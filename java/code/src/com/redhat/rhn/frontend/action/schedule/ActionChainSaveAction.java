@@ -74,31 +74,30 @@ public class ActionChainSaveAction {
             // input validation
 
             if (label.length() >= 256) {
-                log.debug("Action Chain label " + label + " is too long (>= 256 chars)");
+                log.debug("Action Chain label {} is too long (>= 256 chars)", label);
                 return makeResult(false, "actionchain.jsp.labeltoolong");
             }
             ActionChain sameLabelActionChain = ActionChainFactory.getActionChain(u, label);
             if (sameLabelActionChain != null &&
                 !sameLabelActionChain.getId().equals(actionChainId)) {
-                log.debug("Action Chain label " + label + " exists");
+                log.debug("Action Chain label {} exists", label);
                 return makeResult(false, "actionchain.jsp.labelexists");
             }
 
             // change label
-            log.debug("Editing Action Chain " + actionChain + ", changing label to " +
-                label);
+            log.debug("Editing Action Chain {}, changing label to {}", actionChain, label);
             actionChain.setLabel(ActionChainHelper.sanitizeLabel(label));
 
             // delete entries
             for (Long id : deletedEntries) {
-                log.debug("Deleting entry " + id);
+                log.debug("Deleting entry {}", id);
                 actionChain.getEntries().remove(
                     ActionChainFactory.getActionChainEntry(u, id));
             }
 
             // delete groups
             for (Integer sortOrder : deletedSortOrders) {
-                log.debug("Deleting group with sort order " + sortOrder);
+                log.debug("Deleting group with sort order {}", sortOrder);
                 List<ActionChainEntry> entries = ActionChainFactory.getActionChainEntries(
                     actionChain, sortOrder);
                 actionChain.getEntries().removeAll(entries);
@@ -112,8 +111,7 @@ public class ActionChainSaveAction {
                         actionChain, reorderedSortOrderIn));
             }
             for (int sortOrder = 0; sortOrder < reorderedSortOrders.size(); sortOrder++) {
-                log.debug("Changing group order from " + entryGroups.get(sortOrder) +
-                    " to " + sortOrder);
+                log.debug("Changing group order from {} to {}", entryGroups.get(sortOrder), sortOrder);
                 for (ActionChainEntry entry : entryGroups.get(sortOrder)) {
                     entry.setSortOrder(sortOrder);
                 }

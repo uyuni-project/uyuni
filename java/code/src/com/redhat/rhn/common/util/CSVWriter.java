@@ -200,16 +200,16 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
             }
             catch (IllegalAccessException e) {
                 throw new IllegalArgumentException("Can't access method in DTO: get" +
-                        columnKey + "(), IllegalAccessException:" + e.toString());
+                        columnKey + "(), IllegalAccessException:" + e);
             }
             catch (InvocationTargetException e) {
                 throw new IllegalArgumentException("Can't access method in DTO: get" +
-                        columnKey + "(),  InvocationTargetException:" + e.toString());
+                        columnKey + "(),  InvocationTargetException:" + e);
             }
             catch (NoSuchMethodException e) {
                 throw new IllegalArgumentException("Can't call method in DTO class: " +
                         row.getClass().getName() + "." + "get" +
-                        columnKey + "(), NoSuchMethodException: " + e.toString());
+                        columnKey + "(), NoSuchMethodException: " + e);
             }
             catch (NestedNullException e) {
                 return null;

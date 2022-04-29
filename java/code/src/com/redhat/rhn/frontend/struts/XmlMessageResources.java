@@ -48,7 +48,7 @@ public class XmlMessageResources extends MessageResources  {
                                     String config) {
 
         super(factory, config);
-        log.info("Initializing, config='" + config + "'");
+        log.info("Initializing, config='{}'", config);
 
     }
 
@@ -62,15 +62,14 @@ public class XmlMessageResources extends MessageResources  {
                                     String config, boolean returnNull) {
 
         super(factory, config, returnNull);
-        log.info("Initializing, config='" + config +
-                 "', returnNull=" + returnNull);
+        log.info("Initializing, config='{}', returnNull={}", config, returnNull);
 
     }
 
     /** {@inheritDoc} */
     public String getMessage(Locale locale, String key) {
         if (log.isDebugEnabled()) {
-            log.debug("getMessage() : locale (ignored): " + locale + " key: " + key);
+            log.debug("getMessage() : locale (ignored): {} key: {}", locale, key);
         }
         // Force the LocalizationService to determine the Locale vs
         // letting what Struts thinks is the Locale be used.  Notice

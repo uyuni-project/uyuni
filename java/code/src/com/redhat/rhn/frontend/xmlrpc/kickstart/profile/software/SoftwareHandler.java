@@ -53,10 +53,9 @@ public class SoftwareHandler extends BaseHandler {
      * @throws FaultException fault exception
      * @xmlrpc.doc Get a list of a kickstart profile's software packages.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The label of a kickstart
-     * profile.")
+     * @xmlrpc.param #param_desc("string", "ksLabel", "the label of the kickstart profile")
      * @xmlrpc.returntype
-     * #array_single("string", "Get a list of a kickstart profile's software packages")
+     * #array_single("string", "the list of the kickstart profile's software packages")
      */
     @ReadOnly
     public List<String> getSoftwareList(User loggedInUser, String ksLabel) {
@@ -79,10 +78,8 @@ public class SoftwareHandler extends BaseHandler {
      * @throws FaultException fault exception
      * @xmlrpc.doc Set the list of software packages for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The label of a kickstart
-     * profile.")
-     * @xmlrpc.param #param_desc("string[]", "packageList", "A list of package
-     * names to be set on the profile.")
+     * @xmlrpc.param #param_desc("string", "ksLabel", "the label of the kickstart profile")
+     * @xmlrpc.param #array_single_desc("string", "packageList", "the list of package names to be set on the profile")
      * @xmlrpc.returntype #return_int_success()
      */
     public int setSoftwareList(
@@ -112,34 +109,30 @@ public class SoftwareHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param ksLabel A kickstart profile label
      * @param packageList  A list of package names.
-     * @param ignoremissing The boolean value setting --ignoremissing in %packages line
+     * @param ignoreMissing The boolean value setting --ignoremissing in %packages line
      * when true
-     * @param nobase The boolean value setting --nobase in the %packages line when true
+     * @param noBase The boolean value setting --nobase in the %packages line when true
      * @return 1 on success.
      * @throws FaultException fault exception
      * @xmlrpc.doc Set the list of software packages for a kickstart profile.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The label of a kickstart
-     * profile.")
-     * @xmlrpc.param #param_desc("string[]", "packageList", "A list of package
-     * names to be set on the profile.")
-     * @xmlrpc.param #param_desc("boolean", "ignoremissing", "Ignore missing packages
-     * if true")
-     * @xmlrpc.param #param_desc("boolean", "nobase", "Don't install @Base package group
-     * if true")
+     * @xmlrpc.param #param_desc("string", "ksLabel", "the label of the kickstart profile")
+     * @xmlrpc.param #array_single_desc("string", "packageList", "a list of package names to be set on the profile")
+     * @xmlrpc.param #param_desc("boolean", "ignoreMissing", "ignore missing packages if true")
+     * @xmlrpc.param #param_desc("boolean", "noBase", "don't install @Base package group if true")
      * @xmlrpc.returntype #return_int_success()
      */
     public int setSoftwareList(
             User loggedInUser,
             String ksLabel,
             List<String> packageList,
-            Boolean ignoremissing,
-            Boolean nobase) {
+            Boolean ignoreMissing,
+            Boolean noBase) {
 
         checkKickstartPerms(loggedInUser);
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
-        ksdata.setNoBase(nobase);
-        ksdata.setIgnoreMissing(ignoremissing);
+        ksdata.setNoBase(noBase);
+        ksdata.setIgnoreMissing(ignoreMissing);
         KickstartFactory.saveKickstartData(ksdata);
         return setSoftwareList(loggedInUser, ksLabel, packageList);
     }
@@ -154,15 +147,11 @@ public class SoftwareHandler extends BaseHandler {
      * @xmlrpc.doc Append the list of software packages to a kickstart profile.
      * Duplicate packages will be ignored.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The label of a kickstart
-     * profile.")
-     * @xmlrpc.param #param_desc("string[]", "packageList", "A list of package
-     * names to be added to the profile.")
+     * @xmlrpc.param #param_desc("string", "ksLabel", "the label of the kickstart profile")
+     * @xmlrpc.param #array_single_desc("string", "packageList", "the list of package names to be added to the profile")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int appendToSoftwareList(User loggedInUser, String ksLabel,
-            List<String> packageList) {
-
+    public int appendToSoftwareList(User loggedInUser, String ksLabel, List<String> packageList) {
         checkKickstartPerms(loggedInUser);
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
         Set<KickstartPackage> packages = ksdata.getKsPackages();
@@ -197,11 +186,11 @@ public class SoftwareHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise.
      * @xmlrpc.doc Sets kickstart profile software details.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of the kickstart profile")
+     * @xmlrpc.param #param_desc("string", "ksLabel", "the label of the kickstart profile")
      * @xmlrpc.param
-     *          #struct_begin("Kickstart packages info")
-     *              #prop_desc("string", "noBase", "Install @Base package group")
-     *              #prop_desc("string", "ignoreMissing", "Ignore missing packages")
+     *          #struct_desc("params", "kickstart packages info")
+     *              #prop_desc("string", "noBase", "install @Base package group")
+     *              #prop_desc("string", "ignoreMissing", "ignore missing packages")
      *          #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
@@ -223,11 +212,11 @@ public class SoftwareHandler extends BaseHandler {
      * @return Map of KS profile software parameters noBase, ignoreMissingPackages
      * @xmlrpc.doc Gets kickstart profile software details.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of the kickstart profile")
+     * @xmlrpc.param #param_desc("string", "ksLabel", "the label of the kickstart profile")
      * @xmlrpc.returntype
-     *          #struct_begin("Kickstart packages info")
-     *              #prop_desc("string", "noBase", "Install @Base package group")
-     *              #prop_desc("string", "ignoreMissing", "Ignore missing packages")
+     *          #struct_begin("kickstart packages info")
+     *              #prop_desc("string", "noBase", "install @Base package group")
+     *              #prop_desc("string", "ignoreMissing", "ignore missing packages")
      *          #struct_end()
      */
     @ReadOnly

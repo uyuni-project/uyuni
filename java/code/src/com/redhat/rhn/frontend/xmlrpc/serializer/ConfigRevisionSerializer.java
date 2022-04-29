@@ -33,7 +33,7 @@ import java.text.DecimalFormat;
  * ConfigRevisionSerializer
  *
  * @xmlrpc.doc
- * #struct_begin("Configuration Revision information")
+ * #struct_begin("configuration revision information")
  *   #prop("string", "type")
  *              #options()
  *                  #item("file")

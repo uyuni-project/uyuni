@@ -142,7 +142,7 @@ public class TaskHelper {
                     TaskomaticApi.MINION_ACTION_JOB_PREFIX + action.getId(), params, action.getEarliestAction());
         }
         catch (NoSuchBunchTaskException | InvalidParamException e) {
-            LOG.error("Could not schedule action: " + action.getActionType(), e);
+            LOG.error("Could not schedule action: {}", action.getActionType(), e);
         }
     }
 }

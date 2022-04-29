@@ -29697,14 +29697,14 @@ given channel.</source>
         <source>Update Reporting Database</source>
         <target state="final">更新报告数据库</target>
       </trans-unit>
-    <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
+      <trans-unit id="sdc.details.overview.sshport" xml:space="preserve" approved="yes">
         <source>SSH Port:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve">
+        <target state="final">SSH 端口：</target>
+      </trans-unit>
+      <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve" approved="yes">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
@@ -29714,19 +29714,19 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
           <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
+        <target state="final">外设服务器</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve" approved="yes">
         <source>Update Hub Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
+        <target state="final">更新集线器报告数据库</target>
+      </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve" approved="yes">
         <source>Update Hub Reporting Database</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">更新集线器报告数据库</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

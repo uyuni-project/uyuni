@@ -123,7 +123,7 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
         // Set up user to be logged in and sent to YourRhn
         loginAndRedirect(u, mapping, request, response);
 
-        log.debug("ResetLinkAction: user [" + u.getId() + "] is now logged in");
+        log.debug("ResetLinkAction: user [{}] is now logged in", u.getId());
 
         // Have to return NULL - updateWebUserId() has already redirected us,
         // and doing it again will make struts Very Angry
@@ -155,7 +155,7 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
         urlBounce = LoginHelper.updateUrlBounce(urlBounce, reqMethod);
         try {
             if (urlBounce != null) {
-                log.info("redirect: " + urlBounce);
+                log.info("redirect: {}", urlBounce);
                 response.sendRedirect(urlBounce);
             }
         }

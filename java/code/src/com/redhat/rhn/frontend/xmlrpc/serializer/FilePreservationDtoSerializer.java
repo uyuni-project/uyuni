@@ -27,8 +27,8 @@ import com.suse.manager.api.SerializedApiResponse;
  *   #struct_begin("file preservation")
  *      #prop("int", "id")
  *      #prop("string", "name")
- *      #prop("dateTime.iso8601", "created")
- *      #prop("dateTime.iso8601", "last_modified")
+ *      #prop("$date", "created")
+ *      #prop("$date", "last_modified")
  *   #struct_end()
  */
 public class FilePreservationDtoSerializer extends ApiResponseSerializer<FilePreservationDto> {

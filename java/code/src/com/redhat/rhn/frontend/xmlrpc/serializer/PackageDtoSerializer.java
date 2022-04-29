@@ -34,7 +34,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *      #prop("int", "id")
  *      #prop("string", "arch_label")
  *      #prop("string", "last_modified_date")
- *      #prop_desc("string", "last_modified", "(Deprecated)")
+ *      #prop_desc("string", "last_modified", "(deprecated)")
  *  #struct_end()
  *
  */

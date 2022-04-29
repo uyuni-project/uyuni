@@ -156,9 +156,13 @@ const ChannelsSelection = (props: PropsType) => {
     );
   }
 
-  const defaultValueOption = props.initialSelectedSources[0]
+  const initialSource = props.initialSelectedSources[0];
+  const defaultValueOption = initialSource
     ? {
-        base: props.initialSelectedSources[0],
+        base: {
+          id: initialSource.channelId,
+          name: initialSource.name,
+        },
       }
     : undefined;
 
@@ -166,6 +170,7 @@ const ChannelsSelection = (props: PropsType) => {
     <React.Fragment>
       <div className="row">
         <Select
+          data-testid="selectedBaseChannel"
           loadOptions={loadSelectOptions}
           defaultValueOption={defaultValueOption}
           paginate={true}

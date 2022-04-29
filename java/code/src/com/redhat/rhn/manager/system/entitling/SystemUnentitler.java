@@ -76,7 +76,7 @@ public class SystemUnentitler {
     public void removeServerEntitlement(Server server, Entitlement ent) {
         if (!server.hasEntitlement(ent)) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("server doesnt have entitlement: " + ent);
+                LOG.debug("server doesnt have entitlement: {}", ent);
             }
             return;
         }
@@ -95,7 +95,7 @@ public class SystemUnentitler {
                     monitoringManager.disableMonitoring(s);
                 }
                 catch (ValidatorException | IOException e) {
-                    LOG.warn("Error disabling monitoring: " + e.getMessage());
+                    LOG.warn("Error disabling monitoring: {}", e.getMessage());
                 }
             }
 
@@ -115,7 +115,7 @@ public class SystemUnentitler {
             ServerFactory.removeServerFromGroup(server, entitlementServerGroup.get());
         }
         else {
-            LOG.error("Cannot remove entitlement: " + ent.getLabel() + " from system: " + server.getId());
+            LOG.error("Cannot remove entitlement: {} from system: {}", ent.getLabel(), server.getId());
         }
     }
 

@@ -74,7 +74,7 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @xmlrpc.doc List currently available action chains.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #array_begin()
+     * @xmlrpc.returntype #return_array_begin()
      *                      #struct_begin("chain")
      *                        #prop_desc("string", "label", "Label of an Action Chain")
      *                        #prop_desc("string", "entrycount",
@@ -105,7 +105,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.doc List all actions in the particular Action Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @xmlrpc.returntype #array_begin()
+     * @xmlrpc.returntype #return_array_begin()
      *                      #struct_begin("entry")
      *                        #prop_desc("int", "id", "Action ID")
      *                        #prop_desc("string", "label", "Label of an Action")
@@ -223,22 +223,22 @@ public class ActionChainHandler extends BaseHandler {
      * Schedule system reboot.
      *
      * @param loggedInUser The current user
-     * @param serverId Server ID.
+     * @param sid Server ID.
      * @param chainLabel Label of the action chain
      * @return list of action ids, exception thrown otherwise
      *
      * @xmlrpc.doc Add system reboot to an Action Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey",
      * "Session token, issued at login")
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Integer addSystemReboot(User loggedInUser,
-                                   Integer serverId,
+                                   Integer sid,
                                    String chainLabel) {
 
-        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        Server server = this.acUtil.getServerById(sid, loggedInUser);
 
         try {
             return ActionChainManager.scheduleRebootAction(
@@ -255,7 +255,7 @@ public class ActionChainHandler extends BaseHandler {
      * Schedule Errata update.
      *
      * @param loggedInUser The current user
-     * @param serverId Server ID.
+     * @param sid Server ID.
      * @param errataIds a list of erratas IDs
      * @param chainLabel Label of the action chain
      * @return action id if successful, exception otherwise
@@ -263,13 +263,13 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.doc Adds Errata update to an Action Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey",
      * "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "serverId", "System ID")
-     * @xmlrpc.param #array_single("int", "Errata ID")
+     * @xmlrpc.param #param_desc("int", "sid", "System ID")
+     * @xmlrpc.param #array_single_desc("int", "errataIds", "Errata ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Integer addErrataUpdate(User loggedInUser,
-                                   Integer serverId,
+                                   Integer sid,
                                    List<Integer> errataIds,
                                    String chainLabel) {
         if (errataIds.isEmpty()) {
@@ -279,7 +279,7 @@ public class ActionChainHandler extends BaseHandler {
         List<Long> actionIds = null;
         try {
             actionIds = ActionChainManager.scheduleErrataUpdate(loggedInUser,
-                    this.acUtil.getServerById(serverId, loggedInUser),
+                    this.acUtil.getServerById(sid, loggedInUser),
                     errataIds, new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
@@ -299,33 +299,33 @@ public class ActionChainHandler extends BaseHandler {
      * Adds an action to remove installed packages on the system.
      *
      * @param loggedInUser The current user
-     * @param serverId System ID
-     * @param packages List of packages
+     * @param sid System ID
+     * @param packageIds List of packages
      * @param chainLabel Label of the action chain
      * @return list of action ids, exception thrown otherwise
      *
      * @xmlrpc.doc Adds an action to remove installed packages on the system to an Action
      * Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "serverId", "System ID")
-     * @xmlrpc.param #array_single("int", "Package ID")
+     * @xmlrpc.param #param_desc("int", "sid", "System ID")
+     * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action or exception")
      */
     public Integer addPackageRemoval(User loggedInUser,
-                                     Integer serverId,
-                                     List<Integer> packages,
+                                     Integer sid,
+                                     List<Integer> packageIds,
                                      String chainLabel) {
-        if (packages.isEmpty()) {
+        if (packageIds.isEmpty()) {
             throw new InvalidParameterException("No specified packages.");
         }
 
-        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        Server server = this.acUtil.getServerById(sid, loggedInUser);
 
         try {
             return ActionChainManager
                     .schedulePackageRemoval(loggedInUser, server,
-                            this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
+                            this.acUtil.resolvePackages(packageIds, loggedInUser), new Date(),
                             this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
                     .getId().intValue();
         }
@@ -338,32 +338,32 @@ public class ActionChainHandler extends BaseHandler {
      * Schedule package installation to an Action Chain.
      *
      * @param loggedInUser The current user
-     * @param serverId System ID.
-     * @param packages List of packages.
+     * @param sid System ID.
+     * @param packageIds List of packages.
      * @param chainLabel Label of the Action Chain.
      * @return True or false in XML-RPC representation: 1 or 0 respectively.
      *
      * @xmlrpc.doc Adds package installation action to an Action Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "serverId", "System ID")
-     * @xmlrpc.param #array_single("int", "Package ID")
+     * @xmlrpc.param #param_desc("int", "sid", "System ID")
+     * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param #param("string", "chainLabel")
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer addPackageInstall(User loggedInUser,
-                                     Integer serverId,
-                                     List<Integer> packages,
+                                     Integer sid,
+                                     List<Integer> packageIds,
                                      String chainLabel) {
-        if (packages.isEmpty()) {
+        if (packageIds.isEmpty()) {
             throw new InvalidParameterException("No specified packages.");
         }
 
-        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        Server server = this.acUtil.getServerById(sid, loggedInUser);
 
         try {
             return ActionChainManager
                     .schedulePackageInstall(loggedInUser, server,
-                            this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
+                            this.acUtil.resolvePackages(packageIds, loggedInUser), new Date(),
                             this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
                     .getId().intValue();
         }
@@ -376,34 +376,34 @@ public class ActionChainHandler extends BaseHandler {
      * Adds an action to verify installed packages on the system.
      *
      * @param loggedInUser The current user
-     * @param serverId System ID
-     * @param packages List of packages
+     * @param sid System ID
+     * @param packageIds List of packages
      * @param chainLabel Label of the action chain
      * @return True or false in XML-RPC representation (1 or 0 respectively)
      *
      * @xmlrpc.doc Adds an action to verify installed packages on the system to an Action
      * Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "serverId", "System ID")
-     * @xmlrpc.param #array_single("int", "packageId")
+     * @xmlrpc.param #param_desc("int", "sid", "System ID")
+     * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer addPackageVerify(User loggedInUser,
-                                    Integer serverId,
-                                    List<Integer> packages,
+                                    Integer sid,
+                                    List<Integer> packageIds,
                                     String chainLabel) {
-        if (packages.isEmpty()) {
+        if (packageIds.isEmpty()) {
             throw new InvalidParameterException("No specified packages.");
         }
 
-        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        Server server = this.acUtil.getServerById(sid, loggedInUser);
         this.acUtil.ensureNotSalt(server);
 
         try {
             return ActionChainManager
                     .schedulePackageVerify(loggedInUser, server,
-                            this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
+                            this.acUtil.resolvePackages(packageIds, loggedInUser), new Date(),
                             this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
                     .getId().intValue();
         }
@@ -416,33 +416,33 @@ public class ActionChainHandler extends BaseHandler {
      * Adds an action to upgrade installed packages on the system.
      *
      * @param loggedInUser The current user
-     * @param serverId System ID
-     * @param packages List of packages
+     * @param sid System ID
+     * @param packageIds List of packages
      * @param chainLabel Label of the action chain
      * @return True or false in XML-RPC representation (1 or 0 respectively)
      *
      * @xmlrpc.doc Adds an action to upgrade installed packages on the system to an Action
      * Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "serverId", "System ID")
-     * @xmlrpc.param #array_single("int", "packageId")
+     * @xmlrpc.param #param_desc("int", "sid", "System ID")
+     * @xmlrpc.param #array_single("int", "packageIds")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The id of the action or throw an exception")
      */
     public int addPackageUpgrade(User loggedInUser,
-                                 Integer serverId,
-                                 List<Integer> packages,
+                                 Integer sid,
+                                 List<Integer> packageIds,
                                  String chainLabel) {
-        if (packages.isEmpty()) {
+        if (packageIds.isEmpty()) {
             throw new InvalidParameterException("No specified packages.");
         }
 
-        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        Server server = this.acUtil.getServerById(sid, loggedInUser);
 
         try {
             return ActionChainManager
                     .schedulePackageUpgrade(loggedInUser, server,
-                            this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
+                            this.acUtil.resolvePackages(packageIds, loggedInUser), new Date(),
                             this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
                     .getId().intValue();
         }
@@ -455,7 +455,7 @@ public class ActionChainHandler extends BaseHandler {
      * Add a remote command with label as a script.
      *
      * @param loggedInUser The current user
-     * @param serverId System ID
+     * @param sid System ID
      * @param chainLabel Label of the action chain.
      * @param scriptLabel Description/label for script
      * @param uid User ID on the remote system.
@@ -469,20 +469,20 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @xmlrpc.param #param_desc("string", "sessionKey",
      * "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "serverId", "System ID")
+     * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.param #param_desc("string", "scriptLabel", "Label of the script")
      * @xmlrpc.param #param_desc("string", "uid", "User ID on the particular system")
      * @xmlrpc.param #param_desc("string", "gid", "Group ID on the particular system")
      * @xmlrpc.param #param_desc("int", "timeout", "Timeout")
-     * @xmlrpc.param #param_desc("string", "scriptBodyBase64", "Base64 encoded script body")
+     * @xmlrpc.param #param_desc("string", "scriptBody", "Base64 encoded script body")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The id of the action or throw an exception")
      */
-    public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
+    public Integer addScriptRun(User loggedInUser, Integer sid, String chainLabel,
             String scriptLabel, String uid, String gid,
             Integer timeout, String scriptBody) {
         List<Long> systems = new ArrayList<>();
-        systems.add((long) serverId);
+        systems.add((long) sid);
 
         ScriptActionDetails script = ActionManager.createScript(
                 uid, gid, (long) timeout, new String(
@@ -503,7 +503,7 @@ public class ActionChainHandler extends BaseHandler {
      * Add a remote command as a script.
      *
      * @param loggedInUser The current user
-     * @param serverId System ID
+     * @param sid System ID
      * @param chainLabel Label of the action chain.
      * @param uid User ID on the remote system.
      * @param scriptBody Base64 encoded script.
@@ -516,19 +516,19 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @xmlrpc.param #param_desc("string", "sessionKey",
      * "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "serverId", "System ID")
+     * @xmlrpc.param #param_desc("int", "sid", "System ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.param #param_desc("string", "uid", "User ID on the particular system")
      * @xmlrpc.param #param_desc("string", "gid", "Group ID on the particular system")
      * @xmlrpc.param #param_desc("int", "timeout", "Timeout")
-     * @xmlrpc.param #param_desc("string", "scriptBodyBase64", "Base64 encoded script body")
+     * @xmlrpc.param #param_desc("string", "scriptBody", "Base64 encoded script body")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The id of the action or throw an exception")
      */
-    public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
+    public Integer addScriptRun(User loggedInUser, Integer sid, String chainLabel,
             String uid, String gid, Integer timeout, String scriptBody) {
 
         return addScriptRun(
-                loggedInUser, serverId, chainLabel, null, uid, gid, timeout, scriptBody);
+                loggedInUser, sid, chainLabel, null, uid, gid, timeout, scriptBody);
     }
 
     /**
@@ -543,7 +543,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey",
      * "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @xmlrpc.param #param("dateTime.iso8601", "Earliest date")
+     * @xmlrpc.param #param_desc("$date", "date", "Earliest date")
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer scheduleChain(User loggedInUser, String chainLabel, Date date) {
@@ -563,15 +563,15 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @param loggedInUser The current user
      * @param chainLabel Label of the action chain
-     * @param serverId System ID
+     * @param sid System ID
      * @param revisionSpecifiers List of maps specifying a revision
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Adds an action to deploy a configuration file to an Action Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @xmlrpc.param #param_desc("int", "System ID", "System ID")
-     * @xmlrpc.param #array_begin()
+     * @xmlrpc.param #param_desc("int", "sid", "System ID")
+     * @xmlrpc.param #array_begin("revisionSpecifiers")
      *                   #struct_begin("config revision specifier")
      *                       #prop_desc("string", "channelLabel", "Channel label")
      *                       #prop_desc("string", "filePath",
@@ -583,7 +583,7 @@ public class ActionChainHandler extends BaseHandler {
      */
     public Integer addConfigurationDeployment(User loggedInUser,
             String chainLabel,
-            Integer serverId,
+            Integer sid,
             List<Map<String, Object>> revisionSpecifiers) {
         if (revisionSpecifiers.isEmpty()) {
             throw new InvalidParameterException("At least one revision should be given.");
@@ -596,7 +596,7 @@ public class ActionChainHandler extends BaseHandler {
         revisionSpecifiers.stream().forEach(specifier -> validateMap(validKeys, specifier));
 
         List<Long> server = new ArrayList<>();
-        server.add(serverId.longValue());
+        server.add(sid.longValue());
 
         ConfigChannelHandler configChannelHandler = new ConfigChannelHandler();
         List<Long> revisionIds = revisionSpecifiers.stream().map(specifier ->

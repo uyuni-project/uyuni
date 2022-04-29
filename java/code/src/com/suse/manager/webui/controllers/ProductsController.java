@@ -254,7 +254,7 @@ public class ProductsController {
         // Convert to a map specifying operation result for each product while logging the errors that have happened
         Map<String, String> resultMap = new HashMap<>();
         productStatusMap.forEach((product, error) -> {
-            error.ifPresent(ex -> log.fatal("addProduct() failed for " + product, ex));
+            error.ifPresent(ex -> log.fatal("addProduct() failed for {}", product, ex));
             resultMap.put(product, error.map(Throwable::getMessage).orElse(null));
         });
 
@@ -379,7 +379,7 @@ public class ProductsController {
             data.put("baseProducts", jsonProducts);
         }
         catch (Exception e) {
-            log.error("Exception while rendering products: " + e.getMessage());
+            log.error("Exception while rendering products: {}", e.getMessage());
             data.put("error", "Exception while fetching products: " + e.getMessage());
         }
 

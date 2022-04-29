@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * ImageFileSerializer
  * @xmlrpc.doc
- * #struct_begin("Image information")
+ * #struct_begin("image information")
  *   #prop_desc("string", "file", "file name without path")
  *   #prop_desc("string", "type", "file type")
  *   #prop_desc("boolean", "external", "true if the file is external,

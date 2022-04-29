@@ -31,6 +31,8 @@ import com.suse.manager.api.HttpApiResponse;
 import com.suse.manager.api.ListDeserializer;
 import com.suse.manager.api.MapDeserializer;
 import com.suse.manager.api.RouteFactory;
+import com.suse.manager.api.SerializationBuilder;
+import com.suse.manager.api.SerializedApiResponse;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.utils.SparkTestUtils;
 
@@ -158,7 +160,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
-        assertEquals(1L, result.get("myInteger"));
+        assertEquals(1, result.get("myInteger"));
         assertEquals("$tr:ng", result.get("myString"));
         assertEquals(true, result.get("myBoolean"));
     }
@@ -176,7 +178,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
-        assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
+        assertEquals(1, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("-empty-", result.get("myString"));
         assertEquals(true, result.get("myBoolean"));
     }
@@ -195,7 +197,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
-        assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
+        assertEquals(1, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("bar", result.get("myString")); // value in body should take precedence
         assertEquals(true, result.get("myBoolean"));
     }
@@ -229,7 +231,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
-        assertEquals(1L, result.get("myInteger")); // gson prefers long when deserializing numbers
+        assertEquals(1, result.get("myInteger")); // gson prefers long when deserializing numbers
         assertEquals("$tr:ng", result.get("myString"));
         assertEquals(true, result.get("myBoolean"));
     }
@@ -312,7 +314,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
         List<?> result = getResult((String) route.handle(req, res), List.class);
 
-        assertEquals(List.of(2L, 3L, 5L), result);
+        assertEquals(List.of(2, 3, 5), result);
     }
 
     /**
@@ -329,7 +331,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         List<Long> result = getResult((String) route.handle(req, res),
                 TypeToken.getParameterized(List.class, Long.class).getType());
 
-        assertEquals(List.of(2L, 3L, 5L), result);
+        assertEquals(List.of(2, 3, 5), result);
     }
 
     /**
@@ -423,7 +425,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Response res = createResponse();
 
         List<Object> result = getResult((String) route.handle(req, res), List.class);
-        assertTrue(result.containsAll(List.of(1L, "two", "3")));
+        assertTrue(result.containsAll(List.of(1, "two", "3")));
     }
 
     /**
@@ -503,7 +505,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertFalse(result.containsKey("isCustomSerialized"));
-        assertEquals(1L, result.get("myInteger"));
+        assertEquals(1, result.get("myInteger"));
         assertEquals("foo", result.get("myString"));
         assertEquals(2, result.size());
     }
@@ -522,7 +524,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(true, result.get("isCustomSerialized"));
-        assertEquals(1L, result.get("myInteger"));
+        assertEquals(1, result.get("myInteger"));
         assertEquals("foo", result.get("myString"));
         assertEquals(3, result.size());
     }
@@ -543,9 +545,56 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
 
         assertEquals(true, result.get("isCustomSerialized"));
-        assertEquals(1L, result.get("myInteger"));
+        assertEquals(1, result.get("myInteger"));
         assertEquals("foo", result.get("myString"));
         assertEquals(3, result.size());
+    }
+
+    /**
+     * Tests custom serialization of a subclass with its own serializer
+     *
+     * Serializers that serialize classes in the same class hierarchy override each other in the order they are
+     * added. To ensure that subclass serializers take precedence, they must be added later than serializers of their
+     * parent classes. In this test, the serializers are defined in wrong order to test if {@link RouteFactory} handles
+     * the mentioned case properly.
+     */
+    @Test
+    public void testCustomSerializerWithSerializedSubclass() throws Exception {
+        // Create a factory with custom serializers for the case
+        RouteFactory customSerializedRouteFactory = new RouteFactory(new SerializerFactory() {
+            @Override
+            public List<ApiResponseSerializer<?>> getSerializers() {
+                return List.of(
+                        // Additional serializer for the subclass itself (must be registered last)
+                        new ApiResponseSerializer<TestResponseSubclass>() {
+                            @Override
+                            public SerializedApiResponse serialize(TestResponseSubclass src) {
+                                return new SerializationBuilder()
+                                        .add("serializedBySubclass", true)
+                                        .build();
+                            }
+
+                            @Override
+                            public Class<TestResponseSubclass> getSupportedClass() {
+                                return TestResponseSubclass.class;
+                            }
+                        }, new TestSerializer());
+            }
+        });
+
+        Method customResponseSubclass =
+                handler.getClass().getMethod("customResponseSubclass", Integer.class, String.class);
+        Route route = customSerializedRouteFactory.createRoute(customResponseSubclass, handler);
+
+        Request req = createRequest("/manager/api/test/customResponseSubclass",
+                Map.of("myInteger", "1", "myString", "foo"));
+        Response res = createResponse();
+
+        Map<String, Object> result = getResult((String) route.handle(req, res), Map.class);
+
+        // Assert that the result is serialized properly by the serializer of the subclass
+        assertEquals(true, result.get("serializedBySubclass"));
+        assertEquals(1, result.size());
     }
 
     /**
@@ -577,7 +626,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         Map<String, Object> nested = (Map<String, Object>) result.get("myObject");
         assertEquals(true, nested.get("isCustomSerialized"));
         assertEquals("foo", nested.get("myString"));
-        assertEquals(3L, nested.get("myInteger"));
+        assertEquals(3, nested.get("myInteger"));
     }
 
     /**
@@ -595,9 +644,9 @@ public class RouteFactoryTest extends BaseControllerTestCase {
         List<Map<String, Object>> result = getResult((String) route.handle(req, res), List.class);
 
         assertTrue(result.stream().allMatch(i -> (boolean) i.get("isCustomSerialized")));
-        assertEquals(1L, result.get(0).get("myInteger"));
+        assertEquals(1, result.get(0).get("myInteger"));
         assertEquals("foo", result.get(0).get("myString"));
-        assertEquals(2L, result.get(1).get("myInteger"));
+        assertEquals(2, result.get(1).get("myInteger"));
         assertEquals("bar", result.get(1).get("myString"));
     }
 
@@ -617,9 +666,9 @@ public class RouteFactoryTest extends BaseControllerTestCase {
 
         assertEquals(2, result.size());
         assertTrue(result.values().stream().allMatch(i -> (boolean) i.get("isCustomSerialized")));
-        assertEquals(1L, result.get("1").get("myInteger"));
+        assertEquals(1, result.get("1").get("myInteger"));
         assertEquals("foo", result.get("1").get("myString"));
-        assertEquals(2L, result.get("2").get("myInteger"));
+        assertEquals(2, result.get("2").get("myInteger"));
         assertEquals("bar", result.get("2").get("myString"));
     }
 
@@ -637,7 +686,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
 
         List<Long> result = getResult((String) route.handle(req, res), List.class);
 
-        assertEquals(List.of(2L, 3L, 5L), result);
+        assertEquals(List.of(2, 3, 5), result);
     }
 
     /**

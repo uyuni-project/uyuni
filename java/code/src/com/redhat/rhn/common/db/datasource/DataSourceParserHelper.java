@@ -70,7 +70,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     public void startElement(String namespaceURI, String localName, String qualifiedName,
             Attributes atts) {
 
-        logger.debug("startElement(" + localName + ")");
+        logger.debug("startElement({})", localName);
 
         //sqlStatement = new StringBuffer();
         if (localName.equals("datasource_modes")) {
@@ -122,7 +122,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     /** {@inheritDoc} */
     public void endElement(String namespaceURI, String localName, String qualifiedName) {
 
-        logger.debug("endElement(" + localName + ")");
+        logger.debug("endElement({})", localName);
 
         switch (localName) {
             case "mode":
@@ -196,7 +196,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
         ArrayList<String> errors = new ArrayList<>();
         String errmsg;
         for (String modeKey : modes.keySet()) {
-            logger.debug("Sanity check for mode " + modeKey);
+            logger.debug("Sanity check for mode {}", modeKey);
             ParsedMode pm = modes.get(modeKey);
             if (pm == null) {
                 errors.add("ParsedMode is null for key '" + modeKey + "'");

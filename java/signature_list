@@ -1,0 +1,950 @@
+public class BaseHandler implements XmlRpcInvocationHandler {
+    public static final int VALID = 1;
+    public Object invoke(String methodCalled, List params) throws XmlRpcFault {
+    public static User getLoggedInUser(String sessionKey) {
+    public static void ensureOrgAdmin(User user) throws PermissionCheckFailureException {
+    public static void ensureSatAdmin(User user) throws PermissionCheckFailureException {
+    public static void ensureSystemGroupAdmin(User user)
+    public static void ensureConfigAdmin(User user)
+    public static void ensureOrgOrConfigAdmin(User user)
+    public static void ensureImageAdmin(User user)
+    public static void ensureUserRole(User user, Role role)
+public class AnsibleHandler extends BaseHandler {
+    public static final String ANSIBLE_FLUSH_CACHE = "flushCache";
+    public AnsibleHandler(AnsibleManager managerIn) {
+    public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
+    public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
+    public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
+    public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath,
+    public List<AnsiblePath> listAnsiblePaths(User loggedInUser, Integer controlNodeId) {
+    public AnsiblePath lookupAnsiblePathById(User loggedInUser, Integer pathId) {
+    public AnsiblePath createAnsiblePath(User loggedInUser, Map<String, Object> props) {
+    public AnsiblePath updateAnsiblePath(User loggedInUser, Integer pathId, Map<String, Object> props) {
+    public int removeAnsiblePath(User loggedInUser, Integer pathId) {
+    public String fetchPlaybookContents(User loggedInUser, Integer pathId, String playbookRelPath) {
+    public Map<String, Map<String, AnsiblePlaybookSlsResult>> discoverPlaybooks(User loggedInUser, Integer pathId) {
+    public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
+public class ActivationKeyHandler extends BaseHandler {
+    public ActivationKeyHandler(ServerGroupManager serverGroupManagerIn) {
+    public String create(User loggedInUser, String key, String description,
+    public List<ChannelInfo> listChannels(String minionId,
+    public String clone(User loggedInUser, String key, String cloneDescription)
+    public String create(User loggedInUser, String key, String description,
+    public int delete(User loggedInUser, String key) {
+    public int setDetails(User loggedInUser, String key, Map details)
+    public ActivationKey getDetails(User loggedInUser, String key) {
+    public int addEntitlements(User loggedInUser, String key, List entitlements) {
+    public int removeEntitlements(User loggedInUser, String key, List entitlements) {
+    public int addChildChannels(User loggedInUser, String key, List childChannelLabels) {
+    public int removeChildChannels(User loggedInUser, String key, List childChannelLabels) {
+    public int addServerGroups(User loggedInUser, String key, List serverGroupIds) {
+    public int removeServerGroups(User loggedInUser, String key, List serverGroupIds) {
+    public int addPackages(User loggedInUser, String key,
+    public int removePackages(User loggedInUser, String key,
+    public List<ActivationKey> listActivationKeys(User loggedInUser) {
+    public Object[] listActivatedSystems(User loggedInUser, String key) {
+    public List listConfigChannels(User loggedInUser, String key) {
+     public int setConfigChannels(User loggedInUser, List<String> keys,
+     public int addConfigChannels(User loggedInUser,  List<String> keys,
+      public int removeConfigChannels(User loggedInUser, List<String> keys,
+      public int enableConfigDeployment(User loggedInUser, String key) {
+      public int disableConfigDeployment(User loggedInUser, String key) {
+      public int checkConfigDeployment(User loggedInUser, String key) {
+public class ApiHandler extends BaseHandler {
+    public ApiHandler(HandlerFactory handlersIn) {
+    public String systemVersion() {
+    public String getVersion() {
+    public Map<String, String> getApiNamespaces(User loggedInUser) {
+    public Map<String, Object> getApiCallList(User loggedInUser) {
+    public Map getApiNamespaceCallList(User loggedInUser, String namespace) {
+public class TestHandler extends BaseHandler {
+    public int addition(int[] numbers) {
+    public int envIsSatellite() {
+    public Map hashChecking(Map testMap) {
+    public int multiplication(int[] numbers) {
+    public String singleIdentityFunction(String input) {
+public class CVEAuditHandler extends BaseHandler {
+    public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
+    public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
+    public List<CVEAuditImage> listImagesByPatchStatus(User loggedInUser,
+    public List<CVEAuditImage> listImagesByPatchStatus(User loggedInUser,
+public class AuthHandler extends BaseHandler {
+    public int logout(String sessionKey) {
+    public String login(String username, String password)
+    public String login(String username, String password, Integer durationIn)
+    public boolean isSessionKeyValid(String sessionKey) {
+    public int checkAuthToken(String login, String token) {
+public class ActionChainHandler extends BaseHandler {
+    public ActionChainHandler() {
+    public List<Map<String, Object>> listChains(User loggedInUser) {
+    public List<Map<String, Object>> listChainActions(User loggedInUser,
+    public Integer removeAction(User loggedInUser,
+    public Integer deleteChain(User loggedInUser, String chainLabel) {
+    public Integer createChain(User loggedInUser,
+    public Integer addSystemReboot(User loggedInUser,
+    public Integer addErrataUpdate(User loggedInUser,
+    public Integer addPackageRemoval(User loggedInUser,
+    public Integer addPackageInstall(User loggedInUser,
+    public Integer addPackageVerify(User loggedInUser,
+    public int addPackageUpgrade(User loggedInUser,
+    public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
+    public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
+    public Integer scheduleChain(User loggedInUser, String chainLabel, Date date) {
+    public Integer addConfigurationDeployment(User loggedInUser,
+    public Integer renameChain(User loggedInUser,
+public class ChannelAccessHandler extends BaseHandler {
+    public int enableUserRestrictions(User loggedInUser, String channelLabel)
+    public int disableUserRestrictions(User loggedInUser, String channelLabel)
+    public int setOrgSharing(User loggedInUser, String channelLabel, String access)
+    public String getOrgSharing(User loggedInUser, String channelLabel)
+public class ChannelOrgHandler extends BaseHandler {
+    public List list(User loggedInUser, String channelLabel)
+    public int enableAccess(User loggedInUser, String channelLabel, Integer orgId)
+    public int disableAccess(User loggedInUser, String channelLabel, Integer orgId)
+public class ChannelSoftwareHandler extends BaseHandler {
+    public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
+    public TaskomaticApi getTaskomaticApi() {
+    public List<ErrataOverview> listErrataNeedingSync(User loggedInUser,
+    public Integer syncErrata(User loggedInUser, String channelLabel) {
+    public Object[] listLatestPackages(User loggedInUser, String channelLabel)
+    public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel,
+    public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel,
+    public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel)
+    public List<ChannelArch> listArches(User loggedInUser)
+    public int delete(User loggedInUser, String channelLabel)
+    public int isGloballySubscribable(User loggedInUser, String channelLabel) {
+    public Channel getDetails(User loggedInUser, String channelLabel)
+    public Channel getDetails(User loggedInUser, Integer id)
+    public int setDetails(User loggedInUser, String channelLabel, Map<String, String> details) {
+    public int setDetails(User loggedInUser, Integer channelId, Map<String,
+    public int create(User loggedInUser, String label, String name,
+    public int create(User loggedInUser, String label, String name,
+    public int create(User loggedInUser, String label, String name,
+    public int create(User loggedInUser, String label, String name,
+    public int setContactDetails(User loggedInUser, String channelLabel,
+    public Object[] listSubscribedSystems(User loggedInUser, String label)
+    public Object[] listSystemChannels(User loggedInUser, Integer sid)
+    public int setUserSubscribable(User loggedInUser, String channelLabel,
+    public int setUserManageable(User loggedInUser, String channelLabel,
+    public int isUserSubscribable(User loggedInUser, String channelLabel,
+    public boolean isExisting(User loggedInUser, String channelLabel) {
+    public int isUserManageable(User loggedInUser, String channelLabel,
+    public int setGloballySubscribable(User loggedInUser, String channelLabel,
+    public int addPackages(User loggedInUser, String channelLabel, List<Long> packageIds)
+    public int removeErrata(User loggedInUser, String channelLabel,
+    public int removePackages(User loggedInUser, String channelLabel,
+    public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel,
+    public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel,
+    public List<ErrataOverview> listErrata(User loggedInUser,
+    public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel)
+    public Object[] listErrataByType(User loggedInUser, String channelLabel,
+    public Object[] listPackagesWithoutChannel(User loggedInUser) {
+    public int clone(User loggedInUser, String originalLabel,
+    public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
+    public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
+    public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
+    public Object[] mergePackages(User loggedInUser, String mergeFromLabel,
+    public Object[] mergePackages(User loggedInUser, String mergeFromLabel,
+    public int alignMetadata(User loggedInUser, String channelFromLabel, String channelToLabel, String metadataType) {
+    public int regenerateNeededCache(User loggedInUser, String channelLabel) {
+    public int regenerateNeededCache(User loggedInUser) {
+    public int regenerateYumCache(User loggedInUser, String channelLabel, Boolean force) {
+    public Object[] listChildren(User loggedInUser, String channelLabel) {
+    public String getChannelLastBuildById(User loggedInUser, Integer id)
+    public List<Map<String, Object>> listUserRepos(User loggedInUser) {
+    public ContentSource createRepo(User loggedInUser, String label, String type,
+    public ContentSource createRepo(User loggedInUser, String label, String type,
+     public ContentSource createRepo(User loggedInUser, String label, String type,
+    public Integer removeRepo(User loggedInUser, Integer id) {
+    public Integer removeRepo(User loggedInUser, String label) {
+    public Channel associateRepo(User loggedInUser, String chanLabel, String repoLabel) {
+    public Channel disassociateRepo(User loggedInUser, String chanLabel, String repoLabel) {
+    public ContentSource updateRepoUrl(User loggedInUser, Integer id, String url) {
+    public ContentSource updateRepoUrl(User loggedInUser, String label, String url) {
+    public ContentSource updateRepoSsl(User loggedInUser, Integer id,
+    public ContentSource updateRepoSsl(User loggedInUser, String label,
+    public ContentSource updateRepoLabel(User loggedInUser, Integer id, String label) {
+     public ContentSource updateRepoLabel(User loggedInUser, String label,
+    public ContentSource updateRepo(User loggedInUser, Integer id, String label,
+    public ContentSource getRepoDetails(User loggedInUser, String repoLabel) {
+    public ContentSource getRepoDetails(User loggedInUser, Integer id) {
+    public List<ContentSource> listChannelRepos(User loggedInUser, String channelLabel) {
+    public int syncRepo(User loggedInUser, List<String> channelLabels) {
+    public int syncRepo(User loggedInUser, String channelLabel) {
+    public int syncRepo(User loggedInUser, String channelLabel,
+    public int syncRepo(User loggedInUser, String channelLabel, String cronExpr) {
+    public int syncRepo(User loggedInUser,
+    public String getRepoSyncCronExpression(User loggedInUser, String channelLabel) {
+    public List<ContentSourceFilter> listRepoFilters(User loggedInUser, String label) {
+    public int addRepoFilter(User loggedInUser, String label,
+    public int removeRepoFilter(User loggedInUser, String label,
+    public int setRepoFilters(User loggedInUser, String label,
+     public int clearRepoFilters(User loggedInUser, String label) {
+    public List<ContentSourceFilter> listVendorRepoFilters(User loggedInUser, String label) {
+    public int addVendorRepoFilter(User loggedInUser, String label, Map<String, String> filterIn) {
+    public int removeVendorRepoFilter(User loggedInUser, String label,
+    public int setVendorRepoFilters(User loggedInUser, String label,
+    public int clearVendorRepoFilters(User loggedInUser, String label) {
+    public long applyChannelState(User user, List<Integer> sids) {
+public class ChannelHandler extends BaseHandler {
+    public List<Map<String, Object>> listSoftwareChannels(User loggedInUser) {
+    public Object[] listAllChannels(User loggedInUser) {
+    public Object[] listVendorChannels(User loggedInUser) {
+    public Object[] listPopularChannels(User loggedInUser, Integer popularityCount) {
+    public Object[] listMyChannels(User loggedInUser) {
+    public Object[] listSharedChannels(User loggedInUser) {
+    public Object[] listRetiredChannels(User loggedInUser) {
+    public Object[] listManageableChannels(User loggedInUser) {
+public class ConfigChannelHandler extends BaseHandler {
+    public ConfigChannel create(User loggedInUser, String label,
+    public ConfigChannel create(User user, String label, String name, String description, String channelType) {
+    public ConfigChannel create(User user, String label, String name, String description, String channelType,
+    public int deleteFileRevisions(User loggedInUser, String configChannelLabel,
+    public List getFileRevisions(User loggedInUser, String configChannelLabel,
+    public ConfigRevision getFileRevision(User loggedInUser, String configChannelLabel,
+    public int syncSaltFilesOnDisk(User loggedInUser, List<String> channelLabels) {
+    public EncodedConfigRevision getEncodedFileRevision(User loggedInUser,
+    public ConfigChannel getDetails(User loggedInUser, String configChannelLabel) {
+    public ConfigChannel getDetails(User loggedInUser, Integer configChannelId) {
+    public ConfigChannel update(User loggedInUser, String label,
+    public List<ConfigChannel> lookupChannelInfo(User loggedInUser,
+    public List<ConfigChannelDto> listGlobals(User loggedInUser) {
+     public ConfigRevision updateInitSls(User user, String channelLabel, Map<String, Object> data) {
+    public ConfigRevision createOrUpdatePath(User loggedInUser,
+    public ConfigRevision createOrUpdateSymlink(User loggedInUser,
+    public List<ConfigRevision> lookupFileInfo(User loggedInUser,
+    public ConfigRevision lookupFileInfo(User loggedInUser,
+    public List<ConfigFileDto> listFiles(User loggedInUser, String channelLabel) {
+    public int deleteChannels(User loggedInUser, List<String> channelLabels) {
+     public int deleteFiles(User loggedInUser, String channelLabel, List<String> paths) {
+     public Integer scheduleFileComparisons(User loggedInUser, String channelLabel,
+    public int channelExists(User loggedInUser, String channelLabel) {
+    public int deployAllSystems(User loggedInUser, String channelLabel) {
+    public int deployAllSystems(User loggedInUser, String channelLabel, Date date) {
+    public int deployAllSystems(User loggedInUser, String channelLabel, String filePath) {
+    public int deployAllSystems(User loggedInUser, String channelLabel,
+    public List<ConfigSystemDto> listSubscribedSystems(User loggedInUser,
+    public List<ManagedServerGroup> listAssignedSystemGroups(User loggedInUser, String channelLabel) {
+public class DistChannelHandler extends BaseHandler {
+    public Object[] listDefaultMaps(User loggedInUser) {
+    public Object[] listMapsForOrg(User loggedInUser) {
+    public Object[] listMapsForOrg(User loggedInUser, Integer orgId) {
+    public int setMapForOrg(User loggedInUser, String os, String release,
+public class ErrataHandler extends BaseHandler {
+    public String getOval(User loggedInUser, String identifier) throws IOException,
+    public Map<String, Object> getDetails(User loggedInUser, String advisoryName)
+    public Integer setDetails(User loggedInUser, String advisoryName,
+    public Object[] listAffectedSystems(User loggedInUser, String advisoryName)
+    public Map<Long, String> bugzillaFixes(User loggedInUser, String advisoryName)
+    public Object[] listKeywords(User loggedInUser, String advisoryName)
+    public Object[] applicableToChannels(User loggedInUser, String advisoryName)
+    public List listCves(User loggedInUser, String advisoryName) throws FaultException {
+    public List<Map> listPackages(User loggedInUser, String advisoryName)
+    public int addPackages(User loggedInUser, String advisoryName,
+    public int removePackages(User loggedInUser, String advisoryName,
+    public Object[] clone(User loggedInUser, String channelLabel,
+    public int cloneAsync(User loggedInUser, String channelLabel,
+    public Object[] cloneAsOriginal(User loggedInUser, String channelLabel,
+    public int cloneAsOriginalAsync(User loggedInUser, String channelLabel,
+    public Errata create(User loggedInUser, Map<String, Object> errataInfo,
+    public Integer delete(User loggedInUser, String advisoryName)
+    public Errata publish(User loggedInUser, String advisory, List<String> channelLabels) {
+    public Errata publishAsOriginal(User loggedInUser, String advisory,
+    public List<Errata> findByCve(User loggedInUser, String cveName) {
+public class FormulaHandler extends BaseHandler {
+    public FormulaHandler(FormulaManager formulaManagerIn, SaltApi saltApiIn) {
+    public List<String> listFormulas(User loggedInUser) {
+    public List<String> getFormulasByGroupId(User loggedInUser, Integer systemGroupId) {
+    public List<String> getFormulasByServerId(User loggedInUser, Integer systemId) {
+    public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer systemId) {
+    public int setFormulasOfGroup(User loggedInUser, Integer systemGroupId,
+    public int setFormulasOfServer(User loggedInUser, Integer systemId,
+    public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer systemId, String formulaName) {
+    public List<FormulaData> getCombinedFormulaDataByServerIds(User loggedInUser, String formulaName,
+    public Map<String, Object> getGroupFormulaData(User loggedInUser, Integer groupId, String formulaName) {
+    public int setSystemFormulaData(User loggedInUser, Integer systemId, String formulaName, Map<String,
+    public int setGroupFormulaData(User loggedInUser, Integer groupId, String formulaName, Map<String,
+public class ImageProfileHandler extends BaseHandler {
+    public List<String> listImageProfileTypes(User loggedInUser) {
+    public List<ImageProfile> listImageProfiles(User loggedInUser) {
+    public ImageProfile getDetails(User loggedInUser, String label) {
+    public int create(User loggedInUser, String label, String type, String storeLabel,
+    public int create(User loggedInUser, String label, String type, String storeLabel,
+    public int delete(User loggedInUser, String label) {
+    public int setDetails(User loggedInUser, String label, Map details) {
+    public Map<String, String> getCustomValues(User loggedInUser, String label) {
+    public int setCustomValues(User loggedInUser, String label,
+    public int deleteCustomValues(User loggedInUser, String label, List<String> keys) {
+public class ImageStoreHandler extends BaseHandler {
+    public int create(User loggedInUser, String label, String uri, String storeType,
+    public List<ImageStoreType> listImageStoreTypes(User loggedInUser) {
+    public List<ImageStore> listImageStores(User loggedInUser) {
+    public ImageStore getDetails(User loggedInUser, String label) {
+    public int delete(User loggedInUser, String label) {
+    public int setDetails(User loggedInUser, String label, Map details) {
+public class ImageInfoHandler extends BaseHandler {
+    public List<ImageInfo> listImages(User loggedInUser) {
+    public ImageOverview getDetails(User loggedInUser, Integer imageId) {
+    public Long importImage(User loggedInUser, String name, String version,
+    public Long scheduleImageBuild(User loggedInUser, String profileLabel, String version,
+    public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer imageId) {
+    public List<Map<String, Object>> listPackages(User loggedInUser, Integer imageId)
+    public Map<String, String> getCustomValues(User loggedInUser, Integer imageId) {
+    public int delete(User loggedInUser, Integer imageId) {
+public class FilePreservationListHandler extends BaseHandler {
+    public List listAllFilePreservations(User loggedInUser)
+    public int create(User loggedInUser, String name, List<String> files)
+    public int delete(User loggedInUser, String name)
+    public FileList getDetails(User loggedInUser, String name)
+public class CryptoKeysHandler extends BaseHandler {
+    public List listAllKeys(User loggedInUser) {
+    public int create(User loggedInUser, String description, String type, String content) {
+    public int delete(User loggedInUser, String description) {
+    public int update(User loggedInUser, String description, String type, String content) {
+    public CryptoKey getDetails(User loggedInUser, String description) {
+public class KeysHandler extends BaseHandler {
+    public List<ActivationKey> getActivationKeys(User loggedInUser, String ksLabel) {
+    public int addActivationKey(User loggedInUser, String ksLabel, String key) {
+    public int removeActivationKey(User loggedInUser, String ksLabel, String key) {
+public class SoftwareHandler extends BaseHandler {
+    public List<String> getSoftwareList(User loggedInUser, String ksLabel) {
+    public int setSoftwareList(
+    public int setSoftwareList(
+    public int appendToSoftwareList(User loggedInUser, String ksLabel,
+    public int setSoftwareDetails(User loggedInUser, String ksLabel, Map params) {
+    public Map<String, Boolean> getSoftwareDetails(User loggedInUser, String ksLabel) {
+public class SystemDetailsHandler extends BaseHandler {
+    public boolean checkConfigManagement(User loggedInUser, String ksLabel) {
+    public int enableConfigManagement(User loggedInUser, String ksLabel) {
+    public int disableConfigManagement(User loggedInUser, String ksLabel) {
+    public boolean checkRemoteCommands(User loggedInUser, String ksLabel) {
+    public int enableRemoteCommands(User loggedInUser, String ksLabel) {
+    public int disableRemoteCommands(User loggedInUser, String ksLabel) {
+    public String getSELinux(User loggedInUser, String ksLabel) {
+    public int setSELinux(User loggedInUser, String ksLabel, String enforcingMode) {
+    public Map<String, Object> getLocale(User loggedInUser, String ksLabel)
+    public int setLocale(User loggedInUser, String ksLabel, String locale,
+    public int setPartitioningScheme(User loggedInUser, String ksLabel,
+    public List<String> getPartitioningScheme(User loggedInUser, String ksLabel) {
+    public Set<CryptoKey> listKeys(User loggedInUser, String kickstartLabel) {
+    public int addKeys(User loggedInUser, String kickstartLabel,
+    public int removeKeys(User loggedInUser, String kickstartLabel,
+    public Set<FileList> listFilePreservations(User loggedInUser, String kickstartLabel)
+    public int addFilePreservations(User loggedInUser, String kickstartLabel,
+    public int removeFilePreservations(User loggedInUser, String kickstartLabel,
+    public int setRegistrationType(User loggedInUser, String kickstartLabel,
+    public String  getRegistrationType(User loggedInUser, String kickstartLabel) {
+public class ProfileHandler extends BaseHandler {
+    public String getKickstartTree(User loggedInUser, String kslabel) {
+    public String getUpdateType(User loggedInUser, String kslabel) {
+    public Boolean getCfgPreservation(User loggedInUser, String kslabel) {
+    public int setCfgPreservation(User loggedInUser, String kslabel, Boolean preserve) {
+    public int setLogging(User loggedInUser, String kslabel, Boolean pre, Boolean post) {
+    public int setKickstartTree(User loggedInUser, String kslabel,
+    public int setUpdateType(User loggedInUser, String kslabel,
+    public List<String> getChildChannels(User loggedInUser, String kslabel) {
+    public int setChildChannels(User loggedInUser, String kslabel,
+    public List<KickstartScript> listScripts(User loggedInUser, String label) {
+    public int orderScripts(User loggedInUser, String ksLabel, List<Integer> preScripts,
+    public int addScript(User loggedInUser, String ksLabel, String name, String contents,
+    public int addScript(User loggedInUser, String ksLabel, String name, String contents,
+    public int addScript(User loggedInUser, String ksLabel, String name, String contents,
+    public int removeScript(User loggedInUser, String ksLabel, Integer id) {
+    public String downloadKickstart(User loggedInUser, String ksLabel,
+    public String downloadRenderedKickstart(User loggedInUser, String ksLabel) {
+    public Object[] getAdvancedOptions(User loggedInUser, String ksLabel)
+    public int setAdvancedOptions(User loggedInUser, String ksLabel, List<Map> options)
+    public Object[] getCustomOptions(User loggedInUser, String ksLabel)
+   public int setCustomOptions(User loggedInUser, String ksLabel, List<String> options)
+   public Set listIpRanges(User loggedInUser, String ksLabel) {
+   public int addIpRange(User loggedInUser, String ksLabel, String min,
+   public int removeIpRange(User loggedInUser, String ksLabel, String ipAddress) {
+    public Map<String, List<ActivationKey>> compareActivationKeys(User loggedInUser,
+    public Map<String, Set<String>> comparePackages(User loggedInUser,
+    public Map<String, List<KickstartOptionValue>> compareAdvancedOptions(User loggedInUser,
+    public Map<String, Object> getVariables(User loggedInUser, String ksLabel) {
+    public int setVariables
+    public String[] getAvailableRepositories(User loggedInUser, String ksLabel) {
+    public String[] getRepositories(User loggedInUser, String ksLabel) {
+    public int setRepositories(User loggedInUser, String ksLabel, List<String> reposIn) {
+    public String getVirtualizationType(User loggedInUser, String ksLabel) {
+    public int setVirtualizationType(User loggedInUser, String ksLabel, String typeLabel) {
+public class SnippetHandler extends BaseHandler {
+    public List<CobblerSnippet> listAll(User loggedInUser) {
+    public List<CobblerSnippet> listCustom(User loggedInUser) {
+    public List<CobblerSnippet> listDefault(User loggedInUser) {
+    public CobblerSnippet createOrUpdate(User loggedInUser, String name, String contents) {
+    public int delete(User loggedInUser, String name) {
+public class KickstartTreeHandler extends BaseHandler {
+    public KickstartableTreeDetail getDetails(User loggedInUser, String treeLabel) {
+    public List list(User loggedInUser,
+    public List listInstallTypes(User loggedInUser) {
+    public int create(User loggedInUser, String treeLabel,
+    public int delete(User loggedInUser, String treeLabel) {
+    public int deleteTreeAndProfiles(User loggedInUser, String treeLabel) {
+    public int update(User loggedInUser, String treeLabel, String basePath,
+    public int rename(User loggedInUser, String originalLabel, String newLabel) {
+public class KickstartHandler extends BaseHandler {
+    public List<Channel> listKickstartableChannels(User loggedInUser) {
+    public List<Channel> listAutoinstallableChannels(User loggedInUser) {
+    public int importFile(User loggedInUser, String profileLabel,
+    public int importFile(User loggedInUser, String profileLabel,
+    public int importFile(User loggedInUser, String profileLabel,
+    public int createProfile(User loggedInUser, String profileLabel,
+    public int createProfile(User loggedInUser, String profileLabel,
+    public int createProfileWithCustomUrl(User loggedInUser,
+    public int createProfileWithCustomUrl(User loggedInUser,
+    public List listKickstarts(User loggedInUser) {
+    public List listAllIpRanges(User loggedInUser) {
+    public String findKickstartForIp(User loggedInUser, String ipAddress) {
+    public int deleteProfile(User loggedInUser, String ksLabel) {
+    public int disableProfile(User loggedInUser, String profileLabel, Boolean disabled) {
+    public boolean isProfileDisabled(User loggedInUser, String profileLabel) {
+    public int renameProfile(User loggedInUser, String originalLabel, String newLabel) {
+    public int cloneProfile(User loggedInUser, String ksLabelToClone, String newKsLabel) {
+    public int importRawFile(User loggedInUser, String profileLabel,
+    public int importRawFile(User loggedInUser, String profileLabel,
+public class OrgTrustHandler extends BaseHandler {
+    public Object[] listOrgs(User loggedInUser) {
+    public Object[] listChannelsProvided(User loggedInUser, Integer trustOrgId) {
+    public Object[] listChannelsConsumed(User loggedInUser, Integer trustOrgId) {
+    public Map<String, Object> getDetails(User loggedInUser, Integer trustOrgId) {
+    public List<OrgTrustOverview> listTrusts(User loggedInUser, Integer orgId) {
+    public int addTrust(User loggedInUser, Integer orgId, Integer trustOrgId) {
+    public int removeTrust(User loggedInUser, Integer orgId, Integer trustOrgId) {
+    public List<Map<String, Object>> listSystemsAffected(
+public class OrgHandler extends BaseHandler {
+    public OrgHandler(MigrationManager migrationManagerIn) {
+    public OrgDto create(User loggedInUser, String orgName, String adminLogin,
+    public List<OrgDto> listOrgs(User loggedInUser) {
+    public int delete(User loggedInUser, Integer orgId) {
+    public List listUsers(User loggedInUser, Integer orgId) {
+    public OrgDto getDetails(User loggedInUser, Integer orgId) {
+    public OrgDto getDetails(User loggedInUser, String name) {
+    public OrgDto updateName(User loggedInUser, Integer orgId, String name) {
+    public Object[] migrateSystems(User loggedInUser, Integer toOrgId,
+    public Object[] transferSystems(User loggedInUser, Integer toOrgId,
+    public Map<String, Object> getPolicyForScapFileUpload(User loggedInUser,
+    public int setPolicyForScapFileUpload(User loggedInUser, Integer orgId,
+    public Map<String, Object> getPolicyForScapResultDeletion(User loggedInUser,
+    public int setPolicyForScapResultDeletion(User loggedInUser, Integer orgId,
+    public boolean isOrgConfigManagedByOrgAdmin(User loggedInUser, Integer orgId) {
+    public Integer setOrgConfigManagedByOrgAdmin(User loggedInUser, Integer orgId,
+    public boolean isErrataEmailNotifsForOrg(User loggedInUser, Integer orgId) {
+    public Integer setErrataEmailNotifsForOrg(User loggedInUser, Integer orgId,
+    public boolean isContentStagingEnabled(User loggedInUser, Integer orgId) {
+    public Integer setContentStaging(User loggedInUser, Integer orgId,
+    public Boolean getClmSyncPatchesConfig(User loggedInUser, Integer orgId) {
+    public Integer setClmSyncPatchesConfig(User loggedInUser, Integer orgId, Boolean value) {
+public class PackagesProviderHandler extends BaseHandler {
+    public List<PackageProvider> list(User loggedInUser) {
+    public Set<PackageKey> listKeys(User loggedInUser, String providerName) {
+    public int associateKey(User loggedInUser, String providerName, String key,
+public class PackagesSearchHandler extends BaseHandler {
+    public List<PackageOverview> name(String sessionKey, String name)
+    public List<PackageOverview> nameAndDescription(String sessionKey, String query)
+    public List<PackageOverview> nameAndSummary(String sessionKey, String query)
+    public List<PackageOverview> advanced(String sessionKey, String luceneQuery)
+    public List<PackageOverview> advancedWithChannel(String sessionKey,
+    public List<PackageOverview> advancedWithActKey(String sessionKey,
+public class PackagesHandler extends BaseHandler {
+    public Map getDetails(User loggedInUser, Integer pid) throws FaultException {
+    public Object[] listProvidingChannels(User loggedInUser, Integer pid)
+    public Object[] listProvidingErrata(User loggedInUser, Integer pid)
+    public Object[] listFiles(User loggedInUser, Integer pid) throws FaultException {
+    public String listChangelog(User loggedInUser, Integer pid) throws FaultException {
+    public Object[] listDependencies(User loggedInUser, Integer pid) throws FaultException {
+    public int removePackage(User loggedInUser, Integer pid) throws FaultException {
+    public int removeSourcePackage(User loggedInUser, Integer psid) throws FaultException {
+    public Object[] listSourcePackages(User loggedInUser) throws FaultException {
+    public List<Package> findByNvrea(User loggedInUser, String name, String version,
+    public String getPackageUrl(User loggedInUser, Integer pid) {
+    public byte[] getPackage(User loggedInUser, Integer pid) throws IOException {
+public class PreferencesLocaleHandler extends BaseHandler {
+    public int setTimeZone(User loggedInUser, String login, Integer tzid) {
+    public int setLocale(User loggedInUser, String login, String locale) {
+    public Object[] listTimeZones() {
+    public Object[] listLocales() {
+    public static class TzPredicate implements Predicate {
+        public TzPredicate(int tzid) {
+        public boolean evaluate(Object object) {
+    public static class LocalePredicate implements Predicate {
+        public LocalePredicate(String l) {
+        public boolean evaluate(Object object) {
+public class ProxyHandler extends BaseHandler {
+    public ProxyHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+    public String createMonitoringScout(String clientcert)
+    public int isProxy(String clientcert)
+    public int deactivateProxy(String clientcert)
+    public int activateProxy(String clientcert, String version)
+    public List<String> listAvailableProxyChannels(String clientcert) {
+    public Object[] listProxies(User loggedInUser) {
+    public List<Long> listProxyClients(User loggedInUser, Integer proxyId) {
+public class ScheduleHandler extends BaseHandler {
+    public int cancelActions(User loggedInUser, List<Integer> actionIds) throws
+    public int failSystemAction(User loggedInUser, Integer serverId, Integer actionId) {
+    public int failSystemAction(User loggedInUser, Integer serverId, Integer actionId,
+    public Object[] listAllActions(User loggedInUser) {
+    public Object[] listCompletedActions(User loggedInUser) {
+    public Object[] listInProgressActions(User loggedInUser) {
+    public Object[] listFailedActions(User loggedInUser) {
+    public Object[] listArchivedActions(User loggedInUser) {
+    public Object[] listAllArchivedActions(User loggedInUser) {
+    public Object[] listCompletedSystems(User loggedInUser, Integer actionId) {
+    public Object[] listAllCompletedActions(User loggedInUser) {
+    public Object[] listInProgressSystems(User loggedInUser, Integer actionId) {
+    public Object[] listFailedSystems(User loggedInUser, Integer actionId) {
+    public int rescheduleActions(User loggedInUser, List<Integer> actionIds,
+    public int archiveActions(User loggedInUser, List<Integer> actionIds)
+    public int deleteActions(User loggedInUser, List<Integer> actionIds) {
+public class PinnedSubscriptionHandler extends BaseHandler {
+    public List<PinnedSubscription> list(User loggedInUser) {
+    public PinnedSubscription create(User loggedInUser, Integer subscriptionId,
+    public int delete(User loggedInUser, Integer pinnedSubscriptionId) {
+public class ContentSyncHandler extends BaseHandler {
+    public Collection<MgrSyncProductDto> listProducts(User loggedInUser)
+    public List<MgrSyncChannelDto> listChannels(User loggedInUser) {
+    public Integer synchronizeChannels(User loggedInUser, String mirrorUrl)
+    public Integer synchronizeChannelFamilies(User loggedInUser)
+    public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
+    public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
+    public Integer synchronizeRepositories(User loggedInUser, String mirrorUrl) throws ContentSyncException {
+    public Integer addChannel(User loggedInUser, String channelLabel, String mirrorUrl)
+    public Object[] addChannels(User loggedInUser, String channelLabel, String mirrorUrl)
+    public Integer addCredentials(User loggedInUser, String username, String password,
+    public Integer deleteCredentials(User loggedInUser, String username)
+    public List<MirrorCredentialsDto> listCredentials(User loggedInUser)
+public class MasterHandler extends BaseHandler {
+    public static final String[] VALID_MASTER_ORG_ATTRS = {
+    public static final String[] REQUIRED_MASTER_ORG_ATTRS = {
+    public IssMaster create(User loggedInUser, String label) {
+    public IssMaster update(User loggedInUser, Integer masterId, String newLabel) {
+    public int delete(User loggedInUser, Integer masterId) {
+    public int makeDefault(User loggedInUser, Integer masterId) {
+    public IssMaster getDefaultMaster(User loggedInUser) {
+    public boolean hasMaster() {
+    public int unsetDefaultMaster(User loggedInUser) {
+    public int setCaCert(User loggedInUser, Integer masterId, String caCertFilename) {
+    public IssMaster getMaster(User loggedInUser, Integer masterId) {
+    public IssMaster getMasterByLabel(User loggedInUser, String masterLabel) {
+    public List<IssMaster> getMasters(User loggedInUser) {
+    public List<IssMasterOrg> getMasterOrgs(User loggedInUser, Integer masterId) {
+    public int setMasterOrgs(User loggedInUser,
+    public int addToMaster(User loggedInUser,
+    public int mapToLocal(User loggedInUser,
+public class SlaveHandler extends BaseHandler {
+    public IssSlave create(User loggedInUser,
+    public IssSlave update(User loggedInUser,
+    public int delete(User loggedInUser, Integer inSlaveId) {
+    public IssSlave getSlave(User loggedInUser, Integer slaveId) {
+    public IssSlave getSlaveByName(User loggedInUser, String slaveFqdn) {
+    public List<IssSlave> getSlaves(User loggedInUser) {
+    public List<Integer> getAllowedOrgs(User loggedInUser, Integer slaveId) {
+    public int setAllowedOrgs(User loggedInUser, Integer slaveId, List<Integer> orgIds) {
+public class ServerConfigHandler extends BaseHandler {
+    public ServerConfigHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+    public List<ConfigFileNameDto> listFiles(User loggedInUser,
+    public ConfigRevision createOrUpdatePath(User loggedInUser,
+    public ConfigRevision createOrUpdateSymlink(User loggedInUser,
+    public List<ConfigRevision> lookupFileInfo(User loggedInUser,
+    public int deleteFiles(User loggedInUser,
+    public int deployAll(User loggedInUser, List<Number> serverIds, Date date) {
+    public List<ConfigChannel> listChannels(User loggedInUser, Integer sid) {
+    public int addChannels(User loggedInUser, List<Number> serverIds, List<String> configChannelLabels,
+    public int setChannels(User loggedInUser, List<Number> serverIds,
+    public int removeChannels(User loggedInUser, List<Number> serverIds,
+    public Long scheduleApplyConfigChannel(User user, List<Integer> serverIds, Date earliest, Boolean test) {
+public class CustomInfoHandler extends BaseHandler {
+    public int createKey(User loggedInUser, String keyLabel,
+    public int updateKey(User loggedInUser, String keyLabel,
+    public int deleteKey(User loggedInUser, String keyLabel)
+    public Object[] listAllKeys(User loggedInUser) throws FaultException {
+public class SnapshotHandler extends BaseHandler {
+    public SnapshotHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+    public List<ServerSnapshot> listSnapshots(User loggedInUser, Integer sid,
+    public Set<PackageNevra> listSnapshotPackages(User loggedInUser, Integer snapId) {
+    public Set<ConfigRevision> listSnapshotConfigFiles(User loggedInUser, Integer snapId) {
+    public int deleteSnapshots(User loggedInUser, Map dateDetails) {
+    public int deleteSnapshots(User loggedInUser, Integer sid, Map dateDetails) {
+    public int deleteSnapshot(User loggedInUser, Integer snapId) {
+    public int addTagToSnapshot(User loggedInUser, Integer snapId, String tagName) {
+    public int rollbackToSnapshot(User loggedInUser, Integer serverId,
+    public int rollbackToTag(User loggedInUser, Integer serverId,
+    public int rollbackToTag(User loggedInUser, String tagName) {
+public class PowerManagementHandler extends BaseHandler {
+    public List<String> listTypes(User loggedInUser) {
+    public Map<String, String> getDetails(User loggedInUser, Integer serverId) {
+    public Map<String, String> getDetails(User loggedInUser, String nameIn) {
+    public int setDetails(User loggedInUser, Integer serverId, Map<String, String> data) {
+    public int setDetails(User loggedInUser, String nameIn, Map<String, String> data) {
+    public int powerOn(User loggedInUser, Integer serverId) {
+    public int powerOn(User loggedInUser, String nameIn) {
+    public int powerOff(User loggedInUser, Integer serverId) {
+    public int powerOff(User loggedInUser, String nameIn) {
+    public int reboot(User loggedInUser, Integer serverId) {
+    public int reboot(User loggedInUser, String nameIn) {
+    public boolean getStatus(User loggedInUser, Integer serverId) {
+    public boolean getStatus(User loggedInUser, String nameIn) {
+public class SystemScapHandler extends BaseHandler {
+    public List<XccdfTestResultDto> listXccdfScans(User loggedInUser, Integer serverId) {
+    public XccdfTestResult getXccdfScanDetails(User loggedInUser, Integer xid) {
+    public List<XccdfRuleResultDto> getXccdfScanRuleResults(User loggedInUser,
+    public Boolean deleteXccdfScan(User loggedInUser, Integer xid) {
+    public int scheduleXccdfScan(User loggedInUser, List serverIds,
+    public int scheduleXccdfScan(User loggedInUser, List serverIds,
+    public int scheduleXccdfScan(User loggedInUser, List serverIds,
+    public int scheduleXccdfScan(User loggedInUser, Integer sid,
+    public int scheduleXccdfScan(User loggedInUser, Integer sid,
+public class SystemSearchHandler extends BaseHandler {
+    public Object[] ip(String sessionKey, String searchTerm)
+    public Object[] hostname(String sessionKey, String searchTerm)
+    public Object[] deviceVendorId(String sessionKey, String searchTerm)
+    public Object[] deviceId(String sessionKey, String searchTerm)
+    public Object[] deviceDriver(String sessionKey, String searchTerm)
+    public Object[] deviceDescription(String sessionKey, String searchTerm)
+    public Object[] nameAndDescription(String sessionKey, String searchTerm)
+    public Object[] uuid(String sessionKey, String searchTerm)
+public class SystemMonitoringHandler extends BaseHandler {
+    public SystemMonitoringHandler(FormulaManager formulaManagerIn) {
+    public List<EndpointInfo> listEndpoints(User loggedInUser, List<Long> systemIDs) {
+public class SystemHandler extends BaseHandler {
+    public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
+    public String obtainReactivationKey(User loggedInUser, Integer sid)
+    public String obtainReactivationKey(String clientCert)
+    public int upgradeEntitlement(User loggedInUser, Integer sid, String entitlementLevel)
+    public int setChildChannels(User loggedInUser, Integer sid,
+    public int setBaseChannel(User loggedInUser, Integer sid, Integer cid)
+    public int setBaseChannel(User loggedInUser, Integer sid, String channelLabel)
+    public long scheduleChangeChannels(User loggedInUser, Integer serverId, String baseChannelLabel,
+    public List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> serverIds, String baseChannelLabel,
+    public Object[] listSubscribableBaseChannels(User loggedInUser, Integer sid)
+    public Object[] listSystems(User loggedInUser) throws FaultException {
+    public Object[] listEmptySystemProfiles(User loggedInUser) {
+    public List<ShortSystemInfo> listActiveSystems(User loggedInUser)
+    public List<Map<String, Object>> listActiveSystemsDetails(
+    public Object[] listSubscribableChildChannels(User loggedInUser, Integer sid)
+    public Object[] listOlderInstalledPackages(User loggedInUser, Integer sid,
+    public Object[] listNewerInstalledPackages(User loggedInUser, Integer sid,
+    public int isNvreInstalled(User loggedInUser, Integer sid, String name,
+    public int isNvreInstalled(User loggedInUser, Integer sid, String name,
+    public List<Map<String, Object>> listLatestUpgradablePackages(User loggedInUser,
+    public List<Map<String, Object>> listAllInstallablePackages(User loggedInUser,
+    public List<Map<String, Object>> listLatestInstallablePackages(User loggedInUser,
+    public List<Map<String, Object>> listLatestAvailablePackage(User loggedInUser,
+    public Object[] getEntitlements(User loggedInUser, Integer sid) throws FaultException {
+    public String downloadSystemId(User loggedInUser, Integer sid) throws FaultException {
+    public List<Map<String, Object>> listPackages(User loggedInUser, Integer sid)
+    public List<Map<String, Object>> listInstalledPackages(User loggedInUser, Integer sid)
+    public List<Map<String, Object>> listPackagesLockStatus(User loggedInUser, Integer sid) {
+    public Integer deleteGuestProfiles(User loggedInUser, Integer hostId,
+    public int deleteSystems(User loggedInUser, List<Integer> systemIds)
+    public int deleteSystems(User loggedInUser, List<Integer> systemIds, String cleanupType)
+    public int deleteSystem(String clientCert) throws FaultException {
+    public int deleteSystem(User loggedInUser, Integer serverId)
+    public int deleteSystem(User loggedInUser, Integer serverId, String cleanupType)
+    public Map<String, String> getNetwork(User loggedInUser, Integer sid)
+    public List<Map<String, Object>> getNetworkForSystems(User loggedInUser, List<Integer> systemIDs)
+    public List<NetworkInterface> getNetworkDevices(User loggedInUser,
+    public int setGroupMembership(User loggedInUser, Integer sid, Integer sgid,
+    public Object[] listGroups(User loggedInUser, Integer sid) throws FaultException {
+    public List<ShortSystemInfo> listUserSystems(User loggedInUser, String login)
+    public List<ShortSystemInfo> listUserSystems(User loggedInUser) {
+    public int setCustomValues(User loggedInUser, Integer sid, Map<String, String> values)
+    public Map<String, String> getCustomValues(User loggedInUser, Integer sid)
+    public int deleteCustomValues(User loggedInUser, Integer sid, List<String> keys)
+    public int setProfileName(User loggedInUser, Integer sid, String name)
+    public int addNote(User loggedInUser, Integer sid, String subject, String body)
+    public int deleteNote(User loggedInUser, Integer sid, Integer nid) {
+    public int deleteNotes(User loggedInUser, Integer sid) {
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType,
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid) {
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, String actionType) {
+    public List<Map<String, Object>> listSystemEvents(User loggedInUser, Integer sid, Date earliestDate) {
+    public int provisionVirtualGuest(User loggedInUser, Integer sid, String guestName,
+    public int provisionSystem(User loggedInUser, Integer serverId, String profileName)
+    public int provisionSystem(User loggedInUser, Integer serverId,
+    public int provisionVirtualGuest(User loggedInUser, Integer sid, String guestName,
+    public int provisionVirtualGuest(User loggedInUser, Integer sid,
+    public List<SystemOverview> getId(User loggedInUser, String name) {
+    public Map<String, Object> getName(User loggedInUser, Integer serverId) {
+    public Date getRegistrationDate(User loggedInUser, Integer sid) {
+    public List<Channel> listSubscribedChildChannels(User loggedInUser, Integer sid) {
+    public List<ShortSystemInfo> searchByName(User loggedInUser, String regexp) {
+    public Object[] listAdministrators(User loggedInUser, Integer sid) {
+    public String getRunningKernel(User loggedInUser, Integer sid) {
+    public Object[] getEventHistory(User loggedInUser, Integer sid) {
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate, Integer offset,
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Integer offset, Integer limit) {
+    public List<SystemEventDto> getEventHistory(User loggedInUser, Integer sid, Date earliestDate) {
+    public SystemEventDetailsDto getEventDetails(User loggedInUser, Integer sid, Integer eid) {
+    public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer sid) {
+    public List<ErrataOverview> getRelevantErrataByType(User loggedInUser, Integer serverId,
+    public Errata[] getUnscheduledErrata(User loggedInUser, Integer sid) {
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIds,
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIds,
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn,
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn, List<Integer> errataIdsIn,
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn, List<Integer> errataIdsIn,
+    public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid,
+    public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid, List<Integer> errataIds,
+    public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid,
+    public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid, List<Integer> errataIds,
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sid, List<Integer> errataIds,
+    public Object [] comparePackages(User loggedInUser, Integer sid1, Integer sid2) {
+    public Object getDmi(User loggedInUser, Integer sid) {
+    public Object getCpu(User loggedInUser, Integer sid) {
+    public Map<String, Long> getMemory(User loggedInUser, Integer sid) {
+    public Object[] getDevices(User loggedInUser, Integer sid) {
+    public Long[] schedulePackageInstall(User loggedInUser, List<Integer> sids,
+    public Long[] schedulePackageInstall(User loggedInUser, List<Integer> sids,
+    public Long schedulePackageInstall(User loggedInUser, final Integer sid,
+    public Long schedulePackageInstall(User loggedInUser, final Integer sid,
+    public Long[] schedulePackageInstallByNevra(User loggedInUser, List<Integer> sids,
+    public Long[] schedulePackageInstallByNevra(User loggedInUser, List<Integer> sids, List<Map<String,
+    public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid,
+    public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid, List<Map<String,
+    public Long[] schedulePackageRemove(User loggedInUser, List<Integer> sids,
+    public Long[] schedulePackageRemove(User loggedInUser, List<Integer> sids,
+    public int schedulePackageRemove(User loggedInUser, Integer sid,
+    public int schedulePackageRemove(User loggedInUser, Integer sid,
+    public Long[] schedulePackageRemoveByNevra(User loggedInUser, List<Integer> sids,
+    public Long[] schedulePackageRemoveByNevra(User loggedInUser, List<Integer> sids, List<Map<String,
+    public int schedulePackageRemoveByNevra(User loggedInUser, final Integer sid,
+    public int schedulePackageRemoveByNevra(User loggedInUser, final Integer sid, List<Map<String,
+    public Long schedulePackageLockChange(User loggedInUser, Integer sid,
+    public Set<Note> listNotes(User loggedInUser , Integer sid) {
+    public List<String> listFqdns(User loggedInUser, Integer sid) {
+    public List<Map<String, Object>> listPackagesFromChannel(User loggedInUser,
+    public Long scheduleHardwareRefresh(User loggedInUser, Integer sid,
+    public int schedulePackageRefresh(User loggedInUser, Integer sid,
+    public Integer scheduleScriptRun(User loggedInUser, String label, List<Integer>
+    public Integer scheduleScriptRun(User loggedInUser, List<Integer>
+    public Integer scheduleScriptRun(User loggedInUser, Integer sid, String username,
+    public Integer scheduleScriptRun(User loggedInUser, String label, Integer sid, String
+    public Object [] getScriptResults(User loggedInUser, Integer actionId) {
+    public Map<String, Object> getScriptActionDetails(User loggedInUser, Integer actionId) {
+    public Long scheduleReboot(User loggedInUser, Integer sid,
+    public Object getDetails(User loggedInUser, Integer serverId) {
+    public Integer setDetails(User loggedInUser, Integer serverId,
+    public Integer setLockStatus(User loggedInUser, Integer serverId, Boolean lockStatus) {
+    public int addEntitlements(User loggedInUser, Integer serverId,
+    public int removeEntitlements(User loggedInUser, Integer serverId,
+    public int unentitle(String clientCert) {
+    public Map transitionDataForSystem(String clientCert) throws FileNotFoundException,
+    public Object[] listPackageProfiles(User loggedInUser) {
+    public int deletePackageProfile(User loggedInUser, Integer profileId) {
+    public int createPackageProfile(User loggedInUser, Integer sid,
+    public Object[] comparePackageProfile(User loggedInUser, Integer serverId,
+    public Object[] listOutOfDateSystems(User loggedInUser) {
+    public Long scheduleSyncPackagesWithSystem(User loggedInUser, Integer targetServerId,
+    public List<SystemOverview> listUngroupedSystems(User loggedInUser) {
+    public Object getSubscribedBaseChannel(User loggedInUser, Integer sid) {
+    public List<ShortSystemInfo> listInactiveSystems(User loggedInUser) {
+    public List<ShortSystemInfo> listInactiveSystems(User loggedInUser,
+    public User whoRegistered(User loggedInUser, Integer sid) {
+    public List<SystemOverview> listSystemsWithPackage(User loggedInUser,
+    public List<SystemOverview> listSystemsWithPackage(User loggedInUser,
+    public List<SystemOverview> listSystemsWithEntitlement(User loggedInUser, String entitlementName) {
+    public Object[] listPhysicalSystems(User loggedInUser) throws FaultException {
+    public List<SystemOverview> listVirtualHosts(User loggedInUser) {
+    public List<VirtualSystemOverview> listVirtualGuests(User loggedInUser,
+    public int setGuestMemory(User loggedInUser, Integer sid, Integer memory) {
+    public int setGuestCpus(User loggedInUser, Integer sid, Integer numOfCpus) {
+    public int scheduleGuestAction(User loggedInUser, Integer sid, String state,
+    public int scheduleGuestAction(User loggedInUser, Integer sid, String state) {
+    public List<String> listActivationKeys(User loggedInUser, Integer serverId) {
+    public Object[] getConnectionPath(User loggedInUser, Integer sid)
+    public int setupStaticNetwork(String clientcert, Map<String, Object> data) {
+    public int setupStaticNetwork(String clientcert, Map<String, Object> data,
+    public int createSystemRecord(User loggedInUser, Integer serverId, String ksLabel) {
+    public int createSystemRecord(User loggedInUser, String sysName, String ksLabel,
+    public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
+    public Map<String, Object> getVariables(User loggedInUser, Integer serverId) {
+    public int setVariables(User loggedInUser, Integer serverId, Boolean netboot,
+    public List<Map<String, Object>> listDuplicatesByIp(User loggedInUser) {
+    public List listDuplicatesByMac(User loggedInUser) {
+    public List<Map<String, Object>> listDuplicatesByHostname(User loggedInUser) {
+    public Map<String, Integer> getSystemCurrencyMultipliers(User loggedInUser) {
+    public List<Map<String, Long>> getSystemCurrencyScores(User loggedInUser) {
+    public String getUuid(User loggedInUser, Integer serverId) {
+    public int tagLatestSnapshot(User loggedInUser, Integer serverId, String tagName) {
+    public int deleteTagFromSnapshot(User loggedInUser, Integer serverId, String tagName) {
+    public Object[] listSystemsWithExtraPackages(User loggedInUser) {
+    public List<Map<String, Object>> listExtraPackages(User loggedInUser,
+    public int setPrimaryInterface(User loggedInUser, Integer serverId,
+    public int setPrimaryFqdn(User loggedInUser, Integer serverId, String fqdn) {
+    public int scheduleCertificateUpdate(User loggedInUser, Integer serverId) {
+    public int scheduleCertificateUpdate(User loggedInUser, Integer serverId, Date date) {
+    public int sendOsaPing(User loggedInUser, Integer serverId) {
+    public Map<String, Object> getOsaPing(User loggedInUser, Integer serverId) {
+    public List<Map<String, Object>> listMigrationTargets(User loggedInUser,
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
+    public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
+    public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
+    public Object[] listSuggestedReboot(User loggedInUser) {
+    public List<SUSEInstalledProduct> getInstalledProducts(User loggedInUser,
+    public String getKernelLivePatch(User loggedInUser, Integer sid) {
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+    public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
+    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, Boolean test) {
+    public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, Boolean test) {
+    public Long scheduleApplyStates(User loggedInUser, Integer sid, List<String> stateNames,
+    public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
+    public int updatePackageState(User loggedInUser, Integer sid, String packageName, Integer state,
+    public Map<String, Long> getMinionIdMap(User loggedInUser) {
+    public Set<PackageState> listPackageState(User loggedInUser, Integer serverId) {
+    public List<SystemGroupsDTO> listSystemGroupsForSystemsWithEntitlement(User loggedInUser, String entitlement) {
+    public List<Integer> refreshPillar(User loggedInUser, List<Integer> systemIds) {
+    public List<Integer> refreshPillar(User loggedInUser, String subset, List<Integer> systemIds) {
+    public List<Long> changeProxy(User loggedInUser, List<Integer> sids, Integer proxyId) {
+    public TaskomaticApi getTaskomaticApi() {
+public class ServerGroupHandler extends BaseHandler {
+    public ServerGroupHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn, ServerGroupManager serverGroupManagerIn) {
+    public List listAdministrators(User loggedInUser, String systemGroupName) {
+    public int addOrRemoveAdmins(User loggedInUser, String systemGroupName,
+    public List listSystems(User loggedInUser, String systemGroupName) {
+    public List<SystemOverview>
+    public int addOrRemoveSystems(User loggedInUser, String systemGroupName,
+    public ServerGroup create(User loggedInUser, String name, String description) {
+    public int delete(User loggedInUser, String systemGroupName) {
+    public ServerGroup update(User loggedInUser,
+    public List listGroupsWithNoAssociatedAdmins(User loggedInUser) {
+    public List<ManagedServerGroup> listAllGroups(User loggedInUser) {
+    public ServerGroup getDetails(User loggedInUser, Integer systemGroupId)
+    public ServerGroup getDetails(User loggedInUser, String systemGroupName)
+    public List<Long> listActiveSystemsInGroup(User loggedInUser, String systemGroupName) {
+    public List<Long> listInactiveSystemsInGroup(User loggedInUser,
+    public List<Long> listInactiveSystemsInGroup(User loggedInUser,
+    public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
+    public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
+    public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
+    public List<ConfigChannel> listAssignedConfigChannels(User loggedInUser, String systemGroupName) {
+    public int subscribeConfigChannel(User loggedInUser, String systemGroupName,
+    public int unsubscribeConfigChannel(User loggedInUser, String systemGroupName,
+    public List<Formula> listAssignedFormuals(User loggedInUser, String systemGroupName) {
+public class TaskomaticOrgHandler extends TaskomaticHandler {
+public class TaskomaticHandler extends BaseHandler {
+    public TaskomaticHandler() {
+    public Object invoke(String methodCalled, List arguments) throws XmlRpcFault {
+public class RegistrationHandler extends BaseHandler {
+    public String privacyStatement()
+public class UnitTestHandler extends BaseHandler {
+    public Hashtable login()
+    public Integer add(Integer a, Integer b)
+    public String getUserLogin(User u) {
+    public void throwFault()
+public class UserExternalHandler extends BaseHandler {
+    public int setKeepTemporaryRoles(User loggedInUser, Boolean keepRoles)
+    public boolean getKeepTemporaryRoles(User loggedInUser)
+    public int setUseOrgUnit(User loggedInUser, Boolean useOrgUnit)
+    public boolean getUseOrgUnit(User loggedInUser) throws PermissionCheckFailureException {
+    public int setDefaultOrg(User loggedInUser, Integer defaultOrg)
+    public int getDefaultOrg(User loggedInUser) throws PermissionCheckFailureException {
+    public UserExtGroup createExternalGroupToRoleMap(User loggedInUser, String name,
+    public UserExtGroup getExternalGroupToRoleMap(User loggedInUser, String name) {
+    public int setExternalGroupRoles(User loggedInUser, String name, List<String> roles) {
+    public int deleteExternalGroupToRoleMap(User loggedInUser, String name) {
+    public List<UserExtGroup> listExternalGroupToRoleMaps(User loggedInUser) {
+    public OrgUserExtGroup createExternalGroupToSystemGroupMap(User loggedInUser,
+    public OrgUserExtGroup getExternalGroupToSystemGroupMap(User loggedInUser,
+    public int setExternalGroupSystemGroups(User loggedInUser, String name,
+    public int deleteExternalGroupToSystemGroupMap(User loggedInUser, String name) {
+    public List<OrgUserExtGroup> listExternalGroupToSystemGroupMaps(User loggedInUser) {
+public class UserHandler extends BaseHandler {
+    public UserHandler(ServerGroupManager serverGroupManagerIn) {
+    public List listUsers(User loggedInUser) throws FaultException {
+    public Object[] listRoles(User loggedInUser, String login) throws FaultException {
+    public Set<String> listAssignableRoles(User loggedInUser) {
+    public Map getDetails(User loggedInUser, String login) throws FaultException {
+    public int setDetails(User loggedInUser, String login, Map details)
+    public int addRole(User loggedInUser, String login, String role) throws FaultException {
+    public int removeRole(User loggedInUser, String login, String role)
+    public int create(User loggedInUser, String desiredLogin, String desiredPassword,
+    public int create(User loggedInUser, String desiredLogin, String desiredPassword,
+    public int delete(User loggedInUser, String login) throws FaultException {
+    public int disable(User loggedInUser, String login) throws FaultException {
+    public int enable(User loggedInUser, String login) throws FaultException {
+    public int usePamAuthentication(User loggedInUser, String login, Integer val)
+    public int addDefaultSystemGroup(User loggedInUser, String login, String name) {
+    public int addDefaultSystemGroups(User loggedInUser, String login, List sgNames) {
+    public int removeDefaultSystemGroup(User loggedInUser, String login, String sgName) {
+    public int removeDefaultSystemGroups(User loggedInUser, String login, List sgNames) {
+    public Object[] listDefaultSystemGroups(User loggedInUser, String login) {
+    public Object[] listAssignedSystemGroups(User loggedInUser, String login)
+    public int removeAssignedSystemGroups(User loggedInUser,
+    public int removeAssignedSystemGroup(User loggedInUser,
+    public int addAssignedSystemGroup(User loggedInUser, String login, String sgName,
+    public int addAssignedSystemGroups(User loggedInUser, String login, List sgNames,
+    public boolean getCreateDefaultSystemGroup(User loggedInUser) {
+    public int setCreateDefaultSystemGroup(User loggedInUser,
+    public int setReadOnly(User loggedInUser, String login, Boolean readOnly) {
+    public int setErrataNotifications(User loggedInUser, String login, Boolean value) {
+public class VirtualHostManagerHandler extends BaseHandler {
+    public List<VirtualHostManager> listVirtualHostManagers(User loggedInUser) {
+    public int create(User loggedInUser, String label, String moduleName,
+    public int delete(User loggedInUser, String label) {
+    public VirtualHostManager getDetail(User loggedInUser, String label) {
+    public Collection<String> listAvailableVirtualHostGathererModules(User loggedInUser) {
+    public Map<String, String> getModuleParameters(User loggedInUser, String moduleName) {
+public class AdminMonitoringHandler extends BaseHandler {
+    public Map<String, String> enable(User loggedInUser) {
+    public Map<String, String> disable(User loggedInUser) {
+    public Map<String, String> getStatus(User loggedInUser) {
+public class ContentManagementHandler extends BaseHandler {
+    public ContentManagementHandler() {
+    public ContentManagementHandler(ContentManager contentManagerIn) {
+    public List<ContentProject> listProjects(User loggedInUser) {
+    public ContentProject lookupProject(User loggedInUser, String label) {
+    public ContentProject createProject(User loggedInUser, String label, String name, String description) {
+    public ContentProject updateProject(User loggedInUser, String label, Map<String, Object> props) {
+    public int removeProject(User loggedInUser, String label) {
+    public List<ContentEnvironment> listProjectEnvironments(User loggedInUser, String projectLabel) {
+    public ContentEnvironment lookupEnvironment(User loggedInUser, String projectLabel, String envLabel) {
+    public ContentEnvironment createEnvironment(User loggedInUser, String projectLabel, String predecessorLabel,
+    public ContentEnvironment updateEnvironment(User loggedInUser, String projectLabel, String envLabel,
+    public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
+    public List<ProjectSource> listProjectSources(User loggedInUser, String projectLabel) {
+    public ProjectSource lookupSource(User loggedInUser, String projectLabel, String sourceType,
+    public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel,
+    public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
+    public int detachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
+    public List<ContentFilter> listFilters(User loggedInUser) {
+    public ContentFilter lookupFilter(User loggedInUser, Integer id) {
+    public List<Map<String, String>> listFilterCriteria(User loggedInUser) {
+    public ContentFilter createFilter(User loggedInUser, String name, String rule, String entityType,
+    public ContentFilter updateFilter(User loggedInUser, Integer filterId, String name, String rule,
+    public int removeFilter(User loggedInUser, Integer filterId) {
+    public List<ContentProjectFilter> listProjectFilters(User loggedInUser, String projectLabel) {
+    public ContentFilter attachFilter(User loggedInUser, String projectLabel, Integer filterId) {
+    public int detachFilter(User loggedInUser, String projectLabel, Integer filterId) {
+    public int buildProject(User loggedInUser, String projectLabel) {
+    public int buildProject(User loggedInUser, String projectLabel, String message) {
+    public int promoteProject(User loggedInUser, String projectLabel, String envLabel) {
+public class RecurringActionHandler extends BaseHandler {
+    public List<? extends RecurringAction> listByEntity(User loggedInUser, String entityType, Integer entityId) {
+    public RecurringAction lookupById(User loggedInUser, Integer actionId) {
+    public int create(User loggedInUser, Map<String, Object> actionProps) {
+    public int update(User loggedInUser, Map<String, Object> actionProps) {
+    public int delete(User loggedInUser, Integer actionId) {
+public class SaltKeyHandler extends BaseHandler {
+    public SaltKeyHandler(SaltKeyUtils saltKeyUtilsIn) {
+    public List<String> acceptedList(User loggedInUser) {
+    public List<String> pendingList(User loggedInUser) {
+    public List<String> rejectedList(User loggedInUser) {
+    public List<String> deniedList(User loggedInUser) {
+    public int accept(User loggedInUser, String minionId) {
+    public int reject(User loggedInUser, String minionId) {
+    public int delete(User loggedInUser, String minionId) {

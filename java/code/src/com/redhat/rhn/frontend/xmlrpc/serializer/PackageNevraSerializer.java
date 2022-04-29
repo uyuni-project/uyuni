@@ -27,7 +27,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  *
  * @xmlrpc.doc
- *  #struct_begin("package nvera")
+ *  #struct_begin("package nevra")
  *      #prop("string", "name")
  *      #prop("string", "epoch")
  *      #prop("string", "version")

@@ -244,19 +244,19 @@ public class ProductSyncManager {
             }
 
             if (channelStatus.isNotMirrored()) {
-                LOGGER.debug("Channel not mirrored: " + c.getLabel());
+                LOGGER.debug("Channel not mirrored: {}", c.getLabel());
                 notMirroredCounter++;
             }
             else if (channelStatus.isFinished()) {
-                LOGGER.debug("Channel finished: " + c.getLabel());
+                LOGGER.debug("Channel finished: {}", c.getLabel());
                 finishedCounter++;
             }
             else if (channelStatus.isFailed()) {
-                LOGGER.debug("Channel failed: " + c.getLabel());
+                LOGGER.debug("Channel failed: {}", c.getLabel());
                 failedCounter++;
             }
             else {
-                LOGGER.debug("Channel in progress: " + c.getLabel());
+                LOGGER.debug("Channel in progress: {}", c.getLabel());
             }
 
             Date lastSyncDate = channelStatus.getLastSyncDate();
@@ -338,8 +338,7 @@ public class ProductSyncManager {
                 // Set the status and debug info
                 String runStatus = run.getStatus();
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Repo sync run found for channel " + c.getLabel() +
-                            " (" + runStatus + ")");
+                    LOGGER.debug("Repo sync run found for channel {} ({})", c.getLabel(), runStatus);
                 }
 
                 String prefix = "setupwizard.syncstatus.";

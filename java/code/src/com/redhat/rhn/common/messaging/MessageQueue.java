@@ -104,7 +104,7 @@ public class MessageQueue {
      */
     public static void publish(EventMessage msg) {
         if (logger.isDebugEnabled()) {
-            logger.debug("publish(EventMessage) - start: " + msg.getClass().getName());
+            logger.debug("publish(EventMessage) - start: {}", msg.getClass().getName());
         }
         if (!isMessaging()) {
             startMessaging();
@@ -201,8 +201,7 @@ public class MessageQueue {
      */
     public static void registerAction(MessageAction act, Class eventType) {
         if (logger.isDebugEnabled()) {
-            logger.debug("registerAction(MessageAction, Class) - : " + act +
-                    " class: " + eventType.getName());
+            logger.debug("registerAction(MessageAction, Class) - : {} class: {}", act, eventType.getName());
         }
         synchronized (ACTIONS) {
             List<MessageAction> handlers = ACTIONS.computeIfAbsent(eventType, k -> new ArrayList<>());

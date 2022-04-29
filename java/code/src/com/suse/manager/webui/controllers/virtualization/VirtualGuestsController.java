@@ -513,7 +513,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
             return null;
         }
         if (guests.size() > 1) {
-            LOG.error("More than one virtual machine found for this UUID: " + uuid);
+            LOG.error("More than one virtual machine found for this UUID: {}", uuid);
             Spark.halt(HttpStatus.SC_NOT_FOUND, "More than one virtual machine found for this UUID");
         }
         return guests.get(0);

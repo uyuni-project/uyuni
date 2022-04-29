@@ -68,10 +68,10 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
         // Check if this server is a minion
         boolean isMinion = minion.isPresent();
-        LOG.debug(server.getId() + "is a minion system? " + isMinion);
+        LOG.debug("{}is a minion system? {}", server.getId(), isMinion);
         // Check if this is a SUSE system (for minions only)
         boolean isSUSEMinion = isMinion && minion.get().getOsFamily().equals("Suse");
-        LOG.debug(server.getId() + "is a SUSE system? " + isSUSEMinion);
+        LOG.debug("{}is a SUSE system? {}", server.getId(), isSUSEMinion);
 
         if (isSUSEMinion || !isMinion) {
             return PackageManager.systemTotalPackages(server.getId(), null);

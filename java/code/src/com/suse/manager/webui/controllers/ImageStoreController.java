@@ -370,7 +370,7 @@ public class ImageStoreController {
         Optional<ImageStoreType> storeType = ImageStoreFactory.lookupStoreTypeByLabel(createRequest.getStoreType());
 
         if (!storeType.isPresent()) {
-            log.warn("Invalid store type: " + createRequest.getStoreType());
+            log.warn("Invalid store type: {}", createRequest.getStoreType());
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
 

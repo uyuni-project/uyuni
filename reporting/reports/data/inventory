@@ -1,150 +1,69 @@
 
 synopsis:
 
-	Inventory report
+  Inventory report
 
 description:
 
-	List of systems registered to the server, together with
-	hardware and software information.
+  List of all registered systems, together with hardware and software information.
 
 columns:
 
-	server_id:i	System identifier
-	profile_name	Profile name, as stored on server
-	hostname	Hostname, as reported by the system
-	ip_address	IPv4 address, as reported by the system
-	ipv6_address    IPv6 address, as reported by the system
-	registered_by	User under which the system is registered
-	registration_time	Registration time
-	last_checkin_time	Last checkin time
-	kernel_version		Kernel version, as reported by the system
-	packages_out_of_date:i	Number of packages that can be upgraded
-	errata_out_of_date:i	Number of erratas that can be applied
-	software_channel	List of channels to which the system is registered
-	configuration_channel	List of configuration channels
-	entitlements		List of entitlements
-	system_group		List of system group to which the system belongs
-	organization		Organization name
-	virtual_host:i		System identifier of host, if system is a guest
-	architecture		Architecture of the system
-	is_virtualized	Information whether system is virtualized or not
-	virt_type System virtualization type
-	osad_status	OSAD status
-	hardware		Hardware information
-	minion_id       Minion ID, as reported by the system
-	machine_id      Machine ID, as reported by the system
-
-multival_columns:
-
-	server_id
-	software_channel : software_channel
-	configuration_channel : configuration_channel
-	entitlements : entitlements
-	system_group : system_group
-	virtual_host : virtual_host
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  profile_name The unique descriptive name of the system
+  hostname The hostname that identifies this system
+  ip_address The IPv4 address of the primary network interface of the system
+  ip6_addresses The list of IPv6 addresses and their scopes of the primary network interface of the system, separated by ;
+  registered_by The user account who onboarded this system
+  registration_time When this system was onboarded
+  last_checkin_time When this system was visible and reachable last time
+  kernel_version The version of the kernel installed on this system
+  packages_out_of_date The number of packages installed on the system that can be updated
+  errata_out_of_date The number of patches that can be applied to the system
+  software_channels THe list of software channels the system is subscribed to, separated by ;
+  configuration_channels The list of configuration channels the system is subscribed to, separated by ;
+  entitlements The list of entitlements of the system, separated by ;
+  system_groups The list of groups of the system, separated by ;
+  organization The organization that owns this data
+  virtual_host The id of the host of the system, if any
+  architecture The architecture of the system
+  is_virtualized True if the system is virtualized
+  virt_type The type of virtualization, if the system is virualized
+  hardware A brief description of the hardware specification of this system
+  minion_id The identifier of the minion, if the system is a Salt Minion
+  machine_id The identifier of the machine
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-	select server_id, profile_name, hostname, ip_address, ipv6_address, registered_by,
-		registration_time, last_checkin_time, kernel_version,
-		packages_out_of_date, errata_out_of_date,
-		software_channel, configuration_channel,
-		entitlements, system_group, organization, virtual_host, architecture, is_virtualized, virt_type, osad_status, hardware,
-		minion_id, machine_id
-	from (
-	select servers_data.*,
-	rhnchannel.name as software_channel,
-	rhnchannel.parent_channel as parent_channel,
-	rhnchannel.id as channel_id,
-	COALESCE(update_data.packages_out_of_date, 0) as packages_out_of_date,
-	COALESCE(update_data.errata_out_of_date, 0) as errata_out_of_date
-	from
-	(select rhnserver.id as server_id,
-		rhnserver.name as profile_name,
-		rhnserver.hostname,
-		(select minion_id from suseMinionInfo where rhnserver.id = suseMinionInfo.server_id) as minion_id,
-		trim(ipaddr) as ip_address,
-		trim(ip6addr) as ipv6_address,
-		rhnserver.machine_id,
-		( select login from web_contact where rhnserver.creator_id = web_contact.id ) as registered_by,
-		to_char(rhnserver.created, 'YYYY-MM-DD HH24:MI:SS') as registration_time,
-		( select to_char(checkin, 'YYYY-MM-DD HH24:MI:SS') from rhnserverinfo where rhnserver.id = server_id ) as last_checkin_time,
-		running_kernel as kernel_version,
-		rhnconfigchannel.name as configuration_channel,
-		rhnconfigchannel.id as configuration_channel_id,
-		entitlement_data.name as entitlements,
-		entitlement_data.server_group_id as entitlements_server_group_id,
-		group_data.name as system_group,
-		group_data.server_group_id as system_group_server_group_id,
-		(
-		select name from web_customer where rhnserver.org_id = web_customer.id
-		) as organization,
-		virtual_data.host_system_id as virtual_host,
-		(
-		select rhnserverarch.name from rhnserverarch where rhnserver.server_arch_id = rhnserverarch.id
-		) as architecture,
-		(case when (select rhnVirtualInstance.virtual_system_id from rhnVirtualInstance where rhnVirtualInstance.virtual_system_id=rhnserver.id) is null then 'No' else 'Yes' end
-) as is_virtualized,
-		(select rvit.name from rhnvirtualinstance rvi inner join rhnvirtualinstanceinfo rvii on rvi.id = rvii.instance_id inner join rhnvirtualinstancetype rvit on rvii.instance_type = rvit.id where rvi.virtual_system_id = rhnserver.id) as virt_type,
-		(nvl((select rhnpushclientstate.label from rhnpushclient join rhnpushclientstate on rhnpushclient.state_id=rhnpushclientstate.id where rhnpushclient.server_id=rhnServer.id), 'Not enabled')) as osad_status,
-		get_hw_info_as_clob(rhnserver.id, '; ') as hardware
-	from rhnserver left outer join
-		(
-		select server_id, rsna4.address as ipaddr, rsna6.address as ip6addr
-		from rhnservernetinterface rsni
-		left join rhnServerNetAddress4 rsna4
-		on rsni.id = rsna4.interface_id
-		left join rhnServerNetAddress6 rsna6
-		on rsni.id = rsna6.interface_id
-		where id in (
-			select min(id)
-			from rhnservernetinterface
-			where is_primary = 'Y'
-			group by server_id
-			)
-		) netinfos
-		on rhnserver.id = netinfos.server_id
-		left outer join rhnserverconfigchannel
-		on rhnserver.id = rhnserverconfigchannel.server_id
-		left outer join rhnconfigchannel
-		on rhnserverconfigchannel.config_channel_id = rhnconfigchannel.id
-		left outer join
-		(
-		select rhnservergroupmembers.server_id, rhnservergroupmembers.server_group_id, rhnservergroup.name
-		from rhnservergroupmembers left outer join rhnservergroup
-			on rhnservergroupmembers.server_group_id = rhnservergroup.id
-		where rhnservergroup.group_type is not null
-		) entitlement_data
-		on rhnserver.id = entitlement_data.server_id
-		left outer join
-		(
-		select rhnservergroupmembers.server_id, rhnservergroupmembers.server_group_id, rhnservergroup.name
-		from rhnservergroupmembers left outer join rhnservergroup
-			on rhnservergroupmembers.server_group_id = rhnservergroup.id
-		where rhnservergroup.group_type is null
-		) group_data
-		on rhnserver.id = group_data.server_id
-		left outer join
-		(
-		select host_system_id, virtual_system_id
-		from rhnvirtualinstance
-		where host_system_id is not null
-		) virtual_data
-		on rhnserver.id = virtual_data.virtual_system_id
-		) servers_data
-		left outer join rhnserverchannel
-			on servers_data.server_id = rhnserverchannel.server_id
-		left outer join rhnchannel
-			on rhnserverchannel.channel_id = rhnchannel.id
-		left join (select rhnServerNeededCache.server_id,
-					count(distinct rhnpackage.name_id) as packages_out_of_date,
-					count(rhnServerNeededCache.errata_id) as errata_out_of_date
-				from rhnpackage, rhnServerNeededCache
-				where rhnServerNeededCache.package_id = rhnpackage.id
-				group by rhnServerNeededCache.server_id) update_data on update_data.server_id = servers_data.server_id
-	) X
-	-- where placeholder
-	order by server_id, parent_channel nulls first, channel_id,
-		configuration_channel_id, entitlements_server_group_id, system_group_server_group_id,
-		virtual_host
+  SELECT * FROM (
+      SELECT mgm_id
+                 , system_id
+                 , profile_name
+                 , hostname
+                 , ip_address
+                 , ip6_addresses AS ipv6_address
+                 , registered_by
+                 , registration_time
+                 , last_checkin_time
+                 , kernel_version
+                 , packages_out_of_date
+                 , errata_out_of_date
+                 , software_channels AS software_channel
+                 , configuration_channels AS configuration_channel
+                 , entitlements
+                 , system_groups AS system_group
+                 , organization
+                 , virtual_host
+                 , architecture
+                 , is_virtualized
+                 , virt_type
+                 , hardware
+                 , minion_id
+                 , machine_id
+                , synced_date
+        FROM InventoryReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id

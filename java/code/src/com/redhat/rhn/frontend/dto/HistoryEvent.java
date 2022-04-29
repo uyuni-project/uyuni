@@ -78,8 +78,7 @@ public class HistoryEvent extends BaseDto {
             this.completed = format.parse(completedIn);
         }
        catch (ParseException e) {
-            logger.error("Cannot parse " + completedIn +
-                    " according to format " + dateFormat);
+           logger.error("Cannot parse {} according to format {}", completedIn, dateFormat);
             logger.error(e);
        }
     }

@@ -64,7 +64,7 @@ public class PowerManagementHandler extends BaseHandler {
      * @return a list of available power management types
      *
      * @xmlrpc.doc Return a list of available power management types
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array_single("string", "power management types")
      */
     @ReadOnly
@@ -80,12 +80,12 @@ public class PowerManagementHandler extends BaseHandler {
      * Get current power management settings of the given system
      *
      * @param loggedInUser the user
-     * @param serverId the requested server id
+     * @param sid the requested server id
      * @return current power management settings when available
      *
      * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype
      *  #struct_begin("powerManagementParameters")
      *    #prop_desc("string", "powerType", "Power management type")
@@ -96,10 +96,10 @@ public class PowerManagementHandler extends BaseHandler {
      *  #struct_end()
      */
     @ReadOnly
-    public Map<String, String> getDetails(User loggedInUser, Integer serverId) {
+    public Map<String, String> getDetails(User loggedInUser, Integer sid) {
         SystemRecord record = SystemRecord.lookupById(
                 CobblerXMLRPCHelper.getConnection(loggedInUser),
-                lookupServer(loggedInUser, serverId).getCobblerId());
+                lookupServer(loggedInUser, sid).getCobblerId());
         return getDetails(loggedInUser, record);
     }
 
@@ -107,11 +107,11 @@ public class PowerManagementHandler extends BaseHandler {
      * Get current power management settings of the given system
      *
      * @param loggedInUser the user
-     * @param nameIn the cobbler name prefix
+     * @param name the cobbler name prefix
      * @return current power management settings when available
      *
      * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype
      *  #struct_begin("powerManagementParameters")
@@ -123,9 +123,9 @@ public class PowerManagementHandler extends BaseHandler {
      *  #struct_end()
      */
     @ReadOnly
-    public Map<String, String> getDetails(User loggedInUser, String nameIn) {
+    public Map<String, String> getDetails(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
-        SystemRecord record = lookupExistingCobblerRecord(loggedInUser, nameIn);
+        SystemRecord record = lookupExistingCobblerRecord(loggedInUser, name);
         return getDetails(loggedInUser, record);
     }
 
@@ -149,13 +149,13 @@ public class PowerManagementHandler extends BaseHandler {
      * Set power management settings for the given system
      *
      * @param loggedInUser the user
-     * @param serverId the requested server id
+     * @param sid the requested server id
      * @param data power management parameters
      * @return current power management settings when available
      *
      * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param
      *  #struct_begin("data")
      *    #prop_desc("string", "powerType", "Power management type")
@@ -166,9 +166,9 @@ public class PowerManagementHandler extends BaseHandler {
      *  #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setDetails(User loggedInUser, Integer serverId, Map<String, String> data) {
+    public int setDetails(User loggedInUser, Integer sid, Map<String, String> data) {
         CobblerPowerSettingsUpdateCommand cmd = new CobblerPowerSettingsUpdateCommand(
-                loggedInUser, lookupServer(loggedInUser, serverId),
+                loggedInUser, lookupServer(loggedInUser, sid),
                 data.get(PowerManagementAction.POWER_TYPE),
                 data.get(PowerManagementAction.POWER_ADDRESS),
                 data.get(PowerManagementAction.POWER_USERNAME),
@@ -186,12 +186,12 @@ public class PowerManagementHandler extends BaseHandler {
      * Set power management settings for the given system
      *
      * @param loggedInUser the user
-     * @param nameIn the cobbler name prefix
+     * @param name the cobbler name prefix
      * @param data power management parameters
      * @return current power management settings when available
      *
      * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.param
      *  #struct_begin("data")
@@ -203,11 +203,11 @@ public class PowerManagementHandler extends BaseHandler {
      *  #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setDetails(User loggedInUser, String nameIn, Map<String, String> data) {
+    public int setDetails(User loggedInUser, String name, Map<String, String> data) {
         ensureOrgAdmin(loggedInUser);
         CobblerUnregisteredPowerSettingsUpdateCommand cmd =
                 new CobblerUnregisteredPowerSettingsUpdateCommand(
-                loggedInUser, nameIn,
+                loggedInUser, name,
                 data.get(PowerManagementAction.POWER_TYPE),
                 data.get(PowerManagementAction.POWER_ADDRESS),
                 data.get(PowerManagementAction.POWER_USERNAME),
@@ -225,16 +225,16 @@ public class PowerManagementHandler extends BaseHandler {
      * Execute power management action 'powerOn'
      *
      * @param loggedInUser the user
-     * @param serverId the requested server id
+     * @param sid the requested server id
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'powerOn'
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int powerOn(User loggedInUser, Integer serverId) {
-        ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, serverId),
+    public int powerOn(User loggedInUser, Integer sid) {
+        ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
                 CobblerPowerCommand.Operation.PowerOn).store();
         if (error != null) {
             log.error("Power management action 'powerOn' failed");
@@ -248,17 +248,17 @@ public class PowerManagementHandler extends BaseHandler {
      * Execute power management action 'powerOn'
      *
      * @param loggedInUser the user
-     * @param nameIn the cobbler name prefix
+     * @param name the cobbler name prefix
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'powerOn'
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int powerOn(User loggedInUser, String nameIn) {
+    public int powerOn(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
-        ValidatorError error = new CobblerPowerCommand(loggedInUser, nameIn,
+        ValidatorError error = new CobblerPowerCommand(loggedInUser, name,
                 CobblerPowerCommand.Operation.PowerOn).store();
         if (error != null) {
             log.error("Power management action 'powerOn' failed");
@@ -272,16 +272,16 @@ public class PowerManagementHandler extends BaseHandler {
      * Execute power management action 'powerOff'
      *
      * @param loggedInUser the user
-     * @param serverId the requested server id
+     * @param sid the requested server id
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'powerOff'
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int powerOff(User loggedInUser, Integer serverId) {
-        ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, serverId),
+    public int powerOff(User loggedInUser, Integer sid) {
+        ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
                 CobblerPowerCommand.Operation.PowerOff).store();
         if (error != null) {
             log.error("Power management action 'powerOff' failed");
@@ -295,17 +295,17 @@ public class PowerManagementHandler extends BaseHandler {
      * Execute power management action 'powerOff'
      *
      * @param loggedInUser the user
-     * @param nameIn the cobbler name prefix
+     * @param name the cobbler name prefix
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'powerOff'
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int powerOff(User loggedInUser, String nameIn) {
+    public int powerOff(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
-        ValidatorError error = new CobblerPowerCommand(loggedInUser, nameIn,
+        ValidatorError error = new CobblerPowerCommand(loggedInUser, name,
                 CobblerPowerCommand.Operation.PowerOff).store();
         if (error != null) {
             log.error("Power management action 'powerOff' failed");
@@ -319,16 +319,16 @@ public class PowerManagementHandler extends BaseHandler {
      * Execute power management action 'Reboot'
      *
      * @param loggedInUser the user
-     * @param serverId the requested server id
+     * @param sid the requested server id
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'Reboot'
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int reboot(User loggedInUser, Integer serverId) {
-        ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, serverId),
+    public int reboot(User loggedInUser, Integer sid) {
+        ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
                 CobblerPowerCommand.Operation.Reboot).store();
         if (error != null) {
             log.error("Power management action 'reboot' failed");
@@ -342,17 +342,17 @@ public class PowerManagementHandler extends BaseHandler {
      * Execute power management action 'Reboot'
      *
      * @param loggedInUser the user
-     * @param nameIn the cobbler name prefix
+     * @param name the cobbler name prefix
      * @return 1 on success
      *
      * @xmlrpc.doc Execute power management action 'Reboot'
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int reboot(User loggedInUser, String nameIn) {
+    public int reboot(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
-        ValidatorError error = new CobblerPowerCommand(loggedInUser, nameIn,
+        ValidatorError error = new CobblerPowerCommand(loggedInUser, name,
                 CobblerPowerCommand.Operation.Reboot).store();
         if (error != null) {
             log.error("Power management action 'reboot' failed");
@@ -366,20 +366,19 @@ public class PowerManagementHandler extends BaseHandler {
      * Return power status of a system
      *
      * @param loggedInUser the user
-     * @param serverId the requested server id
+     * @param sid the requested server id
      * @return 1 on success
      *
      * @xmlrpc.doc Execute powermanagement actions
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "action")
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
      */
     @ReadOnly
-    public boolean getStatus(User loggedInUser, Integer serverId) {
+    public boolean getStatus(User loggedInUser, Integer sid) {
         SystemRecord record = SystemRecord.lookupById(
                 CobblerXMLRPCHelper.getConnection(loggedInUser),
-                lookupServer(loggedInUser, serverId).getCobblerId());
+                lookupServer(loggedInUser, sid).getCobblerId());
         return record.getPowerStatus();
     }
 
@@ -387,19 +386,18 @@ public class PowerManagementHandler extends BaseHandler {
      * Return power status of a system
      *
      * @param loggedInUser the user
-     * @param nameIn the requested server name (prefix)
+     * @param name the requested server name (prefix)
      * @return 1 on success
      *
      * @xmlrpc.doc Execute powermanagement actions
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param #param("string", "action")
      * @xmlrpc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
      */
     @ReadOnly
-    public boolean getStatus(User loggedInUser, String nameIn) {
+    public boolean getStatus(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
-        SystemRecord record = lookupExistingCobblerRecord(loggedInUser, nameIn);
+        SystemRecord record = lookupExistingCobblerRecord(loggedInUser, name);
         if (record == null) {
             throw new NoSuchSystemException();
         }
@@ -413,7 +411,7 @@ public class PowerManagementHandler extends BaseHandler {
         SystemRecord rec = SystemRecord.lookupByName(
                 CobblerXMLRPCHelper.getConnection(loggedInUser), name);
         if (rec == null) {
-            log.error("System with cobbler name " + name + " not found.");
+            log.error("System with cobbler name {} not found.", name);
         }
         return rec;
     }

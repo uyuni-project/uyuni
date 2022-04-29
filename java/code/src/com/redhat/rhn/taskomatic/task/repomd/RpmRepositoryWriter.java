@@ -179,9 +179,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 "repomd.xml");
         Date mdlastModified = new Date(theFile.lastModified());
         Date dblastModified = channel.getLastModified();
-        log.info("File Modified Date:" + LocalizationService.getInstance().
+        log.info("File Modified Date:{}", LocalizationService.getInstance().
                 formatCustomDate(mdlastModified));
-        log.info("Channel Modified Date:" + LocalizationService.getInstance().
+        log.info("Channel Modified Date:{}", LocalizationService.getInstance().
                 formatCustomDate(dblastModified));
         // We need to cut some digits from ms, we don't want to be very accurate. However
         // removing ms completely will not work either.
@@ -234,7 +234,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         }
         new File(prefix + NOREPO_FILE).delete();
         if (log.isDebugEnabled()) {
-            log.debug("Checksum Type Value: " + checksumType);
+            log.debug("Checksum Type Value: {}", checksumType);
         }
 
         // java.security.MessageDigest recognizes:
@@ -250,10 +250,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             checksumLabel = "sha";
         }
 
-        log.info("Generating new repository metadata for channel '" +
-                channel.getLabel() + "'(" + checksumType + ") " +
-                channel.getPackageCount() + " packages, " +
-                channel.getErrataCount() + " errata");
+        log.info("Generating new repository metadata for channel '{}'({}) {} packages, {} errata", channel.getLabel(),
+                checksumType, channel.getPackageCount(), channel.getErrataCount());
 
         CompressingDigestOutputWriter primaryFile, filelistsFile, otherFile, susedataFile;
 
@@ -323,7 +321,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                     throw new RepomdRuntimeException(e);
                 }
             }
-            log.info("Processed " + (i + packageBatch.getEnd()) + " packages");
+            log.info("Processed {} packages", i + packageBatch.getEnd());
         }
         primary.end();
         filelists.end();
@@ -349,7 +347,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 susedataFile.getUncompressedChecksum(), channel.getLastModified());
 
         if (log.isDebugEnabled()) {
-            log.debug("Starting updateinfo generation for '" + channel.getLabel() + '"');
+            log.debug("Starting updateinfo generation for '{}\"", channel.getLabel());
         }
         RepomdIndexData updateinfoData = generateUpdateinfo(channel, prefix, checksumAlgo);
         RepomdIndexData productsData = generateProducts(channel, prefix, checksumAlgo);
@@ -425,9 +423,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             createdFiles.add(new File(prefix, "repomd.xml.asc"));
             createdFiles.add(new File(prefix, "repomd.xml.key"));
         }
-        log.info("Repository metadata generation for '" +
-                channel.getLabel() + "' finished in " +
-                (int) (new Date().getTime() - start.getTime()) / 1000 + " seconds");
+        log.info("Repository metadata generation for '{}' finished in {} seconds", channel.getLabel(),
+                (int) (new Date().getTime() - start.getTime()) / 1000);
 
         generateSolv(channel);
         createdFiles.add(organizer.move(SOLV_FILE, "solv"));
@@ -452,8 +449,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             // Determine the exit value
             int exitVal = pr.waitFor();
             if (exitVal != 0) {
-                log.error("Unable to create the solv file for '" +
-                          channel.getLabel() + "'");
+                log.error("Unable to create the solv file for '{}'", channel.getLabel());
             }
         }
         catch (IOException e) {
@@ -463,7 +459,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
-        log.info("Solv file successfully create for '" + channel.getLabel() + "'");
+        log.info("Solv file successfully create for '{}'", channel.getLabel());
     }
 
     /**
@@ -472,7 +468,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
      * @param prefix the directory prefix
      */
     private void generateBadRepo(Channel channel, String prefix) {
-        log.warn("No repo will be generated for channel " + channel.getLabel());
+        log.warn("No repo will be generated for channel {}", channel.getLabel());
         deleteRepomdFiles(channel.getLabel(), false);
         try {
             FileWriter norepo = new FileWriter(prefix + NOREPO_FILE);

@@ -13,5 +13,16 @@ spmigration:
         - file: mgrchannels*
 {% endif %}
 
+{% if not salt['pillar.get']('susemanager:distupgrade:dryrun') %}
+{% if pillar.get('missing_successors', [])%}
+mgr_release_pkg_removed:
+  pkg.removed:
+    -   pkgs:
+{%- for missing_successor in pillar.get('missing_successors', [])%}
+        - {{missing_successor}}-release
+{%- endfor %}
+{% endif %}
+{% endif %}
+
 include:
   - channels

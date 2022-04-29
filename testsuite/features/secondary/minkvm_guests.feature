@@ -3,6 +3,7 @@
 
 @scope_virtualization
 @virthost_kvm
+@scope_cobbler
 Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Log in as admin user

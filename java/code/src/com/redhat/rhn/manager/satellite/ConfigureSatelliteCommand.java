@@ -65,9 +65,8 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         boolean anythingChanged = false;
 
         if (logger.isDebugEnabled()) {
-            logger.debug("getCommandArguments(String configFilePath=" +
-                    configFilePath + ", Iterator keyIterator=" + optionMap +
-                    ") - start");
+            logger.debug("getCommandArguments(String configFilePath={}, Iterator keyIterator={}) - start",
+                    configFilePath, optionMap);
         }
 
         List<String> argList = new LinkedList<>();
@@ -103,8 +102,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         argList.add("/dev/null");
         String[] returnStringArray = argList.toArray(new String[0]);
         if (logger.isDebugEnabled()) {
-            logger.debug("getCommandArguments(String, Iterator) - end - return value=" +
-                    returnStringArray);
+            logger.debug("getCommandArguments(String, Iterator) - end - return value={}", (Object)returnStringArray);
         }
         return (anythingChanged ? returnStringArray : null);
     }
@@ -176,7 +174,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
                         Integer.toString(exitcode));
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug("storeConfiguration() - end - return value="  + retval);
+                    logger.debug("storeConfiguration() - end - return value={}", (Object)retval);
                 }
                 return retval;
             }
@@ -184,7 +182,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         this.keysToBeUpdated.clear();
 
         if (logger.isDebugEnabled()) {
-            logger.debug("storeConfiguration() - end - return value="  + null);
+            logger.debug("storeConfiguration() - end - return value=null");
         }
         return null;
 
@@ -198,8 +196,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      */
     public void updateBoolean(String configKey, Boolean newValue) {
         if (logger.isDebugEnabled()) {
-            logger.debug("updateBoolean(String configKey=" + configKey  +
-                    ", Boolean newValue=" + newValue + ") - start");
+            logger.debug("updateBoolean(String configKey={}, Boolean newValue={}) - start", configKey, newValue);
         }
 
         if (newValue == null) {
@@ -228,8 +225,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      */
     public void updateString(String configKey, String newValue) {
         if (logger.isDebugEnabled()) {
-            logger.debug("updateString(String configKey=" + configKey  +
-                    ", String newValue=" + newValue + ") - start");
+            logger.debug("updateString(String configKey={}, String newValue={}) - start", configKey, newValue);
         }
 
         if (Config.get().getString(configKey) == null ||
@@ -249,7 +245,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      */
     public void remove(String configKey) {
         if (logger.isDebugEnabled()) {
-            logger.debug("remove(String configKey=" + configKey + ") - start");
+            logger.debug("remove(String configKey={}) - start", configKey);
         }
 
         if (Config.get().getString(configKey) != null) {

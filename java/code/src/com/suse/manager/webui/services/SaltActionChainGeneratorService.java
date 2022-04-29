@@ -426,7 +426,7 @@ public class SaltActionChainGeneratorService {
                 Files.deleteIfExists(path);
             }
             catch (IOException e) {
-                LOG.warn("Error deleting action chain file " + path.toString(), e);
+                LOG.warn("Error deleting action chain file {}", path.toString(), e);
             }
         }
     }
@@ -464,7 +464,7 @@ public class SaltActionChainGeneratorService {
             return res;
         }
         catch (IOException e) {
-            LOG.error("Could not collect salt:// references from file " + targetFilePath, e);
+            LOG.error("Could not collect salt:// references from file {}", targetFilePath, e);
             return Collections.emptyList();
         }
     }
@@ -500,7 +500,7 @@ public class SaltActionChainGeneratorService {
             saltStateGenerator.generate(states.toArray(new SaltState[states.size()]));
         }
         catch (IOException e) {
-            LOG.error("Could not write action chain sls " + targetFilePath, e);
+            LOG.error("Could not write action chain sls {}", targetFilePath, e);
             throw new RuntimeException(e);
         }
     }
@@ -589,7 +589,7 @@ public class SaltActionChainGeneratorService {
                 );
             }
             catch (NumberFormatException e) {
-                LOG.error("Error parsing action chain state id: " + stateId, e);
+                LOG.error("Error parsing action chain state id: {}", stateId, e);
             }
         }
         return Optional.empty();
@@ -650,7 +650,7 @@ public class SaltActionChainGeneratorService {
                 }
             }
             catch (IOException e) {
-                LOG.error("Could not create action chain directory " + targetDir, e);
+                LOG.error("Could not create action chain directory {}", targetDir, e);
                 throw new RuntimeException(e);
             }
         }

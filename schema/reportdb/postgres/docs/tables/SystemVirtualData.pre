@@ -1,0 +1,42 @@
+--
+-- Copyright (c) 2022 SUSE LLC
+--
+-- This software is licensed to you under the GNU General Public License,
+-- version 2 (GPLv2). There is NO WARRANTY for this software, express or
+-- implied, including the implied warranties of MERCHANTABILITY or FITNESS
+-- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+-- along with this software; if not, see
+-- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+
+COMMENT ON TABLE SystemVirtualData
+  IS 'The list of virtual instances managed by a BRAND_NAME instance';
+
+COMMENT ON COLUMN SystemVirtualData.mgm_id
+  IS 'The id of the BRAND_NAME instance that contains this data';
+COMMENT ON COLUMN SystemVirtualData.instance_id
+  IS 'The id of the virtual system instance';
+COMMENT ON COLUMN SystemVirtualData.host_system_id
+  IS 'The id of the host system, if available';
+COMMENT ON COLUMN SystemVirtualData.virtual_system_id
+  IS 'The id of the virtual system, if available';
+COMMENT ON COLUMN SystemVirtualData.name
+  IS 'The name of this virtual system';
+COMMENT ON COLUMN SystemVirtualData.instance_type_name
+  IS 'The type of virtualization';
+COMMENT ON COLUMN SystemVirtualData.vcpus
+  IS 'The number of virtual CPUs';
+COMMENT ON COLUMN SystemVirtualData.memory_size
+  IS 'The available memory in megabytes';
+COMMENT ON COLUMN SystemVirtualData.uuid
+  IS 'The universally unique identifier of this virtual instance';
+COMMENT ON COLUMN SystemVirtualData.confirmed
+  IS '1 if this virtual instance is confirmed';
+COMMENT ON COLUMN SystemVirtualData.state_name
+  IS 'The current state of this virtual instance';
+COMMENT ON COLUMN SystemVirtualData.synced_date
+  IS 'The timestamp of when this data was last refreshed.';
+
+ALTER TABLE SystemVirtualData
+    ADD CONSTRAINT SystemVirtualData_host_system_fkey FOREIGN KEY (mgm_id, host_system_id) REFERENCES System(mgm_id, system_id),
+    ADD CONSTRAINT SystemVirtualData_virtual_system_fkey FOREIGN KEY (mgm_id, virtual_system_id) REFERENCES System(mgm_id, system_id);

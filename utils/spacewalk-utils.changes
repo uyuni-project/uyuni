@@ -1,3 +1,18 @@
+- use mgr-ssl-cert-setup tool in spacewalk-hostname-rename to
+  deploy certificates on the server
+
+-------------------------------------------------------------------
+Sat Apr 23 00:33:09 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.9-1
+  * Fix the channel name for the Debian11 Client Tools
+
+-------------------------------------------------------------------
+Tue Apr 19 12:42:43 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * Use the official URL for Debian11 security updates
+
 -------------------------------------------------------------------
 Fri Mar 11 15:22:33 CET 2022 - jgonzalez@suse.com
 

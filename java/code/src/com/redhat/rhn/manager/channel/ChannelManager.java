@@ -428,7 +428,7 @@ public class ChannelManager extends BaseManager {
             LocalizationService ls = LocalizationService.getInstance();
 
             throw new LookupException(
-                    String.format(NO_ACCESS, userIn.getId(), cid.toString()),
+                    String.format(NO_ACCESS, userIn.getId(), cid),
                     ls.getMessage("lookup.jsp.title.channel"),
                     ls.getMessage("lookup.jsp.reason1.channel"),
                     ls.getMessage("lookup.jsp.reason2.channel"));
@@ -727,13 +727,12 @@ public class ChannelManager extends BaseManager {
         try {
             String cronExpr = taskomaticApi.getRepoSyncSchedule(channel, user);
             if (!StringUtils.isEmpty(cronExpr)) {
-                log.info("Unscheduling repo sync schedule with " + cronExpr +
-                        " for channel " + channel.getLabel());
+                log.info("Unscheduling repo sync schedule with {} for channel {}", cronExpr, channel.getLabel());
                 taskomaticApi.unscheduleRepoSync(channel, user);
             }
         }
         catch (TaskomaticApiException e) {
-            log.warn("Failed to unschedule repo sync for channel " + channel.getLabel());
+            log.warn("Failed to unschedule repo sync for channel {}", channel.getLabel());
             throw e;
         }
     }
@@ -1213,8 +1212,7 @@ public class ChannelManager extends BaseManager {
     public static List<Map<String, Object>> listLatestPackagesEqual(Long channelId,
             String packageName) {
         if (log.isDebugEnabled()) {
-            log.debug("listLatestPackagesEqual: " +
-                    channelId + " pn: " + packageName);
+            log.debug("listLatestPackagesEqual: {} pn: {}", channelId, packageName);
         }
         SelectMode m = ModeFactory.getMode("Channel_queries",
             "latest_package_equal");
@@ -1235,8 +1233,7 @@ public class ChannelManager extends BaseManager {
     public static List<Map<String, Object>> listLatestPackagesEqual(Long channelId,
                                                                     List<String> packageNames) {
         if (log.isDebugEnabled()) {
-            log.debug("listLatestPackagesEqual: " +
-                    channelId + " pn: " + packageNames);
+            log.debug("listLatestPackagesEqual: {} pn: {}", channelId, packageNames);
         }
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "latest_packages_similar_to");
@@ -1258,8 +1255,7 @@ public class ChannelManager extends BaseManager {
     public static List<Map<String, Object>> listLatestPackagesLike(Long channelId,
             String packageName) {
         if (log.isDebugEnabled()) {
-            log.debug("listLatestPackagesLike() cid: " +
-                    channelId + " packageName : " + packageName);
+            log.debug("listLatestPackagesLike() cid: {} packageName : {}", channelId, packageName);
         }
         SelectMode m = ModeFactory.getMode("Channel_queries",
             "latest_package_like");
@@ -1279,8 +1275,7 @@ public class ChannelManager extends BaseManager {
     public static List<Map<String, Object>> listLatestPackagesLike(Long channelId,
                                                                    List<String> packageNames) {
         if (log.isDebugEnabled()) {
-            log.debug("listLatestPackagesLike() cid: " +
-                    channelId + " packageNames : " + packageNames);
+            log.debug("listLatestPackagesLike() cid: {} packageNames : {}", channelId, packageNames);
         }
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "latest_packages_similar_to");
@@ -1391,8 +1386,7 @@ public class ChannelManager extends BaseManager {
     public static Channel subscribeToChildChannelWithPackageName(User user, Server current,
                 String packageName) {
 
-        log.debug("subscribeToChildChannelWithPackageName: " + current.getId() +
-                " name: " + packageName);
+        log.debug("subscribeToChildChannelWithPackageName: {} name: {}", current.getId(), packageName);
         /*
          * First make sure that we have a base channel.
          * Second, make sure that the base channel has an RHN Tools child channel.
@@ -1405,7 +1399,7 @@ public class ChannelManager extends BaseManager {
 
         // We know its the channel we want if it has the package in it:
         Long bcid = current.getBaseChannel().getId();
-        log.debug("found basechannel: " + bcid);
+        log.debug("found basechannel: {}", bcid);
 
         Long cid = null;
 
@@ -1440,13 +1434,12 @@ public class ChannelManager extends BaseManager {
             channel = ChannelManager.lookupByIdAndUser(cid, user);
         }
         catch (LookupException e) {
-            log.warn("User " + user.getLogin() + " does not have access to channel " +
-                    cid + ".");
+            log.warn("User {} does not have access to channel {}.", user.getLogin(), cid);
         }
 
         if (!current.isSubscribed(channel)) {
             if (log.isDebugEnabled()) {
-                log.debug("Subscribing server to channel: " + channel);
+                log.debug("Subscribing server to channel: {}", channel);
             }
             SystemManager.subscribeServerToChannel(user, current, channel);
         }
@@ -1483,12 +1476,12 @@ public class ChannelManager extends BaseManager {
         for (Channel child : ChannelManager.userAccessibleChildChannels(
                 user.getOrg().getId(), baseChannel.getId())) {
             Set<DistChannelMap> distChannelMaps = child.getDistChannelMaps();
-            log.debug("distChannelMaps null? " + (distChannelMaps == null));
+            log.debug("distChannelMaps null? {}", distChannelMaps == null);
             if (distChannelMaps != null) {
                 for (DistChannelMap dcm : distChannelMaps) {
-                    log.debug("got DistChannelMap: " + dcm);
+                    log.debug("got DistChannelMap: {}", dcm);
                     if (dcm.getOs().equals(osProductName)) {
-                        log.debug("found a channel to subscribe: " + dcm.getChannel());
+                        log.debug("found a channel to subscribe: {}", dcm.getChannel());
                         foundChannel = dcm.getChannel();
                         break;
                     }
@@ -1500,13 +1493,12 @@ public class ChannelManager extends BaseManager {
            log.debug("we found a channel, now lets see if we should sub");
            if (!current.isSubscribed(foundChannel)) {
                 if (log.isDebugEnabled()) {
-                    log.debug("subChildChannelByOSProduct " +
-                            "Subscribing server to channel: " + foundChannel);
+                    log.debug("subChildChannelByOSProduct Subscribing server to channel: {}", foundChannel);
                 }
                 SystemManager.subscribeServerToChannel(user, current, foundChannel);
            }
         }
-        log.debug("subscribeToChildChannelByOSProduct returning: " + foundChannel);
+        log.debug("subscribeToChildChannelByOSProduct returning: {}", foundChannel);
         return foundChannel;
 
     }
@@ -1609,7 +1601,7 @@ public class ChannelManager extends BaseManager {
      */
     public static Channel getToolsChannel(Channel baseChannel, User user) {
         if (log.isDebugEnabled()) {
-            log.debug("getToolsChannel, baseChannel: " + baseChannel.getLabel());
+            log.debug("getToolsChannel, baseChannel: {}", baseChannel.getLabel());
         }
 
         Iterator<Channel> i =
@@ -1617,12 +1609,12 @@ public class ChannelManager extends BaseManager {
                 user.getOrg().getId(), baseChannel.getId()).iterator();
 
         if (log.isDebugEnabled()) {
-            log.debug("getToolsChannel, userAccessibleChildChannels: " + i.hasNext());
+            log.debug("getToolsChannel, userAccessibleChildChannels: {}", i.hasNext());
         }
         while (i.hasNext()) {
             Channel child = i.next();
             if (log.isDebugEnabled()) {
-                log.debug("getToolsChannel, trying: " + child.getLabel());
+                log.debug("getToolsChannel, trying: {}", child.getLabel());
             }
             // First search for legacy kickstart package names:
             List<Map<String, Object>> kspackages =
@@ -1897,9 +1889,9 @@ public class ChannelManager extends BaseManager {
             String version, PackageEvr pevr, String serverArch) {
 
         log.debug("listBaseEusChannelsByVersionReleaseAndServerArch()");
-        log.debug("   version = " + version);
-        log.debug("   release = " + pevr.toString());
-        log.debug("   serverArch = " + serverArch);
+        log.debug("   version = {}", version);
+        log.debug("   release = {}", pevr.toString());
+        log.debug("   serverArch = {}", serverArch);
         SelectMode m = ModeFactory.getMode("Channel_queries",
                     "base_eus_channels_by_version_release_server_arch");
         Map<String, Object> params = new HashMap<>();
@@ -1946,9 +1938,9 @@ public class ChannelManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
-        log.debug("   version = " + rcm.getVersion());
-        log.debug("   release = " + rcm.getRelease());
-        log.debug("   channelArch = " + rcm.getChannelArch().getId());
+        log.debug("   version = {}", rcm.getVersion());
+        log.debug("   release = {}", rcm.getRelease());
+        log.debug("   channelArch = {}", rcm.getChannelArch().getId());
         params.put("product_name_label", RHEL_PRODUCT_NAME);
         params.put("version", rcm.getVersion());
         params.put("channel_arch_id", rcm.getChannelArch().getId());
@@ -1987,8 +1979,8 @@ public class ChannelManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
-        log.debug("   version = " + rhelVersion);
-        log.debug("   channelArch = " + channelArchId);
+        log.debug("   version = {}", rhelVersion);
+        log.debug("   channelArch = {}", channelArchId);
         params.put("product_name_label", RHEL_PRODUCT_NAME);
         params.put("version", rhelVersion);
         params.put("channel_arch_id", channelArchId);
@@ -2317,7 +2309,7 @@ public class ChannelManager extends BaseManager {
      * @param c the channel to clean
      */
     public static void disassociateChannelEntries(Channel c) {
-        log.info("Disassociate packages and patches from channel: " + c.getLabel());
+        log.info("Disassociate packages and patches from channel: {}", c.getLabel());
 
         Map<String, Long> params = new HashMap<>();
         params.put("cid", c.getId());
@@ -2346,10 +2338,9 @@ public class ChannelManager extends BaseManager {
             List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
             if (chan.isVendorChannel() && allowedList.contains(chan.getLabel()) &&
                     user.hasRole(RoleFactory.SAT_ADMIN)) {
-                log.warn("User " + user.getId() + " added packages " + packageIds.stream()
+                log.warn("User {} added packages {} to vendor channel {}", user.getId(), packageIds.stream()
                         .map(Object::toString)
-                        .collect(Collectors.joining(",")) + " to vendor channel " + chan.getLabel()
-                );
+                        .collect(Collectors.joining(",")), chan.getLabel());
             }
             else {
 
@@ -2544,7 +2535,7 @@ public class ChannelManager extends BaseManager {
         Date fileModifiedDateIn = new Date(theFile.lastModified());
         // the file Modified date should be getting set when the file
         // is moved into the correct location.
-        log.info("File Modified Date:" + fileModifiedDateIn);
+        log.info("File Modified Date:{}", fileModifiedDateIn);
         return LocalizationService.getInstance().formatCustomDate(fileModifiedDateIn);
     }
 

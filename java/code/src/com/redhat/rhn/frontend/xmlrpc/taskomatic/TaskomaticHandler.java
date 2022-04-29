@@ -71,7 +71,7 @@ public class TaskomaticHandler extends BaseHandler {
 
         addParameters(loggedInUser, params);
 
-        log.info("Translating " + methodCalled);
+        log.info("Translating {}", methodCalled);
 
         try {
             return client.invoke(TASKOMATIC_NAMESPACE + "." + methodCalled, params);

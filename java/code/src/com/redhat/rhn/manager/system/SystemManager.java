@@ -780,8 +780,7 @@ public class SystemManager extends BaseManager {
                 saltApi.removeSaltSSHKnownHost(server.getHostname());
         boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
         if (!removed) {
-            log.warn("Hostname " + server.getHostname() + " could not be removed from " +
-                    "/var/lib/salt/.ssh/known_hosts: " +
+            log.warn("Hostname {} could not be removed from /var/lib/salt/.ssh/known_hosts: {}", server.getHostname(),
                     result.map(MgrUtilRunner.RemoveKnowHostResult::getComment).orElse(""));
         }
     }
@@ -1913,7 +1912,7 @@ public class SystemManager extends BaseManager {
          * we modified it outside of hibernate :-/
          * This will update the server.channels set.
          */
-        log.debug("returning with a flush? " + flush);
+        log.debug("returning with a flush? {}", flush);
         if (flush) {
             return HibernateFactory.reload(server);
         }
@@ -2601,8 +2600,7 @@ public class SystemManager extends BaseManager {
                     guest.getState().getId().equals(running.getId())) {
 
                 if (guest.getTotalMemory() != null) {
-                    log.debug("   " + guest.getName() + " = " +
-                            (guest.getTotalMemory() / 1024) + "MB");
+                    log.debug("   {} = {}MB", guest.getName(), guest.getTotalMemory() / 1024);
 
                     if (guestIds.contains(guest.getId())) {
                         // Warn the user that a change to max memory will require a reboot
@@ -2615,7 +2613,7 @@ public class SystemManager extends BaseManager {
                 else {
                     // Not much we can do for calculations if we don't have reliable data,
                     // continue on to other guests:
-                    log.warn("No total memory set for guest: " + guest.getName());
+                    log.warn("No total memory set for guest: {}", guest.getName());
                 }
             }
         }
@@ -3589,7 +3587,7 @@ public class SystemManager extends BaseManager {
         out.put("retval", Types.INTEGER);
 
         Map<String, Object> result = mode.execute(params, out);
-        log.debug("bulk_set_custom_value returns: " + result.get("retval"));
+        log.debug("bulk_set_custom_value returns: {}", result.get("retval"));
     }
 
     /**

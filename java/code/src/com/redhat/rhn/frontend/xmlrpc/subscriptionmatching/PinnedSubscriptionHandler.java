@@ -46,7 +46,7 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * @xmlrpc.doc Lists all PinnedSubscriptions
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $PinnedSubscriptionSerializer
      *     #array_end()
      */
@@ -60,19 +60,19 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      *
      * @param loggedInUser - logged-in user
      * @param subscriptionId - id of subscription
-     * @param systemId - id of system
+     * @param sid - id of system
      * @return new PinnedSubscription instance if successful, exception otherwise
      *
      * @xmlrpc.doc Creates a Pinned Subscription based on given subscription and system
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "subscriptionId" "Subscription Id")
-     * @xmlrpc.param #param_desc("int", "systemId" "System Id")
+     * @xmlrpc.param #param_desc("int", "subscriptionId" "Subscription ID")
+     * @xmlrpc.param #param_desc("int", "sid" "System ID")
      * @xmlrpc.returntype $PinnedSubscriptionSerializer
      */
     public PinnedSubscription create(User loggedInUser, Integer subscriptionId,
-            Integer systemId) {
+            Integer sid) {
         ensureSatAdmin(loggedInUser);
-        long systemIdLong = systemId.longValue();
+        long systemIdLong = sid.longValue();
         long subscriptionIdLong = subscriptionId.longValue();
 
         if (PinnedSubscriptionFactory.getInstance().lookupBySystemIdAndSubscriptionId(
@@ -93,19 +93,19 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * Deletes Pinned Subscription with given id
      *
      * @param loggedInUser - logged-in user
-     * @param pinnedSubscriptionId - id of Pinned Subscription to delete
+     * @param subscriptionId - id of Pinned Subscription to delete
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Deletes Pinned Subscription with given id
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "pinnedSubscriptionId" "Pinned Subscription id")
+     * @xmlrpc.param #param_desc("int", "subscriptionId" "Pinned Subscription ID")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int delete(User loggedInUser, Integer pinnedSubscriptionId) {
+    public int delete(User loggedInUser, Integer subscriptionId) {
         ensureSatAdmin(loggedInUser);
 
         PinnedSubscription toDelete = PinnedSubscriptionFactory.getInstance()
-                .lookupById(pinnedSubscriptionId.longValue());
+                .lookupById(subscriptionId.longValue());
 
         if (toDelete == null) {
             throw new InvalidParameterException("Pinned Subscription with given id" +

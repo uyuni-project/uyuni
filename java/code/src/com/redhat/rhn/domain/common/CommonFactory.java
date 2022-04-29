@@ -116,7 +116,7 @@ public class CommonFactory extends HibernateFactory {
         String token = RandomStringUtils.randomAlphanumeric(8);
         TinyUrl existing = lookupTinyUrl(token);
         while (existing != null) {
-            log.warn("Had collision with: " + token);
+            log.warn("Had collision with: {}", token);
             token = RandomStringUtils.randomAlphanumeric(8);
             existing = lookupTinyUrl(token);
         }

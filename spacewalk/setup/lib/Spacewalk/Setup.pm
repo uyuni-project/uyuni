@@ -836,8 +836,8 @@ sub postgresql_setup_db {
         postgresql_get_database_answers($opts, $answers);
 
         if ($opts->{'external-postgresql-over-ssl'}) {
-            system("spacewalk-setup-db-ssl-certificates", $answers->{'db-ca-cert'});
-            $ENV{PGSSLMODE}="verify-full";
+            $ENV{PGSSLROOTCERT} = $answers->{'db-ca-cert'};
+            $ENV{PGSSLMODE} = "verify-full";
         }
 
         my $dbh;
@@ -880,8 +880,8 @@ sub postgresql_reportdb_setup {
 	postgresql_drop_reportdb($answers);
     }
 
-    system("spacewalk-setup-db-ssl-certificates", $answers->{'report-db-ca-cert'});
-    $ENV{PGSSLMODE}="verify-full";
+    $ENV{PGSSLROOTCERT} = $answers->{'report-db-ca-cert'};
+    $ENV{PGSSLMODE} = "verify-full";
 
     if ($answers->{'report-db-host'} ne '') {
             write_rhn_conf($answers, 'report-db-backend', 'report-db-host', 'report-db-port', 'report-db-name', 'report-db-user', 'report-db-password', 'report-db-ssl-enabled');

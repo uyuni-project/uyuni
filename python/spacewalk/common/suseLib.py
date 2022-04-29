@@ -133,8 +133,12 @@ class URL(object):
         if self.scheme == 'uln' and not netloc:
             path = "//" + self.path
 
+        query = self.query
+        if stripPw and query.find('=') == -1:
+            query = "<token>"
+
         return urlparse.urlunsplit((self.scheme, netloc, path,
-                                    self.query, self.fragment))
+                                    query, self.fragment))
 
 
 def _curl_debug(mtype, text):

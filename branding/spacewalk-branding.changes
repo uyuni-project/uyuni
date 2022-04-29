@@ -1,4 +1,10 @@
-- No empty space borders for inner boxes
+- Stylesheets and relevant assets are now provided by spacewalk-web
+
+-------------------------------------------------------------------
+Tue Apr 19 11:57:46 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * No empty space borders for inner boxes
 
 -------------------------------------------------------------------
 Fri Mar 11 14:46:35 CET 2022 - jgonzalez@suse.com

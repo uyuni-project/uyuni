@@ -132,36 +132,36 @@ public class SPMigrationAction extends RhnAction {
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
         // Check if this server is a minion
         boolean isMinion = minion.isPresent();
-        logger.debug("is a minion system? " + isMinion);
+        logger.debug("is a minion system? {}", isMinion);
         request.setAttribute(IS_MINION, isMinion);
 
         // Check if this is a SUSE system (for minions only)
         boolean isSUSEMinion = isMinion && minion.get().getOsFamily().equals("Suse");
-        logger.debug("is a SUSE minion? " + isSUSEMinion);
+        logger.debug("is a SUSE minion? {}", isSUSEMinion);
         request.setAttribute(IS_SUSE_MINION, isSUSEMinion);
 
         // Check if the salt package on the minion is up to date (for minions only)
         boolean isSaltUpToDate = PackageManager.
                 getServerNeededUpdatePackageByName(server.getId(), "salt") == null;
-        logger.debug("salt package is up-to-date? " + isSaltUpToDate);
+        logger.debug("salt package is up-to-date? {}", isSaltUpToDate);
         request.setAttribute(IS_SALT_UP_TO_DATE, isSaltUpToDate);
 
         // Check if this server supports distribution upgrades via capabilities
         // (for traditional clients only)
         boolean supported = isSUSEMinion || DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser());
-        logger.debug("Upgrade supported for '" + server.getName() + "'? " + supported);
+        logger.debug("Upgrade supported for '{}'? {}", server.getName(), supported);
         request.setAttribute(UPGRADE_SUPPORTED, supported);
 
         // Check if zypp-plugin-spacewalk is installed (for traditional clients only)
         boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
                 "zypp-plugin-spacewalk", server) != null;
-        logger.debug("zypp plugin installed? " + zyppPluginInstalled);
+        logger.debug("zypp plugin installed? {}", zyppPluginInstalled);
         request.setAttribute(ZYPP_INSTALLED, zyppPluginInstalled);
 
         // Check if the newest update stack is installed (for traditional clients only)
         boolean updateStackUpdateNeeded = ErrataManager.updateStackUpdateNeeded(
                 ctx.getCurrentUser(), server);
-        logger.debug("update stack update needed? " + updateStackUpdateNeeded);
+        logger.debug("update stack update needed? {}", updateStackUpdateNeeded);
         request.setAttribute(UPDATESTACK_UPDATE_NEEDED, updateStackUpdateNeeded);
 
 
@@ -228,8 +228,8 @@ public class SPMigrationAction extends RhnAction {
             installedProducts.ifPresent(pset -> {
                 logger.debug(pset.toString());
                 if (pset.getBaseProduct() == null) {
-                    logger.error("Server: " + server.getId() + " has no base product installed. " +
-                            "Check your servers installed products.");
+                    logger.error("Server: {} has no base product installed. Check your servers installed products.",
+                            server.getId());
                 }
             });
             List<SUSEProductSet> migrationTargets = getMigrationTargets(
@@ -269,6 +269,7 @@ public class SPMigrationAction extends RhnAction {
                 }
             }
             request.setAttribute(TARGET_PRODUCTS, targetProducts);
+            setMissingSuccessorsInfo(request, installedProducts, List.of(targetProducts));
 
             // Get the base channel
             Channel suseBaseChannel = DistUpgradeManager.getProductBaseChannel(
@@ -301,7 +302,7 @@ public class SPMigrationAction extends RhnAction {
         else if (forward.getName().equals(CONFIRM)) {
             // Put product data
             SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
-
+            setMissingSuccessorsInfo(request,  server.getInstalledProductSet(), List.of(targetProductSet));
             request.setAttribute(TARGET_PRODUCTS, targetProductSet);
             request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
             request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
@@ -345,6 +346,21 @@ public class SPMigrationAction extends RhnAction {
         }
 
         return forward;
+    }
+
+    /**
+     * Identify the extensions which don't have successors and set that information in the request.
+     * OUT: MISSING_SUCESSOR_EXTENSIONS
+     * @param request
+     * @param sourceProducts installed or selected products
+     * @param targetProducts target products
+     */
+    private void setMissingSuccessorsInfo(HttpServletRequest request, Optional<SUSEProductSet> sourceProducts,
+                                          List<SUSEProductSet> targetProducts) {
+        Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<String>());
+        DistUpgradeManager.removeIncompatibleTargets(sourceProducts,
+                targetProducts, missingSuccessorExtensions);
+        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS, missingSuccessorExtensions.orElse(new HashSet<String>()));
     }
 
     /**
@@ -480,13 +496,8 @@ public class SPMigrationAction extends RhnAction {
                                                      User user) {
         List<SUSEProductSet> allMigrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, channelArch, user);
-
-        Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<>());
-        List<SUSEProductSet> migrationTargets = DistUpgradeManager.removeIncompatibleTargets(installedProducts,
-                allMigrationTargets, missingSuccessorExtensions);
-        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS,
-                missingSuccessorExtensions.orElse(new HashSet<>()));
-        return migrationTargets;
+        setMissingSuccessorsInfo(request, installedProducts, allMigrationTargets);
+        return allMigrationTargets;
     }
 
     /**
@@ -511,7 +522,7 @@ public class SPMigrationAction extends RhnAction {
                 .collect(Collectors.toSet());
 
         if (baseChannelSet.size() != 1) {
-            logger.debug((baseChannelSet.isEmpty() ? "No " : "Multiple ") + "matching base channels found");
+            logger.debug("{}matching base channels found", baseChannelSet.isEmpty() ? "No " : "Multiple ");
             return TARGET;
         }
 
@@ -537,7 +548,7 @@ public class SPMigrationAction extends RhnAction {
             return TARGET;
         }
         else if (targetProductSet.size() > 1) {
-            logger.warn("Multiple migration targets found: " + targetProductSet.toString());
+            logger.warn("Multiple migration targets found: {}", targetProductSet.toString());
         }
         else {
             request.setAttribute(ADDON_PRODUCTS, targetProductSet.get(0).getAddonProducts());

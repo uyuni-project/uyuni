@@ -86,4 +86,10 @@
     </query>
 </mode>
 
+<callable-mode name="analyze_reportdb">
+    <query>
+    ANALYZE
+    </query>
+</callable-mode>
+
 </datasource_modes>

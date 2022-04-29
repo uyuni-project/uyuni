@@ -198,7 +198,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
             // get new base channel from the key-value map from the form
             Long newBaseChannelId = changedChannels.get(oldBaseChannelId);
-            log.debug("newBaseChannelId = " + newBaseChannelId);
+            log.debug("newBaseChannelId = {}", newBaseChannelId);
 
             // First add an entry for the default base channel:
             // "Default system base channel" option was selected
@@ -250,8 +250,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                         // Default base channel FOUND
                         if (defaultDcm != null) {
                             newBase = defaultDcm.getChannel();
-                            log.debug("Determined default base channel will be: " +
-                                    newBase.getLabel());
+                            log.debug("Determined default base channel will be: {}", newBase.getLabel());
                                 break;
                         }
                     }
@@ -304,7 +303,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
             // an old base channel was present
             if (oldBase != null) {
-                log.debug(oldBase.getName() + " -> " + newBase.getName());
+                log.debug("{} -> {}", oldBase.getName(), newBase.getName());
                 Map<Channel, Channel> preservations = ChannelManager.findCompatibleChildren(
                         oldBase, newBase, user);
 
@@ -313,8 +312,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     List<Map<String, Object>> serversAffected =
                             SystemManager.
                         getSsmSystemsSubscribedToChannel(user, c.getId());
-                    log.debug("found " + serversAffected.size() +
-                            " servers in set with channel: " + c.getId());
+                    log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
                     if (serversAffected.size() > 0) {
                         matched.add(new ChildChannelPreservationDto(c.getId(), c.getName(),
                                 match.getId(), match.getName(), serversAffected));
@@ -325,8 +323,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     if (!preservations.containsKey(c)) {
                         List<Map<String, Object>> serversAffected =
                             SystemManager.getSsmSystemsSubscribedToChannel(user, c.getId());
-                        log.debug("found " + serversAffected.size() +
-                                " servers in set with channel: " + c.getId());
+                        log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
                         if (serversAffected.size() > 0) {
                             unmatched.add(new ChildChannelPreservationDto(c.getId(),
                                     c.getName(), c.getParentChannel().getId(),
@@ -340,14 +337,12 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         if (log.isDebugEnabled()) {
             log.debug("Matches:");
             for (ChildChannelPreservationDto dto : matched) {
-                log.debug("   " + dto.getOldChannelName() + " " +
-                        dto.getOtherChannelName() + " " + dto.getSystemsAffected());
+                log.debug("   {} {} {}", dto.getOldChannelName(), dto.getOtherChannelName(), dto.getSystemsAffected());
             }
 
             log.debug("Unmatches:");
             for (ChildChannelPreservationDto dto : unmatched) {
-                log.debug("   " + dto.getOldChannelName() + " " +
-                        dto.getOtherChannelName() + " " + dto.getSystemsAffected());
+                log.debug("   {} {} {}", dto.getOldChannelName(), dto.getOtherChannelName(), dto.getSystemsAffected());
             }
         }
 
@@ -405,12 +400,12 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         String barSeparatedChannelIds = request.getParameter(BASE_CHANNEL_IDS);
         String barSeparatedNewChannelIds = request.getParameter(NEW_BASE_CHANNEL_IDS);
-        log.debug("base channel ids = " + barSeparatedChannelIds);
-        log.debug("new base channel ids = " + barSeparatedNewChannelIds);
+        log.debug("base channel ids = {}", barSeparatedChannelIds);
+        log.debug("new base channel ids = {}", barSeparatedNewChannelIds);
         String [] oldChannelIds = barSeparatedChannelIds.split("\\|");
         String [] newChannelIds = barSeparatedNewChannelIds.split("\\|");
-        log.debug("ids size = " + oldChannelIds.length);
-        log.debug("new ids size = " + newChannelIds.length);
+        log.debug("ids size = {}", oldChannelIds.length);
+        log.debug("new ids size = {}", newChannelIds.length);
         assert oldChannelIds.length == newChannelIds.length;
 
         // Map<Channel-Id, List<Server-Id>> - cid == -1 => system-best-guess-default
@@ -468,11 +463,11 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
             List<EssentialChannelDto> compatibles = ChannelManager
                     .listCompatibleBaseChannelsForChannel(user, c);
-            log.debug("Sorting channels: " + compatibles.size());
+            log.debug("Sorting channels: {}", compatibles.size());
             List<EssentialChannelDto> rhn = new ArrayList<>();
             List<EssentialChannelDto> custom = new ArrayList<>();
             for (EssentialChannelDto ecd : compatibles) {
-                log.debug("   " + ecd.getName());
+                log.debug("   {}", ecd.getName());
                 if (ecd.isCustom()) {
                     custom.add(ecd);
                 }

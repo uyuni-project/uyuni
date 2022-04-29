@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-09 09:35+0000\n"
+"POT-Creation-Date: 2022-04-24 14:18+0000\n"
 "PO-Revision-Date: 2022-01-11 14:51+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -896,7 +896,7 @@ msgstr ""
 #: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
-#: ../html/src/manager/proxy/container-config.tsx:244
+#: ../html/src/manager/proxy/container-config.tsx:248
 #: ../html/src/manager/state/recurring-states-list.tsx:51
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
@@ -2476,21 +2476,21 @@ msgstr ""
 msgid "New base channel"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:172
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:177
 msgid "New Base Channel"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:175
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:180
 msgid "Choose the channel to be elected as the new base channel"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:191
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:589
 msgid "Child Channels"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:213
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:218
 msgid "Clear Search"
 msgstr ""
 
@@ -2770,7 +2770,7 @@ msgstr ""
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:368
+#: ../html/src/manager/proxy/container-config.tsx:378
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:196
 msgid "Clear fields"
@@ -3863,7 +3863,7 @@ msgid "Package States"
 msgstr ""
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:303
+#: ../html/src/manager/proxy/container-config.tsx:310
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
@@ -4046,90 +4046,114 @@ msgstr ""
 msgid "Proxy FQDN"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:193
+#: ../html/src/manager/proxy/container-config.tsx:192
+msgid "The FQDN of the machine where the containers are hosted"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:194
 msgid "e.g., proxy.domain.com"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:199
-msgid "Server FQDN"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:201
-msgid "e.g., server.domain.com"
+#: ../html/src/manager/proxy/container-config.tsx:200
+msgid "Parent FQDN"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:202
-msgid "FQDN of the server of proxy to connect to."
+msgid "e.g., server.domain.com"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:208
-msgid "Proxy SSH port"
+#: ../html/src/manager/proxy/container-config.tsx:203
+msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:209
+msgid "Proxy SSH port"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:210
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
 msgid "Port range: 1 - 65535"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:218
-msgid "Max Squid cache size (MB)"
+#: ../html/src/manager/proxy/container-config.tsx:219
+msgid "Max Squid cache size"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:221
+#: ../html/src/manager/proxy/container-config.tsx:220
+msgid "The maximum value of the Squid cache in Megabytes"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:223
 msgid "e.g., 2048"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:228
-msgid "Proxy administrator email"
+#: ../html/src/manager/proxy/container-config.tsx:230
+msgid "Proxy admin email"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:229
+#: ../html/src/manager/proxy/container-config.tsx:231
+msgid "The container-based proxy administrator email address"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., proxy.admin@mycompany.com"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:236
-#: ../html/src/manager/proxy/container-config.tsx:237
+#: ../html/src/manager/proxy/container-config.tsx:239
+#: ../html/src/manager/proxy/container-config.tsx:240
 msgid "SSL certificate"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:245
+#: ../html/src/manager/proxy/container-config.tsx:249
 msgid "Use existing"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:252
-msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#: ../html/src/manager/proxy/container-config.tsx:256
+msgid "CA certificate"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:260
-msgid "CA private key to use to sign the SSL certificate in PEM format"
+#: ../html/src/manager/proxy/container-config.tsx:257
+#: ../html/src/manager/proxy/container-config.tsx:266
+#: ../html/src/manager/proxy/container-config.tsx:323
+msgid "To sign the SSL certificate in PEM format"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:268
+#: ../html/src/manager/proxy/container-config.tsx:265
+#, fuzzy
+msgid "CA private key"
+msgstr "Neues Passwort generieren"
+
+#: ../html/src/manager/proxy/container-config.tsx:274
+#, fuzzy
+msgid "CA password"
+msgstr "Passwort"
+
+#: ../html/src/manager/proxy/container-config.tsx:275
 #, fuzzy
 msgid "The CA private key password"
 msgstr "Neues Passwort generieren"
 
-#: ../html/src/manager/proxy/container-config.tsx:276
+#: ../html/src/manager/proxy/container-config.tsx:283
 msgid "SSL Certificate data"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:283
+#: ../html/src/manager/proxy/container-config.tsx:290
 msgid "Alternate CNAMEs"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:291
+#: ../html/src/manager/proxy/container-config.tsx:298
 msgid "CNAME"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:297
+#: ../html/src/manager/proxy/container-config.tsx:304
 msgid "2-letter country code"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:304
+#: ../html/src/manager/proxy/container-config.tsx:311
 msgid "City"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:305
+#: ../html/src/manager/proxy/container-config.tsx:312
 #: ../html/src/manager/state/highstate-summary.tsx:170
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
@@ -4137,36 +4161,41 @@ msgstr ""
 msgid "Organization"
 msgstr "Organisation"
 
-#: ../html/src/manager/proxy/container-config.tsx:306
+#: ../html/src/manager/proxy/container-config.tsx:313
 #, fuzzy
 msgid "Organization Unit"
 msgstr "Organisation"
 
-#: ../html/src/manager/proxy/container-config.tsx:307
+#: ../html/src/manager/proxy/container-config.tsx:314
 msgid "Email"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:315
-msgid "The root CA used to sign the SSL certificate in PEM format"
+#: ../html/src/manager/proxy/container-config.tsx:322
+msgid "The root CA"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:324
+#: ../html/src/manager/proxy/container-config.tsx:332
 msgid "Intermediate CAs"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:334
+#: ../html/src/manager/proxy/container-config.tsx:342
 msgid "CA file in PEM format"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:345
-msgid "Proxy CRT content in PEM format"
-msgstr ""
-
 #: ../html/src/manager/proxy/container-config.tsx:353
-msgid "Proxy SSL private key in PEM format"
+msgid "Proxy certificate"
 msgstr ""
 
+#: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
+msgid "In PEM format"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:362
+msgid "Proxy SSL private key"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:373
 #, fuzzy
 msgid "Generate"
 msgstr "Allgemein"

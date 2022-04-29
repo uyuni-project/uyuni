@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 11 19:12:37 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
+
+- Add HTTPS validation using provided CA cert
+  Fix HSTS enablement issues
+
+-------------------------------------------------------------------
 Mon Apr 11 08:51:29 UTC 2022 - Dario Leidi <dleidi@suse.com>
 
 - Align the image version to the product one

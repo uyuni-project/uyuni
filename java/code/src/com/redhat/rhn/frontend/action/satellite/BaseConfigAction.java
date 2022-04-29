@@ -49,7 +49,7 @@ public abstract class BaseConfigAction extends RhnAction {
      */
     protected SatelliteConfigurator getCommand(User currentUser) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getCommand(User currentUser=" + currentUser + ") - start");
+            logger.debug("getCommand(User currentUser={}) - start", currentUser);
         }
 
         String className = getCommandClassName();
@@ -65,7 +65,7 @@ public abstract class BaseConfigAction extends RhnAction {
                 ReflectUtils.newInstance(c, paramTypes, args);
 
             if (logger.isDebugEnabled()) {
-                logger.debug("getCommand(User) - end - return value=" + sc);
+                logger.debug("getCommand(User) - end - return value={}", sc);
             }
             return sc;
         }

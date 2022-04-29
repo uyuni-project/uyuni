@@ -146,7 +146,7 @@ public class PoolDefinition {
             def.setSource(PoolSource.parse(poolElement.getChild("source")));
         }
         catch (Exception e) {
-            LOG.error("failed to parse libvirt pool XML definition: " + e.getMessage());
+            LOG.error("failed to parse libvirt pool XML definition: {}", e.getMessage());
             def = null;
         }
 

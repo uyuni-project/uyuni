@@ -29,10 +29,10 @@ import com.suse.manager.api.SerializedApiResponse;
  *  #struct_begin("virtual system")
  *      #prop("int", "id")
  *      #prop("string", "name")
- *      #prop_desc("string", "guest_name", "The virtual guest name as provided
+ *      #prop_desc("string", "guest_name", "the virtual guest name as provided
  *                  by the virtual host")
- *      #prop_desc("dateTime.iso8601", "last_checkin", "Last time server successfully
- *                   checked in.")
+ *      #prop_desc("$date", "last_checkin", "last time the server successfully
+ *                   checked in")
  *      #prop("string", "uuid")
  *   #struct_end()
  *

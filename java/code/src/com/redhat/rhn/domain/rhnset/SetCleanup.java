@@ -126,8 +126,7 @@ public class SetCleanup {
 
         protected int cleanup(RhnSet set) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Noop cleanup for set " + set.getLabel() +
-                    " and user " + set.getUserId(), new Throwable());
+                LOG.debug("Noop cleanup for set {} and user {}", set.getLabel(), set.getUserId(), new Throwable());
             }
             // this is a noop
             return 0;

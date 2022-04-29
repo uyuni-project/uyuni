@@ -183,7 +183,7 @@ public abstract class ApiDoclet implements Doclet {
 
             handler.setClassName(clas.getSimpleName().toString());
 
-            log("Processing handler: " + clas.getSimpleName().toString());
+            log("Processing handler: " + clas.getSimpleName());
 
             new HandlerDoctreeScanner().scan(docTree.getBlockTags(), handler);
 
@@ -206,7 +206,7 @@ public abstract class ApiDoclet implements Doclet {
                     .map(element -> new SimpleElementVisitor9<ApiCall, Void>() {
                             @Override
                             public ApiCall visitExecutable(ExecutableElement executable, Void p) {
-                                log("Visiting executable: " + executable.getSimpleName().toString());
+                                log("Visiting executable: " + executable.getSimpleName());
                                 ApiCall call = new ApiCall(executable);
                                 call.setName(executable.getSimpleName().toString());
 

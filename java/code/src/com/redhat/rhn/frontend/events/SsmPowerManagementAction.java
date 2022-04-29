@@ -61,8 +61,7 @@ public class SsmPowerManagementAction implements MessageAction {
 
         try {
             for (Long sid : sids) {
-                log.debug("Running operation " + operation.toString() + " on server " +
-                        sid);
+                log.debug("Running operation {} on server {}", operation.toString(), sid);
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
 
                 ValidatorError error = null;
@@ -81,7 +80,7 @@ public class SsmPowerManagementAction implements MessageAction {
             }
         }
         catch (Exception e) {
-            log.error("Error in power management operations " + event, e);
+            log.error("Error in power management operations {}", event, e);
         }
         finally {
             SsmOperationManager.completeOperation(user, operationId);

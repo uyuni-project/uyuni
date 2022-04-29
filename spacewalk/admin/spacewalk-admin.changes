@@ -1,5 +1,9 @@
-- spacewalk-startup-helper check status of reportdb creation 
-- hide test result from terminal output
+-------------------------------------------------------------------
+Tue Apr 19 11:56:46 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * spacewalk-startup-helper check status of reportdb creation 
+  * hide test result from terminal output
 
 -------------------------------------------------------------------
 Fri Mar 11 14:46:16 CET 2022 - jgonzalez@suse.com

@@ -203,7 +203,7 @@ public class TaskoRun {
                 return tail;
             }
             catch (IOException e) {
-                log.error("Can't tail " + fileName + ": " + e.toString());
+                log.error("Can't tail {}: {}", fileName, e.toString());
                 // return "";
             }
         }
@@ -263,7 +263,7 @@ public class TaskoRun {
             out.close();
         }
         catch (IOException e) {
-            log.error("Unable to store log file to " + fileName);
+            log.error("Unable to store log file to {}", fileName);
         }
     }
 

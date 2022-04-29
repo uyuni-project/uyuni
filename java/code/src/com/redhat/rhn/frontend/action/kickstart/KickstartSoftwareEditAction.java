@@ -151,13 +151,13 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         List<LabelValueBean> channels = new LinkedList<>();
         Collection<Channel> channelList = cmd.getAvailableChannels();
         for (Channel c : channelList) {
-            log.debug("channel : " + c);
+            log.debug("channel : {}", c);
             LabelValueBean lb = lv(c.getName(), c.getId().toString());
             if (!channels.contains(lb)) {
                 channels.add(lb);
             }
         }
-        log.debug("setting channel attrib: " + channels);
+        log.debug("setting channel attrib: {}", channels);
         ctx.getRequest().setAttribute(CHANNELS, channels);
 
         if (form.get(CHANNEL) == null) {
@@ -175,7 +175,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
 
     private void setupChildChannels(RequestContext ctx, Long channelId,
             KickstartEditCommand cmd) {
-        log.debug("ChannelId: " + channelId);
+        log.debug("ChannelId: {}", channelId);
         // Get all available child channels for this user
         List<Channel> childchannels = ChannelManager
                 .userAccessibleChildChannels(
@@ -187,7 +187,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
             // Remove the Proxy channels from the child channel list
             childchannels.removeIf(Channel::isProxy);
         }
-        log.debug("AVAIL_CHILD_CHANNELS: " + childchannels);
+        log.debug("AVAIL_CHILD_CHANNELS: {}", childchannels);
         ctx.getRequest().setAttribute(AVAIL_CHILD_CHANNELS, childchannels);
 
         // Setup the list of selected child channels
@@ -200,7 +200,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         }
 
         ctx.getRequest().setAttribute("stored_child_channels", selectedChannels);
-        log.debug("scc: " + selectedChannels);
+        log.debug("scc: {}", selectedChannels);
 
     }
     /**

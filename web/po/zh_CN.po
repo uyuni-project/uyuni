@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-09 09:35+0000\n"
-"PO-Revision-Date: 2022-03-23 09:12+0000\n"
+"POT-Creation-Date: 2022-04-24 14:18+0000\n"
+"PO-Revision-Date: 2022-04-15 11:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -899,7 +899,7 @@ msgstr "添加 Pay-as-you-go SSH 数据"
 #: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
-#: ../html/src/manager/proxy/container-config.tsx:244
+#: ../html/src/manager/proxy/container-config.tsx:248
 #: ../html/src/manager/state/recurring-states-list.tsx:51
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
@@ -2351,9 +2351,8 @@ msgid "Cloning channels"
 msgstr "克隆频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
-#, fuzzy
 msgid "Waiting for repositories data to be generated"
-msgstr "生成储存库数据"
+msgstr "正在等待生成储存库数据"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
 #: ../html/src/manager/images/image-view.tsx:505
@@ -2486,21 +2485,21 @@ msgstr "版本历史记录"
 msgid "New base channel"
 msgstr "新基础频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:172
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:177
 msgid "New Base Channel"
 msgstr "新建基础频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:175
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:180
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "选择要用作新基础频道的频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:191
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:589
 msgid "Child Channels"
 msgstr "子频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:213
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:218
 msgid "Clear Search"
 msgstr "清除搜索"
 
@@ -2779,7 +2778,7 @@ msgstr "导入"
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:368
+#: ../html/src/manager/proxy/container-config.tsx:378
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:196
 msgid "Clear fields"
@@ -2959,14 +2958,12 @@ msgstr "您确定要删除选定的存储区吗？（已选择 {0} 个存储区�
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:791
-#, fuzzy
 msgid "Build Log"
-msgstr "构建主机"
+msgstr "构建日志"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:10
-#, fuzzy
 msgid "Build log is not available."
-msgstr "无可用子频道。"
+msgstr "无可用构建日志。"
 
 #: ../html/src/manager/images/image-view-overview.tsx:38
 #: ../html/src/manager/images/image-view-overview.tsx:39
@@ -3279,7 +3276,7 @@ msgstr "运行时"
 
 #: ../html/src/manager/images/image-view.tsx:623
 msgid "Show obsolete"
-msgstr ""
+msgstr "显示过时项"
 
 #: ../html/src/manager/images/image-view.tsx:645
 msgid "Revision"
@@ -3287,7 +3284,7 @@ msgstr "修订版"
 
 #: ../html/src/manager/images/image-view.tsx:647
 msgid "(obsolete)"
-msgstr ""
+msgstr "（过时）"
 
 #: ../html/src/manager/images/image-view.tsx:649
 #: ../html/src/manager/systems/virtual-list.tsx:90
@@ -3598,11 +3595,11 @@ msgstr "日历"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "Below is a list of Maintenance Schedules available to the current user."
-msgstr ""
+msgstr "以下是当前用户可使用的维护日程安排列表。"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
 msgid "Below is a list of Maintenance Calendars available to the current user."
-msgstr ""
+msgstr "以下是当前用户可使用的维护日历列表。"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
@@ -3875,7 +3872,7 @@ msgid "Package States"
 msgstr "软件包状态"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:303
+#: ../html/src/manager/proxy/container-config.tsx:310
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
@@ -4031,22 +4028,21 @@ msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
-msgstr ""
+msgstr "已正确生成基于容器的代理配置。"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
 msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
+msgstr "正在生成代理配置：正在等待响应..."
 
 #: ../html/src/manager/proxy/container-config.tsx:134
-#, fuzzy
 msgid "Request interrupted or invalid response received from the server."
-msgstr "请求已中断，或者从服务器收到了无效响应。请重试。"
+msgstr "请求已中断，或者从服务器收到了无效响应。"
 
 #: ../html/src/manager/proxy/container-config.tsx:171
 #: ../html/src/manager/proxy/container-config.tsx:187
 msgid "Container Based Proxy Configuration"
-msgstr ""
+msgstr "基于容器的代理配置"
 
 #: ../html/src/manager/proxy/container-config.tsx:177
 msgid ""
@@ -4054,101 +4050,127 @@ msgid ""
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .zip archive to download."
 msgstr ""
+"您可以生成一组配置文件和证书以注册并运行基于容器的代理。填写并提交下面的表单"
+"后，系统将提供一个 .zip 存档供您下载。"
 
 #: ../html/src/manager/proxy/container-config.tsx:191
-#, fuzzy
 msgid "Proxy FQDN"
-msgstr "代理"
+msgstr "代理 FQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:193
-#, fuzzy
-msgid "e.g., proxy.domain.com"
-msgstr "例如 host.domain.com"
-
-#: ../html/src/manager/proxy/container-config.tsx:199
-msgid "Server FQDN"
+#: ../html/src/manager/proxy/container-config.tsx:192
+msgid "The FQDN of the machine where the containers are hosted"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:201
+#: ../html/src/manager/proxy/container-config.tsx:194
+msgid "e.g., proxy.domain.com"
+msgstr "例如 proxy.domain.com"
+
+#: ../html/src/manager/proxy/container-config.tsx:200
 #, fuzzy
-msgid "e.g., server.domain.com"
-msgstr "例如 host.domain.com"
+msgid "Parent FQDN"
+msgstr "代理 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
-msgid "FQDN of the server of proxy to connect to."
-msgstr ""
+msgid "e.g., server.domain.com"
+msgstr "例如 server.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:208
+#: ../html/src/manager/proxy/container-config.tsx:203
 #, fuzzy
-msgid "Proxy SSH port"
-msgstr "SSH 端口"
+msgid "The FQDN of the parent (server or proxy) to connect to."
+msgstr "代理要连接到的服务器的 FQDN。"
 
 #: ../html/src/manager/proxy/container-config.tsx:209
+msgid "Proxy SSH port"
+msgstr "代理 SSH 端口"
+
+#: ../html/src/manager/proxy/container-config.tsx:210
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
 msgid "Port range: 1 - 65535"
 msgstr "端口范围：1 - 65535"
 
-#: ../html/src/manager/proxy/container-config.tsx:218
-msgid "Max Squid cache size (MB)"
+#: ../html/src/manager/proxy/container-config.tsx:219
+#, fuzzy
+msgid "Max Squid cache size"
+msgstr "最大 Squid 缓存大小 (MB)"
+
+#: ../html/src/manager/proxy/container-config.tsx:220
+msgid "The maximum value of the Squid cache in Megabytes"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:221
-#, fuzzy
+#: ../html/src/manager/proxy/container-config.tsx:223
 msgid "e.g., 2048"
-msgstr "例如 SLE12"
+msgstr "例如 2048"
 
-#: ../html/src/manager/proxy/container-config.tsx:228
-msgid "Proxy administrator email"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:229
+#: ../html/src/manager/proxy/container-config.tsx:230
 #, fuzzy
+msgid "Proxy admin email"
+msgstr "代理管理员电子邮件"
+
+#: ../html/src/manager/proxy/container-config.tsx:231
+#, fuzzy
+msgid "The container-based proxy administrator email address"
+msgstr "已正确生成基于容器的代理配置。"
+
+#: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., proxy.admin@mycompany.com"
-msgstr "例如 host.domain.com"
+msgstr "例如 proxy.admin@mycompany.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:236
-#: ../html/src/manager/proxy/container-config.tsx:237
+#: ../html/src/manager/proxy/container-config.tsx:239
+#: ../html/src/manager/proxy/container-config.tsx:240
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL 证书"
 
-#: ../html/src/manager/proxy/container-config.tsx:245
+#: ../html/src/manager/proxy/container-config.tsx:249
 msgid "Use existing"
-msgstr ""
+msgstr "使用现有的"
 
-#: ../html/src/manager/proxy/container-config.tsx:252
-msgid "CA certificate to use to sign the SSL certificate in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:260
-msgid "CA private key to use to sign the SSL certificate in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:268
+#: ../html/src/manager/proxy/container-config.tsx:256
 #, fuzzy
-msgid "The CA private key password"
-msgstr "生成新口令"
+msgid "CA certificate"
+msgstr "SSL 证书"
 
-#: ../html/src/manager/proxy/container-config.tsx:276
-msgid "SSL Certificate data"
-msgstr ""
+#: ../html/src/manager/proxy/container-config.tsx:257
+#: ../html/src/manager/proxy/container-config.tsx:266
+#: ../html/src/manager/proxy/container-config.tsx:323
+#, fuzzy
+msgid "To sign the SSL certificate in PEM format"
+msgstr "用于为 PEM 格式的 SSL 证书签名的根 CA"
+
+#: ../html/src/manager/proxy/container-config.tsx:265
+#, fuzzy
+msgid "CA private key"
+msgstr "SSH 私用密钥"
+
+#: ../html/src/manager/proxy/container-config.tsx:274
+#, fuzzy
+msgid "CA password"
+msgstr "口令"
+
+#: ../html/src/manager/proxy/container-config.tsx:275
+msgid "The CA private key password"
+msgstr "CA 私用密钥口令"
 
 #: ../html/src/manager/proxy/container-config.tsx:283
+msgid "SSL Certificate data"
+msgstr "SSL 证书数据"
+
+#: ../html/src/manager/proxy/container-config.tsx:290
 msgid "Alternate CNAMEs"
-msgstr ""
+msgstr "备用 CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:291
+#: ../html/src/manager/proxy/container-config.tsx:298
 msgid "CNAME"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:297
-msgid "2-letter country code"
-msgstr ""
+msgstr "CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:304
-msgid "City"
-msgstr ""
+msgid "2-letter country code"
+msgstr "2 位字母国家/地区代码"
 
-#: ../html/src/manager/proxy/container-config.tsx:305
+#: ../html/src/manager/proxy/container-config.tsx:311
+msgid "City"
+msgstr "城市"
+
+#: ../html/src/manager/proxy/container-config.tsx:312
 #: ../html/src/manager/state/highstate-summary.tsx:170
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
@@ -4156,40 +4178,45 @@ msgstr ""
 msgid "Organization"
 msgstr "组织"
 
-#: ../html/src/manager/proxy/container-config.tsx:306
-#, fuzzy
+#: ../html/src/manager/proxy/container-config.tsx:313
 msgid "Organization Unit"
-msgstr "组织"
+msgstr "组织单位"
 
-#: ../html/src/manager/proxy/container-config.tsx:307
+#: ../html/src/manager/proxy/container-config.tsx:314
 msgid "Email"
+msgstr "电子邮件"
+
+#: ../html/src/manager/proxy/container-config.tsx:322
+msgid "The root CA"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:315
-msgid "The root CA used to sign the SSL certificate in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:324
-#, fuzzy
+#: ../html/src/manager/proxy/container-config.tsx:332
 msgid "Intermediate CAs"
-msgstr "接口"
+msgstr "中间 CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:334
+#: ../html/src/manager/proxy/container-config.tsx:342
 msgid "CA file in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:345
-msgid "Proxy CRT content in PEM format"
-msgstr ""
+msgstr "PEM 格式的 CA 文件"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
-msgid "Proxy SSL private key in PEM format"
-msgstr ""
+#, fuzzy
+msgid "Proxy certificate"
+msgstr "SSL 证书"
 
+#: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
 #, fuzzy
+msgid "In PEM format"
+msgstr "PEM 格式的 CA 文件"
+
+#: ../html/src/manager/proxy/container-config.tsx:362
+#, fuzzy
+msgid "Proxy SSL private key"
+msgstr "PEM 格式的代理 SSL 私用密钥"
+
+#: ../html/src/manager/proxy/container-config.tsx:373
 msgid "Generate"
-msgstr "常规"
+msgstr "生成"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4493,13 +4520,13 @@ msgstr "重复性状态"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:65
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "已创建以下重复操作。"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
-msgstr ""
+msgstr "要创建新的重复操作，请转到您要为其创建操作的系统、组或组织。"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4699,48 +4726,45 @@ msgid "An error occurred during cleanup"
 msgstr "清理期间出错"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:30
-#, fuzzy
 msgid "Not a system id"
-msgstr "未找到目标系统"
+msgstr "不是系统 ID"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:31
-#, fuzzy
 msgid "Unknown System"
-msgstr "未知 Guest"
+msgstr "未知系统"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:32
 msgid "System is not a peripheral server"
-msgstr ""
+msgstr "系统不是外设服务器"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:50
 msgid "New password generated and action for peripheral server scheduled"
-msgstr ""
+msgstr "已生成新口令并为外设服务器安排了操作"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
 msgid "Peripheral Server"
-msgstr ""
+msgstr "外设服务器"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
-msgstr ""
+msgstr "报告数据库名称"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:95
 msgid "Report Database Host"
-msgstr ""
+msgstr "报告数据库主机"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:101
 msgid "Report Database User"
-msgstr ""
+msgstr "报告数据库用户"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:105
 msgid "Report Database Last Synced"
-msgstr ""
+msgstr "报告数据库上次同步"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
-#, fuzzy
 msgid "Regenerate Reporting Database Password"
-msgstr "生成新口令"
+msgstr "重新生成报告数据库口令"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
@@ -6066,6 +6090,18 @@ msgstr "未定义"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "Server FQDN"
+#~ msgstr "服务器 FQDN"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr "用于为 PEM 格式的 SSL 证书签名的 CA 证书"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr "用于为 PEM 格式的 SSL 证书签名的 CA 私用密钥"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "PEM 格式的代理 CRT 内容"
 
 #~ msgid "Delete project"
 #~ msgstr "删除项目"

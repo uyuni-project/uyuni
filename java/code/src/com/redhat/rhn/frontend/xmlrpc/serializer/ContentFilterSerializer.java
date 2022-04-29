@@ -28,16 +28,16 @@ import java.util.HashMap;
  * Serializer for {@link ContentFilter}
  *
  * @xmlrpc.doc
- * #struct_begin("Content Filter information")
+ * #struct_begin("content filter information")
  *   #prop("int", "id")
  *   #prop("string", "name")
  *   #prop("int", "orgId")
- *   #prop("entityType", "Entity type (e.g. 'package')")
- *   #prop("rule", "Rule (e.g. 'deny')")
+ *   #prop("entityType", "entity type (e.g. 'package')")
+ *   #prop("rule", "rule (e.g. 'deny')")
  *   #struct_begin("criteria")
- *       #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
- *       #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
- *       #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
+ *       #prop_desc("string", "matcher", "the matcher type of the filter (e.g. 'contains')")
+ *       #prop_desc("string", "field", "the entity field to match (e.g. 'name'")
+ *       #prop_desc("string", "value", "the field value to match (e.g. 'kernel')")
  *   #struct_end()
  * #struct_end()
  */

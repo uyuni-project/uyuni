@@ -1,11 +1,19 @@
-- Added Channel information
-- Added System packages information
-- Added OpenScap scans information
-- Added Groups information
-- Added System packages information
-- Added proxy information to the system table
-- Changed table SystemGroup to better reflect its content
-- Added location information to the system table
+- unit test for reportdb doc
+- Remove fields info from channel package table
+- add order index for SystemPackageInstalled
+
+-------------------------------------------------------------------
+Tue Apr 19 12:15:24 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Added Channel information
+  * Added System packages information
+  * Added OpenScap scans information
+  * Added Groups information
+  * Added System packages information
+  * Added proxy information to the system table
+  * Changed table SystemGroup to better reflect its content
+  * Added location information to the system table
 
 -------------------------------------------------------------------
 Fri Mar 11 15:43:15 CET 2022 - jgonzalez@suse.com

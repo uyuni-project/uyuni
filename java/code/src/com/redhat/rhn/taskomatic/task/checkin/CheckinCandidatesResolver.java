@@ -85,7 +85,7 @@ public class CheckinCandidatesResolver {
 
             if (lastCheckin < compareValue) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Contacting system for checkin: " + s.getName());
+                    LOG.debug("Contacting system for checkin: {}", s.getName());
                 }
                 candidates.add(s);
             }

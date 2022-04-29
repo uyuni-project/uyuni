@@ -724,7 +724,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         // pass in empty array
         try {
             handler.removeDefaultSystemGroups(
-                    admin, admin.getLogin(), new LinkedList<Integer>());
+                    admin, admin.getLogin(), new LinkedList<>());
             fail("empty array should be invalid");
         }
         catch (IllegalArgumentException iae) {

@@ -48,7 +48,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
      */
     public void execute(EventMessage msg) {
         if (logger.isDebugEnabled()) {
-            logger.debug("execute(EventMessage msg=" + msg + ") - start");
+            logger.debug("execute(EventMessage msg={}) - start", msg);
         }
 
         super.execute(msg);
@@ -103,28 +103,27 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
 
     protected String getSubject(BaseEvent evtIn) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getSubject(User userIn=" + evtIn.getUser() + ") - start");
+            logger.debug("getSubject(User userIn={}) - start", evtIn.getUser());
         }
 
         String returnString = LocalizationService.getInstance().getMessage(
                 "email.newaccount.subject", evtIn.getUserLocale());
         if (logger.isDebugEnabled()) {
-            logger.debug("getSubject(User) - end - return value=" +
-                    returnString);
+            logger.debug("getSubject(User) - end - return value={}", returnString);
         }
         return returnString;
     }
 
     protected String[] getRecipients(User userIn) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getRecipients(User userIn=" + userIn + ") - start");
+            logger.debug("getRecipients(User userIn={}) - start", userIn);
         }
 
         String[] retval = new String[1];
         retval[0] = userIn.getEmail();
 
         if (logger.isDebugEnabled()) {
-            logger.debug("getRecipients(User) - end - return value=" + retval);
+            logger.debug("getRecipients(User) - end - return value={}", (Object)retval);
         }
         return retval;
     }

@@ -119,8 +119,7 @@ public class MockConnection extends CobblerConnection {
         return find((Map)args[0], profiles);
     }
     else if (name.equals("modify_profile")) {
-        log.debug("PROFILE: Modify  w/ handle" + args[0] + ", set " + args[1] +
-                "to " + args[2]);
+        log.debug("PROFILE: Modify  w/ handle{}, set {}to {}", args[0], args[1], args[2]);
         profileMap.get(args[0]).put(args[1], args[2]);
     }
     else if ("get_profile".equals(name)) {
@@ -128,7 +127,7 @@ public class MockConnection extends CobblerConnection {
     }
     else if ("get_profile_handle".equals(name)) {
         String key = random();
-        log.debug("PROFILE:  Got handle  w/ name " + args[0]);
+        log.debug("PROFILE:  Got handle  w/ name {}", args[0]);
         profileMap.put(key, findByName((String) args[0], profiles));
         return key;
     }
@@ -147,20 +146,19 @@ public class MockConnection extends CobblerConnection {
         return distros;
     }
     else if (name.equals("modify_distro")) {
-        log.debug("DISTRO: Modify  w/ handle" + args[0] + ", set " + args[1] +
-                "to " + args[2]);
+        log.debug("DISTRO: Modify  w/ handle{}, set {}to {}", args[0], args[1], args[2]);
         modifyDistro(args[0], args[1], args[2]);
     }
     else if ("get_distro".equals(name)) {
         return findByName((String)args[0], distros);
     }
     else if ("rename_distro".equals(name)) {
-        log.debug("DISTRO: Rename w/ handle" + args[0]);
+        log.debug("DISTRO: Rename w/ handle{}", args[0]);
         distroMap.get(args[0]).put("name", args[2]);
         return "";
     }
     else if ("get_distro_handle".equals(name)) {
-        log.debug("DISTRO:  Got handle  w/ name " + args[0]);
+        log.debug("DISTRO:  Got handle  w/ name {}", args[0]);
         String key = random();
         distroMap.put(key, findByName((String) args[0], distros));
         return key;
@@ -258,7 +256,7 @@ public class MockConnection extends CobblerConnection {
         return true;
     }
     else {
-        log.debug("Unhandled xmlrpc call in MockConnection: " + name);
+        log.debug("Unhandled xmlrpc call in MockConnection: {}", name);
     }
     return "";
    }
@@ -281,7 +279,7 @@ public class MockConnection extends CobblerConnection {
         String key = random();
         profile.put("uid", uid);
 
-        log.debug("PROFILE: Created w/ uid " + uid + "returing handle " + key);
+        log.debug("PROFILE: Created w/ uid {}returing handle {}", uid, key);
 
         profiles.add(profile);
         profileMap.put(key, profile);
@@ -323,7 +321,7 @@ public class MockConnection extends CobblerConnection {
         String key = random();
         distro.put("uid", uid);
 
-        log.debug("DISTRO: Created w/ uid " + uid + "returing handle " + key);
+        log.debug("DISTRO: Created w/ uid {}returing handle {}", uid, key);
 
         distros.add(distro);
         distroMap.put(key, distro);

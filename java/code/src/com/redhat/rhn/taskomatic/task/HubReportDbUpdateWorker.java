@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.task;
 
 
 import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateDelete;
+import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateExistingTables;
 import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateInsert;
 import static com.redhat.rhn.taskomatic.task.ReportDBHelper.generateQuery;
 
@@ -42,12 +43,14 @@ import org.hibernate.Session;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class HubReportDbUpdateWorker implements QueueWorker {
 
     private static final int BATCH_SIZE = Config.get()
-            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 500);
+            .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 2000);
     private TaskQueue parentQueue;
     private final MgrServerInfo mgrServerInfo;
     private Logger log;
@@ -76,9 +79,26 @@ public class HubReportDbUpdateWorker implements QueueWorker {
         this.parentQueue = queue;
     }
 
+    private List<String> filterExistingTables(Session remoteSession, Long serverId) {
+        SelectMode query = generateExistingTables(remoteSession, TABLES);
+        DataResult<Map<String, Object>> result = query.execute();
+        Set<Map.Entry<String, Object>> tableEntry = result.get(0).entrySet();
+        tableEntry.removeIf(t -> {
+            if (t.getValue() == null) {
+                log.warn("Table '" + t.getKey() + "' does not exist in server " + serverId + ": " +
+                        "this table will not be updated");
+                return true;
+            }
+            return false;
+        });
+        List<String> existingTables = tableEntry.stream().map(t ->
+                String.valueOf(t.getValue())).collect(Collectors.toList());
+        return existingTables;
+    }
+
     private void updateRemoteData(Session remoteSession, Session localSession, String tableName, long mgmId) {
         TimeUtils.logTime(log, "Refreshing table " + tableName, () -> {
-            SelectMode query = generateQuery(remoteSession, tableName);
+            SelectMode query = generateQuery(remoteSession, tableName, log);
 
             // Remove all the existing data
             log.debug("Deleting existing data in table {}", tableName);
@@ -93,7 +113,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             if (!firstBatch.isEmpty()) {
                 // Generate the insert using the column name retrieved from the select
                 WriteMode insert = generateInsert(localSession, tableName, mgmId, firstBatch.get(0).keySet());
-                insert.executeUpdates(firstBatch);
+                insert.executeBatchUpdates(firstBatch);
                 log.debug("Extracted {} rows for table {}", firstBatch.size(), tableName);
 
                 // Iterate further if we can have additional rows
@@ -101,7 +121,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                     ReportDBHelper.<Map<String, Object>>batchStream(query, BATCH_SIZE, BATCH_SIZE)
                             .forEach(batch -> {
                                 batch.forEach(e -> e.remove("mgm_id"));
-                                insert.executeUpdates(batch);
+                                insert.executeBatchUpdates(batch);
                                 log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
                             });
                 }
@@ -115,6 +135,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
     @Override
     public void run() {
         try {
+            HubReportDbUpdateDriver.getCurrentMgrServerInfos().add(mgrServerInfo);
             parentQueue.workerStarting();
             ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
             ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
@@ -128,16 +149,17 @@ public class HubReportDbUpdateWorker implements QueueWorker {
                     );
             ReportDbHibernateFactory remoteDB = new ReportDbHibernateFactory(remoteDBCM);
             try {
-
-                TABLES.forEach(table -> {
+                List<String> existingTables = filterExistingTables(remoteDB.getSession(), mgrServerInfo.getId());
+                existingTables.forEach(table -> {
                     updateRemoteData(remoteDB.getSession(), localRh.getSession(), table, mgrServerInfo.getId());
                 });
+                ReportDBHelper.analyzeReportDb(localRh.getSession());
                 Server mgrServer = ServerFactory.lookupById(mgrServerInfo.getId());
                 mgrServer.getMgrServerInfo().setReportDbLastSynced(new Date());
                 ServerFactory.save(mgrServer);
                 HibernateFactory.commitTransaction();
                 localRcm.commitTransaction();
-                log.info("Reporting db updated for server " + mgrServerInfo.getServer().getId() + " successfully.");
+                log.info("Reporting db updated for server {} successfully.", mgrServerInfo.getServer().getId());
             }
             catch (RuntimeException ex) {
                 log.warn("Unable to update reporting db", ex);
@@ -157,10 +179,14 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             }
         }
         catch (Exception e) {
+            parentQueue.getQueueRun().failed();
+            parentQueue.changeRun(null);
             log.error(e);
         }
         finally {
             parentQueue.workerDone();
+            HibernateFactory.closeSession();
+            HubReportDbUpdateDriver.getCurrentMgrServerInfos().remove(mgrServerInfo);
         }
     }
 }

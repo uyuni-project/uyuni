@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * ConfigFileDtoSerializer
  *
  * @xmlrpc.doc
- * #struct_begin("Configuration File information")
+ * #struct_begin("configuration file information")
  *   #prop("string", "type")
  *              #options()
  *                  #item("file")

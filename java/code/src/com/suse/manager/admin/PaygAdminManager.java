@@ -118,7 +118,7 @@ public class PaygAdminManager {
 
         Optional<PaygSshData> paygSshDataOpt = PaygSshDataFactory.lookupByHostname(host);
         if (paygSshDataOpt.isPresent()) {
-            LOG.debug("duplicated payg host: " + host);
+            LOG.debug("duplicated payg host: {}", host);
             throw new EntityExistsException("Duplicated host: " + host);
         }
 
@@ -135,7 +135,7 @@ public class PaygAdminManager {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             LOG.warn("unable to start task to update authentication data", e);
         }
-        LOG.debug("payg ssh data added for hostname: " + host);
+        LOG.debug("payg ssh data added for hostname: {}", host);
 
         return paygSshData;
     }
@@ -343,7 +343,7 @@ public class PaygAdminManager {
     }
 
     private boolean delete(PaygSshData paygSshData) {
-        LOG.debug("deleting " + paygSshData.getId() + " -> " + paygSshData.getHost());
+        LOG.debug("deleting {} -> {}", paygSshData.getId(), paygSshData.getHost());
         List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.
                 lookupRepositoryAuthByCredential(paygSshData.getCredentials());
         existingRepos.forEach(SCCCachingFactory::deleteRepositoryAuth);

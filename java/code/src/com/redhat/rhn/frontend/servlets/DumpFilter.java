@@ -48,24 +48,24 @@ public class DumpFilter implements Filter {
         // handle request
         HttpServletRequest request = (HttpServletRequest) req;
             log.debug("Entered doFilter() ===================================");
-            log.debug("AuthType: " + request.getAuthType());
-            log.debug("Method: " + request.getMethod());
-            log.debug("PathInfo: " + request.getPathInfo());
-            log.debug("Translated path: " + request.getPathTranslated());
-            log.debug("ContextPath: " + request.getContextPath());
-            log.debug("Query String: " + request.getQueryString());
-            log.debug("Remote User: " + request.getRemoteUser());
-            log.debug("Remote Host: " + request.getRemoteHost());
-            log.debug("Remote Addr: " + request.getRemoteAddr());
-            log.debug("SessionId: " + request.getRequestedSessionId());
-            log.debug("uri: " + request.getRequestURI());
-            log.debug("url: " + request.getRequestURL().toString());
-            log.debug("Servlet path: " + request.getServletPath());
-            log.debug("Server Name: " + request.getServerName());
-            log.debug("Server Port: " + request.getServerPort());
-            log.debug("RESPONSE encoding: " + resp.getCharacterEncoding());
-            log.debug("REQUEST encoding: " + request.getCharacterEncoding());
-            log.debug("JVM encoding: " + System.getProperty("file.encoding"));
+            log.debug("AuthType: {}", request.getAuthType());
+            log.debug("Method: {}", request.getMethod());
+            log.debug("PathInfo: {}", request.getPathInfo());
+            log.debug("Translated path: {}", request.getPathTranslated());
+            log.debug("ContextPath: {}", request.getContextPath());
+            log.debug("Query String: {}", request.getQueryString());
+            log.debug("Remote User: {}", request.getRemoteUser());
+            log.debug("Remote Host: {}", request.getRemoteHost());
+            log.debug("Remote Addr: {}", request.getRemoteAddr());
+            log.debug("SessionId: {}", request.getRequestedSessionId());
+            log.debug("uri: {}", request.getRequestURI());
+            log.debug("url: {}", request.getRequestURL().toString());
+            log.debug("Servlet path: {}", request.getServletPath());
+            log.debug("Server Name: {}", request.getServerName());
+            log.debug("Server Port: {}", request.getServerPort());
+            log.debug("RESPONSE encoding: {}", resp.getCharacterEncoding());
+            log.debug("REQUEST encoding: {}", request.getCharacterEncoding());
+            log.debug("JVM encoding: {}", System.getProperty("file.encoding"));
             logSession(request.getSession());
             logHeaders(request);
             logCookies(request.getCookies());
@@ -79,7 +79,7 @@ public class DumpFilter implements Filter {
         if (log.isDebugEnabled()) {
             log.debug("Returned from chain.doFilter() -----------------------");
             log.debug("Handle Response, not much to print");
-            log.debug("Response: " + resp.toString());
+            log.debug("Response: {}", resp.toString());
             log.debug("Leaving doFilter() ===================================");
         }
     }
@@ -111,8 +111,7 @@ public class DumpFilter implements Filter {
             String name = (String) items.nextElement();
             Enumeration hdrs = req.getHeaders(name);
             while (hdrs.hasMoreElements()) {
-                log.debug("Header: name [" + name + "] value [" +
-                        (String) hdrs.nextElement() + "]");
+                log.debug("Header: name [{}] value [{}]", name, (String) hdrs.nextElement());
             }
 
         }
@@ -128,8 +127,7 @@ public class DumpFilter implements Filter {
             String name = (String) items.nextElement();
             String[] values = req.getParameterValues(name);
             for (String valueIn : values) {
-                log.debug("Parameter: name [" + name + "] value [" +
-                        valueIn + "]");
+                log.debug("Parameter: name [{}] value [{}]", name, valueIn);
             }
         }
     }
@@ -140,11 +138,10 @@ public class DumpFilter implements Filter {
             String name = (String) items.nextElement();
             Object obj = req.getAttribute(name);
             if (obj != null) {
-                log.debug("Attribute: name [" + name + "] value [" +
-                    ReflectionToStringBuilder.toString(obj) + "]");
+                log.debug("Attribute: name [{}] value [{}]", name, ReflectionToStringBuilder.toString(obj));
             }
             else {
-                log.debug("Attribute: name [" + name + "] value [null]");
+                log.debug("Attribute: name [{}] value [null]", name);
             }
         }
     }

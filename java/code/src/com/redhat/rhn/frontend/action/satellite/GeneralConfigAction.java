@@ -84,11 +84,8 @@ public class GeneralConfigAction extends BaseConfigAction {
                                  HttpServletResponse response) {
 
         if (logger.isDebugEnabled()) {
-            logger.debug("execute(ActionMapping mapping=" + mapping +
-                    ", ActionForm formIn=" + formIn +
-                    ", HttpServletRequest request=" + request +
-                    ", HttpServletResponse response=" + response +
-                    ") - start");
+            logger.debug("execute(ActionMapping mapping={}, ActionForm formIn={}, HttpServletRequest request={}, " +
+                    "HttpServletResponse response={}) - start", mapping, formIn, request, response);
         }
 
         ActionErrors errors;
@@ -170,9 +167,8 @@ public class GeneralConfigAction extends BaseConfigAction {
         }
         returnActionForward = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         if (logger.isDebugEnabled()) {
-            logger.debug("execute(ActionMapping, ActionForm, HttpServletRequest," +
-                    " HttpServletResponse) - end - return value=" +
-                    returnActionForward);
+            logger.debug("execute(ActionMapping, ActionForm, HttpServletRequest, HttpServletResponse) " +
+                    "- end - return value={}", returnActionForward);
         }
         return returnActionForward;
     }

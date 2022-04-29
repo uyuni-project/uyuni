@@ -26,9 +26,9 @@ import com.suse.manager.api.SerializedApiResponse;
  * XccdfRuleResultDtoSerializer
  * @xmlrpc.doc
  * #struct_begin("OpenSCAP XCCDF RuleResult")
- *   #prop_desc("string", "idref", "idref from XCCDF document.")
- *   #prop_desc("string", "result", "Result of evaluation.")
- *   #prop_desc("string", "idents", "Comma separated list of XCCDF idents.")
+ *   #prop_desc("string", "idref", "idref from XCCDF document")
+ *   #prop_desc("string", "result", "result of evaluation")
+ *   #prop_desc("string", "idents", "comma separated list of XCCDF idents")
  * #struct_end()
  */
 public class XccdfRuleResultDtoSerializer extends ApiResponseSerializer<XccdfRuleResultDto> {

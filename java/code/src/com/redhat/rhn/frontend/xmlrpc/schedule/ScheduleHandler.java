@@ -53,7 +53,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Cancel all actions in given list. If an invalid action is provided,
      * none of the actions given will canceled.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "action id")
+     * @xmlrpc.param #array_single("int", "actionIds")
      * @xmlrpc.returntype #return_int_success()
      */
     public int cancelActions(User loggedInUser, List<Integer> actionIds) throws
@@ -84,19 +84,19 @@ public class ScheduleHandler extends BaseHandler {
     /**
      * Fail specific event on specified system
      * @param loggedInUser The current user
-     * @param serverId server id
+     * @param sid server id
      * @param actionId action id
      * @return int 1 if successfull
      *
      * @xmlrpc.doc Fail specific event on specified system
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype #return_int_success()
      */
 
-    public int failSystemAction(User loggedInUser, Integer serverId, Integer actionId) {
-        return failSystemAction(loggedInUser, serverId, actionId,
+    public int failSystemAction(User loggedInUser, Integer sid, Integer actionId) {
+        return failSystemAction(loggedInUser, sid, actionId,
                 "This action has been manually failed by " + loggedInUser.getLogin());
     }
 
@@ -104,7 +104,7 @@ public class ScheduleHandler extends BaseHandler {
      * Fail specific event on specified system and let the user provide
      * some info for this fail.
      * @param loggedInUser The current user
-     * @param serverId server id
+     * @param sid server id
      * @param actionId action id
      * @param message some info about this fail
      * @return int 1 if successfull
@@ -112,14 +112,14 @@ public class ScheduleHandler extends BaseHandler {
      *
      * @xmlrpc.doc Fail specific event on specified system
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.param #param("string", "message")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int failSystemAction(User loggedInUser, Integer serverId, Integer actionId,
+    public int failSystemAction(User loggedInUser, Integer sid, Integer actionId,
                                  String message) {
-        return ActionManager.failSystemAction(loggedInUser, serverId.longValue(),
+        return ActionManager.failSystemAction(loggedInUser, sid.longValue(),
                 actionId.longValue(), message);
     }
 
@@ -133,7 +133,7 @@ public class ScheduleHandler extends BaseHandler {
      * failed and archived actions.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -154,7 +154,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that have completed successfully.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -174,7 +174,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that are in progress.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -194,7 +194,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that have failed.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -214,7 +214,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that have been archived.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -234,7 +234,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that have been archived.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -255,7 +255,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleSystemSerializer
      * #array_end()
      */
@@ -279,7 +279,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that have been completed.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -300,7 +300,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleSystemSerializer
      * #array_end()
      */
@@ -326,7 +326,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $ScheduleSystemSerializer
      * #array_end()
      */
@@ -352,7 +352,7 @@ public class ScheduleHandler extends BaseHandler {
      *
      * @xmlrpc.doc Reschedule all actions in the given list.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "action id")
+     * @xmlrpc.param #array_single("int", "actionIds")
      * @xmlrpc.param #param_desc("boolean", "onlyFailed",
      *               "True to only reschedule failed actions, False to reschedule all")
      * @xmlrpc.returntype #return_int_success()
@@ -385,7 +385,7 @@ public class ScheduleHandler extends BaseHandler {
      *
      * @xmlrpc.doc Archive all actions in the given list.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "action id")
+     * @xmlrpc.param #array_single("int", "actionIds")
      * @xmlrpc.returntype #return_int_success()
      */
     public int archiveActions(User loggedInUser, List<Integer> actionIds)
@@ -408,7 +408,7 @@ public class ScheduleHandler extends BaseHandler {
      *
      * @xmlrpc.doc Delete all archived actions in the given list.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "action id")
+     * @xmlrpc.param #array_single("int", "actionIds")
      * @xmlrpc.returntype #return_int_success()
      */
     public int deleteActions(User loggedInUser, List<Integer> actionIds) {

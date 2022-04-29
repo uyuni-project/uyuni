@@ -266,8 +266,7 @@ public class SchemaParser {
         constraint.setDataType(DataConverter.getInstance().getJavaType(schemaType));
 
         // Store this constraint
-        log.debug("Adding: constraint name: " + name +
-                " datatype: " + constraint.getDataType());
+        log.debug("Adding: constraint name: {} datatype: {}", name, constraint.getDataType());
         constraints.put(name, constraint);
     }
 

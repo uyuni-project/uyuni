@@ -45,8 +45,8 @@ public class XmlRpcServlet extends HttpServlet {
     private static Logger log = LogManager.getLogger(XmlRpcServlet.class);
 
     private RhnXmlRpcServer server;
-    private HandlerFactory handlerFactory;
-    private SerializerFactory serializerFactory;
+    private final HandlerFactory handlerFactory;
+    private final SerializerFactory serializerFactory;
 
     /**
      * Constructor which takes in HandlerFactory and SerializerFactory. The
@@ -90,9 +90,6 @@ public class XmlRpcServlet extends HttpServlet {
     }
 
     private void registerCustomSerializers(RhnXmlRpcServer srvr) {
-        if (serializerFactory == null) {
-            serializerFactory = new SerializerFactory();
-        }
         XmlRpcSerializer serializer = srvr.getSerializer();
         serializer.addCustomSerializer(new ObjectSerializer());
         serializer.addCustomSerializer(new BigDecimalSerializer());
@@ -102,20 +99,14 @@ public class XmlRpcServlet extends HttpServlet {
     }
 
     private void registerInvocationHandlers(RhnXmlRpcServer srvr) {
-        if (handlerFactory == null) {
-            handlerFactory = new HandlerFactory();
-        }
-
         // find the configured handlers...
         for (String namespace : handlerFactory.getKeys()) {
-            if (log.isDebugEnabled()) {
-                log.debug("registerInvocationHandler: namespace [" + namespace +
-                        "] handler [" + handlerFactory.getHandler(namespace).get() + "]");
-            }
-            srvr.addInvocationHandler(
-                    namespace,
-                    handlerFactory.getHandler(namespace).get()
-            );
+            handlerFactory.getHandler(namespace).ifPresent((handler) -> {
+                if (log.isDebugEnabled()) {
+                    log.debug("registerInvocationHandler: namespace [{}] handler [{}]", namespace, handler);
+                }
+                srvr.addInvocationHandler(namespace, handler);
+            });
         }
     }
 

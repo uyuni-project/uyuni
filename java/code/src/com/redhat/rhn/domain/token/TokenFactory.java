@@ -61,7 +61,7 @@ public class TokenFactory extends HibernateFactory {
                 .uniqueResult();
         }
         catch (HibernateException e) {
-            log.error("Hibernate exception: " + e.toString());
+            log.error("Hibernate exception: {}", e.toString());
             throw e;
         }
     }
@@ -97,7 +97,7 @@ public class TokenFactory extends HibernateFactory {
                 .uniqueResult();
         }
         catch (HibernateException e) {
-            log.error("Hibernate exception: " + e.toString());
+            log.error("Hibernate exception: {}", e.toString());
             throw e;
         }
         if (t == null) {
@@ -129,7 +129,7 @@ public class TokenFactory extends HibernateFactory {
                 .list();
         }
         catch (HibernateException e) {
-            log.error("Hibernate exception: " + e.toString());
+            log.error("Hibernate exception: {}", e.toString());
             throw e;
         }
     }

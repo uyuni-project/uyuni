@@ -193,4 +193,5 @@ mgr_buildimage_kiwi_collect_logs:
   mgrcompat.module_run:
     - name: cp.push
     - path: {{ root_dir }}/build.log
+    - upload_path: /image-{{ bundle_id }}.log
     - order: last

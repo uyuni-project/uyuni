@@ -54,8 +54,7 @@ public class ApplyStatesEventMessageAction implements MessageAction {
 
         // Apply states only for salt systems
         if (server != null && server.hasEntitlement(EntitlementManager.SALT)) {
-            LOG.debug("Schedule state.apply for " + server.getName() + ": " +
-                    applyStatesEvent.getStateNames());
+            LOG.debug("Schedule state.apply for {}: {}", server.getName(), applyStatesEvent.getStateNames());
 
             // The scheduling user can be null
             User scheduler = event.getUserId() != null ?
@@ -73,8 +72,7 @@ public class ApplyStatesEventMessageAction implements MessageAction {
                         applyStatesEvent.isForcePackageListRefresh());
             }
             catch (TaskomaticApiException e) {
-                LOG.error("Could not schedule state application for system: " +
-                        server.getId());
+                LOG.error("Could not schedule state application for system: {}", server.getId());
                 throw new RuntimeException(e);
             }
         }

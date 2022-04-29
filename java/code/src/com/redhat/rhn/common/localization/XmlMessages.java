@@ -119,12 +119,12 @@ public final class XmlMessages {
 
         if (retval != null) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Got bundle from cache, returning : " + bundleKey);
+                LOG.debug("Got bundle from cache, returning : {}", bundleKey);
             }
             return retval;
         }
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Reloading BUNDLE : " + bundleKey);
+            LOG.debug("Reloading BUNDLE : {}", bundleKey);
         }
         StringBuilder urlName = new StringBuilder("/" + bundleName.replace('.', '/'));
 
@@ -147,8 +147,7 @@ public final class XmlMessages {
         }
         catch (IOException ioe) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Resource bundle not found: " +
-                        ioe.toString() + ", url: " + urlName);
+                LOG.debug("Resource bundle not found: {}, url: {}", ioe.toString(), urlName);
             }
             throw new java.util.MissingResourceException(
                     "Resource bundle not found", bundleName, "");

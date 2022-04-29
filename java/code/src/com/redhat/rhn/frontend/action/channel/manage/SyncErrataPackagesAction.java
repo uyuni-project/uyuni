@@ -143,7 +143,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
                 ErrataFactory.syncErrataDetails((ClonedErrata) e);
             }
             else {
-                LOG.fatal("Tried to sync errata with id " + eid + " but it was not cloned");
+                LOG.fatal("Tried to sync errata with id {} but it was not cloned", eid);
             }
         }
 

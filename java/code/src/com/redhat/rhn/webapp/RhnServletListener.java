@@ -78,14 +78,14 @@ public class RhnServletListener implements ServletContextListener {
 
     private void logStart(String system) {
         if (log.isDebugEnabled()) {
-            log.debug(system + " started");
+            log.debug("{} started", system);
         }
         loggingStarted = true;
     }
 
     private void logStop(String system) {
         if (log.isDebugEnabled()) {
-            log.debug(system + "Starting ");
+            log.debug("{}Starting ", system);
         }
         loggingStarted = false;
     }
@@ -177,10 +177,10 @@ public class RhnServletListener implements ServletContextListener {
             Driver driver = drivers.nextElement();
             try {
                 DriverManager.deregisterDriver(driver);
-                log.info("deregistering jdbc driver: " + driver);
+                log.info("deregistering jdbc driver: {}", driver);
             }
             catch (SQLException e) {
-                log.warn("Error deregistering driver " + driver);
+                log.warn("Error deregistering driver {}", driver);
             }
         }
     }

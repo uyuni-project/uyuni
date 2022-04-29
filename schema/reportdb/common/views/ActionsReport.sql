@@ -15,7 +15,8 @@ CREATE OR REPLACE VIEW ActionsReport AS
              , SystemAction.earliest_action
              , SystemAction.event
              , SystemAction.action_name
-             , SystemAction.scheduled_by
+             , SystemAction.scheduler_id
+             , SystemAction.scheduler_username
              , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Picked Up' OR status = 'Queued') OVER(PARTITION BY action_id) AS in_progress_systems
              , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Completed') OVER(PARTITION BY action_id) AS completed_systems
              , string_agg(SystemAction.hostname, ';') FILTER(WHERE status = 'Failed') OVER(PARTITION BY action_id) AS failed_systems

@@ -50,10 +50,10 @@ public class KeysHandler extends BaseHandler {
      *
      * @xmlrpc.doc Lookup the activation keys associated with the kickstart
      * profile.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     $ActivationKeySerializer
      *   #array_end()
      */
@@ -85,7 +85,7 @@ public class KeysHandler extends BaseHandler {
      * @return 1 on success, exception thrown otherwise
      *
      * @xmlrpc.doc Add an activation key association to the kickstart profile
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.param #param_desc("string", "key", "the activation key")
      * @xmlrpc.returntype #return_int_success()
@@ -117,7 +117,7 @@ public class KeysHandler extends BaseHandler {
      * @return 1 on success, exception thrown otherwise
      *
      * @xmlrpc.doc Remove an activation key association from the kickstart profile
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.param #param_desc("string", "key", "the activation key")
      * @xmlrpc.returntype #return_int_success()

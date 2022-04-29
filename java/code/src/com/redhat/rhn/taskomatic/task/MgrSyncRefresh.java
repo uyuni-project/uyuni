@@ -124,7 +124,7 @@ public class MgrSyncRefresh extends RhnJavaJob {
 
         if (log.isDebugEnabled()) {
             long duration = new Date().getTime() - start.getTime();
-            log.debug("Total duration was: " + duration + " ms");
+            log.debug("Total duration was: {} ms", duration);
         }
     }
 }

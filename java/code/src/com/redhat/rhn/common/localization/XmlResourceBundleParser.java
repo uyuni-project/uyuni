@@ -65,17 +65,16 @@ class XmlResourceBundleParser  extends DefaultHandler {
             // For the en_US files we use source
             if (qualifiedName.equals("source")) {
                 if (messages.containsKey(currKey)) {
-                    log.warn("Duplicate message key found in XML Resource file: " +
-                        currKey);
+                    log.warn("Duplicate message key found in XML Resource file: {}", currKey);
                 }
-                log.debug("Adding: [" + currKey + "] value: [" + thisText.toString() + "]");
+                log.debug("Adding: [{}] value: [{}]", currKey, thisText.toString());
                 messages.put(currKey, thisText.toString());
             }
             // For other languages we use target and overwrite the previously
             // placed "source" tag.  Depends on the fact that the target tag
             // comes after the source tag.
             if (qualifiedName.equals("target")) {
-                log.debug("Adding: [" + currKey + "] value: [" + thisText.toString() + "]");
+                log.debug("Adding: [{}] value: [{}]", currKey, thisText.toString());
                 messages.put(currKey, thisText.toString());
             }
         }
@@ -100,12 +99,12 @@ class XmlResourceBundleParser  extends DefaultHandler {
     }
 
     private void printInfo(SAXParseException e) {
-        log.error("   Message key: " + currKey);
-        log.error("   Public ID: " + e.getPublicId());
-        log.error("   System ID: " + e.getSystemId());
-        log.error("   Line number: " + e.getLineNumber());
-        log.error("   Column number: " + e.getColumnNumber());
-        log.error("   Message: " + e.getMessage());
+        log.error("   Message key: {}", currKey);
+        log.error("   Public ID: {}", e.getPublicId());
+        log.error("   System ID: {}", e.getSystemId());
+        log.error("   Line number: {}", e.getLineNumber());
+        log.error("   Column number: {}", e.getColumnNumber());
+        log.error("   Message: {}", e.getMessage());
     }
 
 

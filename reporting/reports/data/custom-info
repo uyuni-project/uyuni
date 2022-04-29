@@ -1,30 +1,34 @@
 
 synopsis:
 
-	Display system custom info
+  Display system custom info
 
 description:
 
-  Display custom info for all systems in Spacewalk with any custom info associated
+  Display all custom info for every system with any info associated
 
 columns:
 
-	server_id	Server id
-	org_id	Organization id
-	server_name	Server name
-	key	Custom info key
-	value	Custom info value
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  system_name The unique descriptive name of the system
+  organization The organization that owns this data
+  key The name of the custom information
+  value The value of the custom information
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-	select * from (
-	select rhnServer.id as server_id,
-	rhnServer.org_id as org_id,
-	rhnServer.name as server_name,
-	rhnCustomDataKey.label as key,
-	rhnServerCustomDataValue.value as value
-	from rhnServer join rhnServerCustomDataValue on rhnServer.id=rhnServerCustomDataValue.server_id join rhnCustomDataKey on rhnServerCustomDataValue.key_id=rhnCustomDataKey.id
-	) X
-	-- where placeholder
-	order by org_id, server_id
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , organization
+                , system_name
+                , key
+                , value
+                , synced_date
+        FROM CustomInfoReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, key
 

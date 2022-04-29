@@ -172,8 +172,8 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
-  xpath_option = ".//*[contains(@class, 'class-#{field}__option') and contains(text(),'#{option}')]"
-  xpath_field = "//*[contains(@class, 'class-#{field}__control')]/../*[@name='#{field}']/.."
+  xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(text(),'#{option}')]"
+  xpath_field = "//*[contains(@class, 'data-testid-#{field}-child__control')]"
   if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)
   else
@@ -905,7 +905,7 @@ Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |option, field|
   next if has_select?(field, selected: option)
 
   # Custom React selector
-  next if has_xpath?("//*[contains(@class, 'class-#{field}__value-container')]/*[contains(text(),'#{option}')]")
+  next if has_xpath?("//*[contains(@class, 'data-testid-#{field}-child__value-container')]/*[contains(text(),'#{option}')]")
 
   raise "#{option} is not selected as #{field}"
 end
@@ -918,7 +918,7 @@ When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |option, fi
     break if has_select?(field, with_options: [option])
 
     # Custom React selector
-    break if has_xpath?("//*[contains(@class, 'class-#{field}__value-container')]/*[contains(text(),'#{option}')]")
+    break if has_xpath?("//*[contains(@class, 'data-testid-#{field}-child__value-container')]/*[contains(text(),'#{option}')]")
   end
 end
 
@@ -1068,32 +1068,9 @@ When(/^I make a list of the existing systems$/) do
   system_elements_list.each { |el| $systems_list << el.text }
 end
 
-Given(/^I have "([^"]*)" with "([^"]*)" as "([^"]*)" property$/) do |host, property_value, property_name|
+Given(/^I have a property "([^"]*)" with value "([^"]*)" on "([^"]*)"$/) do |property_name, property_value, host|
   steps %(
-    Given I am on the Systems overview page of this "#{host}"
-    When I follow "Properties" in the content area
-    And I enter "#{property_value}" as "#{property_name}"
-    And I click on "Update Properties"
-    Then I should see a "System properties changed" text
-  )
-end
-
-# Select first system listed
-When(/^I select the first system in the list$/) do
-  within(:xpath, '//section') do
-    row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
-    # click first link in first row
-    within(row) do
-      first('a').click
-    end
-  end
-end
-
-# Change first system's property
-Given(/^I have a system with "([^"]*)" as "([^"]*)" property$/) do |property_value, property_name|
-  steps %(
-    When I follow the left menu "Systems > Overview"
-    And I select the first system in the list
+    When I am on the Systems overview page of this "#{host}"
     And I follow "Properties" in the content area
     And I enter "#{property_value}" as "#{property_name}"
     And I click on "Update Properties"
@@ -1102,11 +1079,9 @@ Given(/^I have a system with "([^"]*)" as "([^"]*)" property$/) do |property_val
         )
 end
 
-# Change first system's property when it's a list
-Given(/^I have a system with "([^"]*)" as "([^"]*)" listed property$/) do |property_value, property_name|
+Given(/^I have a combobox property "([^"]*)" with value "([^"]*)" on "([^"]*)"$/) do |property_name, property_value, host|
   steps %(
-    When I follow the left menu "Systems > Overview"
-    And I select the first system in the list
+    When I am on the Systems overview page of this "#{host}"
     And I follow "Properties" in the content area
     And I select "#{property_value}" from "#{property_name}"
     And I click on "Update Properties"
@@ -1126,16 +1101,17 @@ Then(/^I should land on system's overview page$/) do
         )
 end
 
-When(/^I enter minion hostname on the search field$/) do
-  step %(I enter "#{$minion.full_hostname}" on the search field)
+When(/^I enter "([^"]*)" hostname on the search field$/) do |host|
+  system_name = get_system_name(host)
+  step %(I enter "#{system_name}" on the search field)
 end
 
-Then(/^I should see minion hostname as first search result$/) do
-  hostname = $minion.full_hostname
+Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
+  system_name = get_system_name(host)
   within(:xpath, '//section') do
     row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
     within(row) do
-      raise "Text '#{hostname}' not found" unless has_text?(hostname)
+      raise "Text '#{system_name}' not found" unless has_text?(system_name)
     end
   end
 end

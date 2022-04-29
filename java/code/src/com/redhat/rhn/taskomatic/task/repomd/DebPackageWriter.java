@@ -236,7 +236,7 @@ public class DebPackageWriter implements Closeable {
             }
         }
         catch (Exception e) {
-            log.error("failed to write DEB dependency " + dep + " " + e.toString());
+            log.error("failed to write DEB dependency {} {}", dep, e.toString());
         }
         try {
             if (count > 0) {
@@ -244,7 +244,7 @@ public class DebPackageWriter implements Closeable {
             }
         }
         catch (Exception e) {
-            log.error("failed to write new line " + e.toString());
+            log.error("failed to write new line {}", e.toString());
         }
 
     }

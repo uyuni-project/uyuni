@@ -1,8 +1,15 @@
-- drop rhnSatelliteInfo and replace it with suseMgrServerInfo to
-  store data about the reporting database settings
-- add checksum column for suseimagefile table
-- fix check on allowVendorChange
-- Store proxy SSH port in database
+- Add missing_successors column to hold products without successors
+- Added Perl requirements.
+
+-------------------------------------------------------------------
+Tue Apr 19 12:12:19 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * drop rhnSatelliteInfo and replace it with suseMgrServerInfo to
+    store data about the reporting database settings
+  * add checksum column for suseimagefile table
+  * fix check on allowVendorChange
+  * Store proxy SSH port in database
 
 -------------------------------------------------------------------
 Fri Mar 11 15:42:02 CET 2022 - jgonzalez@suse.com
