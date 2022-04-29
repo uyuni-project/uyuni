@@ -1,3 +1,6 @@
+- Pass ssh_salt_pre_flight_script and ssh_use_salt_thin parameters
+  to the generated roster files to enable optional Salt Bundle
+  support with Salt SSH
 - Fix reboot time on salt-ssh client(bsc#1197591)
 - detect free products in Alpha and Beta stage and prevent checks
   on openSUSE products (bsc#1197488)
