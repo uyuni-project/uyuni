@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-29 11:12+0000\n"
-"PO-Revision-Date: 2022-04-25 18:12+0000\n"
+"PO-Revision-Date: 2022-04-29 17:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -3455,7 +3455,7 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:42
 msgid "_blank"
-msgstr ""
+msgstr "_prázdne"
 
 #: ../html/src/manager/login/susemanager/login.tsx:57
 #: ../html/src/manager/login/susemanager/login.tsx:82
