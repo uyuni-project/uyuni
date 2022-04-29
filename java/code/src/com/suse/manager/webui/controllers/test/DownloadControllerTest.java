@@ -727,6 +727,34 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         }
     }
 
+    /**
+     * Test for missing file. Should not handover to xsendfile, but throw 404 Not Found
+     * directly
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testDownloadMissingFile() throws Exception {
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        String tokenOrg = tokenBuilder.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(tokenOrg, "");
+        Request request =  SparkTestUtils.createMockRequestWithParams(
+                "http://localhost:8080/rhn/manager/download/:channel/repodata/:file",
+                params,
+                Collections.emptyMap(),
+                channel.getLabel(), "repomd.xml");
+
+        try {
+            assertNotNull(DownloadController.downloadMetadata(request, response));
+            fail("HaltException expected for missing file!");
+        }
+        catch (spark.HaltException e) {
+            assertTrue("Not Found Exception expected", e.getStatusCode() == 404);
+        }
+    }
+
     public void testParseDebPkgFilename1() {
         DownloadController.PkgInfo pkg =
                 DownloadController.parsePackageFileName(
