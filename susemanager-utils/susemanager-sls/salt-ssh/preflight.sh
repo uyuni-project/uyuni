@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+
+# In case the script is executed using different interpreter than bash
+# then we call the script explicitely using bash
+SHPATH=$(readlink /proc/$$/exe)
+if ! [ "$SHPATH" = "/bin/bash" -o "$SHPATH" = "/usr/bin/bash" ]; then
+  exec bash "$0" "$@"
+fi
 
 if [ $# -lt 2 ]; then
     echo "Error: Wrong number of arguments!"
