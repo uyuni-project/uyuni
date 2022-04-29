@@ -558,6 +558,10 @@ public class DownloadController {
      * @param file description of the file to send
      */
     private static Object downloadFile(Request request, Response response, File file) {
+        if (!file.exists()) {
+            log.info("404 - File not found: " + file.getAbsolutePath());
+            halt(HttpStatus.SC_NOT_FOUND, "File not found: " + request.url());
+        }
         response.header("Content-Type", "application/octet-stream");
         response.header("Content-Disposition", "attachment; filename=" + file.getName());
         response.header("X-Sendfile", file.getAbsolutePath());
