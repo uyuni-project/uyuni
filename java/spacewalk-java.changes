@@ -1,3 +1,4 @@
+- check if file exists before sending it to xsendfile (bsc#1198191)
 - update server needed cache after adding Ubuntu Errata (bsc#1196977)
 - Fix ACL rules for config diff download for SLS files (bsc#1198914)
 - fix invalid link to action schedule
