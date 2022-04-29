@@ -187,8 +187,9 @@ def generate_repository_name(repo_url)
   repo_name = repo_url.strip
   repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
   repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/Maintenance:/'
-  repo_name.delete_prefix! 'http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/'
+  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/'
   repo_name.gsub!('/', '_')
+  repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
 end
 
