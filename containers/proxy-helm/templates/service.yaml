@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uyuni-proxy
+spec:
+  selector:
+    app: uyuni-proxy
+  ports:
+    - name: http
+      port: 80
+    - name: https
+      port: 443
+    - name: ssh
+      port: 8022
+      targetPort: 22
+    - name: salt-publish
+      port: 4505
+    - name: salt-request
+      port: 4506
+    - name: tftp
+      port: 69
+      protocol: UDP
