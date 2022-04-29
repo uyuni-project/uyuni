@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#. * Mimic the translation function `t()`, this doesn't match the full functionality but should suffice for tests
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:47
 #: ../html/src/components/input/Range.tsx:59
@@ -14,12 +13,12 @@
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 #: ../html/src/utils/test-utils/setup/t.test.ts:7
-#: ../html/src/utils/test-utils/setup/t.ts:2
+#: ../html/src/utils/test-utils/setup/t.ts:4
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-28 13:44+0000\n"
+"POT-Creation-Date: 2022-04-29 11:12+0000\n"
 "PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -382,7 +381,7 @@ msgid "Last Name"
 msgstr "Poslední jméno (příjmení)"
 
 #: ../html/src/components/input/FormMultiInput.stories.tsx:112
-#: ../html/src/manager/login/login.tsx:162
+#: ../html/src/manager/login/uyuni/login.tsx:54
 msgid "Login"
 msgstr "Přihlášení"
 
@@ -398,7 +397,8 @@ msgstr "požadovaný"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/login.tsx:173
+#: ../html/src/manager/login/susemanager/login.tsx:68
+#: ../html/src/manager/login/uyuni/login.tsx:65
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -2990,6 +2990,7 @@ msgid "Use credentials"
 msgstr "Použít pověření"
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:58
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3410,7 +3411,7 @@ msgstr "Opravdu chcete odstranit vybrané obrazy? (Vybráno {0} obrazů)"
 msgid "Overview"
 msgstr "Přehled"
 
-#: ../html/src/manager/login/login.tsx:53
+#: ../html/src/manager/login/messages.tsx:14
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
@@ -3418,7 +3419,7 @@ msgstr ""
 "Je vyžadován upgrade schématu. Upgradujte prosím své schéma co nejdříve, "
 "abyste dostali nejnovější opravy chyb a vyhnuli se potenciálním problémům."
 
-#: ../html/src/manager/login/login.tsx:62
+#: ../html/src/manager/login/messages.tsx:23
 msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
@@ -3426,7 +3427,7 @@ msgstr ""
 "Nelze ověřit dostupnost místa na disku. Pokud tento problém přetrvává, "
 "obraťte se na správce systému."
 
-#: ../html/src/manager/login/login.tsx:67
+#: ../html/src/manager/login/messages.tsx:28
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
@@ -3434,7 +3435,7 @@ msgstr ""
 "Chybí některé důležité adresáře. Obraťte se na správce systému a "
 "zkontrolujte konfiguraci."
 
-#: ../html/src/manager/login/login.tsx:72
+#: ../html/src/manager/login/messages.tsx:33
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
@@ -3442,7 +3443,7 @@ msgstr ""
 "Na serveru je málo volného místa na disku. Obraťte se na správce systému, "
 "aby přidal více místa na disku."
 
-#: ../html/src/manager/login/login.tsx:77
+#: ../html/src/manager/login/messages.tsx:38
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
@@ -3450,23 +3451,26 @@ msgstr ""
 "Dostupné místo na disku serveru je kriticky malé. Obraťte se na správce "
 "systému, aby přidal více místa na disku."
 
-#: ../html/src/manager/login/login.tsx:95
+#: ../html/src/manager/login/messages.tsx:56
 msgid "Signing in ..."
 msgstr "Přihlašování ..."
 
-#: ../html/src/manager/login/login.tsx:142
+#: ../html/src/manager/login/susemanager/login.tsx:38
+#: ../html/src/manager/login/uyuni/login.tsx:34
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
 msgstr ""
 "Osvojte si nový způsob správy serverů, balíčků, oprav atd. jedním rozhraním."
 
-#: ../html/src/manager/login/login.tsx:145
-msgid "Learn more about"
-msgstr "Poznat více o"
+#: ../html/src/manager/login/susemanager/login.tsx:42
+msgid "_blank"
+msgstr ""
 
-#: ../html/src/manager/login/login.tsx:154
-#: ../html/src/manager/login/login.tsx:181
+#: ../html/src/manager/login/susemanager/login.tsx:57
+#: ../html/src/manager/login/susemanager/login.tsx:82
+#: ../html/src/manager/login/uyuni/login.tsx:46
+#: ../html/src/manager/login/uyuni/login.tsx:73
 msgid "Sign In"
 msgstr "Přihlášení"
 
@@ -3487,6 +3491,10 @@ msgstr ""
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
+
+#: ../html/src/manager/login/uyuni/login.tsx:37
+msgid "Learn more about"
+msgstr "Poznat více o"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:74
 msgid "Skip to the last maintenance window"

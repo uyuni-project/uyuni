@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#. * Mimic the translation function `t()`, this doesn't match the full functionality but should suffice for tests
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:47
 #: ../html/src/components/input/Range.tsx:59
@@ -14,12 +13,12 @@
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 #: ../html/src/utils/test-utils/setup/t.test.ts:7
-#: ../html/src/utils/test-utils/setup/t.ts:2
+#: ../html/src/utils/test-utils/setup/t.ts:4
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-28 13:44+0000\n"
+"POT-Creation-Date: 2022-04-29 11:12+0000\n"
 "PO-Revision-Date: 2022-04-15 11:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -378,7 +377,7 @@ msgid "Last Name"
 msgstr "성"
 
 #: ../html/src/components/input/FormMultiInput.stories.tsx:112
-#: ../html/src/manager/login/login.tsx:162
+#: ../html/src/manager/login/uyuni/login.tsx:54
 msgid "Login"
 msgstr "로그인"
 
@@ -394,7 +393,8 @@ msgstr "필수"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/login.tsx:173
+#: ../html/src/manager/login/susemanager/login.tsx:68
+#: ../html/src/manager/login/uyuni/login.tsx:65
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -2948,6 +2948,7 @@ msgid "Use credentials"
 msgstr "자격 증명 사용"
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:58
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3366,7 +3367,7 @@ msgstr "선택한 이미지를 삭제하시겠습니까?({0}개 이미지 선택
 msgid "Overview"
 msgstr "개요"
 
-#: ../html/src/manager/login/login.tsx:53
+#: ../html/src/manager/login/messages.tsx:14
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
@@ -3374,7 +3375,7 @@ msgstr ""
 "스키마를 업데이트해야 합니다. 최신 버그 수정을 수신하고 잠재적인 문제를 방지"
 "하려면 최대한 빨리 스키마를 업데이트하십시오."
 
-#: ../html/src/manager/login/login.tsx:62
+#: ../html/src/manager/login/messages.tsx:23
 msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
@@ -3382,7 +3383,7 @@ msgstr ""
 "디스크 공간 가용성을 확인할 수 없습니다. 이 문제가 지속되면 시스템 관리자에"
 "게 문의하십시오."
 
-#: ../html/src/manager/login/login.tsx:67
+#: ../html/src/manager/login/messages.tsx:28
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
@@ -3390,7 +3391,7 @@ msgstr ""
 "일부 중요한 디렉토리가 누락되었습니다. 구성을 검토하려면 시스템 관리자에게 문"
 "의하십시오."
 
-#: ../html/src/manager/login/login.tsx:72
+#: ../html/src/manager/login/messages.tsx:33
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
@@ -3398,7 +3399,7 @@ msgstr ""
 "서버에서 사용 가능한 디스크 공간이 부족합니다. 디스크 공간을 추가하려면 시스"
 "템 관리자에게 문의하십시오."
 
-#: ../html/src/manager/login/login.tsx:77
+#: ../html/src/manager/login/messages.tsx:38
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
@@ -3406,11 +3407,12 @@ msgstr ""
 "서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려면 "
 "시스템 관리자에게 문의하십시오."
 
-#: ../html/src/manager/login/login.tsx:95
+#: ../html/src/manager/login/messages.tsx:56
 msgid "Signing in ..."
 msgstr "로그인 중..."
 
-#: ../html/src/manager/login/login.tsx:142
+#: ../html/src/manager/login/susemanager/login.tsx:38
+#: ../html/src/manager/login/uyuni/login.tsx:34
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3418,12 +3420,14 @@ msgstr ""
 "서버, 패키지, 패치 등을 단일 인터페이스에서 관리하기 위한 새로운 방법을 알아"
 "보십시오."
 
-#: ../html/src/manager/login/login.tsx:145
-msgid "Learn more about"
-msgstr "자세히 알아보기"
+#: ../html/src/manager/login/susemanager/login.tsx:42
+msgid "_blank"
+msgstr ""
 
-#: ../html/src/manager/login/login.tsx:154
-#: ../html/src/manager/login/login.tsx:181
+#: ../html/src/manager/login/susemanager/login.tsx:57
+#: ../html/src/manager/login/susemanager/login.tsx:82
+#: ../html/src/manager/login/uyuni/login.tsx:46
+#: ../html/src/manager/login/uyuni/login.tsx:73
 msgid "Sign In"
 msgstr "로그인"
 
@@ -3444,6 +3448,10 @@ msgstr ""
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?"
+
+#: ../html/src/manager/login/uyuni/login.tsx:37
+msgid "Learn more about"
+msgstr "자세히 알아보기"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:74
 msgid "Skip to the last maintenance window"

@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#. * Mimic the translation function `t()`, this doesn't match the full functionality but should suffice for tests
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:47
 #: ../html/src/components/input/Range.tsx:59
@@ -14,12 +13,12 @@
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 #: ../html/src/utils/test-utils/setup/t.test.ts:7
-#: ../html/src/utils/test-utils/setup/t.ts:2
+#: ../html/src/utils/test-utils/setup/t.ts:4
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-28 13:44+0000\n"
+"POT-Creation-Date: 2022-04-29 11:12+0000\n"
 "PO-Revision-Date: 2022-04-15 11:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -373,7 +372,7 @@ msgid "Last Name"
 msgstr "姓氏"
 
 #: ../html/src/components/input/FormMultiInput.stories.tsx:112
-#: ../html/src/manager/login/login.tsx:162
+#: ../html/src/manager/login/uyuni/login.tsx:54
 msgid "Login"
 msgstr "登录"
 
@@ -389,7 +388,8 @@ msgstr "必填"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/login.tsx:173
+#: ../html/src/manager/login/susemanager/login.tsx:68
+#: ../html/src/manager/login/uyuni/login.tsx:65
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -2894,6 +2894,7 @@ msgid "Use credentials"
 msgstr "使用身份凭证"
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:58
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3312,53 +3313,56 @@ msgstr "您确定要删除选定的映像吗？（已选择 {0} 个映像）"
 msgid "Overview"
 msgstr "概览"
 
-#: ../html/src/manager/login/login.tsx:53
+#: ../html/src/manager/login/messages.tsx:14
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
 msgstr ""
 "需要进行纲要升级。请尽早升级您的纲要，以接收最新 bug 修复并避免潜在问题。"
 
-#: ../html/src/manager/login/login.tsx:62
+#: ../html/src/manager/login/messages.tsx:23
 msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
 msgstr "无法验证磁盘空间可用性。如果此问题持续出现，请联系您的系统管理员。"
 
-#: ../html/src/manager/login/login.tsx:67
+#: ../html/src/manager/login/messages.tsx:28
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
 msgstr "缺少一些重要目录。请联系您的系统管理员查看配置。"
 
-#: ../html/src/manager/login/login.tsx:72
+#: ../html/src/manager/login/messages.tsx:33
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
 msgstr "服务器上的可用磁盘空间不足。请联系您的系统管理员添加更多磁盘空间。"
 
-#: ../html/src/manager/login/login.tsx:77
+#: ../html/src/manager/login/messages.tsx:38
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
 msgstr "服务器上的可用磁盘空间严重不足。请联系您的系统管理员添加更多磁盘空间。"
 
-#: ../html/src/manager/login/login.tsx:95
+#: ../html/src/manager/login/messages.tsx:56
 msgid "Signing in ..."
 msgstr "正在登录..."
 
-#: ../html/src/manager/login/login.tsx:142
+#: ../html/src/manager/login/susemanager/login.tsx:38
+#: ../html/src/manager/login/uyuni/login.tsx:34
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
 msgstr "发掘通过一个界面管理服务器、软件包、补丁等资源的新方式。"
 
-#: ../html/src/manager/login/login.tsx:145
-msgid "Learn more about"
-msgstr "了解详细信息"
+#: ../html/src/manager/login/susemanager/login.tsx:42
+msgid "_blank"
+msgstr ""
 
-#: ../html/src/manager/login/login.tsx:154
-#: ../html/src/manager/login/login.tsx:181
+#: ../html/src/manager/login/susemanager/login.tsx:57
+#: ../html/src/manager/login/susemanager/login.tsx:82
+#: ../html/src/manager/login/uyuni/login.tsx:46
+#: ../html/src/manager/login/uyuni/login.tsx:73
 msgid "Sign In"
 msgstr "登录"
 
@@ -3377,6 +3381,10 @@ msgstr "此用户拥有只读 API 访问权限。WebUI 登录被拒绝。"
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
+
+#: ../html/src/manager/login/uyuni/login.tsx:37
+msgid "Learn more about"
+msgstr "了解详细信息"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:74
 msgid "Skip to the last maintenance window"
