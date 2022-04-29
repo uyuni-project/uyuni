@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#. * Mimic the translation function `t()`, this doesn't match the full functionality but should suffice for tests
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:47
 #: ../html/src/components/input/Range.tsx:59
@@ -14,13 +13,13 @@
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 #: ../html/src/utils/test-utils/setup/t.test.ts:7
-#: ../html/src/utils/test-utils/setup/t.ts:2
+#: ../html/src/utils/test-utils/setup/t.ts:4
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-24 14:18+0000\n"
-"PO-Revision-Date: 2022-04-21 18:12+0000\n"
+"POT-Creation-Date: 2022-04-29 11:12+0000\n"
+"PO-Revision-Date: 2022-04-25 18:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -382,7 +381,7 @@ msgid "Last Name"
 msgstr "Priezvisko"
 
 #: ../html/src/components/input/FormMultiInput.stories.tsx:112
-#: ../html/src/manager/login/login.tsx:162
+#: ../html/src/manager/login/uyuni/login.tsx:54
 msgid "Login"
 msgstr "Prihlasovacie meno"
 
@@ -398,7 +397,8 @@ msgstr "požadované"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/login.tsx:173
+#: ../html/src/manager/login/susemanager/login.tsx:68
+#: ../html/src/manager/login/uyuni/login.tsx:65
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -658,7 +658,7 @@ msgstr "Neplatné dáta"
 msgid "No data"
 msgstr "Žiadne dáta"
 
-#: ../html/src/components/utils/HelpLink.tsx:21
+#: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
 msgstr "Pomocník"
 
@@ -693,20 +693,20 @@ msgstr "žiaden"
 msgid "Require this channel"
 msgstr "Vyžadovať tento kanál"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:22
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "Restart is needed for the configuration changes to take effect."
 msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:25
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:26
 msgid "An internal error has occured. See the server logs for details."
 msgstr "Nastala interná chyba. Podrobnosti nájdete v záznamoch servera."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:26
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:27
 msgid "Enabling monitoring failed. See the server logs for details."
 msgstr ""
 "Povolenie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:28
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:29
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
@@ -714,12 +714,12 @@ msgstr ""
 "Nepodarilo sa povoliť všetky monitorovacie služby. Niektoré služby sú stále "
 "zakázané. Podrobnosti nájdete v záznamoch servera."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:30
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:31
 msgid "Disabling monitoring failed. See the server logs for details."
 msgstr ""
 "Zakázanie monitorovania zlyhalo. Podrobnosti nájdete v záznamoch servera."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:32
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:33
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
@@ -727,28 +727,28 @@ msgstr ""
 "Nepodarilo sa zakázať všetky monitorovacie služby. Niektoré služby sú stále "
 "povolené. Podrobnosti nájdete v záznamoch servera."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:34
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:35
 msgid "Monitoring enabled successfully."
 msgstr "Monitorovanie bolo úspešne povolené."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:35
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid "Monitoring disabled successfully."
 msgstr "Monitorovanie bolo úspešne zakázané."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:37
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:38
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
 msgstr ""
 "Exportér Tomcat Prometheus je pripravený, ale konfigurácia JMX je zakázaná. "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:41
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:42
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
 msgstr ""
 "Exportér Tomcat Prometheus nie je pripravený, ale konfigurácia JMX je "
 "povolená. "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:45
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:46
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
@@ -756,7 +756,7 @@ msgstr ""
 "Exportér Taskomatic Prometheus je pripravený, ale konfigurácia JMX je "
 "zakázaná. "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:49
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
@@ -764,15 +764,15 @@ msgstr ""
 "Exportér Taskomatic Prometheus nie je pripravený, ale konfigurácia JMX je "
 "povolená. "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Monitoring status hasn't changed."
 msgstr "Stav monitorovania sa nezmenil."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "An error occured. Monitoring status unknown. Refresh the page."
 msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:60
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
@@ -784,83 +784,83 @@ msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 msgid "System"
 msgstr "Systém"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:62
 msgid "Tomcat (Java JMX)"
 msgstr "Tomcat (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:62
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:63
 msgid "Taskomatic (Java JMX)"
 msgstr "Taskomatic (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:63
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:64
 msgid "PostgreSQL database"
 msgstr "Databáza PostgreSQL"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:64
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:65
 msgid "Server self monitoring"
 msgstr "Vlastné monitorovanie servera"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:80
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:82
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:81
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:83
 msgid "Enabled"
 msgstr "Povolené"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:90
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:92
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:91
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:93
 msgid "Disabled"
 msgstr "Zakázané"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:151
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
 msgid "Server Monitoring"
 msgstr "Monitorovanie servera"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:153
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
 msgid "The server uses "
 msgstr "Server používa "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:155
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:156
 msgid "Prometheus"
 msgstr "Prometheus"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:157
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:158
 msgid " exporters to expose metrics about your environment."
 msgstr " exportéri pre ukázanie metriky o vašom prostredí."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:160
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
 msgid "Refer to the "
 msgstr "Pozrite si "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:166
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:167
 msgid "documentation"
 msgstr "dokumentácia"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:168
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:169
 msgid " to learn how to to consume these metrics."
 msgstr " naučiť sa, ako tieto metriky využívať."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:246
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:266
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:286
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:308
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:247
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:267
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:287
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:309
 msgid "Enable"
 msgstr "Povoliť"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:253
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:273
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:293
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:316
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:317
 msgid "Disable"
 msgstr "Zakázať"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:329
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:330
 msgid "SUSE Manager Configuration - Monitoring"
 msgstr "Konfigurácia SUSE Manager - Monitorovanie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:334
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:335
 msgid "Setup your SUSE Manager server monitoring."
 msgstr "Nastavte monitorovanie svojho servera SUSE Manager."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:340
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:219
@@ -868,38 +868,38 @@ msgstr "Nastavte monitorovanie svojho servera SUSE Manager."
 msgid "General"
 msgstr "Všeobecné"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:345
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:346
 msgid "Bootstrap Script"
 msgstr "Zavádzací skript"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:350
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
 msgid "Organizations"
 msgstr "Organizácie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:355
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
 msgid "Restart"
 msgstr "Reštart"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:360
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:365
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
 msgid "Bare-metal systems"
 msgstr "Systémy Bare-metal"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:369
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:386
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:376
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:387
 msgid "Monitoring"
 msgstr "Monitorovanie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:397
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
 msgid "Restarting"
 msgstr "Reštartovanie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:399
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -924,7 +924,6 @@ msgstr "Pridať nové priebežne platené dáta ssh"
 #: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
-#: ../html/src/manager/proxy/container-config.tsx:248
 #: ../html/src/manager/state/recurring-states-list.tsx:51
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
@@ -2981,6 +2980,7 @@ msgid "Use credentials"
 msgstr "Použiť prihlasovanie údaje"
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:58
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3399,7 +3399,7 @@ msgstr "Naozaj chcete vymazať vybrané obrazy? ({0} vybraných obrazov)"
 msgid "Overview"
 msgstr "Prehľad"
 
-#: ../html/src/manager/login/login.tsx:53
+#: ../html/src/manager/login/messages.tsx:14
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
@@ -3408,7 +3408,7 @@ msgstr ""
 "vám to bude hodiť, aby ste dostávali najnovšie opravy chýb a vyhli sa "
 "potenciálnym problémom."
 
-#: ../html/src/manager/login/login.tsx:62
+#: ../html/src/manager/login/messages.tsx:23
 msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
@@ -3416,7 +3416,7 @@ msgstr ""
 "Nie je možné overiť dostupnosť miesta na disku. Prosím, kontaktujte svojho "
 "systémového administrátora, ak tento problém pretrváva."
 
-#: ../html/src/manager/login/login.tsx:67
+#: ../html/src/manager/login/messages.tsx:28
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
@@ -3424,7 +3424,7 @@ msgstr ""
 "Chýbajú niektoré dôležité adresáre. Prosím, kontaktujte svojho systémového "
 "administrátora, aby skontroloval konfiguráciu."
 
-#: ../html/src/manager/login/login.tsx:72
+#: ../html/src/manager/login/messages.tsx:33
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
@@ -3432,7 +3432,7 @@ msgstr ""
 "Dostupné miesto na disku na serveri je nedostatočné. Prosím, kontaktuje "
 "svojho systémového administrátora, aby pridal viac miesta na disku."
 
-#: ../html/src/manager/login/login.tsx:77
+#: ../html/src/manager/login/messages.tsx:38
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
@@ -3440,11 +3440,12 @@ msgstr ""
 "Dostupné miesto na disku na serveri je kriticky nízke. Prosíme, kontaktuje "
 "svojho systémového administrátora, aby pridal viac miesta na disku."
 
-#: ../html/src/manager/login/login.tsx:95
+#: ../html/src/manager/login/messages.tsx:56
 msgid "Signing in ..."
 msgstr "Prihlasovanie ..."
 
-#: ../html/src/manager/login/login.tsx:142
+#: ../html/src/manager/login/susemanager/login.tsx:38
+#: ../html/src/manager/login/uyuni/login.tsx:34
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3452,12 +3453,14 @@ msgstr ""
 "Objavte nový spôsob správy serverov, balíkov, opráv a ďalšieho "
 "prostredníctvom jedného rozhrania."
 
-#: ../html/src/manager/login/login.tsx:145
-msgid "Learn more about"
-msgstr "Zistiť viac o"
+#: ../html/src/manager/login/susemanager/login.tsx:42
+msgid "_blank"
+msgstr ""
 
-#: ../html/src/manager/login/login.tsx:154
-#: ../html/src/manager/login/login.tsx:181
+#: ../html/src/manager/login/susemanager/login.tsx:57
+#: ../html/src/manager/login/susemanager/login.tsx:82
+#: ../html/src/manager/login/uyuni/login.tsx:46
+#: ../html/src/manager/login/uyuni/login.tsx:73
 msgid "Sign In"
 msgstr "Prihlásiť sa"
 
@@ -3478,6 +3481,10 @@ msgstr ""
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Naozaj chcete zavrieť túto stránku počas prihlasovania?"
+
+#: ../html/src/manager/login/uyuni/login.tsx:37
+msgid "Learn more about"
+msgstr "Zistiť viac o"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:74
 msgid "Skip to the last maintenance window"
@@ -4177,25 +4184,23 @@ msgstr "Proxy FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:192
 msgid "The FQDN of the machine where the containers are hosted"
-msgstr ""
+msgstr "FQDN stroja, v ktorom sú umiestnené kontajnery"
 
 #: ../html/src/manager/proxy/container-config.tsx:194
 msgid "e.g., proxy.domain.com"
 msgstr "napr. proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-#, fuzzy
 msgid "Parent FQDN"
-msgstr "Proxy FQDN"
+msgstr "FQDN rodiča"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., server.domain.com"
 msgstr "napr. server.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:203
-#, fuzzy
 msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr "FQDN servera proxy, ku ktorému sa má pripojiť."
+msgstr "FQDN rodiča (server alebo proxy), ku ktorému sa má pripojiť."
 
 #: ../html/src/manager/proxy/container-config.tsx:209
 msgid "Proxy SSH port"
@@ -4207,9 +4212,8 @@ msgid "Port range: 1 - 65535"
 msgstr "Rozsah portov: 1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:219
-#, fuzzy
 msgid "Max Squid cache size"
-msgstr "Max veľkosť vyrovnávacej pamäte Squid (MB)"
+msgstr "Max veľkosť vyrovnávacej pamäte Squid"
 
 #: ../html/src/manager/proxy/container-config.tsx:220
 msgid "The maximum value of the Squid cache in Megabytes"
@@ -4225,10 +4229,8 @@ msgid "Proxy admin email"
 msgstr "Email administrátora proxy"
 
 #: ../html/src/manager/proxy/container-config.tsx:231
-#, fuzzy
 msgid "The container-based proxy administrator email address"
-msgstr ""
-"Konfigurácia proxy založeného na kontajneroch bola vygenerovaná správne."
+msgstr "Emailová adresa administrátora proxy založeného na kontajneroch"
 
 #: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., proxy.admin@mycompany.com"
@@ -4238,6 +4240,11 @@ msgstr "napr. proxy.admin@mycompany.com"
 #: ../html/src/manager/proxy/container-config.tsx:240
 msgid "SSL certificate"
 msgstr "SSL certifikát"
+
+#: ../html/src/manager/proxy/container-config.tsx:248
+#: ../html/src/manager/proxy/container-config.tsx:373
+msgid "Generate"
+msgstr "Generovať"
 
 #: ../html/src/manager/proxy/container-config.tsx:249
 msgid "Use existing"
@@ -4332,10 +4339,6 @@ msgstr "Súbor CA vo formáte PEM"
 #, fuzzy
 msgid "Proxy SSL private key"
 msgstr "Súkromný kľúč proxy SSL vo formáte PEM"
-
-#: ../html/src/manager/proxy/container-config.tsx:373
-msgid "Generate"
-msgstr "Generovať"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4469,33 +4472,33 @@ msgstr "Kľúče"
 msgid "Fingerprint"
 msgstr "Odtlačok"
 
-#: ../html/src/manager/shared/menu/menu.tsx:199
+#: ../html/src/manager/shared/menu/menu.tsx:203
 msgid "Clear Menu"
 msgstr "Ponuka Vymazať"
 
-#: ../html/src/manager/shared/menu/menu.tsx:201
+#: ../html/src/manager/shared/menu/menu.tsx:205
 msgid "Filter menu"
 msgstr "Ponuka filtra"
 
-#: ../html/src/manager/shared/menu/menu.tsx:238
-#: ../html/src/manager/shared/menu/menu.tsx:241
+#: ../html/src/manager/shared/menu/menu.tsx:242
+#: ../html/src/manager/shared/menu/menu.tsx:245
 msgid "Uyuni homepage"
 msgstr "Domovská stránka Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:239
+#: ../html/src/manager/shared/menu/menu.tsx:243
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:248
-#: ../html/src/manager/shared/menu/menu.tsx:257
+#: ../html/src/manager/shared/menu/menu.tsx:252
+#: ../html/src/manager/shared/menu/menu.tsx:261
 msgid "SUSE Manager homepage"
 msgstr "Domovská stránka SUSE Manager"
 
-#: ../html/src/manager/shared/menu/menu.tsx:251
+#: ../html/src/manager/shared/menu/menu.tsx:255
 msgid "SUSE"
 msgstr "SUSE"
 
-#: ../html/src/manager/shared/menu/menu.tsx:253
+#: ../html/src/manager/shared/menu/menu.tsx:257
 msgid "Manager"
 msgstr "Manager"
 

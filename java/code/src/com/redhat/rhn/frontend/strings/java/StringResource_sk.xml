@@ -11154,6 +11154,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="Report Database Schema" xml:space="preserve">
+        <source>Report Database Schema</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
