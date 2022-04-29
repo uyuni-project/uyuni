@@ -161,9 +161,9 @@ def get_client_type(name)
 end
 
 def repository_exist?(repo)
-  $api_test.login('admin', 'admin')
-  repo_list = $api_test.channel_software_repository_list_user_repos
-  $api_test.logout
+  $api_test.auth.login('admin', 'admin')
+  repo_list = $api_test.channel.software.list_user_repos
+  $api_test.auth.logout
   repo_list.include? repo
 end
 
