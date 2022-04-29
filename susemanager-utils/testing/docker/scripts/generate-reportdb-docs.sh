@@ -117,7 +117,15 @@ if [ ! -f $SCHEMASPY_JAR ]; then
     wget -q --show-progress "https://github.com/$SCHEMASPY_REPO/releases/download/v$SCHEMASPY_VERSION/schemaspy-$SCHEMASPY_VERSION.jar" -O $SCHEMASPY_JAR
 fi
 
-java -cp $(build-classpath ongres-scram) -jar $SCHEMASPY_JAR -configFile $CONFIG_FILE -dp $(build-classpath postgresql-jdbc) -label "$BRAND_NAME Reporting"
+# Check postgresql runtime dependency. If version is >= 42.2.19, we need ongres-stringprep as well
+POSTGRESQL_VERSION=$(rpm -q --qf '%{V}\n' postgresql-jdbc)
+if echo -e "$POSTGRESQL_VERSION\n42.2.19" | sort --reverse --version-sort --check=quiet; then
+    DRIVER_PATH=$(build-classpath postgresql-jdbc ongres-scram ongres-stringprep)
+else
+    DRIVER_PATH=$(build-classpath postgresql-jdbc ongres-scram)
+fi
+
+java -jar $SCHEMASPY_JAR -configFile $CONFIG_FILE -dp "$DRIVER_PATH" -label "$BRAND_NAME Reporting"
 
 CSS_FILE=$(cat $CONFIG_FILE | grep schemaspy.css | cut -c 15-)
 if [ -n $CSS_FILE ] && [ -f $CSS_FILE ]; then
