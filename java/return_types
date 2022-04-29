@@ -1,0 +1,140 @@
+ActivationKey
+AnsiblePath
+boolean
+Boolean
+byte[]
+Channel
+CobblerSnippet
+Collection<MgrSyncProductDto>
+Collection<String>
+ConfigChannel
+ConfigRevision
+ContentEnvironment
+ContentFilter
+ContentProject
+ContentSource
+CryptoKey
+Date
+EncodedConfigRevision
+Errata
+Errata[]
+FileList
+Hashtable
+ImageOverview
+ImageProfile
+ImageStore
+int
+Integer
+IssMaster
+IssSlave
+KickstartableTreeDetail
+List
+List<ActivationKey>
+List<AnsiblePath>
+List<Channel>
+List<ChannelArch>
+List<ChannelInfo>
+List<CobblerSnippet>
+List<ConfigChannel>
+List<ConfigChannelDto>
+List<ConfigFileDto>
+List<ConfigFileNameDto>
+List<ConfigRevision>
+List<ConfigSystemDto>
+List<ContentEnvironment>
+List<ContentFilter>
+List<ContentProject>
+List<ContentProjectFilter>
+List<ContentSource>
+List<ContentSourceFilter>
+List<CVEAuditImage>
+List<CVEAuditServer>
+List<EndpointInfo>
+List<Errata>
+List<ErrataOverview>
+List<? extends RecurringAction>
+List<Formula>
+List<FormulaData>
+List<ImageInfo>
+List<ImageProfile>
+List<ImageStore>
+List<ImageStoreType>
+List<Integer>
+List<IssMaster>
+List<IssMasterOrg>
+List<IssSlave>
+List<KickstartScript>
+List<Long>
+List<ManagedServerGroup>
+List<Map>
+List<Map<String, Long>>
+List<Map<String, Object>>
+List<Map<String, String>>
+List<MgrSyncChannelDto>
+List<MirrorCredentialsDto>
+List<NetworkInterface>
+List<OrgDto>
+List<OrgTrustOverview>
+List<OrgUserExtGroup>
+List<Package>
+List<PackageDto>
+List<PackageOverview>
+List<PackageProvider>
+List<PinnedSubscription>
+List<ProjectSource>
+List<ServerSnapshot>
+List<ShortSystemInfo>
+List<String>
+List<SUSEInstalledProduct>
+List<SystemEventDto>
+List<SystemGroupsDTO>
+List<SystemOverview>
+List<UserExtGroup>
+List<VirtualHostManager>
+List<VirtualSystemOverview>
+List<XccdfRuleResultDto>
+List<XccdfTestResultDto>
+long
+Long
+Long[]
+Map
+Map<Long, String>
+Map<String, Boolean>
+Map<String, Integer>
+Map<String, List<ActivationKey>>
+Map<String, List<KickstartOptionValue>>
+Map<String, Long>
+Map<String, Map<String, AnsiblePlaybookSlsResult>>
+Map<String, Map<String, Object>>
+Map<String, Object>
+Map<String, Set<String>>
+Map<String, String>
+Object
+Object []
+Object[]
+OrgDto
+OrgUserExtGroup
+PinnedSubscription
+ProjectSource
+RecurringAction
+ServerGroup
+Set<ConfigRevision>
+Set<CryptoKey>
+Set<FileList>
+Set<Note>
+Set<PackageKey>
+Set<PackageNevra>
+Set<PackageState>
+Set<String>
+static User
+static void
+String
+String 
+String[]
+SystemEventDetailsDto
+TaskomaticApi
+User
+UserExtGroup
+VirtualHostManager
+void
+XccdfTestResult

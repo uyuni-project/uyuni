@@ -1,0 +1,12 @@
+List:
+
+CVEAuditHandler.listSystemsByPatchStatus List<String> of predefined constants
+FormulaHandler.getCombinedFormulaDataByServerIds List<Long> system IDs
+SystemMonitoringHandler.listEndpoints List<Long> system IDs
+SystemHandler.listActiveSystemsDetails List<Integer> system IDs
+SystemHandler.listLatestAvailablePackage List<Integer> system IDs
+SystemHandler.getNetworkForSystems List<Integer> system IDs
+
+Map:
+
+SnapshotHandler.listSnapshots Map with 2 constant keys: 'startDate', 'endDate'

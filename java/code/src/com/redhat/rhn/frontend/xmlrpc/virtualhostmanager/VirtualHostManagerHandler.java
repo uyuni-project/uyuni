@@ -46,7 +46,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.doc Lists Virtual Host Managers visible to a user
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $VirtualHostManagerSerializer
      *     #array_end()
      */

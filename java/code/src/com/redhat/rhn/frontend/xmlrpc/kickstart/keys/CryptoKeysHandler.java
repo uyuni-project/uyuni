@@ -49,7 +49,7 @@ public class CryptoKeysHandler extends BaseHandler {
      *             given session
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          #struct_begin("key")
      *              #prop("string", "description")
      *              #prop("string", "type")
@@ -83,7 +83,7 @@ public class CryptoKeysHandler extends BaseHandler {
      *         already exists for the user's org
      *
      * @xmlrpc.doc creates a new key with the given parameters
-     * @xmlrpc.param #param("string", "session_key")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "description")
      * @xmlrpc.param #param_desc("string", "type", "valid values are GPG or SSL")
      * @xmlrpc.param #param("string", "content")
@@ -120,7 +120,7 @@ public class CryptoKeysHandler extends BaseHandler {
      * @throws KickstartKeyDeleteException if there is an error during the delete
      *
      * @xmlrpc.doc deletes the key identified by the given parameters
-     * @xmlrpc.param #param("string", "session_key")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "description")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -160,7 +160,7 @@ public class CryptoKeysHandler extends BaseHandler {
      * @throws KickstartKeyDeleteException if there is an error during the delete
      *
      * @xmlrpc.doc Updates type and content of the key identified by the description
-     * @xmlrpc.param #param("string", "session_key")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "description")
      * @xmlrpc.param #param_desc("string", "type", "valid values are GPG or SSL")
      * @xmlrpc.param #param("string", "content")
@@ -190,8 +190,8 @@ public class CryptoKeysHandler extends BaseHandler {
      *
      * @return holder object containing the data associated with the key
      *
-     * @xmlrpc.doc returns all of the data associated with the given key
-     * @xmlrpc.param #param("string", "session_key")
+     * @xmlrpc.doc returns all the data associated with the given key
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "description")
      * @xmlrpc.returntype
      *      #struct_begin("key")

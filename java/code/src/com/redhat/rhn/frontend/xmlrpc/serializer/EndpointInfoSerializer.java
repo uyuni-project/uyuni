@@ -27,7 +27,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * @xmlrpc.doc
  *
- * #struct_begin("endpoint_info")
+ * #struct_begin("endpoint info")
  *   #prop("int", "system_id")
  *   #prop("string", "endpoint_name")
  *   #prop("string", "exporter_name")

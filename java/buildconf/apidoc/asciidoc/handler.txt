@@ -22,7 +22,13 @@ $handler.name
 #if($call.deprecated)
 == Method: $call.name (Deprecated)
 #else
-== Method: $call.name 
+== Method: $call.name
+#end
+
+#if($call.readOnly)
+HTTP `GET`
+#else
+HTTP `POST`
 #end
 
 Description:

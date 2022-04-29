@@ -28,7 +28,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * ImageOverviewSerializer
  * @xmlrpc.doc
- * #struct_begin("Image Overview information")
+ * #struct_begin("image overview information")
  *   #prop("int", "id")
  *   #prop_desc("string", "name", "image name")
  *   #prop_desc("string", "type", "image type")
@@ -60,8 +60,8 @@ import com.suse.manager.api.SerializedApiResponse;
  *   #prop("int", "enhancementErrata")
  *   #prop("int", "outdatedPackages")
  *   #prop("int", "installedPackages")
- *   #prop_desc("boolean", "obsolete", "true if the image has been replaced in the store")
  *   #prop_desc("struct", "files", "image files")
+ *   #prop_desc("boolean", "obsolete", "true if the image has been replaced in the store")
  * #struct_end()
  */
 public class ImageOverviewSerializer extends ApiResponseSerializer<ImageOverview> {

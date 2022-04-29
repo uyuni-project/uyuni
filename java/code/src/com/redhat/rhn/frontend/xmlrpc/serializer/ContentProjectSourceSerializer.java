@@ -25,11 +25,11 @@ import com.suse.manager.api.SerializedApiResponse;
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ProjectSource} class and subclasses
  *
  * @xmlrpc.doc
- * #struct_begin("Content Project Source information")
+ * #struct_begin("content project source information")
  *   #prop("string", "contentProjectLabel")
  *   #prop("string", "type")
  *   #prop("string", "state")
-     #prop_desc("string", "channelLabel", "(If type is SW_CHANNEL) The label of channel associated with the source")
+     #prop_desc("string", "channelLabel", "(if type is SW_CHANNEL) the label of channel associated with the source")
  * #struct_end()
  */
 public class ContentProjectSourceSerializer extends ApiResponseSerializer<ProjectSource> {

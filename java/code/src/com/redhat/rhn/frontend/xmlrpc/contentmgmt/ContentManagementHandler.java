@@ -88,7 +88,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc List Content Projects visible to user
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $ContentProjectSerializer
      * #array_end()
      */
@@ -101,26 +101,26 @@ public class ContentManagementHandler extends BaseHandler {
      * Look up Content Project with given label
      *
      * @param loggedInUser the logged in user
-     * @param label the Content Project label
+     * @param projectLabel the Content Project label
      * @throws EntityNotExistsFaultException when the Content Project does not exist
      * @return the Content Project with given label
      *
      * @xmlrpc.doc Look up Content Project with given label
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.returntype $ContentProjectSerializer
      */
     @ReadOnly
-    public ContentProject lookupProject(User loggedInUser, String label) {
-        return ContentManager.lookupProject(label, loggedInUser)
-                .orElseThrow(() -> new EntityNotExistsFaultException(label));
+    public ContentProject lookupProject(User loggedInUser, String projectLabel) {
+        return ContentManager.lookupProject(projectLabel, loggedInUser)
+                .orElseThrow(() -> new EntityNotExistsFaultException(projectLabel));
     }
 
     /**
      * Create Content Project
      *
      * @param loggedInUser the logged in user
-     * @param label the Content Project label
+     * @param projectLabel the Content Project label
      * @param name the Content Project name
      * @param description the description
      * @throws EntityExistsFaultException when Project already exists
@@ -129,15 +129,15 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Create Content Project
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "name", "Content Project name")
      * @xmlrpc.param #param_desc("string", "description", "Content Project description")
      * @xmlrpc.returntype $ContentProjectSerializer
      */
-    public ContentProject createProject(User loggedInUser, String label, String name, String description) {
+    public ContentProject createProject(User loggedInUser, String projectLabel, String name, String description) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return contentManager.createProject(label, name, description, loggedInUser);
+            return contentManager.createProject(projectLabel, name, description, loggedInUser);
         }
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -151,7 +151,7 @@ public class ContentManagementHandler extends BaseHandler {
      * Update Content Project
      *
      * @param loggedInUser the logged in user
-     * @param label the new label
+     * @param projectLabel the new Content Project label
      * @param props the map with the Content Project properties
      * @throws EntityNotExistsFaultException when Project does not exist
      * @throws ValidationException if validation violation occurs
@@ -159,18 +159,18 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Update Content Project with given label
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param
-     *  #struct_begin("data")
+     *  #struct_begin("props")
      *      #prop_desc("string", "name", "Content Project name")
      *      #prop_desc("string", "description", "Content Project description")
      *  #struct_end()
      * @xmlrpc.returntype $ContentProjectSerializer
      */
-    public ContentProject updateProject(User loggedInUser, String label, Map<String, Object> props) {
+    public ContentProject updateProject(User loggedInUser, String projectLabel, Map<String, Object> props) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return contentManager.updateProject(label,
+            return contentManager.updateProject(projectLabel,
                     ofNullable((String) props.get("name")),
                     ofNullable((String) props.get("description")),
                     loggedInUser);
@@ -187,19 +187,19 @@ public class ContentManagementHandler extends BaseHandler {
      * Remove Content Project
      *
      * @param loggedInUser the logged in user
-     * @param label the label
+     * @param projectLabel the label
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the number of removed objects
      *
      * @xmlrpc.doc Remove Content Project
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "Content Project label")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int removeProject(User loggedInUser, String label) {
+    public int removeProject(User loggedInUser, String projectLabel) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return contentManager.removeProject(label, loggedInUser);
+            return contentManager.removeProject(projectLabel, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -218,7 +218,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $ContentEnvironmentSerializer
      * #array_end()
      */
@@ -264,7 +264,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the logged in user
      * @param projectLabel the Content Project label
      * @param predecessorLabel the Predecessor label
-     * @param label the Content Environment Label
+     * @param envLabel the Content Environment Label
      * @param name the Content Environment name
      * @param description the Content Environment description
      * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
@@ -276,16 +276,16 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "predecessorLabel", "Predecessor Environment label")
-     * @xmlrpc.param #param_desc("string", "label", "new Content Environment label")
+     * @xmlrpc.param #param_desc("string", "envlabel", "new Content Environment label")
      * @xmlrpc.param #param_desc("string", "name", "new Content Environment name")
      * @xmlrpc.param #param_desc("string", "description", "new Content Environment description")
      * @xmlrpc.returntype $ContentEnvironmentSerializer
      */
     public ContentEnvironment createEnvironment(User loggedInUser, String projectLabel, String predecessorLabel,
-            String label, String name, String description) {
+            String envLabel, String name, String description) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return contentManager.createEnvironment(projectLabel, ofNullable(nullIfEmpty(predecessorLabel)), label,
+            return contentManager.createEnvironment(projectLabel, ofNullable(nullIfEmpty(predecessorLabel)), envLabel,
                     name, description, true, loggedInUser);
         }
         catch (EntityNotExistsException e) {
@@ -315,7 +315,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
      * @xmlrpc.param
-     *  #struct_begin("data")
+     *  #struct_begin("props")
      *      #prop_desc("string", "name", "Content Environment name")
      *      #prop_desc("string", "description", "Content Environment description")
      *  #struct_end()
@@ -376,7 +376,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $ContentProjectSourceSerializer
      * #array_end()
      */
@@ -518,7 +518,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc List all Content Filters visible to given user
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $ContentFilterSerializer
      * #array_end()
      */
@@ -528,22 +528,22 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
-     * Lookup {@link ContentFilter} by id
+     * Lookup {@link ContentFilter} by ID
      *
      * @param loggedInUser the logged in user
-     * @param id the filter id
+     * @param filterId the filter ID
      * @throws EntityNotExistsFaultException if filter is not found
      * @return the matching {@link ContentFilter}
      *
-     * @xmlrpc.doc Lookup a Content Filter by id
+     * @xmlrpc.doc Lookup a Content Filter by ID
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "id", "Filter id")
+     * @xmlrpc.param #param_desc("int", "filterId", "Filter ID")
      * @xmlrpc.returntype $ContentFilterSerializer
      */
     @ReadOnly
-    public ContentFilter lookupFilter(User loggedInUser, Integer id) {
-        return ContentManager.lookupFilterById(id.longValue(), loggedInUser)
-                .orElseThrow(() -> new EntityNotExistsFaultException(id));
+    public ContentFilter lookupFilter(User loggedInUser, Integer filterId) {
+        return ContentManager.lookupFilterById(filterId.longValue(), loggedInUser)
+                .orElseThrow(() -> new EntityNotExistsFaultException(filterId));
     }
 
     /**
@@ -555,7 +555,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc List of available filter criteria
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * #struct_begin("Filter Criteria")
      * #prop("string", "type")
      * #prop("string", "matcher")
@@ -580,7 +580,6 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the created {@link ContentFilter}
      *
      * @xmlrpc.doc Create a Content Filter
-     * #paragraph_end()
      * #paragraph()
      * The following filters are available (you can get the list in machine-readable format using
      * the listFilterCriteria() endpoint):
@@ -613,8 +612,8 @@ public class ContentManagementHandler extends BaseHandler {
      * Note: Only 'allow' rule is supported for appstream filters.
      * #paragraph_end()
      * #paragraph()
-     *
      * Note: The 'matches' matcher works on Java regular expressions.
+     * #paragraph_end()
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "name", "Filter name")
@@ -650,7 +649,7 @@ public class ContentManagementHandler extends BaseHandler {
      * Update a {@link ContentFilter}
      *
      * @param loggedInUser the logged in user
-     * @param filterId the Filter id
+     * @param filterId the Filter ID
      * @param name the Filter name
      * @param rule the Filter rule
      * @param criteria the filter criteria
@@ -658,11 +657,11 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the updated {@link ContentFilter}
      *
      * @xmlrpc.doc Update a Content Filter
-     * #paragraph_end()
      * #paragraph()
      * See also: createFilter(), listFilterCriteria()
+     * #paragraph_end()
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "filterId", "Filter id")
+     * @xmlrpc.param #param_desc("int", "filterId", "Filter ID")
      * @xmlrpc.param #param_desc("string", "name", "New filter name")
      * @xmlrpc.param #param_desc("string", "rule", "New filter rule ('deny' or 'allow')")
      * @xmlrpc.param
@@ -720,13 +719,13 @@ public class ContentManagementHandler extends BaseHandler {
      * Remove a {@link ContentFilter}
      *
      * @param loggedInUser the logged in user
-     * @param filterId the filter id
+     * @param filterId the filter ID
      * @throws EntityNotExistsFaultException when Filter does not exist
      * @return 1 on success
      *
      * @xmlrpc.doc Remove a Content Filter
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "id", "Filter id")
+     * @xmlrpc.param #param_desc("int", "filterId", "Filter ID")
      * @xmlrpc.returntype #return_int_success()
      */
     public int removeFilter(User loggedInUser, Integer filterId) {
@@ -752,7 +751,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $ContentProjectFilterSerializer
      * #array_end()
      */
@@ -771,14 +770,14 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the logged in user
      * @param projectLabel the Project label
-     * @param filterId the Filter id to attach
+     * @param filterId the Filter ID to attach
      * @throws EntityNotExistsException if the Project/Filter does not exist
      * @return the attached Filter
      *
      * @xmlrpc.doc Attach a Filter to a Project
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
-     * @xmlrpc.param #param_desc("int", "id", "Filter id to attach")
+     * @xmlrpc.param #param_desc("int", "filterId", "filter ID to attach")
      * @xmlrpc.returntype $ContentFilterSerializer
      */
     public ContentFilter attachFilter(User loggedInUser, String projectLabel, Integer filterId) {
@@ -797,14 +796,14 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the logged in user
      * @param projectLabel the Project label
-     * @param filterId the Filter id to detach
+     * @param filterId the Filter ID to detach
      * @throws EntityNotExistsException if the Project/Filter does not exist
      * @return 1 on success
      *
      * @xmlrpc.doc Detach a Filter from a Project
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
-     * @xmlrpc.param #param_desc("int", "id", "Filter id to detach")
+     * @xmlrpc.param #param_desc("int", "filterId", "filter ID to detach")
      * @xmlrpc.returntype #return_int_success()
      */
     public int detachFilter(User loggedInUser, String projectLabel, Integer filterId) {
@@ -829,7 +828,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Build a Project
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
      * @xmlrpc.returntype #return_int_success()
      */
     public int buildProject(User loggedInUser, String projectLabel) {
@@ -860,8 +859,8 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Build a Project
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
-     * @xmlrpc.param #param_desc("string", "message" "Log message to be assigned to the build")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
+     * @xmlrpc.param #param_desc("string", "message", "log message to be assigned to the build")
      * @xmlrpc.returntype #return_int_success()
      */
     public int buildProject(User loggedInUser, String projectLabel, String message) {
@@ -892,8 +891,8 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @xmlrpc.doc Promote an Environment in a Project
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel" "Project label")
-     * @xmlrpc.param #param_desc("string", "envLabel" "Environment label")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
+     * @xmlrpc.param #param_desc("string", "envLabel", "Environment label")
      * @xmlrpc.returntype #return_int_success()
      */
     public int promoteProject(User loggedInUser, String projectLabel, String envLabel) {

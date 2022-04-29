@@ -29,14 +29,14 @@ import java.util.Comparator;
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ContentProject}
  *
  * @xmlrpc.doc
- * #struct_begin("Content Project information")
+ * #struct_begin("content project information")
  *   #prop("int", "id")
  *   #prop("string", "label")
  *   #prop("string", "name")
  *   #prop("string", "description")
- *   #prop("dateTime.iso8601", "lastBuildDate")
+ *   #prop("$date", "lastBuildDate")
  *   #prop("int", "orgId")
- *   #prop("string", "firstEnvironment label")
+ *   #prop("string", "firstEnvironment")
  * #struct_end()
  */
 public class ContentProjectSerializer extends ApiResponseSerializer<ContentProject> {

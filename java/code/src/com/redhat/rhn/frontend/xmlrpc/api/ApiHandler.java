@@ -83,7 +83,7 @@ public class ApiHandler extends BaseHandler {
      * @return map of API namespaces
      *
      * @xmlrpc.doc Lists available API namespaces
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *   #struct_begin("namespace")
      *        #prop_desc("string", "namespace", "API namespace")
@@ -105,7 +105,7 @@ public class ApiHandler extends BaseHandler {
      * @return a map containing list of api calls for every namespace
      *
      * @xmlrpc.doc Lists all available api calls grouped by namespace
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *   #struct_begin("method_info")
      *       #prop_desc("string", "name", "method name")
@@ -129,7 +129,7 @@ public class ApiHandler extends BaseHandler {
      * @return a map containing list of api calls for every namespace
      *
      * @xmlrpc.doc Lists all available api calls for the specified namespace
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "namespace")
      * @xmlrpc.returntype
      *   #struct_begin("method_info")

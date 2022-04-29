@@ -49,7 +49,7 @@ public class KickstartTreeHandler extends BaseHandler {
      * @return found KickstartableTreeObject
      *
      * @xmlrpc.doc The detailed information about a kickstartable tree given the tree name.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "treeLabel", "Label of kickstartable tree to
      * search.")
      * @xmlrpc.returntype $KickstartTreeDetailSerializer
@@ -73,10 +73,10 @@ public class KickstartTreeHandler extends BaseHandler {
      * @return Array of KickstartableTreeObjects
      *
      * @xmlrpc.doc List the available kickstartable trees for the given channel.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "Label of channel to
      * search.")
-     * @xmlrpc.returntype #array_begin() $KickstartTreeSerializer #array_end()
+     * @xmlrpc.returntype #return_array_begin() $KickstartTreeSerializer #array_end()
      */
     public List list(User loggedInUser,
             String channelLabel) {
@@ -93,8 +93,8 @@ public class KickstartTreeHandler extends BaseHandler {
      *
      * @xmlrpc.doc List the available kickstartable install types (rhel2,3,4,5 and
      * fedora9+).
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array_begin() $KickstartInstallTypeSerializer #array_end()
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype #return_array_begin() $KickstartInstallTypeSerializer #array_end()
      */
     @ReadOnly
     public List listInstallTypes(User loggedInUser) {

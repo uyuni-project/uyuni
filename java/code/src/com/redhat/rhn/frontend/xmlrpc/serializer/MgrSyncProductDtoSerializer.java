@@ -26,23 +26,23 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * @xmlrpc.doc
  *   #struct_begin("product")
- *     #prop_desc("string", "friendly_name", "Friendly name of the product")
- *     #prop_desc("string", "arch", "Architecture")
+ *     #prop_desc("string", "friendly_name", "friendly name of the product")
+ *     #prop_desc("string", "arch", "architecture")
  *     #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
- *     #array_begin()
+ *     #prop_array_begin("channels")
  *       $MgrSyncChannelDtoSerializer
  *     #array_end()
- *     #array_begin()
+ *     #prop_array_begin("extensions")
  *       #struct_begin("extension product")
- *         #prop_desc("string", "friendly_name", "Friendly name of extension product")
- *         #prop_desc("string", "arch", "Architecture")
+ *         #prop_desc("string", "friendly_name", "friendly name of extension product")
+ *         #prop_desc("string", "arch", "architecture")
  *         #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
- *         #array_begin()
+ *         #prop_array_begin("channels")
  *           $MgrSyncChannelDtoSerializer
  *         #array_end()
  *       #struct_end()
  *     #array_end()
- *     #prop_desc("boolean", "recommended", "Recommended")
+ *     #prop_desc("boolean", "recommended", "recommended")
  *   #struct_end()
  */
 public class MgrSyncProductDtoSerializer extends ApiResponseSerializer<MgrSyncProductDto> {

@@ -27,7 +27,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * Also serializes the information about the associated {@link ContentFilter}
  *
  * @xmlrpc.doc
- * #struct_begin("Assigned Content Filter information")
+ * #struct_begin("assigned content filter information")
  *   #prop("string", "state")
  *   $ContentFilterSerializer
  * #struct_end()
