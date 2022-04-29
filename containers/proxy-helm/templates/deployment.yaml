@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: httpd-depl
+  name: uyuni-proxy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: httpd
+      app: uyuni-proxy
   template:
     metadata:
       labels:
-        app: httpd
+        app: uyuni-proxy
     spec:
       containers:
         - name: httpd
@@ -24,10 +24,13 @@ spec:
             mountPath: /etc/uyuni/httpd.yaml
             subPath: httpd.yaml
             readOnly: true
-          - name: rhn-cache
+          - name: package-cache
             mountPath: /var/cache/rhn
           - name: tftp-boot
             mountPath: /srv/tftpboot
+          ports:
+            - containerPort: 80
+            - containerPort: 443
         - name: salt-broker
           image: "{{ .Values.repository }}/proxy-salt-broker:{{ .Values.version | default .Chart.AppVersion }}"
           volumeMounts:
@@ -35,6 +38,9 @@ spec:
             mountPath: /etc/uyuni/config.yaml
             subPath: config.yaml
             readOnly: true
+          ports:
+            - containerPort: 4505
+            - containerPort: 4506
         - name: squid
           image: "{{ .Values.repository }}/proxy-squid:{{ .Values.version | default .Chart.AppVersion }}"
           volumeMounts:
@@ -44,6 +50,8 @@ spec:
             readOnly: true
           - name: squid-cache 
             mountPath: /var/cache/squid
+          ports:
+            - containerPort: 8088
         - name: ssh
           image: "{{ .Values.repository }}/proxy-ssh:{{ .Values.version | default .Chart.AppVersion }}"
           volumeMounts:
@@ -55,6 +63,8 @@ spec:
             mountPath: /etc/uyuni/ssh.yaml
             subPath: ssh.yaml
             readOnly: true
+          ports:
+            - containerPort: 22
         - name: tftpd
           image: "{{ .Values.repository }}/proxy-tftpd:{{ .Values.version | default .Chart.AppVersion }}"
           volumeMounts:
@@ -65,6 +75,9 @@ spec:
           - name: tftp-boot
             mountPath: /srv/tftpboot
             readOnly: true
+          ports:
+            - containerPort: 69
+              protocol: UDP
       volumes:
         - name: config-volume
           configMap:
@@ -84,34 +97,12 @@ spec:
             items:
               - key: ssh.yaml
                 path: ssh.yaml
-        - name: rhn-cache
+        - name: package-cache
           persistentVolumeClaim:
-            claimName: rhn-cache-pv-claim
+            claimName: package-cache-pv-claim
         - name: tftp-boot
           persistentVolumeClaim:
             claimName: tftp-boot-pv-claim
         - name: squid-cache
           persistentVolumeClaim:
             claimName: squid-cache-pv-claim
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: proxy 
-spec:
-  selector:
-    app: httpd
-  ports:
-    - name: http
-      port: 80
-    - name: https
-      port: 443
-    - name: ssh
-      port: 8022
-      targetPort: 22
-    - name: salt-publish
-      port: 4505
-    - name: salt-request
-      port: 4506
-    - name: tftp
-      port: 69

@@ -3,6 +3,26 @@ repository: registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyun
 version: latest
 
 # Persistent Volumes
-BASE_DIR: "~"
-RHN_CACHE_DIR: "/proxy-rhn-cache"
-TFTPBOOT_DIR: "/proxy-tftpboot"
+persistentVolume:
+    ## uyuni proxy overall Persistent Volume access modes
+    ## Must match those of existing PV or dynamic provisioner
+    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    accessModes:
+      - ReadWriteOnce
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+
+    ## package cache Persistent Volume size
+    ##
+    package_cache_size: 5Gi
+
+    ## tftpboot Persistent Volume size
+    ##
+    tftp_boot_size: 5Gi
