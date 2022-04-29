@@ -87,6 +87,7 @@ Feature: Setup SUSE Manager proxy
 @private_net
   Scenario: Parametrize the branch network
     When I follow first "Branch Network" in the content area
+    And I click on "Expand All Sections"
     And I uncheck enable route box
     And I uncheck enable NAT box
     And I click on "Save Formula"
