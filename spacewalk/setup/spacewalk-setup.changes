@@ -1,3 +1,4 @@
+- Allow alternative usage of perl-Net-LibIDN2.
 - remove creation of extra java truststores for database
   SSL connections
 
