@@ -51,6 +51,7 @@ import com.suse.manager.api.ReadOnly;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -66,6 +67,7 @@ import java.util.stream.Collectors;
 public class ContentManagementHandler extends BaseHandler {
 
     private final ContentManager contentManager;
+    private final FilterTemplateManager filterTemplateManager = new FilterTemplateManager();
 
     /**
      * Initialize a handler specifying a content manager instance.
@@ -663,18 +665,21 @@ public class ContentManagementHandler extends BaseHandler {
 
         Channel channel = ChannelManager.lookupByLabelAndUser(channelLabel, loggedInUser);
 
-        FilterTemplateManager filterTemplateManager = new FilterTemplateManager();
+        try {
+            List<ContentFilter> createdFilters = filterTemplateManager.createAppStreamFilters(
+                    prefix, channel, loggedInUser);
 
-        List<ContentFilter> createdFilters = filterTemplateManager.createAppStreamFilters(
-                prefix, channel, loggedInUser);
+            List<ContentFilter> attachedFilters = new ArrayList<>();
 
-        List<ContentFilter> attachedFilters = null;
+            for (ContentFilter createdFilter : createdFilters) {
+                attachedFilters.add(contentManager.attachFilter(projectLabel, createdFilter.getId(), loggedInUser));
+            }
 
-        for (ContentFilter createdFilter : createdFilters) {
-            attachedFilters.add(contentManager.attachFilter(projectLabel, createdFilter.getId(), loggedInUser));
+            return attachedFilters;
         }
-
-        return attachedFilters;
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
     }
 
     /**
