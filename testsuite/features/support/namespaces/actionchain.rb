@@ -28,7 +28,7 @@ class NamespaceActionchain
   end
 
   def add_script_run(system, label, uid, gid, timeout, script)
-    @test.call('actionchain.addScriptRun', sessionKey: @test.token, serverId: system, chainLabel: label, uid: uid, gid: gid, timeout: timeout, scriptBody: Base64.strict_encode64(script))
+    @test.call('actionchain.addScriptRun', sessionKey: @test.token, sid: system, chainLabel: label, uid: uid, gid: gid, timeout: timeout, scriptBody: Base64.strict_encode64(script))
   end
 
   def list_chain_actions(label)
@@ -36,23 +36,23 @@ class NamespaceActionchain
   end
 
   def add_system_reboot(system, label)
-    @test.call('actionchain.addSystemReboot', sessionKey: @test.token, serverId: system, chainLabel: label)
+    @test.call('actionchain.addSystemReboot', sessionKey: @test.token, sid: system, chainLabel: label)
   end
 
   def add_package_install(system, packages, label)
-    @test.call('actionchain.addPackageInstall', sessionKey: @test.token, serverId: system, packages: packages, chainLabel: label)
+    @test.call('actionchain.addPackageInstall', sessionKey: @test.token, sid: system, packageIds: packages, chainLabel: label)
   end
 
   def add_package_upgrade(system, packages, label)
-    @test.call('actionchain.addPackageUpgrade', sessionKey: @test.token, serverId: system, packages: packages, chainLabel: label)
+    @test.call('actionchain.addPackageUpgrade', sessionKey: @test.token, sid: system, packageIds: packages, chainLabel: label)
   end
 
   def add_package_verify(system, packages, label)
-    @test.call('actionchain.addPackageVerify', sessionKey: @test.token, serverId: system, packages: packages, chainLabel: label)
+    @test.call('actionchain.addPackageVerify', sessionKey: @test.token, sid: system, packageIds: packages, chainLabel: label)
   end
 
   def add_package_removal(system, packages, label)
-    @test.call('actionchain.addPackageRemoval', sessionKey: @test.token, serverId: system, packages: packages, chainLabel: label)
+    @test.call('actionchain.addPackageRemoval', sessionKey: @test.token, sid: system, packageIds: packages, chainLabel: label)
   end
 
   def schedule_chain(label, earliest)
