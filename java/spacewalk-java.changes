@@ -1,3 +1,4 @@
+- add createAppStreamFilters() XMLRPC function
 - Display usertime instead of server time for clm issue date filter (bsc#1198429)
 - fix bootstrapping of ssh minions via proxy
 - check if file exists before sending it to xsendfile (bsc#1198191)
