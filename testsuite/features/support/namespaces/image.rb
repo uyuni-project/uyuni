@@ -78,8 +78,8 @@ class NamespaceImageStore
     @test = api_test
   end
 
-  def create(label, uri, type, params = {})
-    @test.call('image.store.create', sessionKey: @test.token, label: label, uri: uri, storeType: type, parameters: params)
+  def create(label, uri, type, creds = {})
+    @test.call('image.store.create', sessionKey: @test.token, label: label, uri: uri, storeType: type, credentials: creds)
   end
 
   def delete(label)
