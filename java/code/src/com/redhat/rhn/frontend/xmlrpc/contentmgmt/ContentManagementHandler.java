@@ -652,12 +652,14 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
+     * Create new {@link ContentFilter}s for all AppStream modules with default streams
      *
-     * @param loggedInUser
-     * @param prefix
-     * @param channelLabel
-     * @param projectLabel
-     * @return List of created Filter or null
+     * @param loggedInUser the logged in user
+     * @param prefix the filter name prefix
+     * @param channelLabel label of the modular channel
+     * @param projectLabel label of the Content Lifecycle Project
+     * @throws EntityExistsFaultException when Filter already exist
+     * @return List of created and successfully attached Filter
      */
     public List<ContentFilter> createAppStreamFilters(User loggedInUser, String prefix,
             String channelLabel, String projectLabel) throws ModulemdApiException {
