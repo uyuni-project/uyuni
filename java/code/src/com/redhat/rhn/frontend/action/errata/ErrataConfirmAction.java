@@ -63,6 +63,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("confirm.jsp.confirm", "confirmErrata");
     }
@@ -70,6 +71,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm form, HttpServletRequest request,
             Map<String, Object> params) {
         RequestContext requestContext = new RequestContext(request);
@@ -148,7 +150,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
             args[0] = currentErrata.getAdvisoryName();
             args[1] = (long) systems.size();
             args[2] = currentErrata.getId().toString();
-            args[3] = update.getId();
+            args[3] = update.getId().toString();
         }
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
@@ -161,7 +163,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
 
             messageKey = "message.addedtoactionchain";
             args = new Object[2];
-            args[0] = actionChain.getId();
+            args[0] = actionChain.getId().toString();
             args[1] = actionChain.getLabel();
         }
 
