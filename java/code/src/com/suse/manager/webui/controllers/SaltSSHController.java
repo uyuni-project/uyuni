@@ -61,7 +61,7 @@ public class SaltSSHController {
 
         res.ifPresentOrElse(result -> {
             if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
-                LOG.error("Generating salt-ssh public key failed: " + result.getStderr());
+                LOG.error("Generating salt-ssh public key failed: {}", result.getStderr());
                 halt(500, result.getStderr());
             }
         }, () -> {
@@ -76,7 +76,7 @@ public class SaltSSHController {
         if (key != null) {
             return key.getBytes();
         }
-        LOG.error("Could not read salt-ssh public key " + pubKey);
+        LOG.error("Could not read salt-ssh public key {}", pubKey);
         halt(500, "Could not read salt-ssh public key");
         return new byte[0];
     }

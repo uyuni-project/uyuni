@@ -94,7 +94,7 @@ public class DebReleaseWriter {
             metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha256Hex, file));
         }
         catch (IOException e) {
-            log.error("Could not generate Release file for channel " + channel.getLabel(), e);
+            log.error("Could not generate Release file for channel {}", channel.getLabel(), e);
         }
     }
 
@@ -115,7 +115,7 @@ public class DebReleaseWriter {
             writer.println(" " + checksum.apply(pkgIn) + " " + file.length() + " " + file.getName());
         }
         catch (IOException e) {
-            log.error("Could not compute checksum for " + file.getName());
+            log.error("Could not compute checksum for {}", file.getName());
         }
     }
 }

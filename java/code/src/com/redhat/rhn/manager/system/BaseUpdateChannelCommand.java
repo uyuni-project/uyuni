@@ -64,8 +64,7 @@ public class BaseUpdateChannelCommand extends BasePersistOperation {
 
         if (log.isDebugEnabled()) {
             sw.stop();
-            log.debug("Finished Updating errata cache. Took [" +
-                    sw.getTime() + "]");
+            log.debug("Finished Updating errata cache. Took [{}]", sw.getTime());
         }
     }
 

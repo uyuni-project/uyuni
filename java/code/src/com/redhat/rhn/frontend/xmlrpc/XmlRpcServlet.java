@@ -103,7 +103,7 @@ public class XmlRpcServlet extends HttpServlet {
         for (String namespace : handlerFactory.getKeys()) {
             handlerFactory.getHandler(namespace).ifPresent((handler) -> {
                 if (log.isDebugEnabled()) {
-                    log.debug("registerInvocationHandler: namespace [" + namespace + "] handler [" + handler + "]");
+                    log.debug("registerInvocationHandler: namespace [{}] handler [{}]", namespace, handler);
                 }
                 srvr.addInvocationHandler(namespace, handler);
             });

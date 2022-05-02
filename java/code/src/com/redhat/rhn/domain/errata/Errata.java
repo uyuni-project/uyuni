@@ -91,7 +91,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
      * @param channelIn the channel to add
      */
     public void addChannel(Channel channelIn) {
-        log.debug("addChannel called: " + channelIn.getLabel());
+        log.debug("addChannel called: {}", channelIn.getLabel());
         if (this.channels == null) {
             this.channels = new HashSet<>();
         }

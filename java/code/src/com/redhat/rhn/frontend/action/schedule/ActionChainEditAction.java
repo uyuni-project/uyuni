@@ -170,7 +170,7 @@ public class ActionChainEditAction extends RhnAction implements MaintenanceWindo
         ActionChain actionChain) {
         List<ActionChainEntryGroup> groups = ActionChainFactory
             .getActionChainEntryGroups(actionChain);
-        log.debug("Found " + groups.size() + " Action Chain Entry groups");
+        log.debug("Found {} Action Chain Entry groups", groups.size());
         request.setAttribute(ACTION_CHAIN_ATTRIBUTE, actionChain);
         request.setAttribute(GROUPS_ATTRIBUTE, groups);
         DatePicker datePicker = getStrutsDelegate().prepopulateDatePicker(request, form,

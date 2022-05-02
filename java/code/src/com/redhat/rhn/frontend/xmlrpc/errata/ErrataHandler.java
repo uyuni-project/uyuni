@@ -95,118 +95,13 @@ public class ErrataHandler extends BaseHandler {
     private static Logger log = LogManager.getLogger(ErrataHandler.class);
 
     /**
-     * Returns an OVAL metadata file for a given errata or CVE
-     * @param loggedInUser The current user
-     * @param identifier Errata identifier (either id, CVE/CAN, or Advisory name)
-     * @return Escaped XML representing the OVAL metadata document
-     * @throws IOException error building XML file
-     * @throws FaultException general error occurred
-     *
-     * @xmlrpc.doc Retrieves the OVAL metadata associated with one or more erratas.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "identifier", "Can either be an erratum's ID,
-     *              CVE/CAN, or advisory name.  In the case of CVE/CAN, all dashes must be
-     *             removed from the name.Numeric advisory IDs and advisory names
-     *              (RHSA-2006:011) can be submitted as they are.")
-     * @xmlrpc.returntype #param_desc("string", "metadata", "The OVAL metadata document in escaped XML form")
-     */
-    /**
-     * The getOval method is being commented out due to bugzilla 504054.  This bug
-     * raises an issue of a null exception being generated on execution.  The method
-     * has been updated to address that exception; however, there is a larger issue at
-     * hand in that the OVAL functionality is not fully supported by the application.
-     * For example, the OVAL meta data is not synced to the database; therefore, there
-     * will never be data to return by the method.  So it is better to comment it out
-     * than to have the method that cannot return any data. :)  It is, however,
-     * desirable to support this in the future, so we don't want to lose the logic.
-     *
-    public String getOval(User loggedInUser, String identifier) throws IOException,
-            FaultException {
-        User loggedInUser = getLoggedInUser(sessionKey);
-
-        String retval = "";
-        List<Errata> erratas = ErrataManager.lookupErrataByIdentifier(identifier);
-        for (Errata errata : erratas) {
-            if (errata.getOrg() != null &&
-                    !errata.getOrg().equals(loggedInUser.getOrg())) {
-                erratas.remove(errata);
-            }
-        }
-
-        if (erratas == null) {
-            throw new FaultException(-1, "errataNotFound",
-                    "No patches found for given identifier");
-        }
-        List files = new LinkedList();
-        if (erratas != null) {
-            for (Iterator iter = erratas.iterator(); iter.hasNext();) {
-                Errata e = (Errata) iter.next();
-                List tmp =
-                    ErrataFactory.lookupErrataFilesByErrataAndFileType(e.getId(),
-                            "oval");
-                if ((tmp != null && tmp.size() > 0) &&
-                        (e.getOrg() == null || e.getOrg().equals(loggedInUser.getOrg()))) {
-                    files.addAll(tmp);
-                }
-            }
-            files = ErrataManager.resolveOvalFiles(files);
-            if (files != null) {
-                if (files.size() == 0) {
-                    throw new FaultException(-1, "ovalNotFound",
-                            "No OVAL files found for given patches");
-                }
-                else if (files.size() == 1) {
-                    File f = (File) files.get(0);
-                    if (f != null) {
-                        InputStream in = null;
-                        byte[] buf = new byte[4096];
-                        int readsize = 0;
-                        ByteArrayOutputStream accum  = new ByteArrayOutputStream();
-                        try {
-                            in = new FileInputStream(f);
-                            while ((readsize = in.read(buf)) > -1) {
-                                accum.write(buf, 0, readsize);
-                            }
-                            retval = new String(accum.toByteArray(), "UTF-8");
-                        }
-                        finally {
-                            if (in != null) {
-                                in.close();
-                            }
-                        }
-                    }
-                }
-                else if (files.size() > 1) {
-                    try {
-                        OvalFileAggregator agg = new OvalFileAggregator();
-                        for (Iterator iter = files.iterator(); iter.hasNext();) {
-                            File f = (File) iter.next();
-                            if (f != null && !f.getPath().endsWith("test-5.xml")) {
-                                agg.add(f);
-                            }
-                        }
-                        retval = StringEscapeUtils.escapeXml(agg.finish(false));
-                    }
-                    catch (JDOMException e) {
-                        throw new FaultException(-1, "err_building_oval", e.getMessage());
-                    }
-                }
-            }
-        }
-        return retval;
-    }
-     */
-
-    /**
      * GetDetails - Retrieves the details for a given errata.
      * @param loggedInUser The current user
      * @param advisoryName The advisory name of the errata
      * @return Returns a map containing the details of the errata
-     * @throws FaultException A FaultException is thrown if the errata
-     * corresponding to advisoryName cannot be found.
+     * @throws FaultException A FaultException is thrown if the errata corresponding to advisoryName cannot be found.
      *
-     * @xmlrpc.doc Retrieves the details for the erratum matching the given
-     * advisory name.
+     * @xmlrpc.doc Retrieves the details for the erratum matching the given advisory name.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
@@ -229,8 +124,7 @@ public class ErrataHandler extends BaseHandler {
      *     #struct_end()
      */
     @ReadOnly
-    public Map<String, Object> getDetails(User loggedInUser, String advisoryName)
-            throws FaultException {
+    public Map<String, Object> getDetails(User loggedInUser, String advisoryName) throws FaultException {
      // Get the logged in user. We don't care what roles this user has, we
         // just want to make sure the caller is logged in.
 
@@ -295,10 +189,10 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.doc Set erratum details. All arguments are optional and will only be modified
      * if included in the struct. This method will only allow for modification of custom
      * errata created either through the UI or API.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param
-     *      #struct_begin("errata details")
+     *      #struct_begin("details")
      *          #prop("string", "synopsis")
      *          #prop("string", "advisory_name")
      *          #prop("int", "advisory_release")
@@ -306,8 +200,8 @@ public class ErrataHandler extends BaseHandler {
      *                  following: 'Security Advisory', 'Product Enhancement Advisory',
      *                  or 'Bug Fix Advisory'")
      *          #prop("string", "product")
-     *          #prop("dateTime.iso8601", "issue_date")
-     *          #prop("dateTime.iso8601", "update_date")
+     *          #prop("$date", "issue_date")
+     *          #prop("$date", "update_date")
      *          #prop("string", "errataFrom")
      *          #prop("string", "topic")
      *          #prop("string", "description")
@@ -317,26 +211,20 @@ public class ErrataHandler extends BaseHandler {
      *          #prop_desc("string", "severity", "Severity of advisory (one of the
      *                  following: 'Low', 'Moderate', 'Important', 'Critical'
      *                  or 'Unspecified'")
-     *          #prop_desc("array", "bugs", "'bugs' is the key into the struct")
-     *              #array_begin()
+     *          #prop_array_begin_desc("bugs", "'bugs' is the key into the struct")
      *                 #struct_begin("bug")
      *                    #prop_desc("int", "id", "Bug Id")
      *                    #prop("string", "summary")
      *                    #prop("string", "url")
      *                 #struct_end()
-     *              #array_end()
-     *          #prop_desc("array", "keywords", "'keywords' is the key into the struct")
-     *              #array_single("string", "keyword - List of keywords to associate
-     *                  with the errata.")
-     *          #prop_desc("array", "CVEs", "'cves' is the key into the struct")
-     *              #array_single("string", "cves - List of CVEs to associate
-     *                  with the errata")
+     *          #prop_array_end()
+     *          #prop_array("keywords", "string", "list of keywords to associate with the errata")
+     *          #prop_array("cves", "string", "list of CVEs to associate with the errata")
      *     #struct_end()
      *
      *  @xmlrpc.returntype #return_int_success()
      */
-    public Integer setDetails(User loggedInUser, String advisoryName,
-            Map<String, Object> details) {
+    public Integer setDetails(User loggedInUser, String advisoryName, Map<String, Object> details) {
 
         Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
 
@@ -545,8 +433,7 @@ public class ErrataHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param advisoryName The advisory name of the errata
      * @return Returns an object array containing the system ids and system name
-     * @throws FaultException A FaultException is thrown if the errata corresponding to
-     * advisoryName cannot be found.
+     * @throws FaultException A FaultException is thrown if the errata corresponding to advisoryName cannot be found.
      *
      * @xmlrpc.doc Return the list of systems affected by the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
@@ -554,13 +441,12 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
     @ReadOnly
-    public Object[] listAffectedSystems(User loggedInUser, String advisoryName)
-            throws FaultException {
+    public Object[] listAffectedSystems(User loggedInUser, String advisoryName) throws FaultException {
 
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
@@ -596,8 +482,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop_desc("string", "bug_summary", "summary who's key is the bug id")
      *      #struct_end()
      */
-    public Map<Long, String> bugzillaFixes(User loggedInUser, String advisoryName)
-            throws FaultException {
+    public Map<Long, String> bugzillaFixes(User loggedInUser, String advisoryName) throws FaultException {
 
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
@@ -614,20 +499,17 @@ public class ErrataHandler extends BaseHandler {
      * @param advisoryName The advisory name of the erratum
      * @return Returns an array of keywords for the erratum
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
-     * given advisoryName cannot be fo
+     * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Get the keywords associated with an erratum matching the
-     * given advisory name.
+     * @xmlrpc.doc Get the keywords associated with an erratum matching the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the keywords of both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.returntype #array_single("string", "Keyword associated with erratum.")
-
+     * @xmlrpc.returntype #array_single("string", "keyword associated with erratum.")
      */
     @ReadOnly
-    public Object[] listKeywords(User loggedInUser, String advisoryName)
-            throws FaultException {
+    public Object[] listKeywords(User loggedInUser, String advisoryName) throws FaultException {
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
         Set<String> keywords = erratas.stream()
@@ -648,14 +530,13 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Returns a list of channels applicable to the errata
-     * with the given advisory name.
+     * @xmlrpc.doc Returns a list of channels applicable to the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the list of channels applicable of both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          #struct_begin("channel")
      *              #prop("int", "channel_id")
      *              #prop("string", "label")
@@ -665,8 +546,7 @@ public class ErrataHandler extends BaseHandler {
      *       #array_end()
      */
     @ReadOnly
-    public Object[] applicableToChannels(User loggedInUser, String advisoryName)
-            throws FaultException {
+    public Object[] applicableToChannels(User loggedInUser, String advisoryName) throws FaultException {
 
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
@@ -685,18 +565,13 @@ public class ErrataHandler extends BaseHandler {
      * @return Returns a collection of CVEs
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
-        throws FaultException {
      *
-     * @xmlrpc.doc Returns a list of
-     * <a href="http://cve.mitre.org/" target="_blank">CVE</a>s
-     * applicable to the errata with the given advisory name.
-     * For those errata that are present in both vendor and user organizations under the same advisory name,
-     * this method retrieves the list of CVEs of both of them.
+     * @xmlrpc.doc Returns a list of <a href="http://cve.mitre.org/" target="_blank">CVE</a>s applicable to the errata
+     * with the given advisory name. For those errata that are present in both vendor and user organizations under the
+     * same advisory name, this method retrieves the list of CVEs of both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string",  "advisoryName")
-     * @xmlrpc.returntype
-     *      #array_single("string", "cveName")
-     *
+     * @xmlrpc.returntype #array_single("string", "CVE name")
      */
     @ReadOnly
     public List listCves(User loggedInUser, String advisoryName) throws FaultException {
@@ -719,14 +594,13 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Returns a list of the packages affected by the errata
-     * with the given advisory name.
+     * @xmlrpc.doc Returns a list of the packages affected by the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the packages of both of them.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
-     *          #array_begin()
+     *          #return_array_begin()
      *              #struct_begin("package")
      *                  #prop("int", "id")
      *                  #prop("string", "name")
@@ -754,8 +628,7 @@ public class ErrataHandler extends BaseHandler {
      *           #array_end()
      */
     @ReadOnly
-    public List<Map> listPackages(User loggedInUser, String advisoryName)
-            throws FaultException {
+    public List<Map> listPackages(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
@@ -774,17 +647,14 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Add a set of packages to an erratum
-     * with the given advisory name. This method will only allow for modification
-     * of custom errata created either through the UI or API.
+     * @xmlrpc.doc Add a set of packages to an erratum with the given advisory name.
+     * This method will only allow for modification of custom errata created either through the UI or API.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.param #array_single("int", "packageId")
-     * @xmlrpc.returntype
-     *   #param_desc("int", "count", "representing the number of packages added, exception otherwise")
+     * @xmlrpc.param #array_single("int", "packageIds")
+     * @xmlrpc.returntype #param("int", "the number of packages added, exception otherwise")
      */
-    public int addPackages(User loggedInUser, String advisoryName,
-            List<Integer> packageIds) throws FaultException {
+    public int addPackages(User loggedInUser, String advisoryName, List<Integer> packageIds) throws FaultException {
 
         // Get the logged in user
         Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
@@ -823,17 +693,14 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Remove a set of packages from an erratum
-     * with the given advisory name.  This method will only allow for modification
-     * of custom errata created either through the UI or API.
+     * @xmlrpc.doc Remove a set of packages from an erratum with the given advisory name.
+     * This method will only allow for modification of custom errata created either through the UI or API.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.param #array_single("int", "packageId")
-     * @xmlrpc.returntype
-     *   #param_desc("int", "count", "representing the number of packages removed, exception otherwise")
+     * @xmlrpc.param #array_single("int", "packageIds")
+     * @xmlrpc.returntype #param("int", "the number of packages removed, exception otherwise")
      */
-    public int removePackages(User loggedInUser, String advisoryName,
-            List<Integer> packageIds) throws FaultException {
+    public int removePackages(User loggedInUser, String advisoryName, List<Integer> packageIds) throws FaultException {
 
         // Get the logged in user
         Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
@@ -918,16 +785,15 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.doc Clone a list of errata into the specified channel.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "channel_label")
-     * @xmlrpc.param
-     *     #array_single("string", " advisory - The advisory name of the errata to clone.")
+     * @xmlrpc.param #param("string", "channelLabel")
+     * @xmlrpc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
      * @xmlrpc.returntype
-     *          #array_begin()
+     *          #return_array_begin()
      *              $ErrataSerializer
      *          #array_end()
      */
-    public Object[] clone(User loggedInUser, String channelLabel,
-            List advisoryNames) throws InvalidChannelRoleException {
+    public Object[] clone(User loggedInUser, String channelLabel, List<String> advisoryNames)
+            throws InvalidChannelRoleException {
         return clone(loggedInUser, channelLabel, advisoryNames, false, false);
     }
 
@@ -938,20 +804,16 @@ public class ErrataHandler extends BaseHandler {
      * @param channelLabel the channel's label that we are cloning into
      * @param advisoryNames an array of String objects containing the advisory name
      *          of every errata you want to clone
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return 1 on success, exception thrown otherwise.
      *
      * @xmlrpc.doc Asynchronously clone a list of errata into the specified channel.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "channel_label")
-     * @xmlrpc.param
-     *     #array_single("string", " advisory - The advisory name of the errata to clone.")
-     * @xmlrpc.returntype
-     *          #return_int_success()
+     * @xmlrpc.param #param("string", "channelLabel")
+     * @xmlrpc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
+     * @xmlrpc.returntype #return_int_success()
      */
-    public int cloneAsync(User loggedInUser, String channelLabel,
-            List advisoryNames) throws InvalidChannelRoleException {
+    public int cloneAsync(User loggedInUser, String channelLabel, List<String> advisoryNames) {
         clone(loggedInUser, channelLabel, advisoryNames, false, true);
         return 1;
     }
@@ -1054,20 +916,18 @@ public class ErrataHandler extends BaseHandler {
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
-     * @xmlrpc.doc Clones a list of errata into a specified cloned channel
-     * according the original erratas.
+     * @xmlrpc.doc Clones a list of errata into a specified cloned channel according the original erratas.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "channel_label")
-     * @xmlrpc.param
-     *     #array_single("string", " advisory - The advisory name of the errata to clone.")
+     * @xmlrpc.param #param("string", "channelLabel")
+     * @xmlrpc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
      * @xmlrpc.returntype
-     *          #array_begin()
+     *          #return_array_begin()
      *              $ErrataSerializer
      *          #array_end()
      */
-    public Object[] cloneAsOriginal(User loggedInUser, String channelLabel,
-            List<String> advisoryNames) throws InvalidChannelRoleException {
+    public Object[] cloneAsOriginal(User loggedInUser, String channelLabel, List<String> advisoryNames)
+            throws InvalidChannelRoleException {
         return clone(loggedInUser, channelLabel, advisoryNames, true, false);
     }
 
@@ -1086,18 +946,15 @@ public class ErrataHandler extends BaseHandler {
      * according the original erratas
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "channel_label")
-     * @xmlrpc.param
-     *     #array_single("string", " advisory - The advisory name of the errata to clone.")
-     * @xmlrpc.returntype
-     *          #return_int_success()
+     * @xmlrpc.param #param("string", "channelLabel")
+     * @xmlrpc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
+     * @xmlrpc.returntype #return_int_success()
      */
-    public int cloneAsOriginalAsync(User loggedInUser, String channelLabel,
-            List<String> advisoryNames) throws InvalidChannelRoleException {
+    public int cloneAsOriginalAsync(User loggedInUser, String channelLabel, List<String> advisoryNames)
+            throws InvalidChannelRoleException {
         clone(loggedInUser, channelLabel, advisoryNames, true, true);
         return 1;
     }
-
 
     private Object getRequiredAttribute(Map map, String attribute) {
         Object value = map.get(attribute);
@@ -1138,7 +995,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.doc Create a custom errata
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
-     *      #struct_begin("errata info")
+     *      #struct_begin("errataInfo")
      *          #prop("string", "synopsis")
      *          #prop("string", "advisory_name")
      *          #prop("int", "advisory_release")
@@ -1159,21 +1016,17 @@ public class ErrataHandler extends BaseHandler {
      *                  or 'Unspecified'")
      *       #struct_end()
      *  @xmlrpc.param
-     *       #array_begin()
-     *              #struct_begin("bug")
-     *                  #prop_desc("int", "id", "Bug Id")
-     *                  #prop("string", "summary")
-     *                  #prop("string", "url")
-     *               #struct_end()
+     *       #array_begin("bugs")
+     *         #struct_begin("bug")
+     *           #prop_desc("int", "id", "Bug Id")
+     *           #prop("string", "summary")
+     *           #prop("string", "url")
+     *         #struct_end()
      *       #array_end()
-     * @xmlrpc.param #array_single("string", "keyword - List of keywords to associate
-     *              with the errata.")
-     * @xmlrpc.param #array_single("int", "packageId")
-     * @xmlrpc.param
-     *       #array_single("string", "channelLabel - list of channels the errata should be
-     *                  published to")
-     * @xmlrpc.returntype
-     *      $ErrataSerializer
+     * @xmlrpc.param #array_single_desc("string", "keywords", "list of keywords to associate with the errata")
+     * @xmlrpc.param #array_single("int", "packageIds")
+     * @xmlrpc.param #array_single_desc("string", "channelLabels", "list of channels the errata should be published to")
+     * @xmlrpc.returntype $ErrataSerializer
      */
     public Errata create(User loggedInUser, Map<String, Object> errataInfo,
                          List<Map<String, Object>> bugs, List<String> keywords,
@@ -1300,7 +1153,7 @@ public class ErrataHandler extends BaseHandler {
         ErrataFactory.save(newErrata);
         List<Channel> vendorChannels = channels.stream().filter(Channel::isVendorChannel).collect(toList());
         if (!vendorChannels.isEmpty()) {
-            log.warn("Errata " + newErrata.getAdvisory() + " added to vendor channels " +
+            log.warn("Errata {} added to vendor channels {}", newErrata.getAdvisory(),
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
         }
 
@@ -1331,25 +1184,23 @@ public class ErrataHandler extends BaseHandler {
     /**
      * Adds an existing errata to a set of channels
      * @param loggedInUser The current user
-     * @param advisory The advisory Name of the errata to add
+     * @param advisoryName The advisory Name of the errata to add
      * @param channelLabels List of channels to add the errata to
      * @return the added errata
      *
      * @xmlrpc.doc Adds an existing errata to a set of channels.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.param
-     *      #array_single("string", "channelLabel - list of channel labels to add to")
-     * @xmlrpc.returntype
-     *          $ErrataSerializer
+     * @xmlrpc.param #array_single_desc("string", "channelLabels", "list of channel labels to add to")
+     * @xmlrpc.returntype $ErrataSerializer
      */
-    public Errata publish(User loggedInUser, String advisory, List<String> channelLabels) {
+    public Errata publish(User loggedInUser, String advisoryName, List<String> channelLabels) {
         List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, allowedList);
         List<Channel> vendorChannels = channels.stream().filter(Channel::isVendorChannel).collect(toList());
-        Errata toPublish = lookupAccessibleErratum(advisory, empty(), loggedInUser.getOrg());
+        Errata toPublish = lookupAccessibleErratum(advisoryName, empty(), loggedInUser.getOrg());
         if (!vendorChannels.isEmpty()) {
-            log.warn("Errata " + toPublish.getAdvisory() + " added to vendor channels " +
+            log.warn("Errata {} added to vendor channels {}", toPublish.getAdvisory(),
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
         }
         return addToChannels(toPublish, channels, loggedInUser, false);
@@ -1359,7 +1210,7 @@ public class ErrataHandler extends BaseHandler {
      * Adds an existing cloned errata to a set of cloned channels
      * according to its original erratum
      * @param loggedInUser The current user
-     * @param advisory The advisory Name of the errata to add
+     * @param advisoryName The advisory Name of the errata to add
      * @param channelLabels List of channels to add the errata to
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return the added errata
@@ -1368,13 +1219,11 @@ public class ErrataHandler extends BaseHandler {
      * channels according to its original erratum
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.param
-     *      #array_single("string", "channelLabel - list of channel labels to add to")
-     * @xmlrpc.returntype
-     *          $ErrataSerializer
+     * @xmlrpc.param #array_single_desc("string", "channelLabels", "list of channel labels to add to")
+     * @xmlrpc.returntype $ErrataSerializer
      */
-    public Errata publishAsOriginal(User loggedInUser, String advisory,
-            List<String> channelLabels) throws InvalidChannelRoleException {
+    public Errata publishAsOriginal(User loggedInUser, String advisoryName, List<String> channelLabels)
+            throws InvalidChannelRoleException {
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, Collections.emptyList());
         for (Channel c : channels) {
             ClonedChannel cc = null;
@@ -1401,7 +1250,7 @@ public class ErrataHandler extends BaseHandler {
                         " does not have access to channel " + original.getLabel());
             }
         }
-        Errata toPublish = lookupErrata(advisory, loggedInUser.getOrg());
+        Errata toPublish = lookupErrata(advisoryName, loggedInUser.getOrg());
         if (!toPublish.isCloned()) {
             throw new InvalidErrataException("Cloned errata expected.");
         }
@@ -1465,7 +1314,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "cveName")
      * @xmlrpc.returntype
-     *          #array_begin()
+     *          #return_array_begin()
      *              $ErrataSerializer
      *          #array_end()
      */

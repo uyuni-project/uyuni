@@ -46,11 +46,11 @@ public class ImageStoreHandler extends BaseHandler {
      * @param label the label
      * @param uri the uri
      * @param storeType the store type
-     * @param parameters optional credentials
+     * @param credentials optional credentials
      * @return 1 on success
      *
-     * @xmlrpc.doc Create a new Image Store
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.doc Create a new image store
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param #param("string", "uri")
      * @xmlrpc.param #param("string", "storeType")
@@ -61,7 +61,7 @@ public class ImageStoreHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String uri, String storeType,
-            Map<String, String> parameters) {
+            Map<String, String> credentials) {
         ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(label)) {
             throw new InvalidParameterException("Label cannot be empty.");
@@ -82,8 +82,8 @@ public class ImageStoreHandler extends BaseHandler {
         imageStore.setStoreType(st.get());
         imageStore.setOrg(loggedInUser.getOrg());
 
-        if (parameters != null) {
-            imageStore.setCreds(ImageStoreFactory.createCredentials(parameters, st.get()));
+        if (credentials != null) {
+            imageStore.setCreds(ImageStoreFactory.createCredentials(credentials, st.get()));
         }
         ImageStoreFactory.save(imageStore);
 
@@ -95,9 +95,9 @@ public class ImageStoreHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return Array of ImageStoreType objects
      *
-     * @xmlrpc.doc List available Image Store Types
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array_begin() $ImageStoreTypeSerializer #array_end()
+     * @xmlrpc.doc List available image store types
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype #return_array_begin() $ImageStoreTypeSerializer #array_end()
      */
     @ReadOnly
     public List<ImageStoreType> listImageStoreTypes(User loggedInUser) {
@@ -110,9 +110,9 @@ public class ImageStoreHandler extends BaseHandler {
      * @param loggedInUser The current User
      * @return Array of ImageStore Objects
      *
-     * @xmlrpc.doc List available Image Stores
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array_begin() $ImageStoreSerializer #array_end()
+     * @xmlrpc.doc List available image stores
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.returntype #return_array_begin() $ImageStoreSerializer #array_end()
      */
     @ReadOnly
     public List<ImageStore> listImageStores(User loggedInUser) {
@@ -126,8 +126,8 @@ public class ImageStoreHandler extends BaseHandler {
      * @param label the Image Store Label
      * @return ImageStore Object
      *
-     * @xmlrpc.doc Get details of an Image Store
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.doc Get details of an image store
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.returntype $ImageStoreSerializer
      */
@@ -153,8 +153,8 @@ public class ImageStoreHandler extends BaseHandler {
      * @param label the image store label
      * @return i on success
      *
-     * @xmlrpc.doc Delete an Image Store
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.doc Delete an image store
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -176,11 +176,11 @@ public class ImageStoreHandler extends BaseHandler {
      * @param details A map containing the new details
      * @return 1 on success
      *
-     * @xmlrpc.doc Set details of an Image Store
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.doc Set details of an image store
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param
-     *   #struct_begin("image store details")
+     *   #struct_desc("details", "image store details")
      *     #prop("string", "uri")
      *     #prop_desc("string", "username", "pass empty string to unset credentials")
      *     #prop("string", "password")

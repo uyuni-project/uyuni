@@ -105,10 +105,10 @@ public class GathererRunner {
                 String uri = builder.build().toString();
                 env.put("http_proxy", uri);
                 env.put("https_proxy", uri);
-                logger.debug("Set http(s)_proxy to " + uri);
+                logger.debug("Set http(s)_proxy to {}", uri);
             }
             catch (URISyntaxException e) {
-                logger.error("URI syntax exception when setting Proxy: " + e.getMessage());
+                logger.error("URI syntax exception when setting Proxy: {}", e.getMessage());
             }
         }
         int debuglevel = Config.get().getInt("debug", 0);
@@ -121,7 +121,7 @@ public class GathererRunner {
         String noProxy = Config.get().getString(HttpClientAdapter.NO_PROXY);
         if (!StringUtils.isEmpty(noProxy)) {
             env.put("no_proxy", noProxy);
-            logger.debug("Set no_proxy to " + noProxy);
+            logger.debug("Set no_proxy to {}", noProxy);
         }
 
         String[] envp = new String[env.size()];
@@ -167,8 +167,7 @@ public class GathererRunner {
 
             int exitCode = p.waitFor();
             if (exitCode != 0) {
-                logger.error("Error while calling the virtual-host-gatherer, exit code " +
-                        exitCode);
+                logger.error("Error while calling the virtual-host-gatherer, exit code {}", exitCode);
                 logger.error("Please check the virtual-host-gatherer logfile.");
                 return null;
             }

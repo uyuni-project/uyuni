@@ -8,6 +8,7 @@ export const renderer = (
   id: string,
   {
     isUyuni,
+    theme,
     urlBounce,
     validationErrors,
     schemaUpgradeRequired,
@@ -26,6 +27,7 @@ export const renderer = (
     ReactDOM.render(
       <Login
         isUyuni={isUyuni}
+        theme={theme}
         bounce={urlBounce}
         validationErrors={validationErrors}
         schemaUpgradeRequired={schemaUpgradeRequired}

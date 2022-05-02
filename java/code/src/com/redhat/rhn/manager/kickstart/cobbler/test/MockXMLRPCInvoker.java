@@ -35,7 +35,7 @@ public class MockXMLRPCInvoker implements XMLRPCInvoker {
     private static Logger log = LogManager.getLogger(MockXMLRPCInvoker.class);
 
     public MockXMLRPCInvoker() {
-        log.debug("Constructor: " + TestUtils.randomString());
+        log.debug("Constructor: {}", TestUtils.randomString());
     }
 
     public Object invokeMethod(String procedureName, List args)

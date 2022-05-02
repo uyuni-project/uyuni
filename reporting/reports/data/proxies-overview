@@ -1,29 +1,31 @@
 
 synopsis:
 
-    Proxies report
+  Proxies report
 
 description:
 
-    List of proxies and the servers registered through them
+  List of proxies and the systems registered through them
 
 columns:
 
-    proxy_id     Proxy identifier
-    proxy_name   Proxy name
-    server_name  Server name
-    server_id    Server identifier
+  mgm_id The id of the management server instance that contains this data
+  proxy_id The id of the proxy system
+  proxy_name The unique descriptive name of the proxy
+  system_name The unique descriptive name of the system behind the proxy
+  system_id The id of the system behind the proxy
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-    select * from (
-        select proxy.id proxy_id, proxy.name proxy_name, server.name server_name, server.id server_id
-          from rhnserver proxy
-               inner join rhnproxyinfo pi on proxy.id = pi.server_id
-               left outer join rhnserverpath sp on sp.proxy_server_id = proxy.id
-               left outer join rhnserver server on server.id = sp.server_id
-         order by proxy.name, server.name 
-    ) X
-    -- where placeholder
-    order by proxy_name, server_name
-
+  SELECT * FROM (
+      SELECT mgm_id
+                , proxy_id
+                , proxy_name
+                , system_name
+                , system_id
+                , synced_date
+        FROM ProxyOverviewReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, proxy_name, system_name

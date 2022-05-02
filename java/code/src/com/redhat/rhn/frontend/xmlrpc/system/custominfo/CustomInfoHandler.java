@@ -143,9 +143,9 @@ public class CustomInfoHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown on error.
      *
      * @xmlrpc.doc List the custom information keys defined for the user's organization.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          $CustomDataKeySerializer
      *      #array_end()
      */

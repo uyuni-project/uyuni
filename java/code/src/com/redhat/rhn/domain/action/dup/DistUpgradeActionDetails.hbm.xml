@@ -28,5 +28,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="dryRun" column="dry_run" type="yes_no" />
     <property name="allowVendorChange" column="allow_vendor_change" type="yes_no" />
     <property name="fullUpdate" column="full_update" type="yes_no" />
+    <!-- comma separated product names -->
+    <property name="missingSuccessors" column="missing_successors" type="string" />
   </class>
 </hibernate-mapping>

@@ -1,35 +1,37 @@
 
 synopsis:
 
-	Inactive system in spacewalk
+  Inactive systems.
 
 description:
 
-	List of all inactive systems in spacewalk
+  List of the inactive systems.
 
 columns:
 
-	system_id	System id
-	system_name	System name
-	organization_id	Id of organization system belongs to
-	last_checkin	Last check of the system
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  system_name 'The unique descriptive name of the system
+  organization The organization that owns this data
+  last_checkin When this system was visible and reachable last time
+  synced_date The timestamp of when this data was last refreshed.
 
 params:
 
-	tresh	web.system_checkin_threshold
+  threshold web.system_checkin_threshold
 
 sql:
 
-	select * from (
-	select rhnServer.id as system_id,
-		rhnServer.name as system_name,
-		rhnServer.org_id as organization_id,
-		rhnServerInfo.checkin as last_checkin
-	from rhnServer
-		join rhnServerInfo on rhnServer.id=rhnServerInfo.server_id
-	where rhnServerInfo.checkin < current_timestamp - numtodsinterval(
-	:tresh * 86400, 'second')
-	) X
-	-- where placeholder
-	order by system_id, organization_id
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , system_name
+                , organization
+                , last_checkin_time AS last_checkin
+                , synced_date
+        FROM SystemInactivityReport
+       WHERE inactivity >= CAST(:threshold || ' days' AS interval)
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id
 

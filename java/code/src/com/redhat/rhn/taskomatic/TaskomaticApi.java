@@ -746,7 +746,7 @@ public class TaskomaticApi {
                 .collect(Collectors.toList());
 
         if (!jobLabels.isEmpty()) {
-            LOG.debug("Unscheduling jobs: " + jobLabels);
+            LOG.debug("Unscheduling jobs: {}", jobLabels);
             invoke("tasko.unscheduleSatBunches", jobLabels);
         }
     }

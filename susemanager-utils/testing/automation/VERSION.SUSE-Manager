@@ -4,9 +4,11 @@ BASE_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-$VER-base
 PGSQL_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-$VER-pgsql
 NODEJS_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-$VER-nodejs
 PUSH2OBS_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-push-to-obs
+REPORTDB_DOC_CONTAINER=devel/galaxy/manager/head/docker/containers/suma-$VER-reportdb-docs
 # Base version for the idempotency test. All PostgreSQL since this version must be idempotent for the test to pass
 # This value is is used if the file for the PR is not found (we assume we are on a branch)
 IDEMPOTENCY_SCHEMA_BASE_VERSION='4.2.4'
 IDEMPOTENCY_REPORTDB_SCHEMA_BASE_VERSION='4.3.1'
 SCHEMA_PACKAGES='susemanager-schema-4.2.4-1.3.noarch.rpm'
 REPORTDB_SCHEMA_PACKAGES='susemanager-schema-4.3.8-150400.1.5.noarch.rpm susemanager-schema-utility-4.3.8-150400.1.5.noarch.rpm uyuni-reportdb-schema-4.3.1-150400.1.5.noarch.rpm'
+BRAND_NAME='SUSE Manager'

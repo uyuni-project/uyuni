@@ -41,15 +41,15 @@ import java.util.Set;
  *      #prop($date, "created")
  *      #prop_array("channels", "string", "labels of channels associated with the
  *              snapshot")
- *      #prop_array("groups", "string", "Names of server groups associated with
+ *      #prop_array("groups", "string", "names of server groups associated with
  *              the snapshot")
- *      #prop_array("entitlements", "string", "Names of system entitlements associated
+ *      #prop_array("entitlements", "string", "names of system entitlements associated
  *              with the snapshot")
- *       #prop_array("config_channels", "string", "Labels of config channels the snapshot
- *                  is associated with.")
- *      #prop_array("tags", "string", "Tag names associated with this snapshot.")
- *      #prop_desc("string", "Invalid_reason", "If the snapshot is invalid, this is the
- *                  reason (optional).")
+ *       #prop_array("config_channels", "string", "labels of config channels the snapshot
+ *                  is associated with")
+ *      #prop_array("tags", "string", "tag names associated with this snapshot")
+ *      #prop_desc("string", "Invalid_reason", "if the snapshot is invalid, this is the
+ *                  reason (optional)")
  *  #struct_end()
  */
 public class ServerSnapshotSerializer extends ApiResponseSerializer<ServerSnapshot> {

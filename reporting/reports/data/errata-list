@@ -1,46 +1,33 @@
 
 synopsis:
 
-	Errata out of compliance information - errata details
+  Errata out of compliance information - errata details
 
 description:
 
-	List of erratas that are applicable to at least one registered
-	system, together with basic info about the errata. Also see
-	errata-systems report to get list of systems that are affected.
+  Patches out of compliance information with their details.
 
 columns:
 
-	advisory	Advisory / errata identifier
-	type		Advisory type (Enhancement, Bug Fix, Security)
-	cve		List of CVE names (Common Vulnerabilities and Exposures Identifiers) addressed by the errata
-	synopsis	Synopsis of the errata
-	systems_affected:i	Number of systems to which this errata is applicable
-
-multival_columns:
-
-	advisory
-	cve : cve
+  mgm_id The id of the management server instance that contains this data
+  advisory The unique name of the advisory
+  type The type of patch. Possible values: Product Enhancement Advisory, Security Advisory, Bug Fix Advisory
+  cve A list of CVE ids that this patch addresses, separated by ;
+  synopsis The brief description of this patch
+  systems_affected The number of system affected by this advisory
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-	select * from (
-	select rhnErrata.advisory_name as advisory,
-		rhnErrata.advisory_type as type,
-		rhnCVE.name as cve,
-		rhnErrata.synopsis,
-		count(*) as systems_affected
-	from rhnErrata left outer join rhnErrataCVE
-		on rhnErrata.id = rhnErrataCVE.errata_id
-		left outer join rhnCVE
-		on rhnErrataCVE.cve_id = rhnCVE.id
-		, rhnServerNeededErrataCache
-	where rhnErrata.id = rhnServerNeededErrataCache.errata_id
-	group by rhnErrata.id,
-		rhnErrata.advisory_name,
-		rhnErrata.advisory_type,
-		rhnCVE.name,
-		rhnErrata.synopsis
-	) X
-	-- where placeholder
-	order by advisory, cve
+  SELECT * FROM (
+      SELECT mgm_id
+                , advisory_name AS advisory
+                , advisory_type AS type
+                , cve
+                , synopsis
+                , affected_systems AS systems_affected
+                , synced_date
+        FROM ErrataListReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, advisory

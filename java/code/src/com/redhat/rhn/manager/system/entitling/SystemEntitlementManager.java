@@ -115,7 +115,7 @@ public class SystemEntitlementManager {
             return;
         }
         if (LOG.isDebugEnabled() && hasEntitlement) {
-            LOG.debug("Server " + server.getName() + " already has monitoring entitlement.");
+            LOG.debug("Server {} already has monitoring entitlement.", server.getName());
         }
     }
 }

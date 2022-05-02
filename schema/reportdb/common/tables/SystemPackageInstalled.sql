@@ -21,3 +21,6 @@ CREATE TABLE SystemPackageInstalled
     type                VARCHAR(10),
     synced_date         TIMESTAMPTZ DEFAULT (current_timestamp)
 );
+
+CREATE INDEX IF NOT EXISTS systempackageinstalled_order_idx
+  on SystemPackageInstalled (mgm_id, system_id, name, epoch, version, release, arch, type);

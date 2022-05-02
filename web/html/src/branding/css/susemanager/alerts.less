@@ -1,0 +1,36 @@
+.alert {
+  padding: 8px;
+  border: none;
+
+  &:before {
+    position: relative;
+    top: 1px;
+    left: 0;
+    margin-right: 8px;
+    font-size: 14px;
+  }
+
+  &-info {
+    background-color: @eos-bc-cerulean-100;
+    border-left: 5px solid @eos-bc-cerulean-900;
+    color: @eos-bc-gray-1000;
+  }
+
+  &-success {
+    background-color: @eos-bc-green-100;
+    border-left: 5px solid @eos-bc-green-500;
+    color: @eos-bc-gray-1000;
+  }
+
+  &-warning {
+    background-color: @eos-bc-yellow-100;
+    border-left: 5px solid @eos-bc-yellow-900;
+    color: @eos-bc-gray-1000;
+  }
+
+  &-danger {
+    background-color: @eos-bc-red-100;
+    border-left: 5px solid @eos-bc-red-900;
+    color: @eos-bc-gray-1000;
+  }
+}

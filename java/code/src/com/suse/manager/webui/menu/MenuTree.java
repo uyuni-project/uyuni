@@ -29,6 +29,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
@@ -83,7 +85,7 @@ public class MenuTree {
             nodes.add(getUsersNode(adminRoles));
             nodes.add(getAdminNode(adminRoles));
             nodes.add(getHelpNode(docsLocale));
-            nodes.add(getExternalLinksNode());
+            nodes.add(getExternalLinksNode(docsLocale));
         }
         else {
             // Create First User
@@ -92,7 +94,7 @@ public class MenuTree {
             }
 
             nodes.add(getAboutNode(docsLocale));
-            nodes.add(getExternalLinksNode());
+            nodes.add(getExternalLinksNode(docsLocale));
         }
 
         if (getActiveNode(nodes, url) == null) {
@@ -483,6 +485,9 @@ public class MenuTree {
                             .withDir("/rhn/apidoc"))
                     .addChild(new MenuItem("FAQ").withPrimaryUrl("/rhn/apidoc/faqs.jsp"))
                     .addChild(new MenuItem("Sample Scripts").withPrimaryUrl("/rhn/apidoc/scripts.jsp"))
+            )
+            .addChild(new MenuItem("Report Database Schema").withTarget("_blank")
+                    .withPrimaryUrl("/docs/en/reportdb-schema/index.html")
             );
     }
 
@@ -506,19 +511,33 @@ public class MenuTree {
                             .withDir("/rhn/apidoc"))
                     .addChild(new MenuItem("FAQ").withPrimaryUrl("/rhn/apidoc/faqs.jsp"))
                     .addChild(new MenuItem("Sample Scripts").withPrimaryUrl("/rhn/apidoc/scripts.jsp"))
+            )
+            .addChild(new MenuItem("Report Database Schema").withTarget("_blank")
+                    .withPrimaryUrl("/docs/en/reportdb-schema/index.html")
             );
     }
 
-    private MenuItem getExternalLinksNode() {
+    private MenuItem getExternalLinksNode(String docsLocale) {
         return new MenuItem("External Links").withIcon("fa-link")
             .addChild(new MenuItem("header.jsp.knowledgebase")
-                    .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
+                    .withPrimaryUrl("https://www.suse.com/support/kb/?id=SUSE+Manager")
                     .withTarget("_blank"))
             .addChild(new MenuItem("header.jsp.documentation")
                     .withPrimaryUrl(ConfigDefaults.get().isUyuni() ?
-                            "https://www.uyuni-project.org/uyuni-docs/uyuni/index.html" :
-                            "https://documentation.suse.com/suma/")
+                            "https://www.uyuni-project.org/uyuni-docs/" + docsLocale + "/uyuni/index.html" :
+                            "https://documentation.suse.com/suma/" + getMajorMinorProductVersion() + "/")
                     .withTarget("_blank"));
+    }
+
+    /**
+     * Get the `MAJOR.MINOR` part of the product version string
+     */
+    private String getMajorMinorProductVersion() {
+        String productVersion = ConfigDefaults.get().getProductVersion();
+        Pattern pattern = Pattern.compile("^[0-9]+\\.[0-9]+");
+        Matcher matcher = pattern.matcher(productVersion);
+        matcher.find();
+        return matcher.group(0);
     }
 
     /**

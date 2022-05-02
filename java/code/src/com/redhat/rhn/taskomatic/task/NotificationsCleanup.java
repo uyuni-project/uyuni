@@ -46,13 +46,13 @@ public class NotificationsCleanup extends RhnJavaJob {
         int lifetime = ConfigDefaults.get().getNotificationsLifetime();
         Date before = Date.from(LocalDate.now().atStartOfDay().minusDays(lifetime)
                 .atZone(ZoneId.systemDefault()).toInstant());
-        log.info("Deleting all notification messages created before: " + before);
+        log.info("Deleting all notification messages created before: {}", before);
         int deleted = UserNotificationFactory.deleteNotificationMessagesBefore(before);
-        log.info("Notification messages deleted: " + deleted);
+        log.info("Notification messages deleted: {}", deleted);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
-            log.debug("Total duration was: " + duration + " ms");
+            log.debug("Total duration was: {} ms", duration);
         }
     }
 }

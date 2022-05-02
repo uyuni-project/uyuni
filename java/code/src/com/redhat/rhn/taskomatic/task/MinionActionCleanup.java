@@ -54,12 +54,12 @@ public class MinionActionCleanup extends RhnJavaJob {
             minionActionUtils.cleanupScriptActions();
         }
         catch (IOException e) {
-            log.error("Could not cleanup script files: " + e.getMessage(), e);
+            log.error("Could not cleanup script files: {}", e.getMessage(), e);
         }
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
-            log.debug("Total duration was: " + duration + " ms");
+            log.debug("Total duration was: {} ms", duration);
         }
     }
 }

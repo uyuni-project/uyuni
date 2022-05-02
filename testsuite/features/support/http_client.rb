@@ -13,7 +13,9 @@ class HttpClient
   def prepare_call(name, params)
     short_name = name.split('.')[-1]
     call_type =
-      if short_name.start_with?('list', 'get', 'is', 'find') || ['logout', 'errata.applicableToChannels'].include?(name)
+      if short_name.start_with?('list', 'get', 'is', 'find') ||
+         name.start_with?('system.search.', 'packages.search.') ||
+         ['auth.logout', 'errata.applicableToChannels'].include?(name)
         'GET'
       else
         'POST'
@@ -32,8 +34,6 @@ class HttpClient
   end
 
   def call(name, params)
-    name.sub!('auth.', '') if ['auth.login', 'auth.logout'].include?(name)
-
     # Get session cookie from previous calls
     if params.nil?
       session_cookie = nil
@@ -57,10 +57,13 @@ class HttpClient
           request.body = params.to_json unless params.nil?
         end
       end
-    raise "Unexpected HTTP status code #{answer.status}" unless answer.status == 200
+    unless answer.status == 200
+      json_body = JSON.parse(answer.body)
+      raise "Unexpected HTTP status code #{answer.status}, message: #{json_body['message']}"
+    end
 
     # Return either new session cookie or HTTP body
-    if name == 'login'
+    if name == 'auth.login'
       session_cookie = ''
       cookies = answer.headers['Set-cookie']
       cookies.split(',').each do |cookie|

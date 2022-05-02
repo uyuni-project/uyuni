@@ -826,6 +826,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Report Database Schema" xml:space="preserve">
+        <source>Report Database Schema</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Relevant" xml:space="preserve">
         <source>Relevant</source>
         <context-group name="ctx">

@@ -16,7 +16,6 @@ package com.redhat.rhn.common.db.datasource;
 
 import org.hibernate.Session;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -112,7 +111,7 @@ public class GeneratedSelectMode extends SelectMode {
 
         @Override
         public List<String> getParameterList() {
-            return new ArrayList<>(parameters);
+            return List.copyOf(parameters);
         }
 
         @Override

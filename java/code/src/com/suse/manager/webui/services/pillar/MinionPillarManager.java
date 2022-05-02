@@ -116,7 +116,7 @@ public class MinionPillarManager {
      */
     public void generatePillar(MinionServer minion, boolean refreshAccessTokens,
                                Collection<AccessToken> tokensToActivate) {
-        LOG.debug("Generating pillar file for minion: " + minion.getMinionId());
+        LOG.debug("Generating pillar file for minion: {}", minion.getMinionId());
 
         if (refreshAccessTokens) {
             AccessTokenFactory.refreshTokens(minion, tokensToActivate);

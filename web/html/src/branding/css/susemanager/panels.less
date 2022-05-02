@@ -1,0 +1,59 @@
+.panel {
+  margin-bottom: 14px;
+  background: @eos-bc-gray-50;
+  box-shadow: none !important;
+
+  .panel {
+    background: @eos-bc-white;
+  }
+
+  .panel-footer {
+    background: transparent !important;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &-default {
+    border: none;
+
+    > .panel-heading {
+      background: transparent;
+      border-color: @eos-bc-gray-100;
+      padding: .75rem 1.25rem;
+      font-size: 14px;
+
+      h1, h2, h3, h4, h5, h6 {
+        font-size: @font-size-h4;
+        font-weight: 500;
+      }
+    }
+
+    .panel-body {
+      padding: 1.25rem;
+    }
+
+    .list-group-item {
+      background: transparent;
+      border-color: @eos-bc-gray-100;
+
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+}
+
+dl:last-child {
+  margin-bottom: 0;
+}
+
+.well {
+  min-height: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}

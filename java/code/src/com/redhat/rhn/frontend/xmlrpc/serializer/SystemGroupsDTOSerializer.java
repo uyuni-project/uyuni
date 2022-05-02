@@ -36,7 +36,7 @@ import java.util.Map;
 * #struct_begin("system")
 *   #prop_desc("int", "id", "system ID")
 *   #prop_array_begin("system_groups")
-*     #struct_begin("system_group")
+*     #struct_begin("system group")
 *       #prop_desc("int", "id", "system group ID")
 *       #prop_desc("string", "name", "system group name")
 *     #struct_end()

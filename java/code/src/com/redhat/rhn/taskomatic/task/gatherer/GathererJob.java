@@ -89,7 +89,7 @@ public class GathererJob extends RhnJavaJob {
                             label));
                     continue;
                 }
-                log.debug("Processing " + label);
+                log.debug("Processing {}", label);
                 new VirtualHostManagerProcessor(manager, results.get(label))
                         .processMapping();
             }

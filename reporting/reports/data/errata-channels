@@ -1,29 +1,27 @@
 
 synopsis:
 
-	List of erratas in channels
+  List of erratas in channels
 
 description:
 
-	List of all erratas and their relation to channels.
+  List of all erratas and their relation to channels.
 
 columns:
 
-	advisory	Advisory / errata identifier
-	channel_label	Channel label
+  mgm_id The id of the management server instance that contains this data
+  advisory The unique name of the advisory
+  channel_label The unique label identifying the channel
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-
-	select advisory, channel_label
-	from (	
-	select rhnErrata.advisory_name as advisory,
-		rhnErrata.id as errata_id,
-		rhnChannel.label as channel_label,
-		rhnChannel.id as channel_id
-	from rhnErrata, rhnChannelErrata, rhnChannel
-	where rhnErrata.id = rhnChannelErrata.errata_id
-		and rhnChannelErrata.channel_id = rhnChannel.id
-	) X
-	-- where placeholder
-	order by advisory, errata_id, channel_label, channel_id
+  SELECT * FROM (
+      SELECT mgm_id
+                , advisory_name AS advisory
+                , channel_label
+                , synced_date
+        FROM ErrataChannelsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, advisory, channel_label

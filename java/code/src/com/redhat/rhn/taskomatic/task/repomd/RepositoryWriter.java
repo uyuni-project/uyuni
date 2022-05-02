@@ -64,7 +64,7 @@ public abstract class RepositoryWriter {
     * @param deleteDir directory to delete
     */
    public void deleteRepomdFiles(String channelLabelToProcess, boolean deleteDir) {
-       log.info("Removing " + channelLabelToProcess);
+       log.info("Removing {}", channelLabelToProcess);
        String prefix = mountPoint + File.separator + pathPrefix + File.separator +
                channelLabelToProcess;
        File theDirectory = new File(prefix);
@@ -74,13 +74,13 @@ public abstract class RepositoryWriter {
            for (String childIn : children) {
                File file = new File(prefix + File.separator + childIn);
                if (!file.delete()) {
-                   log.info("Couldn't remove " + file.getAbsolutePath());
+                   log.info("Couldn't remove {}", file.getAbsolutePath());
                }
            }
        }
        if (deleteDir) {
            if (!theDirectory.delete()) {
-               log.info("Couldn't remove " + prefix);
+               log.info("Couldn't remove {}", prefix);
            }
        }
    }

@@ -1,4 +1,5 @@
 - Moved static Apache Webserver users to config file.
+- hide reportdb password in spacewalk-debug
 - Fix wrong unicode characters issued by rpm (#4614).
 
 -------------------------------------------------------------------

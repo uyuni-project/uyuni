@@ -1,8 +1,8 @@
-:global(.gap-right) {
+.gap_right {
     margin-right: 10px
 }
 
-:global(.placeholder) {
+.placeholder {
     list-style: none;
     padding-left: 0px;
     color: #dddddd;
@@ -10,23 +10,21 @@
     animation: preload 5s infinite cubic-bezier(.65, .05, .36, 1);
 }
 
-:global(.placeholder-item) {
+.placeholder_item {
     margin: 5px 0px 5px 0px
 }
 
-:global(.placeholder-item div) {
+.placeholder_separator {
     display: inline-block;
     width: 200px;
     height: 1em;
     background-color: #dddddd
 }
 
-@keyframes :local(preload) {
+@keyframes preload {
     0%   { opacity: .5; }
     25%  { opacity: .15; }
     50%  { opacity: 1; }
     75%  { opacity: .15; }
     100% { opacity: .5; }
 }
-
-

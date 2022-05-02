@@ -28938,8 +28938,8 @@ given channel.</source>
         <target state="final">在此系统上安装的 <strong>Salt</strong> 软件包版本已过时。在启动产品迁移之前，请将该软件包更新到最新版本。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
-        <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
-        <target>没有任何迁移方法适用于此系统。找不到某些已安装的扩展的后继版本：</target>
+        <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
+        <target state="needs-adaptation">没有任何迁移方法适用于此系统。找不到某些已安装的扩展的后继版本：</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -29697,14 +29697,14 @@ given channel.</source>
         <source>Update Reporting Database</source>
         <target state="final">更新报告数据库</target>
       </trans-unit>
-    <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
+      <trans-unit id="sdc.details.overview.sshport" xml:space="preserve" approved="yes">
         <source>SSH Port:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve">
+        <target state="final">SSH 端口：</target>
+      </trans-unit>
+      <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve" approved="yes">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
@@ -29714,17 +29714,21 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
           <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
+        <target state="final">外设服务器</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve" approved="yes">
         <source>Update Hub Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
+        <target state="final">更新集线器报告数据库</target>
+      </trans-unit>
+      <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve" approved="yes">
         <source>Update Hub Reporting Database</source>
+        <target state="final">更新集线器报告数据库</target>
+      </trans-unit>
+    <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
+        <source>Following installed products will be removed from the system during migration:</source>
       <target state="new"/>
   </trans-unit>
       </body>

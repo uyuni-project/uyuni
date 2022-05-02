@@ -45,7 +45,7 @@ public class ScheduleRepoSyncAction implements MessageAction {
     public void execute(EventMessage msg) {
         ScheduleRepoSyncEvent event = (ScheduleRepoSyncEvent) msg;
         if (logger.isDebugEnabled()) {
-            logger.debug("Scheduling repo sync for channels: " + event.getChannelLabels());
+            logger.debug("Scheduling repo sync for channels: {}", event.getChannelLabels());
         }
         scheduleRepoSync(event.getChannelLabels(), event.getUserId());
     }
@@ -69,8 +69,7 @@ public class ScheduleRepoSyncAction implements MessageAction {
                 new TaskomaticApi().scheduleSingleRepoSync(channels);
             }
             catch (TaskomaticApiException e) {
-                logger.error("Could not schedule repository synchronization for: " +
-                        channels.toString());
+                logger.error("Could not schedule repository synchronization for: {}", channels.toString());
                 logger.error(e);
             }
         }

@@ -238,14 +238,14 @@ export function ProxyConfig() {
           name="sslMode"
           label={t("SSL certificate")}
           title={t("SSL certificate")}
-          hint={"Whether to create an SSL certificate or reuse an existing one"}
+          hint={"Whether to generate an SSL certificate or reuse an existing one"}
           inline={true}
           required
           labelClass="col-md-3"
           divClass="col-md-6"
           defaultValue={SSLMode.CreateSSL}
           items={[
-            { label: t("Create"), value: SSLMode.CreateSSL },
+            { label: t("Generate"), value: SSLMode.CreateSSL },
             { label: t("Use existing"), value: SSLMode.UseSSL },
           ]}
         />

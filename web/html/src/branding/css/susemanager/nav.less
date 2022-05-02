@@ -1,0 +1,26 @@
+.nav-tabs li {
+  a {
+    color: @eos-bc-gray-1000;
+
+    &:hover {
+      border-color: @eos-bc-green-500;
+      padding-bottom: 1px;
+      border-bottom-width: 5px;
+    }
+
+    &:active, &:focus {
+      color: @eos-bc-gray-1000;
+      background: transparent;
+    }
+
+    // TODO: Check disabled states
+  }
+
+  &.active {
+    a {
+      &, &:hover, &:active, &:focus {
+      color: @eos-bc-gray-1000;
+      }
+    }
+  }
+}

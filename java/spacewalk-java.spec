@@ -58,7 +58,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.19
+Version:        4.3.21
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -137,7 +137,7 @@ BuildRequires:  libxml2-tools
 %endif
 BuildRequires:  log4j
 BuildRequires:  log4j-slf4j
-BuildRequires:  netty
+BuildRequires:  netty < 4.1.45
 BuildRequires:  objectweb-asm
 BuildRequires:  perl
 BuildRequires:  pgjdbc-ng
@@ -217,7 +217,7 @@ Requires:       jose4j
 Requires:       jpa-api
 Requires:       libsolv-tools
 Requires:       mgr-libmod
-Requires:       netty
+Requires:       netty < 4.1.45
 Requires:       objectweb-asm
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java

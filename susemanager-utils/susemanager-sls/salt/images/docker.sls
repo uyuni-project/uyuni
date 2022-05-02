@@ -1,3 +1,4 @@
+{% set logfile = "/var/log/image-" + pillar.get('build_id') + ".log" %}
 {% if grains['saltversioninfo'][0] >= 2018 %}
 
 mgr_registries_login:
@@ -16,6 +17,9 @@ mgr_buildimage:
     - tag: "{{ pillar.get('imagename').rsplit(':', 1)[1] }}"
 {%- endif %}
     - path: "{{ pillar.get('builddir') }}"
+{%- if grains['saltversioninfo'][0] >= 3002 %}
+    - logfile: {{ logfile }}
+{%- endif %}
     - buildargs:
         repo: "{{ pillar.get('repo') }}"
         cert: "{{ pillar.get('cert') }}"
@@ -79,3 +83,14 @@ mgr_pushimage:
       - mgrcompat: mgr_registries_login
 
 {% endif %}
+
+{%- if grains['saltversioninfo'][0] >= 3002 %}
+mgr_buildimage_docker_collect_logs:
+  file.touch:
+    - name: {{ logfile }}
+  mgrcompat.module_run:
+    - name: cp.push
+    - path: {{ logfile }}
+    - upload_path: /image-{{ pillar.get('build_id') }}.log
+    - order: last
+{%- endif %}

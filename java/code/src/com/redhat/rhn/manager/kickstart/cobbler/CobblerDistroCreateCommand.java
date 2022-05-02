@@ -73,7 +73,7 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
      * @return ValidatorError if there was a problem
      */
     public ValidatorError store() {
-        log.debug("Token : [" + xmlRpcToken + "]");
+        log.debug("Token : [{}]", xmlRpcToken);
 
         CobblerDistroHelper.getInstance().createDistroFromTree(
                 CobblerXMLRPCHelper.getConnection(user),

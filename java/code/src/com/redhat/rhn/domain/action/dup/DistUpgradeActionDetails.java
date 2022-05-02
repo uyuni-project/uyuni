@@ -29,6 +29,8 @@ public class DistUpgradeActionDetails extends ActionChild {
     private boolean dryRun;
     private boolean allowVendorChange;
     private boolean fullUpdate;
+    private String missingSuccessors;
+
 
     // Set of tasks to perform on single channels
     private Set<DistUpgradeChannelTask> channelTasks =
@@ -88,6 +90,20 @@ public class DistUpgradeActionDetails extends ActionChild {
      */
     public boolean isFullUpdate() {
         return fullUpdate;
+    }
+
+    /**
+     * @return the missingSuccessors as a comma separated String
+     */
+    public String getMissingSuccessors() {
+        return missingSuccessors;
+    }
+
+    /**
+     * @param missingSuccessorsIn a comma separated string
+     */
+    public void setMissingSuccessors(String missingSuccessorsIn) {
+        this.missingSuccessors = missingSuccessorsIn;
     }
 
     /**

@@ -1009,10 +1009,6 @@ class RepoSync(object):
             filters = self.filters
 
         skipped = 0
-        saveurl = suseLib.URL(url)
-        if saveurl.password:
-            saveurl.password = "*******"
-
         packages = []
         try:
             packages = plug.list_packages(filters, self.latest)
@@ -1024,7 +1020,7 @@ class RepoSync(object):
         to_disassociate = {}
         to_process = []
         num_passed = len(packages)
-        log(0, "Repo URL: %s" % saveurl.getURL())
+        log(0, "Repo URL: %s" % suseLib.URL(url).getURL(stripPw=True))
         log(0, "    Packages in repo:             %5d" % plug.num_packages)
         if plug.num_excluded:
             log(0, "    Packages passed filter rules: %5d" % num_passed)
@@ -1836,7 +1832,7 @@ class RepoSync(object):
             except (ValueError, IndexError):
                 log2(0, 0,
                     "Could not figure out which credentials to use "
-                    "for this URL: {0}".format(url.getURL(), stream=sys.stderr)
+                    "for this URL: {0}".format(url.getURL(stripPw=True), stream=sys.stderr)
                 )
                 sys.exit(1)
             # SCC - read credentials from DB
@@ -1845,7 +1841,7 @@ class RepoSync(object):
             credentials = h.fetchone_dict() or None
             if not credentials:
                 log2(0, 0, "Could not figure out which credentials to use "
-                           "for this URL: "+url.getURL(), stream=sys.stderr)
+                           "for this URL: "+url.getURL(stripPw=True), stream=sys.stderr)
                 sys.exit(1)
             url.username = credentials['username']
             url.password = base64.decodestring(credentials['password'].encode()).decode()

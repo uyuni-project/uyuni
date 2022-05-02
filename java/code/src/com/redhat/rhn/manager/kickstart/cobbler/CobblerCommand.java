@@ -65,7 +65,7 @@ public abstract class CobblerCommand {
         else {
             xmlRpcToken =
                 IntegrationService.get().getAuthToken(userIn.getLogin());
-            log.debug("xmlrpc token for cobbler: " + xmlRpcToken);
+            log.debug("xmlrpc token for cobbler: {}", xmlRpcToken);
         }
         // We abstract this fetch of the class so a test class
         // can override the invoker with a mock xmlrpc invoker.
@@ -242,17 +242,16 @@ public abstract class CobblerCommand {
         List<Map> systems = (List) invokeXMLRPC("get_systems", args);
         for (Map row : systems) {
             Set ifacenames = ((Map) row.get("interfaces")).keySet();
-            log.debug("Ifacenames: " + ifacenames);
+            log.debug("Ifacenames: {}", ifacenames);
             Map ifaces = (Map) row.get("interfaces");
-            log.debug("ifaces: " + ifaces);
+            log.debug("ifaces: {}", ifaces);
             for (Object ifacenameIn : ifacenames) {
                 String name = (String) ifacenameIn;
-                log.debug("Name: " + name);
+                log.debug("Name: {}", name);
                 Map iface = (Map) ifaces.get(name);
-                log.debug("iface: " + iface);
+                log.debug("iface: {}", iface);
                 String mac = (String) iface.get("mac_address");
-                log.debug("getSystemMapByMac.ROW: " + row +
-                        " looking for: " + macs);
+                log.debug("getSystemMapByMac.ROW: {} looking for: {}", row, macs);
 
                 if (mac != null &&
                         macs.contains(mac.toLowerCase())) {

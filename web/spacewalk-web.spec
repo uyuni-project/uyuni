@@ -168,14 +168,16 @@ database.
 
 %prep
 %setup -q
+pushd html/src
 tar xf %{S:1}
+popd
 
 %build
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
+pushd html/src
 mkdir -p %{buildroot}%{nodejs_sitelib}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
-pushd html/src
-BUILD_VALIDATION=false NODE_OPTIONS="--trace-warnings --trace-deprecation --unhandled-rejections=strict" node build.js
+node build/yarn/yarn-1.22.17.js build:novalidate
 popd
 rm -rf %{buildroot}%{nodejs_sitelib}
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
@@ -198,8 +200,16 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 
-%{__mkdir_p} %{buildroot}/%{www_path}/javascript/manager
-cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
+%{__mkdir_p} %{buildroot}/%{www_path}/css
+%{__mkdir_p} %{buildroot}/%{www_path}/fonts
+%{__mkdir_p} %{buildroot}/%{www_path}/img
+%{__mkdir_p} %{buildroot}/%{www_path}/javascript
+pushd html/src/dist
+cp -pR css %{buildroot}/%{www_path}
+cp -pR fonts %{buildroot}/%{www_path}
+cp -pR img %{buildroot}/%{www_path}
+cp -pR javascript %{buildroot}/%{www_path}
+popd
 
 %find_lang spacewalk-web
 
@@ -236,19 +246,26 @@ cp -r html/src/dist/javascript/manager %{buildroot}/%{www_path}/javascript
 
 %files -n spacewalk-html -f spacewalk-web.lang
 %defattr(644,root,root,755)
-%dir %{www_path}/javascript
-%dir %{www_path}/javascript/manager
+%dir %{www_path}/css
+%{www_path}/css/*.{css,js}
+%dir %{www_path}/fonts
+%{www_path}/fonts/*
+%dir %{www_path}/img
+%dir %{www_path}/img/*
+%{www_path}/img/*.{gif,ico,jpeg,jpg,png,svg}
+%{www_path}/img/**/*.{gif,ico,jpeg,jpg,png,svg}
 %{www_path}/robots.txt
 %{www_path}/pub
-%{www_path}/javascript/manager/*.js
-%{www_path}/javascript/manager/*.js.LICENSE.txt
+%dir %{www_path}/javascript
 %{www_path}/javascript/*.js
+%dir %{www_path}/javascript/manager
+%{www_path}/javascript/manager/*.{js,js.LICENSE.txt,css}
 %license LICENSE
 
 %files -n spacewalk-html-debug
 %defattr(644,root,root,755)
 %dir %{www_path}/javascript
 %dir %{www_path}/javascript/manager
-%{www_path}/javascript/manager/*.map
+%{www_path}/javascript/manager/*.js.map
 
 %changelog

@@ -234,12 +234,13 @@ public class SaltUtils {
      * @param callResult the result of the call
      * @return true if installed packages have changed or unparsable json, otherwise false
      */
-    public boolean shouldRefreshPackageList(String function,
+    public boolean shouldRefreshPackageList(Optional<Xor<String[], String>> function,
             Optional<JsonElement> callResult) {
-        if (PKG_EXECUTION_MODULES.contains(function)) {
+        List<String> functions = function.map(x -> x.fold(Arrays::asList, List::of)).orElseGet(ArrayList::new);
+        if (functions.stream().anyMatch(PKG_EXECUTION_MODULES::contains)) {
             return true;
         }
-        if (function.equals("state.apply")) {
+        if (functions.contains("state.apply")) {
             return Opt.fold(
                 callResult.flatMap(SaltUtils::jsonEventToStateApplyResults),
                 () -> false,
@@ -265,15 +266,18 @@ public class SaltUtils {
      * @param server server to update
      * @return an outcome
      */
-    public PackageChangeOutcome handlePackageChanges(String function,
+    public PackageChangeOutcome handlePackageChanges(Optional<Xor<String[], String>> function,
             JsonElement callResult, Server server) {
         final PackageChangeOutcome outcome;
 
-        if (function == null) {
+        List<String> functions = function.map(x -> x.fold(Arrays::asList, List::of)).orElseGet(List::of);
+
+        if (functions.isEmpty()) {
             LOG.error("NULL function for: " + server.getName() + callResult.toString());
             throw new BadParameterException("function must not be NULL");
         }
-        if (PKG_STATE_MODULES.contains(function)) {
+
+        if (functions.stream().anyMatch(PKG_STATE_MODULES::contains)) {
             Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = Json.GSON.fromJson(
                 callResult,
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
@@ -282,7 +286,7 @@ public class SaltUtils {
             ErrataManager.insertErrataCacheTask(server);
             outcome = applyChangesFromStateModule(delta, server);
         }
-        else if (function.equals("state.apply")) {
+        else if (functions.contains("state.apply")) {
             Map<String, JsonElement> apply = Json.GSON.fromJson(
                 callResult, new TypeToken<Map<String, JsonElement>>() { }.getType());
             ErrataManager.insertErrataCacheTask(server);
@@ -308,7 +312,7 @@ public class SaltUtils {
             return Optional.of(module + "." + function);
         }
         else {
-            LOG.error("Could not parse Salt function call: " + value);
+            LOG.error("Could not parse Salt function call: {}", value);
             return Optional.empty();
         }
     }
@@ -474,7 +478,7 @@ public class SaltUtils {
      * @param function salt function used for the action
      */
     public void updateServerAction(ServerAction serverAction, long retcode,
-            boolean success, String jid, JsonElement jsonResult, String function) {
+            boolean success, String jid, JsonElement jsonResult, Optional<Xor<String[], String>> function) {
         serverAction.setCompletionTime(new Date());
 
         // Set the result code defaulting to 0
@@ -482,7 +486,7 @@ public class SaltUtils {
 
         // If the State was not executed due 'require' statement
         // we directly set the action to FAILED.
-        if (jsonResult == null && function == null) {
+        if (jsonResult == null && function.isEmpty()) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             serverAction.setResultMsg("Prerequisite failed");
             return;
@@ -855,7 +859,12 @@ public class SaltUtils {
         Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
         Map<String, FilesDiffResult> diffResults = new HashMap<>();
         // We are only interested in results where files are different/new.
-        results.values().stream().filter(fdr -> !fdr.isResult()).forEach(fdr -> diffResults.put(fdr.getName(), fdr));
+        results.values().stream().filter(fdr -> !fdr.isResult())
+                .forEach(fdr -> diffResults.put(
+                        fdr.getName()
+                                .flatMap(x -> x.fold(arr -> Arrays.stream(arr).findFirst(), Optional::of))
+                                .orElse(null),
+                        fdr));
 
         ConfigVerifyAction configAction = (ConfigVerifyAction) action;
         configAction.getConfigRevisionActions().forEach(cra -> {
@@ -936,9 +945,7 @@ public class SaltUtils {
                                         serverAction.setResultMsg("Success");
                                     }
                                     catch (Exception e) {
-                                        LOG.error(
-                                                "Error processing SCAP results file " +
-                                                        resultsFile.toString(), e);
+                                        LOG.error("Error processing SCAP results file {}", resultsFile.toString(), e);
                                         serverAction.setStatus(ActionFactory.STATUS_FAILED);
                                         serverAction.setResultMsg(
                                                 "Error processing SCAP results file " +
@@ -974,8 +981,8 @@ public class SaltUtils {
         }
 
         Path srcPath = Path.of(SALT_CP_PUSH_ROOT_PATH + buildHost.getMinionId() +
-                            "/files/var/lib/Kiwi/build" + action.getId() + "/build.log");
-        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/build-" + action.getId() + ".log");
+                            "/files/image-build" + action.getId() + ".log");
+        Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH + "/image-build" + action.getId() + ".log");
 
         try {
             // copy the log to a directory readable by tomcat
@@ -988,7 +995,7 @@ public class SaltUtils {
             saltApi.removeFile(tmpPath);
         }
         catch (Exception e) {
-            LOG.info("No build log for action " + action.getId() + " " + e);
+            LOG.info("No build log for action {} {}", action.getId(), e);
         }
     }
 
@@ -1001,8 +1008,7 @@ public class SaltUtils {
 
         Optional<ImageInfo> infoOpt = ImageInfoFactory.lookupByBuildAction(ba);
         if (infoOpt.isEmpty()) {
-            LOG.error("ImageInfo not found while performing: "  +
-                    action.getName() + " in handleImageBuildData");
+            LOG.error("ImageInfo not found while performing: {} in handleImageBuildData", action.getName());
             return;
         }
         ImageInfo info = infoOpt.get();
@@ -1011,13 +1017,12 @@ public class SaltUtils {
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             if (details == null) {
-                LOG.error("Details not found while performing: " + action.getName() + " in handleImageBuildData");
+                LOG.error("Details not found while performing: {} in handleImageBuildData", action.getName());
                 return;
             }
             Long imageProfileId = details.getImageProfileId();
             if (imageProfileId == null) { // It happens when the image profile is deleted during a build action
-                LOG.error("Image Profile ID not found while performing: " +
-                        action.getName() + " in handleImageBuildData");
+                LOG.error("Image Profile ID not found while performing: {} in handleImageBuildData", action.getName());
                 return;
             }
 
@@ -1027,7 +1032,7 @@ public class SaltUtils {
                 isKiwiProfile = profileOpt.get().asKiwiProfile().isPresent();
             }
             else {
-                LOG.warn("Could not find any profile for profile ID " + imageProfileId);
+                LOG.warn("Could not find any profile for profile ID {}", imageProfileId);
             }
 
             if (isKiwiProfile) {
@@ -1116,12 +1121,12 @@ public class SaltUtils {
         ImageInspectAction ia = (ImageInspectAction) action;
         ImageInspectActionDetails details = ia.getDetails();
         if (details == null) {
-            LOG.warn("Details not found while performing: "  + action.getName() + " in handleImageInspectData");
+            LOG.warn("Details not found while performing: {} in handleImageInspectData", action.getName());
             return;
         }
         Long imageStoreId = details.getImageStoreId();
         if (imageStoreId == null) { // It happens when the store is deleted during an inspect action
-            LOG.warn("Image Store ID not found while performing: "  + action.getName() + " in handleImageInspectData");
+            LOG.warn("Image Store ID not found while performing: {} in handleImageInspectData", action.getName());
             return;
         }
         ImageInfoFactory
@@ -1140,10 +1145,10 @@ public class SaltUtils {
      *
      * @return true if the action has failed, false otherwise
      */
-    private static boolean actionFailed(String function, JsonElement rawResult,
+    private static boolean actionFailed(Optional<Xor<String[], String>> function, JsonElement rawResult,
             boolean success, long retcode) {
         // For state.apply based actions verify the result of each state
-        if (function.equals("state.apply")) {
+        if (function.map(x -> x.fold(Arrays::asList, List::of).contains("state.apply")).orElse(false)) {
             return Opt.fold(
                 SaltUtils.jsonEventToStateApplyResults(rawResult),
                 () -> true,
@@ -1427,8 +1432,7 @@ public class SaltUtils {
         ServerFactory.save(server);
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();
-            LOG.debug("Package profile updated for minion: " + server.getMinionId() +
-                    " (" + duration + " seconds)");
+            LOG.debug("Package profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
         }
 
         // Trigger update of errata cache for this server
@@ -1665,8 +1669,7 @@ public class SaltUtils {
 
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();
-            LOG.debug("Hardware profile updated for minion: " + server.getMinionId() +
-                    " (" + duration + " seconds)");
+            LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
         }
     }
 
@@ -1761,8 +1764,7 @@ public class SaltUtils {
                         rockyReleaseFile);
 
         if (!rhelProductInfo.isPresent()) {
-            LOG.warn("Could not determine RHEL product type for minion: " +
-                    server.getMinionId());
+            LOG.warn("Could not determine RHEL product type for minion: {}", server.getMinionId());
             return Collections.emptySet();
         }
 
@@ -1804,8 +1806,7 @@ public class SaltUtils {
                          rockyReleaseFile);
 
          if (!rhelProductInfo.isPresent()) {
-             LOG.warn("Could not determine RHEL product type for image: " +
-                     image.getName() + " " + image.getVersion());
+             LOG.warn("Could not determine RHEL product type for image: {} {}", image.getName(), image.getVersion());
              return Collections.emptySet();
          }
 
@@ -1868,8 +1869,8 @@ public class SaltUtils {
             }
             catch (TaskomaticApiException e) {
                 LOG.error("Could not schedule channels state application");
-                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion " +
-                          minion.getMinionId());
+                LOG.error("Could not schedule channels refresh after proxy change. Old URLs remains on minion {}",
+                        minion.getMinionId());
             }
 
         }
@@ -1906,7 +1907,7 @@ public class SaltUtils {
     public void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
         Date bootTime = new Date(
                 System.currentTimeMillis() - (uptimeSeconds * 1000));
-        LOG.debug("Set last boot for " + minion.getMinionId() + " to " + bootTime);
+        LOG.debug("Set last boot for {} to {}", minion.getMinionId(), bootTime);
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
@@ -1925,7 +1926,7 @@ public class SaltUtils {
             }
         }
         if (actionsChanged > 0) {
-            LOG.debug(actionsChanged + " reboot actions set to completed");
+            LOG.debug("{} reboot actions set to completed", actionsChanged);
         }
     }
 
@@ -1950,13 +1951,9 @@ public class SaltUtils {
                 }
             }
             if (LOG.isDebugEnabled()) {
-                LOG.debug("shouldCleanupAction" +
-                        " Server:" + sa.getServer().getId() +
-                        " Action: " + sa.getParentAction().getId() +
-                        " BootTime: " + bootTime +
-                        " PickupTime: " + sa.getPickupTime() +
-                        " EarliestAction " + action.getEarliestAction() +
-                        " Result: " + result);
+                LOG.debug("shouldCleanupAction Server:{} Action: {} BootTime: {} PickupTime: {} EarliestAction {}" +
+                        " Result: {}", sa.getServer().getId(), sa.getParentAction().getId(), bootTime,
+                        sa.getPickupTime(), action.getEarliestAction(), result);
             }
         }
         return result;

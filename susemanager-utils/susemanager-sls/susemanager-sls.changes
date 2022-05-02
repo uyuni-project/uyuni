@@ -1,3 +1,7 @@
+- Collect logs from docker.build
+- add packages.pkgupdate state (bsc#1197507)
+- Uninstall the products with no successors after migration
+
 -------------------------------------------------------------------
 Fri Apr 22 22:11:02 CEST 2022 - jgonzalez@suse.com
 

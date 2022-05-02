@@ -65,7 +65,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
                 throw new NullPointerException("filename is null");
             }
 
-            logger.debug("Parsing mode file '" + filename + "'");
+            logger.debug("Parsing mode file '{}'", filename);
             URL u = this.getClass().getResource(filename);
             DataSourceParserHelper handler =
                           (DataSourceParserHelper)parser.getContentHandler();

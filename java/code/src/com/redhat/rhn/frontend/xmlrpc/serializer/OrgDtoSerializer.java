@@ -28,19 +28,19 @@ import com.suse.manager.api.SerializedApiResponse;
  * #struct_begin("organization info")
  *   #prop("int", "id")
  *   #prop("string", "name")
- *   #prop_desc("int", "active_users", "Number of active users in the organization.")
- *   #prop_desc("int", "systems", "Number of systems in the organization.")
- *   #prop_desc("int", "trusts", "Number of trusted organizations.")
+ *   #prop_desc("int", "active_users", "number of active users in the organization")
+ *   #prop_desc("int", "systems", "number of systems in the organization")
+ *   #prop_desc("int", "trusts", "number of trusted organizations")
  *   #prop_desc("int", "system_groups",
- *                              "Number of system groups in the organization. (optional)")
+ *                              "number of system groups in the organization (optional)")
  *   #prop_desc("int", "activation_keys",
- *                              "Number of activation keys in the organization. (optional)")
+ *                              "number of activation keys in the organization (optional)")
  *   #prop_desc("int", "kickstart_profiles",
- *                          "Number of kickstart profiles in the organization. (optional)")
+ *                          "number of kickstart profiles in the organization (optional)")
  *   #prop_desc("int", "configuration_channels",
- *                      "Number of configuration channels in the organization. (optional)")
+ *                      "number of configuration channels in the organization (optional)")
  *   #prop_desc("boolean", "staging_content_enabled",
- *                      "Is staging content enabled in organization. (optional)")
+ *                      "is staging content enabled in organization (optional)")
  * #struct_end()
  */
 public class OrgDtoSerializer extends ApiResponseSerializer<OrgDto> {

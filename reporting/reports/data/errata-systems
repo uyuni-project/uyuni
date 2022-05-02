@@ -1,48 +1,35 @@
 
 synopsis:
 
-	Errata out of compliance information - erratas for systems
+  Errata out of compliance information - erratas for systems
 
 description:
 
-	List of applicable erratas and systems that are affected.
+  Patches out of compliance information with the details about the system.
 
 columns:
 
-	advisory	Advisory / errata identifier
-	server_id:i	System identifier
-	profile_name	Profile name, as stored on server
-	hostname	Hostname, as reported by the system
-	ip_address	IP address, as reported by the system
-	ipv6_address    IPv6 address, as reported by the system
+  mgm_id The id of the management server instance that contains this data
+  advisory The unique name of this advisory
+  system_id The id of the system
+  profile_name The unique descriptive name of the system
+  hostname The hostname that identifies this system
+  ip_address The IPv4 address of the primary network interface of the system
+  ipv6_address The list of IPv6 addresses and their scopes of the primary network interface of the system, separated by ;
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-	select * from (
-	select rhnErrata.advisory_name as advisory,
-		rhnServerNeededErrataCache.server_id,
-		rhnServer.name as profile_name,
-		rhnServer.hostname, trim(ipaddr) as ip_address,
-		trim(ip6addr) as ipv6_address
-	from rhnErrata, rhnServer,
-		rhnServerNeededErrataCache left outer join
-		(
-		select server_id, rsna4.address as ipaddr, rsna6.address as ip6addr
-		from rhnservernetinterface rsni
-		left join rhnServerNetAddress4 rsna4
-		on rsni.id = rsna4.interface_id
-		left join rhnServerNetAddress6 rsna6
-		on rsni.id = rsna6.interface_id
-		where id in (
-			select min(id)
-			from rhnservernetinterface
-			where is_primary = 'Y'
-			group by server_id
-			)
-		) netinfos
-		on rhnServerNeededErrataCache.server_id = netinfos.server_id
-	where rhnErrata.id = rhnServerNeededErrataCache.errata_id
-		and rhnServerNeededErrataCache.server_id = rhnServer.id
-	) X
-	-- where placeholder
-	order by advisory, server_id
+  SELECT * FROM (
+      SELECT mgm_id
+                , advisory_name AS advisory
+                , system_id
+                , profile_name
+                , hostname
+                , ip_address
+                , ip6_addresses AS ipv6_address
+                , synced_date
+        FROM ErrataSystemsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, advisory, system_id

@@ -1,4 +1,5 @@
 - Replace apache users to root for RHEL.
+- Update translation strings
 
 -------------------------------------------------------------------
 Tue Apr 19 12:11:26 CEST 2022 - jgonzalez@suse.com

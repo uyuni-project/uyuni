@@ -28,16 +28,6 @@
                     arg1="${migrationScheduled.id}" />
             </div>
         </c:when>
-        <c:when test="${not empty latestServicePack and not empty missingSuccessorExtensions}">
-            <div class="alert alert-warning">
-                <bean:message key="spmigration.jsp.error.missing-successor-extensions" /><br/>
-                <ul>
-                    <c:forEach items="${missingSuccessorExtensions}" var="missing">
-                        <li><c:out value="${missing}" /></li>
-                    </c:forEach>
-                </ul>
-            </div>
-        </c:when>
         <c:when test="${not empty latestServicePack}">
             <div class="alert alert-warning">
                 <bean:message key="spmigration.jsp.error.up-to-date" />
@@ -61,7 +51,16 @@
             </div>
         </c:when>
         <c:otherwise>
-
+            <c:if test="${not empty missingSuccessorExtensions}">
+                <div class="alert alert-warning">
+                   <bean:message key="spmigration.jsp.error.missing-successor-extensions" /><br/>
+                      <ul>
+                          <c:forEach items="${missingSuccessorExtensions}" var="missing">
+                              <li><c:out value="${missing}" /></li>
+                          </c:forEach>
+                      </ul>
+                </div>
+            </c:if>
             <c:if test="${targetProductSelectedEmpty}">
                 <div class="alert alert-warning">
                     <bean:message key="spmigration.jsp.error.targetProductSelectedEmpty" />

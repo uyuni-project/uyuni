@@ -44,8 +44,7 @@ public class LogoutAction extends RhnAction {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) {
-        log.info("WEB LOGOUT: [" +
-            new RequestContext(request).getCurrentUser().getLogin() + "]");
+        log.info("WEB LOGOUT: [{}]", new RequestContext(request).getCurrentUser().getLogin());
 
         AuthenticationServiceFactory.getInstance().getAuthenticationService().invalidate(
                 request, response);

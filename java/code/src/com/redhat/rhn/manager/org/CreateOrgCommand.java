@@ -165,8 +165,7 @@ public class CreateOrgCommand {
             defaultOrg);
         if (ssl != null && ssl.isSSL()) {
             // TODO
-            log.debug("Found a SSL key for the default org to copy: " +
-                    ssl.getId());
+            log.debug("Found a SSL key for the default org to copy: {}", ssl.getId());
             CreateCryptoKeyCommand createCryptoKey =
                 new CreateCryptoKeyCommand(createdOrg);
             createCryptoKey.setContents(ssl.getKeyString());
@@ -185,8 +184,7 @@ public class CreateOrgCommand {
                         "mgr-sync-refresh-bunch", params);
             }
             catch (TaskomaticApiException e) {
-                log.error("Problem when running Taskomatic mgr-sync-refresh job: " +
-                        e.getMessage());
+                log.error("Problem when running Taskomatic mgr-sync-refresh job: {}", e.getMessage());
                 // FIXME: return validator error ?
             }
         }

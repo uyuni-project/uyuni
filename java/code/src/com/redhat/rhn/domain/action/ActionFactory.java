@@ -941,8 +941,8 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
         if (log.isDebugEnabled()) {
-            log.debug("Action status " + ActionFactory.STATUS_PICKED_UP.getName() +
-                    " is going to b set for these servers: " + serverIds);
+            log.debug("Action status {} is going to b set for these servers: {}",
+                    ActionFactory.STATUS_PICKED_UP.getName(), serverIds);
         }
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
@@ -959,7 +959,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
         if (log.isDebugEnabled()) {
-            log.debug("Action status " + status.getName() + " is going to b set for these servers: " + serverIds);
+            log.debug("Action status {} is going to b set for these servers: {}", status.getName(), serverIds);
         }
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());

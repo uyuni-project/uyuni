@@ -43,7 +43,7 @@ public class ValidatorService {
      * </p>
      */
     private ValidatorService() {
-        log.info("Initalizing " + this.getClass().getName());
+        log.info("Initalizing {}", this.getClass().getName());
     }
 
     /**
@@ -122,8 +122,7 @@ public class ValidatorService {
      * @return ValidatorError the error result.
      */
     public ValidatorResult validateObject(Object validateIn) {
-        log.debug("ValidatorService.validateObject called on object: " +
-                    validateIn.toString());
+        log.debug("ValidatorService.validateObject called on object: {}", validateIn.toString());
 
         Validator validator;
         try {

@@ -79,7 +79,7 @@ public class EnvironmentFilter implements Filter {
         if (RhnHelper.pathNeedsSecurity(nosslurls, path) &&
                 !hreq.isSecure()) {
             if (log.isDebugEnabled()) {
-                log.debug("redirecting to secure: " + path);
+                log.debug("redirecting to secure: {}", path);
             }
             redirectToSecure(hreq, hres);
             return;
@@ -90,7 +90,7 @@ public class EnvironmentFilter implements Filter {
         request.setAttribute(RequestContext.REQUESTED_URI, req.getRequestURI());
 
         if (log.isDebugEnabled()) {
-            log.debug("set REQUESTED_URI: " + req.getRequestURI());
+            log.debug("set REQUESTED_URI: {}", req.getRequestURI());
         }
 
         // add messages that were put on the request path.

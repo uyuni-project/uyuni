@@ -350,8 +350,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             Long selectedTargetServerId,
             User userIn) {
 
-        log.debug("Initializing with selectedHostServerId=" + selectedHostServerId +
-                ", selectedTargetServerId=" + selectedTargetServerId);
+        log.debug("Initializing with selectedHostServerId={}, selectedTargetServerId={}", selectedHostServerId,
+                selectedTargetServerId);
         this.setPackagesToInstall(new LinkedList());
 
         // There must always be a host server present.
@@ -438,7 +438,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 }
                 retval = mode.execute(params);
                 if (log.isDebugEnabled()) {
-                    log.debug("got back from DB: " + retval);
+                    log.debug("got back from DB: {}", retval);
                 }
                 KickstartLister.getInstance().setKickstartUrls(retval, user);
                 KickstartLister.getInstance().pruneInvalid(user, retval);
@@ -449,7 +449,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         List<CobblerProfileDto> dtos = KickstartLister.getInstance().
                 listCobblerProfiles(user);
         if (log.isDebugEnabled()) {
-            log.debug("got back from cobbler: " + dtos);
+            log.debug("got back from cobbler: {}", dtos);
         }
         retval.setTotalSize(retval.getTotalSize() + dtos.size());
         retval.addAll(dtos);
@@ -535,7 +535,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         Server hostServer  = getHostServer();
-        log.debug("** Server we are operating on: " + hostServer);
+        log.debug("** Server we are operating on: {}", hostServer);
 
 
         //rhn-kickstart-virtualization conflicts with this package, so we have to
@@ -555,7 +555,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             packageAction = ActionManager.schedulePackageInstall(
                     this.user, hostServer, this.packagesToInstall, scheduleDate);
             packageAction.setPrerequisite(removal);
-            log.debug("** Created packageAction ? " + packageAction.getId());
+            log.debug("** Created packageAction ? {}", packageAction.getId());
         }
 
         log.debug("** Cancelling existing sessions.");
@@ -635,7 +635,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         ActionFactory.save(kickstartAction);
         TASKOMATIC_API.scheduleActionExecution(kickstartAction);
-        log.debug("** Created ksaction: " + kickstartAction.getId());
+        log.debug("** Created ksaction: {}", kickstartAction.getId());
 
         this.scheduledAction = kickstartAction;
 
@@ -713,7 +713,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                             this.kickstartSession, 1L, note);
         }
         this.createdProfile = processProfileType(this.profileType);
-        log.debug("** profile created: " + createdProfile);
+        log.debug("** profile created: {}", createdProfile);
     }
 
     /**
@@ -748,9 +748,9 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         kickstartSession
         .setVirtualizationType(this.getKsdata().
                 getKickstartDefaults().getVirtualizationType());
-        log.debug("** Saving new KickstartSession: " + kickstartSession.getId());
+        log.debug("** Saving new KickstartSession: {}", kickstartSession.getId());
         KickstartFactory.saveKickstartSession(kickstartSession);
-        log.debug("** Saved new KickstartSession: " + kickstartSession.getId());
+        log.debug("** Saved new KickstartSession: {}", kickstartSession.getId());
 
         return kickstartSession;
     }
@@ -812,10 +812,10 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         rebootAction.setEarliestAction(this.getScheduleDate());
         rebootAction.setOrg(this.getUser().getOrg());
         rebootAction.setName(rebootAction.getActionType().getName());
-        log.debug("** saving reboot action: " + rebootAction.getName());
+        log.debug("** saving reboot action: {}", rebootAction.getName());
         ActionFactory.save(rebootAction);
         TASKOMATIC_API.scheduleActionExecution(rebootAction);
-        log.debug("** Saved rebootAction: " + rebootAction.getId());
+        log.debug("** Saved rebootAction: {}", rebootAction.getId());
 
         return rebootAction;
     }
@@ -905,7 +905,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         log.debug("** Saving new token");
         ActivationKeyFactory.save(key);
-        log.debug("** Saved new token: " + key.getId());
+        log.debug("** Saved new token: {}", key.getId());
         return key;
     }
 
@@ -939,7 +939,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     }
 
     private Profile processProfileType(String profileTypeIn) {
-        log.debug("PROFILE_TYPE=" + profileTypeIn);
+        log.debug("PROFILE_TYPE={}", profileTypeIn);
 
         if (profileTypeIn == null ||
                 profileTypeIn.length() == 0 || // TODO: fix this hack
@@ -975,11 +975,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         else if (profileTypeIn.equals(TARGET_PROFILE_TYPE_SYSTEM)) {
             Server otherServer = ServerFactory.lookupById(this.serverProfileId);
             log.debug("    TARGET_PROFILE_TYPE_SYSTEM");
-            log.debug("    this.serverProfileId      : " + this.serverProfileId);
-            log.debug("    otherServer               : " + otherServer);
+            log.debug("    this.serverProfileId      : {}", this.serverProfileId);
+            log.debug("    otherServer               : {}", otherServer);
             if (otherServer != null) {
-                log.debug("otherServer.Id            : " + otherServer.getId());
-                log.debug("otherServer.getBaseChannel: " + otherServer.getBaseChannel());
+                log.debug("otherServer.Id            : {}", otherServer.getId());
+                log.debug("otherServer.getBaseChannel: {}", otherServer.getBaseChannel());
             }
 
             retval = ProfileManager.createProfile(
@@ -1010,23 +1010,19 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         List sessions = KickstartFactory.
                 lookupAllKickstartSessionsByServer(hostServer.getId());
         if (sessions != null) {
-            log.debug("    Found sessions: " + sessions);
+            log.debug("    Found sessions: {}", sessions);
             for (Object sessionIn : sessions) {
                 KickstartSession sess = (KickstartSession) sessionIn;
                 if (sess != null &&
                         sess.getState() != null) {
-                    log.debug("    Working with session: " +
-                            sess.getState().getLabel() + " id: " + sess.getId());
+                    log.debug("    Working with session: {} id: {}", sess.getState().getLabel(), sess.getId());
                 }
                 KickstartSessionState state = sess.getState();
 
                 if (!state.equals(KickstartFactory.SESSION_STATE_FAILED) ||
                         !state.equals(KickstartFactory.SESSION_STATE_COMPLETE)) {
-                    log.debug("    need to cancel this Session this.s: " +
-                            hostServer.getId() + " sess.hostServer: " +
-                            (sess.getHostServer() == null ?
-                                    "null" :
-                                    "" + sess.getHostServer().getId()));
+                    log.debug("    need to cancel this Session this.s: {} sess.hostServer: {}", hostServer.getId(),
+                            sess.getHostServer() == null ? "null" : "" + sess.getHostServer().getId());
                     if (sess.getHostServer() != null &&
                             sess.getHostServer().getId().equals(hostServer.getId())) {
                         log.debug("    Marking session failed.");
@@ -1064,7 +1060,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         Map<String, Long> pkgToInstall = findKickstartPackageToInstall(serverChannelIds);
         if (pkgToInstall != null) {
             this.packagesToInstall.add(pkgToInstall);
-            log.debug("    packagesToInstall: " + packagesToInstall);
+            log.debug("    packagesToInstall: {}", packagesToInstall);
             return null;
         }
 
@@ -1076,13 +1072,13 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         if (pkgToInstall != null) {
             this.packagesToInstall.add(pkgToInstall);
-            log.debug("    packagesToInstall: " + packagesToInstall);
+            log.debug("    packagesToInstall: {}", packagesToInstall);
             Long cid = pkgToInstall.get("channel_id");
-            log.debug("    Subscribing to: " + cid);
+            log.debug("    Subscribing to: {}", cid);
             Channel c = ChannelFactory.lookupById(cid);
             try {
                 SystemManager.subscribeServerToChannel(this.user, server, c);
-                log.debug("    Subscribed: " + cid);
+                log.debug("    Subscribed: {}", cid);
             }
             catch (PermissionException pe) {
                 return new ValidatorError("kickstart.schedule.cantsubscribe");
@@ -1108,13 +1104,13 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         List<Map<String, Long>> results = new LinkedList<>();
 
         for (Long chnnelId : channelIds) {
-            log.debug("    Checking on:" + chnnelId + " for: " + this.ksdata.getKickstartPackageNameForTraditional());
+            log.debug("    Checking on:{} for: {}", chnnelId, this.ksdata.getKickstartPackageNameForTraditional());
             List<Map<String, Object>> packages = ChannelManager.listLatestPackagesEqual(
                     chnnelId, this.ksdata.getKickstartPackageNameForTraditional());
-            log.debug("    size: " + packages.size());
+            log.debug("    size: {}", packages.size());
 
             for (Map<String, Object> aPackage : packages) {
-                log.debug("    Found the package: " + aPackage);
+                log.debug("    Found the package: {}", aPackage);
                 Map<String, Long> result = new HashMap<>();
                 result.put("name_id", (Long)aPackage.get("name_id"));
                 result.put("evr_id", (Long)aPackage.get("evr_id"));
@@ -1152,7 +1148,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         Server hostServer = getHostServer();
         List packages = PackageManager.systemPackageList(hostServer.getId(), null);
         if (packages != null) {
-            log.debug("    packages.size() : " + packages.size());
+            log.debug("    packages.size() : {}", packages.size());
         }
         // PackageListItem
         Iterator i = packages.iterator();
@@ -1185,8 +1181,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 up2dateversion = pli.getVersion();
                 up2daterelease = pli.getRelease();
 
-                log.debug("    e: " + up2dateepoch + " v: " + up2dateversion +
-                        " r : " + up2daterelease);
+                log.debug("    e: {} v: {} r : {}", up2dateepoch, up2dateversion, up2daterelease);
             }
         }
 
@@ -1207,7 +1202,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         PackageEvr v2 = new PackageEvr("0", UP2DATE_VERSION, "0", hostServer.getPackageType());
         int comp = v1.compareTo(v2);
 
-        log.debug("    Got back comp from verCmp: " + comp);
+        log.debug("    Got back comp from verCmp: {}", comp);
         if (comp < 0) {
             Long packageId = PackageManager.
                     getServerNeededUpdatePackageByName(hostServer.getId(), "up2date");

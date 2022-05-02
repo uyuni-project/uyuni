@@ -1,44 +1,43 @@
 
 synopsis:
 
-    Custom-channels report
+  Custom-channels report
 
 description:
 
-    Channel-meta-data for all channels owned by specific Satellite orgs
+  Channel metadata for all channels owned by an organization
 
 columns:
 
-    org_id:i                Organization id of owning organization
-    id:i                    Channel id
-    channel_label           Channel label
-    name                    Channel name
-    summary                 Channel summary
-    description             Channel description
-    parent_channel_label    Label of parent-channel (if this is a child channel)
-    channel_arch            Channel architecture label
-    checksum_type           Checksum-type label
-    associated_repo_id_label Label of any repos associated with this channel
-
-multival_columns:
-
-    id
-    associated_repo_id_label : associated_repo_id_label
+  mgm_id The id of the management server instance that contains this data
+  organization The organization that owns this data
+  channel_id The id of the channel
+  channel_label The unique label identifying the channel
+  name The unique name of the channel
+  summary A brief summary of the channel
+  description A detailed description of the channel scope and purpose
+  parent_channel_label The label of the parent of the channel, if exists
+  channel_arch The architecture of the packages hold by the channel
+  checksum_type The type of checksum used by the channel
+  associated_repo_id_label The list of repositories linked to the channel, separated by ;
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-    select * from (
-        select c.org_id, c.id, c.label as channel_label, c.name, c.summary, c.description,
-               pc.label as parent_channel_label, ca.label as channel_arch, cst.label as checksum_type,
-               cs.id || '|' || cs.label as associated_repo_id_label
-          from rhnchannel c
-               left outer join rhnchannel pc on pc.id = c.parent_channel
-               left outer join rhnchannelarch ca on ca.id = c.channel_arch_id
-               left outer join rhnchecksumtype cst on cst.id = c.checksum_type_id
-               left outer join rhnchannelcontentsource ccs on ccs.channel_id = c.id
-               left outer join rhncontentsource cs on cs.id = ccs.source_id
-         where c.org_id is not null
-    ) X
-    -- where placeholder
-    order by org_id, channel_label
-
+  SELECT * FROM (
+      SELECT mgm_id
+                , organization
+                , channel_id
+                , label AS channel_label
+                , name
+                , summary
+                , description
+                , parent_channel_label
+                , arch AS channel_arch
+                , checksum_type
+                , channel_repositories AS associated_repo_id_label
+                , synced_date
+        FROM CustomChannelsReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, channel_label

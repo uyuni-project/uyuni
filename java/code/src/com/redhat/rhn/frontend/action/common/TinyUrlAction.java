@@ -46,24 +46,22 @@ public class TinyUrlAction extends RhnAction {
         throws Exception {
         String token = request.getParameter(TY_TOKEN);
         if (log.isDebugEnabled()) {
-            log.debug("token: " + token);
+            log.debug("token: {}", token);
             Enumeration e = request.getParameterNames();
             while (e.hasMoreElements()) {
                 String name = (String) e.nextElement();
-                log.debug("param.name: " + name + " val: " +
-                        request.getParameter(name));
+                log.debug("param.name: {} val: {}", name, request.getParameter(name));
             }
         }
 
         TinyUrl turl = CommonFactory.lookupTinyUrl(token);
         if (turl != null) {
             if (log.isDebugEnabled()) {
-                log.debug("turl: " + turl.getUrl());
+                log.debug("turl: {}", turl.getUrl());
             }
             request.setAttribute("ksurl", turl.getUrl());
             if (log.isDebugEnabled()) {
-                log.debug("ksurl in request attribute before we call include: " +
-                        request.getAttribute("ksurl"));
+                log.debug("ksurl in request attribute before we call include: {}", request.getAttribute("ksurl"));
             }
             request.getRequestDispatcher("/kickstart/DownloadFile.do").
                 forward(request, response);

@@ -107,7 +107,7 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
         out.print(ls.getMessage("user info"));
         out.println(":");
         if (user != null) {
-            out.println(user.toString());
+            out.println(user);
         }
         else {
             out.println(ls.getMessage("no user loggedin", getUserLocale()));

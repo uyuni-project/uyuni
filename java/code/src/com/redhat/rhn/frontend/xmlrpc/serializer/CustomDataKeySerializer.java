@@ -31,7 +31,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *          #prop("string", "label")
  *          #prop("string", "description")
  *          #prop("int", "system_count")
- *          #prop("dateTime.iso8601", "last_modified")
+ *          #prop("$date", "last_modified")
  *      #struct_end()
  */
 public class CustomDataKeySerializer extends ApiResponseSerializer<CustomDataKeyOverview> {

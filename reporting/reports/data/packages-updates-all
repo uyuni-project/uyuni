@@ -1,48 +1,43 @@
 
 synopsis:
 
-	List of packages which can be updated
+  List of packages which can be updated
 
 description:
 
-	Prints list of packages which can be updated for all systems in spacewalk.
-	Show all newer versions of the packages which are available.
+  List of packages that can be updated for all systems, showing all available newer versions.
 
 columns:
 
-	system_id System id
-  org_id  Id of organization system belongs to
-  package_name  Name of the package
-  package_epoch Epoch of the package
-  package_version Version of the package
-  package_release Release of the package
-  package_arch  Architecture of the package
-	newer_epoch Version of the newer package available
-  newer_version Release of the newer package available
-  newer_release  Architecture of the newer package available
+  mgm_id The id of the management server instance that contains this data
+  system_id The id of the system
+  organization The organization that owns this data
+  package_name The name of the package
+  package_epoch The epoch of the installed package
+  package_version The version number of the installed package
+  package_release The release number of the installed package
+  package_arch The architecture of the package installed package
+  newer_epoch The epoch of the new package that can be installed
+  newer_version The version number of the new package that can be installed
+  newer_release The release number of the new package that can be installed
+  synced_date The timestamp of when this data was last refreshed.
 
 sql:
 
-	select * from (
-  select S.id as system_id,
-    S.org_id as org_id,
-    PN.name as package_name,
-    OPE.epoch as package_epoch,
-    OPE.version as package_version,
-    OPE.release as package_release,
-    PA.label as package_arch,
-    NPE.epoch as newer_epoch,
-    NPE.version as newer_version,
-    NPE.release as newer_release
-  from rhnServer S
-    join rhnServerNeededCache SPC on S.id=SPC.server_id
-    join rhnPackage P on SPC.package_id=P.id
-    join rhnPackageName PN on P.name_id=PN.id
-    join rhnServerPackage SP on SP.server_id=S.id and SP.name_id=P.name_id
-    join rhnPackageArch PA on SP.package_arch_id=PA.id
-    join rhnPackageEvr OPE on OPE.id=SP.evr_id
-    join rhnPackageEvr NPE on NPE.id=P.evr_id
-	) X
-	-- where placeholder
-	order by org_id, system_id
-
+  SELECT * FROM (
+      SELECT mgm_id
+                , system_id
+                , organization
+                , package_name
+                , package_epoch
+                , package_version
+                , package_release
+                , package_arch
+                , newer_epoch
+                , newer_version
+                , newer_release
+                , synced_date
+        FROM PackagesUpdatesAllReport
+  ) X
+  -- where placeholder
+  ORDER BY mgm_id, system_id, package_name

@@ -14,12 +14,14 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -34,6 +36,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
@@ -45,6 +49,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestA
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
@@ -56,6 +61,8 @@ import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -129,6 +136,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -1913,6 +1921,26 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
+    public void testSchedulePackageUpdate() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+
+        assertThrows(MissingEntitlementException.class, () ->
+                handler.schedulePackageUpdate(admin, List.of(server.getId().intValue()), new Date()));
+
+        DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        int preScheduleSize = dr.size();
+
+        Server minion = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeSaltEntitled());
+        handler.schedulePackageUpdate(admin, List.of(minion.getId().intValue()), new Date());
+
+        dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, dr.size() - preScheduleSize);
+        assertEquals("Package Install", ((ScheduledAction)dr.get(0)).getTypeName());
+    }
+
+    @Test
     public void testHardwareRefresh() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
@@ -2858,6 +2886,177 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         results = handler.getInstalledProducts(admin, server.getId().intValue());
 
         assertEquals(3, results.size(), "invalid number of results");
+    }
+
+    /**
+     * Test scheduleProductMigration:
+     * SLES as base product with an addon. On the target product there is no successor
+     * Expected outcome: No migration available in case # and
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testProductMigrationWithNoSuccessor() throws Exception {
+       TaskomaticApi taskomaticMock = mockContext.mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        mockContext.checking(new Expectations() {
+            {
+                allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+                allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)),
+                        with(any(Boolean.class)));
+            }
+        });
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
+        server.setServerArch(ServerFactory.lookupServerArchByName("x86_64"));
+        server.setOsFamily("Suse"); // SP Migration will only work for Minions with OS family `SUSE
+
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct sp1BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel sp1BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(sp1BaseProduct, admin);
+
+        //Create the addon product
+        List<SUSEProduct> sp1Addons = new ArrayList<>();
+        SUSEProduct sp1AddOnProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sp1AddOnProduct.setBase(false);
+        Channel sp1ChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(sp1AddOnProduct, sp1BaseChannel,
+                admin);
+        SUSEProductExtension ext = new SUSEProductExtension(sp1BaseProduct, sp1AddOnProduct, sp1BaseProduct, false);
+        sp1Addons.add(sp1AddOnProduct);
+
+        // Setup repos for base and addon products
+        SUSEProductTestUtils.populateRepository(sp1BaseProduct, sp1BaseChannel, sp1BaseProduct, sp1BaseChannel,
+                admin);
+        SUSEProductTestUtils.populateRepository(sp1BaseProduct, sp1BaseChannel, sp1AddOnProduct, sp1ChildChannel,
+                admin);
+
+        // Setup migration target product
+        SUSEProduct sp2BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel sp2BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(sp2BaseProduct, admin);
+        SUSEProductTestUtils.populateRepository(sp2BaseProduct, sp2BaseChannel, sp2BaseProduct, sp2BaseChannel, admin);
+
+        // Set upgrade paths
+        sp1BaseProduct.setUpgrades(Collections.singleton(sp2BaseProduct));
+
+        Set<InstalledProduct> installedProducts = new HashSet<>();
+        installedProducts.add(SUSEProductTestUtils.getInstalledProduct(sp1BaseProduct));
+        installedProducts.add(SUSEProductTestUtils.getInstalledProduct(sp1AddOnProduct));
+        server.setInstalledProducts(installedProducts);
+        // Test cases
+
+        //Test Case #1 No target found exception is thrown as target exist but with missing successor
+        ArrayList<String> optionalChannels = new ArrayList<>();
+        try {
+            handler.scheduleProductMigration(admin, server.getId().intValue(), sp2BaseChannel.getLabel(),
+                    optionalChannels,  true, new Date());
+            fail("Should throw FaultException");
+        }
+        catch (FaultException e) {
+            assertContains(e.getMessage(), "No target found for Product migration");
+        }
+
+        //Case #2 Include targets even missing successor.
+
+        List<Map<String, Object>> targets  = handler.listMigrationTargets(admin, server.getId().intValue(), false);
+        assertTrue(targets.size() == 1);
+        assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
+        String ident = targets.get(0).get("ident").toString();
+
+        //Case #2-1 ident is provided but removeProductsWithNoSuccessorAfterMigration was passed as false so we expect
+        // no target to be found
+        try {
+            optionalChannels.clear();
+            handler.scheduleProductMigration(admin, server.getId().intValue(), ident, sp2BaseChannel.getLabel(),
+                    optionalChannels, true, true, false, new Date());
+            fail("Should throw FaultException");
+        }
+        catch (FaultException e) {
+            assertContains(e.getMessage(), "No target found for Product migration");
+        }
+        //Case #2-2 ident is not provided but removeProductsWithNoSuccessorAfterMigration was passed as true
+        // so we expect no target to be found
+        try {
+            optionalChannels.clear();
+            handler.scheduleProductMigration(admin, server.getId().intValue(), null, sp2BaseChannel.getLabel(),
+                    optionalChannels, true,  true,  false, new Date());
+            fail("Should throw FaultException");
+        }
+        catch (FaultException e) {
+            assertContains(e.getMessage(), "No target found for Product migration");
+        }
+
+        //Case #2-3 ident is provided and als removeProductsWithNoSuccessorAfterMigration was passed
+        // So we expect the migration to continue and remove the product without successor at the end.
+        optionalChannels.clear();
+        Long actionID = handler.scheduleProductMigration(admin, server.getId().intValue(), ident,
+                sp2BaseChannel.getLabel(), optionalChannels, true, false, true, new Date());
+        // Get the scheduled action and check the contents
+        DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
+        assertEquals(ActionFactory.TYPE_DIST_UPGRADE, action.getActionType());
+        Set<ServerAction> serverActions = action.getServerActions();
+        assertEquals(server, serverActions.iterator().next().getServer());
+        DistUpgradeActionDetails details = action.getDetails();
+        assertTrue(details.isDryRun());
+        assertFalse(details.isAllowVendorChange());
+        //These products will be removed after migration
+        assertEquals(sp1AddOnProduct.getName(), details.getMissingSuccessors());
+    }
+    /**
+     * Test listMigrationTargets:
+     * By default this method will not list migration target where successor is missing unless user
+     * explicitly pass the argument excludeTargetWhereMissingSuccessors as false
+     * Expected outcome: No migration available in case #1 and migration target in case #2
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testListMigrationTargetWithAndWithoutSuccessor() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
+        server.setServerArch(ServerFactory.lookupServerArchByName("x86_64"));
+        server.setOsFamily("Suse"); // SP Migration will only work for Minions with OS family `SUSE
+
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct sp1BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel sp1BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(sp1BaseProduct, admin);
+
+        //Create the addon product
+        List<SUSEProduct> sp1Addons = new ArrayList<>();
+        SUSEProduct sp1AddOnProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sp1AddOnProduct.setBase(false);
+        Channel sp1ChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(sp1AddOnProduct, sp1BaseChannel,
+                admin);
+        SUSEProductExtension ext = new SUSEProductExtension(sp1BaseProduct, sp1AddOnProduct, sp1BaseProduct, false);
+        sp1Addons.add(sp1AddOnProduct);
+
+        // Setup repos for base and addon products
+        SUSEProductTestUtils.populateRepository(sp1BaseProduct, sp1BaseChannel, sp1BaseProduct, sp1BaseChannel,
+                admin);
+        SUSEProductTestUtils.populateRepository(sp1BaseProduct, sp1BaseChannel, sp1AddOnProduct, sp1ChildChannel,
+                admin);
+
+        // Setup migration target product
+        SUSEProduct sp2BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel sp2BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(sp2BaseProduct, admin);
+        SUSEProductTestUtils.populateRepository(sp2BaseProduct, sp2BaseChannel, sp2BaseProduct, sp2BaseChannel, admin);
+
+        // Set upgrade paths
+        sp1BaseProduct.setUpgrades(Collections.singleton(sp2BaseProduct));
+
+        Set<InstalledProduct> installedProducts = new HashSet<>();
+        installedProducts.add(SUSEProductTestUtils.getInstalledProduct(sp1BaseProduct));
+        installedProducts.add(SUSEProductTestUtils.getInstalledProduct(sp1AddOnProduct));
+        server.setInstalledProducts(installedProducts);
+
+        //Test cases
+
+        // case#1 No targets returned because there is successor in target for one addon
+        List<Map<String, Object>> targets = handler.listMigrationTargets(admin, server.getId().intValue());
+        assertTrue(targets.isEmpty());
+        // case#2 all targets returned even with missing successors ones
+        targets = handler.listMigrationTargets(admin, server.getId().intValue(), false);
+        assertTrue(targets.size() == 1);
+        assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
     }
 
     @Test

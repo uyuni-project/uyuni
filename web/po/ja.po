@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#. * Mimic the translation function `t()`, this doesn't match the full functionality but should suffice for tests
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:47
 #: ../html/src/components/input/Range.tsx:59
@@ -14,14 +13,14 @@
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 #: ../html/src/utils/test-utils/setup/t.test.ts:7
-#: ../html/src/utils/test-utils/setup/t.ts:2
+#: ../html/src/utils/test-utils/setup/t.ts:4
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-09 09:35+0000\n"
-"PO-Revision-Date: 2022-03-26 09:12+0000\n"
-"Last-Translator: oota toshiya <ribbon@users.sourceforge.jp>\n"
+"POT-Creation-Date: 2022-04-29 11:12+0000\n"
+"PO-Revision-Date: 2022-04-18 03:12+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -384,7 +383,7 @@ msgid "Last Name"
 msgstr "姓"
 
 #: ../html/src/components/input/FormMultiInput.stories.tsx:112
-#: ../html/src/manager/login/login.tsx:162
+#: ../html/src/manager/login/uyuni/login.tsx:54
 msgid "Login"
 msgstr "ログイン"
 
@@ -400,7 +399,8 @@ msgstr "必要"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/login.tsx:173
+#: ../html/src/manager/login/susemanager/login.tsx:68
+#: ../html/src/manager/login/uyuni/login.tsx:65
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -658,7 +658,7 @@ msgstr "データが正しくありません"
 msgid "No data"
 msgstr "データがありません"
 
-#: ../html/src/components/utils/HelpLink.tsx:21
+#: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
 msgstr "ヘルプ"
 
@@ -693,20 +693,20 @@ msgstr "なし"
 msgid "Require this channel"
 msgstr "このチャンネルが必要"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:22
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "Restart is needed for the configuration changes to take effect."
 msgstr "変更した設定を反映させるには、再起動が必要です。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:25
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:26
 msgid "An internal error has occured. See the server logs for details."
 msgstr "内部エラーが発生しました。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:26
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:27
 msgid "Enabling monitoring failed. See the server logs for details."
 msgstr ""
 "モニタリングの有効化に失敗しました。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:28
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:29
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
@@ -714,12 +714,12 @@ msgstr ""
 "全てのモニタリングサービスの有効化に失敗しました。いくつかのサービスが無効化"
 "されています。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:30
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:31
 msgid "Disabling monitoring failed. See the server logs for details."
 msgstr ""
 "モニタリングの無効化に失敗しました。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:32
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:33
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
@@ -727,29 +727,29 @@ msgstr ""
 "全てのモニタリングサービスの無効化に失敗しました。いくつかのサービスが有効化"
 "されています。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:34
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:35
 msgid "Monitoring enabled successfully."
 msgstr "モニタリングの有効化が正常に完了しました。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:35
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid "Monitoring disabled successfully."
 msgstr "モニタリングの無効化が正常に完了しました。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:37
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:38
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
 msgstr ""
 "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されていま"
 "す。 "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:41
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:42
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
 msgstr ""
 "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されていま"
 "す。 "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:45
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:46
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
@@ -757,7 +757,7 @@ msgstr ""
 "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されて"
 "います。 "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:49
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
@@ -765,16 +765,16 @@ msgstr ""
 "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されて"
 "います。 "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Monitoring status hasn't changed."
 msgstr "モニタリング状態は変更されていません。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "An error occured. Monitoring status unknown. Refresh the page."
 msgstr ""
 "エラーが発生しました。モニタリング状態は不明です。ページを更新してください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:60
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
@@ -786,83 +786,83 @@ msgstr ""
 msgid "System"
 msgstr "システム"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:62
 msgid "Tomcat (Java JMX)"
 msgstr "Tomcat (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:62
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:63
 msgid "Taskomatic (Java JMX)"
 msgstr "Taskomatic (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:63
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:64
 msgid "PostgreSQL database"
 msgstr "PostgreSQL データベース"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:64
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:65
 msgid "Server self monitoring"
 msgstr "サーバ自己監視"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:80
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:82
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:81
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:83
 msgid "Enabled"
 msgstr "有効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:90
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:92
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:91
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:93
 msgid "Disabled"
 msgstr "無効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:151
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
 msgid "Server Monitoring"
 msgstr "サーバ監視"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:153
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
 msgid "The server uses "
 msgstr "サーバは "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:155
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:156
 msgid "Prometheus"
 msgstr "Prometheus"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:157
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:158
 msgid " exporters to expose metrics about your environment."
 msgstr " エクスポータを利用して、お使いの環境に関するメトリックを開示します。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:160
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
 msgid "Refer to the "
 msgstr "詳しくは "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:166
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:167
 msgid "documentation"
 msgstr "ドキュメンテーション"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:168
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:169
 msgid " to learn how to to consume these metrics."
 msgstr " をお読みください。メトリックの消費方法が書かれています。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:246
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:266
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:286
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:308
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:247
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:267
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:287
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:309
 msgid "Enable"
 msgstr "有効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:253
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:273
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:293
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:316
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:317
 msgid "Disable"
 msgstr "無効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:329
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:330
 msgid "SUSE Manager Configuration - Monitoring"
 msgstr "SUSE Manager 設定 - モニタリング"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:334
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:335
 msgid "Setup your SUSE Manager server monitoring."
 msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:340
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:219
@@ -870,38 +870,38 @@ msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 msgid "General"
 msgstr "全般"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:345
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:346
 msgid "Bootstrap Script"
 msgstr "ブートストラップスクリプト"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:350
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
 msgid "Organizations"
 msgstr "組織"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:355
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
 msgid "Restart"
 msgstr "再起動"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:360
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:365
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
 msgid "Bare-metal systems"
 msgstr "ベアメタルシステム"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:369
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:386
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:376
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:387
 msgid "Monitoring"
 msgstr "モニタリング"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:397
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
 msgid "Restarting"
 msgstr "再起動"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:399
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -925,7 +925,6 @@ msgstr "従量課金制のsshデータを追加"
 #: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
-#: ../html/src/manager/proxy/container-config.tsx:244
 #: ../html/src/manager/state/recurring-states-list.tsx:51
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
@@ -2419,9 +2418,8 @@ msgid "Cloning channels"
 msgstr "チャンネルを複製しています"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
-#, fuzzy
 msgid "Waiting for repositories data to be generated"
-msgstr "リポジトリデータを生成しています"
+msgstr "リポジトリデータが生成されるのを待機しています"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
 #: ../html/src/manager/images/image-view.tsx:505
@@ -2554,21 +2552,21 @@ msgstr "バージョン履歴"
 msgid "New base channel"
 msgstr "新しいベースチャンネル"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:172
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:177
 msgid "New Base Channel"
 msgstr "新しいベースチャンネル"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:175
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:180
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "新しいベースチャンネルとして選択すべきチャンネルを選んでください"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:191
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:589
 msgid "Child Channels"
 msgstr "子チャンネル"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:213
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:218
 msgid "Clear Search"
 msgstr "検索の消去"
 
@@ -2863,7 +2861,7 @@ msgstr "取り込み"
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:368
+#: ../html/src/manager/proxy/container-config.tsx:378
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:196
 msgid "Clear fields"
@@ -2984,6 +2982,7 @@ msgid "Use credentials"
 msgstr "資格情報の使用"
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:58
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3050,14 +3049,12 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:791
-#, fuzzy
 msgid "Build Log"
-msgstr "構築ホスト"
+msgstr "構築ログ"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:10
-#, fuzzy
 msgid "Build log is not available."
-msgstr "利用可能な子チャンネルがありません。"
+msgstr "構築ログは利用できません。"
 
 #: ../html/src/manager/images/image-view-overview.tsx:38
 #: ../html/src/manager/images/image-view-overview.tsx:39
@@ -3409,7 +3406,7 @@ msgstr ""
 msgid "Overview"
 msgstr "概要"
 
-#: ../html/src/manager/login/login.tsx:53
+#: ../html/src/manager/login/messages.tsx:14
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
@@ -3418,7 +3415,7 @@ msgstr ""
 "グの回避を行なったりできるよう、できる限り速やかにスキーマをアップグレードす"
 "ることをお勧めします。"
 
-#: ../html/src/manager/login/login.tsx:62
+#: ../html/src/manager/login/messages.tsx:23
 msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
@@ -3426,7 +3423,7 @@ msgstr ""
 "ディスクの空き容量を検証できません。この問題が解決しない場合は、システム管理"
 "者に連絡してください。"
 
-#: ../html/src/manager/login/login.tsx:67
+#: ../html/src/manager/login/messages.tsx:28
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
@@ -3434,7 +3431,7 @@ msgstr ""
 "いくつかの重要なディレクトリがありません。システム管理者に連絡して、設定を確"
 "認してください。"
 
-#: ../html/src/manager/login/login.tsx:72
+#: ../html/src/manager/login/messages.tsx:33
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
@@ -3442,7 +3439,7 @@ msgstr ""
 "サーバの使用可能なディスク容量が不足しています。ディスク容量を追加するには、"
 "システム管理者に連絡してください。"
 
-#: ../html/src/manager/login/login.tsx:77
+#: ../html/src/manager/login/messages.tsx:38
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
@@ -3450,11 +3447,12 @@ msgstr ""
 "サーバで使用可能なディスク容量が非常に少なくなっています。ディスク容量を追加"
 "するには、システム管理者に連絡してください。"
 
-#: ../html/src/manager/login/login.tsx:95
+#: ../html/src/manager/login/messages.tsx:56
 msgid "Signing in ..."
 msgstr "サインインしています..."
 
-#: ../html/src/manager/login/login.tsx:142
+#: ../html/src/manager/login/susemanager/login.tsx:38
+#: ../html/src/manager/login/uyuni/login.tsx:34
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3462,12 +3460,14 @@ msgstr ""
 "Discover はサーバやパッケージ、パッチなどを 1 つのインターフェイスから管理で"
 "きる新しい方式です。"
 
-#: ../html/src/manager/login/login.tsx:145
-msgid "Learn more about"
-msgstr "下記についてさらに詳しく"
+#: ../html/src/manager/login/susemanager/login.tsx:42
+msgid "_blank"
+msgstr ""
 
-#: ../html/src/manager/login/login.tsx:154
-#: ../html/src/manager/login/login.tsx:181
+#: ../html/src/manager/login/susemanager/login.tsx:57
+#: ../html/src/manager/login/susemanager/login.tsx:82
+#: ../html/src/manager/login/uyuni/login.tsx:46
+#: ../html/src/manager/login/uyuni/login.tsx:73
 msgid "Sign In"
 msgstr "サインイン"
 
@@ -3488,6 +3488,10 @@ msgstr ""
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "ログイン処理が動作中ですが、このページを閉じてしまってよろしいですか？"
+
+#: ../html/src/manager/login/uyuni/login.tsx:37
+msgid "Learn more about"
+msgstr "下記についてさらに詳しく"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:74
 msgid "Skip to the last maintenance window"
@@ -3996,7 +4000,7 @@ msgid "Package States"
 msgstr "パッケージの状態"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:303
+#: ../html/src/manager/proxy/container-config.tsx:310
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
@@ -4155,24 +4159,22 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
-msgstr ""
+msgstr "コンテナベースのプロキシ設定が正しく生成されました。"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
 msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
+msgstr "プロキシ設定の生成が進行中です: 応答を待機しています..."
 
 #: ../html/src/manager/proxy/container-config.tsx:134
-#, fuzzy
 msgid "Request interrupted or invalid response received from the server."
 msgstr ""
-"要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。やり"
-"直してください。"
+"要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。"
 
 #: ../html/src/manager/proxy/container-config.tsx:171
 #: ../html/src/manager/proxy/container-config.tsx:187
 msgid "Container Based Proxy Configuration"
-msgstr ""
+msgstr "コンテナベースのプロキシ設定"
 
 #: ../html/src/manager/proxy/container-config.tsx:177
 msgid ""
@@ -4180,101 +4182,133 @@ msgid ""
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .zip archive to download."
 msgstr ""
+"コンテナベースのプロキシを登録して実行するために、一連の設定ファイルと証明書"
+"を生成できます。次のフォームに入力して送信すると、ダウンロードする.zipアーカ"
+"イブが取得されます。"
 
 #: ../html/src/manager/proxy/container-config.tsx:191
-#, fuzzy
 msgid "Proxy FQDN"
-msgstr "プロキシ"
+msgstr "プロキシFQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:193
-#, fuzzy
-msgid "e.g., proxy.domain.com"
-msgstr "例: host.domain.com"
-
-#: ../html/src/manager/proxy/container-config.tsx:199
-msgid "Server FQDN"
+#: ../html/src/manager/proxy/container-config.tsx:192
+msgid "The FQDN of the machine where the containers are hosted"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:201
+#: ../html/src/manager/proxy/container-config.tsx:194
+msgid "e.g., proxy.domain.com"
+msgstr "例: proxy.domain.com"
+
+#: ../html/src/manager/proxy/container-config.tsx:200
 #, fuzzy
-msgid "e.g., server.domain.com"
-msgstr "例: host.domain.com"
+msgid "Parent FQDN"
+msgstr "プロキシFQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
-msgid "FQDN of the server of proxy to connect to."
-msgstr ""
+msgid "e.g., server.domain.com"
+msgstr "例: server.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:208
+#: ../html/src/manager/proxy/container-config.tsx:203
 #, fuzzy
-msgid "Proxy SSH port"
-msgstr "SSHポート"
+msgid "The FQDN of the parent (server or proxy) to connect to."
+msgstr "接続するプロキシのサーバのFQDN。"
 
 #: ../html/src/manager/proxy/container-config.tsx:209
+msgid "Proxy SSH port"
+msgstr "プロキシSSHポート"
+
+#: ../html/src/manager/proxy/container-config.tsx:210
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
 msgid "Port range: 1 - 65535"
 msgstr "ポート範囲: 1 - 65535"
 
-#: ../html/src/manager/proxy/container-config.tsx:218
-msgid "Max Squid cache size (MB)"
+#: ../html/src/manager/proxy/container-config.tsx:219
+#, fuzzy
+msgid "Max Squid cache size"
+msgstr "Squidの最大キャッシュサイズ(MB)"
+
+#: ../html/src/manager/proxy/container-config.tsx:220
+msgid "The maximum value of the Squid cache in Megabytes"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:221
-#, fuzzy
+#: ../html/src/manager/proxy/container-config.tsx:223
 msgid "e.g., 2048"
-msgstr "例: SLE12"
+msgstr "例: 2048"
 
-#: ../html/src/manager/proxy/container-config.tsx:228
-msgid "Proxy administrator email"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:229
+#: ../html/src/manager/proxy/container-config.tsx:230
 #, fuzzy
+msgid "Proxy admin email"
+msgstr "プロキシ管理者の電子メール"
+
+#: ../html/src/manager/proxy/container-config.tsx:231
+#, fuzzy
+msgid "The container-based proxy administrator email address"
+msgstr "コンテナベースのプロキシ設定が正しく生成されました。"
+
+#: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., proxy.admin@mycompany.com"
-msgstr "例: host.domain.com"
+msgstr "例: proxy.admin@mycompany.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:236
-#: ../html/src/manager/proxy/container-config.tsx:237
+#: ../html/src/manager/proxy/container-config.tsx:239
+#: ../html/src/manager/proxy/container-config.tsx:240
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL証明書"
 
-#: ../html/src/manager/proxy/container-config.tsx:245
+#: ../html/src/manager/proxy/container-config.tsx:248
+#: ../html/src/manager/proxy/container-config.tsx:373
+msgid "Generate"
+msgstr "生成"
+
+#: ../html/src/manager/proxy/container-config.tsx:249
 msgid "Use existing"
-msgstr ""
+msgstr "既存の使用"
 
-#: ../html/src/manager/proxy/container-config.tsx:252
-msgid "CA certificate to use to sign the SSL certificate in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:260
-msgid "CA private key to use to sign the SSL certificate in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:268
+#: ../html/src/manager/proxy/container-config.tsx:256
 #, fuzzy
-msgid "The CA private key password"
-msgstr "新しいパスワードの生成"
+msgid "CA certificate"
+msgstr "SSL証明書"
 
-#: ../html/src/manager/proxy/container-config.tsx:276
-msgid "SSL Certificate data"
-msgstr ""
+#: ../html/src/manager/proxy/container-config.tsx:257
+#: ../html/src/manager/proxy/container-config.tsx:266
+#: ../html/src/manager/proxy/container-config.tsx:323
+#, fuzzy
+msgid "To sign the SSL certificate in PEM format"
+msgstr "PEM形式でSSL証明書に署名するために使用されるルートCA"
+
+#: ../html/src/manager/proxy/container-config.tsx:265
+#, fuzzy
+msgid "CA private key"
+msgstr "SSH 機密鍵"
+
+#: ../html/src/manager/proxy/container-config.tsx:274
+#, fuzzy
+msgid "CA password"
+msgstr "パスワード"
+
+#: ../html/src/manager/proxy/container-config.tsx:275
+msgid "The CA private key password"
+msgstr "CA機密鍵のパスワード"
 
 #: ../html/src/manager/proxy/container-config.tsx:283
+msgid "SSL Certificate data"
+msgstr "SSL証明書データ"
+
+#: ../html/src/manager/proxy/container-config.tsx:290
 msgid "Alternate CNAMEs"
-msgstr ""
+msgstr "代替CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:291
+#: ../html/src/manager/proxy/container-config.tsx:298
 msgid "CNAME"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:297
-msgid "2-letter country code"
-msgstr ""
+msgstr "CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:304
-msgid "City"
-msgstr ""
+msgid "2-letter country code"
+msgstr "2文字の国コード"
 
-#: ../html/src/manager/proxy/container-config.tsx:305
+#: ../html/src/manager/proxy/container-config.tsx:311
+msgid "City"
+msgstr "市区町村"
+
+#: ../html/src/manager/proxy/container-config.tsx:312
 #: ../html/src/manager/state/highstate-summary.tsx:170
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
@@ -4282,40 +4316,41 @@ msgstr ""
 msgid "Organization"
 msgstr "組織"
 
-#: ../html/src/manager/proxy/container-config.tsx:306
-#, fuzzy
+#: ../html/src/manager/proxy/container-config.tsx:313
 msgid "Organization Unit"
-msgstr "組織"
+msgstr "組織単位"
 
-#: ../html/src/manager/proxy/container-config.tsx:307
+#: ../html/src/manager/proxy/container-config.tsx:314
 msgid "Email"
+msgstr "電子メール"
+
+#: ../html/src/manager/proxy/container-config.tsx:322
+msgid "The root CA"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:315
-msgid "The root CA used to sign the SSL certificate in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:324
-#, fuzzy
+#: ../html/src/manager/proxy/container-config.tsx:332
 msgid "Intermediate CAs"
-msgstr "インターフェイス"
+msgstr "中間CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:334
+#: ../html/src/manager/proxy/container-config.tsx:342
 msgid "CA file in PEM format"
-msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:345
-msgid "Proxy CRT content in PEM format"
-msgstr ""
+msgstr "PEM形式のCAファイル"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
-msgid "Proxy SSL private key in PEM format"
-msgstr ""
+#, fuzzy
+msgid "Proxy certificate"
+msgstr "SSL証明書"
 
+#: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
 #, fuzzy
-msgid "Generate"
-msgstr "全般"
+msgid "In PEM format"
+msgstr "PEM形式のCAファイル"
+
+#: ../html/src/manager/proxy/container-config.tsx:362
+#, fuzzy
+msgid "Proxy SSL private key"
+msgstr "PEM形式のプロキシSSL機密鍵"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4449,33 +4484,33 @@ msgstr "キー"
 msgid "Fingerprint"
 msgstr "フィンガープリント"
 
-#: ../html/src/manager/shared/menu/menu.tsx:199
+#: ../html/src/manager/shared/menu/menu.tsx:203
 msgid "Clear Menu"
 msgstr "メニューの消去"
 
-#: ../html/src/manager/shared/menu/menu.tsx:201
+#: ../html/src/manager/shared/menu/menu.tsx:205
 msgid "Filter menu"
 msgstr "フィルタメニュー"
 
-#: ../html/src/manager/shared/menu/menu.tsx:238
-#: ../html/src/manager/shared/menu/menu.tsx:241
+#: ../html/src/manager/shared/menu/menu.tsx:242
+#: ../html/src/manager/shared/menu/menu.tsx:245
 msgid "Uyuni homepage"
 msgstr "Uyuni ホームページ"
 
-#: ../html/src/manager/shared/menu/menu.tsx:239
+#: ../html/src/manager/shared/menu/menu.tsx:243
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:248
-#: ../html/src/manager/shared/menu/menu.tsx:257
+#: ../html/src/manager/shared/menu/menu.tsx:252
+#: ../html/src/manager/shared/menu/menu.tsx:261
 msgid "SUSE Manager homepage"
 msgstr "SUSE Manager ホームページ"
 
-#: ../html/src/manager/shared/menu/menu.tsx:251
+#: ../html/src/manager/shared/menu/menu.tsx:255
 msgid "SUSE"
 msgstr "SUSE"
 
-#: ../html/src/manager/shared/menu/menu.tsx:253
+#: ../html/src/manager/shared/menu/menu.tsx:257
 msgid "Manager"
 msgstr "Manager"
 
@@ -4626,6 +4661,8 @@ msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
 msgstr ""
+"新しい定期的なアクションを作成するには、アクションを作成するシステム、グルー"
+"プ、または組織に移動します。"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4840,48 +4877,47 @@ msgid "An error occurred during cleanup"
 msgstr "クリーンアップ処理中にエラーが発生しました"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:30
-#, fuzzy
 msgid "Not a system id"
-msgstr "ターゲットのシステムが見つかりませんでした"
+msgstr "システムIDではありません"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:31
-#, fuzzy
 msgid "Unknown System"
-msgstr "不明ゲスト"
+msgstr "不明なシステム"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:32
 msgid "System is not a peripheral server"
-msgstr ""
+msgstr "システムは周辺機器サーバではありません"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:50
 msgid "New password generated and action for peripheral server scheduled"
 msgstr ""
+"新しいパスワードが生成され、周辺機器サーバのアクションがスケジュールされまし"
+"た"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
 msgid "Peripheral Server"
-msgstr ""
+msgstr "周辺機器サーバ"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
-msgstr ""
+msgstr "レポートデータベース名"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:95
 msgid "Report Database Host"
-msgstr ""
+msgstr "レポートデータベースホスト"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:101
 msgid "Report Database User"
-msgstr ""
+msgstr "レポートデータベースユーザ"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:105
 msgid "Report Database Last Synced"
-msgstr ""
+msgstr "レポートデータベースの最終同期日"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
-#, fuzzy
 msgid "Regenerate Reporting Database Password"
-msgstr "新しいパスワードの生成"
+msgstr "レポーティングデータベースパスワードの生成"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
@@ -6243,6 +6279,18 @@ msgstr "未定義"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "Server FQDN"
+#~ msgstr "サーバFQDN"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM形式でSSL証明書に署名するために使用するCA証明書"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM形式でSSL証明書に署名するために使用するCA機密鍵"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "PEM形式のプロキシCRTコンテンツ"
 
 #~ msgid "Delete project"
 #~ msgstr "プロジェクトの削除"

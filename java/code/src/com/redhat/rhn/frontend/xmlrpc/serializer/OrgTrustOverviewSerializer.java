@@ -25,13 +25,11 @@ import com.suse.manager.api.SerializedApiResponse;
  * OrgSerializer is a custom serializer for the XMLRPC library.
  * It converts an OrgTrustOverview to an XMLRPC &lt;struct&gt;.
  * @xmlrpc.doc
- *   #array_begin()
- *     #struct_begin("trusted organizations")
- *       #prop("int", "orgId")
- *       #prop("string", "orgName")
- *       #prop("boolean", "trustEnabled")
- *     #struct_end()
- *   #array_end()
+ *   #struct_begin("trusted organizations")
+ *     #prop("int", "orgId")
+ *     #prop("string", "orgName")
+ *     #prop("boolean", "trustEnabled")
+ *   #struct_end()
  */
 public class OrgTrustOverviewSerializer extends ApiResponseSerializer<OrgTrustOverview> {
 

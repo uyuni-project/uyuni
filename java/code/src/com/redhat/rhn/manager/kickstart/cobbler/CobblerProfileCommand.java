@@ -95,12 +95,11 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
                     keystring.append(akey.getKey());
                 }
             }
-            log.debug("Setting setRedHatManagementKey to: " + keystring);
+            log.debug("Setting setRedHatManagementKey to: {}", keystring);
             profile.setRedHatManagementKey(keystring.toString());
         }
         else {
-            log.warn("We could not find a default kickstart session for this ksdata: " +
-                    ksData.getLabel());
+            log.warn("We could not find a default kickstart session for this ksdata: {}", ksData.getLabel());
         }
 
         Map meta = profile.getKsMeta();
