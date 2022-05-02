@@ -40,4 +40,4 @@ sql:
         FROM CustomChannelsReport
   ) X
   -- where placeholder
-  ORDER BY mgm_id, channel_id
+  ORDER BY mgm_id, channel_label
