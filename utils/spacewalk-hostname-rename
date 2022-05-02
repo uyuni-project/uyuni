@@ -447,7 +447,8 @@ else
     fi
 fi
 
-OLD_HOSTNAME=$(grep ^redhat_management_server /etc/cobbler/settings | awk '{print $2}')
+# This awk command can read a single line yaml value which may optionally be double or single quoted.
+OLD_HOSTNAME=$(awk -F ':' '/redhat_management_server/{sub(/^[[:blank:]]+/,"", $2); gsub(/["'\'']/, "", $2); print $2}' /etc/cobbler/settings)
 
 echo "=============================================" | tee -a $LOG
 echo "hostname: $HOSTNAME" | tee -a $LOG
@@ -535,7 +536,11 @@ EOS
 print_status 0  # just simulate end
 
 echo -n "Changing cobbler settings ... " | tee -a $LOG
-/usr/bin/spacewalk-setup-cobbler >> $LOG 2>&1
+APACHE2_CONF_DIR_DEFAULT_CONF=$(awk -F '=' '/httpd_config_dir/{sub(/^[[:blank:]]+/,"", $2); print $2}' /usr/share/rhn/config-defaults/rhn.conf)
+if [ -z "$APACHE2_CONF_DIR_DEFAULT_CONF" ]; then
+  print_status 1 'Apache 2 config directory could not be found. Please add it to "/usr/share/rhn/config-defaults/rhn.conf"!'
+fi
+/usr/bin/spacewalk-setup-cobbler --apache2-config-directory "$APACHE2_CONF_DIR_DEFAULT_CONF" >> $LOG 2>&1
 print_status $?
 
 echo -n "Changing kernel_options ... " | tee -a $LOG
