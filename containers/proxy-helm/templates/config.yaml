@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: proxy-configmap
+  namespace: "{{ .Values.namespace }}"
 data:
   config.yaml: |
     server: {{ .Values.server }}
@@ -16,6 +17,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: proxy-secret
+  namespace: "{{ .Values.namespace }}"
 stringData:
   httpd.yaml: |
     httpd:

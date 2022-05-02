@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: uyuni-proxy
+  namespace: "{{ .Values.namespace }}"
 spec:
   replicas: 1
   selector:
@@ -15,6 +16,7 @@ spec:
       containers:
         - name: httpd
           image: "{{ .Values.repository }}/proxy-httpd:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
             mountPath: /etc/uyuni/config.yaml
@@ -33,6 +35,7 @@ spec:
             - containerPort: 443
         - name: salt-broker
           image: "{{ .Values.repository }}/proxy-salt-broker:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
             mountPath: /etc/uyuni/config.yaml
@@ -43,6 +46,7 @@ spec:
             - containerPort: 4506
         - name: squid
           image: "{{ .Values.repository }}/proxy-squid:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
             mountPath: /etc/uyuni/config.yaml
@@ -54,6 +58,7 @@ spec:
             - containerPort: 8088
         - name: ssh
           image: "{{ .Values.repository }}/proxy-ssh:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
             mountPath: /etc/uyuni/config.yaml
@@ -67,6 +72,7 @@ spec:
             - containerPort: 22
         - name: tftpd
           image: "{{ .Values.repository }}/proxy-tftpd:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
             mountPath: /etc/uyuni/config.yaml
