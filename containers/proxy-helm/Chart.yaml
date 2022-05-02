@@ -6,5 +6,6 @@ name: proxy
 description: Uyuni proxy containers.
 type: application
 home: https://www.uyuni-project.org/
+icon: https://www.uyuni-project.org/img/uyuni-logo.svg
 version: 0.0.0 # Only increase the patch number when changing, the rest is replaced when pushing to OBS
 appVersion: "%PKG_VERSION%"
