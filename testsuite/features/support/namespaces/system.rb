@@ -97,7 +97,7 @@ class NamespaceSystemConfig
   end
 
   def remove_channels(servers, channels)
-    @test.call('system.config.removeChannels', sessionKey: @test.token, sid: servers, configChannelLabels: channels)
+    @test.call('system.config.removeChannels', sessionKey: @test.token, sids: servers, configChannelLabels: channels)
   end
 end
 
