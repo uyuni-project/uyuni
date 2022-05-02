@@ -166,7 +166,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
                 else {
                     messageKey = "message.addedtoactionchain";
                     args = new Object[2];
-                    args[0] = actionChain.getId();
+                    args[0] = actionChain.getId().toString();
                     args[1] = actionChain.getLabel();
                 }
 
