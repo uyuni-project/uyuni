@@ -14,17 +14,17 @@ columns:
   profile_name The unique descriptive name of the system
   hostname The hostname that identifies this system
   ip_address The IPv4 address of the primary network interface of the system
-  ip6_addresses The list of IPv6 addresses and their scopes of the primary network interface of the system, separated by ;
+  ipv6_address The list of IPv6 addresses and their scopes of the primary network interface of the system, separated by ;
   registered_by The user account who onboarded this system
   registration_time When this system was onboarded
   last_checkin_time When this system was visible and reachable last time
   kernel_version The version of the kernel installed on this system
   packages_out_of_date The number of packages installed on the system that can be updated
   errata_out_of_date The number of patches that can be applied to the system
-  software_channels THe list of software channels the system is subscribed to, separated by ;
-  configuration_channels The list of configuration channels the system is subscribed to, separated by ;
+  software_channel THe list of software channels the system is subscribed to, separated by ;
+  configuration_channel The list of configuration channels the system is subscribed to, separated by ;
   entitlements The list of entitlements of the system, separated by ;
-  system_groups The list of groups of the system, separated by ;
+  system_group The list of groups of the system, separated by ;
   organization The organization that owns this data
   virtual_host The id of the host of the system, if any
   architecture The architecture of the system
