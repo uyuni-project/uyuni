@@ -11,8 +11,8 @@ columns:
 
   mgm_id The id of the management server instance that contains this data
   system_id The id of the system
-  system_name The unique descriptive name of the system
   organization The organization that owns this data
+  system_name The unique descriptive name of the system
   key The name of the custom information
   value The value of the custom information
   synced_date The timestamp of when this data was last refreshed.
