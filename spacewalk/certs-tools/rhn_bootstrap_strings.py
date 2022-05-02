@@ -1261,6 +1261,8 @@ def getUp2dateTheBoxSh(productName, saltEnabled):
         PKG_NAME_YUM = "yum-rhn-plugin"
         PKG_NAME_ZYPPER_SYNC = PKG_NAME_ZYPPER + "; rhn-profile-sync"
         PKG_NAME_YUM_SYNC = PKG_NAME_YUM + "; rhn-profile-sync"
+        PKG_NAME_VENV_ZYPPER = PKG_NAME_VENV_ZYPPER_SYNC = \
+        PKG_NAME_VENV_YUM = PKG_NAME_VENV_YUM_SYNC = ""
 
     return """\
 echo
