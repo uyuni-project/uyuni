@@ -23,10 +23,10 @@ from .importLib import GenericPackageImport, IncompletePackage, \
     Import, InvalidArchError, InvalidChannelError, \
     IncompatibleArchError
 from .mpmSource import mpmBinaryPackage
-from uyuni.common import rhn_pkg
-from spacewalk.common.rhnConfig import CFG
 from spacewalk.server import taskomatic
 from spacewalk.server.rhnServer import server_packages
+from uyuni.common import rhn_pkg
+from uyuni.common.context_managers import cfg_component
 
 
 class ChannelPackageSubscription(GenericPackageImport):
@@ -83,45 +83,46 @@ class ChannelPackageSubscription(GenericPackageImport):
 
         # Fix the package information up, and uniquify the packages too
         uniqdict = {}
-        for package in self.batch:
-            if package.ignored:
-                continue
-            self._postprocessPackageNEVRA(package)
-            if not CFG.ENABLE_NVREA:
-                # nvrea disabled, skip checksum
-                nevrao = (
-                    package['name_id'],
-                    package['evr_id'],
-                    package['package_arch_id'],
-                    package['org_id'])
-            else:
-                # As nvrea is enabled uniquify based on checksum
-                nevrao = (
-                    package['name_id'],
-                    package['evr_id'],
-                    package['package_arch_id'],
-                    package['org_id'],
-                    package['checksum_id'])
+        with cfg_component() as CFG:
+            for package in self.batch:
+                if package.ignored:
+                    continue
+                self._postprocessPackageNEVRA(package)
+                if not CFG.ENABLE_NVREA:
+                    # nvrea disabled, skip checksum
+                    nevrao = (
+                        package['name_id'],
+                        package['evr_id'],
+                        package['package_arch_id'],
+                        package['org_id'])
+                else:
+                    # As nvrea is enabled uniquify based on checksum
+                    nevrao = (
+                        package['name_id'],
+                        package['evr_id'],
+                        package['package_arch_id'],
+                        package['org_id'],
+                        package['checksum_id'])
 
-            if nevrao not in uniqdict:
-                # Uniquify the channel names
-                package['channels'] = {}
-                # Initialize the channels
-                # This is a handy way of checking arch compatibility for this
-                # package with its channels
-                self.__copyChannels(package, package)
-                uniqdict[nevrao] = package
-            else:
-                # Package is found twice in the same batch
-                # Are the packages the same?
-                self._comparePackages(package, uniqdict[nevrao])
-                # Invalidate it
-                package.ignored = 1
-                firstpackage = uniqdict[nevrao]
-                # Copy any new channels
-                self.__copyChannels(package, firstpackage)
-                # Knowing the id of the referenced package
-                package.first_package = firstpackage
+                if nevrao not in uniqdict:
+                    # Uniquify the channel names
+                    package['channels'] = {}
+                    # Initialize the channels
+                    # This is a handy way of checking arch compatibility for this
+                    # package with its channels
+                    self.__copyChannels(package, package)
+                    uniqdict[nevrao] = package
+                else:
+                    # Package is found twice in the same batch
+                    # Are the packages the same?
+                    self._comparePackages(package, uniqdict[nevrao])
+                    # Invalidate it
+                    package.ignored = 1
+                    firstpackage = uniqdict[nevrao]
+                    # Copy any new channels
+                    self.__copyChannels(package, firstpackage)
+                    # Knowing the id of the referenced package
+                    package.first_package = firstpackage
 
     def _comparePackages(self, package1, package2):
         # XXX This should probably do a deep compare of the two packages
@@ -441,7 +442,8 @@ class PackageImport(ChannelPackageSubscription):
         for package in self.batch:
             # skip missing files and mpm packages
             if package['path'] and not isinstance(package, mpmBinaryPackage):
-                full_path = os.path.join(CFG.MOUNT_POINT, package['path'])
+                with cfg_component() as CFG:
+                    full_path = os.path.join(CFG.MOUNT_POINT, package['path'])
                 if os.path.exists(full_path):
                     header = rhn_pkg.get_package_header(filename=full_path)
                     server_packages.processPackageKeyAssociations(header,
