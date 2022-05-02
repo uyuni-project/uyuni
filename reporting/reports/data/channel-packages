@@ -36,4 +36,4 @@ sql:
         FROM ChannelPackagesReport
   ) X
   -- where placeholder
-  ORDER BY mgm_id, channel_label
+  ORDER BY mgm_id, channel_label, name, version, release, epoch, arch
