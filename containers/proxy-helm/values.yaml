@@ -2,7 +2,12 @@
 repository: registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni
 version: latest
 
-# Persistent Volumes
+## Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+##
+pullPolicy: "Always"
+
+namespace: "default"
+
 persistentVolume:
     ## uyuni proxy overall Persistent Volume access modes
     ## Must match those of existing PV or dynamic provisioner
@@ -26,3 +31,20 @@ persistentVolume:
     ## tftpboot Persistent Volume size
     ##
     tftp_boot_size: 5Gi
+
+services:
+    ## Select service type
+    ## Ref: https://kubernetes.io/docs/concepts/services-networking/service/
+    ## For NodePort, all ports are moved to +30000, except salt ports 32405 and 32406. See below
+    ##
+    type: LoadBalancer
+
+    ## NodePort service ports
+    ## Only used if type is NodePort
+    ##
+    nodeport_http:  30080
+    nodeport_https: 30443
+    nodeport_salta: 32505
+    nodeport_saltb: 32506
+    nodeport_ssh:   30020
+    nodeport_tfpt:  30069
