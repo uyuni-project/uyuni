@@ -1,3 +1,5 @@
+- Default to SUSE Manager images only when installed from SUSE Manager
+
 -------------------------------------------------------------------
 Fri Apr 08 13:39:38 CEST 2022 - jgonzalez@suse.com
 
