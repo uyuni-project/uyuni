@@ -1,3 +1,4 @@
+- faster display installable packages list (bsc#1187333)
 - fix package selection for ubuntu errata install (bsc#1199049)
 - Add script examples for HTTP API
 - Refactor API docs for HTTP API
