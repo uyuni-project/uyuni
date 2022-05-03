@@ -110,6 +110,10 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         PackageTestUtils.installPackageOnServer(oldPkg, server);
         SystemManager.subscribeServerToChannel(user, server, channel);
 
+        // refresh the newest package cache
+        ChannelFactory.refreshNewestPackageCache(channel, "java::test");
+        ChannelFactory.refreshNewestPackageCache(clonedChannel, "java::test");
+
         // verify the package is retracted
         DataResult<PackageListItem> pkgs = PackageManager.systemPackageList(server.getId(), null);
         pkgs.elaborate();
@@ -147,6 +151,11 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // subscribe the system to the channel with the retracted patch
         // the newest installable package should be the "newerPkg", since the "newestPkg" is retracted
         SystemManager.subscribeServerToChannel(user, server, channel);
+
+        // refresh the newest package cache
+        ChannelFactory.refreshNewestPackageCache(channel, "java::test");
+        ChannelFactory.refreshNewestPackageCache(clonedChannel, "java::test");
+
         PackageListItem pkg = assertSingleAndGet(PackageManager.systemAvailablePackages(server.getId(), null));
         assertEquals(newerPkg.getId(), pkg.getPackageId());
 
@@ -175,6 +184,10 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // set the patch in original to retracted
         vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+
+        // refresh the newest package cache
+        ChannelFactory.refreshNewestPackageCache(channel, "java::test");
+        ChannelFactory.refreshNewestPackageCache(clonedChannel, "java::test");
 
         // only the "newerPkg" is retracted in the original channel
         DataResult<PackageOverview> pkgsOriginal = PackageManager.listPackagesInChannelForList(channel.getId());
@@ -209,6 +222,10 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // set the patch in original to retracted
         vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+
+        // refresh the newest package cache
+        ChannelFactory.refreshNewestPackageCache(channel, "java::test");
+        ChannelFactory.refreshNewestPackageCache(clonedChannel, "java::test");
 
         Map<Long, PackageDto> pkgsOriginalMap = ChannelManager.listAllPackages(channel).stream()
                 .collect(Collectors.toMap(PackageDto::getId, p -> p));
@@ -246,6 +263,10 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         PackageTestUtils.installPackageOnServer(oldPkg, server);
         SystemManager.subscribeServerToChannel(user, server, channel);
+
+        // refresh the newest package cache
+        ChannelFactory.refreshNewestPackageCache(channel, "java::test");
+        ChannelFactory.refreshNewestPackageCache(clonedChannel, "java::test");
 
         // list the possible package updates when subscribed to the original
         assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(user, newerPkg.getId()));
