@@ -57,6 +57,9 @@ if [ ! -f ${OSCRC} ]; then
   exit 1
 fi
 
+# declare /manager as "save"
+git config --global --add safe.directory /manager
+
 cd ${REL_ENG_FOLDER}
 
 # If we have more than one destinations, keep SRPMS so we don't
