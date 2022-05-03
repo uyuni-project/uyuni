@@ -49,9 +49,12 @@ install -d -m 755 %{buildroot}/%{_localstatedir}/lib/uyuni/proxy-rhn-cache
 install -d -m 755 %{buildroot}/%{_localstatedir}/lib/uyuni/proxy-tftpboot
 install -d -m 755 %{buildroot}%{_sbindir}
 
+%if "%{?container_images_path}" != ""
+sed 's|^NAMESPACE=.*$|NAMESPACE=%{container_images_path}|' -i uyuni-proxy-services.config
+%endif
+
 %if !0%{?is_opensuse}
 PRODUCT_VERSION=$(echo %{version} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
-sed "s/^NAMESPACE=.*$/NAMESPACE=registry.suse.com\/suse\/manager\/${PRODUCT_VERSION}/" -i uyuni-proxy-services.config
 %endif
 %if 0%{?rhel}
 install -D -m 644 uyuni-proxy-services.config %{buildroot}%{_sysconfdir}/sysconfig/uyuni-proxy-systemd-services.config

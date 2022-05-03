@@ -576,7 +576,7 @@ When(/^I create state channel "([^"]*)" via API$/) do |channel|
 end
 
 When(/^I create state channel "([^"]*)" containing "([^"]*)" via API$/) do |channel, contents|
-  $api_test.configchannel.create_with_data(channel, channel, channel, 'state', { 'contents' => contents })
+  $api_test.configchannel.create_with_pathinfo(channel, channel, channel, 'state', { 'contents' => contents })
 end
 
 When(/^I call configchannel.get_file_revision\(\) with file "([^"]*)", revision "([^"]*)" and channel "([^"]*)" via API$/) do |file_path, revision, channel|

@@ -133,7 +133,7 @@ Feature: Smoke tests for <client>
     And I click on "Confirm & Deploy to Selected Systems"
     Then I should see a "/etc/s-mgr/config" link
     When I click on "Deploy Files to Selected Systems"
-    Then I should see a "scheduled for deploy" text
+    Then I should see a "1 revision-deploy is being scheduled." text
     And I should see a "0 revision-deploys overridden." text
     When I force picking pending events on "<client>" if necessary
     And I wait until file "/etc/s-mgr/config" exists on "<client>"

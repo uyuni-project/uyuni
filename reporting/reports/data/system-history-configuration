@@ -11,7 +11,7 @@ columns:
 
   mgm_id The id of the management server instance that contains this data
   system_id The id of the system
-  event_id The id of the action
+  event_id The id of the history event
   earliest_action The earliest time this action was schedule for execution
   pickup_date When this action was picked up for execution
   completed_date When this action was completed

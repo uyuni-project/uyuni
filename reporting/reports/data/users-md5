@@ -17,7 +17,7 @@ columns:
   first_name The person first name(s)
   position The descriptive role of this user within the organization
   email The email address associated with this account
-  roles List of roles assigned to the user, separated by ;
+  role List of roles assigned to the user, separated by ;
   creation_time When this user account was created
   last_login_time When this user account logged in for the last time
   active Current status of the user. Possible values: enabled, disabled

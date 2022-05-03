@@ -36,4 +36,4 @@ sql:
         FROM SystemExtraPackagesReport
   ) X
   -- where placeholder
-  ORDER BY mgm_id, system_id, package_name
+  ORDER BY mgm_id, system_name, system_id, package_name
