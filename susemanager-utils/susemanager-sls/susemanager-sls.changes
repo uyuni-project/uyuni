@@ -1,3 +1,4 @@
+- Use recursive merge for legacy image pillars (bsc#1199157)
 - Fix log file name for legacy Kiwi (bsc#1199094)
 - Collect logs from docker.build
 - add packages.pkgupdate state (bsc#1197507)
