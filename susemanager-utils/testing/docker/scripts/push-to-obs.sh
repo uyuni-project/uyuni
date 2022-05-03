@@ -56,7 +56,7 @@ if [ ! -f ${OSCRC} ]; then
   exit 1
 fi
 
-# declare /manager as "save"
+# declare /manager as "safe"
 git config --global --add safe.directory /manager
 
 cd ${REL_ENG_FOLDER}
