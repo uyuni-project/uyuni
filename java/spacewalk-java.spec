@@ -171,7 +171,7 @@ Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       byte-buddy
+Requires:       byte-buddy < 1.10
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
@@ -356,7 +356,7 @@ Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       byte-buddy
+Requires:       byte-buddy < 1.10
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
