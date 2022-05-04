@@ -1,4 +1,8 @@
-- Add Debian 11 repositories
+-------------------------------------------------------------------
+Wed May 04 14:08:48 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.16-1
+  * Add Debian 11 repositories
 
 -------------------------------------------------------------------
 Wed Feb 02 13:52:51 CET 2022 - jmassaguerpla@suse.de
