@@ -1,3 +1,4 @@
+- Fix ACL rules for config diff download for SLS files (bsc#1198914)
 - fix invalid link to action schedule
 
 -------------------------------------------------------------------
