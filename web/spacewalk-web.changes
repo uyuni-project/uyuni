@@ -1,9 +1,13 @@
-- increase web page default timeout (bsc#1187333)
-- Add ssh_salt_pre_flight_script and ssh_use_salt_thin parameters
-  to default rhn_web.conf
-- Upgrade minimist to fix CVE-2021-44906
-- susemanager-nodejs-sdk-devel is now provided by spacewalk-web
-- Resolve race conditions in CLM (bsc#1195710)
+-------------------------------------------------------------------
+Wed May 04 14:08:53 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.27-1
+  * increase web page default timeout (bsc#1187333)
+  * Add ssh_salt_pre_flight_script and ssh_use_salt_thin parameters
+    to default rhn_web.conf
+  * Upgrade minimist to fix CVE-2021-44906
+  * susemanager-nodejs-sdk-devel is now provided by spacewalk-web
+  * Resolve race conditions in CLM (bsc#1195710)
 
 -------------------------------------------------------------------
 Tue Mar 29 14:23:20 CEST 2022 - jmassaguerpla@suse.de
