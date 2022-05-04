@@ -1,3 +1,4 @@
+- Fix ACL rules for config diff download for SLS files (bsc#1198914)
 - fix invalid link to action schedule
 - Redesign the auto errata task to schedule combined actions (bsc#1197429)
 - detect free products in Alpha and Beta stage and prevent checks
