@@ -83,7 +83,7 @@ BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
 BuildRequires:  bcel
-BuildRequires:  byte-buddy
+BuildRequires:  byte-buddy < 1.10
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 %if 0%{?suse_version}
