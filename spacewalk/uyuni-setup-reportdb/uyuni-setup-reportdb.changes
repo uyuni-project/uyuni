@@ -1,5 +1,9 @@
-- remove creation of extra java truststores for database
-  SSL connections
+-------------------------------------------------------------------
+Wed May 04 15:27:59 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * remove creation of extra java truststores for database
+    SSL connections
 
 -------------------------------------------------------------------
 Tue Apr 19 12:15:40 CEST 2022 - jgonzalez@suse.com
