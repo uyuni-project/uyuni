@@ -1,3 +1,4 @@
+- increase web page default timeout (bsc#1187333)
 - Add ssh_salt_pre_flight_script and ssh_use_salt_thin parameters
   to default rhn_web.conf
 - Upgrade minimist to fix CVE-2021-44906
