@@ -1,3 +1,4 @@
+- Consistently use conf value for SPA engine timeout
 - Remove nodejs-packaging as a build requirement
 - Update translation strings
 
