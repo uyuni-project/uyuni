@@ -1,5 +1,9 @@
-- hide reportdb password in spacewalk-debug
-- Fix wrong unicode characters issued by rpm (#4614).
+-------------------------------------------------------------------
+Wed May 04 15:19:39 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * hide reportdb password in spacewalk-debug
+  * Fix wrong unicode characters issued by rpm (#4614).
 
 -------------------------------------------------------------------
 Tue Apr 19 11:57:07 CEST 2022 - jgonzalez@suse.com
