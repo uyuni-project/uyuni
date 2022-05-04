@@ -1,4 +1,8 @@
-- Improve parsing deb packages dependencies (bsc#1194594)
+-------------------------------------------------------------------
+Wed May 04 14:08:35 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.21-1
+  * Improve parsing deb packages dependencies (bsc#1194594)
 
 -------------------------------------------------------------------
 Tue Mar 29 14:22:50 CEST 2022 - jmassaguerpla@suse.de
