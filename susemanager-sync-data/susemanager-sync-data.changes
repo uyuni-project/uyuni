@@ -1,6 +1,10 @@
-- change release status of EL 7 and 8 aarch64 to released
-- change release status of Rocky Linux 8 x86_64 to released
-- add Debian 11 amd64
+-------------------------------------------------------------------
+Wed May 04 14:09:04 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.12-1
+  * change release status of EL 7 and 8 aarch64 to released
+  * change release status of Rocky Linux 8 x86_64 to released
+  * add Debian 11 amd64
 
 -------------------------------------------------------------------
 Wed Mar 02 14:10:34 CET 2022 - jgonzalez@suse.com
