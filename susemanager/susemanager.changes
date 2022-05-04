@@ -1,10 +1,14 @@
-- Add Salt Bundle support to mgr-create-bootstrap-repo
-- Enable bootstrapping for Debian 11
-- fix SLE15 bootstrap repo definition (bsc#1197438)
-- Add SLES15SP4 and SUMA Proxy 4.3 to bootstrap
-  repo definitions (bsc#1196702)
-- Add missing dependencies for Salt 3004 into bootstrap repository
-  for SLE15 family (bsc#1198221)
+-------------------------------------------------------------------
+Wed May 04 14:08:57 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.29-1
+  * Add Salt Bundle support to mgr-create-bootstrap-repo
+  * Enable bootstrapping for Debian 11
+  * fix SLE15 bootstrap repo definition (bsc#1197438)
+  * Add SLES15SP4 and SUMA Proxy 4.3 to bootstrap
+    repo definitions (bsc#1196702)
+  * Add missing dependencies for Salt 3004 into bootstrap repository
+    for SLE15 family (bsc#1198221)
 
 -------------------------------------------------------------------
 Tue Mar 29 14:23:24 CEST 2022 - jmassaguerpla@suse.de
