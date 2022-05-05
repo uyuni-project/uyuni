@@ -57,6 +57,9 @@ if $build_validation
   $sle15sp3_client = twopence_init("ssh:#{ENV['SLE15SP3_CLIENT']}") if ENV['SLE15SP3_CLIENT']
   $sle15sp3_minion = twopence_init("ssh:#{ENV['SLE15SP3_MINION']}") if ENV['SLE15SP3_MINION']
   $sle15sp3_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP3_SSHMINION']}") if ENV['SLE15SP3_SSHMINION']
+  $sle15sp4_client = twopence_init("ssh:#{ENV['SLE15SP4_CLIENT']}") if ENV['SLE15SP4_CLIENT']
+  $sle15sp4_minion = twopence_init("ssh:#{ENV['SLE15SP4_MINION']}") if ENV['SLE15SP4_MINION']
+  $sle15sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP4_SSHMINION']}") if ENV['SLE15SP4_SSHMINION']
   $ceos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
   $ceos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $ceos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
@@ -83,6 +86,7 @@ if $build_validation
              $sle15sp1_client, $sle15sp1_minion, $sle15sp1_ssh_minion,
              $sle15sp2_client, $sle15sp2_minion, $sle15sp2_ssh_minion,
              $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
+             $sle15sp4_client, $sle15sp4_minion, $sle15sp4_ssh_minion,
              $ceos7_client, $ceos7_minion, $ceos7_ssh_minion,
              $ceos8_minion, $ceos8_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
@@ -272,6 +276,9 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp3_client'           => $sle15sp3_client,
                   'sle15sp3_minion'           => $sle15sp3_minion,
                   'sle15sp3_ssh_minion'       => $sle15sp3_ssh_minion,
+                  'sle15sp4_client'           => $sle15sp4_client,
+                  'sle15sp4_minion'           => $sle15sp4_minion,
+                  'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
                   'ceos7_client'              => $ceos7_client,
                   'ceos7_minion'              => $ceos7_minion,
                   'ceos7_ssh_minion'          => $ceos7_ssh_minion,
