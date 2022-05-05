@@ -1,3 +1,6 @@
+- Do not raise error on file:// based DEB repo when looking
+  for alternative Release files (bsc#1199142)
+
 -------------------------------------------------------------------
 Wed May 04 14:08:35 CEST 2022 - jmassaguerpla@suse.de
 
