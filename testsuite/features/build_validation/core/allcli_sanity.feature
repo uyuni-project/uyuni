@@ -184,6 +184,27 @@ Feature: Sanity checks
     And "sle15sp3_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp3_ssh_minion" should be exact
 
+@sle15sp4_client
+  Scenario: The SLES 15 SP4 traditional client is healthy
+    Then "sle15sp4_client" should have a FQDN
+    And reverse resolution should work for "sle15sp4_client"
+    And "sle15sp4_client" should communicate with the server using public interface
+    And the clock from "sle15sp4_client" should be exact
+
+@sle15sp4_minion
+  Scenario: The SLES 15 SP4 minion is healthy
+    Then "sle15sp4_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp4_minion"
+    And "sle15sp4_minion" should communicate with the server using public interface
+    And the clock from "sle15sp4_minion" should be exact
+
+@sle15sp4_ssh_minion
+  Scenario: The SLES 15 SP4 Salt SSH minion is healthy
+    Then "sle15sp4_ssh_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp4_ssh_minion"
+    And "sle15sp4_ssh_minion" should communicate with the server using public interface
+    And the clock from "sle15sp4_ssh_minion" should be exact
+
 @ceos7_client
   Scenario: The CentOS 7 traditional client is healthy
     Then "ceos7_client" should have a FQDN
