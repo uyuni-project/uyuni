@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.errata;
 
 import static java.util.Arrays.asList;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -48,6 +49,7 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -2104,6 +2106,23 @@ public class ErrataManager extends BaseManager {
             }
         }
         return needed;
+    }
+
+    /**
+     * Insert an errata cache task for a given channel, will be picked up by taskomatic on
+     * the next run (runs every minute per default).
+     *
+     * @param channel the channel
+     */
+    public static void insertErrataCacheTask(Channel channel) {
+        WriteMode mode = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
+                "insert_into_task_queue");
+        Map<String, Object> params = new HashMap<>();
+        params.put("org_id", ofNullable(channel.getOrg()).orElse(OrgFactory.getSatelliteOrg()).getId());
+        params.put("task_name", "update_errata_cache_by_channel");
+        params.put("task_data", channel.getId());
+        params.put("earliest", new Timestamp(System.currentTimeMillis()));
+        mode.executeUpdate(params);
     }
 
     /**
