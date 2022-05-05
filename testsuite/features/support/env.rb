@@ -355,6 +355,12 @@ Before('@opensuse153arm_minion') do
   skip_this_scenario unless $opensuse153arm_minion
 end
 
+Before('@suse_minion') do |scenario|
+  filename = scenario.location.file
+  skip_this_scenario unless filename.include? 'minion'
+  skip_this_scenario unless (filename.include? 'sle') || (filename.include? 'suse')
+end
+
 Before('@skip_for_debianlike') do |scenario|
   filename = scenario.location.file
   skip_this_scenario if (filename.include? 'ubuntu') || (filename.include? 'debian')
