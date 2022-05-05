@@ -20,6 +20,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
@@ -672,9 +673,9 @@ public class ContentManagementHandler extends BaseHandler {
             String channelLabel, String projectLabel) throws ModulemdApiException {
         ensureOrgAdmin(loggedInUser);
 
-        Channel channel = ChannelManager.lookupByLabelAndUser(channelLabel, loggedInUser);
-
         try {
+            Channel channel = ChannelManager.lookupByLabelAndUser(channelLabel, loggedInUser);
+
             List<ContentFilter> createdFilters = filterTemplateManager.createAppStreamFilters(
                     prefix, channel, loggedInUser);
 
@@ -688,6 +689,9 @@ public class ContentManagementHandler extends BaseHandler {
         }
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
+        }
+        catch (LookupException | EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
         }
     }
 
