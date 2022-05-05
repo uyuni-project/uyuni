@@ -271,11 +271,13 @@ while read PKG_NAME; do
       PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
       sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
 
-      # if obs vs local version is different, add changelog about the bumping version
-      OSC_PKG_VERSION=$(${OSC} cat ${OBS_PROJ}/${PKG_NAME}/Dockerfile | grep '^LABEL org.opencontainers.image.version=')
-      OSC_PKG_VERSION=$(echo ${OSC_PKG_VERSION} | sed -n 's/.*=\"\(.*\)\"/\1/p')
-      if [ "${OSC_PKG_VERSION}" != "${PRODUCT_VERSION}" ]; then
-        ${OSC} vc ${SRPM_PKG_DIR} -m "Bump version to ${PRODUCT_VERSION}"
+      # add a changelog entry if it is not yet up to the latest version
+      CHANGELOG_TEMPLATE="Update the image version to"
+      CHANGELOG_PKG_VERSION=$(cat ${SRPM_PKG_DIR}/${PKG_NAME}.changes | grep -m 1 "${CHANGELOG_TEMPLATE}")
+      CHANGELOG_PKG_VERSION=$(echo ${CHANGELOG_PKG_VERSION} | sed -n "s/.*${CHANGELOG_TEMPLATE}\s\(.*\)$/\1/p")
+      if [ "${CHANGELOG_PKG_VERSION}" != "${PRODUCT_VERSION}" ]; then
+        echo "Adding a changelog entry for ${SRPM_PKG_DIR}"
+        ${OSC} vc ${SRPM_PKG_DIR} -m "${CHANGELOG_TEMPLATE} ${PRODUCT_VERSION}"
       fi
   fi
 
