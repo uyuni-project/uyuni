@@ -28,7 +28,11 @@ Feature: PXE boot a Retail terminal
     And I manually install the "vsftpd" formula on the server
     And I manually install the "saltboot" formula on the server
     And I manually install the "pxe" formula on the server
+    And I manually install the "image-sync" formula on the server
     And I synchronize all Salt dynamic modules on "proxy"
+
+  Scenario: Restart spacewalk services to apply saltboot reactor configuration
+    When I restart the spacewalk service
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -128,6 +132,10 @@ Feature: PXE boot a Retail terminal
     And I enter "Terminal branch: example.org" as "description"
     And I click on "Create Group"
     Then I should see a "System group example created." text
+    When I follow "Target Systems"
+    And I check the "proxy" client
+    And I click on "Add Systems"
+    Then I should see a "1 systems were added to example server group." text
 
   Scenario: Create all terminals group
     When I follow the left menu "Systems > System Groups"
@@ -148,6 +156,12 @@ Feature: PXE boot a Retail terminal
     And I check the "proxy" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to SERVERS server group." text
+
+  Scenario: Move the image to the branch server
+    When I enable repositories before installing branch server
+    And I apply state "image-sync" to "proxy"
+    And I disable repositories after installing branch server
+    Then the image for "pxeboot_minion" should exist on the branch server
 
   Scenario: Enable Saltboot formula for hardware type group
     When I follow the left menu "Systems > System Groups"
