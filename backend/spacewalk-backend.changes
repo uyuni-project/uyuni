@@ -1,3 +1,5 @@
+- Do not raise error on file:// based DEB repo when looking
+  for alternative Release files (bsc#1199142)
 - Improve parsing deb packages dependencies (bsc#1194594)
 - Fix reposync update notice formatting and date parsing (bsc#1194447)
 - implement more decompression algorithms for reposync (bsc#1196704)
