@@ -15,6 +15,11 @@
 
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
+import static com.redhat.rhn.common.util.StringUtil.nullIfEmpty;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -50,11 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.common.util.StringUtil.nullIfEmpty;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
 
 /**
  * Content Management XMLRPC handler
