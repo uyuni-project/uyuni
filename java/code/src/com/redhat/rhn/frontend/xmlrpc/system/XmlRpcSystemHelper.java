@@ -21,10 +21,10 @@ import com.redhat.rhn.frontend.xmlrpc.BootstrapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
+import com.suse.manager.webui.controllers.bootstrap.BootstrapResult;
+import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
-import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import java.util.Arrays;

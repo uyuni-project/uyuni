@@ -26,8 +26,9 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
-import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+
+import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2022 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers.utils;
+package com.suse.manager.webui.controllers.bootstrap;
 
 import static com.suse.manager.webui.services.impl.SaltSSHService.SSH_PUSH_PORT;
 import static com.suse.manager.webui.services.impl.SaltSSHService.getSSHUser;
@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;

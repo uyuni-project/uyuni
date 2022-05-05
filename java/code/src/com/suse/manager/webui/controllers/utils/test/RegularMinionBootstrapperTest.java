@@ -15,7 +15,6 @@
 
 package com.suse.manager.webui.controllers.utils.test;
 
-import com.google.gson.JsonPrimitive;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -25,17 +24,20 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
-import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
-import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
+import com.suse.manager.webui.controllers.bootstrap.BootstrapResult;
+import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
-import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
+
+import com.google.gson.JsonPrimitive;
+
 import org.jmock.Expectations;
 
 import java.util.Arrays;

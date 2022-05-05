@@ -84,8 +84,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
-import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
-import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
 import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
 

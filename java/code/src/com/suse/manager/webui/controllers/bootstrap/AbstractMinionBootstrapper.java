@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2022 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.utils;
+package com.suse.manager.webui.controllers.bootstrap;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_SSH_DIR_PATH;
 import static java.util.Optional.of;
@@ -29,6 +29,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.controllers.utils.CommandExecutionException;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltSSHService;
@@ -47,7 +49,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -370,56 +371,4 @@ public abstract class AbstractMinionBootstrapper {
 
     protected abstract Optional<String> validateContactMethod(ContactMethod desiredContactMethod);
 
-    /**
-     * Representation of the status of bootstrap and possibly error messages.
-     */
-    public static class BootstrapResult {
-
-        private final boolean success;
-        private final String[] messages;
-        private final Optional<String> contactMethod;
-
-        /**
-         * @param successIn success
-         * @param contactMethodIn contact method
-         * @param messagesIn messages
-         */
-        public BootstrapResult(boolean successIn, Optional<String> contactMethodIn,
-                               String ... messagesIn) {
-            this.success = successIn;
-            this.messages = messagesIn;
-            this.contactMethod = contactMethodIn;
-        }
-
-        /**
-         * @return success
-         */
-        public boolean isSuccess() {
-            return success;
-        }
-
-        /**
-         * @return messages
-         */
-        public String[] getMessages() {
-            return messages;
-        }
-
-        /**
-         * @return contactMethod
-         */
-        public Optional<String> getContactMethod() {
-            return contactMethod;
-        }
-
-        /**
-         * @return bootstrap result converted to a map
-         */
-        public Map<String, Object> asMap() {
-            Map<String, Object> ret = new LinkedHashMap<>();
-            ret.put("success", success);
-            ret.put("messages", messages);
-            return ret;
-        }
-    }
 }
