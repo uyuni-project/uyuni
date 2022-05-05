@@ -29,6 +29,9 @@
 - features/build_validation/init_clients/sle15sp3_client.feature
 - features/build_validation/init_clients/sle15sp3_minion.feature
 - features/build_validation/init_clients/sle15sp3_ssh_minion.feature
+- features/build_validation/init_clients/sle15sp4_client.feature
+- features/build_validation/init_clients/sle15sp4_minion.feature
+- features/build_validation/init_clients/sle15sp4_ssh_minion.feature
 
 - features/build_validation/init_clients/ubuntu1804_minion.feature
 - features/build_validation/init_clients/ubuntu1804_ssh_minion.feature
