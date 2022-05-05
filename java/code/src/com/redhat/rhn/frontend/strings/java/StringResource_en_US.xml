@@ -9403,6 +9403,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="setup.product.error.unknown">
         <source>Unexpected error while adding the product.</source>
       </trans-unit>
+      <trans-unit id="bootstrap.minion.error">
+        <source>An unexpected error has occurred during bootstrap.</source>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey">
+        <source>Could not generate salt-ssh public key.</source>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey.failed">
+        <source>Generating salt-ssh public key failed: {0}.</source>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expired.summary">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
       </trans-unit>

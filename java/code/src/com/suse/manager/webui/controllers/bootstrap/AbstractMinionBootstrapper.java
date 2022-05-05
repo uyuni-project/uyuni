@@ -38,7 +38,6 @@ import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 
@@ -47,11 +46,13 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Base for bootstrapping systems using salt-ssh.
@@ -85,10 +86,9 @@ public abstract class AbstractMinionBootstrapper {
      * @return map containing success flag and error messages.
      */
     public BootstrapResult bootstrap(BootstrapParameters params, User user, String defaultContactMethod) {
-        List<String> errMessages = validateBootstrap(params);
-        if (!errMessages.isEmpty()) {
-            return new BootstrapResult(false, Optional.empty(),
-                    errMessages.toArray(new String[errMessages.size()]));
+        List<String> errors = validateBootstrap(params);
+        if (!errors.isEmpty()) {
+            return new BootstrapResult(false, errors.stream().map(BootstrapError::new).collect(Collectors.toList()));
         }
 
         return bootstrapInternal(params, user, defaultContactMethod);
@@ -172,13 +172,13 @@ public abstract class AbstractMinionBootstrapper {
                 String responseMessage = "Cannot read/write '" + SALT_SSH_DIR_PATH + "/known_hosts'. " +
                         "Please check permissions.";
                 LOG.error("Error during bootstrap: " + responseMessage);
-                return new BootstrapResult(false, Optional.of(contactMethod),
+                return new BootstrapResult(false, contactMethod,
                         LOC.getMessage("bootstrap.minion.error.noperm", SALT_SSH_DIR_PATH + "/known_hosts"));
             }
         }
         catch (CommandExecutionException | IOException e) {
             LOG.error(e);
-            return new BootstrapResult(false, Optional.of(contactMethod),
+            return new BootstrapResult(false, contactMethod,
                     LOC.getMessage("bootstrap.minion.error.permcmdexec", SALT_SSH_DIR_PATH + "/known_hosts"));
         }
 
@@ -187,33 +187,33 @@ public abstract class AbstractMinionBootstrapper {
             return saltApi.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
                         String responseMessage = SaltUtils.decodeSaltErr(error);
-                        LOG.error("Error during bootstrap: " + responseMessage);
-                        return new BootstrapResult(false, Optional.of(contactMethod),
-                                responseMessage.split("\\r?\\n"));
+                                LOG.error("Error during bootstrap: " + responseMessage);
+                        return new BootstrapResult(false, contactMethod,
+                            Arrays.stream(responseMessage.split("\\r?\\n"))
+                                  .map(BootstrapError::new)
+                                  .collect(Collectors.toList())
+                        );
                     },
                     result -> {
                         // We have results, check if result = true
                         // for all the single states
-                        Optional<String> errMessage =
-                                getApplyStateErrorMessage(params.getHost(), result);
+                        Optional<String> errMessage = getApplyStateErrorMessage(params.getHost(), result);
                         // Clean up the generated key pair in case of failure
-                        boolean success = !errMessage.isPresent() &&
-                                result.getRetcode() == 0;
-                        errMessage.ifPresent(msg -> {
-                            LOG.error("States failed during bootstrap: " + msg);
-                        });
-                        return new BootstrapResult(success, Optional.of(contactMethod),
-                                Opt.fold(errMessage, () -> null, m -> m.split("\\r?\\n")));
+                        boolean success = errMessage.isEmpty() && result.getRetcode() == 0;
+                        errMessage.ifPresent(msg -> LOG.error("States failed during bootstrap: " + msg));
+                        return new BootstrapResult(success, contactMethod,
+                            Arrays.stream(Opt.fold(errMessage, () -> new String[0], m -> m.split("\\r?\\n")))
+                                  .map(BootstrapError::new)
+                                  .collect(Collectors.toList())
+                        );
                     }
             );
         }
-        catch (SaltException e) {
-            LOG.error("Exception during bootstrap: " + e.getMessage(), e);
-            return new BootstrapResult(false, Optional.empty(),
-                    LOC.getMessage("bootstrap.minion.error.salt", e.getMessage()));
-        }
         catch (Exception e) {
-            return new BootstrapResult(false, Optional.empty(), e.getMessage());
+            LOG.error("Exception during bootstrap: " + e.getMessage(), e);
+            return new BootstrapResult(false,
+                    e.getMessage() != null ? LOC.getMessage("bootstrap.minion.error.salt", e.getMessage()) :
+                            LOC.getMessage("bootstrap.minion.error.salt.unexpected"));
         }
     }
 

@@ -27,7 +27,6 @@ import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +138,7 @@ public class XmlRpcSystemHelper {
 
         // Determine the result, throw BootstrapException in case of failure
         if (!result.isSuccess()) {
-            throw new BootstrapException(Arrays.toString(result.getMessages()));
+            throw new BootstrapException(result.getMessages().toString());
         }
         return 1;
     }

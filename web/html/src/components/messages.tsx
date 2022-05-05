@@ -125,7 +125,7 @@ export const fromServerMessage = (
 
 function msg(severityIn: Severity, ...textIn: Array<React.ReactNode>) {
   return textIn.map(function (txt) {
-    return { severity: severityIn, text: textIn };
+    return { severity: severityIn, text: txt };
   });
 }
 

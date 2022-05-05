@@ -3,10 +3,9 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { AsyncButton } from "components/buttons";
-import { Messages } from "components/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/minion/bootstrap.jade
@@ -34,7 +33,7 @@ type State = {
   reactivationKey: string;
   ignoreHostKeys: boolean;
   manageWithSSH: boolean;
-  messages: any[];
+  errors: any[];
   proxy: string;
   showProxyHostnameWarn: boolean;
   loading: boolean;
@@ -60,7 +59,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       reactivationKey: "",
       ignoreHostKeys: true,
       manageWithSSH: false,
-      messages: [],
+      errors: [],
       proxy: "",
       showProxyHostnameWarn: false,
       loading: false,
@@ -147,8 +146,8 @@ class BootstrapMinions extends React.Component<Props, State> {
   };
 
   proxyChanged = (event) => {
-    var proxyId = event.target.value;
-    var proxy = this.props.proxies.find((p) => DEPRECATED_unsafeEquals(p.id, proxyId));
+    var proxyId = parseInt(event.target.value, 10);
+    var proxy = this.props.proxies.find((p) => p.id === proxyId);
     var showWarn = proxy && proxy.hostname.indexOf(".") < 0;
     this.setState({
       proxy: event.target.value,
@@ -157,7 +156,7 @@ class BootstrapMinions extends React.Component<Props, State> {
   };
 
   onBootstrap = () => {
-    this.setState({ messages: [], loading: true });
+    this.setState({ errors: [], loading: true });
     var formData: any = {};
     formData["host"] = this.state.host.trim();
     formData["port"] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
@@ -186,7 +185,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       (data) => {
         this.setState({
           success: data.success,
-          messages: data.messages,
+          errors: data.errors,
           loading: false,
         });
       },
@@ -194,20 +193,27 @@ class BootstrapMinions extends React.Component<Props, State> {
         try {
           this.setState({
             success: false,
-            messages: [JSON.parse(xhr.responseText)],
+            errors: [
+              {
+                message: JSON.parse(xhr.responseText),
+              },
+            ],
             loading: false,
           });
         } catch (err) {
-          var errMessages = DEPRECATED_unsafeEquals(xhr.status, 0)
-            ? [
-                t(
+          var errMessage =
+            xhr.status === 0
+              ? t(
                   "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
-                ),
-              ]
-            : [Network.errorMessageByStatus(xhr.status)];
+                )
+              : Network.errorMessageByStatus(xhr.status);
           this.setState({
             success: false,
-            messages: errMessages,
+            errors: [
+              {
+                message: errMessage,
+              },
+            ],
             loading: false,
           });
         }
@@ -221,42 +227,39 @@ class BootstrapMinions extends React.Component<Props, State> {
   };
 
   render() {
-    var messages: React.ReactNode = null;
+    var alertMessages: MessageType[] = [];
     if (this.state.success) {
-      messages = (
-        <Messages
-          items={[
-            {
-              severity: "success",
-              text: (
-                <p>
-                  {t("Successfully bootstrapped host! Your system should appear in")}{" "}
-                  <a className="js-spa" href="/rhn/systems/SystemList.do">
-                    {t("systems")}
-                  </a>{" "}
-                  {t("shortly")}.
-                </p>
-              ),
-            },
-          ]}
-        />
+      alertMessages = MessagesUtils.success(
+        <p>
+          {t("Successfully bootstrapped host! Your system should appear in")}{" "}
+          <a className="js-spa" href="/rhn/systems/SystemList.do">
+            {t("systems")}
+          </a>{" "}
+          {t("shortly")}.
+        </p>
       );
-    } else if (this.state.messages.length > 0) {
-      messages = (
-        <Messages
-          items={this.state.messages.map(function (msg) {
-            return { severity: "error", text: msg };
-          })}
-        />
+    } else if (this.state.errors.length === 1) {
+      var error = this.state.errors[0];
+      alertMessages = MessagesUtils.error(
+        <>
+          <p>{error.message}</p>
+        </>
+      );
+    } else if (this.state.errors.length > 1) {
+      alertMessages = MessagesUtils.error(
+        <>
+          <p>{t("Unable to bootstrap host. The following errors have happened:")}</p>
+          <ul>
+            {this.state.errors.map((error) => (
+              <li>{error.message}</li>
+            ))}
+          </ul>
+        </>
       );
     } else if (this.state.loading) {
-      messages = (
-        <Messages
-          items={[{ severity: "info", text: <p>{t("Your system is bootstrapping: waiting for a response..")}</p> }]}
-        />
-      );
+      alertMessages = MessagesUtils.info(t("Your system is bootstrapping: waiting for a response.."));
     } else if (this.state.privKeyLoading) {
-      messages = <Messages items={[{ severity: "info", text: <p>{t("Loading SSH Private Key..")}</p> }]} />;
+      alertMessages = MessagesUtils.info(t("Loading SSH Private Key.."));
     }
 
     var buttons = [
@@ -334,7 +337,7 @@ class BootstrapMinions extends React.Component<Props, State> {
             productName
           )}
         </p>
-        {messages}
+        <Messages items={alertMessages} />
         <div className="form-horizontal">
           <div className="form-group">
             <label className="col-md-3 control-label">{t("Host")}:</label>
@@ -464,8 +467,7 @@ class BootstrapMinions extends React.Component<Props, State> {
                   <option key={p.id} value={p.id}>
                     {p.name}
                     {p.path.reduce(
-                      (acc, val, idx) =>
-                        acc + "\u2192 " + val + (DEPRECATED_unsafeEquals(idx, p.path.length - 1) ? "" : " "),
+                      (acc, val, idx) => acc + "\u2192 " + val + (idx === p.path.length - 1 ? "" : " "),
                       ""
                     )}
                   </option>
