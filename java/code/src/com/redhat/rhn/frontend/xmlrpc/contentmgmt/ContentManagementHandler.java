@@ -660,6 +660,13 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel label of the Content Lifecycle Project
      * @throws EntityExistsFaultException when Filter already exist
      * @return List of created and successfully attached Filter
+     *
+     * @xmlrpc.doc Create Filters for AppStream Modular Channel and attach them to CLM Project
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "prefix", "Filter name prefix")
+     * @xmlrpc.param #param_desc("string", "channelLabel", "Modular Channel label")
+     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
+     * @xmlrpc.returntype #return_array_begin() $ContentFilterSerializer #array_end()
      */
     public List<ContentFilter> createAppStreamFilters(User loggedInUser, String prefix,
             String channelLabel, String projectLabel) throws ModulemdApiException {
