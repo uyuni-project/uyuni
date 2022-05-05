@@ -15,8 +15,10 @@
 package com.suse.manager.webui.controllers.bootstrap;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Representation of the status of bootstrap and possibly error messages.
@@ -24,20 +26,51 @@ import java.util.Optional;
 public class BootstrapResult {
 
     private final boolean success;
-    private final String[] messages;
-    private final Optional<String> contactMethod;
+    private final List<BootstrapError> errors;
+    private final String contactMethod;
 
     /**
-     * @param successIn       success
-     * @param contactMethodIn contact method
-     * @param messagesIn      messages
+     * Build a result from the outcome and the error message
+     * @param successIn the operation outcome
+     * @param errorMessage the error message
      */
-    public BootstrapResult(boolean successIn, Optional<String> contactMethodIn,
-                           String... messagesIn) {
-        this.success = successIn;
-        this.messages = messagesIn;
-        this.contactMethod = contactMethodIn;
+    public BootstrapResult(boolean successIn, String errorMessage) {
+        this(successIn, null, List.of(new BootstrapError(errorMessage)));
     }
+
+    /**
+     * Build a result from the outcome and the errors
+     * @param successIn the operation outcome
+     * @param errorsIn the list of errors
+     */
+    public BootstrapResult(boolean successIn, List<BootstrapError> errorsIn) {
+        this(successIn, null, errorsIn);
+    }
+
+    /**
+     * Build a result from the outcome and the errors
+     *
+     * @param successIn the operation outcome
+     * @param contactMethodIn the contact method
+     * @param errorMessage the error message
+     */
+    public BootstrapResult(boolean successIn, String contactMethodIn, String errorMessage) {
+        this(successIn, contactMethodIn, List.of(new BootstrapError(errorMessage)));
+    }
+
+    /**
+     * Build a result from the outcome and the errors
+     * @param successIn the operation outcome
+     * @param contactMethodIn the contact method
+     * @param errorsIn the list of errors
+     */
+    public BootstrapResult(boolean successIn, String contactMethodIn, List<BootstrapError> errorsIn) {
+        this.success = successIn;
+        this.contactMethod = contactMethodIn;
+        this.errors = errorsIn;
+    }
+
+
 
     /**
      * @return success
@@ -49,15 +82,15 @@ public class BootstrapResult {
     /**
      * @return messages
      */
-    public String[] getMessages() {
-        return messages;
+    public List<String> getMessages() {
+        return errors.stream().map(BootstrapError::getMessage).collect(Collectors.toList());
     }
 
     /**
      * @return contactMethod
      */
     public Optional<String> getContactMethod() {
-        return contactMethod;
+        return Optional.ofNullable(contactMethod);
     }
 
     /**
@@ -66,7 +99,7 @@ public class BootstrapResult {
     public Map<String, Object> asMap() {
         Map<String, Object> ret = new LinkedHashMap<>();
         ret.put("success", success);
-        ret.put("messages", messages);
+        ret.put("errors", errors.stream().map(BootstrapError::asMap).collect(Collectors.toList()));
         return ret;
     }
 }
