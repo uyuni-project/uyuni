@@ -26,8 +26,8 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
-import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper;
-import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
+import com.suse.manager.webui.controllers.bootstrap.AbstractMinionBootstrapper;
+import com.suse.manager.webui.controllers.bootstrap.BootstrapResult;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
