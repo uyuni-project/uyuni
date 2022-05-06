@@ -80,7 +80,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
       label: item.text,
     }));
 
-    const testAttributes = withTestAttributes(this.props["data-testid"], this.props.name);
+    const testAttributes = withTestAttributes(this.props["data-testid"]);
     return (
       <Creatable
         id={this.props.id}
