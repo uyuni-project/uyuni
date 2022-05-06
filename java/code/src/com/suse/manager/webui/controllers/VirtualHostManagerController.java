@@ -560,7 +560,7 @@ public class VirtualHostManagerController {
                         data.get("client-key") != null)
                 .findAny()
                 .ifPresent(data -> {
-                    throw new IllegalStateException(
+                    throw new IllegalArgumentException(
                             "client certificate and key must be embedded for user '" +
                             currentUser + "'");
                 });
