@@ -192,10 +192,12 @@ export function Select(props: Props) {
             isClearable: isClearable,
             styles: bootstrapStyles,
             isMulti: props.isMulti,
+            // NB! This is mandatory for Cucumber integration to work
+            openMenuOnFocus: true,
             // TODO: Create a separate div in body so we don't invalidate the layout every time, see https://github.com/SUSE/spacewalk/issues/17076
             menuPortalTarget: document.body,
           },
-          withTestAttributes(props["data-testid"], props.name)
+          withTestAttributes(props["data-testid"])
         );
 
         if (isAsync(props)) {
