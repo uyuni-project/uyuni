@@ -1,3 +1,5 @@
+- Fix mimetype in kubeconfig validation request (bsc#1199019)
+
 -------------------------------------------------------------------
 Fri May 06 13:06:42 CEST 2022 - jgonzalez@suse.com
 
