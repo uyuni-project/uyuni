@@ -2,7 +2,9 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { AsyncButton } from "components/buttons";
+import { AsyncButton, Button } from "components/buttons";
+import { Dialog } from "components/dialog/Dialog";
+import { ModalLink } from "components/dialog/ModalLink";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
@@ -13,6 +15,80 @@ declare global {
   interface Window {
     availableActivationKeys?: any;
     proxies?: any;
+  }
+}
+
+type ErrorDetails = {
+  message: string;
+  standardOutput?: string;
+  standardError?: string;
+  result?: string;
+};
+
+type ErrorDetailsDialogProps = {
+  error: ErrorDetails | null;
+  onDialogClose: () => void;
+};
+
+class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
+  render() {
+    let content, title, buttons;
+
+    if (this.props.error) {
+      title = (
+        <span>
+          <i className="fa fa-list" /> {t("Error Details")}
+        </span>
+      );
+
+      content = (
+        <>
+          <p>{this.props.error.message}</p>
+          {this.props.error.standardOutput && (
+            <div className="form-group">
+              <label className="control-label">Standard Output:</label>
+              <textarea readOnly disabled className="form-control" value={this.props.error.standardOutput} rows={5} />
+            </div>
+          )}
+          {this.props.error.standardError && (
+            <div className="form-group">
+              <label className="control-label">Standard Error:</label>
+              <textarea readOnly disabled className="form-control" value={this.props.error.standardError} rows={5} />
+            </div>
+          )}
+          {this.props.error.result && (
+            <div className="form-group">
+              <label className="control-label">Result:</label>
+              <textarea readOnly disabled className="form-control" value={this.props.error.result} rows={5} />
+            </div>
+          )}
+        </>
+      );
+
+      buttons = (
+        <div>
+          <Button
+            className="btn-default"
+            text={t("Close")}
+            title={t("Close")}
+            icon="fa-close"
+            handler={this.props.onDialogClose}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <Dialog
+        id="show-error-details"
+        isOpen={this.props.error != null}
+        title={title}
+        className="modal-xs"
+        onClose={this.props.onDialogClose}
+        content={content}
+        footer={buttons}
+      />
+    );
   }
 }
 
@@ -47,6 +123,7 @@ type State = {
   loading: boolean;
   privKeyLoading?: boolean;
   success?: any;
+  errorDetails: ErrorDetails | null;
 };
 
 class BootstrapMinions extends React.Component<Props, State> {
@@ -71,6 +148,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       proxy: "",
       showProxyHostnameWarn: false,
       loading: false,
+      errorDetails: null,
     };
 
     this.state = this.initState;
@@ -163,6 +241,18 @@ class BootstrapMinions extends React.Component<Props, State> {
     });
   };
 
+  hasDetails = (error) => {
+    return error.standardOutput || error.standardError || error.result;
+  };
+
+  showErrorDetailsDialog = (error) => {
+    this.setState({ errorDetails: error });
+  };
+
+  closeErrorDetailsDialog = () => {
+    this.setState({ errorDetails: null });
+  };
+
   onBootstrap = () => {
     this.setState({ errors: [], loading: true });
     var formData: any = {};
@@ -252,7 +342,19 @@ class BootstrapMinions extends React.Component<Props, State> {
       var error = this.state.errors[0];
       alertMessages = MessagesUtils.error(
         <>
-          <p>{error.message}</p>
+          <p>
+            {error.message}{" "}
+            {this.hasDetails(error) && (
+              <ModalLink
+                id={"error-details-0"}
+                text={t("Details")}
+                title={t("Show additional details about this error")}
+                target="show-error-details"
+                className="no-padding"
+                onClick={() => this.showErrorDetailsDialog(error)}
+              />
+            )}
+          </p>
         </>
       );
     } else if (this.state.errors.length > 1) {
@@ -260,8 +362,20 @@ class BootstrapMinions extends React.Component<Props, State> {
         <>
           <p>{t("Unable to bootstrap host. The following errors have happened:")}</p>
           <ul>
-            {this.state.errors.map((error) => (
-              <li>{error.message}</li>
+            {this.state.errors.map((error, index) => (
+              <li>
+                {error.message}{" "}
+                {this.hasDetails(error) && (
+                  <ModalLink
+                    id={"error-details-" + index}
+                    text={t("Details")}
+                    title={t("Show additional details about this error")}
+                    target="show-error-details"
+                    className="no-padding"
+                    onClick={() => this.showErrorDetailsPopup(error)}
+                  />
+                )}
+              </li>
             ))}
           </ul>
         </>
@@ -352,6 +466,7 @@ class BootstrapMinions extends React.Component<Props, State> {
           )}
         </p>
         <Messages items={alertMessages} />
+        <ErrorDetailsDialog error={this.state.errorDetails} onDialogClose={this.closeErrorDetailsDialog} />
         <div className="form-horizontal">
           <div className="form-group">
             <label className="col-md-3 control-label">{t("Host")}:</label>

@@ -39,8 +39,13 @@ Feature: Negative tests for bootstrapping normal minions
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait until I see " Could not resolve hostname not-existing-name: Name or service not known" text
-     Then I should not see a "GenericSaltError" text
+     And I wait until I see "An error has occurred during salt execution: unable to establish ssh connection." text
+     Then I should see a "Details" button
+     When I click on "Details"
+     And I wait at most 10 seconds until I see modal containing "Error Details" text
+     Then I should see a "Standard Error" text
+     And I should see "Could not resolve hostname not-existing-name: Name or service not known" in the textarea
+     When I close the modal dialog
 
   Scenario: Bootstrap a SLES minion with wrong SSH credentials
      And I follow the left menu "Systems > Bootstrapping"
@@ -50,8 +55,13 @@ Feature: Negative tests for bootstrapping normal minions
      And I enter "FRANZ" as "user"
      And I enter "KAFKA" as "password"
      And I click on "Bootstrap"
-     And I wait until I see "Permission denied (publickey,keyboard-interactive)." text or "Password authentication failed" text
-     Then I should not see a "GenericSaltError" text
+     And I wait until I see "An error has occurred during salt execution: unable to establish ssh connection." text
+     Then I should see a "Details" button
+     When I click on "Details"
+     And I wait at most 10 seconds until I see modal containing "Error Details" text
+     Then I should see a "Standard Error" text
+     And I should see "Permission denied (publickey,keyboard-interactive)." or "Password authentication failed" in the textarea
+     When I close the modal dialog
 
   Scenario: Bootstrap a SLES minion with wrong SSH port number
      And I follow the left menu "Systems > Bootstrapping"
@@ -61,9 +71,13 @@ Feature: Negative tests for bootstrapping normal minions
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait until I see "ssh: connect to host" text
-     Then I should not see a "GenericSaltError" text
-     And I should see a "port 11: Connection refused" text or "port 11: Invalid argument" text
+     And I wait until I see "An error has occurred during salt execution: unable to establish ssh connection." text
+     Then I should see a "Details" button
+     When I click on "Details"
+     And I wait at most 10 seconds until I see modal containing "Error Details" text
+     Then I should see a "Standard Error" text
+     And I should see "port 11: Connection refused" or "port 11: Invalid argument" in the textarea
+     When I close the modal dialog
 
   Scenario: Cleanup: bootstrap a SLES minion after negative tests
      When I follow the left menu "Systems > Bootstrapping"

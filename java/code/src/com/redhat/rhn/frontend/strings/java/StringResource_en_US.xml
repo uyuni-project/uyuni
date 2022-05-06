@@ -9393,6 +9393,24 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="bootstrap.minion.error">
         <source>An unexpected error has occurred during bootstrap.</source>
       </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.applystates">
+        <source>Apply States failed during bootstrap (retcode={0}).</source>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.execution">
+        <source>An error has occurred during salt execution: {0}.</source>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable">
+        <source>function {0} not available</source>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported">
+        <source>module {0} is not supported</source>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror">
+        <source>unable to parse json</source>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.saltssherror">
+        <source>unable to establish ssh connection</source>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey">
         <source>Could not generate salt-ssh public key.</source>
       </trans-unit>
