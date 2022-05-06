@@ -134,7 +134,9 @@ def ext_pillar(minion_id, pillar, *args):
 
     # Including images pillar
     try:
-        ret.update(image_pillars(minion_id, ret.get("group_ids", []), ret.get("org_id", 1)))
+        ret = salt.utils.dictupdate.merge(ret,
+                   image_pillars(minion_id, ret.get("group_ids", []), ret.get("org_id", 1)),
+                   strategy='recurse')
     except Exception as error:
         log.error('Error accessing image pillar data: {}'.format(str(error)))
 

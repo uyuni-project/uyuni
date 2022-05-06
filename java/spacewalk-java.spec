@@ -58,7 +58,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.21
+Version:        4.3.22
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
@@ -106,13 +106,12 @@ BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
 BuildRequires:  (gnu-jaf or jakarta-activation)
-%if 0%{?rhel} >= 8 || 0%{?fedora}
+%if 0%{?rhel} || 0%{?fedora}
 BuildRequires:  glassfish-jaxb-core
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
 BuildRequires:  istack-commons-runtime
 BuildRequires:  java-11-openjdk-devel
-BuildRequires:  maven-javadoc-plugin
 BuildRequires:  (glassfish-jaxb-api or jaxb-api)
 %else
 BuildRequires:  java-devel >= %{java_version}
@@ -145,7 +144,7 @@ BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 0.19
+BuildRequires:  salt-netapi-client >= 0.20
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
@@ -190,7 +189,7 @@ Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
 Requires:       (glassfish-jaxb-api or jaxb-api)
-%if 0%{?rhel} == 8
+%if 0%{?rhel}
 Recommends:       rng-tools
 %endif
 %endif
@@ -202,7 +201,7 @@ Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       jade4j
-%if 0%{?rhel} >= 8
+%if 0%{?rhel}
 Requires:       java-11-openjdk
 %else
 Requires:       java >= %{java_version}
@@ -221,7 +220,7 @@ Requires:       netty < 4.1.45
 Requires:       objectweb-asm
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
-Requires:       salt-netapi-client >= 0.19
+Requires:       salt-netapi-client >= 0.20
 Requires:       snakeyaml
 Requires:       spark-core
 Requires:       spark-template-jade
@@ -372,7 +371,7 @@ Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
-%if 0%{?rhel} >= 8
+%if 0%{?rhel}
 Requires:       java-11-openjdk
 %else
 Requires:       java >= %{java_version}
@@ -687,7 +686,7 @@ echo "#### SYMLINKS END ####"
 %endif
 
 %post
-%if 0%{?rhel} == 8
+%if 0%{?rhel}
 echo "Trying to start optional rngd service..."
 systemctl start rngd ||:
 %endif

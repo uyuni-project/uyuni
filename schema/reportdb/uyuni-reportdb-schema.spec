@@ -24,7 +24,7 @@ Summary:        Report DB SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.3.3
+Version:        4.3.4
 Release:        1
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/schema/reportdb/%{name}-rpmlintrc

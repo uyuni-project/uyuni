@@ -315,6 +315,18 @@ Before('@sle15sp3_client') do
   skip_this_scenario unless $sle15sp3_client
 end
 
+Before('@sle15sp4_ssh_minion') do
+  skip_this_scenario unless $sle15sp4_ssh_minion
+end
+
+Before('@sle15sp4_minion') do
+  skip_this_scenario unless $sle15sp4_minion
+end
+
+Before('@sle15sp4_client') do
+  skip_this_scenario unless $sle15sp4_client
+end
+
 Before('@sle11sp4_buildhost') do
   skip_this_scenario unless $sle11sp4_buildhost
 end
@@ -341,6 +353,12 @@ end
 
 Before('@opensuse153arm_minion') do
   skip_this_scenario unless $opensuse153arm_minion
+end
+
+Before('@suse_minion') do |scenario|
+  filename = scenario.location.file
+  skip_this_scenario unless filename.include? 'minion'
+  skip_this_scenario unless (filename.include? 'sle') || (filename.include? 'suse')
 end
 
 Before('@skip_for_debianlike') do |scenario|

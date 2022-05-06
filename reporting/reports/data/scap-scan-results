@@ -34,4 +34,4 @@ sql:
         FROM ScapScanResultReport
   ) X
   -- where placeholder
-  ORDER BY mgm_id, testresult_id, ruleresult_id
+  ORDER BY mgm_id, testresult_id, ruleresult_id, system, system_id, ident

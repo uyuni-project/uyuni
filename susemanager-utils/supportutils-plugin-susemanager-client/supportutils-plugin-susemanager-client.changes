@@ -1,4 +1,8 @@
-- Add proxy containers config and logs
+-------------------------------------------------------------------
+Wed May 04 15:24:24 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Add proxy containers config and logs
 
 -------------------------------------------------------------------
 Mon Aug 09 10:43:30 CEST 2021 - jgonzalez@suse.com

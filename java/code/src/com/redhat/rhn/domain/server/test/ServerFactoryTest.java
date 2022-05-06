@@ -1248,25 +1248,31 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         baseChan.addErrata(e1);
         e1.getPackages().add(p1v2);
         e1.getPackages().add(p2v4);
+        baseChan.getPackages().add(p1v2);
+        baseChan.getPackages().add(p2v4);
 
         Errata e2 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e2.getId());
         baseChan.addErrata(e2);
         e2.getPackages().add(p1v3);
+        baseChan.getPackages().add(p1v3);
 
         Errata e3 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e3.getId());
         baseChan.addErrata(e3);
         e3.getPackages().add(p1v3arch2);
+        baseChan.getPackages().add(p1v3arch2);
 
         Errata e4 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e4.getId());
         childChan.addErrata(e4);
         e4.getPackages().add(p1v2);
+        childChan.getPackages().add(p1v2);
 
         Errata e5 = ErrataFactoryTest.createTestErrata(user.getId());
         childChan.addErrata(e4);
         e4.getPackages().add(p1v4);
+        childChan.getPackages().add(p1v4);
 
         ChannelFactory.save(baseChan);
         ChannelFactory.save(childChan);

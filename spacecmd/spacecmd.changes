@@ -1,4 +1,8 @@
-- on full system update call schedulePackageUpdate API (bsc#1197507)
+-------------------------------------------------------------------
+Wed May 04 15:19:21 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * on full system update call schedulePackageUpdate API (bsc#1197507)
 
 -------------------------------------------------------------------
 Tue Apr 19 11:56:27 CEST 2022 - jgonzalez@suse.com

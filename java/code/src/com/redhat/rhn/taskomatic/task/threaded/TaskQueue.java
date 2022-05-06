@@ -147,9 +147,14 @@ public class TaskQueue {
 
         if (isTaskQueueDone()) {
             // everything done
-            queueDriver.getLogger().debug("Finishing run {}", queueRun.getId());
-            queueRun.finished();
-            queueRun.saveStatus(TaskoRun.STATUS_FINISHED);
+            if (queueRun != null) {
+                queueDriver.getLogger().debug("Finishing run {}", queueRun.getId());
+                queueRun.finished();
+                queueRun.saveStatus(TaskoRun.STATUS_FINISHED);
+            }
+            else {
+                queueDriver.getLogger().debug("Finishing Task Queue");
+            }
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
             changeRun(null);
