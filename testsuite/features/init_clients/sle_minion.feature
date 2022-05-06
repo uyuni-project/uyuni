@@ -41,12 +41,12 @@ Feature: Bootstrap a Salt minion via the GUI
     And I follow "Proxy" in the content area
     Then I should see "sle_minion" hostname
 
-  Scenario: Migrate this minion to SLE 15 SP3
+  Scenario: Migrate this minion to SLE 15 SP4
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" text
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64 (BETA)" text
     And I click on "Select Channels"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
@@ -61,7 +61,7 @@ Feature: Bootstrap a Salt minion via the GUI
     And I wait at most 600 seconds until event "Product Migration" is completed
     And I wait until event "Package List Refresh" is completed
     And I follow "Details" in the content area
-    Then I wait until I see "SUSE Linux Enterprise Server 15 SP3" text, refreshing the page
+    Then I wait until I see "SUSE Linux Enterprise Server 15 SP4" text, refreshing the page
     And vendor change should be enabled for product migration on "sle_minion"
 
   Scenario: Install the latest Salt on this minion

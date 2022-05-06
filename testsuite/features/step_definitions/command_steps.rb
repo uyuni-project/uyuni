@@ -951,7 +951,7 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
 end
 
 When(/^I install package tftpboot-installation on the server$/) do
-  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm')
+  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
   packages = output.split("\n")
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
@@ -1128,10 +1128,24 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
-           "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
-           "--serial file,path=/tmp/#{vm_name}.console.log "\
-           "--import --hvm --noautoconsole --noreboot")
+  case host
+  when 'kvm_server'
+    # use virtio bus for KVM
+    node.run(
+      "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=virtio "\
+      "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
+      "--serial file,path=/tmp/#{vm_name}.console.log "\
+      "--import --hvm --noautoconsole --noreboot --osinfo sle15sp4"
+    )
+  when 'xen_server'
+    # Use ide bus for Xen
+    node.run(
+      "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=ide "\
+      "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
+      "--serial file,path=/tmp/#{vm_name}.console.log "\
+      "--import --hvm --noautoconsole --noreboot --osinfo sle15sp4"
+    )
+  end
 end
 
 When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
@@ -1540,7 +1554,7 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
 end
 
 When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
+  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
   $server.run("mkdir -p #{target_dirs}")
   base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
   source_dir = "/var/autoinstall/"
@@ -1548,8 +1562,8 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
   return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
   return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
-  return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
-  return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
+  return_codes << file_inject($server, base_dir + 'sles15sp4/initrd', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
+  return_codes << file_inject($server, base_dir + 'sles15sp4/linux', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
 end
 
