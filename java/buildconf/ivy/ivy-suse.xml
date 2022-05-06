@@ -110,7 +110,7 @@
         <dependency org="suse" name="tomcat-servlet-4.0-api" rev="9.0.36" />
 
         <!-- Compilation and testing -->
-        <dependency org="suse" name="velocity-engine-core" rev="2.2"/>
+        <dependency org="suse" name="velocity-engine-core" rev="2.3"/>
         <dependency org="checkstyle" name="checkstyle" rev="8.30" transitive="false">
           <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.30/checkstyle-8.30-all.jar"/>
         </dependency>
