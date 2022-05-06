@@ -101,12 +101,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         // Remove '<default>' placeholder for submit
         formData.set("module_context", "");
       }
-      request = Network.post(
-        "/rhn/manager/api/vhms/update/kubernetes",
-        formData,
-        "application/x-www-form-urlencoded",
-        false
-      );
+      request = Network.post("/rhn/manager/api/vhms/update/kubernetes", formData, "multipart/form-data", false);
     } else {
       request = Network.post(
         "/rhn/manager/api/vhms/update/" + this.state.model.id,
@@ -133,12 +128,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         // Remove '<default>' placeholder for submit
         formData.set("module_context", "");
       }
-      request = Network.post(
-        "/rhn/manager/api/vhms/create/kubernetes",
-        formData,
-        "application/x-www-form-urlencoded",
-        false
-      );
+      request = Network.post("/rhn/manager/api/vhms/create/kubernetes", formData, "multipart/form-data", false);
     } else {
       request = Network.post(
         "/rhn/manager/api/vhms/create",
@@ -278,7 +268,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     let kubeconfig = event.target.files[0];
     let formData = new FormData();
     formData.append("kubeconfig", kubeconfig);
-    Network.post("/rhn/manager/api/vhms/kubeconfig/validate", formData, "application/x-www-form-urlencoded", false)
+    Network.post("/rhn/manager/api/vhms/kubeconfig/validate", formData, "multipart/form-data", false)
       .then((res) => {
         const data = res.data;
         if (data.currentContext === "") {
