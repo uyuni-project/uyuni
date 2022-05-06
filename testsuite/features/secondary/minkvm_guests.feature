@@ -109,7 +109,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I should see "1" in field "vcpu"
     And option "VNC" is selected as "graphicsType"
     And option "test-net0" is selected as "network0_source"
-    And option "ide" is selected as "disk0_bus"
+    And option "virtio" is selected as "disk0_bus"
     When I enter "1024" as "memory"
     And I enter "2" as "vcpu"
     And I select "Spice" from "graphicsType"
@@ -147,11 +147,11 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "add_disk"
     And I click on "add_disk"
     And I select "CDROM" from "disk2_device"
-    And I select "ide" from "disk2_bus"
+    And I select "sata" from "disk2_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk-1" virtio disk from pool "test-pool0"
-    And "test-vm" virtual machine on "kvm_server" should have a ide cdrom
+    And "test-vm" virtual machine on "kvm_server" should have a sata cdrom
 
   Scenario: Attach an image to a cdrom on a KVM virtual machine
     When I click on "Edit" in row "test-vm"
@@ -373,28 +373,28 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @scc_credentials
   Scenario: Create auto installation distribution
     And I install package tftpboot-installation on the server
-    And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be installed on "server"
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
-    And I enter "SLE-15-SP2-TFTP" as "label"
-    And I enter "/usr/share/tftpboot-installation/SLE-15-SP2-x86_64/" as "basepath"
-    And I select "SLE-Product-SLES15-SP2-Pool for x86_64" from "channelid"
+    And I enter "SLE-15-SP4-TFTP" as "label"
+    And I enter "/usr/share/tftpboot-installation/SLE-15-SP4-x86_64/" as "basepath"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I enter "useonlinerepo insecure=1" as "kernelopts"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
-    And I should see a "SLE-15-SP2-TFTP" link
+    And I should see a "SLE-15-SP4-TFTP" link
 
 @scc_credentials
   Scenario: Create auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/Autoyast File"
-    When I enter "15-sp2-kvm" as "kickstartLabel"
-    And I select "SLE-15-SP2-TFTP" from "kstreeId"
+    When I enter "15-sp4-kvm" as "kickstartLabel"
+    And I select "SLE-15-SP4-TFTP" from "kstreeId"
     And I select "KVM Virtualized Guest" from "virtualizationTypeLabel"
-    And I attach the file "/sle-15-sp2-autoyast.xml" to "fileUpload"
+    And I attach the file "/sle-15-sp4-autoyast.xml" to "fileUpload"
     And I click on "Create"
-    Then I should see a "Autoinstallation: 15-sp2-kvm" text
+    Then I should see a "Autoinstallation: 15-sp4-kvm" text
     And I should see a "Autoinstallation Details" text
 
 @scc_credentials
@@ -402,19 +402,19 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP2-TFTP\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
+    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
     And I click on "Update Variables"
     And I follow "Autoinstallation File"
-    Then I should see a "SLE-15-SP2-TFTP" text
+    Then I should see a "SLE-15-SP4-TFTP" text
 
 @scc_credentials
   Scenario: Create an auto installing KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm_server"
-    And I wait until the channel "sle-module-basesystem15-sp2-updates-x86_64" has been synced
+    And I wait until the channel "sle-module-basesystem15-sp4-updates-x86_64" has been synced
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
-    And I select "15-sp2-kvm" from "cobbler_profile"
+    And I select "15-sp4-kvm" from "cobbler_profile"
     And I select "test-net0" from "network0_source"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
@@ -434,20 +434,20 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @scc_credentials
   Scenario: Cleanup: remove the auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
-    When I follow "15-sp2-kvm"
+    When I follow "15-sp4-kvm"
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
-    Then I should not see a "15-sp2-kvm" text
+    Then I should not see a "15-sp4-kvm" text
 
 @scc_credentials
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
-    And I follow "SLE-15-SP2-TFTP"
+    And I follow "SLE-15-SP4-TFTP"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP2-x86_64" from this "server"
-    And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be uninstalled on "server"
-    Then I should not see a "SLE-15-SP2-TFTP" text
+    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+    Then I should not see a "SLE-15-SP4-TFTP" text
 
 # End of provisioning scenarios
 

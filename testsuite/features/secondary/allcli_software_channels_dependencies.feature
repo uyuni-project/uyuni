@@ -17,18 +17,18 @@ Feature: Channel subscription with recommended or required dependencies
     And I follow "Software Channels" in the content area
     # check that the required channel by the base one is selected and disabled
     And I wait until I do not see "Loading..." text
-    And I check radio button "SLE-Product-SLES15-SP2-Pool for x86_64"
+    And I check radio button "SLE-Product-SLES15-SP3-Pool for x86_64"
     And I wait until I do not see "Loading..." text
-    Then I should see the child channel "SLE-Product-SLES15-SP2-Updates for x86_64" "selected" and "disabled"
+    Then I should see the child channel "SLE-Product-SLES15-SP3-Updates for x86_64" "selected" and "disabled"
     And I should see the toggler "disabled"
-    And I should see a "SLE-Module-Basesystem15-SP2-Pool for x86_64" text
-    And I should see the child channel "SLE-Module-Basesystem15-SP2-Pool for x86_64" "unselected"
+    And I should see a "SLE-Module-Basesystem15-SP3-Pool for x86_64" text
+    And I should see the child channel "SLE-Module-Basesystem15-SP3-Pool for x86_64" "unselected"
     # check the a child channel selection that requires some channel trigger the selection of it
-    When I select the child channel "SLE-Module-Basesystem15-SP2-Updates for x86_64"
-    Then I should see the child channel "SLE-Module-Basesystem15-SP2-Pool for x86_64" "selected"
+    When I select the child channel "SLE-Module-Basesystem15-SP3-Updates for x86_64"
+    Then I should see the child channel "SLE-Module-Basesystem15-SP3-Pool for x86_64" "selected"
     # check a recommended channel not yet selected is checked  by the recommended toggler
     When I click on the "disabled" toggler
-    Then I should see the child channel "SLE-Module-Server-Applications15-SP2-Pool for x86_64" "selected"
+    Then I should see the child channel "SLE-Module-Server-Applications15-SP3-Pool for x86_64" "selected"
 
   Scenario: Play with recommended and required child channels selection in SSM
     When I follow the left menu "Systems > Overview"
@@ -43,11 +43,11 @@ Feature: Channel subscription with recommended or required dependencies
     When I select "System Default Base Channel" from drop-down in table line with "Test-Channel-x86_64"
     And I click on "Next"
     Then I should see the toggler "disabled"
-    And I should see a "SLE-Module-Basesystem15-SP2-Pool for x86_64" text
-    And I should see "No change" "selected" for the "SLE-Module-Basesystem15-SP2-Pool for x86_64" channel
+    And I should see a "SLE-Module-Basesystem15-SP3-Pool for x86_64" text
+    And I should see "No change" "selected" for the "SLE-Module-Basesystem15-SP3-Pool for x86_64" channel
     When I click on the "disabled" toggler
-    Then I should see "Subscribe" "selected" for the "SLE-Module-Basesystem15-SP2-Pool for x86_64" channel
-    And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-SP2-Pool for x86_64" channel
+    Then I should see "Subscribe" "selected" for the "SLE-Module-Basesystem15-SP3-Pool for x86_64" channel
+    And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-SP3-Pool for x86_64" channel
 
   Scenario: Cleanup: remove remaining systems from SSM after software channel tests
     When I follow "Clear"
