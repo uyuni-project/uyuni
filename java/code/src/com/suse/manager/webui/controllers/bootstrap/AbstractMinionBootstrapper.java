@@ -53,7 +53,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -196,13 +195,10 @@ public abstract class AbstractMinionBootstrapper {
             Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
             return saltApi.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
-                        String responseMessage = SaltUtils.decodeSaltErr(error);
-                                LOG.error("Error during bootstrap: {}", responseMessage);
-                        return new BootstrapResult(false, contactMethod,
-                            Arrays.stream(responseMessage.split("\\r?\\n"))
-                                  .map(BootstrapError::new)
-                                  .collect(Collectors.toList())
-                        );
+                            BootstrapError parsedError = SaltUtils.decodeSaltErr(error);
+                            LOG.error("Error during bootstrap: {}", parsedError);
+
+                            return new BootstrapResult(false, contactMethod, List.of(parsedError));
                     },
                     result -> {
                         // We have results, check if result = true
@@ -210,12 +206,14 @@ public abstract class AbstractMinionBootstrapper {
                         Optional<String> errMessage = getApplyStateErrorMessage(params.getHost(), result);
                         // Clean up the generated key pair in case of failure
                         boolean success = errMessage.isEmpty() && result.getRetcode() == 0;
-                        errMessage.ifPresent(msg -> LOG.error("States failed during bootstrap: {}", msg));
-                        return new BootstrapResult(success, contactMethod,
-                            Arrays.stream(Opt.fold(errMessage, () -> new String[0], m -> m.split("\\r?\\n")))
-                                  .map(BootstrapError::new)
-                                  .collect(Collectors.toList())
-                        );
+                        if (!success) {
+                            errMessage.ifPresent(msg -> LOG.error("States failed during bootstrap: {}", msg));
+
+                            BootstrapError error = SaltUtils.decodeBootstrapSSHResult(result);
+                            return new BootstrapResult(false, contactMethod, List.of(error));
+                        }
+
+                        return new BootstrapResult(true, contactMethod, Collections.emptyList());
                     }
             );
         }

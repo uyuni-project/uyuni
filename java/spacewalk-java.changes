@@ -1,3 +1,4 @@
+- Improved handling of error messages during bootstrapping
 - Fix the confirm message on the refresh action by adding a link
   to pending actions on it (bsc#1172705)
 - Change system details lock tab name to lock/unlock (bsc#1193032)
