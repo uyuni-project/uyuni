@@ -220,6 +220,14 @@ Feature: PXE boot a Retail terminal
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
+  Scenario: Check that the PXE boot minion stays configured after reboot
+    # salt key, channels and installed packages must survive reboot
+    When I reboot the Retail terminal "pxeboot_minion"
+    And I follow the left menu "Systems > System List > All"
+    And I follow this "pxeboot_minion" link
+    And I wait at most 350 seconds until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
+    Then the Salt master can reach "pxeboot_minion"
+
   Scenario: Cleanup: remove a package on the new Retail terminal
     Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Software" in the content area
