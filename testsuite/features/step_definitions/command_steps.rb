@@ -832,11 +832,10 @@ end
 When(/^I remove the LTSS repository and product on this "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = get_os_version(node)
-  if os_family.include?("opensuse") || os_family.include?("sles")
-    cmd = "zypper rr os_ltss_repo && zypper -n rm sles-ltss-release"
-  else raise "The node #{node.hostname} does not have a supported OS Family (#{os_family})"
-  end
-    node.run(cmd, check_errors: false)
+
+  raise "The node #{node.hostname} does not have a supported OS Family (#{os_family})" unless os_family.include?("opensuse") || os_family.include?("sles")
+  cmd = "zypper rr os_ltss_repo && zypper -n rm sles-ltss-release"
+  node.run(cmd, check_errors: false)
 end
 
 When(/^I enable source package syncing$/) do

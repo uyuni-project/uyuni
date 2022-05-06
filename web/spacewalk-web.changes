@@ -1,3 +1,4 @@
+- Improved handling of error messages during bootstrapping
 - Added support for end of life notifications
 - Improved test integration for dropdowns
 - Upgrade moment to 2.29.2

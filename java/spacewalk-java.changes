@@ -1,3 +1,4 @@
+- Improved handling of error messages during bootstrapping
 - skip forwarding data to scc if no credentials are available
 - Change system details lock tab name to lock/unlock (bsc#1193032)
 - Added a notification to inform the administrators about the product end-of-life
