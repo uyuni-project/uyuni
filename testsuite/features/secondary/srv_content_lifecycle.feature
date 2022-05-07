@@ -37,6 +37,7 @@ Feature: Content lifecycle
     And I follow "clp_name"
     And I click on "Attach/Detach Sources"
     And I select "SLES12-SP5-Pool for x86_64" from "selectedBaseChannel"
+    And I wait until I see "SLES12-SP5-Pool for x86_64" text
     And I click on "Save"
     And I wait until I see "SLES12-SP5-Pool for x86_64" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
