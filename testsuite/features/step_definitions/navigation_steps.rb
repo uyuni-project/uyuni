@@ -172,12 +172,12 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
-  xpath_option = ".//*[contains(@class, 'class-#{field}__option') and contains(text(),'#{option}')]"
-  xpath_field = "//*[contains(@class, 'class-#{field}__control')]/../*[@name='#{field}']/.."
   if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)
   else
     # Custom React selector
+    xpath_field = "//*[contains(@class, 'class-#{field}__control')]/../*[@name='#{field}']/.."
+    xpath_option = ".//*[contains(@class, 'class-#{field}__option') and contains(text(), '#{option}')]"
     find(:xpath, xpath_field).click
     find(:xpath, xpath_option, match: :first).click
   end
