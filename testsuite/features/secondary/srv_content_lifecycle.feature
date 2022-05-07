@@ -19,7 +19,7 @@ Feature: Content lifecycle
     And I enter "clp_name" as "name"
     And I enter "clp_desc" as "description"
     And I click on "Create"
-    Then I wait until I see "Content Lifecycle Project - clp_name" text
+    And I wait until I see "Content Lifecycle Project - clp_name" text
 
   Scenario: Verify the content lifecycle project page
     When I follow the left menu "Content Lifecycle > Projects"
@@ -38,21 +38,21 @@ Feature: Content lifecycle
     And I click on "Attach/Detach Sources"
     And I select "SLES12-SP5-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Save"
-    Then I wait until I see "SLES12-SP5-Pool for x86_64" text
-    And I should see a "Version 1: (draft - not built) - Check the changes below" text
+    And I wait until I see "SLES12-SP5-Pool for x86_64" text
+    Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
 @uyuni
   Scenario: Verify added sources for Uyuni
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    And I should see a "SLES12-SP5-Updates for x86_64" text
+    Then I should see a "SLES12-SP5-Updates for x86_64" text
     And I should see a "Build (2)" text
 
 @susemanager
   Scenario: Verify added sources for SUSE Manager
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    And I should see a "SLE-Manager-Tools12-Updates for x86_64 SP5" text
+    Then I should see a "SLE-Manager-Tools12-Updates for x86_64 SP5" text
     And I should see a "SLES12-SP5-Updates for x86_64" text
     And I should see a "SLE-Manager-Tools12-Pool for x86_64 SP5" text
     And I should see a "Build (4)" text
