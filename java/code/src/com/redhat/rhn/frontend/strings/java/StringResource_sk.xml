@@ -8732,70 +8732,70 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="system.entitle.novirtchannel" xml:space="preserve">
         <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <target/>
+        <target>Nepodarilo sa automaticky prihlásiť systém na Virtualizačný kanál RHEL. Tento kanál obsahuje balíky potrebné pre virtualizáciu.  Je to pravdepodobne spôsobené nedostatkom oprávnení na kanál.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
         <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
-        <target/>
+        <target>Nepodarilo sa nájsť kanál s balíkom {0}. Tento balík je potrebný na správu virtuálnych hostí s @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
-        <target/>
+        <target>Systém už má typ systému {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
         <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">POZNÁMKA: Ak chcete povoliť a používať možnosti virtualizácie v @@PRODUCT_NAME@@ pre tento systém, nainštalujte balík mgr-virtualization-host z pridruženého nástrojového kanála potomka. Preštudujte si dokumentáciu, aby ste zistili všetky ďalšie aspekty a požiadavky na povolenie virtualizácie hostiteľského systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Tento používateľ nemá požadované oprávnenia na presun tohto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.migrate.org_not_trusted" xml:space="preserve">
         <source>Systems can only be transferred between trusted organizations.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Systémy sa môžu presúvať len medzi dôveryhodnými organizáciami.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.migrate.no_trusted_orgs" xml:space="preserve">
         <source>This organization has no trusts defined with other organizations, or no other organizations are defined.</source>
-        <target/>
+        <target>Táto organizácia nemá definované žiadne dôveryhodné vzťahy s inými organizáciami alebo žiadne iné organizácie nie sú definované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.migrate.no_org_specified" xml:space="preserve">
         <source>An organization must be specified</source>
-        <target/>
+        <target>Organizácia musí byť uvedená</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.invalid_addon_entitlement" xml:space="preserve">
         <source>Invalid add-on system type [{0}] provided. No such system type exists.</source>
-        <target/>
+        <target>Zadaný neplatný typ prídavného systému [{0}]. Takýto typ systému neexistuje.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.guestcantvirt" xml:space="preserve">
         <source>The system cannot have a Virtualization Host system type because it is a virtual guest.</source>
-        <target/>
+        <target>Systém nemôže mať typ systému Virtualizačného hostiteľa, pretože ide o virtuálneho hosťa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
