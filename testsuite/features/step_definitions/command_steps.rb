@@ -1706,3 +1706,15 @@ Then(/^I should find the updated "([^"]*)" property as "([^"]*)" on the "([^"]*)
   final_synced_date = Time.parse(query_result.tuple(0)[1])
   raise "Column synced_date not updated. Inital synced_date was #{$initial_synced_date} while current synced_date is #{final_synced_date}" unless final_synced_date > $initial_synced_date
 end
+
+Given(/^I block connections from "([^"]*)" on "([^"]*)"$/) do |blockhost, target|
+  blkhost = get_target(blockhost)
+  node = get_target(target)
+  node.run("iptables -A INPUT -s #{blkhost.public_ip} -j LOG")
+  node.run("iptables -A INPUT -s #{blkhost.public_ip} -j DROP")
+end
+
+Then(/^I flush firewall on "([^"]*)"$/) do |target|
+  node = get_target(target)
+  node.run("iptables -F INPUT")
+end
