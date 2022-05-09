@@ -338,15 +338,14 @@ class BootstrapMinions extends React.Component<Props, State> {
           {t("shortly")}.
         </p>
       );
-    } else if (this.state.errors.length === 1) {
-      var error = this.state.errors[0];
+    } else if (this.state.errors.length > 0) {
       alertMessages = MessagesUtils.error(
-        <>
-          <p>
+        this.state.errors.map((error, index) => (
+          <>
             {error.message}{" "}
             {this.hasDetails(error) && (
               <ModalLink
-                id={"error-details-0"}
+                id={"error-details-" + index}
                 text={t("Details")}
                 title={t("Show additional details about this error")}
                 target="show-error-details"
@@ -354,31 +353,10 @@ class BootstrapMinions extends React.Component<Props, State> {
                 onClick={() => this.showErrorDetailsDialog(error)}
               />
             )}
-          </p>
-        </>
-      );
-    } else if (this.state.errors.length > 1) {
-      alertMessages = MessagesUtils.error(
-        <>
-          <p>{t("Unable to bootstrap host. The following errors have happened:")}</p>
-          <ul>
-            {this.state.errors.map((error, index) => (
-              <li>
-                {error.message}{" "}
-                {this.hasDetails(error) && (
-                  <ModalLink
-                    id={"error-details-" + index}
-                    text={t("Details")}
-                    title={t("Show additional details about this error")}
-                    target="show-error-details"
-                    className="no-padding"
-                    onClick={() => this.showErrorDetailsPopup(error)}
-                  />
-                )}
-              </li>
-            ))}
-          </ul>
-        </>
+          </>
+        )),
+        true,
+        t("Unable to bootstrap host. The following errors have happened:")
       );
     } else if (this.state.loading) {
       alertMessages = MessagesUtils.info(t("Your system is bootstrapping: waiting for a response.."));
