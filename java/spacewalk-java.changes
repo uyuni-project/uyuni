@@ -1,3 +1,5 @@
+- Remove the SSH proxy port from the path passed to preflight script
+
 -------------------------------------------------------------------
 Wed May 04 15:20:24 CEST 2022 - jgonzalez@suse.com
 
