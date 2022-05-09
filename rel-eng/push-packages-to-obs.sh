@@ -269,6 +269,8 @@ while read PKG_NAME; do
       fi
       # to lowercase with ",," and replace spaces " " with "-"
       PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
+      # replace the first "-" with "~" for version comparison
+      PRODUCT_VERSION=$(echo ${PRODUCT_VERSION} | sed -r 's/-/~/')
       sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
 
       # if obs vs local version is different, add changelog about the bumping version
