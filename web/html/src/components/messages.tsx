@@ -123,29 +123,56 @@ export const fromServerMessage = (
   return msg;
 };
 
-function msg(severityIn: Severity, ...textIn: Array<React.ReactNode>) {
-  return textIn.map(function (txt) {
-    return { severity: severityIn, text: txt };
-  });
+function msg(severityIn: Severity, textIn: React.ReactNode, listMultiple: boolean, header?: string) {
+  if (Array.isArray(textIn)) {
+    if (listMultiple && textIn.length > 1) {
+      return [
+        {
+          severity: severityIn,
+          text: (
+            <>
+              {header && <p>{header}</p>}
+              <ul>
+                {textIn.map((msg) => (
+                  <li>{msg}</li>
+                ))}
+              </ul>
+            </>
+          ),
+        },
+      ];
+    }
+
+    return textIn.map((txt) => ({ severity: severityIn, text: txt }));
+  }
+
+  return [{ severity: severityIn, text: textIn }];
 }
 
 /**
- * Helper methods to create a single message object of a specific severity
+ * Helper methods to create a single/multiple message object of a specific severity
  *
  * The return value of these methods can be directly fed into the `items` property
  * of the `Messages` component.
+ *
+ * When the optional parameter `listMultipleMessages` is set to true, multiple entries
+ * will be rendered in the same message using a list. If specified, the `headerMessage`
+ * will be displayed before the list.
+ *
+ * Otherwise if the parameter `listMultipleMessages` is omitted or set to false, multiple
+ * entries will generate multiple separated messages.
  */
 export const Utils = {
-  info: function (textIn: React.ReactNode): Array<MessageType> {
-    return msg("info", textIn);
+  info: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): Array<MessageType> {
+    return msg("info", text, listMultiple, header);
   },
-  success: function (textIn: React.ReactNode): Array<MessageType> {
-    return msg("success", textIn);
+  success: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): Array<MessageType> {
+    return msg("success", text, listMultiple, header);
   },
-  warning: function (textIn: React.ReactNode): Array<MessageType> {
-    return msg("warning", textIn);
+  warning: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): Array<MessageType> {
+    return msg("warning", text, listMultiple, header);
   },
-  error: function (textIn: React.ReactNode): Array<MessageType> {
-    return msg("error", textIn);
+  error: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): Array<MessageType> {
+    return msg("error", text, listMultiple, header);
   },
 };
