@@ -175,8 +175,7 @@ function getA_CLIENT_CODE_BASE() {
 
 if [ "${INSTALLER}" = "yum" ]; then
     getY_CLIENT_CODE_BASE
-    CLIENT_REPO_PATH="${CLIENT_REPOS_ROOT}/${Y_CLIENT_CODE_BASE}/${Y_CLIENT_CODE_VERSION}"
-    CLIENT_REPO_URL="${CLIENT_REPOS_ROOT}/${CLIENT_REPO_PATH}/bootstrap"
+    CLIENT_REPO_URL="${CLIENT_REPOS_ROOT}/${Y_CLIENT_CODE_BASE}/${Y_CLIENT_CODE_VERSION}/bootstrap"
     # In case of CentOS, check is centos bootstrap repository is available, if not, fallback to res.
     if [ "$Y_CLIENT_CODE_BASE" == centos ]; then
         $FETCH $CLIENT_REPO_URL/repodata/repomd.xml &> /dev/null
