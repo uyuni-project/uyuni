@@ -38,7 +38,7 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.13
+Version:        4.3.15
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -46,6 +46,7 @@ Source1:        node-modules.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  uyuni-base-common
+BuildRequires:  gettext
 BuildRequires:  nodejs-packaging
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
@@ -55,6 +56,8 @@ BuildRequires:  apache2
 BuildRequires:  nodejs-default
 %else
 BuildRequires:  nodejs
+BuildRequires:  perl-srpm-macros
+BuildRequires:  perl-macros
 %endif
 
 %description

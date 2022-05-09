@@ -1,8 +1,18 @@
-- Removed invalid '\r' character from Roboto*/Icon.
-- Branding updates
-- Use proper SSL terminology visible to the user
-- Stylesheets and relevant assets are now provided by spacewalk-web
-- Fix outdated documentation and release notes links
+-------------------------------------------------------------------
+Fri May 06 13:06:42 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.15-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Wed May 04 15:24:10 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.14-1
+  * increase web page default timeout (bsc#1187333)
+  * Branding updates
+  * Use proper SSL terminology visible to the user
+  * Stylesheets and relevant assets are now provided by spacewalk-web
+  * Fix outdated documentation and release notes links
 
 -------------------------------------------------------------------
 Fri Apr 22 12:59:39 CEST 2022 - jgonzalez@suse.com

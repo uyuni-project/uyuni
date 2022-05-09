@@ -1,4 +1,8 @@
-- Stylesheets and relevant assets are now provided by spacewalk-web
+-------------------------------------------------------------------
+Wed May 04 15:20:07 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Stylesheets and relevant assets are now provided by spacewalk-web
 
 -------------------------------------------------------------------
 Tue Apr 19 11:57:46 CEST 2022 - jgonzalez@suse.com

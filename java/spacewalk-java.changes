@@ -1,23 +1,34 @@
-- fix package selection for ubuntu errata install (bsc#1199049)
-- Add script examples for HTTP API
-- Refactor API docs for HTTP API
-- Branding updates
-- Collect logs form docker.build
-- add schedulePackageUpdate() XMLRPC function (bsc#1197507)
-- Redesign the auto errata task to schedule combined actions (bsc#1197429)
-- Allow to add failed and completed servers to SSM
-- drop specialized SSL truststore for db connections in favor
-  of the java default
-- add menu item for report database schema documentation
-- Improve TaskQueue for mgr-update-reporting-hub task
-- Handle missing tables gracefully during hub synchronisation
-- improve performance of synchronizing peripheral report databases
-- Allow alternative location for byte-buddy jar.
-- Allow migration where target products have no successor
-- require new salt-netapi-client version
-- Fix PXEEvent string comparision
-- Make TERMINALS group optional for saltbooted machines
-- Fix outdated documentation and release notes links
+-------------------------------------------------------------------
+Mon May 09 11:02:43 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.23-1
+  * Remove the SSH proxy port from the path passed to preflight script
+
+-------------------------------------------------------------------
+Wed May 04 15:20:24 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.22-1
+  * faster display installable packages list (bsc#1187333)
+  * fix package selection for ubuntu errata install (bsc#1199049)
+  * Add script examples for HTTP API
+  * Refactor API docs for HTTP API
+  * Branding updates
+  * Collect logs form docker.build
+  * add schedulePackageUpdate() XMLRPC function (bsc#1197507)
+  * Redesign the auto errata task to schedule combined actions (bsc#1197429)
+  * Allow to add failed and completed servers to SSM
+  * drop specialized SSL truststore for db connections in favor
+    of the java default
+  * add menu item for report database schema documentation
+  * Improve TaskQueue for mgr-update-reporting-hub task
+  * Handle missing tables gracefully during hub synchronisation
+  * improve performance of synchronizing peripheral report databases
+  * Allow alternative location for byte-buddy jar.
+  * Allow migration where target products have no successor
+  * require new salt-netapi-client version
+  * Fix PXEEvent string comparision
+  * Make TERMINALS group optional for saltbooted machines
+  * Fix outdated documentation and release notes links
 
 -------------------------------------------------------------------
 Wed Apr 27 12:40:30 CEST 2022 - jgonzalez@suse.com

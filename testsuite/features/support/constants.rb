@@ -97,6 +97,9 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'sle15sp3_client' => 'bison',
                       'sle15sp3_minion' => 'bison',
                       'sle15sp3_ssh_minion' => 'bison',
+                      'sle15sp4_client' => 'bison',
+                      'sle15sp4_minion' => 'bison',
+                      'sle15sp4_ssh_minion' => 'bison',
                       'ceos7_client' => 'autoconf',
                       'ceos7_minion' => 'autoconf',
                       'ceos7_ssh_minion' => 'autoconf',
@@ -145,6 +148,9 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'sle15sp3_client' => 'SLES15-SP3-Pool',
                            'sle15sp3_minion' => 'SLES15-SP3-Pool',
                            'sle15sp3_ssh_minion' => 'SLES15-SP3-Pool',
+                           'sle15sp4_client' => 'SLES15-SP4-Pool',
+                           'sle15sp4_minion' => 'SLES15-SP4-Pool',
+                           'sle15sp4_ssh_minion' => 'SLES15-SP4-Pool',
                            'sle15sp3_buildhost' => 'SLES15-SP3-Pool',
                            'sle15sp3_terminal' => 'SLES15-SP3-Pool',
                            'ceos7_client' => 'RHEL x86_64 Server 7',
@@ -173,6 +179,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-prod
                           'SLES15-SP1-Pool' => 'sle-product-sles15-sp1-pool-x86_64',
                           'SLES15-SP2-Pool' => 'sle-product-sles15-sp2-pool-x86_64',
                           'SLES15-SP3-Pool' => 'sle-product-sles15-sp3-pool-x86_64',
+                          'SLES15-SP4-Pool' => 'sle-product-sles15-sp4-pool-x86_64',
                           'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                           'no-appstream-result-RHEL8-Pool for x86_64' => 'no-appstream-result-rhel8-pool-x86_64',
                           'ubuntu-18.04-pool' => 'ubuntu-18.04-pool-amd64',
@@ -209,6 +216,7 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-P
                                            'SLES15-SP1-Pool' => 'sle-product-sles15-sp1-pool-x86_64',
                                            'SLES15-SP2-Pool' => 'sle-product-sles15-sp2-pool-x86_64',
                                            'SLES15-SP3-Pool' => 'sle-product-sles15-sp3-pool-x86_64',
+                                           'SLES15-SP4-Pool' => 'sle-product-sles15-sp4-pool-x86_64',
                                            'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                                            'no-appstream-result-RHEL8-Pool for x86_64' => nil,
                                            'ubuntu-18.04-pool' => nil,
@@ -245,6 +253,9 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle15sp3_client' => 'x86_64',
                       'sle15sp3_minion' => 'x86_64',
                       'sle15sp3_ssh_minion' => 'x86_64',
+                      'sle15sp4_client' => 'x86_64',
+                      'sle15sp4_minion' => 'x86_64',
+                      'sle15sp4_ssh_minion' => 'x86_64',
                       'ceos7_client' => 'x86_64',
                       'ceos7_minion' => 'x86_64',
                       'ceos7_ssh_minion' => 'x86_64',
@@ -333,6 +344,21 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp3-updates-x86_64
     sle-module-basesystem15-sp3-updates-x86_64
     sle-module-server-applications15-sp3-updates-x86_64
+  ],
+  '15-SP4' =>
+  %w[
+    sle-product-sles15-sp4-pool-x86_64
+    sle-manager-tools15-pool-x86_64-sp4
+    sle-manager-tools15-beta-pool-x86_64-sp4
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-basesystem15-sp4-pool-x86_64
+    sle-module-server-applications15-sp4-pool-x86_64
+    sle-product-sles15-sp4-updates-x86_64
+    sle-manager-tools15-updates-x86_64-sp4
+    sle-manager-tools15-beta-updates-x86_64-sp4
+    sle-module-containers15-sp4-updates-x86_64
+    sle-module-basesystem15-sp4-updates-x86_64
+    sle-module-server-applications15-sp4-updates-x86_64
   ]
 }.freeze
 

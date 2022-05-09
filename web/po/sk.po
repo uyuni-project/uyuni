@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-29 11:12+0000\n"
-"PO-Revision-Date: 2022-04-25 18:12+0000\n"
+"PO-Revision-Date: 2022-05-02 14:25+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -3455,7 +3455,7 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:42
 msgid "_blank"
-msgstr ""
+msgstr "_prázdne"
 
 #: ../html/src/manager/login/susemanager/login.tsx:57
 #: ../html/src/manager/login/susemanager/login.tsx:82
@@ -4217,14 +4217,13 @@ msgstr "Max veľkosť vyrovnávacej pamäte Squid"
 
 #: ../html/src/manager/proxy/container-config.tsx:220
 msgid "The maximum value of the Squid cache in Megabytes"
-msgstr ""
+msgstr "Maximálna hodnota vyrovnávacej pamäte Squid v megabajtoch"
 
 #: ../html/src/manager/proxy/container-config.tsx:223
 msgid "e.g., 2048"
 msgstr "napr. 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:230
-#, fuzzy
 msgid "Proxy admin email"
 msgstr "Email administrátora proxy"
 
@@ -4251,26 +4250,22 @@ msgid "Use existing"
 msgstr "Použiť existujúce"
 
 #: ../html/src/manager/proxy/container-config.tsx:256
-#, fuzzy
 msgid "CA certificate"
-msgstr "SSL certifikát"
+msgstr "CA certifikát"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
 #: ../html/src/manager/proxy/container-config.tsx:266
 #: ../html/src/manager/proxy/container-config.tsx:323
-#, fuzzy
 msgid "To sign the SSL certificate in PEM format"
-msgstr "Koreňová CA použitá na podpísanie certifikátu SSL vo formáte PEM"
+msgstr "Podpísanie certifikátu SSL vo formáte PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:265
-#, fuzzy
 msgid "CA private key"
-msgstr "Súkromný kľúč SSH"
+msgstr "Súkromný kľúč CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:274
-#, fuzzy
 msgid "CA password"
-msgstr "Heslo"
+msgstr "Heslo CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:275
 msgid "The CA private key password"
@@ -4314,7 +4309,7 @@ msgstr "Email"
 
 #: ../html/src/manager/proxy/container-config.tsx:322
 msgid "The root CA"
-msgstr ""
+msgstr "Koreňová CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:332
 msgid "Intermediate CAs"
@@ -4325,20 +4320,17 @@ msgid "CA file in PEM format"
 msgstr "Súbor CA vo formáte PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
-#, fuzzy
 msgid "Proxy certificate"
-msgstr "SSL certifikát"
+msgstr "Proxy certifikát"
 
 #: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
-#, fuzzy
 msgid "In PEM format"
-msgstr "Súbor CA vo formáte PEM"
+msgstr "Vo formáte PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:362
-#, fuzzy
 msgid "Proxy SSL private key"
-msgstr "Súkromný kľúč proxy SSL vo formáte PEM"
+msgstr "Súkromný kľúč proxy SSL"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
