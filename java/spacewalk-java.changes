@@ -1,3 +1,4 @@
+- fix package selection for ubuntu errata install (bsc#1199049)
 - fix invalid link to action schedule
 - add schedulePackageUpdate() XMLRPC function (bsc#1197507)
 - update server needed cache after adding Ubuntu Errata (bsc#1196977)
