@@ -1,5 +1,9 @@
-- Fix bootstrap repository URL resolution for Yum based clients
-  with preflight script for Salt SSH
+-------------------------------------------------------------------
+Mon May 09 17:48:00 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.23-1
+  * Fix bootstrap repository URL resolution for Yum based clients
+    with preflight script for Salt SSH
 
 -------------------------------------------------------------------
 Wed May 04 14:09:02 CEST 2022 - jmassaguerpla@suse.de
