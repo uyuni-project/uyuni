@@ -1,5 +1,9 @@
-- use mgr-ssl-cert-setup tool in spacewalk-hostname-rename to
-  deploy certificates on the server
+-------------------------------------------------------------------
+Wed May 04 15:23:36 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * use mgr-ssl-cert-setup tool in spacewalk-hostname-rename to
+    deploy certificates on the server
 
 -------------------------------------------------------------------
 Sat Apr 23 00:33:09 CEST 2022 - jgonzalez@suse.com

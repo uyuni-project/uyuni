@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon May 09 10:30:58 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Fix containers namespaces in configuration
+
+-------------------------------------------------------------------
+Wed May 04 15:26:57 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.3-1
+  * Default to SUSE Manager images only when installed from SUSE Manager
+
+-------------------------------------------------------------------
 Fri Apr 08 13:39:38 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.2-1

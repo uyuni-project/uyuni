@@ -1,6 +1,19 @@
-- Collect logs from docker.build
-- add packages.pkgupdate state (bsc#1197507)
-- Uninstall the products with no successors after migration
+-------------------------------------------------------------------
+Fri May 06 16:30:23 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.17-1
+  * Fix bootstrap repository URL resolution for Yum based clients
+    with preflight script for Salt SSH
+
+-------------------------------------------------------------------
+Wed May 04 15:26:22 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.16-1
+  * Use recursive merge for legacy image pillars (bsc#1199157)
+  * Fix log file name for legacy Kiwi (bsc#1199094)
+  * Collect logs from docker.build
+  * add packages.pkgupdate state (bsc#1197507)
+  * Uninstall the products with no successors after migration
 
 -------------------------------------------------------------------
 Fri Apr 22 22:11:02 CEST 2022 - jgonzalez@suse.com

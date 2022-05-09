@@ -30,7 +30,6 @@ sql:
                 , is_admin AS admin_access
                 , synced_date
         FROM AccountsSystemsReport
-       WHERE md5_encryption
   ) X
   -- where placeholder
-  ORDER BY mgm_id, user_id, system_id
+  ORDER BY mgm_id, organization, user_id, system_id

@@ -109,14 +109,14 @@ mgr_kiwi_clear_cache:
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
-    - name: "{{ kiwi }} --nocolor --force-new-root --prepare {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
+    - name: "{{ kiwi }} --logfile {{ root_dir }}/build.log --nocolor --force-new-root --prepare {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
     - require:
       - mgrcompat: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
 
 mgr_buildimage_kiwi_create:
   cmd.run:
-    - name: "{{ kiwi }} --nocolor --yes --create {{ chroot_dir }} --dest {{ dest_dir }} {{ kiwi_params() }}"
+    - name: "{{ kiwi }} --logfile {{ root_dir }}/build.log --nocolor --yes --create {{ chroot_dir }} --dest {{ dest_dir }} {{ kiwi_params() }}"
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 

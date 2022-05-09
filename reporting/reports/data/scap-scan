@@ -56,4 +56,4 @@ sql:
         FROM ScapScanReport
   ) X
   -- where placeholder
-  ORDER BY mgm_id, testresult_id, system_id
+  ORDER BY mgm_id, system_id, event_id

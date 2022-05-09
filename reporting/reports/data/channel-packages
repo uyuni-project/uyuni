@@ -26,14 +26,14 @@ sql:
       SELECT mgm_id
                 , channel_label
                 , channel_name
-                , package_name AS name
-                , package_version AS version
-                , package_release AS release
-                , package_epoch AS epoch
-                , package_arch AS arch
+                , name
+                , version
+                , release
+                , epoch
+                , arch
                 , full_package_name
                 , synced_date
         FROM ChannelPackagesReport
   ) X
   -- where placeholder
-  ORDER BY mgm_id, channel_label
+  ORDER BY mgm_id, channel_label, name, version, release, epoch, arch

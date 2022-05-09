@@ -70,11 +70,11 @@ class NamespaceSystem
   end
 
   def schedule_script_run(server, uid, gid, timeout, script, date)
-    @test.call('system.scheduleScriptRun', sessionKey: @test.token, sid: server, username: uid, groupname: gid, timeout: timeout, script: script, earliest: date)
+    @test.call('system.scheduleScriptRun', sessionKey: @test.token, sid: server, username: uid, groupname: gid, timeout: timeout, script: script, earliestOccurrence: date)
   end
 
   def create_system_record(name, kslabel, koptions, comment, netdevices)
-    @test.call('system.createSystemRecord', sessionKey: @test.token, sysName: name, ksLabel: kslabel, kOptions: koptions, comment: comment, netDevices: netdevices)
+    @test.call('system.createSystemRecord', sessionKey: @test.token, systemName: name, ksLabel: kslabel, kOptions: koptions, comment: comment, netDevices: netdevices)
   end
 
   def create_system_profile(name, data)
@@ -97,7 +97,7 @@ class NamespaceSystemConfig
   end
 
   def remove_channels(servers, channels)
-    @test.call('system.config.removeChannels', sessionKey: @test.token, serverIds: servers, configChannelLabels: channels)
+    @test.call('system.config.removeChannels', sessionKey: @test.token, sids: servers, configChannelLabels: channels)
   end
 end
 
@@ -133,27 +133,27 @@ class NamespaceSystemProvisioningPowermanagement
   end
 
   def get_details(server)
-    @test.call('system.provisioning.powermanagement.getDetails', sessionKey: @test.token, serverId: server)
+    @test.call('system.provisioning.powermanagement.getDetails', sessionKey: @test.token, sid: server)
   end
 
   def get_status(server)
-    @test.call('system.provisioning.powermanagement.getStatus', sessionKey: @test.token, serverId: server)
+    @test.call('system.provisioning.powermanagement.getStatus', sessionKey: @test.token, sid: server)
   end
 
   def set_details(server, data)
-    @test.call('system.provisioning.powermanagement.setDetails', sessionKey: @test.token, serverId: server, data: data)
+    @test.call('system.provisioning.powermanagement.setDetails', sessionKey: @test.token, sid: server, data: data)
   end
 
   def power_on(server)
-    @test.call('system.provisioning.powermanagement.powerOn', sessionKey: @test.token, serverId: server)
+    @test.call('system.provisioning.powermanagement.powerOn', sessionKey: @test.token, sid: server)
   end
 
   def power_off(server)
-    @test.call('system.provisioning.powermanagement.powerOff', sessionKey: @test.token, serverId: server)
+    @test.call('system.provisioning.powermanagement.powerOff', sessionKey: @test.token, sid: server)
   end
 
   def reboot(server)
-    @test.call('system.provisioning.powermanagement.reboot', sessionKey: @test.token, serverId: server)
+    @test.call('system.provisioning.powermanagement.reboot', sessionKey: @test.token, sid: server)
   end
 end
 
@@ -164,7 +164,7 @@ class NamespaceSystemScap
   end
 
   def list_xccdf_scans(server)
-    @test.call('system.scap.listXccdfScans', sessionKey: @test.token, serverId: server)
+    @test.call('system.scap.listXccdfScans', sessionKey: @test.token, sid: server)
   end
 end
 
