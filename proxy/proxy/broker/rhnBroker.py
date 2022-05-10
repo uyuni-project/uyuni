@@ -19,6 +19,7 @@ import time
 import socket
 import re
 import os
+import base64
 try:
     # python 3
     from urllib.parse import urlparse, urlunparse
@@ -28,6 +29,7 @@ except ImportError:
 
 # common module imports
 from rhn.UserDictCase import UserDictCase
+from rhn.stringutils import ustr
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
@@ -156,12 +158,18 @@ class BrokerHandler(SharedHandler):
         # The auth token is sent in either a header or in the query part of the URI:
         # SLE minions -> query part of the URI.
         # RHEL minions -> 'X-Mgr-Auth' header.
+        # Debian -> Authorization (Basic Auth)
         #
         # Traditional SLE and RHEL clients uses 'X-RHN-Auth' header, but
         # no auth token is used in order to authenticate.
         if 'X-Mgr-Auth' in self.req.headers_in:
             self.authToken = self.req.headers_in['X-Mgr-Auth']
             del self.req.headers_in['X-Mgr-Auth']
+        elif 'Authorization' in self.req.headers_in and effectiveURI_parts.path.startswith('/rhn/manager/download/'):
+            # we need to remove Basic Auth, otherwise squid does not cache the package
+            # so we convert it into token auth
+            self.authToken = ustr(base64.b64decode(self.req.headers_in['Authorization'][6:]))[:-1] # "Basic " == 6 characters
+            del self.req.headers_in['Authorization']
         elif 'X-RHN-Auth' not in self.req.headers_in:
             self.authToken = effectiveURI_parts.query
 
