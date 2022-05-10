@@ -1,4 +1,5 @@
 - Moved static Apache Webserver users to config file.
+- cleanup leftovers from removing unused xmlrpc endpoint
 
 -------------------------------------------------------------------
 Thu May 05 13:40:49 CEST 2022 - jgonzalez@suse.com

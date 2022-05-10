@@ -16,6 +16,7 @@ After:
 - No documentation needed: **add explanation. This can't be used if there is a GUI diff**
 - No documentation needed: only internal and user invisible changes
 - Documentation issue was created: [Link for SUSE Manager contributors](https://github.com/SUSE/spacewalk/issues/new?template=ISSUE_TEMPLATE_DOCUMENTATION.md&labels=documentation&projects=SUSE/spacewalk/31), [Link for community contributors](https://github.com/uyuni-project/uyuni-docs/issues/new).
+- API documentation added: please review the Wiki page [Writing Documentation for the API](https://github.com/uyuni-project/uyuni/wiki/Writing-documentation-for-the-API) if you have any changes to API documentation.
 - (OPTIONAL) [Documentation PR](https://github.com/uyuni-project/uyuni-docs/pulls)
 
 - [ ] **DONE**
