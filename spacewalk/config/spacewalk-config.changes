@@ -1,4 +1,4 @@
-- on upgrade, create LOCAL-RHN-ORG-TRUSTED-SSL-CERT (bsc#1199376)
+- create LOCAL-RHN-ORG-TRUSTED-SSL-CERT if not exist (bsc#1199376)
 
 -------------------------------------------------------------------
 Thu Apr 28 10:14:10 CEST 2022 - jgonzalez@suse.com
