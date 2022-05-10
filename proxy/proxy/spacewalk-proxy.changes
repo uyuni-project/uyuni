@@ -1,3 +1,5 @@
+- fix caching of debian packages in the proxy (bsc#1199401)
+
 -------------------------------------------------------------------
 Thu Apr 28 10:13:40 CEST 2022 - jgonzalez@suse.com
 
