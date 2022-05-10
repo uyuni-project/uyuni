@@ -83,7 +83,7 @@ class ChannelPackageSubscription(GenericPackageImport):
 
         # Fix the package information up, and uniquify the packages too
         uniqdict = {}
-        with cfg_component() as CFG:
+        with cfg_component("server.susemanager") as CFG:
             for package in self.batch:
                 if package.ignored:
                     continue
@@ -442,7 +442,7 @@ class PackageImport(ChannelPackageSubscription):
         for package in self.batch:
             # skip missing files and mpm packages
             if package['path'] and not isinstance(package, mpmBinaryPackage):
-                with cfg_component() as CFG:
+                with cfg_component("server.susemanager") as CFG:
                     full_path = os.path.join(CFG.MOUNT_POINT, package['path'])
                 if os.path.exists(full_path):
                     header = rhn_pkg.get_package_header(filename=full_path)
