@@ -48,14 +48,11 @@
 #list() #type("array") $value
 #set($listlevel = $listlevel + 1)
 #end
-#macro(array_end)
-#set($listlevel = $listlevel - 1)
-#end
-#macro(array_desc $type $value $desc)
-#list() #atype($type) $value - $desc
+#macro(array_begin_desc $value $desc)
+#list() #type("array") $value - $desc
 #set($listlevel = $listlevel + 1)
 #end
-#macro(array_desc_end)
+#macro(array_end)
 #set($listlevel = $listlevel - 1)
 #end
 #macro(array_single $type $value)
