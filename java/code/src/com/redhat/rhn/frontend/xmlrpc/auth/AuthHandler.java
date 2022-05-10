@@ -36,8 +36,8 @@ import javax.security.auth.login.LoginException;
 /**
  * AuthHandler
  * Corresponds to Auth.pm in old perl code.
- * @xmlrpc.namespace auth
- * @xmlrpc.doc This namespace provides methods to authenticate with the system's
+ * @apidoc.namespace auth
+ * @apidoc.doc This namespace provides methods to authenticate with the system's
  * management server.
  */
 public class AuthHandler extends BaseHandler {
@@ -53,9 +53,9 @@ public class AuthHandler extends BaseHandler {
      * @param sessionKey The sessionKey for the loggedInUser
      * @return Returns 1 on success, exception otherwise.
      *
-     * @xmlrpc.doc Logout the user with the given session key.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Logout the user with the given session key.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
      */
     @ApiIgnore(ApiType.HTTP)
     public int logout(String sessionKey) {
@@ -71,11 +71,11 @@ public class AuthHandler extends BaseHandler {
      * @return Returns the key for the session created
      * @throws LoginException Throws a LoginException if the user can't be logged in.
      *
-     * @xmlrpc.doc Login using a username and password. Returns the session key
+     * @apidoc.doc Login using a username and password. Returns the session key
      * used by most other API methods.
-     * @xmlrpc.param #param("string", "username")
-     * @xmlrpc.param #param("string", "password")
-     * @xmlrpc.returntype
+     * @apidoc.param #param("string", "username")
+     * @apidoc.param #param("string", "password")
+     * @apidoc.returntype
      *     #session_key()
      */
     @ApiIgnore(ApiType.HTTP)
@@ -95,12 +95,12 @@ public class AuthHandler extends BaseHandler {
      * @return Returns the key for the session
      * @throws LoginException Throws a LoginException if the user can't be logged in.
      *
-     * @xmlrpc.doc Login using a username and password. Returns the session key
+     * @apidoc.doc Login using a username and password. Returns the session key
      * used by other methods.
-     * @xmlrpc.param #param("string", "username")
-     * @xmlrpc.param #param("string", "password")
-     * @xmlrpc.param #param_desc("int", "duration", "Length of session.")
-     * @xmlrpc.returntype
+     * @apidoc.param #param("string", "username")
+     * @apidoc.param #param("string", "password")
+     * @apidoc.param #param_desc("int", "duration", "Length of session.")
+     * @apidoc.returntype
      *     #session_key()
      */
     @ApiIgnore(ApiType.HTTP)
@@ -128,7 +128,7 @@ public class AuthHandler extends BaseHandler {
      * @param sessionKey sessionKey to validate
      * @return true if the token is valid, otherwise throws exception with the reason
      *
-     * @xmlrpc.ignore Since this API is for internal integration between services and
+     * @apidoc.ignore Since this API is for internal integration between services and
      * is not useful to external users of the API, the typical XMLRPC API documentation
      * is not being included.
      */
@@ -148,7 +148,7 @@ public class AuthHandler extends BaseHandler {
      * @param token token to validate
      * @return 1 if the token is valid with this username, 0 otherwise.
      *
-     * @xmlrpc.ignore Since this API is for internal integration between services and
+     * @apidoc.ignore Since this API is for internal integration between services and
      * is not useful to external users of the API, the typical XMLRPC API documentation
      * is not being included.
      */

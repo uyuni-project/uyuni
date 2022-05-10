@@ -29,7 +29,7 @@ import java.util.Set;
  *
  * UserExtGroupSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("external group")
  *      #prop("string", "name")
  *      #prop_array("groups", "string", "roles")

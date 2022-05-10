@@ -44,8 +44,8 @@ import java.util.stream.Collectors;
 /**
  * Maintenance Schedule XMLRPC Handler
  *
- * @xmlrpc.namespace maintenance
- * @xmlrpc.doc Provides methods to access and modify Maintenance Schedules related entities
+ * @apidoc.namespace maintenance
+ * @apidoc.doc Provides methods to access and modify Maintenance Schedules related entities
  */
 public class MaintenanceHandler extends BaseHandler {
 
@@ -57,9 +57,9 @@ public class MaintenanceHandler extends BaseHandler {
      * @param loggedInUser the user
      * @return list of schedule names
      *
-     * @xmlrpc.doc List Schedule Names visible to user
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array_single("string", "maintenance schedule names")
+     * @apidoc.doc List Schedule Names visible to user
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #array_single("string", "maintenance schedule names")
      */
     public List<String> listScheduleNames(User loggedInUser) {
         return mm.listScheduleNamesByUser(loggedInUser);
@@ -73,10 +73,10 @@ public class MaintenanceHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Maintenance Schedule does not exist
      * @return the Maintenance Schedule
      *
-     * @xmlrpc.doc Lookup a specific maintenance schedule
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "maintenance Schedule Name")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lookup a specific maintenance schedule
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "maintenance Schedule Name")
+     * @apidoc.returntype
      * #return_array_begin()
      * $MaintenanceScheduleSerializer
      * #array_end()
@@ -94,11 +94,11 @@ public class MaintenanceHandler extends BaseHandler {
      * @param type schedule type
      * @return the new Maintenance Schedule
      *
-     * @xmlrpc.doc Create a new maintenance Schedule
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "maintenance schedule name")
-     * @xmlrpc.param #param_desc("string", "type", "schedule type: single, multi")
-     * @xmlrpc.returntype
+     * @apidoc.doc Create a new maintenance Schedule
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "maintenance schedule name")
+     * @apidoc.param #param_desc("string", "type", "schedule type: single, multi")
+     * @apidoc.returntype
      * #return_array_begin()
      * $MaintenanceScheduleSerializer
      * #array_end()
@@ -123,12 +123,12 @@ public class MaintenanceHandler extends BaseHandler {
      * @param calendar maintenance calendar label
      * @return the new Maintenance Schedule
      *
-     * @xmlrpc.doc Create a new Maintenance Schedule
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "maintenance schedule name")
-     * @xmlrpc.param #param_desc("string", "type", "schedule type: single, multi")
-     * @xmlrpc.param #param_desc("string", "calendar", "maintenance calendar label")
-     * @xmlrpc.returntype
+     * @apidoc.doc Create a new Maintenance Schedule
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "maintenance schedule name")
+     * @apidoc.param #param_desc("string", "type", "schedule type: single, multi")
+     * @apidoc.param #param_desc("string", "calendar", "maintenance calendar label")
+     * @apidoc.returntype
      * #return_array_begin()
      * $MaintenanceScheduleSerializer
      * #array_end()
@@ -154,10 +154,10 @@ public class MaintenanceHandler extends BaseHandler {
      * @param rescheduleStrategy list of strategy module names
      * @return the changed Maintenance Schedule
      *
-     * @xmlrpc.doc Update a maintenance schedule
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "maintenance schedule name")
-     * @xmlrpc.param
+     * @apidoc.doc Update a maintenance schedule
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "maintenance schedule name")
+     * @apidoc.param
      *     #struct_desc("details", "maintenance schedule details")
      *         #prop_desc("string", "type", "new schedule type")
      *           #options()
@@ -166,12 +166,12 @@ public class MaintenanceHandler extends BaseHandler {
      *           #options_end()
      *         #prop_desc("string", "calendar", "new calendar label")
      *     #struct_end()
-     * @xmlrpc.param #array_single_desc("string", "rescheduleStrategy", "available:")
+     * @apidoc.param #array_single_desc("string", "rescheduleStrategy", "available:")
      *                   #options()
      *                     #item_desc("Cancel", "cancel actions which are outside the maintenance windows")
      *                     #item_desc("Fail", "let update fail. The calendar stays untouched")
      *                   #options_end()
-     * @xmlrpc.returntype $RescheduleResultSerializer
+     * @apidoc.returntype $RescheduleResultSerializer
      */
     public RescheduleResult updateSchedule(User loggedInUser, String name, Map<String, String> details,
             List<String> rescheduleStrategy) {
@@ -199,10 +199,10 @@ public class MaintenanceHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Maintenance Schedule does not exist
      * @return number of removed objects
      *
-     * @xmlrpc.doc Remove a maintenance schedule
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "maintenance schedule name")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove a maintenance schedule
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "maintenance schedule name")
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteSchedule(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
@@ -218,9 +218,9 @@ public class MaintenanceHandler extends BaseHandler {
      * @param loggedInUser the user
      * @return list of calendar labels
      *
-     * @xmlrpc.doc List schedule names visible to user
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array_single("string", "maintenance calendar labels")
+     * @apidoc.doc List schedule names visible to user
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #array_single("string", "maintenance calendar labels")
      */
     public List<String> listCalendarLabels(User loggedInUser) {
         return mm.listCalendarLabelsByUser(loggedInUser);
@@ -234,10 +234,10 @@ public class MaintenanceHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Maintenance Calendar does not exist
      * @return the Maintenance Calendar
      *
-     * @xmlrpc.doc Lookup a specific maintenance schedule
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "maintenance calendar label")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lookup a specific maintenance schedule
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "maintenance calendar label")
+     * @apidoc.returntype
      * #return_array_begin()
      * $MaintenanceCalendarSerializer
      * #array_end()
@@ -255,11 +255,11 @@ public class MaintenanceHandler extends BaseHandler {
      * @param ical calendar ical data
      * @return the new Maintenance Calendar
      *
-     * @xmlrpc.doc Create a new maintenance calendar
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "maintenance calendar label")
-     * @xmlrpc.param #param_desc("string", "ical", "ICal calendar data")
-     * @xmlrpc.returntype
+     * @apidoc.doc Create a new maintenance calendar
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "maintenance calendar label")
+     * @apidoc.param #param_desc("string", "ical", "ICal calendar data")
+     * @apidoc.returntype
      * #return_array_begin()
      * $MaintenanceCalendarSerializer
      * #array_end()
@@ -282,11 +282,11 @@ public class MaintenanceHandler extends BaseHandler {
      * @param url calendar url
      * @return the new Maintenance Calendar
      *
-     * @xmlrpc.doc Create a new maintenance calendar
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "maintenance calendar label")
-     * @xmlrpc.param #param_desc("string", "url", "download URL for ICal calendar data")
-     * @xmlrpc.returntype
+     * @apidoc.doc Create a new maintenance calendar
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "maintenance calendar label")
+     * @apidoc.param #param_desc("string", "url", "download URL for ICal calendar data")
+     * @apidoc.returntype
      * #return_array_begin()
      * $MaintenanceCalendarSerializer
      * #array_end()
@@ -313,20 +313,20 @@ public class MaintenanceHandler extends BaseHandler {
      * @param rescheduleStrategy list of strategy module names
      * @return the changed Maintenance Calendar
      *
-     * @xmlrpc.doc Update a maintenance calendar
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "maintenance calendar label")
-     * @xmlrpc.param
+     * @apidoc.doc Update a maintenance calendar
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "maintenance calendar label")
+     * @apidoc.param
      *     #struct_desc("details", "maintenance calendar details")
      *         #prop_desc("string", "ical", "new ical calendar data")
      *         #prop_desc("string", "url", "new calendar URL")
      *     #struct_end()
-     * @xmlrpc.param #array_single_desc("string", "rescheduleStrategy", "available:")
+     * @apidoc.param #array_single_desc("string", "rescheduleStrategy", "available:")
      *                 #options()
      *                   #item_desc("Cancel", "cancel actions which are outside the maintenance windows")
      *                   #item_desc("Fail", "let update fail. The calendar stay untouched")
      *                 #options_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *     #return_array_begin()
      *       $RescheduleResultSerializer
      *     #array_end()
@@ -363,15 +363,15 @@ public class MaintenanceHandler extends BaseHandler {
      * @param rescheduleStrategy list of strategy module names
      * @return 1 on success
      *
-     * @xmlrpc.doc Refresh maintenance calendar data using the configured URL
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "maintenance calendar label")
-     * @xmlrpc.param #array_single_desc("string", "rescheduleStrategy", "available:")
+     * @apidoc.doc Refresh maintenance calendar data using the configured URL
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "maintenance calendar label")
+     * @apidoc.param #array_single_desc("string", "rescheduleStrategy", "available:")
      *                 #options()
      *                   #item_desc("Cancel", "cancel actions which are outside the maintenance windows")
      *                   #item_desc("Fail", "let update fail. The calendar stay untouched")
      *                 #options_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *     #return_array_begin()
      *       $RescheduleResultSerializer
      *     #array_end()
@@ -398,11 +398,11 @@ public class MaintenanceHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Maintenance Calendar does not exist
      * @return number of removed objects
      *
-     * @xmlrpc.doc Remove a maintenance calendar
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "maintenance calendar label")
-     * @xmlrpc.param #param_desc("boolean", "cancelScheduledActions", "cancel actions of affected schedules")
-     * @xmlrpc.returntype
+     * @apidoc.doc Remove a maintenance calendar
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "maintenance calendar label")
+     * @apidoc.param #param_desc("boolean", "cancelScheduledActions", "cancel actions of affected schedules")
+     * @apidoc.returntype
      *     #return_array_begin()
      *       $RescheduleResultSerializer
      *     #array_end()
@@ -423,19 +423,19 @@ public class MaintenanceHandler extends BaseHandler {
      * @param rescheduleStrategy list of strategy module names
      * @return the number of involved systems
      *
-     * @xmlrpc.doc Assign schedule with given name to systems with given IDs.
+     * @apidoc.doc Assign schedule with given name to systems with given IDs.
      * Throws a PermissionCheckFailureException when some of the systems are not accessible by the user.
      * Throws a InvalidParameterException when some of the systems have pending actions that are not allowed in the
      * maintenance mode.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "scheduleName", "The schedule name")
-     * @xmlrpc.param #array_single_desc("int", "sids", "system IDs")
-     * @xmlrpc.param #array_single_desc("string", "rescheduleStrategy", "available:")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "scheduleName", "The schedule name")
+     * @apidoc.param #array_single_desc("int", "sids", "system IDs")
+     * @apidoc.param #array_single_desc("string", "rescheduleStrategy", "available:")
      *                 #options()
      *                   #item_desc("Cancel", "cancel actions which are outside the maintenance windows")
      *                   #item_desc("Fail", "let assignment fail. No operation will be performed")
      *                 #options_end()
-     * @xmlrpc.returntype #array_single("int", "number of involved systems")
+     * @apidoc.returntype #array_single("int", "number of involved systems")
      */
     public Integer assignScheduleToSystems(User loggedInUser, String scheduleName, List<Integer> sids,
             List<String> rescheduleStrategy) {
@@ -464,11 +464,11 @@ public class MaintenanceHandler extends BaseHandler {
      * @param sids the system IDs
      * @return the number of involved systems
      *
-     * @xmlrpc.doc Retract schedule with given name from systems with given IDs
+     * @apidoc.doc Retract schedule with given name from systems with given IDs
      * Throws a PermissionCheckFailureException when some of the systems are not accessible by the user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single_desc("int", "sids", "system IDs")
-     * @xmlrpc.returntype #array_single("int", "number of involved systems")
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single_desc("int", "sids", "system IDs")
+     * @apidoc.returntype #array_single("int", "number of involved systems")
      */
     public Integer retractScheduleFromSystems(User loggedInUser, List<Integer> sids) {
         ensureOrgAdmin(loggedInUser);
@@ -489,11 +489,11 @@ public class MaintenanceHandler extends BaseHandler {
      * @param scheduleName the schedule name
      * @return the IDs of systems that have given schedule assigned
      *
-     * @xmlrpc.doc List IDs of systems that have given schedule assigned
+     * @apidoc.doc List IDs of systems that have given schedule assigned
      * Throws a PermissionCheckFailureException when some of the systems are not accessible by the user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "scheduleName", "the schedule name")
-     * @xmlrpc.returntype #array_single("int", "system IDs")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "scheduleName", "the schedule name")
+     * @apidoc.returntype #array_single("int", "system IDs")
     */
     public List<Long> listSystemsWithSchedule(User loggedInUser, String scheduleName) {
         ensureOrgAdmin(loggedInUser);

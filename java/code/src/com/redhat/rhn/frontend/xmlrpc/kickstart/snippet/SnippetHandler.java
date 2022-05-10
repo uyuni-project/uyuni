@@ -29,8 +29,8 @@ import java.util.List;
 
 /**
  * KickstartSnippetHandler
- * @xmlrpc.namespace kickstart.snippet
- * @xmlrpc.doc Provides methods to create kickstart files
+ * @apidoc.namespace kickstart.snippet
+ * @apidoc.doc Provides methods to create kickstart files
  */
 public class SnippetHandler extends BaseHandler {
 
@@ -46,9 +46,9 @@ public class SnippetHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return List of cobbler snippet objects
      *
-     * @xmlrpc.doc List all cobbler snippets for the logged in user
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List all cobbler snippets for the logged in user
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *          #return_array_begin()
      *            $SnippetSerializer
      *          #array_end()
@@ -64,10 +64,10 @@ public class SnippetHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return List of cobbler snippet objects
      *
-     * @xmlrpc.doc List only custom snippets for the logged in user.
+     * @apidoc.doc List only custom snippets for the logged in user.
      *    These snipppets are editable.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *          #return_array_begin()
      *            $SnippetSerializer
      *          #array_end()
@@ -83,10 +83,10 @@ public class SnippetHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return List of cobbler snippet objects
      *
-     * @xmlrpc.doc List only pre-made default snippets for the logged in user.
+     * @apidoc.doc List only pre-made default snippets for the logged in user.
      *    These snipppets are not editable.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *          #return_array_begin()
      *            $SnippetSerializer
      *          #array_end()
@@ -105,12 +105,12 @@ public class SnippetHandler extends BaseHandler {
      * @param contents the contents of the snippet
      * @return  the snippet
      *
-     * @xmlrpc.doc Will create a snippet with the given name and contents if it
+     * @apidoc.doc Will create a snippet with the given name and contents if it
      *      doesn't exist. If it does exist, the existing snippet will be updated.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param #param("string", "contents")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.param #param("string", "contents")
+     * @apidoc.returntype
      *            $SnippetSerializer
      */
     public CobblerSnippet createOrUpdate(User loggedInUser, String name, String contents) {
@@ -127,11 +127,11 @@ public class SnippetHandler extends BaseHandler {
      * @param name the name of the snippet
      * @return 1 for success 0 for not
      *
-     * @xmlrpc.doc Delete the specified snippet.
+     * @apidoc.doc Delete the specified snippet.
      *      If the snippet is not found, 0 is returned.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.returntype
      *            #return_int_success()
      */
     public int delete(User loggedInUser, String name) {

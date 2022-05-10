@@ -26,7 +26,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * BigDecimalSerializer
  *
 
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #param ("int", "decimal")
  */
 public class BigDecimalSerializer extends RhnXmlRpcCustomSerializer {

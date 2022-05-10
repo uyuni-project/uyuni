@@ -242,11 +242,11 @@
              stylesheetfile="${src.dir}/webapp/css/rhnjavadoc.css"
              breakiterator="yes" useexternalfile="true" maxmemory="128m" >
       <tag name="todo" scope="all" description="To do:" />
-      <tag name="xmlrpc.param" scope="methods" enabled="false"/>
-      <tag name="xmlrpc.returntype" scope="methods" enabled="false"/>
-      <tag name="xmlrpc.namespace" scope="types" enabled="false"/>
-      <tag name="xmlrpc.doc" scope="all" enabled="false"/>
-      <tag name="xmlrpc.serializer" scope="methods" enabled="false"/>
+      <tag name="apidoc.param" scope="methods" enabled="false"/>
+      <tag name="apidoc.returntype" scope="methods" enabled="false"/>
+      <tag name="apidoc.namespace" scope="types" enabled="false"/>
+      <tag name="apidoc.doc" scope="all" enabled="false"/>
+      <tag name="apidoc.serializer" scope="methods" enabled="false"/>
       <fileset dir="code" >
         <include name="**/src/**/*.java" />
         <exclude name="**/test/**" />

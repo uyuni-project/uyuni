@@ -31,8 +31,8 @@ import java.util.stream.Collectors;
 
 /**
  * AdminMonitoringHandler
- * @xmlrpc.namespace admin.monitoring
- * @xmlrpc.doc Provides methods to manage the monitoring of the #product() server.
+ * @apidoc.namespace admin.monitoring
+ * @apidoc.doc Provides methods to manage the monitoring of the #product() server.
  */
 public class AdminMonitoringHandler extends BaseHandler {
 
@@ -63,9 +63,9 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @param loggedInUser the current user
      * @return a map with the status of each exporter
      *
-     * @xmlrpc.doc Enable monitoring.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Enable monitoring.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *  #return_array_begin()
      *      #struct_begin("Exporters")
      *          #prop("string", "node")
@@ -90,9 +90,9 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @param loggedInUser the current user
      * @return a map with the status of each exporter
      *
-     * @xmlrpc.doc Disable monitoring.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Disable monitoring.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *  #return_array_begin()
      *      #struct_begin("Exporters")
      *          #prop("string", "node")
@@ -115,9 +115,9 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @param loggedInUser the current user
      * @return a map with the status of each exporter
      *
-     * @xmlrpc.doc Get the status of each Prometheus exporter.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Get the status of each Prometheus exporter.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *  #return_array_begin()
      *      #struct_begin("Exporters")
      *          #prop("string", "node")

@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * Serializer for the PinnedSubscription class
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("pinned subscription")
  *      #prop("int", "id")
  *      #prop("int", "subscription_id")

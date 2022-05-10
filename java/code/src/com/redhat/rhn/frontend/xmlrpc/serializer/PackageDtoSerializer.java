@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  *
  * PackageSerializer
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("package")
  *      #prop("string", "name")
  *      #prop("string", "version")

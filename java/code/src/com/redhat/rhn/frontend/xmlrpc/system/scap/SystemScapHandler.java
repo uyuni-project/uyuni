@@ -38,8 +38,8 @@ import java.util.List;
 
 /**
  * SystemScapHandler
- * @xmlrpc.namespace system.scap
- * @xmlrpc.doc Provides methods to schedule SCAP scans and access the results.
+ * @apidoc.namespace system.scap
+ * @apidoc.doc Provides methods to schedule SCAP scans and access the results.
  */
 public class SystemScapHandler extends BaseHandler {
 
@@ -49,10 +49,10 @@ public class SystemScapHandler extends BaseHandler {
      * @param sid The server ID.
      * @return a list of dto holding this info.
      *
-     * @xmlrpc.doc Return a list of finished OpenSCAP scans for a given system.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.returntype
+     * @apidoc.doc Return a list of finished OpenSCAP scans for a given system.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype
      * #return_array_begin()
      *   $XccdfTestResultDtoSerializer
      * #array_end()
@@ -71,10 +71,10 @@ public class SystemScapHandler extends BaseHandler {
      * @param xid The id of XCCDF scan.
      * @return a details of OpenSCAP XCCDF scan.
      *
-     * @xmlrpc.doc Get details of given OpenSCAP XCCDF scan.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "xid", "ID of XCCDF scan.")
-     * @xmlrpc.returntype $XccdfTestResultSerializer
+     * @apidoc.doc Get details of given OpenSCAP XCCDF scan.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "xid", "ID of XCCDF scan.")
+     * @apidoc.returntype $XccdfTestResultSerializer
      */
     @ReadOnly
     public XccdfTestResult getXccdfScanDetails(User loggedInUser, Integer xid) {
@@ -88,10 +88,10 @@ public class SystemScapHandler extends BaseHandler {
      * @param xid The id of XCCDF scan.
      * @return a list of RuleResults for given scan.
      *
-     * @xmlrpc.doc Return a full list of RuleResults for given OpenSCAP XCCDF scan.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "xid", "ID of XCCDF scan.")
-     * @xmlrpc.returntype
+     * @apidoc.doc Return a full list of RuleResults for given OpenSCAP XCCDF scan.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "xid", "ID of XCCDF scan.")
+     * @apidoc.returntype
      * #return_array_begin()
      *   $XccdfRuleResultDtoSerializer
      * #array_end()
@@ -109,11 +109,11 @@ public class SystemScapHandler extends BaseHandler {
      * @param xid The id of XCCDF scan.
      * @return a boolean indicating success of the operation.
      *
-     * @xmlrpc.doc Delete OpenSCAP XCCDF Scan from the #product() database. Note that
+     * @apidoc.doc Delete OpenSCAP XCCDF Scan from the #product() database. Note that
      * only those SCAP Scans can be deleted which have passed their retention period.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "xid", "ID of XCCDF scan.")
-     * @xmlrpc.returntype #param_desc("boolean", "status", "indicates success of the operation")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "xid", "ID of XCCDF scan.")
+     * @apidoc.returntype #param_desc("boolean", "status", "indicates success of the operation")
      */
     public Boolean deleteXccdfScan(User loggedInUser, Integer xid) {
         ScapManager.ensureAvailableToUser(loggedInUser, Long.valueOf(xid));
@@ -128,12 +128,12 @@ public class SystemScapHandler extends BaseHandler {
      * @param oscapParams The additional params for oscap tool.
      * @return ID of new SCAP action.
      *
-     * @xmlrpc.doc Schedule OpenSCAP scan.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "sids")
-     * @xmlrpc.param #param_desc("string", "xccdfPath", "path to xccdf content on targeted systems.")
-     * @xmlrpc.param #param_desc("string", "oscapParams", "additional parameters for oscap tool.")
-     * @xmlrpc.returntype #param_desc("int", "id", "ID if SCAP action created")
+     * @apidoc.doc Schedule OpenSCAP scan.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #param_desc("string", "xccdfPath", "path to xccdf content on targeted systems.")
+     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for oscap tool.")
+     * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
     public int scheduleXccdfScan(User loggedInUser, List sids,
             String xccdfPath, String oscapParams) {
@@ -150,14 +150,14 @@ public class SystemScapHandler extends BaseHandler {
      * @param date The date of earliest occurence.
      * @return ID of new SCAP action.
      *
-     * @xmlrpc.doc Schedule OpenSCAP scan.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "sids")
-     * @xmlrpc.param #param_desc("string", "xccdfPath", "path to xccdf content on targeted systems.")
-     * @xmlrpc.param #param_desc("string", "oscapParams", "additional parameters for oscap tool.")
-     * @xmlrpc.param #param_desc("$date","date",
+     * @apidoc.doc Schedule OpenSCAP scan.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #param_desc("string", "xccdfPath", "path to xccdf content on targeted systems.")
+     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("$date","date",
      *                       "The date to schedule the action")
-     * @xmlrpc.returntype #param_desc("int", "id", "ID if SCAP action created")
+     * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
     public int scheduleXccdfScan(User loggedInUser, List sids,
             String xccdfPath, String oscapParams, Date date) {
@@ -175,15 +175,15 @@ public class SystemScapHandler extends BaseHandler {
      * @param date The date of earliest occurence.
      * @return ID of new SCAP action.
      *
-     * @xmlrpc.doc Schedule OpenSCAP scan.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "sids")
-     * @xmlrpc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @xmlrpc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
-     * @xmlrpc.param #param_desc("string", "ovalFiles", "Additional OVAL files for oscap tool.")
-     * @xmlrpc.param #param_desc("$date","date",
+     * @apidoc.doc Schedule OpenSCAP scan.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
+     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("string", "ovalFiles", "Additional OVAL files for oscap tool.")
+     * @apidoc.param #param_desc("$date","date",
      *                       "The date to schedule the action")
-     * @xmlrpc.returntype #param_desc("int", "id", "ID if SCAP action created")
+     * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
     public int scheduleXccdfScan(User loggedInUser, List sids,
              String xccdfPath, String oscapParams, String ovalFiles, Date date) {
@@ -222,12 +222,12 @@ public class SystemScapHandler extends BaseHandler {
      * @param oscapParams The additional params for oscap tool.
      * @return ID of the new scap action.
      *
-     * @xmlrpc.doc Schedule Scap XCCDF scan.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @xmlrpc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
-     * @xmlrpc.returntype #param_desc("int", "id", "ID of the scap action created")
+     * @apidoc.doc Schedule Scap XCCDF scan.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
+     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the scap action created")
      */
     public int scheduleXccdfScan(User loggedInUser, Integer sid,
         String xccdfPath, String oscapParams) {
@@ -243,14 +243,14 @@ public class SystemScapHandler extends BaseHandler {
      * @param date The date of earliest occurence
      * @return ID of the new scap action.
      *
-     * @xmlrpc.doc Schedule Scap XCCDF scan.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @xmlrpc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
-     * @xmlrpc.param #param_desc("$date","date",
+     * @apidoc.doc Schedule Scap XCCDF scan.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
+     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("$date","date",
      *                       "The date to schedule the action")
-     * @xmlrpc.returntype #param_desc("int", "id", "ID of the scap action created")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the scap action created")
      */
     public int scheduleXccdfScan(User loggedInUser, Integer sid,
             String xccdfPath, String oscapParams, Date date) {

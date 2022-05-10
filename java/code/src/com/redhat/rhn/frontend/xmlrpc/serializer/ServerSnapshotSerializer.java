@@ -34,7 +34,7 @@ import java.util.Set;
  * Includes full server details, which may be more data than some calls would like.
  *
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("server snapshot")
  *      #prop("int", "id")
  *      #prop_desc("string", "reason", "the reason for the snapshot's existence")

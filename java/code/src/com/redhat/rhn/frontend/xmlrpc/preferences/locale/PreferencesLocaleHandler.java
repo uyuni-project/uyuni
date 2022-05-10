@@ -33,8 +33,8 @@ import java.util.List;
 /**
  * PreferencesLocaleHandler XMLRPC handler for the "preferences.locale"
  * namespace.
- * @xmlrpc.namespace preferences.locale
- * @xmlrpc.doc Provides methods to access and modify user locale information
+ * @apidoc.namespace preferences.locale
+ * @apidoc.doc Provides methods to access and modify user locale information
  */
 public class PreferencesLocaleHandler extends BaseHandler {
 
@@ -46,11 +46,11 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @param tzid TimeZone id
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Set a user's timezone.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param_desc("int", "tzid" "Timezone ID. (from listTimeZones)")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Set a user's timezone.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #param_desc("int", "tzid" "Timezone ID. (from listTimeZones)")
+     * @apidoc.returntype #return_int_success()
      */
     public int setTimeZone(User loggedInUser, String login, Integer tzid) {
         List tzs = UserManager.lookupAllTimeZones();
@@ -76,11 +76,11 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @param locale Locale code to be used as the users language.
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Set a user's locale.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param_desc("string", "locale", "Locale to set. (from listLocales)")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Set a user's locale.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #param_desc("string", "locale", "Locale to set. (from listLocales)")
+     * @apidoc.returntype #return_int_success()
      */
     public int setLocale(User loggedInUser, String login, String locale) {
         LocalizationService ls = LocalizationService.getInstance();
@@ -103,9 +103,9 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @return list of all understood TimeZones. This should be used
      * as the input into setTimeZone.
      *
-     * @xmlrpc.doc Returns a list of all understood timezones. Results can be
+     * @apidoc.doc Returns a list of all understood timezones. Results can be
      * used as input to setTimeZone.
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * #return_array_begin()
      *   $RhnTimeZoneSerializer
      * #array_end()
@@ -121,9 +121,9 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @return list of all understood Locales. This should be used
      * as the input into setLocale.
      *
-     * @xmlrpc.doc Returns a list of all understood locales. Can be
+     * @apidoc.doc Returns a list of all understood locales. Can be
      * used as input to setLocale.
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * #array_single("string", "Locale code.")
      */
     @ReadOnly

@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ImageInfoSerializer
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("image information")
  *   #prop("int", "id")
  *   #prop_desc("string", "name", "image name")

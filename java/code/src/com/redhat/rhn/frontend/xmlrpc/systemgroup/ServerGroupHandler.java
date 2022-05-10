@@ -53,8 +53,8 @@ import java.util.stream.Collectors;
 
 /**
  * ServerGroupHandler
- * @xmlrpc.namespace systemgroup
- * @xmlrpc.doc Provides methods to access and modify system groups.
+ * @apidoc.namespace systemgroup
+ * @apidoc.doc Provides methods to access and modify system groups.
  */
 public class ServerGroupHandler extends BaseHandler {
 
@@ -78,11 +78,11 @@ public class ServerGroupHandler extends BaseHandler {
      * @param systemGroupName the name of the system group
      * @return a list of users who can administer this system group.
      *
-     * @xmlrpc.doc Returns the list of users who can administer the given group.
+     * @apidoc.doc Returns the list of users who can administer the given group.
      * Caller must be a system group admin or an organization administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.returntype
      *  #return_array_begin()
      *      $UserSerializer
      *   #array_end()
@@ -104,16 +104,16 @@ public class ServerGroupHandler extends BaseHandler {
      * @param add a boolean to associate  or dissociate admins from the group
      * @return 1 if the operation succeed 1 Exception other wise.
      *
-     * @xmlrpc.doc Add or remove administrators to/from the given group. #product() and
+     * @apidoc.doc Add or remove administrators to/from the given group. #product() and
      * Organization administrators are granted access to groups within their organization
      * by default; therefore, users with those roles should not be included in the array
      * provided. Caller must be an organization administrator.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single_desc("string", "loginName", "User's loginName")
-     * @xmlrpc.param #param_desc("int", "add", "1 to add administrators, 0 to remove.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.param #array_single_desc("string", "loginName", "User's loginName")
+     * @apidoc.param #param_desc("int", "add", "1 to add administrators, 0 to remove.")
+     * @apidoc.returntype #return_int_success()
      */
     public int addOrRemoveAdmins(User loggedInUser, String systemGroupName,
                                         List<String> loginNames, boolean add) {
@@ -153,12 +153,12 @@ public class ServerGroupHandler extends BaseHandler {
      * @param systemGroupName the name of the system group
      * @return a list of systems associated to a given system group.
      *
-     * @xmlrpc.doc Return a list of systems associated with this system group.
+     * @apidoc.doc Return a list of systems associated with this system group.
      * User must have access to this system group.
 
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ServerSerializer
      *      #array_end()
@@ -175,12 +175,12 @@ public class ServerGroupHandler extends BaseHandler {
      * @param systemGroupName the name of the system group
      * @return a list of systems associated to a given system group.
      *
-     * @xmlrpc.doc Return a list of systems associated with this system group.
+     * @apidoc.doc Return a list of systems associated with this system group.
      * User must have access to this system group.
 
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
@@ -199,13 +199,13 @@ public class ServerGroupHandler extends BaseHandler {
      * @param add should this server be associated or dissociated to this group.
      * @return Returns 1 if successful, exception otherwise
      *
-     * @xmlrpc.doc Add/remove the given servers to a system group.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single("int", "serverIds")
-     * @xmlrpc.param #param_desc("boolean", "add", "True to add to the group,
+     * @apidoc.doc Add/remove the given servers to a system group.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.param #array_single("int", "serverIds")
+     * @apidoc.param #param_desc("boolean", "add", "True to add to the group,
      *              False to remove.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int addOrRemoveSystems(User loggedInUser, String systemGroupName,
             List serverIds, Boolean add) {
@@ -233,12 +233,12 @@ public class ServerGroupHandler extends BaseHandler {
      * @param description The description of a system group.
      * @return the name of the system group created.
      *
-     * @xmlrpc.doc Create a new system group.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Name of the system group.")
-     * @xmlrpc.param #param_desc("string", "description", "Description of the
+     * @apidoc.doc Create a new system group.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the system group.")
+     * @apidoc.param #param_desc("string", "description", "Description of the
      *                  system group.")
-     * @xmlrpc.returntype $ManagedServerGroupSerializer
+     * @apidoc.returntype $ManagedServerGroupSerializer
      */
     public ServerGroup create(User loggedInUser, String name, String description) {
         ensureSystemGroupAdmin(loggedInUser);
@@ -251,10 +251,10 @@ public class ServerGroupHandler extends BaseHandler {
      * @param systemGroupName the name of the system group
      * @return 1 for success exception  other wise.
      *
-     * @xmlrpc.doc Delete a system group.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Delete a system group.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String systemGroupName) {
         ensureSystemGroupAdmin(loggedInUser);
@@ -271,11 +271,11 @@ public class ServerGroupHandler extends BaseHandler {
      * @param description The description of the system group.
      * @return the updated system group.
      *
-     * @xmlrpc.doc Update an existing system group.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.returntype $ManagedServerGroupSerializer
+     * @apidoc.doc Update an existing system group.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.param #param("string", "description")
+     * @apidoc.returntype $ManagedServerGroupSerializer
      */
     public ServerGroup update(User loggedInUser,
                                 String systemGroupName, String description) {
@@ -299,11 +299,11 @@ public class ServerGroupHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return List of ServerGroups that do not have an associated admin.
      *
-     * @xmlrpc.doc Returns a list of system groups that do not have an administrator.
+     * @apidoc.doc Returns a list of system groups that do not have an administrator.
      * (who is not an organization administrator, as they have implicit access to
      * system groups) Caller must be an organization administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ManagedServerGroupSerializer
      *      #array_end()
@@ -320,10 +320,10 @@ public class ServerGroupHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return a list of ServerGroup objects
      *
-     * @xmlrpc.doc Retrieve a list of system groups that are accessible by the logged
+     * @apidoc.doc Retrieve a list of system groups that are accessible by the logged
      *      in user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ManagedServerGroupSerializer
      *      #array_end()
@@ -349,10 +349,10 @@ public class ServerGroupHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the server group
      * corresponding to systemGroupId cannot be retrieved.
      *
-     * @xmlrpc.doc Retrieve details of a ServerGroup based on it's id
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "systemGroupId")
-     * @xmlrpc.returntype $ManagedServerGroupSerializer
+     * @apidoc.doc Retrieve details of a ServerGroup based on it's id
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "systemGroupId")
+     * @apidoc.returntype $ManagedServerGroupSerializer
      */
     @ReadOnly
     public ServerGroup getDetails(User loggedInUser, Integer systemGroupId)
@@ -370,10 +370,10 @@ public class ServerGroupHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the server group
      * corresponding to systemGroupName cannot be retrieved.
      *
-     * @xmlrpc.doc Retrieve details of a ServerGroup based on it's name
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.returntype $ManagedServerGroupSerializer
+     * @apidoc.doc Retrieve details of a ServerGroup based on it's name
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.returntype $ManagedServerGroupSerializer
      */
     @ReadOnly
     public ServerGroup getDetails(User loggedInUser, String systemGroupName)
@@ -419,10 +419,10 @@ public class ServerGroupHandler extends BaseHandler {
      * @param systemGroupName the system group
      * @return List of system ids that are active
      *
-     * @xmlrpc.doc Lists active systems within a server group
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.returntype #array_single("int", "server_id")
+     * @apidoc.doc Lists active systems within a server group
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.returntype #array_single("int", "server_id")
      */
     @ReadOnly
     public List<Long> listActiveSystemsInGroup(User loggedInUser, String systemGroupName) {
@@ -443,13 +443,13 @@ public class ServerGroupHandler extends BaseHandler {
      * @param daysInactive number of days a system has to not check in to be inactive
      * @return List of system ids that are active
      *
-     * @xmlrpc.doc Lists inactive systems within a server group using a
+     * @apidoc.doc Lists inactive systems within a server group using a
      *          specified inactivity time.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #param_desc("int", "daysInactive", "Number of days a system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.param #param_desc("int", "daysInactive", "Number of days a system
      *           must not check in to be considered inactive.")
-     * @xmlrpc.returntype #array_single("int", "server_id")
+     * @apidoc.returntype #array_single("int", "server_id")
      */
     @ReadOnly
     public List<Long> listInactiveSystemsInGroup(User loggedInUser,
@@ -466,11 +466,11 @@ public class ServerGroupHandler extends BaseHandler {
      * @param systemGroupName the system group
      * @return List of system ids that are active
      *
-     * @xmlrpc.doc Lists inactive systems within a server group using the default
+     * @apidoc.doc Lists inactive systems within a server group using the default
      *          1 day threshold.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.returntype #array_single("int", "server_id")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.returntype #array_single("int", "server_id")
      */
     @ReadOnly
     public List<Long> listInactiveSystemsInGroup(User loggedInUser,
@@ -489,12 +489,12 @@ public class ServerGroupHandler extends BaseHandler {
      * @return list of action ids, exception thrown otherwise
      * @since 13.0
      *
-     * @xmlrpc.doc Schedules an action to apply errata updates to active systems
+     * @apidoc.doc Schedules an action to apply errata updates to active systems
      * from a group.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param  #array_single("int", "errataIds")
-     * @xmlrpc.returntype #array_single("int", "actionId")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.param  #array_single("int", "errataIds")
+     * @apidoc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
                                                                     List errataIds) {
@@ -511,13 +511,13 @@ public class ServerGroupHandler extends BaseHandler {
      * @return list of action ids, exception thrown otherwise
      * @since 13.0
      *
-     * @xmlrpc.doc Schedules an action to apply errata updates to active systems
+     * @apidoc.doc Schedules an action to apply errata updates to active systems
      * from a group at a given date/time.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single("int", "errataIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
-     * @xmlrpc.returntype #array_single("int", "actionId")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.param #array_single("int", "errataIds")
+     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
                                 List<Integer> errataIds, Date earliestOccurrence) {
@@ -536,13 +536,13 @@ public class ServerGroupHandler extends BaseHandler {
      * @return list of action ids, exception thrown otherwise
      * @since 24
      *
-     * @xmlrpc.doc Schedules an action to apply errata updates to active systems
+     * @apidoc.doc Schedules an action to apply errata updates to active systems
      * from a group at a given date/time.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single("int", "errataIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
-     * @xmlrpc.returntype #array_single("int", "actionId")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.param #array_single("int", "errataIds")
+     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
                                             List<Integer> errataIds, Date earliestOccurrence, Boolean onlyRelevant) {
@@ -566,10 +566,10 @@ public class ServerGroupHandler extends BaseHandler {
      * @return list of Config Channels
      * @since 25
      *
-     * @xmlrpc.doc List all Configuration Channels assigned to a system group
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.returntype
+     * @apidoc.doc List all Configuration Channels assigned to a system group
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.returntype
      * #return_array_begin()
      * $ConfigChannelSerializer
      * #array_end()
@@ -590,11 +590,11 @@ public class ServerGroupHandler extends BaseHandler {
      * @param configChannelLabels list of config channel labels to subscribe
      * @return 1 on success
      *
-     * @xmlrpc.doc Subscribe given config channels to a system group
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single("string", "configChannelLabels")
-     * @xmlrpc.returntype 1 on success, exception on failure
+     * @apidoc.doc Subscribe given config channels to a system group
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.param #array_single("string", "configChannelLabels")
+     * @apidoc.returntype 1 on success, exception on failure
      */
     public int subscribeConfigChannel(User loggedInUser, String systemGroupName,
             List<String> configChannelLabels) {
@@ -620,11 +620,11 @@ public class ServerGroupHandler extends BaseHandler {
      * @param configChannelLabels list of config channel labels to subscribe
      * @return 1 on success
      *
-     * @xmlrpc.doc Unsubscribe given config channels to a system group
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.param #array_single("string", "configChannelLabels")
-     * @xmlrpc.returntype 1 on success, exception on failure
+     * @apidoc.doc Unsubscribe given config channels to a system group
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.param #array_single("string", "configChannelLabels")
+     * @apidoc.returntype 1 on success, exception on failure
      */
     public int unsubscribeConfigChannel(User loggedInUser, String systemGroupName,
             List<String> configChannelLabels) {
@@ -650,10 +650,10 @@ public class ServerGroupHandler extends BaseHandler {
      * @return list of Formulas
      * @since 25
      *
-     * @xmlrpc.doc List all Configuration Channels assigned to a system group
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "systemGroupName")
-     * @xmlrpc.returntype
+     * @apidoc.doc List all Configuration Channels assigned to a system group
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "systemGroupName")
+     * @apidoc.returntype
      * #return_array_begin()
      * $FormulaSerializer
      * #array_end()

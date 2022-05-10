@@ -87,8 +87,8 @@ import java.util.stream.Collectors;
 
 /**
  * ErrataHandler - provides methods to access errata information.
- * @xmlrpc.namespace errata
- * @xmlrpc.doc Provides methods to access and modify errata.
+ * @apidoc.namespace errata
+ * @apidoc.doc Provides methods to access and modify errata.
  */
 public class ErrataHandler extends BaseHandler {
 
@@ -101,10 +101,10 @@ public class ErrataHandler extends BaseHandler {
      * @return Returns a map containing the details of the errata
      * @throws FaultException A FaultException is thrown if the errata corresponding to advisoryName cannot be found.
      *
-     * @xmlrpc.doc Retrieves the details for the erratum matching the given advisory name.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.returntype
+     * @apidoc.doc Retrieves the details for the erratum matching the given advisory name.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.returntype
      *      #struct_begin("erratum")
      *          #prop("int", "id")
      *          #prop("string", "issue_date")
@@ -186,12 +186,12 @@ public class ErrataHandler extends BaseHandler {
      * @param details Map of (optional) erratum details to be set.
      * @return 1 on success, exception thrown otherwise.
      *
-     * @xmlrpc.doc Set erratum details. All arguments are optional and will only be modified
+     * @apidoc.doc Set erratum details. All arguments are optional and will only be modified
      * if included in the struct. This method will only allow for modification of custom
      * errata created either through the UI or API.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.param
      *      #struct_begin("details")
      *          #prop("string", "synopsis")
      *          #prop("string", "advisory_name")
@@ -222,7 +222,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop_array("cves", "string", "list of CVEs to associate with the errata")
      *     #struct_end()
      *
-     *  @xmlrpc.returntype #return_int_success()
+     *  @apidoc.returntype #return_int_success()
      */
     public Integer setDetails(User loggedInUser, String advisoryName, Map<String, Object> details) {
 
@@ -435,12 +435,12 @@ public class ErrataHandler extends BaseHandler {
      * @return Returns an object array containing the system ids and system name
      * @throws FaultException A FaultException is thrown if the errata corresponding to advisoryName cannot be found.
      *
-     * @xmlrpc.doc Return the list of systems affected by the errata with the given advisory name.
+     * @apidoc.doc Return the list of systems affected by the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the affected systems by both of them.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
@@ -467,15 +467,15 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata
      * corresponding to the given advisoryName cannot be found.
      *
-     * @xmlrpc.doc Get the Bugzilla fixes for an erratum matching the given
+     * @apidoc.doc Get the Bugzilla fixes for an erratum matching the given
      * advisoryName. The bugs will be returned in a struct where the bug id is
      * the key.  i.e. 208144="errata.bugzillaFixes Method Returns different
      * results than docs say"
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the list of Bugzilla fixes of both of them.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.returntype
      *      #struct_begin("Bugzilla info")
      *          #prop_desc("string", "bugzilla_id", "actual bug number is the key into the
      *                      struct")
@@ -501,12 +501,12 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Get the keywords associated with an erratum matching the given advisory name.
+     * @apidoc.doc Get the keywords associated with an erratum matching the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the keywords of both of them.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.returntype #array_single("string", "keyword associated with erratum.")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.returntype #array_single("string", "keyword associated with erratum.")
      */
     @ReadOnly
     public Object[] listKeywords(User loggedInUser, String advisoryName) throws FaultException {
@@ -530,12 +530,12 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Returns a list of channels applicable to the errata with the given advisory name.
+     * @apidoc.doc Returns a list of channels applicable to the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the list of channels applicable of both of them.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          #struct_begin("channel")
      *              #prop("int", "channel_id")
@@ -566,12 +566,12 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Returns a list of <a href="http://cve.mitre.org/" target="_blank">CVE</a>s applicable to the errata
+     * @apidoc.doc Returns a list of <a href="http://cve.mitre.org/" target="_blank">CVE</a>s applicable to the errata
      * with the given advisory name. For those errata that are present in both vendor and user organizations under the
      * same advisory name, this method retrieves the list of CVEs of both of them.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string",  "advisoryName")
-     * @xmlrpc.returntype #array_single("string", "CVE name")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string",  "advisoryName")
+     * @apidoc.returntype #array_single("string", "CVE name")
      */
     @ReadOnly
     public List listCves(User loggedInUser, String advisoryName) throws FaultException {
@@ -594,12 +594,12 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Returns a list of the packages affected by the errata with the given advisory name.
+     * @apidoc.doc Returns a list of the packages affected by the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the packages of both of them.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.returntype
      *          #return_array_begin()
      *              #struct_begin("package")
      *                  #prop("int", "id")
@@ -647,12 +647,12 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Add a set of packages to an erratum with the given advisory name.
+     * @apidoc.doc Add a set of packages to an erratum with the given advisory name.
      * This method will only allow for modification of custom errata created either through the UI or API.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.returntype #param("int", "the number of packages added, exception otherwise")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.param #array_single("int", "packageIds")
+     * @apidoc.returntype #param("int", "the number of packages added, exception otherwise")
      */
     public int addPackages(User loggedInUser, String advisoryName, List<Integer> packageIds) throws FaultException {
 
@@ -693,12 +693,12 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @xmlrpc.doc Remove a set of packages from an erratum with the given advisory name.
+     * @apidoc.doc Remove a set of packages from an erratum with the given advisory name.
      * This method will only allow for modification of custom errata created either through the UI or API.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.returntype #param("int", "the number of packages removed, exception otherwise")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.param #array_single("int", "packageIds")
+     * @apidoc.returntype #param("int", "the number of packages removed, exception otherwise")
      */
     public int removePackages(User loggedInUser, String advisoryName, List<Integer> packageIds) throws FaultException {
 
@@ -782,12 +782,12 @@ public class ErrataHandler extends BaseHandler {
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
-     * @xmlrpc.doc Clone a list of errata into the specified channel.
+     * @apidoc.doc Clone a list of errata into the specified channel.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "channelLabel")
-     * @xmlrpc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "channelLabel")
+     * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
+     * @apidoc.returntype
      *          #return_array_begin()
      *              $ErrataSerializer
      *          #array_end()
@@ -806,12 +806,12 @@ public class ErrataHandler extends BaseHandler {
      *          of every errata you want to clone
      * @return 1 on success, exception thrown otherwise.
      *
-     * @xmlrpc.doc Asynchronously clone a list of errata into the specified channel.
+     * @apidoc.doc Asynchronously clone a list of errata into the specified channel.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "channelLabel")
-     * @xmlrpc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "channelLabel")
+     * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
+     * @apidoc.returntype #return_int_success()
      */
     public int cloneAsync(User loggedInUser, String channelLabel, List<String> advisoryNames) {
         clone(loggedInUser, channelLabel, advisoryNames, false, true);
@@ -916,12 +916,12 @@ public class ErrataHandler extends BaseHandler {
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
-     * @xmlrpc.doc Clones a list of errata into a specified cloned channel according the original erratas.
+     * @apidoc.doc Clones a list of errata into a specified cloned channel according the original erratas.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "channelLabel")
-     * @xmlrpc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "channelLabel")
+     * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
+     * @apidoc.returntype
      *          #return_array_begin()
      *              $ErrataSerializer
      *          #array_end()
@@ -942,13 +942,13 @@ public class ErrataHandler extends BaseHandler {
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return 1 on success, exception thrown otherwise.
      *
-     * @xmlrpc.doc Asynchronously clones a list of errata into a specified cloned channel
+     * @apidoc.doc Asynchronously clones a list of errata into a specified cloned channel
      * according the original erratas
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "channelLabel")
-     * @xmlrpc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "channelLabel")
+     * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
+     * @apidoc.returntype #return_int_success()
      */
     public int cloneAsOriginalAsync(User loggedInUser, String channelLabel, List<String> advisoryNames)
             throws InvalidChannelRoleException {
@@ -992,9 +992,9 @@ public class ErrataHandler extends BaseHandler {
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return The errata created
      *
-     * @xmlrpc.doc Create a custom errata
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param
+     * @apidoc.doc Create a custom errata
+     * @apidoc.param #session_key()
+     * @apidoc.param
      *      #struct_begin("errataInfo")
      *          #prop("string", "synopsis")
      *          #prop("string", "advisory_name")
@@ -1015,7 +1015,7 @@ public class ErrataHandler extends BaseHandler {
      *                  following: 'Low', 'Moderate', 'Important', 'Critical'
      *                  or 'Unspecified'")
      *       #struct_end()
-     *  @xmlrpc.param
+     *  @apidoc.param
      *       #array_begin("bugs")
      *         #struct_begin("bug")
      *           #prop_desc("int", "id", "Bug Id")
@@ -1023,10 +1023,10 @@ public class ErrataHandler extends BaseHandler {
      *           #prop("string", "url")
      *         #struct_end()
      *       #array_end()
-     * @xmlrpc.param #array_single_desc("string", "keywords", "list of keywords to associate with the errata")
-     * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.param #array_single_desc("string", "channelLabels", "list of channels the errata should be published to")
-     * @xmlrpc.returntype $ErrataSerializer
+     * @apidoc.param #array_single_desc("string", "keywords", "list of keywords to associate with the errata")
+     * @apidoc.param #array_single("int", "packageIds")
+     * @apidoc.param #array_single_desc("string", "channelLabels", "list of channels the errata should be published to")
+     * @apidoc.returntype $ErrataSerializer
      */
     public Errata create(User loggedInUser, Map<String, Object> errataInfo,
                          List<Map<String, Object>> bugs, List<String> keywords,
@@ -1167,11 +1167,11 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException if unknown or invalid erratum is provided.
      * @return 1 on success, exception thrown otherwise.
      *
-     * @xmlrpc.doc Delete an erratum.  This method will only allow for deletion
+     * @apidoc.doc Delete an erratum.  This method will only allow for deletion
      * of custom errata created either through the UI or API.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer delete(User loggedInUser, String advisoryName)
             throws FaultException {
@@ -1188,11 +1188,11 @@ public class ErrataHandler extends BaseHandler {
      * @param channelLabels List of channels to add the errata to
      * @return the added errata
      *
-     * @xmlrpc.doc Adds an existing errata to a set of channels.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.param #array_single_desc("string", "channelLabels", "list of channel labels to add to")
-     * @xmlrpc.returntype $ErrataSerializer
+     * @apidoc.doc Adds an existing errata to a set of channels.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.param #array_single_desc("string", "channelLabels", "list of channel labels to add to")
+     * @apidoc.returntype $ErrataSerializer
      */
     public Errata publish(User loggedInUser, String advisoryName, List<String> channelLabels) {
         List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
@@ -1215,12 +1215,12 @@ public class ErrataHandler extends BaseHandler {
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return the added errata
      *
-     * @xmlrpc.doc Adds an existing cloned errata to a set of cloned
+     * @apidoc.doc Adds an existing cloned errata to a set of cloned
      * channels according to its original erratum
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "advisoryName")
-     * @xmlrpc.param #array_single_desc("string", "channelLabels", "list of channel labels to add to")
-     * @xmlrpc.returntype $ErrataSerializer
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "advisoryName")
+     * @apidoc.param #array_single_desc("string", "channelLabels", "list of channel labels to add to")
+     * @apidoc.returntype $ErrataSerializer
      */
     public Errata publishAsOriginal(User loggedInUser, String advisoryName, List<String> channelLabels)
             throws InvalidChannelRoleException {
@@ -1309,11 +1309,11 @@ public class ErrataHandler extends BaseHandler {
      * @param cveName name of the CVE
      * @return List of Errata objects
      *
-     * @xmlrpc.doc Lookup the details for errata associated with the given CVE
+     * @apidoc.doc Lookup the details for errata associated with the given CVE
      * (e.g. CVE-2008-3270)
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "cveName")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "cveName")
+     * @apidoc.returntype
      *          #return_array_begin()
      *              $ErrataSerializer
      *          #array_end()

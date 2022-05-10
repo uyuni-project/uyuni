@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * SslContentSourceSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("content source SSL")
  *      #prop("string", "sslCaDesc")
  *      #prop("string", "sslCertDesc")

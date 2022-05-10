@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
 *
 * FormulaDataSerializer
 *
-* @xmlrpc.doc
+* @apidoc.doc
 *
 * #struct_begin("formula data")
 *     #prop("int", "system_id")

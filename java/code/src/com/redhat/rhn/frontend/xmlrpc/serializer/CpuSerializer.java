@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  *
  * CpuSerializer
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("CPU")
  *      #prop("string", "cache")
  *      #prop("string", "family")

@@ -40,8 +40,8 @@ import java.util.stream.Collectors;
 /**
  * ApiHandler
  * Corresponds to API.pm in old perl code.
- * @xmlrpc.namespace api
- * @xmlrpc.doc Methods providing information about the API.
+ * @apidoc.namespace api
+ * @apidoc.doc Methods providing information about the API.
  */
 public class ApiHandler extends BaseHandler {
 
@@ -59,8 +59,8 @@ public class ApiHandler extends BaseHandler {
      * Returns the server version.
      * @return Returns the server version.
      *
-     * @xmlrpc.doc Returns the server version.
-     * @xmlrpc.returntype #param("string", "version")
+     * @apidoc.doc Returns the server version.
+     * @apidoc.returntype #param("string", "version")
      */
     public String systemVersion() {
         return ConfigDefaults.get().getProductVersion();
@@ -70,8 +70,8 @@ public class ApiHandler extends BaseHandler {
      * Returns the api version. Called as: api.get_version
      * @return the api version.
      *
-     * @xmlrpc.doc Returns the version of the API.
-     * @xmlrpc.returntype #param("string", "version")
+     * @apidoc.doc Returns the version of the API.
+     * @apidoc.returntype #param("string", "version")
      */
     @ReadOnly
     public String getVersion() {
@@ -82,9 +82,9 @@ public class ApiHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return map of API namespaces
      *
-     * @xmlrpc.doc Lists available API namespaces
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists available API namespaces
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *   #struct_begin("namespace")
      *        #prop_desc("string", "namespace", "API namespace")
      *        #prop_desc("string", "handler", "API Handler")
@@ -104,9 +104,9 @@ public class ApiHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return a map containing list of api calls for every namespace
      *
-     * @xmlrpc.doc Lists all available api calls grouped by namespace
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists all available api calls grouped by namespace
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *   #struct_begin("method_info")
      *       #prop_desc("string", "name", "method name")
      *       #prop_desc("string", "parameters", "method parameters")
@@ -128,10 +128,10 @@ public class ApiHandler extends BaseHandler {
      * @param namespace namespace of interest
      * @return a map containing list of api calls for every namespace
      *
-     * @xmlrpc.doc Lists all available api calls for the specified namespace
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "namespace")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists all available api calls for the specified namespace
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "namespace")
+     * @apidoc.returntype
      *   #struct_begin("method_info")
      *        #prop_desc("string", "name", "method name")
      *        #prop_desc("string", "parameters", "method parameters")

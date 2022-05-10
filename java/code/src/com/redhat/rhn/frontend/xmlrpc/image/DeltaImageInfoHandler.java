@@ -30,8 +30,8 @@ import java.util.Optional;
 
 /**
  * DeltaImageInfoHandler
- * @xmlrpc.namespace image.delta
- * @xmlrpc.doc Provides methods to access and modify delta images.
+ * @apidoc.namespace image.delta
+ * @apidoc.doc Provides methods to access and modify delta images.
  */
 public class DeltaImageInfoHandler extends BaseHandler {
 
@@ -40,9 +40,9 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @param loggedInUser The current User
      * @return Array of DeltaImageInfo Objects
      *
-     * @xmlrpc.doc List available DeltaImages
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $DeltaImageSerializer #array_end()
+     * @apidoc.doc List available DeltaImages
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $DeltaImageSerializer #array_end()
      */
     @ReadOnly
     public List<DeltaImageInfo> listDeltas(User loggedInUser) {
@@ -57,11 +57,11 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @param targetImageId the target Image id
      * @return ImageOverview Object
      *
-     * @xmlrpc.doc Get details of an Image
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sourceImageId")
-     * @xmlrpc.param #param("int", "targetImageId")
-     * @xmlrpc.returntype $DeltaImageSerializer
+     * @apidoc.doc Get details of an Image
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sourceImageId")
+     * @apidoc.param #param("int", "targetImageId")
+     * @apidoc.returntype $DeltaImageSerializer
      */
     @ReadOnly
     public DeltaImageInfo getDetails(User loggedInUser, Integer sourceImageId, Integer targetImageId) {
@@ -82,13 +82,13 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @param pillar pillar data
      * @return 1 on success
      *
-     * @xmlrpc.doc Import an image and schedule an inspect afterwards
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sourceImageId")
-     * @xmlrpc.param #param("int", "targetImageId")
-     * @xmlrpc.param #param("string", "file")
-     * @xmlrpc.param #param("struct", "pillar")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Import an image and schedule an inspect afterwards
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sourceImageId")
+     * @apidoc.param #param("int", "targetImageId")
+     * @apidoc.param #param("string", "file")
+     * @apidoc.param #param("struct", "pillar")
+     * @apidoc.returntype #return_int_success()
      */
     public Long createDeltaImage(User loggedInUser, Integer sourceImageId, Integer targetImageId,
             String file, Map<String, Object> pillar) {

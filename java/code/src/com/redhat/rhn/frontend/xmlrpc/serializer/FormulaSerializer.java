@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
 *
 * FormulaSerializer
 *
-* @xmlrpc.doc
+* @apidoc.doc
 *
 * #struct_begin("formula")
 *     #prop("string", "name")

@@ -51,8 +51,8 @@ import java.util.Map;
 
 /**
  * PackagesHandler
- * @xmlrpc.namespace packages
- * @xmlrpc.doc Methods to retrieve information about the Packages contained
+ * @apidoc.namespace packages
+ * @apidoc.doc Methods to retrieve information about the Packages contained
  * within this server.
  */
 public class PackagesHandler extends BaseHandler {
@@ -68,10 +68,10 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to
      * pid cannot be found.
      *
-     * @xmlrpc.doc Retrieve details for the package with the ID.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "pid")
-     * @xmlrpc.returntype
+     * @apidoc.doc Retrieve details for the package with the ID.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "pid")
+     * @apidoc.returntype
      *   #struct_begin("package")
      *       #prop("int", "id")
      *       #prop("string", "name")
@@ -114,10 +114,10 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to
      * pid cannot be found.
      *
-     * @xmlrpc.doc List the channels that provide the a package.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "pid")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the channels that provide the a package.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "pid")
+     * @apidoc.returntype
      * #return_array_begin()
      *   #struct_begin("channel")
      *     #prop("string", "label")
@@ -145,10 +145,10 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to
      * pid cannot be found.
      *
-     * @xmlrpc.doc List the errata providing the a package.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "pid")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the errata providing the a package.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "pid")
+     * @apidoc.returntype
      * #return_array_begin()
      *   #struct_begin("errata")
      *     #prop("string", "advisory")
@@ -180,10 +180,10 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to
      * pid cannot be found.
      *
-     * @xmlrpc.doc List the files associated with a package.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "pid")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the files associated with a package.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "pid")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     #struct_begin("file info")
      *       #prop("string", "path")
@@ -246,10 +246,10 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to
      * pid cannot be found.
      *
-     * @xmlrpc.doc List the change log for a package.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "pid")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the change log for a package.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "pid")
+     * @apidoc.returntype
      *   string
      */
     @ReadOnly
@@ -268,10 +268,10 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to
      * pid cannot be found.
      *
-     * @xmlrpc.doc List the dependencies for a package.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "pid")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the dependencies for a package.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "pid")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     #struct_begin("dependency")
      *       #prop("string", "dependency")
@@ -349,10 +349,10 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException something bad happens
      * @return 1 on success.
      *
-     * @xmlrpc.doc Remove a package from #product().
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "pid")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove a package from #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "pid")
+     * @apidoc.returntype #return_int_success()
      */
     public int removePackage(User loggedInUser, Integer pid) throws FaultException {
         if (!loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
@@ -384,10 +384,10 @@ public class PackagesHandler extends BaseHandler {
      * @throws FaultException something bad happens
      * @return 1 on success.
      *
-     * @xmlrpc.doc Remove a source package.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "psid", "package source ID")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove a source package.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "psid", "package source ID")
+     * @apidoc.returntype #return_int_success()
      */
     public int removeSourcePackage(User loggedInUser, Integer psid) throws FaultException {
         if (!loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
@@ -419,9 +419,9 @@ public class PackagesHandler extends BaseHandler {
      * @return Returns an array of source packages
      * @throws FaultException A FaultException is thrown
      * when user does not have permissions.
-     * @xmlrpc.doc List all source packages in user's organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List all source packages in user's organization.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      *   #struct_begin("source_package")
      *     #prop("int", "id")
@@ -514,19 +514,19 @@ public class PackagesHandler extends BaseHandler {
      * @param archLabel the arch to search for
      * @return the Package object requested
      *
-     * @xmlrpc.doc Lookup the details for packages with the given name, version,
+     * @apidoc.doc Lookup the details for packages with the given name, version,
      *          release, architecture label, and (optionally) epoch.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param #param("string", "version")
-     * @xmlrpc.param #param("string", "release")
-     * @xmlrpc.param #param_desc("string", "epoch",
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.param #param("string", "version")
+     * @apidoc.param #param("string", "release")
+     * @apidoc.param #param_desc("string", "epoch",
      *          "If set to something other than empty string,
      *          strict matching will be used and the epoch string must be correct.
      *          If set to an empty string, if the epoch is null or there is only one
      *          NVRA combination, it will be returned.  (Empty string is recommended.)")
-     * @xmlrpc.param #param("string", "archLabel")
-     * @xmlrpc.returntype
+     * @apidoc.param #param("string", "archLabel")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     $PackageSerializer
      *   #array_end()
@@ -551,11 +551,11 @@ public class PackagesHandler extends BaseHandler {
      * @param pid the package id
      * @return the url
      *
-     * @xmlrpc.doc Retrieve the url that can be used to download a package.
+     * @apidoc.doc Retrieve the url that can be used to download a package.
      *      This will expire after a certain time period.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "pid")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "pid")
+     * @apidoc.returntype
      *  string - the download url
      *
      */
@@ -575,12 +575,12 @@ public class PackagesHandler extends BaseHandler {
      * @return  a byte array of the package
      * @throws IOException if there is an exception
 
-     * @xmlrpc.doc Retrieve the package file associated with a package.
+     * @apidoc.doc Retrieve the package file associated with a package.
      * (Consider using <a href ="#getPackageUrl">packages.getPackageUrl</a>
      * for larger files.)
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "pid")
-     * @xmlrpc.returntype #array_single("byte", "binary object - package file")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "pid")
+     * @apidoc.returntype #array_single("byte", "binary object - package file")
      */
     @ReadOnly
     public byte[] getPackage(User loggedInUser, Integer pid) throws IOException {

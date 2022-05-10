@@ -47,8 +47,8 @@ import java.util.stream.Collectors;
 
 /**
  * ImageProfileHandler
- * @xmlrpc.namespace image.profile
- * @xmlrpc.doc Provides methods to access and modify image profiles.
+ * @apidoc.namespace image.profile
+ * @apidoc.doc Provides methods to access and modify image profiles.
  */
 public class ImageProfileHandler extends BaseHandler {
 
@@ -57,9 +57,9 @@ public class ImageProfileHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return Array of ImageProfileType strings
      *
-     * @xmlrpc.doc List available image store types
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array_single("string", "the list of image profile types")
+     * @apidoc.doc List available image store types
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #array_single("string", "the list of image profile types")
      */
     @ReadOnly
     public List<String> listImageProfileTypes(User loggedInUser) {
@@ -77,9 +77,9 @@ public class ImageProfileHandler extends BaseHandler {
      * @param loggedInUser The current User
      * @return Array of ImageProfile Objects
      *
-     * @xmlrpc.doc List available image profiles
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $ImageProfileSerializer #array_end()
+     * @apidoc.doc List available image profiles
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $ImageProfileSerializer #array_end()
      */
     @ReadOnly
     public List<ImageProfile> listImageProfiles(User loggedInUser) {
@@ -93,10 +93,10 @@ public class ImageProfileHandler extends BaseHandler {
      * @param label the Image Profile Label
      * @return ImageProfile Object
      *
-     * @xmlrpc.doc Get details of an image profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.returntype $ImageProfileSerializer
+     * @apidoc.doc Get details of an image profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.returntype $ImageProfileSerializer
      */
     @ReadOnly
     public ImageProfile getDetails(User loggedInUser, String label) {
@@ -115,15 +115,15 @@ public class ImageProfileHandler extends BaseHandler {
      * @param kiwiOptions command line options passed to Kiwi
      * @return 1 on success
      *
-     * @xmlrpc.doc Create a new image profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "type")
-     * @xmlrpc.param #param("string", "storeLabel")
-     * @xmlrpc.param #param("string", "path")
-     * @xmlrpc.param #param_desc("string", "activationKey", "optional")
-     * @xmlrpc.param #param("string", "kiwiOptions")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Create a new image profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param #param("string", "type")
+     * @apidoc.param #param("string", "storeLabel")
+     * @apidoc.param #param("string", "path")
+     * @apidoc.param #param_desc("string", "activationKey", "optional")
+     * @apidoc.param #param("string", "kiwiOptions")
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String type, String storeLabel,
             String path, String activationKey, String kiwiOptions) {
@@ -219,14 +219,14 @@ public class ImageProfileHandler extends BaseHandler {
      * @param activationKey the activation key which defines the channels
      * @return 1 on success
      *
-     * @xmlrpc.doc Create a new image profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "type")
-     * @xmlrpc.param #param("string", "storeLabel")
-     * @xmlrpc.param #param("string", "path")
-     * @xmlrpc.param #param_desc("string", "activationKey", "optional")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Create a new image profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param #param("string", "type")
+     * @apidoc.param #param("string", "storeLabel")
+     * @apidoc.param #param("string", "path")
+     * @apidoc.param #param_desc("string", "activationKey", "optional")
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String type, String storeLabel,
             String path, String activationKey) {
@@ -239,10 +239,10 @@ public class ImageProfileHandler extends BaseHandler {
      * @param label the image profile label
      * @return 1 on success
      *
-     * @xmlrpc.doc Delete an image profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Delete an image profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
@@ -257,16 +257,16 @@ public class ImageProfileHandler extends BaseHandler {
      * @param details A map containing the new details
      * @return 1 on success
      *
-     * @xmlrpc.doc Set details of an image profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param
+     * @apidoc.doc Set details of an image profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param
      *   #struct_begin("details")
      *     #prop("string", "storeLabel")
      *     #prop("string", "path")
      *     #prop_desc("string", "activationKey", "set empty string to unset")
      *   #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, String label, Map details) {
         ensureImageAdmin(loggedInUser);
@@ -350,10 +350,10 @@ public class ImageProfileHandler extends BaseHandler {
      * @return Returns a map containing the defined custom data values for the
      * given Image Profile.
      *
-     * @xmlrpc.doc Get the custom data values defined for the image profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.returntype
+     * @apidoc.doc Get the custom data values defined for the image profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.returntype
      *    #struct_begin("the map of custom labels to custom values")
      *      #prop("string", "custom info label")
      *      #prop("string", "value")
@@ -373,15 +373,15 @@ public class ImageProfileHandler extends BaseHandler {
      * @param values A map containing the new set of custom data values for this profile
      * @return Returns a 1 if successful, exception otherwise
      *
-     * @xmlrpc.doc Set custom values for the specified image profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param
+     * @apidoc.doc Set custom values for the specified image profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param
      *    #struct_desc("values", "the map of custom labels to custom values")
      *      #prop("string", "custom info label")
      *      #prop("string", "value")
      *    #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setCustomValues(User loggedInUser, String label,
             Map<String, String> values) {
@@ -429,13 +429,13 @@ public class ImageProfileHandler extends BaseHandler {
      * @param keys A list of custom data labels/keys to delete from the profile
      * @return Returns a 1 if successful, exception otherwise
      *
-     * @xmlrpc.doc Delete the custom values defined for the specified image profile.<br/>
+     * @apidoc.doc Delete the custom values defined for the specified image profile.<br/>
      * (Note: Attempt to delete values of non-existing keys throws exception. Attempt to
      * delete value of existing key which has assigned no values doesn't throw exception.)
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param  #array_single_desc("string", "keys", "the custom data keys")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param  #array_single_desc("string", "keys", "the custom data keys")
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteCustomValues(User loggedInUser, String label, List<String> keys) {
         ImageProfile profile = getValidImageProfile(loggedInUser, label);

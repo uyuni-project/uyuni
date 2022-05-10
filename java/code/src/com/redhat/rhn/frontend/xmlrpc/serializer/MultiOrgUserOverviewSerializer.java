@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * MultiOrgAllUserOverviewSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("user")
  *   #prop("string", "login")
  *   #prop("string", "login_uc")

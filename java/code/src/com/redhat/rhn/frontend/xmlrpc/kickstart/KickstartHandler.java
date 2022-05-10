@@ -45,8 +45,8 @@ import java.util.List;
 
 /**
  * KickstartHandler
- * @xmlrpc.namespace kickstart
- * @xmlrpc.doc Provides methods to create kickstart files
+ * @apidoc.namespace kickstart
+ * @apidoc.doc Provides methods to create kickstart files
  */
 public class KickstartHandler extends BaseHandler {
 
@@ -55,9 +55,9 @@ public class KickstartHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return Array of Channel objects.
      *
-     * @xmlrpc.doc List kickstartable channels for the logged in user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $ChannelSerializer #array_end()
+     * @apidoc.doc List kickstartable channels for the logged in user.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $ChannelSerializer #array_end()
      */
     @ReadOnly
     public List<Channel> listKickstartableChannels(User loggedInUser) {
@@ -72,9 +72,9 @@ public class KickstartHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return Array of Channel objects.
      *
-     * @xmlrpc.doc List autoinstallable channels for the logged in user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $ChannelSerializer #array_end()
+     * @apidoc.doc List autoinstallable channels for the logged in user.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $ChannelSerializer #array_end()
      */
     @ReadOnly
     public List<Channel> listAutoinstallableChannels(User loggedInUser) {
@@ -94,17 +94,17 @@ public class KickstartHandler extends BaseHandler {
      * @param kickstartFileContents Contents of a kickstart file.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
+     * @apidoc.doc Import a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "virtualizationType", "none, para_host,
+     * @apidoc.param #param_desc("string", "virtualizationType", "none, para_host,
      * qemu, xenfv or xenpv.")
-     * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
+     * @apidoc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
-     * @xmlrpc.param #param_desc("string", "kickstartFileContents", "Contents of
+     * @apidoc.param #param_desc("string", "kickstartFileContents", "Contents of
      * the kickstart file to import.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int importFile(User loggedInUser, String profileLabel,
             String virtualizationType, String kickstartableTreeLabel,
@@ -131,22 +131,22 @@ public class KickstartHandler extends BaseHandler {
      * @param kickstartFileContents Contents of a kickstart file.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
+     * @apidoc.doc Import a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "virtualizationType", "none, para_host,
+     * @apidoc.param #param_desc("string", "virtualizationType", "none, para_host,
      * qemu, xenfv or xenpv.")
-     * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
+     * @apidoc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
-     * @xmlrpc.param #param_desc("string", "kickstartHost", "Kickstart hostname
+     * @apidoc.param #param_desc("string", "kickstartHost", "Kickstart hostname
      * (of a #product() server or proxy) used to construct the default download URL for
      * the new kickstart profile. Using this option signifies that this default
      * URL will be used instead of any url/nfs/cdrom/harddrive commands in the
      * kickstart file itself.")
-     * @xmlrpc.param #param_desc("string", "kickstartFileContents", "Contents of
+     * @apidoc.param #param_desc("string", "kickstartFileContents", "Contents of
      * the kickstart file to import.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int importFile(User loggedInUser, String profileLabel,
             String virtualizationType, String kickstartableTreeLabel,
@@ -174,25 +174,25 @@ public class KickstartHandler extends BaseHandler {
      * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
+     * @apidoc.doc Import a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "virtualizationType", "none, para_host,
+     * @apidoc.param #param_desc("string", "virtualizationType", "none, para_host,
      * qemu, xenfv or xenpv.")
-     * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
+     * @apidoc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
-     * @xmlrpc.param #param_desc("string", "kickstartHost", "Kickstart hostname
+     * @apidoc.param #param_desc("string", "kickstartHost", "Kickstart hostname
      * (of a #product() server or proxy) used to construct the default download URL for
      * the new kickstart profile. Using this option signifies that this default
      * URL will be used instead of any url/nfs/cdrom/harddrive commands in the
      * kickstart file itself.")
-     * @xmlrpc.param #param_desc("string", "kickstartFileContents", "Contents of
+     * @apidoc.param #param_desc("string", "kickstartFileContents", "Contents of
      * the kickstart file to import.")
-     * @xmlrpc.param #param_desc("string", "updateType", "Should the profile update
+     * @apidoc.param #param_desc("string", "updateType", "Should the profile update
      * itself to use the newest tree available? Possible values are: none (default)
      * or all (includes custom Kickstart Trees).")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int importFile(User loggedInUser, String profileLabel,
             String virtualizationType, String kickstartableTreeLabel,
@@ -239,22 +239,22 @@ public class KickstartHandler extends BaseHandler {
      * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Create a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel" "Label for the new
+     * @apidoc.doc Create a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel" "Label for the new
      * kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "virtualizationType", "none, para_host,
+     * @apidoc.param #param_desc("string", "virtualizationType", "none, para_host,
      * qemu, xenfv or xenpv.")
-     * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
+     * @apidoc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
-     * @xmlrpc.param #param_desc("string", "kickstartHost", "Kickstart hostname
+     * @apidoc.param #param_desc("string", "kickstartHost", "Kickstart hostname
      * (of a #product() server or proxy) used to construct the default download URL for
      * the new kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "rootPassword", "Root password.")
-     * @xmlrpc.param #param_desc("string", "updateType", "Should the profile update
+     * @apidoc.param #param_desc("string", "rootPassword", "Root password.")
+     * @apidoc.param #param_desc("string", "updateType", "Should the profile update
      * itself to use the newest tree available? Possible values are: none (default)
      * or all (includes custom Kickstart Trees).")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int createProfile(User loggedInUser, String profileLabel,
             String virtualizationType, String kickstartableTreeLabel,
@@ -300,19 +300,19 @@ public class KickstartHandler extends BaseHandler {
      * @param rootPassword Root password.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Create a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel" "Label for the new
+     * @apidoc.doc Create a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel" "Label for the new
      * kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "virtualizationType", "none, para_host,
+     * @apidoc.param #param_desc("string", "virtualizationType", "none, para_host,
      * qemu, xenfv or xenpv.")
-     * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
+     * @apidoc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
-     * @xmlrpc.param #param_desc("string", "kickstartHost", "Kickstart hostname
+     * @apidoc.param #param_desc("string", "kickstartHost", "Kickstart hostname
      * (of a #product() server or proxy) used to construct the default download URL for
      * the new kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "rootPassword", "Root password.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param_desc("string", "rootPassword", "Root password.")
+     * @apidoc.returntype #return_int_success()
      */
     public int createProfile(User loggedInUser, String profileLabel,
             String virtualizationType, String kickstartableTreeLabel,
@@ -334,18 +334,18 @@ public class KickstartHandler extends BaseHandler {
      * @param rootPassword Root password.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Create a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
+     * @apidoc.doc Create a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "virtualizationType", "none, para_host,
+     * @apidoc.param #param_desc("string", "virtualizationType", "none, para_host,
      * qemu, xenfv or xenpv.")
-     * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
+     * @apidoc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
-     * @xmlrpc.param #param_desc("boolean", "downloadUrl", "Download URL, or
+     * @apidoc.param #param_desc("boolean", "downloadUrl", "Download URL, or
      * 'default' to use the kickstart tree's default URL.")
-     * @xmlrpc.param #param_desc("string", "rootPassword", "Root password.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param_desc("string", "rootPassword", "Root password.")
+     * @apidoc.returntype #return_int_success()
      */
     public int createProfileWithCustomUrl(User loggedInUser,
             String profileLabel, String virtualizationType,
@@ -370,21 +370,21 @@ public class KickstartHandler extends BaseHandler {
      * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Create a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
+     * @apidoc.doc Create a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "virtualizationType", "none, para_host,
+     * @apidoc.param #param_desc("string", "virtualizationType", "none, para_host,
      * qemu, xenfv or xenpv.")
-     * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
+     * @apidoc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
-     * @xmlrpc.param #param_desc("boolean", "downloadUrl", "Download URL, or
+     * @apidoc.param #param_desc("boolean", "downloadUrl", "Download URL, or
      * 'default' to use the kickstart tree's default URL.")
-     * @xmlrpc.param #param_desc("string", "rootPassword", "Root password.")
-     * @xmlrpc.param #param_desc("string", "updateType", "Should the profile update
+     * @apidoc.param #param_desc("string", "rootPassword", "Root password.")
+     * @apidoc.param #param_desc("string", "updateType", "Should the profile update
      * itself to use the newest tree available? Possible values are: none (default)
      * or all (includes custom Kickstart Trees).")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int createProfileWithCustomUrl(User loggedInUser,
             String profileLabel, String virtualizationType,
@@ -430,10 +430,10 @@ public class KickstartHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return list of KickstartDto objects
      *
-     * @xmlrpc.doc Provides a list of kickstart profiles visible to the user's
+     * @apidoc.doc Provides a list of kickstart profiles visible to the user's
      * org
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $KickstartDtoSerializer #array_end()
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $KickstartDtoSerializer #array_end()
      */
     @ReadOnly
     public List listKickstarts(User loggedInUser) {
@@ -446,10 +446,10 @@ public class KickstartHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return List of KickstartIpRange objects
      *
-     * @xmlrpc.doc List all Ip Ranges and their associated kickstarts available
+     * @apidoc.doc List all Ip Ranges and their associated kickstarts available
      * in the user's org.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $KickstartIpRangeSerializer #array_end()
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $KickstartIpRangeSerializer #array_end()
      *
      */
     @ReadOnly
@@ -467,11 +467,11 @@ public class KickstartHandler extends BaseHandler {
      * @param ipAddress the ipaddress to search on
      * @return label of the associated kickstart
      *
-     * @xmlrpc.doc Find an associated kickstart for a given ip address.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ipAddress", "The ip address to
+     * @apidoc.doc Find an associated kickstart for a given ip address.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ipAddress", "The ip address to
      * search for (i.e. 192.168.0.1)")
-     * @xmlrpc.returntype #param_desc("string", "label", "label of the kickstart. Empty string if not found")
+     * @apidoc.returntype #param_desc("string", "label", "label of the kickstart. Empty string if not found")
      */
     @ReadOnly
     public String findKickstartForIp(User loggedInUser, String ipAddress) {
@@ -493,11 +493,11 @@ public class KickstartHandler extends BaseHandler {
      * @param ksLabel the kickstart to remove an ip range from
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Delete a kickstart profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The label of
+     * @apidoc.doc Delete a kickstart profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "The label of
      * the kickstart profile you want to remove")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteProfile(User loggedInUser, String ksLabel) {
         if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
@@ -519,12 +519,12 @@ public class KickstartHandler extends BaseHandler {
      * @param disabled True to disable the profile
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Enable/Disable a Kickstart Profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel" "Label for the
+     * @apidoc.doc Enable/Disable a Kickstart Profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel" "Label for the
      * kickstart tree you want to en/disable")
-     * @xmlrpc.param #param_desc("string", "disabled" "true to disable the profile")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param_desc("string", "disabled" "true to disable the profile")
+     * @apidoc.returntype #return_int_success()
      */
     public int disableProfile(User loggedInUser, String profileLabel, Boolean disabled) {
 
@@ -549,10 +549,10 @@ public class KickstartHandler extends BaseHandler {
      * @param profileLabel kickstart profile label
      * @return true if profile is disabled
      *
-     * @xmlrpc.doc Returns whether a kickstart profile is disabled
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel" "kickstart profile label")
-     * @xmlrpc.returntype #param_desc("boolean", "disabled", "true if profile is disabled")
+     * @apidoc.doc Returns whether a kickstart profile is disabled
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel" "kickstart profile label")
+     * @apidoc.returntype #param_desc("boolean", "disabled", "true if profile is disabled")
      */
     @ReadOnly
     public boolean isProfileDisabled(User loggedInUser, String profileLabel) {
@@ -570,12 +570,12 @@ public class KickstartHandler extends BaseHandler {
      * @param newLabel to assign to profile
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Rename a kickstart profile in #product().
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "originalLabel" "Label for the
+     * @apidoc.doc Rename a kickstart profile in #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "originalLabel" "Label for the
      * kickstart profile you want to rename")
-     * @xmlrpc.param #param_desc("string", "newLabel" "new label to change to")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param_desc("string", "newLabel" "new label to change to")
+     * @apidoc.returntype #return_int_success()
      */
     public int renameProfile(User loggedInUser, String originalLabel, String newLabel) {
 
@@ -604,12 +604,12 @@ public class KickstartHandler extends BaseHandler {
      * @param newKsLabel label of the cloned profile
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Clone a Kickstart Profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabelToClone" "Label of the
+     * @apidoc.doc Clone a Kickstart Profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabelToClone" "Label of the
      * kickstart profile to clone")
-     * @xmlrpc.param #param_desc("string", "newKsLabel" "label of the cloned profile")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param_desc("string", "newKsLabel" "label of the cloned profile")
+     * @apidoc.returntype #return_int_success()
      */
     public int cloneProfile(User loggedInUser, String ksLabelToClone, String newKsLabel) {
 
@@ -641,17 +641,17 @@ public class KickstartHandler extends BaseHandler {
      * @param kickstartFileContents Contents of a kickstart file.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a raw kickstart file into #product().
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
+     * @apidoc.doc Import a raw kickstart file into #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "virtualizationType", "none, para_host,
+     * @apidoc.param #param_desc("string", "virtualizationType", "none, para_host,
      * qemu, xenfv or xenpv.")
-     * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
+     * @apidoc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
-     * @xmlrpc.param #param_desc("string", "kickstartFileContents", "Contents of
+     * @apidoc.param #param_desc("string", "kickstartFileContents", "Contents of
      * the kickstart file to import.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int importRawFile(User loggedInUser, String profileLabel,
             String virtualizationType, String kickstartableTreeLabel,
@@ -675,20 +675,20 @@ public class KickstartHandler extends BaseHandler {
      * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a raw kickstart file into #product().
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
+     * @apidoc.doc Import a raw kickstart file into #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
-     * @xmlrpc.param #param_desc("string", "virtualizationType", "none, para_host,
+     * @apidoc.param #param_desc("string", "virtualizationType", "none, para_host,
      * qemu, xenfv or xenpv.")
-     * @xmlrpc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
+     * @apidoc.param #param_desc("string", "kickstartableTreeLabel", "Label of a
      * kickstartable tree to associate the new profile with.")
-     * @xmlrpc.param #param_desc("string", "kickstartFileContents", "Contents of
+     * @apidoc.param #param_desc("string", "kickstartFileContents", "Contents of
      * the kickstart file to import.")
-     * @xmlrpc.param #param_desc("string", "updateType", "Should the profile update
+     * @apidoc.param #param_desc("string", "updateType", "Should the profile update
      * itself to use the newest tree available? Possible values are: none (default)
      * or all (includes custom Kickstart Trees).")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int importRawFile(User loggedInUser, String profileLabel,
             String virtualizationType, String kickstartableTreeLabel,

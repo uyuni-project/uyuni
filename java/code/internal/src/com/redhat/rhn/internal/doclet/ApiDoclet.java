@@ -56,11 +56,11 @@ import jdk.javadoc.doclet.Reporter;
  */
 public abstract class ApiDoclet implements Doclet {
 
-    private static final String XMLRPC_DOC = "xmlrpc.doc";
-    private static final String XMLRPC_PARAM = "xmlrpc.param";
-    private static final String XMLRPC_RETURN = "xmlrpc.returntype";
-    private static final String XMLRPC_NAMESPACE = "xmlrpc.namespace";
-    private static final String XMLRPC_IGNORE = "xmlrpc.ignore";
+    private static final String APIDOC_DOC = "apidoc.doc";
+    private static final String APIDOC_PARAM = "apidoc.param";
+    private static final String APIDOC_RETURN = "apidoc.returntype";
+    private static final String APIDOC_NAMESPACE = "apidoc.namespace";
+    private static final String APIDOC_IGNORE = "apidoc.ignore";
 
     public static final String API_MACROS_FILE = "macros.txt";
     public static final String API_HANDLER_FILE = "handler.txt";
@@ -192,9 +192,9 @@ public abstract class ApiDoclet implements Doclet {
             }
             if (handler.getName() == null) {
                 String error =
-                        "Someone didn't set " + XMLRPC_NAMESPACE + " correctly." +
+                        "Someone didn't set " + APIDOC_NAMESPACE + " correctly." +
                         "  If you really did not want this handler to appear in " +
-                        "the API docs.  Add @xmlrpc.ignore to the class javadoc.";
+                        "the API docs.  Add @apidoc.ignore to the class javadoc.";
                 reporter.print(Diagnostic.Kind.ERROR, clas, error);
                 return false;
             }
@@ -258,7 +258,7 @@ public abstract class ApiDoclet implements Doclet {
             String doc = new DocTreeScanner<String, Void>() {
                 @Override
                 public String visitUnknownBlockTag(UnknownBlockTagTree node, Void ignore) {
-                    if (node.getTagName().equals(XMLRPC_DOC)) {
+                    if (node.getTagName().equals(APIDOC_DOC)) {
                         String text = new TextExtractor().scan(node.getContent(), null);
                         log("Serial Doc content: " + text);
                         return text;
@@ -324,17 +324,17 @@ public abstract class ApiDoclet implements Doclet {
         @Override
         public Void visitUnknownBlockTag(UnknownBlockTagTree node, Handler handler) {
             log("Visiting unknown tag: " + node.getTagName());
-            if (node.getTagName().equals(XMLRPC_IGNORE)) {
+            if (node.getTagName().equals(APIDOC_IGNORE)) {
                 handler.setIgnored();
                 return null;
             }
 
             String text = new TextExtractor().scan(node.getContent(), null);
-            if (node.getTagName().equals(XMLRPC_NAMESPACE)) {
+            if (node.getTagName().equals(APIDOC_NAMESPACE)) {
                 log("Handler Namespace content: " + text);
                 handler.setName(text);
             }
-            else if (node.getTagName().equals(XMLRPC_DOC)) {
+            else if (node.getTagName().equals(APIDOC_DOC)) {
                 log("Handler Doc content: " + text);
                 handler.setDesc(text);
             }
@@ -369,7 +369,7 @@ public abstract class ApiDoclet implements Doclet {
         @Override
         public Void visitUnknownBlockTag(UnknownBlockTagTree node, ApiCall call) {
             log("Visiting unknown tag: " + node.getTagName());
-            if (node.getTagName().equals(XMLRPC_IGNORE)) {
+            if (node.getTagName().equals(APIDOC_IGNORE)) {
                 call.setIgnored();
                 return null;
             }
@@ -381,15 +381,15 @@ public abstract class ApiDoclet implements Doclet {
             }
 
             switch (node.getTagName()) {
-                case XMLRPC_DOC:
+                case APIDOC_DOC:
                     log("Call Doc content: " + text);
                     call.setDoc(text);
                     break;
-                case XMLRPC_PARAM:
+                case APIDOC_PARAM:
                     log("Call Param content: " + text);
                     call.addParam(text);
                     break;
-                case XMLRPC_RETURN:
+                case APIDOC_RETURN:
                     log("Call Return content: " + rawText);
                     call.setReturnDoc(rawText);
                     break;

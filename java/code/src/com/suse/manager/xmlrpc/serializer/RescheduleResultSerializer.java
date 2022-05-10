@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 /**
  * Serializer for {@link com.suse.manager.maintenance.rescheduling.RescheduleResult}
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("reschedule information")
  *   #prop_desc("string", "strategy", "selected strategy")
  *   #prop("string", "for_schedule_name", "for actions belong to this schedule")

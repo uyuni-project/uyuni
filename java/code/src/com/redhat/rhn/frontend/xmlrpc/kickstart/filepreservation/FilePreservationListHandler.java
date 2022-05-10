@@ -29,8 +29,8 @@ import com.suse.manager.api.ReadOnly;
 import java.util.List;
 
 /**
- * @xmlrpc.namespace kickstart.filepreservation
- * @xmlrpc.doc Provides methods to retrieve and manipulate kickstart file
+ * @apidoc.namespace kickstart.filepreservation
+ * @apidoc.doc Provides methods to retrieve and manipulate kickstart file
  * preservation lists.
  *
  */
@@ -45,10 +45,10 @@ public class FilePreservationListHandler extends BaseHandler {
      *   - The sessionKey is invalid
      * @return a list of maps containing the file preservation lists
      *
-     * @xmlrpc.doc List all file preservation lists for the organization
+     * @apidoc.doc List all file preservation lists for the organization
      * associated with the user logged into the given session
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *      #return_array_begin()
      *        $FilePreservationDtoSerializer
      *      #array_end()
@@ -74,11 +74,11 @@ public class FilePreservationListHandler extends BaseHandler {
      *   - The sessionKey is invalid
      *   - The name already exists
      *
-     * @xmlrpc.doc Create a new file preservation list.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "name of the file list to create")
-     * @xmlrpc.param #array_single_desc("string", "files", "file names to include")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Create a new file preservation list.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "name of the file list to create")
+     * @apidoc.param #array_single_desc("string", "files", "file names to include")
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String name, List<String> files)
         throws FaultException {
@@ -108,10 +108,10 @@ public class FilePreservationListHandler extends BaseHandler {
      *   - The sessionKey is invalid
      *   - The name already exists
      *
-     * @xmlrpc.doc Delete a file preservation list.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "name of the file list to delete")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Delete a file preservation list.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "name of the file list to delete")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String name)
         throws FaultException {
@@ -132,10 +132,10 @@ public class FilePreservationListHandler extends BaseHandler {
      *   - The sessionKey is invalid
      * @return holder object containing the data associated with the list
      *
-     * @xmlrpc.doc Returns all the data associated with the given file preservation list.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "name of the file list to retrieve details for")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns all the data associated with the given file preservation list.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "name of the file list to retrieve details for")
+     * @apidoc.returntype
      *     $FileListSerializer
      */
     @ReadOnly

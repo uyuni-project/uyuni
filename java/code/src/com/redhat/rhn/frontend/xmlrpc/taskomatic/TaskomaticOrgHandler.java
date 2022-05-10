@@ -22,9 +22,9 @@ import java.util.List;
 
 /**
  * TaskomaticOrgHandler
- * @xmlrpc.namespace taskomatic.org
- * @xmlrpc.ignore
- * @xmlrpc.doc provides methods to access orgaznizational taskomatic tasks
+ * @apidoc.namespace taskomatic.org
+ * @apidoc.ignore
+ * @apidoc.doc provides methods to access orgaznizational taskomatic tasks
  */
 public class TaskomaticOrgHandler extends TaskomaticHandler {
     protected void checkUserRole(User user) {

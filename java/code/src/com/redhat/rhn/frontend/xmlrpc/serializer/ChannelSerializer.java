@@ -31,7 +31,7 @@ import java.util.List;
  *
  * ChannelSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("channel")
  *      #prop("int", "id")
  *      #prop("string", "name")

@@ -34,9 +34,9 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  * TaskoHandler - translates all the taskomatic API calls to the internal
  * taskomatic xmlrpc handler
- * @xmlrpc.namespace taskomatic
- * @xmlrpc.ignore
- * @xmlrpc.doc provides methods to access taskomatic
+ * @apidoc.namespace taskomatic
+ * @apidoc.ignore
+ * @apidoc.doc provides methods to access taskomatic
  */
 public class TaskomaticHandler extends BaseHandler {
 

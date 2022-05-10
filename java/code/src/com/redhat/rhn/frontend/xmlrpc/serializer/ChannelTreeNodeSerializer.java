@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * ChannelTreeNodeSerializer: Converts a ChannelTreeNode object for
  * representation as an XMLRPC struct.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("channel info")
  *     #prop("int", "id")
  *     #prop("string", "label")

@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ProjectSource} class and subclasses
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("content project source information")
  *   #prop("string", "contentProjectLabel")
  *   #prop("string", "type")

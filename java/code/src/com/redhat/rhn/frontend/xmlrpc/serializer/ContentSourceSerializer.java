@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * ContentSourceSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("channel")
  *      #prop("int", "id")
  *      #prop("string", "label")
