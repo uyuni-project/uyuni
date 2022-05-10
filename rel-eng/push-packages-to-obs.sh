@@ -269,14 +269,9 @@ while read PKG_NAME; do
       fi
       # to lowercase with ",," and replace spaces " " with "-"
       PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
+      # replace the first "-" with "~" for version comparison
+      PRODUCT_VERSION=$(echo ${PRODUCT_VERSION} | sed -r 's/-/~/')
       sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
-
-      # if obs vs local version is different, add changelog about the bumping version
-      OSC_PKG_VERSION=$(${OSC} cat ${OBS_PROJ}/${PKG_NAME}/Dockerfile | grep '^LABEL org.opencontainers.image.version=')
-      OSC_PKG_VERSION=$(echo ${OSC_PKG_VERSION} | sed -n 's/.*=\"\(.*\)\"/\1/p')
-      if [ "${OSC_PKG_VERSION}" != "${PRODUCT_VERSION}" ]; then
-        ${OSC} vc ${SRPM_PKG_DIR} -m "Bump version to ${PRODUCT_VERSION}"
-      fi
   fi
 
   # update from obs (create missing package on the fly)
