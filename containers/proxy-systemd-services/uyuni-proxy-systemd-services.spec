@@ -49,8 +49,8 @@ install -d -m 755 %{buildroot}/%{_localstatedir}/lib/uyuni/proxy-rhn-cache
 install -d -m 755 %{buildroot}/%{_localstatedir}/lib/uyuni/proxy-tftpboot
 install -d -m 755 %{buildroot}%{_sbindir}
 
-%if "%{?container_images_path}" != ""
-sed 's|^NAMESPACE=.*$|NAMESPACE=%{container_images_path}|' -i uyuni-proxy-services.config
+%if "%{?susemanager_container_images_path}" != ""
+sed 's|^NAMESPACE=.*$|NAMESPACE=%{susemanager_container_images_path}|' -i uyuni-proxy-services.config
 %endif
 
 %if !0%{?is_opensuse}
