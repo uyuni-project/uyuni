@@ -56,8 +56,9 @@
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/allcli_action_chain.feature
-- features/secondary/buildhost_docker_build_image.feature
-- features/secondary/buildhost_docker_auth_registry.feature
+# temporarily disabled
+# - features/secondary/buildhost_docker_build_image.feature
+# - features/secondary/buildhost_docker_auth_registry.feature
 - features/secondary/min_docker_api.feature
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
