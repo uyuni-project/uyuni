@@ -73,7 +73,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return list of action chains.
      *
      * @apidoc.doc List currently available action chains.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype #return_array_begin()
      *                      #struct_begin("chain")
      *                        #prop_desc("string", "label", "Label of an Action Chain")
@@ -103,7 +103,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return List of entries in the particular action chain, if any.
      *
      * @apidoc.doc List all actions in the particular Action Chain.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @apidoc.returntype #return_array_begin()
      *                      #struct_begin("entry")
@@ -153,7 +153,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @apidoc.doc Remove an action from an Action Chain.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @apidoc.param #param_desc("int", "actionId", "Action ID")
      * @apidoc.returntype #return_int_success()
@@ -181,7 +181,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @apidoc.doc Delete action chain by label.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @apidoc.returntype #return_int_success()
      */
@@ -200,7 +200,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return id of the created action chain
      *
      * @apidoc.doc Create an Action Chain.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @apidoc.returntype #param_desc("int", "actionId", "The ID of the created action chain")
      */
@@ -228,8 +228,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return list of action ids, exception thrown otherwise
      *
      * @apidoc.doc Add system reboot to an Action Chain.
-     * @apidoc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "System ID")
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -261,8 +260,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return action id if successful, exception otherwise
      *
      * @apidoc.doc Adds Errata update to an Action Chain.
-     * @apidoc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "System ID")
      * @apidoc.param #array_single_desc("int", "errataIds", "Errata ID")
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
@@ -306,7 +304,7 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @apidoc.doc Adds an action to remove installed packages on the system to an Action
      * Chain.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "System ID")
      * @apidoc.param #array_single("int", "packageIds")
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
@@ -344,7 +342,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return True or false in XML-RPC representation: 1 or 0 respectively.
      *
      * @apidoc.doc Adds package installation action to an Action Chain.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "System ID")
      * @apidoc.param #array_single("int", "packageIds")
      * @apidoc.param #param("string", "chainLabel")
@@ -383,7 +381,7 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @apidoc.doc Adds an action to verify installed packages on the system to an Action
      * Chain.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "System ID")
      * @apidoc.param #array_single("int", "packageIds")
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
@@ -423,7 +421,7 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @apidoc.doc Adds an action to upgrade installed packages on the system to an Action
      * Chain.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "System ID")
      * @apidoc.param #array_single("int", "packageIds")
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
@@ -467,8 +465,7 @@ public class ActionChainHandler extends BaseHandler {
      * @apidoc.doc Add an action with label to run a script to an Action Chain.
      * NOTE: The script body must be Base64 encoded!
      *
-     * @apidoc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "System ID")
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @apidoc.param #param_desc("string", "scriptLabel", "Label of the script")
@@ -514,8 +511,7 @@ public class ActionChainHandler extends BaseHandler {
      * @apidoc.doc Add an action to run a script to an Action Chain.
      * NOTE: The script body must be Base64 encoded!
      *
-     * @apidoc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "sid", "System ID")
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @apidoc.param #param_desc("string", "uid", "User ID on the particular system")
@@ -540,8 +536,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @apidoc.doc Schedule the Action Chain so that its actions will actually occur.
-     * @apidoc.param #param_desc("string", "sessionKey",
-     * "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @apidoc.param #param_desc("$date", "date", "Earliest date")
      * @apidoc.returntype #return_int_success()
@@ -568,7 +563,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @apidoc.doc Adds an action to deploy a configuration file to an Action Chain.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @apidoc.param #param_desc("int", "sid", "System ID")
      * @apidoc.param #array_begin("revisionSpecifiers")
@@ -626,7 +621,7 @@ public class ActionChainHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @apidoc.doc Rename an Action Chain.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "previousLabel", "Previous chain label")
      * @apidoc.param #param_desc("string", "newLabel", "New chain label")
      * @apidoc.returntype #return_int_success()

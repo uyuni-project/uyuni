@@ -53,7 +53,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @apidoc.doc List all accessible products.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype #return_array_begin()
      *                       $MgrSyncProductDtoSerializer
      *                    #array_end()
@@ -74,7 +74,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @apidoc.doc List all accessible channels.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype #return_array_begin()
      *                       $MgrSyncChannelDtoSerializer
      *                    #array_end()
@@ -98,7 +98,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @apidoc.doc (Deprecated) Synchronize channels between the Customer Center
      *             and the #product() database.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @apidoc.returntype #return_int_success()
      */
@@ -118,7 +118,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @apidoc.doc Synchronize channel families between the Customer Center
      *             and the #product() database.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype #return_int_success()
      */
     public Integer synchronizeChannelFamilies(User loggedInUser)
@@ -141,7 +141,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @apidoc.doc Synchronize SUSE products between the Customer Center
      *             and the #product() database.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype #return_int_success()
      */
     public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
@@ -164,7 +164,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @apidoc.doc Synchronize subscriptions between the Customer Center
      *             and the #product() database.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype #return_int_success()
      */
     public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
@@ -188,7 +188,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @apidoc.doc Synchronize repositories between the Customer Center
      *             and the #product() database.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "mirrorUrl", "Optional mirror url or null")
      * @apidoc.returntype #return_int_success()
      */
@@ -211,7 +211,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @apidoc.doc Add a new channel to the #product() database
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "channelLabel", "Label of the channel to add")
      * @apidoc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @apidoc.returntype #return_int_success()
@@ -237,7 +237,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @apidoc.doc Add a new channel to the #product() database
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "channelLabel", "Label of the channel to add")
      * @apidoc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @apidoc.returntype #array_single("string", "enabled channel labels")
@@ -279,7 +279,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @apidoc.doc Add organization credentials (mirror credentials) to #product().
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "username", "Organization credentials
      *                                                  (Mirror credentials) username")
      * @apidoc.param #param_desc("string", "password", "Organization credentials
@@ -308,7 +308,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @apidoc.doc Delete organization credentials (mirror credentials) from #product().
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "username", "Username of credentials to delete")
      * @apidoc.returntype #return_int_success()
      */
@@ -333,7 +333,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @apidoc.doc List organization credentials (mirror credentials) available in
      *             #product().
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype #return_array_begin()
      *                       $MirrorCredentialsDtoSerializer
      *                    #array_end()
