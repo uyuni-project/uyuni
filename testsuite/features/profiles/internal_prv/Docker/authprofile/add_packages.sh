@@ -15,7 +15,7 @@ zypper --non-interactive in python3 python3-xml
 
 # re-enable normal repo and remove helper repo
 zypper mr --enable Test-Channel-x86_64 || :
-zypper rr sles12sp4
+zypper rr sles15sp4
 
 # do the real test
 zypper --non-interactive --gpg-auto-import-keys ref
