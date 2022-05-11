@@ -1,3 +1,5 @@
+- Revert proxy listChannels token caching pr#4548
+
 -------------------------------------------------------------------
 Wed Jul 06 15:56:39 CEST 2022 - jmassaguerpla@suse.de
 
