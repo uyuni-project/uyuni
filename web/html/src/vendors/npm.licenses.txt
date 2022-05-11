@@ -1601,7 +1601,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
-moment v2.29.1 - Iskren Ivov Chernev <iskren.chernev@gmail.com> (https://github.com/ichernev)
+moment v2.29.2 - Iskren Ivov Chernev <iskren.chernev@gmail.com> (https://github.com/ichernev)
 https://github.com/moment/moment.git
 --------------------------------------------------------------------------------
 
