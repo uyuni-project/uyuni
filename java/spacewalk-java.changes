@@ -1,3 +1,4 @@
+- fix NoSuchElementException when pkg install date is missing
 - Fix error message in Kubernetes VHM creation dialog
 - Add createAppStreamFilters() XMLRPC function
 - Correct concurrency error on payg taskomatic task
