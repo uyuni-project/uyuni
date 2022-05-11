@@ -419,13 +419,12 @@ class BrokerHandler(SharedHandler):
 
         log_debug(2, "Action is %s" % headers['X-RHN-Action'])
         # Now, is it a login? If so, cache the session token.
-        if headers['X-RHN-Action'] == 'login':
-            # A login. Cache the session token
-            self.__cacheClientSessionToken(headers)
-        elif headers['X-RHN-Action'] == 'listChannels':
-            # Store the new channels in the session token
-            self.__update_token_channels(headers)
+        if headers['X-RHN-Action'] != 'login':
+            # Don't care
+            return
 
+        # A login. Cache the session token
+        self.__cacheClientSessionToken(headers)
 
     def __local_GET_handler(self, req):
         """ GETs: authenticate user, and service local GETs.
@@ -543,11 +542,14 @@ class BrokerHandler(SharedHandler):
         l = len(prefix)
         tokenKeys = [x for x in list(headers.keys()) if x[:l].lower() == prefix]
         for k in tokenKeys:
-            if k.lower() != 'x-rhn-auth-channels':
+            if k.lower() == 'x-rhn-auth-channels':
+                # Multivalued header
+                #values = headers.getHeaderValues(k)
+                values = self._get_header(k)
+                token[k] = [x.split(':') for x in values]
+            else:
                 # Single-valued header
                 token[k] = headers[k]
-
-        token = self.__update_token_channels(headers, token)
 
         # Dump the proxy's clock skew in the dict
         serverTime = float(token['X-RHN-Auth-Server-Time'])
@@ -556,28 +558,6 @@ class BrokerHandler(SharedHandler):
         # Save the token
         self.proxyAuth.set_client_token(self.clientServerId, token)
         return token
-
-
-    def __update_token_channels(self, headers, token=None):
-        if not self.clientServerId:
-            # Get the server ID
-            if 'X-RHN-Server-ID' not in headers:
-                log_debug(3, "Client server ID not found in headers")
-                # XXX: no client server ID in headers, should we care?
-                #raise rhnFault(1000, _("Client Server ID not found in headers!"))
-                return None
-            self.clientServerId = headers['X-RHN-Server-ID']
-
-        if 'X-RHN-Auth-Channels' in headers:
-            if not token:
-                token = self.proxyAuth.get_client_token(self.clientServerId)
-            # Multivalued header
-            token['X-RHN-Auth-Channels'] = [x.split(':') for x in self._get_header('X-RHN-Auth-Channels')]
-
-        # Save the token
-        self.proxyAuth.set_client_token(self.clientServerId, token)
-        return token
-
 
     def __callLocalRepository(self, req_type, identifier, funct, params):
         """ Contacts the local repository and retrieves files"""

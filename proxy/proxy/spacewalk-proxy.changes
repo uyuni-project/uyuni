@@ -1,3 +1,4 @@
+- Revert proxy listChannels token caching pr#4548
 - Move certificates dependencies from broker to proxy package
 
 -------------------------------------------------------------------

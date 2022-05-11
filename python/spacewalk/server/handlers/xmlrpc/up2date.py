@@ -130,22 +130,6 @@ class Up2date(rhnHandler):
         # log the entry
         log_debug(1, self.server_id)
         channelList = rhnChannel.channels_for_server(self.server_id)
-
-        loginDict = {
-            'X-RHN-Server-Id': self.server_id,
-            'X-RHN-Auth-Channels': rhnChannel.getSubscribedChannels(self.server_id),
-        }
-
-        # Duplicate these values in the headers so that the proxy can
-        # intercept and cache them without parseing the xmlrpc.
-        transport = rhnFlags.get('outputTransportOptions')
-        for k, v in list(loginDict.items()):
-            # Special case for channels
-            if k.lower() == 'x-rhn-auth-channels'.lower():
-                # Concatenate the channel information column-separated
-                transport[k] = [':'.join(x) for x in v]
-            else:
-                transport[k] = v
         return channelList
 
     def subscribeChannels(self, system_id, channelNames, username, passwd):
