@@ -47,7 +47,7 @@ public class PackagesProviderHandler extends BaseHandler {
      * User executing the request must be a #product() administrator.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *  #array_begin()
+     *  #return_array_begin()
      *      $PackageProviderSerializer
      *  #array_end()
      */
@@ -69,7 +69,7 @@ public class PackagesProviderHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "providerName", "The provider name")
      * @xmlrpc.returntype
-     *  #array_begin()
+     *  #return_array_begin()
      *      $PackageKeySerializer
      *  #array_end()
      */
@@ -89,7 +89,7 @@ public class PackagesProviderHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param providerName the provider name
      * @param key the key string
-     * @param typeStr the type string (currently only 'gpg' is supported)
+     * @param type the type string (currently only 'gpg' is supported)
      * @return 1 on success
      *
      * @xmlrpc.doc Associate a package security key and with the package provider.
@@ -104,7 +104,7 @@ public class PackagesProviderHandler extends BaseHandler {
      *      #return_int_success()
      */
     public int associateKey(User loggedInUser, String providerName, String key,
-            String typeStr) {
+            String type) {
         isSatelliteAdmin(loggedInUser);
         PackageProvider prov = PackageFactory.lookupPackageProvider(providerName);
         if (prov == null) {
@@ -113,9 +113,9 @@ public class PackagesProviderHandler extends BaseHandler {
         }
 
         //package key type might be invalid
-        PackageKeyType type = PackageFactory.lookupKeyTypeByLabel(typeStr);
-        if (type == null) {
-            throw new InvalidPackageKeyTypeException(typeStr);
+        PackageKeyType keyType = PackageFactory.lookupKeyTypeByLabel(type);
+        if (keyType == null) {
+            throw new InvalidPackageKeyTypeException(type);
         }
 
 
@@ -123,7 +123,7 @@ public class PackagesProviderHandler extends BaseHandler {
         if (pKey == null) {
             pKey = new PackageKey();
             pKey.setKey(StringEscapeUtils.escapeHtml4(key));
-            pKey.setType(type);
+            pKey.setType(keyType);
         }
 
         pKey.setProvider(prov);

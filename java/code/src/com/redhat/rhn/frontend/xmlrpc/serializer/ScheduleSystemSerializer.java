@@ -29,10 +29,10 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  * #struct_begin("system")
  *   #prop("int", "server_id")
- *   #prop_desc("string", "server_name", "Server name.")
- *   #prop_desc("string", "base_channel", "Base channel used by the server.")
- *   #prop_desc($date, "timestamp", "The time the action was completed")
- *   #prop_desc("string", "message", "Optional message containing details
+ *   #prop_desc("string", "server_name", "server name")
+ *   #prop_desc("string", "base_channel", "base channel used by the server")
+ *   #prop_desc($date, "timestamp", "the time the action was completed")
+ *   #prop_desc("string", "message", "optional message containing details
  *   on the execution of the action.  For example, if the action failed,
  *   this will contain the failure text.")
  * #struct_end()

@@ -53,7 +53,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.doc List all organanizations trusted by the user's organization.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         $TrustedOrgDtoSerializer
      *     #array_end()
      */
@@ -68,16 +68,16 @@ public class OrgTrustHandler extends BaseHandler {
      * Lists all software channels that organization given is providing to the user's
      * organization.
      * @param loggedInUser The current user
-     * @param trustOrgId organization id of the trusted org
+     * @param orgId organization id of the trusted org
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
      * @xmlrpc.doc Lists all software channels that the organization given is providing to
      * the user's organization.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "trustOrgId", "Id of the trusted organization")
+     * @xmlrpc.param #param_desc("int", "orgId", "Id of the trusted organization")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         #struct_begin("channel info")
      *             #prop("int", "channel_id")
      *             #prop("string", "channel_name")
@@ -86,19 +86,19 @@ public class OrgTrustHandler extends BaseHandler {
      *         #struct_end()
      *     #array_end()
      */
-    public Object[] listChannelsProvided(User loggedInUser, Integer trustOrgId) {
+    public Object[] listChannelsProvided(User loggedInUser, Integer orgId) {
 
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
-        Org trustOrg = OrgFactory.lookupById(Long.valueOf(trustOrgId));
+        Org trustOrg = OrgFactory.lookupById(Long.valueOf(orgId));
         if (trustOrg == null) {
-            throw new NoSuchOrgException(trustOrgId.toString());
+            throw new NoSuchOrgException(orgId.toString());
         }
 
         if (!loggedInUser.getOrg().getTrustedOrgs().contains(trustOrg)) {
             // the org requested isn't in the user's trust list; therefore, this
             // request is not allowed.
-            throw new OrgNotInTrustException(trustOrgId);
+            throw new OrgNotInTrustException(orgId);
         }
 
         DataResult<ChannelTreeNode> result = ChannelManager.trustChannelConsume(
@@ -111,16 +111,16 @@ public class OrgTrustHandler extends BaseHandler {
      * Lists all software channels that organization given may consume from the user's
      * organization.
      * @param loggedInUser The current user
-     * @param trustOrgId organization id of the trusted org
+     * @param orgId organization id of the trusted org
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
      * @xmlrpc.doc Lists all software channels that the organization given may consume
      * from the user's organization.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "trustOrgId", "Id of the trusted organization")
+     * @xmlrpc.param #param_desc("int", "orgId", "Id of the trusted organization")
      * @xmlrpc.returntype
-     *     #array_begin()
+     *     #return_array_begin()
      *         #struct_begin("channel info")
      *             #prop("int", "channel_id")
      *             #prop("string", "channel_name")
@@ -129,19 +129,19 @@ public class OrgTrustHandler extends BaseHandler {
      *         #struct_end()
      *     #array_end()
      */
-    public Object[] listChannelsConsumed(User loggedInUser, Integer trustOrgId) {
+    public Object[] listChannelsConsumed(User loggedInUser, Integer orgId) {
 
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
-        Org trustOrg = OrgFactory.lookupById(Long.valueOf(trustOrgId));
+        Org trustOrg = OrgFactory.lookupById(Long.valueOf(orgId));
         if (trustOrg == null) {
-            throw new NoSuchOrgException(trustOrgId.toString());
+            throw new NoSuchOrgException(orgId.toString());
         }
 
         if (!loggedInUser.getOrg().getTrustedOrgs().contains(trustOrg)) {
             // the org requested isn't in the user's trust list; therefore, this
             // request is not allowed.
-            throw new OrgNotInTrustException(trustOrgId);
+            throw new OrgNotInTrustException(orgId);
         }
 
         DataResult<ChannelTreeNode> result = ChannelManager.trustChannelConsume(
@@ -154,18 +154,18 @@ public class OrgTrustHandler extends BaseHandler {
      * Returns the organization trust details.
      * given the org_id.
      * @param loggedInUser The current user
-     * @param trustOrgId the id of the organization to lookup on.
+     * @param orgId the id of the organization to lookup on.
      * @return details on the trusted organization.
      *
      * @xmlrpc.doc The trust details about an organization given
      * the organization's ID.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("int", "trustOrgId", "Id of the trusted organization")
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "orgId", "Id of the trusted organization")
      * @xmlrpc.returntype
      *     #struct_begin("org trust details")
-     *          #prop_desc("dateTime.iso8601", "created", "Date the organization was
+     *          #prop_desc("$date", "created", "Date the organization was
      *          created")
-     *          #prop_desc("dateTime.iso8601", "trusted_since", "Date the organization was
+     *          #prop_desc("$date", "trusted_since", "Date the organization was
      *          defined as trusted")
      *          #prop_desc("int", "channels_provided", "Number of channels provided by
      *          the organization.")
@@ -181,16 +181,16 @@ public class OrgTrustHandler extends BaseHandler {
      *          from the organization.")
      *     #struct_end()
      */
-    public Map<String, Object> getDetails(User loggedInUser, Integer trustOrgId) {
+    public Map<String, Object> getDetails(User loggedInUser, Integer orgId) {
 
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
-        Org trustOrg = OrgFactory.lookupById(Long.valueOf(trustOrgId));
+        Org trustOrg = OrgFactory.lookupById(Long.valueOf(orgId));
         if (trustOrg == null) {
-            throw new NoSuchOrgException(trustOrgId.toString());
+            throw new NoSuchOrgException(orgId.toString());
         }
         if (!loggedInUser.getOrg().getTrustedOrgs().contains(trustOrg)) {
-            throw new OrgNotInTrustException(trustOrgId);
+            throw new OrgNotInTrustException(orgId);
         }
 
         Map<String, Object> details = new HashMap<String, Object>();
@@ -234,10 +234,12 @@ public class OrgTrustHandler extends BaseHandler {
      * @param orgId the id of an organization.
      * @return Returns a list of organizations along with a trusted indicator.
      * @xmlrpc.doc Returns the list of trusted organizations.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype
-     * $OrgTrustOverviewSerializer
+     * #return_array_begin()
+     *   $OrgTrustOverviewSerializer
+     * #array_end()
      */
     public List<OrgTrustOverview> listTrusts(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -255,7 +257,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @param trustOrgId The id of the organization to be added.
      * @return 1 on success, else 0.
      * @xmlrpc.doc Add an organization to the list of trusted organizations.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param("int", "trustOrgId")
      * @xmlrpc.returntype #return_int_success()
@@ -282,7 +284,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @param trustOrgId The id of the organization to be removed.
      * @return 1 on success, else 0.
      * @xmlrpc.doc Remove an organization to the list of trusted organizations.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param("int", "trustOrgId")
      * @xmlrpc.returntype #return_int_success()
@@ -313,11 +315,11 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.doc  Get a list of systems within the  <i>trusted</i> organization
      *   that would be affected if the <i>trust</i> relationship was removed.
      *   This basically lists systems that are sharing at least (1) package.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param("string", "trustOrgId")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     #struct_begin("affected systems")
      *       #prop("int", "systemId")
      *       #prop("string", "systemName")

@@ -31,7 +31,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * UserExtGroupSerializer
  *
  * @xmlrpc.doc
- *  #struct_begin("externalGroup")
+ *  #struct_begin("external group")
  *      #prop("string", "name")
  *      #prop_array("roles", "string", "role")
  *  #struct_end()

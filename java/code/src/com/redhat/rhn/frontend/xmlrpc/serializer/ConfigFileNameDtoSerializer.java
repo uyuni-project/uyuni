@@ -30,14 +30,14 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  * ConfigFileDtoSerializer
  * @xmlrpc.doc
- * #struct_begin("Configuration File information")
+ * #struct_begin("configuration file information")
  *   #prop("string", "type")
  *              #options()
  *                  #item("file")
  *                  #item("directory")
  *                  #item("symlink")
  *              #options_end()
- *   #prop_desc("string", "path","File Path")
+ *   #prop_desc("string", "path", "File Path")
  *   #prop_desc("string", "channel_label",
  *      "the label of the  central configuration channel
  *      that has this file. Note this entry only shows up

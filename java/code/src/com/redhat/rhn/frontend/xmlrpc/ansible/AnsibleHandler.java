@@ -60,11 +60,11 @@ public class AnsibleHandler extends BaseHandler {
      * @return the execute playbook action id
      *
      * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
-     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
+     * @xmlrpc.param #param_desc("$date", "earliestOccurrence",
      * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
      * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
@@ -88,11 +88,11 @@ public class AnsibleHandler extends BaseHandler {
      * @return the execute playbook action id
      *
      * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
-     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
+     * @xmlrpc.param #param_desc("$date", "earliestOccurrence",
      * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
      * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
      * @xmlrpc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
@@ -117,11 +117,11 @@ public class AnsibleHandler extends BaseHandler {
      * @return the execute playbook action id
      *
      * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
-     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
+     * @xmlrpc.param #param_desc("$date", "earliestOccurrence",
      * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
      * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
      * @xmlrpc.param
@@ -150,11 +150,11 @@ public class AnsibleHandler extends BaseHandler {
      * @return the execute playbook action id
      *
      * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
-     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
+     * @xmlrpc.param #param_desc("$date", "earliestOccurrence",
      * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
      * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
      * @xmlrpc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
@@ -198,7 +198,7 @@ public class AnsibleHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "controlNodeId", "id of ansible control node server")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      * $AnsiblePathSerializer
      * #array_end()
      */
@@ -243,7 +243,6 @@ public class AnsibleHandler extends BaseHandler {
      *
      * @xmlrpc.doc Create ansible path
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "pathId", "path id")
      * @xmlrpc.param
      *  #struct_begin("props")
      *      #prop_desc("string", "type", "The ansible path type: 'inventory' or 'playbook'")

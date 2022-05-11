@@ -28,11 +28,11 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * HistoryEventSerializer
  *
  * @xmlrpc.doc
- *  #struct_begin("History Event")
- *      #prop_desc("dateTime.iso8601", "completed", "Date that
+ *  #struct_begin("history event")
+ *      #prop_desc("$date", "completed", "date that
  *          the event occurred (optional)")
- *      #prop_desc("string", "summary", "Summary of the event")
- *      #prop_desc("string", "details", "Details of the event")
+ *      #prop_desc("string", "summary", "summary of the event")
+ *      #prop_desc("string", "details", "details of the event")
  *  #struct_end()
  *
  *

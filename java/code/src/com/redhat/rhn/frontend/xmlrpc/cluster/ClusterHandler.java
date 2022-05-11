@@ -65,9 +65,9 @@ public class ClusterHandler extends BaseHandler {
      * @return Returns an array of cluster names
      *
      * @xmlrpc.doc List all clusters for the user's org
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *          #struct_begin("cluster_id")
      *                 #prop("string", "cluster_name")
      *          #struct_end()
@@ -95,7 +95,7 @@ public class ClusterHandler extends BaseHandler {
      * @return Returns a 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Add a cluster
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "name")
      * @xmlrpc.param #param("string", "description")
      * @xmlrpc.param #param("integer", "management node id")
@@ -130,7 +130,7 @@ public class ClusterHandler extends BaseHandler {
      * @return Returns a 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Delete a cluster given the ID
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "clusterId")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -154,7 +154,7 @@ public class ClusterHandler extends BaseHandler {
      * @return Returns an array of node hostnames
      *
      * @xmlrpc.doc Lists the nodes of a cluster.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "clusterId")
      * @xmlrpc.returntype #array_single("string", "hostname")
      */
@@ -177,7 +177,7 @@ public class ClusterHandler extends BaseHandler {
      * @return Returns a 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Schedule the execution of a node join the cluster
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "clusterId")
      * @xmlrpc.param #array_single("integer", "systemIds", "system IDs of the target nodes")
      * @xmlrpc.param struct containing the values for each field in the form
@@ -233,7 +233,7 @@ public class ClusterHandler extends BaseHandler {
      * @return Returns a 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Schedule the execution of a node join the cluster
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "clusterId")
      * @xmlrpc.param #array_single("integer", "systemIds", "system IDs of the target nodes")
      * @xmlrpc.param struct containing the values for each field in the form
@@ -289,7 +289,7 @@ public class ClusterHandler extends BaseHandler {
      * @return Returns a 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Schedule the execution of a cluster upgrade
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "clusterId")
      * @xmlrpc.param struct containing the values for each field in the form
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence", "earliest the action can run")

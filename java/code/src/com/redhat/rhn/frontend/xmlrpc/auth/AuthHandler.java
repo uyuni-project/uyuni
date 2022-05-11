@@ -49,7 +49,7 @@ public class AuthHandler extends BaseHandler {
      * @return Returns 1 on success, exception otherwise.
      *
      * @xmlrpc.doc Logout the user with the given session key.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #return_int_success()
      */
     public int logout(String sessionKey) {
@@ -70,7 +70,7 @@ public class AuthHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "username")
      * @xmlrpc.param #param("string", "password")
      * @xmlrpc.returntype
-     *     #param("string", "sessionKey")
+     *     #session_key()
      */
     public String login(String username, String password)
                       throws LoginException {
@@ -84,7 +84,7 @@ public class AuthHandler extends BaseHandler {
      * and returns the key for the session.
      * @param username Username to check
      * @param password Password to check
-     * @param durationIn The session duration
+     * @param duration The session duration
      * @return Returns the key for the session
      * @throws LoginException Throws a LoginException if the user can't be logged in.
      *
@@ -94,9 +94,9 @@ public class AuthHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "password")
      * @xmlrpc.param #param_desc("int", "duration", "Length of session.")
      * @xmlrpc.returntype
-     *     #param("string", "sessionKey")
+     *     #session_key()
      */
-    public String login(String username, String password, Integer durationIn)
+    public String login(String username, String password, Integer duration)
                       throws LoginException {
         //Log in the user (handles authentication and active/disabled logic)
         User user = null;
@@ -108,9 +108,9 @@ public class AuthHandler extends BaseHandler {
             throw new UserLoginException(e.getMessage());
         }
 
-        long duration = getDuration(durationIn);
+        long dur = getDuration(duration);
         //Create a new session with the user
-        WebSession session = SessionManager.makeSession(user.getId(), duration);
+        WebSession session = SessionManager.makeSession(user.getId(), dur);
         return session.getKey();
     }
 
