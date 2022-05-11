@@ -1,3 +1,5 @@
+- Correct concurrency error on payg taskomatic task
+  for updating certificates (#17783)
 - Fix ACL rules for config diff download for SLS files (bsc#1198914)
 - fix package selection for ubuntu errata install (bsc#1199049)
 - fix invalid link to action schedule
