@@ -59,6 +59,11 @@ Feature: Build container images
     And I schedule the build of image "suse_real_key" via API calls
     And I wait at most 660 seconds until event "Image Build suse_real_key scheduled by admin" is completed
     And I wait at most 60 seconds until all "3" container images are built correctly in the GUI
+    # We should see the same result via API.
+    # Also, check that all inspect actions are finished:
+    And I wait at most 660 seconds until container "suse_key" with version "latest" is built successfully
+    And I wait at most 660 seconds until container "suse_simple" with version "latest" is built successfully
+    And I wait at most 660 seconds until container "suse_real_key" with version "latest" is built successfully
     Then the list of packages of image "suse_key" with version "latest" is not empty
     And the list of packages of image "suse_simple" with version "latest" is not empty
     And the list of packages of image "suse_real_key" with version "latest" is not empty
