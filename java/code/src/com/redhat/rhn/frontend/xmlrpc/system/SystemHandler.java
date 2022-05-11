@@ -3268,7 +3268,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "errataIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sids,
@@ -3292,7 +3292,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "errataIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -3320,7 +3320,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "errataIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.param #param_desc("boolean", "onlyRelevant",
@@ -3421,7 +3421,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "errataIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid,
@@ -3447,7 +3447,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "errataIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -3476,7 +3476,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "errataIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.param #param("boolean", "onlyRelevant")
@@ -3859,7 +3859,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageInstall(User loggedInUser, List<Integer> sids,
@@ -3884,7 +3884,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -3921,7 +3921,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Schedule full package update for several systems.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "serverId")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #param("int", "actionId")
      */
     public Long schedulePackageUpdate(User loggedInUser, List<Integer> sids,
@@ -3946,7 +3946,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long schedulePackageInstall(User loggedInUser, final Integer sid,
@@ -3970,7 +3970,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -4003,7 +4003,7 @@ public class SystemHandler extends BaseHandler {
     *
     *                   #struct_end()
     *               #array_end()
-    * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+    * @xmlrpc.param #param("$date", "earliestOccurrence")
     * @xmlrpc.returntype #array_single("int", "actionId")
     */
     public Long[] schedulePackageInstallByNevra(User loggedInUser, List<Integer> sids,
@@ -4037,7 +4037,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -4072,7 +4072,7 @@ public class SystemHandler extends BaseHandler {
     *
     *                   #struct_end()
     *               #array_end()
-    * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+    * @xmlrpc.param #param("$date", "earliestOccurrence")
     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
     */
     public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid,
@@ -4106,7 +4106,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *              "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -4131,7 +4131,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageRemove(User loggedInUser, List<Integer> sids,
@@ -4157,7 +4157,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #array_single("int", "sids")
      * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -4183,7 +4183,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int schedulePackageRemove(User loggedInUser, Integer sid,
@@ -4212,7 +4212,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "packageIds")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -4250,7 +4250,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageRemoveByNevra(User loggedInUser, List<Integer> sids,
@@ -4285,7 +4285,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -4320,7 +4320,7 @@ public class SystemHandler extends BaseHandler {
     *
     *                   #struct_end()
     *               #array_end()
-    * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+    * @xmlrpc.param #param("$date", "earliestOccurrence")
     * @xmlrpc.returntype #array_single("int", "actionId")
     */
     public int schedulePackageRemoveByNevra(User loggedInUser, final Integer sid,
@@ -4358,7 +4358,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.returntype #array_single("int", "actionId")
@@ -4389,7 +4389,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "sid")
      * @xmlrpc.param #array_single("int", "pkgIdsToLock")
      * @xmlrpc.param #array_single("int", "pkgIdsToUnlock")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #return_int_success()
      */
     public Long schedulePackageLockChange(User loggedInUser, Integer sid,
@@ -4661,7 +4661,7 @@ public class SystemHandler extends BaseHandler {
      * @return ID of the new script action.
      * @xmlrpc.doc Schedule a script to run.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "sids", "System IDs of the servers to run the script on.")
+     * @xmlrpc.param #array_single_desc("int", "sids", "System IDs of the servers to run the script on.")
      * @xmlrpc.param #param_desc("string", "username", "User to run script as.")
      * @xmlrpc.param #param_desc("string", "groupname", "Group to run script as.")
      * @xmlrpc.param #param_desc("int", "timeout", "Seconds to allow the script to run
@@ -4862,7 +4862,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Schedule a reboot for a system.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param("dateTime.iso860", "earliestOccurrence")
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleReboot(User loggedInUser, Integer sid,
@@ -6829,7 +6829,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Schedule update of client certificate at given date and time
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param("dateTime.iso860", "earliestOccurrence")
+     * @xmlrpc.param #param("$date", "earliestOccurrence")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int scheduleCertificateUpdate(User loggedInUser, Integer sid, Date earliestOccurrence) {

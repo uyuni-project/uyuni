@@ -576,6 +576,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the created {@link ContentFilter}
      *
      * @xmlrpc.doc Create a Content Filter
+     * #paragraph_end()
      * #paragraph()
      * The following filters are available (you can get the list in machine-readable format using
      * the listFilterCriteria() endpoint):
@@ -609,7 +610,6 @@ public class ContentManagementHandler extends BaseHandler {
      * #paragraph_end()
      * #paragraph()
      * Note: The 'matches' matcher works on Java regular expressions.
-     * #paragraph_end()
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "name", "Filter name")
@@ -696,9 +696,9 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the updated {@link ContentFilter}
      *
      * @xmlrpc.doc Update a Content Filter
+     * #paragraph_end()
      * #paragraph()
      * See also: createFilter(), listFilterCriteria()
-     * #paragraph_end()
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "filterId", "Filter ID")
      * @xmlrpc.param #param_desc("string", "name", "New filter name")

@@ -14,10 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.user.external;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup;
@@ -36,8 +32,13 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchExternalGroupToRoleMapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchExternalGroupToServerGroupMapException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * UserHandler
@@ -119,7 +120,7 @@ public class UserExternalHandler extends BaseHandler {
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
      * #product() organization name. Can only be called by a #product() Administrator.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("boolean", "useOrgUnit", "tue if we should use the IPA
+     * @xmlrpc.param #param_desc("boolean", "useOrgUnit", "true if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise.")
      * @xmlrpc.returntype #return_int_success()
      */

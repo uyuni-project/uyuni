@@ -771,7 +771,7 @@ public class ConfigChannelHandler extends BaseHandler {
      *
      * @xmlrpc.doc Remove file paths from a global channel.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string","label", "channel to remove the files from")
+     * @xmlrpc.param #param_desc("string", "label", "channel to remove the files from")
      * @xmlrpc.param #array_single("string", "paths", "file paths to remove")
      * @xmlrpc.returntype #return_int_success()
      */
