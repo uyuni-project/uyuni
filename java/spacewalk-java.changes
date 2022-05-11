@@ -1,3 +1,4 @@
+- Add createAppStreamFilters() XMLRPC function
 - Correct concurrency error on payg taskomatic task
   for updating certificates (#17783)
 - Display usertime instead of server time for clm issue date filter (bsc#1198429)
