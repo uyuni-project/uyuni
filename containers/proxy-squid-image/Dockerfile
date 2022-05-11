@@ -28,8 +28,6 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-squid:%PKG_VERSION%.%REL
 # Squid
 EXPOSE 8080/tcp
 
-VOLUME [ "/etc/uyuni", "/var/cache/squid" ]
-
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3 python3-PyYAML
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses squid
 
@@ -43,6 +41,11 @@ RUN chmod +x /usr/bin/uyuni-configure.py
 # For this we need to give the squid user access to squid.conf and squid.pid
 RUN chown squid:squid /etc/squid/squid.conf
 RUN touch /run/squid.pid && chown squid:squid /run/squid.pid
-USER squid
 
+# Ensure the cache is owned by squid user
+RUN chown squid:squid /var/cache/squid
+
+VOLUME [ "/etc/uyuni", "/var/cache/squid" ]
+
+USER squid
 CMD uyuni-configure.py && squid -z --foreground && squid -FC -d 1 --foreground
