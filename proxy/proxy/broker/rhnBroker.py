@@ -171,7 +171,9 @@ class BrokerHandler(SharedHandler):
         elif 'Authorization' in self.req.headers_in and effectiveURI_parts.path.startswith('/rhn/manager/download/'):
             # we need to remove Basic Auth, otherwise squid does not cache the package
             # so we convert it into token auth
-            self.authToken = ustr(base64.b64decode(self.req.headers_in['Authorization'][6:]))[:-1] # "Basic " == 6 characters
+            # The token is the login. So it is not secret
+            lpw = ustr(base64.b64decode(self.req.headers_in['Authorization'][6:])) # "Basic " == 6 characters
+            self.authToken = lpw[:lpw.find(':')]
             del self.req.headers_in['Authorization']
         elif 'X-RHN-Auth' not in self.req.headers_in:
             self.authToken = effectiveURI_parts.query
