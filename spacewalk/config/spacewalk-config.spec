@@ -62,7 +62,7 @@ BuildRequires:  openssl
 BuildRequires:  sudo
 %endif
 Requires:       (apache2-mod_xsendfile or mod_xsendfile)
-Requires: diff
+Requires:       diffutils
 
 %description
 Common Spacewalk configuration files and templates.
