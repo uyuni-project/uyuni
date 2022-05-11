@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  *
  * ErrataOverviewSerializer
- * @xmlrpc.doc
+ * @apidoc.doc
  *     #struct_begin("errata")
  *          #prop_desc("int", "id", "errata ID")
  *          #prop_desc("string", "issue_date", "the date erratum was updated (deprecated)")

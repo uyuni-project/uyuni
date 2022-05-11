@@ -40,8 +40,8 @@ import java.util.Map;
 
 /**
  * OrgTrustsHandler
- * @xmlrpc.namespace org.trusts
- * @xmlrpc.doc Contains methods to access common organization trust information
+ * @apidoc.namespace org.trusts
+ * @apidoc.doc Contains methods to access common organization trust information
  * available from the web interface.
  */
 public class OrgTrustHandler extends BaseHandler {
@@ -52,9 +52,9 @@ public class OrgTrustHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc List all organanizations trusted by the user's organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List all organanizations trusted by the user's organization.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $TrustedOrgDtoSerializer
      *     #array_end()
@@ -75,11 +75,11 @@ public class OrgTrustHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc Lists all software channels that the organization given is providing to
+     * @apidoc.doc Lists all software channels that the organization given is providing to
      * the user's organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "orgId", "Id of the trusted organization")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "orgId", "Id of the trusted organization")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         #struct_begin("channel info")
      *             #prop("int", "channel_id")
@@ -119,11 +119,11 @@ public class OrgTrustHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc Lists all software channels that the organization given may consume
+     * @apidoc.doc Lists all software channels that the organization given may consume
      * from the user's organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "orgId", "Id of the trusted organization")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "orgId", "Id of the trusted organization")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         #struct_begin("channel info")
      *             #prop("int", "channel_id")
@@ -162,11 +162,11 @@ public class OrgTrustHandler extends BaseHandler {
      * @param orgId the id of the organization to lookup on.
      * @return details on the trusted organization.
      *
-     * @xmlrpc.doc The trust details about an organization given
+     * @apidoc.doc The trust details about an organization given
      * the organization's ID.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "orgId", "Id of the trusted organization")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "orgId", "Id of the trusted organization")
+     * @apidoc.returntype
      *     #struct_begin("org trust details")
      *          #prop_desc("$date", "created", "Date the organization was
      *          created")
@@ -239,10 +239,10 @@ public class OrgTrustHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param orgId the id of an organization.
      * @return Returns a list of organizations along with a trusted indicator.
-     * @xmlrpc.doc Returns the list of trusted organizations.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns the list of trusted organizations.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype
      * #return_array_begin()
      *   $OrgTrustOverviewSerializer
      * #array_end()
@@ -263,11 +263,11 @@ public class OrgTrustHandler extends BaseHandler {
      * @param orgId The id of the organization to be updated.
      * @param trustOrgId The id of the organization to be added.
      * @return 1 on success, else 0.
-     * @xmlrpc.doc Add an organization to the list of trusted organizations.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param #param("int", "trustOrgId")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Add an organization to the list of trusted organizations.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param #param("int", "trustOrgId")
+     * @apidoc.returntype #return_int_success()
      */
     public int addTrust(User loggedInUser, Integer orgId, Integer trustOrgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -290,11 +290,11 @@ public class OrgTrustHandler extends BaseHandler {
      * @param orgId the id of the organization to be updated.
      * @param trustOrgId The id of the organization to be removed.
      * @return 1 on success, else 0.
-     * @xmlrpc.doc Remove an organization to the list of trusted organizations.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param #param("int", "trustOrgId")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove an organization to the list of trusted organizations.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param #param("int", "trustOrgId")
+     * @apidoc.returntype #return_int_success()
      */
     public int removeTrust(User loggedInUser, Integer orgId, Integer trustOrgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -319,13 +319,13 @@ public class OrgTrustHandler extends BaseHandler {
      * @param orgId the id of <i>trusting</i> organization.
      * @param trustOrgId The id of the <i>trusted</i> organization.
      * @return A list of affected systems.
-     * @xmlrpc.doc  Get a list of systems within the  <i>trusted</i> organization
+     * @apidoc.doc  Get a list of systems within the  <i>trusted</i> organization
      *   that would be affected if the <i>trust</i> relationship was removed.
      *   This basically lists systems that are sharing at least (1) package.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param #param("string", "trustOrgId")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param #param("string", "trustOrgId")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     #struct_begin("affected systems")
      *       #prop("int", "systemId")

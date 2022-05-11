@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * KickstartTreeDetailSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("kickstartable tree")
  *   #prop("int", "id")

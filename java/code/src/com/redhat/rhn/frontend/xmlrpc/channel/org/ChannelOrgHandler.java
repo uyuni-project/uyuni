@@ -40,8 +40,8 @@ import java.util.Set;
 
 /**
  * ChannelOrgHandler
- * @xmlrpc.namespace channel.org
- * @xmlrpc.doc Provides methods to retrieve and alter organization trust
+ * @apidoc.namespace channel.org
+ * @apidoc.doc Provides methods to retrieve and alter organization trust
  * relationships for a channel.
  */
 public class ChannelOrgHandler extends BaseHandler {
@@ -56,11 +56,11 @@ public class ChannelOrgHandler extends BaseHandler {
      *   - The label is invalid
      *   - The user doesn't have channel admin permissions
      *
-     * @xmlrpc.doc List the organizations associated with the given channel
+     * @apidoc.doc List the organizations associated with the given channel
      * that may be trusted.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of the channel")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of the channel")
+     * @apidoc.returntype
      *   #return_array_begin()
      *      #struct_begin("org")
      *          #prop("int", "org_id")
@@ -123,11 +123,11 @@ public class ChannelOrgHandler extends BaseHandler {
      *   - The org id is invalid
      *   - The user doesn't have channel admin permissions
      *
-     * @xmlrpc.doc Enable access to the channel for the given organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of the channel")
-     * @xmlrpc.param #param_desc("int", "orgId", "ID of org being granted access")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.doc Enable access to the channel for the given organization.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of the channel")
+     * @apidoc.param #param_desc("int", "orgId", "ID of org being granted access")
+     * @apidoc.returntype  #return_int_success()
      */
     public int enableAccess(User loggedInUser, String label, Integer orgId)
         throws FaultException {
@@ -147,11 +147,11 @@ public class ChannelOrgHandler extends BaseHandler {
      *   - The org id is invalid
      *   - The user doesn't have channel admin permissions
      *
-     * @xmlrpc.doc Disable access to the channel for the given organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of the channel")
-     * @xmlrpc.param #param_desc("int", "orgId", "ID of org being removed access")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.doc Disable access to the channel for the given organization.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of the channel")
+     * @apidoc.param #param_desc("int", "orgId", "ID of org being removed access")
+     * @apidoc.returntype  #return_int_success()
      */
     public int disableAccess(User loggedInUser, String label, Integer orgId)
         throws FaultException {

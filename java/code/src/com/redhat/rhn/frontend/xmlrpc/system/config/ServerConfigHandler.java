@@ -65,8 +65,8 @@ import java.util.stream.Stream;
 
 /**
  * ServerConfigChannelHandler
- * @xmlrpc.namespace system.config
- * @xmlrpc.doc Provides methods to access and modify many aspects of
+ * @apidoc.namespace system.config
+ * @apidoc.doc Provides methods to access and modify many aspects of
  * configuration channels and server association.
  * basically system.config name space
  */
@@ -93,10 +93,10 @@ public class ServerConfigHandler extends BaseHandler {
      *                  false if  list of paths in sandbox channel is desired
      * @return a list of dto's holding this info.
      *
-     * @xmlrpc.doc Return the list of files in a given channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param("int", "listLocal")
+     * @apidoc.doc Return the list of files in a given channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param("int", "listLocal")
      *      #options()
      *          #item_desc ("1", "to return configuration files
      *              in the system's local override configuration channel")
@@ -104,7 +104,7 @@ public class ServerConfigHandler extends BaseHandler {
      *              in the system's sandbox configuration channel")
      *      #options_end()
      *
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * #return_array_begin()
      * $ConfigFileNameDtoSerializer
      * #array_end()
@@ -144,17 +144,17 @@ public class ServerConfigHandler extends BaseHandler {
      * @return returns the new created or updated config revision..
      * @since 10.2
      *
-     * @xmlrpc.doc Create a new file (text or binary) or directory with the given path, or
+     * @apidoc.doc Create a new file (text or binary) or directory with the given path, or
      * update an existing path on a server.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param_desc("string", "path", "the configuration file/directory path")
-     * @xmlrpc.param #param( "boolean", "isDir")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("string", "path", "the configuration file/directory path")
+     * @apidoc.param #param( "boolean", "isDir")
      *      #options()
      *          #item_desc ("True", "if the path is a directory")
      *          #item_desc ("False", "if the path is a file")
      *      #options_end()
-     * @xmlrpc.param
+     * @apidoc.param
      *   #struct_begin("data")
      *      #prop_desc("string", "contents",
      *              "Contents of the file (text or base64 encoded if binary)
@@ -177,14 +177,14 @@ public class ServerConfigHandler extends BaseHandler {
      *      #prop_desc("boolean", "binary", "mark the binary content, if True,
      *      base64 encoded content is expected (only for non-directories)")
      *  #struct_end()
-     * @xmlrpc.param #param("boolean", "commitToLocal")
+     * @apidoc.param #param("boolean", "commitToLocal")
      *      #options()
      *          #item_desc ("1", "to commit configuration files
      *              to the system's local override configuration channel")
      *          #item_desc ("0", "to commit configuration files
      *              to the system's sandbox configuration channel")
      *      #options_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *              $ConfigRevisionSerializer
      */
     public ConfigRevision createOrUpdatePath(User loggedInUser,
@@ -239,26 +239,26 @@ public class ServerConfigHandler extends BaseHandler {
      * @return returns the new created or updated config revision..
      * @since 10.2
      *
-     * @xmlrpc.doc Create a new symbolic link with the given path, or
+     * @apidoc.doc Create a new symbolic link with the given path, or
      * update an existing path.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param_desc("string", "path", "the configuration file/directory path")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("string", "path", "the configuration file/directory path")
+     * @apidoc.param
      *  #struct_begin("data")
      *      #prop_desc("string", "target_path",
      *              "The target path for the symbolic link")
      *      #prop_desc("string", "selinux_ctx", "SELinux Security context (optional)")
      *      #prop_desc("int", "revision", "next revision number, auto increment for null")
      *  #struct_end()
-     * @xmlrpc.param #param("boolean", "commitToLocal")
+     * @apidoc.param #param("boolean", "commitToLocal")
      *      #options()
      *          #item_desc ("1", "to commit configuration files
      *              to the system's local override configuration channel")
      *          #item_desc ("0", "to commit configuration files
      *              to the system's sandbox configuration channel")
      *      #options_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *              $ConfigRevisionSerializer
      */
     public ConfigRevision createOrUpdateSymlink(User loggedInUser,
@@ -299,12 +299,12 @@ public class ServerConfigHandler extends BaseHandler {
      * @return a list containing the latest config revisions of the requested paths.
      * @since 10.2
      *
-     * @xmlrpc.doc Given a list of paths and a server, returns details about
+     * @apidoc.doc Given a list of paths and a server, returns details about
      * the latest revisions of the paths.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #array_single_desc("string" "paths", "paths to lookup on.")
-     * @xmlrpc.param #param("boolean", "searchLocal")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #array_single_desc("string" "paths", "paths to lookup on.")
+     * @apidoc.param #param("boolean", "searchLocal")
      *      #options()
      *          #item_desc ("1", "to search configuration file paths
      *              in the system's local override configuration or
@@ -312,7 +312,7 @@ public class ServerConfigHandler extends BaseHandler {
      *          #item_desc ("0", "to search configuration file paths
      *              in the system's sandbox configuration channel")
      *      #options_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ConfigRevisionSerializer
      *      #array_end()
@@ -356,18 +356,18 @@ public class ServerConfigHandler extends BaseHandler {
      * @return 1 if successful with the operation errors out otherwise.
      *
      *
-     * @xmlrpc.doc Removes file paths from a local or sandbox channel of a server.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #array_single("string", "paths", "paths to remove.")
-     * @xmlrpc.param #param("boolean", "deleteFromLocal")
+     * @apidoc.doc Removes file paths from a local or sandbox channel of a server.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #array_single("string", "paths", "paths to remove.")
+     * @apidoc.param #param("boolean", "deleteFromLocal")
      *      #options()
      *          #item_desc ("True", "to delete configuration file paths
      *              from the system's local override configuration channel")
      *          #item_desc ("False", "to delete configuration file paths
      *              from the system's sandbox configuration channel")
      *      #options_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      *
      */
     public int deleteFiles(User loggedInUser,
@@ -408,14 +408,14 @@ public class ServerConfigHandler extends BaseHandler {
      * @param date date of the deploy action..
      * @return 1 on success, raises exceptions otherwise.
      *
-     * @xmlrpc.doc Schedules a deploy action for all the configuration files
+     * @apidoc.doc Schedules a deploy action for all the configuration files
      * on the given list of systems.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single_desc("int", "sids",
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single_desc("int", "sids",
      *              "IDs of the systems to schedule configuration files deployment")
-     * @xmlrpc.param #param_desc($date, "date",
+     * @apidoc.param #param_desc($date, "date",
      *                               "Earliest date for the deploy action.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int deployAll(User loggedInUser, List<Number> sids, Date date) {
         List<Server> servers = new ArrayList<>(sids.size());
@@ -444,11 +444,11 @@ public class ServerConfigHandler extends BaseHandler {
      * @return a list of global config channels associated to the given
      *          system in the order of their ranking..
      *
-     * @xmlrpc.doc List all global('Normal', 'State') configuration channels associated to a
+     * @apidoc.doc List all global('Normal', 'State') configuration channels associated to a
      *              system in the order of their ranking.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype
      *  #return_array_begin()
      *  $ConfigChannelSerializer
      *  #array_end()
@@ -475,7 +475,7 @@ public class ServerConfigHandler extends BaseHandler {
      *                  the top of the configuration channels list of a server
      * @return 1 on success 0 on failure
      *
-     * @xmlrpc.doc Given a list of servers and configuration channels,
+     * @apidoc.doc Given a list of servers and configuration channels,
      * this method appends the configuration channels to either the top or
      * the bottom (whichever you specify) of a system's subscribed
      * configuration channels list. The ordering of the configuration channels
@@ -483,12 +483,12 @@ public class ServerConfigHandler extends BaseHandler {
      * If one of the configuration channels in the 'add' list
      * has been previously subscribed by a server, the
      * subscribed channel will be re-ranked to the appropriate place.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single_desc("int", "sids",
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single_desc("int", "sids",
      *              "IDs of the systems to add the channels to.")
-     * @xmlrpc.param #array_single_desc("string", "configChannelLabels",
+     * @apidoc.param #array_single_desc("string", "configChannelLabels",
      *              "List of configuration channel labels in the ranked order.")
-     * @xmlrpc.param #param("boolean", "addToTop")
+     * @apidoc.param #param("boolean", "addToTop")
      *      #options()
      *          #item_desc ("true", "to prepend the given channels
      *          list to the top of the configuration channels list of a server")
@@ -496,7 +496,7 @@ public class ServerConfigHandler extends BaseHandler {
      *          list to the bottom of the configuration channels list of a server")
      *      #options_end()
      *
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int addChannels(User loggedInUser, List<Number> sids, List<String> configChannelLabels,
                            Boolean addToTop) {
@@ -541,16 +541,16 @@ public class ServerConfigHandler extends BaseHandler {
      * @param configChannelLabels sets channels labels
      * @return 1 on success 0 on failure
      *
-     * @xmlrpc.doc Replace the existing set of config channels on the given servers.
+     * @apidoc.doc Replace the existing set of config channels on the given servers.
      * Channels are ranked according to their order in the configChannelLabels
      * array.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single_desc("int", "sids",
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single_desc("int", "sids",
      *              "IDs of the systems to set the channels on.")
-     * @xmlrpc.param #array_single_desc("string", "configChannelLabels",
+     * @apidoc.param #array_single_desc("string", "configChannelLabels",
      *              "List of configuration channel labels in the ranked order.")
      *
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setChannels(User loggedInUser, List<Number> sids,
             List<String> configChannelLabels) {
@@ -572,13 +572,13 @@ public class ServerConfigHandler extends BaseHandler {
      * @param configChannelLabels sets channels labels
      * @return 1 on success 0 on failure
      *
-     * @xmlrpc.doc Remove config channels from the given servers.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single_desc("int", "sids", "the IDs of the systems from which you
+     * @apidoc.doc Remove config channels from the given servers.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single_desc("int", "sids", "the IDs of the systems from which you
      *              would like to remove configuration channels..")
-     * @xmlrpc.param #array_single_desc("string", "configChannelLabels",
+     * @apidoc.param #array_single_desc("string", "configChannelLabels",
      *              "List of configuration channel labels to remove.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int removeChannels(User loggedInUser, List<Number> sids,
             List<String> configChannelLabels) {
@@ -607,12 +607,12 @@ public class ServerConfigHandler extends BaseHandler {
      * @param test Run states in test-only mode
      * @return action id or exception thrown otherwise
      *
-     * @xmlrpc.doc Schedule highstate application for a given system.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "sids")
-     * @xmlrpc.param #param("$date", "earliestOccurrence")
-     * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
-     * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     * @apidoc.doc Schedule highstate application for a given system.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #param("$date", "earliestOccurrence")
+     * @apidoc.param #param_desc("boolean", "test", "Run states in test-only mode")
+     * @apidoc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyConfigChannel(User user, List<Integer> sids, Date earliest, Boolean test) {
         try {

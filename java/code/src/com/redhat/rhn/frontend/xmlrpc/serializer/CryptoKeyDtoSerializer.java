@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * Serializes instances of {@link com.redhat.rhn.frontend.dto.CryptoKeyDto}.
  *
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("key")
  *          #prop("string", "description")
  *          #prop("string", "type")

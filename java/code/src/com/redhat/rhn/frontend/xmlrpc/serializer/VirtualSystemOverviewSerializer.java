@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * VirtualSystemOverviewSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("virtual system")
  *      #prop("int", "id")
  *      #prop("string", "name")

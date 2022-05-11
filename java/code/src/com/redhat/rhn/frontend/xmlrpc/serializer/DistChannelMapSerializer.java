@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * DistChannelMapSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("distribution channel map")
  *          #prop_desc("string", "os", "operating system")
  *          #prop_desc("string", "release", "OS Relase")

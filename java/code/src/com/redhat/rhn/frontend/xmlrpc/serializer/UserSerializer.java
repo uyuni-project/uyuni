@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * UserSerializer a serializer for the User class
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("user")
  *              #prop("int", "id")
  *              #prop("string", "login")

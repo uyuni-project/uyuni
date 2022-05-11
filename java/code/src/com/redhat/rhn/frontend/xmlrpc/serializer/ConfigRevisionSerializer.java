@@ -32,7 +32,7 @@ import java.text.DecimalFormat;
 /**
  * ConfigRevisionSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("configuration revision information")
  *   #prop("string", "type")
  *              #options()

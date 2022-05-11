@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * XccdfRuleResultDtoSerializer
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("OpenSCAP XCCDF RuleResult")
  *   #prop_desc("string", "idref", "idref from XCCDF document")
  *   #prop_desc("string", "result", "result of evaluation")

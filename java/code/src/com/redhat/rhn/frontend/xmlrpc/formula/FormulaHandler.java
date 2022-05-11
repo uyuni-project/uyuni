@@ -47,8 +47,8 @@ import java.util.stream.Collectors;
 
 /**
  * FormulaHandler
- * @xmlrpc.namespace formula
- * @xmlrpc.doc Provides methods to access and modify formulas.
+ * @apidoc.namespace formula
+ * @apidoc.doc Provides methods to access and modify formulas.
  */
 public class FormulaHandler extends BaseHandler {
 
@@ -72,10 +72,10 @@ public class FormulaHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return the list of formulas currently installed.
      *
-     * @xmlrpc.doc Return the list of formulas currently installed.
+     * @apidoc.doc Return the list of formulas currently installed.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array_single("string", "the list of formulas")
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #array_single("string", "the list of formulas")
      */
     @ReadOnly
     public List<String> listFormulas(User loggedInUser) {
@@ -88,11 +88,11 @@ public class FormulaHandler extends BaseHandler {
      * @param systemGroupId The Id of the server group
      * @return the list of formulas the server group has.
      *
-     * @xmlrpc.doc Return the list of formulas a server group has.
+     * @apidoc.doc Return the list of formulas a server group has.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "systemGroupId")
-     * @xmlrpc.returntype #array_single("string", "the list of formulas")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "systemGroupId")
+     * @apidoc.returntype #array_single("string", "the list of formulas")
      */
     @ReadOnly
     public List<String> getFormulasByGroupId(User loggedInUser, Integer systemGroupId) {
@@ -108,11 +108,11 @@ public class FormulaHandler extends BaseHandler {
      * @param sid The Id of the server
      * @return the list of formulas the server has.
      *
-     * @xmlrpc.doc Return the list of formulas directly applied to a server.
+     * @apidoc.doc Return the list of formulas directly applied to a server.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "the system ID")
-     * @xmlrpc.returntype #array_single("string", "the list of formulas")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "the system ID")
+     * @apidoc.returntype #array_single("string", "the list of formulas")
      */
     @ReadOnly
     public List<String> getFormulasByServerId(User loggedInUser, Integer sid) {
@@ -128,11 +128,11 @@ public class FormulaHandler extends BaseHandler {
      * @param sid The Id of the server
      * @return the list of formulas the server and his groups have.
      *
-     * @xmlrpc.doc Return the list of formulas a server and all his groups have.
+     * @apidoc.doc Return the list of formulas a server and all his groups have.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "the system ID")
-     * @xmlrpc.returntype #array_single("string", "the list of formulas")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "the system ID")
+     * @apidoc.returntype #array_single("string", "the list of formulas")
      */
     @ReadOnly
     public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer sid) {
@@ -151,12 +151,12 @@ public class FormulaHandler extends BaseHandler {
      * @return 1 on success, exception thrown otherwise
      * @throws IOFaultException if an IOException occurs during saving
      *
-     * @xmlrpc.doc Set the formulas of a server group.
+     * @apidoc.doc Set the formulas of a server group.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "systemGroupId")
-     * @xmlrpc.param #array_single("string", "formulas")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "systemGroupId")
+     * @apidoc.param #array_single("string", "formulas")
+     * @apidoc.returntype #return_int_success()
      */
     public int setFormulasOfGroup(User loggedInUser, Integer systemGroupId,
             List<String> formulas) throws IOFaultException {
@@ -185,12 +185,12 @@ public class FormulaHandler extends BaseHandler {
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
-     * @xmlrpc.doc Set the formulas of a server.
+     * @apidoc.doc Set the formulas of a server.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "the system ID")
-     * @xmlrpc.param #array_single("string", "formulas")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "the system ID")
+     * @apidoc.param #array_single("string", "formulas")
+     * @apidoc.returntype #return_int_success()
      */
     public int setFormulasOfServer(User loggedInUser, Integer systemId,
             List<String> formulas) throws IOFaultException, InvalidParameterException {
@@ -219,12 +219,12 @@ public class FormulaHandler extends BaseHandler {
      * @param systemId system id
      * @return saved data as Json
      *
-     * @xmlrpc.doc Get the saved data for the specific formula against specific server
+     * @apidoc.doc Get the saved data for the specific formula against specific server
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "the system ID")
-     * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.returntype #param("struct", "the saved formula data")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "the system ID")
+     * @apidoc.param #param("string", "formulaName")
+     * @apidoc.returntype #param("struct", "the saved formula data")
      */
     @ReadOnly
     public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer systemId, String formulaName) {
@@ -241,12 +241,12 @@ public class FormulaHandler extends BaseHandler {
      * @param formulaName formula name
      * @return a list containing the saved data for the passed formula and the passed system IDs.
      *
-     * @xmlrpc.doc Return the list of formulas a server and all his groups have.
+     * @apidoc.doc Return the list of formulas a server and all his groups have.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param #array_single("int", "sids", "the list of system IDs")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "formulaName")
+     * @apidoc.param #array_single("int", "sids", "the list of system IDs")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     $FormulaDataSerializer
      *   #array_end()
@@ -267,12 +267,12 @@ public class FormulaHandler extends BaseHandler {
      * @param formulaName formula name
      * @param groupId group id
      * @return saved data as Json string
-     * @xmlrpc.doc Get the saved data for the specific formula against specific group
+     * @apidoc.doc Get the saved data for the specific formula against specific group
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "groupId")
-     * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.returntype #param("struct", "the saved formula data")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "groupId")
+     * @apidoc.param #param("string", "formulaName")
+     * @apidoc.returntype #param("struct", "the saved formula data")
      */
     @ReadOnly
     public Map<String, Object> getGroupFormulaData(User loggedInUser, Integer groupId, String formulaName) {
@@ -291,13 +291,13 @@ public class FormulaHandler extends BaseHandler {
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
-     * @xmlrpc.doc Set the formula form for the specified server.
+     * @apidoc.doc Set the formula form for the specified server.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "systemId")
-     * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param #param_desc("struct", "content", "struct content with the values for each field in the form")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "systemId")
+     * @apidoc.param #param("string", "formulaName")
+     * @apidoc.param #param_desc("struct", "content", "struct content with the values for each field in the form")
+     * @apidoc.returntype #return_int_success()
      */
     public int setSystemFormulaData(User loggedInUser, Integer systemId, String formulaName, Map<String,
                 Object> content) throws IOFaultException, InvalidParameterException {
@@ -333,13 +333,13 @@ public class FormulaHandler extends BaseHandler {
      * @throws IOFaultException if an IOException occurs during saving
      * @throws InvalidParameterException if the server is not a salt minion
      *
-     * @xmlrpc.doc Set the formula form for the specified group.
+     * @apidoc.doc Set the formula form for the specified group.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int","groupId")
-     * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param #param_desc("struct", "content", "struct containing the values for each field in the form")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int","groupId")
+     * @apidoc.param #param("string", "formulaName")
+     * @apidoc.param #param_desc("struct", "content", "struct containing the values for each field in the form")
+     * @apidoc.returntype #return_int_success()
      */
     public int setGroupFormulaData(User loggedInUser, Integer groupId, String formulaName, Map<String,
             Object> content) throws IOFaultException, InvalidParameterException {

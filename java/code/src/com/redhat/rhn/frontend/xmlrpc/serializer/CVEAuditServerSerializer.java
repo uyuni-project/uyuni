@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * CVEAuditServerSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("CVE audit system")
  *     #prop("int", "system_id")

@@ -28,7 +28,7 @@ import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * XccdfTestResultSerializer
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("OpenSCAP XCCDF Scan")
  *   #prop_desc("int", "xid", "XCCDF TestResult ID")
  *   #prop_desc("int", "sid", "serverId")

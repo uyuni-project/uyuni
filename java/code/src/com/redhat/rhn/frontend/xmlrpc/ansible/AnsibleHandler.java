@@ -41,8 +41,8 @@ import java.util.Set;
 
 /**
  * Ansible XMLRPC handler
- * @xmlrpc.namespace ansible
- * @xmlrpc.doc Provides methods to manage Ansible systems
+ * @apidoc.namespace ansible
+ * @apidoc.doc Provides methods to manage Ansible systems
  */
 public class AnsibleHandler extends BaseHandler {
 
@@ -71,15 +71,15 @@ public class AnsibleHandler extends BaseHandler {
      * @param actionChainLabel label af action chain to use
      * @return the execute playbook action id
      *
-     * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
-     * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
-     * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
-     * @xmlrpc.param #param_desc("$date", "earliestOccurrence",
+     * @apidoc.doc Schedule a playbook execution
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "playbookPath", "path to the playbook file in the control node")
+     * @apidoc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
+     * @apidoc.param #param_desc("int", "controlNodeId", "system ID of the control node")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence",
      * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
-     * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
-     * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
+     * @apidoc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
      */
     public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
             Date earliestOccurrence, String actionChainLabel) {
@@ -99,16 +99,16 @@ public class AnsibleHandler extends BaseHandler {
      * @param testMode true if the playbook shall be executed in test mode
      * @return the execute playbook action id
      *
-     * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
-     * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
-     * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
-     * @xmlrpc.param #param_desc("$date", "earliestOccurrence",
+     * @apidoc.doc Schedule a playbook execution
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "playbookPath", "path to the playbook file in the control node")
+     * @apidoc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
+     * @apidoc.param #param_desc("int", "controlNodeId", "system ID of the control node")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence",
      * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
-     * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
-     * @xmlrpc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
-     * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
+     * @apidoc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
+     * @apidoc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
      */
     public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
             Date earliestOccurrence, String actionChainLabel, boolean testMode) {
@@ -128,19 +128,19 @@ public class AnsibleHandler extends BaseHandler {
      * @param ansibleArgs the dictionary of additional arguments to pass to ansiblegate
      * @return the execute playbook action id
      *
-     * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
-     * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
-     * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
-     * @xmlrpc.param #param_desc("$date", "earliestOccurrence",
+     * @apidoc.doc Schedule a playbook execution
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "playbookPath", "path to the playbook file in the control node")
+     * @apidoc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
+     * @apidoc.param #param_desc("int", "controlNodeId", "system ID of the control node")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence",
      * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
-     * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
-     * @xmlrpc.param
+     * @apidoc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
+     * @apidoc.param
      *     #struct_begin("ansibleArgs")
      *         #prop("boolean", "flushCache", "clear the fact cache for every host in inventory")
      *     #struct_end()
-     * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
      */
     public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
             Date earliestOccurrence, String actionChainLabel, Map<String, Object> ansibleArgs) {
@@ -161,20 +161,20 @@ public class AnsibleHandler extends BaseHandler {
      * @param ansibleArgs the dictionary of additional arguments to pass to ansiblegate
      * @return the execute playbook action id
      *
-     * @xmlrpc.doc Schedule a playbook execution
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
-     * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
-     * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
-     * @xmlrpc.param #param_desc("$date", "earliestOccurrence",
+     * @apidoc.doc Schedule a playbook execution
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "playbookPath", "path to the playbook file in the control node")
+     * @apidoc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
+     * @apidoc.param #param_desc("int", "controlNodeId", "system ID of the control node")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence",
      * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
-     * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
-     * @xmlrpc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
-     * @xmlrpc.param
+     * @apidoc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
+     * @apidoc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
+     * @apidoc.param
      *     #struct_begin("ansibleArgs")
      *         #prop("boolean", "flushCache", "clear the fact cache for every host in inventory")
      *     #struct_end()
-     * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
      */
     public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath,
             Integer controlNodeId, Date earliestOccurrence, String actionChainLabel, boolean testMode,
@@ -206,10 +206,10 @@ public class AnsibleHandler extends BaseHandler {
      * @return List ansible paths
      *
      *
-     * @xmlrpc.doc List ansible paths for server (control node)
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "controlNodeId", "id of ansible control node server")
-     * @xmlrpc.returntype
+     * @apidoc.doc List ansible paths for server (control node)
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "controlNodeId", "id of ansible control node server")
+     * @apidoc.returntype
      * #return_array_begin()
      * $AnsiblePathSerializer
      * #array_end()
@@ -231,10 +231,10 @@ public class AnsibleHandler extends BaseHandler {
      * @param pathId the path id
      * @return matching path
      *
-     * @xmlrpc.doc Lookup ansible path by path id
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "pathId", "path id")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lookup ansible path by path id
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "pathId", "path id")
+     * @apidoc.returntype
      * $AnsiblePathSerializer
      */
     @ReadOnly
@@ -255,15 +255,15 @@ public class AnsibleHandler extends BaseHandler {
      * @param props the props with the path properties
      * @return created path
      *
-     * @xmlrpc.doc Create ansible path
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param
+     * @apidoc.doc Create ansible path
+     * @apidoc.param #session_key()
+     * @apidoc.param
      *  #struct_begin("props")
      *      #prop_desc("string", "type", "The ansible path type: 'inventory' or 'playbook'")
      *      #prop_desc("int", "server_id", "ID of control node server")
      *      #prop_desc("string", "path", "The local path to inventory/playbook")
      *  #struct_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * $AnsiblePathSerializer
      */
     public AnsiblePath createAnsiblePath(User loggedInUser, Map<String, Object> props) {
@@ -290,14 +290,14 @@ public class AnsibleHandler extends BaseHandler {
      * @param props the props with the path properties
      * @return updated path
      *
-     * @xmlrpc.doc Create ansible path
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "pathId", "path id")
-     * @xmlrpc.param
+     * @apidoc.doc Create ansible path
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "pathId", "path id")
+     * @apidoc.param
      *  #struct_begin("props")
      *      #prop_desc("string", "path", "The local path to inventory/playbook")
      *  #struct_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * $AnsiblePathSerializer
      */
     public AnsiblePath updateAnsiblePath(User loggedInUser, Integer pathId, Map<String, Object> props) {
@@ -321,10 +321,10 @@ public class AnsibleHandler extends BaseHandler {
      * @return 1 on success
      * @throws EntityNotExistsFaultException when path not found or not accessible
      *
-     * @xmlrpc.doc Create ansible path
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "pathId", "path id")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Create ansible path
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "pathId", "path id")
+     * @apidoc.returntype #return_int_success()
      *
      */
     public int removeAnsiblePath(User loggedInUser, Integer pathId) {
@@ -346,12 +346,12 @@ public class AnsibleHandler extends BaseHandler {
      * @return the playbook contents or empty optional if minion did not respond
      * @throws LookupException when path not found or not accessible
      *
-     * @xmlrpc.doc Fetch the playbook content from the control node using a synchronous salt call.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "pathId", "playbook path id")
-     * @xmlrpc.param #param_desc("string", "playbookRelPath", "relative path of playbook (inside path specified by
+     * @apidoc.doc Fetch the playbook content from the control node using a synchronous salt call.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "pathId", "playbook path id")
+     * @apidoc.param #param_desc("string", "playbookRelPath", "relative path of playbook (inside path specified by
      * pathId)")
-     * @xmlrpc.returntype #param_desc("string", "contents", "Text contents of the playbook")
+     * @apidoc.returntype #param_desc("string", "contents", "Text contents of the playbook")
      */
     public String fetchPlaybookContents(User loggedInUser, Integer pathId, String playbookRelPath) {
         try {
@@ -376,10 +376,10 @@ public class AnsibleHandler extends BaseHandler {
      * @param pathId the path id
      * @return the playbooks under given path
      *
-     * @xmlrpc.doc Discover playbooks under given playbook path with given pathId
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "pathId", "path id")
-     * @xmlrpc.returntype
+     * @apidoc.doc Discover playbooks under given playbook path with given pathId
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "pathId", "path id")
+     * @apidoc.returntype
      * #struct_begin("playbooks")
      *     #struct_begin("playbook")
      *         $AnsiblePathSerializer
@@ -409,10 +409,10 @@ public class AnsibleHandler extends BaseHandler {
      * @param pathId the path id
      * @return the inventory contents under given path
      *
-     * @xmlrpc.doc Introspect inventory under given inventory path with given pathId and return it in a structured way
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "pathId", "path id")
-     * @xmlrpc.returntype
+     * @apidoc.doc Introspect inventory under given inventory path with given pathId and return it in a structured way
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "pathId", "path id")
+     * @apidoc.returntype
      * #struct_begin("Inventory in a nested structure")
      *   #param_desc("object", "Inventory item", "Inventory item (can be nested)")
      * #struct_end()

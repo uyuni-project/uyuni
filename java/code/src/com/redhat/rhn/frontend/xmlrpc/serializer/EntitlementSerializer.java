@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * EntitlementSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("entitlement info")
  *   #prop("string", "label")
  *   #prop("string", "name")

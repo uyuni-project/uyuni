@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * Serializer for {@link com.redhat.rhn.domain.recurringactions.RecurringAction} class and subclasses
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("recurring action information")
  *   #prop("int", "id")
  *   #prop("string", "name")

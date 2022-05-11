@@ -43,25 +43,22 @@
 #macro( struct_desc_end )
 	</ul>
 #end
-#macro(array_begin $value)
-<em>array</em> $value
-  <ul>
-   <li>
-#end
 #macro(return_array_begin)
 <em>array</em>
   <ul>
    <li>
 #end
-#macro(array_end)
-</li></ul>
-#end
-#macro(array_desc $type $value $desc)
-<em>array($type)</em> $value - $desc
+#macro(array_begin $value)
+<em>array</em> $value
   <ul>
    <li>
 #end
-#macro(array_desc_end)
+#macro(array_begin_desc $value $desc)
+<em>array</em> $value - $desc
+  <ul>
+   <li>
+#end
+#macro(array_end)
 </li></ul>
 #end
 #macro(array_single $type $value)

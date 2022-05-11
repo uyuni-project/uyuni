@@ -34,8 +34,8 @@ import java.util.Set;
 
 /**
  * PackagesProvider
- * @xmlrpc.namespace packages.provider
- * @xmlrpc.doc Methods to retrieve information about Package Providers associated with
+ * @apidoc.namespace packages.provider
+ * @apidoc.doc Methods to retrieve information about Package Providers associated with
  *      packages.
  */
 public class PackagesProviderHandler extends BaseHandler {
@@ -45,10 +45,10 @@ public class PackagesProviderHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return List of package providers
      *
-     * @xmlrpc.doc List all Package Providers.
+     * @apidoc.doc List all Package Providers.
      * User executing the request must be a #product() administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *  #return_array_begin()
      *      $PackageProviderSerializer
      *  #array_end()
@@ -66,11 +66,11 @@ public class PackagesProviderHandler extends BaseHandler {
      * @param providerName the provider name
      * @return set of package keys
      *
-     * @xmlrpc.doc List all security keys associated with a package provider.
+     * @apidoc.doc List all security keys associated with a package provider.
      * User executing the request must be a #product() administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "providerName", "The provider name")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "providerName", "The provider name")
+     * @apidoc.returntype
      *  #return_array_begin()
      *      $PackageKeySerializer
      *  #array_end()
@@ -95,15 +95,15 @@ public class PackagesProviderHandler extends BaseHandler {
      * @param type the type string (currently only 'gpg' is supported)
      * @return 1 on success
      *
-     * @xmlrpc.doc Associate a package security key and with the package provider.
+     * @apidoc.doc Associate a package security key and with the package provider.
      *      If the provider or key doesn't exist, it is created. User executing the
      *      request must be a #product() administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "providerName", "The provider name")
-     * @xmlrpc.param #param_desc("string", "key", "The actual key")
-     * @xmlrpc.param #param_desc("string", "type", "The type of the key. Currently,
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "providerName", "The provider name")
+     * @apidoc.param #param_desc("string", "key", "The actual key")
+     * @apidoc.param #param_desc("string", "type", "The type of the key. Currently,
      * only 'gpg' is supported")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *      #return_int_success()
      */
     public int associateKey(User loggedInUser, String providerName, String key,

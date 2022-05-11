@@ -37,8 +37,8 @@ import java.util.Map;
 /**
  * Handler for Recurring Actions ({@link RecurringAction})
 
- * @xmlrpc.namespace recurringaction
- * @xmlrpc.doc Provides methods to handle Recurring Actions for Minions, Groups and Organizations.
+ * @apidoc.namespace recurringaction
+ * @apidoc.doc Provides methods to handle Recurring Actions for Minions, Groups and Organizations.
  */
 public class RecurringActionHandler extends BaseHandler {
 
@@ -60,11 +60,11 @@ public class RecurringActionHandler extends BaseHandler {
      * @param entityType type of the entity
      * @return the list of recurring actions
      *
-     * @xmlrpc.doc Return a list of recurring actions for a given entity.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "entityType", "type of the target entity. Can be MINION, GROUP or ORG.")
-     * @xmlrpc.param #param_desc("int", "entityId", "ID of the target entity")
-     * @xmlrpc.returntype
+     * @apidoc.doc Return a list of recurring actions for a given entity.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "entityType", "type of the target entity. Can be MINION, GROUP or ORG.")
+     * @apidoc.param #param_desc("int", "entityId", "ID of the target entity")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $RecurringActionSerializer
      *      #array_end()
@@ -95,10 +95,10 @@ public class RecurringActionHandler extends BaseHandler {
      * @param actionId id of the action
      * @return the recurring action exception thrown otherwise
      *
-     * @xmlrpc.doc Return recurring action with given action ID.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "actionId", "ID of the action")
-     * @xmlrpc.returntype $RecurringActionSerializer
+     * @apidoc.doc Return recurring action with given action ID.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "actionId", "ID of the action")
+     * @apidoc.returntype $RecurringActionSerializer
      */
     @ReadOnly
     public RecurringAction lookupById(User loggedInUser, Integer actionId) {
@@ -118,9 +118,9 @@ public class RecurringActionHandler extends BaseHandler {
      * @param actionProps Map containing action properties
      * @return action id or exception thrown otherwise
      *
-     * @xmlrpc.doc Create a new recurring action.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param
+     * @apidoc.doc Create a new recurring action.
+     * @apidoc.param #session_key()
+     * @apidoc.param
      *  #struct_begin("actionProps")
      *      #prop_desc("string", "entity_type", "the type of the target entity. One of the following:")
      *        #options()
@@ -133,7 +133,7 @@ public class RecurringActionHandler extends BaseHandler {
      *      #prop_desc("string", "cron_expr", "the execution frequency of the action")
      *      #prop_desc("boolean", "test", "whether the action should be executed in test mode (optional)")
      *  #struct_end()
-     * @xmlrpc.returntype #param_desc("int", "id", "the ID of the recurring action")
+     * @apidoc.returntype #param_desc("int", "id", "the ID of the recurring action")
      */
     public int create(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = createAction(actionProps, loggedInUser);
@@ -173,9 +173,9 @@ public class RecurringActionHandler extends BaseHandler {
      * @param actionProps Map containing properties to update
      * @return action id or exception thrown otherwise
      *
-     * @xmlrpc.doc Update a recurring action.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param
+     * @apidoc.doc Update a recurring action.
+     * @apidoc.param #session_key()
+     * @apidoc.param
      *  #struct_begin("actionProps")
      *      #prop_desc("int", "id", "the ID of the action to update")
      *      #prop_desc("string", "name", "the name of the action (optional)")
@@ -183,7 +183,7 @@ public class RecurringActionHandler extends BaseHandler {
      *      #prop_desc("boolean", "test", "whether the action should be executed in test mode (optional)")
      *      #prop_desc("boolean", "active", "whether the action should be active (optional)")
      *  #struct_end()
-     * @xmlrpc.returntype #param_desc("int", "id", "the ID of the recurring action")
+     * @apidoc.returntype #param_desc("int", "id", "the ID of the recurring action")
      */
     public int update(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = updateAction(actionProps, loggedInUser);
@@ -237,10 +237,10 @@ public class RecurringActionHandler extends BaseHandler {
      * @param actionId id of the action
      * @return id of deleted action otherwise exception thrown
      *
-     * @xmlrpc.doc Delete recurring action with given action id.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "actionId", "ID of the action")
-     * @xmlrpc.returntype #param_desc("int", "id", "the ID of the recurring action")
+     * @apidoc.doc Delete recurring action with given action id.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "actionId", "ID of the action")
+     * @apidoc.returntype #param_desc("int", "id", "the ID of the recurring action")
      */
     public int delete(User loggedInUser, Integer actionId) {
         RecurringAction action = lookupById(loggedInUser, actionId);

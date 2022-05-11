@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  *
  * DmiSerializer
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("DMI")
  *          #prop("string", "vendor")
  *          #prop("string", "system")

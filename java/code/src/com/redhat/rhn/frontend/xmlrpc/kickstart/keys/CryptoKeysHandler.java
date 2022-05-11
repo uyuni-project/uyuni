@@ -32,8 +32,8 @@ import com.suse.manager.api.ReadOnly;
 import java.util.List;
 
 /**
- * @xmlrpc.namespace kickstart.keys
- * @xmlrpc.doc Provides methods to manipulate kickstart keys.
+ * @apidoc.namespace kickstart.keys
+ * @apidoc.doc Provides methods to manipulate kickstart keys.
  *
  * @author Jason Dobies
  */
@@ -45,10 +45,10 @@ public class CryptoKeysHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return a list of maps containing the description and type of key found
      *
-     * @xmlrpc.doc list all keys for the org associated with the user logged into the
+     * @apidoc.doc list all keys for the org associated with the user logged into the
      *             given session
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *      #return_array_begin()
      *          #struct_begin("key")
      *              #prop("string", "description")
@@ -82,12 +82,12 @@ public class CryptoKeysHandler extends BaseHandler {
      * @throws KickstartKeyAlreadyExistsException if a key with the given description
      *         already exists for the user's org
      *
-     * @xmlrpc.doc creates a new key with the given parameters
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.param #param_desc("string", "type", "valid values are GPG or SSL")
-     * @xmlrpc.param #param("string", "content")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc creates a new key with the given parameters
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "description")
+     * @apidoc.param #param_desc("string", "type", "valid values are GPG or SSL")
+     * @apidoc.param #param("string", "content")
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String description, String type, String content) {
 
@@ -119,10 +119,10 @@ public class CryptoKeysHandler extends BaseHandler {
      * @return 1 if the delete was successful
      * @throws KickstartKeyDeleteException if there is an error during the delete
      *
-     * @xmlrpc.doc deletes the key identified by the given parameters
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc deletes the key identified by the given parameters
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "description")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String description) {
 
@@ -159,12 +159,12 @@ public class CryptoKeysHandler extends BaseHandler {
      * @return 1 if the delete was successful
      * @throws KickstartKeyDeleteException if there is an error during the delete
      *
-     * @xmlrpc.doc Updates type and content of the key identified by the description
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.param #param_desc("string", "type", "valid values are GPG or SSL")
-     * @xmlrpc.param #param("string", "content")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Updates type and content of the key identified by the description
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "description")
+     * @apidoc.param #param_desc("string", "type", "valid values are GPG or SSL")
+     * @apidoc.param #param("string", "content")
+     * @apidoc.returntype #return_int_success()
      */
     public int update(User loggedInUser, String description, String type, String content) {
         BaseHandler.ensureOrgOrConfigAdmin(loggedInUser);
@@ -190,10 +190,10 @@ public class CryptoKeysHandler extends BaseHandler {
      *
      * @return holder object containing the data associated with the key
      *
-     * @xmlrpc.doc returns all the data associated with the given key
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.returntype
+     * @apidoc.doc returns all the data associated with the given key
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "description")
+     * @apidoc.returntype
      *      #struct_begin("key")
      *          #prop("string", "description")
      *          #prop("string", "type")

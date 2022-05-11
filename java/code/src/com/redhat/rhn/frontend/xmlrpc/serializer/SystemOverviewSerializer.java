@@ -27,7 +27,7 @@ import java.util.Date;
  *
  * SystemOverviewSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("system")
  *     #prop("int", "id")

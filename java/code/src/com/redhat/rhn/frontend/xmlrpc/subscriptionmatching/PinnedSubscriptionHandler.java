@@ -32,8 +32,8 @@ import java.util.List;
  * [1]: rhn/manager/subscription-matching/subscription_report.csv
  * [2]: rhn/manager/api/subscription-matching/data
  *
- * @xmlrpc.namespace subscriptionmatching.pinnedsubscription
- * @xmlrpc.doc Provides the namespace for operations on Pinned Subscriptions
+ * @apidoc.namespace subscriptionmatching.pinnedsubscription
+ * @apidoc.doc Provides the namespace for operations on Pinned Subscriptions
  */
 public class PinnedSubscriptionHandler extends BaseHandler {
 
@@ -43,9 +43,9 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * @param loggedInUser - logged in user
      * @return list of all Pinned Subscriptions
      *
-     * @xmlrpc.doc Lists all PinnedSubscriptions
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists all PinnedSubscriptions
+     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $PinnedSubscriptionSerializer
      *     #array_end()
@@ -63,11 +63,11 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * @param sid - id of system
      * @return new PinnedSubscription instance if successful, exception otherwise
      *
-     * @xmlrpc.doc Creates a Pinned Subscription based on given subscription and system
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "subscriptionId" "Subscription ID")
-     * @xmlrpc.param #param_desc("int", "sid" "System ID")
-     * @xmlrpc.returntype $PinnedSubscriptionSerializer
+     * @apidoc.doc Creates a Pinned Subscription based on given subscription and system
+     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #param_desc("int", "subscriptionId" "Subscription ID")
+     * @apidoc.param #param_desc("int", "sid" "System ID")
+     * @apidoc.returntype $PinnedSubscriptionSerializer
      */
     public PinnedSubscription create(User loggedInUser, Integer subscriptionId,
             Integer sid) {
@@ -96,10 +96,10 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * @param subscriptionId - id of Pinned Subscription to delete
      * @return 1 if successful, exception otherwise
      *
-     * @xmlrpc.doc Deletes Pinned Subscription with given id
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("int", "subscriptionId" "Pinned Subscription ID")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Deletes Pinned Subscription with given id
+     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #param_desc("int", "subscriptionId" "Pinned Subscription ID")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, Integer subscriptionId) {
         ensureSatAdmin(loggedInUser);

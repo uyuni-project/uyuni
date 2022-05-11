@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * Converts an InstalledProduct object for representation as an XMLRPC struct.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("installed product")
  *     #prop("string", "name")
  *     #prop("boolean", "isBaseProduct")

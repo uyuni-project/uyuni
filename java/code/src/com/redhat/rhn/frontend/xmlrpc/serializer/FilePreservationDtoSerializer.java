@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * FilePreservationDtoSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("file preservation")
  *      #prop("int", "id")
  *      #prop("string", "name")

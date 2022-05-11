@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * representation as an XMLRPC struct.
  *
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("custom info")
  *          #prop("int", "id")
  *          #prop("string", "label")

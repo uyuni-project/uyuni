@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * ContentSourceFilterSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("filter")
  *      #prop("int", "sortOrder")
  *      #prop("string", "filter")

@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * ConfigChannelDtoSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("configuration channel information")
  *   #prop("int", "id")
  *   #prop("int", "orgId")

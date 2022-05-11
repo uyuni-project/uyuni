@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * ChannelInfoSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("channelInfo")
  *       #prop_desc("string", "label", "Channel label")
  *       #prop_desc("string", "name", "Channel name")

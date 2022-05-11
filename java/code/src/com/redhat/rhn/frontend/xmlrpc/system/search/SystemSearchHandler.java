@@ -37,8 +37,8 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  * SystemSearchHandler
  * Provides access to the internal XMLRPC search-server for system searches
- * @xmlrpc.namespace system.search
- * @xmlrpc.doc Provides methods to perform system search requests using the search server.
+ * @apidoc.namespace system.search
+ * @apidoc.doc Provides methods to perform system search requests using the search server.
  *
  */
 public class SystemSearchHandler extends BaseHandler {
@@ -89,10 +89,10 @@ public class SystemSearchHandler extends BaseHandler {
      * @return list of systems
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc List the systems which match this ip.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "searchTerm")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the systems which match this ip.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "searchTerm")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
@@ -109,10 +109,10 @@ public class SystemSearchHandler extends BaseHandler {
      * @return list of systems
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc List the systems which match this hostname
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "searchTerm")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the systems which match this hostname
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "searchTerm")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
@@ -129,10 +129,10 @@ public class SystemSearchHandler extends BaseHandler {
      * @return list of systems
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc List the systems which match this device vendor_id
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "searchTerm")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the systems which match this device vendor_id
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "searchTerm")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
@@ -149,10 +149,10 @@ public class SystemSearchHandler extends BaseHandler {
      * @return list of systems
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc List the systems which match this device id
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "searchTerm")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the systems which match this device id
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "searchTerm")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
@@ -169,10 +169,10 @@ public class SystemSearchHandler extends BaseHandler {
      * @return list of systems
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc List the systems which match this device driver.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "searchTerm")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the systems which match this device driver.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "searchTerm")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
@@ -189,10 +189,10 @@ public class SystemSearchHandler extends BaseHandler {
      * @return list of systems
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc List the systems which match the device description.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "searchTerm")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the systems which match the device description.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "searchTerm")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
@@ -209,10 +209,10 @@ public class SystemSearchHandler extends BaseHandler {
      * @return list of systems
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc List the systems which match this name or description
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "searchTerm")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the systems which match this name or description
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "searchTerm")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
@@ -229,10 +229,10 @@ public class SystemSearchHandler extends BaseHandler {
      * @return list of systems
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc List the systems which match this UUID
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "searchTerm")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the systems which match this UUID
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "searchTerm")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $SystemSearchResultSerializer
      *     #array_end()
