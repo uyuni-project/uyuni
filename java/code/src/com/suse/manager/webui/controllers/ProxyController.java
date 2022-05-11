@@ -25,6 +25,7 @@ import static spark.Spark.post;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.SystemsExistException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
@@ -127,6 +128,11 @@ public class ProxyController {
             LOG.error("Failed to generate proxy container configuration", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
                     "Failed to generate proxy container configuration");
+        }
+        catch (SystemsExistException e) {
+            String msg = String.format("Cannot create proxy as an existing system has FQDN '%s'", data.getProxyFqdn());
+            LOG.error(msg);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
         }
         catch (RhnRuntimeException e) {
             return json(response, HttpStatus.SC_BAD_REQUEST, e.getMessage());
