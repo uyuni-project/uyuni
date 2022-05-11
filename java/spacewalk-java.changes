@@ -1,3 +1,4 @@
+- Fix outdated documentation and release notes links
 - Fix error message in Kubernetes VHM creation dialog
 - Add createAppStreamFilters() XMLRPC function
 - Correct concurrency error on payg taskomatic task

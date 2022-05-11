@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { docsLocale } from "core/user-preferences";
+
 import styles from "./login.css";
 
 type Props = {
@@ -17,7 +19,7 @@ const LoginFooter = (props: Props) => (
         </div>
         <div className={`footer-release ${styles.footer_release_container}`}>
           {`${props.productName} release `}
-          <a href="/rhn/help/dispatcher/release_notes">{props.webVersion}</a>
+          <a href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>{props.webVersion}</a>
         </div>
         <div>{props.customFooter}</div>
       </div>

@@ -1,3 +1,4 @@
+- Fix outdated documentation and release notes links
 - Fix mimetype in kubeconfig validation request (bsc#1199019)
 
 -------------------------------------------------------------------
