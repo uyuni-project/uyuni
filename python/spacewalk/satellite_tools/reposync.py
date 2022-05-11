@@ -1416,7 +1416,7 @@ class RepoSync(object):
                 else:
                     pack.path = ""
 
-                if self.match_package_checksum(db_pack['path'], pack.path, pack.checksum_type, pack.checksum):
+                if self.match_package_checksum(pack, db_pack):
                     # package is already on disk
                     pack_status = ' . '
 

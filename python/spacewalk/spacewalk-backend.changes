@@ -1,3 +1,4 @@
+- Fix traceback on calling spacewalk-repo-sync --show-packages
 - cleanup leftovers from removing unused xmlrpc endpoint
 
 -------------------------------------------------------------------
