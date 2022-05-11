@@ -587,6 +587,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the created {@link ContentFilter}
      *
      * @apidoc.doc Create a Content Filter
+     * #paragraph_end()
      * #paragraph()
      * The following filters are available (you can get the list in machine-readable format using
      * the listFilterCriteria() endpoint):
@@ -620,7 +621,6 @@ public class ContentManagementHandler extends BaseHandler {
      * #paragraph_end()
      * #paragraph()
      * Note: The 'matches' matcher works on Java regular expressions.
-     * #paragraph_end()
      *
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "name", "Filter name")
@@ -707,9 +707,9 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the updated {@link ContentFilter}
      *
      * @apidoc.doc Update a Content Filter
+     * #paragraph_end()
      * #paragraph()
      * See also: createFilter(), listFilterCriteria()
-     * #paragraph_end()
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "filterId", "Filter ID")
      * @apidoc.param #param_desc("string", "name", "New filter name")

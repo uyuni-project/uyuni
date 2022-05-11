@@ -123,7 +123,7 @@ public class UserExternalHandler extends BaseHandler {
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
      * #product() organization name. Can only be called by a #product() Administrator.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("boolean", "useOrgUnit", "tue if we should use the IPA
+     * @apidoc.param #param_desc("boolean", "useOrgUnit", "true if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise.")
      * @apidoc.returntype #return_int_success()
      */

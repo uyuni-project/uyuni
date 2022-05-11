@@ -516,7 +516,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "systemGroupName")
      * @apidoc.param #array_single("int", "errataIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
@@ -541,7 +541,8 @@ public class ServerGroupHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "systemGroupName")
      * @apidoc.param #array_single("int", "errataIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
+     * @apidoc.param #param("boolean", "onlyRelevant")
      * @apidoc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,

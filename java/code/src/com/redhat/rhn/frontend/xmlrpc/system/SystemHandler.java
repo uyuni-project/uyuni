@@ -3591,7 +3591,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #array_single("int", "errataIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sids,
@@ -3615,7 +3615,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #array_single("int", "errataIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.returntype #array_single("int", "actionId")
@@ -3643,7 +3643,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #array_single("int", "errataIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.param #param_desc("boolean", "onlyRelevant",
@@ -3744,7 +3744,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_single("int", "errataIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid,
@@ -3770,7 +3770,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_single("int", "errataIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.returntype #array_single("int", "actionId")
@@ -3799,7 +3799,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_single("int", "errataIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.param #param("boolean", "onlyRelevant")
@@ -4186,7 +4186,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #array_single("int", "packageIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageInstall(User loggedInUser, List<Integer> sids,
@@ -4211,7 +4211,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #array_single("int", "packageIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.returntype #array_single("int", "actionId")
@@ -4246,9 +4246,9 @@ public class SystemHandler extends BaseHandler {
      * @since 25
      *
      * @apidoc.doc Schedule full package update for several systems.
-     * @apidoc.param #param("string", "sessionKey")
+     * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "serverId")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #param("int", "actionId")
      */
     public Long schedulePackageUpdate(User loggedInUser, List<Integer> sids,
@@ -4273,7 +4273,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_single("int", "packageIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long schedulePackageInstall(User loggedInUser, final Integer sid,
@@ -4297,7 +4297,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_single("int", "packageIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -4330,7 +4330,7 @@ public class SystemHandler extends BaseHandler {
     *
     *                   #struct_end()
     *               #array_end()
-    * @apidoc.param dateTime.iso8601 earliestOccurrence
+    * @apidoc.param #param("$date", "earliestOccurrence")
     * @apidoc.returntype #array_single("int", "actionId")
     */
     public Long[] schedulePackageInstallByNevra(User loggedInUser, List<Integer> sids,
@@ -4364,7 +4364,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.returntype #array_single("int", "actionId")
@@ -4399,7 +4399,7 @@ public class SystemHandler extends BaseHandler {
     *
     *                   #struct_end()
     *               #array_end()
-    * @apidoc.param dateTime.iso8601 earliestOccurrence
+    * @apidoc.param #param("$date", "earliestOccurrence")
     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
     */
     public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid,
@@ -4433,7 +4433,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *              "Allow this API call, despite modular content being present")
      * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -4458,7 +4458,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #array_single("int", "packageIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageRemove(User loggedInUser, List<Integer> sids,
@@ -4484,7 +4484,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #array_single("int", "packageIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.returntype #array_single("int", "actionId")
@@ -4510,7 +4510,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_single("int", "packageIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int schedulePackageRemove(User loggedInUser, Integer sid,
@@ -4539,7 +4539,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_single("int", "packageIds")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
@@ -4577,7 +4577,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #array_single("int", "actionId")
      */
     public Long[] schedulePackageRemoveByNevra(User loggedInUser, List<Integer> sids,
@@ -4612,7 +4612,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.returntype #array_single("int", "actionId")
@@ -4647,7 +4647,7 @@ public class SystemHandler extends BaseHandler {
     *
     *                   #struct_end()
     *               #array_end()
-    * @apidoc.param dateTime.iso8601 earliestOccurrence
+    * @apidoc.param #param("$date", "earliestOccurrence")
     * @apidoc.returntype #array_single("int", "actionId")
     */
     public int schedulePackageRemoveByNevra(User loggedInUser, final Integer sid,
@@ -4685,7 +4685,7 @@ public class SystemHandler extends BaseHandler {
      *
      *                   #struct_end()
      *               #array_end()
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
      * @apidoc.returntype #array_single("int", "actionId")
@@ -4716,7 +4716,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #array_single("int", "pkgIdsToLock")
      * @apidoc.param #array_single("int", "pkgIdsToUnlock")
-     * @apidoc.param dateTime.iso8601 earliestOccurrence
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #return_int_success()
      */
     public Long schedulePackageLockChange(User loggedInUser, Integer sid,
@@ -4990,7 +4990,7 @@ public class SystemHandler extends BaseHandler {
      * @return ID of the new script action.
      * @apidoc.doc Schedule a script to run.
      * @apidoc.param #session_key()
-     * @apidoc.param #array_single("int", "sids", "System IDs of the servers to run the script on.")
+     * @apidoc.param #array_single_desc("int", "sids", "System IDs of the servers to run the script on.")
      * @apidoc.param #param_desc("string", "username", "User to run script as.")
      * @apidoc.param #param_desc("string", "groupname", "Group to run script as.")
      * @apidoc.param #param_desc("int", "timeout", "Seconds to allow the script to run
@@ -5188,7 +5188,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.doc Schedule a reboot for a system.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
-     * @apidoc.param #param("dateTime.iso860", "earliestOccurrence")
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleReboot(User loggedInUser, Integer sid,
@@ -7169,7 +7169,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.doc Schedule update of client certificate at given date and time
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
-     * @apidoc.param #param("dateTime.iso860", "earliestOccurrence")
+     * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int scheduleCertificateUpdate(User loggedInUser, Integer sid, Date earliestOccurrence) {

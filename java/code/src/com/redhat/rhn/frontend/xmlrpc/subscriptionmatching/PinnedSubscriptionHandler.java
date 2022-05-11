@@ -44,7 +44,7 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * @return list of all Pinned Subscriptions
      *
      * @apidoc.doc Lists all PinnedSubscriptions
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype
      *     #return_array_begin()
      *         $PinnedSubscriptionSerializer
@@ -64,7 +64,7 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * @return new PinnedSubscription instance if successful, exception otherwise
      *
      * @apidoc.doc Creates a Pinned Subscription based on given subscription and system
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "subscriptionId" "Subscription ID")
      * @apidoc.param #param_desc("int", "sid" "System ID")
      * @apidoc.returntype $PinnedSubscriptionSerializer
@@ -97,7 +97,7 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @apidoc.doc Deletes Pinned Subscription with given id
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "subscriptionId" "Pinned Subscription ID")
      * @apidoc.returntype #return_int_success()
      */

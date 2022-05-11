@@ -779,7 +779,7 @@ public class ConfigChannelHandler extends BaseHandler {
      *
      * @apidoc.doc Remove file paths from a global channel.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string","label", "channel to remove the files from")
+     * @apidoc.param #param_desc("string", "label", "channel to remove the files from")
      * @apidoc.param #array_single("string", "paths", "file paths to remove")
      * @apidoc.returntype #return_int_success()
      */

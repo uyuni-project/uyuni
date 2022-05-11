@@ -44,7 +44,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return List of Virtual Host Managers
      *
      * @apidoc.doc Lists Virtual Host Managers visible to a user
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype
      *     #return_array_begin()
      *         $VirtualHostManagerSerializer
@@ -68,7 +68,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @apidoc.doc Creates a Virtual Host Manager from given arguments
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "label" "Virtual Host Manager label")
      * @apidoc.param #param_desc("string", "moduleName" "the name of the Gatherer module")
      * @apidoc.param #param_desc("parameters", "parameters"
@@ -112,7 +112,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return 1 if successful, exception otherwise
      *
      * @apidoc.doc Deletes a Virtual Host Manager with a given label
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "label", "Virtual Host Manager label")
      * @apidoc.returntype #return_int_success()
      */
@@ -137,7 +137,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return Virtual Host Manager details
      *
      * @apidoc.doc Gets details of a Virtual Host Manager with a given label
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "label", "Virtual Host Manager label")
      * @apidoc.returntype $VirtualHostManagerSerializer
      */
@@ -154,7 +154,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @return List of available module names
      *
      * @apidoc.doc List all available modules from virtual-host-gatherer
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.returntype #array_single("string", "moduleName")
      */
     @ReadOnly
@@ -173,7 +173,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      *
      * @apidoc.doc Get a list of parameters for a virtual-host-gatherer module.
      * It returns a map of parameters with their typical default values.
-     * @apidoc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "moduleName", "The name of the module")
      * @apidoc.returntype #param_desc("map", "module_params", "module parameters")
      */

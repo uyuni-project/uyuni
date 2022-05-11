@@ -487,7 +487,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *
      * @apidoc.doc Allows to modify channel attributes
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "channelLabel", "channel label")
+     * @apidoc.param #param_desc("string", "channelLabel", "channel label")
      * @apidoc.param
      *  #struct_begin("details")
      *      #prop_desc("string", "checksum_label", "new channel repository checksum label
@@ -692,7 +692,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "checksumType", "checksum type for this channel,
      *              used for yum repository metadata generation")
      *      #options()
-     *          #item_desc ("sha1", "offers widest compatibility  with clients")
+     *          #item_desc ("sha1", "offers widest compatibility with clients")
      *          #item_desc ("sha256", "offers highest security, but is compatible
      *                        only with newer clients: Fedora 11 and newer,
      *                        or Enterprise Linux 6 and newer.")
@@ -769,7 +769,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "checksumType", "checksum type for this channel,
      *              used for yum repository metadata generation")
      *      #options()
-     *          #item_desc ("sha1", "offers widest compatibility  with clients")
+     *          #item_desc ("sha1", "offers widest compatibility with clients")
      *          #item_desc ("sha256", "offers highest security, but is compatible
      *                        only with newer clients: Fedora 11 and newer,
      *                        or Enterprise Linux 6 and newer.")
@@ -825,7 +825,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "checksumType", "checksum type for this channel,
      *              used for yum repository metadata generation")
      *      #options()
-     *          #item_desc ("sha1", "offers widest compatibility  with clients")
+     *          #item_desc ("sha1", "offers widest compatibility with clients")
      *          #item_desc ("sha256", "offers highest security, but is compatible
      *                        only with newer clients: Fedora 11 and newer,
      *                        or Enterprise Linux 6 and newer.")
