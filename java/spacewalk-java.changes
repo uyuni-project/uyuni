@@ -1,3 +1,4 @@
+- fix NoSuchElementException when pkg install date is missing
 - Improve API documentation
 - Fix outdated documentation and release notes links
 - Fix error message in Kubernetes VHM creation dialog

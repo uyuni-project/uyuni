@@ -1676,7 +1676,9 @@ public class SaltUtils {
                                                            Pkg.Info pkgInfo, Server server) {
         InstalledPackage pkg = new InstalledPackage();
         pkg.setEvr(packageEvr);
-        pkg.setInstallTime(new Date(pkgInfo.getInstallDateUnixTime().get() * 1000));
+        pkg.setInstallTime(pkgInfo.getInstallDateUnixTime()
+                .map(time -> new Date((time * 1000)))
+                .orElse(null));
         pkg.setName(packageName);
         pkg.setServer(server);
 
