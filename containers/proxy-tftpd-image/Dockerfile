@@ -1,4 +1,4 @@
-#!BuildTag: uyuni/proxy-tftpd:latest uyuni/proxy-tftpd:%PKG_VERSION% uyuni/proxy-tftpd:%PKG_VERSION%.%RELEASE% uyuni/proxy-tftpd:beta
+#!BuildTag: uyuni/proxy-tftpd:latest uyuni/proxy-tftpd:%PKG_VERSION% uyuni/proxy-tftpd:%PKG_VERSION%.%RELEASE%
 
 ARG BASE=registry.suse.com/bci/bci-base:15.3
 FROM $BASE

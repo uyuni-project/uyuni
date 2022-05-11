@@ -98,6 +98,18 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLES 15 SP3 Salt SSH minion
     When I create the bootstrap repository for "sle15sp3_ssh_minion" on the server
 
+@sle15sp4_client
+  Scenario: Create the bootstrap repository for a SLES 15 SP4 traditional client
+    When I create the bootstrap repository for "sle15sp4_client" on the server
+
+@sle15sp4_minion
+  Scenario: Create the bootstrap repository for a SLES 15 SP4 minion
+    When I create the bootstrap repository for "sle15sp4_minion" on the server
+
+@sle15sp4_ssh_minion
+  Scenario: Create the bootstrap repository for a SLES 15 SP4 Salt SSH minion
+    When I create the bootstrap repository for "sle15sp4_ssh_minion" on the server
+
 @ceos7_client
   Scenario: Create the bootstrap repository for a CentOS 7 traditional client
     When I create the bootstrap repository for "ceos7_client" on the server

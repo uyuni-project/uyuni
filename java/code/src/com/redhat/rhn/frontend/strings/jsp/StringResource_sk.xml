@@ -781,7 +781,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.removerole" xml:space="preserve">
           <source>Cannot remove role.</source>
-        <target/>
+        <target>Nie je možné odstrániť rolu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -28753,8 +28753,8 @@ given channel.</source>
         <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
-        <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
-        <target/>
+        <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -29422,7 +29422,7 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve">
+      <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
@@ -29432,19 +29432,23 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
           <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
+        <source>Following installed products will be removed from the system during migration:</source>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

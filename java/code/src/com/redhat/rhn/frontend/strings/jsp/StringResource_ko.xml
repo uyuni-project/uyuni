@@ -28932,8 +28932,8 @@ given channel.</source>
         <target state="translated">이 시스템에 설치된 &lt;strong&gt;Salt&lt;/strong&gt; 패키지 버전이 오래되었습니다. 패키지를 최신 버전으로 업데이트한 후 제품 마이그레이션을 시작하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
-        <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
-        <target>이 시스템에서 사용할 수 있는 마이그레이션이 없습니다. 설치된 일부 확장에 대한 후속 작업을 찾을 수 없음:</target>
+        <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
+        <target state="needs-adaptation">이 시스템에서 사용할 수 있는 마이그레이션이 없습니다. 설치된 일부 확장에 대한 후속 작업을 찾을 수 없음:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -29717,6 +29717,10 @@ given channel.</source>
         <source>Update Hub Reporting Database</source>
         <target state="final">허브 보고 데이터베이스 업데이트</target>
       </trans-unit>
-    </body>
+    <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
+        <source>Following installed products will be removed from the system during migration:</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

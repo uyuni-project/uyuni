@@ -42,7 +42,7 @@ public class VelocityHelper {
     public VelocityHelper(String templateDir) {
         Properties p = new Properties();
         if (templateDir != null) {
-            p.setProperty("file.resource.loader.path", templateDir);
+            p.setProperty("resource.loader.file.path", templateDir);
         }
         p.setProperty(RuntimeConstants.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL, "true");
 

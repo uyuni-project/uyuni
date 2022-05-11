@@ -387,7 +387,7 @@
         </context-group>
         <target>API</target>
       </trans-unit>
-      <trans-unit id="FAQs" xml:space="preserve">
+      <trans-unit id="FAQs" xml:space="preserve" approved="yes">
         <source>FAQs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -450,7 +450,7 @@
         </context-group>
         <target>Prüfen</target>
       </trans-unit>
-      <trans-unit id="OpenSCAP" xml:space="preserve">
+      <trans-unit id="OpenSCAP" xml:space="preserve" approved="yes">
         <source>OpenSCAP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -5935,7 +5935,7 @@ Benutzers vor dem Versuch, den Account zu deaktivieren.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Sie haben Ihren ersten Benutzer für den @@PRODUCT_NAME@@-Dienst erstellt.  Weitere Konfigurationen sollten durch einen &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;Klick hier&lt;/strong&gt;&lt;/a&gt; fertiggestellt werden.</target>
+        <target>Sie haben Ihren ersten Benutzer für den @@PRODUCT_NAME@@-Dienst erstellt. Weitere Konfigurationen sollten durch einen &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;Klick hier&lt;/strong&gt;&lt;/a&gt; fertiggestellt werden.</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -10857,17 +10857,24 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state. Check the server logs.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="container.based.proxy.config" xml:space="preserve">
+      <trans-unit id="container.based.proxy.config" xml:space="preserve">
         <source>Proxy Configuration</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Report Database Schema" xml:space="preserve">
+        <source>Report Database Schema</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

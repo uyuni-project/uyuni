@@ -16,7 +16,7 @@ class NamespaceUser
   end
 
   def create(user, password, first, last, email)
-    @test.call('user.create', sessionKey: @test.token, desiredLogin: user, desiredPassword: password, firstName: first, lastName: last, email: email)
+    @test.call('user.create', sessionKey: @test.token, login: user, password: password, firstName: first, lastName: last, email: email)
   end
 
   def delete(user)

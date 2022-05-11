@@ -24,4 +24,4 @@ sql:
         FROM ErrataChannelsReport
   ) X
   -- where placeholder
-  ORDER BY mgm_id, channel_label, advisory
+  ORDER BY mgm_id, advisory, channel_label

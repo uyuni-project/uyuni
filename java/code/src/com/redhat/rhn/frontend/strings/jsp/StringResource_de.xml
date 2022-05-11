@@ -9224,7 +9224,7 @@ und Organisationsmanagement-Tools haben, sollten Sie diese Rolle aus Ihrem Login
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.doT</context>
         </context-group>
-        <target>Bereits geklont? </target>
+        <target>Bereits geklont?</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.no" xml:space="preserve">
         <source>No</source>
@@ -11281,7 +11281,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.edit" xml:space="preserve">
           <source> Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source>
-        <target>Alternativ können Sie eine neue Version in dem '{0}' Bereich unten hochladen und '{1}' auswählen.</target>
+        <target> Alternativ können Sie eine neue Version in dem '{0}' Bereich unten hochladen und '{1}' auswählen.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -28528,7 +28528,8 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
-        <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
+        <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -29206,6 +29207,10 @@ für einen angegebenen Channel aufgelistet wird.</target>
       </trans-unit>
       <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
+        <source>Following installed products will be removed from the system during migration:</source>
         <target state="new"/>
       </trans-unit>
     </body>

@@ -1,5 +1,9 @@
-- Add missing_successors column to hold products without successors
-- Added Perl requirements.
+-------------------------------------------------------------------
+Wed May 04 15:25:59 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * Add missing_successors column to hold products without successors
+  * Added Perl requirements.
 
 -------------------------------------------------------------------
 Tue Apr 19 12:12:19 CEST 2022 - jgonzalez@suse.com

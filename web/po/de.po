@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#. * Mimic the translation function `t()`, this doesn't match the full functionality but should suffice for tests
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:47
 #: ../html/src/components/input/Range.tsx:59
@@ -14,12 +13,12 @@
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 #: ../html/src/utils/test-utils/setup/t.test.ts:7
-#: ../html/src/utils/test-utils/setup/t.ts:2
+#: ../html/src/utils/test-utils/setup/t.ts:4
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-24 14:18+0000\n"
+"POT-Creation-Date: 2022-04-29 11:12+0000\n"
 "PO-Revision-Date: 2022-01-11 14:51+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -370,7 +369,7 @@ msgid "Last Name"
 msgstr "Nachname"
 
 #: ../html/src/components/input/FormMultiInput.stories.tsx:112
-#: ../html/src/manager/login/login.tsx:162
+#: ../html/src/manager/login/uyuni/login.tsx:54
 msgid "Login"
 msgstr "Login"
 
@@ -386,7 +385,8 @@ msgstr "notwendig"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/login.tsx:173
+#: ../html/src/manager/login/susemanager/login.tsx:68
+#: ../html/src/manager/login/uyuni/login.tsx:65
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -644,7 +644,7 @@ msgstr "Ungültige Daten"
 msgid "No data"
 msgstr "Keine Daten"
 
-#: ../html/src/components/utils/HelpLink.tsx:21
+#: ../html/src/components/utils/HelpLink.tsx:23
 msgid "Help"
 msgstr "Hilfe"
 
@@ -679,73 +679,73 @@ msgstr "keine"
 msgid "Require this channel"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:22
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "Restart is needed for the configuration changes to take effect."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:25
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:26
 msgid "An internal error has occured. See the server logs for details."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:26
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:27
 msgid "Enabling monitoring failed. See the server logs for details."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:28
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:29
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:30
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:31
 msgid "Disabling monitoring failed. See the server logs for details."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:32
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:33
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:34
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:35
 msgid "Monitoring enabled successfully."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:35
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid "Monitoring disabled successfully."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:37
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:38
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:41
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:42
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:45
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:46
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:49
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Monitoring status hasn't changed."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "An error occured. Monitoring status unknown. Refresh the page."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:60
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:58
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:285
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
@@ -757,83 +757,83 @@ msgstr ""
 msgid "System"
 msgstr "System"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:61
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:62
 msgid "Tomcat (Java JMX)"
 msgstr "Tomcat (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:62
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:63
 msgid "Taskomatic (Java JMX)"
 msgstr "Taskomatic (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:63
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:64
 msgid "PostgreSQL database"
 msgstr "PostgreSQL Datenbank"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:64
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:65
 msgid "Server self monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:80
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:82
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:81
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:83
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:90
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:92
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:91
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:93
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:151
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
 msgid "Server Monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:153
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
 msgid "The server uses "
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:155
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:156
 msgid "Prometheus"
 msgstr "Prometheus"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:157
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:158
 msgid " exporters to expose metrics about your environment."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:160
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
 msgid "Refer to the "
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:166
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:167
 msgid "documentation"
 msgstr "Dokumentation"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:168
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:169
 msgid " to learn how to to consume these metrics."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:246
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:266
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:286
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:308
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:247
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:267
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:287
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:309
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:253
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:273
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:293
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:316
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:317
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:329
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:330
 msgid "SUSE Manager Configuration - Monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:334
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:335
 msgid "Setup your SUSE Manager server monitoring."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:340
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:219
@@ -841,38 +841,38 @@ msgstr ""
 msgid "General"
 msgstr "Allgemein"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:345
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:346
 msgid "Bootstrap Script"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:350
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
 msgid "Organizations"
 msgstr "Organisationen"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:355
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
 msgid "Restart"
 msgstr "Neustart"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:360
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:365
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
 msgid "Bare-metal systems"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:369
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:386
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:376
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:387
 msgid "Monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:397
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
 msgid "Restarting"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:399
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -896,7 +896,6 @@ msgstr ""
 #: ../html/src/manager/images/image-stores.tsx:148
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
-#: ../html/src/manager/proxy/container-config.tsx:248
 #: ../html/src/manager/state/recurring-states-list.tsx:51
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
@@ -2887,6 +2886,7 @@ msgid "Use credentials"
 msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:58
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3305,52 +3305,55 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
-#: ../html/src/manager/login/login.tsx:53
+#: ../html/src/manager/login/messages.tsx:14
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
 msgstr ""
 
-#: ../html/src/manager/login/login.tsx:62
+#: ../html/src/manager/login/messages.tsx:23
 msgid ""
 "Unable to validate the disk space availability. Please contact your system "
 "admistrator if this problem persists."
 msgstr ""
 
-#: ../html/src/manager/login/login.tsx:67
+#: ../html/src/manager/login/messages.tsx:28
 msgid ""
 "Some important directories are missing. Please contact your system "
 "administrator to review the configuration."
 msgstr ""
 
-#: ../html/src/manager/login/login.tsx:72
+#: ../html/src/manager/login/messages.tsx:33
 msgid ""
 "The available disk space on the server is running low. Please contact your "
 "system administrator to add more disk space."
 msgstr ""
 
-#: ../html/src/manager/login/login.tsx:77
+#: ../html/src/manager/login/messages.tsx:38
 msgid ""
 "The available disk space on the server is critically low. Please contact "
 "your system administrator to add more disk space."
 msgstr ""
 
-#: ../html/src/manager/login/login.tsx:95
+#: ../html/src/manager/login/messages.tsx:56
 msgid "Signing in ..."
 msgstr ""
 
-#: ../html/src/manager/login/login.tsx:142
+#: ../html/src/manager/login/susemanager/login.tsx:38
+#: ../html/src/manager/login/uyuni/login.tsx:34
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
 msgstr ""
 
-#: ../html/src/manager/login/login.tsx:145
-msgid "Learn more about"
+#: ../html/src/manager/login/susemanager/login.tsx:42
+msgid "_blank"
 msgstr ""
 
-#: ../html/src/manager/login/login.tsx:154
-#: ../html/src/manager/login/login.tsx:181
+#: ../html/src/manager/login/susemanager/login.tsx:57
+#: ../html/src/manager/login/susemanager/login.tsx:82
+#: ../html/src/manager/login/uyuni/login.tsx:46
+#: ../html/src/manager/login/uyuni/login.tsx:73
 msgid "Sign In"
 msgstr ""
 
@@ -3368,6 +3371,10 @@ msgstr ""
 
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
+msgstr ""
+
+#: ../html/src/manager/login/uyuni/login.tsx:37
+msgid "Learn more about"
 msgstr ""
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:74
@@ -4104,6 +4111,12 @@ msgstr ""
 msgid "SSL certificate"
 msgstr ""
 
+#: ../html/src/manager/proxy/container-config.tsx:248
+#: ../html/src/manager/proxy/container-config.tsx:373
+#, fuzzy
+msgid "Generate"
+msgstr "Allgemein"
+
 #: ../html/src/manager/proxy/container-config.tsx:249
 msgid "Use existing"
 msgstr ""
@@ -4194,11 +4207,6 @@ msgstr ""
 #: ../html/src/manager/proxy/container-config.tsx:362
 msgid "Proxy SSL private key"
 msgstr ""
-
-#: ../html/src/manager/proxy/container-config.tsx:373
-#, fuzzy
-msgid "Generate"
-msgstr "Allgemein"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4332,33 +4340,33 @@ msgstr ""
 msgid "Fingerprint"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:199
+#: ../html/src/manager/shared/menu/menu.tsx:203
 msgid "Clear Menu"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:201
+#: ../html/src/manager/shared/menu/menu.tsx:205
 msgid "Filter menu"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:238
-#: ../html/src/manager/shared/menu/menu.tsx:241
+#: ../html/src/manager/shared/menu/menu.tsx:242
+#: ../html/src/manager/shared/menu/menu.tsx:245
 msgid "Uyuni homepage"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:239
+#: ../html/src/manager/shared/menu/menu.tsx:243
 msgid "Uyuni"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:248
-#: ../html/src/manager/shared/menu/menu.tsx:257
+#: ../html/src/manager/shared/menu/menu.tsx:252
+#: ../html/src/manager/shared/menu/menu.tsx:261
 msgid "SUSE Manager homepage"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:251
+#: ../html/src/manager/shared/menu/menu.tsx:255
 msgid "SUSE"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:253
+#: ../html/src/manager/shared/menu/menu.tsx:257
 msgid "Manager"
 msgstr ""
 

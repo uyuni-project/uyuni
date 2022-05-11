@@ -247,7 +247,10 @@ public class SaltUtils {
                 results -> results.entrySet().stream()
                     .anyMatch(result -> extractFunction(result.getKey())
                         .map(fn -> fn.equals("mgrcompat.module_run") ?
-                            PKG_EXECUTION_MODULES.contains(result.getValue().getName()) :
+                            result.getValue().getName()
+                                    .map(x -> x.fold(Arrays::asList, List::of))
+                                    .orElseGet(ArrayList::new)
+                                    .stream().anyMatch(PKG_EXECUTION_MODULES::contains) :
                             PKG_STATE_MODULES.contains(fn)
                         ).orElse(false) &&
                         !result.getValue().getChanges().isEmpty()
@@ -414,7 +417,12 @@ public class SaltUtils {
                                 new TypeToken<StateApplyResult<JsonElement>>() {
                                 }.getType()
                         );
-                        if (PKG_EXECUTION_MODULES.contains(ap.getName())) {
+                        if (
+                            ap.getName()
+                                    .map(x -> x.fold(Arrays::asList, List::of))
+                                    .orElseGet(ArrayList::new)
+                                    .stream().anyMatch(PKG_EXECUTION_MODULES::contains)
+                        ) {
                             return Stream.of(ap);
                         }
                         else {

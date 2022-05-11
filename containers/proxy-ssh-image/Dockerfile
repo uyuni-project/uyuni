@@ -1,4 +1,4 @@
-#!BuildTag: uyuni/proxy-ssh:latest uyuni/proxy-ssh:%PKG_VERSION% uyuni/proxy-ssh:%PKG_VERSION%.%RELEASE% uyuni/proxy-ssh:beta
+#!BuildTag: uyuni/proxy-ssh:latest uyuni/proxy-ssh:%PKG_VERSION% uyuni/proxy-ssh:%PKG_VERSION%.%RELEASE%
 
 ARG BASE=registry.suse.com/bci/bci-base:15.3
 FROM $BASE

@@ -8725,7 +8725,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
-        <target/>
+        <target>Nájdené viaceré kanály potomkov s balíkom: {0}. Prosím, prihláste tento systém ručne do príslušného kanála potomka a naplánujte inštaláciu tohto balíka.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11149,6 +11149,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Report Database Schema" xml:space="preserve">
+        <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>

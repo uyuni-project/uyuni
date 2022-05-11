@@ -17,6 +17,10 @@ Feature: Register a salt-ssh system via API
     And I wait until I see "has been deleted" text
     Then "ssh_minion" should not be registered
 
+@proxy
+  Scenario: block direct access from server to sshminion to test proxy as jumphost
+    Given I block connections from "server" on "ssh_minion"
+
   Scenario: Bootstrap a SLES SSH minion via API
     Given I am logged in API as user "admin" and password "admin"
     When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
@@ -58,3 +62,7 @@ Feature: Register a salt-ssh system via API
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
+
+@proxy
+  Scenario: cleanup and flush the firewall rules
+    When I flush firewall on "ssh_minion"

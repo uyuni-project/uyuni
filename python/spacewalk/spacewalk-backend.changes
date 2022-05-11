@@ -1,6 +1,19 @@
 - Fix traceback on calling spacewalk-repo-sync --show-packages
-- hide reportdb password in spacewalk-debug
-- Fix wrong unicode characters issued by rpm (#4614).
+- cleanup leftovers from removing unused xmlrpc endpoint
+
+-------------------------------------------------------------------
+Thu May 05 13:40:49 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * Do not raise error on file:// based DEB repo when looking
+    for alternative Release files (bsc#1199142)
+
+-------------------------------------------------------------------
+Wed May 04 15:19:39 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.11-1
+  * hide reportdb password in spacewalk-debug
+  * Fix wrong unicode characters issued by rpm (#4614).
 
 -------------------------------------------------------------------
 Tue Apr 19 11:57:07 CEST 2022 - jgonzalez@suse.com
