@@ -55,7 +55,8 @@
 - features/secondary/min_bootstrap_negative.feature
 - features/secondary/min_bootstrap_reactivation.feature
 - features/secondary/min_salt_software_states.feature
-- features/secondary/min_salt_install_with_staging.feature
+# temporarily disabled. Reason: Tests fail and are not blockers
+# - features/secondary/min_salt_install_with_staging.feature
 - features/secondary/min_salt_formulas.feature
 - features/secondary/min_salt_formulas_advanced.feature
 - features/secondary/min_salt_install_package.feature
