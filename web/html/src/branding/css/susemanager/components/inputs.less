@@ -3,6 +3,7 @@
 .form-control {
   color: @eos-bc-gray-1000;
   height: @input-height !important;
+  max-width: 100%;
   padding: 8px !important;
   border-radius: @border-radius-base !important;
   border-color: @eos-bc-gray-700 !important;
@@ -18,7 +19,30 @@
     color: @eos-bc-gray-700;
     pointer-events: auto;
     cursor: not-allowed;
+
+    &:focus {
+      border-color: @eos-bc-gray-700 !important;
+    }
   }
+
+  &:read-only {
+    color: @eos-bc-gray-700;
+    pointer-events: auto;
+    cursor: default;
+
+    &:focus {
+      border-color: @eos-bc-gray-700 !important;
+    }
+  }
+
+  &::placeholder {
+    color: @input-placeholder;
+    opacity: 1;
+  }
+}
+
+textarea.form-control {
+  height: auto !important;
 }
 
 .input-group-addon {

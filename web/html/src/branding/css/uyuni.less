@@ -1,25 +1,27 @@
 @import url(bootstrap/less/bootstrap.less);
 
 /* The basic default css and the overriding customization right after each */
-@import url(uyuni-typography.less);
-@import url(variables.less);
-@import url(uyuni-variables.less);
-@import url(theme.less);
-@import url(uyuni-theme.less);
-@import url(mixins.less);
-@import url(uyuni-mixins.less);
-@import url(inputs.less);
-@import url(tables.less);
-@import url(error.less);
-@import url(tools.less);
-@import url(setup-wizard.less);
-@import url(visualization.less);
-@import url(notifications.less);
-@import url(uyuni-login.less);
-@import url(fixes.less);
-@import url(network.less);
-@import url(modal.less);
-@import url(buttons.less);
+@import url(uyuni/fonts.less);
+@import url(uyuni/variables.less);
+@import url(uyuni/legacy-variables.less);
+@import url(uyuni/theme.less);
+@import url(uyuni/legacy-theme.less);
+@import url(uyuni/mixins.less);
+@import url(uyuni/legacy-mixins.less);
+// TODO: This needs to be obsolete
+@import url(base/inputs.less);
+@import url(base/tables.less);
+@import url(base/error.less);
+@import url(base/tools.less);
+@import url(base/setup-wizard.less);
+@import url(base/visualization.less);
+@import url(base/notifications.less);
+@import url(uyuni/login.less);
+@import url(base/fixes.less);
+@import url(base/network.less);
+@import url(uyuni/modal.less);
+@import url(uyuni/buttons.less);
+@import url(uyuni/toastr.less);
 
 // LEAVE THIS LINE AT THE END ALWAYS TO WARRANTY THE RESPONSIVE RULES REWRITE THE EXISTING STYLES
-@import url(responsive-rules.less);
+@import url(base/responsive-rules.less);

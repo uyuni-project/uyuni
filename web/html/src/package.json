@@ -115,7 +115,7 @@
     "react-modal": "^3.13.1",
     "react-select": "^4.3.1",
     "react-select-async-paginate": "^0.6.0",
-    "react-toastify": "^6.0.5",
+    "react-toastify": "6.0.5",
     "react-virtuoso": "^2.5.1",
     "senna": "^2.7.8",
     "use-immer": "^0.3.0",

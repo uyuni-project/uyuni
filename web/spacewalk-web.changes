@@ -1,3 +1,4 @@
+- Styling fixes for new branding
 - Fix mimetype in kubeconfig validation request (bsc#1199019)
 
 -------------------------------------------------------------------

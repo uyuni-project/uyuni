@@ -15,6 +15,7 @@ html(lang=window.preferredLocale.replace("_", "-"))
         // import styles
         link(rel='stylesheet', href='/css/#{webTheme}.css?cb=#{webBuildtimestamp}')
         script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')
+        script(src='/javascript/login.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/bootstrap.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/manager/main.bundle.js?cb=#{webBuildtimestamp}')
         noscript
@@ -58,4 +59,5 @@ html(lang=window.preferredLocale.replace("_", "-"))
                           diskspaceSeverity: '#{diskspaceSeverity}',
                       }
                     )
+                    validate();
                 });
