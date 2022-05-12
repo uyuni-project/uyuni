@@ -53,6 +53,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP1 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP1 x86_64"
+    And I select "SUSE Linux Enterprise Server LTSS 15 SP1 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" product has been added
 
