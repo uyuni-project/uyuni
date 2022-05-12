@@ -46,7 +46,8 @@
 # - features/secondary/allcli_software_channels_dependencies.feature
 
 - features/secondary/min_centos_salt_install_package_and_patch.feature
-- features/secondary/min_centos_monitoring.feature
+# temporarily disabled. Reason: We need to add the tools update repo 
+#- features/secondary/min_centos_monitoring.feature
 - features/secondary/minssh_salt_install_package.feature
 - features/secondary/minssh_ansible_control_node.feature
 - features/secondary/min_ubuntu_salt_install_with_staging.feature
@@ -68,7 +69,8 @@
 - features/secondary/min_config_state_channel_api.feature
 - features/secondary/min_salt_pkgset_beacon.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
-- features/secondary/min_monitoring.feature
+# temporarily disabled. Reason: We need to add the tools update repo 
+# - features/secondary/min_monitoring.feature
 - features/secondary/min_ansible_control_node.feature
 - features/secondary/srv_scc_user_credentials.feature
 
