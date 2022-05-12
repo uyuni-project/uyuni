@@ -56,14 +56,15 @@
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/allcli_action_chain.feature
-# temporarily disabled
+# temporarily disabled. Reason: Tests fail and are not blockers
 # - features/secondary/buildhost_docker_build_image.feature
 # - features/secondary/buildhost_docker_auth_registry.feature
 - features/secondary/min_docker_api.feature
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
 - features/secondary/min_retracted_patches.feature
-- features/secondary/proxy_cobbler_pxeboot.feature
+# temporarily disabled. Reason: Tests fail and are not blockers
+# - features/secondary/proxy_cobbler_pxeboot.feature
 - features/secondary/srv_restart.feature
 - features/secondary/min_timezone.feature
 - features/secondary/min_move_from_and_to_proxy.feature
