@@ -2250,7 +2250,7 @@ public class SystemManager extends BaseManager {
         }
         config.put("ca_crt", rootCaCert);
 
-        addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dump(config).getBytes(), 0600);
+        addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dump(config).getBytes(), 0644);
         /**
          * config.yaml
          */
