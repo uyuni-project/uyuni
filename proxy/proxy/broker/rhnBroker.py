@@ -169,9 +169,12 @@ class BrokerHandler(SharedHandler):
             # we need to remove Basic Auth, otherwise squid does not cache the package
             # so we convert it into token auth
             # The token is the login. So it is not secret
-            lpw = ustr(base64.b64decode(self.req.headers_in['Authorization'][6:])) # "Basic " == 6 characters
-            self.authToken = lpw[:lpw.find(':')]
-            del self.req.headers_in['Authorization']
+            try:
+                lpw = ustr(base64.b64decode(self.req.headers_in['Authorization'][6:])) # "Basic " == 6 characters
+                self.authToken = lpw[:lpw.find(':')]
+                del self.req.headers_in['Authorization']
+            except Exception as e:
+                log_error("Unable to decode Authorization header.", e)
         elif 'X-RHN-Auth' not in self.req.headers_in:
             self.authToken = effectiveURI_parts.query
 
