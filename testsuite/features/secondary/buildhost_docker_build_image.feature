@@ -58,12 +58,12 @@ Feature: Build container images
     And I wait at most 660 seconds until event "Image Build suse_simple scheduled by admin" is completed
     And I schedule the build of image "suse_real_key" via API calls
     And I wait at most 660 seconds until event "Image Build suse_real_key scheduled by admin" is completed
-    And I wait at most 60 seconds until all "3" container images are built correctly in the GUI
+    And I wait at most 60 seconds until all "3" container images are built correctly on the Image List page
     # We should see the same result via API.
     # Also, check that all inspect actions are finished:
-    And I wait at most 660 seconds until container "suse_key" with version "latest" is built successfully
-    And I wait at most 660 seconds until container "suse_simple" with version "latest" is built successfully
-    And I wait at most 660 seconds until container "suse_real_key" with version "latest" is built successfully
+    And I wait at most 660 seconds until image "suse_key" with version "latest" is built and inspected successfully via API
+    And I wait at most 660 seconds until image "suse_simple" with version "latest" is built and inspected successfully via API
+    And I wait at most 660 seconds until image "suse_real_key" with version "latest" is built and inspected successfully via API
     Then the list of packages of image "suse_key" with version "latest" is not empty
     And the list of packages of image "suse_simple" with version "latest" is not empty
     And the list of packages of image "suse_real_key" with version "latest" is not empty
@@ -71,8 +71,8 @@ Feature: Build container images
   Scenario: Build same images with different versions
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
-    And I wait at most 660 seconds until container "suse_simple" with version "Latest_simple" is built successfully
-    And I wait at most 660 seconds until container "suse_key" with version "Latest_key-activation1" is built successfully
+    And I wait at most 660 seconds until image "suse_simple" with version "Latest_simple" is built and inspected successfully via API
+    And I wait at most 660 seconds until image "suse_key" with version "Latest_key-activation1" is built and inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
     And the list of packages of image "suse_simple" with version "Latest_simple" is not empty
 
@@ -85,8 +85,8 @@ Feature: Build container images
   Scenario: Rebuild the images
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
-    And I wait at most 660 seconds until container "suse_key" with version "Latest_key-activation1" is built successfully
-    And I wait at most 660 seconds until container "suse_simple" with version "Latest_simple" is built successfully
+    And I wait at most 660 seconds until image "suse_key" with version "Latest_key-activation1" is built and inspected successfully via API
+    And I wait at most 660 seconds until image "suse_simple" with version "Latest_simple" is built and inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
     And the list of packages of image "suse_simple" with version "Latest_simple" is not empty
 
@@ -97,7 +97,7 @@ Feature: Build container images
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "GUI_BUILT_IMAGE" text
-    And I wait at most 660 seconds until container "suse_real_key" with version "GUI_BUILT_IMAGE" is built successfully
+    And I wait at most 660 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is built and inspected successfully via API
 
   Scenario: Login as Docker image administrator and build an image
     Given I am authorized as "docker" with password "docker"
@@ -107,7 +107,7 @@ Feature: Build container images
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "GUI_DOCKERADMIN" text
-    And I wait at most 660 seconds until container "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully
+    And I wait at most 660 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built and inspected successfully via API
 
   Scenario: Cleanup: delete all images
     Given I am authorized as "admin" with password "admin"

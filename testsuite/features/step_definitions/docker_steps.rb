@@ -30,7 +30,7 @@ When(/^I enter URI, username and password for registry$/) do
   )
 end
 
-When(/^I wait at most (\d+) seconds until container "([^"]*)" with version "([^"]*)" is built successfully$/) do |timeout, name, version|
+When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is built and inspected successfully via API$/) do |timeout, name, version|
   images_list = $api_test.image.list_images
   log "List of images: #{images_list}"
   image_id = 0
@@ -54,7 +54,7 @@ end
 
 # Warning: this can be confused by failures in previous scenarios
 # so it should be used only in the first image building scenario
-When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly in the GUI$/) do |timeout, count|
+When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly on the Image List page$/) do |timeout, count|
   os_version, os_family = get_os_version($build_host)
   # don't run this for sles11 (docker feature is not there)
   unless os_family =~ /^sles/ && os_version =~ /^11/
