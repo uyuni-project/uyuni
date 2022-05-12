@@ -176,8 +176,8 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
     select(option, from: field)
   else
     # Custom React selector
-    xpath_field = "//*[contains(@class, 'class-#{field}__control')]/../*[@name='#{field}']/.."
-    xpath_option = ".//*[contains(@class, 'class-#{field}__option') and contains(text(), '#{option}')]"
+    xpath_field = "//*[contains(@class, 'data-testid-#{field}-child__control')]"
+    xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(text(), '#{option}')]"
     find(:xpath, xpath_field).click
     find(:xpath, xpath_option, match: :first).click
   end
@@ -905,7 +905,7 @@ Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |option, field|
   next if has_select?(field, selected: option)
 
   # Custom React selector
-  next if has_xpath?("//*[contains(@class, 'class-#{field}__value-container')]/*[contains(text(),'#{option}')]")
+  next if has_xpath?("//*[contains(@class, 'data-testid-#{field}-child__value-container')]/*[contains(text(),'#{option}')]")
 
   raise "#{option} is not selected as #{field}"
 end
@@ -918,7 +918,7 @@ When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |option, fi
     break if has_select?(field, with_options: [option])
 
     # Custom React selector
-    break if has_xpath?("//*[contains(@class, 'class-#{field}__value-container')]/*[contains(text(),'#{option}')]")
+    break if has_xpath?("//*[contains(@class, 'data-testid-#{field}-child__value-container')]/*[contains(text(),'#{option}')]")
   end
 end
 
