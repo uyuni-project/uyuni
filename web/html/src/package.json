@@ -5,7 +5,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "all": "yarn install && npm-run-all -clps --aggregate-output build lint test tsc",
-    "audit-production-dependencies": "yarn audit --groups \"dependencies\"",
+    "audit-production-dependencies": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" node build/audit.js",
     "dev": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" webpack --config build/webpack.config.js --mode development",
     "watch": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" webpack --config build/webpack.config.js --mode development --watch",
     "proxy": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\"; proxy () { webpack-dev-server --mode development --config build/webpack.config.js --env server=$*; }; proxy",
