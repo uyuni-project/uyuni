@@ -2,6 +2,10 @@ const { exec } = require("child_process");
 
 const ignore = require("../.auditignore.js");
 
+const inline = (message) => {
+  return (message || "").replace(/\r?\n/g, " ");
+};
+
 // Yarn 1.x doesn't currently support muting known issues, see https://github.com/yarnpkg/yarn/issues/6669
 exec(`yarn audit --json --groups "dependencies"`, (_, stdout) => {
   try {
@@ -19,9 +23,13 @@ exec(`yarn audit --json --groups "dependencies"`, (_, stdout) => {
     }
 
     const validAdvisories = advisories.filter((item) => {
-      const { module_name: moduleName, id } = item.data.advisory;
+      const { module_name: moduleName, id, overview, recommendation } = item.data.advisory;
       if (ignore[moduleName]) {
-        console.info(`Ignoring advisory ${id} for module "${moduleName}": ${ignore[moduleName]}`);
+        console.info(
+          `Warning: Ignoring advisory ${id} for module "${moduleName}"\n\tOverview: ${inline(
+            overview
+          )}\n\tRecommendation: ${inline(recommendation)}\n\tReason for ignoring: ${ignore[moduleName]}\n`
+        );
         return false;
       }
       return true;
@@ -32,7 +40,9 @@ exec(`yarn audit --json --groups "dependencies"`, (_, stdout) => {
       validAdvisories.forEach((item) => {
         const { module_name: moduleName, id, overview, recommendation } = item.data.advisory;
         console.error(
-          `Error: Found advisory ${id} for module "${moduleName}"\nOverview: ${overview}\nRecommendation: ${recommendation}\n`
+          `Error: Found advisory ${id} for module "${moduleName}"\n\tOverview: ${inline(
+            overview
+          )}\n\tRecommendation: ${inline(recommendation)}\n`
         );
       });
       return;
