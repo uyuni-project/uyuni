@@ -58,6 +58,10 @@
     <delete dir="${test.results.dir}" />
   </target>
 
+  <target name="maybe-clean" unless="build.incremental.compile">
+    <antcall target="clean" />
+  </target>
+
   <target name="obs-to-maven" description="Updates local maven repository with OBS jars">
     <exec failonerror="true" executable="obs-to-maven">
       <arg line="-d ${basedir}/buildconf/ivy/obs-maven-config.yaml ${basedir}/buildconf/ivy/repository" />
@@ -68,7 +72,7 @@
     <ivy-retrieve sync="true" type="jar,bundle"/>
   </target>
 
-  <target name="refresh-branding-jar" depends="clean" description="Compiles and builds the SUSE branding jar">
+  <target name="refresh-branding-jar" depends="maybe-clean" description="Compiles and builds the SUSE branding jar">
     <mkdir dir="${build.dir}/java-branding" />
 
     <javac destdir="${build.dir}/java-branding"
@@ -88,7 +92,7 @@
   </target>
 
   <target name="compile"
-          depends="clean"
+          depends="maybe-clean"
           unless="precompiled"
           description="Compiles the main codebase"
   >
