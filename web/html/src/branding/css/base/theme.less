@@ -1,20 +1,19 @@
-/* Main HTML5 tags defined for the theme */
+/**
+ * This file is the old core theme file, over time we can hopefully clean this up and separate the logic accordingly
+ */
+
 body {
-  background: @white;
+  background: @body-background;
   width: auto;
   -webkit-font-smoothing: antialiased;
+  font-family: @lato;
 }
 html, body {
   height: auto;
 }
 
-* {
-  outline: none!important;
-}
-
-input.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: @input-placeholder;
-  opacity: 1; /* Firefox */
+a {
+  color: @link-color;
 }
 
 header {
@@ -27,21 +26,27 @@ header {
   border-radius: 0;
   border-bottom: 2px solid darken(@green, 10%);
   margin-bottom: 0;
-  padding: 12px 10px;
   background: @header;
+
+  .header-content {
+    padding: 12px 10px;
+  }
+
   a {
-    color: @gray-light;
+    color: @header-text;
   }
+
   a:hover {
-    color: @gray-light;
+    color: @header-text;
   }
+
   img {
     float: left;
   }
 }
 
 footer {
-  border-top: 1px solid @blue-light;
+  border-top: 1px solid @footer-border;
   background: @footer;
   padding: 3px 12px;
   color: @footer-text;
@@ -59,9 +64,11 @@ footer {
     color: @footer-links;
     text-decoration: underline;
   }
+
   a:hover {
     color: @footer-hover;
   }
+
   /* override spacewalk rules */
   div:nth-child(1),
   div:nth-child(2) {
@@ -74,7 +81,7 @@ footer {
   }
 
   div.wrapper {
-    background: url('/img/susemanager/suse-logo-footer-white.svg') no-repeat right center;
+    background: url('/img/susemanager/suse-logo-footer.svg') no-repeat right 18px;
     background-size: 32px 16px;
     min-height: 28px;
     padding-right: 55px!important;
@@ -82,37 +89,6 @@ footer {
       padding: 3px 0 2px 0;
     }
   }
-}
-
-/* titles */
-h1, h2, h3, h4, h5, h6, .subheadline { .Roboto-thin; }
-
-h1, h2 {
- font-weight: 400;
- margin-bottom: 10px;
- margin-top: 20px;
-}
-h3 {
- margin-bottom: 10px;
- margin-top: 20px;
-}
-h3, h4, h5, h6 {
-  .Roboto-strong;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-h1 { font-size: 2em }
-h2 { font-size: 1.75em; }
-h3 { font-size: 1.5em; }
-h4 { font-size: 1.3em; }
-h5 { font-size: 1.15em; }
-h6 { font-size: 1em; }
-.subheadline {
-  font-size: 1.3em;
-  font-weight: 300;
-  line-height: 1.5em;
-  margin-bottom: 10px;
-  margin-top: 10px;
 }
 
 /* override spacewalk rules */
@@ -135,15 +111,15 @@ section {
     position: fixed;
     #nav nav ul.level1 {
       overflow-y: auto !important;
-      scrollbar-color: rgba(173,216,230,0.5) transparent;
+      scrollbar-color: rgba(200, 200, 200, 0.5) transparent;
       scrollbar-width: thin;
       &::-webkit-scrollbar {
         width: 7px;
       }
       &::-webkit-scrollbar-thumb {
         border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 6px rgba(173,216,230,0.5);
-        background: rgba(173,216,230,0.5);
+        -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.5);
+        background: rgba(200, 200, 200, 0.5);
       }
     }
   }
@@ -151,16 +127,16 @@ section {
   /* fixing margins in the 1st and last columns */
   section {
     .make-xs-column(10);
-    padding-left:2em;
-    padding-right: 2em;
+    padding-left:4em;
+    padding-right: 4em;
     padding-top: 0;
-    padding-bottom: 2em;
+    padding-bottom: 4em;
     float: right;
   }
 }
 
 #breadcrumb {
-  color: @gray;
+  color: @header-text;
   display: inline-block;
   span {
     vertical-align: bottom;
@@ -177,14 +153,20 @@ section {
   float: right;
 }
 
-.navbar-collapse.in {
-  display: block !important;
-}
-.navbar-collapse.collapse {
-  display: none !important;
-}
-.navbar-collapse.collapse + div section {
-  width: 100%;
+.navbar-collapse {
+  max-height: none;
+
+  &.in {
+    display: block !important;
+  }
+
+  &.collapse {
+    display: none !important;
+
+    & + div section {
+      width: 100%;
+    }
+  }
 }
 
 header, nav.navbar-pf {
@@ -229,7 +211,7 @@ header, nav.navbar-pf {
   .box-wrapper {
     position: absolute;
     top: 100%;
-    background-color: @blue;
+    background-color: @eos-bc-pine-500;
     border-radius: 0px 2px 2px 2px;
     z-index: 1000;
     box-shadow: 0px 4px 4px 0px @gray;
@@ -259,7 +241,7 @@ header, nav.navbar-pf {
     select.form-control {
       -webkit-appearance: button;
       -webkit-padding-end: 20px;
-      background: url('../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+      background: url('../../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
       cursor: pointer;
       display: inline-block;
       -moz-appearance: none;
@@ -287,10 +269,6 @@ header, nav.navbar-pf {
         vertical-align: middle;
         margin-right: 5px;
       }
-    }
-    a#manage-ssm:hover {
-      text-decoration: none;
-      color: @green;
     }
     a {
       display: inline-block;
@@ -320,7 +298,7 @@ header, nav.navbar-pf {
     font-size: 1.6em;
     display: inline-block;
     vertical-align: baseline;
-    color: @gray-light;
+    color: @header-text;
     > i {
       display: none;
     }
@@ -330,7 +308,7 @@ header, nav.navbar-pf {
     }
   }
   .navbar-brand:hover {
-    color: @gray-light;
+    color: @header-text;
   }
 }
 
@@ -373,12 +351,13 @@ header, nav.navbar-pf {
       vertical-align: top;
     }
     input {
-      background-color: @blue;
-      border-color: @blue-light;
+      background-color: @aside;
+      border-color: @aside-menu-search-border;
       border-style: solid;
       border-radius: 0;
       border-width: 0 0 1px 0;
-      color: @gray-light;
+      // TODO: Update this to dark
+      color: @eos-bc-gray-900;
       padding-right: 3em;
       height: 3em;
     }
@@ -388,14 +367,13 @@ header, nav.navbar-pf {
     .input-right-icon {
       color: @aside-menu-search-clear;
       position: absolute;
-      top: .4em;
+      top: 3px;
       right: 0;
       font-size: 1.2em;
       cursor: pointer;
-      margin-right: 1em;
       padding: 0;
     }
-    .clear:hover {
+    .input-right-icon:hover {
       color: @aside-menu-search-clear-hover;
     }
   }
@@ -412,7 +390,7 @@ header, nav.navbar-pf {
         display: block;
         div {
           a {
-            padding: 4px 10px;
+            padding: 6px 10px;
           }
         }
       }
@@ -422,18 +400,14 @@ header, nav.navbar-pf {
         }
       }
       // active
-      li.active > .nodeLink {
-        color: @green;
-      }
       li.active > .leafLink {
-        background-color: @aside-menu-active;
-        border-radius: 0 2px 2px 0;
+        border-left-color: @aside-menu-active;
       }
       // nodeLink and leafLink
       div.nodeLink,
       div.leafLink {
-        color: @gray-light;
-        border-left: 3px solid transparent;
+        color: @aside-menu-text;
+        border-left: 5px solid transparent;
         a {
           display: block;
           color: inherit;
@@ -448,7 +422,7 @@ header, nav.navbar-pf {
       div.nodeLink {
         position: relative;
         > i {
-          font-size: 1.3em;
+          font-size: 1.2em;
           vertical-align: text-bottom;
         }
         > i.submenuIcon {
@@ -461,33 +435,27 @@ header, nav.navbar-pf {
           display: inline-block;
         }
         > a:hover {
-          color: @gray-light;
+          color: @aside-menu-text;
         }
-      }
-      div.nodeLink:hover {
-        color: @aside-menu-active;
       }
     }
     /* First Level */
     > ul {
-      padding-top: 10px;
-      padding-bottom: 10px;
-      padding-right: 10px;
       > li {
         > div {
           > a {
-            padding: 8px 2px;
+            padding: 10px 4px;
           }
         }
         > div.nodeLink {
-          padding-left: 0.8em;
+          padding-left: 1em;
           > i.submenuIcon {
             top: 0.6em;
           }
         }
         /* Second Level */
         > ul {
-          padding-bottom: 10px;
+          padding-bottom: 25px;
           > li {
             > div {
               > a {
@@ -499,7 +467,7 @@ header, nav.navbar-pf {
               > li {
                 > div {
                   > a {
-                    padding-left: 5em;
+                    padding-left: 4.4em;
                   }
                 }
                 /* Fourth Level */
@@ -507,7 +475,7 @@ header, nav.navbar-pf {
                   > li {
                     > div {
                       > a {
-                        padding-left: 7em;
+                        padding-left: 5.8em;
                       }
                     }
                   }
@@ -556,7 +524,7 @@ header, nav.navbar-pf {
       a {
         display: block;
         border: 0px;
-        color: #428bca;
+        color: @link-color;
         padding: 2px 20px;
       }
     }
@@ -613,7 +581,7 @@ header, nav.navbar-pf {
   display: inline-block;
   width: 5em;
   border: 1px solid #dddddd;
-  background-color: @gray-light-2;
+  background-color: @eos-bc-gray-100;
 }
 .view-systems-registered{
   .input-sm;
@@ -653,7 +621,6 @@ h1 .fa-stack {
 }
 .fa-stack .fa-circle {
   font-size: .7em;
-  .text-info;
 }
 
 // Panels: reseting default margins and paddings in H tags
@@ -669,6 +636,8 @@ h1 .fa-stack {
     border-top: 0;
   }
 }
+// TODO: Move to a separate file
+
 
 /* systems selected tool*/
 .spacewalk-toolbar>a, #spacewalk-bar-off i {
@@ -861,7 +830,7 @@ form[name="createSatelliteForm"] .panel {
 select[name="cveIdentifierYear"]#cveIdentifierYear {
   -webkit-appearance: button;
     -webkit-padding-end: 20px;
-  background: url('../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+  background: url('../../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
   cursor: pointer;
   display: inline-block;
   min-width: 80px;
@@ -882,10 +851,6 @@ input[name="cveIdentifierId"]#cveIdentifierId {
 .popover-content ul li {
   margin-top: .5em
 }
-/* Create New User. Language selection hidden for SUSE Manager users as we only offer support for English */
-#new-user-language {
-  display: none;
-}
 
 i.spacewalk-help-link {
   font-size: 16px
@@ -894,22 +859,30 @@ i.spacewalk-help-link {
 /* after pattern fly - fixes (more like workarounds) */
 .navbar-pf {
   ul.navbar-utility, ul.navbar-primary {
-    font-size: 13px;
     > li {
       display: inline-block;
       float: none;
       margin: 0;
       clear: none;
-      color: @gray-light;
+      color: @header-text;
       vertical-align: top;
       border-radius: 2px;
+
       a:hover, a:focus {
-        background-color: @header;
+        background-color: transparent;
         text-decoration: underline;
       }
-      button, button:hover {
-        background-color: @header;
-        color: @gray-light;
+      a[role="button"]:hover,
+      a[role="button"]:focus {
+        color: @green;
+      }
+      button {
+        background-color: transparent;
+        color: @header-text;
+      }
+      button:hover {
+        background-color: transparent;
+        color: @green;
       }
     }
     .search {
@@ -945,7 +918,7 @@ i.spacewalk-help-link {
       border: none;
       padding: 6px 12px 1px;
       display: inline-block;
-      color: @blue-light;
+      color: @link-color;
       font-size: 1.1em;
       border-width: 0 0 5px 0;
       border-style: solid;
@@ -955,7 +928,7 @@ i.spacewalk-help-link {
     a:hover {
       background: inherit;
       border-width: 0 0 3px 0;
-      border-color: @green;
+      border-color: @eos-bc-gray-500;
       padding-bottom: 3px;
     }
   }
@@ -986,6 +959,8 @@ i.spacewalk-help-link {
   font-family: 'spacewalk-icon';
   top: 15px;
 }
+
+// TODO: Clean this up and separate for Uyuni and Suma
 
 .alert-info,
 .alert-success,
@@ -1065,12 +1040,7 @@ a time:hover {
   padding: 0 5px;
   margin-top: 15px;
   margin-bottom: 5px;
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fafafa+0,eaeaea+100 */
-  background: rgb(250,250,250); /* Old browsers */
-  background: -moz-linear-gradient(top, rgba(250,250,250,1) 0%, rgba(234,234,234,1) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(250,250,250,1) 0%,rgba(234,234,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(250,250,250,1) 0%,rgba(234,234,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */
+  background: @eos-bc-gray-50;
   .action-button-wrapper {
     float: right;
     overflow: auto;
@@ -1336,21 +1306,4 @@ tr.changed > td {
   width: 100%;
   border: none;
   text-align: left;
-}
-
-// Button fixes
-.btn-default {
-  .default-button-colour;
-  color: @gray-dark;
-}
-.btn-primary,
-.btn-success {
-  .call-to-action-button-colour;
-  color: #fff;
-  border-color: @green;
-}
-
-/* wrap on normal line break in modal dialog bodies */
-.modal-body {
-  white-space: pre-line;
 }

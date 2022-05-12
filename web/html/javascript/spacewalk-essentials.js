@@ -32,6 +32,21 @@ function adaptFluidColLayout() {
 // On window load and resize
 jQuery(window).on("load resize", alignContentDimensions);
 
+// Ensure legacy layouts update their sizes when global notifications are added/removed
+var isListening = false;
+function listenForGlobalNotificationChanges() {
+  if (isListening) return;
+
+  var globalNotificationsContainer = document.querySelector("#messages-container");
+  if (!globalNotificationsContainer) {
+    return;
+  }
+  isListening = true;
+
+  var observer = new MutationObserver(alignContentDimensions);
+  observer.observe(globalNotificationsContainer, {subtree: true, childList: true});
+}
+
 // On section#spacewalk-content scroll
 function scrollTopBehavior() {
   jQuery(window).on("scroll", function () {
@@ -221,7 +236,12 @@ function makeAjaxHandler(callbackFunction, errorHandlerFunction) {
 function showFatalError(message, exception) {
   console.log("DWR AJAX call failed with message: " + message);
   console.log(exception);
-  alert("Unexpected error, please reload the page and check server logs.");
+  var message = "Unexpected error, please reload the page and check server logs.";
+  if (window.showErrorToastr) {
+    window.showErrorToastr(message, { containerId: "global" });
+  } else {
+    alert(message);
+  }
 }
 
 
@@ -528,6 +548,7 @@ function onDocumentReadyInitOldJS() {
   onDocumentReadyAutoBootstrapGrid();
   humanizeDates();
   initIEWarningUse();
+  listenForGlobalNotificationChanges();
 }
 
 jQuery(document).ready(function() {
@@ -536,4 +557,5 @@ jQuery(document).ready(function() {
   registerSpacewalkContentObservers();
   humanizeDates();
   initIEWarningUse();
+  listenForGlobalNotificationChanges();
 });

@@ -30,7 +30,7 @@
 @eos-bc-dt-gray-200:    #1f222b;
 @eos-bc-waterhole-blue: #2453ff;
 
-/* Main tags colours for Bootstrap */
+/* Tags colours for Bootstrap */
 @green-dark:             @eos-bc-green-900;
 @green:                  @eos-bc-green-500;
 @green-light:            @eos-bc-green-100;
@@ -50,9 +50,7 @@
 @violet:                 #841781;
 @black:                  @eos-bc-gray-1000;
 
-/* Body */
-@body-background:     @eos-bc-gray-50;
-
+/* Basic text */
 @font-size-base:          14px;
 @font-size-large:         18.2px;
 @font-size-small:         12px;
@@ -69,17 +67,16 @@
 
 /* Header */
 @header:          @eos-bc-pine-500;
-@header-text:     @eos-bc-gray-50;
+@header-text:     @eos-bc-white;
 
 /* Colours for the menu in the first column on the left */
-@aside:                        @eos-bc-gray-1000;
+@aside:                        @eos-bc-gray-50;
 @aside-border:                 lighten(@aside, 8%);
-@aside-menu-text:              @eos-bc-gray-50;
+@aside-menu-text:              @eos-bc-gray-1000;
 @aside-menu-active:            @green;
-@aside-menu-active-text:       @eos-bc-white;
 
 /* aside menu search box */
-@aside-menu-search-border:         @eos-bc-gray-1000;
+@aside-menu-search-border:         @eos-bc-gray-100;
 @aside-menu-search-clear:          fade(@eos-bc-gray-300, 60%);
 @aside-menu-search-clear-hover:    @eos-bc-gray-700;
 
@@ -89,17 +86,17 @@
 
 /* Footer colours */
 @footer:            @aside;
-@footer-text:       @eos-bc-gray-100;
-@footer-links:      @eos-bc-gray-100;
-@footer-hover:      @eos-bc-gray-100;
-@footer-border:     @eos-bc-gray-1000;
+@footer-text:       @eos-bc-gray-900;
+@footer-links:      @eos-bc-gray-900;
+@footer-hover:      @eos-bc-gray-900;
+@footer-border:     @eos-bc-gray-100;
 
 /* Input */
 @input-placeholder:  @gray;
 
 /* Modals */
 @modal-color:           @white;
-@modal-backdrop-color:  fade(@black, 50%);
+@modal-backdrop-color:  fade(@eos-bc-gray-1000, 50%);
 
 /* Other elements */
 @border-radius-base:  0;
@@ -111,7 +108,7 @@
 @link-color:             @eos-bc-blue-500;
 // TODO: This should be selection green instead?
 @table-row-selected:     lighten(@eos-bc-yellow-100, 5%);
-
+ 
 /**
 * FONTS
 */
@@ -123,3 +120,6 @@
 /* WorkSans variable: font variable to be applied in different text elements */
 @worksans: 'WorkSans', arial, helvetica, sans-serif;
 @worksans-bold: 'WorkSans Bold', arial, helvetica, sans-serif;
+
+/* Manually map Bootstrap's fonts since our setup is a bit unorthodox */
+@icon-font-path: "../../node_modules/bootstrap/fonts/";

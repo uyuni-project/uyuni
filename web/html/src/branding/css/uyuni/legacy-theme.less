@@ -1,9 +1,8 @@
 /* Main HTML5 tags defined for the theme */
 body {
-  background: @body-background;
+  background: @white;
   width: auto;
   -webkit-font-smoothing: antialiased;
-  font-family: @lato;
 }
 html, body {
   height: auto;
@@ -13,13 +12,9 @@ html, body {
   outline: none!important;
 }
 
- input.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+input.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: @input-placeholder;
   opacity: 1; /* Firefox */
-}
-
-a {
-  color: @link-color;
 }
 
 header {
@@ -35,10 +30,10 @@ header {
   padding: 12px 10px;
   background: @header;
   a {
-    color: @header-text;
+    color: @gray-light;
   }
   a:hover {
-    color: @header-text;
+    color: @gray-light;
   }
   img {
     float: left;
@@ -46,7 +41,7 @@ header {
 }
 
 footer {
-  border-top: 1px solid @footer-border;
+  border-top: 1px solid @blue-light;
   background: @footer;
   padding: 3px 12px;
   color: @footer-text;
@@ -79,7 +74,7 @@ footer {
   }
 
   div.wrapper {
-    background: url('/img/susemanager/suse-logo-footer.svg') no-repeat right 18px;
+    background: url('/img/susemanager/suse-logo-footer-white.svg') no-repeat right center;
     background-size: 32px 16px;
     min-height: 28px;
     padding-right: 55px!important;
@@ -87,6 +82,37 @@ footer {
       padding: 3px 0 2px 0;
     }
   }
+}
+
+/* titles */
+h1, h2, h3, h4, h5, h6, .subheadline { .Roboto-thin; }
+
+h1, h2 {
+ font-weight: 400;
+ margin-bottom: 10px;
+ margin-top: 20px;
+}
+h3 {
+ margin-bottom: 10px;
+ margin-top: 20px;
+}
+h3, h4, h5, h6 {
+  .Roboto-strong;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+h1 { font-size: 2em }
+h2 { font-size: 1.75em; }
+h3 { font-size: 1.5em; }
+h4 { font-size: 1.3em; }
+h5 { font-size: 1.15em; }
+h6 { font-size: 1em; }
+.subheadline {
+  font-size: 1.3em;
+  font-weight: 300;
+  line-height: 1.5em;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 /* override spacewalk rules */
@@ -109,15 +135,15 @@ section {
     position: fixed;
     #nav nav ul.level1 {
       overflow-y: auto !important;
-      scrollbar-color: rgba(200, 200, 200, 0.5) transparent;
+      scrollbar-color: rgba(173,216,230,0.5) transparent;
       scrollbar-width: thin;
       &::-webkit-scrollbar {
         width: 7px;
       }
       &::-webkit-scrollbar-thumb {
         border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.5);
-        background: rgba(200, 200, 200, 0.5);
+        -webkit-box-shadow: inset 0 0 6px rgba(173,216,230,0.5);
+        background: rgba(173,216,230,0.5);
       }
     }
   }
@@ -125,10 +151,10 @@ section {
   /* fixing margins in the 1st and last columns */
   section {
     .make-xs-column(10);
-    padding-left:4em;
-    padding-right: 4em;
+    padding-left:2em;
+    padding-right: 2em;
     padding-top: 0;
-    padding-bottom: 4em;
+    padding-bottom: 2em;
     float: right;
   }
 }
@@ -203,7 +229,7 @@ header, nav.navbar-pf {
   .box-wrapper {
     position: absolute;
     top: 100%;
-    background-color: @eos-bc-pine-500;
+    background-color: @blue;
     border-radius: 0px 2px 2px 2px;
     z-index: 1000;
     box-shadow: 0px 4px 4px 0px @gray;
@@ -233,7 +259,7 @@ header, nav.navbar-pf {
     select.form-control {
       -webkit-appearance: button;
       -webkit-padding-end: 20px;
-      background: url('../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+      background: url('../../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
       cursor: pointer;
       display: inline-block;
       -moz-appearance: none;
@@ -347,13 +373,12 @@ header, nav.navbar-pf {
       vertical-align: top;
     }
     input {
-      background-color: @aside;
-      border-color: @aside-menu-search-border;
+      background-color: @blue;
+      border-color: @blue-light;
       border-style: solid;
       border-radius: 0;
       border-width: 0 0 1px 0;
-      // TODO: Update this to dark
-      color: @eos-bc-gray-900;
+      color: @gray-light;
       padding-right: 3em;
       height: 3em;
     }
@@ -370,7 +395,7 @@ header, nav.navbar-pf {
       margin-right: 1em;
       padding: 0;
     }
-    .input-right-icon:hover {
+    .clear:hover {
       color: @aside-menu-search-clear-hover;
     }
   }
@@ -387,7 +412,7 @@ header, nav.navbar-pf {
         display: block;
         div {
           a {
-            padding: 6px 10px;
+            padding: 4px 10px;
           }
         }
       }
@@ -398,19 +423,17 @@ header, nav.navbar-pf {
       }
       // active
       li.active > .nodeLink {
-        color: @green-dark;
+        color: @green;
       }
       li.active > .leafLink {
         background-color: @aside-menu-active;
-        border-radius: 0 @border-radius-small @border-radius-small 0;
-        margin-right: 10px;
-        color: @aside-menu-active-text;
+        border-radius: 0 2px 2px 0;
       }
       // nodeLink and leafLink
       div.nodeLink,
       div.leafLink {
-        color: @aside-menu-text;
-        border-left: 5px solid transparent;
+        color: @gray-light;
+        border-left: 3px solid transparent;
         a {
           display: block;
           color: inherit;
@@ -425,7 +448,7 @@ header, nav.navbar-pf {
       div.nodeLink {
         position: relative;
         > i {
-          font-size: 1.2em;
+          font-size: 1.3em;
           vertical-align: text-bottom;
         }
         > i.submenuIcon {
@@ -438,27 +461,33 @@ header, nav.navbar-pf {
           display: inline-block;
         }
         > a:hover {
-          color: @aside-menu-text;
+          color: @gray-light;
         }
+      }
+      div.nodeLink:hover {
+        color: @aside-menu-active;
       }
     }
     /* First Level */
     > ul {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-right: 10px;
       > li {
         > div {
           > a {
-            padding: 10px 4px;
+            padding: 8px 2px;
           }
         }
         > div.nodeLink {
-          padding-left: 1em;
+          padding-left: 0.8em;
           > i.submenuIcon {
             top: 0.6em;
           }
         }
         /* Second Level */
         > ul {
-          padding-bottom: 25px;
+          padding-bottom: 10px;
           > li {
             > div {
               > a {
@@ -470,7 +499,7 @@ header, nav.navbar-pf {
               > li {
                 > div {
                   > a {
-                    padding-left: 4.4em;
+                    padding-left: 5em;
                   }
                 }
                 /* Fourth Level */
@@ -478,7 +507,7 @@ header, nav.navbar-pf {
                   > li {
                     > div {
                       > a {
-                        padding-left: 5.8em;
+                        padding-left: 7em;
                       }
                     }
                   }
@@ -527,7 +556,7 @@ header, nav.navbar-pf {
       a {
         display: block;
         border: 0px;
-        color: @link-color;
+        color: #428bca;
         padding: 2px 20px;
       }
     }
@@ -584,7 +613,7 @@ header, nav.navbar-pf {
   display: inline-block;
   width: 5em;
   border: 1px solid #dddddd;
-  background-color: @eos-bc-gray-100;
+  background-color: @gray-light-2;
 }
 .view-systems-registered{
   .input-sm;
@@ -640,8 +669,6 @@ h1 .fa-stack {
     border-top: 0;
   }
 }
-// TODO: Move to a separate file
-
 
 /* systems selected tool*/
 .spacewalk-toolbar>a, #spacewalk-bar-off i {
@@ -834,7 +861,7 @@ form[name="createSatelliteForm"] .panel {
 select[name="cveIdentifierYear"]#cveIdentifierYear {
   -webkit-appearance: button;
     -webkit-padding-end: 20px;
-  background: url('../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+  background: url('../../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
   cursor: pointer;
   display: inline-block;
   min-width: 80px;
@@ -855,6 +882,10 @@ input[name="cveIdentifierId"]#cveIdentifierId {
 .popover-content ul li {
   margin-top: .5em
 }
+/* Create New User. Language selection hidden for SUSE Manager users as we only offer support for English */
+#new-user-language {
+  display: none;
+}
 
 i.spacewalk-help-link {
   font-size: 16px
@@ -863,6 +894,7 @@ i.spacewalk-help-link {
 /* after pattern fly - fixes (more like workarounds) */
 .navbar-pf {
   ul.navbar-utility, ul.navbar-primary {
+    font-size: 13px;
     > li {
       display: inline-block;
       float: none;
@@ -913,7 +945,7 @@ i.spacewalk-help-link {
       border: none;
       padding: 6px 12px 1px;
       display: inline-block;
-      color: @link-color;
+      color: @blue-light;
       font-size: 1.1em;
       border-width: 0 0 5px 0;
       border-style: solid;
@@ -923,7 +955,7 @@ i.spacewalk-help-link {
     a:hover {
       background: inherit;
       border-width: 0 0 3px 0;
-      border-color: @eos-bc-gray-500;
+      border-color: @green;
       padding-bottom: 3px;
     }
   }
@@ -1033,7 +1065,12 @@ a time:hover {
   padding: 0 5px;
   margin-top: 15px;
   margin-bottom: 5px;
-  background: @eos-bc-gray-50;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fafafa+0,eaeaea+100 */
+  background: rgb(250,250,250); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(250,250,250,1) 0%, rgba(234,234,234,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(250,250,250,1) 0%,rgba(234,234,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(250,250,250,1) 0%,rgba(234,234,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */
   .action-button-wrapper {
     float: right;
     overflow: auto;
@@ -1299,4 +1336,21 @@ tr.changed > td {
   width: 100%;
   border: none;
   text-align: left;
+}
+
+// Button fixes
+.btn-default {
+  .default-button-colour;
+  color: @gray-dark;
+}
+.btn-primary,
+.btn-success {
+  .call-to-action-button-colour;
+  color: #fff;
+  border-color: @green;
+}
+
+/* wrap on normal line break in modal dialog bodies */
+.modal-body {
+  white-space: pre-line;
 }
