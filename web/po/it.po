@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-29 11:12+0000\n"
+"POT-Creation-Date: 2022-05-13 11:07+0000\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -29,11 +29,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:491
+#: ../html/javascript/spacewalk-essentials.js:511
 msgid "remaining"
 msgstr ""
 
-#: ../html/javascript/spacewalk-essentials.js:511
+#: ../html/javascript/spacewalk-essentials.js:531
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -143,8 +143,8 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-details.tsx:146
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:188
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:189
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
 msgid "Back"
 msgstr "Indietro"
 
@@ -896,7 +896,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
 #: ../html/src/manager/state/recurring-states-list.tsx:51
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
 #: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
@@ -1357,7 +1357,7 @@ msgstr ""
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
 #: ../html/src/manager/notifications/notification-messages.tsx:570
-#: ../html/src/utils/network.ts:101
+#: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr ""
 
@@ -2290,8 +2290,8 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:177
 #: ../html/src/manager/images/image-store-edit.tsx:259
 #: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
 msgstr ""
@@ -2768,7 +2768,7 @@ msgstr ""
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:378
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:196
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr ""
 
@@ -2807,7 +2807,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profile-edit.tsx:492
 #: ../html/src/manager/images/image-store-edit.tsx:214
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:111
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:40
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:38
@@ -5057,16 +5057,16 @@ msgid "Are you sure you want to delete this virtual host manager?"
 msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:185
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:272
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:262
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
 msgid "Gatherer module"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:313
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:303
 msgid "Current Context"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:327
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:317
 msgid "Kubeconfig file"
 msgstr ""
 
@@ -6043,20 +6043,20 @@ msgstr ""
 msgid "Split into groups"
 msgstr ""
 
-#: ../html/src/utils/network.ts:95
+#: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr ""
 
-#: ../html/src/utils/network.ts:97
+#: ../html/src/utils/network.ts:99
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
 
-#: ../html/src/utils/network.ts:99
+#: ../html/src/utils/network.ts:101
 msgid "Resource not found."
 msgstr ""
 
-#: ../html/src/utils/network.ts:103
+#: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr ""
 
