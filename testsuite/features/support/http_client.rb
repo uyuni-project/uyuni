@@ -58,6 +58,8 @@ class HttpClient
         end
       end
     unless answer.status == 200
+      raise "Unexpected HTTP status code #{answer.status}" if answer.body.empty?
+
       json_body = JSON.parse(answer.body)
       raise "Unexpected HTTP status code #{answer.status}, message: #{json_body['message']}"
     end
