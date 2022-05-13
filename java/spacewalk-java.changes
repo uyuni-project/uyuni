@@ -1,3 +1,4 @@
+- Allow removing duplicated packages names in the same Salt action (bsc#1198686)
 - Styling fixes for new branding
 - fix NoSuchElementException when pkg install date is missing
 - Fix error message in Kubernetes VHM creation dialog
