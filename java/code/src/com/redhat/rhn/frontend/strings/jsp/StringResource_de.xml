@@ -2219,7 +2219,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Verwende PAM:</target>
+        <target>Verwende PAM: </target>
       </trans-unit>
       <!-- userlist.jsp -->
       <trans-unit id="userlist.jsp.useroverview" xml:space="preserve">
