@@ -1,3 +1,5 @@
+- Upgrade minimist to fix CVE-2021-44906
+
 -------------------------------------------------------------------
 Mon Sep 20 12:18:46 CEST 2021 - jmassaguerpla@suse.de
 
