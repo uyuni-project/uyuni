@@ -1053,6 +1053,30 @@ DATA = {
         'PDID' : [2299, 2384], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
+    'SLE-MICRO-5.1-aarch64' : {
+        'PDID' : [2282], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/1/bootstrap/'
+    },
+    'SLE-MICRO-5.1-s390x' : {
+        'PDID' : [2287], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/1/bootstrap/'
+    },
+    'SLE-MICRO-5.1-x86_64' : {
+        'PDID' : [2283], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5//bootstrap/'
+    },
+    'SLE-MICRO-5.2-aarch64' : {
+        'PDID' : [2399], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
+    },
+    'SLE-MICRO-5.2-s390x' : {
+        'PDID' : [2400], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
+    },
+    'SLE-MICRO-5.2-x86_64' : {
+        'PDID' : [2401], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
+    },
     'openSUSE-Leap-15-x86_64' : {
         'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/0/bootstrap/'
