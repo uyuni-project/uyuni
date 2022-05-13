@@ -470,10 +470,13 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 resultPkgs2.stream().filter(pkg -> p2.getPackageName().getName().equals(pkg.get(0))).findFirst().get();
 
         // Assert packages are sent to Salt correctly
+        assertEquals(1, resultPkgs1.size());
+        assertEquals(1, resultPkgs2.size());
         assertEquals("x86_64", resultPkg1.get(1));
-        assertEquals("1.0.1", resultPkg1.get(2));
         assertEquals("x86_64", resultPkg2.get(1));
-        assertEquals("1.0.0", resultPkg2.get(2));
+        assertTrue(Arrays.asList("1.0.0", "1.0.1").contains(resultPkg1.get(2)));
+        assertTrue(Arrays.asList("1.0.0", "1.0.1").contains(resultPkg2.get(2)));
+        assertTrue(resultPkg1.get(2) != resultPkg2.get(2));
     }
 
     @Test
