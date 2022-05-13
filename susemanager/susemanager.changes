@@ -1,3 +1,4 @@
+- add bootstrap repository definitions for SLE-Micro 5.1 and 5.2
 - add bootstrap repo definitions for oracle, alma and rocky linux 9
 - add bootstrap repo data for SUSE Liberty Linux 9
 - add python3-extras to bootstrap repo as dependency of

@@ -138,6 +138,7 @@ function getZ_CLIENT_CODE_BASE() {
         if [ "$BASE" != "sle" ]; then
             grep -q 'openSUSE' /etc/os-release && BASE='opensuse'
         fi
+        grep -q 'Enterprise Micro' /etc/os-release && BASE='slemicro'
         VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\1/p')"
         PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\1/p')"
     fi
