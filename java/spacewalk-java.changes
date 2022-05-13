@@ -1,6 +1,5 @@
 - Styling fixes for new branding
 - fix NoSuchElementException when pkg install date is missing
-- Update translation strings
 - Fix error message in Kubernetes VHM creation dialog
 - Add createAppStreamFilters() XMLRPC function
 - Correct concurrency error on payg taskomatic task
