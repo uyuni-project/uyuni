@@ -417,6 +417,65 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testPackageRemoveDuplicates() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        List<MinionServer> mins = new ArrayList<>();
+        mins.add(minion);
+
+        List<MinionSummary> minionSummaries = mins.stream().
+                map(MinionSummary::new).collect(Collectors.toList());
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Package p1 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        Package p2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        p1.getPackageName().setName("test-package-duplicated-name");
+        p2.setPackageName(p1.getPackageName());
+        p1.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X", PackageType.RPM));
+        p2.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.1", "X", PackageType.RPM));
+
+        List<Map<String, Long>> packageMaps = new ArrayList<>();
+        Map<String, Long> p1map = new HashMap<>();
+        p1map.put("name_id", p1.getPackageName().getId());
+        p1map.put("evr_id", p1.getPackageEvr().getId());
+        p1map.put("arch_id", p1.getPackageArch().getId());
+        packageMaps.add(p1map);
+        Map<String, Long> p2map = new HashMap<>();
+        p2map.put("name_id", p2.getPackageName().getId());
+        p2map.put("evr_id", p2.getPackageEvr().getId());
+        p2map.put("arch_id", p2.getPackageArch().getId());
+        packageMaps.add(p2map);
+
+        final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+        Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_REMOVE,
+                "test remove action", Date.from(now.toInstant()));
+
+        ActionFactory.addServerToAction(minion, action);
+
+        ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
+        TestUtils.flushAndEvict(action);
+        Action removeAction = ActionFactory.lookupById(action.getId());
+
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(removeAction, minionSummaries);
+        assertEquals(1, result.values().size());
+        LocalCall<?> resultCall = result.keySet().iterator().next();
+        List<List<String>> resultPkgs1 = (List<List<String>>) ((Map) ((Map) resultCall.getPayload().get("kwarg")).get(
+                "pillar")).get("param_pkgs");
+        List<List<String>> resultPkgs2 = (List<List<String>>) ((Map) ((Map) resultCall.getPayload().get("kwarg")).get(
+                "pillar")).get("param_pkgs_duplicates");
+
+        List<String> resultPkg1 =
+                resultPkgs1.stream().filter(pkg -> p1.getPackageName().getName().equals(pkg.get(0))).findFirst().get();
+        List<String> resultPkg2 =
+                resultPkgs2.stream().filter(pkg -> p2.getPackageName().getName().equals(pkg.get(0))).findFirst().get();
+
+        // Assert packages are sent to Salt correctly
+        assertEquals("x86_64", resultPkg1.get(1));
+        assertEquals("1.0.1", resultPkg1.get(2));
+        assertEquals("x86_64", resultPkg2.get(1));
+        assertEquals("1.0.0", resultPkg2.get(2));
+    }
+
+    @Test
     public void testDeployFiles() throws Exception {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
