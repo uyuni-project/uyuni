@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * Serializes {@link MgrSyncProductDto}.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("product")
  *     #prop_desc("string", "friendly_name", "friendly name of the product")
  *     #prop_desc("string", "arch", "architecture")

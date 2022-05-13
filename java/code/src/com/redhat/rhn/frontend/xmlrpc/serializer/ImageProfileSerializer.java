@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * ImageProfileSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("image profile information")
  *   #prop("string", "label")
  *   #prop("string", "imageType")

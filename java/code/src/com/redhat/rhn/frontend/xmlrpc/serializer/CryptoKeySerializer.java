@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * {@link com.redhat.rhn.domain.kickstart.crypto.CryptoKey}.
  *
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("key")
  *          #prop("string", "description")
  *          #prop("string", "type")

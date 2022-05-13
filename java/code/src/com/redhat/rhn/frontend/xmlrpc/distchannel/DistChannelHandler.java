@@ -35,8 +35,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * DistChannelHandler - provides methods to access distribution channel information.
- * @xmlrpc.namespace distchannel
- * @xmlrpc.doc Provides methods to access and modify distribution channel information
+ * @apidoc.namespace distchannel
+ * @apidoc.doc Provides methods to access and modify distribution channel information
  */
 public class DistChannelHandler extends BaseHandler {
 
@@ -45,9 +45,9 @@ public class DistChannelHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return List of dist channel maps
      *
-     * @xmlrpc.doc Lists the default distribution channel maps
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists the default distribution channel maps
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *   #return_array_begin()
      *      $DistChannelMapSerializer
      *   #array_end()
@@ -62,9 +62,9 @@ public class DistChannelHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return List of dist channel maps
      *
-     * @xmlrpc.doc Lists distribution channel maps valid for the user's organization
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists distribution channel maps valid for the user's organization
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *   #return_array_begin()
      *      $DistChannelMapSerializer
      *   #array_end()
@@ -81,11 +81,11 @@ public class DistChannelHandler extends BaseHandler {
      * @param orgId organization id
      * @return List of dist channel maps
      *
-     * @xmlrpc.doc Lists distribution channel maps valid for an organization,
+     * @apidoc.doc Lists distribution channel maps valid for an organization,
      * #product() admin rights needed.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype
      *   #return_array_begin()
      *      $DistChannelMapSerializer
      *   #array_end()
@@ -113,14 +113,14 @@ public class DistChannelHandler extends BaseHandler {
      * @param channelLabel channel label
      * @return Returns 1 if successful, exception otherwise
      *
-     * @xmlrpc.doc Sets, overrides (/removes if channelLabel empty)
+     * @apidoc.doc Sets, overrides (/removes if channelLabel empty)
      * a distribution channel map within an organization
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "os")
-     * @xmlrpc.param #param("string", "release")
-     * @xmlrpc.param #param("string", "archName")
-     * @xmlrpc.param #param("string", "channelLabel")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "os")
+     * @apidoc.param #param("string", "release")
+     * @apidoc.param #param("string", "archName")
+     * @apidoc.param #param("string", "channelLabel")
+     * @apidoc.returntype #return_int_success()
      */
     public int setMapForOrg(User loggedInUser, String os, String release,
                                             String archName, String channelLabel) {

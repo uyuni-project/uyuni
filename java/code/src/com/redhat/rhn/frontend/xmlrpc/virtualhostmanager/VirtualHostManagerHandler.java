@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @xmlrpc.namespace virtualhostmanager
- * @xmlrpc.doc Provides the namespace for the Virtual Host Manager methods.
+ * @apidoc.namespace virtualhostmanager
+ * @apidoc.doc Provides the namespace for the Virtual Host Manager methods.
  */
 public class VirtualHostManagerHandler extends BaseHandler {
 
@@ -43,9 +43,9 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param loggedInUser the currently logged in user
      * @return List of Virtual Host Managers
      *
-     * @xmlrpc.doc Lists Virtual Host Managers visible to a user
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists Virtual Host Managers visible to a user
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $VirtualHostManagerSerializer
      *     #array_end()
@@ -67,13 +67,13 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * virtual-host-gatherer)
      * @return 1 if successful, exception otherwise
      *
-     * @xmlrpc.doc Creates a Virtual Host Manager from given arguments
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "label" "Virtual Host Manager label")
-     * @xmlrpc.param #param_desc("string", "moduleName" "the name of the Gatherer module")
-     * @xmlrpc.param #param_desc("parameters", "parameters"
+     * @apidoc.doc Creates a Virtual Host Manager from given arguments
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label" "Virtual Host Manager label")
+     * @apidoc.param #param_desc("string", "moduleName" "the name of the Gatherer module")
+     * @apidoc.param #param_desc("parameters", "parameters"
      *         "additional parameters (credentials, parameters for virtual-host-gatherer)")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String moduleName,
             Map<String, String> parameters) {
@@ -111,10 +111,10 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param label Virtual Host Manager label
      * @return 1 if successful, exception otherwise
      *
-     * @xmlrpc.doc Deletes a Virtual Host Manager with a given label
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "label", "Virtual Host Manager label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Deletes a Virtual Host Manager with a given label
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "Virtual Host Manager label")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String label) {
         ensureOrgAdmin(loggedInUser);
@@ -136,10 +136,10 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param label Virtual Host Manager label
      * @return Virtual Host Manager details
      *
-     * @xmlrpc.doc Gets details of a Virtual Host Manager with a given label
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "label", "Virtual Host Manager label")
-     * @xmlrpc.returntype $VirtualHostManagerSerializer
+     * @apidoc.doc Gets details of a Virtual Host Manager with a given label
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "Virtual Host Manager label")
+     * @apidoc.returntype $VirtualHostManagerSerializer
      */
     @ReadOnly
     public VirtualHostManager getDetail(User loggedInUser, String label) {
@@ -153,9 +153,9 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param loggedInUser the currently logged in user
      * @return List of available module names
      *
-     * @xmlrpc.doc List all available modules from virtual-host-gatherer
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #array_single("string", "moduleName")
+     * @apidoc.doc List all available modules from virtual-host-gatherer
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #array_single("string", "moduleName")
      */
     @ReadOnly
     public Collection<String> listAvailableVirtualHostGathererModules(User loggedInUser) {
@@ -171,11 +171,11 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param moduleName the module name
      * @return Map of module parameters
      *
-     * @xmlrpc.doc Get a list of parameters for a virtual-host-gatherer module.
+     * @apidoc.doc Get a list of parameters for a virtual-host-gatherer module.
      * It returns a map of parameters with their typical default values.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "moduleName", "The name of the module")
-     * @xmlrpc.returntype #param_desc("map", "module_params", "module parameters")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "moduleName", "The name of the module")
+     * @apidoc.returntype #param_desc("map", "module_params", "module parameters")
      */
     @ReadOnly
     public Map<String, String> getModuleParameters(User loggedInUser, String moduleName) {

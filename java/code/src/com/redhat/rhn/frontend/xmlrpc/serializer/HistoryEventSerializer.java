@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * HistoryEventSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("history event")
  *      #prop_desc("$date", "completed", "date that
  *          the event occurred (optional)")

@@ -35,8 +35,8 @@ import java.util.Set;
  * SlaveHandler
  *
  *
- * @xmlrpc.namespace sync.slave
- * @xmlrpc.doc Contains methods to set up information about allowed-"slaves", for use
+ * @apidoc.namespace sync.slave
+ * @apidoc.doc Contains methods to set up information about allowed-"slaves", for use
  * on the "master" side of ISS
  */
 public class SlaveHandler extends BaseHandler {
@@ -49,14 +49,14 @@ public class SlaveHandler extends BaseHandler {
      * @param allowAllOrgs Should we export all orgs to this Slave?
      * @return Newly created ISSSlave object.
      *
-     * @xmlrpc.doc Create a new Slave, known to this Master.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "slaveFqdn", "Slave's fully-qualified domain name")
-     * @xmlrpc.param #param_desc("boolean",
+     * @apidoc.doc Create a new Slave, known to this Master.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "slaveFqdn", "Slave's fully-qualified domain name")
+     * @apidoc.param #param_desc("boolean",
      *    "isEnabled", "Let this slave talk to us?")
-     * @xmlrpc.param #param_desc("boolean",
+     * @apidoc.param #param_desc("boolean",
      *    "allowAllOrgs", "Export all our orgs to this slave?")
-     * @xmlrpc.returntype $IssSlaveSerializer
+     * @apidoc.returntype $IssSlaveSerializer
      */
     public IssSlave create(User loggedInUser,
                            String slaveFqdn,
@@ -85,15 +85,15 @@ public class SlaveHandler extends BaseHandler {
      * @param allowAllOrgs Should we export all orgs to this Slave?
      * @return updated IssSlave
      *
-     * @xmlrpc.doc Updates attributes of the specified Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "slaveId", "ID of the Slave to update")
-     * @xmlrpc.param #param_desc("string", "slaveFqdn", "Slave's fully-qualified domain name")
-     * @xmlrpc.param #param_desc("boolean",
+     * @apidoc.doc Updates attributes of the specified Slave
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "slaveId", "ID of the Slave to update")
+     * @apidoc.param #param_desc("string", "slaveFqdn", "Slave's fully-qualified domain name")
+     * @apidoc.param #param_desc("boolean",
      *    "isEnabled", "Let this slave talk to us?")
-     * @xmlrpc.param #param_desc("boolean",
+     * @apidoc.param #param_desc("boolean",
      *    "allowAllOrgs", "Export all our orgs to this Slave?")
-     * @xmlrpc.returntype $IssSlaveSerializer
+     * @apidoc.returntype $IssSlaveSerializer
      */
     public IssSlave update(User loggedInUser,
                            Integer slaveId,
@@ -116,10 +116,10 @@ public class SlaveHandler extends BaseHandler {
      * @param slaveId Id of the Slave to remove
      * @return 1 on success, exception otherwise
      *
-     * @xmlrpc.doc Remove the specified Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "slaveId", "ID of the Slave to remove")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove the specified Slave
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "slaveId", "ID of the Slave to remove")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, Integer slaveId) {
         IssSlave slave = getSlave(loggedInUser, slaveId);
@@ -133,10 +133,10 @@ public class SlaveHandler extends BaseHandler {
      * @param slaveId Id of the Slave to look for
      * @return the specified Slave if found, exception otherwise
      *
-     * @xmlrpc.doc Find a Slave by specifying its ID
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "slaveId", "ID of the desired Slave")
-     * @xmlrpc.returntype $IssSlaveSerializer
+     * @apidoc.doc Find a Slave by specifying its ID
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "slaveId", "ID of the desired Slave")
+     * @apidoc.returntype $IssSlaveSerializer
      */
     @ReadOnly
     public IssSlave getSlave(User loggedInUser, Integer slaveId) {
@@ -152,10 +152,10 @@ public class SlaveHandler extends BaseHandler {
      * @param slaveFqdn Domain name of the Slave to look for
      * @return the specified Slave if found, exception otherwise
      *
-     * @xmlrpc.doc Find a Slave by specifying its Fully-Qualified Domain Name
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "slaveFqdn", "Domain-name of the desired Slave")
-     * @xmlrpc.returntype $IssSlaveSerializer
+     * @apidoc.doc Find a Slave by specifying its Fully-Qualified Domain Name
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "slaveFqdn", "Domain-name of the desired Slave")
+     * @apidoc.returntype $IssSlaveSerializer
      */
     @ReadOnly
     public IssSlave getSlaveByName(User loggedInUser, String slaveFqdn) {
@@ -170,9 +170,9 @@ public class SlaveHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return list of all the IssSlaves we know about
      *
-     * @xmlrpc.doc Get all the Slaves this Master knows about
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Get all the Slaves this Master knows about
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $IssSlaveSerializer
      *      #array_end()
@@ -189,10 +189,10 @@ public class SlaveHandler extends BaseHandler {
      * @param slaveId Id of the Slave to look for
      * @return list of all the IssSlaves we know about
      *
-     * @xmlrpc.doc Get all orgs this Master is willing to export to the specified Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "slaveId", "Id of the desired Slave")
-     * @xmlrpc.returntype #array_single("int", "ids of allowed organizations")
+     * @apidoc.doc Get all orgs this Master is willing to export to the specified Slave
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "slaveId", "Id of the desired Slave")
+     * @apidoc.returntype #array_single("int", "ids of allowed organizations")
      */
     @ReadOnly
     public List<Integer> getAllowedOrgs(User loggedInUser, Integer slaveId) {
@@ -211,11 +211,11 @@ public class SlaveHandler extends BaseHandler {
      * @param orgIds List of org-ids we're willing to export
      * @return 1 for success, exception otherwise
      *
-     * @xmlrpc.doc Set the orgs this Master is willing to export to the specified Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "slaveId", "ID of the desired Slave")
-     * @xmlrpc.param #array_single_desc("int", "orgIds", "List of org-ids we're willing to export")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Set the orgs this Master is willing to export to the specified Slave
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "slaveId", "ID of the desired Slave")
+     * @apidoc.param #array_single_desc("int", "orgIds", "List of org-ids we're willing to export")
+     * @apidoc.returntype #return_int_success()
      */
     public int setAllowedOrgs(User loggedInUser, Integer slaveId, List<Integer> orgIds) {
         IssSlave slave = getSlave(loggedInUser, slaveId);

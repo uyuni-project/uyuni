@@ -39,8 +39,8 @@ import java.util.Set;
  * MasterHandler
  *
  *
- * @xmlrpc.namespace sync.master
- * @xmlrpc.doc Contains methods to set up information about known-"masters", for use
+ * @apidoc.namespace sync.master
+ * @apidoc.doc Contains methods to set up information about known-"masters", for use
  * on the "slave" side of ISS
  */
 public class MasterHandler extends BaseHandler {
@@ -68,10 +68,10 @@ public class MasterHandler extends BaseHandler {
      * @param label Master's fully-qualified domain name
      * @return Newly created ISSMaster object.
      *
-     * @xmlrpc.doc Create a new Master, known to this Slave.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "Master's fully-qualified domain name")
-     * @xmlrpc.returntype $IssMasterSerializer
+     * @apidoc.doc Create a new Master, known to this Slave.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "Master's fully-qualified domain name")
+     * @apidoc.returntype $IssMasterSerializer
      */
     public IssMaster create(User loggedInUser, String label) {
         ensureSatAdmin(loggedInUser);
@@ -92,11 +92,11 @@ public class MasterHandler extends BaseHandler {
      * @param label new label
      * @return updated IssMaster
      *
-     * @xmlrpc.doc Updates the label of the specified Master
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "masterId", "ID of the Master to update")
-     * @xmlrpc.param #param_desc("string", "label", "Desired new label")
-     * @xmlrpc.returntype $IssMasterSerializer
+     * @apidoc.doc Updates the label of the specified Master
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "masterId", "ID of the Master to update")
+     * @apidoc.param #param_desc("string", "label", "Desired new label")
+     * @apidoc.returntype $IssMasterSerializer
      */
     public IssMaster update(User loggedInUser, Integer masterId, String label) {
         IssMaster master = getMaster(loggedInUser, masterId);
@@ -112,10 +112,10 @@ public class MasterHandler extends BaseHandler {
      * @param masterId Id of the Master to remove
      * @return 1 on success, exception otherwise
      *
-     * @xmlrpc.doc Remove the specified Master
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "masterId", "Id of the Master to remove")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove the specified Master
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "masterId", "Id of the Master to remove")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, Integer masterId) {
         IssMaster master = getMaster(loggedInUser, masterId);
@@ -129,10 +129,10 @@ public class MasterHandler extends BaseHandler {
      * @param masterId Id of the Master to be the default
      * @return 1 on success, exception otherwise
      *
-     * @xmlrpc.doc Make the specified Master the default for this Slave's inter-server-sync
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "masterId", "Id of the Master to make the default")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Make the specified Master the default for this Slave's inter-server-sync
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "masterId", "Id of the Master to make the default")
+     * @apidoc.returntype #return_int_success()
      */
     public int makeDefault(User loggedInUser, Integer masterId) {
         IssMaster master = getMaster(loggedInUser, masterId);
@@ -146,9 +146,9 @@ public class MasterHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return current default Master, null if there isn't one
      *
-     * @xmlrpc.doc Return the current default-Master for this Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype $IssMasterSerializer
+     * @apidoc.doc Return the current default-Master for this Slave
+     * @apidoc.param #session_key()
+     * @apidoc.returntype $IssMasterSerializer
      */
     @ReadOnly
     public IssMaster getDefaultMaster(User loggedInUser) {
@@ -162,8 +162,8 @@ public class MasterHandler extends BaseHandler {
      * Check if this host is reading configuration from an ISS master.
      * @return boolean if there is ISS master.
      *
-     * @xmlrpc.doc Check if this host is reading configuration from an ISS master.
-     * @xmlrpc.returntype #param_desc("boolean", "master", "True if has an ISS master, false otherwise")
+     * @apidoc.doc Check if this host is reading configuration from an ISS master.
+     * @apidoc.returntype #param_desc("boolean", "master", "True if has an ISS master, false otherwise")
      */
     public boolean hasMaster() {
         return IssFactory.getCurrentMaster() != null;
@@ -174,9 +174,9 @@ public class MasterHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return 1 on success, exception otherwise
      *
-     * @xmlrpc.doc Make this slave have no default Master for inter-server-sync
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Make this slave have no default Master for inter-server-sync
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
      */
     public int unsetDefaultMaster(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
@@ -191,12 +191,12 @@ public class MasterHandler extends BaseHandler {
      * @param caCertFilename path to this Master's CA Cert on this Slave
      * @return 1 on success, exception otherwise
      *
-     * @xmlrpc.doc Set the CA-CERT filename for specified Master on this Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "masterId", "ID of the Master to affect")
-     * @xmlrpc.param #param_desc("string", "caCertFilename",
+     * @apidoc.doc Set the CA-CERT filename for specified Master on this Slave
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "masterId", "ID of the Master to affect")
+     * @apidoc.param #param_desc("string", "caCertFilename",
      *  "path to specified Master's CA cert")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setCaCert(User loggedInUser, Integer masterId, String caCertFilename) {
         IssMaster master = getMaster(loggedInUser, masterId);
@@ -210,10 +210,10 @@ public class MasterHandler extends BaseHandler {
      * @param masterId Id of the Master to look for
      * @return the specified Master if found, exception otherwise
      *
-     * @xmlrpc.doc Find a Master by specifying its ID
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "masterId", "ID of the desired Master")
-     * @xmlrpc.returntype $IssMasterSerializer
+     * @apidoc.doc Find a Master by specifying its ID
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "masterId", "ID of the desired Master")
+     * @apidoc.returntype $IssMasterSerializer
      */
     @ReadOnly
     public IssMaster getMaster(User loggedInUser, Integer masterId) {
@@ -229,10 +229,10 @@ public class MasterHandler extends BaseHandler {
      * @param label Label of the Master to look for
      * @return the specified Master if found, exception otherwise
      *
-     * @xmlrpc.doc Find a Master by specifying its label
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "Label of the desired Master")
-     * @xmlrpc.returntype $IssMasterSerializer
+     * @apidoc.doc Find a Master by specifying its label
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "Label of the desired Master")
+     * @apidoc.returntype $IssMasterSerializer
      */
     @ReadOnly
     public IssMaster getMasterByLabel(User loggedInUser, String label) {
@@ -247,9 +247,9 @@ public class MasterHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return list of all the IssMasters we know about
      *
-     * @xmlrpc.doc Get all the Masters this Slave knows about
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Get all the Masters this Slave knows about
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $IssMasterSerializer
      *      #array_end()
@@ -267,10 +267,10 @@ public class MasterHandler extends BaseHandler {
      * @param masterId Id of the Master to look for
      * @return List of MasterOrgs we know about
      *
-     * @xmlrpc.doc List all organizations the specified Master has exported to this Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "masterId", "ID of the desired Master")
-     * @xmlrpc.returntype
+     * @apidoc.doc List all organizations the specified Master has exported to this Slave
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "masterId", "ID of the desired Master")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     $IssMasterOrgSerializer
      *   #array_end()
@@ -291,10 +291,10 @@ public class MasterHandler extends BaseHandler {
      * @param orgMaps List of MasterOrgs we know about
      * @return 1 if successful, exception otherwise
      *
-     * @xmlrpc.doc Reset all organizations the specified Master has exported to this Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "masterId", "Id of the desired Master")
-     * @xmlrpc.param
+     * @apidoc.doc Reset all organizations the specified Master has exported to this Slave
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "masterId", "Id of the desired Master")
+     * @apidoc.param
      *   #array_begin("orgMaps")
      *      #struct_begin("master-org details")
      *          #prop("int", "masterOrgId")
@@ -302,7 +302,7 @@ public class MasterHandler extends BaseHandler {
      *          #prop("int", "localOrgId")
      *     #struct_end()
      *   #array_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setMasterOrgs(User loggedInUser,
                              Integer masterId,
@@ -326,17 +326,17 @@ public class MasterHandler extends BaseHandler {
      * @param orgMap new master-organization to add
      * @return 1 if success, exception otherwise
      *
-     * @xmlrpc.doc Add a single organizations to the list of those the specified Master has
+     * @apidoc.doc Add a single organizations to the list of those the specified Master has
      * exported to this Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "masterId", "Id of the desired Master")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "masterId", "Id of the desired Master")
+     * @apidoc.param
      *      #struct_begin("orgMap")
      *          #prop("int", "masterOrgId")
      *          #prop("string", "masterOrgName")
      *          #prop("int", "localOrgId")
      *     #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      *
      */
     public int addToMaster(User loggedInUser,
@@ -357,13 +357,13 @@ public class MasterHandler extends BaseHandler {
      * @param localOrgId id of the local organization to map to masterOrgId
      * @return 1 if success, exception otherwise
      *
-     * @xmlrpc.doc Add a single organizations to the list of those the specified Master has
+     * @apidoc.doc Add a single organizations to the list of those the specified Master has
      * exported to this Slave
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "masterId", "ID of the desired Master")
-     * @xmlrpc.param #param_desc("int", "masterOrgId", "ID of the desired Master")
-     * @xmlrpc.param #param_desc("int", "localOrgId", "ID of the desired Master")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "masterId", "ID of the desired Master")
+     * @apidoc.param #param_desc("int", "masterOrgId", "ID of the desired Master")
+     * @apidoc.param #param_desc("int", "localOrgId", "ID of the desired Master")
+     * @apidoc.returntype #return_int_success()
      *
      */
     public int mapToLocal(User loggedInUser,

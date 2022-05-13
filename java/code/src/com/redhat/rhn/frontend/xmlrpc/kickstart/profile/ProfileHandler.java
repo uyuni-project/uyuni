@@ -80,8 +80,8 @@ import java.util.Set;
 
 /**
  * ProfileHandler
- * @xmlrpc.namespace kickstart.profile
- * @xmlrpc.doc Provides methods to access and modify many aspects of
+ * @apidoc.namespace kickstart.profile
+ * @apidoc.doc Provides methods to access and modify many aspects of
  * a kickstart profile.
  */
 public class ProfileHandler extends BaseHandler {
@@ -102,11 +102,11 @@ public class ProfileHandler extends BaseHandler {
      * @param ksLabel label of the kickstart profile to be changed.
      * @return kickstart tree label
      *
-     * @xmlrpc.doc Get the kickstart tree for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Get the kickstart tree for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *     #param_desc("string", "kstreeLabel", "Label of the kickstart tree.")
      */
     @ReadOnly
@@ -130,11 +130,11 @@ public class ProfileHandler extends BaseHandler {
      * @param kslabel label of the kickstart profile to be changed.
      * @return kickstart tree label
      *
-     * @xmlrpc.doc Get the update type for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Get the update type for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile.")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *     #param_desc("string", "update_type", "Update type for this Kickstart Profile.")
      */
     @ReadOnly
@@ -157,11 +157,11 @@ public class ProfileHandler extends BaseHandler {
      * @param ksLabel the kickstart label
      * @return Boolean value of the option
      *
-     * @xmlrpc.doc Get ks.cfg preservation option for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Get ks.cfg preservation option for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *   #param_desc("boolean", "preserve", "The value of the option.
      *      True means that ks.cfg will be copied to /root, false means that it will not")
      */
@@ -183,13 +183,13 @@ public class ProfileHandler extends BaseHandler {
      * @param preserve whether to perserve ks.cfg or not
      * @return int 1 for success
      *
-     * @xmlrpc.doc Set ks.cfg preservation option for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Set ks.cfg preservation option for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.param #param_desc("boolean", "preserve", "whether or not
+     * @apidoc.param #param_desc("boolean", "preserve", "whether or not
      *      ks.cfg and all %include fragments will be copied to /root.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setCfgPreservation(User loggedInUser, String ksLabel, Boolean preserve) {
         checkKickstartPerms(loggedInUser);
@@ -211,15 +211,15 @@ public class ProfileHandler extends BaseHandler {
      * @param post whether to log post scripts or not
      * @return int 1 for success
      *
-     * @xmlrpc.doc Set logging options for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Set logging options for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.param #param_desc("boolean", "pre", "whether or not to log
+     * @apidoc.param #param_desc("boolean", "pre", "whether or not to log
      *      the pre section of a kickstart to /root/ks-pre.log")
-     * @xmlrpc.param #param_desc("boolean", "post", "whether or not to log
+     * @apidoc.param #param_desc("boolean", "post", "whether or not to log
      *      the post section of a kickstart to /root/ks-post.log")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setLogging(User loggedInUser, String ksLabel, Boolean pre, Boolean post) {
         checkKickstartPerms(loggedInUser);
@@ -255,13 +255,13 @@ public class ProfileHandler extends BaseHandler {
      * @param kstreeLabel label of the new kickstart tree.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Set the kickstart tree for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Set the kickstart tree for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.param #param_desc("string", "kstreeLabel", "Label of new
+     * @apidoc.param #param_desc("string", "kstreeLabel", "Label of new
      * kickstart tree.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setKickstartTree(User loggedInUser, String ksLabel,
             String kstreeLabel) {
@@ -307,13 +307,13 @@ public class ProfileHandler extends BaseHandler {
      * @param updateType the new update type.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Set the update typefor a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Set the update typefor a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.param #param_desc("string", "updateType", "The new update type
+     * @apidoc.param #param_desc("string", "updateType", "The new update type
      * to set. Possible values are 'all' and 'none'.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setUpdateType(User loggedInUser, String ksLabel,
             String updateType) {
@@ -351,11 +351,11 @@ public class ProfileHandler extends BaseHandler {
      * @param ksLabel label of the kickstart profile to be updated.
      * @return list of child channels associated with the profile.
      *
-     * @xmlrpc.doc Get the child channels for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Get the child channels for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile.")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *     #array_single("string", "channelLabel")
      */
     @ReadOnly
@@ -385,13 +385,13 @@ public class ProfileHandler extends BaseHandler {
      * kickstart profile.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Set the child channels for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Set the child channels for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.param #array_single_desc("string", "channelLabels",
+     * @apidoc.param #array_single_desc("string", "channelLabels",
      * "List of labels of child channels")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setChildChannels(User loggedInUser, String ksLabel,
             List<String> channelLabels) {
@@ -426,12 +426,12 @@ public class ProfileHandler extends BaseHandler {
      * @param ksLabel the kickstart label
      * @return list of kickstartScript objects
      *
-     * @xmlrpc.doc List the pre and post scripts for a kickstart profile
+     * @apidoc.doc List the pre and post scripts for a kickstart profile
      * in the order they will run during the kickstart.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "The label of the
      * kickstart")
-     * @xmlrpc.returntype #return_array_begin() $KickstartScriptSerializer #array_end()
+     * @apidoc.returntype #return_array_begin() $KickstartScriptSerializer #array_end()
      */
     @ReadOnly
     public List<KickstartScript> listScripts(User loggedInUser, String ksLabel) {
@@ -463,25 +463,25 @@ public class ProfileHandler extends BaseHandler {
      * scripts that run after registration
      * @return 1 on success
      *
-     * @xmlrpc.doc Change the order that kickstart scripts will run for
+     * @apidoc.doc Change the order that kickstart scripts will run for
      * this kickstart profile. Scripts will run in the order they appear
      * in the array. There are three arrays, one for all pre scripts, one
      * for the post scripts that run before registration and server
      * actions happen, and one for post scripts that run after registration
      * and server actions. All scripts must be included in one of these
      * lists, as appropriate.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "The label of the
      * kickstart")
-     * @xmlrpc.param #array_single_desc("int", "preScripts",
+     * @apidoc.param #array_single_desc("int", "preScripts",
      *              "IDs of the ordered pre scripts")
-     * @xmlrpc.param #array_single_desc("int", "postScriptsBeforeRegistration",
+     * @apidoc.param #array_single_desc("int", "postScriptsBeforeRegistration",
      *              "IDs of the ordered post scripts that will run
      *              before registration")
-     * @xmlrpc.param #array_single_desc("int", "postScriptsAfterRegistration",
+     * @apidoc.param #array_single_desc("int", "postScriptsAfterRegistration",
      *              "IDs of the ordered post scripts that will run
      *              after registration")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int orderScripts(User loggedInUser, String ksLabel, List<Integer> preScripts,
             List<Integer> postScriptsBeforeRegistration,
@@ -572,21 +572,21 @@ public class ProfileHandler extends BaseHandler {
      * @param chroot true if you want it to be chrooted
      * @return the id of the created script
      *
-     * @xmlrpc.doc Add a pre/post script to a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The kickstart label to
+     * @apidoc.doc Add a pre/post script to a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "The kickstart label to
      * add the script to.")
-     * @xmlrpc.param #param_desc("string", "name", "The kickstart script name.")
-     * @xmlrpc.param #param_desc("string", "contents", "The full script to
+     * @apidoc.param #param_desc("string", "name", "The kickstart script name.")
+     * @apidoc.param #param_desc("string", "contents", "The full script to
      * add.")
-     * @xmlrpc.param #param_desc("string", "interpreter", "The path to the
+     * @apidoc.param #param_desc("string", "interpreter", "The path to the
      * interpreter to use (i.e. /bin/bash). An empty string will use the
      * kickstart default interpreter.")
-     * @xmlrpc.param #param_desc("string", "type", "The type of script (either
+     * @apidoc.param #param_desc("string", "type", "The type of script (either
      * 'pre' or 'post').")
-     * @xmlrpc.param #param_desc("boolean", "chroot", "Whether to run the script
+     * @apidoc.param #param_desc("boolean", "chroot", "Whether to run the script
      * in the chrooted install location (recommended) or not.")
-     * @xmlrpc.returntype #param_desc("int", "id", "the id of the added script")
+     * @apidoc.returntype #param_desc("int", "id", "the id of the added script")
      *
      */
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
@@ -607,22 +607,22 @@ public class ProfileHandler extends BaseHandler {
      * @param template enable templating using cobbler
      * @return the id of the created script
      *
-     * @xmlrpc.doc Add a pre/post script to a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The kickstart label to
+     * @apidoc.doc Add a pre/post script to a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "The kickstart label to
      * add the script to.")
-     * @xmlrpc.param #param_desc("string", "name", "The kickstart script name.")
-     * @xmlrpc.param #param_desc("string", "contents", "The full script to
+     * @apidoc.param #param_desc("string", "name", "The kickstart script name.")
+     * @apidoc.param #param_desc("string", "contents", "The full script to
      * add.")
-     * @xmlrpc.param #param_desc("string", "interpreter", "The path to the
+     * @apidoc.param #param_desc("string", "interpreter", "The path to the
      * interpreter to use (i.e. /bin/bash). An empty string will use the
      * kickstart default interpreter.")
-     * @xmlrpc.param #param_desc("string", "type", "The type of script (either
+     * @apidoc.param #param_desc("string", "type", "The type of script (either
      * 'pre' or 'post').")
-     * @xmlrpc.param #param_desc("boolean", "chroot", "Whether to run the script
+     * @apidoc.param #param_desc("boolean", "chroot", "Whether to run the script
      * in the chrooted install location (recommended) or not.")
-     * @xmlrpc.param #param_desc("boolean", "template", "Enable templating using cobbler.")
-     * @xmlrpc.returntype #param_desc("int", "id", "the id of the added script")
+     * @apidoc.param #param_desc("boolean", "template", "Enable templating using cobbler.")
+     * @apidoc.returntype #param_desc("int", "id", "the id of the added script")
      *
      */
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
@@ -644,24 +644,24 @@ public class ProfileHandler extends BaseHandler {
      * @param erroronfail Whether to throw an error if the script fails or not
      * @return the id of the created script
      *
-     * @xmlrpc.doc Add a pre/post script to a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The kickstart label to
+     * @apidoc.doc Add a pre/post script to a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "The kickstart label to
      * add the script to.")
-     * @xmlrpc.param #param_desc("string", "name", "The kickstart script name.")
-     * @xmlrpc.param #param_desc("string", "contents", "The full script to
+     * @apidoc.param #param_desc("string", "name", "The kickstart script name.")
+     * @apidoc.param #param_desc("string", "contents", "The full script to
      * add.")
-     * @xmlrpc.param #param_desc("string", "interpreter", "The path to the
+     * @apidoc.param #param_desc("string", "interpreter", "The path to the
      * interpreter to use (i.e. /bin/bash). An empty string will use the
      * kickstart default interpreter.")
-     * @xmlrpc.param #param_desc("string", "type", "The type of script (either
+     * @apidoc.param #param_desc("string", "type", "The type of script (either
      * 'pre' or 'post').")
-     * @xmlrpc.param #param_desc("boolean", "chroot", "Whether to run the script
+     * @apidoc.param #param_desc("boolean", "chroot", "Whether to run the script
      * in the chrooted install location (recommended) or not.")
-     * @xmlrpc.param #param_desc("boolean", "template", "Enable templating using cobbler.")
-     * @xmlrpc.param #param_desc("boolean", "erroronfail", "Whether to throw an
+     * @apidoc.param #param_desc("boolean", "template", "Enable templating using cobbler.")
+     * @apidoc.param #param_desc("boolean", "erroronfail", "Whether to throw an
      * error if the script fails or not")
-     * @xmlrpc.returntype #param_desc("int", "id", "the id of the added script")
+     * @apidoc.returntype #param_desc("int", "id", "the id of the added script")
      *
      */
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
@@ -700,13 +700,13 @@ public class ProfileHandler extends BaseHandler {
      * @param scriptId the id of the kickstart
      * @return 1 on success
      *
-     * @xmlrpc.doc Remove a script from a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The kickstart from which
+     * @apidoc.doc Remove a script from a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "The kickstart from which
      * to remove the script from.")
-     * @xmlrpc.param #param_desc("int", "scriptId", "The id of the script to
+     * @apidoc.param #param_desc("int", "scriptId", "The id of the script to
      * remove.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      *
      */
     public int removeScript(User loggedInUser, String ksLabel, Integer scriptId) {
@@ -735,14 +735,14 @@ public class ProfileHandler extends BaseHandler {
      * @param host The host/ip to use when referring to the server itself
      * @return the kickstart file
      *
-     * @xmlrpc.doc Download the full contents of a kickstart file.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
+     * @apidoc.doc Download the full contents of a kickstart file.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "The label of the
      * kickstart to download.")
-     * @xmlrpc.param #param_desc("string", "host", "The host to use when
+     * @apidoc.param #param_desc("string", "host", "The host to use when
      * referring to the #product() server. Usually this should be the FQDN,
      * but could be the ip address or shortname as well.")
-     * @xmlrpc.returntype #param_desc("string", "ks", "The contents of the kickstart file. Note: if
+     * @apidoc.returntype #param_desc("string", "ks", "The contents of the kickstart file. Note: if
      * an activation key is not associated with the kickstart file, registration
      * will not occur in the generated %post section. If one is
      * associated, it will be used for registration")
@@ -760,11 +760,11 @@ public class ProfileHandler extends BaseHandler {
      * @param ksLabel the label to download
      * @return the kickstart file
      *
-     * @xmlrpc.doc Downloads the Cobbler-rendered Kickstart file.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
+     * @apidoc.doc Downloads the Cobbler-rendered Kickstart file.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "The label of the
      * kickstart to download.")
-     * @xmlrpc.returntype #param_desc("string", "ks", "The contents of the kickstart file")
+     * @apidoc.returntype #param_desc("string", "ks", "The contents of the kickstart file")
      */
     public String downloadRenderedKickstart(User loggedInUser, String ksLabel) {
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
@@ -780,11 +780,11 @@ public class ProfileHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if
      *         the profile associated with ksLabel cannot be found
      *
-     * @xmlrpc.doc Get advanced options for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
+     * @apidoc.doc Get advanced options for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * #return_array_begin()
      * $KickstartAdvancedOptionsSerializer
      * #array_end()
@@ -814,13 +814,13 @@ public class ProfileHandler extends BaseHandler {
      *         the profile associated with ksLabel cannot be found
      *         or invalid advanced option is provided
      *
-     * @xmlrpc.doc Set advanced options for a kickstart profile.
+     * @apidoc.doc Set advanced options for a kickstart profile.
      * If 'md5_crypt_rootpw' is set to 'True', 'root_pw' is taken as plaintext and
      * will md5 encrypted on server side, otherwise a hash encoded password
      * (according to the auth option) is expected
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string","ksLabel")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string","ksLabel")
+     * @apidoc.param
      *   #array_begin("options")
      *      #struct_begin("advanced options")
      *          #prop_desc("string", "name", "Name of the advanced option.
@@ -834,7 +834,7 @@ public class ProfileHandler extends BaseHandler {
      *          #prop_desc("string", "arguments", "Arguments of the option")
      *      #struct_end()
      *   #array_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setAdvancedOptions(User loggedInUser, String ksLabel, List<Map> options)
     throws FaultException {
@@ -939,11 +939,11 @@ public class ProfileHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if
      *         the profile associated with ksLabel cannot be found
      *
-     * @xmlrpc.doc Get custom options for a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string","ksLabel")
+     * @apidoc.doc Get custom options for a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string","ksLabel")
      *
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * #return_array_begin()
      * $KickstartCommandSerializer
      * #array_end()
@@ -970,11 +970,11 @@ public class ProfileHandler extends BaseHandler {
     * @throws FaultException A FaultException is thrown if
     *         the profile associated with ksLabel cannot be found
     *
-    * @xmlrpc.doc Set custom options for a kickstart profile.
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param("string","ksLabel")
-    * @xmlrpc.param #array_single("string", "options")
-    * @xmlrpc.returntype #return_int_success()
+    * @apidoc.doc Set custom options for a kickstart profile.
+    * @apidoc.param #session_key()
+    * @apidoc.param #param("string","ksLabel")
+    * @apidoc.param #array_single("string", "options")
+    * @apidoc.returntype #return_int_success()
     */
    public int setCustomOptions(User loggedInUser, String ksLabel, List<String> options)
    throws FaultException {
@@ -1025,11 +1025,11 @@ public class ProfileHandler extends BaseHandler {
     * @param ksLabel the label of the kickstart
     * @return List of KickstartIpRange objects
     *
-    * @xmlrpc.doc List all ip ranges for a kickstart profile.
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
+    * @apidoc.doc List all ip ranges for a kickstart profile.
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "ksLabel", "The label of the
     * kickstart")
-    * @xmlrpc.returntype #return_array_begin() $KickstartIpRangeSerializer #array_end()
+    * @apidoc.returntype #return_array_begin() $KickstartIpRangeSerializer #array_end()
     *
     */
    @ReadOnly
@@ -1049,15 +1049,15 @@ public class ProfileHandler extends BaseHandler {
     * @param max the max ip address of the range
     * @return 1 on success
     *
-    * @xmlrpc.doc Add an ip range to a kickstart profile.
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
+    * @apidoc.doc Add an ip range to a kickstart profile.
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "ksLabel", "The label of the
     * kickstart")
-    * @xmlrpc.param #param_desc("string", "min", "The ip address making up the
+    * @apidoc.param #param_desc("string", "min", "The ip address making up the
     * minimum of the range (i.e. 192.168.0.1)")
-    * @xmlrpc.param #param_desc("string", "max", "The ip address making up the
+    * @apidoc.param #param_desc("string", "max", "The ip address making up the
     * maximum of the range (i.e. 192.168.0.254)")
-    * @xmlrpc.returntype #return_int_success()
+    * @apidoc.returntype #return_int_success()
     *
     */
    public int addIpRange(User loggedInUser, String ksLabel, String min,
@@ -1087,14 +1087,14 @@ public class ProfileHandler extends BaseHandler {
     * @param ipAddress an ip address in the range that you want to remove
     * @return 1 on removal, 0 if not found, exception otherwise
     *
-    * @xmlrpc.doc Remove an ip range from a kickstart profile.
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "ksLabel", "The kickstart label of
+    * @apidoc.doc Remove an ip range from a kickstart profile.
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "ksLabel", "The kickstart label of
     * the ip range you want to remove")
-    * @xmlrpc.param #param_desc("string", "ipAddress", "An Ip Address that
+    * @apidoc.param #param_desc("string", "ipAddress", "An Ip Address that
     * falls within the range that you are wanting to remove. The min or max of
     * the range will work.")
-    * @xmlrpc.returntype #param_desc("int", "status", "1 on successful removal, 0 if range wasn't found
+    * @apidoc.returntype #param_desc("int", "status", "1 on successful removal, 0 if range wasn't found
     * for the specified kickstart, exception otherwise")
     */
    public int removeIpRange(User loggedInUser, String ksLabel, String ipAddress) {
@@ -1126,12 +1126,12 @@ public class ProfileHandler extends BaseHandler {
      * @return map of kickstart label to a list of keys in that profile but not in
      *         the other; if no keys match the criteria the list will be empty
      *
-     * @xmlrpc.doc Returns a list for each kickstart profile; each list will contain
+     * @apidoc.doc Returns a list for each kickstart profile; each list will contain
      *             activation keys not present on the other profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "kickstartLabel1")
-     * @xmlrpc.param #param("string", "kickstartLabel2")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "kickstartLabel1")
+     * @apidoc.param #param("string", "kickstartLabel2")
+     * @apidoc.returntype
      *  #struct_begin("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
@@ -1196,12 +1196,12 @@ public class ProfileHandler extends BaseHandler {
      * @return map of kickstart label to a list of package names in that profile but not in
      *         the other; if no keys match the criteria the list will be empty
      *
-     * @xmlrpc.doc Returns a list for each kickstart profile; each list will contain
+     * @apidoc.doc Returns a list for each kickstart profile; each list will contain
      *             package names not present on the other profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "kickstartLabel1")
-     * @xmlrpc.param #param("string", "kickstartLabel2")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "kickstartLabel1")
+     * @apidoc.param #param("string", "kickstartLabel2")
+     * @apidoc.returntype
      *  #struct_begin("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
@@ -1274,13 +1274,13 @@ public class ProfileHandler extends BaseHandler {
      * @return map of kickstart label to a list of properties and their values whose
      *         values are different for each profile
      *
-     * @xmlrpc.doc Returns a list for each kickstart profile; each list will contain the
+     * @apidoc.doc Returns a list for each kickstart profile; each list will contain the
      *             properties that differ between the profiles and their values for that
      *             specific profile .
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "kickstartLabel1")
-     * @xmlrpc.param #param("string", "kickstartLabel2")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "kickstartLabel1")
+     * @apidoc.param #param("string", "kickstartLabel2")
+     * @apidoc.returntype
      *  #struct_begin("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
@@ -1362,12 +1362,12 @@ public class ProfileHandler extends BaseHandler {
      *
      * @return map of kickstart variables associated with the specified kickstart
      *
-     * @xmlrpc.doc Returns a list of variables
+     * @apidoc.doc Returns a list of variables
      *                      associated with the specified kickstart profile
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "ksLabel")
+     * @apidoc.returntype
      *     #struct_begin("kickstart variable")
      *         #prop("string", "key")
      *         #prop("string or int", "value")
@@ -1392,17 +1392,17 @@ public class ProfileHandler extends BaseHandler {
      *
      * @return int - 1 on success, exception thrown otherwise
      *
-     * @xmlrpc.doc Associates list of kickstart variables
+     * @apidoc.doc Associates list of kickstart variables
      *                              with the specified kickstart profile
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "ksLabel")
+     * @apidoc.param
      *     #struct_begin("variables")
      *         #prop("string", "key")
      *         #prop("string or int", "value")
      *     #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setVariables
                 (User loggedInUser, String ksLabel, Map<String, Object> variables) {
@@ -1420,11 +1420,11 @@ public class ProfileHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param ksLabel identifies the kickstart profile
      * @return Array of available OS repositories for provided kickstart profile
-     * @xmlrpc.doc Lists available OS repositories to associate with the provided
+     * @apidoc.doc Lists available OS repositories to associate with the provided
      * kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.returntype #array_single("string", "repositoryLabel")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "ksLabel")
+     * @apidoc.returntype #array_single("string", "repositoryLabel")
      */
     @ReadOnly
     public String[] getAvailableRepositories(User loggedInUser, String ksLabel) {
@@ -1448,10 +1448,10 @@ public class ProfileHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param ksLabel identifies the kickstart profile
      * @return Array of available OS repositories
-     * @xmlrpc.doc Lists all OS repositories associated with provided kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.returntype #array_single("string", "repositoryLabel")
+     * @apidoc.doc Lists all OS repositories associated with provided kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "ksLabel")
+     * @apidoc.returntype #array_single("string", "repositoryLabel")
      */
     @ReadOnly
     public String[] getRepositories(User loggedInUser, String ksLabel) {
@@ -1479,11 +1479,11 @@ public class ProfileHandler extends BaseHandler {
      * @param ksLabel ksLabel identifies the kickstart profile
      * @param repoLabels OS repositories to set
      * @return int - 1 on success, exception thrown otherwise
-     * @xmlrpc.doc Associates OS repository to a kickstart profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.param #array_single("string", "repoLabels")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Associates OS repository to a kickstart profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "ksLabel")
+     * @apidoc.param #array_single("string", "repoLabels")
+     * @apidoc.returntype #return_int_success()
      */
     public int setRepositories(User loggedInUser, String ksLabel, List<String> repoLabels) {
         if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {
@@ -1517,11 +1517,11 @@ public class ProfileHandler extends BaseHandler {
      * @param loggedInUser The Current user
      * @param ksLabel Kickstart profile label
      * @return Label of virtualization type for given profile
-     * @xmlrpc.doc For given kickstart profile label returns label of
+     * @apidoc.doc For given kickstart profile label returns label of
      * virtualization type it's using
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.returntype #param_desc("string", "virtLabel",
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "ksLabel")
+     * @apidoc.returntype #param_desc("string", "virtLabel",
      * "Label of virtualization type.")
      */
     @ReadOnly
@@ -1537,12 +1537,12 @@ public class ProfileHandler extends BaseHandler {
      * @param ksLabel Kickstart profile label
      * @param typeLabel virtualization type label
      * @return int - 1 on success, exception thrown otherwise
-     * @xmlrpc.doc For given kickstart profile label sets its virtualization type.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.param #param_desc("string", "typeLabel", "One of the following: 'none',
+     * @apidoc.doc For given kickstart profile label sets its virtualization type.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "ksLabel")
+     * @apidoc.param #param_desc("string", "typeLabel", "One of the following: 'none',
      * 'qemu', 'para_host', 'xenpv', 'xenfv'")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setVirtualizationType(User loggedInUser, String ksLabel, String typeLabel) {
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());

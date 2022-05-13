@@ -19,7 +19,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
 /**
  * xmlrpc handler for the up2date registration process
- * @xmlrpc.ignore
+ * @apidoc.ignore
  */
 public class RegistrationHandler extends BaseHandler {
 

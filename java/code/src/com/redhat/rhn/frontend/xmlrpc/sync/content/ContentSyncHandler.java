@@ -40,8 +40,8 @@ import java.util.stream.Collectors;
 /**
  * API handler offering content synchronization methods.
  *
- * @xmlrpc.namespace sync.content
- * @xmlrpc.doc Provides the namespace for the content synchronization methods.
+ * @apidoc.namespace sync.content
+ * @apidoc.doc Provides the namespace for the content synchronization methods.
  */
 public class ContentSyncHandler extends BaseHandler {
 
@@ -52,9 +52,9 @@ public class ContentSyncHandler extends BaseHandler {
      * @return List of products with their extensions (add-ons).
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc List all accessible products.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #return_array_begin()
+     * @apidoc.doc List all accessible products.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin()
      *                       $MgrSyncProductDtoSerializer
      *                    #array_end()
      */
@@ -73,9 +73,9 @@ public class ContentSyncHandler extends BaseHandler {
      * @return List of channels.
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc List all accessible channels.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #return_array_begin()
+     * @apidoc.doc List all accessible channels.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin()
      *                       $MgrSyncChannelDtoSerializer
      *                    #array_end()
      */
@@ -96,11 +96,11 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc (Deprecated) Synchronize channels between the Customer Center
+     * @apidoc.doc (Deprecated) Synchronize channels between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer synchronizeChannels(User loggedInUser, String mirrorUrl)
             throws ContentSyncException {
@@ -116,10 +116,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Synchronize channel families between the Customer Center
+     * @apidoc.doc Synchronize channel families between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
      */
     public Integer synchronizeChannelFamilies(User loggedInUser)
             throws ContentSyncException {
@@ -139,10 +139,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Synchronize SUSE products between the Customer Center
+     * @apidoc.doc Synchronize SUSE products between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
      */
     public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
@@ -162,10 +162,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Synchronize subscriptions between the Customer Center
+     * @apidoc.doc Synchronize subscriptions between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
      */
     public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
@@ -186,11 +186,11 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Synchronize repositories between the Customer Center
+     * @apidoc.doc Synchronize repositories between the Customer Center
      *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Optional mirror url or null")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "mirrorUrl", "Optional mirror url or null")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer synchronizeRepositories(User loggedInUser, String mirrorUrl) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
@@ -210,11 +210,11 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Add a new channel to the #product() database
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of the channel to add")
-     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Add a new channel to the #product() database
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "Label of the channel to add")
+     * @apidoc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer addChannel(User loggedInUser, String channelLabel, String mirrorUrl)
             throws ContentSyncException {
@@ -236,11 +236,11 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Array of enabled channel labels
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Add a new channel to the #product() database
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of the channel to add")
-     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
-     * @xmlrpc.returntype #array_single("string", "enabled channel labels")
+     * @apidoc.doc Add a new channel to the #product() database
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "Label of the channel to add")
+     * @apidoc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
+     * @apidoc.returntype #array_single("string", "enabled channel labels")
      */
     public Object[] addChannels(User loggedInUser, String channelLabel, String mirrorUrl)
             throws ContentSyncException {
@@ -278,14 +278,14 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Add organization credentials (mirror credentials) to #product().
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "username", "Organization credentials
+     * @apidoc.doc Add organization credentials (mirror credentials) to #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "username", "Organization credentials
      *                                                  (Mirror credentials) username")
-     * @xmlrpc.param #param_desc("string", "password", "Organization credentials
+     * @apidoc.param #param_desc("string", "password", "Organization credentials
      *                                                  (Mirror credentials) password")
-     * @xmlrpc.param #param_desc("boolean", "primary", "Make this the primary credentials")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param_desc("boolean", "primary", "Make this the primary credentials")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer addCredentials(User loggedInUser, String username, String password,
             boolean primary) throws ContentSyncException {
@@ -307,10 +307,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Delete organization credentials (mirror credentials) from #product().
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "username", "Username of credentials to delete")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Delete organization credentials (mirror credentials) from #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "username", "Username of credentials to delete")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer deleteCredentials(User loggedInUser, String username)
             throws ContentSyncException {
@@ -331,10 +331,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @return List of organization credentials (mirror credentials)
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc List organization credentials (mirror credentials) available in
+     * @apidoc.doc List organization credentials (mirror credentials) available in
      *             #product().
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #return_array_begin()
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin()
      *                       $MirrorCredentialsDtoSerializer
      *                    #array_end()
      */

@@ -54,8 +54,8 @@ import java.util.List;
 
 /**
  * ProxyHandler
- * @xmlrpc.namespace proxy
- * @xmlrpc.doc Provides methods to activate/deactivate a proxy
+ * @apidoc.namespace proxy
+ * @apidoc.doc Provides methods to activate/deactivate a proxy
  * server.
  */
 public class ProxyHandler extends BaseHandler {
@@ -82,9 +82,9 @@ public class ProxyHandler extends BaseHandler {
      * @throws NotSupportedException thrown everytime as this call is no longer supported
      * @since 10.7
      *
-     * @xmlrpc.doc Create Monitoring Scout for proxy.
-     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
-     * @xmlrpc.returntype #param("string", "")
+     * @apidoc.doc Create Monitoring Scout for proxy.
+     * @apidoc.param #param_desc("string", "clientcert", "client certificate file")
+     * @apidoc.returntype #param("string", "")
      */
     public String createMonitoringScout(String clientcert)
         throws NotSupportedException {
@@ -97,10 +97,10 @@ public class ProxyHandler extends BaseHandler {
      * @return 1 if system is proxy, 0 otherwise.
      * @throws MethodInvalidParamException thrown if certificate is invalid.
      *
-     * @xmlrpc.doc Test, if the system identified by the given client
+     * @apidoc.doc Test, if the system identified by the given client
      * certificate i.e. systemid file, is proxy.
-     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param_desc("string", "clientcert", "client certificate file")
+     * @apidoc.returntype #return_int_success()
      */
     @ReadOnly
     public int isProxy(String clientcert)
@@ -116,10 +116,10 @@ public class ProxyHandler extends BaseHandler {
      * @throws ProxyNotActivatedException thrown if server is not a proxy.
      * @throws MethodInvalidParamException thrown if certificate is invalid.
      *
-     * @xmlrpc.doc Deactivates the proxy identified by the given client
+     * @apidoc.doc Deactivates the proxy identified by the given client
      * certificate i.e. systemid file.
-     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param_desc("string", "clientcert", "client certificate file")
+     * @apidoc.returntype #return_int_success()
      */
     public int deactivateProxy(String clientcert)
         throws ProxyNotActivatedException, MethodInvalidParamException {
@@ -146,12 +146,12 @@ public class ProxyHandler extends BaseHandler {
      * @throws ProxyMissingEntitlementException thrown if system does not have the
      * management entitlement.
      *
-     * @xmlrpc.doc Activates the proxy identified by the given client
+     * @apidoc.doc Activates the proxy identified by the given client
      * certificate i.e. systemid file.
-     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
-     * @xmlrpc.param #param_desc("string", "version", "Version of proxy to be
+     * @apidoc.param #param_desc("string", "clientcert", "client certificate file")
+     * @apidoc.param #param_desc("string", "version", "Version of proxy to be
      * registered.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int activateProxy(String clientcert, String version)
         throws ProxyAlreadyRegisteredException, MethodInvalidParamException,
@@ -176,10 +176,10 @@ public class ProxyHandler extends BaseHandler {
      * @return 1 if the deactivation succeeded, 0 otherwise.
      * @since 10.5
      *
-     * @xmlrpc.doc List available version of proxy channel for system
+     * @apidoc.doc List available version of proxy channel for system
      * identified by the given client certificate i.e. systemid file.
-     * @xmlrpc.param #param_desc("string", "clientcert", "client certificate file")
-     * @xmlrpc.returntype  #array_single ("string", "version")
+     * @apidoc.param #param_desc("string", "clientcert", "client certificate file")
+     * @apidoc.returntype  #array_single ("string", "version")
      */
     @ReadOnly
     public List<String> listAvailableProxyChannels(String clientcert) {
@@ -214,9 +214,9 @@ public class ProxyHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return  list of Maps containing "id", "name", and "last_checkin"
      *
-     * @xmlrpc.doc List the proxies within the user's organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List the proxies within the user's organization.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      *   $SystemOverviewSerializer
      * #array_end()
@@ -238,10 +238,10 @@ public class ProxyHandler extends BaseHandler {
      * @param proxyId the ID of the Proxy
      * @return list of client IDs
      *
-     * @xmlrpc.doc List the clients directly connected to a given Proxy.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "proxyId", "the Proxy ID")
-     * @xmlrpc.returntype #array_single("int", "clientId")
+     * @apidoc.doc List the clients directly connected to a given Proxy.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "proxyId", "the Proxy ID")
+     * @apidoc.returntype #array_single("int", "clientId")
      */
     @ReadOnly
     public List<Long> listProxyClients(User loggedInUser, Integer proxyId) {
@@ -269,19 +269,19 @@ public class ProxyHandler extends BaseHandler {
      * @param proxyKey proxy SSL private key in PEM format
      * @return the configuration file
      *
-     * @xmlrpc.doc Compute and download the configuration for proxy containers
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "proxyName", "The FQDN of the proxy")
-     * @xmlrpc.param #param("int", "proxyPort", "The SSH port the proxy listens on")
-     * @xmlrpc.param #param("string", "server", "The server FQDN the proxy will connect to")
-     * @xmlrpc.param #param("int", "maxCache", "Max cache size in MB")
-     * @xmlrpc.param #param("string", "email", "The proxy admin email")
-     * @xmlrpc.param #param("string", "rootCA", "The root CA used to sign the SSL certificate in PEM format")
-     * @xmlrpc.param #array_single_desc("string", "intermediateCAs",
+     * @apidoc.doc Compute and download the configuration for proxy containers
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "proxyName", "The FQDN of the proxy")
+     * @apidoc.param #param("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param("string", "server", "The server FQDN the proxy will connect to")
+     * @apidoc.param #param("int", "maxCache", "Max cache size in MB")
+     * @apidoc.param #param("string", "email", "The proxy admin email")
+     * @apidoc.param #param("string", "rootCA", "The root CA used to sign the SSL certificate in PEM format")
+     * @apidoc.param #array_single_desc("string", "intermediateCAs",
      *                                  "intermediate CAs used to sign the SSL certificate in PEM format")
-     * @xmlrpc.param #param("string", "proxyCrt", "proxy CRT content in PEM format")
-     * @xmlrpc.param #param("string", "proxyKey", "proxy SSL private key in PEM format")
-     *  @xmlrpc.returntype #array_single("byte", "binary object - package file")
+     * @apidoc.param #param("string", "proxyCrt", "proxy CRT content in PEM format")
+     * @apidoc.param #param("string", "proxyKey", "proxy SSL private key in PEM format")
+     *  @apidoc.returntype #array_single("byte", "binary object - package file")
      */
     public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
                                   Integer maxCache, String email,
@@ -331,24 +331,24 @@ public class ProxyHandler extends BaseHandler {
      *
      * @return the configuration file
      *
-     * @xmlrpc.doc Compute and download the configuration for proxy containers
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "proxyName", "The FQDN of the proxy")
-     * @xmlrpc.param #param("int", "proxyPort", "The SSH port the proxy listens on")
-     * @xmlrpc.param #param("string", "server", "The server FQDN the proxy will connect to")
-     * @xmlrpc.param #param("int", "maxCache", "Max cache size in MB")
-     * @xmlrpc.param #param("string", "email", "The proxy admin email")
-     * @xmlrpc.param #param("string", "caCrt", "CA certificate to use to sign the SSL certificate in PEM format")
-     * @xmlrpc.param #param("string", "caKey", "CA private key to use to sign the SSL certificate in PEM format")
-     * @xmlrpc.param #param("string", "caPassword", "The CA private key password")
-     * @xmlrpc.param #array_single_desc("string", "cnames", "Proxy alternate cnames to set in the SSL certificate")
-     * @xmlrpc.param #param("string", "country", "The 2-letter country code to set in the SSL certificate")
-     * @xmlrpc.param #param("string", "state", "The state to set in the SSL certificate")
-     * @xmlrpc.param #param("string", "city", "The city to set in the SSL certificate")
-     * @xmlrpc.param #param("string", "org", "The organization to set in the SSL certificate")
-     * @xmlrpc.param #param("string", "orgUnit", "The organization unit to set in the SSL certificate")
-     * @xmlrpc.param #param("string", "sslEmail", "The email to set in the SSL certificate")
-     *  @xmlrpc.returntype #array_single("byte", "binary object - package file")
+     * @apidoc.doc Compute and download the configuration for proxy containers
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "proxyName", "The FQDN of the proxy")
+     * @apidoc.param #param("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param("string", "server", "The server FQDN the proxy will connect to")
+     * @apidoc.param #param("int", "maxCache", "Max cache size in MB")
+     * @apidoc.param #param("string", "email", "The proxy admin email")
+     * @apidoc.param #param("string", "caCrt", "CA certificate to use to sign the SSL certificate in PEM format")
+     * @apidoc.param #param("string", "caKey", "CA private key to use to sign the SSL certificate in PEM format")
+     * @apidoc.param #param("string", "caPassword", "The CA private key password")
+     * @apidoc.param #array_single_desc("string", "cnames", "Proxy alternate cnames to set in the SSL certificate")
+     * @apidoc.param #param("string", "country", "The 2-letter country code to set in the SSL certificate")
+     * @apidoc.param #param("string", "state", "The state to set in the SSL certificate")
+     * @apidoc.param #param("string", "city", "The city to set in the SSL certificate")
+     * @apidoc.param #param("string", "org", "The organization to set in the SSL certificate")
+     * @apidoc.param #param("string", "orgUnit", "The organization unit to set in the SSL certificate")
+     * @apidoc.param #param("string", "sslEmail", "The email to set in the SSL certificate")
+     *  @apidoc.returntype #array_single("byte", "binary object - package file")
      */
     public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
                                   Integer maxCache, String email,

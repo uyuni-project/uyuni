@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * ActivationKeySerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("kickstart")
  *          #prop("string", "label")
  *          #prop("string", "tree_label")

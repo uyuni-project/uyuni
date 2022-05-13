@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 
 /**
  * SystemMonitoringHandler
- * @xmlrpc.namespace system.monitoring
- * @xmlrpc.doc Provides methods to access information about managed systems, applications and formulas which can be
+ * @apidoc.namespace system.monitoring
+ * @apidoc.doc Provides methods to access information about managed systems, applications and formulas which can be
  * relevant for Prometheus monitoring
  */
 public class SystemMonitoringHandler extends BaseHandler {
@@ -51,10 +51,10 @@ public class SystemMonitoringHandler extends BaseHandler {
      * @param sids The system IDs
      * @return a list containing endpoint details for all Prometheus exporters on the passed system IDs.
      *
-     * @xmlrpc.doc Get the list of monitoring endpoint details.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "sids")
-     * @xmlrpc.returntype
+     * @apidoc.doc Get the list of monitoring endpoint details.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     $EndpointInfoSerializer
      *   #array_end()

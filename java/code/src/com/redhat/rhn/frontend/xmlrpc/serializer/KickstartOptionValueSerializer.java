@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * Serializer for {@link KickstartOptionValue} objects.
  *
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("value")
  *          #prop("string", "name")
  *          #prop("string", "value")

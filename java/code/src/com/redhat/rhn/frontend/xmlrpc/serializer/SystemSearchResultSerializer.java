@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * SystemSearchResultSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("system")
  *      #prop("int", "id")

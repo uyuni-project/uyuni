@@ -31,7 +31,7 @@ import java.util.Map;
  * Serializer for VirtualHostManager class.
  * The content of the "config" struct is dynamic.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("virtual host manager")
  *      #prop("string", "label")
  *      #prop("int", "org_id")

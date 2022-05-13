@@ -46,8 +46,8 @@ import java.util.Set;
 
 /**
  * SnapshotHandler
- * @xmlrpc.namespace system.provisioning.snapshot
- * @xmlrpc.doc Provides methods to access and delete system snapshots.
+ * @apidoc.namespace system.provisioning.snapshot
+ * @apidoc.doc Provides methods to access and delete system snapshots.
  */
 public class SnapshotHandler extends BaseHandler {
 
@@ -72,7 +72,7 @@ public class SnapshotHandler extends BaseHandler {
      * @return list of server snapshots
      * @since 10.1
      *
-     * @xmlrpc.doc List snapshots for a given system.
+     * @apidoc.doc List snapshots for a given system.
      * A user may optionally provide a start and end date to narrow the snapshots that
      * will be listed.  For example,
      * <ul>
@@ -83,11 +83,11 @@ public class SnapshotHandler extends BaseHandler {
      * <li>If the user doesn't provide a startDate and endDate, all snapshots associated
      * with the server will be returned.</li>
      * </ul>
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param($date, "startDate")
-     * @xmlrpc.param #param($date, "endDate")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param($date, "startDate")
+     * @apidoc.param #param($date, "endDate")
+     * @apidoc.returntype
      *  #return_array_begin()
      *      $ServerSnapshotSerializer
      *  #array_end()
@@ -110,7 +110,7 @@ public class SnapshotHandler extends BaseHandler {
      * @return list of server snapshots
      * @since 10.1
      *
-     * @xmlrpc.doc List snapshots for a given system.
+     * @apidoc.doc List snapshots for a given system.
      * A user may optionally provide a start and end date to narrow the snapshots that
      * will be listed.  For example,
      * <ul>
@@ -121,15 +121,15 @@ public class SnapshotHandler extends BaseHandler {
      * <li>If the user doesn't provide a startDate and endDate, all snapshots associated
      * with the server will be returned.</li>
      * </ul>
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param
      *     #struct_begin("dateDetails")
      *         #prop_desc($date, "startDate", "Optional, unless endDate
      *         is provided.")
      *         #prop_desc($date, "endDate", "Optional.")
      *     #struct_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *  #return_array_begin()
      *      $ServerSnapshotSerializer
      *  #array_end()
@@ -157,10 +157,10 @@ public class SnapshotHandler extends BaseHandler {
      * @return Set of packageNevra objects
      * @since 10.1
      *
-     * @xmlrpc.doc List the packages associated with a snapshot.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "snapId")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the packages associated with a snapshot.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "snapId")
+     * @apidoc.returntype
      *      #return_array_begin()
      *         $PackageNevraSerializer
      *     #array_end()
@@ -179,10 +179,10 @@ public class SnapshotHandler extends BaseHandler {
      * @return Set of ConfigRevision objects
      * @since 10.2
      *
-     * @xmlrpc.doc List the config files associated with a snapshot.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "snapId")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the config files associated with a snapshot.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "snapId")
+     * @apidoc.returntype
      *      #return_array_begin()
      *         $ConfigRevisionSerializer
      *     #array_end()
@@ -201,7 +201,7 @@ public class SnapshotHandler extends BaseHandler {
      * @return 1 on success
      * @since 10.1
      *
-     * @xmlrpc.doc  Deletes all snapshots across multiple systems based on the given date
+     * @apidoc.doc  Deletes all snapshots across multiple systems based on the given date
      * criteria.  For example,
      * <ul>
      * <li>If the user provides startDate only, all snapshots created either on or after
@@ -212,10 +212,10 @@ public class SnapshotHandler extends BaseHandler {
      * removed.</li>
      * </ul>
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param($date, "startDate")
-     * @xmlrpc.param #param($date, "endDate")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param($date, "startDate")
+     * @apidoc.param #param($date, "endDate")
+     * @apidoc.returntype #return_int_success()
      */
     @ApiIgnore(ApiType.XMLRPC)
     public int deleteSnapshots(User loggedInUser, Date startDate, Date endDate) {
@@ -232,7 +232,7 @@ public class SnapshotHandler extends BaseHandler {
      * @return 1 on success
      * @since 10.1
      *
-     * @xmlrpc.doc  Deletes all snapshots for a given system based on the date
+     * @apidoc.doc  Deletes all snapshots for a given system based on the date
      * criteria.  For example,
      * <ul>
      * <li>If the user provides startDate only, all snapshots created either on or after
@@ -243,11 +243,11 @@ public class SnapshotHandler extends BaseHandler {
      * with the server will be removed.</li>
      * </ul>
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "ID of system to delete snapshots for")
-     * @xmlrpc.param #param($date, "startDate")
-     * @xmlrpc.param #param($date, "endDate")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of system to delete snapshots for")
+     * @apidoc.param #param($date, "startDate")
+     * @apidoc.param #param($date, "endDate")
+     * @apidoc.returntype #return_int_success()
      */
     @ApiIgnore(ApiType.XMLRPC)
     public int deleteSnapshots(User loggedInUser, Integer sid, Date startDate, Date endDate) {
@@ -263,7 +263,7 @@ public class SnapshotHandler extends BaseHandler {
      * @return 1 on success
      * @since 10.1
      *
-     * @xmlrpc.doc  Deletes all snapshots across multiple systems based on the given date
+     * @apidoc.doc  Deletes all snapshots across multiple systems based on the given date
      * criteria.  For example,
      * <ul>
      * <li>If the user provides startDate only, all snapshots created either on or after
@@ -274,14 +274,14 @@ public class SnapshotHandler extends BaseHandler {
      * removed.</li>
      * </ul>
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param
      *     #struct_begin("dateDetails")
      *         #prop_desc($date, "startDate", "Optional, unless endDate
      *         is provided.")
      *         #prop_desc($date, "endDate", "Optional.")
      *     #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     @ApiIgnore(ApiType.HTTP)
     public int deleteSnapshots(User loggedInUser, Map dateDetails) {
@@ -306,7 +306,7 @@ public class SnapshotHandler extends BaseHandler {
      * @return 1 on success
      * @since 10.1
      *
-     * @xmlrpc.doc  Deletes all snapshots for a given system based on the date
+     * @apidoc.doc  Deletes all snapshots for a given system based on the date
      * criteria.  For example,
      * <ul>
      * <li>If the user provides startDate only, all snapshots created either on or after
@@ -317,16 +317,16 @@ public class SnapshotHandler extends BaseHandler {
      * with the server will be removed.</li>
      * </ul>
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "ID of system to delete
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of system to delete
      *          snapshots for")
-     * @xmlrpc.param
+     * @apidoc.param
      *     #struct_begin("dateDetails")
      *         #prop_desc($date, "startDate", "Optional, unless endDate
      *         is provided.")
      *         #prop_desc($date, "endDate", "Optional.")
      *     #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     @ApiIgnore(ApiType.HTTP)
     public int deleteSnapshots(User loggedInUser, Integer sid, Map dateDetails) {
@@ -350,10 +350,10 @@ public class SnapshotHandler extends BaseHandler {
      * @return 1 on success
      * @since 10.1
      *
-     * @xmlrpc.doc  Deletes a snapshot with the given snapshot id
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "snapId", "ID of snapshot to delete")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc  Deletes a snapshot with the given snapshot id
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "snapId", "ID of snapshot to delete")
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteSnapshot(User loggedInUser, Integer snapId) {
         ServerSnapshot snap = lookupSnapshot(loggedInUser, snapId);
@@ -368,11 +368,11 @@ public class SnapshotHandler extends BaseHandler {
      * @param tagName name iof the snapshot tag
      * @return 1 on success
      *
-     * @xmlrpc.doc Adds tag to snapshot
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "snapId", "ID of the snapshot")
-     * @xmlrpc.param #param_desc("string", "tagName", "Name of the snapshot tag")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Adds tag to snapshot
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "snapId", "ID of the snapshot")
+     * @apidoc.param #param_desc("string", "tagName", "Name of the snapshot tag")
+     * @apidoc.returntype #return_int_success()
      */
     public int addTagToSnapshot(User loggedInUser, Integer snapId, String tagName) {
         ServerSnapshot snap = lookupSnapshot(loggedInUser, snapId);
@@ -418,11 +418,11 @@ public class SnapshotHandler extends BaseHandler {
      * @param sid server ID
      * @param snapId snapshot ID
      * @return 1 in case of success, exception thrown otherwise
-     * @xmlrpc.doc Rollbacks server to snapshot
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param_desc("int", "snapId", "ID of the snapshot")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Rollbacks server to snapshot
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("int", "snapId", "ID of the snapshot")
+     * @apidoc.returntype #return_int_success()
      */
     public int rollbackToSnapshot(User loggedInUser, Integer sid,
             Integer snapId) {
@@ -451,11 +451,11 @@ public class SnapshotHandler extends BaseHandler {
      * @param sid server ID
      * @param tagName Snapshot tag name
      * @return 1 in case of success, exception thrown otherwise
-     * @xmlrpc.doc Rollbacks server to snapshot
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param #param_desc("string", "tagName", "Name of the snapshot tag")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Rollbacks server to snapshot
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("string", "tagName", "Name of the snapshot tag")
+     * @apidoc.returntype #return_int_success()
      */
     public int rollbackToTag(User loggedInUser, Integer sid, String tagName) {
         try {
@@ -476,10 +476,10 @@ public class SnapshotHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param tagName Snapshot tag name
      * @return 1 in case of success, exception thrown otherwise
-     * @xmlrpc.doc Rollbacks server to snapshot
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "tagName", "Name of the snapshot tag")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Rollbacks server to snapshot
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "tagName", "Name of the snapshot tag")
+     * @apidoc.returntype #return_int_success()
      */
     public int rollbackToTag(User loggedInUser, String tagName) {
         try {

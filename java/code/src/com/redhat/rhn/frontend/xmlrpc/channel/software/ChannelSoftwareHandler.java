@@ -108,8 +108,8 @@ import java.util.stream.Collectors;
 
 /**
  * ChannelSoftwareHandler
- * @xmlrpc.namespace channel.software
- * @xmlrpc.doc Provides methods to access and modify many aspects of a channel.
+ * @apidoc.namespace channel.software
+ * @apidoc.doc Provides methods to access and modify many aspects of a channel.
  */
 public class ChannelSoftwareHandler extends BaseHandler {
 
@@ -136,7 +136,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * Only needed for unit tests.
      * @return the {@link TaskomaticApi} instance used by this class
      *
-     * @xmlrpc.ignore
+     * @apidoc.ignore
      */
     @ApiIgnore
     public TaskomaticApi getTaskomaticApi() {
@@ -154,16 +154,16 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabel Label of cloned channel to check
      * @return List of errata that are missing packages
      *
-     * @xmlrpc.doc If you have synced a new channel then patches
+     * @apidoc.doc If you have synced a new channel then patches
      * will have been updated with the packages that are in the newly
      * synced channel. A cloned erratum will not have been automatically updated
      * however. If you cloned a channel that includes those cloned errata and
      * should include the new packages, they will not be included when they
      * should. This method lists the errata that will be updated if you run the
      * syncErrata method.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to update")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to update")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
@@ -191,7 +191,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @return Returns 1 if successfull, FaultException otherwise
      * @throws NoSuchChannelException thrown if no channel is found.
      *
-     * @xmlrpc.doc If you have synced a new channel then patches
+     * @apidoc.doc If you have synced a new channel then patches
      * will have been updated with the packages that are in the newly
      * synced channel. A cloned erratum will not have been automatically updated
      * however. If you cloned a channel that includes those cloned errata and
@@ -200,9 +200,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * with packages that have recently been added, and ensures that all the
      * packages you expect are in the channel. It also updates cloned errata
      * attributes like advisoryStatus.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to update")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to update")
+     * @apidoc.returntype  #return_int_success()
      */
     public Integer syncErrata(User loggedInUser, String channelLabel) {
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
@@ -249,11 +249,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * and epoch) for the unique package names
      * @throws NoSuchChannelException thrown if no channel is found.
      *
-     * @xmlrpc.doc Lists the packages with the latest version (including release and
+     * @apidoc.doc Lists the packages with the latest version (including release and
      * epoch) for the given channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          #struct_begin("package")
      *              #prop("string", "name")
@@ -286,13 +286,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * given dates.
      * @throws NoSuchChannelException thrown if no channel is found.
      *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of package version,
+     * @apidoc.doc Lists all packages in the channel, regardless of package version,
      * between the given dates.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param($date, "startDate")
-     * @xmlrpc.param #param($date, "endDate")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.param #param($date, "startDate")
+     * @apidoc.param #param($date, "endDate")
+     * @apidoc.returntype
      *      #return_array_begin()
      *              $PackageDtoSerializer
      *      #array_end()
@@ -315,12 +315,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * modified date is greater than given date.
      * @throws NoSuchChannelException thrown if no channel is found.
      *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of version whose last
+     * @apidoc.doc Lists all packages in the channel, regardless of version whose last
      * modified date is greater than given date.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param($date, "startDate")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.param #param($date, "startDate")
+     * @apidoc.returntype
      *      #return_array_begin()
      *              $PackageDtoSerializer
      *      #array_end()
@@ -338,10 +338,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @return all packages in the channel, regardless of version
      * @throws NoSuchChannelException thrown if no channel is found.
      *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of the package version
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists all packages in the channel, regardless of the package version
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.returntype
      *      #return_array_begin()
      *              $PackageDtoSerializer
      *      #array_end()
@@ -361,9 +361,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws PermissionCheckFailureException thrown if the user is not a
      * channel admin
      *
-     * @xmlrpc.doc Lists the potential software channel architectures that can be created
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists the potential software channel architectures that can be created
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *          #return_array_begin()
      *              $ChannelArchSerializer
      *          #array_end()
@@ -387,10 +387,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * delete channel.
      * @throws NoSuchChannelException thrown if label is invalid.
      *
-     * @xmlrpc.doc Deletes a custom software channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to delete")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Deletes a custom software channel
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to delete")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String channelLabel)
             throws PermissionCheckFailureException, NoSuchChannelException {
@@ -423,11 +423,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabel Label of channel to be deleted.
      * @return 1 if the Channel is globally subscribable, 0 otherwise.
      *
-     * @xmlrpc.doc Returns whether the channel is subscribable by any user
+     * @apidoc.doc Returns whether the channel is subscribable by any user
      * in the organization
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.returntype #param_desc("int", "subscribable", "1 if true, 0 otherwise")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.returntype #param_desc("int", "subscribable", "1 if true, 0 otherwise")
      */
     @ReadOnly
     public int isGloballySubscribable(User loggedInUser, String channelLabel) {
@@ -447,10 +447,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws NoSuchChannelException thrown if no channel is found.
      * @return the channel requested.
      *
-     * @xmlrpc.doc Returns details of the given channel as a map
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns details of the given channel as a map
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.returntype
      *     $ChannelSerializer
      */
     @ReadOnly
@@ -466,10 +466,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws NoSuchChannelException thrown if no channel is found.
      * @return the channel requested.
      *
-     * @xmlrpc.doc Returns details of the given channel as a map
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "id", "channel to query")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns details of the given channel as a map
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "id", "channel to query")
+     * @apidoc.returntype
      *     $ChannelSerializer
      */
     @ReadOnly
@@ -485,10 +485,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param details map of channel attributes to be changed
      * @return 1 if edit was successful, exception thrown otherwise
      *
-     * @xmlrpc.doc Allows to modify channel attributes
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "channelLabel", "channel label")
-     * @xmlrpc.param
+     * @apidoc.doc Allows to modify channel attributes
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel label")
+     * @apidoc.param
      *  #struct_begin("details")
      *      #prop_desc("string", "checksum_label", "new channel repository checksum label
      *          (optional)")
@@ -507,7 +507,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #prop_desc("string", "gpg_check", "enable/disable gpg check (optional)")
      *
      *  #struct_end()
-     *@xmlrpc.returntype #return_int_success()
+     *@apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, String channelLabel, Map<String, String> details) {
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
@@ -521,10 +521,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param details map of channel attributes to be changed
      * @return 1 if edit was successful, exception thrown otherwise
      *
-     * @xmlrpc.doc Allows to modify channel attributes
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "channelId", "channel id")
-     * @xmlrpc.param
+     * @apidoc.doc Allows to modify channel attributes
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "channelId", "channel id")
+     * @apidoc.param
      *  #struct_begin("details")
      *      #prop_desc("string", "checksum_label", "new channel repository checksum label
      *          (optional)")
@@ -544,7 +544,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          (optional)")
      *  #struct_end()
 
-     *@xmlrpc.returntype #return_int_success()
+     *@apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, Integer channelId, Map<String,
             String> details) {
@@ -679,34 +679,34 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws InvalidParentChannelException thrown if parent label is for a
      * channel that is not a base channel.
      *
-     * @xmlrpc.doc Creates a software channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of the new channel")
-     * @xmlrpc.param #param_desc("string", "name", "name of the new channel")
-     * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
-     * @xmlrpc.param #param_desc("string", "archLabel",
+     * @apidoc.doc Creates a software channel
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of the new channel")
+     * @apidoc.param #param_desc("string", "name", "name of the new channel")
+     * @apidoc.param #param_desc("string", "summary" "summary of the channel")
+     * @apidoc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
      *              run channel.software.listArches API for complete listing")
-     * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
+     * @apidoc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
-     * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
+     * @apidoc.param #param_desc("string", "checksumType", "checksum type for this channel,
      *              used for yum repository metadata generation")
      *      #options()
-     *          #item_desc ("sha1", "offers widest compatibility  with clients")
+     *          #item_desc ("sha1", "offers widest compatibility with clients")
      *          #item_desc ("sha256", "offers highest security, but is compatible
      *                        only with newer clients: Fedora 11 and newer,
      *                        or Enterprise Linux 6 and newer.")
      *      #options_end()
-     * @xmlrpc.param
+     * @apidoc.param
      *      #struct_begin("gpgKey")
      *          #prop_desc("string", "url", "GPG key URL")
      *          #prop_desc("string", "id", "GPG key ID")
      *          #prop_desc("string", "fingerprint", "GPG key Fingerprint")
      *      #struct_end()
-     * @xmlrpc.param #param_desc("boolean", "gpgCheck", "true if the GPG check should be
+     * @apidoc.param #param_desc("boolean", "gpgCheck", "true if the GPG check should be
      *     enabled by default, false otherwise")
 
-     * @xmlrpc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
+     * @apidoc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
      */
     public int create(User loggedInUser, String label, String name,
                       String summary, String archLabel, String parentLabel,
@@ -756,31 +756,31 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws InvalidParentChannelException thrown if parent label is for a
      * channel that is not a base channel.
      *
-     * @xmlrpc.doc Creates a software channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of the new channel")
-     * @xmlrpc.param #param_desc("string", "name", "name of the new channel")
-     * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
-     * @xmlrpc.param #param_desc("string", "archLabel",
+     * @apidoc.doc Creates a software channel
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of the new channel")
+     * @apidoc.param #param_desc("string", "name", "name of the new channel")
+     * @apidoc.param #param_desc("string", "summary" "summary of the channel")
+     * @apidoc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
      *              run channel.software.listArches API for complete listing")
-     * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
+     * @apidoc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
-     * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
+     * @apidoc.param #param_desc("string", "checksumType", "checksum type for this channel,
      *              used for yum repository metadata generation")
      *      #options()
-     *          #item_desc ("sha1", "offers widest compatibility  with clients")
+     *          #item_desc ("sha1", "offers widest compatibility with clients")
      *          #item_desc ("sha256", "offers highest security, but is compatible
      *                        only with newer clients: Fedora 11 and newer,
      *                        or Enterprise Linux 6 and newer.")
      *      #options_end()
-     * @xmlrpc.param
+     * @apidoc.param
      *      #struct_begin("gpgKey")
      *          #prop_desc("string", "url", "GPG key URL")
      *          #prop_desc("string", "id", "GPG key ID")
      *          #prop_desc("string", "fingerprint", "GPG key Fingerprint")
      *      #struct_end()
-     * @xmlrpc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
+     * @apidoc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
      */
     public int create(User loggedInUser, String label, String name,
             String summary, String archLabel, String parentLabel, String checksumType,
@@ -812,25 +812,25 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws InvalidParentChannelException thrown if parent label is for a
      * channel that is not a base channel.
      *
-     * @xmlrpc.doc Creates a software channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of the new channel")
-     * @xmlrpc.param #param_desc("string", "name", "name of the new channel")
-     * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
-     * @xmlrpc.param #param_desc("string", "archLabel",
+     * @apidoc.doc Creates a software channel
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of the new channel")
+     * @apidoc.param #param_desc("string", "name", "name of the new channel")
+     * @apidoc.param #param_desc("string", "summary" "summary of the channel")
+     * @apidoc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
      *              run channel.software.listArches API for complete listing")
-     * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
+     * @apidoc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
-     * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
+     * @apidoc.param #param_desc("string", "checksumType", "checksum type for this channel,
      *              used for yum repository metadata generation")
      *      #options()
-     *          #item_desc ("sha1", "offers widest compatibility  with clients")
+     *          #item_desc ("sha1", "offers widest compatibility with clients")
      *          #item_desc ("sha256", "offers highest security, but is compatible
      *                        only with newer clients: Fedora 11 and newer,
      *                        or Enterprise Linux 6 and newer.")
      *      #options_end()
-     * @xmlrpc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
+     * @apidoc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
      */
 
     public int create(User loggedInUser, String label, String name,
@@ -861,17 +861,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws InvalidParentChannelException thrown if parent label is for a
      * channel that is not a base channel.
      *
-     * @xmlrpc.doc Creates a software channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of the new channel")
-     * @xmlrpc.param #param_desc("string", "name", "name of the new channel")
-     * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
-     * @xmlrpc.param #param_desc("string", "archLabel",
+     * @apidoc.doc Creates a software channel
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of the new channel")
+     * @apidoc.param #param_desc("string", "name", "name of the new channel")
+     * @apidoc.param #param_desc("string", "summary" "summary of the channel")
+     * @apidoc.param #param_desc("string", "archLabel",
      *              "the label of the architecture the channel corresponds to,
      *              run channel.software.listArches API for complete listing")
-     * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
+     * @apidoc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
-     * @xmlrpc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
+     * @apidoc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
      */
     public int create(User loggedInUser, String label, String name,
             String summary, String archLabel, String parentLabel)
@@ -895,17 +895,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - The channelLabel is invalid
      *   - The user doesn't have channel admin permissions
      *
-     * @xmlrpc.doc Set contact/support information for given channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.param #param_desc("string", "maintainerName", "name of the channel
+     * @apidoc.doc Set contact/support information for given channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.param #param_desc("string", "maintainerName", "name of the channel
      * maintainer")
-     * @xmlrpc.param #param_desc("string", "maintainerEmail", "email of the channel
+     * @apidoc.param #param_desc("string", "maintainerEmail", "email of the channel
      * maintainer")
-     * @xmlrpc.param #param_desc("string", "maintainerPhone", "phone number of the channel
+     * @apidoc.param #param_desc("string", "maintainerPhone", "phone number of the channel
      * maintainer")
-     * @xmlrpc.param #param_desc("string", "supportPolicy", "channel support policy")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.param #param_desc("string", "supportPolicy", "channel support policy")
+     * @apidoc.returntype  #return_int_success()
      */
     public int setContactDetails(User loggedInUser, String channelLabel,
             String maintainerName, String maintainerEmail, String maintainerPhone,
@@ -938,10 +938,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - Logged in user is not a channel admin.
      *   - Channel does not exist.
      *
-     * @xmlrpc.doc Returns list of subscribed systems for the given channel label
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns list of subscribed systems for the given channel label
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.returntype
      *          #return_array_begin()
      *              #struct_begin("system")
      *                  #prop("int", "id")
@@ -980,11 +980,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - Server does not exist
      *   - User does not have access to system
      *
-     * @xmlrpc.doc Returns a list of channels that a system is subscribed to for the
+     * @apidoc.doc Returns a list of channels that a system is subscribed to for the
      * given system id
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "system ID")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "system ID")
+     * @apidoc.returntype
      *          #return_array_begin()
      *              #struct_begin("channel")
      *                  #prop("string", "id")
@@ -1016,14 +1016,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - The loggedInUser doesn't have permission to perform this action
      *   - The login, sessionKey, or channelLabel is invalid
      *
-     * @xmlrpc.doc Set the subscribable flag for a given channel and user.
+     * @apidoc.doc Set the subscribable flag for a given channel and user.
      * If value is set to 'true', this method will give the user
      * subscribe permissions to the channel. Otherwise, that privilege is revoked.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.param #param_desc("string", "login", "login of the target user")
-     * @xmlrpc.param #param_desc("boolean", "value", "value of the flag to set")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.param #param_desc("string", "login", "login of the target user")
+     * @apidoc.param #param_desc("boolean", "value", "value of the flag to set")
+     * @apidoc.returntype #return_int_success()
      */
     public int setUserSubscribable(User loggedInUser, String channelLabel,
                    String login, Boolean value) throws FaultException {
@@ -1062,14 +1062,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - The loggedInUser doesn't have permission to perform this action
      *   - The login, sessionKey, or channelLabel is invalid
      *
-     * @xmlrpc.doc Set the manageable flag for a given channel and user.
+     * @apidoc.doc Set the manageable flag for a given channel and user.
      * If value is set to 'true', this method will give the user
      * manage permissions to the channel. Otherwise, that privilege is revoked.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.param #param_desc("string", "login", "login of the target user")
-     * @xmlrpc.param #param_desc("boolean", "value", "value of the flag to set")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.param #param_desc("string", "login", "login of the target user")
+     * @apidoc.param #param_desc("boolean", "value", "value of the flag to set")
+     * @apidoc.returntype #return_int_success()
      */
     public int setUserManageable(User loggedInUser, String channelLabel,
                    String login, Boolean value) throws FaultException {
@@ -1108,11 +1108,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - The loggedInUser doesn't have permission to perform this action
      *   - The login, sessionKey, or channelLabel is invalid
      *
-     * @xmlrpc.doc Returns whether the channel may be subscribed to by the given user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.param #param_desc("string", "login", "login of the target user")
-     * @xmlrpc.returntype #param_desc("int", "status", "1 if subscribable, 0 if not")
+     * @apidoc.doc Returns whether the channel may be subscribed to by the given user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.param #param_desc("string", "login", "login of the target user")
+     * @apidoc.returntype #param_desc("int", "status", "1 if subscribable, 0 if not")
      */
     @ReadOnly
     public int isUserSubscribable(User loggedInUser, String channelLabel,
@@ -1137,10 +1137,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabel The label for the channel in question
      * @return whether the channel is existing
      *
-     * @xmlrpc.doc Returns whether is existing
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.returntype #param_desc("boolean", "result", "true if the channel exists")
+     * @apidoc.doc Returns whether is existing
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.returntype #param_desc("boolean", "result", "true if the channel exists")
      */
     @ReadOnly
     public boolean isExisting(User loggedInUser, String channelLabel) {
@@ -1157,11 +1157,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - The loggedInUser doesn't have permission to perform this action
      *   - The login, sessionKey, or channelLabel is invalid
      *
-     * @xmlrpc.doc Returns whether the channel may be managed by the given user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.param #param_desc("string", "login", "login of the target user")
-     * @xmlrpc.returntype #param_desc("int", "status", "1 if manageable, 0 if not")
+     * @apidoc.doc Returns whether the channel may be managed by the given user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.param #param_desc("string", "login", "login of the target user")
+     * @apidoc.returntype #param_desc("int", "status", "1 if manageable, 0 if not")
      */
     @ReadOnly
     public int isUserManageable(User loggedInUser, String channelLabel,
@@ -1195,12 +1195,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - The channel is invalid
      *   - The logged in user isn't a channel admin
      *
-     * @xmlrpc.doc Set globally subscribable attribute for given channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.param #param_desc("boolean", "value", "true if the channel is to be
+     * @apidoc.doc Set globally subscribable attribute for given channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.param #param_desc("boolean", "value", "true if the channel is to be
      *          globally subscribable. False otherwise.")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.returntype  #return_int_success()
      */
     public int setGloballySubscribable(User loggedInUser, String channelLabel,
                    boolean value) throws FaultException {
@@ -1237,12 +1237,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - A package id is invalid
      *   - The user doesn't have access to one of the channels in the list
      *
-     * @xmlrpc.doc Adds a given list of packages to the given channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "target channel")
-     * @xmlrpc.param #array_single_desc("int", "packageIds", "ID of a package to
+     * @apidoc.doc Adds a given list of packages to the given channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "target channel")
+     * @apidoc.param #array_single_desc("int", "packageIds", "ID of a package to
      *                                   add to the channel")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.returntype  #return_int_success()
      */
     public int addPackages(User loggedInUser, String channelLabel, List<Long> packageIds)
         throws FaultException {
@@ -1283,13 +1283,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - The channel is invalid
      *   - The user doesn't have access to one of the channels in the list
      *
-     * @xmlrpc.doc Removes a given list of errata from the given channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "target channel")
-     * @xmlrpc.param #array_single_desc("string", "errataNames", "name of an erratum to remove")
-     * @xmlrpc.param #param_desc("boolean", "removePackages",
+     * @apidoc.doc Removes a given list of errata from the given channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "target channel")
+     * @apidoc.param #array_single_desc("string", "errataNames", "name of an erratum to remove")
+     * @apidoc.param #param_desc("boolean", "removePackages",
      *                          "true to remove packages from the channel")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.returntype  #return_int_success()
      */
     public int removeErrata(User loggedInUser, String channelLabel,
             List<String> errataNames, boolean removePackages) {
@@ -1358,12 +1358,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *   - A package id is invalid
      *   - The user doesn't have access to one of the channels in the list
      *
-     * @xmlrpc.doc Removes a given list of packages from the given channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "target channel")
-     * @xmlrpc.param #array_single_desc("int", "packageIds", "ID of a package to
+     * @apidoc.doc Removes a given list of packages from the given channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "target channel")
+     * @apidoc.param #array_single_desc("int", "packageIds", "ID of a package to
      *                                   remove from the channel")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.returntype  #return_int_success()
      */
     public int removePackages(User loggedInUser, String channelLabel,
             List<Long> packageIds) throws FaultException {
@@ -1431,11 +1431,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws NoSuchChannelException thrown if there is no channel matching
      * channelLabel.
      *
-     * @xmlrpc.doc List the errata applicable to a channel after given startDate
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param($date, "startDate")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the errata applicable to a channel after given startDate
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.param #param($date, "startDate")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
@@ -1456,12 +1456,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws NoSuchChannelException thrown if there is no channel matching
      * channelLabel.
      *
-     * @xmlrpc.doc List the errata applicable to a channel between startDate and endDate.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param($date, "startDate")
-     * @xmlrpc.param #param($date, "endDate")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the errata applicable to a channel between startDate and endDate.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.param #param($date, "startDate")
+     * @apidoc.param #param($date, "endDate")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
@@ -1486,14 +1486,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws NoSuchChannelException thrown if there is no channel matching
      * channelLabel.
      *
-     * @xmlrpc.doc List the errata applicable to a channel between startDate and endDate.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param($date, "startDate")
-     * @xmlrpc.param #param($date, "endDate")
-     * @xmlrpc.param #param_desc("boolean", "lastModified",
+     * @apidoc.doc List the errata applicable to a channel between startDate and endDate.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.param #param($date, "startDate")
+     * @apidoc.param #param($date, "endDate")
+     * @apidoc.param #param_desc("boolean", "lastModified",
      *     "select by last modified or not")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
@@ -1519,10 +1519,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws NoSuchChannelException thrown if there is no channel matching
      * channelLabel.
      *
-     * @xmlrpc.doc List the errata applicable to a channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the errata applicable to a channel
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.returntype
      *    #return_array_begin()
      *          $ErrataOverviewSerializer
      *    #array_end()
@@ -1544,13 +1544,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws NoSuchChannelException thrown if there is no channel matching
      * channelLabel.
      *
-     * @xmlrpc.doc List the errata of a specific type that are applicable to a channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param_desc("string", "advisoryType", "type of advisory (one of
+     * @apidoc.doc List the errata of a specific type that are applicable to a channel
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel to query")
+     * @apidoc.param #param_desc("string", "advisoryType", "type of advisory (one of
      * of the following: 'Security Advisory', 'Product Enhancement Advisory',
      * 'Bug Fix Advisory'")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *      #return_array_begin()
      *          #struct_begin("errata")
      *              #prop_desc("string","advisory", "name of the advisory")
@@ -1651,10 +1651,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @return list of Package objects not associated with a channel
      * @throws NoSuchChannelException thrown if no channel is found.
      *
-     * @xmlrpc.doc Lists all packages that are not associated with a channel.  Typically
+     * @apidoc.doc Lists all packages that are not associated with a channel.  Typically
      *          these are custom packages.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *  #return_array_begin()
      *      $PackageSerializer
      *   #array_end()
@@ -1683,12 +1683,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          will be cloned.  Any updates will not be.
      * @return int id of clone channel
      *
-     * @xmlrpc.doc Clone a channel.  If arch_label is omitted, the arch label of the
+     * @apidoc.doc Clone a channel.  If arch_label is omitted, the arch label of the
      *      original channel will be used. If parent_label is omitted, the clone will be
      *      a base channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "originalLabel")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "originalLabel")
+     * @apidoc.param
      *      #struct_begin("channelDetails")
      *          #prop("string", "name")
      *          #prop("string", "label")
@@ -1705,8 +1705,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          #prop_desc("string", "description", "(optional)")
      *          #prop_desc("string", "checksum", "either sha1 or sha256")
      *      #struct_end()
-     * @xmlrpc.param #param("boolean", "originalState")
-     * @xmlrpc.returntype #param_desc("int", "id", "the cloned channel ID")
+     * @apidoc.param #param("boolean", "originalState")
+     * @apidoc.returntype #param_desc("int", "id", "the cloned channel ID")
      */
     public int clone(User loggedInUser, String originalLabel,
             Map<String, String> channelDetails, Boolean originalState) {
@@ -1762,13 +1762,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param mergeToLabel the label of the channel to push errata into
      * @return A list of errata that were merged.
      *
-     * @xmlrpc.doc Merges all errata from one channel into another
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "mergeFromLabel", "the label of the
+     * @apidoc.doc Merges all errata from one channel into another
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "mergeFromLabel", "the label of the
      * channel to pull errata from")
-     * @xmlrpc.param #param_desc("string", "mergeToLabel", "the label to push the
+     * @apidoc.param #param_desc("string", "mergeToLabel", "the label to push the
      * errata into")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ErrataSerializer
      *      #array_end()
@@ -1799,16 +1799,16 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param endDate end date
      * @return A list of errata that were merged.
      *
-     * @xmlrpc.doc Merges all errata from one channel into another based upon a
+     * @apidoc.doc Merges all errata from one channel into another based upon a
      * given start/end date.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "mergeFromLabel", "the label of the
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "mergeFromLabel", "the label of the
      * channel to pull errata from")
-     * @xmlrpc.param #param_desc("string", "mergeToLabel", "the label to push the
+     * @apidoc.param #param_desc("string", "mergeToLabel", "the label to push the
      * errata into")
-     * @xmlrpc.param #param("string", "startDate")
-     * @xmlrpc.param #param("string", "endDate")
-     * @xmlrpc.returntype
+     * @apidoc.param #param("string", "startDate")
+     * @apidoc.param #param("string", "endDate")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ErrataSerializer
      *      #array_end()
@@ -1841,15 +1841,15 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param errataNames the list of errata to merge
      * @return A list of errata that were merged.
      *
-     * @xmlrpc.doc Merges a list of errata from one channel into another
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "mergeFromLabel", "the label of the
+     * @apidoc.doc Merges a list of errata from one channel into another
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "mergeFromLabel", "the label of the
      * channel to pull errata from")
-     * @xmlrpc.param #param_desc("string", "mergeToLabel", "the label to push the
+     * @apidoc.param #param_desc("string", "mergeToLabel", "the label to push the
      * errata into")
-     * @xmlrpc.param
+     * @apidoc.param
      *      #array_single_desc("string", "errataNames", "the advisory name of the errata to merge")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ErrataSerializer
      *      #array_end()
@@ -1893,13 +1893,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param mergeToLabel the label of the channel to push packages into
      * @return A list of packages that were merged.
      *
-     * @xmlrpc.doc Merges all packages from one channel into another
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "mergeFromLabel", "the label of the
+     * @apidoc.doc Merges all packages from one channel into another
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "mergeFromLabel", "the label of the
      *          channel to pull packages from")
-     * @xmlrpc.param #param_desc("string", "mergeToLabel", "the label to push the
+     * @apidoc.param #param_desc("string", "mergeToLabel", "the label to push the
      *              packages into")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $PackageSerializer
      *      #array_end()
@@ -1917,15 +1917,15 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param alignModules whether to align RHEL >= 8 modular data
      * @return A list of packages that were merged.
      *
-     * @xmlrpc.doc Merges all packages from one channel into another
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "mergeFromLabel", "the label of the
+     * @apidoc.doc Merges all packages from one channel into another
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "mergeFromLabel", "the label of the
      *          channel to pull packages from")
-     * @xmlrpc.param #param_desc("string", "mergeToLabel", "the label to push the
+     * @apidoc.param #param_desc("string", "mergeToLabel", "the label to push the
      *              packages into")
-     * @xmlrpc.param #param_desc("boolean", "alignModules", "align modular data of the target channel
+     * @apidoc.param #param_desc("boolean", "alignModules", "align modular data of the target channel
      *              to the source channel (RHEL8 and higher)")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $PackageSerializer
      *      #array_end()
@@ -1976,12 +1976,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @return 1 when the channel metadata has been aligned
      * @throws PermissionCheckFailureException when user does not have access to the target channel
      *
-     * @xmlrpc.doc Align the metadata of a channel to another channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelFromLabel", "the label of the source channel")
-     * @xmlrpc.param #param_desc("string", "channelToLabel", "the label of the target channel")
-     * @xmlrpc.param #param_desc("string", "metadataType", "the metadata type. Only 'modules' supported currently.")
-     * @xmlrpc.returntype #param_desc("int", "result code", "1 when metadata has been aligned, 0 otherwise")
+     * @apidoc.doc Align the metadata of a channel to another channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelFromLabel", "the label of the source channel")
+     * @apidoc.param #param_desc("string", "channelToLabel", "the label of the target channel")
+     * @apidoc.param #param_desc("string", "metadataType", "the metadata type. Only 'modules' supported currently.")
+     * @apidoc.returntype #param_desc("int", "result code", "1 when metadata has been aligned, 0 otherwise")
      */
     public int alignMetadata(User loggedInUser, String channelFromLabel, String channelToLabel, String metadataType) {
         Channel channelFrom = lookupChannelByLabel(loggedInUser, channelFromLabel);
@@ -2010,15 +2010,15 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabel the channel label
      * @return int - 1 on success!
      *
-     * @xmlrpc.doc Completely clear and regenerate the needed Errata and Package
+     * @apidoc.doc Completely clear and regenerate the needed Errata and Package
      *      cache for all systems subscribed to the specified channel.  This should
      *      be used only if you believe your cache is incorrect for all the systems
      *      in a given channel. This will schedule an asynchronous action to actually
      *      do the processing.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "the label of the
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "the label of the
      *          channel")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.returntype  #return_int_success()
      *
      */
     public int regenerateNeededCache(User loggedInUser, String channelLabel) {
@@ -2035,12 +2035,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return int - 1 on success!
      *
-     * @xmlrpc.doc Completely clear and regenerate the needed Errata and Package
+     * @apidoc.doc Completely clear and regenerate the needed Errata and Package
      *      cache for all systems subscribed. You must be a #product() Admin to
      *      perform this action. This will schedule an asynchronous action to
      *      actually do the processing.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.returntype  #return_int_success()
      */
     public int regenerateNeededCache(User loggedInUser) {
         if (loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) {
@@ -2061,12 +2061,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param force force regeneration
      * @return int - 1 on success!
      *
-     * @xmlrpc.doc Regenerate yum cache for the specified channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "the label of the
+     * @apidoc.doc Regenerate yum cache for the specified channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "the label of the
      *          channel")
-     * @xmlrpc.param #param_desc("boolean", "force", "force cache regeneration")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.param #param_desc("boolean", "force", "force cache regeneration")
+     * @apidoc.returntype  #return_int_success()
      *
      */
     public int regenerateYumCache(User loggedInUser, String channelLabel, Boolean force) {
@@ -2084,10 +2084,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabel the channel label
      * @return list of channel id's and labels
      *
-     * @xmlrpc.doc List the children of a channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "the label of the channel")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the children of a channel
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "the label of the channel")
+     * @apidoc.returntype
      *      #return_array_begin()
      *              $ChannelSerializer
      *      #array_end()
@@ -2106,11 +2106,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @throws NoSuchChannelException thrown if no channel is found.
     * @return the build date on the repodata of the channel requested
     *
-    * @xmlrpc.doc Returns the last build date of the repomd.xml file
+    * @apidoc.doc Returns the last build date of the repomd.xml file
     * for the given channel as a localised string.
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("int", "id", "id of channel wanted")
-    * @xmlrpc.returntype
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("int", "id", "id of channel wanted")
+    * @apidoc.returntype
     *   #param_desc("date", "date", "the last build date of the repomd.xml file as a localised string")
     */
     @ReadOnly
@@ -2128,9 +2128,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
     /** Returns a list of ContentSource (repos) that the user can see
      * @param loggedInUser The current user
      * @return Lists the repos visible to the user
-     * @xmlrpc.doc Returns a list of ContentSource (repos) that the user can see
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns a list of ContentSource (repos) that the user can see
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *      #return_array_begin()
      *          #struct_begin("map")
      *              #prop_desc("long","id", "ID of the repo")
@@ -2163,12 +2163,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param url of the repo
     * @return new ContentSource
     *
-    * @xmlrpc.doc Creates a repository
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "label", "repository label")
-    * @xmlrpc.param #param_desc("string", "type", "repository type (yum, uln...)")
-    * @xmlrpc.param #param_desc("string", "url", "repository url")
-    * @xmlrpc.returntype $ContentSourceSerializer
+    * @apidoc.doc Creates a repository
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "label", "repository label")
+    * @apidoc.param #param_desc("string", "type", "repository type (yum, uln...)")
+    * @apidoc.param #param_desc("string", "url", "repository url")
+    * @apidoc.returntype $ContentSourceSerializer
    **/
     public ContentSource createRepo(User loggedInUser, String label, String type,
             String url) {
@@ -2191,16 +2191,16 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param sslCliKey Client key description
      * @return new ContentSource
      *
-     * @xmlrpc.doc Creates a repository
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "repository label")
-     * @xmlrpc.param #param_desc("string", "type",
+     * @apidoc.doc Creates a repository
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "repository label")
+     * @apidoc.param #param_desc("string", "type",
      * "repository type (yum, uln...)")
-     * @xmlrpc.param #param_desc("string", "url", "repository url")
-     * @xmlrpc.param #param_desc("string", "sslCaCert", "SSL CA cert description")
-     * @xmlrpc.param #param_desc("string", "sslCliCert", "SSL Client cert description")
-     * @xmlrpc.param #param_desc("string", "sslCliKey", "SSL Client key description")
-     * @xmlrpc.returntype $ContentSourceSerializer
+     * @apidoc.param #param_desc("string", "url", "repository url")
+     * @apidoc.param #param_desc("string", "sslCaCert", "SSL CA cert description")
+     * @apidoc.param #param_desc("string", "sslCliCert", "SSL Client cert description")
+     * @apidoc.param #param_desc("string", "sslCliKey", "SSL Client key description")
+     * @apidoc.returntype $ContentSourceSerializer
      **/
     public ContentSource createRepo(User loggedInUser, String label, String type,
             String url, String sslCaCert, String sslCliCert, String sslCliKey) {
@@ -2221,21 +2221,21 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param hasSignedMetadata Whether the repository has signed metadata
      * @return new ContentSource
      *
-     * @xmlrpc.doc Creates a repository
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "repository label")
-     * @xmlrpc.param #param_desc("string", "type",
+     * @apidoc.doc Creates a repository
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "repository label")
+     * @apidoc.param #param_desc("string", "type",
      * "repository type (only YUM is supported)")
-     * @xmlrpc.param #param_desc("string", "url", "repository url")
-     * @xmlrpc.param #param_desc("string", "sslCaCert", "SSL CA cert description, or an
+     * @apidoc.param #param_desc("string", "url", "repository url")
+     * @apidoc.param #param_desc("string", "sslCaCert", "SSL CA cert description, or an
      *     empty string")
-     * @xmlrpc.param #param_desc("string", "sslCliCert", "SSL Client cert description, or
+     * @apidoc.param #param_desc("string", "sslCliCert", "SSL Client cert description, or
      *     an empty string")
-     * @xmlrpc.param #param_desc("string", "sslCliKey", "SSL Client key description, or an
+     * @apidoc.param #param_desc("string", "sslCliKey", "SSL Client key description, or an
      *     empty string")
-     * @xmlrpc.param #param_desc("boolean", "hasSignedMetadata", "true if the repository
+     * @apidoc.param #param_desc("boolean", "hasSignedMetadata", "true if the repository
      *     has signed metadata, false otherwise")
-     * @xmlrpc.returntype $ContentSourceSerializer
+     * @apidoc.returntype $ContentSourceSerializer
     **/
      public ContentSource createRepo(User loggedInUser, String label, String type,
              String url, String sslCaCert, String sslCliCert, String sslCliKey,
@@ -2285,10 +2285,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param id of the repo to be removed
     * @return Integer 1 on success
     *
-    * @xmlrpc.doc Removes a repository
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("long", "id", "ID of repo to be removed")
-    * @xmlrpc.returntype #return_int_success()
+    * @apidoc.doc Removes a repository
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("long", "id", "ID of repo to be removed")
+    * @apidoc.returntype #return_int_success()
    **/
     public Integer removeRepo(User loggedInUser, Integer id) {
         ContentSource repo = lookupContentSourceById(id.longValue(), loggedInUser.getOrg());
@@ -2303,10 +2303,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param label of the repo to be removed
     * @return Integer 1 on success
     *
-    * @xmlrpc.doc Removes a repository
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "label", "label of repo to be removed")
-    * @xmlrpc.returntype #return_int_success()
+    * @apidoc.doc Removes a repository
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "label", "label of repo to be removed")
+    * @apidoc.returntype #return_int_success()
    **/
     public Integer removeRepo(User loggedInUser, String label) {
         ContentSource repo = lookupContentSourceByLabel(label, loggedInUser.getOrg());
@@ -2323,11 +2323,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param repoLabel of the repo to associate
     * @return the channel with the newly associated repo
     *
-    * @xmlrpc.doc Associates a repository with a channel
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
-    * @xmlrpc.param #param_desc("string", "repoLabel", "repository label")
-    * @xmlrpc.returntype $ChannelSerializer
+    * @apidoc.doc Associates a repository with a channel
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "channelLabel", "channel label")
+    * @apidoc.param #param_desc("string", "repoLabel", "repository label")
+    * @apidoc.returntype $ChannelSerializer
    **/
     public Channel associateRepo(User loggedInUser, String channelLabel, String repoLabel) {
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
@@ -2347,11 +2347,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param repoLabel of the repo to disassociate
     * @return the channel minus the disassociated repo
     *
-    * @xmlrpc.doc Disassociates a repository from a channel
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
-    * @xmlrpc.param #param_desc("string", "repoLabel", "repository label")
-    * @xmlrpc.returntype $ChannelSerializer
+    * @apidoc.doc Disassociates a repository from a channel
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "channelLabel", "channel label")
+    * @apidoc.param #param_desc("string", "repoLabel", "repository label")
+    * @apidoc.returntype $ChannelSerializer
    **/
     public Channel disassociateRepo(User loggedInUser, String channelLabel, String repoLabel) {
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
@@ -2373,11 +2373,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param url new URL to use
     * @return the updated repo
     *
-    * @xmlrpc.doc Updates repository source URL
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("int", "id", "repository ID")
-    * @xmlrpc.param #param_desc("string", "url", "new repository URL")
-    * @xmlrpc.returntype $ContentSourceSerializer
+    * @apidoc.doc Updates repository source URL
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("int", "id", "repository ID")
+    * @apidoc.param #param_desc("string", "url", "new repository URL")
+    * @apidoc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepoUrl(User loggedInUser, Integer id, String url) {
         ContentSource repo = lookupContentSourceById(id.longValue(), loggedInUser.getOrg());
@@ -2393,11 +2393,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param url new URL to use
     * @return the updated repo
     *
-    * @xmlrpc.doc Updates repository source URL
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "label", "repository label")
-    * @xmlrpc.param #param_desc("string", "url", "new repository URL")
-    * @xmlrpc.returntype $ContentSourceSerializer
+    * @apidoc.doc Updates repository source URL
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "label", "repository label")
+    * @apidoc.param #param_desc("string", "url", "new repository URL")
+    * @apidoc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepoUrl(User loggedInUser, String label, String url) {
         ContentSource repo = lookupContentSourceByLabel(label, loggedInUser.getOrg());
@@ -2415,13 +2415,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param sslCliKey new Client key description
     * @return the updated repository
     *
-    * @xmlrpc.doc Updates repository SSL certificates
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("int", "id", "repository ID")
-    * @xmlrpc.param #param_desc("string", "sslCaCert", "SSL CA cert description")
-    * @xmlrpc.param #param_desc("string", "sslCliCert", "SSL Client cert description")
-    * @xmlrpc.param #param_desc("string", "sslCliKey", "SSL Client key description")
-    * @xmlrpc.returntype $ContentSourceSerializer
+    * @apidoc.doc Updates repository SSL certificates
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("int", "id", "repository ID")
+    * @apidoc.param #param_desc("string", "sslCaCert", "SSL CA cert description")
+    * @apidoc.param #param_desc("string", "sslCliCert", "SSL Client cert description")
+    * @apidoc.param #param_desc("string", "sslCliKey", "SSL Client key description")
+    * @apidoc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepoSsl(User loggedInUser, Integer id,
             String sslCaCert, String sslCliCert, String sslCliKey) {
@@ -2441,13 +2441,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param sslCliKey new Client key description
     * @return the updated repository
     *
-    * @xmlrpc.doc Updates repository SSL certificates
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "label", "repository label")
-    * @xmlrpc.param #param_desc("string", "sslCaCert", "SSL CA cert description")
-    * @xmlrpc.param #param_desc("string", "sslCliCert", "SSL Client cert description")
-    * @xmlrpc.param #param_desc("string", "sslCliKey", "SSL Client key description")
-    * @xmlrpc.returntype $ContentSourceSerializer
+    * @apidoc.doc Updates repository SSL certificates
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "label", "repository label")
+    * @apidoc.param #param_desc("string", "sslCaCert", "SSL CA cert description")
+    * @apidoc.param #param_desc("string", "sslCliCert", "SSL Client cert description")
+    * @apidoc.param #param_desc("string", "sslCliKey", "SSL Client key description")
+    * @apidoc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepoSsl(User loggedInUser, String label,
             String sslCaCert, String sslCliCert, String sslCliKey) {
@@ -2496,11 +2496,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param label new label
     * @return the updated repo
     *
-    * @xmlrpc.doc Updates repository label
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("int", "id", "repository ID")
-    * @xmlrpc.param #param_desc("string", "label", "new repository label")
-    * @xmlrpc.returntype $ContentSourceSerializer
+    * @apidoc.doc Updates repository label
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("int", "id", "repository ID")
+    * @apidoc.param #param_desc("string", "label", "new repository label")
+    * @apidoc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepoLabel(User loggedInUser, Integer id, String label) {
         ContentSource repo = lookupContentSourceById(id.longValue(), loggedInUser.getOrg());
@@ -2516,11 +2516,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param newLabel new label
      * @return the updated repo
      *
-     * @xmlrpc.doc Updates repository label
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "repository label")
-     * @xmlrpc.param #param_desc("string", "newLabel", "new repository label")
-     * @xmlrpc.returntype $ContentSourceSerializer
+     * @apidoc.doc Updates repository label
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "repository label")
+     * @apidoc.param #param_desc("string", "newLabel", "new repository label")
+     * @apidoc.returntype $ContentSourceSerializer
     **/
      public ContentSource updateRepoLabel(User loggedInUser, String label,
                      String newLabel) {
@@ -2538,12 +2538,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param url new URL
     * @return the updated repo
     *
-    * @xmlrpc.doc Updates a ContentSource (repo)
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("int", "id", "repository ID")
-    * @xmlrpc.param #param_desc("string", "label", "new repository label")
-    * @xmlrpc.param #param_desc("string", "url", "new repository URL")
-    * @xmlrpc.returntype $ContentSourceSerializer
+    * @apidoc.doc Updates a ContentSource (repo)
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("int", "id", "repository ID")
+    * @apidoc.param #param_desc("string", "label", "new repository label")
+    * @apidoc.param #param_desc("string", "url", "new repository URL")
+    * @apidoc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepo(User loggedInUser, Integer id, String label,
             String url) {
@@ -2560,10 +2560,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param repoLabel Label of repo whose details are sought.
      * @return the repo requested.
      *
-     * @xmlrpc.doc Returns details of the given repository
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "repoLabel", "repo to query")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns details of the given repository
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "repoLabel", "repo to query")
+     * @apidoc.returntype
      *     $ContentSourceSerializer
      */
     @ReadOnly
@@ -2577,10 +2577,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param id ID of repo whose details are sought.
      * @return the repo requested.
      *
-     * @xmlrpc.doc Returns details of the given repository
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "id", "repository ID")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns details of the given repository
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "id", "repository ID")
+     * @apidoc.returntype
      *     $ContentSourceSerializer
      */
     @ReadOnly
@@ -2594,10 +2594,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabel channel label
      * @return list of associates repos
      *
-     * @xmlrpc.doc Lists associated repos with the given channel
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lists associated repos with the given channel
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel label")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ContentSourceSerializer
      *      #array_end()
@@ -2614,10 +2614,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabels channel labels
      * @return 1 on success
      *
-     * @xmlrpc.doc Trigger immediate repo synchronization
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("string", "channelLabels")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.doc Trigger immediate repo synchronization
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("string", "channelLabels")
+     * @apidoc.returntype  #return_int_success()
      */
     public int syncRepo(User loggedInUser, List<String> channelLabels) {
         try {
@@ -2640,10 +2640,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabel channel label
      * @return 1 on success
      *
-     * @xmlrpc.doc Trigger immediate repo synchronization
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.doc Trigger immediate repo synchronization
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel label")
+     * @apidoc.returntype  #return_int_success()
      */
     public int syncRepo(User loggedInUser, String channelLabel) {
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
@@ -2663,17 +2663,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param params parameters
      * @return 1 on success
      *
-     * @xmlrpc.doc Trigger immediate repo synchronization
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
-     * @xmlrpc.param
+     * @apidoc.doc Trigger immediate repo synchronization
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel label")
+     * @apidoc.param
      *  #struct_begin("params")
      *    #prop_desc("boolean", "sync-kickstart", "create kickstartable tree - Optional")
      *    #prop_desc("boolean", "no-errata", "do not sync errata - Optional")
      *    #prop_desc("boolean", "fail", "terminate upon any error - Optional")
      *    #prop_desc("boolean", "latest", "only download latest packages - Optional")
      *  #struct_end()
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.returntype  #return_int_success()
      */
     public int syncRepo(User loggedInUser, String channelLabel,
                                                Map<String, String> params) {
@@ -2694,12 +2694,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param cronExpr cron expression, if empty all periodic schedules will be disabled
      * @return 1 on success
      *
-     * @xmlrpc.doc Schedule periodic repo synchronization
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
-     * @xmlrpc.param #param_desc("string", "cronExpr",
+     * @apidoc.doc Schedule periodic repo synchronization
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel label")
+     * @apidoc.param #param_desc("string", "cronExpr",
      *      "cron expression, if empty all periodic schedules will be disabled")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.returntype  #return_int_success()
      */
     public int syncRepo(User loggedInUser, String channelLabel, String cronExpr) {
         try {
@@ -2725,19 +2725,19 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param params parameters
      * @return 1 on success
      *
-     * @xmlrpc.doc Schedule periodic repo synchronization
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
-     * @xmlrpc.param #param_desc("string", "cronExpr",
+     * @apidoc.doc Schedule periodic repo synchronization
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel label")
+     * @apidoc.param #param_desc("string", "cronExpr",
      *      "cron expression, if empty all periodic schedules will be disabled")
-     * @xmlrpc.param
+     * @apidoc.param
      *  #struct_begin("params")
      *    #prop_desc("boolean", "sync-kickstart", "create kickstartable tree - Optional")
      *    #prop_desc("boolean", "no-errata", "do not sync errata - Optional")
      *    #prop_desc("boolean", "fail", "terminate upon any error - Optional")
      *    #prop_desc("boolean", "latest", "only download latest packages - Optional")
      *  #struct_end()
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.returntype  #return_int_success()
      */
     public int syncRepo(User loggedInUser,
             String channelLabel, String cronExpr, Map<String, String> params) {
@@ -2769,10 +2769,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param channelLabel channel label
      * @return quartz expression
      *
-     * @xmlrpc.doc Returns repo synchronization cron expression
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
-     * @xmlrpc.returntype #param_desc("string", "expression", "quartz expression")
+     * @apidoc.doc Returns repo synchronization cron expression
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "channel label")
+     * @apidoc.returntype #param_desc("string", "expression", "quartz expression")
      */
     @ReadOnly
     public String getRepoSyncCronExpression(User loggedInUser, String channelLabel) {
@@ -2795,10 +2795,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param label of the repo to use
     * @return list of filters
     *
-    * @xmlrpc.doc Lists the filters for a repo
-    * @xmlrpc.param #session_key()
-    * @xmlrpc.param #param_desc("string", "label", "repository label")
-    * @xmlrpc.returntype
+    * @apidoc.doc Lists the filters for a repo
+    * @apidoc.param #session_key()
+    * @apidoc.param #param_desc("string", "label", "repository label")
+    * @apidoc.returntype
     *      #return_array_begin()
     *          $ContentSourceFilterSerializer
     *      #array_end()
@@ -2819,15 +2819,15 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param filterProps list of filters
      * @return sort order for the new filter
      *
-     * @xmlrpc.doc Adds a filter for a given repo.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "repository label")
-     * @xmlrpc.param
+     * @apidoc.doc Adds a filter for a given repo.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "repository label")
+     * @apidoc.param
      *  #struct_begin("filterProps")
      *          #prop_desc("string", "filter", "string to filter on")
      *          #prop_desc("string", "flag", "+ for include, - for exclude")
      *  #struct_end()
-     * @xmlrpc.returntype #param_desc("int", "order", "sort order for new filter")
+     * @apidoc.returntype #param_desc("int", "order", "sort order for new filter")
      */
     public int addRepoFilter(User loggedInUser, String label,
             Map<String, String> filterProps) {
@@ -2870,15 +2870,15 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param filterProps list of filters
      * @return 1 on success
      *
-     * @xmlrpc.doc Removes a filter for a given repo.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "repository label")
-     * @xmlrpc.param
+     * @apidoc.doc Removes a filter for a given repo.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "repository label")
+     * @apidoc.param
      *  #struct_begin("filterProps")
      *          #prop_desc("string", "filter", "string to filter on")
      *          #prop_desc("string", "flag", "+ for include, - for exclude")
      *  #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int removeRepoFilter(User loggedInUser, String label,
             Map<String, String> filterProps) {
@@ -2924,18 +2924,18 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param filterProps list of filters
      * @return 1 on success
      *
-     * @xmlrpc.doc Replaces the existing set of filters for a given repo.
+     * @apidoc.doc Replaces the existing set of filters for a given repo.
      * Filters are ranked by their order in the array.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "repository label")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "repository label")
+     * @apidoc.param
      *  #array_begin("filterProps")
      *      #struct_begin("filter properties")
      *          #prop_desc("string", "filter", "string to filter on")
      *          #prop_desc("string", "flag", "+ for include, - for exclude")
      *      #struct_end()
      *  #array_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setRepoFilters(User loggedInUser, String label,
             List<Map<String, String>> filterProps) {
@@ -2984,10 +2984,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param label of the repo to use
      * @return 1 on success
      *
-     * @xmlrpc.doc Removes the filters for a repo
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "repository label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Removes the filters for a repo
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "repository label")
+     * @apidoc.returntype #return_int_success()
     **/
      public int clearRepoFilters(User loggedInUser, String label) {
          Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
@@ -3009,7 +3009,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param label of the repo to use
      * @return list of filters
      *
-     * @xmlrpc.ignore
+     * @apidoc.ignore
     **/
     public List<ContentSourceFilter> listVendorRepoFilters(User loggedInUser, String label) {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
@@ -3032,7 +3032,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param label of the repo to use
      * @param filterIn list of filters
      * @return sort order for the new filter
-     * @xmlrpc.ignore
+     * @apidoc.ignore
      */
     public int addVendorRepoFilter(User loggedInUser, String label, Map<String, String> filterIn) {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
@@ -3074,7 +3074,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param label of the repo to use
      * @param filterIn list of filters
      * @return 1 on success
-     * @xmlrpc.ignore
+     * @apidoc.ignore
      */
     public int removeVendorRepoFilter(User loggedInUser, String label,
             Map<String, String> filterIn) {
@@ -3117,7 +3117,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param label of the repo to use
      * @param filtersIn list of filters
      * @return 1 on success
-     * @xmlrpc.ignore
+     * @apidoc.ignore
      */
     public int setVendorRepoFilters(User loggedInUser, String label,
             List<Map<String, String>> filtersIn) {
@@ -3166,7 +3166,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param loggedInUser The current user
     * @param label of the repo to use
     * @return 1 on success
-    * @xmlrpc.ignore
+    * @apidoc.ignore
    **/
     public int clearVendorRepoFilters(User loggedInUser, String label) {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
@@ -3189,10 +3189,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param sids server ids for the minions
      * @return action id or 0 if no action is scheduled for any reason
      *
-     * @xmlrpc.doc Refresh pillar data and then schedule channels state on the provided systems
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "sids")
-     * @xmlrpc.returntype #array_single("int", "actionId")
+     * @apidoc.doc Refresh pillar data and then schedule channels state on the provided systems
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.returntype #array_single("int", "actionId")
      */
 
     public long applyChannelState(User user, List<Integer> sids) {

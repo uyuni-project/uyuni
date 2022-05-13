@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * Serializer for {@link MirrorCredentialsDto} objects.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("credentials")
  *     #prop_desc("int", "id", "ID of the credentials")
  *     #prop_desc("string", "user", "username")

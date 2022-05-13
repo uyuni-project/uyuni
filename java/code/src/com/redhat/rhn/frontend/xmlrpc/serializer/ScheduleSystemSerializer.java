@@ -22,7 +22,7 @@ import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ScheduleSystemSerializer
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("system")
  *   #prop("int", "server_id")

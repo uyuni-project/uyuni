@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * DeviceSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("device")
  *      #prop_desc("string", "device", "optional")
  *      #prop_desc("string", "device_class",  "Includes CDROM, FIREWIRE, HD, USB, VIDEO,

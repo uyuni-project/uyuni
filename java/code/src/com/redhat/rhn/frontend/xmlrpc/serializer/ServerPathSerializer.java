@@ -26,7 +26,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * XMLRPC struct.
  *
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("proxy connection path details")
  *         #prop_desc("int", "position", "position of proxy in chain. The proxy that the
  *             system connects directly to is listed in position 1.")

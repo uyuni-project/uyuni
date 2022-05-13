@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * PackageKeySerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("package security key")
  *     #prop("string", "key")
  *     #prop("string", "type")

@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * NetworkInterfaceSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("network device")
  *          #prop_desc("string", "ip", "IP address assigned to this network device")
  *          #prop_desc("string", "interface", "network interface assigned to device, e.g. eth0")

@@ -63,8 +63,8 @@ import java.util.stream.Collectors;
 /**
  * UserHandler
  * Corresponds to User.pm in old perl code.
- * @xmlrpc.namespace user
- * @xmlrpc.doc User namespace contains methods to access common user functions
+ * @apidoc.namespace user
+ * @apidoc.doc User namespace contains methods to access common user functions
  * available from the web user interface.
  */
 public class UserHandler extends BaseHandler {
@@ -105,9 +105,9 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the loggedInUser
      * doesn't have permissions to list the users in their org.
      *
-     * @xmlrpc.doc Returns a list of users in your organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns a list of users in your organization.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      *     $UserSerializer
      * #array_end()
@@ -131,10 +131,10 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the user doesn't have access
      * to lookup the user corresponding to login or if the user does not exist.
      *
-     * @xmlrpc.doc Returns a list of the user's roles.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.returntype #array_single("string", "(role label)")
+     * @apidoc.doc Returns a list of the user's roles.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.returntype #array_single("string", "(role label)")
      */
     @ReadOnly
     public Object[] listRoles(User loggedInUser, String login) throws FaultException {
@@ -158,9 +158,9 @@ public class UserHandler extends BaseHandler {
      * @return Returns a list of assignable roles for user
      * @throws FaultException A FaultException is thrown if the logged doesn't have access.
      *
-     * @xmlrpc.doc Returns a list of user roles that this user can assign to others.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array_single("string", "(role label)")
+     * @apidoc.doc Returns a list of user roles that this user can assign to others.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #array_single("string", "(role label)")
      */
     @ReadOnly
     public Set<String> listAssignableRoles(User loggedInUser) {
@@ -176,10 +176,10 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the user doesn't have access
      * to lookup the user corresponding to login or if the user does not exist.
      *
-     * @xmlrpc.doc Returns the details about a given user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns the details about a given user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.returntype
      *   #struct_begin("user details")
      *     #prop_desc("string", "first_names", "deprecated, use first_name")
      *     #prop("string", "first_name")
@@ -248,10 +248,10 @@ public class UserHandler extends BaseHandler {
      * have access to lookup the user corresponding to login or if the user
      * does not exist.
      *
-     * @xmlrpc.doc Updates the details of a user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param
+     * @apidoc.doc Updates the details of a user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param
      *   #struct_begin("details")
      *     #prop_desc("string", "first_names", "deprecated, use first_name")
      *     #prop("string", "first_name")
@@ -260,7 +260,7 @@ public class UserHandler extends BaseHandler {
      *     #prop("string", "prefix")
      *     #prop("string", "password")
      *   #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, String login, Map details)
         throws FaultException {
@@ -355,13 +355,13 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the user doesn't have access
      * to lookup the user corresponding to login or if the user does not exist.
      *
-     * @xmlrpc.doc Adds a role to a user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User login name to update.")
-     * @xmlrpc.param #param_desc("string", "role", "Role label to add.  Can be any of:
+     * @apidoc.doc Adds a role to a user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User login name to update.")
+     * @apidoc.param #param_desc("string", "role", "Role label to add.  Can be any of:
      * satellite_admin, org_admin, channel_admin, config_admin, system_group_admin, or
      * activation_key_admin.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int addRole(User loggedInUser, String login, String role) throws FaultException {
         validateRoleInputs(role, loggedInUser);
@@ -387,13 +387,13 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the user doesn't have access
      * to lookup the user corresponding to login or if the user does not exist.
      *
-     * @xmlrpc.doc Remove a role from a user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User login name to update.")
-     * @xmlrpc.param #param_desc("string", "role", "Role label to remove.  Can be any of:
+     * @apidoc.doc Remove a role from a user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User login name to update.")
+     * @apidoc.param #param_desc("string", "role", "Role label to remove.  Can be any of:
      * satellite_admin, org_admin, channel_admin, config_admin, system_group_admin, or
      * activation_key_admin.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int removeRole(User loggedInUser, String login, String role)
         throws FaultException {
@@ -440,15 +440,15 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the loggedInUser doesn't have
      * permissions to create new users in thier org.
      *
-     * @xmlrpc.doc Create a new user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "desired login name, will fail if
+     * @apidoc.doc Create a new user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "desired login name, will fail if
      * already in use.")
-     * @xmlrpc.param #param("string", "password")
-     * @xmlrpc.param #param("string", "firstName")
-     * @xmlrpc.param #param("string", "lastName")
-     * @xmlrpc.param #param_desc("string", "email", "User's e-mail address.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param("string", "password")
+     * @apidoc.param #param("string", "firstName")
+     * @apidoc.param #param("string", "lastName")
+     * @apidoc.param #param_desc("string", "email", "User's e-mail address.")
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String login, String password,
                    String firstName, String lastName, String email) throws FaultException {
@@ -471,17 +471,17 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the loggedInUser doesn't have
      * permissions to create new users in thier org.
      *
-     * @xmlrpc.doc Create a new user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "desired login name,
+     * @apidoc.doc Create a new user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "desired login name,
      * will fail if already in use.")
-     * @xmlrpc.param #param("string", "password")
-     * @xmlrpc.param #param("string", "firstName")
-     * @xmlrpc.param #param("string", "lastName")
-     * @xmlrpc.param #param_desc("string", "email", "User's e-mail address.")
-     * @xmlrpc.param #param_desc("int", "usePamAuth", "1 if you wish to use PAM
+     * @apidoc.param #param("string", "password")
+     * @apidoc.param #param("string", "firstName")
+     * @apidoc.param #param("string", "lastName")
+     * @apidoc.param #param_desc("string", "email", "User's e-mail address.")
+     * @apidoc.param #param_desc("int", "usePamAuth", "1 if you wish to use PAM
      * authentication for this user, 0 otherwise.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String login, String password,
                       String firstName, String lastName, String email, Integer usePamAuth)
@@ -536,10 +536,10 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the user doesn't have access
      * to lookup the user corresponding to login or if the user does not exist.
      *
-     * @xmlrpc.doc Delete a user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User login name to delete.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Delete a user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User login name to delete.")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String login) throws FaultException {
         ensureOrgAdmin(loggedInUser);
@@ -563,10 +563,10 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the user doesn't have access
      * to lookup the user corresponding to login or if the user does not exist.
      *
-     * @xmlrpc.doc Disable a user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User login name to disable.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Disable a user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User login name to disable.")
+     * @apidoc.returntype #return_int_success()
      */
     public int disable(User loggedInUser, String login) throws FaultException {
         ensureOrgAdmin(loggedInUser);
@@ -585,10 +585,10 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the user doesn't have access
      * to lookup the user corresponding to login or if the user does not exist.
      *
-     * @xmlrpc.doc Enable a user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User login name to enable.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Enable a user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User login name to enable.")
+     * @apidoc.returntype #return_int_success()
      */
     public int enable(User loggedInUser, String login) throws FaultException {
         ensureOrgAdmin(loggedInUser);
@@ -608,16 +608,16 @@ public class UserHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the user doesn't have access
      * to lookup the user corresponding to login or if the user does not exist.
      *
-     * @xmlrpc.doc Toggles whether or not a user uses PAM authentication or
+     * @apidoc.doc Toggles whether or not a user uses PAM authentication or
      * basic #product() authentication.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param("int", "val")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #param("int", "val")
      *   #options()
      *     #item("1 to enable PAM authentication")
      *     #item("0 to disable.")
      *   #options_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int usePamAuthentication(User loggedInUser, String login, Integer val)
         throws FaultException {
@@ -675,11 +675,11 @@ public class UserHandler extends BaseHandler {
      * @param name name of ServerGroup.
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Add system group to user's list of default system groups.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param_desc("string", "name", "server group name")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Add system group to user's list of default system groups.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #param_desc("string", "name", "server group name")
+     * @apidoc.returntype #return_int_success()
      */
     public int addDefaultSystemGroup(User loggedInUser, String login, String name) {
         List<String> ids = new LinkedList<>();
@@ -698,11 +698,11 @@ public class UserHandler extends BaseHandler {
      * @param sgNames names of ServerGroups.
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Add system groups to user's list of default system groups.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #array_single_desc("string", "sgNames", "server group names")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Add system groups to user's list of default system groups.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #array_single_desc("string", "sgNames", "server group names")
+     * @apidoc.returntype #return_int_success()
      */
     public int addDefaultSystemGroups(User loggedInUser, String login, List<String> sgNames) {
 
@@ -764,11 +764,11 @@ public class UserHandler extends BaseHandler {
      * @param sgName Name of ServerGroup.
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Remove a system group from user's list of default system groups.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param_desc("string", "sgName", "server group name")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove a system group from user's list of default system groups.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #param_desc("string", "sgName", "server group name")
+     * @apidoc.returntype #return_int_success()
      */
     public int removeDefaultSystemGroup(User loggedInUser, String login, String sgName) {
         List<String> names = new LinkedList<>();
@@ -787,11 +787,11 @@ public class UserHandler extends BaseHandler {
      * @param sgNames Names of ServerGroups.
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Remove system groups from a user's list of default system groups.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #array_single_desc("string", "sgNames", "server group names")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove system groups from a user's list of default system groups.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #array_single_desc("string", "sgNames", "server group names")
+     * @apidoc.returntype #return_int_success()
      */
     public int removeDefaultSystemGroups(User loggedInUser, String login, List<String> sgNames) {
 
@@ -849,10 +849,10 @@ public class UserHandler extends BaseHandler {
      * sought.
      * @return default system groups for the given login
      *
-     * @xmlrpc.doc Returns a user's list of default system groups.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns a user's list of default system groups.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     #struct_begin("system group")
      *       #prop("int", "id")
@@ -887,10 +887,10 @@ public class UserHandler extends BaseHandler {
      * have access to lookup the user corresponding to login or if the user
      * does not exist.
      *
-     * @xmlrpc.doc Returns the system groups that a user can administer.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns the system groups that a user can administer.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     #struct_begin("system group")
      *       #prop("int", "id")
@@ -919,13 +919,13 @@ public class UserHandler extends BaseHandler {
      *      group defaults
      * @return 1 on success
      *
-     * @xmlrpc.doc Remove system groups from a user's list of assigned system groups.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #array_single_desc("string", "sgNames", "server group names")
-     * @xmlrpc.param #param_desc("boolean", "setDefault", "Should system groups also be
+     * @apidoc.doc Remove system groups from a user's list of assigned system groups.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #array_single_desc("string", "sgNames", "server group names")
+     * @apidoc.param #param_desc("boolean", "setDefault", "Should system groups also be
      * removed from the user's list of default system groups.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int removeAssignedSystemGroups(User loggedInUser,
             String login, List<String> sgNames, Boolean setDefault) {
@@ -967,13 +967,13 @@ public class UserHandler extends BaseHandler {
      *      group defaults
      * @return 1 on success
      *
-     * @xmlrpc.doc Remove system group from the user's list of assigned system groups.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param_desc("string", "sgName", "server group name")
-     * @xmlrpc.param #param_desc("boolean", "setDefault", "Should system group also
+     * @apidoc.doc Remove system group from the user's list of assigned system groups.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #param_desc("string", "sgName", "server group name")
+     * @apidoc.param #param_desc("boolean", "setDefault", "Should system group also
      * be removed from the user's list of default system groups.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int removeAssignedSystemGroup(User loggedInUser,
             String login, String sgName, Boolean setDefault) {
@@ -993,13 +993,13 @@ public class UserHandler extends BaseHandler {
      * @param setDefault True to also add group to the user's default system groups.
      * @return Returns 1 if successful (exception thrown otherwise)
      *
-     * @xmlrpc.doc Add system group to user's list of assigned system groups.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param("string", "sgName", "server group name")
-     * @xmlrpc.param #param_desc("boolean", "setDefault", "Should system group also be
+     * @apidoc.doc Add system group to user's list of assigned system groups.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #param("string", "sgName", "server group name")
+     * @apidoc.param #param_desc("boolean", "setDefault", "Should system group also be
      * added to user's list of default system groups.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int addAssignedSystemGroup(User loggedInUser, String login, String sgName,
             Boolean setDefault) {
@@ -1017,13 +1017,13 @@ public class UserHandler extends BaseHandler {
      * @param setDefault True to also add groups to the user's default system groups.
      * @return Returns 1 if successful (exception thrown otherwise)
      *
-     * @xmlrpc.doc Add system groups to user's list of assigned system groups.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #array_single_desc("string", "sgNames", "server group names")
-     * @xmlrpc.param #param_desc("boolean", "setDefault", "Should system groups also be
+     * @apidoc.doc Add system groups to user's list of assigned system groups.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #array_single_desc("string", "sgNames", "server group names")
+     * @apidoc.param #param_desc("boolean", "setDefault", "Should system groups also be
      * added to user's list of default system groups.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int addAssignedSystemGroups(User loggedInUser, String login, List<String> sgNames,
             Boolean setDefault) {
@@ -1071,7 +1071,7 @@ public class UserHandler extends BaseHandler {
      * Must be org_admin.
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Returns the current value of the CreateDefaultSystemGroup setting.
+     * @apidoc.doc Returns the current value of the CreateDefaultSystemGroup setting.
      * If True this will cause there to be a system group created (with the same name
      * as the user) every time a new user is created, with the user automatically given
      * permission to that system group and the system group being set as the default
@@ -1079,8 +1079,8 @@ public class UserHandler extends BaseHandler {
      * placed in that system group by default). This can be useful if different
      * users will administer different groups of servers in the same organization.
      * Can only be called by an org_admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
      */
     @ReadOnly
     public boolean getCreateDefaultSystemGroup(User loggedInUser) {
@@ -1097,7 +1097,7 @@ public class UserHandler extends BaseHandler {
      * @param createDefaultSystemGroup The value to set
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Sets the value of the createDefaultSystemGroup setting.
+     * @apidoc.doc Sets the value of the createDefaultSystemGroup setting.
      * If True this will cause there to be a system group created (with the same name
      * as the user) every time a new user is created, with the user automatically given
      * permission to that system group and the system group being set as the default
@@ -1105,10 +1105,10 @@ public class UserHandler extends BaseHandler {
      * placed in that system group by default). This can be useful if different
      * users will administer different groups of servers in the same organization.
      * Can only be called by an org_admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("boolean", "createDefaultSystemGroup",
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("boolean", "createDefaultSystemGroup",
      * "true if we should automatically create system groups, false otherwise.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setCreateDefaultSystemGroup(User loggedInUser,
             Boolean createDefaultSystemGroup) {
@@ -1125,13 +1125,13 @@ public class UserHandler extends BaseHandler {
      * @param login User to modify.
      * @param readOnly readOnly flag to set
      * @return 1 (should always succeed)
-     * @xmlrpc.doc Sets whether the target user should have only read-only API access or
+     * @apidoc.doc Sets whether the target user should have only read-only API access or
      * standard full scale access.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param_desc("boolean", "readOnly", "Sets whether the target user should
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #param_desc("boolean", "readOnly", "Sets whether the target user should
      * have only read-only API access or standard full scale access.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setReadOnly(User loggedInUser, String login, Boolean readOnly) {
         //Logged in user must be an org admin.
@@ -1160,12 +1160,12 @@ public class UserHandler extends BaseHandler {
      * @param login User to modify
      * @param value value to enable/disable errata mail notifications
      * @return Returns 1 if successful (exception thrown otherwise)
-     * @xmlrpc.doc Enables/disables errata mail notifications for a specific user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.param #param_desc("boolean", "value", "True for enabling
+     * @apidoc.doc Enables/disables errata mail notifications for a specific user.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "login", "User's login name.")
+     * @apidoc.param #param_desc("boolean", "value", "True for enabling
      * errata notifications, False for disabling")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setErrataNotifications(User loggedInUser, String login, Boolean value) {
         //Logged in user must be an org admin.

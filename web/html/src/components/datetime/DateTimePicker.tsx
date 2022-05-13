@@ -284,18 +284,6 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
     });
   };
 
-  toggleTimeZone = () => {
-    if (localizedMoment.serverTimeZone === localizedMoment.userTimeZone) {
-      return;
-    }
-    this.setState({
-      timeZone:
-        this.state.timeZone === localizedMoment.serverTimeZone
-          ? localizedMoment.userTimeZone
-          : localizedMoment.serverTimeZone,
-    });
-  };
-
   onDateChanged = (year: number, month: number, day: number) => {
     const newValue = localizedMoment(this.props.value)
       // The user made the choice in the given timezone
@@ -375,7 +363,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
             seconds={seconds}
             key="time-picker"
           />,
-          <span className="input-group-addon" key="tz" onClick={this.toggleTimeZone}>
+          <span className="input-group-addon" key="tz">
             {this.state.timeZone}
           </span>,
         ]}

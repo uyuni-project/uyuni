@@ -52,8 +52,8 @@ import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * PackagesSearchHandler
- * @xmlrpc.namespace packages.search
- * @xmlrpc.doc Methods to interface to package search capabilities in search server..
+ * @apidoc.namespace packages.search
+ * @apidoc.doc Methods to interface to package search capabilities in search server..
  */
 public class PackagesSearchHandler extends BaseHandler {
 
@@ -67,11 +67,11 @@ public class PackagesSearchHandler extends BaseHandler {
      * @return the package objects requested
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc Search the lucene package indexes for all packages which
+     * @apidoc.doc Search the lucene package indexes for all packages which
      *          match the given name.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "package name to search for")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "package name to search for")
+     * @apidoc.returntype
      * #return_array_begin()
      *   $PackageOverviewSerializer
      * #array_end()
@@ -90,11 +90,11 @@ public class PackagesSearchHandler extends BaseHandler {
      * @return the package objects requested
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc Search the lucene package indexes for all packages which
+     * @apidoc.doc Search the lucene package indexes for all packages which
      *          match the given query in name or description
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "query", "text to match in package name or description")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "query", "text to match in package name or description")
+     * @apidoc.returntype
      * #return_array_begin()
      *   $PackageOverviewSerializer
      * #array_end()
@@ -113,11 +113,11 @@ public class PackagesSearchHandler extends BaseHandler {
      * @return the package objects requested
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc Search the lucene package indexes for all packages which
+     * @apidoc.doc Search the lucene package indexes for all packages which
      *          match the given query in name or summary.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "query", "text to match in package name or summary")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "query", "text to match in package name or summary")
+     * @apidoc.returntype
      * #return_array_begin()
      *   $PackageOverviewSerializer
      * #array_end()
@@ -141,7 +141,7 @@ public class PackagesSearchHandler extends BaseHandler {
      * @return the package objects requested
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc Advanced method to search lucene indexes with a passed in query written
+     * @apidoc.doc Advanced method to search lucene indexes with a passed in query written
      * in Lucene Query Parser syntax.<br>
      * Lucene Query Parser syntax is defined at
      * <a href="http://lucene.apache.org/java/3_5_0/queryparsersyntax.html" target="_blank">
@@ -149,9 +149,9 @@ public class PackagesSearchHandler extends BaseHandler {
      * Fields searchable for Packages:
      * name, epoch, version, release, arch, description, summary<br>
      * Lucene Query Example: "name:kernel AND version:2.6.18 AND -description:devel"
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "luceneQuery", "a query written in the form of Lucene QueryParser Syntax")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "luceneQuery", "a query written in the form of Lucene QueryParser Syntax")
+     * @apidoc.returntype
      *   #return_array_begin()
      *      $PackageOverviewSerializer
      *   #array_end()
@@ -181,7 +181,7 @@ public class PackagesSearchHandler extends BaseHandler {
      * @return the package objects requested
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc Advanced method to search lucene indexes with a passed in query written
+     * @apidoc.doc Advanced method to search lucene indexes with a passed in query written
      * in Lucene Query Parser syntax, additionally this method will limit results to those
      * which are in the passed in channel label.<br>
      * Lucene Query Parser syntax is defined at
@@ -190,10 +190,10 @@ public class PackagesSearchHandler extends BaseHandler {
      * Fields searchable for Packages:
      * name, epoch, version, release, arch, description, summary<br>
      * Lucene Query Example: "name:kernel AND version:2.6.18 AND -description:devel"
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "luceneQuery", "a query written in the form of Lucene QueryParser Syntax")
-     * @xmlrpc.param #param_desc("string", "channelLabel", "the channel Label")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "luceneQuery", "a query written in the form of Lucene QueryParser Syntax")
+     * @apidoc.param #param_desc("string", "channelLabel", "the channel Label")
+     * @apidoc.returntype
      *   #return_array_begin()
      *      $PackageOverviewSerializer
      *   #array_end()
@@ -244,7 +244,7 @@ public class PackagesSearchHandler extends BaseHandler {
      * @return the package objects requested
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc Advanced method to search lucene indexes with a passed in query written
+     * @apidoc.doc Advanced method to search lucene indexes with a passed in query written
      * in Lucene Query Parser syntax, additionally this method will limit results to those
      * which are associated with a given activation key.<br>
      * Lucene Query Parser syntax is defined at
@@ -253,10 +253,10 @@ public class PackagesSearchHandler extends BaseHandler {
      * Fields searchable for Packages:
      * name, epoch, version, release, arch, description, summary<br>
      * Lucene Query Example: "name:kernel AND version:2.6.18 AND -description:devel"
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "luceneQuery", "a query written in the form of Lucene QueryParser Syntax")
-     * @xmlrpc.param #param_desc("string", "activationKey", "activation key to look for packages in")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "luceneQuery", "a query written in the form of Lucene QueryParser Syntax")
+     * @apidoc.param #param_desc("string", "activationKey", "activation key to look for packages in")
+     * @apidoc.returntype
      *   #return_array_begin()
      *      $PackageOverviewSerializer
      *   #array_end()

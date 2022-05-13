@@ -44,8 +44,8 @@ import java.util.Map;
 
 /**
  * PowerManagementHandler
- * @xmlrpc.namespace system.provisioning.powermanagement
- * @xmlrpc.doc Provides methods to access and modify power management for systems.
+ * @apidoc.namespace system.provisioning.powermanagement
+ * @apidoc.doc Provides methods to access and modify power management for systems.
  * Some functions exist in 2 variants. Either with server id or with a name.
  * The function with server id is useful when a system exists with a full profile.
  * Everybody allowed to manage that system can execute these functions.
@@ -63,9 +63,9 @@ public class PowerManagementHandler extends BaseHandler {
      * @param loggedInUser the user
      * @return a list of available power management types
      *
-     * @xmlrpc.doc Return a list of available power management types
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array_single("string", "power management types")
+     * @apidoc.doc Return a list of available power management types
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #array_single("string", "power management types")
      */
     @ReadOnly
     public List<String> listTypes(User loggedInUser) {
@@ -83,10 +83,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param sid the requested server id
      * @return current power management settings when available
      *
-     * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.returntype
+     * @apidoc.doc Get current power management settings of the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype
      *  #struct_begin("powerManagementParameters")
      *    #prop_desc("string", "powerType", "Power management type")
      *    #prop_desc("string", "powerAddress", "IP address for power management")
@@ -110,10 +110,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param name the cobbler name prefix
      * @return current power management settings when available
      *
-     * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.returntype
+     * @apidoc.doc Get current power management settings of the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.returntype
      *  #struct_begin("powerManagementParameters")
      *    #prop_desc("string", "powerType", "Power management type")
      *    #prop_desc("string", "powerAddress", "IP address for power management")
@@ -153,10 +153,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param data power management parameters
      * @return current power management settings when available
      *
-     * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.param
+     * @apidoc.doc Get current power management settings of the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param
      *  #struct_begin("data")
      *    #prop_desc("string", "powerType", "Power management type")
      *    #prop_desc("string", "powerAddress", "IP address for power management")
@@ -164,7 +164,7 @@ public class PowerManagementHandler extends BaseHandler {
      *    #prop_desc("string", "powerPassword", "The Password")
      *    #prop_desc("string", "powerId", "Identifier")
      *  #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, Integer sid, Map<String, String> data) {
         CobblerPowerSettingsUpdateCommand cmd = new CobblerPowerSettingsUpdateCommand(
@@ -190,10 +190,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param data power management parameters
      * @return current power management settings when available
      *
-     * @xmlrpc.doc Get current power management settings of the given system
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param
+     * @apidoc.doc Get current power management settings of the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.param
      *  #struct_begin("data")
      *    #prop_desc("string", "powerType", "Power management type")
      *    #prop_desc("string", "powerAddress", "IP address for power management")
@@ -201,7 +201,7 @@ public class PowerManagementHandler extends BaseHandler {
      *    #prop_desc("string", "powerPassword", "The Password")
      *    #prop_desc("string", "powerId", "Identifier")
      *  #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, String name, Map<String, String> data) {
         ensureOrgAdmin(loggedInUser);
@@ -228,10 +228,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param sid the requested server id
      * @return 1 on success
      *
-     * @xmlrpc.doc Execute power management action 'powerOn'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Execute power management action 'powerOn'
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype #return_int_success()
      */
     public int powerOn(User loggedInUser, Integer sid) {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
@@ -251,10 +251,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param name the cobbler name prefix
      * @return 1 on success
      *
-     * @xmlrpc.doc Execute power management action 'powerOn'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Execute power management action 'powerOn'
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.returntype #return_int_success()
      */
     public int powerOn(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
@@ -275,10 +275,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param sid the requested server id
      * @return 1 on success
      *
-     * @xmlrpc.doc Execute power management action 'powerOff'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Execute power management action 'powerOff'
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype #return_int_success()
      */
     public int powerOff(User loggedInUser, Integer sid) {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
@@ -298,10 +298,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param name the cobbler name prefix
      * @return 1 on success
      *
-     * @xmlrpc.doc Execute power management action 'powerOff'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Execute power management action 'powerOff'
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.returntype #return_int_success()
      */
     public int powerOff(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
@@ -322,10 +322,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param sid the requested server id
      * @return 1 on success
      *
-     * @xmlrpc.doc Execute power management action 'Reboot'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Execute power management action 'Reboot'
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype #return_int_success()
      */
     public int reboot(User loggedInUser, Integer sid) {
         ValidatorError error = new CobblerPowerCommand(loggedInUser, lookupServer(loggedInUser, sid),
@@ -345,10 +345,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param name the cobbler name prefix
      * @return 1 on success
      *
-     * @xmlrpc.doc Execute power management action 'Reboot'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Execute power management action 'Reboot'
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.returntype #return_int_success()
      */
     public int reboot(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
@@ -369,10 +369,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param sid the requested server id
      * @return 1 on success
      *
-     * @xmlrpc.doc Execute powermanagement actions
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "sid")
-     * @xmlrpc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
+     * @apidoc.doc Execute powermanagement actions
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
      */
     @ReadOnly
     public boolean getStatus(User loggedInUser, Integer sid) {
@@ -389,10 +389,10 @@ public class PowerManagementHandler extends BaseHandler {
      * @param name the requested server name (prefix)
      * @return 1 on success
      *
-     * @xmlrpc.doc Execute powermanagement actions
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
+     * @apidoc.doc Execute powermanagement actions
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.returntype #param_desc("boolean", "status", "True when power is on, otherwise False")
      */
     @ReadOnly
     public boolean getStatus(User loggedInUser, String name) {

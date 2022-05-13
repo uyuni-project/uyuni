@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * as an XMLRPC struct.
  *
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("option")
  *          #prop("int", "id")
  *          #prop("string", "arguments")

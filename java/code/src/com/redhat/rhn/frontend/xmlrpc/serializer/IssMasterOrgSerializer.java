@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * IssMasterOrgSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("IssMasterOrg info")
  *   #prop("int", "masterOrgId")
  *   #prop("string", "masterOrgName")

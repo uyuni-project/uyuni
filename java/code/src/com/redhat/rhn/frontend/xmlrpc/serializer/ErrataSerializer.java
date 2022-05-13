@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * ErrataSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("errata")
  *          #prop_desc("int", "id", "errata ID")
  *          #prop_desc("string", "date", "the date erratum was created")

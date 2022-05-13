@@ -37,8 +37,8 @@ import java.util.List;
 /**
  * KickstartTreeHandler - methods related to CRUD operations
  * on KickstartableTree objects.
- * @xmlrpc.namespace kickstart.tree
- * @xmlrpc.doc Provides methods to access and modify the kickstart trees.
+ * @apidoc.namespace kickstart.tree
+ * @apidoc.doc Provides methods to access and modify the kickstart trees.
  */
 public class KickstartTreeHandler extends BaseHandler {
 
@@ -48,11 +48,11 @@ public class KickstartTreeHandler extends BaseHandler {
      * @param treeLabel Label of kickstartable tree to search.
      * @return found KickstartableTreeObject
      *
-     * @xmlrpc.doc The detailed information about a kickstartable tree given the tree name.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "treeLabel", "Label of kickstartable tree to
+     * @apidoc.doc The detailed information about a kickstartable tree given the tree name.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "treeLabel", "Label of kickstartable tree to
      * search.")
-     * @xmlrpc.returntype $KickstartTreeDetailSerializer
+     * @apidoc.returntype $KickstartTreeDetailSerializer
      */
     @ReadOnly
     public KickstartableTreeDetail getDetails(User loggedInUser, String treeLabel) {
@@ -72,11 +72,11 @@ public class KickstartTreeHandler extends BaseHandler {
      * @param channelLabel Label of channel to search.
      * @return Array of KickstartableTreeObjects
      *
-     * @xmlrpc.doc List the available kickstartable trees for the given channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of channel to
+     * @apidoc.doc List the available kickstartable trees for the given channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "Label of channel to
      * search.")
-     * @xmlrpc.returntype #return_array_begin() $KickstartTreeSerializer #array_end()
+     * @apidoc.returntype #return_array_begin() $KickstartTreeSerializer #array_end()
      */
     public List list(User loggedInUser,
             String channelLabel) {
@@ -91,10 +91,10 @@ public class KickstartTreeHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return Array of KickstartInstallType objects
      *
-     * @xmlrpc.doc List the available kickstartable install types (rhel2,3,4,5 and
+     * @apidoc.doc List the available kickstartable install types (rhel2,3,4,5 and
      * fedora9+).
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $KickstartInstallTypeSerializer #array_end()
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $KickstartInstallTypeSerializer #array_end()
      */
     @ReadOnly
     public List listInstallTypes(User loggedInUser) {
@@ -112,16 +112,16 @@ public class KickstartTreeHandler extends BaseHandler {
      * rhel_3, rhel_4, rhel_5, fedora_9)
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Create a Kickstart Tree (Distribution) in #product().
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "treeLabel" "The new kickstart tree label.")
-     * @xmlrpc.param #param_desc("string", "basePath", "Path to the base or
+     * @apidoc.doc Create a Kickstart Tree (Distribution) in #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "treeLabel" "The new kickstart tree label.")
+     * @apidoc.param #param_desc("string", "basePath", "Path to the base or
      * root of the kickstart tree.")
-     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of channel to
+     * @apidoc.param #param_desc("string", "channelLabel", "Label of channel to
      * associate with the kickstart tree. ")
-     * @xmlrpc.param #param_desc("string", "installType", "Label for
+     * @apidoc.param #param_desc("string", "installType", "Label for
      * KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9).")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String treeLabel,
             String basePath, String channelLabel,
@@ -151,11 +151,11 @@ public class KickstartTreeHandler extends BaseHandler {
      * @param treeLabel Label for the new kickstart tree
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Delete a Kickstart Tree (Distribution) from #product().
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "treeLabel" "Label for the
+     * @apidoc.doc Delete a Kickstart Tree (Distribution) from #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "treeLabel" "Label for the
      * kickstart tree to delete.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String treeLabel) {
 
@@ -180,13 +180,13 @@ public class KickstartTreeHandler extends BaseHandler {
      * @param treeLabel Label for the new kickstart tree
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Delete a kickstarttree and any profiles associated with
+     * @apidoc.doc Delete a kickstarttree and any profiles associated with
      * this kickstart tree.  WARNING:  This will delete all profiles
      * associated with this kickstart tree!
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "treeLabel" "Label for the
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "treeLabel" "Label for the
      * kickstart tree to delete.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteTreeAndProfiles(User loggedInUser, String treeLabel) {
 
@@ -219,17 +219,17 @@ public class KickstartTreeHandler extends BaseHandler {
      *
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Edit a Kickstart Tree (Distribution) in #product().
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "treeLabel" "Label for the kickstart tree.")
-     * @xmlrpc.param #param_desc("string", "basePath", "Path to the base or
+     * @apidoc.doc Edit a Kickstart Tree (Distribution) in #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "treeLabel" "Label for the kickstart tree.")
+     * @apidoc.param #param_desc("string", "basePath", "Path to the base or
      * root of the kickstart tree.")
-     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of channel to
+     * @apidoc.param #param_desc("string", "channelLabel", "Label of channel to
      * associate with kickstart tree.")
-     * @xmlrpc.param #param_desc("string", "installType", "Label for
+     * @apidoc.param #param_desc("string", "installType", "Label for
      * KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9).")
      *
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int update(User loggedInUser, String treeLabel, String basePath,
                  String channelLabel, String installType) {
@@ -259,12 +259,12 @@ public class KickstartTreeHandler extends BaseHandler {
      * @param newLabel to assign to tree.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Rename a Kickstart Tree (Distribution) in #product().
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "originalLabel" "Label for the
+     * @apidoc.doc Rename a Kickstart Tree (Distribution) in #product().
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "originalLabel" "Label for the
      * kickstart tree to rename.")
-     * @xmlrpc.param #param_desc("string", "newLabel" "The kickstart tree's new label.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param_desc("string", "newLabel" "The kickstart tree's new label.")
+     * @apidoc.returntype #return_int_success()
      */
     public int rename(User loggedInUser, String originalLabel, String newLabel) {
 

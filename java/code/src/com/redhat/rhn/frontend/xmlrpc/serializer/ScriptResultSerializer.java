@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Converts a ScriptResult to an XMLRPC &lt;struct&gt;.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("script result")
  *      #prop_desc("int", "serverId", "ID of the server the script runs on")
  *      #prop_desc("$date", "startDate", "time script began execution")

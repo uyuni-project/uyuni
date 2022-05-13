@@ -26,7 +26,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * Serializer for {@link ContentProjectFilter}
  * Also serializes the information about the associated {@link ContentFilter}
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("assigned content filter information")
  *   #prop("string", "state")
  *   $ContentFilterSerializer

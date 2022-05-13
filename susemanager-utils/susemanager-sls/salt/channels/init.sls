@@ -132,7 +132,8 @@ mgrchannels_yum_clean_all:
 {%- endif %}
 {%- endif %}
 
-{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and not grains['oscodename'] == 'openSUSE Leap 15.3'%}
+{%- if not salt['pillar.get']('susemanager:distupgrade:dryrun', False) %}
+{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and not grains['oscodename'] == 'openSUSE Leap 15.3' %}
 mgrchannels_install_products:
   product.all_installed:
     - require:
@@ -145,3 +146,4 @@ mgrchannels_install_products:
 {%- endif %}
 
 {% include 'channels/gpg-keys.sls' %}
+{%- endif %}

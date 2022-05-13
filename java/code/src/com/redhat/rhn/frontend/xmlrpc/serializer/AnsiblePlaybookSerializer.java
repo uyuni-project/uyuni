@@ -23,7 +23,7 @@ import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 /**
  * XMLRPC Serializer for {@link AnsiblePlaybookSlsResult}
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("ansible playbook")
  *     #prop("string", "fullpath")
  *     #prop("string", "custom_inventory")

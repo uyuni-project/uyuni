@@ -1,6 +1,3 @@
-import "react-toastify/dist/ReactToastify.css";
-import "./toastr.css";
-
 import * as React from "react";
 
 import { cssTransition, toast, ToastContainer } from "react-toastify";
@@ -32,6 +29,8 @@ function show(message: React.ReactNode, notify: (arg0: React.ReactNode) => void)
   }
 }
 
+// window.dispatchEvent(new Event("resize"));
+
 /** Parse `optionalParams.autoHide` into a valid configuration value */
 function parseAutoHide(input: boolean) {
   // react-toastify accepts either a number or false, true is not a valid value, undefined results in using the default duration
@@ -57,11 +56,12 @@ export function showWarningToastr(message: React.ReactNode, optionalParams: Opti
 }
 
 export function showErrorToastr(message: React.ReactNode | Error, optionalParams: OptionalParams = { autoHide: true }) {
-  const notify = (msg) =>
+  const notify = (msg) => {
     toast.error(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
     });
+  };
 
   if (message instanceof Error) {
     const msg = (message as Error).toString();

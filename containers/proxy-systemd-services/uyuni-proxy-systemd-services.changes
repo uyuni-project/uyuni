@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue May 10 10:02:30 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Fix containers namespaces in configuration
+
+-------------------------------------------------------------------
+Tue May 10 10:00:13 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Rename container_images_path specfile macro to less generic one
+
+-------------------------------------------------------------------
 Wed May 04 15:26:57 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.3-1

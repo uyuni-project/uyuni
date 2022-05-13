@@ -1,4 +1,28 @@
+- Styling fixes for new branding
+- fix NoSuchElementException when pkg install date is missing
 - Update translation strings
+- Fix error message in Kubernetes VHM creation dialog
+- Add createAppStreamFilters() XMLRPC function
+- Correct concurrency error on payg taskomatic task
+  for updating certificates (#17783)
+- Display usertime instead of server time for clm issue date filter (bsc#1198429)
+- fix bootstrapping of ssh minions via proxy
+- check if file exists before sending it to xsendfile (bsc#1198191)
+- update server needed cache after adding Ubuntu Errata (bsc#1196977)
+- Fix ACL rules for config diff download for SLS files (bsc#1198914)
+- fix invalid link to action schedule
+
+-------------------------------------------------------------------
+Tue May 10 13:13:13 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.24-1
+  * Update translations
+
+-------------------------------------------------------------------
+Mon May 09 11:02:43 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.23-1
+  * Remove the SSH proxy port from the path passed to preflight script
 
 -------------------------------------------------------------------
 Wed May 04 15:20:24 CEST 2022 - jgonzalez@suse.com

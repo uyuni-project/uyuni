@@ -53,15 +53,12 @@
   <ul>
    <li>
 #end
-#macro(array_end)
-</li></ul>
-#end
-#macro(array_desc $type $value $desc)
-<em>array($type)</em> $value - $desc
+#macro(array_begin_desc $value $desc)
+<em>array</em> $value - $desc
   <ul>
    <li>
 #end
-#macro(array_desc_end)
+#macro(array_end)
 </li></ul>
 #end
 #macro(array_single $type $value)

@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * OrgDtoSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("organization info")
  *   #prop("int", "id")
  *   #prop("string", "name")

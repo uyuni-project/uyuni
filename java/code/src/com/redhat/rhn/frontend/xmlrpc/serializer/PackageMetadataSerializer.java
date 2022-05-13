@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * Converts PackageMetadata to an XMLRPC &lt;struct&gt;.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("package metadata")
  *      #prop("int", "package_name_id")
  *      #prop("string", "package_name")

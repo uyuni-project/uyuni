@@ -11,7 +11,7 @@ import { flatten } from "utils";
 import { ThemeProps } from "../login";
 import { getFormMessages, getGlobalMessages } from "../messages";
 import useLoginApi from "../use-login-api";
-import styles from "./login.css";
+import styles from "./login.less";
 import logo from "./logo.svg";
 import mobileLogo from "./mobile-logo.svg";
 
@@ -46,7 +46,7 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             </p>
           )}
         </div>
-        <div className={styles.loginArea}>
+        <div className={`${styles.loginArea} is-wrap`}>
           <div className={styles.loginHeader}>
             <img src={mobileLogo} alt="SUSE logo" width="70" height="35" className={styles.mobileLogo} />
             <div className={styles.messagesArea}>
