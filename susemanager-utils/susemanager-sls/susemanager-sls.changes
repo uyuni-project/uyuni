@@ -1,3 +1,5 @@
+- do not install products and gpg keys when performing distupgrade
+  dry-run (bsc#1199466)
 - remove unknown repository flags on EL
 
 -------------------------------------------------------------------
