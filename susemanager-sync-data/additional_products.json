@@ -8,11 +8,11 @@
         "release_type" : null,
         "arch" : "amd64",
         "friendly_name" : "Debian 11",
-        "product_class" : "SLE-M-T-BETA",
+        "product_class" : "SLE-M-T",
         "cpe" : null,
         "free" : true,
         "description" : null,
-        "release_stage" : "beta",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
