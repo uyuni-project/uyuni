@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-29 11:12+0000\n"
+"POT-Creation-Date: 2022-05-13 11:07+0000\n"
 "PO-Revision-Date: 2022-04-15 11:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -30,11 +30,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:491
+#: ../html/javascript/spacewalk-essentials.js:511
 msgid "remaining"
 msgstr "剩余"
 
-#: ../html/javascript/spacewalk-essentials.js:511
+#: ../html/javascript/spacewalk-essentials.js:531
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -146,8 +146,8 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 #: ../html/src/manager/state/recurring-states-details.tsx:146
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:188
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:189
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
 msgid "Back"
 msgstr "上一步"
 
@@ -900,7 +900,7 @@ msgstr "添加 Pay-as-you-go SSH 数据"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
 #: ../html/src/manager/state/recurring-states-list.tsx:51
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
 #: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
@@ -1366,7 +1366,7 @@ msgstr "会话已失效，请重新装载页面以查看最新数据。"
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
 #: ../html/src/manager/notifications/notification-messages.tsx:570
-#: ../html/src/utils/network.ts:101
+#: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
 
@@ -2301,8 +2301,8 @@ msgstr "已成功在 {1} 中构建版本 {0}"
 #: ../html/src/manager/images/image-profiles.tsx:177
 #: ../html/src/manager/images/image-store-edit.tsx:259
 #: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
 msgstr "标签"
@@ -2779,7 +2779,7 @@ msgstr "导入"
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:378
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:196
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "清除字段"
 
@@ -2818,7 +2818,7 @@ msgstr "创建更多自定义信息键"
 #: ../html/src/manager/images/image-profile-edit.tsx:492
 #: ../html/src/manager/images/image-store-edit.tsx:214
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:111
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:40
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:38
@@ -5082,16 +5082,16 @@ msgid "Are you sure you want to delete this virtual host manager?"
 msgstr "您确定要删除此虚拟主机管理器吗？"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:185
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:272
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:262
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
 msgid "Gatherer module"
 msgstr "收集器模块"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:313
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:303
 msgid "Current Context"
 msgstr "当前上下文"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:327
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:317
 msgid "Kubeconfig file"
 msgstr "Kubeconfig 文件"
 
@@ -6068,20 +6068,20 @@ msgstr "选择系统组"
 msgid "Split into groups"
 msgstr "分割成组"
 
-#: ../html/src/utils/network.ts:95
+#: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "会话已失效，请重新装载页面。"
 
-#: ../html/src/utils/network.ts:97
+#: ../html/src/utils/network.ts:99
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr "授权错误，请重新装载页面或重试注销/登录。"
 
-#: ../html/src/utils/network.ts:99
+#: ../html/src/utils/network.ts:101
 msgid "Resource not found."
 msgstr "未找到资源。"
 
-#: ../html/src/utils/network.ts:103
+#: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
 
