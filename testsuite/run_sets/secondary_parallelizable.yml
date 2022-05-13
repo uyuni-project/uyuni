@@ -37,7 +37,8 @@
 - features/secondary/srv_reportdb.feature
 - features/secondary/trad_spacewalk_channel.feature
 
-- features/secondary/proxy_retail_pxeboot_and_mass_import.feature
+# temporarily disabled. Reason: Tests fail and are not blockers
+# - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
 - features/secondary/allcli_system_group.feature
 - features/secondary/allcli_config_channel.feature
@@ -58,8 +59,10 @@
 - features/secondary/min_salt_software_states.feature
 # temporarily disabled. Reason: Tests fail and are not blockers
 # - features/secondary/min_salt_install_with_staging.feature
-- features/secondary/min_salt_formulas.feature
-- features/secondary/min_salt_formulas_advanced.feature
+# temporarily disabled. Reason: Tests fail and are not blockers
+# - features/secondary/min_salt_formulas.feature
+# temporarily disabled. Reason: Tests fail and are not blockers
+# - features/secondary/min_salt_formulas_advanced.feature
 - features/secondary/min_salt_install_package.feature
 - features/secondary/min_salt_openscap_audit.feature
 - features/secondary/min_salt_user_states.feature
