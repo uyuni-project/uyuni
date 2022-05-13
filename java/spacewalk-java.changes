@@ -1,3 +1,5 @@
+- Fix notification message on system properties update to ensure
+  style consistency (bsc#1172179)
 - Fix containerized proxy configuration machine name
 - Improve CLM channel cloning performance (bsc#1199523)
 - Keep the websocket connections alive with ping/pong frames (bsc#1199874)
