@@ -418,9 +418,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testPackageRemoveDuplicates() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinion = MinionServerFactoryTest.createTestMinionServer(user);
         List<MinionServer> mins = new ArrayList<>();
-        mins.add(minion);
+        mins.add(testMinion);
 
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
@@ -449,13 +449,14 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_REMOVE,
                 "test remove action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(minion, action);
+        ActionFactory.addServerToAction(testMinion, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
         Action removeAction = ActionFactory.lookupById(action.getId());
 
-        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(removeAction, minionSummaries);
+        Map<LocalCall<?>, List<MinionSummary>> result =
+                saltServerActionService.callsForAction(removeAction, minionSummaries);
         assertEquals(1, result.values().size());
         LocalCall<?> resultCall = result.keySet().iterator().next();
         List<List<String>> resultPkgs1 = (List<List<String>>) ((Map) ((Map) resultCall.getPayload().get("kwarg")).get(
