@@ -1065,6 +1065,10 @@ DATA = {
         'PDID' : [1421, 1932], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
     },
+    'SLED-12-SP3-x86_64' : {
+        'PDID' : [1425], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+    },
     'SLES4SAP-12-SP3-x86_64' : {
         'PDID' : 1426, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
