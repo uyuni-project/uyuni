@@ -15,14 +15,16 @@
 
 package com.redhat.rhn.domain.notification;
 
-import com.google.gson.Gson;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.notification.types.CreateBootstrapRepoFailed;
+import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
+
+import com.google.gson.Gson;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -124,6 +126,8 @@ public class NotificationMessage implements Serializable {
                 return new Gson().fromJson(getData(), CreateBootstrapRepoFailed.class);
             case StateApplyFailed:
                 return new Gson().fromJson(getData(), StateApplyFailed.class);
+            case EndOfLifePeriod:
+                return new Gson().fromJson(getData(), EndOfLifePeriod.class);
             default: throw new RuntimeException("should not happen!");
         }
     }

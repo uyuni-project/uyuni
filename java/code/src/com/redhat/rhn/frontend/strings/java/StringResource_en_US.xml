@@ -9287,6 +9287,20 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="bootstrap.minion.error.salt">
         <source>Error during applying the bootstrap state, message: {0}</source>
       </trans-unit>
+      <trans-unit id="notification.endoflife.expired.summary">
+        <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expired.detail">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.summary">
+        <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.detail">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

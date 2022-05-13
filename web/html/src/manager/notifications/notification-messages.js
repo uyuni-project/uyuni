@@ -38,6 +38,10 @@ const _MESSAGE_TYPE = {
     id: "StateApplyFailed",
     text: t("State apply failed"),
   },
+  EndOfLifePeriod: {
+   id: "EndOfLifePeriod",
+   text: t("End of Life period"),
+  },
 }
 
 function reloadData(dataUrlSlice) {

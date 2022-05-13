@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import static java.util.Optional.empty;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -21,24 +23,33 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.dto.ActionMessage;
 import com.redhat.rhn.frontend.dto.AwolServer;
 import com.redhat.rhn.frontend.dto.OrgIdWrapper;
 import com.redhat.rhn.frontend.dto.ReportingUser;
 
 import com.suse.manager.utils.MailHelper;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -55,12 +66,42 @@ public class DailySummary extends RhnJavaJob {
     private static final int ERRATA_SPACER = 4;
     private static final String ERRATA_UPDATE = "Errata Update";
     private static final String ERRATA_INDENTION = StringUtils.repeat(" ", ERRATA_SPACER);
+    private static final LocalDate SUSE_MANAGER_4_1_EOL = LocalDate.of(2022, Month.OCTOBER, 31);
+    private static final Period NOTIFICATION_PERIOD = Period.ofMonths(6);
 
     /**
      * {@inheritDoc}
      */
     public void execute(JobExecutionContext ctxIn)
         throws JobExecutionException {
+
+        processEndOfLifeNotification();
+
+        processEmails();
+    }
+
+    private void processEndOfLifeNotification() {
+        // No end of life for Uyuni
+        if (ConfigDefaults.get().isUyuni()) {
+            return;
+        }
+
+        final LocalDate today = LocalDate.now();
+        // Notify only on the first day of the month
+        if (today.getDayOfMonth() != 1) {
+            return;
+        }
+
+        // For 4.1 EOL is hardcoded because the date in the SUSE-Manager-Server.prod file is wrong...
+        if (SUSE_MANAGER_4_1_EOL.minus(NOTIFICATION_PERIOD).isBefore(today)) {
+            EndOfLifePeriod data = new EndOfLifePeriod(SUSE_MANAGER_4_1_EOL);
+
+            NotificationMessage notification = UserNotificationFactory.createNotificationMessage(data);
+            UserNotificationFactory.storeNotificationMessageFor(notification, Set.of(RoleFactory.ORG_ADMIN), empty());
+        }
+    }
+
+    private void processEmails() {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_DAILY_SUMMARY_QUEUE);
         List results = m.execute();
