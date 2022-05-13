@@ -23,6 +23,9 @@ no_ssh_push_key_authorized:
 # SUSE OS Family
 {%- if grains['os_family'] == 'Suse' %}
   {% set os_base = 'sle' %}
+  {%- if 'sle micro' in grains['osfullname']|lower  %}
+    {%- set os_base = 'slemicro' %}
+  {% endif %}
   {% set osrelease_major = grains['osrelease_info'][0] %}
   #exceptions to the family rule
   {%- if "opensuse" in grains['oscodename']|lower %}
