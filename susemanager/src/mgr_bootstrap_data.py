@@ -1425,6 +1425,10 @@ DATA = {
         'PDID' : [-7, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/7/bootstrap/'
     },
+    'RHEL7-x86_64-uyuni' : {
+        'BASECHANNEL' : 'rhel7-pool-x86_64', 'PKGLIST' : RES7 + RES7_X86,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/7/bootstrap/'
+    },
     'SLE-ES8-x86_64' : {
         'PDID' : [-8, 1921, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
@@ -1433,6 +1437,10 @@ DATA = {
         'PDID' : [-8, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
+    'RHEL8-x86_64-uyuni' : {
+        'BASECHANNEL' : 'rhel8-pool-x86_64', 'PKGLIST' : RES8 + RES8_X86,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
+    },    
     'alibaba-2-x86_64-uyuni': {
         'BASECHANNEL': 'alibaba-2-x86_64', 'PKGLIST': RES7 + RES7_X86,
         'DEST': DOCUMENT_ROOT + '/pub/repositories/alibaba/2/bootstrap/'
