@@ -322,24 +322,27 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         rec.setKsMeta(ksmeta);
         Profile recProfile = rec.getProfile();
         if (recProfile != null && "suse".equals(recProfile.getDistro().getBreed())) {
-            if (kernelOptions != null && kickstartHost != null && mediaPath != null &&
-                    !kernelOptions.contains("install=")) {
-                kernelOptions = kernelOptions + " install=http://" + kickstartHost +
-                    mediaPath;
-            }
-        }
-
-        if (recProfile != null && "suse".equals(recProfile.getDistro().getBreed())) {
-            if (kernelOptions != null && kickstartHost != null && mediaPath != null &&
-                    !kernelOptions.contains("self_update=") && ksData != null) {
-                Optional<Channel> installerUpdated = ksData.getTree().getChannel()
-                        .getAccessibleChildrenFor(user)
-                        .stream()
-                        .filter(Channel::isInstallerUpdates)
-                        .findFirst();
-                if (installerUpdated.isPresent()) {
-                    kernelOptions = kernelOptions + " self_update=http://" + kickstartHost + "/ks/dist/child/" +
-                            installerUpdated.get().getLabel() + "/" + ksData.getTree().getLabel();
+            if (kernelOptions != null && kickstartHost != null && mediaPath != null) {
+                if (!kernelOptions.contains("install=")) {
+                    kernelOptions = kernelOptions + " install=http://" + kickstartHost +
+                            mediaPath;
+                }
+                if (!kernelOptions.contains("self_update=") && ksData != null) {
+                    Optional<Channel> installerUpdated = ksData.getTree().getChannel()
+                            .getAccessibleChildrenFor(user)
+                            .stream()
+                            .filter(Channel::isInstallerUpdates)
+                            .findFirst();
+                    if (installerUpdated.isPresent()) {
+                        kernelOptions = kernelOptions + " self_update=http://" + kickstartHost + "/ks/dist/child/" +
+                                installerUpdated.get().getLabel() + "/" + ksData.getTree().getLabel();
+                    }
+                    else {
+                        kernelOptions = kernelOptions + "self_update=0";
+                    }
+                }
+                else {
+                    kernelOptions = kernelOptions + "self_update=0";
                 }
             }
         }
