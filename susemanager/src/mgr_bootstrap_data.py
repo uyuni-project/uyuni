@@ -1313,6 +1313,22 @@ DATA = {
         'BASECHANNEL' : 'opensuse_leap15_3-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
     },
+    'openSUSE-Leap-15.4-x86_64' : {
+        'PDID' : [2409], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
+    },
+    'openSUSE-Leap-15.4-aarch64' : {
+        'PDID' : [2406], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
+    },
+    'openSUSE-Leap-15.4-x86_64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_leap15_4-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
+    },
+    'openSUSE-Leap-15.4-aarch64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_leap15_4-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
+    },    
     'centos-6-x86_64' : {
         'PDID' : [-11, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/6/bootstrap/'
