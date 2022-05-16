@@ -40,13 +40,13 @@ zypper ar -n "Uyuni Server Stable" https://download.opensuse.org/repositories/sy
 zypper ar -n "Update repository wiht updates from SUSE Linux Enterprise" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/sle repo-sle-update
 zypper ar -n "Update repository of openSUSE Backports" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/backports/ repo-backports-update
 zypper ref
-zypper -n dup --allow-vendor-change
+# For now, betty must always come from Uyuni, even if it is an older version
+zypper -n dup --allow-vendor-change && zypper in --force --from "Uyuni Server Stable" netty
 ret=$?
 if [[ $ret -ne 0 ]];then
     echo "Migration went wrong. Please fix the issues and try again. return code is $ret"
     exit -1
 fi
-zypper in --force --from "Uyuni Server Stable" httpcomponents-asyncclient
 
 CURRENT_VERSION_ID=$(cat /etc/os-release  | grep VERSION_ID | cut -f2 -d=)
 
