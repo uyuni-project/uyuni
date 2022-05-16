@@ -1,3 +1,4 @@
+- Fix virt_notify SQL syntax error (bsc#1199528)
 - Do not raise error on file:// based DEB repo when looking
   for alternative Release files (bsc#1199142)
 - Improve parsing deb packages dependencies (bsc#1194594)
