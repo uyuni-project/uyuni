@@ -1,3 +1,4 @@
+- Add support to packages.pkgremove to deal with duplicated pkg names (bsc#1198686)
 - Fix bootstrap repository path resolution for Oracle Linux
 - Fix deprecated warning when getting pillar data (bsc#1192850)
 - fixing how the return code is returned in mgrutil runner (bsc#1194909)

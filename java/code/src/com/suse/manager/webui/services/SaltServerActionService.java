@@ -1094,12 +1094,28 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> packagesRemoveAction(
             List<MinionSummary> minionSummaries, PackageRemoveAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        List<List<String>> pkgs = action
+        List<List<String>> pkgsAll = action
                 .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                         d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                 .collect(Collectors.toList());
+
+        List<List<String>> uniquePkgs = new ArrayList<>();
+        pkgsAll.stream().forEach(d -> {
+                if (!uniquePkgs.stream().map(p -> p.get(0))
+                        .collect(Collectors.toList())
+                        .contains(d.get(0))) {
+                                uniquePkgs.add(d);
+                }
+        });
+        List<List<String>> duplicatedPkgs = pkgsAll.stream()
+                .filter(p -> !uniquePkgs.contains(p)).collect(Collectors.toList());
+
+        Map<String, Object> params = new HashMap<>();
+        params.put(PARAM_PKGS, uniquePkgs);
+        params.put("param_pkgs_duplicates", duplicatedPkgs);
+
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGREMOVE),
-                Optional.of(singletonMap(PARAM_PKGS, pkgs))), minionSummaries);
+                Optional.of(params)), minionSummaries);
         return ret;
     }
 
