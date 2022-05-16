@@ -1,3 +1,4 @@
+- Allow removing duplicated packages names in the same Salt action (bsc#1198686)
 - fix NoSuchElementException when pkg install date is missing
 - Improve API documentation
 - Fix outdated documentation and release notes links
