@@ -198,6 +198,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' =>
                                     'SLES15-SP1-Pool' => 'SLE-15-SP1-x86_64',
                                     'SLES15-SP2-Pool' => 'SLE-15-SP2-x86_64',
                                     'SLES15-SP3-Pool' => 'SLE-15-SP3-x86_64',
+                                    'SLES15-SP4-Pool' => 'SLE-15-SP4-x86_64',
                                     'RHEL x86_64 Server 7' => 'RES7-x86_64',
                                     'no-appstream-result-RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
