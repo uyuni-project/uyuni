@@ -18,6 +18,9 @@ package com.suse.manager.webui.services.pillar;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.GlobalInstanceHolder;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +43,8 @@ public class MinionPillarManager {
 
     /** Logger */
     private static final Logger LOG = LogManager.getLogger(MinionPillarManager.class);
+
+    private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
     public static final MinionPillarManager INSTANCE = new MinionPillarManager(
                     new MinionPillarFileManager(MinionGeneralPillarGenerator.INSTANCE),
@@ -106,6 +111,8 @@ public class MinionPillarManager {
                     throw new RuntimeException("unreachable");
             }
         }
+        // push the changed pillar data to the minion
+        saltApi.refreshPillar(new MinionList(minion.getMinionId()));
     }
 
     /**

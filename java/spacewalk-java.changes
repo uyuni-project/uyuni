@@ -1,3 +1,4 @@
+- MinionPillarManager - refresh pillar on update (bsc#1197724)
 - Adjust cobbler requirement to version 3.3.3
 - Support inherited values for kernel options from Cobbler API
 - Fix virtFileSize type after cobbler upgrade
