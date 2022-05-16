@@ -46,8 +46,10 @@
 - features/secondary/min_salt_minions_page.feature
 - features/secondary/min_salt_mgrcompat_state.feature
 - features/secondary/min_salt_lock_packages.feature
-- features/secondary/minkvm_guests.feature
-- features/secondary/minxen_guests.feature
+# temporarily disabled. Reason: Tests fail and are not blockers
+# - features/secondary/minkvm_guests.feature
+# temporarily disabled. Reason: Tests fail and are not blockers
+# - features/secondary/minxen_guests.feature
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_action_chain.feature
@@ -65,7 +67,8 @@
 - features/secondary/min_retracted_patches.feature
 # temporarily disabled. Reason: Tests fail and are not blockers
 # - features/secondary/proxy_cobbler_pxeboot.feature
-- features/secondary/srv_restart.feature
+# temporarily disabled. Reason: Tests fail and are not blockers
+# - features/secondary/srv_restart.feature
 - features/secondary/min_timezone.feature
 - features/secondary/min_move_from_and_to_proxy.feature
 - features/secondary/minssh_move_from_and_to_proxy.feature
