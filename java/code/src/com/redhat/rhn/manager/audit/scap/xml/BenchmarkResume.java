@@ -30,7 +30,7 @@ public class BenchmarkResume {
     @Attribute
     private String version;
 
-    @Element(name = "profile")
+    @Element(name = "profile", required = false)
     private Profile profile;
 
     @Element(name = "TestResult")
