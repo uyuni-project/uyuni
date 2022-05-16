@@ -341,9 +341,6 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                         kernelOptions = kernelOptions + "self_update=0";
                     }
                 }
-                else {
-                    kernelOptions = kernelOptions + "self_update=0";
-                }
             }
         }
 
