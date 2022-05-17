@@ -214,6 +214,12 @@ cp -pR img %{buildroot}/%{www_path}
 cp -pR javascript %{buildroot}/%{www_path}
 popd
 
+# Adjust default theme for SUSE Manager
+%if 0%{?sle_version}
+sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_web.conf
+%endif
+
+
 %find_lang spacewalk-web
 
 %files -n spacewalk-base
