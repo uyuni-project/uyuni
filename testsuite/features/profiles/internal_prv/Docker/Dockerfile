@@ -1,4 +1,4 @@
-FROM registry.mgr.prv.suse.net/toaster-sles15sp4-products
+FROM registry.mgr.prv.suse.net/toaster-sles15sp2-products
 MAINTAINER Admin User "noemail@example.com"
 
 ARG repo
@@ -10,7 +10,7 @@ RUN echo "$repo" > /etc/zypp/repos.d/susemanager:dockerbuild.repo
 
 ADD nsswitch.conf /etc/nsswitch.conf
 ADD avahi-daemon.conf /root/avahi-daemon.conf
-ADD sles15sp4.repo /etc/zypp/repos.d/sles15sp4.repo
+ADD sles15sp2.repo /etc/zypp/repos.d/sles15sp2.repo
 
 ADD add_packages.sh /root/add_packages.sh
 RUN /root/add_packages.sh
