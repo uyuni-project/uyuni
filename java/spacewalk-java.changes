@@ -1,3 +1,4 @@
+- Fix Intenal Server Error when URI contains invalid sysid (bsc#1186011)
 - Fix containerized proxy configuration machine name
 - Improve CLM channel cloning performance (bsc#1199523)
 - Keep the websocket connections alive with ping/pong frames (bsc#1199874)
