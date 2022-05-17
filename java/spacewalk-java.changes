@@ -1,3 +1,4 @@
+- Set profile tag has no-mandatory in XCCDF result (bsc#1194262)
 - provisioning thought proxy should use proxy for self_update (bsc#1199036)
 - Allow removing duplicated packages names in the same Salt action (bsc#1198686)
 - fix NoSuchElementException when pkg install date is missing
