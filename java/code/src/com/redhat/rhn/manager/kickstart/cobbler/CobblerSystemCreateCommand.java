@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -72,6 +74,8 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private String bridgeNetmask;
     private String bridgeGateway;
     private boolean isBridgeDhcp;
+    private KickstartData ksData;
+
     /**
      * @param dhcp true if the network type is dhcp
      * @param networkInterfaceIn The name of the network interface
@@ -130,6 +134,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
             throw new NullPointerException("ksDataIn cant be null");
         }
         this.activationKeys = activationKeysIn;
+        this.ksData = ksDataIn;
     }
 
     /**
@@ -138,13 +143,14 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
      * @param serverIn profile we want to create in cobbler
      * @param cobblerProfileName the name of the cobbler profile
      * to associate with system
-     * @param ksData the kickstart data to associate the system with
+     * @param ksDataIn the kickstart data to associate the system with
      */
     public CobblerSystemCreateCommand(Server serverIn, String cobblerProfileName,
-            KickstartData ksData) {
+            KickstartData ksDataIn) {
         super(serverIn.getCreator());
         this.server = serverIn;
         this.mediaPath = null;
+        String keys = "";
         this.profileName = cobblerProfileName;
         String note = "Reactivation key for " + server.getName() + ".";
         ActivationKey key = ActivationKeyManager.getInstance().
@@ -152,9 +158,10 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                         server.getOrg()), server, note);
         key.setUsageLimit(1L);
         log.debug("created reactivation key: " + key.getKey());
-        String keys = key.getKey();
-        if (ksData != null) {
-            for (Token token : ksData.getDefaultRegTokens()) {
+        keys = key.getKey();
+        this.ksData = ksDataIn;
+        if (this.ksData != null) {
+            for (Token token : this.ksData.getDefaultRegTokens()) {
                 ActivationKey keyTmp = ActivationKeyFactory.lookupByToken(token);
                 if (keyTmp != null) {
                     keys += "," + keyTmp.getKey();
@@ -164,6 +171,37 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         this.activationKeys = keys;
     }
 
+    /**
+     * Constructor to be used to create a new system with a cobbler profile.
+     *
+     * @param userIn the user creating the system
+     * @param cobblerProfileName the name of the cobbler profile
+     * to associate with system
+     * @param ksDataIn the kickstart data to associate the system with
+     * @param serverNameIn the name of the system to create
+     * @param orgIdIn the organization ID the system will belong to
+     */
+    public CobblerSystemCreateCommand(User userIn, String cobblerProfileName, KickstartData ksDataIn,
+            String serverNameIn, Long orgIdIn) {
+        super(userIn);
+        this.server = null;
+        this.mediaPath = null;
+        this.profileName = cobblerProfileName;
+        String keys = "";
+        this.ksData = ksDataIn;
+        if (this.ksData != null) {
+            for (Token token : this.ksData.getDefaultRegTokens()) {
+                ActivationKey keyTmp = ActivationKeyFactory.lookupByToken(token);
+                if (keyTmp != null) {
+                    if (!keys.isBlank()) {
+                        keys += ",";
+                    }
+                    keys += keyTmp.getKey();
+                }
+            }
+        }
+        this.activationKeys = keys;
+    }
 
 
     /**
@@ -267,10 +305,25 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         rec.setKsMeta(ksmeta);
         Profile recProfile = rec.getProfile();
         if (recProfile != null && "suse".equals(recProfile.getDistro().getBreed())) {
-            if (kernelOptions != null && kickstartHost != null && mediaPath != null &&
-                    !kernelOptions.contains("install=")) {
-                kernelOptions = kernelOptions + " install=http://" + kickstartHost +
-                    mediaPath;
+            if (kernelOptions != null && kickstartHost != null && mediaPath != null) {
+                if (!kernelOptions.contains("install=")) {
+                    kernelOptions = kernelOptions + " install=http://" + kickstartHost +
+                            mediaPath;
+                }
+                if (!kernelOptions.contains("self_update=") && ksData != null) {
+                    Optional<Channel> installerUpdated = ksData.getTree().getChannel()
+                            .getAccessibleChildrenFor(user)
+                            .stream()
+                            .filter(Channel::isInstallerUpdates)
+                            .findFirst();
+                    if (installerUpdated.isPresent()) {
+                        kernelOptions = kernelOptions + " self_update=http://" + kickstartHost + "/ks/dist/child/" +
+                                installerUpdated.get().getLabel() + "/" + ksData.getTree().getLabel();
+                    }
+                    else {
+                        kernelOptions = kernelOptions + "self_update=0";
+                    }
+                }
             }
         }
 
@@ -456,5 +509,12 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
      */
     public String getComment() {
         return this.comment;
+    }
+
+    /**
+     * @return the KickstartData
+     */
+    public KickstartData getKsData() {
+        return ksData;
     }
 }

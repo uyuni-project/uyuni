@@ -6102,7 +6102,8 @@ public class SystemHandler extends BaseHandler {
 
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
         CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(
-                loggedInUser, server, ksData.getCobblerObject(loggedInUser).getName());
+                loggedInUser, ksData.getCobblerObject(loggedInUser).getName(),
+                ksData, server.getName(), loggedInUser.getOrg().getId());
         cmd.store();
 
         return 1;
