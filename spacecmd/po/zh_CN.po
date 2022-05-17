@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-29 17:14+0000\n"
-"PO-Revision-Date: 2022-04-15 11:12+0000\n"
+"PO-Revision-Date: 2022-05-17 09:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -6924,12 +6924,11 @@ msgstr "无法获取软件包 %i 的名称"
 
 #: ../src/spacecmd/system.py:1097
 msgid "Full package update on systems:"
-msgstr ""
+msgstr "系统上完整的软件包更新："
 
 #: ../src/spacecmd/system.py:1106
-#, fuzzy
 msgid "Upgrade these systems/packages [y/N]:"
-msgstr "升级这些软件包 [y/N]："
+msgstr "升级这些系统/软件包 [y/N]："
 
 #: ../src/spacecmd/system.py:1142
 msgid "system_listupgrades: List the available upgrades for a system"
