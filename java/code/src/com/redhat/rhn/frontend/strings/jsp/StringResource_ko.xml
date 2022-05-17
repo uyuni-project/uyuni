@@ -28931,9 +28931,9 @@ given channel.</source>
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
         <target state="translated">이 시스템에 설치된 &lt;strong&gt;Salt&lt;/strong&gt; 패키지 버전이 오래되었습니다. 패키지를 최신 버전으로 업데이트한 후 제품 마이그레이션을 시작하십시오.</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve" approved="yes">
         <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
-        <target state="needs-adaptation">이 시스템에서 사용할 수 있는 마이그레이션이 없습니다. 설치된 일부 확장에 대한 후속 작업을 찾을 수 없음:</target>
+        <target state="final">설치된 일부 확장에 대한 후속 작업을 찾을 수 없습니다. 마이그레이션하는 동안 선택한 대상에 따라 이러한 제품 중 일부 또는 전체가 제거되므로 주의하여 진행하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -29717,10 +29717,10 @@ given channel.</source>
         <source>Update Hub Reporting Database</source>
         <target state="final">허브 보고 데이터베이스 업데이트</target>
       </trans-unit>
-    <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve" approved="yes">
         <source>Following installed products will be removed from the system during migration:</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">다음 설치된 제품은 마이그레이션 중에 시스템에서 제거됩니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
