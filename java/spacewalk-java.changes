@@ -1,4 +1,4 @@
-- Profile is tag is no longer mandatory in XCCDF 1.2 (bsc#1194262 )
+- Set profile tag has no-mandatory in XCCDF result (bsc#1194262 )
 - Allow removing duplicated packages names in the same Salt action (bsc#1198686)
 - Styling fixes for new branding
 - fix NoSuchElementException when pkg install date is missing
