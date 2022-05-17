@@ -11195,13 +11195,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">外设服务器</target>
       </trans-unit>
-    <trans-unit id="Report Database Schema" xml:space="preserve">
+      <trans-unit id="Report Database Schema" xml:space="preserve" approved="yes">
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">报告数据库纲要</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
