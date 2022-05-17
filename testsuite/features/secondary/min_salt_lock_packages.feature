@@ -16,20 +16,20 @@ Feature: Lock packages on SLES salt minion
   Scenario: Lock a package on the client
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_minion"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
     When I wait until event "Lock packages scheduled by admin" is completed
     Then "hoag-dummy-1.1-1.1" is locked on "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
 
   Scenario: Attempt to install a locked package on the client
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And package "hoag-dummy-1.1-1.1" is reported as locked
     And I follow "Install"
     And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_minion"
@@ -46,7 +46,7 @@ Feature: Lock packages on SLES salt minion
   Scenario: Unlock a package on the client
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And package "hoag-dummy-1.1-1.1" is reported as locked
     And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_minion"
     And I click on "Unlock"
@@ -54,13 +54,13 @@ Feature: Lock packages on SLES salt minion
     When I wait until event "Lock packages scheduled by admin" is completed
     Then "hoag-dummy-1.1-1.1" is unlocked on "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as unlocked
 
   Scenario: Schedule a package lock
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_minion"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
@@ -69,7 +69,7 @@ Feature: Lock packages on SLES salt minion
   Scenario: Schedule another package lock
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     When I check row with "milkyway-dummy-2.0-1.1" and arch of "sle_minion"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
@@ -77,20 +77,20 @@ Feature: Lock packages on SLES salt minion
     Then "hoag-dummy-1.1-1.1" is locked on "sle_minion"
     And "milkyway-dummy-2.0-1.1" is locked on "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as locked
 
   Scenario: Mix package locks and unlock events
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as locked
     When I check row with "orion-dummy-1.1-1.1" and arch of "sle_minion"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
-    When I follow "Lock"
+    When I follow "Lock / Unlock"
     And I check row with "milkyway-dummy-2.0-1.1" and arch of "sle_minion"
     And I uncheck row with "hoag-dummy-1.1-1.1" and arch of "sle_minion"
     And I click on "Unlock"
@@ -100,7 +100,7 @@ Feature: Lock packages on SLES salt minion
     And "milkyway-dummy-2.0-1.1" is unlocked on "sle_minion"
     And "orion-dummy-1.1-1.1" is locked on "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as unlocked
     And package "orion-dummy-1.1-1.1" is reported as locked
@@ -108,7 +108,7 @@ Feature: Lock packages on SLES salt minion
   Scenario: Mix package locks and unlock events part 2
     Given I am on the Systems overview page of this "sle_minion"
     And I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     When I click on "Select All"
     And I click on "Unlock"
     Then I should see a "Packages has been requested for being unlocked." text
@@ -117,7 +117,7 @@ Feature: Lock packages on SLES salt minion
     Then "hoag-dummy-1.1-1.1" is unlocked on "sle_minion"
     And "orion-dummy-1.1-1.1" is unlocked on "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as unlocked
     And package "orion-dummy-1.1-1.1" is reported as unlocked
 
