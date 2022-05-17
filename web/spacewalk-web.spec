@@ -215,7 +215,7 @@ cp -pR javascript %{buildroot}/%{www_path}
 popd
 
 # Adjust default theme for SUSE Manager
-%if 0%{?sle_version}
+%if 0%{?sle_version} && ! (0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora})
 sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_web.conf
 %endif
 
