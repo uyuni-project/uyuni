@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-13 11:07+0000\n"
-"PO-Revision-Date: 2022-04-18 03:12+0000\n"
+"PO-Revision-Date: 2022-05-17 17:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -3462,7 +3462,7 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:42
 msgid "_blank"
-msgstr ""
+msgstr "_blank"
 
 #: ../html/src/manager/login/susemanager/login.tsx:57
 #: ../html/src/manager/login/susemanager/login.tsx:82
@@ -4192,25 +4192,23 @@ msgstr "プロキシFQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:192
 msgid "The FQDN of the machine where the containers are hosted"
-msgstr ""
+msgstr "コンテナがホストされているマシンのFQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:194
 msgid "e.g., proxy.domain.com"
 msgstr "例: proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-#, fuzzy
 msgid "Parent FQDN"
-msgstr "プロキシFQDN"
+msgstr "親FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., server.domain.com"
 msgstr "例: server.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:203
-#, fuzzy
 msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr "接続するプロキシのサーバのFQDN。"
+msgstr "接続する親(サーバまたはプロキシ)のFQDN。"
 
 #: ../html/src/manager/proxy/container-config.tsx:209
 msgid "Proxy SSH port"
@@ -4222,27 +4220,24 @@ msgid "Port range: 1 - 65535"
 msgstr "ポート範囲: 1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:219
-#, fuzzy
 msgid "Max Squid cache size"
-msgstr "Squidの最大キャッシュサイズ(MB)"
+msgstr "Squidの最大キャッシュサイズ"
 
 #: ../html/src/manager/proxy/container-config.tsx:220
 msgid "The maximum value of the Squid cache in Megabytes"
-msgstr ""
+msgstr "Squidキャッシュの最大値(メガバイト単位)"
 
 #: ../html/src/manager/proxy/container-config.tsx:223
 msgid "e.g., 2048"
 msgstr "例: 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:230
-#, fuzzy
 msgid "Proxy admin email"
 msgstr "プロキシ管理者の電子メール"
 
 #: ../html/src/manager/proxy/container-config.tsx:231
-#, fuzzy
 msgid "The container-based proxy administrator email address"
-msgstr "コンテナベースのプロキシ設定が正しく生成されました。"
+msgstr "コンテナベースのプロキシ管理者の電子メールアドレス"
 
 #: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., proxy.admin@mycompany.com"
@@ -4263,26 +4258,22 @@ msgid "Use existing"
 msgstr "既存の使用"
 
 #: ../html/src/manager/proxy/container-config.tsx:256
-#, fuzzy
 msgid "CA certificate"
-msgstr "SSL証明書"
+msgstr "CA 証明書"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
 #: ../html/src/manager/proxy/container-config.tsx:266
 #: ../html/src/manager/proxy/container-config.tsx:323
-#, fuzzy
 msgid "To sign the SSL certificate in PEM format"
-msgstr "PEM形式でSSL証明書に署名するために使用されるルートCA"
+msgstr "PEM形式でSSL証明書に署名するには"
 
 #: ../html/src/manager/proxy/container-config.tsx:265
-#, fuzzy
 msgid "CA private key"
-msgstr "SSH 機密鍵"
+msgstr "CA機密鍵"
 
 #: ../html/src/manager/proxy/container-config.tsx:274
-#, fuzzy
 msgid "CA password"
-msgstr "パスワード"
+msgstr "CA パスワード"
 
 #: ../html/src/manager/proxy/container-config.tsx:275
 msgid "The CA private key password"
@@ -4326,7 +4317,7 @@ msgstr "電子メール"
 
 #: ../html/src/manager/proxy/container-config.tsx:322
 msgid "The root CA"
-msgstr ""
+msgstr "ルートCA"
 
 #: ../html/src/manager/proxy/container-config.tsx:332
 msgid "Intermediate CAs"
@@ -4337,20 +4328,17 @@ msgid "CA file in PEM format"
 msgstr "PEM形式のCAファイル"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
-#, fuzzy
 msgid "Proxy certificate"
-msgstr "SSL証明書"
+msgstr "プロキシ証明書"
 
 #: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
-#, fuzzy
 msgid "In PEM format"
-msgstr "PEM形式のCAファイル"
+msgstr "PEM形式で"
 
 #: ../html/src/manager/proxy/container-config.tsx:362
-#, fuzzy
 msgid "Proxy SSL private key"
-msgstr "PEM形式のプロキシSSL機密鍵"
+msgstr "プロキシSSL機密鍵"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
