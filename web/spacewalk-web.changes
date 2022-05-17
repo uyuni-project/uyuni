@@ -1,3 +1,5 @@
+- change default theme to susemanager-light for SUSE Manager
+  installations (bsc#1199586)
 - Styling fixes for new branding
 - Fix mimetype in kubeconfig validation request (bsc#1199019)
 
