@@ -28937,9 +28937,9 @@ given channel.</source>
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
         <target state="final">在此系统上安装的 <strong>Salt</strong> 软件包版本已过时。在启动产品迁移之前，请将该软件包更新到最新版本。</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve" approved="yes">
         <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
-        <target state="needs-adaptation">没有任何迁移方法适用于此系统。找不到某些已安装的扩展的后继版本：</target>
+        <target state="final">找不到某些已安装的扩展的后继版本。迁移期间，将会根据所选的目标去除其中的部分或全部产品，因此请小心操作：</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -29727,10 +29727,10 @@ given channel.</source>
         <source>Update Hub Reporting Database</source>
         <target state="final">更新集线器报告数据库</target>
       </trans-unit>
-    <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve" approved="yes">
         <source>Following installed products will be removed from the system during migration:</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">迁移期间将从系统中去除已安装的以下产品：</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
