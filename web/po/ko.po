@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-13 11:07+0000\n"
-"PO-Revision-Date: 2022-04-15 11:12+0000\n"
+"PO-Revision-Date: 2022-05-17 10:09+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -3422,7 +3422,7 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:42
 msgid "_blank"
-msgstr ""
+msgstr "_blank"
 
 #: ../html/src/manager/login/susemanager/login.tsx:57
 #: ../html/src/manager/login/susemanager/login.tsx:82
@@ -4141,25 +4141,23 @@ msgstr "프록시 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:192
 msgid "The FQDN of the machine where the containers are hosted"
-msgstr ""
+msgstr "컨테이너가 호스팅되는 시스템의 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:194
 msgid "e.g., proxy.domain.com"
 msgstr "예: proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-#, fuzzy
 msgid "Parent FQDN"
-msgstr "프록시 FQDN"
+msgstr "상위 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., server.domain.com"
 msgstr "예: server.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:203
-#, fuzzy
 msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr "연결한 프록시의 서버 FQDN입니다."
+msgstr "연결할 상위(서버 또는 프록시)의 FQDN입니다."
 
 #: ../html/src/manager/proxy/container-config.tsx:209
 msgid "Proxy SSH port"
@@ -4171,27 +4169,24 @@ msgid "Port range: 1 - 65535"
 msgstr "포트 범위: 1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:219
-#, fuzzy
 msgid "Max Squid cache size"
-msgstr "최대 Squid 캐시 크기(MB)"
+msgstr "최대 Squid 캐시 크기"
 
 #: ../html/src/manager/proxy/container-config.tsx:220
 msgid "The maximum value of the Squid cache in Megabytes"
-msgstr ""
+msgstr "메가바이트 단위의 Squid 캐시 최대값"
 
 #: ../html/src/manager/proxy/container-config.tsx:223
 msgid "e.g., 2048"
 msgstr "예: 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:230
-#, fuzzy
 msgid "Proxy admin email"
 msgstr "프록시 관리자 전자 메일"
 
 #: ../html/src/manager/proxy/container-config.tsx:231
-#, fuzzy
 msgid "The container-based proxy administrator email address"
-msgstr "컨테이너 기반 프록시 구성이 올바르게 생성되었습니다."
+msgstr "컨테이너 기반 프록시 관리자 전자 메일 주소"
 
 #: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., proxy.admin@mycompany.com"
@@ -4212,26 +4207,22 @@ msgid "Use existing"
 msgstr "기존 항목 사용"
 
 #: ../html/src/manager/proxy/container-config.tsx:256
-#, fuzzy
 msgid "CA certificate"
-msgstr "SSL 인증서"
+msgstr "CA 인증서"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
 #: ../html/src/manager/proxy/container-config.tsx:266
 #: ../html/src/manager/proxy/container-config.tsx:323
-#, fuzzy
 msgid "To sign the SSL certificate in PEM format"
-msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 루트 CA"
+msgstr "PEM 형식의 SSL 인증서에 서명"
 
 #: ../html/src/manager/proxy/container-config.tsx:265
-#, fuzzy
 msgid "CA private key"
-msgstr "SSH 개인 키"
+msgstr "CA 개인 키"
 
 #: ../html/src/manager/proxy/container-config.tsx:274
-#, fuzzy
 msgid "CA password"
-msgstr "비밀번호"
+msgstr "CA 비밀번호"
 
 #: ../html/src/manager/proxy/container-config.tsx:275
 msgid "The CA private key password"
@@ -4275,7 +4266,7 @@ msgstr "전자 메일"
 
 #: ../html/src/manager/proxy/container-config.tsx:322
 msgid "The root CA"
-msgstr ""
+msgstr "루트 CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:332
 msgid "Intermediate CAs"
@@ -4286,20 +4277,17 @@ msgid "CA file in PEM format"
 msgstr "PEM 형식의 CA 파일"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
-#, fuzzy
 msgid "Proxy certificate"
-msgstr "SSL 인증서"
+msgstr "프록시 인증서"
 
 #: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
-#, fuzzy
 msgid "In PEM format"
-msgstr "PEM 형식의 CA 파일"
+msgstr "PEM 형식"
 
 #: ../html/src/manager/proxy/container-config.tsx:362
-#, fuzzy
 msgid "Proxy SSL private key"
-msgstr "PEM 형식의 프록시 SSL 개인 키"
+msgstr "프록시 SSL 개인 키"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
