@@ -15,6 +15,11 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.throttling;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.post;
+
 import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
@@ -38,7 +43,12 @@ public class FrontendLogController {
 
     private static Logger log = LogManager.getLogger(FrontendLogController.class);
 
-    private FrontendLogController() { }
+    /**
+     * Initialize the {@link spark.Route}s served by this controller
+     */
+    public void initRoutes() {
+        post("/manager/frontend-log", asJson(withUser(throttling(FrontendLogController::log))));
+    }
 
     /**
      * Returns JSON data about the success of the log action
