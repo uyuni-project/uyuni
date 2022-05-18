@@ -19,12 +19,16 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.throttling;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.post;
 
+import com.redhat.rhn.domain.user.User;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.redhat.rhn.domain.user.User;
+
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+
 import spark.Request;
 import spark.Response;
 
@@ -55,11 +59,7 @@ public class FrontendLogController {
     public static String log(Request request, Response response, User user) {
         Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
         String type = map.get("level").toString();
-        String userId = "no-logged-user";
-        if (user != null) {
-            userId = user.getId().toString();
-        }
-        String message = "[" + userId + " - " + request.userAgent() + "] - " + map.get("message").toString();
+        String message = "[" + user.getId() + " - " + request.userAgent() + "] - " + map.get("message").toString();
 
         switch (type) {
             case "info": log.info(message); break;
