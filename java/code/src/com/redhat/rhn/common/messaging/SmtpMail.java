@@ -30,9 +30,11 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Address;
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -65,6 +67,12 @@ public class SmtpMail implements Mail {
 
         Config c = Config.get();
         smtpHost = c.getString(ConfigDefaults.WEB_SMTP_SERVER, "localhost");
+        int smtpPort = c.getInt(ConfigDefaults.WEB_SMTP_PORT, 25);
+        boolean smtpAuth = c.getBoolean(ConfigDefaults.WEB_SMTP_AUTH);
+        boolean smtpSSL = c.getBoolean(ConfigDefaults.WEB_SMTP_SSL);
+        boolean smtpStartTLS = c.getBoolean(ConfigDefaults.WEB_SMTP_STARTTLS);
+        String smtpUser = c.getString(ConfigDefaults.WEB_SMTP_USER);
+        String smtpPass = c.getString(ConfigDefaults.WEB_SMTP_PASS);
         String from = c.getString(ConfigDefaults.WEB_DEFAULT_MAIL_FROM, "root@localhost");
 
         // Get system properties
@@ -72,9 +80,24 @@ public class SmtpMail implements Mail {
 
         // Setup mail server
         props.put("mail.smtp.host", smtpHost);
+        props.put("mail.smtp.port", smtpPort);
+        props.put("mail.smtp.auth", smtpAuth);
+        props.put("mail.smtp.ssl.enable", smtpSSL);
+        props.put("mail.smtp.starttls.enable", smtpStartTLS);
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        // Setup Authentication
+        Authenticator auth = null;
+        if (smtpAuth) {
+            auth = new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(smtpUser, smtpPass);
+                }
+            };
+        }
 
         // Get session
-        Session session = Session.getDefaultInstance(props, null);
+        Session session = Session.getDefaultInstance(props, auth);
         try {
             message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
