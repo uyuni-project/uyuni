@@ -4,6 +4,10 @@
 @ssh_minion
 Feature: Bootstrap a Salt host managed via salt-ssh
 
+  # WORKAROUND because LTSS prevents migration, this needs to be removed when we update the minion to higher SP
+  Scenario: Prepare this SSH minion before migration
+    When I remove the LTSS repository and product on this "ssh_minion"
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 

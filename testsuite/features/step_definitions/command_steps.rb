@@ -829,6 +829,16 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
 end
 # rubocop:enable Metrics/BlockLength
 
+When(/^I remove the LTSS repository and product on this "([^"]*)"$/) do |host|
+  node = get_target(host)
+  os_family = get_os_version(node)
+  if os_family.include?("opensuse") || os_family.include?("sles")
+    cmd = "zypper rr os_ltss_repo && zypper -n rm sles-ltss-release"
+  else raise "The node #{node.hostname} does not have a supported OS Family (#{os_family})"
+  end
+    node.run(cmd, check_errors: false)
+end
+
 When(/^I enable source package syncing$/) do
   cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"
   $server.run(cmd)
