@@ -56,6 +56,13 @@ public class ConfigDefaults {
     public static final String WEB_SESSION_SWAP_SECRET_4 = "web.session_swap_secret_4";
 
     public static final String WEB_SMTP_SERVER = "java.smtp_server";
+    public static final String WEB_SMTP_PORT = "java.smtp_port";
+    public static final String WEB_SMTP_AUTH = "java.smtp_auth";
+    public static final String WEB_SMTP_SSL = "java.smtp_ssl";
+    public static final String WEB_SMTP_STARTTLS = "java.smtp_starttls";
+    public static final String WEB_SMTP_USER = "java.smtp_user";
+    public static final String WEB_SMTP_PASS = "java.smtp_pass";
+
     public static final String ERRATA_CACHE_COMPUTE_THRESHOLD
     = "errata_cache_compute_threshold";
 

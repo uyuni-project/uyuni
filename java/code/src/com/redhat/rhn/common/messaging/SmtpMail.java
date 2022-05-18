@@ -17,27 +17,21 @@ package com.redhat.rhn.common.messaging;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.mail.*;
+import javax.mail.Message.RecipientType;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.Message.RecipientType;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 /**
  * A simple wrapper around javamail to allow us to send e-mail quickly.
@@ -65,6 +59,12 @@ public class SmtpMail implements Mail {
 
         Config c = Config.get();
         smtpHost = c.getString(ConfigDefaults.WEB_SMTP_SERVER, "localhost");
+        Integer smtpPort = c.getInt(ConfigDefaults.WEB_SMTP_PORT, 25);
+        Boolean smtpAuth = c.getBoolean(ConfigDefaults.WEB_SMTP_AUTH);
+        Boolean smtpSSL = c.getBoolean(ConfigDefaults.WEB_SMTP_SSL);
+        Boolean smtpStartTLS = c.getBoolean(ConfigDefaults.WEB_SMTP_STARTTLS);
+        String smtpUser = c.getString(ConfigDefaults.WEB_SMTP_USER);
+        String smtpPass = c.getString(ConfigDefaults.WEB_SMTP_PASS);
         String from = c.getString(ConfigDefaults.WEB_DEFAULT_MAIL_FROM, "root@localhost");
 
         // Get system properties
@@ -72,9 +72,24 @@ public class SmtpMail implements Mail {
 
         // Setup mail server
         props.put("mail.smtp.host", smtpHost);
+        props.put("mail.smtp.port", smtpPort);
+        props.put("mail.smtp.auth", smtpAuth);
+        props.put("mail.smtp.ssl.enable", smtpSSL);
+        props.put("mail.smtp.starttls.enable", smtpStartTLS);
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        // Setup Authentication
+        Authenticator auth = null;
+        if (smtpAuth) {
+            auth = new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(smtpUser, smtpPass);
+                }
+            };
+        }
 
         // Get session
-        Session session = Session.getDefaultInstance(props, null);
+        Session session = Session.getDefaultInstance(props, auth);
         try {
             message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
