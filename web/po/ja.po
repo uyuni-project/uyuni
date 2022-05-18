@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-13 11:07+0000\n"
-"PO-Revision-Date: 2022-05-17 17:12+0000\n"
+"PO-Revision-Date: 2022-05-18 03:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -4265,7 +4265,7 @@ msgstr "CA 証明書"
 #: ../html/src/manager/proxy/container-config.tsx:266
 #: ../html/src/manager/proxy/container-config.tsx:323
 msgid "To sign the SSL certificate in PEM format"
-msgstr "PEM形式でSSL証明書に署名するには"
+msgstr "PEM形式のSSL証明書に署名するには"
 
 #: ../html/src/manager/proxy/container-config.tsx:265
 msgid "CA private key"
@@ -4334,7 +4334,7 @@ msgstr "プロキシ証明書"
 #: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
 msgid "In PEM format"
-msgstr "PEM形式で"
+msgstr "PEM形式"
 
 #: ../html/src/manager/proxy/container-config.tsx:362
 msgid "Proxy SSL private key"
