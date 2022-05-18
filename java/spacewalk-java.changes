@@ -1,3 +1,4 @@
+- Add support in rhn.cfg for smtp port, auth, ssl/tls config
 - Change system details lock tab name to lock/unlock (bsc#1193032)
 - Added a notification to inform the administrators about the product end-of-life
 - Set profile tag has no-mandatory in XCCDF result (bsc#1194262)
