@@ -246,3 +246,44 @@ $ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;token
   }
 }
 ----
+
+
+===Python 3 example
+
+Below is an example of the `system.listActiveSystems` call being used.
+
+[source,python]
+----
+#!/usr/bin/env python3
+import requests
+import pprint
+
+MANAGER_URL = "https://manager.example.com/rhn/manager/api"
+MANAGER_LOGIN = "username"
+MANAGER_PASSWORD = "password"
+SSLVERIFY = "/path/to/CA" # or False to disable verify;
+
+data = {"login": MANAGER_LOGIN, "password": MANAGER_PASSWORD}
+response = requests.post(MANAGER_URL + '/auth/login', json=data, verify=SSLVERIFY)
+print("LOGIN: {}:{}".format(response.status_code, response.json()))
+
+cookies = response.cookies
+res2 = requests.get(MANAGER_URL + '/system/listActiveSystems', cookies=cookies, verify=SSLVERIFY)
+print("RETCODE: {}".format(res2.status_code))
+pprint.pprint(res2.json())
+
+sysinfo = res2.json()['result'][0]
+
+note = {"sid": sysinfo['id'], "subject": "Title", "body": "Content of the Note"}
+res2 = requests.post(MANAGER_URL + '/system/addNote', json=note, cookies=cookies, verify=SSLVERIFY)
+print("RETCODE: {}".format(res2.status_code))
+pprint.pprint(res2.json())
+
+res2 = requests.get(MANAGER_URL + '/system/listNotes?sid={}'.format(sysinfo['id']), cookies=cookies, verify=SSLVERIFY)
+print("RETCODE: {}".format(res2.status_code))
+pprint.pprint(res2.json())
+
+res2 = requests.post(MANAGER_URL + '/auth/logout', cookies=cookies, verify=SSLVERIFY)
+print("RETCODE: {}".format(res2.status_code))
+pprint.pprint(res2.json())
+----
