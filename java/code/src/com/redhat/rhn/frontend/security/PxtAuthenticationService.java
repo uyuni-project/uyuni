@@ -16,8 +16,9 @@ package com.redhat.rhn.frontend.security;
 
 
 import com.redhat.rhn.common.util.ServletUtils;
-import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
+
+import com.suse.manager.webui.utils.LoginHelper;
 
 import org.apache.commons.collections.set.UnmodifiableSet;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,7 @@ import org.apache.http.client.utils.URIBuilder;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,12 +45,14 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     private static final Set LOGIN_URIS;
 
     static {
+        // Login routes
         TreeSet set = new TreeSet();
         set.add("/rhn/newlogin/");
         set.add("/rhn/manager/login");
 
         LOGIN_URIS = UnmodifiableSet.decorate(set);
 
+        // Unauthenticated routes
         set = new TreeSet(set);
         set.add("/rhn/rpc/api");
         set.add("/rhn/help/");
@@ -64,10 +68,10 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         // password-reset-link destination
         set.add("/rhn/ResetLink");
         set.add("/rhn/ResetPasswordSubmit");
-        set.add("/rhn/manager/frontend-log");
 
         UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
 
+        // CSRF whitelist
         set = new TreeSet(set);
         set.add("/rhn/common/DownloadFile");
         // search (safe to be unprotected, since it has no modifying side-effects)
