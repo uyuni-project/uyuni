@@ -15,11 +15,9 @@
 package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.notFound;
-import static spark.Spark.post;
 
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
@@ -106,8 +104,7 @@ public class Router implements SparkApplication {
         MinionsAPI minionsAPI = new MinionsAPI(systemQuery, sshMinionBootstrapper, regularMinionBootstrapper);
         StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi);
         FormulaController formulaController = new FormulaController(systemQuery, saltApi);
-
-        post("/manager/frontend-log", withUser(FrontendLogController::log));
+        FrontendLogController frontendLogController = new FrontendLogController();
 
         // Login
         LoginController.initRoutes(jade);
@@ -191,6 +188,9 @@ public class Router implements SparkApplication {
         MaintenanceController.initRoutes();
         MaintenanceScheduleController.initRoutes(jade);
         MaintenanceCalendarController.initRoutes(jade);
+
+        // Frontend Logging
+        frontendLogController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {
