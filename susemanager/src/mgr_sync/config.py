@@ -65,11 +65,17 @@ class Config(object):
 
         # Read /etc/rhn/rhn.conf if any
         if os.access(Config.RHNFILE, os.R_OK):
-            self._config.merge(ConfigObj(Config.RHNFILE))
+            try:
+                self._config.merge(ConfigObj(Config.RHNFILE))
+            except SyntaxError as ex:
+                raise SyntaxError("Error while parsing file {0}: {1}".format(Config.RHNFILE, ex)) from ex
 
         # Read ~/.mgr-sync if any and override
         if os.access(Config.DOTFILE, os.R_OK):
-            self._config.merge(ConfigObj(Config.DOTFILE))
+            try:
+                self._config.merge(ConfigObj(Config.DOTFILE))
+            except SyntaxError as ex:
+                raise SyntaxError("Error while parsing file{0}: {1}".format(Config.DOTFILE, ex)) from ex
 
         # Remove unnesessary items
         for key in list(self._config.keys()):
