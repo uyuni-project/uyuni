@@ -107,6 +107,7 @@ done
 
 %files
 %defattr(-,root,root)
+%doc README.md
 %{_unitdir}/*.service
 %{_sbindir}/rcuyuni-*
 %if 0%{?rhel}
