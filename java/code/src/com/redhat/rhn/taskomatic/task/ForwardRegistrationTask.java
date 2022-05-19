@@ -23,10 +23,10 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.SCCSystemRegistrationManager;
-
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -34,6 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -57,6 +58,16 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         try {
             if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
 
+                List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+                Optional<Credentials> optPrimCred = credentials.stream()
+                        .filter(Credentials::isPrimarySCCCredential)
+                        .findFirst();
+                if (optPrimCred.isEmpty()) {
+                    // We cannot update SCC without credentials
+                    // Standard Uyuni case
+                    log.debug("No SCC Credentials - skipping forwarding registration");
+                    return;
+                }
                 int waitTime = ThreadLocalRandom.current().nextInt(0, 15 * 60);
                 if (log.isDebugEnabled()) {
                     // no waiting when debug is on
@@ -75,21 +86,19 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                 log.debug(forwardRegistration.size() + " RegCacheItems found to forward");
                 List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
                 log.debug(deregister.size() + " RegCacheItems found to delete");
-                List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
                 SCCConfig sccConfig = new SCCConfig(url, "", "", uuid);
                 SCCClient sccClient = new SCCWebClient(sccConfig);
                 SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient);
                 sccRegManager.deregister(deregister, false);
-                credentials.stream()
-                    .filter(c -> c.isPrimarySCCCredential())
-                    .findFirst().ifPresent(primaryCredentials -> {
-                        sccRegManager.register(forwardRegistration, primaryCredentials);
-                    });
+                optPrimCred.ifPresent(primaryCredentials ->
+                    sccRegManager.register(forwardRegistration, primaryCredentials));
                 if (LocalDateTime.now().isAfter(nextLastSeenUpdateRun)) {
-                    sccRegManager.updateLastSeen();
-                    // next run in 22 - 26 hours
-                    nextLastSeenUpdateRun = nextLastSeenUpdateRun.plusMinutes(
-                            ThreadLocalRandom.current().nextInt(22 * 60, 26 * 60));
+                    optPrimCred.ifPresent(primaryCredentials -> {
+                        sccRegManager.updateLastSeen(primaryCredentials);
+                        // next run in 22 - 26 hours
+                        nextLastSeenUpdateRun = nextLastSeenUpdateRun.plusMinutes(
+                                ThreadLocalRandom.current().nextInt(22 * 60, 26 * 60));
+                    });
                 }
             }
         }
