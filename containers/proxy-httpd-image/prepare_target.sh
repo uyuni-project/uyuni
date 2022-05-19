@@ -1,33 +1,24 @@
 #!/bin/bash
-# Moves to /target any file to be preserved in the slimmed-down image
+# Removes any unnecessary files and packages before moving to the next build stage
 
 set -xe
 
-# rhn config
-mkdir -p /target/etc/rhn
-mkdir -p /target/usr/share/rhn/config-defaults
-mv /etc/rhn/rhn*.conf /target/etc/rhn/rhn.conf
-mv /usr/share/rhn/config-defaults/rhn*.conf /target/usr/share/rhn/config-defaults
+# remove rpm-build and its dependencies
+rpm -e rpm-build --nodeps
+rpm -e dwz make gcc patch diffutils python-rpm-macros systemd-rpm-macros glibc-locale
 
-# apache2 and sysconfig
-mkdir -p /target/etc/apache2
-mkdir -p /target/etc/sysconfig
-mv /etc/apache2 /target/etc/
-mv /etc/sysconfig /target/etc/
+# remove perl and its dependencies
+rpm -e --nodeps perl spacewalk-base-minimal
+rpm -e perl-DBI perl-Module-Implementation perl-Module-Runtime perl-Params-Validate perl-Try-Tiny
 
-# rhn proxy
-mkdir -p /target/usr/share/rhn/proxy
-mv /usr/share/rhn/proxy /target/usr/share/rhn/
+# remove locale data
+rm -rf /usr/share/locale
 
-# uyuni-configure.py
-mkdir -p /target/usr/bin
-mv /usr/bin/uyuni-configure.py /target/usr/bin/
+# remove other packages
+zypper --non-interactive rm \
+  binutils \
+  cpp7 \
+  glibc-locale-base
 
-# site packages
-SITE_PACKAGES=usr/lib/$(ls /usr/lib/ | grep python)/site-packages
-mkdir -p /target/$SITE_PACKAGES
-mv /$SITE_PACKAGES/spacewalk /target/$SITE_PACKAGES
-mv /$SITE_PACKAGES/rhn /target/$SITE_PACKAGES
-mv /$SITE_PACKAGES/uyuni /target/$SITE_PACKAGES
-
-mkdir -p /target/var/log/salt
+# remove packages with a -devel suffix
+zypper --non-interactive rm *-devel

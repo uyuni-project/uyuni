@@ -11,16 +11,14 @@ COPY add_repos.sh /usr/bin
 RUN sh add_repos.sh ${PRODUCT_REPO}
 
 # Main packages
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-rhnlib
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses spacewalk-proxy-broker
-
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses spacewalk-proxy-common
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses spacewalk-proxy-package-manager
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses spacewalk-proxy-redirect
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses spacewalk-ssl-cert-check
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses spacewalk-proxy-html
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses susemanager-tftpsync-recv     
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML
+RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
+    spacewalk-proxy-broker \
+    spacewalk-proxy-redirect \
+    spacewalk-proxy-html \
+    susemanager-tftpsync-recv\
+    python3-rhnlib \
+    python3-PyYAML
 
 # Additional material
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
@@ -30,10 +28,7 @@ RUN chmod +x /usr/bin/uyuni-configure.py
 COPY prepare_target.sh .
 RUN sh prepare_target.sh
 
-RUN ls -l /target/etc/sysconfig
-
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.3
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni
@@ -41,10 +36,7 @@ ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3-PyYAML
-COPY --from=base /target /
-
-
+COPY --from=base / /
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.proxy-httpd
@@ -63,8 +55,6 @@ EXPOSE 80/tcp
 EXPOSE 443/tcp
 
 VOLUME ["/etc/uyuni", "/srv/tftpboot", "/var/cache/rhn"]
-
-
 
 RUN sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
 RUN sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
