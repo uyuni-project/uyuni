@@ -1,3 +1,4 @@
+- Change system details lock tab name to lock/unlock (bsc#1193032)
 - Set profile tag has no-mandatory in XCCDF result (bsc#1194262)
 - Added a notification to inform the administrators about the product end-of-life
 - provisioning thought proxy should use proxy for self_update (bsc#1199036)
