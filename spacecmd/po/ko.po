@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-29 17:14+0000\n"
-"PO-Revision-Date: 2022-04-15 11:12+0000\n"
+"POT-Creation-Date: 2022-05-17 10:11+0000\n"
+"PO-Revision-Date: 2022-05-17 10:09+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
 ">\n"
@@ -6968,12 +6968,11 @@ msgstr "%i 패키지의 이름을 가져올 수 없음"
 
 #: ../src/spacecmd/system.py:1097
 msgid "Full package update on systems:"
-msgstr ""
+msgstr "시스템의 전체 패키지 업데이트:"
 
 #: ../src/spacecmd/system.py:1106
-#, fuzzy
 msgid "Upgrade these systems/packages [y/N]:"
-msgstr "이 패키지 업그레이드 [y/N]:"
+msgstr "이 시스템/패키지 업그레이드[y/N]:"
 
 #: ../src/spacecmd/system.py:1142
 msgid "system_listupgrades: List the available upgrades for a system"

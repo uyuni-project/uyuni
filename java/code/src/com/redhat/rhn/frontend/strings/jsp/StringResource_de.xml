@@ -2493,7 +2493,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-        <target>Diese Benutzerinformation kann in dem unten zur Verfügung gestellten Formular geändert werden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;. </target>
+        <target>Diese Benutzerinformation kann in dem unten zur Verfügung gestellten Formular geändert werden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone" xml:space="preserve">
         <source>Phone</source>
@@ -5702,8 +5702,8 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} hardware {1} will be refreshed.</source>
-        <target>{0} Hardware {1} wird aktualisiert.</target>
+          <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
+        <target state="needs-adaptation">{0} Hardware {1} wird aktualisiert.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5738,8 +5738,8 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} package {1} will be refreshed.</source>
-        <target>{0} Paket {1} wird aktualisiert.</target>
+          <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
+        <target state="needs-adaptation">{0} Paket {1} wird aktualisiert.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
@@ -8221,10 +8221,11 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.menu" xml:space="preserve">
-        <source>Lock</source>
+        <source>Lock / Unlock</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="pkg.lock.requestlock" xml:space="preserve">
         <source>Lock</source>
@@ -28636,7 +28637,8 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>Credentials with this username already exist</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2021 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29213,6 +29215,20 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>Following installed products will be removed from the system during migration:</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

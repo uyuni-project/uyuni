@@ -2205,6 +2205,7 @@ Es mostra {3}</target>
       </trans-unit>
       <trans-unit id="config.upload.onechannel" xml:space="preserve">
         <source>Destination Configuration Channel: {0}</source>
+        <target>Canal de configuració de destinació: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Destination Configuration Channel: sandbox for postmaster.devel</context>
@@ -2212,18 +2213,21 @@ Es mostra {3}</target>
       </trans-unit>
       <trans-unit id="config.upload.channels" xml:space="preserve">
         <source>Destination Configuration Channels:</source>
+        <target>Canals de configuració de destinació:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.upload.filenames" xml:space="preserve">
         <source>Files for Upload:</source>
+        <target>Fitxers per carregar:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.message" xml:space="preserve">
         <source>The following packages are not available in any of the channels associated to this kickstart profile: {0}. In order for all kickstart functionality to work correctly, these packages should be present in at least one channel associated to this profile.</source>
+        <target>Els paquets següents no estan disponibles en cap dels canals associats a aquest perfil de kickstart: {0}. Perquè totes les funcionalitats de kickstart funcionin correctament, aquests paquets haurien d'estar presents en almenys un canal associat a aquest perfil.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2258,7 +2262,32 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;Per resoldre aquest problema, comproveu el següent:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+És el canal d'eines del client per a la base d'aquest perfil de Kickstart
+disponible per a la vostra organització? Si no ho és, caldrà sol·licitar
+drets per al canal d'eines de client del vostre administrador @@PRODUCT_NAME@@.
+&lt;/li&gt;
+&lt;li&gt;
+Assegureu-vos que el client d'eines canal per a la base d'aquest perfil de kickstart
+el canal estigui disponible per al vostre @@PRODUCT_NAME@@. Si no ho és, poseu-vos en contacte amb el vostre
+Administrador de @@PRODUCT_NAME@@ i sol·liciteu una gestió inter-sincronització per al canal d'eines del client
+i torneu-ho a provar.
+&lt;/li&gt;
+&lt;li&gt;
+Assegureu-vos que el paquet spacewalk-koan corresponent a aquest kickstart estigui
+disponible al canal d'eines del canal base del kickstart. Si no,
+caldrà que estigui disponible perquè aquest perfil de kickstart funcioni correctament.
+&lt;/li&gt;
+&lt;li&gt;
+Els paquets enumerats anteriorment estan disponibles al canal base d'aquest kickstart? Si no, caldrà fer-los
+disponibles perquè aquest perfil Kickstart funcioni correctament.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</target>
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve">
         <source>&lt;div style="text-align: left;"&gt;
@@ -2285,18 +2314,21 @@ and try again.
       </trans-unit>
       <trans-unit id="kickstart.initiate" xml:space="preserve">
         <source>Initiate an autoinstallation</source>
+        <target>Inicia una autoinstal·lació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart_guest.initiate" xml:space="preserve">
         <source>Initiate an autoinstallation of a guest system</source>
+        <target>Inicia una autoinstal·lació d'un sistema convidat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule_sync" xml:space="preserve">
         <source>Schedule a package sync for autoinstallations</source>
+        <target>Programeu una sincronització de paquets per a autoinstal·lacions</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
@@ -2306,118 +2338,137 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">L'etiqueta d'instal·lació automàtica seleccionada no és vàlida, ha de tenir com a mínim {0} caràcters i només contenir els caràcters següents: A-Z, a-z, 0-9, _, - </target>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists" xml:space="preserve">
         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
+        <target>L'etiqueta d'autoinstal·lació ja existeix: "{0}". Si us plau, trieu una etiqueta d'inici única.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.success" xml:space="preserve">
         <source>Autoinstallation details successfully updated.</source>
+        <target>Els detalls de l'autoinstal·lació s'han actualitzat correctament.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.duplicatefile" xml:space="preserve">
         <source>Please specify only file contents or a file to upload but not both.</source>
+        <target>Especifiqueu només el contingut del fitxer o un fitxer per carregar, però no tots dos.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.nolabel" xml:space="preserve">
         <source>Autoinstallation profile label is required.</source>
+        <target>Cal l'etiqueta de perfil d'instal·lació automàtica.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.delete.success" xml:space="preserve">
         <source>Autoinstallation was deleted successfully.</source>
+        <target>La instal·lació automàtica s'ha suprimit correctament.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.options.success" xml:space="preserve">
         <source>Kickstart advanced options successfully updated.</source>
+        <target>Les opcions avançades del Kickstart s'han actualitzat correctament.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.options.url.note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Default @@PRODUCT_NAME@@ kickstart URLs are stored with just the file path, allowing @@PRODUCT_NAME@@ to know when to dynamically adjust the hostname in the URL rendered in the kickstart file. (for proxies, etc) You may customize this value by changing it to a fully qualified URL, which will appear in the kickstart file as is.</source>
+        <target>&lt;strong&gt;NOTA:&lt;/strong&gt; Els URL de kickstart @@PRODUCT_NAME@@ predeterminats s'emmagatzemen només amb la ruta del fitxer, cosa que permet a @@PRODUCT_NAME@@ saber quan ajustar dinàmicament el nom d'amfitrió a l'URL representat al fitxer de kickstart (per a servidors intermediaris, etc.). Podeu personalitzar aquest valor canviant-lo per un URL totalment qualificat, que apareixerà al fitxer de kickstart tal com sigui.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.options.rootpw.note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; You may set a password hashed with any algorithm (that this operating system supports) in this field. The hash algorithm in the &lt;strong&gt;auth&lt;/strong&gt; option will affect future passwords created, you may want it to be the same as the agorithm used here. If you enter a plaintext password you must select &lt;strong&gt;Encrypt&lt;/strong&gt; above to encrypt it, if you don't you will be unable to login when the kickstart is finished.</source>
+        <target>&lt;strong&gt;NOTA:&lt;/strong&gt; Podeu establir una contrasenya de resum amb qualsevol algorisme (que admeti aquest sistema operatiu) en aquest camp. L'algoritme de resum a l'eina &lt;strong&gt;auth&lt;/strong&gt; L'opció afectarà les futures contrasenyes creades. És possible que vulgueu que sigui el mateix que l'agorisme usat aquí. Si introduïu una contrasenya de text sense format, heu de seleccionar &lt;strong&gt;Encriptar&lt;/strong&gt; més amunt per encriptar-lo; si no ho feu, no podreu iniciar sessió quan el kickstart acabi.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_add.success" xml:space="preserve">
         <source>Successfully added IP Range to Autoinstallation Profile {0}</source>
+        <target>S'ha afegit correctament l'interval d'IP al perfil d'instal·lació automàtica {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_conflict.failure" xml:space="preserve">
         <source>Error: The IP range you entered conflicts with another IP range. Please choose a different IP range.</source>
+        <target>Error: l'interval d'IP que heu introduït té un conflicte amb un altre interval d'IP. Si us plau, trieu un interval d'IP diferent.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_validate.failure" xml:space="preserve">
         <source>Error: IP range values must be between 0 and 255. Please check IP range you just entered and try again.</source>
+        <target>Error: els valors de l'interval d'IP han de ser d'entre 0 i 255. Comproveu l'interval d'IP que acabeu d'introduir i torneu-ho a provar.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.success" xml:space="preserve">
         <source>Successfully deleted IP Range from Autoinstallation Profile {0}</source>
+        <target>S'ha suprimit correctament l'interval d'IP del perfil d'instal·lació automàtica {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.failure" xml:space="preserve">
         <source>There was an error deleting the IP Range from Autoinstallation Profile {0}. Please try again.</source>
+        <target>S'ha produït un error en suprimir l'interval d'IP del perfil d'instal·lació automàtica {0}. Torneu-ho a provar.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobblersnippet.update.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; updated successfully.</source>
+        <target>Fragment d'autoinstal·lació &lt;strong&gt;{0}&lt;/strong&gt; actualitzat correctament.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobblersnippet.create.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; created successfully.</source>
+        <target>Fragment d'autoinstal·lació &lt;strong&gt;{0}&lt;/strong&gt; creat correctament.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobblersnippet.delete.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; deleted successfully.</source>
+        <target>Fragment d'autoinstal·lació &lt;strong&gt;{0}&lt;/strong&gt; esborrat correctament.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.couldnotdelete.message" xml:space="preserve">
         <source>An error occurred when attempting to delete the snippet &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <target>Fragment d'autoinstal·lació &lt;strong&gt;{0}&lt;/strong&gt; esborrat correctament.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart snippet Delete Confirm pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.rename-error" xml:space="preserve">
         <source>An error occurred when attempting to rename the snippet &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
+        <target>S'ha produït un error en intentar canviar el nom del fragment &lt;strong&gt;{0}&lt;/strong&gt; a &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.snippet.filenameexists.message" xml:space="preserve">
         <source>Snippet with the name &lt;strong&gt;{0}&lt;/strong&gt; already exists.</source>
+        <target>Ja existeix un fragment amb el nom &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2427,88 +2478,102 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">El nom del fitxer del fragment sol·licitat no és vàlid. El nom del fitxer del fragment del Kickstart no pot contenir una barra inclinada (/) ni començar amb un punt (.)</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.details" xml:space="preserve">
         <source>Delete or rename the offending snippet from {0}</source>
+        <target>Suprimeix o canvia el nom del fragment ofensiu de {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Snippet Details pages.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.snippets" xml:space="preserve">
         <source>delete snippet</source>
+        <target>suprimeix el fragment</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange.url" xml:space="preserve">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
+        <target>Els sistemes nous es poden instal·lar automàticament segons l'adreça IP afegint &lt;code&gt;{0}&lt;/code&gt; als paràmetres del nucli per a una instal·lació automàtica.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.partition.success" xml:space="preserve">
         <source>Kickstart profile options updated successfully.</source>
+        <target>Les opcions del perfil del Kickstart s'han actualitzat correctament.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPartitionEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.updated" xml:space="preserve">
         <source>Kickstart profile package groups updated successfully.</source>
+        <target>Els grups de paquets de perfils del Kickstart s'han actualitzat correctament.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation.schedule_pkg_install" xml:space="preserve">
         <source>Schedule a package install for activation key</source>
+        <target>Programa la instal·lació d'un paquet per a la clau d'activació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activation.schedule_deploy" xml:space="preserve">
         <source>Schedule a config deploy for activation key</source>
+        <target>Programa un desplegament de configuració per a la clau d'activació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="configfiles.mtime_upload" xml:space="preserve">
         <source>Upload config file data based upon mtime to server</source>
+        <target>Carrega les dades del fitxer de configuració basades en mtime al servidor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="script.run" xml:space="preserve">
         <source>Run an arbitrary script</source>
+        <target>Executa un script arbitrari</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rhnsd.configure" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daemon Configuration</source>
+        <target>@@PRODUCT_NAME@@ Configuració del dimoni</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.verify" xml:space="preserve">
         <source>Verify deployed packages</source>
+        <target>Verifica els paquets desplegats</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rhn_applet.use_satellite" xml:space="preserve">
         <source>Allows for rhn-applet use with an @@PRODUCT_NAME@@</source>
+        <target>Permet l'ús de rhn-applet amb un @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="rollback.rollback" xml:space="preserve">
         <source>Rollback a transaction</source>
+        <target>Retrocedeix una transacció</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="action.failedlink" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} sistema&lt;/a&gt;&lt;/strong&gt; no s'ha pogut completar aquesta acció.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">
@@ -2518,6 +2583,7 @@ and try again.
       </trans-unit>
       <trans-unit id="action.failedlink.plural" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} sistemes&lt;/a&gt;&lt;/strong&gt; no s'ha pogut completar aquesta acció.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
           <context context-type="paramnotes">
@@ -2527,6 +2593,7 @@ and try again.
       </trans-unit>
       <trans-unit id="action.completelink" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} sistema&lt;/a&gt;&lt;/strong&gt; ha completat correctament aquesta acció.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">
@@ -2536,6 +2603,7 @@ and try again.
       </trans-unit>
       <trans-unit id="action.completelink.plural" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} sistemes&lt;/a&gt;&lt;/strong&gt; ha completat correctament aquesta acció.&lt;br/&gt;&lt;br/&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
           <context context-type="paramnotes">
@@ -2545,6 +2613,7 @@ and try again.
       </trans-unit>
       <trans-unit id="action.name" xml:space="preserve">
         <source>Patch Update: {0} - {1}</source>
+        <target>Actualització del pedaç: {0} - {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: RHSA-2004:577 - Security Advisory</context>
@@ -2552,6 +2621,7 @@ and try again.
       </trans-unit>
       <trans-unit id="errata.swstack" xml:space="preserve">
         <source>Patch Update: Combined update for the software update stack ({0} patches)</source>
+        <target>Actualització de pedaços: actualització combinada per a la pila d'actualitzacions de programari ({0} pedaços)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: combined software stack update (4 errata)</context>
@@ -9904,20 +9974,74 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Proxy Configuration</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="Peripheral Server" xml:space="preserve">
+      <trans-unit id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Report Database Schema" xml:space="preserve">
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="bootstrap.minion.error" xml:space="preserve">
+        <source>An unexpected error has occurred during bootstrap.</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
+        <source>Apply States failed during bootstrap (retcode={0}).</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
+        <source>An error has occurred during salt execution: {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
+        <source>function {0} not available</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
+        <source>module {0} is not supported</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
+        <source>unable to parse json</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
+        <source>unable to establish ssh connection</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
+        <source>Could not generate salt-ssh public key.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
+        <source>Generating salt-ssh public key failed: {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+      <target state="new"/>
+  </trans-unit>
+    </body>
   </file>
 </xliff>

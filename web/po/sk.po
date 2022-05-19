@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-13 11:07+0000\n"
+"POT-Creation-Date: 2022-05-19 14:13+0000\n"
 "PO-Revision-Date: 2022-05-02 14:25+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -399,8 +399,8 @@ msgstr "požadované"
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:68
 #: ../html/src/manager/login/uyuni/login.tsx:65
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "Heslo"
@@ -471,7 +471,7 @@ msgstr "Prvá"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:407
+#: ../html/src/manager/admin/setup/products/products.tsx:403
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
@@ -480,7 +480,7 @@ msgstr "Predchádzajúce"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:413
+#: ../html/src/manager/admin/setup/products/products.tsx:409
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -497,7 +497,7 @@ msgstr "Stránka"
 
 #: ../html/src/components/pagination.tsx:108
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:418
+#: ../html/src/manager/admin/setup/products/products.tsx:414
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
 msgid "of"
 msgstr "z"
@@ -628,7 +628,7 @@ msgid "({0} selected)"
 msgstr "(Vybrané {0})"
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.tsx:335
+#: ../html/src/manager/admin/setup/products/products.tsx:331
 msgid "Clear"
 msgstr "Vyčistiť"
 
@@ -960,7 +960,7 @@ msgid "Bastion SSH connection data"
 msgstr "Dáta pripojenia bašty SSH"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:266
+#: ../html/src/manager/admin/setup/products/products.tsx:262
 msgid "Setup Wizard"
 msgstr "Sprievodca nastavením"
 
@@ -972,7 +972,7 @@ msgstr "Filtrovať podľa ľubovoľnej hodnoty"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr "Hostiteľ"
 
@@ -1044,26 +1044,26 @@ msgstr "Úprava údajov pripojenia ssh.."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr "Port SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr "Používateľ"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:430
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr "Súkromný kľúč SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr "Heslo súkromného kľúča SSH"
 
@@ -1092,7 +1092,7 @@ msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:373
-#: ../html/src/manager/notifications/notification-messages.tsx:444
+#: ../html/src/manager/notifications/notification-messages.tsx:448
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "Obnoviť"
@@ -1116,6 +1116,7 @@ msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:131
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "Podrobnosti"
@@ -1132,7 +1133,11 @@ msgstr ""
 msgid "The product catalog refresh is running..."
 msgstr "Obnovovanie katalógu produktov prebieha..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:291
+#: ../html/src/manager/admin/setup/products/products.tsx:214
+msgid "The following product installations failed. Please check log files."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1140,28 +1145,28 @@ msgstr ""
 "Obnovovanie produktových údajov momentálne beží na pozadí. Skúste znova "
 "neskôr, prosím."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:296
+#: ../html/src/manager/admin/setup/products/products.tsx:292
 msgid "The product catalog is still refreshing, please wait."
 msgstr "Katalóg produktov sa stále obnovuje, čakajte, prosím."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:298
+#: ../html/src/manager/admin/setup/products/products.tsx:294
 msgid "Select some product first."
 msgstr "Najskôr vyberte nejaký produkt."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:307
-#: ../html/src/manager/admin/setup/products/products.tsx:315
+#: ../html/src/manager/admin/setup/products/products.tsx:303
+#: ../html/src/manager/admin/setup/products/products.tsx:311
 msgid "Add products"
 msgstr "Pridať produkty"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:334
+#: ../html/src/manager/admin/setup/products/products.tsx:330
 msgid "Clear products selection"
 msgstr "Vymazať výber produktov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:374
+#: ../html/src/manager/admin/setup/products/products.tsx:370
 msgid "Why aren't all products displayed in the list?"
 msgstr "Prečo nie sú v zozname zobrazené všetky produkty?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:377
+#: ../html/src/manager/admin/setup/products/products.tsx:373
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1170,7 +1175,7 @@ msgstr ""
 "vašej organizácie (prihlasovacími údajmi zrkadla) ako aj s vašimi "
 "predplatnými SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:382
+#: ../html/src/manager/admin/setup/products/products.tsx:378
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1178,7 +1183,7 @@ msgstr ""
 "Ak sa domnievate, že niektoré produkty chýbajú, uistite sa, že ste pridali "
 "správne prihlasovacie údaje organizácie v predchádzajúcom kroku sprievodcu."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:392
+#: ../html/src/manager/admin/setup/products/products.tsx:388
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1186,61 +1191,61 @@ msgstr ""
 "Tento server je nakonfigurovaný ako podriadený Inter-Server Synchronisation "
 "(ISS). Produkty je možné spravovať iba na hlavnom serveri ISS."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:468
+#: ../html/src/manager/admin/setup/products/products.tsx:464
 msgid "Filter by architecture"
 msgstr "Filtrovať podľa architektúry"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:563
+#: ../html/src/manager/admin/setup/products/products.tsx:559
 msgid "Filter by product Description"
 msgstr "Filtrovať podľa popisu produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:633
+#: ../html/src/manager/admin/setup/products/products.tsx:629
 msgid "Product Description"
 msgstr "Popis produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:639
-#: ../html/src/manager/admin/setup/products/products.tsx:1017
+#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:1013
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "Architektúra"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:641
+#: ../html/src/manager/admin/setup/products/products.tsx:637
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:648
+#: ../html/src/manager/admin/setup/products/products.tsx:644
 msgid "Channels"
 msgstr "Kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:819
+#: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid " channels sync failed"
 msgstr " synchronizácia kanálov zlyhala"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:827
+#: ../html/src/manager/admin/setup/products/products.tsx:823
 msgid " channels sync in progress"
 msgstr " prebieha synchronizácia kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:835
+#: ../html/src/manager/admin/setup/products/products.tsx:831
 msgid " channels synced"
 msgstr " kanály synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:860
+#: ../html/src/manager/admin/setup/products/products.tsx:856
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 "Ak chcete povoliť tento produkt, najskôr by mal byť vybraný rodičovský "
 "produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:861
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 msgid "Select this product"
 msgstr "Vybrať tento produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:873
+#: ../html/src/manager/admin/setup/products/products.tsx:869
 msgid "This product is mirrored."
 msgstr "Tento produkt je zrkadlený."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:902
+#: ../html/src/manager/admin/setup/products/products.tsx:898
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1248,7 +1253,7 @@ msgstr "Tento produkt je zrkadlený."
 msgid "recommended"
 msgstr "odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:920
+#: ../html/src/manager/admin/setup/products/products.tsx:916
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1256,51 +1261,51 @@ msgstr "odporúčané"
 msgid "include recommended"
 msgstr "zahrnúť odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:962
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 msgid "SCC product catalog refresh in progress"
 msgstr "Prebieha obnovovanie katalógu výrobkov SCC"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:965
+#: ../html/src/manager/admin/setup/products/products.tsx:961
 msgid "Scheduling channels product resync"
 msgstr "Plánovanie opätovnej synchronizácie produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:968
+#: ../html/src/manager/admin/setup/products/products.tsx:964
 msgid "Channels product resync scheduled"
 msgstr "Opätovná synchronizácia produktov kanálov naplánovaná"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:971
+#: ../html/src/manager/admin/setup/products/products.tsx:967
 msgid "Schedule channels product resync"
 msgstr "Naplánovať opätovnú synchronizáciu produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1032
+#: ../html/src/manager/admin/setup/products/products.tsx:1028
 msgid "Show product's channels"
 msgstr "Zobraziť kanály produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1064
+#: ../html/src/manager/admin/setup/products/products.tsx:1060
 msgid "Product Channels - "
 msgstr "Kanály produktov - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1069
+#: ../html/src/manager/admin/setup/products/products.tsx:1065
 msgid "Mandatory Channels"
 msgstr "Povinné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1076
+#: ../html/src/manager/admin/setup/products/products.tsx:1072
 msgid "Optional Channels"
 msgstr "Voliteľné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1091
+#: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "not synced"
 msgstr "nesynchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1094
+#: ../html/src/manager/admin/setup/products/products.tsx:1090
 msgid "sync in progress"
 msgstr "prebieha synchronizácia"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1097
+#: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "synced"
 msgstr "synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1100
+#: ../html/src/manager/admin/setup/products/products.tsx:1096
 msgid "sync failed"
 msgstr "synchronizácia zlyhala"
 
@@ -1396,7 +1401,7 @@ msgstr "Momentálne na serveri nie sú spustené žiadne úlohy."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:568
+#: ../html/src/manager/notifications/notification-messages.tsx:572
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste zobrazili "
@@ -1404,7 +1409,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:570
+#: ../html/src/manager/notifications/notification-messages.tsx:574
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Chyba servera, prosím, skontrolujte súbory záznamov."
@@ -2604,7 +2609,7 @@ msgstr "žiadne kanály potomkov"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:640
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notification-messages.tsx:510
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2799,7 +2804,7 @@ msgstr "Cesta"
 #: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-import.tsx:229
 #: ../html/src/manager/images/image-profile-edit.tsx:394
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:548
 msgid "Activation Key"
 msgstr "Aktivačný kľúč"
 
@@ -2862,7 +2867,7 @@ msgstr "Import"
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:378
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "Vymazať polia"
@@ -4032,97 +4037,101 @@ msgstr "Aplikácia stavu zlyhala"
 msgid "Pay-as-you-go refresh authentication data failed"
 msgstr "Zlyhalo obnovenie dát overenia priebežnej platby"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:141
+#: ../html/src/manager/notifications/notification-messages.tsx:54
+msgid "End of Life Period"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
 msgstr "Filtrovať podľa typu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.tsx:253
+#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Info"
 msgstr "Informácie"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:257
-#: ../html/src/manager/notifications/notification-messages.tsx:258
+#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Warning"
 msgstr "Varovanie"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:265
-#: ../html/src/manager/notifications/notification-messages.tsx:266
+#: ../html/src/manager/notifications/notification-messages.tsx:269
+#: ../html/src/manager/notifications/notification-messages.tsx:270
 msgid "Error"
 msgstr "Chyba"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:328
+#: ../html/src/manager/notifications/notification-messages.tsx:332
 msgid "show details"
 msgstr "zobraziť podrobnosti"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:377
+#: ../html/src/manager/notifications/notification-messages.tsx:381
 msgid "Retry onboarding"
 msgstr "Skúste znova začlenenie sa"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:387
+#: ../html/src/manager/notifications/notification-messages.tsx:391
 msgid "Retry repo sync"
 msgstr "Zopakovať synchronizáciu repozitárov"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:411
+#: ../html/src/manager/notifications/notification-messages.tsx:415
 msgid "Unread Messages"
 msgstr "Neprečítané správy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:416
+#: ../html/src/manager/notifications/notification-messages.tsx:420
 msgid "All Messages"
 msgstr "Všetky správy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:448
-#: ../html/src/manager/notifications/notification-messages.tsx:449
+#: ../html/src/manager/notifications/notification-messages.tsx:452
+#: ../html/src/manager/notifications/notification-messages.tsx:453
 msgid "Delete selected messages"
 msgstr "Vymazať vybraté správy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:456
-#: ../html/src/manager/notifications/notification-messages.tsx:457
+#: ../html/src/manager/notifications/notification-messages.tsx:460
+#: ../html/src/manager/notifications/notification-messages.tsx:461
 msgid "Mark selected as read"
 msgstr "Označiť vybrané ako prečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:474
-#: ../html/src/manager/notifications/notification-messages.tsx:556
+#: ../html/src/manager/notifications/notification-messages.tsx:478
+#: ../html/src/manager/notifications/notification-messages.tsx:560
 msgid "Notification Messages"
 msgstr "Správy s upozorneniami"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:479
+#: ../html/src/manager/notifications/notification-messages.tsx:483
 msgid "The server has collected the following notification messages."
 msgstr "Server zhromaždil nasledujúce správy s upozorneniami."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notification-messages.tsx:498
 msgid "Filter by summary"
 msgstr "Filtrovať podľa súhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:500
+#: ../html/src/manager/notifications/notification-messages.tsx:504
 msgid "Severity"
 msgstr "Závažnosť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notification-messages.tsx:516
 msgid "Summary"
 msgstr "Súhrn"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:518
+#: ../html/src/manager/notifications/notification-messages.tsx:522
 msgid "Created"
 msgstr "Vytvorené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:523
+#: ../html/src/manager/notifications/notification-messages.tsx:527
 msgid "Action"
 msgstr "Akcia"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notification-messages.tsx:533
 msgid "Read|Delete"
 msgstr "Čítať|Vymazať"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:542
 msgid "Flag as Unread"
 msgstr "Označiť ako neprečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:542
 msgid "Flag as Read"
 msgstr "Označiť ako prečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:544
+#: ../html/src/manager/notifications/notification-messages.tsx:548
 msgid "Delete Notification"
 msgstr "Vymazať oznámenie"
 
@@ -4207,7 +4216,7 @@ msgid "Proxy SSH port"
 msgstr "Port Proxy SSH"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr "Rozsah portov: 1 - 65535"
 
@@ -4712,7 +4721,17 @@ msgstr ""
 "Akýkoľvek systém zaregistrovaný pomocou tohto aktivačného kľúča bude "
 "prihlásený k vybraným kanálom potomkov."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:214
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
+#, fuzzy
+msgid "Error Details"
+msgstr "Podrobnosti"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
+msgid "Close"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -4720,35 +4739,43 @@ msgstr ""
 "Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
 "Prosím, skontrolujte, či bol váš klient minion správne zavedený."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:243
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "Hostiteľ bol úspešne zavedený! Váš systém by sa mal objaviť v"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:245
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "systems"
 msgstr "systémy"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:247
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
 msgid "shortly"
 msgstr "krátko"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:265
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
+msgid "Show additional details about this error"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
+msgid "Unable to bootstrap host. The following errors have happened:"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "Váš systém sa zavádza: čakanie na odpoveď.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:269
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
 msgid "Loading SSH Private Key.."
 msgstr "Načítava sa súkromný kľúč SSH..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:277
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:372
 msgid "Bootstrap"
 msgstr "Zavádzať"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:303
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 msgid "e.g., ••••••••••••"
 msgstr "napr. ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:319
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:414
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
@@ -4756,15 +4783,15 @@ msgstr ""
 "Súbor bude uložený v dočasnom súbore na serveri a bude vymazaný po "
 "zavádzacej procedúre"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:332
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
 msgid "Leave empty for no passphrase"
 msgstr "Nechajte prázdne pre žiadne heslo"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:344
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 msgid "Bootstrap Minions"
 msgstr "Zavádzať klientov minion"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:347
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:442
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4773,11 +4800,11 @@ msgstr ""
 "prihlasovacích údajov SSH. {0} pripraví systém vzdialene a vykoná "
 "registráciu."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:360
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
 msgid "e.g., host.domain.com"
 msgstr "napr. host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:493
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4789,33 +4816,33 @@ msgstr ""
 "'ssh_push_sudo_user' je 'root'. Tento používateľ je nastavený po nasadení "
 "kľúča SSH {0} počas zavádzacej procedúry."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Authentication Method"
 msgstr "Metóda overenia"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:443
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
 msgid "Ansible control node"
 msgstr "Riadiaci uzol Ansible"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:491
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:557
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:587
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "Žiadny"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:570
 msgid "Reactivation Key"
 msgstr "Reaktivačný kľúč"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:480
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:576
 msgid "Leave empty when no reactivation is wanted"
 msgstr "Ponechať prázdne, ak sa nevyžaduje reaktivácia"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:487
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:510
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:605
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
@@ -4823,15 +4850,15 @@ msgstr ""
 "Názov hostiteľa servera proxy nie je plne kvalifikovaný. To môže spôsobiť "
 "problémy pri prístupe ku kanálom."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:622
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr "Zakázať prísnu kontrolu kľúča hostiteľa SSH počas zavádzacieho procesu"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:543
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:638
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "Spravovať systém kompletne cez SSH (neinštaluje sa agent)"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:559
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:654
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "Naozaj chcete zavrieť túto stránku, kým prebieha zavádzanie?"

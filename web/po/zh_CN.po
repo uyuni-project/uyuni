@@ -18,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-13 11:07+0000\n"
-"PO-Revision-Date: 2022-04-15 11:12+0000\n"
-"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"POT-Creation-Date: 2022-05-19 14:13+0000\n"
+"PO-Revision-Date: 2022-05-18 12:12+0000\n"
+"Last-Translator: Padraig Dillon <padraig.dillon@suse.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
 "Language: zh_CN\n"
@@ -390,8 +390,8 @@ msgstr "必填"
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:68
 #: ../html/src/manager/login/uyuni/login.tsx:65
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "口令"
@@ -462,7 +462,7 @@ msgstr "第一页"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:407
+#: ../html/src/manager/admin/setup/products/products.tsx:403
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
@@ -471,7 +471,7 @@ msgstr "上一页"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:413
+#: ../html/src/manager/admin/setup/products/products.tsx:409
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -488,7 +488,7 @@ msgstr "页码"
 
 #: ../html/src/components/pagination.tsx:108
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:418
+#: ../html/src/manager/admin/setup/products/products.tsx:414
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
 msgid "of"
 msgstr "/"
@@ -617,7 +617,7 @@ msgid "({0} selected)"
 msgstr "（已选择 {0} 个）"
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.tsx:335
+#: ../html/src/manager/admin/setup/products/products.tsx:331
 msgid "Clear"
 msgstr "清除"
 
@@ -935,7 +935,7 @@ msgid "Bastion SSH connection data"
 msgstr "堡垒 SSH 连接数据"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:266
+#: ../html/src/manager/admin/setup/products/products.tsx:262
 msgid "Setup Wizard"
 msgstr "安装向导"
 
@@ -947,7 +947,7 @@ msgstr "按任意值过滤"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr "主机"
 
@@ -1017,26 +1017,26 @@ msgstr "正在编辑 SSH 连接数据..."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr "SSH 端口"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr "用户"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:430
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr "SSH 私用密钥"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 私用密钥通行口令"
 
@@ -1065,7 +1065,7 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:373
-#: ../html/src/manager/notifications/notification-messages.tsx:444
+#: ../html/src/manager/notifications/notification-messages.tsx:448
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "刷新"
@@ -1089,6 +1089,7 @@ msgstr "操作不成功：服务器返回了空答复"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:131
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "细节"
@@ -1104,48 +1105,52 @@ msgstr ""
 msgid "The product catalog refresh is running..."
 msgstr "产品目录刷新正在运行..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:291
+#: ../html/src/manager/admin/setup/products/products.tsx:214
+msgid "The following product installations failed. Please check log files."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr "当前正在后台运行产品数据刷新。请稍后重试。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:296
+#: ../html/src/manager/admin/setup/products/products.tsx:292
 msgid "The product catalog is still refreshing, please wait."
 msgstr "产品目录仍在刷新，请稍候。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:298
+#: ../html/src/manager/admin/setup/products/products.tsx:294
 msgid "Select some product first."
 msgstr "请先选择某个产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:307
-#: ../html/src/manager/admin/setup/products/products.tsx:315
+#: ../html/src/manager/admin/setup/products/products.tsx:303
+#: ../html/src/manager/admin/setup/products/products.tsx:311
 msgid "Add products"
 msgstr "添加产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:334
+#: ../html/src/manager/admin/setup/products/products.tsx:330
 msgid "Clear products selection"
 msgstr "清除产品选择"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:374
+#: ../html/src/manager/admin/setup/products/products.tsx:370
 msgid "Why aren't all products displayed in the list?"
 msgstr "列表中为何不显示所有产品？"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:377
+#: ../html/src/manager/admin/setup/products/products.tsx:373
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 "此列表中显示的产品直接链接到您的组织身份凭证（镜像身份凭证）和 SUSE 订阅。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:382
+#: ../html/src/manager/admin/setup/products/products.tsx:378
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 "如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:392
+#: ../html/src/manager/admin/setup/products/products.tsx:388
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1153,59 +1158,59 @@ msgstr ""
 "此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产"
 "品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:468
+#: ../html/src/manager/admin/setup/products/products.tsx:464
 msgid "Filter by architecture"
 msgstr "按体系结构过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:563
+#: ../html/src/manager/admin/setup/products/products.tsx:559
 msgid "Filter by product Description"
 msgstr "按产品说明过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:633
+#: ../html/src/manager/admin/setup/products/products.tsx:629
 msgid "Product Description"
 msgstr "产品说明"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:639
-#: ../html/src/manager/admin/setup/products/products.tsx:1017
+#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:1013
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:641
+#: ../html/src/manager/admin/setup/products/products.tsx:637
 msgid "Arch"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:648
+#: ../html/src/manager/admin/setup/products/products.tsx:644
 msgid "Channels"
 msgstr "频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:819
+#: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid " channels sync failed"
 msgstr " 频道同步失败"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:827
+#: ../html/src/manager/admin/setup/products/products.tsx:823
 msgid " channels sync in progress"
 msgstr " 频道同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:835
+#: ../html/src/manager/admin/setup/products/products.tsx:831
 msgid " channels synced"
 msgstr " 频道已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:860
+#: ../html/src/manager/admin/setup/products/products.tsx:856
 msgid "To enable this product, the parent product should be selected first"
 msgstr "要启用此产品，应先选择父产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:861
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 msgid "Select this product"
 msgstr "选择此产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:873
+#: ../html/src/manager/admin/setup/products/products.tsx:869
 msgid "This product is mirrored."
 msgstr "已镜像此产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:902
+#: ../html/src/manager/admin/setup/products/products.tsx:898
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1213,7 +1218,7 @@ msgstr "已镜像此产品。"
 msgid "recommended"
 msgstr "建议"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:920
+#: ../html/src/manager/admin/setup/products/products.tsx:916
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1221,51 +1226,51 @@ msgstr "建议"
 msgid "include recommended"
 msgstr "包括建议项"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:962
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 产品目录刷新正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:965
+#: ../html/src/manager/admin/setup/products/products.tsx:961
 msgid "Scheduling channels product resync"
 msgstr "正在安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:968
+#: ../html/src/manager/admin/setup/products/products.tsx:964
 msgid "Channels product resync scheduled"
 msgstr "已安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:971
+#: ../html/src/manager/admin/setup/products/products.tsx:967
 msgid "Schedule channels product resync"
 msgstr "安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1032
+#: ../html/src/manager/admin/setup/products/products.tsx:1028
 msgid "Show product's channels"
 msgstr "显示产品的频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1064
+#: ../html/src/manager/admin/setup/products/products.tsx:1060
 msgid "Product Channels - "
 msgstr "产品频道 - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1069
+#: ../html/src/manager/admin/setup/products/products.tsx:1065
 msgid "Mandatory Channels"
 msgstr "必需频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1076
+#: ../html/src/manager/admin/setup/products/products.tsx:1072
 msgid "Optional Channels"
 msgstr "可选频道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1091
+#: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "not synced"
 msgstr "未同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1094
+#: ../html/src/manager/admin/setup/products/products.tsx:1090
 msgid "sync in progress"
 msgstr "同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1097
+#: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "synced"
 msgstr "已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1100
+#: ../html/src/manager/admin/setup/products/products.tsx:1096
 msgid "sync failed"
 msgstr "同步失败"
 
@@ -1359,13 +1364,13 @@ msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:568
+#: ../html/src/manager/notifications/notification-messages.tsx:572
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:570
+#: ../html/src/manager/notifications/notification-messages.tsx:574
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
@@ -2534,7 +2539,7 @@ msgstr "无子频道"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:640
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notification-messages.tsx:510
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2715,7 +2720,7 @@ msgstr "路径"
 #: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-import.tsx:229
 #: ../html/src/manager/images/image-profile-edit.tsx:394
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:548
 msgid "Activation Key"
 msgstr "激活密钥"
 
@@ -2778,7 +2783,7 @@ msgstr "导入"
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:378
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "清除字段"
@@ -3357,7 +3362,7 @@ msgstr "发掘通过一个界面管理服务器、软件包、补丁等资源的
 
 #: ../html/src/manager/login/susemanager/login.tsx:42
 msgid "_blank"
-msgstr ""
+msgstr "_blank"
 
 #: ../html/src/manager/login/susemanager/login.tsx:57
 #: ../html/src/manager/login/susemanager/login.tsx:82
@@ -3919,97 +3924,101 @@ msgstr "状态应用失败"
 msgid "Pay-as-you-go refresh authentication data failed"
 msgstr "Pay-as-you-go 刷新身份验证数据失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:141
+#: ../html/src/manager/notifications/notification-messages.tsx:54
+msgid "End of Life Period"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
 msgstr "按类型过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.tsx:253
+#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Info"
 msgstr "信息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:257
-#: ../html/src/manager/notifications/notification-messages.tsx:258
+#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Warning"
 msgstr "警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:265
-#: ../html/src/manager/notifications/notification-messages.tsx:266
+#: ../html/src/manager/notifications/notification-messages.tsx:269
+#: ../html/src/manager/notifications/notification-messages.tsx:270
 msgid "Error"
 msgstr "错误"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:328
+#: ../html/src/manager/notifications/notification-messages.tsx:332
 msgid "show details"
 msgstr "显示细节"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:377
+#: ../html/src/manager/notifications/notification-messages.tsx:381
 msgid "Retry onboarding"
 msgstr "重试载入"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:387
+#: ../html/src/manager/notifications/notification-messages.tsx:391
 msgid "Retry repo sync"
 msgstr "重试储存库同步"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:411
+#: ../html/src/manager/notifications/notification-messages.tsx:415
 msgid "Unread Messages"
 msgstr "未读消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:416
+#: ../html/src/manager/notifications/notification-messages.tsx:420
 msgid "All Messages"
 msgstr "所有消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:448
-#: ../html/src/manager/notifications/notification-messages.tsx:449
+#: ../html/src/manager/notifications/notification-messages.tsx:452
+#: ../html/src/manager/notifications/notification-messages.tsx:453
 msgid "Delete selected messages"
 msgstr "删除选定的消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:456
-#: ../html/src/manager/notifications/notification-messages.tsx:457
+#: ../html/src/manager/notifications/notification-messages.tsx:460
+#: ../html/src/manager/notifications/notification-messages.tsx:461
 msgid "Mark selected as read"
 msgstr "将选定消息标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:474
-#: ../html/src/manager/notifications/notification-messages.tsx:556
+#: ../html/src/manager/notifications/notification-messages.tsx:478
+#: ../html/src/manager/notifications/notification-messages.tsx:560
 msgid "Notification Messages"
 msgstr "通知消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:479
+#: ../html/src/manager/notifications/notification-messages.tsx:483
 msgid "The server has collected the following notification messages."
 msgstr "服务器已收集以下通知消息。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notification-messages.tsx:498
 msgid "Filter by summary"
 msgstr "按摘要过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:500
+#: ../html/src/manager/notifications/notification-messages.tsx:504
 msgid "Severity"
 msgstr "严重性"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notification-messages.tsx:516
 msgid "Summary"
 msgstr "摘要"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:518
+#: ../html/src/manager/notifications/notification-messages.tsx:522
 msgid "Created"
 msgstr "创建日期"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:523
+#: ../html/src/manager/notifications/notification-messages.tsx:527
 msgid "Action"
 msgstr "操作"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notification-messages.tsx:533
 msgid "Read|Delete"
 msgstr "阅读|删除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:542
 msgid "Flag as Unread"
 msgstr "标记为未读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:542
 msgid "Flag as Read"
 msgstr "标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:544
+#: ../html/src/manager/notifications/notification-messages.tsx:548
 msgid "Delete Notification"
 msgstr "删除通知"
 
@@ -4066,57 +4075,52 @@ msgstr "代理 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:192
 msgid "The FQDN of the machine where the containers are hosted"
-msgstr ""
+msgstr "托管容器的计算机的 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:194
 msgid "e.g., proxy.domain.com"
 msgstr "例如 proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-#, fuzzy
 msgid "Parent FQDN"
-msgstr "代理 FQDN"
+msgstr "父 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., server.domain.com"
 msgstr "例如 server.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:203
-#, fuzzy
 msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr "代理要连接到的服务器的 FQDN。"
+msgstr "要连接到的父项（服务器或代理）的 FQDN。"
 
 #: ../html/src/manager/proxy/container-config.tsx:209
 msgid "Proxy SSH port"
 msgstr "代理 SSH 端口"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr "端口范围：1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:219
-#, fuzzy
 msgid "Max Squid cache size"
-msgstr "最大 Squid 缓存大小 (MB)"
+msgstr "最大 Squid 缓存大小"
 
 #: ../html/src/manager/proxy/container-config.tsx:220
 msgid "The maximum value of the Squid cache in Megabytes"
-msgstr ""
+msgstr "Squid 缓存的最大值 (MB)"
 
 #: ../html/src/manager/proxy/container-config.tsx:223
 msgid "e.g., 2048"
 msgstr "例如 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:230
-#, fuzzy
 msgid "Proxy admin email"
 msgstr "代理管理员电子邮件"
 
 #: ../html/src/manager/proxy/container-config.tsx:231
-#, fuzzy
 msgid "The container-based proxy administrator email address"
-msgstr "已正确生成基于容器的代理配置。"
+msgstr "基于容器的代理管理员电子邮件地址"
 
 #: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., proxy.admin@mycompany.com"
@@ -4137,26 +4141,22 @@ msgid "Use existing"
 msgstr "使用现有的"
 
 #: ../html/src/manager/proxy/container-config.tsx:256
-#, fuzzy
 msgid "CA certificate"
-msgstr "SSL 证书"
+msgstr "CA 证书"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
 #: ../html/src/manager/proxy/container-config.tsx:266
 #: ../html/src/manager/proxy/container-config.tsx:323
-#, fuzzy
 msgid "To sign the SSL certificate in PEM format"
-msgstr "用于为 PEM 格式的 SSL 证书签名的根 CA"
+msgstr "为 PEM 格式的 SSL 证书签名"
 
 #: ../html/src/manager/proxy/container-config.tsx:265
-#, fuzzy
 msgid "CA private key"
-msgstr "SSH 私用密钥"
+msgstr "CA 私用密钥"
 
 #: ../html/src/manager/proxy/container-config.tsx:274
-#, fuzzy
 msgid "CA password"
-msgstr "口令"
+msgstr "CA 口令"
 
 #: ../html/src/manager/proxy/container-config.tsx:275
 msgid "The CA private key password"
@@ -4200,7 +4200,7 @@ msgstr "电子邮件"
 
 #: ../html/src/manager/proxy/container-config.tsx:322
 msgid "The root CA"
-msgstr ""
+msgstr "根 CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:332
 msgid "Intermediate CAs"
@@ -4211,20 +4211,17 @@ msgid "CA file in PEM format"
 msgstr "PEM 格式的 CA 文件"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
-#, fuzzy
 msgid "Proxy certificate"
-msgstr "SSL 证书"
+msgstr "代理证书"
 
 #: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
-#, fuzzy
 msgid "In PEM format"
-msgstr "PEM 格式的 CA 文件"
+msgstr "PEM 格式"
 
 #: ../html/src/manager/proxy/container-config.tsx:362
-#, fuzzy
 msgid "Proxy SSL private key"
-msgstr "PEM 格式的代理 SSL 私用密钥"
+msgstr "代理 SSL 私用密钥"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4600,67 +4597,85 @@ msgid ""
 "selected child channels."
 msgstr "使用此激活密钥注册的所有系统都将订阅所选子频道。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:214
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
+#, fuzzy
+msgid "Error Details"
+msgstr "细节"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
+msgid "Close"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
 msgstr ""
 "请求已中断，或者从服务器收到了无效响应。请检查您的受控端是否已正常引导。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:243
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "已成功引导主机！您的系统很快应会显示在"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:245
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "systems"
 msgstr "系统"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:247
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
 msgid "shortly"
 msgstr "中"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:265
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
+msgid "Show additional details about this error"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
+msgid "Unable to bootstrap host. The following errors have happened:"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "您的系统正在引导：正在等待响应..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:269
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
 msgid "Loading SSH Private Key.."
 msgstr "正在装载 SSH 私用密钥..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:277
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:372
 msgid "Bootstrap"
 msgstr "引导"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:303
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 msgid "e.g., ••••••••••••"
 msgstr "例如 ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:319
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:414
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr "该文件将储存在服务器上的临时文件中，在完成引导过程后将被删除"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:332
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
 msgid "Leave empty for no passphrase"
 msgstr "留空表示无通行口令"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:344
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 msgid "Bootstrap Minions"
 msgstr "引导受控端"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:347
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:442
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
 msgstr ""
 "只能通过提供 SSH 身份凭证来添加要管理的系统。{0} 将远程准备系统并执行注册。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:360
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
 msgid "e.g., host.domain.com"
 msgstr "例如 host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:493
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4671,47 +4686,47 @@ msgstr ""
 "\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间部署 {0} 的 "
 "SSH 密钥后设置。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Authentication Method"
 msgstr "身份验证方法"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:443
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
 msgid "Ansible control node"
 msgstr "Ansible 控制节点"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:491
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:557
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:587
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "无"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:570
 msgid "Reactivation Key"
 msgstr "重新激活密钥"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:480
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:576
 msgid "Leave empty when no reactivation is wanted"
 msgstr "如不需要重新激活，则留空"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:487
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
 msgid "Proxy"
 msgstr "代理"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:510
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:605
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr "代理的主机名不是完全限定的。这可能导致在访问频道时出现问题。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:622
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr "在引导期间禁用 SSH 严格主机密钥检查"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:543
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:638
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "完全通过 SSH 管理系统（将不安装代理）"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:559
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:654
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "正在进行引导，您确定要关闭此页面吗？"
