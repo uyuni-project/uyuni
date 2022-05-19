@@ -19,7 +19,6 @@ import static java.util.Optional.ofNullable;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.Credentials;
-import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
@@ -68,13 +67,10 @@ public class SCCSystemRegistrationManager {
 
     /**
      * Update last_seen field in SCC for all registered clients
+     * @param primaryCredential the primary scc credential
      */
-    public void updateLastSeen() {
-        List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
-        Credentials primCred = credentials.stream()
-                .filter(c -> c.isPrimarySCCCredential())
-                .findFirst().orElseThrow();
-        List<Map<String, Object>> candidates = SCCCachingFactory.listUpdateLastSeenCandidates(primCred);
+    public void updateLastSeen(Credentials primaryCredential) {
+        List<Map<String, Object>> candidates = SCCCachingFactory.listUpdateLastSeenCandidates(primaryCredential);
 
         List<SCCUpdateSystemJson> sysList = candidates.stream()
                 .map(c -> new SCCUpdateSystemJson(
@@ -90,7 +86,7 @@ public class SCCSystemRegistrationManager {
                                 )).values());
         for (List<SCCUpdateSystemJson> batch: batches) {
             try {
-                sccClient.updateBulkLastSeen(batch, primCred.getUsername(), primCred.getPassword());
+                sccClient.updateBulkLastSeen(batch, primaryCredential.getUsername(), primaryCredential.getPassword());
             }
             catch (SCCClientException e) {
                 LOG.error("SCC error while updating systems", e);

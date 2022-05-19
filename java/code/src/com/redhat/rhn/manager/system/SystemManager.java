@@ -776,13 +776,15 @@ public class SystemManager extends BaseManager {
     }
 
     private void removeSaltSSHKnownHosts(Server server) {
-        Optional<MgrUtilRunner.RemoveKnowHostResult> result =
-                saltApi.removeSaltSSHKnownHost(server.getHostname());
-        boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
-        if (!removed) {
-            log.warn("Hostname {} could not be removed from /var/lib/salt/.ssh/known_hosts: {}", server.getHostname(),
-                    result.map(MgrUtilRunner.RemoveKnowHostResult::getComment).orElse(""));
-        }
+        Optional.ofNullable(server.getHostname()).ifPresent(hostname -> {
+            Optional<MgrUtilRunner.RemoveKnowHostResult> result =
+                    saltApi.removeSaltSSHKnownHost(hostname);
+            boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
+            if (!removed) {
+                log.warn("Hostname " + hostname + " could not be removed from " +
+                        "/var/lib/salt/.ssh/known_hosts: " + result.map(r -> r.getComment()).orElse(""));
+            }
+        });
     }
 
     /**

@@ -17,7 +17,7 @@ Feature: Lock packages on traditional client
 
   Scenario: Lock a package on the client
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Lock"
     And I run "rhn_check -vvv" on "sle_client"
@@ -28,7 +28,7 @@ Feature: Lock packages on traditional client
 
   Scenario: Attempt to install a locked package on the client
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And package "hoag-dummy-1.1-1.1" is reported as locked
     And I follow "Install"
     And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
@@ -45,7 +45,7 @@ Feature: Lock packages on traditional client
 
   Scenario: Unlock a package on the client
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And package "hoag-dummy-1.1-1.1" is reported as locked
     And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Unlock"
@@ -57,7 +57,7 @@ Feature: Lock packages on traditional client
 
   Scenario: Schedule a package lock
     When I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And I check row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
@@ -65,13 +65,13 @@ Feature: Lock packages on traditional client
 
   Scenario: Schedule another package lock
     And I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And package "hoag-dummy-1.1-1.1" is reported as pending to be locked
     And package "hoag-dummy-1.1-1.1" cannot be selected
     When I check row with "milkyway-dummy-2.0-1.1" and arch of "sle_client"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
-    When I follow "Lock"
+    When I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as pending to be locked
     And package "hoag-dummy-1.1-1.1" cannot be selected
     And package "milkyway-dummy-2.0-1.1" is reported as pending to be locked
@@ -79,13 +79,13 @@ Feature: Lock packages on traditional client
     When I run "rhn_check -vvv" on "sle_client"
     Then "hoag-dummy-1.1-1.1" is locked on "sle_client"
     And "milkyway-dummy-2.0-1.1" is locked on "sle_client"
-    When I follow "Lock"
+    When I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as locked
 
   Scenario: Mix package locks and unlock events
     And I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     And package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as locked
     When I check row with "orion-dummy-1.1-1.1" and arch of "sle_client"
@@ -99,7 +99,7 @@ Feature: Lock packages on traditional client
     And I uncheck row with "hoag-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Unlock"
     Then I should see a "Packages has been requested for being unlocked." text
-    When I follow "Lock"
+    When I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as pending to be unlocked
     And package "orion-dummy-1.1-1.1" is reported as pending to be locked
@@ -107,21 +107,21 @@ Feature: Lock packages on traditional client
     Then "hoag-dummy-1.1-1.1" is locked on "sle_client"
     And "milkyway-dummy-2.0-1.1" is unlocked on "sle_client"
     And "orion-dummy-1.1-1.1" is locked on "sle_client"
-    When I follow "Lock"
+    When I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
     And package "milkyway-dummy-2.0-1.1" is reported as unlocked
     And package "orion-dummy-1.1-1.1" is reported as locked
 
   Scenario: Mix package locks and unlock events part 2
     And I follow "Software" in the content area
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     When I click on "Select All"
     And I click on "Unlock"
     Then I should see a "Packages has been requested for being unlocked." text
     When I follow "Lock"
     Then only packages "hoag-dummy-1.1-1.1, orion-dummy-1.1-1.1" are reported as pending to be unlocked
     When I run "rhn_check -vvv" on "sle_client"
-    And I follow "Lock"
+    And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as unlocked
     And package "orion-dummy-1.1-1.1" is reported as unlocked
 

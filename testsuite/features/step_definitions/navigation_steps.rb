@@ -625,6 +625,12 @@ Then(/^I should see "([^"]*)" in the textarea$/) do |text|
   end
 end
 
+Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
+  within('textarea') do
+    raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
+  end
+end
+
 #
 # Test for a text in the whole page using regexp
 #

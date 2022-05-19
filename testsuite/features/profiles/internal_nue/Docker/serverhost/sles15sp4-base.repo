@@ -1,6 +1,0 @@
-[sles15sp4-base]
-name=sles15sp4-base
-enabled=1
-autorefresh=0
-baseurl=http://download.suse.de/ibs/SUSE/Updates/SLE-Module-Basesystem/15-SP4/x86_64/update/
-type=rpm-md

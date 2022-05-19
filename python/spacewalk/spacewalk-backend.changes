@@ -1,5 +1,7 @@
+- Fix virt_notify SQL syntax error (bsc#1199528)
 - store create-bootstrap logs in spacewalk-debug
 - Fix traceback on calling spacewalk-repo-sync --show-packages
+  (bsc#1193238)
 - cleanup leftovers from removing unused xmlrpc endpoint
 
 -------------------------------------------------------------------

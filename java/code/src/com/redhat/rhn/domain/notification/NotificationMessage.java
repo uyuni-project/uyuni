@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.notification;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.notification.types.CreateBootstrapRepoFailed;
+import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
@@ -128,6 +129,8 @@ public class NotificationMessage implements Serializable {
                 return new Gson().fromJson(getData(), StateApplyFailed.class);
             case PaygAuthenticationUpdateFailed:
                 return new Gson().fromJson(getData(), PaygAuthenticationUpdateFailed.class);
+            case EndOfLifePeriod:
+                return new Gson().fromJson(getData(), EndOfLifePeriod.class);
             default: throw new RuntimeException("should not happen!");
         }
     }

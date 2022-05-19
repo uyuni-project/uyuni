@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2022 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.utils;
+package com.suse.manager.webui.controllers.bootstrap;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_SSH_DIR_PATH;
 import static java.util.Optional.of;
@@ -33,6 +33,8 @@ import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.controllers.utils.CommandExecutionException;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltSSHService;
@@ -53,7 +55,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -92,10 +93,9 @@ public abstract class AbstractMinionBootstrapper {
      * @return map containing success flag and error messages.
      */
     public BootstrapResult bootstrap(BootstrapParameters params, User user, String defaultContactMethod) {
-        List<String> errMessages = validateBootstrap(params);
-        if (!errMessages.isEmpty()) {
-            return new BootstrapResult(false, Optional.empty(),
-                    errMessages.toArray(new String[errMessages.size()]));
+        List<String> errors = validateBootstrap(params);
+        if (!errors.isEmpty()) {
+            return new BootstrapResult(false, errors.stream().map(BootstrapError::new).collect(Collectors.toList()));
         }
 
         return bootstrapInternal(params, user, defaultContactMethod);
@@ -179,13 +179,13 @@ public abstract class AbstractMinionBootstrapper {
                 String responseMessage = "Cannot read/write '" + SALT_SSH_DIR_PATH + "/known_hosts'. " +
                         "Please check permissions.";
                 LOG.error("Error during bootstrap: {}", responseMessage);
-                return new BootstrapResult(false, Optional.of(contactMethod),
+                return new BootstrapResult(false, contactMethod,
                         LOC.getMessage("bootstrap.minion.error.noperm", SALT_SSH_DIR_PATH + "/known_hosts"));
             }
         }
         catch (CommandExecutionException | IOException e) {
             LOG.error(e);
-            return new BootstrapResult(false, Optional.of(contactMethod),
+            return new BootstrapResult(false, contactMethod,
                     LOC.getMessage("bootstrap.minion.error.permcmdexec", SALT_SSH_DIR_PATH + "/known_hosts"));
         }
 
@@ -195,28 +195,31 @@ public abstract class AbstractMinionBootstrapper {
             Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
             return saltApi.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
-                        String responseMessage = SaltUtils.decodeSaltErr(error);
-                                LOG.error("Error during bootstrap: {}", responseMessage);
-                        return new BootstrapResult(false, Optional.of(contactMethod),
-                                responseMessage.split("\\r?\\n"));
+                            BootstrapError parsedError = SaltUtils.decodeSaltErr(error);
+                            LOG.error("Error during bootstrap: {}", parsedError);
+
+                            return new BootstrapResult(false, contactMethod, List.of(parsedError));
                     },
                     result -> {
                         // We have results, check if result = true
                         // for all the single states
-                        Optional<String> errMessage =
-                                getApplyStateErrorMessage(params.getHost(), result);
+                        Optional<String> errMessage = getApplyStateErrorMessage(params.getHost(), result);
                         // Clean up the generated key pair in case of failure
-                        boolean success = !errMessage.isPresent() &&
-                                result.getRetcode() == 0;
-                        errMessage.ifPresent(msg -> LOG.error("States failed during bootstrap: {}", msg));
-                        return new BootstrapResult(success, Optional.of(contactMethod),
-                                Opt.fold(errMessage, () -> null, m -> m.split("\\r?\\n")));
+                        boolean success = errMessage.isEmpty() && result.getRetcode() == 0;
+                        if (!success) {
+                            errMessage.ifPresent(msg -> LOG.error("States failed during bootstrap: {}", msg));
+
+                            BootstrapError error = SaltUtils.decodeBootstrapSSHResult(result);
+                            return new BootstrapResult(false, contactMethod, List.of(error));
+                        }
+
+                        return new BootstrapResult(true, contactMethod, Collections.emptyList());
                     }
             );
         }
         catch (Exception e) {
             LOG.error("Exception during bootstrap: {}", e.getMessage(), e);
-            return new BootstrapResult(false, Optional.empty(),
+            return new BootstrapResult(false,
                     e.getMessage() != null ? LOC.getMessage("bootstrap.minion.error.salt", e.getMessage()) :
                             LOC.getMessage("bootstrap.minion.error.salt.unexpected"));
         }
@@ -419,56 +422,4 @@ public abstract class AbstractMinionBootstrapper {
 
     protected abstract Optional<String> validateContactMethod(ContactMethod desiredContactMethod);
 
-    /**
-     * Representation of the status of bootstrap and possibly error messages.
-     */
-    public static class BootstrapResult {
-
-        private final boolean success;
-        private final String[] messages;
-        private final Optional<String> contactMethod;
-
-        /**
-         * @param successIn success
-         * @param contactMethodIn contact method
-         * @param messagesIn messages
-         */
-        public BootstrapResult(boolean successIn, Optional<String> contactMethodIn,
-                               String ... messagesIn) {
-            this.success = successIn;
-            this.messages = messagesIn;
-            this.contactMethod = contactMethodIn;
-        }
-
-        /**
-         * @return success
-         */
-        public boolean isSuccess() {
-            return success;
-        }
-
-        /**
-         * @return messages
-         */
-        public String[] getMessages() {
-            return messages;
-        }
-
-        /**
-         * @return contactMethod
-         */
-        public Optional<String> getContactMethod() {
-            return contactMethod;
-        }
-
-        /**
-         * @return bootstrap result converted to a map
-         */
-        public Map<String, Object> asMap() {
-            Map<String, Object> ret = new LinkedHashMap<>();
-            ret.put("success", success);
-            ret.put("messages", messages);
-            return ret;
-        }
-    }
 }

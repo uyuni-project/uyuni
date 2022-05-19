@@ -832,9 +832,8 @@ public class SaltSSHService {
 
             return future.handle((applyResult, err) -> {
                 if (applyResult != null) {
-                    return applyResult.<Optional<List<String>>>fold((saltErr) ->
-                            Optional.of(singletonList(
-                                        SaltUtils.decodeSaltErr(saltErr))),
+                    return applyResult.fold((saltErr) ->
+                            Optional.of(singletonList(SaltUtils.decodeSaltErr(saltErr).getMessage())),
                             (saltRes) -> saltRes.values().stream()
                                     .filter(value -> !value.isResult())
                                     .map(StateApplyResult::getComment)

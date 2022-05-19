@@ -21,25 +21,38 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.dto.ActionMessage;
 import com.redhat.rhn.frontend.dto.AwolServer;
 import com.redhat.rhn.frontend.dto.OrgIdWrapper;
 import com.redhat.rhn.frontend.dto.ReportingUser;
 
+import com.suse.manager.maintenance.ProductEndOfLifeManager;
 import com.suse.manager.utils.MailHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
+
+import javax.xml.stream.XMLStreamException;
 
 /**
  * DailySummary task.
@@ -50,10 +63,14 @@ import java.util.TreeMap;
  */
 public class DailySummary extends RhnJavaJob {
 
+    private static final Logger LOGGER = LogManager.getLogger(DailySummary.class);
+
     private static final int HEADER_SPACER = 10;
     private static final int ERRATA_SPACER = 4;
     private static final String ERRATA_UPDATE = "Errata Update";
     private static final String ERRATA_INDENTION = StringUtils.repeat(" ", ERRATA_SPACER);
+
+    private static final ProductEndOfLifeManager END_OF_LIFE_MANAGER = new ProductEndOfLifeManager();
 
     @Override
     public String getConfigNamespace() {
@@ -65,6 +82,47 @@ public class DailySummary extends RhnJavaJob {
      */
     public void execute(JobExecutionContext ctxIn)
         throws JobExecutionException {
+
+        processEndOfLifeNotification();
+
+        processEmails();
+    }
+
+    private void processEndOfLifeNotification() {
+        if (ConfigDefaults.get().isUyuni()) {
+            // No end of life for Uyuni
+            return;
+        }
+
+        // Notify only on the first day of the month
+        final LocalDate today = LocalDate.now();
+        if (today.getDayOfMonth() != 1) {
+            return;
+        }
+
+        final LocalDate endOfLifeDate;
+
+        try {
+            endOfLifeDate = END_OF_LIFE_MANAGER.getEndOfLifeDate();
+            if (endOfLifeDate == null) {
+                LOGGER.warn("No end of life date defined for the SUSE Manager");
+                return;
+            }
+        }
+        catch (IOException | XMLStreamException ex) {
+            LOGGER.error("Unable to retrieve end of life date for SUSE Manager", ex);
+            return;
+        }
+
+        if (END_OF_LIFE_MANAGER.isNotificationPeriod(endOfLifeDate, today)) {
+            NotificationMessage notification = UserNotificationFactory.createNotificationMessage(
+                new EndOfLifePeriod(endOfLifeDate));
+            UserNotificationFactory.storeNotificationMessageFor(notification,
+                Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
+        }
+    }
+
+    private void processEmails() {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_DAILY_SUMMARY_QUEUE);
         List results = m.execute();

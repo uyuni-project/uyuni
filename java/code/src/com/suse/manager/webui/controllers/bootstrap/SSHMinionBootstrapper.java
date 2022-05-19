@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2022 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,17 +13,19 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers.utils;
+package com.suse.manager.webui.controllers.bootstrap;
 
 import static com.suse.manager.webui.services.impl.SaltSSHService.SSH_PUSH_PORT;
 import static com.suse.manager.webui.services.impl.SaltSSHService.getSSHUser;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
@@ -50,6 +52,8 @@ import java.util.stream.Stream;
 public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
     private static final Logger LOG = LogManager.getLogger(SSHMinionBootstrapper.class);
+
+    private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
     /**
      * Standard constructor. For testing only - to obtain instance of this class, use
@@ -94,12 +98,12 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         Optional<MgrUtilRunner.SshKeygenResult> res = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         if (res.isEmpty()) {
             LOG.error("Could not generate salt-ssh public key.");
-            return new BootstrapResult(false, Optional.empty(), "Could not generate salt-ssh public key.");
+            return new BootstrapResult(false, LOCALIZATION.getMessage("bootstrap.minion.error.generatekey"));
         }
         if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
             LOG.error("Generating salt-ssh public key failed: {}", res.get().getStderr());
-            return new BootstrapResult(false, Optional.empty(),
-                    "Generating salt-ssh public key failed: " + res.get().getStderr());
+            return new BootstrapResult(false,
+                LOCALIZATION.getMessage("bootstrap.minion.error.generatekey.failed", res.get().getStderr()));
         }
 
         BootstrapResult result = super.bootstrapInternal(params, user, defaultContactMethod);

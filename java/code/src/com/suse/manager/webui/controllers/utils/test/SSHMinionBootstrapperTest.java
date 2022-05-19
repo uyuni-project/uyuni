@@ -22,8 +22,8 @@ import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 
 import org.jmock.Expectations;
 import org.junit.jupiter.api.BeforeEach;
