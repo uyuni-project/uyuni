@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%define SERVICES proxy-httpd proxy-salt-broker proxy-squid proxy-ssh proxy-tftpd proxy-pod
+%define SERVICES uyuni-proxy-httpd uyuni-proxy-salt-broker uyuni-proxy-squid uyuni-proxy-ssh uyuni-proxy-tftpd uyuni-proxy-pod
 
 Name:           uyuni-proxy-systemd-services
 Summary:        Uyuni proxy server systemd services containers
@@ -63,48 +63,47 @@ install -D -m 644 uyuni-proxy-services.config %{buildroot}%{_fillupdir}/sysconfi
 %endif
 
 for service in %{SERVICES}; do
-    install -D -m 644 uyuni-${service}.service %{buildroot}%{_unitdir}/uyuni-${service}.service
-    ln -s /usr/sbin/service %{buildroot}%{_sbindir}/rcuyuni-${service}
+    install -D -m 644 ${service}.service %{buildroot}%{_unitdir}/${service}.service
+    ln -s /usr/sbin/service %{buildroot}%{_sbindir}/rc${service}
 done
 
 %check
 
 %pre
 %if !0%{?rhel}
-for service in %{SERVICES}; do
-    %service_add_pre uyuni-${service}.service
-done
+%service_add_pre %{SERVICES}
 %endif
 
 %post
 %if 0%{?suse_version}
 %fillup_only
 %endif
+
+%if 0%{?rhel}
 for service in %{SERVICES}; do
-    %if 0%{?rhel}
-        %systemd_post uyuni-${service}.service
-    %else
-    %service_add_post uyuni-${service}.service
-    %endif
+    %systemd_post ${service}.service
 done
+%else
+%service_add_post %{SERVICES}
+%endif
 
 %preun
+%if 0%{?rhel}
 for service in %{SERVICES}; do
-    %if 0%{?rhel}
-        %systemd_preun uyuni-${service}.service
-    %else
-        %service_del_preun uyuni-${service}.service
-    %endif
+    %systemd_preun ${service}.service
 done
+%else
+%service_del_preun %{SERVICES}
+%endif
 
 %postun
+%if 0%{?rhel}
 for service in %{SERVICES}; do
-    %if 0%{?rhel}
-        %systemd_postun uyuni-${service}.service
-    %else
-        %service_del_postun uyuni-${service}.service
-    %endif
+    %systemd_postun ${service}.service
 done
+%else
+%service_del_postun %{SERVICES}
+%endif
 
 %files
 %defattr(-,root,root)
