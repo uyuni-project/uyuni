@@ -2493,7 +2493,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-        <target>Diese Benutzerinformation kann in dem unten zur Verfügung gestellten Formular geändert werden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;. </target>
+        <target>Diese Benutzerinformation kann in dem unten zur Verfügung gestellten Formular geändert werden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone" xml:space="preserve">
         <source>Phone</source>
