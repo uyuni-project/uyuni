@@ -29,6 +29,8 @@ BuildRequires:  python3
 BuildArch:      noarch
 Requires:       httpd
 Requires:       python3-uyuni-common-libs
+Requires:       spacewalk-certs-tools
+Requires:       spacewalk-ssl-cert-check
 BuildRequires:  mgr-push >= 4.0.0
 BuildRequires:  python3-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24
@@ -80,9 +82,7 @@ This package require all needed packages for Spacewalk Proxy Server.
 Summary:        The Broker component for the Spacewalk Proxy Server
 Group:          Applications/Internet
 Requires:       httpd
-Requires:       spacewalk-certs-tools
 Requires:       spacewalk-proxy-package-manager
-Requires:       spacewalk-ssl-cert-check
 %if 0%{?suse_version}
 Requires:       apache2-prefork
 Requires:       apache2-mod_wsgi-python3
