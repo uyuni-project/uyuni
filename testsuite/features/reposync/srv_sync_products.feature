@@ -46,7 +46,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I select the addon "Legacy Module 12 x86_64"
     Then I should see the "Legacy Module 12 x86_64" selected
     # Comment following 1 line if you wish to re-enable testing with beta client tools for SLE12
-    And I deselect "SUSE Manager Client Tools Beta for SLE 12 x86_64 (BETA)" as a SUSE Manager product
+    # And I deselect "SUSE Manager Client Tools Beta for SLE 12 x86_64 (BETA)" as a SUSE Manager product
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
     Then the SLE12 SP5 product should be added
