@@ -14,7 +14,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=/etc/sysconfig/uyuni-proxy-systemd-services
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-squid.pid %t/uyuni-proxy-squid.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/uyuni-proxy-squid.pid --cidfile %t/uyuni-proxy-squid.ctr-id --cgroups=no-conmon --pod-id-file %t/uyuni-proxy-pod.pod-id --replace -d -v ${CONFIG_DIR}:/etc/uyuni:ro -v ${SQUID_CACHE_DIR}:/var/cache/squid --name uyuni-proxy-squid ${NAMESPACE}/proxy-squid
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/uyuni-proxy-squid.pid --cidfile %t/uyuni-proxy-squid.ctr-id --cgroups=no-conmon --pod-id-file %t/uyuni-proxy-pod.pod-id --replace -d -v ${CONFIG_DIR}:/etc/uyuni:ro -v ${SQUID_CACHE_DIR}:/var/cache/squid --name uyuni-proxy-squid ${NAMESPACE}/proxy-squid:${TAG}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-squid.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/uyuni-proxy-squid.ctr-id
 PIDFile=%t/uyuni-proxy-squid.pid
