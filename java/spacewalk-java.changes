@@ -1,3 +1,4 @@
+- skip forwarding data to scc if no credentials are available
 - add python3 example for HTTP API
 - Improved handling of error messages during bootstrapping
 - Fix the confirm message on the refresh action by adding a link

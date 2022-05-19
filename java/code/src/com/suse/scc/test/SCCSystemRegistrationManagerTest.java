@@ -181,7 +181,7 @@ public class SCCSystemRegistrationManagerTest {
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
 
-        sccSystemRegistrationManager.updateLastSeen();
+        sccSystemRegistrationManager.updateLastSeen(credentials);
     }
 
     @Test
@@ -248,6 +248,6 @@ public class SCCSystemRegistrationManagerTest {
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
 
-        sccSystemRegistrationManager.updateLastSeen();
+        sccSystemRegistrationManager.updateLastSeen(credentials);
     }
 }
