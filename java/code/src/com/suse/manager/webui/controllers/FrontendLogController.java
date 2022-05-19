@@ -26,6 +26,7 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.log4j.Logger;
 
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +60,11 @@ public class FrontendLogController {
     public static String log(Request request, Response response, User user) {
         Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
         String type = map.get("level").toString();
-        String message = "[" + user.getId() + " - " + request.userAgent() + "] - " + map.get("message").toString();
+
+        // Normalize the unicode message to canonical form to ensure no invalid characters are present
+        String message = Normalizer.normalize(map.get("message").toString(), Normalizer.Form.NFC);
+        message = "[" + user.getId() + " - " + request.userAgent() + "] - " + message;
+
 
         switch (type) {
             case "info": log.info(message); break;
