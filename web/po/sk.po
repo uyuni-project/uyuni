@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-19 14:13+0000\n"
-"PO-Revision-Date: 2022-05-02 14:25+0000\n"
+"PO-Revision-Date: 2022-05-19 17:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1136,6 +1136,8 @@ msgstr "Obnovovanie katalógu produktov prebieha..."
 #: ../html/src/manager/admin/setup/products/products.tsx:214
 msgid "The following product installations failed. Please check log files."
 msgstr ""
+"Nasledujúce inštalácie produktov zlyhali. Skontrolujte, prosím, súbory "
+"záznamov."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
@@ -4039,7 +4041,7 @@ msgstr "Zlyhalo obnovenie dát overenia priebežnej platby"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:54
 msgid "End of Life Period"
-msgstr ""
+msgstr "Koniec životného cyklu"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
@@ -4722,14 +4724,13 @@ msgstr ""
 "prihlásený k vybraným kanálom potomkov."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
-#, fuzzy
 msgid "Error Details"
-msgstr "Podrobnosti"
+msgstr "Podrobnosti o chybách"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
 msgid "Close"
-msgstr ""
+msgstr "Zavrieť"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
@@ -4753,11 +4754,11 @@ msgstr "krátko"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
-msgstr ""
+msgstr "Zobraziť ďalšie podrobnosti o tejto chybe"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
 msgid "Unable to bootstrap host. The following errors have happened:"
-msgstr ""
+msgstr "Nie je možné zaviesť hostiteľa. Vyskytli sa nasledujúce chyby:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
