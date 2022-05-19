@@ -14,7 +14,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=/etc/sysconfig/uyuni-proxy-systemd-services
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-tftpd.pid %t/uyuni-proxy-tftpd.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/uyuni-proxy-tftpd.pid --cidfile %t/uyuni-proxy-tftpd.ctr-id --cgroups=no-conmon --pod-id-file %t/uyuni-proxy-pod.pod-id -d --replace -dt -v ${CONFIG_DIR}:/etc/uyuni:ro -v ${TFTPBOOT_DIR}:/srv/tftpboot:ro --name uyuni-proxy-tftpd ${NAMESPACE}/proxy-tftpd
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/uyuni-proxy-tftpd.pid --cidfile %t/uyuni-proxy-tftpd.ctr-id --cgroups=no-conmon --pod-id-file %t/uyuni-proxy-pod.pod-id -d --replace -dt -v ${CONFIG_DIR}:/etc/uyuni:ro -v ${TFTPBOOT_DIR}:/srv/tftpboot:ro --name uyuni-proxy-tftpd ${NAMESPACE}/proxy-tftpd:${TAG}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-tftpd.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/uyuni-proxy-tftpd.ctr-id
 PIDFile=%t/uyuni-proxy-tftpd.pid
