@@ -1,3 +1,5 @@
+- spacewalk-hostname-rename now correctly replaces the hostname for
+  the mgr-sync configuration file (bsc#1198356)
 - spacewalk-hostname-rename now utilizes the "--apache2-conf-dir"
   flag for spacewalk-setup-cobbler
 - Add repositories for Ubuntu 22.04 LTS
