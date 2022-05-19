@@ -1,3 +1,4 @@
+- Fixed query to populate the XccdScanResult reporting table
 - skip forwarding data to scc if no credentials are available
 - add python3 example for HTTP API
 - Improved handling of error messages during bootstrapping

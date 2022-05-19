@@ -63,6 +63,7 @@
         )
         SELECT rhnxccdfruleresult.testresult_id AS scan_id
                    , rhnxccdfruleresult.id AS rule_id
+                   , COALESCE(rhnxccdfruleidentmap.ident_id, ruleresult_idrefs.ident_id) AS ident_id
                    , ruleresult_idrefs.identifier AS idref
                    , rhnxccdfidentsystem.system as rulesystem
                    , rhnxccdftestresult.server_id as system_id
@@ -75,7 +76,7 @@
                    LEFT JOIN rhnxccdfruleidentmap ON rhnxccdfruleidentmap.rresult_id = ruleresult_idrefs.rresult_id AND rhnxccdfruleidentmap.ident_id != ruleresult_idrefs.ident_id
                    LEFT JOIN rhnxccdfident on rhnxccdfruleidentmap.ident_id = rhnxccdfident.id
                    LEFT JOIN rhnxccdfidentsystem on rhnxccdfident.identsystem_id = rhnxccdfidentsystem.id
-        ORDER BY rhnxccdfruleresult.testresult_id OFFSET :offset LIMIT :limit
+        ORDER BY scan_id, rule_id, ident_id OFFSET :offset LIMIT :limit
     </query>
 </mode>
 
