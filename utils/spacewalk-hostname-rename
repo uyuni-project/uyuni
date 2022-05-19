@@ -652,8 +652,8 @@ print_status $?
 # change /root/.mgr-sync
 if [ -e $MGR_SYNC_CONF ]; then
     backup_file $MGR_SYNC_CONF
-    sed -i "s/$OLD_HOSTNAME/$HOSTNAME/g" $MGR_SYNC_CONF
-    sed -i "s/^\(mgrsync.session.token \?=\).*$/\1/g" $MGR_SYNC_CONF
+    sed -i "s/^mgrsync.host\s\{0,1\}=\s\{0,1\}.*/mgrsync.host = $HOSTNAME/g" $MGR_SYNC_CONF
+    sed -i "s/^mgrsync.session.token\s\{0,1\}=\s\{0,1\}.*/mgrsync.session.token = \"\"/g" $MGR_SYNC_CONF
 fi
 print_status 0  # just simulate end
 
