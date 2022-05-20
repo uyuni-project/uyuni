@@ -15,16 +15,15 @@
 package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.notFound;
-import static spark.Spark.post;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -71,9 +70,12 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
+
+import org.apache.http.HttpStatus;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.http.HttpStatus;
+
 import spark.ModelAndView;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
@@ -114,8 +116,7 @@ public class Router implements SparkApplication {
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(systemQuery, saltApi);
         ClustersController clustersController = new ClustersController(clusterManager, formulaManager);
-
-        post("/manager/frontend-log", withUser(FrontendLogController::log));
+        FrontendLogController frontendLogController = new FrontendLogController();
 
         // Login
         LoginController.initRoutes(jade);
@@ -202,6 +203,9 @@ public class Router implements SparkApplication {
 
         // Ansible Control Node
         AnsibleController.initRoutes(jade);
+
+        // Frontend Logging
+        frontendLogController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {
