@@ -101,7 +101,6 @@ function HighstateOutput({ minionId }) {
         icon="fa-file-text-o"
         text={t("Show full highstate output")}
         action={() => requestHighstate(minionId).then(setHighstate)}
-        defaultType="btn-link"
       />
     );
   }

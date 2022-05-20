@@ -62,11 +62,15 @@
 }
 
 .btn-link {
-  color: @link-color;
-  font-weight: normal;
+  &, &:active, &:focus, &:disabled, &.disabled {
+    &, &:hover {
+      color: @link-color;
+      font-weight: normal;
+    }
 
-  &:hover {
-    text-decoration: underline;
+    &:not(:disabled):not(.disabled):not(.text-muted):hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -123,7 +127,7 @@
       border-color: @eos-bc-red-500;
       color: @eos-bc-white;
 
-      &:not(:disabled):not(.disabled):hover {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover {
         background: @eos-bc-red-900;
         border-color: @eos-bc-red-900;
       }
