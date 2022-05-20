@@ -1,3 +1,4 @@
+- Hide authentication data in PAYG UI (bsc#1199679)
 - Improved handling of error messages during bootstrapping
 - Added support for end of life notifications
 - Improved test integration for dropdowns

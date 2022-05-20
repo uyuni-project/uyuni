@@ -1,3 +1,4 @@
+- Hide authentication data in PAYG UI (bsc#1199679)
 - autoinstallation: missing whitespace after install URL (bsc#1199888)
 - Improved handling of error messages during bootstrapping
 - skip forwarding data to scc if no credentials are available

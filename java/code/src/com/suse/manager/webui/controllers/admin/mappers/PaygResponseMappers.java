@@ -69,12 +69,16 @@ public class PaygResponseMappers {
                 new PaygProperties(paygSshData.getDescription(),
                         paygSshData.getHost(),
                         paygSshData.getPort() != null ? String.valueOf(paygSshData.getPort()) : null,
-                        paygSshData.getUsername(), paygSshData.getPassword(),
-                        paygSshData.getKey(), paygSshData.getKeyPassword(),
+                        paygSshData.getUsername(),
+                        "",
+                        "",
+                        "",
                         paygSshData.getBastionHost(),
                         paygSshData.getBastionPort() != null ? String.valueOf(paygSshData.getBastionPort()) : null,
-                        paygSshData.getBastionUsername(), paygSshData.getBastionPassword(),
-                        paygSshData.getBastionKey(), paygSshData.getBastionKeyPassword()
+                        paygSshData.getBastionUsername(),
+                        "",
+                        "",
+                        "", false, false
                         ));
         return paygResponse;
     }

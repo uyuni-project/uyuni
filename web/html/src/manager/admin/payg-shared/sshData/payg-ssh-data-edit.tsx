@@ -22,6 +22,11 @@ const PaygSshDataEdit = (props: Props) => {
   const { onAction, cancelAction, isLoading } = useLifecyclePaygActionsApi();
 
   const saveAction = ({ item, closeDialog, setErrors }) => {
+    if (props.isInstance) {
+      item.instance_edit = true;
+    } else {
+      item.bastion_edit = true;
+    }
     onAction(item, "update", props.paygId)
       .then((data) => {
         closeDialog();

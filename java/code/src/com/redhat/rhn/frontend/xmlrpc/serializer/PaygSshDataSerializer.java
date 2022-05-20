@@ -35,15 +35,9 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *              #prop("string", "hostname")
  *              #prop("int", "port")
  *              #prop("string", "username")
- *              #prop("string", "password")
- *              #prop("string", "key")
- *              #prop("string", "key_password")
  *              #prop("string", "bastion_hostname")
  *              #prop("int", "bastion_port")
  *              #prop("string", "bastion_username")
- *              #prop("string", "bastion_password")
- *              #prop("string", "bastion_key")
- *              #prop("string", "bastion_key_password")
  *      #struct_end()
  */
 public class PaygSshDataSerializer extends RhnXmlRpcCustomSerializer {
@@ -67,16 +61,10 @@ public class PaygSshDataSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("hostname", sshData.getHost());
         helper.add("port", sshData.getPort());
         helper.add("username", sshData.getUsername());
-        helper.add("password", sshData.getPassword());
-        helper.add("key", sshData.getKey());
-        helper.add("key_password", sshData.getKeyPassword());
 
         helper.add("bastion_hostname", sshData.getBastionHost());
         helper.add("bastion_port", sshData.getBastionPort());
         helper.add("bastion_username", sshData.getBastionUsername());
-        helper.add("bastion_password", sshData.getBastionPassword());
-        helper.add("bastion_key", sshData.getBastionKey());
-        helper.add("bastion_key_password", sshData.getBastionKeyPassword());
         helper.writeTo(output);
     }
 }
