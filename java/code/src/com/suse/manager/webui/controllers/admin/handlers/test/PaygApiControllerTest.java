@@ -166,7 +166,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         PaygSshData paygInfo = createPaygSshData();
         PaygProperties properties = new PaygProperties("d", "h", "8001",
                 "u", "p", "k", "kp",
-                "bh", "8002", "bu", "bp", "bk", "bkp");
+                "bh", "8002", "bu", "bp", "bk", "bkp", true, true);
 
         String dataJson = PaygApiContoller.updatePayg(
                 getPostRequestWithCsrfAndBody("/manager/api/admin/config/payg/:id",
@@ -181,16 +181,18 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         assertEquals(paygInfo.getHost(), returnData.getData().getProperties().getHost());
         assertEquals(properties.getPort(), returnData.getData().getProperties().getPort());
         assertEquals(properties.getUsername(), returnData.getData().getProperties().getUsername());
-        assertEquals(properties.getPassword(), returnData.getData().getProperties().getPassword());
-        assertEquals(properties.getKey(), returnData.getData().getProperties().getKey());
-        assertEquals(properties.getKeyPassword(), returnData.getData().getProperties().getKeyPassword());
+        assertEquals("", returnData.getData().getProperties().getPassword());
+        assertEquals("", returnData.getData().getProperties().getKey());
+        assertEquals("", returnData.getData().getProperties().getKeyPassword());
 
         assertEquals(properties.getBastionHost(), returnData.getData().getProperties().getBastionHost());
         assertEquals(properties.getBastionPort(), returnData.getData().getProperties().getBastionPort());
         assertEquals(properties.getBastionUsername(), returnData.getData().getProperties().getBastionUsername());
-        assertEquals(properties.getBastionPassword(), returnData.getData().getProperties().getBastionPassword());
-        assertEquals(properties.getBastionKey(), returnData.getData().getProperties().getBastionKey());
-        assertEquals(properties.getBastionKeyPassword(), returnData.getData().getProperties().getBastionKeyPassword());
+        assertEquals("", returnData.getData().getProperties().getBastionPassword());
+        assertEquals("", returnData.getData().getProperties().getBastionKey());
+        assertEquals("", returnData.getData().getProperties().getBastionKeyPassword());
+
+        //FIXME check data in the database
 
         context.assertIsSatisfied();
     }
@@ -220,7 +222,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
 
         PaygProperties properties = new PaygProperties("d", "h", "8001",
                 "u", "p", "k", "kp",
-                "bh", "8002", "bu", "bp", "bk", "bkp");
+                "bh", "8002", "bu", "bp", "bk", "bkp", true, true);
 
         String dataJson = PaygApiContoller.createPayg(
                 getPostRequestWithCsrfAndBody("/manager/api/admin/config/payg",

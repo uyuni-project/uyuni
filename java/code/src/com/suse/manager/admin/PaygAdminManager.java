@@ -168,38 +168,48 @@ public class PaygAdminManager {
         Integer port = null;
         Integer bastionPort = null;
 
-        if (!StringUtils.isEmpty(paygProperties.getPort())) {
-            try {
-                port = Integer.parseInt(paygProperties.getPort());
-            }
-            catch (NumberFormatException e) {
-                result.addFieldError(PaygAdminFields.port.name(), "payg.port_invalid");
-            }
-        }
-        if (!StringUtils.isEmpty(paygProperties.getBastionPort())) {
-            try {
-                bastionPort = Integer.parseInt(paygProperties.getBastionPort());
-            }
-            catch (NumberFormatException e) {
-                result.addFieldError(PaygAdminFields.bastion_port.name(), "payg.bastion_port_invalid");
+        if (paygProperties.isInstanceEdit()) {
+            if (!StringUtils.isEmpty(paygProperties.getPort())) {
+                try {
+                    port = Integer.parseInt(paygProperties.getPort());
+                }
+                catch (NumberFormatException e) {
+                    result.addFieldError(PaygAdminFields.port.name(), "payg.port_invalid");
+                }
             }
         }
-
+        else {
+            port = paygSshData.getPort();
+        }
+        if (paygProperties.isBastionEdit()) {
+            if (!StringUtils.isEmpty(paygProperties.getBastionPort())) {
+                try {
+                    bastionPort = Integer.parseInt(paygProperties.getBastionPort());
+                }
+                catch (NumberFormatException e) {
+                    result.addFieldError(PaygAdminFields.bastion_port.name(), "payg.bastion_port_invalid");
+                }
+            }
+        }
+        else {
+            bastionPort = paygSshData.getBastionPort();
+        }
 
         return setDetails(paygSshData,
                 paygProperties.getDescription(),
                 paygSshData.getHost(),
                 port,
-                paygProperties.getUsername(),
-                paygProperties.getPassword(),
-                paygProperties.getKey(),
-                paygProperties.getKeyPassword(),
-                paygProperties.getBastionHost(),
+                paygProperties.isInstanceEdit() ? paygProperties.getUsername() : paygSshData.getUsername(),
+                paygProperties.isInstanceEdit() ? paygProperties.getPassword() : paygSshData.getPassword(),
+                paygProperties.isInstanceEdit() ? paygProperties.getKey() : paygSshData.getKey(),
+                paygProperties.isInstanceEdit() ? paygProperties.getKeyPassword() : paygSshData.getKeyPassword(),
+                paygProperties.isBastionEdit() ? paygProperties.getBastionHost() : paygSshData.getBastionHost(),
                 bastionPort,
-                paygProperties.getBastionUsername(),
-                paygProperties.getBastionPassword(),
-                paygProperties.getBastionKey(),
-                paygProperties.getBastionKeyPassword());
+                paygProperties.isBastionEdit() ? paygProperties.getBastionUsername() : paygSshData.getBastionUsername(),
+                paygProperties.isBastionEdit() ? paygProperties.getBastionPassword() : paygSshData.getBastionPassword(),
+                paygProperties.isBastionEdit() ? paygProperties.getBastionKey() : paygSshData.getBastionKey(),
+                paygProperties.isBastionEdit() ? paygProperties.getBastionKeyPassword() :
+                        paygSshData.getBastionKeyPassword());
     }
 
     /**
