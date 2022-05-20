@@ -337,19 +337,18 @@ public class RemoteMinionCommands {
                             Optional<MinionServer> minion =
                                     MinionServerFactory.findByMinionId(minionId);
 
+                            final String end = "</pre>";
                             StringBuilder details = new StringBuilder();
                             details.append("Command: <pre>");
                             details.append(command);
                             details.append("</pre> returned:<pre>");
-                            int maxLength = 4000 - details.length() - 6;
-                            String output = result;
-                            int truncate = StringUtil.htmlifyText(output).length() - maxLength;
-                            if (truncate > 0) {
-                                // command output too large, truncate it to fit in the db
-                                output = StringUtils.substring(output, 0, maxLength - truncate - 3) + "...";
-                            }
-                            details.append(StringUtil.htmlifyText(output));
-
+                            int maxLength = 4000 - details.length() - end.length();
+                            String htmlOutput = StringUtil.htmlifyText(result);
+                            details.append(
+                                htmlOutput.length() > maxLength ?
+                                    StringUtils.substring(htmlOutput, 0, maxLength - "...".length()) + "..." :
+                                    htmlOutput
+                            );
                             details.append("</pre>");
                             minion.ifPresent(min ->
                                     SystemManager.addHistoryEvent(min,
