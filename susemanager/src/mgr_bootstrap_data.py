@@ -1516,7 +1516,7 @@ DATA = {
      },
      'debian11-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-11-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN11,
-         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/11/bootstrap/',
+         'DEST' : '/srv/www/htdocs/pub/repositories/debian/11/bootstrap/',
          'TYPE' : 'deb'
      },
      'astralinux-orel-amd64': {

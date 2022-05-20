@@ -21,6 +21,12 @@
 - Redesign the auto errata task to schedule combined actions (bsc#1197429)
 
 -------------------------------------------------------------------
+Fri May 20 17:08:24 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.36-1
+  * Add rate-limiting to frontend logging (bsc#1199512) (CVE-2022-21952)
+
+-------------------------------------------------------------------
 Wed May 04 14:08:43 CEST 2022 - jmassaguerpla@suse.de
 
 - version 4.2.35-1
