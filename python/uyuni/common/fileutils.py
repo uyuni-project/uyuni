@@ -239,12 +239,29 @@ def rhn_popen(cmd, progressCallback=None, bufferSize=16384, outputLog=None):
 
 
 def makedirs(path,  mode=int('0755', 8), user=None, group=None):
-    "makedirs function that also changes the owners"
+    """Creates all required directories on a path and changes its owner and group
+
+    :param path: path to create
+    :type path: str
+    :param mode: mode for the created directories
+    :type mode: int
+    :param user: desired owner
+    :type user: str
+    :param group: desired group
+    :type group:str
+    :returns: None
+    """
 
     dirs_to_create = []
     dirname = path
 
     uid, gid = getUidGid(user, group)
+
+    if uid is None:
+        raise OSError("*** ERROR: user %s doesn't exist. Cannot create path." % user)
+
+    if gid is None:
+        raise OSError("*** ERROR: group %s doesn't exist. Cannot create path." % group)
 
     while 1:
         if os.path.isdir(dirname):
@@ -356,8 +373,6 @@ class GecosCache:
         try:
             uid = pwd.getpwnam(name)[2]
         except KeyError:
-            # XXX misa: gripe? taw: I think we need to do something!
-            sys.stderr.write("XXX: User %s does not exist\n" % name)
             return None
         self._users[name] = uid
         return uid
@@ -369,8 +384,6 @@ class GecosCache:
         try:
             gid = grp.getgrnam(name)[2]
         except KeyError:
-            # XXX misa: gripe?
-            sys.stderr.write("XXX: Group %s does not exist\n" % name)
             return None
         self._groups[name] = gid
         return gid
@@ -381,24 +394,28 @@ class GecosCache:
 
 
 def getUidGid(user=None, group=None):
-    "return uid, gid given user and group"
+    """Returns uid and gid of given user name and group name
+
+    :param user: The name of the user
+    :type user: str
+    :param group: The name of the group
+    :type group: str
+    :returns: a tuple with the uid and the gid
+    :rtype: tuple
+    """
 
     gc = GecosCache()
-    uid = os.getuid()
-    if uid != 0:
-        # Don't bother to change the owner, it will fail anyway
-        # group ownership may work though
-        user = None
-    else:
+
+    if user:
         uid = gc.getuid(user)
+    else:
+        uid = os.getuid()
 
     if group:
         gid = gc.getgid(group)
     else:
-        gid = None
-
-    if gid is None:
         gid = os.getgid()
+
     return uid, gid
 
 # Duplicated in client/tools/rhncfg/config_common/file_utils.py to remove dependency
