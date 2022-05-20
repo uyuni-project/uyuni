@@ -1,4 +1,8 @@
-- change release status of Debian 11 to released
+-------------------------------------------------------------------
+Fri May 20 00:15:03 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * change release status of Debian 11 to released
 
 -------------------------------------------------------------------
 Wed May 04 15:26:39 CEST 2022 - jgonzalez@suse.com

@@ -1,4 +1,8 @@
-- Removed Apache Commons httpclient requirements.
+-------------------------------------------------------------------
+Fri May 20 00:10:13 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Removed Apache Commons httpclient requirements
 
 -------------------------------------------------------------------
 Tue Apr 19 12:06:37 CEST 2022 - jgonzalez@suse.com

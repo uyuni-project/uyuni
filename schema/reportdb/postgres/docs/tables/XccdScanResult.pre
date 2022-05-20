@@ -17,6 +17,8 @@ COMMENT ON COLUMN XccdScanResult.mgm_id
 COMMENT ON COLUMN XccdScanResult.scan_id
   IS 'The id of the security scan';
 COMMENT ON COLUMN XccdScanResult.rule_id
+  IS 'The id of the rule result';
+COMMENT ON COLUMN XccdScanResult.ident_id
   IS 'The id of the rule';
 COMMENT ON COLUMN XccdScanResult.idref
   IS 'The reference of the rule';
@@ -25,7 +27,7 @@ COMMENT ON COLUMN XccdScanResult.rulesystem
 COMMENT ON COLUMN XccdScanResult.system_id
   IS 'The id of the system';
 COMMENT ON COLUMN XccdScanResult.ident
-  IS 'The CCE v5 id of this rule';
+  IS 'The identifier of this rule';
 COMMENT ON COLUMN XccdScanResult.result
   IS 'The result of the scan for this rule';
 COMMENT ON COLUMN XccdScanResult.synced_date
