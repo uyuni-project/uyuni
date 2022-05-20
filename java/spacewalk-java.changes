@@ -1,3 +1,6 @@
+- During re-activation, recalculate grains if 
+  contact method has been changed (bsc#1199677)
+
 -------------------------------------------------------------------
 Mon May 23 10:57:23 CEST 2022 - jgonzalez@suse.com
 
