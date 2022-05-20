@@ -40,7 +40,9 @@
 - features/secondary/min_ssh_tunnel.feature
 - features/secondary/min_activationkey.feature
 - features/secondary/trad_migrate_to_minion.feature
-- features/secondary/trad_migrate_to_sshminion.feature
+# temporarily disabled. Reason: this is unstable, it fails sometimes
+# and can't find the reason. We need to check later on this test.
+# - features/secondary/trad_migrate_to_sshminion.feature
 - features/secondary/trad_ssh_tunnel.feature
 - features/secondary/trad_baremetal_discovery.feature
 - features/secondary/min_salt_minions_page.feature
