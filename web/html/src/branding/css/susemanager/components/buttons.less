@@ -73,7 +73,7 @@
 // TODO: Add :active and :focus states for green etc
 // NB! Here and below, these are not nested because they're not used consistently along with .btn
 .btn-default {
-  &, &:disabled, &.disabled {
+  &, &:active, &:focus, &:disabled, &.disabled {
     &, &:hover {
       background: transparent;
       border-color: @eos-bc-pine-500;
@@ -87,7 +87,7 @@
 }
 
 .btn-primary {
-  &, &:disabled, &.disabled {
+  &, &:active, &:focus, &:disabled, &.disabled {
     &, &:hover {
       background: @eos-bc-persimmon-500;
       border-color: @eos-bc-persimmon-500;
@@ -101,7 +101,7 @@
 }
 
 .btn-success {
-  &, &:disabled, &.disabled {
+  &, &:active, &:focus, &:disabled, &.disabled {
     &, &:hover {
       background: transparent;
       border-color: @eos-bc-persimmon-500;
@@ -117,7 +117,7 @@
 // Warning shouldn't currently be used anywhere, but cover it just in case
 .btn-warning,
 .btn-danger {
-  &, &:disabled, &.disabled {
+  &, &:active, &:focus, &:disabled, &.disabled {
     &, &:hover {
       background: @eos-bc-red-500;
       border-color: @eos-bc-red-500;
