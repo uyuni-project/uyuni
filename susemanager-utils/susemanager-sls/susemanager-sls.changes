@@ -1,3 +1,6 @@
+- create CA certificate symlink on Proxies which might get lost due
+  to de-installation of the ca package
+
 -------------------------------------------------------------------
 Fri May 20 00:14:13 CEST 2022 - jgonzalez@suse.com
 
