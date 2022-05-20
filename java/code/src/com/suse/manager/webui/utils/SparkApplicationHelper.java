@@ -28,6 +28,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.webui.Languages;
+import com.suse.manager.webui.services.ThrottlingService;
+import com.suse.manager.webui.services.TooManyCallsException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,6 +58,7 @@ public class SparkApplicationHelper {
 
     private static final String TEMPLATE_ROOT = "com/suse/manager/webui";
     private static final Gson GSON = new GsonBuilder().create();
+    private static final ThrottlingService THROTTLER = new ThrottlingService();
 
     /**
      * Private constructor.
@@ -431,6 +434,44 @@ public class SparkApplicationHelper {
                 throw new PermissionException("no perms");
             }
             return route.handle(request, response);
+        };
+    }
+
+    /**
+     * Apply rate-limiting to a specific authenticated endpoint
+     *
+     * The routes set up with throttling allow only a limited number of calls for each period. If the consumer exceeds
+     * the limit, the call returns a 429 (Too many requests) response, with a 'Retry-After' header set to notify the
+     * consumer to try the request again after a certain amount of time (RFC 6585).
+     * @param route the route
+     * @return the route
+     */
+    public static RouteWithUser throttling(RouteWithUser route) {
+        return throttling(route, ThrottlingService.DEF_MAX_CALLS_PER_PERIOD,
+                ThrottlingService.DEF_THROTTLE_PERIOD_SECS);
+    }
+
+    /**
+     * Apply rate-limiting to a specific authenticated endpoint
+     *
+     * The routes set up with throttling allow only a limited number of calls for each period. If the consumer exceeds
+     * the limit, the call returns a 429 (Too many requests) response, with a 'Retry-After' header set to notify the
+     * consumer to try the request again after a certain amount of time (RFC 6585).
+     * @param route the route
+     * @param maxCalls maximum number of allowed calls per throttling period
+     * @param period the throttling period in seconds
+     * @return the route
+     */
+    public static RouteWithUser throttling(RouteWithUser route, long maxCalls, long period) {
+        return (req, res, user) -> {
+            try {
+                THROTTLER.call(user.getId(), req.pathInfo(), maxCalls, period);
+            }
+            catch (TooManyCallsException e) {
+                res.header("Retry-After", Long.toString(period));
+                Spark.halt(429, "Too many requests");
+            }
+            return route.handle(req, res, user);
         };
     }
 
