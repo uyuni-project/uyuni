@@ -162,7 +162,7 @@ class SCCDialog extends React.Component<Props> {
                         : "fa fa-li fa-circle-o text-muted"
                     }
                   />
-                  <span className={s.success == null ? "text-muted" : ""}>{s.label}</span>
+                  <span>{s.label}</span>
                 </li>
               );
             })}

@@ -26,7 +26,7 @@ export class SearchField extends React.Component<SearchFieldProps> {
     const props = this.props;
     return (
       <input
-        className="form-control table-input-search with-bottom-margin"
+        className="form-control table-input-search"
         value={props.criteria || ""}
         placeholder={props.placeholder}
         type="text"
