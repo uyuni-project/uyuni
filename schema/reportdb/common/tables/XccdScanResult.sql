@@ -14,6 +14,7 @@ CREATE TABLE XccdScanResult
     mgm_id              NUMERIC NOT NULL,
     scan_id             NUMERIC NOT NULL,
     rule_id             NUMERIC NOT NULL,
+    ident_id            NUMERIC NOT NULL,
     idref               VARCHAR(255),
     rulesystem          VARCHAR(80),
     system_id           NUMERIC NOT NULL,
@@ -23,4 +24,4 @@ CREATE TABLE XccdScanResult
 );
 
 ALTER TABLE XccdScanResult
-  ADD CONSTRAINT XccdScanResult_pk PRIMARY KEY (mgm_id, scan_id, rule_id);
+  ADD CONSTRAINT XccdScanResult_pk PRIMARY KEY (mgm_id, scan_id, rule_id, ident_id);

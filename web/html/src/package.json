@@ -5,7 +5,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "all": "yarn install && npm-run-all -clps --aggregate-output build lint test tsc",
-    "audit-production-dependencies": "yarn audit --groups \"dependencies\"",
+    "audit-production-dependencies": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" node build/audit.js",
     "dev": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" webpack --config build/webpack.config.js --mode development",
     "watch": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" webpack --config build/webpack.config.js --mode development --watch",
     "proxy": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\"; proxy () { webpack-dev-server --mode development --config build/webpack.config.js --env server=$*; }; proxy",
@@ -115,7 +115,7 @@
     "react-modal": "^3.13.1",
     "react-select": "^4.3.1",
     "react-select-async-paginate": "^0.6.0",
-    "react-toastify": "^6.0.5",
+    "react-toastify": "6.0.5",
     "react-virtuoso": "^2.5.1",
     "senna": "^2.7.8",
     "use-immer": "^0.3.0",

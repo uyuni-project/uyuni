@@ -205,17 +205,13 @@ class ProductsPageWrapper extends React.Component {
           resultMessages = MessagesUtils.success("Selected channels/products were scheduled successfully for syncing.");
         } else {
           resultMessages = MessagesUtils.warning(
-            <>
-              <p>The following product installations failed:</p>
-              <ul>
-                {failedProducts.map((a) => (
-                  <li>
-                    {a.label}: {data[a.identifier]}
-                  </li>
-                ))}
-              </ul>
-              <p className="margin-bottom-xs">Please check log files.</p>
-            </>
+            failedProducts.map((a) => (
+              <>
+                {a.label}: {data[a.identifier]}
+              </>
+            )),
+            true,
+            t("The following product installations failed. Please check log files.")
           );
         }
         currentObject.setState({

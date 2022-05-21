@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * PackageStateSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("package state")
  *     #prop("int", "id")

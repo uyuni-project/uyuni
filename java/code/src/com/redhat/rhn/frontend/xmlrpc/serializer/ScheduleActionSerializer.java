@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * ScheduleActionSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("action")
  *   #prop_desc("int", "id", "action ID")

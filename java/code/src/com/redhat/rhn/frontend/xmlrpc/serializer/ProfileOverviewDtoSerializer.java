@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * ProfileOverviewDtoSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("package profile")
  *   #prop("int", "id")
  *   #prop("string", "name")

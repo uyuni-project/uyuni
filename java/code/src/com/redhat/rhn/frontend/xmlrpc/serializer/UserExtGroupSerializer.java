@@ -28,7 +28,7 @@ import java.util.List;
  *
  * UserExtGroupSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("external group")
  *      #prop("string", "name")
  *      #prop_array("roles", "string", "role")

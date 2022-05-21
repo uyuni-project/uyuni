@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-29 11:12+0000\n"
+"POT-Creation-Date: 2022-05-19 14:13+0000\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -30,11 +30,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:491
+#: ../html/javascript/spacewalk-essentials.js:511
 msgid "remaining"
 msgstr "restante"
 
-#: ../html/javascript/spacewalk-essentials.js:511
+#: ../html/javascript/spacewalk-essentials.js:531
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -153,8 +153,8 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-details.tsx:146
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:188
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:189
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
 msgid "Back"
 msgstr "Voltar"
 
@@ -401,8 +401,8 @@ msgstr ""
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:68
 #: ../html/src/manager/login/uyuni/login.tsx:65
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "Senha"
@@ -474,7 +474,7 @@ msgstr "Primeiro"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:407
+#: ../html/src/manager/admin/setup/products/products.tsx:403
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
@@ -483,7 +483,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:413
+#: ../html/src/manager/admin/setup/products/products.tsx:409
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -501,7 +501,7 @@ msgstr "Página"
 
 #: ../html/src/components/pagination.tsx:108
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:418
+#: ../html/src/manager/admin/setup/products/products.tsx:414
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
 msgid "of"
 msgstr "de"
@@ -632,7 +632,7 @@ msgid "({0} selected)"
 msgstr ""
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.tsx:335
+#: ../html/src/manager/admin/setup/products/products.tsx:331
 msgid "Clear"
 msgstr ""
 
@@ -915,7 +915,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
 #: ../html/src/manager/state/recurring-states-list.tsx:51
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
 #: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
@@ -950,7 +950,7 @@ msgid "Bastion SSH connection data"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:266
+#: ../html/src/manager/admin/setup/products/products.tsx:262
 msgid "Setup Wizard"
 msgstr ""
 
@@ -962,7 +962,7 @@ msgstr ""
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr ""
 
@@ -1034,27 +1034,27 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 #, fuzzy
 msgid "User"
 msgstr "Usuários"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:430
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr ""
 
@@ -1083,7 +1083,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:373
-#: ../html/src/manager/notifications/notification-messages.tsx:444
+#: ../html/src/manager/notifications/notification-messages.tsx:448
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr ""
@@ -1107,6 +1107,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:131
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr ""
@@ -1121,104 +1122,108 @@ msgstr ""
 msgid "The product catalog refresh is running..."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:291
+#: ../html/src/manager/admin/setup/products/products.tsx:214
+msgid "The following product installations failed. Please check log files."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:296
+#: ../html/src/manager/admin/setup/products/products.tsx:292
 msgid "The product catalog is still refreshing, please wait."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:298
+#: ../html/src/manager/admin/setup/products/products.tsx:294
 msgid "Select some product first."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:307
-#: ../html/src/manager/admin/setup/products/products.tsx:315
+#: ../html/src/manager/admin/setup/products/products.tsx:303
+#: ../html/src/manager/admin/setup/products/products.tsx:311
 msgid "Add products"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:334
+#: ../html/src/manager/admin/setup/products/products.tsx:330
 msgid "Clear products selection"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:374
+#: ../html/src/manager/admin/setup/products/products.tsx:370
 msgid "Why aren't all products displayed in the list?"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:377
+#: ../html/src/manager/admin/setup/products/products.tsx:373
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:382
+#: ../html/src/manager/admin/setup/products/products.tsx:378
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:392
+#: ../html/src/manager/admin/setup/products/products.tsx:388
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:468
+#: ../html/src/manager/admin/setup/products/products.tsx:464
 msgid "Filter by architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:563
+#: ../html/src/manager/admin/setup/products/products.tsx:559
 msgid "Filter by product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:633
+#: ../html/src/manager/admin/setup/products/products.tsx:629
 msgid "Product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:639
-#: ../html/src/manager/admin/setup/products/products.tsx:1017
+#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:1013
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:641
+#: ../html/src/manager/admin/setup/products/products.tsx:637
 msgid "Arch"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:648
+#: ../html/src/manager/admin/setup/products/products.tsx:644
 msgid "Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:819
+#: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid " channels sync failed"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:827
+#: ../html/src/manager/admin/setup/products/products.tsx:823
 msgid " channels sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:835
+#: ../html/src/manager/admin/setup/products/products.tsx:831
 msgid " channels synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:860
+#: ../html/src/manager/admin/setup/products/products.tsx:856
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:861
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 msgid "Select this product"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:873
+#: ../html/src/manager/admin/setup/products/products.tsx:869
 msgid "This product is mirrored."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:902
+#: ../html/src/manager/admin/setup/products/products.tsx:898
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1226,7 +1231,7 @@ msgstr ""
 msgid "recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:920
+#: ../html/src/manager/admin/setup/products/products.tsx:916
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1234,51 +1239,51 @@ msgstr ""
 msgid "include recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:962
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 msgid "SCC product catalog refresh in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:965
+#: ../html/src/manager/admin/setup/products/products.tsx:961
 msgid "Scheduling channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:968
+#: ../html/src/manager/admin/setup/products/products.tsx:964
 msgid "Channels product resync scheduled"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:971
+#: ../html/src/manager/admin/setup/products/products.tsx:967
 msgid "Schedule channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1032
+#: ../html/src/manager/admin/setup/products/products.tsx:1028
 msgid "Show product's channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1064
+#: ../html/src/manager/admin/setup/products/products.tsx:1060
 msgid "Product Channels - "
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1069
+#: ../html/src/manager/admin/setup/products/products.tsx:1065
 msgid "Mandatory Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1076
+#: ../html/src/manager/admin/setup/products/products.tsx:1072
 msgid "Optional Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1091
+#: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "not synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1094
+#: ../html/src/manager/admin/setup/products/products.tsx:1090
 msgid "sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1097
+#: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1100
+#: ../html/src/manager/admin/setup/products/products.tsx:1096
 msgid "sync failed"
 msgstr ""
 
@@ -1372,14 +1377,14 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:568
+#: ../html/src/manager/notifications/notification-messages.tsx:572
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:570
-#: ../html/src/utils/network.ts:101
+#: ../html/src/manager/notifications/notification-messages.tsx:574
+#: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr ""
 
@@ -2313,8 +2318,8 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:177
 #: ../html/src/manager/images/image-store-edit.tsx:259
 #: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
 msgstr ""
@@ -2547,7 +2552,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:640
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notification-messages.tsx:510
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2728,7 +2733,7 @@ msgstr ""
 #: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-import.tsx:229
 #: ../html/src/manager/images/image-profile-edit.tsx:394
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:548
 msgid "Activation Key"
 msgstr ""
 
@@ -2791,8 +2796,8 @@ msgstr ""
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:378
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:196
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr ""
 
@@ -2831,7 +2836,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profile-edit.tsx:492
 #: ../html/src/manager/images/image-store-edit.tsx:214
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:111
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:40
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:38
@@ -3940,97 +3945,101 @@ msgstr ""
 msgid "Pay-as-you-go refresh authentication data failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:141
+#: ../html/src/manager/notifications/notification-messages.tsx:54
+msgid "End of Life Period"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.tsx:253
+#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Info"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:257
-#: ../html/src/manager/notifications/notification-messages.tsx:258
+#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Warning"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:265
-#: ../html/src/manager/notifications/notification-messages.tsx:266
+#: ../html/src/manager/notifications/notification-messages.tsx:269
+#: ../html/src/manager/notifications/notification-messages.tsx:270
 msgid "Error"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:328
+#: ../html/src/manager/notifications/notification-messages.tsx:332
 msgid "show details"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:377
+#: ../html/src/manager/notifications/notification-messages.tsx:381
 msgid "Retry onboarding"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:387
+#: ../html/src/manager/notifications/notification-messages.tsx:391
 msgid "Retry repo sync"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:411
+#: ../html/src/manager/notifications/notification-messages.tsx:415
 msgid "Unread Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:416
+#: ../html/src/manager/notifications/notification-messages.tsx:420
 msgid "All Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:448
-#: ../html/src/manager/notifications/notification-messages.tsx:449
+#: ../html/src/manager/notifications/notification-messages.tsx:452
+#: ../html/src/manager/notifications/notification-messages.tsx:453
 msgid "Delete selected messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:456
-#: ../html/src/manager/notifications/notification-messages.tsx:457
+#: ../html/src/manager/notifications/notification-messages.tsx:460
+#: ../html/src/manager/notifications/notification-messages.tsx:461
 msgid "Mark selected as read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:474
-#: ../html/src/manager/notifications/notification-messages.tsx:556
+#: ../html/src/manager/notifications/notification-messages.tsx:478
+#: ../html/src/manager/notifications/notification-messages.tsx:560
 msgid "Notification Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:479
+#: ../html/src/manager/notifications/notification-messages.tsx:483
 msgid "The server has collected the following notification messages."
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notification-messages.tsx:498
 msgid "Filter by summary"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:500
+#: ../html/src/manager/notifications/notification-messages.tsx:504
 msgid "Severity"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notification-messages.tsx:516
 msgid "Summary"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:518
+#: ../html/src/manager/notifications/notification-messages.tsx:522
 msgid "Created"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:523
+#: ../html/src/manager/notifications/notification-messages.tsx:527
 msgid "Action"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notification-messages.tsx:533
 msgid "Read|Delete"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:542
 msgid "Flag as Unread"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:542
 msgid "Flag as Read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:544
+#: ../html/src/manager/notifications/notification-messages.tsx:548
 msgid "Delete Notification"
 msgstr ""
 
@@ -4108,7 +4117,7 @@ msgid "Proxy SSH port"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:210
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr ""
 
@@ -4617,65 +4626,82 @@ msgid ""
 "selected child channels."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:214
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
+msgid "Error Details"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
+msgid "Close"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:243
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:245
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "systems"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:247
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
 msgid "shortly"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:265
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
+msgid "Show additional details about this error"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
+msgid "Unable to bootstrap host. The following errors have happened:"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:269
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
 msgid "Loading SSH Private Key.."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:277
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:372
 msgid "Bootstrap"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:303
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 msgid "e.g., ••••••••••••"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:319
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:414
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:332
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
 msgid "Leave empty for no passphrase"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:344
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 msgid "Bootstrap Minions"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:347
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:442
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:360
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
 msgid "e.g., host.domain.com"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:493
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4683,47 +4709,47 @@ msgid ""
 "key is deployed during the bootstrap procedure."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Authentication Method"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:443
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
 msgid "Ansible control node"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:491
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:557
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:587
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:570
 msgid "Reactivation Key"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:480
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:576
 msgid "Leave empty when no reactivation is wanted"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:487
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
 msgid "Proxy"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:510
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:605
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:622
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:543
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:638
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:559
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:654
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr ""
@@ -5091,16 +5117,16 @@ msgid "Are you sure you want to delete this virtual host manager?"
 msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:185
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:272
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:262
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
 msgid "Gatherer module"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:313
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:303
 msgid "Current Context"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:327
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:317
 msgid "Kubeconfig file"
 msgstr ""
 
@@ -6080,20 +6106,20 @@ msgstr ""
 msgid "Split into groups"
 msgstr ""
 
-#: ../html/src/utils/network.ts:95
+#: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr ""
 
-#: ../html/src/utils/network.ts:97
+#: ../html/src/utils/network.ts:99
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
 
-#: ../html/src/utils/network.ts:99
+#: ../html/src/utils/network.ts:101
 msgid "Resource not found."
 msgstr ""
 
-#: ../html/src/utils/network.ts:103
+#: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr ""
 

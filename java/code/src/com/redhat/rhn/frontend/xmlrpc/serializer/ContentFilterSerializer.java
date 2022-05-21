@@ -27,7 +27,7 @@ import java.util.HashMap;
 /**
  * Serializer for {@link ContentFilter}
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("content filter information")
  *   #prop("int", "id")
  *   #prop("string", "name")

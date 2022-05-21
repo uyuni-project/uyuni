@@ -25,14 +25,13 @@
 %global apache_group apache
 %endif
 
-%define apache_commons_httpclient (apache-commons-httpclient or jakarta-commons-httpclient)
 %define oro (oro or jakarta-oro)
 
 Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        GPL-2.0-only AND Apache-2.0
 Group:          Applications/Internet
-Version:        4.3.3
+Version:        4.3.4
 Release:        1
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -52,7 +51,6 @@ BuildRequires:  apache-commons-logging
 BuildRequires:  apache-mybatis
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
-BuildRequires:  %{apache_commons_httpclient}
 BuildRequires:  %{oro}
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
@@ -78,7 +76,6 @@ Requires:       apache-commons-logging
 Requires:       apache-mybatis
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       %{apache_commons_httpclient}
 Requires:       %{oro}
 Requires:       javapackages-tools
 Requires:       lucene == 2.4.1

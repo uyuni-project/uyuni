@@ -26,7 +26,7 @@ import java.util.Optional;
  *
  * Serializer for {@link SystemEventDto}
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("system event")
  *      #prop_desc("int", "id", "ID of the event")
  *      #prop_desc("string", "history_type", "type of history event")

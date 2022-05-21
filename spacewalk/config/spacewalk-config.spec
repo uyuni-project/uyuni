@@ -31,7 +31,7 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.3.7
+Version:        4.3.8
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -62,6 +62,7 @@ BuildRequires:  openssl
 BuildRequires:  sudo
 %endif
 Requires:       (apache2-mod_xsendfile or mod_xsendfile)
+Requires:       diffutils
 
 %description
 Common Spacewalk configuration files and templates.
@@ -206,5 +207,12 @@ if [ -e /etc/pki/tls/private/uyuni.key ]; then
   fi
 fi
 
+if [ ! -f /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ] ; then
+    if diff -qs /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT ; then
+        mv /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+    else
+        cp /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+    fi
+fi
 
 %changelog

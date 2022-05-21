@@ -28,7 +28,7 @@ import java.util.Comparator;
 /**
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ContentProject}
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("content project information")
  *   #prop("int", "id")
  *   #prop("string", "label")

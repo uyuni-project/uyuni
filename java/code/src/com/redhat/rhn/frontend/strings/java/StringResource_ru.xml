@@ -10776,6 +10776,60 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="bootstrap.minion.error" xml:space="preserve">
+        <source>An unexpected error has occurred during bootstrap.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
+        <source>Apply States failed during bootstrap (retcode={0}).</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
+        <source>An error has occurred during salt execution: {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
+        <source>function {0} not available</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
+        <source>module {0} is not supported</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
+        <source>unable to parse json</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
+        <source>unable to establish ssh connection</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
+        <source>Could not generate salt-ssh public key.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
+        <source>Generating salt-ssh public key failed: {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+      <target state="new"/>
+  </trans-unit>
+    </body>
   </file>
 </xliff>

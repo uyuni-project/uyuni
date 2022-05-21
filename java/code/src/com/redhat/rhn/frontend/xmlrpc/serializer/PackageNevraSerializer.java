@@ -26,7 +26,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * Includes full server details, which may be more data than some calls would like.
  *
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("package nevra")
  *      #prop("string", "name")
  *      #prop("string", "epoch")

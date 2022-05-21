@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * KickstartIpRangeSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("kickstart IP range")
  *     #prop_desc("string", "ksLabel", "the kickstart label associated with the IP range")
  *     #prop_desc("string", "max", "the max IP of the range")

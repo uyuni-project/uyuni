@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 20 00:15:22 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Fixed duplication of XccdScanResult table
+
+-------------------------------------------------------------------
 Wed May 04 15:27:38 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.4-1

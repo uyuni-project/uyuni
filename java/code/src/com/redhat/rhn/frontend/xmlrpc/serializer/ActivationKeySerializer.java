@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * ActivationKeySerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("activation key")
  *     #prop("string", "key")
  *     #prop("string", "description")

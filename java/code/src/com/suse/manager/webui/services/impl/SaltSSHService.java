@@ -212,8 +212,13 @@ public class SaltSSHService {
      */
     public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target, Optional<String> extraFileRefs)
             throws SaltException {
+        // Using custom LocalCall timeout if included in the payload
+        Optional<Integer> sshTimeout = call.getPayload().containsKey("timeout") ?
+                Optional.ofNullable((Integer) call.getPayload().get("timeout")) :
+                    getSshPushTimeout();
+        Optional<SaltRoster> roster = prepareSaltRoster(target, sshTimeout);
         return unwrapSSHReturn(
-                callSyncSSHInternal(call, target, Optional.empty(), false, isSudoUser(getSSHUser()), extraFileRefs));
+                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser()), extraFileRefs));
     }
 
     /**
@@ -233,13 +238,15 @@ public class SaltSSHService {
         return callSyncSSH(call, target, Optional.empty());
     }
 
-    private SaltRoster prepareSaltRoster(MinionList target, Optional<Integer> sshTimeout) {
+    private Optional<SaltRoster> prepareSaltRoster(MinionList target, Optional<Integer> sshTimeout) {
         SaltRoster roster = new SaltRoster();
+        boolean pendingMinion = false;
 
         // these values are mostly fixed, which should change when we allow configuring
         // per-minion server
         for (String mid : target.getTarget()) {
             if (MinionPendingRegistrationService.containsSSHMinion(mid)) {
+                pendingMinion = true;
                 MinionPendingRegistrationService.get(mid).ifPresent(minion -> {
                     String contactMethodLabel = minion.getContactMethod();
 
@@ -285,7 +292,9 @@ public class SaltSSHService {
                 }, () -> LOG.error("Minion id='{}' not found in the database", mid));
             }
         }
-        return roster;
+        // we only need a roster when we may contact pending minions which are not yet in DB
+        // otherwise the roster is generated from DB
+        return pendingMinion ? Optional.of(roster) : Optional.empty();
     }
 
     /**
@@ -313,7 +322,7 @@ public class SaltSSHService {
     public <R> Map<String, CompletionStage<Result<R>>> callAsyncSSH(
             LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel,
             Optional<String> extraFilerefs) {
-        SaltRoster roster = prepareSaltRoster(target, getSshPushTimeout());
+        Optional<SaltRoster> roster = prepareSaltRoster(target, getSshPushTimeout());
         Map<String, CompletableFuture<Result<R>>> futures = new HashedMap();
         target.getTarget().forEach(minionId ->
                 futures.put(minionId, new CompletableFuture<>())
@@ -322,7 +331,7 @@ public class SaltSSHService {
                 CompletableFuture.supplyAsync(() -> {
                     try {
                         return unwrapSSHReturn(
-                                callSyncSSHInternal(call, target, Optional.of(roster),
+                                callSyncSSHInternal(call, target, roster,
                                         false, isSudoUser(getSSHUser()),
                                         extraFilerefs));
                     }
@@ -823,9 +832,8 @@ public class SaltSSHService {
 
             return future.handle((applyResult, err) -> {
                 if (applyResult != null) {
-                    return applyResult.<Optional<List<String>>>fold((saltErr) ->
-                            Optional.of(singletonList(
-                                        SaltUtils.decodeSaltErr(saltErr))),
+                    return applyResult.fold((saltErr) ->
+                            Optional.of(singletonList(SaltUtils.decodeSaltErr(saltErr).getMessage())),
                             (saltRes) -> saltRes.values().stream()
                                     .filter(value -> !value.isResult())
                                     .map(StateApplyResult::getComment)

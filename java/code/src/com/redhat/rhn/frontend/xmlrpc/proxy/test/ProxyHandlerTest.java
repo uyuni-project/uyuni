@@ -39,8 +39,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertPair;
-import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
-import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;

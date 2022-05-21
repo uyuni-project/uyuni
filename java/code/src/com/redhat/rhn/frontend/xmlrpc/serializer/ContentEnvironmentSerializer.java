@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ContentEnvironment}
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("content environment information")
  *   #prop("int", "id")
  *   #prop("string", "label")

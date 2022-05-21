@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * IssMasterSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("IssMaster info")
  *   #prop("int", "id")
  *   #prop("string", "label")

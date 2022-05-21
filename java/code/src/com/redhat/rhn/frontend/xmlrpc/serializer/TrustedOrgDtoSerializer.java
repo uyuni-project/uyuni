@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * TrustedOrgDtoSerializer is a custom serializer for the XMLRPC library.
  * It converts an TrustedOrgDto to an XMLRPC &lt;struct&gt;.
- * @xmlrpc.doc
+ * @apidoc.doc
  *     #struct_begin("trusted organizations")
  *       #prop("int", "org_id")
  *       #prop("string", "org_name")

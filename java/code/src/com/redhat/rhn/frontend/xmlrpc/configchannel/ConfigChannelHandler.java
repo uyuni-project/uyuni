@@ -73,8 +73,8 @@ import java.util.stream.Collectors;
 
 /**
  * ConfigHandler
- * @xmlrpc.namespace configchannel
- * @xmlrpc.doc Provides methods to access and modify many aspects of
+ * @apidoc.namespace configchannel
+ * @apidoc.doc Provides methods to access and modify many aspects of
  * configuration channels.
  */
 public class ConfigChannelHandler extends BaseHandler {
@@ -87,13 +87,13 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param description description of the config channel
      * @return the newly created config channel
      *
-     * @xmlrpc.doc Create a new global config channel. Caller must be at least a
+     * @apidoc.doc Create a new global config channel. Caller must be at least a
      * config admin or an organization admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param #param("string", "name")
+     * @apidoc.param #param("string", "description")
+     * @apidoc.returntype
      * $ConfigChannelSerializer
      */
     public ConfigChannel create(User loggedInUser, String label,
@@ -110,14 +110,14 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param type type of config channel(possible values are 'state', 'normal')
      * @return the newly created config channel
      *
-     * @xmlrpc.doc Create a new global config channel. Caller must be at least a
+     * @apidoc.doc Create a new global config channel. Caller must be at least a
      * config admin or an organization admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.param #param_desc("string", "type", "the channel type either 'normal' or 'state'")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param #param("string", "name")
+     * @apidoc.param #param("string", "description")
+     * @apidoc.param #param_desc("string", "type", "the channel type either 'normal' or 'state'")
+     * @apidoc.returntype
      * $ConfigChannelSerializer
      */
     public ConfigChannel create(User user, String label, String name, String description, String type) {
@@ -134,19 +134,19 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param pathInfo a map containing 'content' and 'contents_enc64' (only applicable for channelType 'state')
      * @return the newly created config channel
      *
-     * @xmlrpc.doc Create a new global config channel. Caller must be at least a
+     * @apidoc.doc Create a new global config channel. Caller must be at least a
      * config admin or an organization admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.param #param_desc("string", "type", "the channel type either 'normal' or 'state'")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param #param("string", "name")
+     * @apidoc.param #param("string", "description")
+     * @apidoc.param #param_desc("string", "type", "the channel type either 'normal' or 'state'")
+     * @apidoc.param
      *  #struct_desc("pathInfo", "the path info")
      *      #prop_desc("string", "contents", "contents of the init.sls file")
      *      #prop_desc("boolean", "contents_enc64", "identifies base64 encoded content(default: disabled)")
      *  #struct_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * $ConfigChannelSerializer
      */
     public ConfigChannel create(User user, String label, String name, String description, String type,
@@ -190,14 +190,14 @@ public class ConfigChannelHandler extends BaseHandler {
      *  @param revisions List of configuration file revisions to delete.
      *  @return 1 if deletion succeeds, errors out otherwise.
      *
-     * @xmlrpc.doc Delete specified revisions of a given configuration file
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label",
+     * @apidoc.doc Delete specified revisions of a given configuration file
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label",
      *                          "label of config channel to lookup on")
-     * @xmlrpc.param #param_desc("string", "filePath",
+     * @apidoc.param #param_desc("string", "filePath",
      *                          "configuration file path")
-     * @xmlrpc.param #array_single_desc("int", "revisions", "list of revisions to delete")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #array_single_desc("int", "revisions", "list of revisions to delete")
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteFileRevisions(User loggedInUser, String label,
                                    String filePath, List<Integer> revisions) {
@@ -224,13 +224,13 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param filePath The configuration file path.
      * @return List of revisions of the configuration file, errors out otherwise.
      *
-     * @xmlrpc.doc Get list of revisions for specified config file
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label",
+     * @apidoc.doc Get list of revisions for specified config file
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label",
      *                          "label of config channel to lookup on")
-     * @xmlrpc.param #param_desc("string", "filePath",
+     * @apidoc.param #param_desc("string", "filePath",
      *                          "config file path to examine")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * #return_array_begin()
      * $ConfigRevisionSerializer
      * #array_end()
@@ -258,13 +258,13 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param revision The configuration file revision.
      * @return Revisions of the configuration file, errors out otherwise.
      *
-     * @xmlrpc.doc Get revision of the specified config file
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label",
+     * @apidoc.doc Get revision of the specified config file
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label",
      *                          "label of config channel to lookup on")
-     * @xmlrpc.param #param_desc("string", "filePath", "config file path to examine")
-     * @xmlrpc.param #param_desc("int", "revision", "config file revision to examine")
-     * @xmlrpc.returntype
+     * @apidoc.param #param_desc("string", "filePath", "config file path to examine")
+     * @apidoc.param #param_desc("int", "revision", "config file revision to examine")
+     * @apidoc.returntype
      * $ConfigRevisionSerializer
      */
     @ReadOnly
@@ -288,11 +288,11 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param labels the list of global channels to synchronize files from.
      * @return 1 if successful with the operation, errors out otherwise.
      *
-     * @xmlrpc.doc Synchronize all files on the disk to the current state of the database.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param
+     * @apidoc.doc Synchronize all files on the disk to the current state of the database.
+     * @apidoc.param #session_key()
+     * @apidoc.param
      * #array_single_desc("string", "labels", "configuration channel labels to synchronize files from")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int syncSaltFilesOnDisk(User loggedInUser, List<String> labels) {
         var manager = ConfigurationManager.getInstance();
@@ -317,13 +317,13 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param revision The configuration file revision.
      * @return Revisions of the configuration file, errors out otherwise.
      *
-     * @xmlrpc.doc Get revision of the specified configuration file and transmit the
+     * @apidoc.doc Get revision of the specified configuration file and transmit the
      *             contents as base64 encoded.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of config channel to lookup on")
-     * @xmlrpc.param #param_desc("string", "filePath", "config file path to examine")
-     * @xmlrpc.param #param_desc("int", "revision", "config file revision to examine")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of config channel to lookup on")
+     * @apidoc.param #param_desc("string", "filePath", "config file path to examine")
+     * @apidoc.param #param_desc("int", "revision", "config file revision to examine")
+     * @apidoc.returntype
      * $ConfigRevisionSerializer
      */
     @ReadOnly
@@ -339,10 +339,10 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param label Config channel label.
      * @return the Config channel details
      *
-     * @xmlrpc.doc Lookup config channel details.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lookup config channel details.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.returntype
      *   $ConfigChannelSerializer
      */
     @ReadOnly
@@ -357,10 +357,10 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param id Config channel ID.
      * @return the Config channel details
      *
-     * @xmlrpc.doc Lookup config channel details.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "id", "the channel ID")
-     * @xmlrpc.returntype
+     * @apidoc.doc Lookup config channel details.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "id", "the channel ID")
+     * @apidoc.returntype
      *    $ConfigChannelSerializer
      */
     @ReadOnly
@@ -377,14 +377,14 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param description description of the config channel
      * @return the newly created config channel
      *
-     * @xmlrpc.doc Update a global config channel. Caller must be at least a
+     * @apidoc.doc Update a global config channel. Caller must be at least a
      * config admin or an organization admin, or have access to a system containing this
      * config channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param #param("string", "name")
+     * @apidoc.param #param("string", "description")
+     * @apidoc.returntype
      * $ConfigChannelSerializer
      */
     public ConfigChannel update(User loggedInUser, String label, String name, String description) {
@@ -414,11 +414,11 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param labels the list of channel labels to lookup on
      * @return a list of config channels.
      *
-     * @xmlrpc.doc Lists details on a list of channels given their channel labels.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param
+     * @apidoc.doc Lists details on a list of channels given their channel labels.
+     * @apidoc.param #session_key()
+     * @apidoc.param
      * #array_single_desc("string", "labels", "the channel labels")
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * #return_array_begin()
      *  $ConfigChannelSerializer
      * #array_end()
@@ -434,9 +434,9 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return a list of accessible global config channels
      *
-     * @xmlrpc.doc List all the global config channels accessible to the logged-in user.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List all the global config channels accessible to the logged-in user.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      *  $ConfigChannelDtoSerializer
      * #array_end()
@@ -456,16 +456,16 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param pathInfo a map containing 'content', 'contents_enc64' and 'revision'
      * @return returns the updated config revision..
      *
-     * @xmlrpc.doc Update the init.sls file for the given state channel. User can only update contents, nothing else.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "the channel label")
-     * @xmlrpc.param
+     * @apidoc.doc Update the init.sls file for the given state channel. User can only update contents, nothing else.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "the channel label")
+     * @apidoc.param
      *  #struct_begin("pathInfo", "the path info")
      *      #prop_desc("string","contents", "contents of the init.sls file")
      *      #prop_desc("boolean","contents_enc64", "identifies base64 encoded content(default: disabled)")
      *      #prop_desc("int", "revision", "next revision number, auto increment for null")
      *  #struct_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * $ConfigRevisionSerializer
      */
      public ConfigRevision updateInitSls(User user, String label, Map<String, Object> pathInfo) {
@@ -518,14 +518,14 @@ public class ConfigChannelHandler extends BaseHandler {
      * @return returns the new created or updated config revision..
      * @since 10.2
      *
-     * @xmlrpc.doc Create a new file or directory with the given path, or
+     * @apidoc.doc Create a new file or directory with the given path, or
      * update an existing path.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "the channel label")
-     * @xmlrpc.param #param("string", "path")
-     * @xmlrpc.param #param_desc("boolean","isDir",
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "the channel label")
+     * @apidoc.param #param("string", "path")
+     * @apidoc.param #param_desc("boolean","isDir",
      *              "true if the path is a directory, False if it is a file")
-     * @xmlrpc.param
+     * @apidoc.param
      *  #struct_begin("pathInfo", "the path info")
      *      #prop_desc("string","contents",
      *              "contents of the file (text or base64 encoded if binary or want to preserve
@@ -548,7 +548,7 @@ public class ConfigChannelHandler extends BaseHandler {
      *      base64 encoded content is expected (only for non-directories)")
      *
      *  #struct_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * $ConfigRevisionSerializer
      */
     public ConfigRevision createOrUpdatePath(User loggedInUser,
@@ -603,12 +603,12 @@ public class ConfigChannelHandler extends BaseHandler {
      * @return returns the new created or updated config revision..
      * @since 10.2
      *
-     * @xmlrpc.doc Create a new symbolic link with the given path, or
+     * @apidoc.doc Create a new symbolic link with the given path, or
      * update an existing path in config channel of 'normal' type.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "path")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param #param("string", "path")
+     * @apidoc.param
      *  #struct_begin("pathInfo", "the path info")
      *      #prop_desc("string","target_path",
      *              "the target path for the symbolic link")
@@ -616,7 +616,7 @@ public class ConfigChannelHandler extends BaseHandler {
      *      #prop_desc("int", "revision", "next revision number,
      *       skip this field for automatic revision number assignment")
      *  #struct_end()
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * $ConfigRevisionSerializer
      */
     public ConfigRevision createOrUpdateSymlink(User loggedInUser,
@@ -652,12 +652,12 @@ public class ConfigChannelHandler extends BaseHandler {
      * @return a list containing the latest config revisions of the requested paths.
      * @since 10.2
      *
-     * @xmlrpc.doc Given a list of paths and a channel, returns details about
+     * @apidoc.doc Given a list of paths and a channel, returns details about
      * the latest revisions of the paths.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of config channel to lookup on")
-     * @xmlrpc.param #array_single_desc("string", "paths", "list of paths to examine")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of config channel to lookup on")
+     * @apidoc.param #array_single_desc("string", "paths", "list of paths to examine")
+     * @apidoc.returntype
      * #return_array_begin()
      * $ConfigRevisionSerializer
      * #array_end()
@@ -688,14 +688,14 @@ public class ConfigChannelHandler extends BaseHandler {
      * @return the specified config revision of the requested path.
      * @since 10.12
      *
-     * @xmlrpc.doc Given a path, revision number, and a channel, returns details about
+     * @apidoc.doc Given a path, revision number, and a channel, returns details about
      * the latest revisions of the paths.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of config channel to lookup on")
-     * @xmlrpc.param #param_desc("string", "path", "path of file/directory")
-     * @xmlrpc.param #param_desc("int", "revision", "the revision number")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of config channel to lookup on")
+     * @apidoc.param #param_desc("string", "path", "path of file/directory")
+     * @apidoc.param #param_desc("int", "revision", "the revision number")
      *
-     * @xmlrpc.returntype
+     * @apidoc.returntype
      * $ConfigRevisionSerializer
      */
     @ReadOnly
@@ -724,10 +724,10 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param label the label of the config channel
      * @return a list of dto's holding this info.
      *
-     * @xmlrpc.doc Return a list of files in a channel.
-     * @xmlrpc.param  #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of config channel to list files on")
-     * @xmlrpc.returntype
+     * @apidoc.doc Return a list of files in a channel.
+     * @apidoc.param  #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of config channel to list files on")
+     * @apidoc.returntype
      * #return_array_begin()
      * $ConfigFileDtoSerializer
      * #array_end()
@@ -750,11 +750,11 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param labels the the list of global channels.
      * @return 1 if successful with the operation errors out otherwise.
      *
-     * @xmlrpc.doc Delete a list of global config channels.
+     * @apidoc.doc Delete a list of global config channels.
      * Caller must be a config admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single_desc("string","labels", "configuration channel labels to delete")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single_desc("string","labels", "configuration channel labels to delete")
+     * @apidoc.returntype #return_int_success()
      *
      */
     public int deleteChannels(User loggedInUser, List<String> labels) {
@@ -777,11 +777,11 @@ public class ConfigChannelHandler extends BaseHandler {
      * @return 1 if successful with the operation errors out otherwise.
      *
      *
-     * @xmlrpc.doc Remove file paths from a global channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string","label", "channel to remove the files from")
-     * @xmlrpc.param #array_single("string", "paths", "file paths to remove")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove file paths from a global channel.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "channel to remove the files from")
+     * @apidoc.param #array_single("string", "paths", "file paths to remove")
+     * @apidoc.returntype #return_int_success()
      */
      public int deleteFiles(User loggedInUser, String label, List<String> paths) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
@@ -812,13 +812,13 @@ public class ConfigChannelHandler extends BaseHandler {
       * @return the id of the action scheduled
       *
       *
-      * @xmlrpc.doc Schedule a comparison of the latest revision of a file
+      * @apidoc.doc Schedule a comparison of the latest revision of a file
       * against the version deployed on a list of systems.
-      * @xmlrpc.param #session_key()
-      * @xmlrpc.param #param_desc("string", "label", "label of config channel")
-      * @xmlrpc.param #param_desc("string", "path", "file path")
-      * @xmlrpc.param #array_single("long", "sids", "the list of system IDs that the comparison will be performed on")
-      * @xmlrpc.returntype #param_desc("int", "actionId", "the action ID of the scheduled action")
+      * @apidoc.param #session_key()
+      * @apidoc.param #param_desc("string", "label", "label of config channel")
+      * @apidoc.param #param_desc("string", "path", "file path")
+      * @apidoc.param #array_single("long", "sids", "the list of system IDs that the comparison will be performed on")
+      * @apidoc.returntype #param_desc("int", "actionId", "the action ID of the scheduled action")
       */
      public Integer scheduleFileComparisons(User loggedInUser, String label, String path, List<Integer> sids) {
 
@@ -858,10 +858,10 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param label the channel to check for.
      * @return 1 if exists, 0 otherwise.
      *
-     * @xmlrpc.doc Check for the existence of the config channel provided.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "channel to check for")
-     * @xmlrpc.returntype #param_desc("int", "existence", "1 if exists, 0 otherwise")
+     * @apidoc.doc Check for the existence of the config channel provided.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "channel to check for")
+     * @apidoc.returntype #param_desc("int", "existence", "1 if exists, 0 otherwise")
      */
     public int channelExists(User loggedInUser, String label) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
@@ -877,11 +877,11 @@ public class ConfigChannelHandler extends BaseHandler {
      * @return 1 if successful with the operation errors out otherwise.
      *
      *
-     * @xmlrpc.doc Schedule an immediate configuration deployment for all systems
+     * @apidoc.doc Schedule an immediate configuration deployment for all systems
      *    subscribed to a particular configuration channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "the configuration channel's label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "the configuration channel's label")
+     * @apidoc.returntype #return_int_success()
      */
     public int deployAllSystems(User loggedInUser, String label) {
         return deployAllSystems(loggedInUser, label, new Date());
@@ -896,12 +896,12 @@ public class ConfigChannelHandler extends BaseHandler {
      * @return 1 if successful with the operation errors out otherwise.
      *
      *
-     * @xmlrpc.doc Schedule a configuration deployment for all systems
+     * @apidoc.doc Schedule a configuration deployment for all systems
      *    subscribed to a particular configuration channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "the configuration channel's label")
-     * @xmlrpc.param #param_desc("$date", "date", "the date to schedule the action")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "the configuration channel's label")
+     * @apidoc.param #param_desc("$date", "date", "the date to schedule the action")
+     * @apidoc.returntype #return_int_success()
      */
     public int deployAllSystems(User loggedInUser, String label, Date date) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
@@ -942,12 +942,12 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param label  the channel to deploy the files from..
      * @param filePath config file path
      * @return 1 if successful with the operation errors out otherwise.
-     * @xmlrpc.doc Schedule a configuration deployment of a certain file for all systems
+     * @apidoc.doc Schedule a configuration deployment of a certain file for all systems
      *    subscribed to a particular configuration channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "the configuration channel's label")
-     * @xmlrpc.param #param_desc("string", "filePath", "the configuration file path")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "the configuration channel's label")
+     * @apidoc.param #param_desc("string", "filePath", "the configuration file path")
+     * @apidoc.returntype #return_int_success()
      */
     public int deployAllSystems(User loggedInUser, String label, String filePath) {
         return deployAllSystems(loggedInUser, label, filePath, new Date());
@@ -959,13 +959,13 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param filePath config file path
      * @param date the date to schedule
      * @return 1 if successful with the operation errors out otherwise.
-     * @xmlrpc.doc Schedule a configuration deployment of a certain file for all systems
+     * @apidoc.doc Schedule a configuration deployment of a certain file for all systems
      *    subscribed to a particular configuration channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "the configuration channel's label")
-     * @xmlrpc.param #param_desc("string", "filePath", "the configuration file path")
-     * @xmlrpc.param #param_desc("$date","date", "the date to schedule the action")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "label", "the configuration channel's label")
+     * @apidoc.param #param_desc("string", "filePath", "the configuration file path")
+     * @apidoc.param #param_desc("$date","date", "the date to schedule the action")
+     * @apidoc.returntype #return_int_success()
      */
     public int deployAllSystems(User loggedInUser, String label, String filePath, Date date) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
@@ -1006,10 +1006,10 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param label the label of the config channel
      * @return a list of dto's holding this info.
      *
-     * @xmlrpc.doc Return a list of systems subscribed to a configuration channel
-     * @xmlrpc.param  #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of the config channel to list subscribed systems")
-     * @xmlrpc.returntype
+     * @apidoc.doc Return a list of systems subscribed to a configuration channel
+     * @apidoc.param  #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of the config channel to list subscribed systems")
+     * @apidoc.returntype
      * #return_array_begin()
      * $ConfigSystemDtoSerializer
      * #array_end()
@@ -1029,10 +1029,10 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param label the label for the configuration channels
      * @return a list of Groups
      *
-     * @xmlrpc.doc Return a list of Groups where a given configuration channel is assigned to
-     * @xmlrpc.param  #session_key()
-     * @xmlrpc.param #param_desc("string", "label", "label of the config channel to list assigned groups")
-     * @xmlrpc.returntype
+     * @apidoc.doc Return a list of Groups where a given configuration channel is assigned to
+     * @apidoc.param  #session_key()
+     * @apidoc.param #param_desc("string", "label", "label of the config channel to list assigned groups")
+     * @apidoc.returntype
      * #return_array_begin()
      * $ManagedServerGroupSerializer
      * #array_end()

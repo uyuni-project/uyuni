@@ -62,8 +62,8 @@ import java.util.stream.Collectors;
 
 /**
  * ImageInfoHandler
- * @xmlrpc.namespace image
- * @xmlrpc.doc Provides methods to access and modify images.
+ * @apidoc.namespace image
+ * @apidoc.doc Provides methods to access and modify images.
  */
 public class ImageInfoHandler extends BaseHandler {
 
@@ -85,9 +85,9 @@ public class ImageInfoHandler extends BaseHandler {
      * @param loggedInUser The current User
      * @return Array of ImageInfo Objects
      *
-     * @xmlrpc.doc List available images
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $ImageInfoSerializer #array_end()
+     * @apidoc.doc List available images
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $ImageInfoSerializer #array_end()
      */
     @ReadOnly
     public List<ImageInfo> listImages(User loggedInUser) {
@@ -101,10 +101,10 @@ public class ImageInfoHandler extends BaseHandler {
      * @param imageId the Image id
      * @return ImageOverview Object
      *
-     * @xmlrpc.doc Get details of an image
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "imageId")
-     * @xmlrpc.returntype $ImageOverviewSerializer
+     * @apidoc.doc Get details of an image
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "imageId")
+     * @apidoc.returntype $ImageOverviewSerializer
      */
     @ReadOnly
     public ImageOverview getDetails(User loggedInUser, Integer imageId) {
@@ -123,10 +123,10 @@ public class ImageInfoHandler extends BaseHandler {
      * @param imageId the Image id
      * @return the pillar
      *
-     * @xmlrpc.doc Get pillar data of an image
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "imageId")
-     * @xmlrpc.returntype #param("struct", "the pillar data")
+     * @apidoc.doc Get pillar data of an image
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "imageId")
+     * @apidoc.returntype #param("struct", "the pillar data")
      */
     @ReadOnly
     public Map<String, Object> getPillar(User loggedInUser, Integer imageId) {
@@ -147,11 +147,11 @@ public class ImageInfoHandler extends BaseHandler {
      * @param pillarData the new pillar
      * @return 1 on success
      *
-     * @xmlrpc.doc Set pillar data of an image
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "imageId")
-     * @xmlrpc.param #param("struct", "pillarData")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Set pillar data of an image
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "imageId")
+     * @apidoc.param #param("struct", "pillarData")
+     * @apidoc.returntype #return_int_success()
      */
     public int setPillar(User loggedInUser, Integer imageId, Map<String, Object> pillarData) {
         ensureImageAdmin(loggedInUser);
@@ -181,15 +181,15 @@ public class ImageInfoHandler extends BaseHandler {
      * @param earliestOccurrence Earliest occurrence of the following image inspect
      * @return the image inspect action id
      *
-     * @xmlrpc.doc Import an image and schedule an inspect afterwards
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "image name as specified in the store")
-     * @xmlrpc.param #param_desc("string", "version", "version to import or empty")
-     * @xmlrpc.param #param_desc("int", "buildHostId", "system ID of the build host")
-     * @xmlrpc.param #param("string", "storeLabel")
-     * @xmlrpc.param #param_desc("string", "activationKey", "activation key to get the channel data from")
-     * @xmlrpc.param #param_desc("$date", "earliestOccurrence", "earliest the following inspect can run")
-     * @xmlrpc.returntype #param("int", "the ID of the inspect action created")
+     * @apidoc.doc Import an image and schedule an inspect afterwards
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "image name as specified in the store")
+     * @apidoc.param #param_desc("string", "version", "version to import or empty")
+     * @apidoc.param #param_desc("int", "buildHostId", "system ID of the build host")
+     * @apidoc.param #param("string", "storeLabel")
+     * @apidoc.param #param_desc("string", "activationKey", "activation key to get the channel data from")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence", "earliest the following inspect can run")
+     * @apidoc.returntype #param("int", "the ID of the inspect action created")
      */
     @Deprecated
     public Long importImage(User loggedInUser, String name, String version,
@@ -211,15 +211,15 @@ public class ImageInfoHandler extends BaseHandler {
      * @param earliestOccurrence Earliest occurrence of the following image inspect
      * @return the image inspect action id
      *
-     * @xmlrpc.doc Import an image and schedule an inspect afterwards
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "image name as specified in the store")
-     * @xmlrpc.param #param_desc("string", "version", "version to import or empty")
-     * @xmlrpc.param #param_desc("int", "buildHostId", "system ID of the build host")
-     * @xmlrpc.param #param("string", "storeLabel")
-     * @xmlrpc.param #param_desc("string", "activationKey", "activation key to get the channel data from")
-     * @xmlrpc.param #param_desc("$date", "earliestOccurrence", "earliest the following inspect can run")
-     * @xmlrpc.returntype #param("int", "the ID of the inspect action created")
+     * @apidoc.doc Import an image and schedule an inspect afterwards
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "image name as specified in the store")
+     * @apidoc.param #param_desc("string", "version", "version to import or empty")
+     * @apidoc.param #param_desc("int", "buildHostId", "system ID of the build host")
+     * @apidoc.param #param("string", "storeLabel")
+     * @apidoc.param #param_desc("string", "activationKey", "activation key to get the channel data from")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence", "earliest the following inspect can run")
+     * @apidoc.returntype #param("int", "the ID of the inspect action created")
      */
     public Long importContainerImage(User loggedInUser, String name, String version,
             Integer buildHostId, String storeLabel, String activationKey,
@@ -264,12 +264,12 @@ public class ImageInfoHandler extends BaseHandler {
      * @param arch The architecture
      * @return the image id
      *
-     * @xmlrpc.doc Import an image and schedule an inspect afterwards
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "image name as specified in the store")
-     * @xmlrpc.param #param_desc("string", "version", "version to import")
-     * @xmlrpc.param #param_desc("string", "arch", "image architecture")
-     * @xmlrpc.returntype #param("int", "the ID of the image")
+     * @apidoc.doc Import an image and schedule an inspect afterwards
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "image name as specified in the store")
+     * @apidoc.param #param_desc("string", "version", "version to import")
+     * @apidoc.param #param_desc("string", "arch", "image architecture")
+     * @apidoc.returntype #param("int", "the ID of the image")
      */
     public Long importOSImage(User loggedInUser, String name, String version, String arch) {
         ensureImageAdmin(loggedInUser);
@@ -311,11 +311,11 @@ public class ImageInfoHandler extends BaseHandler {
      * @param file the file name
      * @return 1 on success
      *
-     * @xmlrpc.doc Delete image file
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "imageId", "ID of the image")
-     * @xmlrpc.param #param_desc("string", "file", "the file name")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Delete image file
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "imageId", "ID of the image")
+     * @apidoc.param #param_desc("string", "file", "the file name")
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteImageFile(User loggedInUser, Integer imageId, String file) {
         ensureImageAdmin(loggedInUser);
@@ -345,13 +345,13 @@ public class ImageInfoHandler extends BaseHandler {
      * @param external the file is external
      * @return 1 on success
      *
-     * @xmlrpc.doc Delete image file
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "imageId", "ID of the image")
-     * @xmlrpc.param #param_desc("string", "file", "the file name, it must exist in the store")
-     * @xmlrpc.param #param_desc("string", "type", "the image type")
-     * @xmlrpc.param #param_desc("boolean", "external", "the file is external")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Delete image file
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "imageId", "ID of the image")
+     * @apidoc.param #param_desc("string", "file", "the file name, it must exist in the store")
+     * @apidoc.param #param_desc("string", "type", "the image type")
+     * @apidoc.param #param_desc("boolean", "external", "the file is external")
+     * @apidoc.returntype #return_int_success()
      */
     public Long addImageFile(User loggedInUser, Integer imageId, String file, String type, Boolean external) {
         ensureImageAdmin(loggedInUser);
@@ -390,13 +390,13 @@ public class ImageInfoHandler extends BaseHandler {
      * @param earliestOccurrence Earliest occurrence of the image build
      * @return the image build action id
      *
-     * @xmlrpc.doc Schedule an image build
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "profileLabel")
-     * @xmlrpc.param #param_desc("string", "version", "version to build or empty")
-     * @xmlrpc.param #param_desc("int", "buildHostId", "system id of the build host")
-     * @xmlrpc.param #param_desc("$date", "earliestOccurrence", "earliest the build can run.")
-     * @xmlrpc.returntype #param("int", "the ID of the build action created")
+     * @apidoc.doc Schedule an image build
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "profileLabel")
+     * @apidoc.param #param_desc("string", "version", "version to build or empty")
+     * @apidoc.param #param_desc("int", "buildHostId", "system id of the build host")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence", "earliest the build can run.")
+     * @apidoc.returntype #param("int", "the ID of the build action created")
      */
     public Long scheduleImageBuild(User loggedInUser, String profileLabel, String version,
             Integer buildHostId, Date earliestOccurrence) {
@@ -428,10 +428,10 @@ public class ImageInfoHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * imageId cannot be found.
      *
-     * @xmlrpc.doc Returns a list of all errata that are relevant for the image
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "imageId")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns a list of all errata that are relevant for the image
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "imageId")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
@@ -459,10 +459,10 @@ public class ImageInfoHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the image corresponding to
      * imageId cannot be found.
      *
-     * @xmlrpc.doc List the installed packages on the given image
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "imageId")
-     * @xmlrpc.returntype
+     * @apidoc.doc List the installed packages on the given image
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "imageId")
+     * @apidoc.returntype
      *      #return_array_begin()
      *          #struct_begin("package")
      *                 #prop("string", "name")
@@ -502,10 +502,10 @@ public class ImageInfoHandler extends BaseHandler {
      * @return Returns a map containing the defined custom data values for the
      * given Image.
      *
-     * @xmlrpc.doc Get the custom data values defined for the image
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "imageId")
-     * @xmlrpc.returntype
+     * @apidoc.doc Get the custom data values defined for the image
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "imageId")
+     * @apidoc.returntype
      *    #struct_begin("the map of custom labels to custom values")
      *      #prop("string", "custom info label")
      *      #prop("string", "value")
@@ -529,10 +529,10 @@ public class ImageInfoHandler extends BaseHandler {
      * @param imageId the image id
      * @return 1 on success
      *
-     * @xmlrpc.doc Delete an image
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "imageId")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Delete an image
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "imageId")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);

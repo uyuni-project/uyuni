@@ -24,7 +24,7 @@ import java.util.Hashtable;
 
 /**
  * xmlrpc handler for the general up2date process
- * @xmlrpc.ignore
+ * @apidoc.ignore
  */
 public class UnitTestHandler extends BaseHandler {
 

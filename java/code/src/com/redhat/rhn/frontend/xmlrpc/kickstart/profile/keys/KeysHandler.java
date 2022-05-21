@@ -36,8 +36,8 @@ import java.util.List;
 
 /**
 * KeysHandler
-* @xmlrpc.namespace kickstart.profile.keys
-* @xmlrpc.doc Provides methods to access and modify the list of activation keys
+* @apidoc.namespace kickstart.profile.keys
+* @apidoc.doc Provides methods to access and modify the list of activation keys
 * associated with a kickstart profile.
 */
 public class KeysHandler extends BaseHandler {
@@ -48,11 +48,11 @@ public class KeysHandler extends BaseHandler {
      * @param ksLabel The kickstart profile label
      * @return List of map representations of activation keys
      *
-     * @xmlrpc.doc Lookup the activation keys associated with the kickstart
+     * @apidoc.doc Lookup the activation keys associated with the kickstart
      * profile.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "the kickstart profile label")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     $ActivationKeySerializer
      *   #array_end()
@@ -84,11 +84,11 @@ public class KeysHandler extends BaseHandler {
      * @param key The activation key
      * @return 1 on success, exception thrown otherwise
      *
-     * @xmlrpc.doc Add an activation key association to the kickstart profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
-     * @xmlrpc.param #param_desc("string", "key", "the activation key")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Add an activation key association to the kickstart profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "the kickstart profile label")
+     * @apidoc.param #param_desc("string", "key", "the activation key")
+     * @apidoc.returntype #return_int_success()
      */
     public int addActivationKey(User loggedInUser, String ksLabel, String key) {
 
@@ -116,11 +116,11 @@ public class KeysHandler extends BaseHandler {
      * @param key The activation key
      * @return 1 on success, exception thrown otherwise
      *
-     * @xmlrpc.doc Remove an activation key association from the kickstart profile
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
-     * @xmlrpc.param #param_desc("string", "key", "the activation key")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove an activation key association from the kickstart profile
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "ksLabel", "the kickstart profile label")
+     * @apidoc.param #param_desc("string", "key", "the activation key")
+     * @apidoc.returntype #return_int_success()
      */
     public int removeActivationKey(User loggedInUser, String ksLabel, String key) {
 

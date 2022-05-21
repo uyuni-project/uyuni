@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * XMLRPC Serializer for AnsiblePath
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("ansible path")
  *     #prop("int", "path id")
  *     #prop("string", "type label")

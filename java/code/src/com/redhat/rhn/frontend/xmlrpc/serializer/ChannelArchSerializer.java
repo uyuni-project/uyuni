@@ -22,7 +22,7 @@ import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * ChannelArchSerializer serializes ChannelArch object to XMLRPC.
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("channel arch")
  *          #prop("string", "name")
  *          #prop("string", "label")

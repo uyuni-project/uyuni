@@ -91,31 +91,11 @@ def poll_hypervisor():
         # No connection to hypervisor made
         return {}
 
-    domainIDs = conn.listDomainsID()
-
-    if not domainIDs:
-        domainIDs = []
-    if len(domainIDs) == 0:
-        domainIDs.extend(conn.listDefinedDomains())
+    domains = conn.listAllDomains()
 
     state = {}
 
-    for domainID in domainIDs:
-        if type(domainID) == int:
-            try:
-                domain = conn.lookupByID(domainID)
-            except libvirt.libvirtError:
-                lve = sys.exc_info()[1]
-                raise_with_tb(VirtualizationException("Failed to obtain handle to domain %d: %s" % (domainID, repr(lve)),
-                                                      sys.exc_info()[2]))
-        else:
-            try:
-                domain = conn.lookupByName(domainID)
-            except libvirt.libvirtError:
-                lve = sys.exc_info()[1]
-                raise_with_tb(VirtualizationException("Failed to obtain handle to domain %d: %s" % (domainID, repr(lve)),
-                                                      sys.exc_info()[2]))
-
+    for domain in domains:
         uuid = binascii.hexlify(domain.UUID())
         # SEE: http://libvirt.org/html/libvirt-libvirt.html#virDomainInfo
         # for more info.

@@ -1,0 +1,83 @@
+@input-height: 35px;
+
+.form-control {
+  color: @eos-bc-gray-1000;
+  height: @input-height !important;
+  max-width: 100%;
+  padding: 8px !important;
+  border-radius: @border-radius-base !important;
+  border-color: @eos-bc-gray-700 !important;
+  box-shadow: none !important;
+
+  &:focus {
+    border-color: @eos-bc-blue-500 !important;
+    outline: none !important;
+  }
+
+  &.disabled,
+  &:disabled {
+    color: @eos-bc-gray-700;
+    pointer-events: auto;
+    cursor: not-allowed;
+
+    &:focus {
+      border-color: @eos-bc-gray-700 !important;
+    }
+  }
+
+  &:read-only {
+    color: @eos-bc-gray-700;
+    pointer-events: auto;
+    cursor: default;
+
+    &:focus {
+      border-color: @eos-bc-gray-700 !important;
+    }
+  }
+
+  &::placeholder {
+    color: @input-placeholder;
+    opacity: 1;
+  }
+}
+
+textarea.form-control {
+  height: auto !important;
+}
+
+.input-group-addon {
+  border-color: @eos-bc-gray-700 !important;
+}
+
+.select2-container {
+  padding: 0 !important;
+}
+
+.select2-choices {
+  border-radius: 0 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.select2-search-field {
+  width: 100%;
+}
+
+.select2-input {
+  width: 100% !important;
+  height: @input-height !important;
+  padding: 8px !important;
+  border: 1px solid @eos-bc-gray-700 !important;
+  border-radius: @border-radius-base !important;
+
+  .select2-container-active & {
+    border-color: @eos-bc-blue-500 !important;
+    outline: none !important;
+  }
+}
+
+.select2-drop-active {
+  border-color: @eos-bc-blue-500 !important;
+  border-radius: 0 !important;
+}

@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * NetworkDtoSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("system")
  *      #prop("int", "systemId")

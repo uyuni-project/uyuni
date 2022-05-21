@@ -33,7 +33,7 @@ import java.util.Map;
 /**
 * ActivationKeySerializer
 *
-* @xmlrpc.doc
+* @apidoc.doc
 *   #struct_begin("token serializer")
 *     #prop("string", "description")
 *     #prop("int", "usage_limit")

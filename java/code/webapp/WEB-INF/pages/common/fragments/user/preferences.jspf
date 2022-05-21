@@ -96,7 +96,7 @@
                     <c:if test="${item.key == currentLocale}">
                       checked="checked"
                     </c:if>/>
-            <span class="text-info"><strong><c:out value="${item.value.localizedName}" /></strong></span>
+            <span><strong><c:out value="${item.value.localizedName}" /></strong></span>
           </div>
           <c:if test="${counter == 1}">
             </div>
@@ -143,7 +143,7 @@
                     <c:if test="${item.key == currentDocsLocale}">
                       checked="checked"
                     </c:if>/>
-            <span class="text-info"><strong><c:out value="${item.value.localizedName}" /></strong></span>
+            <span><strong><c:out value="${item.value.localizedName}" /></strong></span>
           </div>
           <c:if test="${counter == 1}">
             </div>

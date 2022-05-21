@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-29 11:12+0000\n"
-"PO-Revision-Date: 2022-04-18 03:12+0000\n"
+"POT-Creation-Date: 2022-05-19 14:13+0000\n"
+"PO-Revision-Date: 2022-05-18 03:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -29,11 +29,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:491
+#: ../html/javascript/spacewalk-essentials.js:511
 msgid "remaining"
 msgstr "残り"
 
-#: ../html/javascript/spacewalk-essentials.js:511
+#: ../html/javascript/spacewalk-essentials.js:531
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -153,8 +153,8 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-details.tsx:146
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:188
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:189
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
 msgid "Back"
 msgstr "戻る"
 
@@ -401,8 +401,8 @@ msgstr "必要"
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:68
 #: ../html/src/manager/login/uyuni/login.tsx:65
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:296
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "パスワード"
@@ -473,7 +473,7 @@ msgstr "最初"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:407
+#: ../html/src/manager/admin/setup/products/products.tsx:403
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1092
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1123
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
@@ -482,7 +482,7 @@ msgstr "前へ"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:413
+#: ../html/src/manager/admin/setup/products/products.tsx:409
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1073
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:551
@@ -499,7 +499,7 @@ msgstr "ページ"
 
 #: ../html/src/components/pagination.tsx:108
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:418
+#: ../html/src/manager/admin/setup/products/products.tsx:414
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:866
 msgid "of"
 msgstr "／"
@@ -628,7 +628,7 @@ msgid "({0} selected)"
 msgstr "({0} 個を選択しています)"
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.tsx:335
+#: ../html/src/manager/admin/setup/products/products.tsx:331
 msgid "Clear"
 msgstr "消去"
 
@@ -926,7 +926,7 @@ msgstr "従量課金制のsshデータを追加"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
 #: ../html/src/manager/state/recurring-states-list.tsx:51
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:217
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
 #: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
@@ -961,7 +961,7 @@ msgid "Bastion SSH connection data"
 msgstr "要塞SSH接続データ"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:266
+#: ../html/src/manager/admin/setup/products/products.tsx:262
 msgid "Setup Wizard"
 msgstr "セットアップウィザード"
 
@@ -973,7 +973,7 @@ msgstr "任意の値でフィルタ"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:354
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr "ホスト"
 
@@ -1045,26 +1045,26 @@ msgstr "ssh接続データを編集しています.."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr "SSHポート"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:383
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr "ユーザ"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:430
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr "SSH 機密鍵"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:325
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 機密鍵のパスフレーズ"
 
@@ -1093,7 +1093,7 @@ msgstr "SUSE カスタマーセンターから製品カタログを更新"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:373
-#: ../html/src/manager/notifications/notification-messages.tsx:444
+#: ../html/src/manager/notifications/notification-messages.tsx:448
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "更新"
@@ -1117,6 +1117,7 @@ msgstr "操作は成功しませんでした: サーバからの応答が空で�
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:131
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "詳細"
@@ -1133,7 +1134,11 @@ msgstr ""
 msgid "The product catalog refresh is running..."
 msgstr "製品カタログの更新を行なっています..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:291
+#: ../html/src/manager/admin/setup/products/products.tsx:214
+msgid "The following product installations failed. Please check log files."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1141,28 +1146,28 @@ msgstr ""
 "製品データの更新処理が裏で動作しています。しばらくしてからやり直してくださ"
 "い。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:296
+#: ../html/src/manager/admin/setup/products/products.tsx:292
 msgid "The product catalog is still refreshing, please wait."
 msgstr "まだ製品カタログを更新しています。しばらくお待ちください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:298
+#: ../html/src/manager/admin/setup/products/products.tsx:294
 msgid "Select some product first."
 msgstr "まずは製品を選択してください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:307
-#: ../html/src/manager/admin/setup/products/products.tsx:315
+#: ../html/src/manager/admin/setup/products/products.tsx:303
+#: ../html/src/manager/admin/setup/products/products.tsx:311
 msgid "Add products"
 msgstr "製品の追加"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:334
+#: ../html/src/manager/admin/setup/products/products.tsx:330
 msgid "Clear products selection"
 msgstr "製品の選択解除"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:374
+#: ../html/src/manager/admin/setup/products/products.tsx:370
 msgid "Why aren't all products displayed in the list?"
 msgstr "なぜ一覧に全ての製品が表示されていないのですか？"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:377
+#: ../html/src/manager/admin/setup/products/products.tsx:373
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1170,7 +1175,7 @@ msgstr ""
 "この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 "
 "(ミラークレデンシャル) に直接結びついています。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:382
+#: ../html/src/manager/admin/setup/products/products.tsx:378
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1178,7 +1183,7 @@ msgstr ""
 "存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情"
 "報を追加していることをご確認ください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:392
+#: ../html/src/manager/admin/setup/products/products.tsx:388
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1186,59 +1191,59 @@ msgstr ""
 "このサーバはサーバ間同期 (ISS) スレーブとして設定されています。製品は ISS マ"
 "スター上でのみ管理することができます。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:468
+#: ../html/src/manager/admin/setup/products/products.tsx:464
 msgid "Filter by architecture"
 msgstr "アーキテクチャでフィルタ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:563
+#: ../html/src/manager/admin/setup/products/products.tsx:559
 msgid "Filter by product Description"
 msgstr "製品説明でフィルタ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:633
+#: ../html/src/manager/admin/setup/products/products.tsx:629
 msgid "Product Description"
 msgstr "製品説明"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:639
-#: ../html/src/manager/admin/setup/products/products.tsx:1017
+#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:1013
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "アーキテクチャ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:641
+#: ../html/src/manager/admin/setup/products/products.tsx:637
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:648
+#: ../html/src/manager/admin/setup/products/products.tsx:644
 msgid "Channels"
 msgstr "チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:819
+#: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid " channels sync failed"
 msgstr " チャンネル同期に失敗しました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:827
+#: ../html/src/manager/admin/setup/products/products.tsx:823
 msgid " channels sync in progress"
 msgstr " チャンネル同期を実行しています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:835
+#: ../html/src/manager/admin/setup/products/products.tsx:831
 msgid " channels synced"
 msgstr " チャンネルを同期しました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:860
+#: ../html/src/manager/admin/setup/products/products.tsx:856
 msgid "To enable this product, the parent product should be selected first"
 msgstr "この製品を有効化するには、先に親製品を選択しておく必要があります"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:861
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 msgid "Select this product"
 msgstr "この製品を選択"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:873
+#: ../html/src/manager/admin/setup/products/products.tsx:869
 msgid "This product is mirrored."
 msgstr "この製品はミラーされています。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:902
+#: ../html/src/manager/admin/setup/products/products.tsx:898
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1246,7 +1251,7 @@ msgstr "この製品はミラーされています。"
 msgid "recommended"
 msgstr "推奨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:920
+#: ../html/src/manager/admin/setup/products/products.tsx:916
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1254,51 +1259,51 @@ msgstr "推奨"
 msgid "include recommended"
 msgstr "推奨を含める"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:962
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 製品カタログの更新を実行しています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:965
+#: ../html/src/manager/admin/setup/products/products.tsx:961
 msgid "Scheduling channels product resync"
 msgstr "チャンネル製品の再同期をスケジュールしています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:968
+#: ../html/src/manager/admin/setup/products/products.tsx:964
 msgid "Channels product resync scheduled"
 msgstr "チャンネル製品の再同期をスケジュールしました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:971
+#: ../html/src/manager/admin/setup/products/products.tsx:967
 msgid "Schedule channels product resync"
 msgstr "チャンネル製品の再同期をスケジュール"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1032
+#: ../html/src/manager/admin/setup/products/products.tsx:1028
 msgid "Show product's channels"
 msgstr "製品チャンネルの表示"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1064
+#: ../html/src/manager/admin/setup/products/products.tsx:1060
 msgid "Product Channels - "
 msgstr "製品チャンネル - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1069
+#: ../html/src/manager/admin/setup/products/products.tsx:1065
 msgid "Mandatory Channels"
 msgstr "必須チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1076
+#: ../html/src/manager/admin/setup/products/products.tsx:1072
 msgid "Optional Channels"
 msgstr "任意チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1091
+#: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "not synced"
 msgstr "同期されていません"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1094
+#: ../html/src/manager/admin/setup/products/products.tsx:1090
 msgid "sync in progress"
 msgstr "同期を行なっています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1097
+#: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "synced"
 msgstr "同期済み"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1100
+#: ../html/src/manager/admin/setup/products/products.tsx:1096
 msgid "sync failed"
 msgstr "同期が失敗しました"
 
@@ -1394,7 +1399,7 @@ msgstr "現時点では、サーバ内で動作しているタスクはありま
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:568
+#: ../html/src/manager/notifications/notification-messages.tsx:572
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "セッションの期限が切れました。最新のデータを表示するには、ページを再読み込み"
@@ -1402,8 +1407,8 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:570
-#: ../html/src/utils/network.ts:101
+#: ../html/src/manager/notifications/notification-messages.tsx:574
+#: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
 
@@ -2367,8 +2372,8 @@ msgstr "バージョン {0} を {1} にビルドしました"
 #: ../html/src/manager/images/image-profiles.tsx:177
 #: ../html/src/manager/images/image-store-edit.tsx:259
 #: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:325
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
 msgstr "ラベル"
@@ -2602,7 +2607,7 @@ msgstr "子チャンネル無し"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:640
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notification-messages.tsx:510
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2797,7 +2802,7 @@ msgstr "パス"
 #: ../html/src/manager/images/image-build.tsx:274
 #: ../html/src/manager/images/image-import.tsx:229
 #: ../html/src/manager/images/image-profile-edit.tsx:394
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:548
 msgid "Activation Key"
 msgstr "アクティベーションキー"
 
@@ -2862,8 +2867,8 @@ msgstr "取り込み"
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
 #: ../html/src/manager/proxy/container-config.tsx:378
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:285
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:196
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
 msgstr "項目の消去"
 
@@ -2902,7 +2907,7 @@ msgstr "追加の独自 info 鍵の作成"
 #: ../html/src/manager/images/image-profile-edit.tsx:492
 #: ../html/src/manager/images/image-store-edit.tsx:214
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:111
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:40
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:38
@@ -3462,7 +3467,7 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:42
 msgid "_blank"
-msgstr ""
+msgstr "_blank"
 
 #: ../html/src/manager/login/susemanager/login.tsx:57
 #: ../html/src/manager/login/susemanager/login.tsx:82
@@ -4040,97 +4045,101 @@ msgstr "状態の適用に失敗しました"
 msgid "Pay-as-you-go refresh authentication data failed"
 msgstr "従量課金制の認証データの更新が失敗しました"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:141
+#: ../html/src/manager/notifications/notification-messages.tsx:54
+msgid "End of Life Period"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
 msgstr "タイプでフィルタ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.tsx:253
+#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Info"
 msgstr "情報"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:257
-#: ../html/src/manager/notifications/notification-messages.tsx:258
+#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Warning"
 msgstr "警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:265
-#: ../html/src/manager/notifications/notification-messages.tsx:266
+#: ../html/src/manager/notifications/notification-messages.tsx:269
+#: ../html/src/manager/notifications/notification-messages.tsx:270
 msgid "Error"
 msgstr "エラー"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:328
+#: ../html/src/manager/notifications/notification-messages.tsx:332
 msgid "show details"
 msgstr "詳細の表示"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:377
+#: ../html/src/manager/notifications/notification-messages.tsx:381
 msgid "Retry onboarding"
 msgstr "オンボーディングの再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:387
+#: ../html/src/manager/notifications/notification-messages.tsx:391
 msgid "Retry repo sync"
 msgstr "リポジトリー同期の再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:411
+#: ../html/src/manager/notifications/notification-messages.tsx:415
 msgid "Unread Messages"
 msgstr "未読メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:416
+#: ../html/src/manager/notifications/notification-messages.tsx:420
 msgid "All Messages"
 msgstr "全てのメッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:448
-#: ../html/src/manager/notifications/notification-messages.tsx:449
+#: ../html/src/manager/notifications/notification-messages.tsx:452
+#: ../html/src/manager/notifications/notification-messages.tsx:453
 msgid "Delete selected messages"
 msgstr "選択したメッセージの削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:456
-#: ../html/src/manager/notifications/notification-messages.tsx:457
+#: ../html/src/manager/notifications/notification-messages.tsx:460
+#: ../html/src/manager/notifications/notification-messages.tsx:461
 msgid "Mark selected as read"
 msgstr "選択したものを読み込み済みとしてマーク"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:474
-#: ../html/src/manager/notifications/notification-messages.tsx:556
+#: ../html/src/manager/notifications/notification-messages.tsx:478
+#: ../html/src/manager/notifications/notification-messages.tsx:560
 msgid "Notification Messages"
 msgstr "通知メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:479
+#: ../html/src/manager/notifications/notification-messages.tsx:483
 msgid "The server has collected the following notification messages."
 msgstr "このサーバは下記のような通知メッセージを収集しました。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notification-messages.tsx:498
 msgid "Filter by summary"
 msgstr "概要でフィルタ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:500
+#: ../html/src/manager/notifications/notification-messages.tsx:504
 msgid "Severity"
 msgstr "重大度"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notification-messages.tsx:516
 msgid "Summary"
 msgstr "概要"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:518
+#: ../html/src/manager/notifications/notification-messages.tsx:522
 msgid "Created"
 msgstr "作成日"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:523
+#: ../html/src/manager/notifications/notification-messages.tsx:527
 msgid "Action"
 msgstr "動作"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notification-messages.tsx:533
 msgid "Read|Delete"
 msgstr "読み込み|削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:542
 msgid "Flag as Unread"
 msgstr "未読として設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:542
 msgid "Flag as Read"
 msgstr "読み込み済みとして設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:544
+#: ../html/src/manager/notifications/notification-messages.tsx:548
 msgid "Delete Notification"
 msgstr "通知の削除"
 
@@ -4192,57 +4201,52 @@ msgstr "プロキシFQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:192
 msgid "The FQDN of the machine where the containers are hosted"
-msgstr ""
+msgstr "コンテナがホストされているマシンのFQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:194
 msgid "e.g., proxy.domain.com"
 msgstr "例: proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-#, fuzzy
 msgid "Parent FQDN"
-msgstr "プロキシFQDN"
+msgstr "親FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., server.domain.com"
 msgstr "例: server.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:203
-#, fuzzy
 msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr "接続するプロキシのサーバのFQDN。"
+msgstr "接続する親(サーバまたはプロキシ)のFQDN。"
 
 #: ../html/src/manager/proxy/container-config.tsx:209
 msgid "Proxy SSH port"
 msgstr "プロキシSSHポート"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr "ポート範囲: 1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:219
-#, fuzzy
 msgid "Max Squid cache size"
-msgstr "Squidの最大キャッシュサイズ(MB)"
+msgstr "Squidの最大キャッシュサイズ"
 
 #: ../html/src/manager/proxy/container-config.tsx:220
 msgid "The maximum value of the Squid cache in Megabytes"
-msgstr ""
+msgstr "Squidキャッシュの最大値(メガバイト単位)"
 
 #: ../html/src/manager/proxy/container-config.tsx:223
 msgid "e.g., 2048"
 msgstr "例: 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:230
-#, fuzzy
 msgid "Proxy admin email"
 msgstr "プロキシ管理者の電子メール"
 
 #: ../html/src/manager/proxy/container-config.tsx:231
-#, fuzzy
 msgid "The container-based proxy administrator email address"
-msgstr "コンテナベースのプロキシ設定が正しく生成されました。"
+msgstr "コンテナベースのプロキシ管理者の電子メールアドレス"
 
 #: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., proxy.admin@mycompany.com"
@@ -4263,26 +4267,22 @@ msgid "Use existing"
 msgstr "既存の使用"
 
 #: ../html/src/manager/proxy/container-config.tsx:256
-#, fuzzy
 msgid "CA certificate"
-msgstr "SSL証明書"
+msgstr "CA 証明書"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
 #: ../html/src/manager/proxy/container-config.tsx:266
 #: ../html/src/manager/proxy/container-config.tsx:323
-#, fuzzy
 msgid "To sign the SSL certificate in PEM format"
-msgstr "PEM形式でSSL証明書に署名するために使用されるルートCA"
+msgstr "PEM形式のSSL証明書に署名するには"
 
 #: ../html/src/manager/proxy/container-config.tsx:265
-#, fuzzy
 msgid "CA private key"
-msgstr "SSH 機密鍵"
+msgstr "CA機密鍵"
 
 #: ../html/src/manager/proxy/container-config.tsx:274
-#, fuzzy
 msgid "CA password"
-msgstr "パスワード"
+msgstr "CA パスワード"
 
 #: ../html/src/manager/proxy/container-config.tsx:275
 msgid "The CA private key password"
@@ -4326,7 +4326,7 @@ msgstr "電子メール"
 
 #: ../html/src/manager/proxy/container-config.tsx:322
 msgid "The root CA"
-msgstr ""
+msgstr "ルートCA"
 
 #: ../html/src/manager/proxy/container-config.tsx:332
 msgid "Intermediate CAs"
@@ -4337,20 +4337,17 @@ msgid "CA file in PEM format"
 msgstr "PEM形式のCAファイル"
 
 #: ../html/src/manager/proxy/container-config.tsx:353
-#, fuzzy
 msgid "Proxy certificate"
-msgstr "SSL証明書"
+msgstr "プロキシ証明書"
 
 #: ../html/src/manager/proxy/container-config.tsx:354
 #: ../html/src/manager/proxy/container-config.tsx:363
-#, fuzzy
 msgid "In PEM format"
-msgstr "PEM形式のCAファイル"
+msgstr "PEM形式"
 
 #: ../html/src/manager/proxy/container-config.tsx:362
-#, fuzzy
 msgid "Proxy SSL private key"
-msgstr "PEM形式のプロキシSSL機密鍵"
+msgstr "プロキシSSL機密鍵"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4734,7 +4731,17 @@ msgstr ""
 "このアクティベーションキーを利用して登録したシステムは、選択した子チャンネル"
 "をサブスクライブします。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:214
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
+#, fuzzy
+msgid "Error Details"
+msgstr "詳細"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
+msgid "Close"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -4742,35 +4749,43 @@ msgstr ""
 "リクエストが中断されたか、もしくはサーバから不正な応答を受け取りました。お使"
 "いの minion が正しくブートストラップされているかどうかをご確認ください。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:243
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:334
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "ホストをブートストラップしました。システムは"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:245
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "systems"
 msgstr "システム"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:247
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:338
 msgid "shortly"
 msgstr "しばらくすると現われるはずです"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:265
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
+msgid "Show additional details about this error"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
+msgid "Unable to bootstrap host. The following errors have happened:"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "システムをブートストラップしています: 応答を待っています.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:269
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:364
 msgid "Loading SSH Private Key.."
 msgstr "SSH 機密鍵を読み込んでいます.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:277
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:372
 msgid "Bootstrap"
 msgstr "ブートストラップ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:303
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 msgid "e.g., ••••••••••••"
 msgstr "例: ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:319
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:414
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
@@ -4778,15 +4793,15 @@ msgstr ""
 "ファイルはサーバ内の一時ファイルとして保存されています。ブートストラップ処理"
 "が完了すると削除されます"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:332
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
 msgid "Leave empty for no passphrase"
 msgstr "パスフレーズが無い場合は何も入力しないでください"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:344
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 msgid "Bootstrap Minions"
 msgstr "minion のブートストラップ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:347
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:442
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4794,11 +4809,11 @@ msgstr ""
 "SSH の資格情報のみを提供することで、管理対象のシステムを追加することができま"
 "す。 {0} はシステムを遠隔から準備し、登録処理を実施します。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:360
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
 msgid "e.g., host.domain.com"
 msgstr "例: host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:493
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4810,33 +4825,33 @@ msgstr ""
 "鍵に対する既定のユーザは 'root' です。このユーザは {0} の SSH 鍵を配置したあ"
 "と、ブートストラップ処理の際に設定されます。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Authentication Method"
 msgstr "認証メソッド"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:443
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
 msgid "Ansible control node"
 msgstr "Ansible 制御ノード"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:491
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:557
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:587
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "なし"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:570
 msgid "Reactivation Key"
 msgstr "再アクティベーションキー"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:480
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:576
 msgid "Leave empty when no reactivation is wanted"
 msgstr "再アクティベーションが不要な場合は空のままにする"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:487
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
 msgid "Proxy"
 msgstr "プロキシ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:510
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:605
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
@@ -4844,15 +4859,15 @@ msgstr ""
 "プロキシのホスト名が完全修飾型ではありません。チャンネルへのアクセス時に問題"
 "を引き起こす可能性があります。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:622
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr "ブートストラッププロセス中にSSH厳密ホストキーの確認を無効にする"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:543
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:638
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "SSH 経由でシステムを完全に管理する(エージェントをインストールしない)"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:559
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:654
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "ブートストラップ中にこのページを閉じてもよろしいですか?"
@@ -5245,16 +5260,16 @@ msgid "Are you sure you want to delete this virtual host manager?"
 msgstr "この仮想ホストマネージャを削除してよろしいですか？"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:185
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:272
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:262
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
 msgid "Gatherer module"
 msgstr "収集モジュール"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:313
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:303
 msgid "Current Context"
 msgstr "現在のコンテキスト"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:327
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:317
 msgid "Kubeconfig file"
 msgstr "Kubeconfig ファイル"
 
@@ -6247,22 +6262,22 @@ msgstr "システムグループの選択"
 msgid "Split into groups"
 msgstr "グループに分割"
 
-#: ../html/src/utils/network.ts:95
+#: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "セッションの有効期限が切れました。ページを再読み込みしてください。"
 
-#: ../html/src/utils/network.ts:97
+#: ../html/src/utils/network.ts:99
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
 "認証エラーが発生しました。ページを再読み込みするか、いったんログアウトしてロ"
 "グインし直してください。"
 
-#: ../html/src/utils/network.ts:99
+#: ../html/src/utils/network.ts:101
 msgid "Resource not found."
 msgstr "リソースが見つかりませんでした。"
 
-#: ../html/src/utils/network.ts:103
+#: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
 

@@ -26,7 +26,7 @@ import java.util.Optional;
 /**
  * Serializer for {@link MgrSyncChannelDto} objects.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("channel")
  *     #prop_desc("string", "arch", "architecture of the channel")
  *     #prop_desc("string", "description", "description of the channel")

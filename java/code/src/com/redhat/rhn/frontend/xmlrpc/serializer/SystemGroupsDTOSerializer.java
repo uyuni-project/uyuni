@@ -31,7 +31,7 @@ import java.util.Map;
 *
 * SystemGroupsDTOSerializer
 *
-* @xmlrpc.doc
+* @apidoc.doc
 *
 * #struct_begin("system")
 *   #prop_desc("int", "id", "system ID")

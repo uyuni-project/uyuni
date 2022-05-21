@@ -22,7 +22,7 @@ import com.suse.manager.api.SerializedApiResponse;
 
 /**
  * DeltaImageSerializer
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("delta image information")
  *   #prop("int", "source_id")
  *   #prop("int", "target_id")

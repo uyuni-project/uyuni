@@ -23,7 +23,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * IssSlaveSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  * #struct_begin("IssSlave info")
  *   #prop("int", "id")
  *   #prop("string", "slave")

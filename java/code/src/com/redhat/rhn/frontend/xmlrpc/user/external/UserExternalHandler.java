@@ -44,8 +44,8 @@ import java.util.Set;
 
 /**
  * UserHandler
- * @xmlrpc.namespace user.external
- * @xmlrpc.doc If you are using IPA integration to allow authentication of users from
+ * @apidoc.namespace user.external
+ * @apidoc.doc If you are using IPA integration to allow authentication of users from
  * an external IPA server (rare) the users will still need to be created in the #product()
  * database. Methods in this namespace allow you to configure some specifics of how this
  * happens, like what organization they are created in or what roles they will have.
@@ -60,13 +60,13 @@ public class UserExternalHandler extends BaseHandler {
      * @return 1 on success
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc Set whether we should keeps roles assigned to users because of
+     * @apidoc.doc Set whether we should keeps roles assigned to users because of
      * their IPA groups even after they log in through a non-IPA method. Can only be
      * called by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("boolean", "keepRoles", "True if we should keep roles
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("boolean", "keepRoles", "True if we should keep roles
      * after users log in through non-IPA method, false otherwise.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setKeepTemporaryRoles(User loggedInUser, Boolean keepRoles)
             throws PermissionCheckFailureException {
@@ -94,11 +94,11 @@ public class UserExternalHandler extends BaseHandler {
      * after users log in through non-IPA method, false otherwise.
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc Get whether we should keeps roles assigned to users because of
+     * @apidoc.doc Get whether we should keeps roles assigned to users because of
      * their IPA groups even after they log in through a non-IPA method. Can only be
      * called by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #param_desc("boolean", "keep", "True if we should keep roles
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #param_desc("boolean", "keep", "True if we should keep roles
      * after users log in through non-IPA method, false otherwise")
      */
     @ReadOnly
@@ -119,13 +119,13 @@ public class UserExternalHandler extends BaseHandler {
      * @return 1 on success
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc Set whether we place users into the organization that corresponds
+     * @apidoc.doc Set whether we place users into the organization that corresponds
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
      * #product() organization name. Can only be called by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("boolean", "useOrgUnit", "tue if we should use the IPA
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("boolean", "useOrgUnit", "true if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setUseOrgUnit(User loggedInUser, Boolean useOrgUnit)
             throws PermissionCheckFailureException {
@@ -145,11 +145,11 @@ public class UserExternalHandler extends BaseHandler {
      * @return True if we should use org unit
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc Get whether we place users into the organization that corresponds
+     * @apidoc.doc Get whether we place users into the organization that corresponds
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
      * #product() organization name. Can only be called by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #param_desc("boolean", "use", "True if we should use the IPA
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #param_desc("boolean", "use", "True if we should use the IPA
      * orgunit to determine which organization to create the user in, false otherwise")
      */
     @ReadOnly
@@ -169,12 +169,12 @@ public class UserExternalHandler extends BaseHandler {
      * @return 1 on success
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc Set the default org that users should be added in if orgunit from
+     * @apidoc.doc Set the default org that users should be added in if orgunit from
      * IPA server isn't found or is disabled. Can only be called by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "orgId", "ID of the organization to set
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "orgId", "ID of the organization to set
      * as the default org. 0 if there should not be a default organization.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setDefaultOrg(User loggedInUser, Integer orgId)
             throws PermissionCheckFailureException {
@@ -199,10 +199,10 @@ public class UserExternalHandler extends BaseHandler {
      * @return orgId of the default org
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc Get the default org that users should be added in if orgunit from
+     * @apidoc.doc Get the default org that users should be added in if orgunit from
      * IPA server isn't found or is disabled. Can only be called by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #param_desc("int", "id", "ID of the default organization. 0 if there is no default")
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #param_desc("int", "id", "ID of the default organization. 0 if there is no default")
      */
     @ReadOnly
     public int getDefaultOrg(User loggedInUser) throws PermissionCheckFailureException {
@@ -226,17 +226,17 @@ public class UserExternalHandler extends BaseHandler {
      * @return the newly created group
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc Externally authenticated users may be members of external groups. You
+     * @apidoc.doc Externally authenticated users may be members of external groups. You
      * can use these groups to assign additional roles to the users when they log in.
      * Can only be called by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Name of the external group. Must be
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the external group. Must be
      * unique.")
-     * @xmlrpc.param #array_single_desc("string", "roles", "role - Can be any of:
+     * @apidoc.param #array_single_desc("string", "roles", "role - Can be any of:
      * satellite_admin, org_admin (implies all other roles except for satellite_admin),
      * channel_admin, config_admin, system_group_admin, or
      * activation_key_admin.")
-     * @xmlrpc.returntype $UserExtGroupSerializer
+     * @apidoc.returntype $UserExtGroupSerializer
      */
     public UserExtGroup createExternalGroupToRoleMap(User loggedInUser, String name,
             List<String> roles) {
@@ -272,11 +272,11 @@ public class UserExternalHandler extends BaseHandler {
      * @return the  group
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc Get a representation of the role mapping for an external group.
+     * @apidoc.doc Get a representation of the role mapping for an external group.
      * Can only be called by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
-     * @xmlrpc.returntype $UserExtGroupSerializer
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the external group.")
+     * @apidoc.returntype $UserExtGroupSerializer
      */
     @ReadOnly
     public UserExtGroup getExternalGroupToRoleMap(User loggedInUser, String name) {
@@ -299,15 +299,15 @@ public class UserExternalHandler extends BaseHandler {
      * @param roles the roles to set
      * @return 1 if successful, error otherwise
      *
-     * @xmlrpc.doc Update the roles for an external group. Replace previously set roles
+     * @apidoc.doc Update the roles for an external group. Replace previously set roles
      * with the ones passed in here. Can only be called by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
-     * @xmlrpc.param #array_single_desc("string", "roles", "role - Can be any of:
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the external group.")
+     * @apidoc.param #array_single_desc("string", "roles", "role - Can be any of:
      * satellite_admin, org_admin (implies all other roles except for satellite_admin),
      * channel_admin, config_admin, system_group_admin, or
      * activation_key_admin.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setExternalGroupRoles(User loggedInUser, String name, List<String> roles) {
         // Make sure we're logged in and a Sat Admin
@@ -341,11 +341,11 @@ public class UserExternalHandler extends BaseHandler {
      * @return 1 if successful, error otherwise
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc Delete the role map for an external group. Can only be called
+     * @apidoc.doc Delete the role map for an external group. Can only be called
      * by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the external group.")
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteExternalGroupToRoleMap(User loggedInUser, String name) {
         // Make sure we're logged in and a Sat Admin
@@ -366,10 +366,10 @@ public class UserExternalHandler extends BaseHandler {
      * @return the external groups
      * @throws PermissionCheckFailureException if the user is not a product admin
      *
-     * @xmlrpc.doc List role mappings for all known external groups. Can only be called
+     * @apidoc.doc List role mappings for all known external groups. Can only be called
      * by a #product() Administrator.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      *     $UserExtGroupSerializer
      * #array_end()
@@ -410,15 +410,15 @@ public class UserExternalHandler extends BaseHandler {
      * @param groupNames List of system groups to set for this group
      * @return the newly created group
      *
-     * @xmlrpc.doc Externally authenticated users may be members of external groups. You
+     * @apidoc.doc Externally authenticated users may be members of external groups. You
      * can use these groups to give access to server groups to the users when they log in.
      * Can only be called by an org_admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Name of the external group. Must be
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the external group. Must be
      * unique.")
-     * @xmlrpc.param #array_single_desc("string", "groupNames", "the names of the server
+     * @apidoc.param #array_single_desc("string", "groupNames", "the names of the server
      * groups to grant access to.")
-     * @xmlrpc.returntype $OrgUserExtGroupSerializer
+     * @apidoc.returntype $OrgUserExtGroupSerializer
      */
     public OrgUserExtGroup createExternalGroupToSystemGroupMap(User loggedInUser,
             String name, List<String> groupNames) {
@@ -452,11 +452,11 @@ public class UserExternalHandler extends BaseHandler {
      * @param name The name of the group
      * @return the  group
      *
-     * @xmlrpc.doc Get a representation of the server group mapping for an external
+     * @apidoc.doc Get a representation of the server group mapping for an external
      * group. Can only be called by an org_admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
-     * @xmlrpc.returntype $OrgUserExtGroupSerializer
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the external group.")
+     * @apidoc.returntype $OrgUserExtGroupSerializer
      */
     @ReadOnly
     public OrgUserExtGroup getExternalGroupToSystemGroupMap(User loggedInUser,
@@ -473,13 +473,13 @@ public class UserExternalHandler extends BaseHandler {
      * @param groupNames the groups to set
      * @return 1 if successful, error otherwise
      *
-     * @xmlrpc.doc Update the server groups for an external group. Replace previously set
+     * @apidoc.doc Update the server groups for an external group. Replace previously set
      * server groups with the ones passed in here. Can only be called by an org_admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
-     * @xmlrpc.param #array_single_desc("string", "groupNames", "the names of the
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the external group.")
+     * @apidoc.param #array_single_desc("string", "groupNames", "the names of the
      * server groups to grant access to.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setExternalGroupSystemGroups(User loggedInUser, String name,
             List<String> groupNames) {
@@ -511,11 +511,11 @@ public class UserExternalHandler extends BaseHandler {
      * @param name The name of the group
      * @return 1 if successful, error otherwise
      *
-     * @xmlrpc.doc Delete the server group map for an external group. Can only be called
+     * @apidoc.doc Delete the server group map for an external group. Can only be called
      * by an org_admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Name of the external group.")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the external group.")
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteExternalGroupToSystemGroupMap(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
@@ -536,10 +536,10 @@ public class UserExternalHandler extends BaseHandler {
      * @return the external groups
      * @throws PermissionCheckFailureException if the user is not an Org admin
      *
-     * @xmlrpc.doc List server group mappings for all known external groups. Can only be
+     * @apidoc.doc List server group mappings for all known external groups. Can only be
      * called by an org_admin.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      *     $OrgUserExtGroupSerializer
      * #array_end()

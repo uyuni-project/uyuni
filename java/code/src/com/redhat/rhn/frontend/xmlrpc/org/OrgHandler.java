@@ -63,8 +63,8 @@ import java.util.Set;
 
 /**
  * OrgHandler
- * @xmlrpc.namespace org
- * @xmlrpc.doc Contains methods to access common organization management
+ * @apidoc.namespace org
+ * @apidoc.doc Contains methods to access common organization management
  * functions available from the web interface.
  */
 public class OrgHandler extends BaseHandler {
@@ -95,15 +95,15 @@ public class OrgHandler extends BaseHandler {
      * @param email New administrator's e-mail.
      * @return Newly created organization object.
      *
-     * @xmlrpc.doc Create first organization and user after initial setup without authentication
-     * @xmlrpc.param #param_desc("string", "orgName", "Organization name. Must meet same
+     * @apidoc.doc Create first organization and user after initial setup without authentication
+     * @apidoc.param #param_desc("string", "orgName", "Organization name. Must meet same
      * criteria as in the web UI.")
-     * @xmlrpc.param #param_desc("string", "adminLogin", "New administrator login name.")
-     * @xmlrpc.param #param_desc("string", "adminPassword", "New administrator password.")
-     * @xmlrpc.param #param_desc("string", "firstName", "New administrator's first name.")
-     * @xmlrpc.param #param_desc("string", "lastName", "New administrator's first name.")
-     * @xmlrpc.param #param_desc("string", "email", "New administrator's e-mail.")
-     * @xmlrpc.returntype $OrgDtoSerializer
+     * @apidoc.param #param_desc("string", "adminLogin", "New administrator login name.")
+     * @apidoc.param #param_desc("string", "adminPassword", "New administrator password.")
+     * @apidoc.param #param_desc("string", "firstName", "New administrator's first name.")
+     * @apidoc.param #param_desc("string", "lastName", "New administrator's first name.")
+     * @apidoc.param #param_desc("string", "email", "New administrator's e-mail.")
+     * @apidoc.returntype $OrgDtoSerializer
      */
     public OrgDto createFirst(String orgName, String adminLogin,
             String adminPassword, String firstName, String lastName,
@@ -144,20 +144,20 @@ public class OrgHandler extends BaseHandler {
      * @param usePamAuth Should PAM authentication be used for new administrators account.
      * @return Newly created organization object.
      *
-     * @xmlrpc.doc Create a new organization and associated administrator account.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "orgName", "Organization name. Must meet same
+     * @apidoc.doc Create a new organization and associated administrator account.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "orgName", "Organization name. Must meet same
      * criteria as in the web UI.")
-     * @xmlrpc.param #param_desc("string", "adminLogin", "New administrator login name.")
-     * @xmlrpc.param #param_desc("string", "adminPassword", "New administrator password.")
-     * @xmlrpc.param #param_desc("string", "prefix", "New administrator's prefix. Must
+     * @apidoc.param #param_desc("string", "adminLogin", "New administrator login name.")
+     * @apidoc.param #param_desc("string", "adminPassword", "New administrator password.")
+     * @apidoc.param #param_desc("string", "prefix", "New administrator's prefix. Must
      * match one of the values available in the web UI. (i.e. Dr., Mr., Mrs., Sr., etc.)")
-     * @xmlrpc.param #param_desc("string", "firstName", "New administrator's first name.")
-     * @xmlrpc.param #param_desc("string", "lastName", "New administrator's first name.")
-     * @xmlrpc.param #param_desc("string", "email", "New administrator's e-mail.")
-     * @xmlrpc.param #param_desc("boolean", "usePamAuth", "True if PAM authentication
+     * @apidoc.param #param_desc("string", "firstName", "New administrator's first name.")
+     * @apidoc.param #param_desc("string", "lastName", "New administrator's first name.")
+     * @apidoc.param #param_desc("string", "email", "New administrator's e-mail.")
+     * @apidoc.param #param_desc("boolean", "usePamAuth", "True if PAM authentication
      * should be used for the new administrator account.")
-     * @xmlrpc.returntype $OrgDtoSerializer
+     * @apidoc.returntype $OrgDtoSerializer
      */
     public OrgDto create(User loggedInUser, String orgName, String adminLogin,
             String adminPassword, String prefix, String firstName, String lastName,
@@ -229,9 +229,9 @@ public class OrgHandler extends BaseHandler {
      * Returns the list of organizations.
      * @param loggedInUser The current user
      * @return list of orgs.
-     * @xmlrpc.doc Returns the list of organizations.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns the list of organizations.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *   #return_array_begin()
      *     $OrgDtoSerializer
      *   #array_end()
@@ -249,11 +249,11 @@ public class OrgHandler extends BaseHandler {
      * @param orgId ID of organization to delete.
      * @return 1 on success, exception thrown otherwise.
      *
-     * @xmlrpc.doc Delete an organization. The default organization
+     * @apidoc.doc Delete an organization. The default organization
      * (i.e. orgId=1) cannot be deleted.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -283,10 +283,10 @@ public class OrgHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param orgId the orgId of the organization to lookup on.
      * @return the list of users in a organization.
-     * @xmlrpc.doc Returns the list of users in a given organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns the list of users in a given organization.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype
      *   #return_array_begin()
      *     $MultiOrgUserOverviewSerializer
      *   #array_end()
@@ -305,11 +305,11 @@ public class OrgHandler extends BaseHandler {
      * @param orgId the orgId of the organization to lookup on.
      * @return the list of users in a organization.
      *
-     * @xmlrpc.doc The detailed information about an organization given
+     * @apidoc.doc The detailed information about an organization given
      * the organization ID.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype $OrgDtoSerializer
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype $OrgDtoSerializer
      */
     @ReadOnly
     public OrgDto getDetails(User loggedInUser, Integer orgId) {
@@ -324,11 +324,11 @@ public class OrgHandler extends BaseHandler {
      * @param name the name of the organization to lookup on.
      * @return the list of users in a organization.
      *
-     * @xmlrpc.doc The detailed information about an organization given
+     * @apidoc.doc The detailed information about an organization given
      * the organization name.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "name")
-     * @xmlrpc.returntype $OrgDtoSerializer
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "name")
+     * @apidoc.returntype $OrgDtoSerializer
      */
     @ReadOnly
     public OrgDto getDetails(User loggedInUser, String name) {
@@ -343,12 +343,12 @@ public class OrgHandler extends BaseHandler {
      * @param name the new name for the org.
      * @return the updated org.
      *
-     * @xmlrpc.doc Updates the name of an organization
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param #param_desc("string", "name", "Organization name. Must meet same
+     * @apidoc.doc Updates the name of an organization
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param #param_desc("string", "name", "Organization name. Must meet same
      * criteria as in the web UI.")
-     * @xmlrpc.returntype $OrgDtoSerializer
+     * @apidoc.returntype $OrgDtoSerializer
      */
     public OrgDto updateName(User loggedInUser, Integer orgId, String name) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -402,7 +402,7 @@ public class OrgHandler extends BaseHandler {
      * @deprecated being replaced by org.transferSystems(User loggedInUser, Integer toOrgId,
      * List(Integer) sids)
      *
-     * @xmlrpc.doc Transfer systems from one organization to another.  If executed by
+     * @apidoc.doc Transfer systems from one organization to another.  If executed by
      * a #product() administrator, the systems will be transferred from their current
      * organization to the organization specified by the toOrgId.  If executed by
      * an organization administrator, the systems must exist in the same organization
@@ -412,11 +412,11 @@ public class OrgHandler extends BaseHandler {
      *
      * Note: This method is deprecated and will be removed in a future API version. Please use
      * transferSystems instead.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "toOrgId", "ID of the organization where the
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "toOrgId", "ID of the organization where the
      * system(s) will be transferred to.")
-     * @xmlrpc.param #array_single("int", "sids")
-     * @xmlrpc.returntype
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.returntype
      * #array_single("int", "serverIdTransferred")
      */
     @Deprecated
@@ -447,18 +447,18 @@ public class OrgHandler extends BaseHandler {
      *   - The origination or destination organization does not exist
      *   - The user is not defined in the destination organization's trust
      *
-     * @xmlrpc.doc Transfer systems from one organization to another.  If executed by
+     * @apidoc.doc Transfer systems from one organization to another.  If executed by
      * a #product() administrator, the systems will be transferred from their current
      * organization to the organization specified by the toOrgId.  If executed by
      * an organization administrator, the systems must exist in the same organization
      * as that administrator and the systems will be transferred to the organization
      * specified by the toOrgId. In any scenario, the origination and destination
      * organizations must be defined in a trust.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "toOrgId", "ID of the organization where the
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "toOrgId", "ID of the organization where the
      * system(s) will be transferred to.")
-     * @xmlrpc.param #array_single("int", "sids")
-     * @xmlrpc.returntype
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.returntype
      * #array_single("int", "serverIdTransferred")
      */
     public Object[] transferSystems(User loggedInUser, Integer toOrgId,
@@ -526,12 +526,12 @@ public class OrgHandler extends BaseHandler {
      * @param orgId ID of organization to query.
      * @return Returns the status of SCAP detailed result file upload settings.
      *
-     * @xmlrpc.doc Get the status of SCAP detailed result file upload settings
+     * @apidoc.doc Get the status of SCAP detailed result file upload settings
      * for the given organization.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype
      *     #struct_begin("scap_upload_info")
      *         #prop_desc("boolean", "enabled",
      *             "Aggregation of detailed SCAP results is enabled.")
@@ -559,19 +559,19 @@ public class OrgHandler extends BaseHandler {
      * @param newSettings New settings of the SCAP detailed result file upload.
      * @return Returns 1 for successfull change.
      *
-     * @xmlrpc.doc Set the status of SCAP detailed result file upload settings
+     * @apidoc.doc Set the status of SCAP detailed result file upload settings
      * for the given organization.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param
      *     #struct_begin("newSettings")
      *         #prop_desc("boolean", "enabled",
      *             "Aggregation of detailed SCAP results is enabled.")
      *         #prop_desc("int", "size_limit",
      *             "Limit (in Bytes) for a single SCAP file upload.")
      *     #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setPolicyForScapFileUpload(User loggedInUser, Integer orgId,
             Map<String, Object> newSettings) {
@@ -601,12 +601,12 @@ public class OrgHandler extends BaseHandler {
      * @param orgId ID of organization to query.
      * @return Returns the status of SCAP result deletion settings.
      *
-     * @xmlrpc.doc Get the status of SCAP result deletion settings for the given
+     * @apidoc.doc Get the status of SCAP result deletion settings for the given
      * organization.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype
      *     #struct_begin("scap_deletion_info")
      *         #prop_desc("boolean", "enabled", "Deletion of SCAP results is enabled")
      *         #prop_desc("int", "retention_period",
@@ -634,19 +634,19 @@ public class OrgHandler extends BaseHandler {
      * @param newSettings New settings of the SCAP result deletion settings.
      * @return Returns 1 for successfull change.
      *
-     * @xmlrpc.doc Set the status of SCAP result deletion settins for the given
+     * @apidoc.doc Set the status of SCAP result deletion settins for the given
      * organization.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param
      *     #struct_begin("newSettings")
      *         #prop_desc("boolean", "enabled",
      *             "Deletion of SCAP results is enabled")
      *         #prop_desc("int", "retention_period",
      *             "Period (in days) after which a scan can be deleted (if enabled).")
      *     #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setPolicyForScapResultDeletion(User loggedInUser, Integer orgId,
             Map<String, Object> newSettings) {
@@ -683,12 +683,12 @@ public class OrgHandler extends BaseHandler {
      * @param orgId affected organization
      * @return Returns the status org admin management setting
      *
-     * @xmlrpc.doc Returns whether Organization Administrator is able to manage his
+     * @apidoc.doc Returns whether Organization Administrator is able to manage his
      * organization configuration. This may have a high impact on general #product() performance.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype #param_desc("boolean", "status", "Returns the status org admin management setting")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype #param_desc("boolean", "status", "Returns the status org admin management setting")
      */
     @ReadOnly
     public boolean isOrgConfigManagedByOrgAdmin(User loggedInUser, Integer orgId) {
@@ -707,13 +707,13 @@ public class OrgHandler extends BaseHandler {
      * organization configuration
      * @return Returns 1 for successful change, exception otherwise
      *
-     * @xmlrpc.doc Sets whether Organization Administrator can manage his organization
+     * @apidoc.doc Sets whether Organization Administrator can manage his organization
      * configuration. This may have a high impact on general #product() performance.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer setOrgConfigManagedByOrgAdmin(User loggedInUser, Integer orgId,
                                       Boolean enable) {
@@ -747,12 +747,12 @@ public class OrgHandler extends BaseHandler {
      * @return Returns the status of the errata e-mail notification setting
      * for the organization
      *
-     * @xmlrpc.doc Returns whether errata e-mail notifications are enabled
+     * @apidoc.doc Returns whether errata e-mail notifications are enabled
      * for the organization
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype #param_desc("boolean", "status", "Returns the status of the errata e-mail notification
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype #param_desc("boolean", "status", "Returns the status of the errata e-mail notification
      * setting for the organization")
      */
     @ReadOnly
@@ -771,12 +771,12 @@ public class OrgHandler extends BaseHandler {
      * for the organization
      * @return Returns 1 for successful change, exception otherwise
      *
-     * @xmlrpc.doc Dis/enables errata e-mail notifications for the organization
+     * @apidoc.doc Dis/enables errata e-mail notifications for the organization
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer setErrataEmailNotifsForOrg(User loggedInUser, Integer orgId,
                                       Boolean enable) {
@@ -794,12 +794,12 @@ public class OrgHandler extends BaseHandler {
      * @param orgId Organization ID to change the setting for
      * @return Returns the status of content staging settings.
      *
-     * @xmlrpc.doc Get the status of content staging settings for the given organization.
+     * @apidoc.doc Get the status of content staging settings for the given organization.
      * Returns true if enabled, false otherwise.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype #param_desc("boolean", "status", "Get the status of content staging settings")
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype #param_desc("boolean", "status", "Get the status of content staging settings")
      */
     @ReadOnly
     public boolean isContentStagingEnabled(User loggedInUser, Integer orgId) {
@@ -816,12 +816,12 @@ public class OrgHandler extends BaseHandler {
      * @param enable Boolean to indicate desired settings.
      * @return Returns 1 for successfull change, traceback otherwise.
      *
-     * @xmlrpc.doc Set the status of content staging for the given organization.
+     * @apidoc.doc Set the status of content staging for the given organization.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer setContentStaging(User loggedInUser, Integer orgId,
                                      Boolean enable) {
@@ -844,10 +844,10 @@ public class OrgHandler extends BaseHandler {
      * @param orgId the org id
      * @return the option value
      *
-     * @xmlrpc.doc Reads the content lifecycle management patch synchronization config option.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype #param_desc("boolean", "status", "Get the config option value")
+     * @apidoc.doc Reads the content lifecycle management patch synchronization config option.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.returntype #param_desc("boolean", "status", "Get the config option value")
      */
     @ReadOnly
     public Boolean getClmSyncPatchesConfig(User loggedInUser, Integer orgId) {
@@ -869,12 +869,12 @@ public class OrgHandler extends BaseHandler {
      * @return 1 on success
      * @throws PermissionCheckFailureException if the user is not authorized to perform this action
      *
-     * @xmlrpc.doc Sets the content lifecycle management patch synchronization config option.
+     * @apidoc.doc Sets the content lifecycle management patch synchronization config option.
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.param #param_desc("boolean", "value", "The config option value")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "orgId")
+     * @apidoc.param #param_desc("boolean", "value", "The config option value")
+     * @apidoc.returntype #return_int_success()
      */
     public Integer setClmSyncPatchesConfig(User loggedInUser, Integer orgId, Boolean value) {
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);

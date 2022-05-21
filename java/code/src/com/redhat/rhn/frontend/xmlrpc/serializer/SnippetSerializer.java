@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * SnippetSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("snippet")
  *     #prop("string", "name")
  *     #prop("string", "contents")

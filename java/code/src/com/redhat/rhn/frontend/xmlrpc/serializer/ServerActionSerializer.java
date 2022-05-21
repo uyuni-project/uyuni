@@ -25,7 +25,7 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * ActivationKeySerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("action")
  *          #prop_desc("int", "failed_count", "number of times action failed")
  *          #prop_desc("string", "modified", "date modified (deprecated by 'modified_date')")

@@ -30,8 +30,8 @@ import com.suse.manager.api.ReadOnly;
 
 /**
  * ChannelAccessHandler
- * @xmlrpc.namespace channel.access
- * @xmlrpc.doc Provides methods to retrieve and alter channel access restrictions.
+ * @apidoc.namespace channel.access
+ * @apidoc.doc Provides methods to retrieve and alter channel access restrictions.
  */
 public class ChannelAccessHandler extends BaseHandler {
 
@@ -46,11 +46,11 @@ public class ChannelAccessHandler extends BaseHandler {
      *   - The channel label is invalid
      *   - The user doesn't have channel admin permissions
      *
-     * @xmlrpc.doc Enable user restrictions for the given channel. If enabled, only
+     * @apidoc.doc Enable user restrictions for the given channel. If enabled, only
      * selected users within the organization may subscribe to the channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.returntype  #return_int_success()
      */
     public int enableUserRestrictions(User loggedInUser, String channelLabel)
         throws FaultException {
@@ -79,11 +79,11 @@ public class ChannelAccessHandler extends BaseHandler {
      *   - The channel label is invalid
      *   - The user doesn't have channel admin permissions
      *
-     * @xmlrpc.doc Disable user restrictions for the given channel.  If disabled,
+     * @apidoc.doc Disable user restrictions for the given channel.  If disabled,
      * all users within the organization may subscribe to the channel.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.returntype  #return_int_success()
      */
     public int disableUserRestrictions(User loggedInUser, String channelLabel)
         throws FaultException {
@@ -114,12 +114,12 @@ public class ChannelAccessHandler extends BaseHandler {
      *   - The access is invalid
      *   - The user doesn't have channel admin permissions
      *
-     * @xmlrpc.doc Set organization sharing access control.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.param #param_desc("string", "access", "Access (one of the
+     * @apidoc.doc Set organization sharing access control.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.param #param_desc("string", "access", "Access (one of the
      *                  following: 'public', 'private', or 'protected'")
-     * @xmlrpc.returntype  #return_int_success()
+     * @apidoc.returntype  #return_int_success()
      */
     public int setOrgSharing(User loggedInUser, String channelLabel, String access)
         throws FaultException {
@@ -148,10 +148,10 @@ public class ChannelAccessHandler extends BaseHandler {
      *   - The access is invalid
      *   - The user doesn't have channel admin permissions
      *
-     * @xmlrpc.doc Get organization sharing access control.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.returntype
+     * @apidoc.doc Get organization sharing access control.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.returntype
      *  #param_desc("string", "access", "The access value (one of the following: 'public', 'private', or 'protected'")
      */
     @ReadOnly

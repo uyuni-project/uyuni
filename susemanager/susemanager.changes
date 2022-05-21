@@ -1,6 +1,16 @@
 - Replace apache users to root for RHEL.
 
 -------------------------------------------------------------------
+Fri May 20 00:13:50 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.14-1
+  * mgr-sync: Raise a proper exception when duplicated lines exist
+    in a config file (bsc#1182742)
+  * Add openSUSE Leap 15.4 bootstrap repositories
+  * add SLED 12 SP3 bootstrap repo definition (bsc#1199438)
+  * Add RHEL 7 and 8 bootstrap repositories for Uyuni
+
+-------------------------------------------------------------------
 Wed May 04 15:24:41 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.13-1

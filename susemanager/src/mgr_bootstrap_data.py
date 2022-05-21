@@ -1065,6 +1065,10 @@ DATA = {
         'PDID' : [1421, 1932], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
     },
+    'SLED-12-SP3-x86_64' : {
+        'PDID' : [1425], 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
+    },
     'SLES4SAP-12-SP3-x86_64' : {
         'PDID' : 1426, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/3/bootstrap/'
@@ -1309,6 +1313,22 @@ DATA = {
         'BASECHANNEL' : 'opensuse_leap15_3-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
     },
+    'openSUSE-Leap-15.4-x86_64' : {
+        'PDID' : [2409], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
+    },
+    'openSUSE-Leap-15.4-aarch64' : {
+        'PDID' : [2406], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
+    },
+    'openSUSE-Leap-15.4-x86_64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_leap15_4-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
+    },
+    'openSUSE-Leap-15.4-aarch64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_leap15_4-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
+    },    
     'centos-6-x86_64' : {
         'PDID' : [-11, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/6/bootstrap/'
@@ -1425,6 +1445,10 @@ DATA = {
         'PDID' : [-7, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/7/bootstrap/'
     },
+    'RHEL7-x86_64-uyuni' : {
+        'BASECHANNEL' : 'rhel7-pool-x86_64', 'PKGLIST' : RES7 + RES7_X86,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/7/bootstrap/'
+    },
     'SLE-ES8-x86_64' : {
         'PDID' : [-8, 1921, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
@@ -1433,6 +1457,10 @@ DATA = {
         'PDID' : [-8, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
+    'RHEL8-x86_64-uyuni' : {
+        'BASECHANNEL' : 'rhel8-pool-x86_64', 'PKGLIST' : RES8 + RES8_X86,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
+    },    
     'alibaba-2-x86_64-uyuni': {
         'BASECHANNEL': 'alibaba-2-x86_64', 'PKGLIST': RES7 + RES7_X86,
         'DEST': DOCUMENT_ROOT + '/pub/repositories/alibaba/2/bootstrap/'

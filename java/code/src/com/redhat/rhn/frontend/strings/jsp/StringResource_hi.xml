@@ -5543,11 +5543,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} hardware {1} will be refreshed.</source>
+          <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <!-- SSM Software Refresh -->
       <trans-unit id="ssm.sw.systems.header" xml:space="preserve">
           <source>Confirm Package Profiles Refresh</source>
@@ -5574,11 +5575,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} package {1} will be refreshed.</source>
+          <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.hardware" xml:space="preserve">
           <source>Hardware</source>
         <context-group name="ctx">
@@ -7908,10 +7910,11 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.menu" xml:space="preserve">
-        <source>Lock</source>
+        <source>Lock / Unlock</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="pkg.lock.requestlock" xml:space="preserve">
         <source>Lock</source>
@@ -27273,7 +27276,8 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2021 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -27849,6 +27853,20 @@ given channel.</source>
       <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
         <source>Following installed products will be removed from the system during migration:</source>
       <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
+            </context-group>
+        <target state="new"/>
   </trans-unit>
       </body>
   </file>

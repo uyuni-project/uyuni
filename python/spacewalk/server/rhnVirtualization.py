@@ -538,7 +538,7 @@ class VirtualizationEventHandler:
             SELECT s.id
             FROM rhnServer s
             LEFT JOIN rhnVirtualInstance vi on vi.virtual_system_id = s.id
-            WHERE s.machine_id = ':uuid' and vi.virtual_system_id IS NULL
+            WHERE s.machine_id = :uuid and vi.virtual_system_id IS NULL
         """
         query = rhnSQL.prepare(get_system_id_sql)
         query.execute(uuid=uuid)

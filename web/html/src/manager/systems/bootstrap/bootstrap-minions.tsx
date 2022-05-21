@@ -2,11 +2,12 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { AsyncButton } from "components/buttons";
-import { Messages } from "components/messages";
+import { AsyncButton, Button } from "components/buttons";
+import { Dialog } from "components/dialog/Dialog";
+import { ModalLink } from "components/dialog/ModalLink";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/minion/bootstrap.jade
@@ -14,6 +15,80 @@ declare global {
   interface Window {
     availableActivationKeys?: any;
     proxies?: any;
+  }
+}
+
+type ErrorDetails = {
+  message: string;
+  standardOutput?: string;
+  standardError?: string;
+  result?: string;
+};
+
+type ErrorDetailsDialogProps = {
+  error: ErrorDetails | null;
+  onDialogClose: () => void;
+};
+
+class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
+  render() {
+    let content, title, buttons;
+
+    if (this.props.error) {
+      title = (
+        <span>
+          <i className="fa fa-list" /> {t("Error Details")}
+        </span>
+      );
+
+      content = (
+        <>
+          <p>{this.props.error.message}</p>
+          {this.props.error.standardOutput && (
+            <div className="form-group">
+              <label className="control-label">Standard Output:</label>
+              <textarea readOnly disabled className="form-control" value={this.props.error.standardOutput} rows={5} />
+            </div>
+          )}
+          {this.props.error.standardError && (
+            <div className="form-group">
+              <label className="control-label">Standard Error:</label>
+              <textarea readOnly disabled className="form-control" value={this.props.error.standardError} rows={5} />
+            </div>
+          )}
+          {this.props.error.result && (
+            <div className="form-group">
+              <label className="control-label">Result:</label>
+              <textarea readOnly disabled className="form-control" value={this.props.error.result} rows={5} />
+            </div>
+          )}
+        </>
+      );
+
+      buttons = (
+        <div>
+          <Button
+            className="btn-default"
+            text={t("Close")}
+            title={t("Close")}
+            icon="fa-close"
+            handler={this.props.onDialogClose}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <Dialog
+        id="show-error-details"
+        isOpen={this.props.error != null}
+        title={title}
+        className="modal-xs"
+        onClose={this.props.onDialogClose}
+        content={content}
+        footer={buttons}
+      />
+    );
   }
 }
 
@@ -42,12 +117,13 @@ type State = {
   reactivationKey: string;
   ignoreHostKeys: boolean;
   manageWithSSH: boolean;
-  messages: any[];
+  errors: any[];
   proxy: string;
   showProxyHostnameWarn: boolean;
   loading: boolean;
   privKeyLoading?: boolean;
   success?: any;
+  errorDetails: ErrorDetails | null;
 };
 
 class BootstrapMinions extends React.Component<Props, State> {
@@ -68,10 +144,11 @@ class BootstrapMinions extends React.Component<Props, State> {
       reactivationKey: "",
       ignoreHostKeys: true,
       manageWithSSH: false,
-      messages: [],
+      errors: [],
       proxy: "",
       showProxyHostnameWarn: false,
       loading: false,
+      errorDetails: null,
     };
 
     this.state = this.initState;
@@ -155,8 +232,8 @@ class BootstrapMinions extends React.Component<Props, State> {
   };
 
   proxyChanged = (event) => {
-    var proxyId = event.target.value;
-    var proxy = this.props.proxies.find((p) => DEPRECATED_unsafeEquals(p.id, proxyId));
+    var proxyId = parseInt(event.target.value, 10);
+    var proxy = this.props.proxies.find((p) => p.id === proxyId);
     var showWarn = proxy && proxy.hostname.indexOf(".") < 0;
     this.setState({
       proxy: event.target.value,
@@ -164,8 +241,20 @@ class BootstrapMinions extends React.Component<Props, State> {
     });
   };
 
+  hasDetails = (error) => {
+    return error.standardOutput || error.standardError || error.result;
+  };
+
+  showErrorDetailsDialog = (error) => {
+    this.setState({ errorDetails: error });
+  };
+
+  closeErrorDetailsDialog = () => {
+    this.setState({ errorDetails: null });
+  };
+
   onBootstrap = () => {
-    this.setState({ messages: [], loading: true });
+    this.setState({ errors: [], loading: true });
     var formData: any = {};
     formData["host"] = this.state.host.trim();
     formData["port"] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
@@ -196,7 +285,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       (data) => {
         this.setState({
           success: data.success,
-          messages: data.messages,
+          errors: data.errors,
           loading: false,
         });
       },
@@ -204,20 +293,27 @@ class BootstrapMinions extends React.Component<Props, State> {
         try {
           this.setState({
             success: false,
-            messages: [JSON.parse(xhr.responseText)],
+            errors: [
+              {
+                message: JSON.parse(xhr.responseText),
+              },
+            ],
             loading: false,
           });
         } catch (err) {
-          var errMessages = DEPRECATED_unsafeEquals(xhr.status, 0)
-            ? [
-                t(
+          var errMessage =
+            xhr.status === 0
+              ? t(
                   "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
-                ),
-              ]
-            : [Network.errorMessageByStatus(xhr.status)];
+                )
+              : Network.errorMessageByStatus(xhr.status);
           this.setState({
             success: false,
-            messages: errMessages,
+            errors: [
+              {
+                message: errMessage,
+              },
+            ],
             loading: false,
           });
         }
@@ -231,42 +327,41 @@ class BootstrapMinions extends React.Component<Props, State> {
   };
 
   render() {
-    var messages: React.ReactNode = null;
+    var alertMessages: MessageType[] = [];
     if (this.state.success) {
-      messages = (
-        <Messages
-          items={[
-            {
-              severity: "success",
-              text: (
-                <p>
-                  {t("Successfully bootstrapped host! Your system should appear in")}{" "}
-                  <a className="js-spa" href="/rhn/systems/SystemList.do">
-                    {t("systems")}
-                  </a>{" "}
-                  {t("shortly")}.
-                </p>
-              ),
-            },
-          ]}
-        />
+      alertMessages = MessagesUtils.success(
+        <p>
+          {t("Successfully bootstrapped host! Your system should appear in")}{" "}
+          <a className="js-spa" href="/rhn/systems/SystemList.do">
+            {t("systems")}
+          </a>{" "}
+          {t("shortly")}.
+        </p>
       );
-    } else if (this.state.messages.length > 0) {
-      messages = (
-        <Messages
-          items={this.state.messages.map(function (msg) {
-            return { severity: "error", text: msg };
-          })}
-        />
+    } else if (this.state.errors.length > 0) {
+      alertMessages = MessagesUtils.error(
+        this.state.errors.map((error, index) => (
+          <>
+            {error.message}{" "}
+            {this.hasDetails(error) && (
+              <ModalLink
+                id={"error-details-" + index}
+                text={t("Details")}
+                title={t("Show additional details about this error")}
+                target="show-error-details"
+                className="no-padding"
+                onClick={() => this.showErrorDetailsDialog(error)}
+              />
+            )}
+          </>
+        )),
+        true,
+        t("Unable to bootstrap host. The following errors have happened:")
       );
     } else if (this.state.loading) {
-      messages = (
-        <Messages
-          items={[{ severity: "info", text: <p>{t("Your system is bootstrapping: waiting for a response..")}</p> }]}
-        />
-      );
+      alertMessages = MessagesUtils.info(t("Your system is bootstrapping: waiting for a response.."));
     } else if (this.state.privKeyLoading) {
-      messages = <Messages items={[{ severity: "info", text: <p>{t("Loading SSH Private Key..")}</p> }]} />;
+      alertMessages = MessagesUtils.info(t("Loading SSH Private Key.."));
     }
 
     var buttons = [
@@ -348,7 +443,8 @@ class BootstrapMinions extends React.Component<Props, State> {
             productName
           )}
         </p>
-        {messages}
+        <Messages items={alertMessages} />
+        <ErrorDetailsDialog error={this.state.errorDetails} onDialogClose={this.closeErrorDetailsDialog} />
         <div className="form-horizontal">
           <div className="form-group">
             <label className="col-md-3 control-label">{t("Host")}:</label>
@@ -494,8 +590,7 @@ class BootstrapMinions extends React.Component<Props, State> {
                   <option key={p.id} value={p.id}>
                     {p.name}
                     {p.path.reduce(
-                      (acc, val, idx) =>
-                        acc + "\u2192 " + val + (DEPRECATED_unsafeEquals(idx, p.path.length - 1) ? "" : " "),
+                      (acc, val, idx) => acc + "\u2192 " + val + (idx === p.path.length - 1 ? "" : " "),
                       ""
                     )}
                   </option>

@@ -31,8 +31,8 @@ import java.util.Map;
 
 /**
  * ChannelHandler
- * @xmlrpc.namespace channel
- * @xmlrpc.doc Provides method to get back a list of Software Channels.
+ * @apidoc.namespace channel
+ * @apidoc.doc Provides method to get back a list of Software Channels.
  */
 public class ChannelHandler extends BaseHandler {
 
@@ -45,9 +45,9 @@ public class ChannelHandler extends BaseHandler {
      * channel_label, channel_parent_label, channel_name, channel_end_of_life,
      * channel_arch
      *
-     * @xmlrpc.doc List all visible software channels.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List all visible software channels.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *  #return_array_begin()
      *      #struct_begin("channel")
      *          #prop("string", "label")
@@ -98,9 +98,9 @@ public class ChannelHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc List all software channels that the user's organization is entitled to.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List all software channels that the user's organization is entitled to.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
@@ -119,10 +119,10 @@ public class ChannelHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc Lists all the vendor software channels that the user's organization
+     * @apidoc.doc Lists all the vendor software channels that the user's organization
      * is entitled to.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
@@ -144,12 +144,12 @@ public class ChannelHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc List the most popular software channels.  Channels that have at least
+     * @apidoc.doc List the most popular software channels.  Channels that have at least
      * the number of systems subscribed as specified by the popularity count will be
      * returned.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "popularityCount")
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "popularityCount")
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
@@ -168,9 +168,9 @@ public class ChannelHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc List all software channels that belong to the user's organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List all software channels that belong to the user's organization.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
@@ -188,10 +188,10 @@ public class ChannelHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc List all software channels that may be shared by the user's
+     * @apidoc.doc List all software channels that may be shared by the user's
      * organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
@@ -212,11 +212,11 @@ public class ChannelHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc List all retired software channels.  These are channels that the user's
+     * @apidoc.doc List all retired software channels.  These are channels that the user's
      * organization is entitled to, but are no longer supported because they have reached
      * their 'end-of-life' date.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
@@ -235,9 +235,9 @@ public class ChannelHandler extends BaseHandler {
      * @return Returns array of channels with info such as channel_label, channel_name,
      * channel_parent_label, packages and systems.
      *
-     * @xmlrpc.doc List all software channels that the user is entitled to manage.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List all software channels that the user is entitled to manage.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *     #return_array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()

@@ -28,7 +28,7 @@ import java.util.List;
  * FileListSerializer: Converts a FileList object for representation
  * as an XMLRPC struct.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("file list")
  *     #prop("string", "name")
  *     #prop_array("file_names", "string", "the list of file names")

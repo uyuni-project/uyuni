@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * CVEAuditImageSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("CVE audit image")
  *     #prop("int", "image_id")

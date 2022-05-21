@@ -25,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * PackageOverviewSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *   #struct_begin("package overview")
  *   #prop("int", "id")
  *   #prop("string", "name")

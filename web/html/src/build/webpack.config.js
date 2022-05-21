@@ -76,7 +76,7 @@ module.exports = (env, argv) => {
           },
           {
             // Stylesheets that are imported directly by components
-            test: /\.css$/,
+            test: /(components|core|manager)\/.*\.(css|less)$/,
             exclude: /node_modules/,
             use: [
               MiniCssExtractPlugin.loader,
@@ -91,7 +91,7 @@ module.exports = (env, argv) => {
           },
           {
             // Global stylesheets
-            test: /\.less$/,
+            test: /branding\/.*\.less$/,
             exclude: /node_modules/,
             use: [
               MiniCssExtractPlugin.loader,
@@ -106,7 +106,7 @@ module.exports = (env, argv) => {
             ],
           },
           {
-            // Stylesheets of dependencies
+            // Stylesheets of third party dependencies
             test: /\.css$/,
             include: /node_modules/,
             use: [{ loader: "style-loader" }, { loader: "css-loader" }],

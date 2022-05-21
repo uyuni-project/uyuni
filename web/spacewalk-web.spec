@@ -38,7 +38,7 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.15
+Version:        4.3.16
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -213,6 +213,12 @@ cp -pR fonts %{buildroot}/%{www_path}
 cp -pR img %{buildroot}/%{www_path}
 cp -pR javascript %{buildroot}/%{www_path}
 popd
+
+# Adjust default theme for SUSE Manager
+%if 0%{?sle_version} && ! (0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora})
+sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_web.conf
+%endif
+
 
 %find_lang spacewalk-web
 

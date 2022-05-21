@@ -24,7 +24,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * RhnTimeZoneSerializer will serialize an RhnTimeZone object to XMLRPC
  * syntax.
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *
  * #struct_begin("timezone")
  *   #prop_desc("int", "time_zone_id", "unique identifier for timezone")

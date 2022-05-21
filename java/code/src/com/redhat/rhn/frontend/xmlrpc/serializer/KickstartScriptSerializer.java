@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * ErrataOverviewSerializer
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *      #struct_begin("kickstart script")
  *          #prop("int", "id")
  *          #prop("string", "name")

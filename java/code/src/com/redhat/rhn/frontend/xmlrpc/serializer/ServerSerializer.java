@@ -34,7 +34,7 @@ import java.util.List;
  * Includes full server details, which may be more data than some calls would like.
  *
  *
- * @xmlrpc.doc
+ * @apidoc.doc
  *  #struct_begin("server details")
  *         #prop_desc("int", "id", "system ID")
  *         #prop("string", "profile_name")

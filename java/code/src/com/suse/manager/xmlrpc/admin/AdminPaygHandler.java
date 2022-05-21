@@ -32,8 +32,8 @@ import java.util.Map;
 /**
  * Payg-as-you-go XMLRPC Handler
  *
- * @xmlrpc.namespace admin
- * @xmlrpc.doc Provides methods to access and modify pay-as-you-go ssh connection data
+ * @apidoc.namespace admin
+ * @apidoc.doc Provides methods to access and modify pay-as-you-go ssh connection data
  */
 public class AdminPaygHandler extends BaseHandler {
 
@@ -61,17 +61,17 @@ public class AdminPaygHandler extends BaseHandler {
      * @param keyPassword private key password
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Create a new ssh connection data to extract data from
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.param #param_desc("string", "host", "hostname or IP address to the instance, will fail if
+     * @apidoc.doc Create a new ssh connection data to extract data from
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "description")
+     * @apidoc.param #param_desc("string", "host", "hostname or IP address to the instance, will fail if
      * already in use.")
-     * @xmlrpc.param #param("int", "port")
-     * @xmlrpc.param #param("string", "username")
-     * @xmlrpc.param #param("string", "password")
-     * @xmlrpc.param #param_desc("string", "key", "private key to use in authentication")
-     * @xmlrpc.param #param("string", "keyPassword")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param("int", "port")
+     * @apidoc.param #param("string", "username")
+     * @apidoc.param #param("string", "password")
+     * @apidoc.param #param_desc("string", "key", "private key to use in authentication")
+     * @apidoc.param #param("string", "keyPassword")
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String description, String host, Integer port, String username,
                       String password, String key, String keyPassword) {
@@ -98,23 +98,23 @@ public class AdminPaygHandler extends BaseHandler {
      * @param bastionKeyPassword private key password for bastion key
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Create a new ssh connection data to extract data from
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "description")
-     * @xmlrpc.param #param_desc("string", "host", "hostname or IP address to the instance, will fail if
+     * @apidoc.doc Create a new ssh connection data to extract data from
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "description")
+     * @apidoc.param #param_desc("string", "host", "hostname or IP address to the instance, will fail if
      * already in use.")
-     * @xmlrpc.param #param("int", "port")
-     * @xmlrpc.param #param("string", "username")
-     * @xmlrpc.param #param("string", "password")
-     * @xmlrpc.param #param_desc("string", "key", "private key to use in authentication")
-     * @xmlrpc.param #param("string", "keyPassword")
-     * @xmlrpc.param #param_desc("string", "bastionHost", "hostname or IP address to a bastion host")
-     * @xmlrpc.param #param("int", "bastionPort")
-     * @xmlrpc.param #param("string", "bastionUsername")
-     * @xmlrpc.param #param("string", "bastionPassword")
-     * @xmlrpc.param #param_desc("string", "bastionKey", "private key to use in bastion authentication")
-     * @xmlrpc.param #param("string", "bastionKeyPassword")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.param #param("int", "port")
+     * @apidoc.param #param("string", "username")
+     * @apidoc.param #param("string", "password")
+     * @apidoc.param #param_desc("string", "key", "private key to use in authentication")
+     * @apidoc.param #param("string", "keyPassword")
+     * @apidoc.param #param_desc("string", "bastionHost", "hostname or IP address to a bastion host")
+     * @apidoc.param #param("int", "bastionPort")
+     * @apidoc.param #param("string", "bastionUsername")
+     * @apidoc.param #param("string", "bastionPassword")
+     * @apidoc.param #param_desc("string", "bastionKey", "private key to use in bastion authentication")
+     * @apidoc.param #param("string", "bastionKeyPassword")
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String description, String host, Integer port, String username,
                       String password, String key, String keyPassword,
@@ -136,11 +136,11 @@ public class AdminPaygHandler extends BaseHandler {
      * @param details A map containing the new details values
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Updates the details of a ssh connection data
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "host", "hostname or IP address to the instance, will fail if
+     * @apidoc.doc Updates the details of a ssh connection data
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "host", "hostname or IP address to the instance, will fail if
      * host doesn't exist.")
-     * @xmlrpc.param
+     * @apidoc.param
      *   #struct_desc("details", "user details")
      *     #prop("string", "description")
      *     #prop("int", "port")
@@ -155,7 +155,7 @@ public class AdminPaygHandler extends BaseHandler {
      *     #prop("string", "bastion_key")
      *     #prop("string", "bastion_key_password")
      *   #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, String host, Map details) {
 
@@ -168,9 +168,9 @@ public class AdminPaygHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return Returns a list of PaygSshData
      *
-     * @xmlrpc.doc Returns a list of ssh connection data registered.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc Returns a list of ssh connection data registered.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      *     $PaygSshDataSerializer
      * #array_end()
@@ -186,11 +186,11 @@ public class AdminPaygHandler extends BaseHandler {
      * @param host hostname or IP address to the instance
      * @return Returns a list of PaygSshData
      *
-     * @xmlrpc.doc Returns a list of ssh connection data registered.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "host", "hostname or IP address of the instance, will fail if
+     * @apidoc.doc Returns a list of ssh connection data registered.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "host", "hostname or IP address of the instance, will fail if
      * host doesn't exist.")
-     * @xmlrpc.returntype $PaygSshDataSerializer
+     * @apidoc.returntype $PaygSshDataSerializer
      */
     public PaygSshData getDetails(User loggedInUser, String host) {
         ensureSatAdmin(loggedInUser);
@@ -204,10 +204,10 @@ public class AdminPaygHandler extends BaseHandler {
      * @param host hostname or IP address of the instance
      * @return Returns 1 if successful (exception otherwise)
      *
-     * @xmlrpc.doc Returns a list of ssh connection data registered.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "host", "hostname or IP address of the instance")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Returns a list of ssh connection data registered.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "host", "hostname or IP address of the instance")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String host) {
         ensureSatAdmin(loggedInUser);

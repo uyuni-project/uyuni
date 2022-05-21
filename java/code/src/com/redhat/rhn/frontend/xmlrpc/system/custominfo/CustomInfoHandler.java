@@ -27,8 +27,8 @@ import com.suse.manager.api.ReadOnly;
 
 /**
  * CustomInfoHandler
- * @xmlrpc.namespace system.custominfo
- * @xmlrpc.doc Provides methods to access and modify custom system information.
+ * @apidoc.namespace system.custominfo
+ * @apidoc.doc Provides methods to access and modify custom system information.
  */
 public class CustomInfoHandler extends BaseHandler {
 
@@ -42,11 +42,11 @@ public class CustomInfoHandler extends BaseHandler {
      *   - Either the label or description is not provided
      *   - Any error occurs
      *
-     * @xmlrpc.doc  Create a new custom key
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "keyLabel", "new key's label")
-     * @xmlrpc.param #param_desc("string", "keyDescription", "new key's description")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc  Create a new custom key
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "keyLabel", "new key's label")
+     * @apidoc.param #param_desc("string", "keyDescription", "new key's description")
+     * @apidoc.returntype #return_int_success()
      */
     public int createKey(User loggedInUser, String keyLabel,
                 String keyDescription) throws FaultException {
@@ -79,11 +79,11 @@ public class CustomInfoHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if a key doesn't exist or
      * an iinvalid description is provided
      *
-     * @xmlrpc.doc  Update description of a custom key
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "keyLabel", "key to change")
-     * @xmlrpc.param #param_desc("string", "keyDescription", "new key's description")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc  Update description of a custom key
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "keyLabel", "key to change")
+     * @apidoc.param #param_desc("string", "keyDescription", "new key's description")
+     * @apidoc.returntype #return_int_success()
      */
     public int updateKey(User loggedInUser, String keyLabel,
                 String keyDescription) throws FaultException {
@@ -116,10 +116,10 @@ public class CustomInfoHandler extends BaseHandler {
      *   - Either the label or description is not provided
      *   - Any error occurs
      *
-     * @xmlrpc.doc  Delete an existing custom key and all systems' values for the key.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "keyLabel", "new key's label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc  Delete an existing custom key and all systems' values for the key.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "keyLabel", "new key's label")
+     * @apidoc.returntype #return_int_success()
      */
     public int deleteKey(User loggedInUser, String keyLabel)
         throws FaultException {
@@ -142,9 +142,9 @@ public class CustomInfoHandler extends BaseHandler {
      * @return list of inactive systems
      * @throws FaultException A FaultException is thrown on error.
      *
-     * @xmlrpc.doc List the custom information keys defined for the user's organization.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List the custom information keys defined for the user's organization.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      *      #return_array_begin()
      *          $CustomDataKeySerializer
      *      #array_end()

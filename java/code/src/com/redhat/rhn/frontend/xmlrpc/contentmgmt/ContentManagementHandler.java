@@ -20,7 +20,9 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
@@ -29,6 +31,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentProjectValidator;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage;
 import com.redhat.rhn.domain.user.User;
@@ -41,12 +44,15 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
 
 import com.suse.manager.api.ReadOnly;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,13 +61,14 @@ import java.util.stream.Collectors;
 /**
  * Content Management XMLRPC handler
  *
- * @xmlrpc.namespace contentmanagement
- * @xmlrpc.doc Provides methods to access and modify Content Lifecycle Management related entities
+ * @apidoc.namespace contentmanagement
+ * @apidoc.doc Provides methods to access and modify Content Lifecycle Management related entities
  * (Projects, Environments, Filters, Sources).
  */
 public class ContentManagementHandler extends BaseHandler {
 
     private final ContentManager contentManager;
+    private final FilterTemplateManager filterTemplateManager = new FilterTemplateManager();
 
     /**
      * Initialize a handler specifying a content manager instance.
@@ -85,9 +92,9 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the logged in user
      * @return the list of Content Projects visible to user
      *
-     * @xmlrpc.doc List Content Projects visible to user
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List Content Projects visible to user
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      * $ContentProjectSerializer
      * #array_end()
@@ -105,10 +112,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when the Content Project does not exist
      * @return the Content Project with given label
      *
-     * @xmlrpc.doc Look up Content Project with given label
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.returntype $ContentProjectSerializer
+     * @apidoc.doc Look up Content Project with given label
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.returntype $ContentProjectSerializer
      */
     @ReadOnly
     public ContentProject lookupProject(User loggedInUser, String projectLabel) {
@@ -127,12 +134,12 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws ValidationException if validation violation occurs
      * @return the created Content Project
      *
-     * @xmlrpc.doc Create Content Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param #param_desc("string", "name", "Content Project name")
-     * @xmlrpc.param #param_desc("string", "description", "Content Project description")
-     * @xmlrpc.returntype $ContentProjectSerializer
+     * @apidoc.doc Create Content Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "name", "Content Project name")
+     * @apidoc.param #param_desc("string", "description", "Content Project description")
+     * @apidoc.returntype $ContentProjectSerializer
      */
     public ContentProject createProject(User loggedInUser, String projectLabel, String name, String description) {
         ensureOrgAdmin(loggedInUser);
@@ -157,15 +164,15 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws ValidationException if validation violation occurs
      * @return the updated Content Project
      *
-     * @xmlrpc.doc Update Content Project with given label
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param
+     * @apidoc.doc Update Content Project with given label
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param
      *  #struct_begin("props")
      *      #prop_desc("string", "name", "Content Project name")
      *      #prop_desc("string", "description", "Content Project description")
      *  #struct_end()
-     * @xmlrpc.returntype $ContentProjectSerializer
+     * @apidoc.returntype $ContentProjectSerializer
      */
     public ContentProject updateProject(User loggedInUser, String projectLabel, Map<String, Object> props) {
         ensureOrgAdmin(loggedInUser);
@@ -191,10 +198,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the number of removed objects
      *
-     * @xmlrpc.doc Remove Content Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove Content Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.returntype #return_int_success()
      */
     public int removeProject(User loggedInUser, String projectLabel) {
         ensureOrgAdmin(loggedInUser);
@@ -214,10 +221,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the List of Content Environments with respect to their ordering
      *
-     * @xmlrpc.doc List Environments in a Content Project with the respect to their ordering
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.returntype
+     * @apidoc.doc List Environments in a Content Project with the respect to their ordering
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.returntype
      * #return_array_begin()
      * $ContentEnvironmentSerializer
      * #array_end()
@@ -241,11 +248,11 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsException when Project does not exist
      * @return found Content Environment or null if no such environment exists
      *
-     * @xmlrpc.doc Look up Content Environment based on Content Project and Content Environment label
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
-     * @xmlrpc.returntype $ContentEnvironmentSerializer
+     * @apidoc.doc Look up Content Environment based on Content Project and Content Environment label
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "envLabel", "Content Environment label")
+     * @apidoc.returntype $ContentEnvironmentSerializer
      */
     @ReadOnly
     public ContentEnvironment lookupEnvironment(User loggedInUser, String projectLabel, String envLabel) {
@@ -272,14 +279,14 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws ValidationException if validation violation occurs
      * @return the created Content Environment
      *
-     * @xmlrpc.doc Create a Content Environment and appends it behind given Content Environment
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param #param_desc("string", "predecessorLabel", "Predecessor Environment label")
-     * @xmlrpc.param #param_desc("string", "envlabel", "new Content Environment label")
-     * @xmlrpc.param #param_desc("string", "name", "new Content Environment name")
-     * @xmlrpc.param #param_desc("string", "description", "new Content Environment description")
-     * @xmlrpc.returntype $ContentEnvironmentSerializer
+     * @apidoc.doc Create a Content Environment and appends it behind given Content Environment
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "predecessorLabel", "Predecessor Environment label")
+     * @apidoc.param #param_desc("string", "envlabel", "new Content Environment label")
+     * @apidoc.param #param_desc("string", "name", "new Content Environment name")
+     * @apidoc.param #param_desc("string", "description", "new Content Environment description")
+     * @apidoc.returntype $ContentEnvironmentSerializer
      */
     public ContentEnvironment createEnvironment(User loggedInUser, String projectLabel, String predecessorLabel,
             String envLabel, String name, String description) {
@@ -310,16 +317,16 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws ValidationException if validation violation occurs
      * @return the updated Environment
      *
-     * @xmlrpc.doc Update Content Environment with given label
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
-     * @xmlrpc.param
+     * @apidoc.doc Update Content Environment with given label
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "envLabel", "Content Environment label")
+     * @apidoc.param
      *  #struct_begin("props")
      *      #prop_desc("string", "name", "Content Environment name")
      *      #prop_desc("string", "description", "Content Environment description")
      *  #struct_end()
-     * @xmlrpc.returntype $ContentEnvironmentSerializer
+     * @apidoc.returntype $ContentEnvironmentSerializer
      */
     public ContentEnvironment updateEnvironment(User loggedInUser, String projectLabel, String envLabel,
             Map<String, Object> props) {
@@ -348,11 +355,11 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the number of removed objects
      *
-     * @xmlrpc.doc Remove a Content Environment
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove a Content Environment
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "envLabel", "Content Environment label")
+     * @apidoc.returntype #return_int_success()
      */
     public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
@@ -372,10 +379,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return list of Project Sources
      *
-     * @xmlrpc.doc List Content Project Sources
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.returntype
+     * @apidoc.doc List Content Project Sources
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.returntype
      * #return_array_begin()
      * $ContentProjectSourceSerializer
      * #array_end()
@@ -397,12 +404,12 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException if the Project or Project Source is not found
      * @return list of Project Sources
      *
-     * @xmlrpc.doc Look up Content Project Source
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
-     * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
-     * @xmlrpc.returntype $ContentProjectSourceSerializer
+     * @apidoc.doc Look up Content Project Source
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
+     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @apidoc.returntype $ContentProjectSourceSerializer
      */
     @ReadOnly
     public ProjectSource lookupSource(User loggedInUser, String projectLabel, String sourceType,
@@ -429,13 +436,13 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
      * @return the created Source
      *
-     * @xmlrpc.doc Attach a Source to a Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
-     * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
-     * @xmlrpc.param #param_desc("int", "sourcePosition", "Project Source position")
-     * @xmlrpc.returntype $ContentProjectSourceSerializer
+     * @apidoc.doc Attach a Source to a Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
+     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @apidoc.param #param_desc("int", "sourcePosition", "Project Source position")
+     * @apidoc.returntype $ContentProjectSourceSerializer
      */
     public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel,
             int sourcePosition) {
@@ -453,12 +460,12 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
      * @return the created Source
      *
-     * @xmlrpc.doc Attach a Source to a Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
-     * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
-     * @xmlrpc.returntype $ContentProjectSourceSerializer
+     * @apidoc.doc Attach a Source to a Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
+     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @apidoc.returntype $ContentProjectSourceSerializer
      */
     public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
         return attachSource(loggedInUser, projectLabel, sourceType, sourceLabel, empty());
@@ -490,12 +497,12 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
      * @return 1 on success
      *
-     * @xmlrpc.doc Detach a Source from a Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @xmlrpc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
-     * @xmlrpc.param #param_desc("string", "sourceLabel", "Project Source label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Detach a Source from a Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
+     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @apidoc.returntype #return_int_success()
      */
     public int detachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
         ensureOrgAdmin(loggedInUser);
@@ -515,9 +522,9 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the logged in user
      * @return the list of {@link ContentFilter}s
      *
-     * @xmlrpc.doc List all Content Filters visible to given user
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List all Content Filters visible to given user
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      * $ContentFilterSerializer
      * #array_end()
@@ -535,10 +542,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException if filter is not found
      * @return the matching {@link ContentFilter}
      *
-     * @xmlrpc.doc Lookup a Content Filter by ID
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "filterId", "Filter ID")
-     * @xmlrpc.returntype $ContentFilterSerializer
+     * @apidoc.doc Lookup a Content Filter by ID
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "filterId", "Filter ID")
+     * @apidoc.returntype $ContentFilterSerializer
      */
     @ReadOnly
     public ContentFilter lookupFilter(User loggedInUser, Integer filterId) {
@@ -552,9 +559,9 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the user
      * @return list of filter criteria
      *
-     * @xmlrpc.doc List of available filter criteria
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
+     * @apidoc.doc List of available filter criteria
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
      * #return_array_begin()
      * #struct_begin("Filter Criteria")
      * #prop("string", "type")
@@ -579,7 +586,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws InvalidArgsException when invalid criteria are passed
      * @return the created {@link ContentFilter}
      *
-     * @xmlrpc.doc Create a Content Filter
+     * @apidoc.doc Create a Content Filter
+     * #paragraph_end()
      * #paragraph()
      * The following filters are available (you can get the list in machine-readable format using
      * the listFilterCriteria() endpoint):
@@ -613,19 +621,18 @@ public class ContentManagementHandler extends BaseHandler {
      * #paragraph_end()
      * #paragraph()
      * Note: The 'matches' matcher works on Java regular expressions.
-     * #paragraph_end()
      *
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name", "Filter name")
-     * @xmlrpc.param #param_desc("string", "rule", "Filter rule ('deny' or 'allow')")
-     * @xmlrpc.param #param_desc("string", "entityType", "Filter entityType ('package' or 'erratum')")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Filter name")
+     * @apidoc.param #param_desc("string", "rule", "Filter rule ('deny' or 'allow')")
+     * @apidoc.param #param_desc("string", "entityType", "Filter entityType ('package' or 'erratum')")
+     * @apidoc.param
      *  #struct_begin("criteria")
      *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
      *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
      *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
      *  #struct_end()
-     * @xmlrpc.returntype $ContentFilterSerializer
+     * @apidoc.returntype $ContentFilterSerializer
      */
     public ContentFilter createFilter(User loggedInUser, String name, String rule, String entityType,
             Map<String, Object> criteria) {
@@ -646,6 +653,49 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
+     * Create new {@link ContentFilter}s for all AppStream modules with default streams
+     *
+     * @param loggedInUser the logged in user
+     * @param prefix the filter name prefix
+     * @param channelLabel label of the modular channel
+     * @param projectLabel label of the Content Lifecycle Project
+     * @throws EntityExistsFaultException when Filter already exist
+     * @return List of created and successfully attached Filter
+     *
+     * @apidoc.doc Create Filters for AppStream Modular Channel and attach them to CLM Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "prefix", "Filter name prefix")
+     * @apidoc.param #param_desc("string", "channelLabel", "Modular Channel label")
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.returntype #return_array_begin() $ContentFilterSerializer #array_end()
+     */
+    public List<ContentFilter> createAppStreamFilters(User loggedInUser, String prefix,
+            String channelLabel, String projectLabel) throws ModulemdApiException {
+        ensureOrgAdmin(loggedInUser);
+
+        try {
+            Channel channel = ChannelManager.lookupByLabelAndUser(channelLabel, loggedInUser);
+
+            List<ContentFilter> createdFilters = filterTemplateManager.createAppStreamFilters(
+                    prefix, channel, loggedInUser);
+
+            List<ContentFilter> attachedFilters = new ArrayList<>();
+
+            for (ContentFilter createdFilter : createdFilters) {
+                attachedFilters.add(contentManager.attachFilter(projectLabel, createdFilter.getId(), loggedInUser));
+            }
+
+            return attachedFilters;
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+        catch (LookupException | EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
+    }
+
+    /**
      * Update a {@link ContentFilter}
      *
      * @param loggedInUser the logged in user
@@ -656,21 +706,21 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Filter is not found
      * @return the updated {@link ContentFilter}
      *
-     * @xmlrpc.doc Update a Content Filter
+     * @apidoc.doc Update a Content Filter
+     * #paragraph_end()
      * #paragraph()
      * See also: createFilter(), listFilterCriteria()
-     * #paragraph_end()
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "filterId", "Filter ID")
-     * @xmlrpc.param #param_desc("string", "name", "New filter name")
-     * @xmlrpc.param #param_desc("string", "rule", "New filter rule ('deny' or 'allow')")
-     * @xmlrpc.param
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "filterId", "Filter ID")
+     * @apidoc.param #param_desc("string", "name", "New filter name")
+     * @apidoc.param #param_desc("string", "rule", "New filter rule ('deny' or 'allow')")
+     * @apidoc.param
      *  #struct_begin("criteria")
      *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
      *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
      *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
      *  #struct_end()
-     * @xmlrpc.returntype $ContentFilterSerializer
+     * @apidoc.returntype $ContentFilterSerializer
      */
     public ContentFilter updateFilter(User loggedInUser, Integer filterId, String name, String rule,
             Map<String, Object> criteria) {
@@ -723,10 +773,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Filter does not exist
      * @return 1 on success
      *
-     * @xmlrpc.doc Remove a Content Filter
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "filterId", "Filter ID")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Remove a Content Filter
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "filterId", "Filter ID")
+     * @apidoc.returntype #return_int_success()
      */
     public int removeFilter(User loggedInUser, Integer filterId) {
         ensureOrgAdmin(loggedInUser);
@@ -747,10 +797,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Project is not found
      * @return the list of filters
      *
-     * @xmlrpc.doc List all Filters associated with a Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
-     * @xmlrpc.returntype
+     * @apidoc.doc List all Filters associated with a Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.returntype
      * #return_array_begin()
      * $ContentProjectFilterSerializer
      * #array_end()
@@ -774,11 +824,11 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsException if the Project/Filter does not exist
      * @return the attached Filter
      *
-     * @xmlrpc.doc Attach a Filter to a Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
-     * @xmlrpc.param #param_desc("int", "filterId", "filter ID to attach")
-     * @xmlrpc.returntype $ContentFilterSerializer
+     * @apidoc.doc Attach a Filter to a Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.param #param_desc("int", "filterId", "filter ID to attach")
+     * @apidoc.returntype $ContentFilterSerializer
      */
     public ContentFilter attachFilter(User loggedInUser, String projectLabel, Integer filterId) {
         ensureOrgAdmin(loggedInUser);
@@ -800,11 +850,11 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsException if the Project/Filter does not exist
      * @return 1 on success
      *
-     * @xmlrpc.doc Detach a Filter from a Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
-     * @xmlrpc.param #param_desc("int", "filterId", "filter ID to detach")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Detach a Filter from a Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.param #param_desc("int", "filterId", "filter ID to detach")
+     * @apidoc.returntype #return_int_success()
      */
     public int detachFilter(User loggedInUser, String projectLabel, Integer filterId) {
         ensureOrgAdmin(loggedInUser);
@@ -826,10 +876,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
-     * @xmlrpc.doc Build a Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Build a Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.returntype #return_int_success()
      */
     public int buildProject(User loggedInUser, String projectLabel) {
         ensureOrgAdmin(loggedInUser);
@@ -857,11 +907,11 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
-     * @xmlrpc.doc Build a Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
-     * @xmlrpc.param #param_desc("string", "message", "log message to be assigned to the build")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Build a Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.param #param_desc("string", "message", "log message to be assigned to the build")
+     * @apidoc.returntype #return_int_success()
      */
     public int buildProject(User loggedInUser, String projectLabel, String message) {
         ensureOrgAdmin(loggedInUser);
@@ -889,11 +939,11 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws ContentManagementFaultException on Content Management-related error
      * @return 1 if successful
      *
-     * @xmlrpc.doc Promote an Environment in a Project
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
-     * @xmlrpc.param #param_desc("string", "envLabel", "Environment label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Promote an Environment in a Project
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "projectLabel", "Project label")
+     * @apidoc.param #param_desc("string", "envLabel", "Environment label")
+     * @apidoc.returntype #return_int_success()
      */
     public int promoteProject(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);

@@ -1,5 +1,30 @@
-- Fix ACL rules for config diff download for SLS files (bsc#1198914)
-- fix invalid link to action schedule
+-------------------------------------------------------------------
+Fri May 20 00:09:29 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.25-1
+  * Fixed query to populate the XccdScanResult reporting table
+  * skip forwarding data to scc if no credentials are available
+  * add python3 example for HTTP API
+  * Improved handling of error messages during bootstrapping
+  * Fix the confirm message on the refresh action by adding a link
+    to pending actions on it (bsc#1172705)
+  * Change system details lock tab name to lock/unlock (bsc#1193032)
+  * Added a notification to inform the administrators about the product end-of-life
+  * Set profile tag has no-mandatory in XCCDF result (bsc#1194262)
+  * provisioning thought proxy should use proxy for self_update (bsc#1199036)
+  * Allow removing duplicated packages names in the same Salt action (bsc#1198686)
+  * Styling fixes for new branding
+  * fix NoSuchElementException when pkg install date is missing
+  * Fix error message in Kubernetes VHM creation dialog
+  * Add createAppStreamFilters() XMLRPC function
+  * Correct concurrency error on payg taskomatic task
+    for updating certificates (#17783)
+  * Display usertime instead of server time for clm issue date filter (bsc#1198429)
+  * fix bootstrapping of ssh minions via proxy
+  * check if file exists before sending it to xsendfile (bsc#1198191)
+  * update server needed cache after adding Ubuntu Errata (bsc#1196977)
+  * Fix ACL rules for config diff download for SLS files (bsc#1198914)
+  * fix invalid link to action schedule
 
 -------------------------------------------------------------------
 Tue May 10 13:13:13 CEST 2022 - jgonzalez@suse.com

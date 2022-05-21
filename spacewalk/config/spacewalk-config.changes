@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 20 00:08:47 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.8-1
+  * create LOCAL-RHN-ORG-TRUSTED-SSL-CERT if it does not
+    exist (bsc#1199376)
+
+-------------------------------------------------------------------
 Thu Apr 28 10:14:10 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.7-1

@@ -35,8 +35,8 @@ import java.util.stream.Collectors;
 
 /**
  * ImageStoreHandler
- * @xmlrpc.namespace image.store
- * @xmlrpc.doc Provides methods to access and modify image stores.
+ * @apidoc.namespace image.store
+ * @apidoc.doc Provides methods to access and modify image stores.
  */
 public class ImageStoreHandler extends BaseHandler {
 
@@ -49,16 +49,16 @@ public class ImageStoreHandler extends BaseHandler {
      * @param credentials optional credentials
      * @return 1 on success
      *
-     * @xmlrpc.doc Create a new image store
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param #param("string", "uri")
-     * @xmlrpc.param #param("string", "storeType")
-     * @xmlrpc.param #struct_desc("credentials", "optional")
+     * @apidoc.doc Create a new image store
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param #param("string", "uri")
+     * @apidoc.param #param("string", "storeType")
+     * @apidoc.param #struct_desc("credentials", "optional")
      *   #prop("string", "username")
      *   #prop("string", "password")
      * #struct_desc_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String uri, String storeType,
             Map<String, String> credentials) {
@@ -95,9 +95,9 @@ public class ImageStoreHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @return Array of ImageStoreType objects
      *
-     * @xmlrpc.doc List available image store types
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $ImageStoreTypeSerializer #array_end()
+     * @apidoc.doc List available image store types
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $ImageStoreTypeSerializer #array_end()
      */
     @ReadOnly
     public List<ImageStoreType> listImageStoreTypes(User loggedInUser) {
@@ -110,9 +110,9 @@ public class ImageStoreHandler extends BaseHandler {
      * @param loggedInUser The current User
      * @return Array of ImageStore Objects
      *
-     * @xmlrpc.doc List available image stores
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #return_array_begin() $ImageStoreSerializer #array_end()
+     * @apidoc.doc List available image stores
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $ImageStoreSerializer #array_end()
      */
     @ReadOnly
     public List<ImageStore> listImageStores(User loggedInUser) {
@@ -126,10 +126,10 @@ public class ImageStoreHandler extends BaseHandler {
      * @param label the Image Store Label
      * @return ImageStore Object
      *
-     * @xmlrpc.doc Get details of an image store
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.returntype $ImageStoreSerializer
+     * @apidoc.doc Get details of an image store
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.returntype $ImageStoreSerializer
      */
     @ReadOnly
     public ImageStore getDetails(User loggedInUser, String label) {
@@ -153,10 +153,10 @@ public class ImageStoreHandler extends BaseHandler {
      * @param label the image store label
      * @return i on success
      *
-     * @xmlrpc.doc Delete an image store
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.doc Delete an image store
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
@@ -176,16 +176,16 @@ public class ImageStoreHandler extends BaseHandler {
      * @param details A map containing the new details
      * @return 1 on success
      *
-     * @xmlrpc.doc Set details of an image store
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "label")
-     * @xmlrpc.param
+     * @apidoc.doc Set details of an image store
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param
      *   #struct_desc("details", "image store details")
      *     #prop("string", "uri")
      *     #prop_desc("string", "username", "pass empty string to unset credentials")
      *     #prop("string", "password")
      *   #struct_end()
-     * @xmlrpc.returntype #return_int_success()
+     * @apidoc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, String label, Map details) {
         ensureImageAdmin(loggedInUser);
