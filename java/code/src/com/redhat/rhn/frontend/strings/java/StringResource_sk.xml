@@ -8814,43 +8814,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="api.action.nosuchactionchain" xml:space="preserve">
         <source>No such action chain: {0}</source>
-        <target/>
+        <target>Žiadny takýto reťazec akcií: {0}</target>
       </trans-unit>
       <trans-unit id="api.action.invalidactiontype" xml:space="preserve">
         <source>Invalid action type</source>
-        <target/>
+        <target>Neplatný typ akcie</target>
       </trans-unit>
       <trans-unit id="api.org.pamAuthNotConfigured" xml:space="preserve">
         <source>The server is not configured to support PAM authentication. Refer to the reference guide for instructions on how to set up PAM.</source>
-        <target/>
+        <target>Server nie je nakonfigurovaný na podporu overovania PAM. Inštrukcie na nastavenie PAM nájdete v referenčnej príručke.</target>
       </trans-unit>
       <trans-unit id="api.org.migrationtosameorg" xml:space="preserve">
         <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
-        <target/>
+        <target>Používateľ nemôže migrovať systém, v ktorom sú pôvodná a cieľová organizácia rovnaké.  Org Id: {0}, Systém Id: {1}.</target>
       </trans-unit>
       <trans-unit id="api.org.nosuchorg" xml:space="preserve">
         <source>No such organization: {0}</source>
-        <target/>
+        <target>Žiadna takáto organizácia: {0}</target>
       </trans-unit>
       <trans-unit id="api.org.notintrust" xml:space="preserve">
         <source>Organization {0} is not defined in trust.</source>
-        <target/>
+        <target>Organizácia {0} nie je definovaná ako dôveryhodná.</target>
       </trans-unit>
       <trans-unit id="api.org.sysnotintrust" xml:space="preserve">
         <source>System {0} is member of organization {1} which is not defined in the destination organization's trust.</source>
-        <target/>
+        <target>Systém {0} je členom organizácie {1}, ktorá nie je definovaná v dôvere cieľovej organizácie.</target>
       </trans-unit>
       <trans-unit id="api.org.notpermittedbyorg" xml:space="preserve">
         <source>User in organization {0} is not allowed to retrieve or modify {1} properties in organization {2}.</source>
-        <target/>
+        <target>Používateľ v organizácii {0} nemá povolené získať alebo zmeniť vlastnosti {1} v organizácii {2}.</target>
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg" xml:space="preserve">
         <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Túto operáciu nemožno vykonať na organizácii @@PRODUCT_NAME@@. (Org ID 1)</target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata" xml:space="preserve">
         <source>Invalid patch: {0}</source>
-        <target/>
+        <target>Neplatná oprava: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.invalidrole" xml:space="preserve">
         <source>Invalid role: {0}</source>
