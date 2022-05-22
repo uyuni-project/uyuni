@@ -10,7 +10,7 @@
         <dependency org="suse" name="mybatis" rev="3.2.3" />
         <dependency org="suse" name="quartz" rev="2.3.0" />
         <dependency org="suse" name="log4j" rev="1.2.12" />
-        <dependency org="suse" name="c3p0" rev="0.9.5.2" />
+        <dependency org="suse" name="c3p0" rev="0.9.5.5" />
         <dependency org="suse" name="mchange-commons-java" rev="0.2.20" />
         <dependency org="suse" name="picocontainer" rev="1.3" />
 
