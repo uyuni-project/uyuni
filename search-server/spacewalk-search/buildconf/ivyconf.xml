@@ -7,6 +7,6 @@
     <ibiblio name="central" m2compatible="true"/>
   </resolvers>
   <modules>
-    <module organisation="suse" name="*" resolver="suse"/>
+    <module organisation="manager-42" name="*" resolver="suse"/>
   </modules>
 </ivysettings>
