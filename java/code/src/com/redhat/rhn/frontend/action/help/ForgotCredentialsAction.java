@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 
 
 /**
@@ -100,6 +101,10 @@ public class ForgotCredentialsAction extends RhnAction {
     private void newPassword(String login, String email,
             ActionErrors errors, ActionMessages msgs, HttpSession session) {
 
+        if (!validateNewPasswordFields(login, email, errors)) {
+            return;
+        }
+
         // Check if time elapsed from last request
         if (!hasTimeElapsed(session, "password", login, PASSWORD_REQUEST_TIMEOUT)) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
@@ -134,8 +139,32 @@ public class ForgotCredentialsAction extends RhnAction {
                 new ActionMessage("help.credentials.passwordsent", email));
     }
 
+    private boolean validateNewPasswordFields(String login, String email, ActionErrors errors) {
+        return validateLogin(login, errors) & validateEmail(email, errors);
+    }
+
+    private boolean validateLogin(String login, ActionErrors errors) {
+        if (login.trim().isEmpty()) {
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("help.credentials.emptylogin"));
+            return false;
+        }
+        return true;
+    }
+    private boolean validateEmail(String email, ActionErrors errors) {
+        if (!RhnValidationHelper.isValidEmailAddress(email)) {
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("help.credentials.invalidemailvalue"));
+            return false;
+        }
+
+        return true;
+    }
+
     private void lookupLogins(String email,
             ActionErrors errors, ActionMessages msgs, HttpSession session) {
+
+        if (!validateEmail(email, errors)) {
+            return;
+        }
 
         // Check if time elapsed from last request
         if (!hasTimeElapsed(session, "logins", email, LOGINS_REQUEST_TIMEOUT)) {
