@@ -1,4 +1,8 @@
-- Fix send login(s) and send password actions to avoid user enumeration (bsc#1199629)
+-------------------------------------------------------------------
+Mon May 23 15:51:43 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.37-1
+  * Fix send login(s) and send password actions to avoid user enumeration (bsc#1199629)
 
 -------------------------------------------------------------------
 Fri May 20 17:08:24 CEST 2022 - jmassaguerpla@suse.de
