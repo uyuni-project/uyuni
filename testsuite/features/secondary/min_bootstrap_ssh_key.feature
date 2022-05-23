@@ -1,6 +1,7 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@flaky
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI using SSH key
 
