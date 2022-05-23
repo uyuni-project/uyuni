@@ -1,4 +1,4 @@
-- Fix send login(s) action to avoid user enumeration (bsc#1199629)
+- Fix send login(s) and send password actions to avoid user enumeration (bsc#1199629)
 
 -------------------------------------------------------------------
 Mon May 23 10:57:23 CEST 2022 - jgonzalez@suse.com
