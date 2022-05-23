@@ -129,14 +129,14 @@ public class ForgotCredentialsAction extends RhnAction {
                         getMessage("help.credentials.jsp.passwordreset");
                 String rhnHeader = "Requested " + subject + " for " + email;
                 MailHelper.withSmtp().addRhnHeader(rhnHeader).sendEmail(email, subject, emailBody);
-
-                // Save time and login to session
-                saveRequestTime(session, "password", login);
             }
         }
         catch (LookupException e) {
             // expected
         }
+
+        // Save time and login to session
+        saveRequestTime(session, "password", login);
         msgs.add(ActionMessages.GLOBAL_MESSAGE,
                 new ActionMessage("help.credentials.passwordsent", email));
     }
@@ -191,10 +191,10 @@ public class ForgotCredentialsAction extends RhnAction {
                     getMessage("help.credentials.jsp.logininfo");
             String rhnHeader = "Requested " + subject + " for " + email;
             MailHelper.withSmtp().addRhnHeader(rhnHeader).sendEmail(email, subject, emailBody);
-
-            // Save time and email to session
-            saveRequestTime(session, "logins", email);
         }
+
+        // Save time and email to session
+        saveRequestTime(session, "logins", email);
 
         msgs.add(ActionMessages.GLOBAL_MESSAGE,
                 new ActionMessage("help.credentials.loginssent", email));
