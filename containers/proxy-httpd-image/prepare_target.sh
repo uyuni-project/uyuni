@@ -22,3 +22,5 @@ zypper --non-interactive rm \
 
 # remove packages with a -devel suffix
 zypper --non-interactive rm *-devel
+
+zypper clean --all
