@@ -40,18 +40,14 @@
 - features/secondary/min_ssh_tunnel.feature
 - features/secondary/min_activationkey.feature
 - features/secondary/trad_migrate_to_minion.feature
-# temporarily disabled. Reason: this is unstable, it fails sometimes
-# and can't find the reason. We need to check later on this test.
-# - features/secondary/trad_migrate_to_sshminion.feature
+- features/secondary/trad_migrate_to_sshminion.feature
 - features/secondary/trad_ssh_tunnel.feature
 - features/secondary/trad_baremetal_discovery.feature
 - features/secondary/min_salt_minions_page.feature
 - features/secondary/min_salt_mgrcompat_state.feature
 - features/secondary/min_salt_lock_packages.feature
-# temporarily disabled. Reason: Tests fail and are not blockers
-# - features/secondary/minkvm_guests.feature
-# temporarily disabled. Reason: Tests fail and are not blockers
-# - features/secondary/minxen_guests.feature
+- features/secondary/minkvm_guests.feature
+- features/secondary/minxen_guests.feature
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_action_chain.feature
@@ -60,17 +56,14 @@
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/allcli_action_chain.feature
-# temporarily disabled. Reason: Tests fail and are not blockers
-# - features/secondary/buildhost_docker_build_image.feature
-# - features/secondary/buildhost_docker_auth_registry.feature
+- features/secondary/buildhost_docker_build_image.feature
+- features/secondary/buildhost_docker_auth_registry.feature
 - features/secondary/min_docker_api.feature
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
 - features/secondary/min_retracted_patches.feature
-# temporarily disabled. Reason: Tests fail and are not blockers
-# - features/secondary/proxy_cobbler_pxeboot.feature
-# temporarily disabled. Reason: Tests fail and are not blockers
-# - features/secondary/srv_restart.feature
+- features/secondary/proxy_cobbler_pxeboot.feature
+- features/secondary/srv_restart.feature
 - features/secondary/min_timezone.feature
 - features/secondary/min_move_from_and_to_proxy.feature
 - features/secondary/minssh_move_from_and_to_proxy.feature

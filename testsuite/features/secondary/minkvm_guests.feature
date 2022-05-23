@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@flaky
 @scope_virtualization
 @virthost_kvm
 @scope_cobbler
