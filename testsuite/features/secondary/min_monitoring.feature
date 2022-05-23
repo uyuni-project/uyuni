@@ -4,6 +4,7 @@
 # - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
 # - sumaform : As it is configuring monitoring to be enabled after deployment
 
+@flaky
 @sle_minion
 @scope_monitoring
 Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion

@@ -37,8 +37,7 @@
 - features/secondary/srv_reportdb.feature
 - features/secondary/trad_spacewalk_channel.feature
 
-# temporarily disabled. Reason: Tests fail and are not blockers
-# - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
+- features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
 - features/secondary/allcli_system_group.feature
 - features/secondary/allcli_config_channel.feature
@@ -47,8 +46,7 @@
 # - features/secondary/allcli_software_channels_dependencies.feature
 
 - features/secondary/min_centos_salt_install_package_and_patch.feature
-# temporarily disabled. Reason: We need to add the tools update repo 
-#- features/secondary/min_centos_monitoring.feature
+- features/secondary/min_centos_monitoring.feature
 - features/secondary/minssh_salt_install_package.feature
 - features/secondary/minssh_ansible_control_node.feature
 - features/secondary/min_ubuntu_salt_install_with_staging.feature
@@ -57,12 +55,9 @@
 - features/secondary/min_bootstrap_negative.feature
 - features/secondary/min_bootstrap_reactivation.feature
 - features/secondary/min_salt_software_states.feature
-# temporarily disabled. Reason: Tests fail and are not blockers
-# - features/secondary/min_salt_install_with_staging.feature
-# temporarily disabled. Reason: Tests fail and are not blockers
-# - features/secondary/min_salt_formulas.feature
-# temporarily disabled. Reason: Tests fail and are not blockers
-# - features/secondary/min_salt_formulas_advanced.feature
+- features/secondary/min_salt_install_with_staging.feature
+- features/secondary/min_salt_formulas.feature
+- features/secondary/min_salt_formulas_advanced.feature
 - features/secondary/min_salt_install_package.feature
 - features/secondary/min_salt_openscap_audit.feature
 - features/secondary/min_salt_user_states.feature
@@ -72,8 +67,7 @@
 - features/secondary/min_config_state_channel_api.feature
 - features/secondary/min_salt_pkgset_beacon.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
-# temporarily disabled. Reason: We need to add the tools update repo 
-# - features/secondary/min_monitoring.feature
+- features/secondary/min_monitoring.feature
 - features/secondary/min_ansible_control_node.feature
 - features/secondary/srv_scc_user_credentials.feature
 
