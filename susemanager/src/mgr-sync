@@ -31,6 +31,12 @@ except socket.error as ex:
         raise
     else:
         sys.exit(1)
+except SyntaxError as ex:
+    sys.stderr.write("Syntax error: {0}\n".format(ex))
+    if options.verbose:
+        raise
+    else:
+        sys.exit(1)
 except KeyboardInterrupt as ex:
     sys.stdout.write("\n")
 except Exception as ex:
