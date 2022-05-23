@@ -125,19 +125,13 @@ public class ForgotCredentialsAction extends RhnAction {
 
                 // Save time and login to session
                 saveRequestTime(session, "password", login);
-
-                msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("help.credentials.passwordsent", email));
-            }
-            else {
-                errors.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("help.credentials.invalidemail"));
             }
         }
         catch (LookupException e) {
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("help.credentials.invalidlogin"));
+            // expected
         }
+        msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage("help.credentials.passwordsent", email));
     }
 
     private void lookupLogins(String email,
