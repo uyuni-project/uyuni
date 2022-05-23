@@ -1,6 +1,7 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@flaky
 @scope_virtualization
 @virthost_xen
 Feature: Be able to manage XEN virtual machines via the GUI

@@ -7,6 +7,7 @@
 # This feature is a dependency for:
 # - features/secondary/srv_docker_cve_audit.feature : Due to the images listed in the CVE Audit images
 
+@flaky
 @buildhost
 @scope_building_container_images
 @no_auth_registry

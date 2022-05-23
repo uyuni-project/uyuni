@@ -5,6 +5,7 @@
 # we included a manual refresh and a simple navigation step to make sure the UI
 # is indeed up and running after the restart.
 
+@flaky
 Feature: Restart the spacewalk services via UI
 
   Scenario: Restart the SUSE Manager through the WebUI Admin option
