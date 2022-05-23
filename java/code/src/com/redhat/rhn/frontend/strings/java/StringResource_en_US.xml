@@ -8558,7 +8558,13 @@ tree will not be usable for autoinstalling.
         <source>An email has already been sent. You may request this action only every {0} seconds.</source>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+      </trans-unit>
+      <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
+      </trans-unit>
+      <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -8570,7 +8576,7 @@ tree will not be usable for autoinstalling.
         <source>There are no registered accounts with that email address.</source>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>

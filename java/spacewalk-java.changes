@@ -1,3 +1,5 @@
+- Fix send login(s) and send password actions to avoid user enumeration (bsc#1199629)
+
 -------------------------------------------------------------------
 Fri May 20 17:08:24 CEST 2022 - jmassaguerpla@suse.de
 
