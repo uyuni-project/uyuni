@@ -4,6 +4,7 @@
 # - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
 # - sumaform : As it is configuring monitoring to be enabled after deployment
 
+@flaky
 @centos_minion
 @scope_monitoring
 @scope_res

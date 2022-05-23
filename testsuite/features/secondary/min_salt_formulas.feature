@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@flaky
 @scope_formulas
 Feature: Use salt formulas
   In order to use simple forms to apply changes to minions

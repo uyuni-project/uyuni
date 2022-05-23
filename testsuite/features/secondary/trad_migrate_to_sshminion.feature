@@ -1,6 +1,7 @@
 # Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@flaky
 @scope_traditional_client
 Feature: Migrate a traditional client into a Salt SSH minion
   In order to move away from traditional clients
