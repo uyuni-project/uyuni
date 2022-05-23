@@ -15,6 +15,11 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.throttling;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.post;
+
 import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
@@ -23,6 +28,7 @@ import com.google.gson.GsonBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +44,12 @@ public class FrontendLogController {
 
     private static Logger log = LogManager.getLogger(FrontendLogController.class);
 
-    private FrontendLogController() { }
+    /**
+     * Initialize the {@link spark.Route}s served by this controller
+     */
+    public void initRoutes() {
+        post("/manager/frontend-log", asJson(withUser(throttling(FrontendLogController::log))));
+    }
 
     /**
      * Returns JSON data about the success of the log action
@@ -51,11 +62,11 @@ public class FrontendLogController {
     public static String log(Request request, Response response, User user) {
         Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
         String type = map.get("level").toString();
-        String userId = "no-logged-user";
-        if (user != null) {
-            userId = user.getId().toString();
-        }
-        String message = "[" + userId + " - " + request.userAgent() + "] - " + map.get("message");
+
+        // Normalize the unicode message to canonical form to ensure no invalid characters are present
+        String message = Normalizer.normalize(map.get("message").toString(), Normalizer.Form.NFC);
+        message = "[" + user.getId() + " - " + request.userAgent() + "] - " + message;
+
 
         switch (type) {
             case "info": log.info(message); break;
