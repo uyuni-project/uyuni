@@ -171,14 +171,10 @@ public class ForgotCredentialsAction extends RhnAction {
 
             // Save time and email to session
             saveRequestTime(session, "logins", email);
+        }
 
-            msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("help.credentials.loginssent", email));
-        }
-        else {
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("help.credentials.nologins"));
-        }
+        msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage("help.credentials.loginssent", email));
     }
 
     /**
