@@ -1,4 +1,8 @@
-- Fix miscellaneous small branding mismatches
+-------------------------------------------------------------------
+Mon May 23 10:57:53 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.17-1
+  * Fix miscellaneous small branding mismatches
 
 -------------------------------------------------------------------
 Fri May 20 00:13:32 CEST 2022 - jgonzalez@suse.com
