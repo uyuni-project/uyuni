@@ -2250,7 +2250,7 @@ public class SystemManager extends BaseManager {
         }
         config.put("ca_crt", rootCaCert);
 
-        addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dump(config).getBytes(), 0644);
+        addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dumpPlain(config).getBytes(), 0644);
         /**
          * config.yaml
          */
@@ -2277,7 +2277,7 @@ public class SystemManager extends BaseManager {
         }
 
         httpdRootConfig.put("httpd", httpdConfig);
-        addTarEntry(tarOut, "httpd.yaml", YamlHelper.INSTANCE.dump(httpdRootConfig).getBytes(), 0600);
+        addTarEntry(tarOut, "httpd.yaml", YamlHelper.INSTANCE.dumpPlain(httpdRootConfig).getBytes(), 0600);
         /**
          * httpd.yaml
          */
@@ -2304,7 +2304,7 @@ public class SystemManager extends BaseManager {
         sshConfig.put("server_ssh_push_pub", result.getPublicKey());
 
         sshRootConfig.put("ssh", sshConfig);
-        addTarEntry(tarOut, "ssh.yaml", YamlHelper.INSTANCE.dump(sshRootConfig).getBytes(), 0600);
+        addTarEntry(tarOut, "ssh.yaml", YamlHelper.INSTANCE.dumpPlain(sshRootConfig).getBytes(), 0600);
         /**
          * ssh.yaml
          */
