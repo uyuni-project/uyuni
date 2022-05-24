@@ -124,3 +124,14 @@ def test_module_run_on_2016_11_4():
     with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [2016, 11, 4, 0]}):
        mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
        mock.assert_called_once_with(**MGRCOMPAT_MODULE_RUN_KWARGS)
+
+def test_module_run_on_silicon_set__low__():
+    mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
+    mgrcompat.module.run = mock
+    low = {"test": "foobar"}
+    mgrcompat.__low__ = {}
+    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3004, None, None, None]}
+    ), patch.dict(mgrcompat.__low__, low):
+        mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
+        mock.assert_called_once_with(**MGRCOMPAT_MODULE_RUN_KWARGS)
+        assert mgrcompat.module.__low__ == low
