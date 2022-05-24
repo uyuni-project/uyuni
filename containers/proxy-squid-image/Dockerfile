@@ -49,14 +49,6 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-squid:%PKG_VERSION%.%REL
 # Squid
 EXPOSE 8080/tcp
 
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3 python3-PyYAML
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses squid
-
-COPY squid.conf /etc/squid/squid.conf
-
-COPY uyuni-configure.py /usr/bin/uyuni-configure.py
-RUN chmod +x /usr/bin/uyuni-configure.py
-
 # Ensure every run / exec uses the squid user to avoid errors like
 #    FATAL: Cannot open '/proc/self/fd/1' for writing.
 # For this we need to give the squid user access to squid.conf and squid.pid
