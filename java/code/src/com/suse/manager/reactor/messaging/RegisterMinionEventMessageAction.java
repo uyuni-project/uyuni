@@ -418,7 +418,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         // take care that custom grains are deployed on the minion before we request them
         saltApi.syncGrains(new MinionList(minionId));
         ValueMap grains = new ValueMap(saltApi.getGrains(minionId).orElseGet(HashMap::new));
-
         MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
 
         if (grains.isEmpty()) {
@@ -427,8 +426,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             grains = new ValueMap(saltApi.getGrains(minionId).orElseGet(HashMap::new));
 
         }
-
-        Optional<String> activationKeyLabel = getActivationKeyLabelFromGrains(grains, activationKeyOverride);
 
         if (grains.isEmpty()) {
             LOG.warn("Grains from minionID={} cannot be fetched, some information can be missing", minionId);
@@ -439,6 +436,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         minion.setName(minionId);
         minion.setDigitalServerId(machineId);
 
+        Optional<String> activationKeyLabel = getActivationKeyLabelFromGrains(grains, activationKeyOverride);
         Optional<ActivationKey> activationKey = activationKeyLabel.map(ActivationKeyFactory::lookupByKey);
 
         try {
