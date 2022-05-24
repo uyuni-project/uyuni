@@ -8854,43 +8854,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="api.externalgroup.invalidrole" xml:space="preserve">
         <source>Invalid role: {0}</source>
-        <target/>
+        <target>Neplatná rola: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.nosuchgroup" xml:space="preserve">
         <source>No external group to role map exists for group: {0}</source>
-        <target/>
+        <target>Neexistuje žiadna externá skupina k mape rolí pre skupinu: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.nosuchservergroup" xml:space="preserve">
         <source>No such server group exists: {0}</source>
-        <target/>
+        <target>Žiadna takáto skupina serverov neexistuje: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.nosuchgrouptoservergroup" xml:space="preserve">
         <source>No external group to server group map exists for group: {0}</source>
-        <target/>
+        <target>Neexistuje žiadna externá skupina k mape skupín serverov pre skupinu: {0}</target>
       </trans-unit>
       <trans-unit id="api.package.invalidpackage" xml:space="preserve">
         <source>Invalid package: {0}</source>
-        <target/>
+        <target>Neplatný balík: {0}</target>
       </trans-unit>
       <trans-unit id="api.errata.duplicateerrata" xml:space="preserve">
         <source>Patch already exists with advisory {0}</source>
-        <target/>
+        <target>Oprava už existuje s upozornením {0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidsnapshot" xml:space="preserve">
         <source>Invalid snapshot specified: {0}</source>
-        <target/>
+        <target>Zadaná neplatná snímka: {0}</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.lookupServerGroup" xml:space="preserve">
         <source>Unable to locate or access server group: "{0}"</source>
-        <target/>
+        <target>Nie je možné vyhľadať alebo získať prístup ku skupine serverov: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied" xml:space="preserve">
         <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Zmena prístupu administrátora nie je povolená pre administrátorov @@PRODUCT_NAME@@ a organizácie.  Týmto používateľom je v predvolenom nastavení udelený prístup; preto by sa mali zo vstupu odstrániť títo používatelia: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel" xml:space="preserve">
         <source>Invalid profile label specified: {0}</source>
-        <target/>
+        <target>Zadané neplatné označenie profilu: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.missingCapabilities" xml:space="preserve">
         <source>The server {0} does not have the {1} client capability. Please enable the capability before proceeding with the operation.</source>
