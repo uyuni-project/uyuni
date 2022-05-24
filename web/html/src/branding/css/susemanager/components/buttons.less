@@ -90,6 +90,20 @@
   }
 }
 
+.btn-default-inverse {
+  &, &:active, &:focus, &:disabled, &.disabled {
+    &, &:hover {
+      background: transparent;
+      border-color: @eos-bc-white;
+      color: @eos-bc-white;
+
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+        background: @eos-bc-white;
+      }
+    }
+  }
+}
+
 .btn-primary {
   &, &:active, &:focus, &:disabled, &.disabled {
     &, &:hover {
