@@ -4,6 +4,11 @@
 .btn-success,
 .btn-warning,
 .btn-danger {
+  // We use flex to ensure icons etc are correctly aligned in buttons
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+
   color: inherit;
   font-size: 14px;
   font-weight: bold;
@@ -58,6 +63,10 @@
 
   &.text-muted {
     color: inherit !important;
+  }
+
+  i[class~="fa"], i[class*="icon-"], i[class*="spacewalk-icon"] {
+    margin: 0;
   }
 }
 
