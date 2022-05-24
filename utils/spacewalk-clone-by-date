@@ -38,7 +38,9 @@ if _LIBPATH not in sys.path:
 
 from utils import cloneByDate
 from utils.cloneByDate import UserError
+from warnings import warn
 
+warn(f'The module {__name__} is DEPRECATED. Please use Content Lifecycle Management Tool.', DeprecationWarning, stacklevel=2)
 
 SAMPLE_CONFIG = """
 {
