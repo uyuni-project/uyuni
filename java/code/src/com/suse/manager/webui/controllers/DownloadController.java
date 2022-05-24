@@ -49,6 +49,8 @@ import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Base64;
@@ -377,7 +379,8 @@ public class DownloadController {
         String path = "";
         try {
             URL url = new URL(request.url());
-            path = url.getPath();
+            // URL decode the path to support ^ in package versions
+            path = URLDecoder.decode(url.getPath(), StandardCharsets.UTF_8);
         }
         catch (MalformedURLException e) {
             halt(HttpStatus.SC_INTERNAL_SERVER_ERROR,
