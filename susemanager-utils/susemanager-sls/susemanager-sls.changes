@@ -1,3 +1,6 @@
+- Prevent tracebacks on mgrcompat.module_run call with Salt
+  having autodetection of syntax implemented with PR#61772
+
 -------------------------------------------------------------------
 Fri May 20 00:14:13 CEST 2022 - jgonzalez@suse.com
 
