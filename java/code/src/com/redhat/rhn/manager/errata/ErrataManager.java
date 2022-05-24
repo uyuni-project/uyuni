@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.Tuple2;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -302,10 +303,11 @@ public class ErrataManager extends BaseManager {
         Set<Errata> tgtErrata = new HashSet<>(ErrataFactory.listByChannel(user.getOrg(), tgtChannel));
 
         // let's remove errata that aren't in the source errata nor is their original
-        tgtErrata.stream()
-                .filter(e -> !(srcErrata.contains(e) ||
-                        asCloned(e).map(er -> srcErrata.contains(er.getOriginal())).orElse(false)))
-                .forEach(e -> removeErratumAndPackagesFromChannel(e, tgtChannel, user));
+        Set<Errata> filteredErrata = tgtErrata.stream().filter(e -> !(srcErrata.contains(e) || asCloned(e)
+                .map(er -> srcErrata.contains(er.getOriginal())).orElse(false)))
+                .collect(Collectors.toUnmodifiableSet());
+
+        removeErratumAndPackagesFromChannel(filteredErrata, tgtChannel, user);
     }
 
     private static Optional<ClonedErrata> asCloned(Errata e) {
@@ -1312,23 +1314,29 @@ public class ErrataManager extends BaseManager {
      * @param chan the channel to remove the erratum from
      * @param user the user doing the removing
      */
-    public static void removeErratumAndPackagesFromChannel(Errata errata, Channel chan, User user) {
+    public static void removeErratumAndPackagesFromChannel(Set<Errata> errata, Channel chan, User user) {
         if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
         }
 
+
         //Remove the errata from the channel
-        chan.getErratas().remove(errata);
-        List<Long> eList = new ArrayList<Long>();
-        eList.add(errata.getId());
+        chan.getErratas().removeAll(errata);
+        List<Long> eList = errata.stream().map(Errata::getId).collect(toList());
         //First delete the cache entries
         ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);
-        ErrataCacheManager.deleteCacheEntriesForChannelPackages(
-                chan.getId(),
-                errata.getPackages().stream().map(p -> p.getId()).collect(toList()));
+
+        Set<Package> packages = new HashSet<>();
+        errata.forEach(e -> packages.addAll(e.getPackages()));
+        List<Long> pids = packages.stream().map(Package::getId).collect(Collectors.toList());
+        ErrataCacheManager.deleteCacheEntriesForChannelPackages(chan.getId(), pids);
 
         // remove packages
-        errata.getPackages().stream().forEach(p -> chan.getPackages().remove(p));
+        Map<String, Long> params = new HashMap<String, Long>();
+        params.put("cid", chan.getId());
+
+        WriteMode m = ModeFactory.getWriteMode("Channel_queries", "remove_packages");
+        m.executeUpdate(params, pids);
     }
 
     /**
