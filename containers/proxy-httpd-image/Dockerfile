@@ -11,6 +11,7 @@ COPY add_repos.sh /usr/bin
 RUN sh add_repos.sh ${PRODUCT_REPO}
 
 # Main packages
+COPY remove_unused.sh .
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
     spacewalk-proxy-broker \
@@ -18,15 +19,12 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     spacewalk-proxy-html \
     susemanager-tftpsync-recv\
     python3-rhnlib \
-    python3-PyYAML
+    python3-PyYAML && \
+    sh remove_unused.sh
 
 # Additional material
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
-
-# Prepare for slimming down
-COPY prepare_target.sh .
-RUN sh prepare_target.sh
 
 # Define slim image
 FROM $BASE AS slim

@@ -10,7 +10,7 @@ COPY add_repos.sh /usr/bin
 RUN sh add_repos.sh ${PRODUCT_REPO}
 
 # Main packages
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses squid
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses squid && zypper clean --all
 
 # Additional material
 COPY squid.conf /etc/squid/squid.conf
@@ -31,7 +31,7 @@ ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3 python3-PyYAML
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses python3 python3-PyYAML && zypper clean --all
 COPY --from=fat /target /
 
 # Build Service required labels
