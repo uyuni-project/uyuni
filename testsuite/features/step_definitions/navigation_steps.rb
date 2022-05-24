@@ -255,21 +255,6 @@ end
 #
 When(/^I click on "([^"]*)"$/) do |text|
   click_button_and_wait(text, match: :first)
-
-  # In case of a search reindex not having finished yet, keeps retrying until successful search or timeout
-  if text == 'Search' && has_text?('Could not connect to search server.', wait: 0)
-    click_button(text, match: :first, wait: false)
-    start = Time.new
-    timeout = 10
-    while (has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)) &&
-          (Time.new - start <= timeout)
-
-      click_button(text, match: :first, wait: false)
-    end
-    if Time.new - start > timeout
-      raise 'Could not perform a successful search after reindexation'
-    end
-  end
 end
 
 #
@@ -1104,6 +1089,19 @@ Then(/^I should land on system's overview page$/) do
     And I should see a "System Properties" text
     And I should see a "Subscribed Channels" text
         )
+end
+
+# In case of a search reindex not having finished yet, keep retrying until successful search or timeout
+When(/^I click on the search button$/) do
+  click_button_and_wait('Search', match: :first)
+  # after a search reindex, the UI will show a "Could not connect to search server" followed by a false "No matches found" for a while
+  if has_text?('Could not connect to search server.', wait: 0)
+    repeat_until_timeout(message: 'Could not perform a successful search after reindexation', timeout: 10) do
+      break unless has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)
+      sleep 1
+      click_button('Search', match: :first, wait: false)
+    end
+  end
 end
 
 When(/^I enter "([^"]*)" hostname on the search field$/) do |host|
