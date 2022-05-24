@@ -60,6 +60,11 @@ def module_run(**kwargs):
     # The new syntax will be used as the default
     use_new_syntax = True
 
+    # Set global __low__ for states module to prevent traceback
+    # on module.run syntax autodetection implemented with upstream PR#61772
+    if "__low__" in globals():
+        module.__low__ = __low__
+
     if __grains__['saltversioninfo'][0] > 3004:
         # Only new syntax - default behavior for Phosphorus and future releases
         pass
