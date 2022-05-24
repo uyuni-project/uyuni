@@ -1,3 +1,4 @@
+- Improve CLM channel cloning performance (bsc#1199523)
 - Keep the websocket connections alive with ping/pong frames (bsc#1199874)
 
 -------------------------------------------------------------------
