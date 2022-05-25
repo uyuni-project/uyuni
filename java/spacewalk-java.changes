@@ -1,3 +1,5 @@
+- Show patch as installed in CVE Audit even if successor patch affects
+  additional packages (bsc#1199646)
 - fix download of packages with caret sign in the version due
   to missing url decode
 - Prefer the Salt Bundle with Cobbler snippets configuration
