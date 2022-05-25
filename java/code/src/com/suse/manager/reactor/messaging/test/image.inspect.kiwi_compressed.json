@@ -41,13 +41,13 @@
                         "image": {
                             "hash": "md5:a64dbc025c748bde968b888db6b7b9e3",
                             "compression": null,
-                            "name": "POS_Image_JeOS6",
-                            "filepath": "/var/lib/Kiwi/build24/images.build/POS_Image_JeOS6.x86_64-6.0.0",
+                            "name": "POS_Image_Minimal-SLES",
+                            "filepath": "/var/lib/Kiwi/build24/images.build/POS_Image_Minimal-SLES.x86_64-6.0.0",
                             "type": "pxe",
-                            "basename": "POS_Image_JeOS6.x86_64-6.0.0",
+                            "basename": "POS_Image_Minimal-SLES.x86_64-6.0.0",
                             "fstype": "ext3",
                             "version": "6.0.0",
-                            "filename": "POS_Image_JeOS6.x86_64-6.0.0",
+                            "filename": "POS_Image_Minimal-SLES.x86_64-6.0.0",
                             "arch": "x86_64",
                             "size": 1490026496,
                             "compression": "gzip",
@@ -2365,9 +2365,9 @@
                         "bundle": {
                             "hash": "sha256:a46cbaad0679e40ea53d0907ed42e00030142b0b9372c9ebc0ba6b9dde5df6b",
                             "suffix": "tgz",
-                            "filepath": "/var/lib/Kiwi/build24/images/POS_Image_JeOS6.x86_64-6.0.0-build24.tgz",
-                            "basename": "POS_Image_JeOS6.x86_64-6.0.0",
-                            "filename": "POS_Image_JeOS6.x86_64-6.0.0-build24.tgz",
+                            "filepath": "/var/lib/Kiwi/build24/images/POS_Image_Minimal-SLES.x86_64-6.0.0-build24.tgz",
+                            "basename": "POS_Image_Minimal-SLES.x86_64-6.0.0",
+                            "filename": "POS_Image_Minimal-SLES.x86_64-6.0.0-build24.tgz",
                             "id": "build24"
                         }
                     }

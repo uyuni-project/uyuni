@@ -85,7 +85,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     public void testParse() {
         Event event = mock(Event.class);
         Map<String, Object> data = createTestData("minion.local", "groupPrefix", "root=/dev/sda1",
-                "/dev/sda1", "POS_Image_JeOS7-7.0.0-1", "custom=option", true);
+                "/dev/sda1", "POS_Image_Minimal-SLES-7.0.0-1", "custom=option", true);
         context().checking(new Expectations() {{
             allowing(event).getTag();
             will(returnValue("suse/manager/pxe_update"));
@@ -102,7 +102,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
             assertEquals("root=/dev/sda1", e.getRoot());
             assertEquals(Optional.of("/dev/sda1"), e.getSaltDevice());
             assertEquals(Optional.of("custom=option"), e.getKernelParameters());
-            assertEquals("POS_Image_JeOS7-7.0.0-1", e.getBootImage());
+            assertEquals("POS_Image_Minimal-SLES-7.0.0-1", e.getBootImage());
             // Localhost device should be parsed out
             assertTrue(e.getHwAddresses().size() == 1);
             assertEquals(e.getHwAddresses().get(0), "00:11:22:33:44:55");
@@ -145,7 +145,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     public void testParseNoHWaddresses() {
         Event event = mock(Event.class);
         Map<String, Object> data = createTestData("minion.local", "groupPrefix", "root=/dev/sda1",
-                "/dev/sda1", "POS_Image_JeOS7-7.0.0-1", "custom=option", false);
+                "/dev/sda1", "POS_Image_Minimal-SLES-7.0.0-1", "custom=option", false);
         context().checking(new Expectations() {{
             allowing(event).getTag();
             will(returnValue("suse/manager/pxe_update"));
@@ -162,7 +162,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     public void testParseNoRoot() {
         Event event = mock(Event.class);
         Map<String, Object> data = createTestData("minion.local", "groupPrefix", "",
-                "/dev/sda1", "POS_Image_JeOS7-7.0.0-1", "custom=option", true);
+                "/dev/sda1", "POS_Image_Minimal-SLES-7.0.0-1", "custom=option", true);
         context().checking(new Expectations() {{
             allowing(event).getTag();
             will(returnValue("suse/manager/pxe_update"));
@@ -196,7 +196,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     public void testParseNoKernelOptions() {
         Event event = mock(Event.class);
         Map<String, Object> data = createTestData("minion.local", "groupPrefix", "root=/dev/sda1",
-                "/dev/sda1", "POS_Image_JeOS7-7.0.0-1", "", true);
+                "/dev/sda1", "POS_Image_Minimal-SLES-7.0.0-1", "", true);
         context().checking(new Expectations() {{
             allowing(event).getTag();
             will(returnValue("suse/manager/pxe_update"));
@@ -212,7 +212,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
             assertEquals("root=/dev/sda1", e.getRoot());
             assertEquals(Optional.of("/dev/sda1"), e.getSaltDevice());
             assertEquals(Optional.empty(), e.getKernelParameters());
-            assertEquals("POS_Image_JeOS7-7.0.0-1", e.getBootImage());
+            assertEquals("POS_Image_Minimal-SLES-7.0.0-1", e.getBootImage());
             // Localhost device should be parsed out
             assertTrue(e.getHwAddresses().size() == 1);
             assertEquals(e.getHwAddresses().get(0), "00:11:22:33:44:55");
@@ -226,7 +226,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     public void testParseNoSaltDevice() {
         Event event = mock(Event.class);
         Map<String, Object> data = createTestData("minion.local", "groupPrefix", "root=/dev/sda1",
-                "", "POS_Image_JeOS7-7.0.0-1", "custom=option", true);
+                "", "POS_Image_Minimal-SLES-7.0.0-1", "custom=option", true);
         context().checking(new Expectations() {{
             allowing(event).getTag();
             will(returnValue("suse/manager/pxe_update"));
@@ -242,7 +242,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
             assertEquals("root=/dev/sda1", e.getRoot());
             assertEquals(Optional.empty(), e.getSaltDevice());
             assertEquals(Optional.of("custom=option"), e.getKernelParameters());
-            assertEquals("POS_Image_JeOS7-7.0.0-1", e.getBootImage());
+            assertEquals("POS_Image_Minimal-SLES-7.0.0-1", e.getBootImage());
             // Localhost device should be parsed out
             assertTrue(e.getHwAddresses().size() == 1);
             assertEquals(e.getHwAddresses().get(0), "00:11:22:33:44:55");

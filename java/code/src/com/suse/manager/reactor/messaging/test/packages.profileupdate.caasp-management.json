@@ -1216,7 +1216,7 @@
                 "edition": "3.0.4-3.23"
               }
             ],
-            "jeos-licenses": [
+            "minimal-sles-licenses": [
               {
                 "arch": "x86_64",
                 "version": "3.0",
