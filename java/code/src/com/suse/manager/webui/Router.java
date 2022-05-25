@@ -14,19 +14,15 @@
  */
 package com.suse.manager.webui;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.isApiRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.isJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.notFound;
-import static spark.Spark.post;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -111,7 +107,6 @@ public class Router implements SparkApplication {
         VirtManager virtManager = GlobalInstanceHolder.VIRT_MANAGER;
         RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
         SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
-        FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
@@ -125,8 +120,8 @@ public class Router implements SparkApplication {
                 saltKeyUtils);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(saltApi);
-
-        post("/manager/frontend-log", asJson(withUser(FrontendLogController::log)));
+        HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
+        FrontendLogController frontendLogController = new FrontendLogController();
 
         // Login
         LoginController.initRoutes(jade);
@@ -223,8 +218,10 @@ public class Router implements SparkApplication {
         // Image Upload
         ImageUploadController.initRoutes();
 
+        // Frontend Logging
+        frontendLogController.initRoutes();
+
         // HTTP API
-        HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
         httpApiRegistry.initRoutes();
     }
 
