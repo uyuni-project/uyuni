@@ -91,7 +91,7 @@ Utility for cloning errata by date (For RHEL5 and above).
 
 <RefSect1><Title>Description</Title>
     <para>
-        The module <emphasis>spacewalk-clone-by-date</emphasis> is DEPRECATED. Please use Content Lifecycle Management Tool.
+        <emphasis>spacewalk-clone-by-date</emphasis> is DEPRECATED. Please use Content Lifecycle Management Tool.
     </para>
     <para>
         <emphasis>spacewalk-clone-by-date</emphasis> tool, clones all the errata belonging to a specified channel, as of a specific date.
