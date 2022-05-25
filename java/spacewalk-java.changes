@@ -1,3 +1,5 @@
+- Show patch as installed in CVE Audit even if successor patch affects
+  additional packages (bsc#1199646)
 - Fix containerized proxy configuration machine name
 - Improve CLM channel cloning performance (bsc#1199523)
 - Keep the websocket connections alive with ping/pong frames (bsc#1199874)
