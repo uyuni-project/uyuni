@@ -58,6 +58,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
+        super.setUp();
         factory = UserFactory.getInstance();
     }
 
