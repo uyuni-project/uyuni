@@ -1,13 +1,13 @@
 repositories:
   Leap:
-    project: openSUSE:Leap:15.3
+    project: openSUSE:Leap:15.4
     repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.3
+    repository: openSUSE_Leap_15.4
   Uyuni:
     project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.3
+    repository: openSUSE_Leap_15.4
 artifacts:
   - artifact: asm
     package: asm3
@@ -21,7 +21,7 @@ artifacts:
   - artifact: byte-buddy
     repository: Uyuni_Other
   - artifact: c3p0
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: cglib
     jar: cglib.jar
     repository: Leap
@@ -111,7 +111,7 @@ artifacts:
   - artifact: httpasyncclient
     package: httpcomponents-asyncclient
     jar: httpasyncclient-[0-9.]+
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: httpclient
     package: httpcomponents-client
     repository: Leap
@@ -137,7 +137,7 @@ artifacts:
     package: java-saml
     repository: Uyuni_Other
   - artifact: javassist
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: jboss-logging
     repository: Leap
   - artifact: jcommon
@@ -161,10 +161,10 @@ artifacts:
     package: log4j-slf4j
     repository: Leap
   - artifact: jsch
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: mchange-commons-java
     package: mchange-commons
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-buffer
     package: netty
     repository: Uyuni_Other
