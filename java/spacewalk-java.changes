@@ -1,3 +1,5 @@
+- During re-activation, recalculate grains if 
+  contact method has been changed (bsc#1199677)
 - autoinstallation: missing whitespace after install URL (bsc#1199888)
 
 -------------------------------------------------------------------
