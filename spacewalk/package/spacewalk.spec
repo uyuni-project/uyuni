@@ -104,7 +104,7 @@ Provides:       spacewalk-db-virtual = %{version}-%{release}
 Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
-%if 0%{?suse_version}
+%if 0%{?suse_version} || 0%{?is_opensuse}
 %if 0%{?sle_version} >= 150400
 Requires:       postgresql14
 Requires:       postgresql14-contrib
@@ -118,7 +118,7 @@ Requires:       postgresql13-contrib
 Conflicts:      postgresql-implementation >= 14
 Conflicts:      postgresql-contrib-implementation >= 14
 %endif # if sle_version >= 150400
-%else # not suse_version
+%else # not suse_version or opensuse
 Requires:       postgresql >= 12
 Requires:       postgresql-contrib >= 12
 # we do not support postgresql versions > 13.x yet
