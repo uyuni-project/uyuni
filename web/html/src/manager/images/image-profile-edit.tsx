@@ -353,7 +353,7 @@ class CreateImageProfile extends React.Component<Props, State> {
               <span key="hint">
                 Kiwi command line options
                 <br />
-                Example: <em>--profile jeos</em>
+                Example: <em>--profile minimal-sles</em>
               </span>
             }
             labelClass="col-md-3"

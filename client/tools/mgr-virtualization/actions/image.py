@@ -110,7 +110,7 @@ def _generate_xml(params):
 
 # Download and start a new image given by the following parameters:
 #
-# downloadURL   : http://download.suse.de/install/SLE-15-JeOS-RC2/SLES15-JeOS.x86_64-15.0-kvm-and-xen-RC2.qcow2
+# downloadURL   : http://download.suse.de/install/OS/IMAGE.qcow2
 # proxySettings : { proxyURL  : http://myproxy.site:3128
 #                  proxyUser : user
 #                  proxyPass : s3cr3t }
