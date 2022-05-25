@@ -193,6 +193,12 @@ artifacts:
   - artifact: common
     package: ongres-scram
     repository: Leap
+  - artifact: stringprep
+    package: ongres-stringprep
+    repository: Leap
+  - artifact: saslprep
+    package: ongres-stringprep-saslprep
+    repository: Leap
   - artifact: oro
     repository: Leap
   - artifact: pgjdbc-ng
