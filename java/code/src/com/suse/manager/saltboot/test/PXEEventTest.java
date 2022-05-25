@@ -18,8 +18,8 @@ package com.suse.manager.saltboot.test;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.empty;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
