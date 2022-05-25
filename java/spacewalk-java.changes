@@ -1,3 +1,5 @@
+- autoinstallation: missing whitespace after install URL (bsc#1199888)
+
 -------------------------------------------------------------------
 Mon May 23 17:20:08 CEST 2022 - jgonzalez@suse.com
 
