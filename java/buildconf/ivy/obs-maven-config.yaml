@@ -313,3 +313,5 @@ artifacts:
     repository: Leap
   - artifact: ical4j
     repository: Uyuni_Other
+  - artifact: jetty-util
+    repository: Leap
