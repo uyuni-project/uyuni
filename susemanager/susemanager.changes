@@ -1,4 +1,4 @@
- - mgr-sync: Raise a proper exception when duplicated lines exist in a config file (bsc#1182742)
+- mgr-sync: Raise a proper exception when duplicated lines exist in a config file (bsc#1182742)
 - fix SLE15 bootstrap repo definition (bsc#1197438)
 - Add SLES15SP4 and SUMA Proxy 4.3 to bootstrap
   repo definitions (bsc#1196702)
