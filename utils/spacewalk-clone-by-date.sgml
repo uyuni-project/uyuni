@@ -9,7 +9,7 @@
 <RefNameDiv>
 <RefName><command>spacewalk-clone-by-date</command></RefName>
 <RefPurpose>
-The module <emphasis>spacewalk-clone-by-date</emphasis> is DEPRECATED. Please use Content Lifecycle Management Tool.
+<emphasis>spacewalk-clone-by-date</emphasis> is DEPRECATED. Please use Content Lifecycle Management Tool.
 Utility for cloning errata by date (For RHEL5 and above).
 </RefPurpose>
 </RefNameDiv>
