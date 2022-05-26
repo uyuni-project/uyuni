@@ -8894,43 +8894,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="api.system.missingCapabilities" xml:space="preserve">
         <source>The server {0} does not have the {1} client capability. Please enable the capability before proceeding with the operation.</source>
-        <target/>
+        <target>Server {0} nemá možnosť klienta {1}. Prosím, pred pokračovaním v operácii povoľte túto možnosť.</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.serverNotInGroup" xml:space="preserve">
         <source>The specified server is not a member of the specified group</source>
-        <target/>
+        <target>Zadaný server nie je členom určenej skupiny</target>
       </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
-        <target/>
+        <target>Žiadne takéto sieťové rozhranie: {0}.</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype" xml:space="preserve">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
-        <target/>
+        <target>Neplatný typ opravy, "{0}". Použite, prosím, jeden z nasledujúcich: "Bezpečnostné upozornenie", "Upozornenie na vylepšenia produktu" alebo "Upozornenie na opravu chyby".</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisoryrelease" xml:space="preserve">
         <source>Invalid advisory release, "{0}". Maximum value is {1}.</source>
-        <target/>
+        <target>Neplatné vydanie upozornenia, "{0}". Maximálna hodnota je {1}.</target>
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected" xml:space="preserve">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
-        <target/>
+        <target>Pokúšate sa publikovať opravu, ale nevybrali ste žiadne kanály, do ktorých chcete publikovať. Opravy musia byť publikované aspoň v jednom kanáli.</target>
       </trans-unit>
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
-        <target/>
+        <target>Požadovaný súbor je príliš veľký na stiahnutie cez XMLRPC.</target>
       </trans-unit>
       <trans-unit id="api.package.download.ioerror" xml:space="preserve">
         <source>There was a general IO Error, check permissions on the requested file.</source>
-        <target/>
+        <target>Vyskytla sa všeobecná chyba IO, skontrolujte oprávnenia na požadovanom súbore.</target>
       </trans-unit>
       <trans-unit id="api.channel.access.invalidaccessvalue" xml:space="preserve">
         <source>Access value, "{0}". Please use one of the following: "public", "private", or "protected".</source>
-        <target/>
+        <target>Hodnota prístupu, "{0}". Prosím, použite jednu z nasledujúcich: "verejné", "súkromné" alebo "chránené".</target>
       </trans-unit>
       <trans-unit id="api.channel.software.channelsubscription" xml:space="preserve">
         <source>Unable to subscribe this system to the requested channel: "{0}"</source>
-        <target/>
+        <target>Nie je možné prihlásiť tento systém k požadovanému kanálu: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel" xml:space="preserve">
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
