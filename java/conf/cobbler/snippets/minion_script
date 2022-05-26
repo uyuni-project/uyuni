@@ -3,7 +3,13 @@
     <filename>uyuni-minion.sh</filename>
     <source>
         <![CDATA[
-cat <<EOF >"/etc/salt/minion.d/susemanager.conf"
+SALT_MINION_CONF_DIR="/etc/venv-salt-minion/minion.d"
+SALT_MINION_SERVICE="venv-salt-minion"
+if [ ! -d "$SALT_MINION_CONF_DIR" ]; then
+  SALT_MINION_CONF_DIR="/etc/salt/minion.d"
+  SALT_MINION_SERVICE="salt-minion"
+fi
+cat <<EOF >"$SALT_MINION_CONF_DIR/susemanager.conf"
 master: $redhat_management_server
 server_id_use_crc: adler32
 enable_legacy_startup_events: False
@@ -29,18 +35,18 @@ EOF
 #end if
 
 #if $activation_keys or $management_key
-cat <<EOF >>"/etc/salt/minion.d/susemanager.conf"
+cat <<EOF >>"$SALT_MINION_CONF_DIR/susemanager.conf"
 grains:
     susemanager:
 EOF
 #end if
 #if $management_key
-cat <<EOF >>"/etc/salt/minion.d/susemanager.conf"
+cat <<EOF >>"$SALT_MINION_CONF_DIR/susemanager.conf"
         management_key: "$management_key"
 EOF
 #end if
 #if $activation_keys
-cat <<EOF >>"/etc/salt/minion.d/susemanager.conf"
+cat <<EOF >>"$SALT_MINION_CONF_DIR/susemanager.conf"
         activation_key: "$activation_keys"
 EOF
 #end if
@@ -48,8 +54,8 @@ EOF
 #if not $varExists('dont_register')
 # if you don't want to register, set the 'dont_register' variable
 
-systemctl restart salt-minion
-systemctl enable salt-minion
+systemctl restart "$SALT_MINION_SERVICE"
+systemctl enable "$SALT_MINION_SERVICE"
 #end if
 
 #if not $varExists('dont_disable_automatic_onlineupdate')
