@@ -40,7 +40,7 @@ zypper ar -n "Uyuni Server Stable" https://download.opensuse.org/repositories/sy
 zypper ar -n "Update repository wiht updates from SUSE Linux Enterprise" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/sle repo-sle-update
 zypper ar -n "Update repository of openSUSE Backports" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/backports/ repo-backports-update
 zypper ref
-zypper -n dup --allow-vendor-change
+zypper -n dup
 ret=$?
 if [[ $ret -ne 0 ]];then
     echo "Migration went wrong. Please fix the issues and try again. return code is $ret"
