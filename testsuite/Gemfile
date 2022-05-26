@@ -17,7 +17,7 @@ gem 'minitest'
 gem 'websocket'
 gem 'websocket-driver'
 gem 'syntax'
-gem 'parallel_tests'
+gem 'parallel_tests', '3.8.1'
 gem 'simplecov'
 gem 'rubocop'
 # Pre-requisite:
