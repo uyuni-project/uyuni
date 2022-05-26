@@ -1,3 +1,6 @@
+- Prefer the Salt Bundle with Cobbler snippets configuration
+  (minion_script and redhat_register_using_salt) (bsc#1198646)
+
 -------------------------------------------------------------------
 Mon May 23 10:57:23 CEST 2022 - jgonzalez@suse.com
 
