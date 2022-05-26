@@ -1,3 +1,5 @@
+- Fix traceback on calling spacewalk-repo-sync --show-packages
+  (bsc#1193238)
 - Fix virt_notify SQL syntax error (bsc#1199528)
 - Do not raise error on file:// based DEB repo when looking
   for alternative Release files (bsc#1199142)
