@@ -1,4 +1,8 @@
-- Ensure autohiding alerts don't overlap with content
+-------------------------------------------------------------------
+Thu May 26 09:28:15 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.18-1
+  * Ensure autohiding alerts don't overlap with content
 
 -------------------------------------------------------------------
 Mon May 23 10:57:53 CEST 2022 - jgonzalez@suse.com
