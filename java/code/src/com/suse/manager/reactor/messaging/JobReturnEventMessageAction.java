@@ -237,6 +237,11 @@ public class JobReturnEventMessageAction implements MessageAction {
                 jobReturnEvent.getMinionId());
         if (minion.isPresent()) {
             MinionServer m = minion.get();
+            if (jobResult.isEmpty()) {
+                LOG.warn("Do not update server info since job=" + jobReturnEvent.getJobId() + " running " +
+                        "function=" + function + " in minion=" + jobReturnEvent.getMinionId() + " is empty");
+                return;
+            }
             m.updateServerInfo();
             // for s390 update the host as well
             if (m.getCpu() != null &&

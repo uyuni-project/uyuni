@@ -1,3 +1,5 @@
+- During re-activation, recalculate grains if 
+  contact method has been changed (bsc#1199677)
 - Fix send login(s) and send password actions to avoid user enumeration (bsc#1199629)
 - autoinstallation: missing whitespace after install URL (bsc#1199888)
 - Add rate-limiting to frontend logging (bsc#1199512) (CVE-2022-21952)

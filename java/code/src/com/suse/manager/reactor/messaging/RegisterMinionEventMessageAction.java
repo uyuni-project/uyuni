@@ -308,6 +308,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         ValueMap grains = new ValueMap(systemQuery.getGrains(minionId).orElseGet(HashMap::new));
         MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
         Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
+        if (grains.isEmpty()) {
+            //recalculate grains, cause probably the contact method is changed
+            grains = new ValueMap(systemQuery.getGrains(minionId).orElseGet(HashMap::new));
+        }
+
+        if (grains.isEmpty()) {
+            LOG.warn("Grains from minionID=" + minionId + " cannot be fetched, some information can be missing");
+        }
 
         minion.setMachineId(machineId);
         minion.setMinionId(minionId);
@@ -392,7 +400,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             SystemEntitlementManager.INSTANCE.setBaseEntitlement(minion, EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the minion
-            activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(minion, ak, grains));
+            if (activationKey.isPresent()) {
+                RegistrationUtils.applyActivationKeyProperties(minion, activationKey.get(), grains);
+            }
 
             // Saltboot treatment - prepare and apply saltboot
             if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
@@ -568,20 +578,20 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             Optional<String> activationKeyOverride,
             String machineId,
             ValueMap grains) {
-        Optional<String> fqdn = grains.getOptionalAsString(FQDN);
-        Set<String> hwAddrs = extractHwAddresses(grains);
 
-        return ServerFactory.findByMachineId(machineId)
-            .flatMap(server -> {
-                if (!server.asMinionServer().isPresent()) {
-                    // change the type of the hibernate entity from Server to MinionServer
-                    SystemManager.addMinionInfoToServer(server.getId(), minionId);
-                    // need to clear the session to avoid NonUniqueObjectException
-                    ServerFactory.getSession().clear();
-                }
-                return MinionServerFactory.lookupById(server.getId());
-            })
-            .map(minion -> {
+        Optional<Server> server = ServerFactory.findByMachineId(machineId);
+
+        if (server.isPresent()) {
+            Server s = server.get();
+            if (!s.asMinionServer().isPresent()) {
+                // change the type of the hibernate entity from Server to MinionServer
+                SystemManager.addMinionInfoToServer(s.getId(), minionId);
+                // need to clear the session to avoid NonUniqueObjectException
+                ServerFactory.getSession().clear();
+            }
+            Optional<MinionServer> optMinionServer = MinionServerFactory.lookupById(s.getId());
+            if (optMinionServer.isPresent()) {
+                MinionServer minion = optMinionServer.get();
                 // hardware will be refreshed anyway
                 // new secret will be generated later
 
@@ -624,7 +634,22 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 minion.getHistory().add(historyEvent);
 
                 return minion;
-            }).orElseGet(() -> findMatchingEmptyProfiles(fqdn, hwAddrs).orElseGet(MinionServer::new));
+
+            }
+        }
+
+        //if minion was not found, fallback to FQDN and hwAddrs found using previous grains
+        if (grains.isPresent()) {
+            Optional<String> fqdn = grains.getOptionalAsString(FQDN);
+            Set<String> hwAddrs = extractHwAddresses(grains);
+            Optional<MinionServer> optMinionServer =  findMatchingEmptyProfiles(fqdn, hwAddrs);
+            if (optMinionServer.isPresent()) {
+                return optMinionServer.get();
+            }
+        }
+
+        //if not create a new server
+        return new MinionServer();
     }
 
     private Optional<MinionServer> findMatchingEmptyProfiles(Optional<String> hostname, Set<String> hwAddrs) {
