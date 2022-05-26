@@ -226,32 +226,15 @@ header, nav.navbar-pf {
   /* Search header box */
   form#search-form {
     .form-group {
-      padding: 10px;
       width: 200px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
-    input[type="search"] {
-      padding: 0px 5px;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      display: block;
-      width: 100%;
-    }
-    //style for the select to make it plain colour
+    input[type="search"],
     select.form-control {
-      -webkit-appearance: button;
-      -webkit-padding-end: 20px;
-      background: url('../../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
-      cursor: pointer;
-      display: inline-block;
-      -moz-appearance: none;
-      text-indent: 0.01px;
-      text-overflow: '';
-      line-height: normal;
-      padding: 2px 28px 2px 2px;
-      display: block;
       width: 100%;
-      margin: 5px 0;
     }
   }
 
@@ -583,7 +566,7 @@ header, nav.navbar-pf {
 .display-number{
   .input-sm;
   display: inline-block;
-  width: 5em;
+  width: 5.2em;
   border: 1px solid #dddddd;
   background-color: @eos-bc-gray-100;
 }
@@ -880,31 +863,13 @@ i.spacewalk-help-link {
       a[role="button"]:focus {
         color: @green;
       }
-      button {
+      button.is-plain {
         background-color: transparent;
         color: @header-text;
       }
-      button:hover {
+      button.is-plain:hover {
         background-color: transparent;
         color: @green;
-      }
-    }
-    .search {
-      .form-group {
-        .btn-primary {
-          display: block;
-          width: 100%;
-          background: @gray-light;
-          color: @gray-dark;
-          border: 0;
-          border-radius: 2px;
-          height: 1.8em;
-          padding: 0;
-        }
-        .btn-primary:hover {
-          background: @green;
-          color: #333;
-        }
       }
     }
   }

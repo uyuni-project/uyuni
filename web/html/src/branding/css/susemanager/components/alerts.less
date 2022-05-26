@@ -19,6 +19,16 @@
   }
 }
 
+.alert:after,
+.Toastify__toast:after {
+  font-family: "Fontawesome";
+  content: "\f00d";
+  position: absolute;
+  top: 9px;
+  right: 12px;
+  font-size: 12px;
+}
+
 .alert:before,
 .Toastify__toast:before {
   font-family: 'spacewalk-icon';
@@ -75,13 +85,12 @@
   // Global alerts
   &#global .Toastify__toast-container {
     position: relative !important;
+    margin: 0 !important;
   }
 }
 
 .Toastify__toast-container {
-  position: absolute !important;
-  top: 0 !important;
-  padding: 0 !important;
+  margin-top: 24px;
   width: 100% !important;
 }
 
@@ -112,4 +121,17 @@
   100% {
     opacity: 0;
   }
+}
+
+// This is required to hide the toasts automatically
+@keyframes Toastify__trackProgress {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}
+.Toastify__progress-bar--animated {
+  animation: Toastify__trackProgress linear 1 forwards;
 }

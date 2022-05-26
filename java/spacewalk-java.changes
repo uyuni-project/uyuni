@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu May 26 12:30:12 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.29-1
+  * Prefer the Salt Bundle with Cobbler snippets configuration
+    (minion_script and redhat_register_using_salt) (bsc#1198646)
+
+-------------------------------------------------------------------
+Thu May 26 09:27:43 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.28-1
+  * During re-activation, recalculate grains if 
+    contact method has been changed (bsc#1199677)
+  * autoinstallation: missing whitespace after install URL (bsc#1199888)
+
+-------------------------------------------------------------------
 Mon May 23 17:20:08 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.27-1
