@@ -251,8 +251,8 @@ public class JobReturnEventMessageAction implements MessageAction {
         if (minion.isPresent()) {
             MinionServer m = minion.get();
             if (jobResult.isEmpty()) {
-                LOG.warn("Do not update server info since job=" +  jobReturnEvent.getJobId() + " in minion=" +
-                        jobReturnEvent.getMinionId() + " is empty");
+                LOG.warn("Do not update server info since job=" + jobReturnEvent.getJobId() + " running " +
+                        "function=" + function + " in minion=" + jobReturnEvent.getMinionId() + " is empty");
                 return;
             }
             m.updateServerInfo();
