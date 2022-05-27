@@ -42,7 +42,7 @@ zypper ar -n "Update repository of openSUSE Backports" http://download.opensuse.
 zypper ref
 zypper -n dup
 ret=$?
-if [[ $ret -ne 0 ]];then
+if [[ ${ret} -ne 0 ]];then
     echo "Migration went wrong. Please fix the issues and try again. return code is ${ret}"
     exit -1
 fi
