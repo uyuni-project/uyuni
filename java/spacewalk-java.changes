@@ -1,24 +1,28 @@
-- During re-activation, recalculate grains if 
-  contact method has been changed (bsc#1199677)
-- Fix send login(s) and send password actions to avoid user enumeration (bsc#1199629)
-- autoinstallation: missing whitespace after install URL (bsc#1199888)
-- Add rate-limiting to frontend logging (bsc#1199512) (CVE-2022-21952)
-- Change system details lock tab name to lock/unlock (bsc#1193032)
-- Set profile tag has no-mandatory in XCCDF result (bsc#1194262)
-- Added a notification to inform the administrators about the product end-of-life
-- provisioning thought proxy should use proxy for self_update (bsc#1199036)
-- Allow removing duplicated packages names in the same Salt action (bsc#1198686)
-- Fix ACL rules for config diff download for SLS files (bsc#1198914)
-- fix invalid link to action schedule
-- Redesign the auto errata task to schedule combined actions (bsc#1197429)
-- detect free products in Alpha and Beta stage and prevent checks
-  on openSUSE products (bsc#1197488)
-- Optimize adding new products function (bsc#1193707)
-- change directory owner and permissions only when needed
-- Fixed broken help link for system overview
-- Finding empty profiles by mac address must be case insensitive (bsc#1196407)
-- generate the system ssh key when bootstrapping a salt-ssh client
-  (bsc#1194909)
+-------------------------------------------------------------------
+Fri May 27 11:56:26 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.45-1
+  * During re-activation, recalculate grains if 
+    contact method has been changed (bsc#1199677)
+  * Fix send login(s) and send password actions to avoid user enumeration (bsc#1199629)
+  * autoinstallation: missing whitespace after install URL (bsc#1199888)
+  * Add rate-limiting to frontend logging (bsc#1199512) (CVE-2022-21952)
+  * Change system details lock tab name to lock/unlock (bsc#1193032)
+  * Set profile tag has no-mandatory in XCCDF result (bsc#1194262)
+  * Added a notification to inform the administrators about the product end-of-life
+  * provisioning thought proxy should use proxy for self_update (bsc#1199036)
+  * Allow removing duplicated packages names in the same Salt action (bsc#1198686)
+  * Fix ACL rules for config diff download for SLS files (bsc#1198914)
+  * fix invalid link to action schedule
+  * Redesign the auto errata task to schedule combined actions (bsc#1197429)
+  * detect free products in Alpha and Beta stage and prevent checks
+    on openSUSE products (bsc#1197488)
+  * Optimize adding new products function (bsc#1193707)
+  * change directory owner and permissions only when needed
+  * Fixed broken help link for system overview
+  * Finding empty profiles by mac address must be case insensitive (bsc#1196407)
+  * generate the system ssh key when bootstrapping a salt-ssh client
+    (bsc#1194909)
 
 -------------------------------------------------------------------
 Thu Mar 03 17:32:21 CET 2022 - jmassaguerpla@suse.de
