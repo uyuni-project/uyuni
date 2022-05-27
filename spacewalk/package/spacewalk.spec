@@ -119,8 +119,8 @@ Conflicts:      postgresql-implementation >= 14
 Conflicts:      postgresql-contrib-implementation >= 14
 %endif # if sle_version >= 150400
 %else # not suse_version or opensuse
-Requires:       postgresql >= 13
-Requires:       postgresql-contrib >= 13
+Requires:       postgresql >= 14
+Requires:       postgresql-contrib >= 14
 # we do not support postgresql versions > 14.x yet
 Conflicts:      postgresql >= 15
 Conflicts:      postgresql-contrib >= 15
