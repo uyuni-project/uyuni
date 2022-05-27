@@ -1,4 +1,8 @@
-- Report all VMs in poller, not only running ones. (bsc#1199528)
+-------------------------------------------------------------------
+Fri May 27 11:56:11 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.3-1
+  * Report all VMs in poller, not only running ones. (bsc#1199528)
 
 -------------------------------------------------------------------
 Wed Jan 12 16:00:21 CET 2022 - jmassaguerpla@suse.de
