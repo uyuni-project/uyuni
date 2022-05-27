@@ -15,16 +15,21 @@
 
 package com.redhat.rhn.domain.notification;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.Mail;
+import com.redhat.rhn.common.messaging.SmtpMail;
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 
+import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.websocket.Notification;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,8 +56,31 @@ public class UserNotificationFactory extends HibernateFactory {
     private static UserNotificationFactory singleton = new UserNotificationFactory();
     private static Logger log = LogManager.getLogger(UserNotificationFactory.class);
 
+    private static Mail mailer;
+
     private UserNotificationFactory() {
         super();
+        String clazz = Config.get().getString("web.mailer_class");
+        if (clazz == null) {
+            mailer = new SmtpMail();
+            return;
+        }
+        try {
+            Class cobj = Class.forName(clazz);
+            mailer = (Mail) cobj.newInstance();
+            return;
+        }
+        catch (Exception e) {
+            mailer = new SmtpMail();
+        }
+    }
+
+    /**
+     * For debugging set special mailer
+     * @param mailerIn the mailer
+     */
+    public static void setMailer(Mail mailerIn) {
+        singleton.mailer = mailerIn;
     }
 
     /**
@@ -75,9 +103,19 @@ public class UserNotificationFactory extends HibernateFactory {
      * @return boolean if notification type is disabled
      */
     public static boolean isNotificationTypeDisabled(UserNotification userNotificationIn) {
+        return isNotificationTypeDisabled(userNotificationIn.getMessage());
+    }
+
+    /**
+     * Check if the given notification is currently disabled
+     *
+     * @param notificationIn the notification
+     * @return boolean if notification type is disabled
+     */
+    public static boolean isNotificationTypeDisabled(NotificationMessage notificationIn) {
         List<String> disableNotificationsBy = ConfigDefaults.get().getNotificationsTypeDisabled();
 
-        return disableNotificationsBy.contains(userNotificationIn.getMessage().getType().name());
+        return disableNotificationsBy.contains(notificationIn.getType().name());
     }
 
     /**
@@ -85,12 +123,8 @@ public class UserNotificationFactory extends HibernateFactory {
      *
      * @param userNotificationIn userNotification
      */
-    public static void store(UserNotification userNotificationIn) {
-        // We want to disable out the notifications defined on parameter: java.notifications_type_disabled
-        // They are still added to the SuseNotificationTable but not associated with any user
-        if (!isNotificationTypeDisabled(userNotificationIn)) {
-            singleton.saveObject(userNotificationIn);
-        }
+    private static void store(UserNotification userNotificationIn) {
+        singleton.saveObject(userNotificationIn);
     }
 
     /**
@@ -106,6 +140,7 @@ public class UserNotificationFactory extends HibernateFactory {
 
     /**
      * Stores a notification visible for the specified users.
+     * Send email to users which have email notifications requested
      *
      * @param notificationMessageIn notification to store
      * @param users user that should see the notification
@@ -114,10 +149,33 @@ public class UserNotificationFactory extends HibernateFactory {
         // save first the message to get the 'id' auto generated
         // because it is referenced by the UserNotification object
         singleton.saveObject(notificationMessageIn);
-        users.stream().
-            filter(u -> !u.isDisabled()).
-            forEach(user -> UserNotificationFactory.store(new UserNotification(user, notificationMessageIn)));
+        // We want to disable out the notifications defined on parameter: java.notifications_type_disabled
+        // They are still added to the SuseNotificationTable but not associated with any user
+        if (!isNotificationTypeDisabled(notificationMessageIn)) {
+            Set<User> notifyUsers = users.stream()
+                    .filter(u -> !u.isDisabled())
+                    .collect(Collectors.toSet());
+            notifyUsers
+                    .forEach(user -> UserNotificationFactory.store(new UserNotification(user, notificationMessageIn)));
 
+            String[] receipients = notifyUsers.stream()
+                    .filter(u -> u.getEmailNotify() == 1)
+                    .map(u -> u.getEmail())
+                    .toArray(size -> new String[size]);
+            if (receipients.length > 0) {
+                String subject = String.format("%s Notification from %s: %s",
+                        MailHelper.PRODUCT_PREFIX,
+                        ConfigDefaults.get().getHostname(),
+                        notificationMessageIn.getTypeAsString());
+                NotificationData data = notificationMessageIn.getNotificationData();
+                String message = data.getSummary();
+                if (!StringUtils.isBlank(data.getDetails())) {
+                    message += "\n\n" + data.getDetails();
+                }
+                MailHelper.withMailer(singleton.mailer)
+                        .sendEmail(receipients, subject, message.replaceAll("\\<.*?\\>", ""));
+            }
+        }
         // Update Notification WebSocket Sessions right now
         Notification.spreadUpdate(Notification.USER_NOTIFICATIONS);
     }
