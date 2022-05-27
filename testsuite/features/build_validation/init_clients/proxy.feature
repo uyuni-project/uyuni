@@ -6,9 +6,9 @@
 
 @proxy
 Feature: Setup SUSE Manager proxy
-  In order to use a proxy and retail branch server with the SUSE manager server
+  In order to use a proxy with the SUSE manager server
   As the system administrator
-  I want to register the proxy to the server and configure it also as branch server
+  I want to register the proxy to the server
 
   Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
     When I perform a full salt minion cleanup on "proxy"
@@ -54,57 +54,3 @@ Feature: Setup SUSE Manager proxy
 
   Scenario: Check events history for failures on the proxy
     When I check for failed events on history event page
-
-@private_net
-  Scenario: Install the Retail pattern on the server
-    When I install pattern "suma_retail" on this "server"
-    And I wait for "patterns-suma_retail" to be installed on "server"
-
-@private_net
-  Scenario: Enable repositories for installing branch services
-    When I install package "expect" on this "proxy"
-
-@private_net
-  Scenario: Configure retail formulas using retail_branch_init command
-    When I set "eth1" as NIC, "id" as prefix, "rbs" as branch server name and "branch.org" as domain
-
-@private_net
-  Scenario: Parametrize empty-zones-enable section in DNS formula
-    # retail_branch_init command is not able to configure this
-    # so we need to do it manually via web UI
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I follow first "Bind" in the content area
-    And I click on "Expand All Sections"
-    And I check include forwarders box
-    And I press "Add Item" in config options section
-    And I enter "empty-zones-enable" in first option field
-    And I enter "no" in first value field
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
-@proxy
-@private_net
-  Scenario: Parametrize the branch network
-    When I follow first "Branch Network" in the content area
-    And I click on "Expand All Sections"
-    And I uncheck enable route box
-    And I uncheck enable NAT box
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
-@private_net
-  Scenario: Let avahi work on the branch server
-    When I open avahi port on the proxy
-
-@private_net
-  Scenario: Apply the branch network formulas via the highstate
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
-    Then service "dhcpd" is enabled on "proxy"
-    And service "dhcpd" is active on "proxy"
-    And service "named" is enabled on "proxy"
-    And service "named" is active on "proxy"
-    And service "firewalld" is enabled on "proxy"
-    And service "firewalld" is active on "proxy"
