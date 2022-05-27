@@ -14,7 +14,7 @@
 #
 
 Name:           susemanager-nodejs-sdk-devel
-Version:        4.1.12
+Version:        4.1.13
 Release:        1%{?dist}
 
 License:        Apache-2.0 and BSD-2-Clause and BSD-3-Clause and MIT and CC-BY-3.0 and ISC and SUSE-Public-Domain and WTFPL
