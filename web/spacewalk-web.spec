@@ -180,6 +180,7 @@ make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 pushd html/src
 mkdir -p %{buildroot}%{nodejs_sitelib}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
+node build/yarn/yarn-1.22.17.js lint:production
 node build/yarn/yarn-1.22.17.js build:novalidate
 popd
 rm -rf %{buildroot}%{nodejs_sitelib}
