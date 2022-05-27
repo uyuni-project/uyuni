@@ -1,9 +1,13 @@
-- mgr-sync: Raise a proper exception when duplicated lines exist in a config file (bsc#1182742)
-- fix SLE15 bootstrap repo definition (bsc#1197438)
-- Add SLES15SP4 and SUMA Proxy 4.3 to bootstrap
-  repo definitions (bsc#1196702)
-- Add missing dependencies for Salt 3004 into bootstrap repository
-  for SLE15 family (bsc#1198221)
+-------------------------------------------------------------------
+Fri May 27 11:56:39 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.34-1
+  * mgr-sync: Raise a proper exception when duplicated lines exist in a config file (bsc#1182742)
+  * fix SLE15 bootstrap repo definition (bsc#1197438)
+  * Add SLES15SP4 and SUMA Proxy 4.3 to bootstrap
+    repo definitions (bsc#1196702)
+  * Add missing dependencies for Salt 3004 into bootstrap repository
+    for SLE15 family (bsc#1198221)
 
 -------------------------------------------------------------------
 Thu Mar 03 17:33:20 CET 2022 - jmassaguerpla@suse.de
