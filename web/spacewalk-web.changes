@@ -1,4 +1,8 @@
-- Added support for end of life notifications
+-------------------------------------------------------------------
+Fri May 27 11:56:36 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.33-1
+  * Added support for end of life notifications
 
 -------------------------------------------------------------------
 Thu Mar 03 17:32:53 CET 2022 - jmassaguerpla@suse.de
