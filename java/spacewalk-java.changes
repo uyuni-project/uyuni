@@ -1,3 +1,5 @@
+- Prefer the Salt Bundle with Cobbler snippets configuration
+  (minion_script and redhat_register_using_salt) (bsc#1198646)
 - During re-activation, recalculate grains if 
   contact method has been changed (bsc#1199677)
 - Hide authentication data in PAYG UI (bsc#1199679)
