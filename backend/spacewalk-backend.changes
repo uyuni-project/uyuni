@@ -1,11 +1,15 @@
-- Fix traceback on calling spacewalk-repo-sync --show-packages
-  (bsc#1193238)
-- Fix virt_notify SQL syntax error (bsc#1199528)
-- Do not raise error on file:// based DEB repo when looking
-  for alternative Release files (bsc#1199142)
-- Improve parsing deb packages dependencies (bsc#1194594)
-- Fix reposync update notice formatting and date parsing (bsc#1194447)
-- implement more decompression algorithms for reposync (bsc#1196704)
+-------------------------------------------------------------------
+Fri May 27 11:56:23 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.31-1
+  * Fix traceback on calling spacewalk-repo-sync --show-packages
+    (bsc#1193238)
+  * Fix virt_notify SQL syntax error (bsc#1199528)
+  * Do not raise error on file:// based DEB repo when looking
+    for alternative Release files (bsc#1199142)
+  * Improve parsing deb packages dependencies (bsc#1194594)
+  * Fix reposync update notice formatting and date parsing (bsc#1194447)
+  * implement more decompression algorithms for reposync (bsc#1196704)
 
 -------------------------------------------------------------------
 Wed Jan 12 16:03:15 CET 2022 - jmassaguerpla@suse.de
