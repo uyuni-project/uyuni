@@ -43,7 +43,7 @@ zypper ref
 zypper -n dup
 ret=$?
 if [[ $ret -ne 0 ]];then
-    echo "Migration went wrong. Please fix the issues and try again. return code is $ret"
+    echo "Migration went wrong. Please fix the issues and try again. return code is ${ret}"
     exit -1
 fi
 
