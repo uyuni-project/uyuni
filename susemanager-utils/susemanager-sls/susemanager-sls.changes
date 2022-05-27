@@ -1,7 +1,11 @@
-- Add support to packages.pkgremove to deal with duplicated pkg names (bsc#1198686)
-- Fix bootstrap repository path resolution for Oracle Linux
-- Fix deprecated warning when getting pillar data (bsc#1192850)
-- fixing how the return code is returned in mgrutil runner (bsc#1194909)
+-------------------------------------------------------------------
+Fri May 27 11:56:49 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.35-1
+  * Add support to packages.pkgremove to deal with duplicated pkg names (bsc#1198686)
+  * Fix bootstrap repository path resolution for Oracle Linux
+  * Fix deprecated warning when getting pillar data (bsc#1192850)
+  * fixing how the return code is returned in mgrutil runner (bsc#1194909)
 
 -------------------------------------------------------------------
 Mon Mar 07 12:30:24 CET 2022 - jmassaguerpla@suse.de
