@@ -1,7 +1,11 @@
-- spacewalk-hostname-rename now correctly replaces the hostname for
-  the mgr-sync configuration file (bsc#1198356)
-- spacewalk-hostname-rename now utilizes the "--apache2-conf-dir"
-  flag for spacewalk-setup-cobbler (bsc#1198356)
+-------------------------------------------------------------------
+Fri May 27 11:56:32 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.20-1
+  * spacewalk-hostname-rename now correctly replaces the hostname for
+    the mgr-sync configuration file (bsc#1198356)
+  * spacewalk-hostname-rename now utilizes the "--apache2-conf-dir"
+    flag for spacewalk-setup-cobbler (bsc#1198356)
 
 -------------------------------------------------------------------
 Wed Jan 12 16:09:31 CET 2022 - jmassaguerpla@suse.de
