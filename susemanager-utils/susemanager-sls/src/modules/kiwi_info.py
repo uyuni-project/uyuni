@@ -146,6 +146,7 @@ _compression_types = [
     { 'suffix': '.xz', 'compression': 'xz' },
     { 'suffix': '.install.iso',    'compression': None },
     { 'suffix': '.iso',            'compression': None },
+    { 'suffix': '.qcow2',          'compression': None },
     { 'suffix': '.raw',            'compression': None },
     { 'suffix': '',    'compression': None }
     ]
@@ -356,16 +357,20 @@ def build_info(dest, build_id, bundle_dest = None):
             image_filepath = filepath
             break
 
+    # Kiwi creates checksum for filesystem image when image type is PXE(or KIS), however if image is compressed, this
+    # checksum is of uncompressed image. That is needed for image inspect, but here we are interested only in file result
+    # Other image types do not have checksum created
+    checksum = __salt__['hashutil.digest_file'](image_filepath, checksum='md5')
+
     res['image'] = {
         'name': name,
         'arch': arch,
         'version': version,
         'filepath': image_filepath,
         'filename': image_filename,
-        'build_id': build_id
+        'build_id': build_id,
+        'hash': checksum
     }
-
-    res['image'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5')))
 
     if image_type == 'pxe':
         r = inspect_boot_image(dest)
