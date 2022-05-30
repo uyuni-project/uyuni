@@ -179,7 +179,7 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       classmate
 %endif
 Requires:       %{ehcache}
-Requires:       cobbler >= 3.0.0
+Requires:       cobbler = 3.1.2
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       (gnu-jaf or jakarta-activation)
