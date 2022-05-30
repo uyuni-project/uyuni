@@ -1,4 +1,8 @@
-- Force a one-off VACUUM ANALYZE (bsc#1199985)
+-------------------------------------------------------------------
+Mon May 30 14:59:28 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * Force a one-off VACUUM ANALYZE (bsc#1199985)
 
 -------------------------------------------------------------------
 Wed May 04 15:25:59 CEST 2022 - jgonzalez@suse.com
