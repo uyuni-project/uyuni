@@ -1,3 +1,5 @@
+- Force a one-off VACUUM ANALYZE (bsc#1199985)
+
 -------------------------------------------------------------------
 Wed May 04 15:25:59 CEST 2022 - jgonzalez@suse.com
 
