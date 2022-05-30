@@ -1,3 +1,5 @@
+- Add specific requirement for Cobbler 3.2.1 to not conflict with Leap 15.4
+
 -------------------------------------------------------------------
 Mon May 23 10:57:23 CEST 2022 - jgonzalez@suse.com
 
