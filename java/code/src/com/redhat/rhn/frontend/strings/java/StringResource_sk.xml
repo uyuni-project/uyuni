@@ -8934,43 +8934,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel" xml:space="preserve">
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
-        <target/>
+        <target>Viacero základných kanálov vybraných na predplatné.  Na predplatné boli vybrané kanály {0} a {1}, ale systém môže byť prihlásený len k jednému základnému kanálu.</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannellist" xml:space="preserve">
         <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
-        <target/>
+        <target>Poskytnutý zoznam kanálov je neplatný.  Musí obsahovať zoznam označení alebo id kanálov, ale nie kombináciu oboch.</target>
       </trans-unit>
       <trans-unit id="channel.invalidchannelarch" xml:space="preserve">
         <source>The channel arch specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaná arch kanála ({0}) je neplatná.</target>
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannellabel" xml:space="preserve">
         <source>The channel label specified ({0}) already exists.</source>
-        <target/>
+        <target>Zadané označenie kanála ({0}) už existuje.</target>
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannelname" xml:space="preserve">
         <source>The channel name specified ({0}) already exists.</source>
-        <target/>
+        <target>Zadaný názov kanála ({0}) už existuje.</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannelaccess" xml:space="preserve">
         <source>The channel access ({0}) is not allowed for this operation.</source>
-        <target/>
+        <target>Prístup ku kanálu ({0}) nie je pre túto operáciu povolený.</target>
       </trans-unit>
       <trans-unit id="Certificate Administrators" xml:space="preserve">
         <source>Certificate Administrators</source>
-        <target/>
+        <target>Administrátori certifikátov</target>
       </trans-unit>
       <trans-unit id="Monitoring Administrators" xml:space="preserve">
         <source>Monitoring Administrators</source>
-        <target/>
+        <target>Administrátori monitorovania</target>
       </trans-unit>
       <trans-unit id="Configuration Administrators" xml:space="preserve">
         <source>Configuration Administrators</source>
-        <target/>
+        <target>Administrátori konfigurácie</target>
       </trans-unit>
       <trans-unit id="user.unspecified.name" xml:space="preserve">
         <source>(unspecified)</source>
-        <target/>
+        <target>(nešpecifikované)</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.tagalreadyinuse" xml:space="preserve">
         <source>Snapshot tag already exists: {0}</source>
