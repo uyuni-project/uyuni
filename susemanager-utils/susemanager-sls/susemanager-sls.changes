@@ -1,4 +1,5 @@
 - Fix missing checksum and add support for qcow2 images (bsc#1199983)
+
 -------------------------------------------------------------------
 Fri May 20 00:14:13 CEST 2022 - jgonzalez@suse.com
 
