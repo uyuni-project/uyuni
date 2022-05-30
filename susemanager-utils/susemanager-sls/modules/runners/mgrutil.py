@@ -83,8 +83,8 @@ def chain_ssh_cmd(hosts=None, clientkey=None, proxykey=None, user="root", option
             out.write(ret["stdout"])
     return ret
 
-def remove_ssh_known_host(user, hostname):
-    return __salt__['salt.cmd']('ssh.rm_known_host', user, hostname)
+def remove_ssh_known_host(user, hostname, port):
+    return __salt__['salt.cmd']('ssh.rm_known_host', user, hostname, None, port)
 
 
 def _cmd(cmd):
