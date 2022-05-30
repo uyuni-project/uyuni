@@ -78,6 +78,7 @@ import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -1999,6 +2000,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         String proxyName = "pxy.mgr.lab";
         createTestProxy(proxyName);
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).removeSaltSSHKnownHost(with(proxyName), with(8022));
+            will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
+        }});
         testCreateProxyContainerConfig();
     }
 
@@ -2007,9 +2012,13 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 user, true, ServerFactoryTest.TYPE_SERVER_PROXY, new Date());
         proxy.setName(fqdn);
         proxy.setHostname(fqdn);
+        proxy.getFqdns().add(new ServerFQDN(proxy, fqdn));
         proxy.getProxyInfo().setVersion(null);
+        proxy.getProxyInfo().setSshPort(8022);
 
         systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
+        ServerFactory.save(proxy);
+        TestUtils.saveAndFlush(proxy);
     }
 
     private Map<String, String> readTarData(byte[] data) throws IOException {

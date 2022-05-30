@@ -778,13 +778,15 @@ public class SystemManager extends BaseManager {
     }
 
     private void removeSaltSSHKnownHosts(Server server) {
+        Integer sshPort = server.getProxyInfo() != null ? server.getProxyInfo().getSshPort() : null;
+        int port = sshPort != null ? sshPort : SaltSSHService.SSH_DEFAULT_PORT;
         Optional.ofNullable(server.getHostname()).ifPresent(hostname -> {
             Optional<MgrUtilRunner.RemoveKnowHostResult> result =
-                    saltApi.removeSaltSSHKnownHost(hostname);
+                    saltApi.removeSaltSSHKnownHost(hostname, port);
             boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
             if (!removed) {
-                log.warn("Hostname " + hostname + " could not be removed from " +
-                        "/var/lib/salt/.ssh/known_hosts: " + result.map(r -> r.getComment()).orElse(""));
+                log.warn("Hostname {}:{} could not be removed from /var/lib/salt/.ssh/known_hosts: {}", hostname, port,
+                        result.map(r -> r.getComment()).orElse(""));
             }
         });
     }
@@ -2166,6 +2168,8 @@ public class SystemManager extends BaseManager {
         if (existing.isPresent()) {
             Server server = existing.get();
             if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
+                // The SSH key is going to change remove it from the known hosts
+                removeSaltSSHKnownHosts(server);
                 return server;
             }
             throw new SystemsExistException(List.of(server.getId()));
