@@ -1,4 +1,8 @@
-- Fix loading filebased pillars for minions (bsc#1199979)
+-------------------------------------------------------------------
+Mon May 30 14:58:51 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.30-1
+  * Fix loading filebased pillars for minions (bsc#1199979)
 
 -------------------------------------------------------------------
 Thu May 26 12:30:12 CEST 2022 - jgonzalez@suse.com
