@@ -405,6 +405,20 @@ public class FormulaFactory {
                 .filter(pillar -> pillar.getCategory().startsWith(PREFIX))
                 .map(pillar -> pillar.getCategory().substring(PREFIX.length()))
                 .collect(Collectors.toList()));
+
+        // Still try the legacy way since the formula data may not be converted yet
+        File serverDataFile = new File(getServerDataFile());
+        if (formulas.isEmpty() && serverDataFile.exists()) {
+            try {
+                Map<String, List<String>> serverFormulas =
+                        GSON.fromJson(new BufferedReader(new FileReader(serverDataFile)),
+                                Map.class);
+                return orderFormulas(serverFormulas.getOrDefault(minion.getMinionId(),
+                        Collections.emptyList()));
+            }
+            catch (FileNotFoundException e) {
+            }
+        }
         return orderFormulas(formulas);
     }
 
