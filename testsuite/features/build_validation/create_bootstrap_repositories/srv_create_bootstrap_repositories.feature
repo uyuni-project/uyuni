@@ -4,7 +4,7 @@
 Feature: Create bootstrap repositories
   In order to be able to enroll clients with MU repositories
   As the system administrator
-  I create all bootstrap repos with --custom-repos option
+  I create all bootstrap repos with --with-custom-channels option
 
 @proxy
   Scenario: Create the bootstrap repository for the SUSE Manager proxy
