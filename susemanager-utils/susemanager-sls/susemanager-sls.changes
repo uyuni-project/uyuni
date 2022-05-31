@@ -1,4 +1,8 @@
-- Image checksum was missing type prefix (bsc#1199983)
+-------------------------------------------------------------------
+Tue May 31 16:59:26 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.20-1
+  * Image checksum was missing type prefix (bsc#1199983)
 
 -------------------------------------------------------------------
 Mon May 30 14:59:57 CEST 2022 - jgonzalez@suse.com
