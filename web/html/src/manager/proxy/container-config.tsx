@@ -43,7 +43,7 @@ const initialModel = {
 };
 
 export function ProxyConfig() {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<React.ReactNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<boolean | undefined>();
   const [model, setModel] = useState(initialModel);
@@ -126,7 +126,15 @@ export function ProxyConfig() {
         (xhr) => {
           try {
             setSuccess(false);
-            setMessages([JSON.parse(xhr.responseText)]);
+            setMessages([
+              <>
+                {JSON.parse(xhr.responseText)
+                  .split("\n")
+                  .map((line: string) => (
+                    <p>{line}</p>
+                  ))}
+              </>,
+            ]);
             setLoading(false);
           } catch (err) {
             const errMessages =
