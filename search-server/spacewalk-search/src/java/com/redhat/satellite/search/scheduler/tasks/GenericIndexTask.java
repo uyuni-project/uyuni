@@ -23,7 +23,8 @@ import com.redhat.satellite.search.index.IndexingException;
 import com.redhat.satellite.search.index.builder.BuilderFactory;
 import com.redhat.satellite.search.index.builder.DocumentBuilder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -46,7 +47,7 @@ import java.util.Map;
  */
 public abstract class GenericIndexTask implements StatefulJob {
 
-    private static Logger log = Logger.getLogger(GenericIndexTask.class);
+    private static Logger log = LogManager.getLogger(GenericIndexTask.class);
     private String lang = "en";
     /**
      * {@inheritDoc}

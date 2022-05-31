@@ -1,8 +1,8 @@
 <project name="build-props">
 
-  <available file="/usr/share/java/log4j-1.jar" type="file" property="log4j-jars" value="log4j-1" />
-  <available file="/usr/share/java/log4j12/log4j-12.jar" type="file" property="log4j-jars" value="log4j12/log4j-12" />
-  <available file="/usr/share/java/log4j.jar" type="file" property="log4j-jars" value="log4j" />
+  <available file="${java.lib.dir}/log4j/log4j-core.jar" type="file" property="log4j-core" value="log4j/log4j-core" />
+  <available file="${java.lib.dir}/log4j/log4j-api.jar" type="file" property="log4j-api" value="log4j/log4j-api" />
+  <property name="log4j-jars" value="${log4j-core} ${log4j-api}"/>
 
   <property name="ivy.settings.file" value="buildconf/ivyconf.xml" />
 

@@ -21,7 +21,8 @@ import com.redhat.satellite.search.index.ngram.NGramAnalyzer;
 import com.redhat.satellite.search.index.ngram.NGramQueryParser;
 import com.redhat.satellite.search.rpc.handlers.IndexHandler;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -58,7 +59,7 @@ import java.util.TreeMap;
  */
 public class IndexManager {
 
-    private static Logger log = Logger.getLogger(IndexManager.class);
+    private static Logger log = LogManager.getLogger(IndexManager.class);
     private String indexWorkDir;
     private int maxHits;
     private double score_threshold;

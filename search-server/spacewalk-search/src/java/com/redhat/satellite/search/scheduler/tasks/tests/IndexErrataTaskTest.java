@@ -27,7 +27,8 @@ import com.redhat.satellite.search.scheduler.tasks.IndexErrataTask;
 import com.redhat.satellite.search.tests.BaseTestCase;
 import com.redhat.satellite.search.tests.TestUtil;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
@@ -52,7 +53,7 @@ import java.util.Map;
  * @version $Rev$
  */
 public class IndexErrataTaskTest extends BaseTestCase {
-    private static Logger log = Logger.getLogger(IndexErrataTaskTest.class);
+    private static Logger log = LogManager.getLogger(IndexErrataTaskTest.class);
     private Scheduler scheduler;
 
     @Override
