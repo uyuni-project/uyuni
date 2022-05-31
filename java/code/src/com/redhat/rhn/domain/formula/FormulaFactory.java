@@ -312,11 +312,27 @@ public class FormulaFactory {
         if (!legacyFormulas.isEmpty()) {
             legacyFormulas.forEach(formula -> {
                 Optional<Map<String, Object>> data = getFormulaValuesByNameAndMinion(formula, server);
-                data.ifPresent(formData -> server.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
-                    Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), server);
-                    server.getPillars().add(pillar);
-                    return pillar;
-                }).setPillar(formData));
+                // If data are empty -> load from files. If anything is already in database, ignore files
+                if (data.isEmpty()) {
+                    File dataFile = new File(getPillarDir() + server.getMinionId() + "_" + formula + "." +
+                            PILLAR_FILE_EXTENSION);
+                    if (dataFile.exists()) {
+                        try {
+                            data = Optional.ofNullable((Map<String, Object>) GSON.fromJson(
+                                    new BufferedReader(new FileReader(dataFile)), Map.class));
+                            data.ifPresent(d -> {
+                                Pillar pillar = new Pillar(PREFIX + formula, d, server);
+                                server.getPillars().add(pillar);
+                            });
+                        }
+                        catch (FileNotFoundException e) {
+                        }
+                    }
+                }
+                else {
+                    LOG.warn("Minion \"" + server.getMinionId() + "\" pillar \"" + formula +
+                            "\" already in database, not migrating pillar file");
+                }
                 FileUtils.deleteFile(new File(getPillarDir() +
                         server.getMinionId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
             });
