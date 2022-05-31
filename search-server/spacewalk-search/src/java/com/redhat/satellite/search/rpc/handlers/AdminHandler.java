@@ -19,7 +19,8 @@ import com.redhat.satellite.search.db.DatabaseManager;
 import com.redhat.satellite.search.index.IndexManager;
 import com.redhat.satellite.search.scheduler.ScheduleManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * XML-RPC handler which handles calls for administration
@@ -29,7 +30,7 @@ import org.apache.log4j.Logger;
  */
 public class AdminHandler {
 
-    private static Logger log = Logger.getLogger(AdminHandler.class);
+    private static Logger log = LogManager.getLogger(AdminHandler.class);
     private ScheduleManager scheduleManager;
 
     /**

@@ -17,7 +17,8 @@ package com.redhat.satellite.search.index.ngram.tests;
 import com.redhat.satellite.search.index.ngram.NGramAnalyzer;
 import com.redhat.satellite.search.index.ngram.NGramQueryParser;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
@@ -28,7 +29,7 @@ import org.apache.lucene.store.Directory;
 
 public class NGramQueryParserTest extends NGramTestSetup {
 
-        private static Logger log = Logger.getLogger(NGramQueryParserTest.class);
+        private static Logger log = LogManager.getLogger(NGramQueryParserTest.class);
 
     public NGramQueryParserTest() {
         super();
