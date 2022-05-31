@@ -56,7 +56,7 @@ if [[ "${CURRENT_VERSION_ID}" != "\"${NEW_VERSION_ID}\"" ]]; then
 fi
 
 echo "==================================================================="
-echo "If you did not yet migrate the database to the new postgres version, do so now"
+echo "OS migrated successfully, now please migrate to the new postgres version "
 echo "by running /usr/lib/susemanager/bin/pg-migrate-x-to-y.sh"
 echo
 echo "Reboot system afterwards."
