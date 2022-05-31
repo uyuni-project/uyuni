@@ -360,7 +360,7 @@ def build_info(dest, build_id, bundle_dest = None):
     # Kiwi creates checksum for filesystem image when image type is PXE(or KIS), however if image is compressed, this
     # checksum is of uncompressed image. That is needed for image inspect, but here we are interested only in file result
     # Other image types do not have checksum created
-    checksum = __salt__['hashutil.digest_file'](image_filepath, checksum='md5')
+    checksum = "md5:" + __salt__['hashutil.digest_file'](image_filepath, checksum='md5')
 
     res['image'] = {
         'name': name,
