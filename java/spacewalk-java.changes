@@ -1,4 +1,8 @@
-- Migration of server pillars was not loading file pillars (bsc#1199979)
+-------------------------------------------------------------------
+Tue May 31 16:58:37 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.31-1
+  * Migration of server pillars was not loading file pillars (bsc#1199979)
 
 -------------------------------------------------------------------
 Mon May 30 14:58:51 CEST 2022 - jgonzalez@suse.com
