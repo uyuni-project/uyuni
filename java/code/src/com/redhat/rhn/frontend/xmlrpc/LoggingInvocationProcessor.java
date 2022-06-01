@@ -68,6 +68,9 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
                 if (potentialSessionKey(arg)) {
                     setCaller(getLoggedInUser(arg));
                 }
+                else {
+                    caller.remove();
+                }
             }
         }
 

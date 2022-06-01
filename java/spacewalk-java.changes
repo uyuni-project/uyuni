@@ -1,3 +1,4 @@
+- fix api log message references the wrong user (bsc#1179962)
 - Show patch as installed in CVE Audit even if successor patch affects
   additional packages (bsc#1199646)
 - fix download of packages with caret sign in the version due
