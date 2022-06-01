@@ -491,7 +491,7 @@ if [ "$INSTALLER" == yum ]; then
     CLIENT_REPO_NAME="susemanager:bootstrap"
     CLIENT_REPO_FILE="/etc/yum.repos.d/$CLIENT_REPO_NAME.repo"
 
-    # In case of Red Hat derivates, check is bootstrap repository is available, if not, fallback to res.
+    # In case of Red Hat derivates, check if bootstrap repository is available, if not, fallback to RES.
     if [ "$Y_CLIENT_CODE_BASE" == almalinux ] || \
       [ "$Y_CLIENT_CODE_BASE" == rockylinux ] || \
       [ "$Y_CLIENT_CODE_BASE" == oracle ] || \
