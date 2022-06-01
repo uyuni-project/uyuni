@@ -45,6 +45,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.UserPreferenceUtils;
 import com.suse.manager.webui.utils.ViewHelper;
+import com.suse.manager.webui.websocket.WebsocketHeartbeatService;
 
 /**
  * This class only exists to have a single place for initializing objects
@@ -89,6 +90,7 @@ public class GlobalInstanceHolder {
     public static final SystemManager SYSTEM_MANAGER = new SystemManager(ServerFactory.SINGLETON,
             ServerGroupFactory.SINGLETON, SALT_API);
     public static final MigrationManager MIGRATION_MANAGER = new MigrationManager(SERVER_GROUP_MANAGER);
+    public static final WebsocketHeartbeatService WEBSOCKET_SESSION_MANAGER = new WebsocketHeartbeatService();
 
     public static final ViewHelper VIEW_HELPER = ViewHelper.getInstance();
     public static final ThrottlingService THROTTLING_SERVICE = new ThrottlingService();

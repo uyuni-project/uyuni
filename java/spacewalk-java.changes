@@ -1,3 +1,5 @@
+- Keep the websocket connections alive with ping/pong frames (bsc#1199874)
+
 -------------------------------------------------------------------
 Tue Jun 21 18:31:05 CEST 2022 - jgonzalez@suse.com
 
