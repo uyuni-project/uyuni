@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.websocket;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -75,6 +76,7 @@ public class VirtNotifications {
     private static final Object LOCK = new Object();
     private static Map<Session, Set<VirtNotificationMessage>> wsSessions = new HashMap<>();
     private static Set<Session> brokenSessions = new HashSet<>();
+    private static final WebsocketHeartbeatService HEARTBEAT_SERVICE = GlobalInstanceHolder.WEBSOCKET_SESSION_MANAGER;
 
     /**
      * Callback executed when the websocket is opened.
@@ -328,6 +330,7 @@ public class VirtNotifications {
      * @param session the session to add
      */
     private static void handshakeSession(Session session) {
+        HEARTBEAT_SERVICE.register(session);
         synchronized (LOCK) {
             wsSessions.put(session, new HashSet<>());
         }
@@ -338,6 +341,7 @@ public class VirtNotifications {
      * @param session the session to remove
      */
     private static void handbreakSession(Session session) {
+        HEARTBEAT_SERVICE.unregister(session);
         synchronized (LOCK) {
             brokenSessions.add(session);
         }

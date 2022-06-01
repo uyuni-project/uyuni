@@ -49,7 +49,6 @@ import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnError;
 import javax.websocket.Session;
-import javax.websocket.EndpointConfig;
 import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
@@ -83,14 +82,14 @@ public class RemoteMinionCommands {
     private List<String> previewedMinions;
     private static ExecutorService eventHistoryExecutor = Executors.newCachedThreadPool();
     private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+    private static final WebsocketHeartbeatService HEARTBEAT_SERVICE = GlobalInstanceHolder.WEBSOCKET_SESSION_MANAGER;
 
     /**
      * Callback executed when the websocket is opened.
      * @param session the websocket session
-     * @param config the endpoint config
      */
     @OnOpen
-    public void onOpen(Session session, EndpointConfig config) {
+    public void onOpen(Session session) {
         this.sessionId = LocalizedEnvironmentFilter.getCurrentSessionId();
         if (this.sessionId == null) {
             try {
@@ -101,19 +100,23 @@ public class RemoteMinionCommands {
                 LOG.debug("Error closing web socket session", e);
             }
         }
+        else {
+            HEARTBEAT_SERVICE.register(session);
+        }
     }
 
     /**
      * Callback executed when the websocket is closed.
+     * @param session the websocket session
      */
     @OnClose
-    public void onClose() {
+    public void onClose(Session session) {
         LOG.debug("Closing web socket session");
+        HEARTBEAT_SERVICE.unregister(session);
         if (this.failAfter != null) {
             this.failAfter.completeExceptionally(
                     new TimeoutException("Canceled waiting because of websocket close"));
         }
-
     }
 
     /**
@@ -429,7 +432,7 @@ public class RemoteMinionCommands {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        Boolean didClientAbortedConnection = err instanceof EOFException ||
+        boolean didClientAbortedConnection = err instanceof EOFException ||
                 !session.isOpen() ||
                 err.getMessage().startsWith("Unexpected error [32]");
 

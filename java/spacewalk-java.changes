@@ -1,3 +1,4 @@
+- Keep the websocket connections alive with ping/pong frames (bsc#1199874)
 - Fix missing remote command history events for big output (bsc#1199656)
 - Improve CLM channel cloning performance (bsc#1199523)
 - fix api log message references the wrong user (bsc#1179962)

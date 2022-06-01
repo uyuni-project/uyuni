@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.websocket;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 
@@ -51,6 +52,7 @@ public class Notification {
     private static final Object LOCK = new Object();
     private static Map<Session, Long> wsSessions = new HashMap<>();
     private static Set<Session> brokenSessions = new HashSet<>();
+    private static final WebsocketHeartbeatService HEARTBEAT_SERVICE = GlobalInstanceHolder.WEBSOCKET_SESSION_MANAGER;
 
     /**
      * Callback executed when the WebSocket is opened.
@@ -198,6 +200,7 @@ public class Notification {
      * @param session the session to add
      */
     private static void handshakeSession(long userId, Session session) {
+        HEARTBEAT_SERVICE.register(session);
         synchronized (LOCK) {
             wsSessions.put(session, userId);
         }
@@ -208,6 +211,7 @@ public class Notification {
      * @param session the session to remove
      */
     private static void handbreakSession(Session session) {
+        HEARTBEAT_SERVICE.unregister(session);
         synchronized (LOCK) {
             brokenSessions.add(session);
         }
