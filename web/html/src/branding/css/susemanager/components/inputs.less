@@ -2,7 +2,7 @@
 
 .form-control {
   color: @eos-bc-gray-1000;
-  height: @input-height !important;
+  height: @input-height;
   max-width: 100%;
   padding: 8px !important;
   border-radius: @border-radius-base !important;
@@ -41,13 +41,10 @@
   }
 }
 
-textarea.form-control {
-  height: auto !important;
-}
-
+textarea.form-control,
 select[multiple],
 select[size] {
-  height: auto !important;
+  height: auto;
 }
 
 .input-group-addon {
