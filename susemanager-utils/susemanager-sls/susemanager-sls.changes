@@ -1,4 +1,8 @@
-- Use checksum function with reasonable RAM requirements (bsc#1200101)
+-------------------------------------------------------------------
+Wed Jun 01 11:48:26 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.22-1
+  * Use checksum function with reasonable RAM requirements (bsc#1200101)
 
 -------------------------------------------------------------------
 Wed Jun 01 10:03:00 CEST 2022 - jgonzalez@suse.com
