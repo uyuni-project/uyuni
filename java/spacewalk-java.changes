@@ -1,4 +1,8 @@
-- Do not generate pillars for non-PXE images (bsc#1200101)
+-------------------------------------------------------------------
+Wed Jun 01 13:23:36 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.32-1
+  * Do not generate pillars for non-PXE images (bsc#1200101)
 
 -------------------------------------------------------------------
 Tue May 31 16:58:37 CEST 2022 - jgonzalez@suse.com
