@@ -3,6 +3,10 @@
 
 set -xe
 
+mkdir -p /target/etc/
+mv /etc/passwd /target/etc
+mv /etc/group /target/etc
+
 mkdir -p /target/etc/squid
 mv /etc/squid /target/etc
 
