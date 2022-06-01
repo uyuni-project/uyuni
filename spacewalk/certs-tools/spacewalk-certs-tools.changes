@@ -1,4 +1,9 @@
-- use RES bootstrap repo as a fallback for Red Hat downstream OS (bsc#1200087)
+-------------------------------------------------------------------
+Wed Jun 01 10:01:23 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * use RES bootstrap repo as a fallback for Red Hat
+    downstream OS (bsc#1200087)
 
 -------------------------------------------------------------------
 Tue Apr 19 11:59:08 CEST 2022 - jgonzalez@suse.com
