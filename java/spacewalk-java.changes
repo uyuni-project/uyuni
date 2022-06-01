@@ -1,3 +1,4 @@
+- fix api log message references the wrong user (bsc#1179962)
 - Consistently use conf value for SPA engine timeout
 - fix download of packages with caret sign in the version due
   to missing url decode
