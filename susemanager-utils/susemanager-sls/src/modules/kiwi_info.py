@@ -357,11 +357,6 @@ def build_info(dest, build_id, bundle_dest = None):
             image_filepath = filepath
             break
 
-    # Kiwi creates checksum for filesystem image when image type is PXE(or KIS), however if image is compressed, this
-    # checksum is of uncompressed image. That is needed for image inspect, but here we are interested only in file result
-    # Other image types do not have checksum created
-    checksum = "md5:" + __salt__['hashutil.digest_file'](image_filepath, checksum='md5')
-
     res['image'] = {
         'name': name,
         'arch': arch,
@@ -369,8 +364,11 @@ def build_info(dest, build_id, bundle_dest = None):
         'filepath': image_filepath,
         'filename': image_filename,
         'build_id': build_id,
-        'hash': checksum
     }
+
+    # Kiwi creates checksum for filesystem image when image type is PXE(or KIS), however if image is compressed, this
+    # checksum is of uncompressed image. Other image types do not have checksum created at all.
+    res['image'].update(get_md5(image_filepath))
 
     if image_type == 'pxe':
         r = inspect_boot_image(dest)
