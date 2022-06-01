@@ -169,7 +169,7 @@ function getA_CLIENT_CODE_BASE() {
 if [ "${INSTALLER}" = "yum" ]; then
     getY_CLIENT_CODE_BASE
     CLIENT_REPO_URL="${CLIENT_REPOS_ROOT}/${Y_CLIENT_CODE_BASE}/${Y_CLIENT_CODE_VERSION}/bootstrap"
-    # In case of Red Hat derivates, check is bootstrap repository is available, if not, fallback to res.
+    # In case of Red Hat derivatives, check if bootstrap repository is available, if not, fallback to RES.
     if [ "$Y_CLIENT_CODE_BASE" == almalinux ] || \
       [ "$Y_CLIENT_CODE_BASE" == rockylinux ] || \
       [ "$Y_CLIENT_CODE_BASE" == oracle ] || \
