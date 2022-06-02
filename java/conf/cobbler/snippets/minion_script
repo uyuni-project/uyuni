@@ -77,6 +77,10 @@ zypper mr -d --all
 zypper mr -e --medium-type plugin
 #end if
 
+# Clean up the reinstallation boot entry
+rm -rf /etc/grub.d/42_uyuni_reinstall
+rm -rf /boot/uyuni-reinstall-kernel /boot/uyuni-reinstall-initrd
+/usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
         ]]>
     </source>
 </script>
