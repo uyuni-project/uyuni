@@ -1,4 +1,8 @@
-- Fix autoinstallation profiles editor area and hints (bsc#1199887)
+-------------------------------------------------------------------
+Thu Jun 02 11:41:36 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.33-1
+  * Fix autoinstallation profiles editor area and hints (bsc#1199887)
 
 -------------------------------------------------------------------
 Wed Jun 01 13:23:36 CEST 2022 - jgonzalez@suse.com
