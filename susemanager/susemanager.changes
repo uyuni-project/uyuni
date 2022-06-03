@@ -1,3 +1,5 @@
+- Add python3-gnupg to bootstrap repo definition for Ubuntu 20.04 (bsc#1200212)
+
 -------------------------------------------------------------------
 Fri May 27 11:56:39 CEST 2022 - jmassaguerpla@suse.de
 
