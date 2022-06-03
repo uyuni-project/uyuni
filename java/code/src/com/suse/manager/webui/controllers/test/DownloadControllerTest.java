@@ -65,8 +65,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,11 +129,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         this.uriFile = String.format("%s.rpm", nvra);
 
         this.pkg2 = ErrataTestUtils.createLaterTestPackage(user, null, channel, pkg,
-                null, "1000^20220524", pkg.getPackageEvr().getRelease());
+                null, "1000+git001^20220524", pkg.getPackageEvr().getRelease());
         final String nvra2 = String.format("%s-%s-%s.%s",
                 pkg2.getPackageName().getName(), pkg2.getPackageEvr().getVersion(),
                 pkg2.getPackageEvr().getRelease(), pkg2.getPackageArch().getLabel());
-        this.uriFile2 = URLEncoder.encode(String.format("%s.rpm", nvra2), StandardCharsets.UTF_8);
+        this.uriFile2 = new URI(String.format("%s.rpm", nvra2.replace("^", "%5e"))).toString();
 
         Tuple3<Package, File, String> dpkg = createDebPkg(channel, "1", "1", "0", "all-deb");
         this.debPkg = dpkg.getA();
