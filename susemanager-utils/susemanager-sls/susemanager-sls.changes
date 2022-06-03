@@ -1,5 +1,9 @@
-- Prevent possible tracebacks on calling module.run from mgrcompat
-  by setting proper globals with using LazyLoader
+-------------------------------------------------------------------
+Fri Jun 03 10:35:14 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.36-1
+  * Prevent possible tracebacks on calling module.run from mgrcompat
+    by setting proper globals with using LazyLoader
 
 -------------------------------------------------------------------
 Fri May 27 11:56:49 CEST 2022 - jmassaguerpla@suse.de
