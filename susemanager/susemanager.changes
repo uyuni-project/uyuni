@@ -1,3 +1,4 @@
+- Add python3-gnupg to bootstrap repo definition for Ubuntu 20.04 (bsc#1200212)
 - Update server-migrator to dist-upgrade to openSUSE 15.4
 
 -------------------------------------------------------------------
