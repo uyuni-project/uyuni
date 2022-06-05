@@ -66,6 +66,8 @@ if $build_validation
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
   $ubuntu2004_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2004_SSHMINION']}") if ENV['UBUNTU2004_SSHMINION']
+  $ubuntu2204_minion = twopence_init("ssh:#{ENV['UBUNTU2204_MINION']}") if ENV['UBUNTU2204_MINION']
+  $ubuntu2204_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2204_SSHMINION']}") if ENV['UBUNTU2204_SSHMINION']
   $debian9_minion = twopence_init("ssh:#{ENV['DEBIAN9_MINION']}") if ENV['DEBIAN9_MINION']
   $debian9_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN9_SSHMINION']}") if ENV['DEBIAN9_SSHMINION']
   $debian10_minion = twopence_init("ssh:#{ENV['DEBIAN10_MINION']}") if ENV['DEBIAN10_MINION']
@@ -86,6 +88,7 @@ if $build_validation
              $ceos8_minion, $ceos8_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
+             $ubuntu2204_minion, $ubuntu2204_ssh_minion,
              $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
@@ -290,6 +293,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,
                   'ubuntu2004_ssh_minion'     => $ubuntu2004_ssh_minion,
+                  'ubuntu2204_minion'         => $ubuntu2204_minion,
+                  'ubuntu2204_ssh_minion'     => $ubuntu2204_ssh_minion,
                   'debian9_minion'            => $debian9_minion,
                   'debian9_ssh_minion'        => $debian9_ssh_minion,
                   'debian10_minion'           => $debian10_minion,

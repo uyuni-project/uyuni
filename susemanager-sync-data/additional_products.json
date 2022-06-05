@@ -1,5 +1,192 @@
 [
     {
+        "id" : -33,
+        "name" : "Ubuntu 22.04",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "22.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu 22.04",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -400,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy/main/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-main",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Main",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -401,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy/multiverse/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-multiverse",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Multiverse",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -402,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy/restricted/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-restricted",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Restricted",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -403,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy/universe/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-universe",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Universe",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -404,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-backports/main/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-main-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Main Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -405,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-backports/multiverse/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-multiverse-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Multiverse Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -406,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-backports/restricted/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-restricted-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Restricted Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -407,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-backports/universe/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-universe-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Universe Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -408,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/jammy-security/main/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-main-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Main Security",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -409,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/jammy-security/multiverse/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-multiverse-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Multiverse Security",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -410,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/jammy-security/restricted/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-restricted-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Restricted Security",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -411,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/jammy-security/universe/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-universe-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Universe Security",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -412,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-updates/main/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -413,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-updates/multiverse/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-multiverse-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Multiverse Updates",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -414,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-updates/restricted/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-restricted-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Restricted Updates",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -415,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/jammy-updates/universe/binary-amd64/",
+                "name" : "ubuntu-2204-amd64-universe-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 22.04 LTS AMD64 Universe Updates",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -32,
         "name" : "Debian 11",
         "identifier" : "Debian-Client",
