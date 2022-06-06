@@ -382,7 +382,7 @@ public class DownloadController {
 
         }
         catch (URISyntaxException e) {
-            log.error(String.format("Unable to parse: %s", request.url()));
+            log.error("Unable to parse: {}", request.url());
             halt(HttpStatus.SC_INTERNAL_SERVER_ERROR,
                     String.format("url '%s' is malformed", request.url()));
         }
