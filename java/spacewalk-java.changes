@@ -1,3 +1,4 @@
+- Force package list refresh after patch installation (bsc#1198126)
 - fix download of packages with caret sign in the version due
   to missing url decode
 - Add specific requirement for Cobbler 3.2.1 to not conflict with Leap 15.4
