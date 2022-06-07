@@ -8974,43 +8974,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.tagalreadyinuse" xml:space="preserve">
         <source>Snapshot tag already exists: {0}</source>
-        <target/>
+        <target>Značka snímky už existuje: {0}</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.nosuchtag" xml:space="preserve">
         <source>No such server snapshot tag: {0}</source>
-        <target/>
+        <target>Žiadna takáto značka snímky servera: {0}</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.nosuchsnapshot" xml:space="preserve">
         <source>No such server snapshot: {0}</source>
-        <target/>
+        <target>Žiadna takáto snímka servera: {0}</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidKeyType" xml:space="preserve">
         <source>The package key type specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaný typ kľúča balíka ({0}) je neplatný.</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidKey" xml:space="preserve">
         <source>The package key specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaný kľúč balíka ({0}) je neplatný.</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidProvider" xml:space="preserve">
         <source>The package provider specified ({0}) is  invalid.</source>
-        <target/>
+        <target>Zadaný poskytovateľ balíka ({0}) je neplatný.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidvirttype" xml:space="preserve">
         <source>Invalid virtualization type: {0}</source>
-        <target/>
+        <target>Neplatný typ virtualizácie: {0}</target>
       </trans-unit>
       <trans-unit id="org.create.success" xml:space="preserve">
         <source>Organization {0} created successfully</source>
-        <target/>
+        <target>Organizácia {0} úspešne vytvorená</target>
       </trans-unit>
       <trans-unit id="orgName" xml:space="preserve">
         <source>Organization Name</source>
-        <target/>
+        <target>Názov organizácie</target>
       </trans-unit>
       <trans-unit id="api.kickstart.nosuchkickstarttreelabel" xml:space="preserve">
         <source>Unable to locate autoinstallable tree for your organization: {0}</source>
-        <target/>
+        <target>Nie je možné nájsť automaticky inštalovateľný strom pre vašu organizáciu: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartlabel" xml:space="preserve">
         <source>Invalid autoinstallation label: {0}</source>
