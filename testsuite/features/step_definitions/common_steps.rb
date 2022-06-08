@@ -1447,7 +1447,7 @@ end
 Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
   result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}")
   puts("cobbler #{item} edit --name #{name} #{param}=#{value}")
-  raise "error in adding parameter and value to Cobbler distro/profile/system.\nLogs:\n#{result}" if code.nonzero?
+  raise "error in adding parameter and value to Cobbler #{item}.\nLogs:\n#{result}" if code.nonzero?
 end
 
 And(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
