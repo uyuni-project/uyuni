@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-19 14:13+0000\n"
+"POT-Creation-Date: 2022-06-08 14:50+0000\n"
 "PO-Revision-Date: 2022-05-18 03:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -4309,7 +4309,7 @@ msgid "City"
 msgstr "市区町村"
 
 #: ../html/src/manager/proxy/container-config.tsx:312
-#: ../html/src/manager/state/highstate-summary.tsx:170
+#: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4477,6 +4477,11 @@ msgstr "拒否済み"
 msgid "Keys"
 msgstr "キー"
 
+#: ../html/src/manager/salt/keys/key-management.tsx:154
+#, fuzzy
+msgid "Search by name or fingerprint"
+msgstr "名前またはプロジェクトでフィルタ"
+
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
 msgstr "フィンガープリント"
@@ -4551,7 +4556,7 @@ msgstr "派生元"
 msgid "Show full highstate output"
 msgstr "完全な highstate 出力の表示"
 
-#: ../html/src/manager/state/highstate-summary.tsx:163
+#: ../html/src/manager/state/highstate-summary.tsx:162
 msgid "System Group"
 msgstr "システムグループ"
 

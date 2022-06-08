@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-19 14:13+0000\n"
+"POT-Creation-Date: 2022-06-08 14:50+0000\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -4174,7 +4174,7 @@ msgid "City"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:312
-#: ../html/src/manager/state/highstate-summary.tsx:170
+#: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4343,6 +4343,10 @@ msgstr ""
 msgid "Keys"
 msgstr ""
 
+#: ../html/src/manager/salt/keys/key-management.tsx:154
+msgid "Search by name or fingerprint"
+msgstr ""
+
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
 msgstr ""
@@ -4417,7 +4421,7 @@ msgstr ""
 msgid "Show full highstate output"
 msgstr ""
 
-#: ../html/src/manager/state/highstate-summary.tsx:163
+#: ../html/src/manager/state/highstate-summary.tsx:162
 #, fuzzy
 msgid "System Group"
 msgstr "Sistema"
