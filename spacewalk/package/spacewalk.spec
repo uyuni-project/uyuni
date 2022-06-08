@@ -104,7 +104,8 @@ Provides:       spacewalk-db-virtual = %{version}-%{release}
 Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
-%if 0%{?sle_version} >= 150400 || 0%{?rhel}
+%if 0%{?sle_version}
+%if 0%{?sle_version} >= 150400
 Requires:       postgresql14
 Requires:       postgresql14-contrib
 # we do not support postgresql versions > 14.x yet
@@ -117,6 +118,14 @@ Requires:       postgresql13-contrib
 Conflicts:      postgresql-implementation >= 14
 Conflicts:      postgresql-contrib-implementation >= 14
 %endif # if sle_version >= 150400
+%else # not a supported SUSE version or alternative OS.
+Requires:       postgresql14
+Requires:       postgresql14-contrib
+# we do not support postgresql versions > 14.x yet
+# Hardcoded v15 conflict due to PostgreSQL bug 17507 (instead of >= 15)
+Conflicts:      postgresql15
+Conflicts:      postgresql15-contrib
+%endif # if sle_Version
 
 %description postgresql
 Spacewalk is a systems management application that will 
