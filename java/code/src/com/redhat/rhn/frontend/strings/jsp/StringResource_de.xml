@@ -2883,7 +2883,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
         </context-group>
-        <target> Die folgenden Aktionen konnten nicht ordnungsgemäß auf einem oder auf mehreren Systemen ausgeführt werden. Aktionen können nur von Organisations-Administratoren oder vom Benutzer, der die Aktion eingeplant hat, archiviert werden.</target>
+        <target> Die folgenden Aktionen konnten nicht ordnungsgemäß auf einem oder auf mehreren Systemen ausgeführt werden. Aktionen können nur von Organisations-Administratoren oder vom Benutzer, der die Aktion eingeplant hat, archiviert werden. </target>
       </trans-unit>
       <trans-unit id="failedactions.jsp.nogroups" xml:space="preserve">
         <source>No failed actions.</source>
@@ -8225,7 +8225,7 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="pkg.lock.requestlock" xml:space="preserve">
         <source>Lock</source>
@@ -11289,7 +11289,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
           <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target>Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
+        <target> Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -28638,7 +28638,7 @@ für einen angegebenen Channel aufgelistet wird.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29215,20 +29215,20 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>Following installed products will be removed from the system during migration:</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
+      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
+      </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-      </body>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

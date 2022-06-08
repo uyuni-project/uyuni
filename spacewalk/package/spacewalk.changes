@@ -1,4 +1,5 @@
 - Simplified PostgreSQL14 requirement.
+- Update server-migrator to dist-upgrade to openSUSE 15.4
 
 -------------------------------------------------------------------
 Tue Jan 18 13:37:41 CET 2022 - jgonzalez@suse.com

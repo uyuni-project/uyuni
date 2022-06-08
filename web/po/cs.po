@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-19 14:13+0000\n"
+"POT-Creation-Date: 2022-06-08 14:50+0000\n"
 "PO-Revision-Date: 2021-10-29 21:12+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -4312,7 +4312,7 @@ msgid "City"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:312
-#: ../html/src/manager/state/highstate-summary.tsx:170
+#: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4483,6 +4483,11 @@ msgstr "zamítnuto"
 msgid "Keys"
 msgstr "Klíče"
 
+#: ../html/src/manager/salt/keys/key-management.tsx:154
+#, fuzzy
+msgid "Search by name or fingerprint"
+msgstr "Filtrovat podle názvu projektu"
+
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
 msgstr "Otisk prstu"
@@ -4557,7 +4562,7 @@ msgstr "Zděděno z"
 msgid "Show full highstate output"
 msgstr "Zobrazit úplný výstup highstate"
 
-#: ../html/src/manager/state/highstate-summary.tsx:163
+#: ../html/src/manager/state/highstate-summary.tsx:162
 msgid "System Group"
 msgstr "Systémová skupina"
 
