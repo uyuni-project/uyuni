@@ -9014,43 +9014,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartlabel" xml:space="preserve">
         <source>Invalid autoinstallation label: {0}</source>
-        <target/>
+        <target>Neplatné označenie automatickej inštalácie: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateType" xml:space="preserve">
         <source>Invalid update type: {0}</source>
-        <target/>
+        <target>Neplatný typ aktualizácie: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateTypeAndTree" xml:space="preserve">
         <source>If update type is red_hat the kickstartable tree you start with must be provided by Red Hat. This tree is not: {0}</source>
-        <target/>
+        <target>Ak je typ aktualizácie red_hat, strom schopný kickstart, s ktorým začínate, musí byť poskytnutý spoločnosťou Red Hat. Tento strom nie je: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateTypeAndNoBase" xml:space="preserve">
         <source>The kickstartable tree {0} has no base channel. The only valid update type with a no-base kickstartable tree is 'none'.</source>
-        <target/>
+        <target>Strom schopný kickstart {0} nemá žiadny základný kanál. Jediný platný typ aktualizácie s nezákladným stromom schopným kickstart je 'none'.</target>
       </trans-unit>
       <trans-unit id="api.package.invalidpackagearch" xml:space="preserve">
         <source>The package arch specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaná arch balíka ({0}) je neplatná.</target>
       </trans-unit>
       <trans-unit id="api.errata.missingerrataaction" xml:space="preserve">
         <source>A required patch attribute ({0}) was missing.</source>
-        <target/>
+        <target>Chýbal požadovaný atribút opravy ({0}).</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster" xml:space="preserve">
         <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Záznam pre nadradeného @@PRODUCT_NAME@@ {0} už existuje</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicateslave" xml:space="preserve">
         <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Záznam pre podriadeného @@PRODUCT_NAME@@ {0} už existuje</target>
       </trans-unit>
       <trans-unit id="securityErrata" xml:space="preserve">
         <source>Security Patches</source>
-        <target/>
+        <target>Bezpečnostné opravy</target>
       </trans-unit>
       <trans-unit id="bugErrata" xml:space="preserve">
         <source>Bug Patches</source>
-        <target/>
+        <target>Opravy chýb</target>
       </trans-unit>
       <trans-unit id="enhancementErrata" xml:space="preserve">
         <source>Enhancement Patches</source>
