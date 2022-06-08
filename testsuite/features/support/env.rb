@@ -90,6 +90,8 @@ After do |scenario|
     begin
       Dir.mkdir("screenshots") unless File.directory?("screenshots")
       path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+      # only click on Details when we have errors during bootstrapping and more Details available
+      click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
       page.driver.browser.save_screenshot(path)
       attach path, 'image/png'
       attach current_url, 'text/plain'

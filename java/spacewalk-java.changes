@@ -1,3 +1,13 @@
+- fix download of packages with caret sign in the version due
+  to missing url decode
+- Add specific requirement for Cobbler 3.2.1 to not conflict with Leap 15.4
+
+-------------------------------------------------------------------
+Mon May 23 10:57:23 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.26-1
+  * set prouduct_tree_tag to SUMA4.3 (bsc#1199758)
+
 -------------------------------------------------------------------
 Fri May 20 00:09:29 CEST 2022 - jgonzalez@suse.com
 

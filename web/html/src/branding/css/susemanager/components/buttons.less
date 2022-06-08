@@ -34,7 +34,7 @@
   }
 
   // Branding hover effect
-  &:not(:disabled):not(.disabled):hover::after {
+  &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
     // background: #686565;
     border: 2px solid transparent;
     bottom: -2px;
@@ -57,29 +57,33 @@
   }
 
   &.text-muted {
-    color: inherit;
+    color: inherit !important;
   }
 }
 
 .btn-link {
-  color: @link-color;
-  font-weight: normal;
+  &, &:active, &:focus, &:disabled, &.disabled {
+    &, &:hover {
+      color: @link-color;
+      font-weight: normal;
+    }
 
-  &:hover {
-    text-decoration: underline;
+    &:not(:disabled):not(.disabled):not(.text-muted):hover {
+      text-decoration: underline;
+    }
   }
 }
 
 // TODO: Add :active and :focus states for green etc
 // NB! Here and below, these are not nested because they're not used consistently along with .btn
 .btn-default {
-  &, &:disabled, &.disabled {
+  &, &:active, &:focus, &:disabled, &.disabled {
     &, &:hover {
       background: transparent;
       border-color: @eos-bc-pine-500;
       color: @eos-bc-pine-500;
 
-      &:not(:disabled):not(.disabled):hover::after {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: @eos-bc-pine-500;
       }
     }
@@ -87,13 +91,13 @@
 }
 
 .btn-primary {
-  &, &:disabled, &.disabled {
+  &, &:active, &:focus, &:disabled, &.disabled {
     &, &:hover {
       background: @eos-bc-persimmon-500;
       border-color: @eos-bc-persimmon-500;
       color: @eos-bc-gray-1000;
 
-      &:not(:disabled):not(.disabled):hover::after {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: @eos-bc-gray-900;
       }
     }
@@ -101,13 +105,13 @@
 }
 
 .btn-success {
-  &, &:disabled, &.disabled {
+  &, &:active, &:focus, &:disabled, &.disabled {
     &, &:hover {
       background: transparent;
       border-color: @eos-bc-persimmon-500;
       color: @eos-bc-gray-1000;
 
-      &:not(:disabled):not(.disabled):hover::after {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: @eos-bc-persimmon-500;
       }
     }
@@ -117,18 +121,18 @@
 // Warning shouldn't currently be used anywhere, but cover it just in case
 .btn-warning,
 .btn-danger {
-  &, &:disabled, &.disabled {
+  &, &:active, &:focus, &:disabled, &.disabled {
     &, &:hover {
       background: @eos-bc-red-500;
       border-color: @eos-bc-red-500;
       color: @eos-bc-white;
 
-      &:not(:disabled):not(.disabled):hover {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover {
         background: @eos-bc-red-900;
         border-color: @eos-bc-red-900;
       }
 
-      &:not(:disabled):not(.disabled):hover::after {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: @eos-bc-gray-900;
       }
     }
@@ -140,7 +144,7 @@
   padding: 6px 12px;
   z-index: 100;
 
-  &:not(:disabled):not(.disabled):hover::after {
+  &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
     border-width: 1px;
     bottom: -1px;
     left: -1px;

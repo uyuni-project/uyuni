@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 24 13:27:51 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Change the default base image to 15.4
+
+-------------------------------------------------------------------
 Fri May 13 07:34:53 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 4.3.0

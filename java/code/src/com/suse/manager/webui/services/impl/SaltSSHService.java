@@ -806,7 +806,7 @@ public class SaltSSHService {
      * @return list of error messages or empty if no error
      */
     public Optional<List<String>> cleanupSSHMinion(MinionServer minion, int timeout) {
-        CompletableFuture timeoutAfter = FutureUtils.failAfter(timeout);
+        CompletableFuture<GenericError> timeoutAfter = FutureUtils.failAfter(timeout);
         try {
             Map<String, Object> pillarData = new HashMap<>();
             if (!minion.getServerPaths().isEmpty()) {
@@ -832,17 +832,15 @@ public class SaltSSHService {
 
             return future.handle((applyResult, err) -> {
                 if (applyResult != null) {
-                    return applyResult.fold((saltErr) ->
-                            Optional.of(singletonList(SaltUtils.decodeSaltErr(saltErr).getMessage())),
-                            (saltRes) -> saltRes.values().stream()
-                                    .filter(value -> !value.isResult())
-                                    .map(StateApplyResult::getComment)
-                                    .collect(Collectors
-                                            .collectingAndThen(Collectors.toList(),
-                                                    (list) -> list.isEmpty() ?
-                                                            Optional.<List<String>>empty() :
-                                                            Optional.of(list)))
+                    List<String> result = applyResult.fold(
+                        (saltErr) -> singletonList(SaltUtils.decodeSaltErr(saltErr).getMessage()),
+                        (saltRes) -> saltRes.values().stream()
+                                            .filter(value -> !value.isResult())
+                                            .map(StateApplyResult::getComment)
+                                            .collect(Collectors.toList())
                     );
+
+                    return result.isEmpty() ? Optional.<List<String>>empty() : Optional.of(result);
                 }
                 else if (err instanceof TimeoutException) {
                     return Optional.of(singletonList(SaltService.MINION_UNREACHABLE_ERROR));

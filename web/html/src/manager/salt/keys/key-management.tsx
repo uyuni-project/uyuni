@@ -151,7 +151,7 @@ class KeyManagement extends React.Component<Props, State> {
             identifier={this.rowKey}
             initialSortColumnKey="id"
             loading={this.state.loading}
-            searchField={<SearchField filter={this.searchData} />}
+            searchField={<SearchField filter={this.searchData} placeholder={t("Search by name or fingerprint")} />}
           >
             <Column
               columnKey="id"

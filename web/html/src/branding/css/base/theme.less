@@ -356,11 +356,15 @@ header, nav.navbar-pf {
       border-style: solid;
       border-radius: 0;
       border-width: 0 0 1px 0;
-      // TODO: Update this to dark
-      color: @eos-bc-gray-900;
       padding-right: 3em;
       height: 3em;
+      color: @eos-bc-gray-1000;
+
+      &::placeholder {
+        color: @eos-bc-gray-900;
+      }
     }
+
     input:focus {
       box-shadow: none;
     }
@@ -1070,11 +1074,10 @@ a time:hover {
 .spacewalk-section-toolbar.fixed {
   position: fixed;
   z-index: 900;
-  border-bottom: 1px solid #ccc;
-  box-shadow: 0px 2px 1px 0px #eee;
   padding-left: 1em;
   padding-right: 1em;
   margin-top: 0px;
+
   .form-group {
     margin-bottom: 0;
   }
