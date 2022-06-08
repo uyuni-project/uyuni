@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-19 14:13+0000\n"
+"POT-Creation-Date: 2022-06-08 14:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4165,7 +4165,7 @@ msgid "City"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:312
-#: ../html/src/manager/state/highstate-summary.tsx:170
+#: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4333,6 +4333,10 @@ msgstr ""
 msgid "Keys"
 msgstr ""
 
+#: ../html/src/manager/salt/keys/key-management.tsx:154
+msgid "Search by name or fingerprint"
+msgstr ""
+
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
 msgstr ""
@@ -4407,7 +4411,7 @@ msgstr ""
 msgid "Show full highstate output"
 msgstr ""
 
-#: ../html/src/manager/state/highstate-summary.tsx:163
+#: ../html/src/manager/state/highstate-summary.tsx:162
 msgid "System Group"
 msgstr ""
 
