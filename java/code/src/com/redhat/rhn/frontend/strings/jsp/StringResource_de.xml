@@ -11289,7 +11289,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
           <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target>Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
+        <target> Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
