@@ -654,21 +654,6 @@ PKGLISTUBUNTU2004 = [
 ]
 
 PKGLISTUBUNTU2204 = [
-    "dctrl-tools",
-    "libnorm1",
-    "libpgm-5.3-0",
-    "libzmq5",
-    "python3-dateutil",
-    "python3-distro",
-    "python3-jinja2",
-    "python3-markupsafe",
-    "python3-msgpack",
-    "python3-psutil",
-    "python3-pycryptodome",
-    "python3-zmq",
-    "salt-common",
-    "salt-minion",
-    "gnupg",
     "venv-salt-minion",
 ]
 
