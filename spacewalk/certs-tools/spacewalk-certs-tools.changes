@@ -1,4 +1,8 @@
-- set permissions on apache ssl key file (bsc#1200371)
+-------------------------------------------------------------------
+Thu Jun 09 13:43:22 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.13-1
+  * set permissions on apache ssl key file (bsc#1200371)
 
 -------------------------------------------------------------------
 Wed Jun 01 10:01:23 CEST 2022 - jgonzalez@suse.com
