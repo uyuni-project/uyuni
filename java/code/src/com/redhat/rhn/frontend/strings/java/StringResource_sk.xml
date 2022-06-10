@@ -9054,43 +9054,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="enhancementErrata" xml:space="preserve">
         <source>Enhancement Patches</source>
-        <target/>
+        <target>Vylepšovacie opravy</target>
       </trans-unit>
       <trans-unit id="outdatedPackages" xml:space="preserve">
         <source>Outdated Packages</source>
-        <target/>
+        <target>Zastarané balíky</target>
       </trans-unit>
       <trans-unit id="lastCheckin" xml:space="preserve">
         <source>Last Checkin</source>
-        <target/>
+        <target>Posledné prihlásenie</target>
       </trans-unit>
       <trans-unit id="entitlement" xml:space="preserve">
         <source>System Types</source>
-        <target/>
+        <target>Typy systémov</target>
       </trans-unit>
       <trans-unit id="groupAdmins" xml:space="preserve">
         <source>Group Admins</source>
-        <target/>
+        <target>Administrátori skupín</target>
       </trans-unit>
       <trans-unit id="serverCount" xml:space="preserve">
         <source>Server Count</source>
-        <target/>
+        <target>Počet serverov</target>
       </trans-unit>
       <trans-unit id="monitoringStatus" xml:space="preserve">
         <source>Monitor Status</source>
-        <target/>
+        <target>Stav monitora</target>
       </trans-unit>
       <trans-unit id="userLogin" xml:space="preserve">
         <source>User Login</source>
-        <target/>
+        <target>Prihlásenie používateľa</target>
       </trans-unit>
       <trans-unit id="userLastName" xml:space="preserve">
         <source>User Last Name</source>
-        <target/>
+        <target>Priezvisko používateľa</target>
       </trans-unit>
       <trans-unit id="userFirstName" xml:space="preserve">
         <source>User First Name</source>
-        <target/>
+        <target>Krstné meno používateľa</target>
       </trans-unit>
       <trans-unit id="roleNames" xml:space="preserve">
         <source>Role Names</source>
