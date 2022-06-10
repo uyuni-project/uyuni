@@ -1,4 +1,5 @@
 - Replace apache users to root for RHEL.
+- Update server-migrator to dist-upgrade to openSUSE 15.4
 
 -------------------------------------------------------------------
 Fri May 20 00:13:50 CEST 2022 - jgonzalez@suse.com

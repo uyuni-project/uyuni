@@ -19,27 +19,44 @@ echo
 read -n 1 -s -r -p "Press any key to start the migration or CTRL+C to cancel...";
 echo
 
+NEW_VERSION_ID=15.4
+
+CHECK_OS=$(cat /etc/os-release  | grep PRETTY_NAME)
+
+if [[ ${CHECK_OS} != *"openSUSE Leap"* ]]; then
+  echo "Please check your OS. openSUSE Leap is needed "
+  exit -1
+fi
+
 spacewalk-service stop
 rm -rf /etc/zypp/repos.d.old
 mv /etc/zypp/repos.d /etc/zypp/repos.d.old
 mkdir /etc/zypp/repos.d
-zypper ar -n "Main Repository" http://download.opensuse.org/distribution/leap/15.3/repo/oss repo-oss
-zypper ar -n "Main Update Repository" http://download.opensuse.org/update/leap/15.3/oss repo-update
-zypper ar -n "Non-OSS Repository" http://download.opensuse.org/distribution/leap/15.3/repo/non-oss repo-non-oss
-zypper ar -n "Update Repository (Non-Oss)" http://download.opensuse.org/update/leap/15.3/non-oss/ repo-update-non-oss
+zypper ar -n "Main Repository" http://download.opensuse.org/distribution/leap/${NEW_VERSION_ID}/repo/oss repo-oss
+zypper ar -n "Main Update Repository" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/oss repo-update
+zypper ar -n "Non-OSS Repository" http://download.opensuse.org/distribution/leap/${NEW_VERSION_ID}/repo/non-oss repo-non-oss
+zypper ar -n "Update Repository (Non-Oss)" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/non-oss/ repo-update-non-oss
 zypper ar -n "Uyuni Server Stable" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ uyuni-server-stable
-zypper ar -n "Update repository wiht updates from SUSE Linux Enterprise 15" http://download.opensuse.org/update/leap/15.3/sle repo-sle-update
-zypper ar -n "Update repository of openSUSE Backports" http://download.opensuse.org/update/leap/15.3/backports/ repo-backports-update
+zypper ar -n "Update repository wiht updates from SUSE Linux Enterprise" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/sle repo-sle-update
+zypper ar -n "Update repository of openSUSE Backports" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/backports/ repo-backports-update
 zypper ref
 zypper -n dup --allow-vendor-change
-if [ $? -ne 0 ];then
-    echo "Migration went wrong. Please fix the issues and try again."
+ret=${?}
+if [[ ${ret} -ne 0 ]];then
+    echo "Migration went wrong. Please fix the issues and try again. return code is ${ret}"
     exit -1
 fi
 
-echo
+CURRENT_VERSION_ID=$(cat /etc/os-release  | grep VERSION_ID | cut -f2 -d=)
+
+if [[ "${CURRENT_VERSION_ID}" != "\"${NEW_VERSION_ID}\"" ]]; then
+    echo "Migration went wrong. Expected version is ${NEW_VERSION_ID} instead is ${CURRENT_VERSION_ID}"
+    echo "Please try to re-run this script"
+    exit -1
+fi
+
 echo "==================================================================="
-echo "If you did not yet migrate the database to postgresql13, do so now"
+echo "OS migrated successfully, now please migrate to the new postgres version "
 echo "by running /usr/lib/susemanager/bin/pg-migrate-x-to-y.sh"
 echo
 echo "Reboot system afterwards."

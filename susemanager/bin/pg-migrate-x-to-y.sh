@@ -199,6 +199,7 @@ else
 fi
 
 cp /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf /var/lib/pgsql/data
+cp /var/lib/pgsql/data-pg${OLD_VERSION}/postgresql.conf /var/lib/pgsql/data/
 chown postgres:postgres /var/lib/pgsql/data/*
 
 echo "$(timestamp)   Starting PostgreSQL service..."

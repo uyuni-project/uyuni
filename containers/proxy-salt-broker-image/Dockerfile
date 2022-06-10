@@ -1,6 +1,6 @@
 #!BuildTag: uyuni/proxy-salt-broker:latest uyuni/proxy-salt-broker:%PKG_VERSION% uyuni/proxy-salt-broker:%PKG_VERSION%.%RELEASE%
 
-ARG BASE=registry.suse.com/bci/bci-base:15.3
+ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS fat
 
 ARG PRODUCT_REPO
@@ -21,7 +21,7 @@ COPY prepare_target.sh .
 RUN sh prepare_target.sh
 
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.3
+ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni
