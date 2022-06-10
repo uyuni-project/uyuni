@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug Taskomatic",
+            "request": "attach",
+            "hostName": "server.tf.local",
+            "port": 8001
+        },
+        {
+            "type": "java",
+            "name": "Debug Search Server",
+            "request": "attach",
+            "hostName": "server.tf.local",
+            "port": 8002
+        },
+        {
+            "type": "java",
+            "name": "Debug Tomcat",
+            "request": "attach",
+            "hostName": "server.tf.local",
+            "port": 8003
+        }
+    ]
+}
+
