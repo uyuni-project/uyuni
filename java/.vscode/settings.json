@@ -1,0 +1,12 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ],
+    "java.test.config": {
+        "vmArgs": [
+            "-Drhn.config.dir=${workspaceFolder}/buildconf/test",
+            "-Dlog4j2.configurationFile=${workspaceFolder}/buildconf/test/log4j2.properties"
+         ]
+    }
+}
+
