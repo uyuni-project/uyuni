@@ -122,8 +122,8 @@
         <dependency org="com.sun.xml.bind" name="jaxb-core" rev="2.3.0" transitive="false"/>
         <dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.3.0" transitive="false"/>
         <dependency org="suse" name="junit" rev="4.12" transitive="false"/>
-        <dependency org="org.junit.jupiter" name="junit-jupiter-api" rev="5.6.3" transitive="false"/>
-        <dependency org="org.junit.platform" name="junit-platform-commons" rev="1.6.3" transitive="false" />
+        <dependency org="org.junit.jupiter" name="junit-jupiter-api" rev="5.8.2" transitive="false"/>
+        <dependency org="org.junit.platform" name="junit-platform-commons" rev="1.8.2" transitive="false" />
         <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" transitive="false"/>
         <dependency org="org.apiguardian" name="apiguardian-api" rev="1.1.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock" rev="2.12.0" transitive="false"/>
