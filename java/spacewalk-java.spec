@@ -100,14 +100,16 @@ BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  google-gson >= 2.2.4
-BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate-types
-BuildRequires:  hibernate5
+BuildRequires:  hibernate-commons-annotations
+BuildRequires:  mvn(org.hibernate:hibernate-core)
+BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
+BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
-BuildRequires:  (gnu-jaf or jakarta-activation)
+BuildRequires:  jakarta-activation
 %if 0%{?rhel} || 0%{?fedora}
 BuildRequires:  glassfish-jaxb-core
 BuildRequires:  glassfish-jaxb-runtime
@@ -184,7 +186,7 @@ Requires:       %{ehcache}
 Requires:       cobbler = 3.1.2
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       (gnu-jaf or jakarta-activation)
+Requires:       jakarta-activation
 %if 0%{?rhel} || 0%{?fedora}
 Requires:       glassfish-jaxb-core
 Requires:       glassfish-jaxb-runtime
@@ -198,9 +200,11 @@ Recommends:     rng-tools
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
-Requires:       hibernate-commons-annotations
 Requires:       hibernate-types
-Requires:       hibernate5
+Requires:       hibernate-commons-annotations
+Requires:       mvn(org.hibernate:hibernate-core)
+Requires:       mvn(org.hibernate:hibernate-c3p0)
+Requires:       mvn(org.hibernate:hibernate-ehcache)
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       jade4j
@@ -370,8 +374,9 @@ Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       hibernate-commons-annotations
-Requires:       hibernate-types
-Requires:       hibernate5
+Requires:       mvn(org.hibernate:hibernate-core)
+Requires:       mvn(org.hibernate:hibernate-c3p0)
+Requires:       mvn(org.hibernate:hibernate-ehcache)
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
 %if 0%{?rhel}
