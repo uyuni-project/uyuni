@@ -1,9 +1,4 @@
--------------------------------------------------------------------
-Fri Jun 13 18:00:00 CEST 2022 - philippe.bidault@getronics.com
-
-- version 4.3.11-1
-  * Add EPEL8 for Almalinux 8 and Rocky 8 in spacewalk-common-channels.ini
-
+- Add EPEL8 for Almalinux 8 and Rocky 8 in spacewalk-common-channels.ini
 -------------------------------------------------------------------
 Fri May 20 00:12:42 CEST 2022 - jgonzalez@suse.com
 
