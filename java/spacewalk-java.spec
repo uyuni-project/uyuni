@@ -640,11 +640,14 @@ fi
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
 install -m 644 build/reports/apidocs/docbook/susemanager_api_doc.xml $RPM_BUILD_ROOT%{_docdir}/%{name}/xml/susemanager_api_doc.xml
 cp -R build/reports/apidocs/asciidoc/ $RPM_BUILD_ROOT%{_docdir}/%{name}/asciidoc/
+
 # delete JARs which must not be deployed
 rm -rf $RPM_BUILD_ROOT%{jardir}/jspapi.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-compiler.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-runtime.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/tomcat*.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/google-gson_google-gsongson-extras.jar
+
 %if 0%{?omit_tests} > 0
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/lib/rhn-test.jar
 rm -rf $RPM_BUILD_ROOT/classes/com/redhat/rhn/common/conf/test/conf
