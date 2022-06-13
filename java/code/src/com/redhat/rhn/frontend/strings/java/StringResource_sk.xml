@@ -9094,43 +9094,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="roleNames" xml:space="preserve">
         <source>Role Names</source>
-        <target/>
+        <target>Názvy rolí</target>
       </trans-unit>
       <trans-unit id="lastLoggedIn" xml:space="preserve">
         <source>Last Logged In</source>
-        <target/>
+        <target>Naposledy prihlásený</target>
       </trans-unit>
       <trans-unit id="changedByFirstName" xml:space="preserve">
         <source>Changed by First Name</source>
-        <target/>
+        <target>Zmenené podľa krstného mena</target>
       </trans-unit>
       <trans-unit id="changedByLastName" xml:space="preserve">
         <source>Changed by Last Name</source>
-        <target/>
+        <target>Zmenené podľa priezviska</target>
       </trans-unit>
       <trans-unit id="changeDate" xml:space="preserve">
         <source>Change Date</source>
-        <target/>
+        <target>Dátum zmeny</target>
       </trans-unit>
       <trans-unit id="channelLabels" xml:space="preserve">
         <source>Channel Labels</source>
-        <target/>
+        <target>Označenia kanálov</target>
       </trans-unit>
       <trans-unit id="entitlementLevel" xml:space="preserve">
         <source>System Type Level</source>
-        <target/>
+        <target>Úroveň typu systému</target>
       </trans-unit>
       <trans-unit id="serverName" xml:space="preserve">
         <source>Server Name</source>
-        <target/>
+        <target>Názov servera</target>
       </trans-unit>
       <trans-unit id="matchingField" xml:space="preserve">
         <source>Matching Field Name</source>
-        <target/>
+        <target>Zodpovedajúci názov poľa</target>
       </trans-unit>
       <trans-unit id="matchingFieldValue" xml:space="preserve">
         <source>Matching Field Value</source>
-        <target/>
+        <target>Zodpovedajúca hodnota poľa</target>
       </trans-unit>
       <trans-unit id="dmiBiosVendor" xml:space="preserve">
         <source>DMI Bios Vendor</source>
