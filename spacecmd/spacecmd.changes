@@ -1,3 +1,4 @@
+- Process date values in spacecmd api calls (bsc#1198903)
 - Improve Proxy FQDN hint message
 
 -------------------------------------------------------------------
