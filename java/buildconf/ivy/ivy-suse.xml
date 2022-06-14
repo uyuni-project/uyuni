@@ -29,7 +29,7 @@
         <dependency org="manager-42" name="dwr" rev="3.0.2" />
         <dependency org="manager-42" name="ehcache-core" rev="2.10.1" />
         <dependency org="manager-42" name="geronimo-jta-1.1-api" rev="1.2" />
-        <dependency org="manager-42" name="google-gson" rev="2.8.5" />
+        <dependency org="manager-42" name="google-gson" rev="2.8.9" />
         <dependency org="manager-42" name="hibernate-c3p0" rev="5.3.7" />
         <dependency org="manager-42" name="hibernate-commons-annotations" rev="5.0.4" />
         <dependency org="manager-42" name="hibernate-core" rev="5.3.7" />

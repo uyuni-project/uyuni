@@ -100,6 +100,7 @@ artifacts:
     repository: 15_SP2_GA
   - artifact: google-gson
     repository: 15_SP2_Update
+    jar: gson.jar
   - artifact: hibernate-c3p0
     package: hibernate5
     jar: hibernate-c3p0
