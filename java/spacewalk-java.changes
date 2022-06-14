@@ -1,3 +1,4 @@
+- Improved log handling in HTTP API (bsc#1199662)
 - set Channel GPG Key info from SCC data
 - set GPG Key Url as channel pillar data (bsc#1199984)
 - new API endpoint for addErrataUpdate, that take 
