@@ -1342,3 +1342,13 @@ When(/^I schedule a task to update ReportDB$/) do
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
   )
 end
+
+Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
+  output, _code = $server.run("ss -l --numeric | grep #{port}  || echo 'closed'", check_errors: false)
+  case selection
+  when 'open'
+    raise "Port '#{port}' not open although it should be!" if output == "closed\n"
+  when 'closed'
+    raise "Port '#{port}' open although it should not be!" if output != "closed\n"
+  end
+end
