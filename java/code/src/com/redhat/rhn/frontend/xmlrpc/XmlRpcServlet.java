@@ -86,7 +86,7 @@ public class XmlRpcServlet extends HttpServlet {
         // enhancement: if we ever need more than one InvocationProcessor
         // we should use the ManifestFactory like we did above for the
         // handlers.
-        server.addInvocationInterceptor(new LoggingInvocationProcessor());
+        server.addInvocationInterceptor(new XmlRpcLoggingInvocationProcessor());
     }
 
     private void registerCustomSerializers(RhnXmlRpcServer srvr) {
