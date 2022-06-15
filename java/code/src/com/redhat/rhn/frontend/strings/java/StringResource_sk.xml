@@ -9134,70 +9134,70 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="dmiBiosVendor" xml:space="preserve">
         <source>DMI Bios Vendor</source>
-        <target/>
+        <target>Dodávateľ DMI Bios</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiBiosVersion" xml:space="preserve">
         <source>DMI Bios Version</source>
-        <target/>
+        <target>Verzia DMI Bios</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiBiosRelease" xml:space="preserve">
         <source>DMI Bios Release</source>
-        <target/>
+        <target>Vydanie DMI Bios</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiSystem" xml:space="preserve">
         <source>DMI System</source>
-        <target/>
+        <target>Systém DMI</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiAsset" xml:space="preserve">
         <source>DMI Asset Tag</source>
-        <target/>
+        <target>Označenie majetku DMI</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuModel" xml:space="preserve">
         <source>CPU Model</source>
-        <target/>
+        <target>Model CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuMHz" xml:space="preserve">
         <source>CPU MHz</source>
-        <target/>
+        <target>CPU MHz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuNumberOfCpus" xml:space="preserve">
         <source>CPU Count</source>
-        <target/>
+        <target>Počet CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ram" xml:space="preserve">
         <source>RAM KB</source>
-        <target/>
+        <target>RAM KB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="serverArchName" xml:space="preserve">
         <source>Server Architecture</source>
-        <target/>
+        <target>Architektúra servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
