@@ -191,7 +191,7 @@
 
   <!-- SUSE extra dependencies: runtime only -->
   <property name="suse-runtime-jars" value="${commons-lang} concurrentlinkedhashmap-lru
-    slf4j/api log4j/log4j-slf4j-impl ${product-runtime-jars}" />
+    slf4j/api log4j/log4j-slf4j-impl ${product-runtime-jars} jctools/jctools-core" />
 
   <property name="install.build.jar.dependencies"
       value="ant ant/ant-junit ${ant-contrib.path} antlr ${jasper-jars} ${test.build.jar.dependencies}
