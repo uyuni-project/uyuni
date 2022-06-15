@@ -6,6 +6,7 @@
 # This feature depends on:
 # - sumaform : As it is configuring monitoring to be enabled after deployment
 
+@flaky
 @scope_monitoring
 Feature: Disable and re-enable monitoring of the server
 
