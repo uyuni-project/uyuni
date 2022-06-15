@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature is a dependency for:
 # - features/secondary/min_monitoring.feature : If this feature fails could let monitoring feature disabled for SLE minion
