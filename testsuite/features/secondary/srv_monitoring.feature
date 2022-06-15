@@ -30,6 +30,8 @@ Feature: Disable and re-enable monitoring of the server
     And port "3334" should be closed
     And file "/usr/lib/systemd/system/tomcat.service.d/jmx.conf" should not exist on server
     And file "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf" should not exist on server
+    And port "5556" should be closed
+    And port "5557" should be closed
 
   Scenario: Restart spacewalk services to apply config changes after disabling monitoring
     When I restart the spacewalk service
@@ -64,6 +66,8 @@ Feature: Disable and re-enable monitoring of the server
     And port "3334" should be closed
     And file "/usr/lib/systemd/system/tomcat.service.d/jmx.conf" should contain "jmx_prometheus_javaagent.jar=5556" on server
     And file "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf" should contain "jmx_prometheus_javaagent.jar=5557" on server
+    And port "5556" should be open
+    And port "5557" should be open
 
   Scenario: Restart spacewalk services to apply config changes after enabling monitoring
     When I restart the spacewalk service
