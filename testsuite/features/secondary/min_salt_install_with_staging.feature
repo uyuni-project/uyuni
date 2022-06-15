@@ -10,7 +10,7 @@
 #   java.salt_content_staging_advance = 0.05 (3 minutes)
 # which means "beetwen 3 and 1 minutes before package installation or patching"
 
-@flaky
+
 @sle_minion
 @scope_content_staging
 Feature: Install a package on the SLES minion with staging enabled

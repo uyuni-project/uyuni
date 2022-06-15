@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 
-@flaky
+
 @proxy
 @private_net
 @pxeboot_minion
