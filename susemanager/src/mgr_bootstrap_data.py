@@ -585,8 +585,6 @@ PKGLISTUBUNTU2004 = [
     "salt-common",
     "salt-minion",
     "gnupg",
-    "python3-immutables",
-    "python3-contextvars",
 ]
 
 PKGLISTDEBIAN9 = [
@@ -706,8 +704,6 @@ PKGLISTDEBIAN10 = [
     "salt-common",
     "salt-minion",
     "gnupg",
-    "python3-immutables",
-    "python3-contextvars",
 ]
 
 PKGLISTASTRALINUXOREL = [
