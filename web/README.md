@@ -8,7 +8,7 @@ The `web` subdirectory consists of roughly the following main chunks:
  - `web/html/src/branding`: Branding assets, such as stylesheet sources, fonts, images etc.
  - `web/html/src/build`: Build tooling for the web UI.
  - `web/html/src/components`, `web/html/src/core`, `web/html/src/manager`, `web/html/src/utils`: Source code for the web UI.
- - `web/html/dist`: Output directory for the frontend build, do not check this directory in nor modify it directly, your changes will be overriden by the next build.  
+ - `web/html/dist`: Output directory for the frontend build, do not check this directory in nor modify it directly, your changes will be overwritten by the next build.  
 
 ## Scripts
 
