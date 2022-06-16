@@ -48,7 +48,7 @@ public class FilePreservationListHandler extends BaseHandler {
      * associated with the user logged into the given session
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #return_array_begin()
      *        $FilePreservationDtoSerializer
      *      #array_end()
      */
@@ -73,9 +73,9 @@ public class FilePreservationListHandler extends BaseHandler {
      *   - The name already exists
      *
      * @xmlrpc.doc Create a new file preservation list.
-     * @xmlrpc.param #param("string", "session_key")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "name", "name of the file list to create")
-     * @xmlrpc.param #array_single("string", "name - file names to include")
+     * @xmlrpc.param #array_single_desc("string", "files", "file names to include")
      * @xmlrpc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String name, List<String> files)
@@ -107,7 +107,7 @@ public class FilePreservationListHandler extends BaseHandler {
      *   - The name already exists
      *
      * @xmlrpc.doc Delete a file preservation list.
-     * @xmlrpc.param #param("string", "session_key")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "name", "name of the file list to delete")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -130,11 +130,9 @@ public class FilePreservationListHandler extends BaseHandler {
      *   - The sessionKey is invalid
      * @return holder object containing the data associated with the list
      *
-     * @xmlrpc.doc Returns all of the data associated with the given file preservation
-     * list.
-     * @xmlrpc.param #param("string", "session_key")
-     * @xmlrpc.param #param_desc("string", "name", "name of the file list to retrieve
-     * details for")
+     * @xmlrpc.doc Returns all the data associated with the given file preservation list.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "name", "name of the file list to retrieve details for")
      * @xmlrpc.returntype
      *     $FileListSerializer
      */

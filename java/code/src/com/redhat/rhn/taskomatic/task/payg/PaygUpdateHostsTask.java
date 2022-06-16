@@ -44,7 +44,7 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        log.debug("Running CloudRmUpdateHostsTaksc");
+        log.debug("Running CloudRmUpdateHostsTask");
         List<CloudRmtHost> hostToUpdate = CloudRmtHostFactory.lookupCloudRmtHostsToUpdate();
         loadHttpsCertificates(hostToUpdate);
         updateHost(hostToUpdate);
@@ -63,8 +63,17 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
             log.error("error when writing the hosts file", e);
         }
         finally {
-            String[] cmd = {"/usr/sbin/update-ca-certificates"};
-            executeExtCmd(cmd);
+            if (hostToUpdate.size() > 0) {
+                try {
+                    String[] cmd = {"systemctl", "is-active", "--quiet", "ca-certificates.path"};
+                    executeExtCmd(cmd);
+                }
+                catch (Exception e) {
+                    log.debug("ca-certificates.path service is not active, we will call 'update-ca-certificates' tool");
+                    String[] cmd = {"/usr/share/rhn/certs/update-ca-cert-trust.sh"};
+                    executeExtCmd(cmd);
+                }
+            }
         }
     }
 

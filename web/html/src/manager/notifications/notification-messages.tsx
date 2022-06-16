@@ -49,6 +49,10 @@ const _MESSAGE_TYPE = {
     id: "PaygAuthenticationUpdateFailed",
     text: t("Pay-as-you-go refresh authentication data failed"),
   },
+  EndOfLifePeriod: {
+    id: "EndOfLifePeriod",
+    text: t("End of Life Period"),
+  },
 };
 
 function reloadData(dataUrlSlice: string) {

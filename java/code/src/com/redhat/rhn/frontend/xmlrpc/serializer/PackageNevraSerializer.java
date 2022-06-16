@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  *
  * @xmlrpc.doc
- *  #struct_begin("package nvera")
+ *  #struct_begin("package nevra")
  *      #prop("string", "name")
  *      #prop("string", "epoch")
  *      #prop("string", "version")

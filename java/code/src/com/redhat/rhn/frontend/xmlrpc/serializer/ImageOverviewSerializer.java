@@ -30,7 +30,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 /**
  * ImageOverviewSerializer
  * @xmlrpc.doc
- * #struct_begin("Image Overview information")
+ * #struct_begin("image overview information")
  *   #prop("int", "id")
  *   #prop_desc("string", "name", "image name")
  *   #prop_desc("string", "version", "image tag/version")

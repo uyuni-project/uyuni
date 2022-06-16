@@ -12,10 +12,7 @@
 #end
 #macro(prop_array $key $type $desc)
 <listitem>
-  <para>array "$key"</para>
-  <itemizedlist spacing="compact">
-    <listitem><para>$type - $desc</para></listitem>
-  </itemizedlist>
+  <para>array($type) "$key" - $desc</para>
 </listitem>
 #end
 #macro(prop_array_begin $key)
@@ -32,48 +29,51 @@
   </itemizedlist>
 </listitem>
 #end
-#macro(struct_begin $type)
+#macro(struct_begin $value)
 <listitem>
-  <para>struct - $type</para>
+  <para>struct $value</para>
   <itemizedlist spacing="compact">
 #end
 #macro(struct_end)
   </itemizedlist>
 </listitem>
 #end
-#macro(struct_desc $type $desc)
+#macro(struct_desc $value $desc)
 <listitem>
-  <para>struct - $type $desc</para>
+  <para>struct $value - $desc</para>
   <itemizedlist spacing="compact">
 #end
 #macro(struct_desc_end)
   </itemizedlist>
 </listitem>
 #end
-#macro(array_begin)
+#macro(return_array_begin)
 <listitem>
-  <para>array:</para>
+  <para>array</para>
+  <itemizedlist spacing="compact">
+#end
+#macro(array_begin $value)
+<listitem>
+  <para>array $value</para>
+  <itemizedlist spacing="compact">
+#end
+#macro(array_begin_desc $value $desc)
+<listitem>
+  <para>array $value - $desc</para>
   <itemizedlist spacing="compact">
 #end
 #macro(array_end)
   </itemizedlist>
 </listitem>
 #end
-#macro(array_desc $type $desc)
+#macro(array_single $type $value)
 <listitem>
-  <para>array $type - $desc</para>
-  <itemizedlist spacing="compact">
-#end
-#macro(array_desc_end)
-  </itemizedlist>
+  <para>array($type) $value</para>
 </listitem>
 #end
-#macro(array_single $type $desc)
+#macro(array_single_desc $type $value $desc)
 <listitem>
-  <para>array:</para>
-  <itemizedlist spacing="compact">
-    <listitem><para>$type - $desc</para></listitem>
-  </itemizedlist>
+  <para>array($type) $value - $desc</para>
 </listitem>
 #end
 #macro(options)

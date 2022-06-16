@@ -175,7 +175,7 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
 
-        sccSystemRegistrationManager.updateLastSeen();
+        sccSystemRegistrationManager.updateLastSeen(credentials);
     }
 
     public void testMassUpdateSystems() throws Exception {
@@ -241,6 +241,6 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
 
-        sccSystemRegistrationManager.updateLastSeen();
+        sccSystemRegistrationManager.updateLastSeen(credentials);
     }
 }

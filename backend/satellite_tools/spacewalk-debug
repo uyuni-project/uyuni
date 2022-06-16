@@ -205,6 +205,11 @@ if [ -d /var/log/rhn ]; then
     if [ -d /var/log/rhn/search ]; then
         cp -fapRd /var/log/rhn/search $DIR/rhn-logs/rhn
     fi
+
+    # check mgr-create-bootstrap-repo dir
+    if [ -d /var/log/rhn/mgr-create-bootstrap-repo ]; then
+        cp -fapRd /var/log/rhn/mgr-create-bootstrap-repo $DIR/rhn-logs/rhn
+    fi
 fi
 
 DB_INSTALL_LOG=/var/log/rhn/rhn-database-installation.log

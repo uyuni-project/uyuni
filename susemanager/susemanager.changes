@@ -1,3 +1,6 @@
+- mgr-sync: Raise a proper exception when duplicated lines exist in a config file (bsc#1182742)
+- add SLED 12 SP3 bootstrap repo definition (bsc#1199438)
+
 -------------------------------------------------------------------
 Mon Jun 06 10:27:00 CEST 2022 - jgonzalez@suse.com
 

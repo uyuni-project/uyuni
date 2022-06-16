@@ -31,10 +31,10 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  * @xmlrpc.doc
  *  #struct_begin("proxy connection path details")
- *         #prop_desc("int", "position", "Position of proxy in chain. The proxy that the
+ *         #prop_desc("int", "position", "position of proxy in chain. The proxy that the
  *             system connects directly to is listed in position 1.")
- *         #prop_desc("int", "id", "Proxy system id")
- *         #prop_desc("string", "hostname", "Proxy host name")
+ *         #prop_desc("int", "id", "proxy system ID")
+ *         #prop_desc("string", "hostname", "proxy host name")
  *  #struct_end()
  */
 public class ServerPathSerializer extends RhnXmlRpcCustomSerializer {

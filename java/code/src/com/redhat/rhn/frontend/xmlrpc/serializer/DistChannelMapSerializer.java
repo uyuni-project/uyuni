@@ -28,11 +28,11 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * DistChannelMapSerializer
  *
  * @xmlrpc.doc
- *      #struct_begin("distChannelMap")
- *          #prop_desc("string", "os", "Operationg System")
+ *      #struct_begin("distribution channel map")
+ *          #prop_desc("string", "os", "operating system")
  *          #prop_desc("string", "release", "OS Relase")
- *          #prop_desc("string", "arch_name", "Channel architecture")
- *          #prop_desc("string", "channel_label", "Channel label")
+ *          #prop_desc("string", "arch_name", "channel architecture")
+ *          #prop_desc("string", "channel_label", "channel label")
  *          #prop_desc("string", "org_specific", "'Y' organization specific, 'N' default")
  *     #struct_end()
  */

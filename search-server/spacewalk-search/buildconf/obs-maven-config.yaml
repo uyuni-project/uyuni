@@ -1,50 +1,62 @@
+url: http://download.suse.de/ibs
+group: manager-42
+
 repositories:
-  Leap:
-    project: openSUSE:Leap:15.2
+  15_GA:
+    project: SUSE:SLE-15:GA
     repository: standard
-  Uyuni_Other:
-    project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.2
-  Uyuni:
-    project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.2
+  15_SP2_GA:
+    project: SUSE:SLE-15-SP2:GA
+    repository: standard
+  15_SP2_Update:
+    project: SUSE:SLE-15-SP2:Update
+    repository: standard
+  15_SP3_GA:
+    project: SUSE:SLE-15-SP3:GA
+    repository: standard
+  4.2:
+    project: SUSE:SLE-15-SP3:Update:Products:Manager42
+    repository: standard
+  D_G_M_4.2:
+    project: Devel:Galaxy:Manager:4.2
+    repository: SLE_15_SP3
 artifacts:
   - artifact: simple-core
     # How comes that package is not noarch?
     arch: x86_64
-    repository: Uyuni_Other
-  - artifact: lucene-core
-    jar: lucene-core
-    package: lucene
-    repository: Uyuni_Other
-  - artifact: lucene-analyzers
-    jar: lucene-analyzers
-    package: lucene
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: commons-lang3
     package: apache-commons-lang3
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: redstone-xmlrpc
     jar: redstone-xmlrpc-[0-9.]+
-    repository: Uyuni_Other
-  - artifact: mybatis
-    package: apache-mybatis
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: quartz
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: log4j
     package: log4j12
-    repository: Leap
+    repository: 15_SP2_GA
+  - artifact: c3p0
+    repository: 4.2
+  - artifact: lucene-core
+    jar: lucene-core
+    package: lucene
+    repository: 4.2
+  - artifact: lucene-analyzers
+    jar: lucene-analyzers
+    package: lucene
+    repository: 4.2
+  - artifact: mybatis
+    package: apache-mybatis
+    repository: 4.2
   - artifact: nutch-core
     jar: nutch-core
-    repository: Uyuni_Other
-  - artifact: c3p0
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: picocontainer
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: hadoop
-    repository: Uyuni_Other
+    repository: 4.2

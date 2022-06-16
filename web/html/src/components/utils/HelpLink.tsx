@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { docsLocale } from "core/user-preferences";
+
 import HelpIcon from "./HelpIcon";
 
 type Props = {
@@ -12,7 +14,7 @@ type Props = {
 
 export function HelpLink(props: Props) {
   return (
-    <a href={"/docs/" + window.docsLocale + "/" + props.url} target="_blank" rel="noopener noreferrer">
+    <a href={"/docs/" + docsLocale + "/" + props.url} target="_blank" rel="noopener noreferrer">
       <HelpIcon text={props.text} />
     </a>
   );

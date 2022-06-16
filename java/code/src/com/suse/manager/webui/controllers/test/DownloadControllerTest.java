@@ -15,8 +15,6 @@
 
 package com.suse.manager.webui.controllers.test;
 
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -42,6 +40,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -57,6 +56,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,14 +83,18 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     private Channel channel;
     private String uriFile;
+    private String uriFile2;
     private String debUriFile;
     private String debUriFile2;
     private File packageFile;
+
+    private File packageFile2;
     private File debPackageFile;
     private File debPackageFile2;
     private MockHttpServletResponse mockResponse;
     private Response response;
     private Package pkg;
+    private Package pkg2;
     private Package debPkg;
     private Package debPkg2;
 
@@ -127,15 +131,22 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
 
-        this.channel = createTestChannel(user);
+        this.channel = ErrataTestUtils.createTestChannel(user);
         this.mockResponse = new RhnMockHttpServletResponse();
         this.response = RequestResponseFactory.create(mockResponse);
 
-        this.pkg = createTestPackage(user, channel, "noarch");
+        this.pkg = ErrataTestUtils.createTestPackage(user, channel, "noarch");
         final String nvra = String.format("%s-%s-%s.%s",
                 pkg.getPackageName().getName(), pkg.getPackageEvr().getVersion(),
                 pkg.getPackageEvr().getRelease(), pkg.getPackageArch().getLabel());
         this.uriFile = String.format("%s.rpm", nvra);
+
+        this.pkg2 = ErrataTestUtils.createLaterTestPackage(user, null, channel, pkg,
+                null, "1000+git001^20220524", pkg.getPackageEvr().getRelease());
+        final String nvra2 = String.format("%s-%s-%s.%s",
+                pkg2.getPackageName().getName(), pkg2.getPackageEvr().getVersion(),
+                pkg2.getPackageEvr().getRelease(), pkg2.getPackageArch().getLabel());
+        this.uriFile2 = new URI(String.format("%s.rpm", nvra2.replace("^", "%5e"))).toString();
 
         Tuple3<Package, File, String> dpkg = createDebPkg(channel, "1", "1", "0", "all-deb");
         this.debPkg = dpkg.getA();
@@ -155,6 +166,14 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         pkg.setPath(FilenameUtils.getName(packageFile.getAbsolutePath()));
         TestUtils.saveAndFlush(pkg);
+
+        this.packageFile2 = File.createTempFile(nvra2, ".rpm");
+        // Write a fake file for the package
+        Files.write(packageFile2.getAbsoluteFile().toPath(),
+                TestUtils.randomString().getBytes());
+
+        pkg2.setPath(FilenameUtils.getName(packageFile2.getAbsolutePath()));
+        TestUtils.saveAndFlush(pkg2);
 
         // Change mount point to the parent of the temp file
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
@@ -522,6 +541,28 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         }
     }
 
+    public void testDownloadPackageWithSpecialCharacters() throws Exception {
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        tokenBuilder.onlyChannels(new HashSet<>(Arrays.asList(channel.getLabel())));
+        String tokenChannel = tokenBuilder.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(tokenChannel, "");
+        Request request = getMockRequestWithParamsAndHeaders(params, Collections.emptyMap(), uriFile2);
+        try {
+            assertNotNull(DownloadController.downloadPackage(request, response));
+
+            assertEquals(packageFile2.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+            assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
+            assertEquals("attachment; filename=" + packageFile2.getName(),
+                    response.raw().getHeader("Content-Disposition"));
+        }
+        catch (spark.HaltException e) {
+            fail(String.format("No HaltException should be thrown! %s", e.body()));
+        }
+    }
+
     /**
      * Test a download with a correct organization in the token.
      *
@@ -724,6 +765,34 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         }
         finally {
             FileUtils.deleteDirectory(productsDir);
+        }
+    }
+
+    /**
+     * Test for missing file. Should not handover to xsendfile, but throw 404 Not Found
+     * directly
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testDownloadMissingFile() throws Exception {
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        String tokenOrg = tokenBuilder.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(tokenOrg, "");
+        Request request =  SparkTestUtils.createMockRequestWithParams(
+                "http://localhost:8080/rhn/manager/download/:channel/repodata/:file",
+                params,
+                Collections.emptyMap(),
+                channel.getLabel(), "repomd.xml");
+
+        try {
+            assertNotNull(DownloadController.downloadMetadata(request, response));
+            fail("HaltException expected for missing file!");
+        }
+        catch (spark.HaltException e) {
+            assertTrue("Not Found Exception expected", e.getStatusCode() == 404);
         }
     }
 

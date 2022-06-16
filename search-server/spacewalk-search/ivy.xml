@@ -1,19 +1,19 @@
 <ivy-module version="1.0">
-    <info organisation="suse" module="manager" />
+    <info organisation="manager-42" module="manager" />
     <dependencies>
-        <dependency org="suse" name="simple-core" rev="3.1.3" />
-        <dependency org="suse" name="lucene-core" rev="2.4" />
-        <dependency org="suse" name="lucene-analyzers" rev="2.4" />
-        <dependency org="suse" name="commons-lang3" rev="3.8.1" />
-        <dependency org="suse" name="commons-logging" rev="1.2" />
-        <dependency org="suse" name="redstone-xmlrpc" rev="1.1_20071120" />
-        <dependency org="suse" name="mybatis" rev="3.2.3" />
-        <dependency org="suse" name="quartz" rev="2.3.0" />
-        <dependency org="suse" name="log4j" rev="1.2.12" />
-        <dependency org="suse" name="nutch-core" rev="1.0.1" />
-        <dependency org="suse" name="c3p0" rev="0.9.5.2" />
-        <dependency org="suse" name="picocontainer" rev="1.3" />
-        <dependency org="suse" name="hadoop" rev="0.18.1" />
+        <dependency org="manager-42" name="simple-core" rev="3.1.3" />
+        <dependency org="manager-42" name="lucene-core" rev="2.4" />
+        <dependency org="manager-42" name="lucene-analyzers" rev="2.4" />
+        <dependency org="manager-42" name="commons-lang3" rev="3.8.1" />
+        <dependency org="manager-42" name="commons-logging" rev="1.2" />
+        <dependency org="manager-42" name="redstone-xmlrpc" rev="1.1_20071120" />
+        <dependency org="manager-42" name="mybatis" rev="3.2.3" />
+        <dependency org="manager-42" name="quartz" rev="2.3.0" />
+        <dependency org="manager-42" name="log4j" rev="1.2.12" />
+        <dependency org="manager-42" name="nutch-core" rev="1.0.1" />
+        <dependency org="manager-42" name="c3p0" rev="0.9.5.2" />
+        <dependency org="manager-42" name="picocontainer" rev="1.3" />
+        <dependency org="manager-42" name="hadoop" rev="0.18.1" />
 
         <dependency org="junit" name="junit" rev="3.8.2" transitive="false"/>
     </dependencies>

@@ -302,3 +302,5 @@ artifacts:
     repository: 15_SP2_GA
   - artifact: ical4j
     repository: 4.2
+  - artifact: jetty-util
+    repository: 15_SP2_Update

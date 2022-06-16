@@ -33,10 +33,10 @@ import java.util.Date;
  * #struct_begin("system")
  *     #prop("int", "id")
  *     #prop("string", "name")
- *     #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
+ *     #prop_desc("$date",  "last_checkin", "last time server
  *             successfully checked in")
- *     #prop_desc("dateTime.iso8601",  "created", "Server registration time")
- *     #prop_desc("dateTime.iso8601",  "last_boot", "Last server boot time")
+ *     #prop_desc("$date",  "created", "server registration time")
+ *     #prop_desc("$date",  "last_boot", "last server boot time")
  * #struct_end()
  */
 public class ShortSystemInfoSerializer extends RhnXmlRpcCustomSerializer {

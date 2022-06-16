@@ -51,7 +51,7 @@ public class CVEAuditHandler extends BaseHandler {
      * by the 'cve-server-channels' taskomatic job.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "cveIdentifier")
-     * @xmlrpc.returntype #array_begin() $CVEAuditServerSerializer #array_end()
+     * @xmlrpc.returntype #return_array_begin() $CVEAuditServerSerializer #array_end()
      */
     public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
             String cveIdentifier) {
@@ -76,7 +76,7 @@ public class CVEAuditHandler extends BaseHandler {
      * 'cve-server-channels' taskomatic job.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "cveIdentifier")
-     * @xmlrpc.param #array_single("string", "patchStatusLabel")
+     * @xmlrpc.param #array_single("string", "patchStatusLabels")
      *  #options()
      *      #item_desc ("AFFECTED_PATCH_INAPPLICABLE",
      *          "Affected, patch available in unassigned channel")
@@ -85,7 +85,7 @@ public class CVEAuditHandler extends BaseHandler {
      *      #item_desc ("NOT_AFFECTED", "Not affected")
      *      #item_desc ("PATCHED", "Patched")
      *  #options_end()
-     * @xmlrpc.returntype #array_begin() $CVEAuditServerSerializer #array_end()
+     * @xmlrpc.returntype #return_array_begin() $CVEAuditServerSerializer #array_end()
      */
     public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
             String cveIdentifier, List<String> patchStatusLabels) throws FaultException {
@@ -134,7 +134,7 @@ public class CVEAuditHandler extends BaseHandler {
      * by the 'cve-server-channels' taskomatic job.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "cveIdentifier")
-     * @xmlrpc.returntype #array_begin() $CVEAuditImageSerializer #array_end()
+     * @xmlrpc.returntype #return_array_begin() $CVEAuditImageSerializer #array_end()
      */
     public List<CVEAuditImage> listImagesByPatchStatus(User loggedInUser,
             String cveIdentifier) {
@@ -159,7 +159,7 @@ public class CVEAuditHandler extends BaseHandler {
      * 'cve-server-channels' taskomatic job.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "cveIdentifier")
-     * @xmlrpc.param #array_single("string", "patchStatusLabel")
+     * @xmlrpc.param #array_single("string", "patchStatusLabels")
      *  #options()
      *      #item_desc ("AFFECTED_PATCH_INAPPLICABLE",
      *          "Affected, patch available in unassigned channel")
@@ -168,7 +168,7 @@ public class CVEAuditHandler extends BaseHandler {
      *      #item_desc ("NOT_AFFECTED", "Not affected")
      *      #item_desc ("PATCHED", "Patched")
      *  #options_end()
-     * @xmlrpc.returntype #array_begin() $CVEAuditImageSerializer #array_end()
+     * @xmlrpc.returntype #return_array_begin() $CVEAuditImageSerializer #array_end()
      */
     public List<CVEAuditImage> listImagesByPatchStatus(User loggedInUser,
             String cveIdentifier, List<String> patchStatusLabels) throws FaultException {

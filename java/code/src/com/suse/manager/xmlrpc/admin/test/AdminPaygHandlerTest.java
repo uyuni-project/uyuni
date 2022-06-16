@@ -292,6 +292,14 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         assertNull(payg.get().getPassword());
         assertNull(payg.get().getKey());
         assertNull(payg.get().getKeyPassword());
+
+        assertNull(payg.get().getBastionHost());
+        assertNull(payg.get().getBastionPort());
+        assertNull(payg.get().getBastionUsername());
+        assertNull(payg.get().getBastionPassword());
+        assertNull(payg.get().getBastionKey());
+        assertNull(payg.get().getBastionKeyPassword());
+
         assertEquals(payg.get().getStatus(), PaygSshData.Status.P);
         assertNull(payg.get().getErrorMessage());
         assertNullBastion(payg.get());

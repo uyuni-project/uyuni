@@ -122,7 +122,7 @@ public class SaltSSHService {
             "certs", "channels", "cleanup_ssh_minion", "configuration",
             "distupgrade", "hardware", "images", "packages/init.sls",
             "packages/patchdownload.sls", "packages/patchinstall.sls", "packages/pkgdownload.sls",
-            "packages/pkginstall.sls", "packages/pkgremove.sls", "packages/profileupdate.sls",
+            "packages/pkginstall.sls", "packages/pkgupdate.sls", "packages/pkgremove.sls", "packages/profileupdate.sls",
             "packages/redhatproductinfo.sls", "remotecommands", "scap", "services",
             "custom", "custom_groups", "custom_org", "util", "bootstrap", "formulas.sls");
 
@@ -846,9 +846,8 @@ public class SaltSSHService {
 
             return future.handle((applyResult, err) -> {
                 if (applyResult != null) {
-                    return applyResult.<Optional<List<String>>>fold((saltErr) ->
-                            Optional.of(singletonList(
-                                        SaltUtils.decodeSaltErr(saltErr))),
+                    return applyResult.fold((saltErr) ->
+                            Optional.of(singletonList(SaltUtils.decodeSaltErr(saltErr).getMessage())),
                             (saltRes) -> saltRes.values().stream()
                                     .filter(value -> !value.isResult())
                                     .map(value -> value.getComment())

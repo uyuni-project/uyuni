@@ -3,6 +3,10 @@
 
 Feature: Bootstrap a Salt minion via the GUI
 
+  # WORKAROUND because LTSS prevents migration, this needs to be removed when we update the minion to higher SP
+  Scenario: Prepare this minion before migration
+    When I remove the LTSS repository and product on this "sle_minion"
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 

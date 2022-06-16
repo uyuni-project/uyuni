@@ -33,21 +33,21 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *
  * @xmlrpc.doc
  *
- * #struct_begin("cve_audit_image")
+ * #struct_begin("CVE audit image")
  *     #prop("int", "image_id")
  *     #prop("string", "patch_status")
  *         #options()
  *             #item_desc ("AFFECTED_PATCH_INAPPLICABLE",
- *                "Affected, patch available in unassigned channel")
+ *                "affected, patch available in unassigned channel")
  *             #item_desc ("AFFECTED_PATCH_APPLICABLE",
- *                "Affected, patch available in assigned channel")
- *             #item_desc ("NOT_AFFECTED", "Not affected")
- *             #item_desc ("PATCHED", "Patched")
+ *                "affected, patch available in assigned channel")
+ *             #item_desc ("NOT_AFFECTED", "not affected")
+ *             #item_desc ("PATCHED", "patched")
  *         #options_end()
  *     #prop_array("string", "channel_labels",
- *         "Labels of channels that contain an unapplied patch")
+ *         "labels of channels that contain an unapplied patch")
  *     #prop_array("string", "errata_advisories",
- *         "Advisories of erratas that patch the specified vulnerability")
+ *         "advisories of erratas that patch the specified vulnerability")
  * #struct_end()
  */
 public class CVEAuditImageSerializer extends RhnXmlRpcCustomSerializer {

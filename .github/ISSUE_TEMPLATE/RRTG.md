@@ -15,13 +15,13 @@ assignees: ''
 
 **Lists of blockers:**
 
--[ ] 🛑 Short description
+- [ ] 🛑 Short description
   - Bugzilla link:
   - Related card comments (links):
--[ ] 🛑 Short description
+- [ ] 🛑 Short description
   - Bugzilla link:
   - Related card comments (links):
--[ ] 🛑 Short description
+- [ ] 🛑 Short description
   - Bugzilla link:
   - Related card comments (links):
 

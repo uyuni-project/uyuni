@@ -36,6 +36,6 @@ class NamespaceSchedule
   end
 
   def fail_system_action(system_id, action_id)
-    @test.call('schedule.failSystemAction', sessionKey: @test.token, serverId: system_id, actionId: action_id)
+    @test.call('schedule.failSystemAction', sessionKey: @test.token, sid: system_id, actionId: action_id)
   end
 end

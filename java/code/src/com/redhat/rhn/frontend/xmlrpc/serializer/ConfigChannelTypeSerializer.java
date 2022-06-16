@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * ConfigChannelTypeSerializer
  *
  * @xmlrpc.doc
- * #struct_begin("Configuration Channel Type information")
+ * #struct_begin("configuration channel type information")
  *   #prop("int", "id")
  *   #prop("string", "label")
  *   #prop("string", "name")

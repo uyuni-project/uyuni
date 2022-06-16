@@ -55,9 +55,12 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
-import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.hamcrest.Matcher;
@@ -744,7 +747,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).collect(Collectors.toList());
@@ -796,7 +799,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).collect(Collectors.toList());
@@ -848,7 +851,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).collect(Collectors.toList());
@@ -901,7 +904,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).collect(Collectors.toList());
@@ -954,7 +957,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).collect(Collectors.toList());
@@ -1006,7 +1009,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).collect(Collectors.toList());
@@ -1057,7 +1060,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user);
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).collect(Collectors.toList());

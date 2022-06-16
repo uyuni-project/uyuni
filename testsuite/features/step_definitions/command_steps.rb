@@ -829,6 +829,15 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
 end
 # rubocop:enable Metrics/BlockLength
 
+When(/^I remove the LTSS repository and product on this "([^"]*)"$/) do |host|
+  node = get_target(host)
+  os_family = get_os_version(node)
+
+  raise "The node #{node.hostname} does not have a supported OS Family (#{os_family})" unless os_family.include?("opensuse") || os_family.include?("sles")
+  cmd = "zypper rr os_ltss_repo && zypper -n rm sles-ltss-release"
+  node.run(cmd, check_errors: false)
+end
+
 When(/^I enable source package syncing$/) do
   cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"
   $server.run(cmd)
@@ -965,11 +974,6 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
     result, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
   end
-end
-
-# WORKAROUND: --flush option does not seem to work in case of hash mismatch with same version
-When(/^I clean up all bootstrap repositories on the server$/) do
-  $server.run('rm -rf /srv/www/htdocs/pub/repositories/*')
 end
 
 When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|

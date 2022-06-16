@@ -103,6 +103,8 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.controllers.bootstrap.BootstrapError;
+import com.suse.manager.webui.controllers.bootstrap.SaltBootstrapError;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -132,20 +134,24 @@ import com.suse.manager.webui.websocket.VirtNotifications;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.errors.SaltError;
+import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.salt.netapi.results.Ret;
+import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -172,7 +178,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -217,6 +222,8 @@ public class SaltUtils {
 
     // SUSE OS family as defined in Salt grains
     private static final String OS_FAMILY_SUSE = "Suse";
+
+    private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
     /**
      * Enumerates results of handlePackageChanges().
@@ -1676,7 +1683,9 @@ public class SaltUtils {
                                                            Pkg.Info pkgInfo, Server server) {
         InstalledPackage pkg = new InstalledPackage();
         pkg.setEvr(packageEvr);
-        pkg.setInstallTime(new Date(pkgInfo.getInstallDateUnixTime().get() * 1000));
+        pkg.setInstallTime(pkgInfo.getInstallDateUnixTime()
+                .map(time -> new Date((time * 1000)))
+                .orElse(null));
         pkg.setName(packageName);
         pkg.setServer(server);
 
@@ -2153,51 +2162,92 @@ public class SaltUtils {
         return uuidSwap.toString().replaceAll("-", "");
     }
 
-    /**
-     * Decode the std message from the whole message
-     *
-     * @param message the message Object
-     * @param key the json key of the message to decode (e.g.: sdterr, stdout)
-     * @return the String decoded if it exists
-     */
-    public static Optional<String> decodeStdMessage(Object message, String key) {
-        if (message instanceof JsonParsingError) {
-            JsonElement json = ((JsonParsingError)message).getJson();
-            if (json.isJsonObject() && json.getAsJsonObject().has(key)) {
-                if (json.getAsJsonObject().get(key).isJsonPrimitive() &&
-                    json.getAsJsonObject().get(key).getAsJsonPrimitive().isString()) {
-                    return Optional.ofNullable(
-                            json.getAsJsonObject().get(key).getAsJsonPrimitive().getAsString())
-                            .filter(s -> !s.isEmpty());
+    private static JsonElement parseJsonError(SaltError message) {
+        return message.fold(
+            functionNotAvailable -> null,
+            moduleNotSupported -> null,
+            jsonParsingError -> jsonParsingError.getJson(),
+            genericError -> null,
+            saltSshError -> {
+                try {
+                    // Try parsing the error message as JSON
+                    return JsonParser.GSON.fromJson("{" + saltSshError.getMessage() + "}", JsonElement.class);
                 }
-                else if (json.getAsJsonObject().get(key).isJsonArray()) {
-                    StringBuilder msg = new StringBuilder();
-                    json.getAsJsonObject().get(key).getAsJsonArray()
-                            .forEach(elem -> msg.append(elem.getAsString()));
-                    return Optional.ofNullable(msg.toString()).filter(s -> !s.isEmpty());
+                catch (JsonParseException ex) {
+                    LOG.warn("Unable to parse SaltSSHError message \"" +
+                        saltSshError.getMessage() + " \"as json: " + ex.getMessage());
+
+                    // Parsing as json has failed. Set the whole message as the "result" field, so it can be reported
+                    JsonObject result = new JsonObject();
+                    result.addProperty("result", saltSshError.getMessage());
+                    return result;
                 }
             }
+        );
+    }
+
+    private static String extractStandardMessage(JsonElement json, String key) {
+        if (json == null || !json.isJsonObject() || !json.getAsJsonObject().has(key)) {
+            return null;
         }
 
-        return Optional.empty();
+        final JsonElement element = json.getAsJsonObject().get(key);
+        if (element.isJsonPrimitive()) {
+            return StringUtils.trimToNull(element.getAsJsonPrimitive().getAsString());
+        }
+        else if (element.isJsonArray()) {
+            StringBuilder msg = new StringBuilder();
+            element.getAsJsonArray().forEach(elem -> msg.append(elem.getAsString()));
+            return StringUtils.trimToNull(msg.toString());
+        }
+
+        return null;
     }
 
     /**
-     * Decode a {@link SaltError} to a string error message.
+     * Decode a {@link SaltError} to a {@link BootstrapError}.
      *
      * @param saltErr the Salt err
-     * @return the error as a string
+     * @return The parsed information from the error
      */
-    public static String decodeSaltErr(SaltError saltErr) {
-        List<Optional<String>> messages = new LinkedList<>();
-        messages.add(SaltUtils.decodeStdMessage(saltErr, "stderr"));
-        messages.add(SaltUtils.decodeStdMessage(saltErr, "stdout"));
-        messages.add(SaltUtils.decodeStdMessage(saltErr, "return"));
-        Optional<String> error = Optional.ofNullable(messages.stream()
-                    .flatMap(Optional::stream)
-                    .collect(Collectors.joining(" "))
-                ).filter(s -> !s.isEmpty());
-        return error.orElseGet(() -> saltErr.toString());
+    public static BootstrapError decodeSaltErr(SaltError saltErr) {
+        // Create a generic main message
+        String detailMessage = saltErr.fold(
+            err -> LOCALIZATION.getMessage("bootstrap.minion.error.salt.functionnotavailable", err.getFunctionName()),
+            err -> LOCALIZATION.getMessage("bootstrap.minion.error.salt.modulenotsupported", err.getModuleName()),
+            err -> LOCALIZATION.getMessage("bootstrap.minion.error.salt.jsonparsingerror"),
+            err -> err.getMessage(),
+            err -> LOCALIZATION.getMessage("bootstrap.minion.error.salt.saltssherror")
+        );
+
+        JsonElement jsonElement = SaltUtils.parseJsonError(saltErr);
+        return new SaltBootstrapError(LOCALIZATION.getMessage("bootstrap.minion.error.salt.execution", detailMessage),
+            SaltUtils.extractStandardMessage(jsonElement, "stdout"),
+            SaltUtils.extractStandardMessage(jsonElement, "stderr"),
+            SaltUtils.extractStandardMessage(jsonElement, "result"));
+    }
+
+
+    /**
+     * Decode a collection of {@link State.ApplyResult} to a {@link BootstrapError}.
+     *
+     * @param result a map containing the result for each state applied
+     * @return The parsed information from the error
+     */
+    public static BootstrapError decodeBootstrapSSHResult(SSHResult<Map<String, State.ApplyResult>> result) {
+        String message = LOCALIZATION.getMessage("bootstrap.minion.error.salt.applystates", result.getRetcode());
+
+        String standardOuput = result.getStdout().orElse(null);
+        String standardError = result.getStderr().orElse(null);
+        String resultText = StringUtils.trimToNull(
+            result.getReturn().stream()
+                  .flatMap(map -> map.entrySet().stream())
+                  .filter(entry -> !entry.getValue().isResult())
+                  .map(fail -> fail.getKey() + ": " + fail.getValue().getComment())
+                  .collect(Collectors.joining("\n"))
+        );
+
+        return new SaltBootstrapError(message, standardOuput, standardError, resultText);
     }
 
     /**

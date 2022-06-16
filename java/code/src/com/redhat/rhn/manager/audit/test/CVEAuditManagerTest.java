@@ -1306,6 +1306,77 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Test that successor products and service packs are considered *only* if there is no patch
+     * installed in a current product. Even if the current products patch does not contain all the
+     * packages available in a patch for a successor product, since packages might be to old to be affected.
+     *
+     * See also here: https://bugzilla.suse.com/show_bug.cgi?id=1199646
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testIgnoreSuccessorProductsWhenCurrentPatchInstalled() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<>();
+        cves.add(cve);
+
+        // Create SP2 and SP3 products + upgrade path
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct productSP2 = createTestSUSEProduct(channelFamily);
+        SUSEProduct productSP3 = createTestSUSEProduct(channelFamily);
+        createTestSUSEUpgradePath(productSP2, productSP3);
+
+        // Create channels for the products
+        ChannelProduct channelProductSP2 = createTestChannelProduct();
+        ChannelProduct channelProductSP3 = createTestChannelProduct();
+        Channel baseChannelSP2 = createTestVendorBaseChannel(channelFamily, channelProductSP2);
+        Channel updateChannelSP2 = createTestVendorChildChannel(baseChannelSP2, channelProductSP2);
+        Channel baseChannelSP3 = createTestVendorBaseChannel(channelFamily, channelProductSP3);
+        Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
+
+        // Assign channels to products
+        createTestSUSEProductChannel(baseChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(updateChannelSP2, productSP2, true);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3, true);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3, true);
+
+        // Create two errata: one in the SP2 updates and one in SP3 updates
+        User user = createTestUser();
+        Errata errataSP2 = createTestErrata(user, cves);
+        updateChannelSP2.addErrata(errataSP2);
+        TestUtils.saveAndFlush(updateChannelSP2);
+        Errata errataSP3 = createTestErrata(user, cves);
+        updateChannelSP3.addErrata(errataSP3);
+        TestUtils.saveAndFlush(updateChannelSP3);
+
+        // Create packages for SP2 and SP3, but SP3 has an update not available in SP2 patch
+        Package basePackage1 = createTestPackage(user, null, baseChannelSP2, "noarch");
+        Package basePackage2 = createTestPackage(user, null, baseChannelSP2, "noarch");
+        Package updatePackage1SP2 = createLaterTestPackage(user, errataSP2, updateChannelSP2, basePackage1);
+        Package updatePackage1SP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage1);
+        Package updatePackage2SP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage2);
+
+        // Create server: patch is installed
+        Set<Channel> channelsSP2 = new HashSet<>();
+        channelsSP2.add(baseChannelSP2);
+        channelsSP2.add(updateChannelSP2);
+        Server server = createTestServer(user, channelsSP2);
+        createTestInstalledPackage(updatePackage1SP2, server);
+        createTestInstalledPackage(basePackage2, server);
+        installSUSEProductOnServer(productSP2, server);
+
+        // Show the patch as available in the currently installed product version
+        CVEAuditManager.populateCVEChannels();
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
+        // Make sure the errata and channel for the successor product is filtered out
+        assertEquals(0, results.stream().findFirst().get().getErratas().size());
+        assertEquals(0, results.stream().findFirst().get().getChannels().size());
+    }
+
+    /**
      * Test the SDK scenario: one errata with two packages in different channels.
      *
      * @throws Exception if anything goes wrong

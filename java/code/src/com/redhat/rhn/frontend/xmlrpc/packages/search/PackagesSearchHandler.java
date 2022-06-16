@@ -67,10 +67,9 @@ public class PackagesSearchHandler extends BaseHandler {
      * @xmlrpc.doc Search the lucene package indexes for all packages which
      *          match the given name.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "name",
-     *      "package name to search for")
+     * @xmlrpc.param #param_desc("string", "name", "package name to search for")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $PackageOverviewSerializer
      * #array_end()
      *  */
@@ -90,10 +89,9 @@ public class PackagesSearchHandler extends BaseHandler {
      * @xmlrpc.doc Search the lucene package indexes for all packages which
      *          match the given query in name or description
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "query",
-     *      "text to match in package name or description")
+     * @xmlrpc.param #param_desc("string", "query", "text to match in package name or description")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $PackageOverviewSerializer
      * #array_end()
      *  */
@@ -113,10 +111,9 @@ public class PackagesSearchHandler extends BaseHandler {
      * @xmlrpc.doc Search the lucene package indexes for all packages which
      *          match the given query in name or summary.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "query",
-     *      "text to match in package name or summary")
+     * @xmlrpc.param #param_desc("string", "query", "text to match in package name or summary")
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $PackageOverviewSerializer
      * #array_end()
      *  */
@@ -147,10 +144,9 @@ public class PackagesSearchHandler extends BaseHandler {
      * name, epoch, version, release, arch, description, summary<br>
      * Lucene Query Example: "name:kernel AND version:2.6.18 AND -description:devel"
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "luceneQuery",
-     *      "a query written in the form of Lucene QueryParser Syntax")
+     * @xmlrpc.param #param_desc("string", "luceneQuery", "a query written in the form of Lucene QueryParser Syntax")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *      $PackageOverviewSerializer
      *   #array_end()
      *  */
@@ -188,12 +184,10 @@ public class PackagesSearchHandler extends BaseHandler {
      * name, epoch, version, release, arch, description, summary<br>
      * Lucene Query Example: "name:kernel AND version:2.6.18 AND -description:devel"
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "luceneQuery",
-     *      "a query written in the form of Lucene QueryParser Syntax")
-     * @xmlrpc.param #param_desc("string", "channelLabel",
-     *      "Channel Label")
+     * @xmlrpc.param #param_desc("string", "luceneQuery", "a query written in the form of Lucene QueryParser Syntax")
+     * @xmlrpc.param #param_desc("string", "channelLabel", "the channel Label")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *      $PackageOverviewSerializer
      *   #array_end()
      *  */
@@ -238,7 +232,7 @@ public class PackagesSearchHandler extends BaseHandler {
      *
      * @param sessionKey The sessionKey for the logged in used
      * @param luceneQuery - a search query written in the form of Lucene QueryParser Syntax
-     * @param actKey - activation key
+     * @param activationKey - activation key
      * @return the package objects requested
      * @throws FaultException A FaultException is thrown on error.
      *
@@ -252,18 +246,16 @@ public class PackagesSearchHandler extends BaseHandler {
      * name, epoch, version, release, arch, description, summary<br>
      * Lucene Query Example: "name:kernel AND version:2.6.18 AND -description:devel"
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "luceneQuery",
-     *      "a query written in the form of Lucene QueryParser Syntax")
-     * @xmlrpc.param #param_desc("string", "actKey",
-     *      "activation key to look for packages in")
+     * @xmlrpc.param #param_desc("string", "luceneQuery", "a query written in the form of Lucene QueryParser Syntax")
+     * @xmlrpc.param #param_desc("string", "activationKey", "activation key to look for packages in")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *      $PackageOverviewSerializer
      *   #array_end()
      *  */
     public List<PackageOverview> advancedWithActKey(String sessionKey,
-            String luceneQuery, String actKey) throws FaultException {
-        if (StringUtils.isBlank(actKey)) {
+            String luceneQuery, String activationKey) throws FaultException {
+        if (StringUtils.isBlank(activationKey)) {
             throw new MethodInvalidParamException();
         }
         List<PackageOverview> pkgs = performSearch(sessionKey, luceneQuery,
@@ -271,7 +263,7 @@ public class PackagesSearchHandler extends BaseHandler {
         WebSession session = SessionManager.loadSession(sessionKey);
         User user = session.getUser();
         // Lookup what packages are in the activation key and filter
-        ActivationKey key = ActivationKeyManager.getInstance().lookupByKey(actKey, user);
+        ActivationKey key = ActivationKeyManager.getInstance().lookupByKey(activationKey, user);
         if (key == null) {
             throw new MethodInvalidParamException();
         }

@@ -32,13 +32,13 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  * @xmlrpc.doc
  *  #struct_begin("script result")
- *      #prop_desc("int", "serverId", "ID of the server the script runs on.")
- *      #prop_desc("dateTime.iso8601", "startDate", "Time script began execution.")
- *      #prop_desc("dateTime.iso8601", "stopDate", "Time script stopped execution.")
- *      #prop_desc("int", "returnCode", "Script execution return code.")
- *      #prop_desc("string", "output", "Output of the script (base64 encoded according
+ *      #prop_desc("int", "serverId", "ID of the server the script runs on")
+ *      #prop_desc("$date", "startDate", "time script began execution")
+ *      #prop_desc("$date", "stopDate", "time script stopped execution")
+ *      #prop_desc("int", "returnCode", "script execution return code")
+ *      #prop_desc("string", "output", "output of the script (base64 encoded according
                 to the output_enc64 attribute)")
- *      #prop_desc("boolean", "output_enc64", "Identifies base64 encoded output")
+ *      #prop_desc("boolean", "output_enc64", "identifies base64 encoded output")
  *  #struct_end()
  *
  */

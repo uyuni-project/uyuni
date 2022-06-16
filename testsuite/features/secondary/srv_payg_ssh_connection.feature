@@ -44,15 +44,15 @@ Feature: Listing, adding and removing ssh connection data for the payg feature
     And I should see a "my-host-full.local" text in element "Instance-panel-wrapper"
     And I should see a "21" text in element "Instance-panel-wrapper"
     And I should see a "rootFull" text in element "Instance-panel-wrapper"
-    And I should see a "passwordFull" text in element "Instance-panel-wrapper"
-    And I should see a "keyFull" text in element "Instance-panel-wrapper"
-    And I should see a "keyPasswordFull" text in element "Instance-panel-wrapper"
+    And I should not see a "passwordFull" text in element "Instance-panel-wrapper"
+    And I should not see a "keyFull" text in element "Instance-panel-wrapper"
+    And I should not see a "keyPasswordFull" text in element "Instance-panel-wrapper"
     And I should see a "my-bastion.local" text in element "Bastion-panel-wrapper"
     And I should see a "22" text in element "Bastion-panel-wrapper"
     And I should see a "b_rootFull" text in element "Bastion-panel-wrapper"
-    And I should see a "b_passwordFull" text in element "Bastion-panel-wrapper"
-    And I should see a "b_keyFull" text in element "Bastion-panel-wrapper"
-    And I should see a "b_keyPasswordFull" text in element "Bastion-panel-wrapper"
+    And I should not see a "b_passwordFull" text in element "Bastion-panel-wrapper"
+    And I should not see a "b_keyFull" text in element "Bastion-panel-wrapper"
+    And I should not see a "b_keyPasswordFull" text in element "Bastion-panel-wrapper"
     And I should see a "Delete" button
 
   Scenario: Check pay-as-you-go list
@@ -84,9 +84,9 @@ Feature: Listing, adding and removing ssh connection data for the payg feature
     Then I should see a "Pay-as-you-go properties updated successfully" text
     And I should see a "221" text in element "Instance-panel-wrapper"
     And I should see a "NewRootFull" text in element "Instance-panel-wrapper"
-    And I should see a "NewPasswordFull" text in element "Instance-panel-wrapper"
-    And I should see a "newKeyFull" text in element "Instance-panel-wrapper"
-    And I should see a "newKeyPasswordFull" text in element "Instance-panel-wrapper"
+    And I should not see a "NewPasswordFull" text in element "Instance-panel-wrapper"
+    And I should not see a "newKeyFull" text in element "Instance-panel-wrapper"
+    And I should not see a "newKeyPasswordFull" text in element "Instance-panel-wrapper"
 
   Scenario: Edit bastion ssh connection data
     When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
@@ -103,9 +103,9 @@ Feature: Listing, adding and removing ssh connection data for the payg feature
     And I should see a "my-new-bastion.local" text in element "Bastion-panel-wrapper"
     And I should see a "222" text in element "Bastion-panel-wrapper"
     And I should see a "b_new_rootFull" text in element "Bastion-panel-wrapper"
-    And I should see a "b_new_passwordFull" text in element "Bastion-panel-wrapper"
-    And I should see a "b_new_keyFull" text in element "Bastion-panel-wrapper"
-    And I should see a "b_new_keyPasswordFull" text in element "Bastion-panel-wrapper"
+    And I should not see a "b_new_passwordFull" text in element "Bastion-panel-wrapper"
+    And I should not see a "b_new_keyFull" text in element "Bastion-panel-wrapper"
+    And I should not see a "b_new_keyPasswordFull" text in element "Bastion-panel-wrapper"
 
   Scenario: Delete minimal information for payg ssh connection data
     When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"

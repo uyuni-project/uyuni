@@ -45,7 +45,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @return Returns 1 if successful (exception otherwise)
      *
      * @xmlrpc.doc Set a user's timezone.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.param #param_desc("int", "tzid" "Timezone ID. (from listTimeZones)")
      * @xmlrpc.returntype #return_int_success()
@@ -75,7 +75,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @return Returns 1 if successful (exception otherwise)
      *
      * @xmlrpc.doc Set a user's locale.
-     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.param #param_desc("string", "locale", "Locale to set. (from listLocales)")
      * @xmlrpc.returntype #return_int_success()
@@ -104,7 +104,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of all understood timezones. Results can be
      * used as input to setTimeZone.
      * @xmlrpc.returntype
-     * #array_begin()
+     * #return_array_begin()
      *   $RhnTimeZoneSerializer
      * #array_end()
      */

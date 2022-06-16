@@ -37,11 +37,11 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *      #prop("string", "epoch")
  *      #prop("int", "id")
  *      #prop("string", "arch_label")
- *      #prop("dateTime.iso8601", "last_modified")
- *      #prop_desc("string", "path", "The path on that file system that the package
+ *      #prop("$date", "last_modified")
+ *      #prop_desc("string", "path", "the path on that file system that the package
  *             resides")
- *      #prop_desc("boolean", "part_of_retracted_patch", "True if the package is a part of a retracted patch")
- *      #prop_desc("string", "provider", "The provider of the package, determined by
+ *      #prop_desc("boolean", "part_of_retracted_patch", "true if the package is a part of a retracted patch")
+ *      #prop_desc("string", "provider", "the provider of the package, determined by
  *              the gpg key it was signed with.")
  *  #struct_end()
  *

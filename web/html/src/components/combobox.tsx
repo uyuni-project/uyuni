@@ -2,6 +2,8 @@ import * as React from "react";
 
 import Creatable from "react-select/creatable";
 
+import withTestAttributes from "./input/select-test-attributes";
+
 type ReactSelectItem = {
   value: string | null | undefined;
   id: any | null | undefined;
@@ -20,6 +22,9 @@ type ComboboxProps = {
   selectedId?: (number | null | undefined) | (string | null | undefined);
   onFocus?: () => void;
   onSelect: (value: ComboboxItem) => void;
+
+  /** Id for testing purposes */
+  "data-testid"?: string;
 };
 
 type ComboboxState = {
@@ -75,6 +80,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
       label: item.text,
     }));
 
+    const testAttributes = withTestAttributes(this.props["data-testid"], this.props.name);
     return (
       <Creatable
         id={this.props.id}
@@ -85,7 +91,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
         options={options}
         styles={colourStyles}
         menuPortalTarget={document.body}
-        classNamePrefix={`class-${this.props.name}`}
+        {...testAttributes}
       />
     );
   }

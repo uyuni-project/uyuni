@@ -67,7 +67,7 @@ start() {
     else
         touch $DISABLE_FILE
     fi
-    echo "  Running DB schema upgrade. This may take a while."
+    echo "  Checking DB schema and running DB schema upgrade if needed. This may take a while."
     echo "  Call the following command to see progress: journalctl -f -u uyuni-check-database.service"
     MSG1=$(systemctl start spacewalk.target 2>&1) || {
         MSG2=$(systemctl status uyuni-check-database.service)

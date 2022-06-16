@@ -1,3 +1,5 @@
+- Report all VMs in poller, not only running ones. (bsc#1199528)
+
 -------------------------------------------------------------------
 Wed Mar 30 16:22:17 CEST 2022 - jmassaguerpla@suse.de
 

@@ -52,6 +52,22 @@ public class ValueMap {
     }
 
     /**
+     * Check if ValueMap is empty
+     * @return true if ValueMap is empty
+     */
+    public boolean isEmpty() {
+        return this.valueMap.isEmpty();
+    }
+
+    /**
+     * Check if ValueMap is present
+     * @return true if ValueMap is present
+     */
+    public boolean isPresent() {
+        return !this.valueMap.isEmpty();
+    }
+
+    /**
      * Get the value as string.
      * @param key the key
      * @return a value converted to string or an

@@ -2,6 +2,7 @@
 #set($listlevel = 1)
 #macro(list)#foreach($i in [1..$listlevel])*#end#end
 #macro(type $type)[.$type]#$type# #end
+#macro(atype $type)[.array]#$type array# #end
 #macro(serializer $serializer)
 #list() $serializer
 #end
@@ -12,10 +13,7 @@
 #list() #type($type) "$value" - $desc
 #end
 #macro(prop_array $key $type $desc)
-#list() #type("array") "$key"
-#set($listlevel = $listlevel + 1)
-#list() $type - $desc
-#set($listlevel = $listlevel - 1)
+#list() #atype($type) "$key" - $desc
 #end
 #macro(prop_array_begin $key)
 #list() #type("array") "$key"
@@ -23,46 +21,48 @@
 #end
 #macro(prop_array_begin_desc $key $desc)
 #list() #type("array") "$key" - $desc
+#set($listlevel = $listlevel + 1)
 #end
 #macro(prop_array_end)
 #set($listlevel = $listlevel - 1)
 #end
-#macro(struct_begin $type)
-#list() #type("struct") - $type
+#macro(struct_begin $value)
+#list() #type("struct") $value
 #set($listlevel = $listlevel + 1)
 #end
 #macro(struct_end)
 #set($listlevel = $listlevel - 1)
 #end
-#macro(struct_desc $type $desc)
-#list() #type("struct") - $type $desc
+#macro(struct_desc $value $desc)
+#list() #type("struct") $value - $desc
 #set($listlevel = $listlevel + 1)
 #end
 #macro(struct_desc_end)
 #set($listlevel = $listlevel - 1)
 #end
-#macro(array_begin)
+#macro(return_array_begin)
 #list() #type("array"):
+#set($listlevel = $listlevel + 1)
+#end
+#macro(array_begin $value)
+#list() #type("array") $value
+#set($listlevel = $listlevel + 1)
+#end
+#macro(array_begin_desc $value $desc)
+#list() #type("array") $value - $desc
 #set($listlevel = $listlevel + 1)
 #end
 #macro(array_end)
 #set($listlevel = $listlevel - 1)
 #end
-#macro(array_desc $type $desc)
-#list() #type("array") $type - $desc
-#set($listlevel = $listlevel + 1)
+#macro(array_single $type $value)
+#list() #atype("$type") $value
 #end
-#macro(array_desc_end)
-#set($listlevel = $listlevel - 1)
-#end
-#macro(array_single $type $desc)
-#list() #type("array"):
-#set($listlevel = $listlevel + 1)
-#list() #type($type) - $desc
-#set($listlevel = $listlevel - 1)
+#macro(array_single_desc $type $value $desc)
+#list() #atype($type) $value - $desc
 #end
 #macro(options)
-
+#set($listlevel = $listlevel + 1)
 #end
 #macro(item $item)
 #list() $item
@@ -71,7 +71,7 @@
 #list() $item - $desc
 #end
 #macro(options_end)
-
+#set($listlevel = $listlevel - 1)
 #end
 #macro(param $type $value)
 #list() #type($type) $value
@@ -92,8 +92,8 @@
 
 #end
 #macro(paragraph)
- 
+
 #end
 #macro(paragraph_end)
- 
+
 #end

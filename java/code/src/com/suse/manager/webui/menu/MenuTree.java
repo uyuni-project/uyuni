@@ -29,6 +29,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
@@ -467,12 +469,12 @@ public class MenuTree {
             // External Links
             nodes.add(new MenuItem("External Links").withIcon("fa-link")
                 .addChild(new MenuItem("header.jsp.knowledgebase")
-                    .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
+                    .withPrimaryUrl("https://www.suse.com/support/kb/?id=SUSE+Manager")
                     .withTarget("_blank"))
                 .addChild(new MenuItem("header.jsp.documentation")
                     .withPrimaryUrl(ConfigDefaults.get().isUyuni() ?
-                            "https://www.uyuni-project.org/uyuni-docs/uyuni/index.html"
-                            : "https://documentation.suse.com/suma/")
+                            "https://www.uyuni-project.org/uyuni-docs/" + docsLocale + "/uyuni/index.html" :
+                            "https://documentation.suse.com/suma/" + getMajorMinorProductVersion() + "/")
                     .withTarget("_blank"))
                 );
         }
@@ -481,6 +483,17 @@ public class MenuTree {
             getBestActiveDirs(nodes, url);
         }
         return nodes;
+    }
+
+    /**
+     * Get the `MAJOR.MINOR` part of the product version string
+     */
+    private String getMajorMinorProductVersion() {
+        String productVersion = ConfigDefaults.get().getProductVersion();
+        Pattern pattern = Pattern.compile("^[0-9]+\\.[0-9]+");
+        Matcher matcher = pattern.matcher(productVersion);
+        matcher.find();
+        return matcher.group(0);
     }
 
     /**

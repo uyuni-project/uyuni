@@ -552,7 +552,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                       rhnPackageArch pa,
                       rhnPackageEVR pevr,
                       rhnPackageEVR spevr,
-                      rhnPackageName pn
+                      rhnPackageName pn,
+                      rhnChannelPackage pc
                  WHERE e.id in (:errataIds) AND
                       sc.server_id in (:serverIds) AND
                       e.id = ce.errata_id AND
@@ -566,7 +567,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                       pevr.evr > spevr.evr AND
                       p.package_arch_id = sp.package_arch_id AND
                       p.package_arch_id = pa.id AND
-                      p.name_id = pn.id
+                      p.name_id = pn.id AND
+                      pc.package_id = p.id AND
+                      pc.channel_id = sc.channel_id
                  GROUP BY sc.server_id, pn.name, pa.label) X]]>
     </sql-query>
 

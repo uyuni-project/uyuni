@@ -35,7 +35,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * ConfigRevisionSerializer
  *
  * @xmlrpc.doc
- * #struct_begin("Configuration Revision information")
+ * #struct_begin("configuration revision information")
  *   #prop("string", "type")
  *              #options()
  *                  #item("file")

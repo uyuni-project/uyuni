@@ -328,6 +328,11 @@ public class UbuntuErrataManager {
                         e -> e.getChannels().stream().map(c -> c.getId()).collect(Collectors.toList())
                         )
                 );
+        changedErrata.stream().flatMap(e -> e.getChannels().stream()).distinct()
+            .forEach(channel -> {
+                LOG.debug("Update NeededCache for Channel: " + channel.getLabel());
+                ErrataManager.insertErrataCacheTask(channel);
+        });
         ErrataManager.bulkErrataNotification(errataToChannels, new Date());
     }
 }

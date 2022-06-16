@@ -172,12 +172,12 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
-  xpath_option = ".//*[contains(@class, 'class-#{field}__option') and contains(text(),'#{option}')]"
-  xpath_field = "//*[contains(@class, 'class-#{field}__control')]/../*[@name='#{field}']/.."
   if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)
   else
     # Custom React selector
+    xpath_field = "//*[contains(@class, 'data-testid-#{field}-child__control')]"
+    xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(text(), '#{option}')]"
     find(:xpath, xpath_field).click
     find(:xpath, xpath_option, match: :first).click
   end
@@ -625,6 +625,12 @@ Then(/^I should see "([^"]*)" in the textarea$/) do |text|
   end
 end
 
+Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
+  within('textarea') do
+    raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
+  end
+end
+
 #
 # Test for a text in the whole page using regexp
 #
@@ -905,7 +911,7 @@ Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |option, field|
   next if has_select?(field, selected: option)
 
   # Custom React selector
-  next if has_xpath?("//*[contains(@class, 'class-#{field}__value-container')]/*[contains(text(),'#{option}')]")
+  next if has_xpath?("//*[contains(@class, 'data-testid-#{field}-child__value-container')]/*[contains(text(),'#{option}')]")
 
   raise "#{option} is not selected as #{field}"
 end
@@ -918,7 +924,7 @@ When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |option, fi
     break if has_select?(field, with_options: [option])
 
     # Custom React selector
-    break if has_xpath?("//*[contains(@class, 'class-#{field}__value-container')]/*[contains(text(),'#{option}')]")
+    break if has_xpath?("//*[contains(@class, 'data-testid-#{field}-child__value-container')]/*[contains(text(),'#{option}')]")
   end
 end
 

@@ -65,7 +65,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.doc Return the list of formulas currently installed.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array_single("string", "(formulas)")
+     * @xmlrpc.returntype #array_single("string", "the list of formulas")
      */
     public List<String> listFormulas(User loggedInUser) {
         return FormulaFactory.listFormulaNames();
@@ -81,7 +81,7 @@ public class FormulaHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "systemGroupId")
-     * @xmlrpc.returntype #array_single("string", "(formulas)")
+     * @xmlrpc.returntype #array_single("string", "the list of formulas")
      */
     public List<String> getFormulasByGroupId(User loggedInUser, Integer systemGroupId) {
         ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(new Long(systemGroupId), loggedInUser.getOrg());
@@ -92,37 +92,37 @@ public class FormulaHandler extends BaseHandler {
     /**
      * List the formulas applied directly to a server.
      * @param loggedInUser The current user
-     * @param systemId The Id of the server
+     * @param sid The Id of the server
      * @return the list of formulas the server has.
      *
      * @xmlrpc.doc Return the list of formulas directly applied to a server.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "systemId")
-     * @xmlrpc.returntype #array_single("string", "(formulas)")
+     * @xmlrpc.param #param_desc("int", "sid", "the system ID")
+     * @xmlrpc.returntype #array_single("string", "the list of formulas")
      */
-    public List<String> getFormulasByServerId(User loggedInUser, Integer systemId) {
-        Server server = ServerFactory.lookupById(new Long(systemId));
+    public List<String> getFormulasByServerId(User loggedInUser, Integer sid) {
+        Server server = ServerFactory.lookupById(new Long(sid));
         FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
-        return FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(systemId.longValue()));
+        return FormulaFactory.getFormulasByMinionId(MinionServerFactory.getMinionId(sid.longValue()));
     }
 
     /**
      * List the formulas applied to a server and all of his groups.
      * @param loggedInUser The current user
-     * @param systemId The Id of the server
+     * @param sid The Id of the server
      * @return the list of formulas the server and his groups have.
      *
      * @xmlrpc.doc Return the list of formulas a server and all his groups have.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "systemId")
-     * @xmlrpc.returntype #array_single("string", "(formulas)")
+     * @xmlrpc.param #param_desc("int", "sid", "the system ID")
+     * @xmlrpc.returntype #array_single("string", "the list of formulas")
      */
-    public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer systemId) {
-        Server server = ServerFactory.lookupById(new Long(systemId));
+    public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer sid) {
+        Server server = ServerFactory.lookupById(new Long(sid));
         FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, server);
-        return FormulaFactory.getCombinedFormulasByServerId(systemId.longValue());
+        return FormulaFactory.getCombinedFormulasByServerId(sid.longValue());
     }
 
     /**
@@ -137,7 +137,7 @@ public class FormulaHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "systemGroupId")
-     * @xmlrpc.param #array_single("string", "formulaName")
+     * @xmlrpc.param #array_single("string", "formulas")
      * @xmlrpc.returntype #return_int_success()
      */
     public int setFormulasOfGroup(User loggedInUser, Integer systemGroupId,
@@ -167,8 +167,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.doc Set the formulas of a server.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "systemId")
-     * @xmlrpc.param #array_single("string", "formulaName")
+     * @xmlrpc.param #param_desc("int", "sid", "the system ID")
+     * @xmlrpc.param #array_single("string", "formulas")
      * @xmlrpc.returntype #return_int_success()
      */
     public int setFormulasOfServer(User loggedInUser, Integer systemId,
@@ -205,9 +205,9 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.doc Get the saved data for the specific formula against specific server
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "systemId")
+     * @xmlrpc.param #param_desc("int", "sid", "the system ID")
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.returntype struct with saved formula data
+     * @xmlrpc.returntype #param("struct", "the saved formula data")
      */
     public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer systemId, String formulaName) {
         return formulaManager
@@ -219,7 +219,7 @@ public class FormulaHandler extends BaseHandler {
      * and all of the groups those systems are member of
      *
      * @param loggedInUser The current user
-     * @param systemIds The system IDs
+     * @param sids The system IDs
      * @param formulaName formula name
      * @return a list containing the saved data for the passed formula and the passed system IDs.
      *
@@ -227,15 +227,15 @@ public class FormulaHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param #array_single("int", "systemID")
+     * @xmlrpc.param #array_single("int", "sids", "the list of system IDs")
      * @xmlrpc.returntype
-     *   #array_begin()
+     *   #return_array_begin()
      *     $FormulaDataSerializer
      *   #array_end()
      */
     public List<FormulaData> getCombinedFormulaDataByServerIds(User loggedInUser, String formulaName,
-            List<Long> systemIds) {
-        return this.formulaManager.getCombinedFormulaDataForSystems(loggedInUser, systemIds, formulaName);
+            List<Long> sids) {
+        return this.formulaManager.getCombinedFormulaDataForSystems(loggedInUser, sids, formulaName);
     }
 
     /**
@@ -250,7 +250,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "groupId")
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.returntype struct with saved formula data
+     * @xmlrpc.returntype #param("struct", "the saved formula data")
      */
     public Map<String, Object> getGroupFormulaData(User loggedInUser, Integer groupId, String formulaName) {
         Map<String, Object> savedData = formulaManager
@@ -273,7 +273,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "systemId")
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param struct content with the values for each field in the form
+     * @xmlrpc.param #param_desc("struct", "content", "struct content with the values for each field in the form")
      * @xmlrpc.returntype #return_int_success()
      */
     public int setSystemFormulaData(User loggedInUser, Integer systemId, String formulaName, Map<String,
@@ -313,7 +313,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int","groupId")
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param struct containing the values for each field in the form
+     * @xmlrpc.param #param_desc("struct", "content", "struct containing the values for each field in the form")
      * @xmlrpc.returntype #return_int_success()
      */
     public int setGroupFormulaData(User loggedInUser, Integer groupId, String formulaName, Map<String,
