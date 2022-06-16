@@ -1,5 +1,5 @@
 The `web` subdirectory contains the React based modern web UI, related assets such as fonts and images, translations, and some miscellaneous legacy bits and pieces.  
-For legacy the web UI, please see the `java` subdirectory.  
+For the legacy web UI, please see the `java` subdirectory.  
 
 The `web` subdirectory consists of roughly the following main chunks:  
 
