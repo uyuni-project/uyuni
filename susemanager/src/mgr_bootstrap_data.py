@@ -375,6 +375,8 @@ RES8 = [
     "python3-pytz",
     "python3-setuptools",
     "python3-distro"
+    "python3-immutables",
+    "python3-contextvars",
 ]
 
 PKGLIST15_SALT = [
@@ -561,6 +563,8 @@ PKGLISTUBUNTU1804 = [
     "python3-distro",
     "python3-gnupg",
     "gnupg",
+    "python3-immutables",
+    "python3-contextvars",
 ]
 
 PKGLISTUBUNTU2004 = [
