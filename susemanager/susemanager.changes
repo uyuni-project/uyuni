@@ -1,4 +1,8 @@
-- Add python3-contextvars and python3-immutables to missing bootstrap repos (bsc#1200606)
+-------------------------------------------------------------------
+Thu Jun 16 16:23:32 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.36-1
+  * Add python3-contextvars and python3-immutables to missing bootstrap repos (bsc#1200606)
 
 -------------------------------------------------------------------
 Mon Jun 06 10:28:12 CEST 2022 - jgonzalez@suse.com
