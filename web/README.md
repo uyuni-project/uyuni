@@ -4,7 +4,7 @@ For legacy the web UI, please see the `java` subdirectory.
 The `web` subdirectory consists of roughly the following main chunks:  
 
  - `web/po`: Translations.
- - `web/html/javascript`: Legacy scripts, most of them global. Over time we're slowly trying to sunset piece by piece.  
+ - `web/html/javascript`: Legacy scripts, most of them global. Over time we're slowly trying to sunset these piece by piece.  
  - `web/html/src/branding`: Branding assets, such as stylesheet sources, fonts, images etc.
  - `web/html/src/build`: Build tooling for the web UI.
  - `web/html/src/components`, `web/html/src/core`, `web/html/src/manager`, `web/html/src/utils`: Source code for the web UI.
