@@ -388,6 +388,8 @@ RES8 = [
     "python3-pytz",
     "python3-setuptools",
     "python3-distro",
+    "python3-immutables",
+    "python3-contextvars",
     "venv-salt-minion",
 ]
 
@@ -614,6 +616,8 @@ PKGLISTUBUNTU1804 = [
     "python3-distro",
     "python3-gnupg",
     "gnupg",
+    "python3-immutables",
+    "python3-contextvars",
     "venv-salt-minion",
 ]
 
