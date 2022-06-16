@@ -119,9 +119,10 @@ class DpkgRepo:
                             self._pkg_index = cnt_fname, f.read()
                             break
                     except FileNotFoundError as ex:
-                        logging.debug(
+                        logging.exception(
                             "File not found: {}".format(
                                 packages_url.replace("file://", "")), exc_info=True)
+                        raise ex
                 else:
                     resp = requests.get(packages_url, proxies=self.proxies)
                     if resp.status_code == http.HTTPStatus.OK:
