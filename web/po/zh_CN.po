@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-19 14:13+0000\n"
+"POT-Creation-Date: 2022-06-08 14:50+0000\n"
 "PO-Revision-Date: 2022-05-18 12:12+0000\n"
 "Last-Translator: Padraig Dillon <padraig.dillon@suse.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -4183,7 +4183,7 @@ msgid "City"
 msgstr "城市"
 
 #: ../html/src/manager/proxy/container-config.tsx:312
-#: ../html/src/manager/state/highstate-summary.tsx:170
+#: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4351,6 +4351,11 @@ msgstr "已拒绝"
 msgid "Keys"
 msgstr "密钥"
 
+#: ../html/src/manager/salt/keys/key-management.tsx:154
+#, fuzzy
+msgid "Search by name or fingerprint"
+msgstr "按名称或项目过滤"
+
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
 msgstr "指纹"
@@ -4425,7 +4430,7 @@ msgstr "继承自"
 msgid "Show full highstate output"
 msgstr "显示完整 Highstate 输出"
 
-#: ../html/src/manager/state/highstate-summary.tsx:163
+#: ../html/src/manager/state/highstate-summary.tsx:162
 msgid "System Group"
 msgstr "系统组"
 

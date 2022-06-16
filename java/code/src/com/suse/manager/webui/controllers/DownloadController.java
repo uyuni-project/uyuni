@@ -47,8 +47,8 @@ import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Base64;
@@ -376,10 +376,13 @@ public class DownloadController {
         String channel = request.params(":channel");
         String path = "";
         try {
-            URL url = new URL(request.url());
-            path = url.getPath();
+            URI uri = new URI(request.url());
+            // URL decode the path to support ^ in package versions
+            path = uri.getPath();
+
         }
-        catch (MalformedURLException e) {
+        catch (URISyntaxException e) {
+            log.error("Unable to parse: {}", request.url());
             halt(HttpStatus.SC_INTERNAL_SERVER_ERROR,
                     String.format("url '%s' is malformed", request.url()));
         }
@@ -396,6 +399,7 @@ public class DownloadController {
                 pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch(),
                 pkgInfo.getChecksum());
         if (pkg == null) {
+            log.error(String.format("%s: Package not found in channel: %s", path, channel));
             halt(HttpStatus.SC_NOT_FOUND,
                  String.format("%s not found in %s", basename, channel));
         }

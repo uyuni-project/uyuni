@@ -788,14 +788,14 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.disableuser" xml:space="preserve">
           <source>Cannot deactivate user.</source>
-        <target/>
+        <target>Nie je možné deaktivovať používateľa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.enableuser" xml:space="preserve">
           <source>Cannot reactivate user.</source>
-        <target/>
+        <target>Nie je možné opätovne aktivovať používateľa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -29449,20 +29449,20 @@ given channel.</source>
         <source>Following installed products will be removed from the system during migration:</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
+      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
+      </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-      </body>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

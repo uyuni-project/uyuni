@@ -1,3 +1,9 @@
+- fix api log message references the wrong user (bsc#1179962)
+- Consistently use conf value for SPA engine timeout
+- fix download of packages with caret sign in the version due
+  to missing url decode
+- Add specific requirement for Cobbler 3.2.1 to not conflict with Leap 15.4
+
 -------------------------------------------------------------------
 Mon May 23 10:57:23 CEST 2022 - jgonzalez@suse.com
 

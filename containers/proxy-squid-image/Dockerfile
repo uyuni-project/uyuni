@@ -1,6 +1,6 @@
 #!BuildTag: uyuni/proxy-squid:latest uyuni/proxy-squid:%PKG_VERSION% uyuni/proxy-squid:%PKG_VERSION%.%RELEASE%
 
-ARG BASE=registry.suse.com/bci/bci-base:15.3
+ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE
 
 ARG PRODUCT_REPO

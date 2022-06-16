@@ -8802,215 +8802,215 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="system.invalidsystem" xml:space="preserve">
         <source>Invalid system</source>
-        <target/>
+        <target>Neplatný systém</target>
       </trans-unit>
       <trans-unit id="api.invalidargs" xml:space="preserve">
         <source>Invalid argument(s): {0}</source>
-        <target/>
+        <target>Neplatný argument(y): {0}</target>
       </trans-unit>
       <trans-unit id="api.action.nosuchaction" xml:space="preserve">
         <source>No such action: {0}</source>
-        <target/>
+        <target>Žiadna takáto akcia: {0}</target>
       </trans-unit>
       <trans-unit id="api.action.nosuchactionchain" xml:space="preserve">
         <source>No such action chain: {0}</source>
-        <target/>
+        <target>Žiadny takýto reťazec akcií: {0}</target>
       </trans-unit>
       <trans-unit id="api.action.invalidactiontype" xml:space="preserve">
         <source>Invalid action type</source>
-        <target/>
+        <target>Neplatný typ akcie</target>
       </trans-unit>
       <trans-unit id="api.org.pamAuthNotConfigured" xml:space="preserve">
         <source>The server is not configured to support PAM authentication. Refer to the reference guide for instructions on how to set up PAM.</source>
-        <target/>
+        <target>Server nie je nakonfigurovaný na podporu overovania PAM. Inštrukcie na nastavenie PAM nájdete v referenčnej príručke.</target>
       </trans-unit>
       <trans-unit id="api.org.migrationtosameorg" xml:space="preserve">
         <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
-        <target/>
+        <target>Používateľ nemôže migrovať systém, v ktorom sú pôvodná a cieľová organizácia rovnaké.  Org Id: {0}, Systém Id: {1}.</target>
       </trans-unit>
       <trans-unit id="api.org.nosuchorg" xml:space="preserve">
         <source>No such organization: {0}</source>
-        <target/>
+        <target>Žiadna takáto organizácia: {0}</target>
       </trans-unit>
       <trans-unit id="api.org.notintrust" xml:space="preserve">
         <source>Organization {0} is not defined in trust.</source>
-        <target/>
+        <target>Organizácia {0} nie je definovaná ako dôveryhodná.</target>
       </trans-unit>
       <trans-unit id="api.org.sysnotintrust" xml:space="preserve">
         <source>System {0} is member of organization {1} which is not defined in the destination organization's trust.</source>
-        <target/>
+        <target>Systém {0} je členom organizácie {1}, ktorá nie je definovaná v dôvere cieľovej organizácie.</target>
       </trans-unit>
       <trans-unit id="api.org.notpermittedbyorg" xml:space="preserve">
         <source>User in organization {0} is not allowed to retrieve or modify {1} properties in organization {2}.</source>
-        <target/>
+        <target>Používateľ v organizácii {0} nemá povolené získať alebo zmeniť vlastnosti {1} v organizácii {2}.</target>
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg" xml:space="preserve">
         <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Túto operáciu nemožno vykonať na organizácii @@PRODUCT_NAME@@. (Org ID 1)</target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata" xml:space="preserve">
         <source>Invalid patch: {0}</source>
-        <target/>
+        <target>Neplatná oprava: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.invalidrole" xml:space="preserve">
         <source>Invalid role: {0}</source>
-        <target/>
+        <target>Neplatná rola: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.nosuchgroup" xml:space="preserve">
         <source>No external group to role map exists for group: {0}</source>
-        <target/>
+        <target>Neexistuje žiadna externá skupina k mape rolí pre skupinu: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.nosuchservergroup" xml:space="preserve">
         <source>No such server group exists: {0}</source>
-        <target/>
+        <target>Žiadna takáto skupina serverov neexistuje: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.nosuchgrouptoservergroup" xml:space="preserve">
         <source>No external group to server group map exists for group: {0}</source>
-        <target/>
+        <target>Neexistuje žiadna externá skupina k mape skupín serverov pre skupinu: {0}</target>
       </trans-unit>
       <trans-unit id="api.package.invalidpackage" xml:space="preserve">
         <source>Invalid package: {0}</source>
-        <target/>
+        <target>Neplatný balík: {0}</target>
       </trans-unit>
       <trans-unit id="api.errata.duplicateerrata" xml:space="preserve">
         <source>Patch already exists with advisory {0}</source>
-        <target/>
+        <target>Oprava už existuje s upozornením {0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidsnapshot" xml:space="preserve">
         <source>Invalid snapshot specified: {0}</source>
-        <target/>
+        <target>Zadaná neplatná snímka: {0}</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.lookupServerGroup" xml:space="preserve">
         <source>Unable to locate or access server group: "{0}"</source>
-        <target/>
+        <target>Nie je možné vyhľadať alebo získať prístup ku skupine serverov: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied" xml:space="preserve">
         <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Zmena prístupu administrátora nie je povolená pre administrátorov @@PRODUCT_NAME@@ a organizácie.  Týmto používateľom je v predvolenom nastavení udelený prístup; preto by sa mali zo vstupu odstrániť títo používatelia: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel" xml:space="preserve">
         <source>Invalid profile label specified: {0}</source>
-        <target/>
+        <target>Zadané neplatné označenie profilu: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.missingCapabilities" xml:space="preserve">
         <source>The server {0} does not have the {1} client capability. Please enable the capability before proceeding with the operation.</source>
-        <target/>
+        <target>Server {0} nemá možnosť klienta {1}. Prosím, pred pokračovaním v operácii povoľte túto možnosť.</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.serverNotInGroup" xml:space="preserve">
         <source>The specified server is not a member of the specified group</source>
-        <target/>
+        <target>Zadaný server nie je členom určenej skupiny</target>
       </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
-        <target/>
+        <target>Žiadne takéto sieťové rozhranie: {0}.</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype" xml:space="preserve">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
-        <target/>
+        <target>Neplatný typ opravy, "{0}". Použite, prosím, jeden z nasledujúcich: "Bezpečnostné upozornenie", "Upozornenie na vylepšenia produktu" alebo "Upozornenie na opravu chyby".</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisoryrelease" xml:space="preserve">
         <source>Invalid advisory release, "{0}". Maximum value is {1}.</source>
-        <target/>
+        <target>Neplatné vydanie upozornenia, "{0}". Maximálna hodnota je {1}.</target>
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected" xml:space="preserve">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
-        <target/>
+        <target>Pokúšate sa publikovať opravu, ale nevybrali ste žiadne kanály, do ktorých chcete publikovať. Opravy musia byť publikované aspoň v jednom kanáli.</target>
       </trans-unit>
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
-        <target/>
+        <target>Požadovaný súbor je príliš veľký na stiahnutie cez XMLRPC.</target>
       </trans-unit>
       <trans-unit id="api.package.download.ioerror" xml:space="preserve">
         <source>There was a general IO Error, check permissions on the requested file.</source>
-        <target/>
+        <target>Vyskytla sa všeobecná chyba IO, skontrolujte oprávnenia na požadovanom súbore.</target>
       </trans-unit>
       <trans-unit id="api.channel.access.invalidaccessvalue" xml:space="preserve">
         <source>Access value, "{0}". Please use one of the following: "public", "private", or "protected".</source>
-        <target/>
+        <target>Hodnota prístupu, "{0}". Prosím, použite jednu z nasledujúcich: "verejné", "súkromné" alebo "chránené".</target>
       </trans-unit>
       <trans-unit id="api.channel.software.channelsubscription" xml:space="preserve">
         <source>Unable to subscribe this system to the requested channel: "{0}"</source>
-        <target/>
+        <target>Nie je možné prihlásiť tento systém k požadovanému kanálu: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel" xml:space="preserve">
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
-        <target/>
+        <target>Viacero základných kanálov vybraných na predplatné.  Na predplatné boli vybrané kanály {0} a {1}, ale systém môže byť prihlásený len k jednému základnému kanálu.</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannellist" xml:space="preserve">
         <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
-        <target/>
+        <target>Poskytnutý zoznam kanálov je neplatný.  Musí obsahovať zoznam označení alebo id kanálov, ale nie kombináciu oboch.</target>
       </trans-unit>
       <trans-unit id="channel.invalidchannelarch" xml:space="preserve">
         <source>The channel arch specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaná arch kanála ({0}) je neplatná.</target>
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannellabel" xml:space="preserve">
         <source>The channel label specified ({0}) already exists.</source>
-        <target/>
+        <target>Zadané označenie kanála ({0}) už existuje.</target>
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannelname" xml:space="preserve">
         <source>The channel name specified ({0}) already exists.</source>
-        <target/>
+        <target>Zadaný názov kanála ({0}) už existuje.</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannelaccess" xml:space="preserve">
         <source>The channel access ({0}) is not allowed for this operation.</source>
-        <target/>
+        <target>Prístup ku kanálu ({0}) nie je pre túto operáciu povolený.</target>
       </trans-unit>
       <trans-unit id="Certificate Administrators" xml:space="preserve">
         <source>Certificate Administrators</source>
-        <target/>
+        <target>Administrátori certifikátov</target>
       </trans-unit>
       <trans-unit id="Monitoring Administrators" xml:space="preserve">
         <source>Monitoring Administrators</source>
-        <target/>
+        <target>Administrátori monitorovania</target>
       </trans-unit>
       <trans-unit id="Configuration Administrators" xml:space="preserve">
         <source>Configuration Administrators</source>
-        <target/>
+        <target>Administrátori konfigurácie</target>
       </trans-unit>
       <trans-unit id="user.unspecified.name" xml:space="preserve">
         <source>(unspecified)</source>
-        <target/>
+        <target>(nešpecifikované)</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.tagalreadyinuse" xml:space="preserve">
         <source>Snapshot tag already exists: {0}</source>
-        <target/>
+        <target>Značka snímky už existuje: {0}</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.nosuchtag" xml:space="preserve">
         <source>No such server snapshot tag: {0}</source>
-        <target/>
+        <target>Žiadna takáto značka snímky servera: {0}</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.nosuchsnapshot" xml:space="preserve">
         <source>No such server snapshot: {0}</source>
-        <target/>
+        <target>Žiadna takáto snímka servera: {0}</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidKeyType" xml:space="preserve">
         <source>The package key type specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaný typ kľúča balíka ({0}) je neplatný.</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidKey" xml:space="preserve">
         <source>The package key specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaný kľúč balíka ({0}) je neplatný.</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidProvider" xml:space="preserve">
         <source>The package provider specified ({0}) is  invalid.</source>
-        <target/>
+        <target>Zadaný poskytovateľ balíka ({0}) je neplatný.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidvirttype" xml:space="preserve">
         <source>Invalid virtualization type: {0}</source>
-        <target/>
+        <target>Neplatný typ virtualizácie: {0}</target>
       </trans-unit>
       <trans-unit id="org.create.success" xml:space="preserve">
         <source>Organization {0} created successfully</source>
-        <target/>
+        <target>Organizácia {0} úspešne vytvorená</target>
       </trans-unit>
       <trans-unit id="orgName" xml:space="preserve">
         <source>Organization Name</source>
-        <target/>
+        <target>Názov organizácie</target>
       </trans-unit>
       <trans-unit id="api.kickstart.nosuchkickstarttreelabel" xml:space="preserve">
         <source>Unable to locate autoinstallable tree for your organization: {0}</source>
-        <target/>
+        <target>Nie je možné nájsť automaticky inštalovateľný strom pre vašu organizáciu: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartlabel" xml:space="preserve">
         <source>Invalid autoinstallation label: {0}</source>
@@ -11161,60 +11161,60 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="bootstrap.minion.error" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error" xml:space="preserve">
         <source>An unexpected error has occurred during bootstrap.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
         <source>An error has occurred during salt execution: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
         <source>function {0} not available</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
         <source>module {0} is not supported</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
         <source>unable to parse json</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
         <source>Generating salt-ssh public key failed: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
     </body>
   </file>
 </xliff>

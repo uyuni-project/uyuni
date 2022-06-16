@@ -128,6 +128,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     /**
      * Override to return 'null' if the requested param doesn't exist
      * (Mock throws an AssertionError in this case :(
+     * This requires old junit4 as this class is not defined anymore in junit5
      * @param paramName name of param to look up
      * @return value of paramName, or 'null' if paramName isn't in the request
      */

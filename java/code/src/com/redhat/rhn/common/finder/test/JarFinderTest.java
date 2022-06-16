@@ -32,12 +32,12 @@ public class JarFinderTest {
     // Sigh.
     // At least make it clear what we're looking for...
 
-    // Currently used jarfile: postgresql-jdbc-42.2.16.jar
+    // Currently used jarfile: postgresql-jdbc-42.2.25.jar
     // (previously redstone.xmlrpc could find either redstone-xmlrpc.jar or
     //  redstone-xmlrpc-client.jar, making test-results indeterminate)
     private static final String TESTJAR = "org.postgresql";
-    private static final int NUM_CLASSES_IN_TESTJAR = 375;
-    private static final int NUM_SUBDIRS_IN_TESTJAR = 375;
+    private static final int NUM_CLASSES_IN_TESTJAR = 377;
+    private static final int NUM_SUBDIRS_IN_TESTJAR = 377;
 
     @Test
     public void testGetFinder() throws Exception {
