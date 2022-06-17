@@ -114,7 +114,7 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         self.parent = parent
         (url, parts) = opts.urlparser.parse(url, opts)
         (scheme, host, path, parm, query, frag) = parts
-        opts.find_proxy(url, scheme.decode("utf-8"))
+        opts.find_proxy(url, scheme)
         super().__init__(url, filename, opts)
 
     def _do_open(self):
