@@ -9204,55 +9204,55 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="runningKernel" xml:space="preserve">
         <source>Kernel</source>
-        <target/>
+        <target>Jadro</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemTypeLabel" xml:space="preserve">
         <source>System Type</source>
-        <target/>
+        <target>Typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemIdForCsv" xml:space="preserve">
         <source>System Id</source>
-        <target/>
+        <target>Id systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hostSystemIdForCsv" xml:space="preserve">
         <source>Host System Id</source>
-        <target/>
+        <target>Id hostiteľského systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="xid" xml:space="preserve">
         <source>Xid</source>
-        <target/>
+        <target>Xid</target>
       </trans-unit>
       <trans-unit id="testResult" xml:space="preserve">
         <source>Idref of TestResult</source>
-        <target/>
+        <target>Idref výsledku testu</target>
       </trans-unit>
       <trans-unit id="completed" xml:space="preserve">
         <source>Completion Time</source>
-        <target/>
+        <target>Čas dokončenia</target>
       </trans-unit>
       <trans-unit id="pass" xml:space="preserve">
         <source>Pass</source>
-        <target/>
+        <target>Úspešné</target>
       </trans-unit>
       <trans-unit id="fail" xml:space="preserve">
         <source>Fail</source>
-        <target/>
+        <target>Neúspešné</target>
       </trans-unit>
       <trans-unit id="error" xml:space="preserve">
         <source>Error</source>
-        <target/>
+        <target>Chyba</target>
       </trans-unit>
       <trans-unit id="unknown" xml:space="preserve">
         <source>Unknown</source>
