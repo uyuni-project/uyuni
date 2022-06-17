@@ -33,6 +33,12 @@
 - Redesign the auto errata task to schedule combined actions (bsc#1197429)
 
 -------------------------------------------------------------------
+Fri Jun 17 11:25:33 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.38-1
+  * Remove unused gson-extras.jar during build 
+
+-------------------------------------------------------------------
 Mon May 23 15:51:43 CEST 2022 - jmassaguerpla@suse.de
 
 - version 4.2.37-1
