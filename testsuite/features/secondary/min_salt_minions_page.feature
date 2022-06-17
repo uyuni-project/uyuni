@@ -1,7 +1,6 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@flaky
 @scope_salt
 Feature: Management of minion keys
   In Order to validate the minion onboarding page
