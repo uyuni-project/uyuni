@@ -1,6 +1,7 @@
 # Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@flaky
 @scope_ubuntu
 @ubuntu_minion
 Feature: Install and upgrade package on the Ubuntu minion via Salt through the UI
