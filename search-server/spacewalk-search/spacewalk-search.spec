@@ -50,6 +50,8 @@ BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-lang3
 BuildRequires:  apache-commons-logging
 BuildRequires:  mvn(org.mybatis:mybatis)
+BuildRequires:  mvn(org.apache.commons:commons-ognl)
+BuildRequires:  mvn(javassist:javassist)
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  javapackages-tools
@@ -75,6 +77,8 @@ Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
 Requires:       mvn(org.mybatis:mybatis)
+Requires:       mvn(org.apache.commons:commons-ognl)
+Requires:       mvn(javassist:javassist)
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       javapackages-tools
