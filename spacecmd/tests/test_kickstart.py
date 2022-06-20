@@ -6,6 +6,7 @@ NOTE: This module is quite rarely used within Uyuni/SLE,
       only mostly for cloning, manual editing of the cobbler profiles
       and then deleting them.
 """
+import copy
 import os
 from unittest.mock import MagicMock, patch
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
@@ -808,3 +809,28 @@ echo 'some more hello'
         assert not shell.help_kickstart_removeactivationkeys.called
         assert not shell.user_confirm.called
         assert shell.client.kickstart.profile.keys.removeActivationKey.called
+
+    def test_export_kickstart_getdetails_sort_all_lists(self, shell):
+        """
+        Test export_kickstart_getdetails for sorting list of dicts
+
+        :return:
+        """
+        advanced_opts = [
+            {"name": "keyboard", "arguments": "us"},
+            {"name": "install"},
+            {"name": "firewall", "arguments": "--disabled"},
+        ]
+        expected = [
+            {"name": "firewall", "arguments": "--disabled"},
+            {"name": "install"},
+            {"name": "keyboard", "arguments": "us"},
+        ]
+        shell.client.kickstart.profile.getAdvancedOptions = MagicMock(
+            return_value=copy.deepcopy(advanced_opts)
+        )
+        shell.kickstart_getcontents = MagicMock(return_value="")
+        details = spacecmd.kickstart.export_kickstart_getdetails(shell, "testing-testing", [{
+            "label": "testing-testing",
+        }])
+        assert details["advanced_opts"] == expected
