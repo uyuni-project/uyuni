@@ -134,6 +134,16 @@ salt-minion-package:
     - require:
       - file: bootstrap_repo
 
+{% if salt_minion_name == 'salt-minion' and grains['os_family'] == 'Debian' and grains['pythonversion'][0] >= 3 and grains['pythonversion'][1] < 7 %}
+salt-install-contextvars:
+  pkg.installed:
+    - name: python3-contextvars
+    - install_recommends: False
+    - require:
+      - file: bootstrap_repo
+      - pkg: salt-minion-package
+{% endif %}
+
 {{ salt_config_dir }}/minion.d/susemanager.conf:
   file.managed:
     - source:
