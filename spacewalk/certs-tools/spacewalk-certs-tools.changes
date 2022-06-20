@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Jun 09 13:43:22 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.13-1
+  * set permissions on apache ssl key file (bsc#1200371)
+
+-------------------------------------------------------------------
+Wed Jun 01 10:01:23 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * use RES bootstrap repo as a fallback for Red Hat
+    downstream OS (bsc#1200087)
+
+-------------------------------------------------------------------
 Tue Apr 19 11:59:08 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.11-1

@@ -36,6 +36,7 @@ import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.menu.MenuTree;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.ThrottlingService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -90,4 +91,5 @@ public class GlobalInstanceHolder {
     public static final MigrationManager MIGRATION_MANAGER = new MigrationManager(SERVER_GROUP_MANAGER);
 
     public static final ViewHelper VIEW_HELPER = ViewHelper.getInstance();
+    public static final ThrottlingService THROTTLING_SERVICE = new ThrottlingService();
 }

@@ -635,6 +635,7 @@ PKGLISTUBUNTU2004 = [
     "python3-psutil",
     "python3-pycryptodome",
     "python3-zmq",
+    "python3-gnupg",
     "salt-common",
     "salt-minion",
     "gnupg",
