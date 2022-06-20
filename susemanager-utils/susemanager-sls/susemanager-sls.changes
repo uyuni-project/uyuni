@@ -1,3 +1,4 @@
+- Fix bootstrapping for Ubuntu 18.04 with classic Salt package (bsc#1200707)
 - create CA certificate symlink on Proxies which might get lost due
   to de-installation of the ca package
 
