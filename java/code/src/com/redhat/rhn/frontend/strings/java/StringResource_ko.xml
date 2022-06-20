@@ -11211,9 +11211,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>An error has occurred during salt execution: {0}.</source>
         <target state="final">Salt 실행 중 오류가 발생했습니다: {0}.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve" approved="yes">
         <source>function {0} not available</source>
-        <target state="needs-translation">{0} 함수를 사용할 수 없습니다.</target>
+        <target state="final">{0} 기능을 사용할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve" approved="yes">
         <source>module {0} is not supported</source>
