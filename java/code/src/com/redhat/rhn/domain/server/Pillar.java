@@ -330,7 +330,7 @@ public class Pillar implements Identifiable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, minion, org, group, category, pillar);
+        return Objects.hash(minion, org, group, category);
     }
 }
 
