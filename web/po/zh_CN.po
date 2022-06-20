@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-08 14:50+0000\n"
-"PO-Revision-Date: 2022-05-18 12:12+0000\n"
-"Last-Translator: Padraig Dillon <padraig.dillon@suse.com>\n"
+"PO-Revision-Date: 2022-06-20 06:12+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
 "Language: zh_CN\n"
@@ -1107,7 +1107,7 @@ msgstr "产品目录刷新正在运行..."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:214
 msgid "The following product installations failed. Please check log files."
-msgstr ""
+msgstr "以下产品安装失败。请检查日志文件。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
@@ -3926,7 +3926,7 @@ msgstr "Pay-as-you-go 刷新身份验证数据失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:54
 msgid "End of Life Period"
-msgstr ""
+msgstr "生命周期结束期限"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
@@ -4352,9 +4352,8 @@ msgid "Keys"
 msgstr "密钥"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:154
-#, fuzzy
 msgid "Search by name or fingerprint"
-msgstr "按名称或项目过滤"
+msgstr "按名称或指纹搜索"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
@@ -4603,14 +4602,13 @@ msgid ""
 msgstr "使用此激活密钥注册的所有系统都将订阅所选子频道。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
-#, fuzzy
 msgid "Error Details"
-msgstr "细节"
+msgstr "错误细节"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
 msgid "Close"
-msgstr ""
+msgstr "关闭"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
@@ -4633,11 +4631,11 @@ msgstr "中"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
-msgstr ""
+msgstr "显示关于此错误的其他细节"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
 msgid "Unable to bootstrap host. The following errors have happened:"
-msgstr ""
+msgstr "无法引导主机。发生以下错误："
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
