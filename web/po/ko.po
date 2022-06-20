@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-08 14:50+0000\n"
-"PO-Revision-Date: 2022-05-17 10:09+0000\n"
+"PO-Revision-Date: 2022-06-20 08:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -1131,7 +1131,7 @@ msgstr "제품 카탈로그 새로 고침이 실행 중입니다..."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:214
 msgid "The following product installations failed. Please check log files."
-msgstr ""
+msgstr "다음 제품 설치에 실패했습니다. 로그 파일을 확인하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
@@ -3997,7 +3997,7 @@ msgstr "용량제 새로 고침 인증 데이터 실패"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:54
 msgid "End of Life Period"
-msgstr ""
+msgstr "수명 주기 종료"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
@@ -4427,9 +4427,8 @@ msgid "Keys"
 msgstr "키"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:154
-#, fuzzy
 msgid "Search by name or fingerprint"
-msgstr "이름 또는 프로젝트를 기준으로 필터링"
+msgstr "이름 또는 핑거프린트를 기준으로 검색"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
@@ -4684,14 +4683,13 @@ msgstr ""
 "이 활성화 키를 사용하여 등록된 모든 시스템이 선택한 하위 채널에 등록됩니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
-#, fuzzy
 msgid "Error Details"
-msgstr "세부 사항"
+msgstr "오류 세부 정보"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
 msgid "Close"
-msgstr ""
+msgstr "닫기"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
@@ -4715,11 +4713,11 @@ msgstr "곧"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
-msgstr ""
+msgstr "이 오류에 대한 추가 세부 정보 보기"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
 msgid "Unable to bootstrap host. The following errors have happened:"
-msgstr ""
+msgstr "호스트 부트스트랩에 실패했습니다. 다음 오류가 발생했습니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
