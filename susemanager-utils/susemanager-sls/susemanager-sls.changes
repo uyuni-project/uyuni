@@ -7,6 +7,13 @@
 - add packages.pkgupdate state (bsc#1197507)
 
 -------------------------------------------------------------------
+Mon Jun 20 18:19:05 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.24-1
+  * Manage the correct minion config file when venv-salt-minion is installed (bsc#1200703)
+  * Fix bootstrapping for Ubuntu 18.04 with classic Salt package (bsc#1200707)
+
+-------------------------------------------------------------------
 Mon May 09 17:48:00 CEST 2022 - jmassaguerpla@suse.de
 
 - version 4.2.23-1
