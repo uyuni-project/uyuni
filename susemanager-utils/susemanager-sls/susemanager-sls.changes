@@ -1,4 +1,4 @@
-- Check the correct minion config file when venv-salt-minion is installed (bsc#1200703)
+- Manage the correct minion config file when venv-salt-minion is installed (bsc#1200703)
 - Fix bootstrapping for Ubuntu 18.04 with classic Salt package (bsc#1200707)
 
 -------------------------------------------------------------------
