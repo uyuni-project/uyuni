@@ -14,7 +14,7 @@ mgr_salt_minion_inst:
     - name: {{ salt_minion_name }}
     - order: last
 
-/etc/salt/minion.d/susemanager.conf:
+{{ susemanager_minion_config }}:
   file.managed:
     - source:
       - salt://bootstrap/susemanager.conf
