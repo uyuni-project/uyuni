@@ -5761,9 +5761,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve">
+      <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve" approved="yes">
           <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="needs-adaptation">将刷新 {0} 硬件 {1}。</target>
+        <target state="final"><a href="/rhn/schedule/PendingActions.do">已安排</a>刷新 1 个硬件配置文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5797,9 +5797,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve">
+      <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve" approved="yes">
           <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="needs-adaptation">将刷新 {0} 软件包 {1}。</target>
+        <target state="final"><a href="/rhn/schedule/PendingActions.do">已安排</a>刷新 1 个软件包配置文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
@@ -8337,9 +8337,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="pkg.lock.menu" xml:space="preserve">
+      <trans-unit id="pkg.lock.menu" xml:space="preserve" approved="yes">
         <source>Lock / Unlock</source>
-        <target state="needs-adaptation">锁定</target>
+        <target state="final">锁定/解锁</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
@@ -29077,9 +29077,9 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
         <target>已存在使用此用户名的身份凭证</target>
       </trans-unit>
-      <trans-unit id="copyright.jsp.title" xml:space="preserve">
+      <trans-unit id="copyright.jsp.title" xml:space="preserve" approved="yes">
         <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
-        <target state="needs-adaptation">版权所有 (c) 2011 - 2020 SUSE LLC.</target>
+        <target state="final">版权所有 (c) 2011 - 2022 SUSE LLC。</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29731,20 +29731,20 @@ given channel.</source>
         <source>Following installed products will be removed from the system during migration:</source>
         <target state="final">迁移期间将从系统中去除已安装的以下产品：</target>
       </trans-unit>
-    <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
+      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve" approved="yes">
             <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
             </context-group>
-        <target state="new"/>
-  </trans-unit>
-      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
+        <target state="final"><a href="/rhn/schedule/PendingActions.do">已安排</a>刷新 {0} 个硬件配置文件。</target>
+      </trans-unit>
+      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve" approved="yes">
             <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
             </context-group>
-        <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final"><a href="/rhn/schedule/PendingActions.do">已安排</a>刷新 {0} 个软件包配置文件。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
