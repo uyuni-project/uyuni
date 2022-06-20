@@ -14,18 +14,21 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.ImageSyncedEventMessage;
 import com.suse.manager.reactor.messaging.ImageSyncedEventMessageAction;
@@ -38,8 +41,6 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -71,7 +72,55 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
      * (based on its product) assigned.
      */
     @Test
-    public void testImageSyncedPillarCreated() throws Exception {
+    public void testImageSyncedPillarCreatedRemoved() throws Exception {
+        ImageInfo img1 = ImageTestUtils.createImageInfo("ImageTest", "8.0.0", user);
+        img1.setRevisionNumber(5);
+
+        JsonParser<Event> jsonParser = new JsonParser<>(new TypeToken<>() {
+        });
+        Event event = jsonParser.parse(
+        "{                                                       " +
+        "    'tag': 'suse/manager/image_synced',                 " +
+        "    'data': {                                           " +
+        "        'id': '" + testMinion.getMinionId() + "',       " +
+        "        'cmd': '_minion_event',                         " +
+        "        'pretag': None,                                 " +
+        "        'data': {                                       " +
+        "            'branch': '" + testGroup1.getName() + "',   " +
+        "            'action': 'add',                            " +
+        "            'image_name': 'ImageTest',                  " +
+        "            'image_version': '8.0.0-5'                  " +
+        "        }                                               " +
+        "    }                                                   " +
+        "}");
+
+        Optional<ImageSyncedEvent> imageSyncedEventOpt = ImageSyncedEvent.parse(event);
+        assertTrue(imageSyncedEventOpt.isPresent());
+        assertEquals("add", imageSyncedEventOpt.get().getAction());
+        EventMessage message = new ImageSyncedEventMessage(imageSyncedEventOpt.get());
+        ImageSyncedEventMessageAction action = new ImageSyncedEventMessageAction();
+        action.execute(message);
+
+        testGroup1 = TestUtils.reload(testGroup1);
+
+        String category = "SyncedImage" + img1.getId();
+        assertTrue(testGroup1.getPillarByCategory(category).isPresent());
+
+
+        HibernateFactory.getSession().delete(img1);
+        HibernateFactory.getSession().flush();
+        testGroup1 = TestUtils.reload(testGroup1);
+
+        assertFalse(testGroup1.getPillarByCategory(category).isPresent());
+    }
+
+    /**
+     * Happy path scenario: machine_id grain is present.
+     * In this case we test that at the end of the Action, the minion has correct channels
+     * (based on its product) assigned.
+     */
+    @Test
+    public void testLegacyImageSyncedPillarCreatedRemoved() throws Exception {
         JsonParser<Event> jsonParser = new JsonParser<>(new TypeToken<>() {
         });
         Event event = jsonParser.parse(
@@ -97,11 +146,35 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
         ImageSyncedEventMessageAction action = new ImageSyncedEventMessageAction();
         action.execute(message);
 
-        Path filePath = tmpSaltRoot.resolve(SUMA_PILLAR_IMAGES_DATA_PATH)
-            .resolve("group" + testGroup1.getId().toString())
-            .resolve("ImageTest-7.0.0." + PILLAR_IMAGE_DATA_FILE_EXT);
+        testGroup1 = TestUtils.reload(testGroup1);
 
-        assertTrue(Files.exists(filePath));
-        Files.deleteIfExists(filePath);
+        assertTrue(testGroup1.getPillarByCategory("LegacySyncedImage-ImageTest-7.0.0").isPresent());
+
+        Event event2 = jsonParser.parse(
+        "{                                                       " +
+        "    'tag': 'suse/manager/image_synced',                 " +
+        "    'data': {                                           " +
+        "        'id': '" + testMinion.getMinionId() + "',       " +
+        "        'cmd': '_minion_event',                         " +
+        "        'pretag': None,                                 " +
+        "        'data': {                                       " +
+        "            'branch': '" + testGroup1.getName() + "',   " +
+        "            'action': 'remove',                         " +
+        "            'image_name': 'ImageTest',                  " +
+        "            'image_version': '7.0.0'                  " +
+        "        }                                               " +
+        "    }                                                   " +
+        "}");
+
+        Optional<ImageSyncedEvent> imageSyncedEventOpt2 = ImageSyncedEvent.parse(event2);
+        assertTrue(imageSyncedEventOpt2.isPresent());
+        assertEquals("remove", imageSyncedEventOpt2.get().getAction());
+        EventMessage message2 = new ImageSyncedEventMessage(imageSyncedEventOpt2.get());
+        ImageSyncedEventMessageAction action2 = new ImageSyncedEventMessageAction();
+        action2.execute(message2);
+
+        testGroup1 = TestUtils.reload(testGroup1);
+
+        assertFalse(testGroup1.getPillarByCategory("LegacySyncedImage-ImageTest-7.0.0").isPresent());
     }
 }

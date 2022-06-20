@@ -14,10 +14,8 @@
  */
 package com.suse.manager.webui.services.test;
 
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -26,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
+import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -35,6 +34,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
@@ -166,19 +166,33 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
     @Test
     public void testImageSyncedPillar() throws Exception {
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        ImageInfo img1 = ImageTestUtils.createImageInfo("ImageTest", "8.0.0", user);
+        img1.setRevisionNumber(1);
 
-        Path filePath = tmpSaltRoot.resolve(SUMA_PILLAR_IMAGES_DATA_PATH)
-                .resolve("group" + group.getId().toString())
-                .resolve("ImageName-1.0.0." + PILLAR_IMAGE_DATA_FILE_EXT);
+        String category = "SyncedImage" + img1.getId();
+        SaltStateGeneratorService.INSTANCE.createImageSyncedPillar(group, "ImageTest", "8.0.0-1");
+
+        Map<String, Object> map = group.getPillarByCategory(category).get().getPillar();
+
+        assertTrue(map.containsKey("images"));
+        Map<String, Object> images = (Map<String, Object>)map.get("images");
+        assertTrue(images.containsKey("ImageTest"));
+        Map<String, Object> image = (Map<String, Object>)images.get("ImageTest");
+        assertTrue(image.containsKey("8.0.0-1"));
+        Map<String, Object> version = (Map<String, Object>)image.get("8.0.0-1");
+        assertTrue(version.containsKey("synced"));
+
+        SaltStateGeneratorService.INSTANCE.removeImageSyncedPillar(group, "ImageTest", "8.0.0-1");
+        assertFalse(group.getPillarByCategory(category).isPresent());
+    }
+    @Test
+    public void testLegacyImageSyncedPillar() throws Exception {
+        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
 
         SaltStateGeneratorService.INSTANCE.createImageSyncedPillar(group, "ImageName", "1.0.0");
 
-        assertTrue(Files.exists(filePath));
+        Map<String, Object> map = group.getPillarByCategory("LegacySyncedImage-ImageName-1.0.0").get().getPillar();
 
-        Map<String, Object> map;
-        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
-            map = new Yaml().loadAs(fi, Map.class);
-        }
         assertTrue(map.containsKey("images"));
         Map<String, Object> images = (Map<String, Object>)map.get("images");
         assertTrue(images.containsKey("ImageName"));
@@ -188,7 +202,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         assertTrue(version.containsKey("synced"));
 
         SaltStateGeneratorService.INSTANCE.removeImageSyncedPillar(group, "ImageName", "1.0.0");
-        assertFalse(Files.exists(filePath));
+        assertFalse(group.getPillarByCategory("LegacySyncedImage-ImageName-1.0.0").isPresent());
     }
 
 }
