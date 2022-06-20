@@ -1,4 +1,8 @@
-- Fix bootstrapping for Ubuntu 18.04 with classic Salt package (bsc#1200707)
+-------------------------------------------------------------------
+Mon Jun 20 18:24:34 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.1.37-1
+  * Fix bootstrapping for Ubuntu 18.04 with classic Salt package (bsc#1200707)
 
 -------------------------------------------------------------------
 Fri Jun 03 10:35:14 CEST 2022 - jmassaguerpla@suse.de
