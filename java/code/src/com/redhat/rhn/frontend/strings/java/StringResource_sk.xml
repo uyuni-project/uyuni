@@ -9256,43 +9256,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="unknown" xml:space="preserve">
         <source>Unknown</source>
-        <target/>
+        <target>Neznáme</target>
       </trans-unit>
       <trans-unit id="notapplicable" xml:space="preserve">
         <source>Notapplicable</source>
-        <target/>
+        <target>Nepoužiteľné</target>
       </trans-unit>
       <trans-unit id="notchecked" xml:space="preserve">
         <source>Notchecked</source>
-        <target/>
+        <target>Nekontrolované</target>
       </trans-unit>
       <trans-unit id="notselected" xml:space="preserve">
         <source>Notselected</source>
-        <target/>
+        <target>Nevybrané</target>
       </trans-unit>
       <trans-unit id="informational" xml:space="preserve">
         <source>Informational</source>
-        <target/>
+        <target>Informačné</target>
       </trans-unit>
       <trans-unit id="fixed" xml:space="preserve">
         <source>Fixed</source>
-        <target/>
+        <target>Opravené</target>
       </trans-unit>
       <trans-unit id="sum" xml:space="preserve">
         <source>Total</source>
-        <target/>
+        <target>Celkom</target>
       </trans-unit>
       <trans-unit id="documentIdref" xml:space="preserve">
         <source>Idref of rule-result</source>
-        <target/>
+        <target>Idref výsledku pravidla</target>
       </trans-unit>
       <trans-unit id="identsString" xml:space="preserve">
         <source>Assigned Idents</source>
-        <target/>
+        <target>Priradené identifikátory</target>
       </trans-unit>
       <trans-unit id="evaluationResult" xml:space="preserve">
         <source>Result of Evaluation</source>
-        <target/>
+        <target>Výsledok hodnotenia</target>
       </trans-unit>
       <trans-unit id="profile" xml:space="preserve">
         <source>Idref of Profile</source>
