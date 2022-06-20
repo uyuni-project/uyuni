@@ -1344,7 +1344,7 @@ When(/^I schedule a task to update ReportDB$/) do
 end
 
 Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
-  output, _code = $server.run("ss --listening --numeric | grep #{port}  || echo 'closed'", check_errors: false)
+  output, _code = $server.run("lsof -i -P -n  | grep #{port}  || echo 'closed'", check_errors: false)
   case selection
   when 'open'
     raise "Port '#{port}' not open although it should be!" if output == "closed\n"
