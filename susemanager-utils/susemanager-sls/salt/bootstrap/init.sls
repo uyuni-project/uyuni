@@ -134,6 +134,9 @@ salt-minion-package:
     - require:
       - file: bootstrap_repo
 
+{# These two dependencies are only needed on DEB based distros with Python version < 3.7 #}
+{# We cannot make these packages as hard depedendencies for Salt package because this is only needed for Ubuntu 18.04 #}
+{# and we only maintain a single DEB package for all DEB based distros #}
 {% if salt_minion_name == 'salt-minion' and grains['os_family'] == 'Debian' and grains['pythonversion'][0] >= 3 and grains['pythonversion'][1] < 7 %}
 salt-install-contextvars:
   pkg.installed:
