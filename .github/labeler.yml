@@ -63,7 +63,7 @@ xmlrpc:
 - java/code/src/com/redhat/rhn/frontend/xmlrpc/*
 - java/code/src/com/redhat/rhn/frontend/xmlrpc/**/*
 
-#QA Labels
+#QE Labels
 testing:
 - testsuite/*
 - testsuite/**/*

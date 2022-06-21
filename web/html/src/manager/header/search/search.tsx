@@ -75,24 +75,19 @@ export class HeaderSearch extends React.PureComponent {
                   }
                 }}
                 type="search"
-                className="form-control input-sm"
+                className="form-control"
                 size={20}
                 autoFocus
                 placeholder={t("Search")}
               />
-              <select
-                name="searchType"
-                value={this.state.searchType}
-                onChange={this.onChange}
-                className="form-control input-sm"
-              >
+              <select name="searchType" value={this.state.searchType} onChange={this.onChange} className="form-control">
                 {SEARCH_TYPES.map(({ value, name }) => (
                   <option value={value} key={value}>
                     {name}
                   </option>
                 ))}
               </select>
-              <SubmitButton icon="fa-search" text={t("Search")} className="btn-primary input-sm" />
+              <SubmitButton icon="fa-search" text={t("Search")} className="btn-default-inverse" />
             </div>
           </form>
         ) : null}

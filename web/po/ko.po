@@ -4430,6 +4430,7 @@ msgstr "키"
 msgid "Search by name or fingerprint"
 msgstr "이름 또는 핑거프린트를 기준으로 검색"
 
+
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
 msgstr "지문"

@@ -1,4 +1,12 @@
+- bootstrap repo: set optional packages
+- Add python3-contextvars and python3-immutables to missing bootstrap repos (bsc#1200606)
 - Update server-migrator to dist-upgrade to openSUSE 15.4
+
+-------------------------------------------------------------------
+Mon Jun 06 10:26:27 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.15-1
+  * Add python3-gnupg to bootstrap repo definition for Ubuntu 20.04 (bsc#1200212)
 
 -------------------------------------------------------------------
 Fri May 20 00:13:50 CEST 2022 - jgonzalez@suse.com

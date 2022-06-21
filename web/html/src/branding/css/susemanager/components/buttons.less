@@ -4,6 +4,11 @@
 .btn-success,
 .btn-warning,
 .btn-danger {
+  // We use flex to ensure icons etc are correctly aligned in buttons
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+
   color: inherit;
   font-size: 14px;
   font-weight: bold;
@@ -59,6 +64,10 @@
   &.text-muted {
     color: inherit !important;
   }
+
+  i[class~="fa"], i[class*="icon-"], i[class*="spacewalk-icon"] {
+    margin: 0;
+  }
 }
 
 .btn-link {
@@ -85,6 +94,20 @@
 
       &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: @eos-bc-pine-500;
+      }
+    }
+  }
+}
+
+.btn-default-inverse {
+  &, &:active, &:focus, &:disabled, &.disabled {
+    &, &:hover {
+      background: transparent;
+      border-color: @eos-bc-white;
+      color: @eos-bc-white;
+
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+        background: @eos-bc-white;
       }
     }
   }

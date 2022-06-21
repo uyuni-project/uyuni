@@ -25,7 +25,10 @@ window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(
   }
 };
 
-window.pageRenderers.spaengine.init = function init(timeout = 30) {
+window.pageRenderers.spaengine.init = function init(timeout?: number) {
+  if (typeof timeout !== "number") {
+    throw new TypeError(`Invalid SPA engine timeout configuration, expected number, got ${typeof timeout}`);
+  }
   // We need this until the login page refactor using a different layout template is completed
   if (!isLoginPage(window.location.pathname)) {
     const appInstance = new App();

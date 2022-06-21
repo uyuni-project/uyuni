@@ -432,6 +432,7 @@ def deployApache(apache_cert_content, server_key_content):
         os.remove(APACHE_CRT_FILE)
     with open(APACHE_KEY_FILE, "w") as f:
         f.write(server_key_content)
+    os.chmod(APACHE_KEY_FILE, int("0600", 8))
     with open(APACHE_CRT_FILE, "w") as f:
         f.write(apache_cert_content)
     # exists on server and proxy
