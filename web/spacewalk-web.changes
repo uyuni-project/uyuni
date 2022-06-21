@@ -1,6 +1,10 @@
-- Consistently use conf value for SPA engine timeout
-- Remove nodejs-packaging as a build requirement
-- Update translation strings
+-------------------------------------------------------------------
+Tue Jun 21 18:32:18 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.21-1
+  * Consistently use conf value for SPA engine timeout
+  * Remove nodejs-packaging as a build requirement
+  * Update translation strings
 
 -------------------------------------------------------------------
 Thu Jun 02 11:42:31 CEST 2022 - jgonzalez@suse.com
