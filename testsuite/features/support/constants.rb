@@ -187,7 +187,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-prod
                           'debian-9-pool' => 'debian-9-pool-amd64',
                           'debian-10-pool' => 'debian-10-pool-amd64',
                           'debian-11-pool' => 'debian-11-pool-amd64',
-                          'openSUSE-Leap-15.3-Pool for aarch64' => 'opensuse_leap15_3-aarch64' }.freeze
+                          'openSUSE-Leap-15.3-Pool for aarch64' => 'opensuse-leap-15.3-pool-aarch64' }.freeze
 
 CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'SUMA-43-PROXY-x86_64',
                                     'SLES11-SP3-Pool' => 'SLE-11-SP3-i586',
