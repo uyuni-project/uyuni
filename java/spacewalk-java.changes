@@ -1,3 +1,4 @@
+- Fix missing remote command history events for big output (bsc#1199656)
 - Improve CLM channel cloning performance (bsc#1199523)
 - fix api log message references the wrong user (bsc#1179962)
 - Show patch as installed in CVE Audit even if successor patch affects
