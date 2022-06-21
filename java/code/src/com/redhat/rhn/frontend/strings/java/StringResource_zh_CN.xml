@@ -9973,8 +9973,8 @@ tree will not be usable for autoinstalling.</source>
         <target state="translated">已经发送了一封电子邮件。您每 {0} 秒只能请求一次此操作。</target>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
-        <target>已将口令重设置信息发送到 {0}。</target>
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+        <target state="needs-adaptation">已将口令重设置信息发送到 {0}。</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -9989,8 +9989,8 @@ tree will not be usable for autoinstalling.</source>
         <target state="translated">没有使用该电子邮件地址注册的帐户。</target>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
-        <target state="translated">找到的登录名已发送至 {0}。</target>
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+        <target state="needs-adaptation">找到的登录名已发送至 {0}。</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -11258,6 +11258,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final"><p>@@PRODUCT_NAME@@ {0} 的生命周期即将结束。对其的标准支持将于 <strong>{1}</strong>结束，请考虑在此之前升级此服务器实例。</p>
           <p>有关如何升级 @@PRODUCT_NAME@@ 的其他信息，请查看官方文档<em>安装/升级指南</em>的<em>升级</em>章节。</p></target>
       </trans-unit>
-    </body>
+    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

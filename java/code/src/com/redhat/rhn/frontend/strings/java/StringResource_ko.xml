@@ -9970,8 +9970,8 @@ tree will not be usable for autoinstalling.</source>
         <target>이메일이 이미 전송되었습니다. 이 작업은 {0}초마다 요청할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
-        <target>비밀번호 재설정 정보가 {0}(으)로 전송되었습니다.</target>
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+        <target state="needs-adaptation">비밀번호 재설정 정보가 {0}(으)로 전송되었습니다.</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -9986,8 +9986,8 @@ tree will not be usable for autoinstalling.</source>
         <target>해당 이메일 주소로 등록된 계정이 없습니다.</target>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
-        <target>찾은 로그인을 {0}(으)로 전송했습니다.</target>
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+        <target state="needs-adaptation">찾은 로그인을 {0}(으)로 전송했습니다.</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -11255,6 +11255,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0}의 수명이 곧 다합니다. &lt;strong&gt;{1}&lt;/strong&gt;에 일반 지원이 종료되기 전, 서버 인스턴스 업그레이드를 고려해 보십시오.&lt;/p&gt;
           &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서의 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt; &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
       </trans-unit>
-    </body>
+    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
