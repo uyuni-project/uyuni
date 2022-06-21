@@ -20,8 +20,8 @@ import Network from "utils/network";
 // See java/code/src/com/suse/manager/webui/templates/content_management/build.jade
 declare global {
   interface Window {
-    profileId?: any;
-    hostId?: any;
+    profileId?: number;
+    hostId?: number;
     version?: any;
     timezone?: any;
     localTime?: any;
@@ -48,8 +48,8 @@ type State = {
   model: {
     version: string;
     earliest: moment.Moment;
-    profileId?: any;
-    buildHostId?: any;
+    profileId?: number;
+    buildHostId?: number;
     actionChain?: any;
   };
   profile: any;

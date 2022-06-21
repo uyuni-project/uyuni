@@ -20,7 +20,7 @@ import Network from "utils/network";
 // See java/code/src/com/suse/manager/webui/templates/content_management/edit-profile.jade
 declare global {
   interface Window {
-    profileId?: any;
+    profileId?: number;
     activationKeys?: any;
     customDataKeys?: any;
     imageTypesDataFromTheServer?: any;
