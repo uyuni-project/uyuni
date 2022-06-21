@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 14:50+0000\n"
+"POT-Creation-Date: 2022-06-21 12:55+0000\n"
 "PO-Revision-Date: 2022-06-20 08:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -187,7 +187,7 @@ msgstr "구성 채널에서 검색"
 
 #: ../html/src/components/config-channels.tsx:338
 #: ../html/src/manager/header/search/search.tsx:81
-#: ../html/src/manager/header/search/search.tsx:95
+#: ../html/src/manager/header/search/search.tsx:90
 #: ../html/src/manager/minion/packages/package-states.tsx:214
 #: ../html/src/manager/minion/packages/package-states.tsx:247
 msgid "Search"
@@ -4429,7 +4429,6 @@ msgstr "키"
 #: ../html/src/manager/salt/keys/key-management.tsx:154
 msgid "Search by name or fingerprint"
 msgstr "이름 또는 핑거프린트를 기준으로 검색"
-
 
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"

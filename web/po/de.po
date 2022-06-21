@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 14:50+0000\n"
+"POT-Creation-Date: 2022-06-21 12:55+0000\n"
 "PO-Revision-Date: 2022-01-11 14:51+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -182,7 +182,7 @@ msgstr ""
 
 #: ../html/src/components/config-channels.tsx:338
 #: ../html/src/manager/header/search/search.tsx:81
-#: ../html/src/manager/header/search/search.tsx:95
+#: ../html/src/manager/header/search/search.tsx:90
 #: ../html/src/manager/minion/packages/package-states.tsx:214
 #: ../html/src/manager/minion/packages/package-states.tsx:247
 msgid "Search"
