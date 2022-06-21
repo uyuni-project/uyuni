@@ -9014,285 +9014,285 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartlabel" xml:space="preserve">
         <source>Invalid autoinstallation label: {0}</source>
-        <target/>
+        <target>Neplatné označenie automatickej inštalácie: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateType" xml:space="preserve">
         <source>Invalid update type: {0}</source>
-        <target/>
+        <target>Neplatný typ aktualizácie: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateTypeAndTree" xml:space="preserve">
         <source>If update type is red_hat the kickstartable tree you start with must be provided by Red Hat. This tree is not: {0}</source>
-        <target/>
+        <target>Ak je typ aktualizácie red_hat, strom schopný kickstart, s ktorým začínate, musí byť poskytnutý spoločnosťou Red Hat. Tento strom nie je: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateTypeAndNoBase" xml:space="preserve">
         <source>The kickstartable tree {0} has no base channel. The only valid update type with a no-base kickstartable tree is 'none'.</source>
-        <target/>
+        <target>Strom schopný kickstart {0} nemá žiadny základný kanál. Jediný platný typ aktualizácie s nezákladným stromom schopným kickstart je 'none'.</target>
       </trans-unit>
       <trans-unit id="api.package.invalidpackagearch" xml:space="preserve">
         <source>The package arch specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaná arch balíka ({0}) je neplatná.</target>
       </trans-unit>
       <trans-unit id="api.errata.missingerrataaction" xml:space="preserve">
         <source>A required patch attribute ({0}) was missing.</source>
-        <target/>
+        <target>Chýbal požadovaný atribút opravy ({0}).</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster" xml:space="preserve">
         <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Záznam pre nadradeného @@PRODUCT_NAME@@ {0} už existuje</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicateslave" xml:space="preserve">
         <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Záznam pre podriadeného @@PRODUCT_NAME@@ {0} už existuje</target>
       </trans-unit>
       <trans-unit id="securityErrata" xml:space="preserve">
         <source>Security Patches</source>
-        <target/>
+        <target>Bezpečnostné opravy</target>
       </trans-unit>
       <trans-unit id="bugErrata" xml:space="preserve">
         <source>Bug Patches</source>
-        <target/>
+        <target>Opravy chýb</target>
       </trans-unit>
       <trans-unit id="enhancementErrata" xml:space="preserve">
         <source>Enhancement Patches</source>
-        <target/>
+        <target>Vylepšovacie opravy</target>
       </trans-unit>
       <trans-unit id="outdatedPackages" xml:space="preserve">
         <source>Outdated Packages</source>
-        <target/>
+        <target>Zastarané balíky</target>
       </trans-unit>
       <trans-unit id="lastCheckin" xml:space="preserve">
         <source>Last Checkin</source>
-        <target/>
+        <target>Posledné prihlásenie</target>
       </trans-unit>
       <trans-unit id="entitlement" xml:space="preserve">
         <source>System Types</source>
-        <target/>
+        <target>Typy systémov</target>
       </trans-unit>
       <trans-unit id="groupAdmins" xml:space="preserve">
         <source>Group Admins</source>
-        <target/>
+        <target>Administrátori skupín</target>
       </trans-unit>
       <trans-unit id="serverCount" xml:space="preserve">
         <source>Server Count</source>
-        <target/>
+        <target>Počet serverov</target>
       </trans-unit>
       <trans-unit id="monitoringStatus" xml:space="preserve">
         <source>Monitor Status</source>
-        <target/>
+        <target>Stav monitora</target>
       </trans-unit>
       <trans-unit id="userLogin" xml:space="preserve">
         <source>User Login</source>
-        <target/>
+        <target>Prihlásenie používateľa</target>
       </trans-unit>
       <trans-unit id="userLastName" xml:space="preserve">
         <source>User Last Name</source>
-        <target/>
+        <target>Priezvisko používateľa</target>
       </trans-unit>
       <trans-unit id="userFirstName" xml:space="preserve">
         <source>User First Name</source>
-        <target/>
+        <target>Krstné meno používateľa</target>
       </trans-unit>
       <trans-unit id="roleNames" xml:space="preserve">
         <source>Role Names</source>
-        <target/>
+        <target>Názvy rolí</target>
       </trans-unit>
       <trans-unit id="lastLoggedIn" xml:space="preserve">
         <source>Last Logged In</source>
-        <target/>
+        <target>Naposledy prihlásený</target>
       </trans-unit>
       <trans-unit id="changedByFirstName" xml:space="preserve">
         <source>Changed by First Name</source>
-        <target/>
+        <target>Zmenené podľa krstného mena</target>
       </trans-unit>
       <trans-unit id="changedByLastName" xml:space="preserve">
         <source>Changed by Last Name</source>
-        <target/>
+        <target>Zmenené podľa priezviska</target>
       </trans-unit>
       <trans-unit id="changeDate" xml:space="preserve">
         <source>Change Date</source>
-        <target/>
+        <target>Dátum zmeny</target>
       </trans-unit>
       <trans-unit id="channelLabels" xml:space="preserve">
         <source>Channel Labels</source>
-        <target/>
+        <target>Označenia kanálov</target>
       </trans-unit>
       <trans-unit id="entitlementLevel" xml:space="preserve">
         <source>System Type Level</source>
-        <target/>
+        <target>Úroveň typu systému</target>
       </trans-unit>
       <trans-unit id="serverName" xml:space="preserve">
         <source>Server Name</source>
-        <target/>
+        <target>Názov servera</target>
       </trans-unit>
       <trans-unit id="matchingField" xml:space="preserve">
         <source>Matching Field Name</source>
-        <target/>
+        <target>Zodpovedajúci názov poľa</target>
       </trans-unit>
       <trans-unit id="matchingFieldValue" xml:space="preserve">
         <source>Matching Field Value</source>
-        <target/>
+        <target>Zodpovedajúca hodnota poľa</target>
       </trans-unit>
       <trans-unit id="dmiBiosVendor" xml:space="preserve">
         <source>DMI Bios Vendor</source>
-        <target/>
+        <target>Dodávateľ DMI Bios</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiBiosVersion" xml:space="preserve">
         <source>DMI Bios Version</source>
-        <target/>
+        <target>Verzia DMI Bios</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiBiosRelease" xml:space="preserve">
         <source>DMI Bios Release</source>
-        <target/>
+        <target>Vydanie DMI Bios</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiSystem" xml:space="preserve">
         <source>DMI System</source>
-        <target/>
+        <target>Systém DMI</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiAsset" xml:space="preserve">
         <source>DMI Asset Tag</source>
-        <target/>
+        <target>Označenie majetku DMI</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuModel" xml:space="preserve">
         <source>CPU Model</source>
-        <target/>
+        <target>Model CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuMHz" xml:space="preserve">
         <source>CPU MHz</source>
-        <target/>
+        <target>CPU MHz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuNumberOfCpus" xml:space="preserve">
         <source>CPU Count</source>
-        <target/>
+        <target>Počet CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ram" xml:space="preserve">
         <source>RAM KB</source>
-        <target/>
+        <target>RAM KB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="serverArchName" xml:space="preserve">
         <source>Server Architecture</source>
-        <target/>
+        <target>Architektúra servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="runningKernel" xml:space="preserve">
         <source>Kernel</source>
-        <target/>
+        <target>Jadro</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemTypeLabel" xml:space="preserve">
         <source>System Type</source>
-        <target/>
+        <target>Typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemIdForCsv" xml:space="preserve">
         <source>System Id</source>
-        <target/>
+        <target>Id systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hostSystemIdForCsv" xml:space="preserve">
         <source>Host System Id</source>
-        <target/>
+        <target>Id hostiteľského systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="xid" xml:space="preserve">
         <source>Xid</source>
-        <target/>
+        <target>Xid</target>
       </trans-unit>
       <trans-unit id="testResult" xml:space="preserve">
         <source>Idref of TestResult</source>
-        <target/>
+        <target>Idref výsledku testu</target>
       </trans-unit>
       <trans-unit id="completed" xml:space="preserve">
         <source>Completion Time</source>
-        <target/>
+        <target>Čas dokončenia</target>
       </trans-unit>
       <trans-unit id="pass" xml:space="preserve">
         <source>Pass</source>
-        <target/>
+        <target>Úspešné</target>
       </trans-unit>
       <trans-unit id="fail" xml:space="preserve">
         <source>Fail</source>
-        <target/>
+        <target>Neúspešné</target>
       </trans-unit>
       <trans-unit id="error" xml:space="preserve">
         <source>Error</source>
-        <target/>
+        <target>Chyba</target>
       </trans-unit>
       <trans-unit id="unknown" xml:space="preserve">
         <source>Unknown</source>
-        <target/>
+        <target>Neznáme</target>
       </trans-unit>
       <trans-unit id="notapplicable" xml:space="preserve">
         <source>Notapplicable</source>
-        <target/>
+        <target>Nepoužiteľné</target>
       </trans-unit>
       <trans-unit id="notchecked" xml:space="preserve">
         <source>Notchecked</source>
-        <target/>
+        <target>Nekontrolované</target>
       </trans-unit>
       <trans-unit id="notselected" xml:space="preserve">
         <source>Notselected</source>
-        <target/>
+        <target>Nevybrané</target>
       </trans-unit>
       <trans-unit id="informational" xml:space="preserve">
         <source>Informational</source>
-        <target/>
+        <target>Informačné</target>
       </trans-unit>
       <trans-unit id="fixed" xml:space="preserve">
         <source>Fixed</source>
-        <target/>
+        <target>Opravené</target>
       </trans-unit>
       <trans-unit id="sum" xml:space="preserve">
         <source>Total</source>
-        <target/>
+        <target>Celkom</target>
       </trans-unit>
       <trans-unit id="documentIdref" xml:space="preserve">
         <source>Idref of rule-result</source>
-        <target/>
+        <target>Idref výsledku pravidla</target>
       </trans-unit>
       <trans-unit id="identsString" xml:space="preserve">
         <source>Assigned Idents</source>
-        <target/>
+        <target>Priradené identifikátory</target>
       </trans-unit>
       <trans-unit id="evaluationResult" xml:space="preserve">
         <source>Result of Evaluation</source>
-        <target/>
+        <target>Výsledok hodnotenia</target>
       </trans-unit>
       <trans-unit id="profile" xml:space="preserve">
         <source>Idref of Profile</source>
@@ -10032,8 +10032,8 @@ tree will not be usable for autoinstalling.</source>
         <target/>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
-        <target/>
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -10048,8 +10048,8 @@ tree will not be usable for autoinstalling.</source>
         <target/>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
-        <target/>
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -11215,6 +11215,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
