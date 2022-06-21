@@ -92,17 +92,17 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   if (uptime[:days] >= 1 && rounded_uptime_days < 2) || (uptime[:days] < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
     step %(I should see a "a day ago" text)
   elsif rounded_uptime_hours > 1 && rounded_uptime_hours <= 21
-    step %(I should see a "#{rounded_uptime_hours} hours ago" text)
+    step %(I should see a "#{rounded_uptime_hours} hours ago"/"#{rounded_uptime_hours + 1}" text)
   elsif rounded_uptime_minutes >= 45 && rounded_uptime_hours == 1 # shows "an hour ago" from 45 minutes onwards up to 1.5 hours
     step %(I should see a "an hour ago" text)
   elsif rounded_uptime_minutes > 1 && rounded_uptime_hours < 1
-    step %(I should see a "#{rounded_uptime_minutes} minutes ago" text)
+    step %(I should see a "#{rounded_uptime_minutes} minutes ago"/"#{rounded_uptime_minutes + 1} minutes ago" text)
   elsif uptime[:seconds] >= 45 && rounded_uptime_minutes == 1
     step %(I should see a "a minute ago" text)
   elsif uptime[:seconds] < 45
     step %(I should see a "a few seconds ago" text)
   elsif rounded_uptime_days < 25
-    step %(I should see a "#{rounded_uptime_days} days ago" text) # shows "a month ago" from 25 days onwards
+    step %(I should see a "#{rounded_uptime_days} days ago"/"#{rounded_uptime_days + 1} days ago" text) # shows "a month ago" from 25 days onwards
   else
     step %(I should see a "a month ago" text)
   end
