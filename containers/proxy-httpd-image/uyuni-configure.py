@@ -139,6 +139,9 @@ with open(config_path + "httpd.yaml") as httpdSource:
 WSGIScriptAlias /tftpsync/add /srv/www/tftpsync/add
 WSGIScriptAlias /tftpsync/delete /srv/www/tftpsync/delete''')
 
+    with open("/etc/apache2/conf.d/susemanager-pub.conf", "w") as file:
+        file.write("WSGIScriptAlias /pub /usr/share/rhn/wsgi/xmlrpc.py")
+
     with open("/etc/apache2/conf.d/saltboot.conf", "w") as file:
         # Saltboot uses the same URL regardles containerized or normal proxy
         # here we rewrite URL so upstream server understands it
