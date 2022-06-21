@@ -1,9 +1,13 @@
-- fix missing remote command history events for big output (bsc#1199656)
-- fix api log message references the wrong user (bsc#1179962)
-- Consistently use conf value for SPA engine timeout
-- fix download of packages with caret sign in the version due
-  to missing url decode
-- Add specific requirement for Cobbler 3.2.1 to not conflict with Leap 15.4
+-------------------------------------------------------------------
+Tue Jun 21 18:31:05 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.34-1
+  * fix missing remote command history events for big output (bsc#1199656)
+  * fix api log message references the wrong user (bsc#1179962)
+  * Consistently use conf value for SPA engine timeout
+  * fix download of packages with caret sign in the version due
+    to missing url decode
+  * Add specific requirement for Cobbler 3.2.1 to not conflict with Leap 15.4
 
 -------------------------------------------------------------------
 Thu Jun 02 11:41:36 CEST 2022 - jgonzalez@suse.com
