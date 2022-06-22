@@ -121,8 +121,8 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
         assertEquals(Distro.BOOTSTRAP_NAME, newProfile.get("distro"));
         String activationKeyToken = user.getOrg().getId() + "-" +
             ActivationKey.BOOTSTRAP_TOKEN;
-        String expectedOptions = MessageFormat.format("spacewalk_activationkey={0} spacewalk_hostname={1} ROOTFS_FSCK=0",
-                activationKeyToken, config.getHostname());
+        String expectedOptions = "spacewalk_activationkey='" + activationKeyToken + "' spacewalk_hostname='"
+                + config.getHostname() + "' ROOTFS_FSCK='0'";
         assertEquals(expectedOptions, ((String) newProfile.get("kernel_options")).trim());
 
         criteria.put("name", SystemRecord.BOOTSTRAP_NAME);

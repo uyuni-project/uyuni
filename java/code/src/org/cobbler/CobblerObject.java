@@ -137,10 +137,6 @@ public abstract class CobblerObject {
     protected abstract void reload();
     protected abstract void invokeRename(String newName);
 
-    protected final Object getResolvedValue(String key) {
-        return client.invokeTokenMethod("get_item_resolved_value", getUid(), key);
-    }
-
     protected String getHandle() {
         if (isBlank(handle)) {
             handle = invokeGetHandle();
@@ -316,6 +312,13 @@ public abstract class CobblerObject {
         modify(DEPTH, depthIn);
     }
 
+    /**
+     * @return the kernelOptionsMap
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> getKernelOptionsMap() {
+        return parseKernelOpts(getKernelOptions());
+    }
 
     /**
      * @return the kernelOptions
@@ -327,17 +330,6 @@ public abstract class CobblerObject {
             return convertOptionsMap((Map<String, Object>) kernelOpts);
         }
         return (String) kernelOpts;
-    }
-
-    /**
-     * Gets resolved kernel options as a dictionary
-     *
-     * The resolved value includes all the options inherited from above.
-     * @return the kernel option map
-     */
-    @SuppressWarnings("unchecked")
-    public Map<String, Object> getResolvedKernelOptions() {
-        return (Map<String, Object>) getResolvedValue(KERNEL_OPTIONS);
     }
 
     /**
@@ -353,17 +345,12 @@ public abstract class CobblerObject {
     }
 
     /**
-     * Gets resolved kernel post options as a dictionary
+     * Convert the kernel options map to a string
      *
-     * The resolved value includes all the options inherited from above.
-     * @return the kernel post option map
+     * @param map the kernel options map
+     * @return the kernel options string
      */
-    @SuppressWarnings("unchecked")
-    public Map<String, Object> getResolvedKernelOptionsPost() {
-        return (Map<String, Object>) getResolvedValue(KERNEL_OPTIONS_POST);
-    }
-
-    private String convertOptionsMap(Map<String, Object> map) {
+    public static String convertOptionsMap(Map<String, Object> map) {
         StringBuilder string = new StringBuilder();
         for (String key : map.keySet()) {
             List<String> keyList;
@@ -379,13 +366,12 @@ public abstract class CobblerObject {
             }
             else {
                 for (String value : keyList) {
-                    string.append(key + "=" + value + " ");
+                    string.append(key + "='"  + value + "' ");
                 }
             }
         }
         return string.toString();
     }
-
 
     /**
      * @param kernelOptionsIn the kernelOptions to set
@@ -406,6 +392,33 @@ public abstract class CobblerObject {
      */
     public void setKernelOptionsPost(String kernelOptionsPostIn) {
         modify(SET_KERNEL_OPTIONS_POST, kernelOptionsPostIn);
+    }
+
+    private Map<String, Object> parseKernelOpts(String kernelOpts) {
+        Map<String, Object> toRet = new HashMap<>();
+
+        if (StringUtils.isEmpty(kernelOpts)) {
+            return toRet;
+        }
+
+        // Split the string on any whitespace character, not enclosed by quotes
+        String[] options = kernelOpts.split("\\s(?=(?:[^']*'[^']*')*[^']*$)(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+        for (String option : options) {
+            String[] split = option.replaceAll("[\",']", "").split("=", 2);
+            if (split.length == 1) {
+                toRet.put(split[0], new ArrayList<String>());
+            }
+            else if (split.length == 2) {
+                if (toRet.containsKey(split[0])) {
+                    List<String> list = (List) toRet.get(split[0]);
+                    list.add(split[1]);
+                }
+                else {
+                    toRet.put(split[0], new ArrayList<>(Arrays.asList(split[1])));
+                }
+            }
+        }
+        return toRet;
     }
 
     /**
