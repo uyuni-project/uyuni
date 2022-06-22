@@ -11,17 +11,15 @@ Feature: Be able to list available channels and enable them
     # Order matters here, refresh first
     When I refresh SCC
     And I execute mgr-sync "list channels -e" with user "admin" and password "admin"
-    Then I should get "[ ] SLES12-SP3-Pool for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-pool-x86_64]"
-    And I should get "    [ ] SLE-Live-Patching12-SP3-Pool for x86_64 SUSE Linux Enterprise Live Patching 12 SP3 x86_64 [sle-live-patching12-sp3-pool-x86_64]"
-    And I should get "sles12-sp3-debuginfo"
-    And I should get "sles12-sp3-installer"
+    Then I should get "[ ] SLES12-SP4-Pool for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-pool-x86_64]"
+    And I should get "    [ ] SLES12-SP4-Updates for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-updates-x86_64]"
+    And I should get "sles12-sp4-installer"
 
   Scenario: List available mandatory channels
     When I execute mgr-sync "list channels -e --no-optional"
-    Then I should get "[ ] SLES12-SP3-Pool for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-pool-x86_64]"
-    And I should get "    [ ] SLE-Live-Patching12-SP3-Pool for x86_64 SUSE Linux Enterprise Live Patching 12 SP3 x86_64 [sle-live-patching12-sp3-pool-x86_64]"
-    And I shouldn't get "sles12-sp3-debuginfo"
-    And I shouldn't get "sles12-sp3-installer"
+    Then I should get "[ ] SLES12-SP4-Pool for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-pool-x86_64]"
+    And I should get "    [ ] SLES12-SP4-Updates for x86_64 SUSE Linux Enterprise Server 12 SP4 x86_64 [sles12-sp4-updates-x86_64]"
+    And I shouldn't get "sles12-sp4-installer"
 
 @susemanager
   Scenario: List products
