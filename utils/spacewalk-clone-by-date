@@ -38,6 +38,7 @@ if _LIBPATH not in sys.path:
 
 from utils import cloneByDate
 from utils.cloneByDate import UserError
+import warnings
 
 
 SAMPLE_CONFIG = """
@@ -452,6 +453,8 @@ def main():
 
 
 if __name__ == '__main__':
+    warnings.simplefilter('always', DeprecationWarning)
+    warnings.warn(f'spacewalk-clone-by-date is DEPRECATED. Please use Content Lifecycle Management Tool.', DeprecationWarning, stacklevel=2)
     try:
         sys.exit(abs(main() or 0))
     except KeyboardInterrupt:

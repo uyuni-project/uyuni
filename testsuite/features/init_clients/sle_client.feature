@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle_client
 Feature: Register a traditional client
   In order to register a traditional client to the Uyuni server
   I want to create, parametrize and run boostrap script from proxy

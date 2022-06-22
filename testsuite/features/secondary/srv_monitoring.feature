@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature is a dependency for:
 # - features/secondary/min_monitoring.feature : If this feature fails could let monitoring feature disabled for SLE minion
@@ -25,16 +25,11 @@ Feature: Disable and re-enable monitoring of the server
     And I should see a list item with text "Taskomatic (Java JMX)" and a failing bullet
     And I should see a list item with text "Tomcat (Java JMX)" and a failing bullet
     And I should see a "Restarting Tomcat and Taskomatic is needed for the configuration changes to take effect." text
-    And file "/etc/rhn/rhn.conf" should contain "prometheus_monitoring_enabled = 0" on server
-    And file "/etc/sysconfig/tomcat" should not contain "Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
-    And file "/etc/rhn/taskomatic.conf" should not contain "Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
-    And file "/usr/lib/systemd/system/tomcat.service.d/jmx.conf" should not exist on server
-    And file "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf" should not exist on server
 
   Scenario: Restart spacewalk services to apply config changes after disabling monitoring
     When I restart the spacewalk service
 
-  Scenario: Check that monitoring is disabled using the UI
+  Scenario: Check that monitoring is disabled
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Manager Configuration > Monitoring"
     And I wait until I see "Server self monitoring" text
@@ -46,6 +41,13 @@ Feature: Disable and re-enable monitoring of the server
     And I should see a list item with text "Taskomatic (Java JMX)" and a failing bullet
     And I should see a list item with text "Tomcat (Java JMX)" and a failing bullet
     And I should not see a "Restarting Tomcat and Taskomatic is needed for the configuration changes to take effect." text
+    And file "/etc/rhn/rhn.conf" should contain "prometheus_monitoring_enabled = 0" on server
+    And file "/usr/lib/systemd/system/tomcat.service.d/jmx.conf" should not exist on server
+    And file "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf" should not exist on server
+    And port "3333" should be closed
+    And port "3334" should be closed
+    And port "5556" should be closed
+    And port "5557" should be closed
 
   Scenario: Enable monitoring from the UI
     When I follow the left menu "Admin > Manager Configuration > Monitoring"
@@ -59,16 +61,11 @@ Feature: Disable and re-enable monitoring of the server
     And I should see a list item with text "Taskomatic (Java JMX)" and a pending bullet
     And I should see a list item with text "Tomcat (Java JMX)" and a pending bullet
     And I should see a "Restarting Tomcat and Taskomatic is needed for the configuration changes to take effect." text
-    And file "/etc/rhn/rhn.conf" should contain "prometheus_monitoring_enabled = 1" on server
-    And file "/etc/sysconfig/tomcat" should not contain "Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
-    And file "/etc/rhn/taskomatic.conf" should not contain "Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
-    And file "/usr/lib/systemd/system/tomcat.service.d/jmx.conf" should contain "jmx_prometheus_javaagent.jar=5556" on server
-    And file "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf" should contain "jmx_prometheus_javaagent.jar=5557" on server
 
   Scenario: Restart spacewalk services to apply config changes after enabling monitoring
     When I restart the spacewalk service
 
-  Scenario: Check that monitoring is enabled using the UI
+  Scenario: Check that monitoring is enabled
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Manager Configuration > Monitoring"
     And I wait until I see "Server self monitoring" text
@@ -80,3 +77,10 @@ Feature: Disable and re-enable monitoring of the server
     And I should see a list item with text "Taskomatic (Java JMX)" and a success bullet
     And I should see a list item with text "Tomcat (Java JMX)" and a success bullet
     And I should not see a "Restarting Tomcat and Taskomatic is needed for the configuration changes to take effect." text
+    And file "/etc/rhn/rhn.conf" should contain "prometheus_monitoring_enabled = 1" on server
+    And file "/usr/lib/systemd/system/tomcat.service.d/jmx.conf" should contain "jmx_prometheus_javaagent.jar=5556" on server
+    And file "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf" should contain "jmx_prometheus_javaagent.jar=5557" on server
+    And port "3333" should be closed
+    And port "3334" should be closed
+    And port "5556" should be open
+    And port "5557" should be open

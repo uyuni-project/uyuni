@@ -9970,8 +9970,8 @@ tree will not be usable for autoinstalling.</source>
         <target>이메일이 이미 전송되었습니다. 이 작업은 {0}초마다 요청할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
-        <target>비밀번호 재설정 정보가 {0}(으)로 전송되었습니다.</target>
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+        <target state="needs-adaptation">비밀번호 재설정 정보가 {0}(으)로 전송되었습니다.</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -9986,8 +9986,8 @@ tree will not be usable for autoinstalling.</source>
         <target>해당 이메일 주소로 등록된 계정이 없습니다.</target>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
-        <target>찾은 로그인을 {0}(으)로 전송했습니다.</target>
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+        <target state="needs-adaptation">찾은 로그인을 {0}(으)로 전송했습니다.</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -11199,60 +11199,70 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">보고서 데이터베이스 스키마</target>
       </trans-unit>
-    <trans-unit id="bootstrap.minion.error" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error" xml:space="preserve" approved="yes">
         <source>An unexpected error has occurred during bootstrap.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
+        <target state="final">부트스트랩 중 예기치 못한 오류가 발생했습니다.</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve" approved="yes">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
+        <target state="final">부트스트랩 중 상태 적용에 실패했습니다(retcode={0}).</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve" approved="yes">
         <source>An error has occurred during salt execution: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
+        <target state="final">Salt 실행 중 오류가 발생했습니다: {0}.</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve" approved="yes">
         <source>function {0} not available</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
+        <target state="final">{0} 기능을 사용할 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve" approved="yes">
         <source>module {0} is not supported</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
+        <target state="final">{0} 모듈이 지원되지 않습니다.</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve" approved="yes">
         <source>unable to parse json</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
+        <target state="final">json을 파싱할 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve" approved="yes">
         <source>unable to establish ssh connection</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
+        <target state="final">SSH 연결을 수립할 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve" approved="yes">
         <source>Could not generate salt-ssh public key.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
+        <target state="final">Salt-SSH 공개 키를 생성하지 못했습니다.</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve" approved="yes">
         <source>Generating salt-ssh public key failed: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
+        <target state="final">Salt-SSH 공개 키 생성에 실패했습니다: {0}.</target>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
+        <target state="final">@@PRODUCT_NAME@@ {0}의 수명이 다했습니다.</target>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
+        <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0}의 수명 주기가 다했습니다. &lt;strong&gt;{1}&lt;/strong&gt;에 일반 지원이 종료되었습니다. 계속해서 지원받으려면 &lt;strong&gt;반드시&lt;/strong&gt; @@PRODUCT_NAME@@ 서버 인스턴스를 업그레이드해야 합니다.&lt;/p&gt;
+          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서의 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt; &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
+        <target state="final">@@PRODUCT_NAME@@ {0}의 수명이 곧 다합니다.</target>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+        <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0}의 수명이 곧 다합니다. &lt;strong&gt;{1}&lt;/strong&gt;에 일반 지원이 종료되기 전, 서버 인스턴스 업그레이드를 고려해 보십시오.&lt;/p&gt;
+          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서의 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt; &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
+      </trans-unit>
+    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
       <target state="new"/>
   </trans-unit>
-    </body>
+      <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

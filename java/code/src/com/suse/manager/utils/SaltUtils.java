@@ -1304,10 +1304,12 @@ public class SaltUtils {
                 packages.forEach(pkg -> createImagePackageFromSalt(pkg.getName(), Optional.of(pkg.getEpoch()),
                         Optional.of(pkg.getRelease()), pkg.getVersion(), Optional.of(instantNow),
                         Optional.of(pkg.getArch()), imageInfo));
-                SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
-                        ret.getBootImage(), imageInfo);
-                if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
-                    SaltbootUtils.createSaltbootDistro(imageInfo, ret.getBootImage().get());
+                if ("pxe".equals(ret.getImage().getType())) {
+                    SaltStateGeneratorService.INSTANCE.generateOSImagePillar(ret.getImage(),
+                            ret.getBootImage(), imageInfo);
+                    if (ret.getBootImage().isPresent() && ret.getBundles().isEmpty()) {
+                        SaltbootUtils.createSaltbootDistro(imageInfo, ret.getBootImage().get());
+                    }
                 }
             }
             else {

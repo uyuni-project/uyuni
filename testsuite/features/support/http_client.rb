@@ -7,7 +7,7 @@ require 'faraday'
 class HttpClient
   def initialize(host)
     puts 'Activating HTTP API'
-    @http_client = Faraday.new('https://' + host)
+    @http_client = Faraday.new('https://' + host, request: { timeout: DEFAULT_TIMEOUT })
   end
 
   def prepare_call(name, params)

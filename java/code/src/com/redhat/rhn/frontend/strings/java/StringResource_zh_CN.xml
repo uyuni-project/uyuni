@@ -9973,8 +9973,8 @@ tree will not be usable for autoinstalling.</source>
         <target state="translated">已经发送了一封电子邮件。您每 {0} 秒只能请求一次此操作。</target>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
-        <target>已将口令重设置信息发送到 {0}。</target>
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+        <target state="needs-adaptation">已将口令重设置信息发送到 {0}。</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -9989,8 +9989,8 @@ tree will not be usable for autoinstalling.</source>
         <target state="translated">没有使用该电子邮件地址注册的帐户。</target>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
-        <target state="translated">找到的登录名已发送至 {0}。</target>
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+        <target state="needs-adaptation">找到的登录名已发送至 {0}。</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -11202,60 +11202,70 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">报告数据库纲要</target>
       </trans-unit>
-    <trans-unit id="bootstrap.minion.error" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error" xml:space="preserve" approved="yes">
         <source>An unexpected error has occurred during bootstrap.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
+        <target state="final">引导期间发生意外错误。</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve" approved="yes">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
+        <target state="final">引导期间应用状态失败 (retcode={0})。</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve" approved="yes">
         <source>An error has occurred during salt execution: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
+        <target state="final">Salt 执行期间发生错误：{0}。</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve" approved="yes">
         <source>function {0} not available</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
+        <target state="final">函数 {0} 不可用</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve" approved="yes">
         <source>module {0} is not supported</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
+        <target state="final">不支持模块 {0}</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve" approved="yes">
         <source>unable to parse json</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
+        <target state="final">无法分析 json</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve" approved="yes">
         <source>unable to establish ssh connection</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
+        <target state="final">无法建立 SSH 连接</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve" approved="yes">
         <source>Could not generate salt-ssh public key.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
+        <target state="final">无法生成 salt-ssh 公共密钥。</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve" approved="yes">
         <source>Generating salt-ssh public key failed: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
+        <target state="final">生成 salt-ssh 公共密钥失败：{0}。</target>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
+        <target state="final">@@PRODUCT_NAME@@ {0} 的生命周期已结束</target>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
+        <target state="final"><p>@@PRODUCT_NAME@@ {0} 的生命周期已结束。对其的标准支持已于 <strong>{1}</strong>结束。要继续享受支持，<strong>必须</strong>升级此 @@PRODUCT_NAME@@ 服务器实例。</p>
+          <p>有关如何升级 @@PRODUCT_NAME@@ 的其他信息，请查看官方文档<em>安装/升级指南</em>的<em>升级</em>章节。</p></target>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
+        <target state="final">@@PRODUCT_NAME@@ {0} 的生命周期即将结束</target>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+        <target state="final"><p>@@PRODUCT_NAME@@ {0} 的生命周期即将结束。对其的标准支持将于 <strong>{1}</strong>结束，请考虑在此之前升级此服务器实例。</p>
+          <p>有关如何升级 @@PRODUCT_NAME@@ 的其他信息，请查看官方文档<em>安装/升级指南</em>的<em>升级</em>章节。</p></target>
+      </trans-unit>
+    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
       <target state="new"/>
   </trans-unit>
-    </body>
+      <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
