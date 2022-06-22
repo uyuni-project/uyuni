@@ -9296,51 +9296,51 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="profile" xml:space="preserve">
         <source>Idref of Profile</source>
-        <target/>
+        <target>Idref profilu</target>
       </trans-unit>
       <trans-unit id="satisfied" xml:space="preserve">
         <source>Satisfied</source>
-        <target/>
+        <target>Uspokojivé</target>
       </trans-unit>
       <trans-unit id="dissatisfied" xml:space="preserve">
         <source>Dissatisfied</source>
-        <target/>
+        <target>Neuspokojivé</target>
       </trans-unit>
       <trans-unit id="satisfactionUnknown" xml:space="preserve">
         <source>Unknown</source>
-        <target/>
+        <target>Neznáme</target>
       </trans-unit>
       <trans-unit id="filter.clearfilter" xml:space="preserve">
         <source>The list below is filtered.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Clear filter to see all items.&lt;/strong&gt; &lt;/a&gt;</source>
-        <target/>
+        <target>Nižšie uvedený zoznam je filtrovaný.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Ak chcete zobraziť všetky položky, vymažte filter.&lt;/strong&gt; &lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="listtag.clearfilter" xml:space="preserve">
         <source>Clear filter </source>
-        <target/>
+        <target>Vymažte filter </target>
       </trans-unit>
       <trans-unit id="listtag.seeall" xml:space="preserve">
         <source>to see all {0} items.  </source>
-        <target/>
+        <target>aby ste videli všetky {0} položky.  </target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessage" xml:space="preserve">
         <source>The list of {0} item(s) below is filtered.</source>
-        <target/>
+        <target>Nižšie uvedený zoznam {0} položky(iek) je filtrovaný.</target>
       </trans-unit>
       <trans-unit id="listtag.all_items_in_filter" xml:space="preserve">
         <source>The list below is not filtered, because the term you entered to filter by, '&lt;strong&gt;{0}&lt;/strong&gt;', returned matches for every item in the list. Try to filter by a more unique term.</source>
-        <target/>
+        <target>Nižšie uvedený zoznam nie je filtrovaný, pretože výraz, ktorý ste zadali na filtrovanie, '&lt;strong&gt;{0}&lt;/strong&gt;', vrátil zhody pre každú položku v zozname. Skúste filtrovať podľa jedinečnejšieho výrazu.</target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessageempty" xml:space="preserve">
         <source>The empty list below is filtered.</source>
-        <target/>
+        <target>Nižšie uvedený prázdny zoznam je filtrovaný.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidguestnamelength" xml:space="preserve">
         <source>Length of guest names must be at least {0} characters.</source>
-        <target/>
+        <target>Dĺžka názvov hostí musí byť aspoň {0} znakov.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidmemvalue" xml:space="preserve">
         <source>Memory Allocation must be a positive value greater than 0.</source>
-        <target/>
+        <target>Alokácia pamäte musí byť kladná hodnota väčšia ako 0.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidcpuvalue" xml:space="preserve">
         <source>Virtual CPUs must be set to a positive value greater than 0 and less than {0}.</source>
@@ -11215,14 +11215,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+      <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
         <source>Please fill in login.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
