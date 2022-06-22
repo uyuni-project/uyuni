@@ -44,7 +44,6 @@ java/conf/cobbler/snippets/ @SchoolGuy
 # This file only holds data, no Python code
 mgr_bootstrap_data.py
 
-
 # Frontend
 web/ @uyuni-project/frontend
 branding/ @uyuni-project/frontend
@@ -58,3 +57,38 @@ branding/ @uyuni-project/frontend
 
 # Testsuite
 testsuite/ @uyuni-project/qe
+
+# mgr-libmod
+susemanager-utils/mgr-libmod/ @cbbayburt
+
+# Individual Java packages
+
+# XMLRPC API
+java/code/src/com/redhat/rhn/frontend/xmlrpc/ @uyuni-project/frontend
+
+# HTTP API
+java/code/src/com/suse/manager/api/ @uyuni-project/frontend
+
+# Content Lifecycle Management
+java/code/src/com/redhat/rhn/manager/contentmgmt/ @uyuni-project/frontend
+java/code/src/com/suse/manager/webui/controllers/contentmanagement/ @uyuni-project/frontend
+java/code/src/com/redhat/rhn/domain/contentmgmt/ @uyuni-project/frontend
+
+# Maintenance Windows
+java/code/src/com/suse/manager/model/maintenance/ @uyuni-project/frontend
+java/code/src/com/suse/manager/webui/controllers/maintenance/ @uyuni-project/frontend
+java/code/src/com/suse/manager/maintenance/ @uyuni-project/frontend
+java/code/src/com/suse/manager/webui/utils/gson/MaintenanceWindowDataJson.java @uyuni-project/frontend
+
+# Minion Bootstrapping
+java/code/src/com/suse/manager/webui/controllers/bootstrap/ @uyuni-project/frontend
+java/code/src/com/suse/manager/webui/utils/gson/BootstrapHostsJson.java @uyuni-project/frontend
+java/code/src/com/suse/manager/webui/utils/gson/BootstrapParameters.java @uyuni-project/frontend
+
+# Notification Messages
+java/code/src/com/redhat/rhn/domain/notification/ @uyuni-project/frontend
+java/code/src/com/suse/manager/webui/controllers/NotificationMessageController.java @uyuni-project/frontend
+java/code/src/com/suse/manager/webui/utils/gson/NotificationMessageJson.java @uyuni-project/frontend
+
+# Websockets
+java/code/src/com/suse/manager/webui/websocket/ @uyuni-project/frontend
