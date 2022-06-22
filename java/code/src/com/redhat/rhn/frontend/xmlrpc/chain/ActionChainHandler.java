@@ -294,6 +294,53 @@ public class ActionChainHandler extends BaseHandler {
     }
 
     /**
+     * Schedule Errata update.
+     *
+     * @param loggedInUser The current user
+     * @param sids a list of Server IDs
+     * @param errataIds a list of erratas IDs
+     * @param chainLabel Label of the action chain
+     * @return action id if successful, exception otherwise
+     *
+     * @apidoc.doc Adds Errata update to an Action Chain.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single_desc("int", "sids", "System IDs")
+     * @apidoc.param #array_single_desc("int", "errataIds", "Errata ID")
+     * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Integer addErrataUpdate(User loggedInUser,
+                                    List<Integer> sids,
+                                    List<Integer> errataIds,
+                                    String chainLabel) {
+        if (errataIds.isEmpty()) {
+            throw new InvalidParameterException("No specified Erratas.");
+        }
+
+        List<Long> actionIds = null;
+        try {
+            List<Server> serverIds = sids.stream().map(sid ->
+                    this.acUtil.getServerById(sid, loggedInUser)).collect(Collectors.toList());
+
+            actionIds = ActionChainManager.scheduleErrataUpdates(loggedInUser,
+                    serverIds,
+                    errataIds, new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            // this err should never be thrown
+            log.error("Taskomatic exception", e);
+            throw new TaskomaticApiException("Error scheduling staging jobs with Taskomatic.");
+        }
+
+        if (actionIds.isEmpty()) {
+            throw new NoSuchActionException("No actions created for applying errata.");
+        }
+
+        return actionIds.get(0).intValue();
+    }
+
+
+    /**
      * Adds an action to remove installed packages on the system.
      *
      * @param loggedInUser The current user
