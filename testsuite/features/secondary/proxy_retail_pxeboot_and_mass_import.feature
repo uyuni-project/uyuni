@@ -23,17 +23,6 @@ Feature: PXE boot a Retail terminal
   I PXE boot one of the terminals
   I perform a mass import of several virtual terminals and one real minion
 
-  Scenario: Install or update PXE formulas on the server
-    When I manually install the "tftpd" formula on the server
-    And I manually install the "vsftpd" formula on the server
-    And I manually install the "saltboot" formula on the server
-    And I manually install the "pxe" formula on the server
-    And I manually install the "image-sync" formula on the server
-    And I synchronize all Salt dynamic modules on "proxy"
-
-  Scenario: Restart spacewalk services to apply saltboot reactor configuration
-    When I restart the spacewalk service
-
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
