@@ -103,7 +103,7 @@ else
         echo "$(timestamp)   A fast migration does not need this additional diskspace, because"
         echo "$(timestamp)   database files will be hardlinked instead of copied."
         echo
-        echo "$(timestamp)   If you have a backup of the database, run \"$0 fast\""
+        echo "$(timestamp)   If you have a backup of the database, run \"$0 -f\""
         echo
         exit 1
     else
