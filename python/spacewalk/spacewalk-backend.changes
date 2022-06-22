@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 21 18:30:19 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.14-1
+  * Fix issues with "http proxy" not being used by reposync in some cases
+
+-------------------------------------------------------------------
 Fri May 20 00:04:23 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.13-1

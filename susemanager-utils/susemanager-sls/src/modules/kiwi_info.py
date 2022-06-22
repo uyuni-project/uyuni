@@ -146,6 +146,7 @@ _compression_types = [
     { 'suffix': '.xz', 'compression': 'xz' },
     { 'suffix': '.install.iso',    'compression': None },
     { 'suffix': '.iso',            'compression': None },
+    { 'suffix': '.qcow2',          'compression': None },
     { 'suffix': '.raw',            'compression': None },
     { 'suffix': '',    'compression': None }
     ]
@@ -362,10 +363,12 @@ def build_info(dest, build_id, bundle_dest = None):
         'version': version,
         'filepath': image_filepath,
         'filename': image_filename,
-        'build_id': build_id
+        'build_id': build_id,
     }
 
-    res['image'].update(parse_kiwi_md5(os.path.join(dest, basename + '.md5')))
+    # Kiwi creates checksum for filesystem image when image type is PXE(or KIS), however if image is compressed, this
+    # checksum is of uncompressed image. Other image types do not have checksum created at all.
+    res['image'].update(get_md5(image_filepath))
 
     if image_type == 'pxe':
         r = inspect_boot_image(dest)

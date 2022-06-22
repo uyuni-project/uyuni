@@ -415,7 +415,7 @@ public class OSImageInspectSlsResult {
      * @return the boot image
      */
     public Optional<BootImage> getBootImage() {
-        return Optional.of(bootImage);
+        return Optional.ofNullable(bootImage);
     }
 
     /**

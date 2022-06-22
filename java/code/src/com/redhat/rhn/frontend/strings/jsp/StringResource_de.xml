@@ -4087,7 +4087,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>Errata veröffentlichen:</target>
+        <target>Errata veröffentlichen: </target>
       </trans-unit>
       <trans-unit id="errata.publish.instructions" xml:space="preserve">
         <source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>

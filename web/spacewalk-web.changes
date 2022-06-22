@@ -1,4 +1,29 @@
-- Update translation strings
+-------------------------------------------------------------------
+Tue Jun 21 18:32:18 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.21-1
+  * Consistently use conf value for SPA engine timeout
+  * Remove nodejs-packaging as a build requirement
+  * Update translation strings
+
+-------------------------------------------------------------------
+Thu Jun 02 11:42:31 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.20-1
+  * Fix autoinstallation profiles editor area and hints (bsc#1199887)
+
+-------------------------------------------------------------------
+Thu May 26 12:48:37 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.19-1
+  * Fix icon misalignment in buttons
+  * Fix header search layout in new branding
+
+-------------------------------------------------------------------
+Thu May 26 09:28:15 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.18-1
+  * Ensure autohiding alerts don't overlap with content
 
 -------------------------------------------------------------------
 Mon May 23 10:57:53 CEST 2022 - jgonzalez@suse.com

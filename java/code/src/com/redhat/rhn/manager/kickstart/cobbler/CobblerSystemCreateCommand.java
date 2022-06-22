@@ -338,7 +338,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                                 installerUpdated.get().getLabel() + "/" + ksData.getTree().getLabel();
                     }
                     else {
-                        kernelOptions = kernelOptions + "self_update=0";
+                        kernelOptions = kernelOptions + " self_update=0";
                     }
                 }
             }

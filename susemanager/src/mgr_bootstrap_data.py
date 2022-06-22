@@ -388,6 +388,8 @@ RES8 = [
     "python3-pytz",
     "python3-setuptools",
     "python3-distro",
+    "python3-immutables",
+    "python3-contextvars",
     "venv-salt-minion",
 ]
 
@@ -502,20 +504,20 @@ PKGLIST15_TRAD = [
     "hwdata",
     "python3-hwdata",
     "python3-rhnlib",
-    "spacewalk-check",
-    "spacewalk-client-setup",
+    "spacewalk-check*",
+    "spacewalk-client-setup*",
     "spacewalk-client-tools",
-    "python3-spacewalk-check",
-    "python3-spacewalk-client-setup",
+    "python3-spacewalk-check*",
+    "python3-spacewalk-client-setup*",
     "python3-spacewalk-client-tools",
     "python3-uyuni-common-libs*",
-    "mgr-daemon|spacewalksd",
+    "mgr-daemon|spacewalksd*",
     "shared-mime-info",
     "suseRegisterInfo",
     "python3-suseRegisterInfo",
-    "zypp-plugin-spacewalk",
+    "zypp-plugin-spacewalk*",
     "python3-zypp-plugin",
-    "python3-zypp-plugin-spacewalk",
+    "python3-zypp-plugin-spacewalk*",
 ]
 
 PKGLIST15_X86_ARM = [
@@ -614,6 +616,8 @@ PKGLISTUBUNTU1804 = [
     "python3-distro",
     "python3-gnupg",
     "gnupg",
+    "python3-immutables",
+    "python3-contextvars",
     "venv-salt-minion",
 ]
 
@@ -631,6 +635,7 @@ PKGLISTUBUNTU2004 = [
     "python3-psutil",
     "python3-pycryptodome",
     "python3-zmq",
+    "python3-gnupg",
     "salt-common",
     "salt-minion",
     "gnupg",

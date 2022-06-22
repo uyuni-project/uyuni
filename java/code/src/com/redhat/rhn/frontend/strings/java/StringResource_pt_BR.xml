@@ -9972,8 +9972,8 @@ para erros mais detalhados. Se você não resolver os erros, o auto-instalável
         <target>Um email já foi enviado. Você pode solicitar esta ação somente a cada {0} segundos.</target>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
-        <target>Informações de redefinição de senha enviadas para {0}.</target>
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+        <target state="needs-adaptation">Informações de redefinição de senha enviadas para {0}.</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -9988,8 +9988,8 @@ para erros mais detalhados. Se você não resolver os erros, o auto-instalável
         <target>Não há contas registradas com este endereço de email.</target>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
-        <target>Login encontrado foi enviado para {0}.</target>
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+        <target state="needs-adaptation">Login encontrado foi enviado para {0}.</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -11255,6 +11255,14 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
       <target state="new"/>
   </trans-unit>
-    </body>
+    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

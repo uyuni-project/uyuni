@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@sle_minion
 Feature: Bootstrap a Salt minion via the GUI
 
   Scenario: Log in as admin user
