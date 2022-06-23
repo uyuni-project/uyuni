@@ -32,6 +32,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import spark.Route;
@@ -115,6 +116,17 @@ public class HttpApiRegistry {
         registerAuthEndpoints();
         LOG.info(MessageFormat.format("Registered {0} methods in {1} namespaces.",
                 methodCount[0], handlerFactory.getKeys().size()));
+    }
+
+    /**
+     * Contains the endpoints that should be exposed without requiring any authentication.
+     * @return a Set containing the URL to the public endpoints
+     */
+    public static Set<String> getUnautenticatedRoutes() {
+        return Set.of(
+            "/rhn/manager/api/api/getVersion",
+            "/rhn/manager/api/api/systemVersion"
+        );
     }
 
     /**
