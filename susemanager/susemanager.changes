@@ -1,4 +1,8 @@
-- Fix issue with bootstrap repo definitions for RHEL/RES8 variants (bsc#1200863)
+-------------------------------------------------------------------
+Thu Jun 23 23:50:12 CEST 2022 - jgonzalez@suse.com
+
+- version 4.2.33-1
+  * Fix issue with bootstrap repo definitions for RHEL/RES8 variants (bsc#1200863)
 
 -------------------------------------------------------------------
 Thu Jun 16 16:21:46 CEST 2022 - jmassaguerpla@suse.de
