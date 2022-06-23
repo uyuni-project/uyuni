@@ -36,9 +36,6 @@ $nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
 
 if $build_validation
   # Define twopence objects for QAM or Build Validation environment
-  $sle11sp4_client = twopence_init("ssh:#{ENV['SLE11SP4_CLIENT']}") if ENV['SLE11SP4_CLIENT']
-  $sle11sp4_minion = twopence_init("ssh:#{ENV['SLE11SP4_MINION']}") if ENV['SLE11SP4_MINION']
-  $sle11sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE11SP4_SSHMINION']}") if ENV['SLE11SP4_SSHMINION']
   $sle12sp4_client = twopence_init("ssh:#{ENV['SLE12SP4_CLIENT']}") if ENV['SLE12SP4_CLIENT']
   $sle12sp4_minion = twopence_init("ssh:#{ENV['SLE12SP4_MINION']}") if ENV['SLE12SP4_MINION']
   $sle12sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP4_SSHMINION']}") if ENV['SLE12SP4_SSHMINION']
@@ -75,12 +72,10 @@ if $build_validation
   $debian10_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN10_SSHMINION']}") if ENV['DEBIAN10_SSHMINION']
   $debian11_minion = twopence_init("ssh:#{ENV['DEBIAN11_MINION']}") if ENV['DEBIAN11_MINION']
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
-  $sle11sp4_buildhost = twopence_init("ssh:#{ENV['SLE11SP4_BUILDHOST']}") if ENV['SLE11SP4_BUILDHOST']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
   $opensuse153arm_minion = twopence_init("ssh:#{ENV['OPENSUSE153ARM_MINION']}") if ENV['OPENSUSE153ARM_MINION']
-  $nodes += [$sle11sp4_client, $sle11sp4_minion, $sle11sp4_ssh_minion,
-             $sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
+  $nodes += [$sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
              $sle15_client, $sle15_minion, $sle15_ssh_minion,
              $sle15sp1_client, $sle15sp1_minion, $sle15sp1_ssh_minion,
@@ -94,7 +89,6 @@ if $build_validation
              $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
-             $sle11sp4_buildhost,
              $sle12sp5_buildhost,
              $sle15sp3_buildhost,
              $opensuse153arm_minion]
@@ -159,7 +153,7 @@ def get_system_name(host)
       word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/ || word =~ /pxeboot-/
     end
     system_name = 'pxeboot.example.org' if system_name.nil?
-  when 'sle11sp3_terminal', 'sle12sp5_terminal', 'sle15sp3_terminal'
+  when 'sle12sp5_terminal', 'sle15sp3_terminal'
     system_name = host + '.example.org'
   else
     begin
@@ -231,7 +225,6 @@ end
 $product = product
 $pxeboot_mac = ENV['PXEBOOT_MAC']
 $pxeboot_image = ENV['PXEBOOT_IMAGE'] || 'sles15sp3o'
-$sle11sp3_terminal_mac = ENV['SLE11SP3_TERMINAL_MAC']
 $sle12sp5_terminal_mac = ENV['SLE12SP5_TERMINAL_MAC']
 $sle15sp3_terminal_mac = ENV['SLE15SP3_TERMINAL_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
@@ -255,9 +248,6 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'build_host'                => $build_host,
                   'kvm_server'                => $kvm_server,
                   'xen_server'                => $xen_server,
-                  'sle11sp4_client'           => $sle11sp4_client,
-                  'sle11sp4_minion'           => $sle11sp4_minion,
-                  'sle11sp4_ssh_minion'       => $sle11sp4_ssh_minion,
                   'sle12sp4_client'           => $sle12sp4_client,
                   'sle12sp4_minion'           => $sle12sp4_minion,
                   'sle12sp4_ssh_minion'       => $sle12sp4_ssh_minion,
@@ -294,7 +284,6 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'debian10_ssh_minion'       => $debian10_ssh_minion,
                   'debian11_minion'           => $debian11_minion,
                   'debian11_ssh_minion'       => $debian11_ssh_minion,
-                  'sle11sp4_buildhost'        => $sle11sp4_buildhost,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
                   'sle15sp3_buildhost'        => $sle15sp3_buildhost,
                   'opensuse153arm_minion'     => $opensuse153arm_minion }

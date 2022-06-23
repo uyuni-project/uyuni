@@ -10,18 +10,6 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for the SUSE Manager proxy
     When I create the bootstrap repository for "proxy" on the server
 
-@sle11sp4_client
-  Scenario: Create the bootstrap repository for a SLES 11 SP4 traditional client
-    When I create the bootstrap repository for "sle11sp4_client" on the server
-
-@sle11sp4_minion
-  Scenario: Create the bootstrap repository for a SLES 11 SP4 minion
-    When I create the bootstrap repository for "sle11sp4_minion" on the server
-
-@sle11sp4_ssh_minion
-  Scenario: Create the bootstrap repository for a SLES 11 SP4 Salt SSH minion
-    When I create the bootstrap repository for "sle11sp4_ssh_minion" on the server
-
 @sle12sp4_client
   Scenario: Create the bootstrap repository for a SLES 12 SP4 traditional client
     When I create the bootstrap repository for "sle12sp4_client" on the server
