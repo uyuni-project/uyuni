@@ -1827,15 +1827,17 @@ public class ContentSyncManager {
                 .filter(e -> e.isMandatory())
                 .allMatch(entry -> {
                     boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
+                    boolean isAvailable = entry.getRootProduct().parentChannel().isPresent();
                     boolean isISSSlave = IssFactory.getCurrentMaster() != null;
                     boolean isMirrorable = false;
                     if (!isISSSlave) {
                         isMirrorable = entry.getRepository().isAccessible();
                     }
+
                     log.debug(product.getFriendlyName() + " - " + entry.getChannelLabel() +
                             " isPublic: " + isPublic + " isMirrorable: " + isMirrorable +
-                            " isISSSlave: " + isISSSlave);
-                    return  isPublic && (isMirrorable || isISSSlave);
+                            " isISSSlave: " + isISSSlave + " isAvailable: " + isAvailable);
+                    return  isPublic && (isMirrorable || isISSSlave || isAvailable);
                 }
              );
     }

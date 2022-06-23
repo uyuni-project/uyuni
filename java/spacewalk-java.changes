@@ -1,3 +1,4 @@
+- Add channel availability check for product migration (bsc#1200296)
 - Fix the confirm message on the refresh action by adding a link
   to pending actions on it (bsc#1172705)
 - require new salt-netapi-client version
