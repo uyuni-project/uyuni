@@ -9344,43 +9344,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidcpuvalue" xml:space="preserve">
         <source>Virtual CPUs must be set to a positive value greater than 0 and less than {0}.</source>
-        <target/>
+        <target>Virtuálne CPU musia byť nastavené na kladnú hodnotu väčšiu ako 0 a menšiu ako {0}.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidstoragevalue" xml:space="preserve">
         <source>Only natural numbers are accepted as storage values.</source>
-        <target/>
+        <target>Iba prirodzené čísla sú akceptované ako hodnoty úložiska.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidmacaddressvalue" xml:space="preserve">
         <source>MAC Addresses must be of the form XX:XX:XX:XX:XX:XX where all X's are hexedecimal values.</source>
-        <target/>
+        <target>Adresy MAC musia mať tvar XX:XX:XX:XX:XX:XX:XX, kde všetky X sú hexadecimálne hodnoty.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.duplicatemacaddressvalue" xml:space="preserve">
         <source>MAC Addresses must be unique. This MAC Address has already been recorded. Please choose a different MAC Address.</source>
-        <target/>
+        <target>Adresy MAC musia byť unikátne. Táto adresa MAC už bola zaznamenaná. Vyberte, prosím, inú adresu MAC.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.duplicateipaddressvalue" xml:space="preserve">
         <source>IP Addresses must be unique, and IP Address for &lt;strong&gt;{0}&lt;/strong&gt; has already been recorded. Please choose a different IP Address.</source>
-        <target/>
+        <target>IP adresy musia byť unikátne a IP adresa pre &lt;strong&gt;{0}&lt;/strong&gt; už bola zaznamenaná. Vyberte, prosím, inú IP adresu.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidregexp" xml:space="preserve">
         <source>Guest name can only contain alphanumeric characters, hyphens ('-'), periods ('.') and underscores ('_')</source>
-        <target/>
+        <target>Názov hosťa môže obsahovať len alfanumerické znaky, pomlčky ('-'), bodky ('.') a podčiarkovníky ('_')</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewChannels" xml:space="preserve">
         <source>View Associated Channels</source>
-        <target/>
+        <target>Zobraziť pridružené kanály</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewErrata" xml:space="preserve">
         <source>View Associated Patches</source>
-        <target/>
+        <target>Zobraziť pridružené opravy</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.submit" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>Potvrdiť</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.success" xml:space="preserve">
         <source>Successfully added {1} package(s) and {0} patches to channel {2}.</source>
-        <target/>
+        <target>Úspešne pridané {1} balík(y) a {0} opráv do kanála {2}.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.permsfailure" xml:space="preserve">
         <source>You do not have sufficient permissions to perform this action.</source>
