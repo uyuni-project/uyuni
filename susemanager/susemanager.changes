@@ -1,3 +1,5 @@
+- Fix issue with bootstrap repo definitions for RHEL/RES8 variants (bsc#1200863)
+
 -------------------------------------------------------------------
 Thu Jun 16 16:23:32 CEST 2022 - jmassaguerpla@suse.de
 
