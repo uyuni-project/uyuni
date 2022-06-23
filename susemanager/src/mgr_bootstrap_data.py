@@ -382,7 +382,7 @@ RES8 = [
     "python3-pysocks",
     "python3-pytz",
     "python3-setuptools",
-    "python3-distro"
+    "python3-distro",
     "python3-immutables",
     "python3-contextvars",
 ]
