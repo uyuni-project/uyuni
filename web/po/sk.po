@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-04-21 18:12+0000\n"
+"PO-Revision-Date: 2022-06-08 18:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5782,6 +5782,11 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Delete Pay-as-you-go"
 #~ msgstr "Vymazať priebežnú platbu"
 
+#~ msgid "The following product installations failed. Please check log files."
+#~ msgstr ""
+#~ "Nasledujúce inštalácie produktov zlyhali. Skontrolujte, prosím, súbory "
+#~ "záznamov."
+
 #~ msgid "Affected, patches available in channels which are not assigned"
 #~ msgstr "Ovplyvnené, opravy dostupné v kanáloch, ktoré nie sú priradené"
 
@@ -5955,6 +5960,9 @@ msgstr "Kód chyby HTTP "
 #~ "kontaktuje svojho systémového administrátora, aby pridal viac miesta na "
 #~ "disku."
 
+#~ msgid "_blank"
+#~ msgstr "_prázdne"
+
 #~ msgid ""
 #~ "Below is a list of Maintenance Schedules available to the current user."
 #~ msgstr ""
@@ -5988,6 +5996,9 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Pay-as-you-go refresh authentication data failed"
 #~ msgstr "Zlyhalo obnovenie dát overenia priebežnej platby"
 
+#~ msgid "End of Life Period"
+#~ msgstr "Koniec životného cyklu"
+
 #~ msgid ""
 #~ "The container based proxy configuration has been generated correctly."
 #~ msgstr ""
@@ -6018,29 +6029,38 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Proxy FQDN"
 #~ msgstr "Proxy FQDN"
 
+#~ msgid "The FQDN of the machine where the containers are hosted"
+#~ msgstr "FQDN stroja, v ktorom sú umiestnené kontajnery"
+
 #~ msgid "e.g., proxy.domain.com"
 #~ msgstr "napr. proxy.domain.com"
 
-#~ msgid "Server FQDN"
-#~ msgstr "Server FQDN"
+#~ msgid "Parent FQDN"
+#~ msgstr "FQDN rodiča"
 
 #~ msgid "e.g., server.domain.com"
 #~ msgstr "napr. server.domain.com"
 
-#~ msgid "FQDN of the server of proxy to connect to."
-#~ msgstr "FQDN servera proxy, ku ktorému sa má pripojiť."
+#~ msgid "The FQDN of the parent (server or proxy) to connect to."
+#~ msgstr "FQDN rodiča (server alebo proxy), ku ktorému sa má pripojiť."
 
 #~ msgid "Proxy SSH port"
 #~ msgstr "Port Proxy SSH"
 
-#~ msgid "Max Squid cache size (MB)"
-#~ msgstr "Max veľkosť vyrovnávacej pamäte Squid (MB)"
+#~ msgid "Max Squid cache size"
+#~ msgstr "Max veľkosť vyrovnávacej pamäte Squid"
+
+#~ msgid "The maximum value of the Squid cache in Megabytes"
+#~ msgstr "Maximálna hodnota vyrovnávacej pamäte Squid v megabajtoch"
 
 #~ msgid "e.g., 2048"
 #~ msgstr "napr. 2048"
 
-#~ msgid "Proxy administrator email"
+#~ msgid "Proxy admin email"
 #~ msgstr "Email administrátora proxy"
+
+#~ msgid "The container-based proxy administrator email address"
+#~ msgstr "Emailová adresa administrátora proxy založeného na kontajneroch"
 
 #~ msgid "e.g., proxy.admin@mycompany.com"
 #~ msgstr "napr. proxy.admin@mycompany.com"
@@ -6048,18 +6068,23 @@ msgstr "Kód chyby HTTP "
 #~ msgid "SSL certificate"
 #~ msgstr "SSL certifikát"
 
+#~ msgid "Generate"
+#~ msgstr "Generovať"
+
 #~ msgid "Use existing"
 #~ msgstr "Použiť existujúce"
 
-#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
-#~ msgstr ""
-#~ "Certifikát CA, ktorý sa má použiť na podpísanie certifikátu SSL vo "
-#~ "formáte PEM"
+#~ msgid "CA certificate"
+#~ msgstr "CA certifikát"
 
-#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
-#~ msgstr ""
-#~ "Súkromný kľúč CA, ktorý sa má použiť na podpísanie certifikátu SSL vo "
-#~ "formáte PEM"
+#~ msgid "To sign the SSL certificate in PEM format"
+#~ msgstr "Podpísanie certifikátu SSL vo formáte PEM"
+
+#~ msgid "CA private key"
+#~ msgstr "Súkromný kľúč CA"
+
+#~ msgid "CA password"
+#~ msgstr "Heslo CA"
 
 #~ msgid "The CA private key password"
 #~ msgstr "Heslo súkromného kľúča CA"
@@ -6085,8 +6110,8 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Email"
 #~ msgstr "Email"
 
-#~ msgid "The root CA used to sign the SSL certificate in PEM format"
-#~ msgstr "Koreňová CA použitá na podpísanie certifikátu SSL vo formáte PEM"
+#~ msgid "The root CA"
+#~ msgstr "Koreňová CA"
 
 #~ msgid "Intermediate CAs"
 #~ msgstr "Sprostredkujúce CA"
@@ -6094,14 +6119,17 @@ msgstr "Kód chyby HTTP "
 #~ msgid "CA file in PEM format"
 #~ msgstr "Súbor CA vo formáte PEM"
 
-#~ msgid "Proxy CRT content in PEM format"
-#~ msgstr "Obsah proxy CRT vo formáte PEM"
+#~ msgid "Proxy certificate"
+#~ msgstr "Proxy certifikát"
 
-#~ msgid "Proxy SSL private key in PEM format"
-#~ msgstr "Súkromný kľúč proxy SSL vo formáte PEM"
+#~ msgid "In PEM format"
+#~ msgstr "Vo formáte PEM"
 
-#~ msgid "Generate"
-#~ msgstr "Generovať"
+#~ msgid "Proxy SSL private key"
+#~ msgstr "Súkromný kľúč proxy SSL"
+
+#~ msgid "Search by name or fingerprint"
+#~ msgstr "Hľadať podľa názvu alebo odtlačku"
 
 #~ msgid "The following recurring actions have been created."
 #~ msgstr "Boli vytvorené nasledujúce opakujúce sa akcie."
@@ -6125,6 +6153,18 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "Error Details"
+#~ msgstr "Podrobnosti o chybách"
+
+#~ msgid "Close"
+#~ msgstr "Zavrieť"
+
+#~ msgid "Show additional details about this error"
+#~ msgstr "Zobraziť ďalšie podrobnosti o tejto chybe"
+
+#~ msgid "Unable to bootstrap host. The following errors have happened:"
+#~ msgstr "Nie je možné zaviesť hostiteľa. Vyskytli sa nasledujúce chyby:"
 
 #~ msgid "Authentication Method"
 #~ msgstr "Metóda overenia"
@@ -6283,6 +6323,22 @@ msgstr "Kód chyby HTTP "
 #~ msgid "foo {0} tea {1}"
 #~ msgstr "foo {0} tea {1}"
 
+#~ msgid "Server FQDN"
+#~ msgstr "Server FQDN"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr ""
+#~ "Certifikát CA, ktorý sa má použiť na podpísanie certifikátu SSL vo "
+#~ "formáte PEM"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr ""
+#~ "Súkromný kľúč CA, ktorý sa má použiť na podpísanie certifikátu SSL vo "
+#~ "formáte PEM"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "Obsah proxy CRT vo formáte PEM"
+
 #~ msgid "Apply"
 #~ msgstr "Použiť"
 
@@ -6342,3 +6398,18 @@ msgstr "Kód chyby HTTP "
 #~ msgstr ""
 #~ "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste spustili "
 #~ "príkaz v systémoch."
+
+#~ msgid "FQDN of the server of proxy to connect to."
+#~ msgstr "FQDN servera proxy, ku ktorému sa má pripojiť."
+
+#~ msgid "Max Squid cache size (MB)"
+#~ msgstr "Max veľkosť vyrovnávacej pamäte Squid (MB)"
+
+#~ msgid "Proxy administrator email"
+#~ msgstr "Email administrátora proxy"
+
+#~ msgid "The root CA used to sign the SSL certificate in PEM format"
+#~ msgstr "Koreňová CA použitá na podpísanie certifikátu SSL vo formáte PEM"
+
+#~ msgid "Proxy SSL private key in PEM format"
+#~ msgstr "Súkromný kľúč proxy SSL vo formáte PEM"

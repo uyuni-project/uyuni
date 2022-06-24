@@ -5562,16 +5562,24 @@ msgstr ""
 #~ msgstr "Dokumentation"
 
 #, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Allgemein"
+
+#, fuzzy
+#~ msgid "CA private key"
+#~ msgstr "Neues Passwort generieren"
+
+#, fuzzy
+#~ msgid "CA password"
+#~ msgstr "Passwort"
+
+#, fuzzy
 #~ msgid "The CA private key password"
 #~ msgstr "Neues Passwort generieren"
 
 #, fuzzy
 #~ msgid "Organization Unit"
 #~ msgstr "Organisation"
-
-#, fuzzy
-#~ msgid "Generate"
-#~ msgstr "Allgemein"
 
 #, fuzzy
 #~ msgid "Unknown System"

@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-04-15 11:12+0000\n"
+"PO-Revision-Date: 2022-06-20 08:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -5731,6 +5731,9 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Delete Pay-as-you-go"
 #~ msgstr "용량제 삭제"
 
+#~ msgid "The following product installations failed. Please check log files."
+#~ msgstr "다음 제품 설치에 실패했습니다. 로그 파일을 확인하십시오."
+
 #~ msgid "Affected, patches available in channels which are not assigned"
 #~ msgstr "할당되지 않은 채널에서 사용 가능한 패치가 적용됨"
 
@@ -5901,6 +5904,9 @@ msgstr "HTTP 오류 코드 "
 #~ "서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려"
 #~ "면 시스템 관리자에게 문의하십시오."
 
+#~ msgid "_blank"
+#~ msgstr "_blank"
+
 #~ msgid ""
 #~ "Below is a list of Maintenance Schedules available to the current user."
 #~ msgstr "아래는 현재 사용자가 사용할 수 있는 유지보수 일정 목록입니다."
@@ -5930,6 +5936,9 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Pay-as-you-go refresh authentication data failed"
 #~ msgstr "용량제 새로 고침 인증 데이터 실패"
 
+#~ msgid "End of Life Period"
+#~ msgstr "수명 주기 종료"
+
 #~ msgid ""
 #~ "The container based proxy configuration has been generated correctly."
 #~ msgstr "컨테이너 기반 프록시 구성이 올바르게 생성되었습니다."
@@ -5957,29 +5966,38 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Proxy FQDN"
 #~ msgstr "프록시 FQDN"
 
+#~ msgid "The FQDN of the machine where the containers are hosted"
+#~ msgstr "컨테이너가 호스팅되는 시스템의 FQDN"
+
 #~ msgid "e.g., proxy.domain.com"
 #~ msgstr "예: proxy.domain.com"
 
-#~ msgid "Server FQDN"
-#~ msgstr "서버 FQDN"
+#~ msgid "Parent FQDN"
+#~ msgstr "상위 FQDN"
 
 #~ msgid "e.g., server.domain.com"
 #~ msgstr "예: server.domain.com"
 
-#~ msgid "FQDN of the server of proxy to connect to."
-#~ msgstr "연결한 프록시의 서버 FQDN입니다."
+#~ msgid "The FQDN of the parent (server or proxy) to connect to."
+#~ msgstr "연결할 상위(서버 또는 프록시)의 FQDN입니다."
 
 #~ msgid "Proxy SSH port"
 #~ msgstr "프록시 SSH 포트"
 
-#~ msgid "Max Squid cache size (MB)"
-#~ msgstr "최대 Squid 캐시 크기(MB)"
+#~ msgid "Max Squid cache size"
+#~ msgstr "최대 Squid 캐시 크기"
+
+#~ msgid "The maximum value of the Squid cache in Megabytes"
+#~ msgstr "메가바이트 단위의 Squid 캐시 최대값"
 
 #~ msgid "e.g., 2048"
 #~ msgstr "예: 2048"
 
-#~ msgid "Proxy administrator email"
+#~ msgid "Proxy admin email"
 #~ msgstr "프록시 관리자 전자 메일"
+
+#~ msgid "The container-based proxy administrator email address"
+#~ msgstr "컨테이너 기반 프록시 관리자 전자 메일 주소"
 
 #~ msgid "e.g., proxy.admin@mycompany.com"
 #~ msgstr "예: proxy.admin@mycompany.com"
@@ -5987,14 +6005,23 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "SSL certificate"
 #~ msgstr "SSL 인증서"
 
+#~ msgid "Generate"
+#~ msgstr "생성"
+
 #~ msgid "Use existing"
 #~ msgstr "기존 항목 사용"
 
-#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
-#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 인증서"
+#~ msgid "CA certificate"
+#~ msgstr "CA 인증서"
 
-#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
-#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 개인 키"
+#~ msgid "To sign the SSL certificate in PEM format"
+#~ msgstr "PEM 형식의 SSL 인증서에 서명"
+
+#~ msgid "CA private key"
+#~ msgstr "CA 개인 키"
+
+#~ msgid "CA password"
+#~ msgstr "CA 비밀번호"
 
 #~ msgid "The CA private key password"
 #~ msgstr "CA 개인 키 비밀번호"
@@ -6020,8 +6047,8 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Email"
 #~ msgstr "전자 메일"
 
-#~ msgid "The root CA used to sign the SSL certificate in PEM format"
-#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 루트 CA"
+#~ msgid "The root CA"
+#~ msgstr "루트 CA"
 
 #~ msgid "Intermediate CAs"
 #~ msgstr "중간 CA"
@@ -6029,14 +6056,17 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "CA file in PEM format"
 #~ msgstr "PEM 형식의 CA 파일"
 
-#~ msgid "Proxy CRT content in PEM format"
-#~ msgstr "PEM 형식의 프록시 CRT 컨텐트"
+#~ msgid "Proxy certificate"
+#~ msgstr "프록시 인증서"
 
-#~ msgid "Proxy SSL private key in PEM format"
-#~ msgstr "PEM 형식의 프록시 SSL 개인 키"
+#~ msgid "In PEM format"
+#~ msgstr "PEM 형식"
 
-#~ msgid "Generate"
-#~ msgstr "생성"
+#~ msgid "Proxy SSL private key"
+#~ msgstr "프록시 SSL 개인 키"
+
+#~ msgid "Search by name or fingerprint"
+#~ msgstr "이름 또는 핑거프린트를 기준으로 검색"
 
 #~ msgid "The following recurring actions have been created."
 #~ msgstr "다음 반복 작업이 생성되었습니다."
@@ -6060,6 +6090,18 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "Error Details"
+#~ msgstr "오류 세부 정보"
+
+#~ msgid "Close"
+#~ msgstr "닫기"
+
+#~ msgid "Show additional details about this error"
+#~ msgstr "이 오류에 대한 추가 세부 정보 보기"
+
+#~ msgid "Unable to bootstrap host. The following errors have happened:"
+#~ msgstr "호스트 부트스트랩에 실패했습니다. 다음 오류가 발생했습니다."
 
 #~ msgid "Authentication Method"
 #~ msgstr "인증 방법"
@@ -6214,6 +6256,18 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "foo {0} tea {1}"
 #~ msgstr "푸 {0} 티 {1}"
 
+#~ msgid "Server FQDN"
+#~ msgstr "서버 FQDN"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 인증서"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 개인 키"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "PEM 형식의 프록시 CRT 컨텐트"
+
 #~ msgid "Apply"
 #~ msgstr "적용"
 
@@ -6272,3 +6326,18 @@ msgstr "HTTP 오류 코드 "
 #~ msgstr ""
 #~ "세션이 만료되었습니다. 시스템에서 명령을 실행하려면 페이지를 다시 로드하십"
 #~ "시오."
+
+#~ msgid "FQDN of the server of proxy to connect to."
+#~ msgstr "연결한 프록시의 서버 FQDN입니다."
+
+#~ msgid "Max Squid cache size (MB)"
+#~ msgstr "최대 Squid 캐시 크기(MB)"
+
+#~ msgid "Proxy administrator email"
+#~ msgstr "프록시 관리자 전자 메일"
+
+#~ msgid "The root CA used to sign the SSL certificate in PEM format"
+#~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 루트 CA"
+
+#~ msgid "Proxy SSL private key in PEM format"
+#~ msgstr "PEM 형식의 프록시 SSL 개인 키"

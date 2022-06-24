@@ -5775,6 +5775,18 @@ msgstr ""
 #~ msgstr "p. ej., SLE12"
 
 #, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Generales"
+
+#, fuzzy
+#~ msgid "CA private key"
+#~ msgstr "Generar contraseña nueva"
+
+#, fuzzy
+#~ msgid "CA password"
+#~ msgstr "Contraseña"
+
+#, fuzzy
 #~ msgid "The CA private key password"
 #~ msgstr "Generar contraseña nueva"
 
@@ -5783,12 +5795,16 @@ msgstr ""
 #~ msgstr "Organización"
 
 #, fuzzy
-#~ msgid "Generate"
-#~ msgstr "Generales"
+#~ msgid "Search by name or fingerprint"
+#~ msgstr "Filtrar por productos instalados a nivel sistema"
 
 #, fuzzy
 #~ msgid "${defaultChannelName}"
 #~ msgstr "Nombre del canal"
+
+#, fuzzy
+#~ msgid "Error Details"
+#~ msgstr "Detalles del filtro"
 
 #, fuzzy
 #~ msgid "Reactivation Key"

@@ -5923,6 +5923,10 @@ msgstr "Kód chyby HTTP "
 #~ msgstr "např. host.doman.com"
 
 #, fuzzy
+#~ msgid "Parent FQDN"
+#~ msgstr "Proxy"
+
+#, fuzzy
 #~ msgid "e.g., server.domain.com"
 #~ msgstr "např. host.doman.com"
 
@@ -5939,6 +5943,18 @@ msgstr "Kód chyby HTTP "
 #~ msgstr "např. host.doman.com"
 
 #, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Všeobecné"
+
+#, fuzzy
+#~ msgid "CA private key"
+#~ msgstr "Privátní klíč SSH"
+
+#, fuzzy
+#~ msgid "CA password"
+#~ msgstr "Heslo"
+
+#, fuzzy
 #~ msgid "The CA private key password"
 #~ msgstr "Vygenerovat nové heslo"
 
@@ -5951,8 +5967,12 @@ msgstr "Kód chyby HTTP "
 #~ msgstr "Rozhraní"
 
 #, fuzzy
-#~ msgid "Generate"
-#~ msgstr "Všeobecné"
+#~ msgid "Proxy SSL private key"
+#~ msgstr "Port"
+
+#, fuzzy
+#~ msgid "Search by name or fingerprint"
+#~ msgstr "Filtrovat podle názvu projektu"
 
 #~ msgid ""
 #~ "The below times are displayed in the server time zone {0}. The scheduled "
@@ -5966,6 +5986,10 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
+
+#, fuzzy
+#~ msgid "Error Details"
+#~ msgstr "Podrobnosti"
 
 #, fuzzy
 #~ msgid "Reactivation Key"

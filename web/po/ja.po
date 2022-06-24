@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-04-18 03:12+0000\n"
+"PO-Revision-Date: 2022-06-22 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -5804,6 +5804,10 @@ msgstr "HTTP エラーコード "
 #~ msgid "Delete Pay-as-you-go"
 #~ msgstr "従量課金制を削除"
 
+#~ msgid "The following product installations failed. Please check log files."
+#~ msgstr ""
+#~ "次の製品のインストールに失敗しました。 ログファイルを確認してください。"
+
 #~ msgid "Affected, patches available in channels which are not assigned"
 #~ msgstr "影響を受ける、割り当てられていないチャンネルで利用可能なパッチ"
 
@@ -5979,6 +5983,9 @@ msgstr "HTTP エラーコード "
 #~ "サーバで使用可能なディスク容量が非常に少なくなっています。ディスク容量を追"
 #~ "加するには、システム管理者に連絡してください。"
 
+#~ msgid "_blank"
+#~ msgstr "_blank"
+
 #~ msgid ""
 #~ "Below is a list of Maintenance Schedules available to the current user."
 #~ msgstr ""
@@ -6009,6 +6016,9 @@ msgstr "HTTP エラーコード "
 #~ msgid "Pay-as-you-go refresh authentication data failed"
 #~ msgstr "従量課金制の認証データの更新が失敗しました"
 
+#~ msgid "End of Life Period"
+#~ msgstr "サポート期間の終了"
+
 #~ msgid ""
 #~ "The container based proxy configuration has been generated correctly."
 #~ msgstr "コンテナベースのプロキシ設定が正しく生成されました。"
@@ -6037,29 +6047,38 @@ msgstr "HTTP エラーコード "
 #~ msgid "Proxy FQDN"
 #~ msgstr "プロキシFQDN"
 
+#~ msgid "The FQDN of the machine where the containers are hosted"
+#~ msgstr "コンテナがホストされているマシンのFQDN"
+
 #~ msgid "e.g., proxy.domain.com"
 #~ msgstr "例: proxy.domain.com"
 
-#~ msgid "Server FQDN"
-#~ msgstr "サーバFQDN"
+#~ msgid "Parent FQDN"
+#~ msgstr "親FQDN"
 
 #~ msgid "e.g., server.domain.com"
 #~ msgstr "例: server.domain.com"
 
-#~ msgid "FQDN of the server of proxy to connect to."
-#~ msgstr "接続するプロキシのサーバのFQDN。"
+#~ msgid "The FQDN of the parent (server or proxy) to connect to."
+#~ msgstr "接続する親(サーバまたはプロキシ)のFQDN。"
 
 #~ msgid "Proxy SSH port"
 #~ msgstr "プロキシSSHポート"
 
-#~ msgid "Max Squid cache size (MB)"
-#~ msgstr "Squidの最大キャッシュサイズ(MB)"
+#~ msgid "Max Squid cache size"
+#~ msgstr "Squidの最大キャッシュサイズ"
+
+#~ msgid "The maximum value of the Squid cache in Megabytes"
+#~ msgstr "Squidキャッシュの最大値(メガバイト単位)"
 
 #~ msgid "e.g., 2048"
 #~ msgstr "例: 2048"
 
-#~ msgid "Proxy administrator email"
+#~ msgid "Proxy admin email"
 #~ msgstr "プロキシ管理者の電子メール"
+
+#~ msgid "The container-based proxy administrator email address"
+#~ msgstr "コンテナベースのプロキシ管理者の電子メールアドレス"
 
 #~ msgid "e.g., proxy.admin@mycompany.com"
 #~ msgstr "例: proxy.admin@mycompany.com"
@@ -6067,14 +6086,23 @@ msgstr "HTTP エラーコード "
 #~ msgid "SSL certificate"
 #~ msgstr "SSL証明書"
 
+#~ msgid "Generate"
+#~ msgstr "生成"
+
 #~ msgid "Use existing"
 #~ msgstr "既存の使用"
 
-#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
-#~ msgstr "PEM形式でSSL証明書に署名するために使用するCA証明書"
+#~ msgid "CA certificate"
+#~ msgstr "CA 証明書"
 
-#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
-#~ msgstr "PEM形式でSSL証明書に署名するために使用するCA機密鍵"
+#~ msgid "To sign the SSL certificate in PEM format"
+#~ msgstr "PEM形式のSSL証明書に署名するには"
+
+#~ msgid "CA private key"
+#~ msgstr "CA機密鍵"
+
+#~ msgid "CA password"
+#~ msgstr "CA パスワード"
 
 #~ msgid "The CA private key password"
 #~ msgstr "CA機密鍵のパスワード"
@@ -6100,8 +6128,8 @@ msgstr "HTTP エラーコード "
 #~ msgid "Email"
 #~ msgstr "電子メール"
 
-#~ msgid "The root CA used to sign the SSL certificate in PEM format"
-#~ msgstr "PEM形式でSSL証明書に署名するために使用されるルートCA"
+#~ msgid "The root CA"
+#~ msgstr "ルートCA"
 
 #~ msgid "Intermediate CAs"
 #~ msgstr "中間CA"
@@ -6109,14 +6137,17 @@ msgstr "HTTP エラーコード "
 #~ msgid "CA file in PEM format"
 #~ msgstr "PEM形式のCAファイル"
 
-#~ msgid "Proxy CRT content in PEM format"
-#~ msgstr "PEM形式のプロキシCRTコンテンツ"
+#~ msgid "Proxy certificate"
+#~ msgstr "プロキシ証明書"
 
-#~ msgid "Proxy SSL private key in PEM format"
-#~ msgstr "PEM形式のプロキシSSL機密鍵"
+#~ msgid "In PEM format"
+#~ msgstr "PEM形式"
 
-#~ msgid "Generate"
-#~ msgstr "生成"
+#~ msgid "Proxy SSL private key"
+#~ msgstr "プロキシSSL機密鍵"
+
+#~ msgid "Search by name or fingerprint"
+#~ msgstr "名前または指紋で検索"
 
 #~ msgid "The following recurring actions have been created."
 #~ msgstr "繰り返し動作が作成されました。"
@@ -6140,6 +6171,18 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "Error Details"
+#~ msgstr "エラーの詳細"
+
+#~ msgid "Close"
+#~ msgstr "閉じる"
+
+#~ msgid "Show additional details about this error"
+#~ msgstr "このエラーの詳細を表示する"
+
+#~ msgid "Unable to bootstrap host. The following errors have happened:"
+#~ msgstr "ホストをブートストラップできません。 次のエラーが発生しました。"
 
 #~ msgid "Authentication Method"
 #~ msgstr "認証メソッド"
@@ -6302,6 +6345,18 @@ msgstr "HTTP エラーコード "
 #~ msgid "foo {0} tea {1}"
 #~ msgstr "foo {0} tea {1}"
 
+#~ msgid "Server FQDN"
+#~ msgstr "サーバFQDN"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM形式でSSL証明書に署名するために使用するCA証明書"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr "PEM形式でSSL証明書に署名するために使用するCA機密鍵"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "PEM形式のプロキシCRTコンテンツ"
+
 #~ msgid "Apply"
 #~ msgstr "適用"
 
@@ -6370,3 +6425,18 @@ msgstr "HTTP エラーコード "
 
 #~ msgid "Select a custom info key"
 #~ msgstr "独自の info 鍵の選択"
+
+#~ msgid "FQDN of the server of proxy to connect to."
+#~ msgstr "接続するプロキシのサーバのFQDN。"
+
+#~ msgid "Max Squid cache size (MB)"
+#~ msgstr "Squidの最大キャッシュサイズ(MB)"
+
+#~ msgid "Proxy administrator email"
+#~ msgstr "プロキシ管理者の電子メール"
+
+#~ msgid "The root CA used to sign the SSL certificate in PEM format"
+#~ msgstr "PEM形式でSSL証明書に署名するために使用されるルートCA"
+
+#~ msgid "Proxy SSL private key in PEM format"
+#~ msgstr "PEM形式のプロキシSSL機密鍵"

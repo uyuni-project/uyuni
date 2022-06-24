@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-04-15 11:12+0000\n"
+"PO-Revision-Date: 2022-06-20 06:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -5640,6 +5640,9 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Delete Pay-as-you-go"
 #~ msgstr "删除 Pay-as-you-go"
 
+#~ msgid "The following product installations failed. Please check log files."
+#~ msgstr "以下产品安装失败。请检查日志文件。"
+
 #~ msgid "Affected, patches available in channels which are not assigned"
 #~ msgstr "受影响，频道中有可用补丁，但未指派"
 
@@ -5800,6 +5803,9 @@ msgstr "HTTP 错误代码 "
 #~ msgstr ""
 #~ "服务器上的可用磁盘空间严重不足。请联系您的系统管理员添加更多磁盘空间。"
 
+#~ msgid "_blank"
+#~ msgstr "_blank"
+
 #~ msgid ""
 #~ "Below is a list of Maintenance Schedules available to the current user."
 #~ msgstr "以下是当前用户可使用的维护日程安排列表。"
@@ -5829,6 +5835,9 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Pay-as-you-go refresh authentication data failed"
 #~ msgstr "Pay-as-you-go 刷新身份验证数据失败"
 
+#~ msgid "End of Life Period"
+#~ msgstr "生命周期结束期限"
+
 #~ msgid ""
 #~ "The container based proxy configuration has been generated correctly."
 #~ msgstr "已正确生成基于容器的代理配置。"
@@ -5855,29 +5864,38 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Proxy FQDN"
 #~ msgstr "代理 FQDN"
 
+#~ msgid "The FQDN of the machine where the containers are hosted"
+#~ msgstr "托管容器的计算机的 FQDN"
+
 #~ msgid "e.g., proxy.domain.com"
 #~ msgstr "例如 proxy.domain.com"
 
-#~ msgid "Server FQDN"
-#~ msgstr "服务器 FQDN"
+#~ msgid "Parent FQDN"
+#~ msgstr "父 FQDN"
 
 #~ msgid "e.g., server.domain.com"
 #~ msgstr "例如 server.domain.com"
 
-#~ msgid "FQDN of the server of proxy to connect to."
-#~ msgstr "代理要连接到的服务器的 FQDN。"
+#~ msgid "The FQDN of the parent (server or proxy) to connect to."
+#~ msgstr "要连接到的父项（服务器或代理）的 FQDN。"
 
 #~ msgid "Proxy SSH port"
 #~ msgstr "代理 SSH 端口"
 
-#~ msgid "Max Squid cache size (MB)"
-#~ msgstr "最大 Squid 缓存大小 (MB)"
+#~ msgid "Max Squid cache size"
+#~ msgstr "最大 Squid 缓存大小"
+
+#~ msgid "The maximum value of the Squid cache in Megabytes"
+#~ msgstr "Squid 缓存的最大值 (MB)"
 
 #~ msgid "e.g., 2048"
 #~ msgstr "例如 2048"
 
-#~ msgid "Proxy administrator email"
+#~ msgid "Proxy admin email"
 #~ msgstr "代理管理员电子邮件"
+
+#~ msgid "The container-based proxy administrator email address"
+#~ msgstr "基于容器的代理管理员电子邮件地址"
 
 #~ msgid "e.g., proxy.admin@mycompany.com"
 #~ msgstr "例如 proxy.admin@mycompany.com"
@@ -5885,14 +5903,23 @@ msgstr "HTTP 错误代码 "
 #~ msgid "SSL certificate"
 #~ msgstr "SSL 证书"
 
+#~ msgid "Generate"
+#~ msgstr "生成"
+
 #~ msgid "Use existing"
 #~ msgstr "使用现有的"
 
-#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
-#~ msgstr "用于为 PEM 格式的 SSL 证书签名的 CA 证书"
+#~ msgid "CA certificate"
+#~ msgstr "CA 证书"
 
-#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
-#~ msgstr "用于为 PEM 格式的 SSL 证书签名的 CA 私用密钥"
+#~ msgid "To sign the SSL certificate in PEM format"
+#~ msgstr "为 PEM 格式的 SSL 证书签名"
+
+#~ msgid "CA private key"
+#~ msgstr "CA 私用密钥"
+
+#~ msgid "CA password"
+#~ msgstr "CA 口令"
 
 #~ msgid "The CA private key password"
 #~ msgstr "CA 私用密钥口令"
@@ -5918,8 +5945,8 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Email"
 #~ msgstr "电子邮件"
 
-#~ msgid "The root CA used to sign the SSL certificate in PEM format"
-#~ msgstr "用于为 PEM 格式的 SSL 证书签名的根 CA"
+#~ msgid "The root CA"
+#~ msgstr "根 CA"
 
 #~ msgid "Intermediate CAs"
 #~ msgstr "中间 CA"
@@ -5927,14 +5954,17 @@ msgstr "HTTP 错误代码 "
 #~ msgid "CA file in PEM format"
 #~ msgstr "PEM 格式的 CA 文件"
 
-#~ msgid "Proxy CRT content in PEM format"
-#~ msgstr "PEM 格式的代理 CRT 内容"
+#~ msgid "Proxy certificate"
+#~ msgstr "代理证书"
 
-#~ msgid "Proxy SSL private key in PEM format"
-#~ msgstr "PEM 格式的代理 SSL 私用密钥"
+#~ msgid "In PEM format"
+#~ msgstr "PEM 格式"
 
-#~ msgid "Generate"
-#~ msgstr "生成"
+#~ msgid "Proxy SSL private key"
+#~ msgstr "代理 SSL 私用密钥"
+
+#~ msgid "Search by name or fingerprint"
+#~ msgstr "按名称或指纹搜索"
 
 #~ msgid "The following recurring actions have been created."
 #~ msgstr "已创建以下重复操作。"
@@ -5954,6 +5984,18 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "${this.getDefaultBase().name}"
 #~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "Error Details"
+#~ msgstr "错误细节"
+
+#~ msgid "Close"
+#~ msgstr "关闭"
+
+#~ msgid "Show additional details about this error"
+#~ msgstr "显示关于此错误的其他细节"
+
+#~ msgid "Unable to bootstrap host. The following errors have happened:"
+#~ msgstr "无法引导主机。发生以下错误："
 
 #~ msgid "Authentication Method"
 #~ msgstr "身份验证方法"
@@ -6105,6 +6147,18 @@ msgstr "HTTP 错误代码 "
 #~ msgid "foo {0} tea {1}"
 #~ msgstr "foo {0} tea {1}"
 
+#~ msgid "Server FQDN"
+#~ msgstr "服务器 FQDN"
+
+#~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
+#~ msgstr "用于为 PEM 格式的 SSL 证书签名的 CA 证书"
+
+#~ msgid "CA private key to use to sign the SSL certificate in PEM format"
+#~ msgstr "用于为 PEM 格式的 SSL 证书签名的 CA 私用密钥"
+
+#~ msgid "Proxy CRT content in PEM format"
+#~ msgstr "PEM 格式的代理 CRT 内容"
+
 #~ msgid "Apply"
 #~ msgstr "应用"
 
@@ -6163,3 +6217,18 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Select a custom info key"
 #~ msgstr "选择自定义信息键"
+
+#~ msgid "FQDN of the server of proxy to connect to."
+#~ msgstr "代理要连接到的服务器的 FQDN。"
+
+#~ msgid "Max Squid cache size (MB)"
+#~ msgstr "最大 Squid 缓存大小 (MB)"
+
+#~ msgid "Proxy administrator email"
+#~ msgstr "代理管理员电子邮件"
+
+#~ msgid "The root CA used to sign the SSL certificate in PEM format"
+#~ msgstr "用于为 PEM 格式的 SSL 证书签名的根 CA"
+
+#~ msgid "Proxy SSL private key in PEM format"
+#~ msgstr "PEM 格式的代理 SSL 私用密钥"

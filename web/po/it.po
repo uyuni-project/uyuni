@@ -5542,6 +5542,14 @@ msgstr ""
 #~ msgstr "Proxy"
 
 #, fuzzy
+#~ msgid "Parent FQDN"
+#~ msgstr "Proxy"
+
+#, fuzzy
+#~ msgid "CA password"
+#~ msgstr "Password"
+
+#, fuzzy
 #~ msgid "Organization Unit"
 #~ msgstr "Organizzazione"
 

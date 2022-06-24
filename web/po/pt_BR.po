@@ -5583,6 +5583,14 @@ msgstr ""
 #~ msgstr "Canal de configuração de estado"
 
 #, fuzzy
+#~ msgid "CA private key"
+#~ msgstr "Gerar nova senha"
+
+#, fuzzy
+#~ msgid "CA password"
+#~ msgstr "Senha"
+
+#, fuzzy
 #~ msgid "The CA private key password"
 #~ msgstr "Gerar nova senha"
 
