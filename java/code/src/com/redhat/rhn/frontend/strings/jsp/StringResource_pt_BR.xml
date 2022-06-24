@@ -5707,7 +5707,7 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
       </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve">
           <source>{0} hardware {1} will be refreshed.</source>
-        <target>{0} hardware {1} será atualizado.</target>
+        <target state="needs-adaptation">{0} hardware {1} será atualizado.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5743,7 +5743,7 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
       </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve">
           <source>{0} package {1} will be refreshed.</source>
-        <target>{0} pacote {1} será atualizado.</target>
+        <target state="needs-adaptation">{0} pacote {1} será atualizado.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
@@ -8233,10 +8233,11 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.menu" xml:space="preserve">
-        <source>Lock</source>
+        <source>Lock / Unlock</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="pkg.lock.requestlock" xml:space="preserve">
         <source>Lock</source>
@@ -28553,6 +28554,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -28660,6 +28662,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2021 SUSE LLC.</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>

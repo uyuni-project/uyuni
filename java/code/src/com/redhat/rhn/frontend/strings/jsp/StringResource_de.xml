@@ -936,7 +936,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.general" xml:space="preserve">
           <source>You must be an @@PRODUCT_NAME@@ administrator to view this page. Contact your @@PRODUCT_NAME@@ administrator to get information on the organizations in this system.</source>
-        <target>Sie müssen ein Satellite-Administrator sein, um diese Seite ansehen zu können.  Kontaktieren Sie Ihren Satellite-Administrator, um Informationen über die Organisationen in diesem System zu erhalten.</target>
+        <target>Sie müssen ein Satellite-Administrator sein, um diese Seite ansehen zu können. Kontaktieren Sie Ihren Satellite-Administrator, um Informationen über die Organisationen in diesem System zu erhalten.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -2219,7 +2219,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Verwende PAM:</target>
+        <target>Verwende PAM: </target>
       </trans-unit>
       <!-- userlist.jsp -->
       <trans-unit id="userlist.jsp.useroverview" xml:space="preserve">
@@ -2493,7 +2493,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-        <target>Diese Benutzerinformation kann in dem unten zur Verfügung gestellten Formular geändert werden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;. </target>
+        <target>Diese Benutzerinformation kann in dem unten zur Verfügung gestellten Formular geändert werden.  Einträge, die mit einem Sternchen (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) versehen sind, sind &lt;strong&gt;Pflichtfelder&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone" xml:space="preserve">
         <source>Phone</source>
@@ -2883,7 +2883,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
         </context-group>
-        <target> Die folgenden Aktionen konnten nicht ordnungsgemäß auf einem oder auf mehreren Systemen ausgeführt werden. Aktionen können nur von Organisations-Administratoren oder vom Benutzer, der die Aktion eingeplant hat, archiviert werden.</target>
+        <target> Die folgenden Aktionen konnten nicht ordnungsgemäß auf einem oder auf mehreren Systemen ausgeführt werden. Aktionen können nur von Organisations-Administratoren oder vom Benutzer, der die Aktion eingeplant hat, archiviert werden. </target>
       </trans-unit>
       <trans-unit id="failedactions.jsp.nogroups" xml:space="preserve">
         <source>No failed actions.</source>
@@ -4087,7 +4087,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>Errata veröffentlichen:</target>
+        <target>Errata veröffentlichen: </target>
       </trans-unit>
       <trans-unit id="errata.publish.instructions" xml:space="preserve">
         <source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>
@@ -5703,7 +5703,7 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
       </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve">
           <source>{0} hardware {1} will be refreshed.</source>
-        <target>{0} Hardware {1} wird aktualisiert.</target>
+        <target state="needs-adaptation">{0} Hardware {1} wird aktualisiert.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5739,7 +5739,7 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
       </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve">
           <source>{0} package {1} will be refreshed.</source>
-        <target>{0} Paket {1} wird aktualisiert.</target>
+        <target state="needs-adaptation">{0} Paket {1} wird aktualisiert.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
@@ -8221,10 +8221,11 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.menu" xml:space="preserve">
-        <source>Lock</source>
+        <source>Lock / Unlock</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="pkg.lock.requestlock" xml:space="preserve">
         <source>Lock</source>
@@ -9224,7 +9225,7 @@ und Organisationsmanagement-Tools haben, sollten Sie diese Rolle aus Ihrem Login
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.doT</context>
         </context-group>
-        <target>Bereits geklont? </target>
+        <target>Bereits geklont?</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.no" xml:space="preserve">
         <source>No</source>
@@ -11281,14 +11282,14 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.edit" xml:space="preserve">
           <source> Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source>
-        <target>Alternativ können Sie eine neue Version in dem '{0}' Bereich unten hochladen und '{1}' auswählen.</target>
+        <target> Alternativ können Sie eine neue Version in dem '{0}' Bereich unten hochladen und '{1}' auswählen.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
           <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target>Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
+        <target> Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -13851,7 +13852,7 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
       </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-tooltip" xml:space="preserve">
           <source> Deploy configuration files to systems on registration</source>
-        <target>Konfigurationsdateien bei Systemen einsetzen, wenn sie mit diesem Aktivierungsschlüssel angemeldet werden.</target>
+        <target> Konfigurationsdateien bei Systemen einsetzen, wenn sie mit diesem Aktivierungsschlüssel angemeldet werden.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -28529,6 +28530,7 @@ für einen angegebenen Channel aufgelistet wird.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -28636,6 +28638,7 @@ für einen angegebenen Channel aufgelistet wird.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2021 SUSE LLC.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
