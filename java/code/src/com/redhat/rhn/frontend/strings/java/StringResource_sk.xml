@@ -8725,662 +8725,662 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
-        <target/>
+        <target>Nájdené viaceré kanály potomkov s balíkom: {0}. Prosím, prihláste tento systém ručne do príslušného kanála potomka a naplánujte inštaláciu tohto balíka.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.novirtchannel" xml:space="preserve">
         <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <target/>
+        <target>Nepodarilo sa automaticky prihlásiť systém na Virtualizačný kanál RHEL. Tento kanál obsahuje balíky potrebné pre virtualizáciu.  Je to pravdepodobne spôsobené nedostatkom oprávnení na kanál.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
         <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
-        <target/>
+        <target>Nepodarilo sa nájsť kanál s balíkom {0}. Tento balík je potrebný na správu virtuálnych hostí s @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
-        <target/>
+        <target>Systém už má typ systému {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.virtualization.help" xml:space="preserve">
         <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">POZNÁMKA: Ak chcete povoliť a používať možnosti virtualizácie v @@PRODUCT_NAME@@ pre tento systém, nainštalujte balík mgr-virtualization-host z pridruženého nástrojového kanála potomka. Preštudujte si dokumentáciu, aby ste zistili všetky ďalšie aspekty a požiadavky na povolenie virtualizácie hostiteľského systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Tento používateľ nemá požadované oprávnenia na presun tohto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.migrate.org_not_trusted" xml:space="preserve">
         <source>Systems can only be transferred between trusted organizations.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Systémy sa môžu presúvať len medzi dôveryhodnými organizáciami.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.migrate.no_trusted_orgs" xml:space="preserve">
         <source>This organization has no trusts defined with other organizations, or no other organizations are defined.</source>
-        <target/>
+        <target>Táto organizácia nemá definované žiadne dôveryhodné vzťahy s inými organizáciami alebo žiadne iné organizácie nie sú definované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.migrate.no_org_specified" xml:space="preserve">
         <source>An organization must be specified</source>
-        <target/>
+        <target>Organizácia musí byť uvedená</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.invalid_addon_entitlement" xml:space="preserve">
         <source>Invalid add-on system type [{0}] provided. No such system type exists.</source>
-        <target/>
+        <target>Zadaný neplatný typ prídavného systému [{0}]. Takýto typ systému neexistuje.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.guestcantvirt" xml:space="preserve">
         <source>The system cannot have a Virtualization Host system type because it is a virtual guest.</source>
-        <target/>
+        <target>Systém nemôže mať typ systému Virtualizačného hostiteľa, pretože ide o virtuálneho hosťa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.invalidsystem" xml:space="preserve">
         <source>Invalid system</source>
-        <target/>
+        <target>Neplatný systém</target>
       </trans-unit>
       <trans-unit id="api.invalidargs" xml:space="preserve">
         <source>Invalid argument(s): {0}</source>
-        <target/>
+        <target>Neplatný argument(y): {0}</target>
       </trans-unit>
       <trans-unit id="api.action.nosuchaction" xml:space="preserve">
         <source>No such action: {0}</source>
-        <target/>
+        <target>Žiadna takáto akcia: {0}</target>
       </trans-unit>
       <trans-unit id="api.action.nosuchactionchain" xml:space="preserve">
         <source>No such action chain: {0}</source>
-        <target/>
+        <target>Žiadny takýto reťazec akcií: {0}</target>
       </trans-unit>
       <trans-unit id="api.action.invalidactiontype" xml:space="preserve">
         <source>Invalid action type</source>
-        <target/>
+        <target>Neplatný typ akcie</target>
       </trans-unit>
       <trans-unit id="api.org.pamAuthNotConfigured" xml:space="preserve">
         <source>The server is not configured to support PAM authentication. Refer to the reference guide for instructions on how to set up PAM.</source>
-        <target/>
+        <target>Server nie je nakonfigurovaný na podporu overovania PAM. Inštrukcie na nastavenie PAM nájdete v referenčnej príručke.</target>
       </trans-unit>
       <trans-unit id="api.org.migrationtosameorg" xml:space="preserve">
         <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
-        <target/>
+        <target>Používateľ nemôže migrovať systém, v ktorom sú pôvodná a cieľová organizácia rovnaké.  Org Id: {0}, Systém Id: {1}.</target>
       </trans-unit>
       <trans-unit id="api.org.nosuchorg" xml:space="preserve">
         <source>No such organization: {0}</source>
-        <target/>
+        <target>Žiadna takáto organizácia: {0}</target>
       </trans-unit>
       <trans-unit id="api.org.notintrust" xml:space="preserve">
         <source>Organization {0} is not defined in trust.</source>
-        <target/>
+        <target>Organizácia {0} nie je definovaná ako dôveryhodná.</target>
       </trans-unit>
       <trans-unit id="api.org.sysnotintrust" xml:space="preserve">
         <source>System {0} is member of organization {1} which is not defined in the destination organization's trust.</source>
-        <target/>
+        <target>Systém {0} je členom organizácie {1}, ktorá nie je definovaná v dôvere cieľovej organizácie.</target>
       </trans-unit>
       <trans-unit id="api.org.notpermittedbyorg" xml:space="preserve">
         <source>User in organization {0} is not allowed to retrieve or modify {1} properties in organization {2}.</source>
-        <target/>
+        <target>Používateľ v organizácii {0} nemá povolené získať alebo zmeniť vlastnosti {1} v organizácii {2}.</target>
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg" xml:space="preserve">
         <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Túto operáciu nemožno vykonať na organizácii @@PRODUCT_NAME@@. (Org ID 1)</target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata" xml:space="preserve">
         <source>Invalid patch: {0}</source>
-        <target/>
+        <target>Neplatná oprava: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.invalidrole" xml:space="preserve">
         <source>Invalid role: {0}</source>
-        <target/>
+        <target>Neplatná rola: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.nosuchgroup" xml:space="preserve">
         <source>No external group to role map exists for group: {0}</source>
-        <target/>
+        <target>Neexistuje žiadna externá skupina k mape rolí pre skupinu: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.nosuchservergroup" xml:space="preserve">
         <source>No such server group exists: {0}</source>
-        <target/>
+        <target>Žiadna takáto skupina serverov neexistuje: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.nosuchgrouptoservergroup" xml:space="preserve">
         <source>No external group to server group map exists for group: {0}</source>
-        <target/>
+        <target>Neexistuje žiadna externá skupina k mape skupín serverov pre skupinu: {0}</target>
       </trans-unit>
       <trans-unit id="api.package.invalidpackage" xml:space="preserve">
         <source>Invalid package: {0}</source>
-        <target/>
+        <target>Neplatný balík: {0}</target>
       </trans-unit>
       <trans-unit id="api.errata.duplicateerrata" xml:space="preserve">
         <source>Patch already exists with advisory {0}</source>
-        <target/>
+        <target>Oprava už existuje s upozornením {0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidsnapshot" xml:space="preserve">
         <source>Invalid snapshot specified: {0}</source>
-        <target/>
+        <target>Zadaná neplatná snímka: {0}</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.lookupServerGroup" xml:space="preserve">
         <source>Unable to locate or access server group: "{0}"</source>
-        <target/>
+        <target>Nie je možné vyhľadať alebo získať prístup ku skupine serverov: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied" xml:space="preserve">
         <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Zmena prístupu administrátora nie je povolená pre administrátorov @@PRODUCT_NAME@@ a organizácie.  Týmto používateľom je v predvolenom nastavení udelený prístup; preto by sa mali zo vstupu odstrániť títo používatelia: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel" xml:space="preserve">
         <source>Invalid profile label specified: {0}</source>
-        <target/>
+        <target>Zadané neplatné označenie profilu: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.missingCapabilities" xml:space="preserve">
         <source>The server {0} does not have the {1} client capability. Please enable the capability before proceeding with the operation.</source>
-        <target/>
+        <target>Server {0} nemá možnosť klienta {1}. Prosím, pred pokračovaním v operácii povoľte túto možnosť.</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.serverNotInGroup" xml:space="preserve">
         <source>The specified server is not a member of the specified group</source>
-        <target/>
+        <target>Zadaný server nie je členom určenej skupiny</target>
       </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
-        <target/>
+        <target>Žiadne takéto sieťové rozhranie: {0}.</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype" xml:space="preserve">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
-        <target/>
+        <target>Neplatný typ opravy, "{0}". Použite, prosím, jeden z nasledujúcich: "Bezpečnostné upozornenie", "Upozornenie na vylepšenia produktu" alebo "Upozornenie na opravu chyby".</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisoryrelease" xml:space="preserve">
         <source>Invalid advisory release, "{0}". Maximum value is {1}.</source>
-        <target/>
+        <target>Neplatné vydanie upozornenia, "{0}". Maximálna hodnota je {1}.</target>
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected" xml:space="preserve">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
-        <target/>
+        <target>Pokúšate sa publikovať opravu, ale nevybrali ste žiadne kanály, do ktorých chcete publikovať. Opravy musia byť publikované aspoň v jednom kanáli.</target>
       </trans-unit>
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
-        <target/>
+        <target>Požadovaný súbor je príliš veľký na stiahnutie cez XMLRPC.</target>
       </trans-unit>
       <trans-unit id="api.package.download.ioerror" xml:space="preserve">
         <source>There was a general IO Error, check permissions on the requested file.</source>
-        <target/>
+        <target>Vyskytla sa všeobecná chyba IO, skontrolujte oprávnenia na požadovanom súbore.</target>
       </trans-unit>
       <trans-unit id="api.channel.access.invalidaccessvalue" xml:space="preserve">
         <source>Access value, "{0}". Please use one of the following: "public", "private", or "protected".</source>
-        <target/>
+        <target>Hodnota prístupu, "{0}". Prosím, použite jednu z nasledujúcich: "verejné", "súkromné" alebo "chránené".</target>
       </trans-unit>
       <trans-unit id="api.channel.software.channelsubscription" xml:space="preserve">
         <source>Unable to subscribe this system to the requested channel: "{0}"</source>
-        <target/>
+        <target>Nie je možné prihlásiť tento systém k požadovanému kanálu: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel" xml:space="preserve">
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
-        <target/>
+        <target>Viacero základných kanálov vybraných na predplatné.  Na predplatné boli vybrané kanály {0} a {1}, ale systém môže byť prihlásený len k jednému základnému kanálu.</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannellist" xml:space="preserve">
         <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
-        <target/>
+        <target>Poskytnutý zoznam kanálov je neplatný.  Musí obsahovať zoznam označení alebo id kanálov, ale nie kombináciu oboch.</target>
       </trans-unit>
       <trans-unit id="channel.invalidchannelarch" xml:space="preserve">
         <source>The channel arch specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaná arch kanála ({0}) je neplatná.</target>
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannellabel" xml:space="preserve">
         <source>The channel label specified ({0}) already exists.</source>
-        <target/>
+        <target>Zadané označenie kanála ({0}) už existuje.</target>
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannelname" xml:space="preserve">
         <source>The channel name specified ({0}) already exists.</source>
-        <target/>
+        <target>Zadaný názov kanála ({0}) už existuje.</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannelaccess" xml:space="preserve">
         <source>The channel access ({0}) is not allowed for this operation.</source>
-        <target/>
+        <target>Prístup ku kanálu ({0}) nie je pre túto operáciu povolený.</target>
       </trans-unit>
       <trans-unit id="Certificate Administrators" xml:space="preserve">
         <source>Certificate Administrators</source>
-        <target/>
+        <target>Administrátori certifikátov</target>
       </trans-unit>
       <trans-unit id="Monitoring Administrators" xml:space="preserve">
         <source>Monitoring Administrators</source>
-        <target/>
+        <target>Administrátori monitorovania</target>
       </trans-unit>
       <trans-unit id="Configuration Administrators" xml:space="preserve">
         <source>Configuration Administrators</source>
-        <target/>
+        <target>Administrátori konfigurácie</target>
       </trans-unit>
       <trans-unit id="user.unspecified.name" xml:space="preserve">
         <source>(unspecified)</source>
-        <target/>
+        <target>(nešpecifikované)</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.tagalreadyinuse" xml:space="preserve">
         <source>Snapshot tag already exists: {0}</source>
-        <target/>
+        <target>Značka snímky už existuje: {0}</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.nosuchtag" xml:space="preserve">
         <source>No such server snapshot tag: {0}</source>
-        <target/>
+        <target>Žiadna takáto značka snímky servera: {0}</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.nosuchsnapshot" xml:space="preserve">
         <source>No such server snapshot: {0}</source>
-        <target/>
+        <target>Žiadna takáto snímka servera: {0}</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidKeyType" xml:space="preserve">
         <source>The package key type specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaný typ kľúča balíka ({0}) je neplatný.</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidKey" xml:space="preserve">
         <source>The package key specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaný kľúč balíka ({0}) je neplatný.</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidProvider" xml:space="preserve">
         <source>The package provider specified ({0}) is  invalid.</source>
-        <target/>
+        <target>Zadaný poskytovateľ balíka ({0}) je neplatný.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidvirttype" xml:space="preserve">
         <source>Invalid virtualization type: {0}</source>
-        <target/>
+        <target>Neplatný typ virtualizácie: {0}</target>
       </trans-unit>
       <trans-unit id="org.create.success" xml:space="preserve">
         <source>Organization {0} created successfully</source>
-        <target/>
+        <target>Organizácia {0} úspešne vytvorená</target>
       </trans-unit>
       <trans-unit id="orgName" xml:space="preserve">
         <source>Organization Name</source>
-        <target/>
+        <target>Názov organizácie</target>
       </trans-unit>
       <trans-unit id="api.kickstart.nosuchkickstarttreelabel" xml:space="preserve">
         <source>Unable to locate autoinstallable tree for your organization: {0}</source>
-        <target/>
+        <target>Nie je možné nájsť automaticky inštalovateľný strom pre vašu organizáciu: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartlabel" xml:space="preserve">
         <source>Invalid autoinstallation label: {0}</source>
-        <target/>
+        <target>Neplatné označenie automatickej inštalácie: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateType" xml:space="preserve">
         <source>Invalid update type: {0}</source>
-        <target/>
+        <target>Neplatný typ aktualizácie: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateTypeAndTree" xml:space="preserve">
         <source>If update type is red_hat the kickstartable tree you start with must be provided by Red Hat. This tree is not: {0}</source>
-        <target/>
+        <target>Ak je typ aktualizácie red_hat, strom schopný kickstart, s ktorým začínate, musí byť poskytnutý spoločnosťou Red Hat. Tento strom nie je: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateTypeAndNoBase" xml:space="preserve">
         <source>The kickstartable tree {0} has no base channel. The only valid update type with a no-base kickstartable tree is 'none'.</source>
-        <target/>
+        <target>Strom schopný kickstart {0} nemá žiadny základný kanál. Jediný platný typ aktualizácie s nezákladným stromom schopným kickstart je 'none'.</target>
       </trans-unit>
       <trans-unit id="api.package.invalidpackagearch" xml:space="preserve">
         <source>The package arch specified ({0}) is invalid.</source>
-        <target/>
+        <target>Zadaná arch balíka ({0}) je neplatná.</target>
       </trans-unit>
       <trans-unit id="api.errata.missingerrataaction" xml:space="preserve">
         <source>A required patch attribute ({0}) was missing.</source>
-        <target/>
+        <target>Chýbal požadovaný atribút opravy ({0}).</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster" xml:space="preserve">
         <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Záznam pre nadradeného @@PRODUCT_NAME@@ {0} už existuje</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicateslave" xml:space="preserve">
         <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Záznam pre podriadeného @@PRODUCT_NAME@@ {0} už existuje</target>
       </trans-unit>
       <trans-unit id="securityErrata" xml:space="preserve">
         <source>Security Patches</source>
-        <target/>
+        <target>Bezpečnostné opravy</target>
       </trans-unit>
       <trans-unit id="bugErrata" xml:space="preserve">
         <source>Bug Patches</source>
-        <target/>
+        <target>Opravy chýb</target>
       </trans-unit>
       <trans-unit id="enhancementErrata" xml:space="preserve">
         <source>Enhancement Patches</source>
-        <target/>
+        <target>Vylepšovacie opravy</target>
       </trans-unit>
       <trans-unit id="outdatedPackages" xml:space="preserve">
         <source>Outdated Packages</source>
-        <target/>
+        <target>Zastarané balíky</target>
       </trans-unit>
       <trans-unit id="lastCheckin" xml:space="preserve">
         <source>Last Checkin</source>
-        <target/>
+        <target>Posledné prihlásenie</target>
       </trans-unit>
       <trans-unit id="entitlement" xml:space="preserve">
         <source>System Types</source>
-        <target/>
+        <target>Typy systémov</target>
       </trans-unit>
       <trans-unit id="groupAdmins" xml:space="preserve">
         <source>Group Admins</source>
-        <target/>
+        <target>Administrátori skupín</target>
       </trans-unit>
       <trans-unit id="serverCount" xml:space="preserve">
         <source>Server Count</source>
-        <target/>
+        <target>Počet serverov</target>
       </trans-unit>
       <trans-unit id="monitoringStatus" xml:space="preserve">
         <source>Monitor Status</source>
-        <target/>
+        <target>Stav monitora</target>
       </trans-unit>
       <trans-unit id="userLogin" xml:space="preserve">
         <source>User Login</source>
-        <target/>
+        <target>Prihlásenie používateľa</target>
       </trans-unit>
       <trans-unit id="userLastName" xml:space="preserve">
         <source>User Last Name</source>
-        <target/>
+        <target>Priezvisko používateľa</target>
       </trans-unit>
       <trans-unit id="userFirstName" xml:space="preserve">
         <source>User First Name</source>
-        <target/>
+        <target>Krstné meno používateľa</target>
       </trans-unit>
       <trans-unit id="roleNames" xml:space="preserve">
         <source>Role Names</source>
-        <target/>
+        <target>Názvy rolí</target>
       </trans-unit>
       <trans-unit id="lastLoggedIn" xml:space="preserve">
         <source>Last Logged In</source>
-        <target/>
+        <target>Naposledy prihlásený</target>
       </trans-unit>
       <trans-unit id="changedByFirstName" xml:space="preserve">
         <source>Changed by First Name</source>
-        <target/>
+        <target>Zmenené podľa krstného mena</target>
       </trans-unit>
       <trans-unit id="changedByLastName" xml:space="preserve">
         <source>Changed by Last Name</source>
-        <target/>
+        <target>Zmenené podľa priezviska</target>
       </trans-unit>
       <trans-unit id="changeDate" xml:space="preserve">
         <source>Change Date</source>
-        <target/>
+        <target>Dátum zmeny</target>
       </trans-unit>
       <trans-unit id="channelLabels" xml:space="preserve">
         <source>Channel Labels</source>
-        <target/>
+        <target>Označenia kanálov</target>
       </trans-unit>
       <trans-unit id="entitlementLevel" xml:space="preserve">
         <source>System Type Level</source>
-        <target/>
+        <target>Úroveň typu systému</target>
       </trans-unit>
       <trans-unit id="serverName" xml:space="preserve">
         <source>Server Name</source>
-        <target/>
+        <target>Názov servera</target>
       </trans-unit>
       <trans-unit id="matchingField" xml:space="preserve">
         <source>Matching Field Name</source>
-        <target/>
+        <target>Zodpovedajúci názov poľa</target>
       </trans-unit>
       <trans-unit id="matchingFieldValue" xml:space="preserve">
         <source>Matching Field Value</source>
-        <target/>
+        <target>Zodpovedajúca hodnota poľa</target>
       </trans-unit>
       <trans-unit id="dmiBiosVendor" xml:space="preserve">
         <source>DMI Bios Vendor</source>
-        <target/>
+        <target>Dodávateľ DMI Bios</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiBiosVersion" xml:space="preserve">
         <source>DMI Bios Version</source>
-        <target/>
+        <target>Verzia DMI Bios</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiBiosRelease" xml:space="preserve">
         <source>DMI Bios Release</source>
-        <target/>
+        <target>Vydanie DMI Bios</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiSystem" xml:space="preserve">
         <source>DMI System</source>
-        <target/>
+        <target>Systém DMI</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiAsset" xml:space="preserve">
         <source>DMI Asset Tag</source>
-        <target/>
+        <target>Označenie majetku DMI</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuModel" xml:space="preserve">
         <source>CPU Model</source>
-        <target/>
+        <target>Model CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuMHz" xml:space="preserve">
         <source>CPU MHz</source>
-        <target/>
+        <target>CPU MHz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuNumberOfCpus" xml:space="preserve">
         <source>CPU Count</source>
-        <target/>
+        <target>Počet CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ram" xml:space="preserve">
         <source>RAM KB</source>
-        <target/>
+        <target>RAM KB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="serverArchName" xml:space="preserve">
         <source>Server Architecture</source>
-        <target/>
+        <target>Architektúra servera</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="runningKernel" xml:space="preserve">
         <source>Kernel</source>
-        <target/>
+        <target>Jadro</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemTypeLabel" xml:space="preserve">
         <source>System Type</source>
-        <target/>
+        <target>Typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemIdForCsv" xml:space="preserve">
         <source>System Id</source>
-        <target/>
+        <target>Id systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hostSystemIdForCsv" xml:space="preserve">
         <source>Host System Id</source>
-        <target/>
+        <target>Id hostiteľského systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="xid" xml:space="preserve">
         <source>Xid</source>
-        <target/>
+        <target>Xid</target>
       </trans-unit>
       <trans-unit id="testResult" xml:space="preserve">
         <source>Idref of TestResult</source>
-        <target/>
+        <target>Idref výsledku testu</target>
       </trans-unit>
       <trans-unit id="completed" xml:space="preserve">
         <source>Completion Time</source>
-        <target/>
+        <target>Čas dokončenia</target>
       </trans-unit>
       <trans-unit id="pass" xml:space="preserve">
         <source>Pass</source>
-        <target/>
+        <target>Úspešné</target>
       </trans-unit>
       <trans-unit id="fail" xml:space="preserve">
         <source>Fail</source>
-        <target/>
+        <target>Neúspešné</target>
       </trans-unit>
       <trans-unit id="error" xml:space="preserve">
         <source>Error</source>
-        <target/>
+        <target>Chyba</target>
       </trans-unit>
       <trans-unit id="unknown" xml:space="preserve">
         <source>Unknown</source>
-        <target/>
+        <target>Neznáme</target>
       </trans-unit>
       <trans-unit id="notapplicable" xml:space="preserve">
         <source>Notapplicable</source>
-        <target/>
+        <target>Nepoužiteľné</target>
       </trans-unit>
       <trans-unit id="notchecked" xml:space="preserve">
         <source>Notchecked</source>
-        <target/>
+        <target>Nekontrolované</target>
       </trans-unit>
       <trans-unit id="notselected" xml:space="preserve">
         <source>Notselected</source>
-        <target/>
+        <target>Nevybrané</target>
       </trans-unit>
       <trans-unit id="informational" xml:space="preserve">
         <source>Informational</source>
-        <target/>
+        <target>Informačné</target>
       </trans-unit>
       <trans-unit id="fixed" xml:space="preserve">
         <source>Fixed</source>
-        <target/>
+        <target>Opravené</target>
       </trans-unit>
       <trans-unit id="sum" xml:space="preserve">
         <source>Total</source>
-        <target/>
+        <target>Celkom</target>
       </trans-unit>
       <trans-unit id="documentIdref" xml:space="preserve">
         <source>Idref of rule-result</source>
-        <target/>
+        <target>Idref výsledku pravidla</target>
       </trans-unit>
       <trans-unit id="identsString" xml:space="preserve">
         <source>Assigned Idents</source>
-        <target/>
+        <target>Priradené identifikátory</target>
       </trans-unit>
       <trans-unit id="evaluationResult" xml:space="preserve">
         <source>Result of Evaluation</source>
-        <target/>
+        <target>Výsledok hodnotenia</target>
       </trans-unit>
       <trans-unit id="profile" xml:space="preserve">
         <source>Idref of Profile</source>
-        <target/>
+        <target>Idref profilu</target>
       </trans-unit>
       <trans-unit id="satisfied" xml:space="preserve">
         <source>Satisfied</source>
-        <target/>
+        <target>Uspokojivé</target>
       </trans-unit>
       <trans-unit id="dissatisfied" xml:space="preserve">
         <source>Dissatisfied</source>
-        <target/>
+        <target>Neuspokojivé</target>
       </trans-unit>
       <trans-unit id="satisfactionUnknown" xml:space="preserve">
         <source>Unknown</source>
-        <target/>
+        <target>Neznáme</target>
       </trans-unit>
       <trans-unit id="filter.clearfilter" xml:space="preserve">
         <source>The list below is filtered.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Clear filter to see all items.&lt;/strong&gt; &lt;/a&gt;</source>
-        <target/>
+        <target>Nižšie uvedený zoznam je filtrovaný.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Ak chcete zobraziť všetky položky, vymažte filter.&lt;/strong&gt; &lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="listtag.clearfilter" xml:space="preserve">
         <source>Clear filter </source>
-        <target/>
+        <target>Vymažte filter </target>
       </trans-unit>
       <trans-unit id="listtag.seeall" xml:space="preserve">
         <source>to see all {0} items.  </source>
-        <target/>
+        <target>aby ste videli všetky {0} položky.  </target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessage" xml:space="preserve">
         <source>The list of {0} item(s) below is filtered.</source>
-        <target/>
+        <target>Nižšie uvedený zoznam {0} položky(iek) je filtrovaný.</target>
       </trans-unit>
       <trans-unit id="listtag.all_items_in_filter" xml:space="preserve">
         <source>The list below is not filtered, because the term you entered to filter by, '&lt;strong&gt;{0}&lt;/strong&gt;', returned matches for every item in the list. Try to filter by a more unique term.</source>
-        <target/>
+        <target>Nižšie uvedený zoznam nie je filtrovaný, pretože výraz, ktorý ste zadali na filtrovanie, '&lt;strong&gt;{0}&lt;/strong&gt;', vrátil zhody pre každú položku v zozname. Skúste filtrovať podľa jedinečnejšieho výrazu.</target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessageempty" xml:space="preserve">
         <source>The empty list below is filtered.</source>
-        <target/>
+        <target>Nižšie uvedený prázdny zoznam je filtrovaný.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidguestnamelength" xml:space="preserve">
         <source>Length of guest names must be at least {0} characters.</source>
-        <target/>
+        <target>Dĺžka názvov hostí musí byť aspoň {0} znakov.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidmemvalue" xml:space="preserve">
         <source>Memory Allocation must be a positive value greater than 0.</source>
-        <target/>
+        <target>Alokácia pamäte musí byť kladná hodnota väčšia ako 0.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidcpuvalue" xml:space="preserve">
         <source>Virtual CPUs must be set to a positive value greater than 0 and less than {0}.</source>
-        <target/>
+        <target>Virtuálne CPU musia byť nastavené na kladnú hodnotu väčšiu ako 0 a menšiu ako {0}.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidstoragevalue" xml:space="preserve">
         <source>Only natural numbers are accepted as storage values.</source>
-        <target/>
+        <target>Iba prirodzené čísla sú akceptované ako hodnoty úložiska.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidmacaddressvalue" xml:space="preserve">
         <source>MAC Addresses must be of the form XX:XX:XX:XX:XX:XX where all X's are hexedecimal values.</source>
-        <target/>
+        <target>Adresy MAC musia mať tvar XX:XX:XX:XX:XX:XX:XX, kde všetky X sú hexadecimálne hodnoty.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.duplicatemacaddressvalue" xml:space="preserve">
         <source>MAC Addresses must be unique. This MAC Address has already been recorded. Please choose a different MAC Address.</source>
-        <target/>
+        <target>Adresy MAC musia byť unikátne. Táto adresa MAC už bola zaznamenaná. Vyberte, prosím, inú adresu MAC.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.duplicateipaddressvalue" xml:space="preserve">
         <source>IP Addresses must be unique, and IP Address for &lt;strong&gt;{0}&lt;/strong&gt; has already been recorded. Please choose a different IP Address.</source>
-        <target/>
+        <target>IP adresy musia byť unikátne a IP adresa pre &lt;strong&gt;{0}&lt;/strong&gt; už bola zaznamenaná. Vyberte, prosím, inú IP adresu.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidregexp" xml:space="preserve">
         <source>Guest name can only contain alphanumeric characters, hyphens ('-'), periods ('.') and underscores ('_')</source>
-        <target/>
+        <target>Názov hosťa môže obsahovať len alfanumerické znaky, pomlčky ('-'), bodky ('.') a podčiarkovníky ('_')</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewChannels" xml:space="preserve">
         <source>View Associated Channels</source>
-        <target/>
+        <target>Zobraziť pridružené kanály</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewErrata" xml:space="preserve">
         <source>View Associated Patches</source>
-        <target/>
+        <target>Zobraziť pridružené opravy</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.submit" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>Potvrdiť</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.success" xml:space="preserve">
         <source>Successfully added {1} package(s) and {0} patches to channel {2}.</source>
-        <target/>
+        <target>Úspešne pridané {1} balík(y) a {0} opráv do kanála {2}.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.permsfailure" xml:space="preserve">
         <source>You do not have sufficient permissions to perform this action.</source>
@@ -10033,8 +10033,8 @@ tree will not be usable for autoinstalling.
         <target/>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
-        <target/>
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -10049,8 +10049,8 @@ tree will not be usable for autoinstalling.
         <target/>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
-        <target/>
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -11140,7 +11140,69 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error" xml:space="preserve">
+        <source>An unexpected error has occurred during bootstrap.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
+        <source>Apply States failed during bootstrap (retcode={0}).</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
+        <source>An error has occurred during salt execution: {0}.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
+        <source>function {0} not available</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
+        <source>module {0} is not supported</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
+        <source>unable to parse json</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
+        <source>unable to establish ssh connection</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
+        <source>Could not generate salt-ssh public key.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
+        <source>Generating salt-ssh public key failed: {0}.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+        <target state="needs-adaptation"/>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+        <target state="needs-adaptation"/>
+      </trans-unit>
+      <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="login.jsp.satbody2" xml:space="preserve">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
       <target state="new"/>
   </trans-unit>

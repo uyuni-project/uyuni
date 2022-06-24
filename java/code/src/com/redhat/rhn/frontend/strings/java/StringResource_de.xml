@@ -387,7 +387,7 @@
         </context-group>
         <target>API</target>
       </trans-unit>
-      <trans-unit id="FAQs" xml:space="preserve">
+      <trans-unit approved="yes" id="FAQs" xml:space="preserve">
         <source>FAQs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -450,7 +450,7 @@
         </context-group>
         <target>Prüfen</target>
       </trans-unit>
-      <trans-unit id="OpenSCAP" xml:space="preserve">
+      <trans-unit approved="yes" id="OpenSCAP" xml:space="preserve">
         <source>OpenSCAP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -5935,7 +5935,7 @@ Benutzers vor dem Versuch, den Account zu deaktivieren.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Sie haben Ihren ersten Benutzer für den @@PRODUCT_NAME@@-Dienst erstellt.  Weitere Konfigurationen sollten durch einen &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;Klick hier&lt;/strong&gt;&lt;/a&gt; fertiggestellt werden.</target>
+        <target>Sie haben Ihren ersten Benutzer für den @@PRODUCT_NAME@@-Dienst erstellt. Weitere Konfigurationen sollten durch einen &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;Klick hier&lt;/strong&gt;&lt;/a&gt; fertiggestellt werden.</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -9790,7 +9790,8 @@ tree will not be usable for autoinstalling.
         <target>Eine E-Mail wurde bereits verschickt. Sie können diese Aktion alle {0} Sekunden anfordern.</target>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -9805,8 +9806,8 @@ tree will not be usable for autoinstalling.
         <target>Es sind keine Accounts mit dieser E-Mail-Adresse registriert.</target>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
-        <target>Gefundene Login(s) an {0} geschickt.</target>
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+        <target state="needs-adaptation">Gefundene Login(s) an {0} geschickt.</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -10854,6 +10855,68 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="new"/>
       </trans-unit>
+      <trans-unit id="bootstrap.minion.error" xml:space="preserve">
+        <source>An unexpected error has occurred during bootstrap.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
+        <source>Apply States failed during bootstrap (retcode={0}).</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
+        <source>An error has occurred during salt execution: {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
+        <source>function {0} not available</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
+        <source>module {0} is not supported</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
+        <source>unable to parse json</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
+        <source>unable to establish ssh connection</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
+        <source>Could not generate salt-ssh public key.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
+        <source>Generating salt-ssh public key failed: {0}.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+      <target state="needs-adaptation"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+      <target state="needs-adaptation"/>
+  </trans-unit>
+    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
+      <target state="new"/>
+  </trans-unit>
       <trans-unit id="login.jsp.satbody2" xml:space="preserve">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
       <target state="new"/>

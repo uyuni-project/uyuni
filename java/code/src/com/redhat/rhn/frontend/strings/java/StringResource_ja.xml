@@ -9966,9 +9966,9 @@ tree will not be usable for autoinstalling.
         <source>An email has already been sent. You may request this action only every {0} seconds.</source>
         <target>電子メールがすでに送信されています。この動作の要求は {0} 秒ごとにのみ実行できます。</target>
       </trans-unit>
-      <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
-        <source>Password reset information sent to {0}.</source>
-        <target>パスワードリセットの情報を {0} に送信しました。</target>
+      <trans-unit approved="yes" id="help.credentials.passwordsent" xml:space="preserve">
+        <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+        <target state="final">パスワードリセットの情報を {0} に送信しました。受信されない場合は、指定されたログイン情報と電子メールアドレスで登録されたアカウントを持っていることを確認してください。</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -9982,9 +9982,9 @@ tree will not be usable for autoinstalling.
         <source>There are no registered accounts with that email address.</source>
         <target>該当する電子メールアドレスを持つ登録されたアカウントはありません。</target>
       </trans-unit>
-      <trans-unit id="help.credentials.loginssent" xml:space="preserve">
-        <source>Found login(s) sent to {0}.</source>
-        <target>検出されたログインが {0} に送信されました。</target>
+      <trans-unit approved="yes" id="help.credentials.loginssent" xml:space="preserve">
+        <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+        <target state="final">検出されたログイン情報が {0} に送信されました。受信されない場合は、指定された電子メールアドレスで登録されたアカウントを持っていることを確認してください。</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -11174,7 +11174,71 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="final">指定されたCVE番号がデータベースに見つかりませんでした。このCVEに関する詳細については、次のリンクを参照してください。</target>
       </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
+      <trans-unit approved="yes" id="bootstrap.minion.error" xml:space="preserve">
+        <source>An unexpected error has occurred during bootstrap.</source>
+        <target state="final">ブートストラップ中に予期しないエラーが発生しました。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
+        <source>Apply States failed during bootstrap (retcode={0}).</source>
+        <target state="final">ブートストラップ中に状態の適用に失敗しました(retcode={0})。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.execution" xml:space="preserve">
+        <source>An error has occurred during salt execution: {0}.</source>
+        <target state="final">Salt実行中にエラーが発生しました: {0}。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
+        <source>function {0} not available</source>
+        <target state="final">関数 {0} は使用できません</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
+        <source>module {0} is not supported</source>
+        <target state="final">モジュール {0} はサポートされていません</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
+        <source>unable to parse json</source>
+        <target state="final">jsonを解析できません</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
+        <source>unable to establish ssh connection</source>
+        <target state="final">ssh接続を確立できません</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.generatekey" xml:space="preserve">
+        <source>Could not generate salt-ssh public key.</source>
+        <target state="final">salt-ssh公開鍵を生成できませんでした。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
+        <source>Generating salt-ssh public key failed: {0}.</source>
+        <target state="final">salt-ssh公開鍵の生成に失敗しました: {0}。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.endoflife.expired.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
+        <target state="final">@@PRODUCT_NAME@@ {0} はサポートが終了しました</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.endoflife.expired.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+        <target state="needs-adaptation">&lt;p&gt;@@PRODUCT_NAME@@ {0} はサポートが終了になりました。一般的なサポートは &lt;strong&gt;{1}&lt;/strong&gt; で終了しました。サポートを継続するには、この@@PRODUCT_NAME@@サーバインスタンスをアップグレードする&lt;strong&gt;必要があります。&lt;/strong&gt;
+       &lt;/p&gt;@@product_name@@のアップグレード方法の詳細については、公式ドキュメントの&lt;em&gt;インストール/アップグレードガイド&lt;/em &gt;の&lt;em&gt;アップグレード&lt;セクションを参照してください。&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.endoflife.expiring.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
+        <target state="final">@@PRODUCT_NAME@@ {0} は、サポート終了に近づいています</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.endoflife.expiring.detail" xml:space="preserve">
+        <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
+          &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
+        <target state="needs-adaptation">&lt;p&gt;@@PRODUCT_NAME@@ {0} はサポート終了に近づいています。 一般的なサポートが &lt;strong&gt;{1}&lt;/strong&gt; で終了する前に、このサーバインスタンスのアップグレードを検討してください。&lt;/p&gt;
+          &lt;p&gt;@@PRODUCT_NAME@@のアップグレード方法の詳細については、公式ドキュメントの&lt;em&gt;インストール/アップグレードガイド&lt;/em&gt; の &lt;em&gt;アップグレード&lt;/em&gt; セクションを参照してください。&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <source>Please fill in a valid email.</source>
+        <target state="final">有効な電子メールアドレスを入力してください。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="help.credentials.emptylogin" xml:space="preserve">
+        <source>Please fill in login.</source>
+        <target state="final">ログイン情報を入力してください。</target>
+      </trans-unit>
+    <trans-unit id="login.jsp.satbody2" xml:space="preserve">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
       <target state="new"/>
   </trans-unit>
