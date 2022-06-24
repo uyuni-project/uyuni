@@ -45,7 +45,6 @@ Feature: Smoke tests for <client>
     Then I should see a "1 patch update has been scheduled for" text
     When I force picking pending events on "<client>" if necessary
     And I wait until event "Patch Update:" is completed
-    And I regenerate the boot RAM disk on "<client>" if necessary
 
   Scenario: Install a package on the <client>
     When I follow "Software" in the content area

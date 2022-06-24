@@ -1,4 +1,8 @@
-- Update server-migrator to dist-upgrade to openSUSE 15.4
+-------------------------------------------------------------------
+Tue Jun 21 18:29:52 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.4-1
+  * Update server-migrator to dist-upgrade to openSUSE 15.4
 
 -------------------------------------------------------------------
 Tue Jan 18 13:37:41 CET 2022 - jgonzalez@suse.com
