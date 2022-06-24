@@ -33,7 +33,7 @@
         <dependency org="suse" name="dwr" rev="3.0.2" />
         <dependency org="suse" name="ehcache-core" rev="2.10.1" />
         <dependency org="suse" name="geronimo-jta-1.1-api" rev="1.2" />
-        <dependency org="suse" name="google-gson" rev="2.8.5" />
+        <dependency org="suse" name="google-gson" rev="2.8.9" />
         <dependency org="suse" name="hibernate-c3p0" rev="5.3.25" />
         <dependency org="suse" name="hibernate-commons-annotations" rev="5.0.4" />
         <dependency org="suse" name="hibernate-core" rev="5.3.25" />

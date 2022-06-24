@@ -8,6 +8,8 @@ repositories:
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.4
+  Leap_sle:
+    url: https://download.opensuse.org/update/leap/15.4/sle
 artifacts:
   - artifact: asm
     package: asm3
@@ -87,7 +89,8 @@ artifacts:
     package: geronimo-jta-1_1-api
     repository: Leap
   - artifact: google-gson
-    repository: Leap
+    jar: gson.jar
+    repository: Leap_sle
   - artifact: hibernate-c3p0
     package: hibernate5
     jar: hibernate-c3p0
