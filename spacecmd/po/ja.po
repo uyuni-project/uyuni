@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2022-04-18 03:12+0000\n"
+"PO-Revision-Date: 2022-05-17 17:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -8662,6 +8662,12 @@ msgstr "FQDN を取得している際に未処理の例外が発生しました:
 #, python-format
 #~ msgid "Exception occurred: %s"
 #~ msgstr "例外が発生しました: %s"
+
+#~ msgid "Full package update on systems:"
+#~ msgstr "システムの完全なパッケージ更新:"
+
+#~ msgid "Upgrade these systems/packages [y/N]:"
+#~ msgstr "これらのシステム/パッケージをアップグレードします [y/N]:"
 
 #~ msgid ""
 #~ "This method is deprecated and will be removed in a future API version. "

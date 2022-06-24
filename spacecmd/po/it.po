@@ -7583,5 +7583,9 @@ msgid "Unhandled exception occurred while getting FQDN:"
 msgstr ""
 
 #, fuzzy
+#~ msgid "Upgrade these systems/packages [y/N]:"
+#~ msgstr "Aggiorna questi pacchetti [y/N]:"
+
+#, fuzzy
 #~ msgid "Hostname must be provided"
 #~ msgstr "Nessuno script passato"

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2022-03-27 18:12+0000\n"
+"PO-Revision-Date: 2022-04-29 17:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
 ">\n"
@@ -8640,6 +8640,12 @@ msgstr "Pri získavaní FQDN sa vyskytla neošetrená výnimka:"
 #, python-format
 #~ msgid "Exception occurred: %s"
 #~ msgstr "Vyskytla sa výnimka: %s"
+
+#~ msgid "Full package update on systems:"
+#~ msgstr "Úplná aktualizácia balíkov v systémoch:"
+
+#~ msgid "Upgrade these systems/packages [y/N]:"
+#~ msgstr "Aktualizovať tieto systémy/balíky [a/N]:"
 
 #~ msgid ""
 #~ "This method is deprecated and will be removed in a future API version. "
