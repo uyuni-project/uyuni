@@ -11218,7 +11218,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="needs-adaptation">&lt;p&gt;@@PRODUCT_NAME@@ {0} はサポートが終了になりました。一般的なサポートは &lt;strong&gt;{1}&lt;/strong&gt; で終了しました。サポートを継続するには、この@@PRODUCT_NAME@@サーバインスタンスをアップグレードする&lt;strong&gt;必要があります。&lt;/strong&gt;
-       &lt;/p&gt;@@product_name@@のアップグレード方法の詳細については、公式ドキュメントの&lt;em&gt;インストール/アップグレードガイド&lt;/em &gt;の&lt;em&gt;アップグレード&lt;セクションを参照してください。&lt;/p&gt;</target>
+       &lt;/p&gt;@@PRODUCT_NAME@@のアップグレード方法の詳細については、公式ドキュメントの&lt;em&gt;インストール/アップグレードガイド&lt;/em &gt;の&lt;em&gt;アップグレード&lt;セクションを参照してください。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
