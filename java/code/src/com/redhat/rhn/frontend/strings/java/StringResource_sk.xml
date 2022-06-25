@@ -9384,85 +9384,85 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.permsfailure" xml:space="preserve">
         <source>You do not have sufficient permissions to perform this action.</source>
-        <target/>
+        <target>Na vykonanie tejto akcie nemáte dostatočné oprávnenia.</target>
       </trans-unit>
       <!-- The following resources need to be updated for each
               schema change (see rhnChannelArch.sql) -->
       <trans-unit id="IA-32" xml:space="preserve">
         <source>IA-32</source>
-        <target/>
+        <target>IA-32</target>
       </trans-unit>
       <trans-unit id="IA-32 Debian" xml:space="preserve">
         <source>IA-32 Debian</source>
-        <target/>
+        <target>IA-32 Debian</target>
       </trans-unit>
       <trans-unit id="IA-64" xml:space="preserve">
         <source>IA-64</source>
-        <target/>
+        <target>IA-64</target>
       </trans-unit>
       <trans-unit id="IA-64 Debian" xml:space="preserve">
         <source>IA-64 Debian</source>
-        <target/>
+        <target>IA-64 Debian</target>
       </trans-unit>
       <trans-unit id="Sparc" xml:space="preserve">
         <source>Sparc</source>
-        <target/>
+        <target>Sparc</target>
       </trans-unit>
       <trans-unit id="Sparc Debian" xml:space="preserve">
         <source>Sparc Debian</source>
-        <target/>
+        <target>Sparc Debian</target>
       </trans-unit>
       <trans-unit id="Alpha" xml:space="preserve">
         <source>Alpha</source>
-        <target/>
+        <target>Alpha</target>
       </trans-unit>
       <trans-unit id="Alpha Debian" xml:space="preserve">
         <source>Alpha Debian</source>
-        <target/>
+        <target>Alpha Debian</target>
       </trans-unit>
       <trans-unit id="s390" xml:space="preserve">
         <source>s390</source>
-        <target/>
+        <target>s390</target>
       </trans-unit>
       <trans-unit id="s390 Debian" xml:space="preserve">
         <source>s390 Debian</source>
-        <target/>
+        <target>s390 Debian</target>
       </trans-unit>
       <trans-unit id="s390x" xml:space="preserve">
         <source>s390x</source>
-        <target/>
+        <target>s390x</target>
       </trans-unit>
       <trans-unit id="iSeries" xml:space="preserve">
         <source>iSeries</source>
-        <target/>
+        <target>iSeries</target>
       </trans-unit>
       <trans-unit id="pSeries" xml:space="preserve">
         <source>pSeries</source>
-        <target/>
+        <target>pSeries</target>
       </trans-unit>
       <trans-unit id="x86_64" xml:space="preserve">
         <source>x86_64</source>
-        <target/>
+        <target>x86_64</target>
       </trans-unit>
       <trans-unit id="AMD64 Debian" xml:space="preserve">
         <source>AMD64 Debian</source>
-        <target/>
+        <target>AMD64 Debian</target>
       </trans-unit>
       <trans-unit id="PPC" xml:space="preserve">
         <source>PPC</source>
-        <target/>
+        <target>PPC</target>
       </trans-unit>
       <trans-unit id="PowerPC Debian" xml:space="preserve">
         <source>PowerPC Debian</source>
-        <target/>
+        <target>PowerPC Debian</target>
       </trans-unit>
       <trans-unit id="ARM soft. FP" xml:space="preserve">
         <source>ARM soft. FP</source>
-        <target/>
+        <target>ARM soft. FP</target>
       </trans-unit>
       <trans-unit id="ARM hard. FP" xml:space="preserve">
         <source>ARM hard. FP</source>
-        <target/>
+        <target>ARM hard. FP</target>
       </trans-unit>
       <trans-unit id="arm Debian" xml:space="preserve">
         <source>arm Debian</source>
