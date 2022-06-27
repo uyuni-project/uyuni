@@ -252,6 +252,7 @@ Metrics/AbcSize:
   Max: 18
   Exclude:
     - 'features/support/api_test.rb'
+    - 'features/support/twopence_init.rb'
 
 # Offense count: 2
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -273,6 +274,8 @@ Metrics/ParameterLists:
 
 Metrics/CyclomaticComplexity:
   Max: 10
+  Exclude:
+    - 'features/support/twopence_init.rb'
 
 Metrics/PerceivedComplexity:
   Max: 10
@@ -551,6 +554,7 @@ Style/RegexpLiteral:
 Style/RescueStandardError:
   Exclude:
     - 'features/step_definitions/api_common.rb'
+    - 'features/step_definitions/navigation_steps.rb'
     - 'features/support/cobbler_test.rb'
 
 # Offense count: 6

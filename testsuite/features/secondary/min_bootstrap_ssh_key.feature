@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_onboarding
@@ -46,7 +46,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     And I check radio button "SSH Private Key"
     And I attach the file "ssh_keypair/id_rsa_bootstrap-passphrase_linux" to "privKeyFile"
     And I enter "linux" as "privKeyPwd"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
 

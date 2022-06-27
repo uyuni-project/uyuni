@@ -26,9 +26,25 @@ def read_server_domain_from_yaml
   tree['branches'].values[0]['server_domain']
 end
 
-# determine image for PXE boot tests
-def compute_image_filename
-  case $pxeboot_image
+# determine profile for PXE boot and terminal tests
+def compute_image(host)
+  # TODO: now that the terminals derive from sumaform's pxe_boot module,
+  #       we could also specify the desired image as an environment variable
+  case host
+  when 'pxeboot_minion'
+    $pxeboot_image
+  when 'sle12sp5_terminal'
+    'sles12sp5o'
+  when 'sle15sp3_terminal'
+    'sles15sp3o'
+  else
+    raise "Is #{host} a supported terminal?"
+  end
+end
+
+def compute_kiwi_profile_filename(host)
+  image = compute_image(host)
+  case image
   when 'sles15sp3', 'sles15sp3o'
     'Kiwi/POS_Image-JeOS7_42'
     # $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head' for HEAD branch
@@ -41,12 +57,13 @@ def compute_image_filename
     'Kiwi/POS_Image-JeOS6_42'
     # 'Kiwi/POS_Image-JeOS6_head' for HEAD branch
   else
-    raise 'Is this a supported image version?'
+    raise "Is #{image} a supported image version?"
   end
 end
 
-def compute_image_name
-  case $pxeboot_image
+def compute_kiwi_profile_name(host)
+  image = compute_image(host)
+  case image
   when 'sles15sp3', 'sles15sp3o'
     'POS_Image_JeOS7_42'
     # $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head' for HEAD branch
@@ -59,7 +76,7 @@ def compute_image_name
     'POS_Image_JeOS6_42'
     # 'POS_Image_JeOS6_head' for HEAD branch
   else
-    raise 'Is this a supported image version?'
+    raise "Is #{image} a supported image version?"
   end
 end
 
@@ -193,10 +210,17 @@ When(/^I restart the network on the PXE boot minion$/) do
   $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
-When(/^I reboot the PXE boot minion$/) do
+When(/^I reboot the terminal "([^"]*)"$/) do |host|
   # we might have no or any IPv4 address on that machine
   # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
+  if host == 'pxeboot_minion'
+    mac = $pxeboot_mac
+  elsif host == 'sle12sp5_terminal'
+    mac = $sle12sp5_terminal_mac
+  elsif host == 'sle15sp3_terminal'
+    mac = $sle15sp3_terminal_mac
+  end
+  mac = mac.tr(':', '')
   hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
   ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + '%eth1'
   log "Rebooting #{ipv6}..."
@@ -232,21 +256,6 @@ end
 
 When(/^I accept key of pxeboot minion in the Salt master$/) do
   $server.run('salt-key -y --accept=pxeboot.example.org')
-end
-
-When(/^I stop and disable avahi on the PXE boot minion$/) do
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + '%eth1'
-  log "Stoppping and disabling avahi on #{ipv6}..."
-  file = 'stop-avahi-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
-  return_code = file_inject($proxy, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
 When(/^I stop salt-minion on the PXE boot minion$/) do
@@ -287,7 +296,7 @@ When(/^I prepare the retail configuration file on server$/) do
   sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
   sed_values << "s/<CLIENT>/#{ADDRESSES['sle_client']}/; "
   sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
-  sed_values << "s/<IMAGE>/#{compute_image_name}/"
+  sed_values << "s/<IMAGE>/#{compute_kiwi_profile_name('pxeboot_minion')}/"
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
 
@@ -332,14 +341,6 @@ When(/^I delete all the imported terminals$/) do
       Then I should see a "has been deleted" text
     )
   end
-end
-
-When(/^I set "([^"]*)" as NIC, "([^"]*)" as prefix, "([^"]*)" as branch server name and "([^"]*)" as domain$/) do |nic, prefix, server_name, domain|
-  cred = '--api-user admin --api-pass admin'
-  dhcp = "--dedicated-nic #{nic} --branch-ip #{net_prefix}#{ADDRESSES['proxy']} --netmask 255.255.255.0 --dyn-range #{net_prefix}#{ADDRESSES['range begin']} #{net_prefix}#{ADDRESSES['range end']}"
-  names = "--server-name #{server_name} --server-domain #{domain} --branch-prefix #{prefix}"
-  output, return_code = $server.run("retail_branch_init #{$proxy.full_hostname} #{dhcp} #{names} #{cred}")
-  raise "Command failed with following output: #{output}" unless return_code.zero?
 end
 
 When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, field|
@@ -453,6 +454,12 @@ end
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   if host == 'pxeboot_minion'
     mac = $pxeboot_mac
+  elsif host == 'sle12sp5_terminal'
+    mac = $sle12sp5_terminal_mac
+    mac = 'EE:EE:EE:00:00:05' if mac.nil?
+  elsif host == 'sle15sp3_terminal'
+    mac = $sle15sp3_terminal_mac
+    mac = 'EE:EE:EE:00:00:06' if mac.nil?
   elsif host.include? 'ubuntu'
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')
@@ -486,8 +493,8 @@ When(/^I enter the local network in (.*) field of zone with local name$/) do |fi
   step %(I enter "#{$private_net}" in #{field} field of zone with local name)
 end
 
-When(/^I enter the image name in (.*) field$/) do |field|
-  name = compute_image_name
+When(/^I enter the image name for "([^"]*)" in (.*) field$/) do |host, field|
+  name = compute_kiwi_profile_name(host)
   fill_in(FIELD_IDS[field], with: name, fill_options: { clear: :backspace })
 end
 
@@ -537,17 +544,18 @@ When(/^I uncheck (.*) box$/) do |checkbox_name|
 end
 
 # OS image build
-When(/^I enter the image filename relative to profiles as "([^"]*)"$/) do |field|
+When(/^I enter the image filename for "([^"]*)" relative to profiles as "([^"]*)"$/) do |host, field|
   git_profiles = ENV['GITPROFILES']
-  path = compute_image_filename
+  path = compute_kiwi_profile_filename(host)
   step %(I enter "#{git_profiles}/#{path}" as "#{field}")
 end
 
 When(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
-  steps %(
-    When I wait at most 3300 seconds until event "Image Build #{image_name} scheduled by kiwikiwi" is completed
-    And I wait at most 300 seconds until event "Image Inspect 1//#{image_name}:latest scheduled by kiwikiwi" is completed
-  )
+  step %(I wait at most 3300 seconds until event "Image Build #{image_name}" is completed)
+end
+
+When(/^I wait until the image inspection "([^"]*)" is completed$/) do |image_name|
+  step %(I wait at most 300 seconds until event "Image Inspect 1//#{image_name}:latest" is completed)
 end
 
 When(/^I am on the image store of the Kiwi image for organization "([^"]*)"$/) do |org|
@@ -555,38 +563,13 @@ When(/^I am on the image store of the Kiwi image for organization "([^"]*)"$/) d
   visit("https://#{$server.full_hostname}/os-images/#{org}/")
 end
 
-Then(/^I should see the name of the image$/) do
-  step %(I should see a "#{compute_image_name}" text)
+Then(/^I should see the name of the image for "([^"]*)"$/) do |host|
+  name = compute_kiwi_profile_name(host)
+  step %(I should see a "#{name}" text)
 end
 
-Then(/^the image should exist on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  images, _code = node.run('ls /srv/saltboot/image/')
-  image = compute_image_name
-  raise "Image #{image} does not exist on #{host}" unless images.include? image
-end
-
-### TBD below: get rid of semi-xmlrpc-tester
-
-When(/^I prepare configuration for "([^"]*)" terminal deployment$/) do |environment|
-  environment = environment.downcase.gsub(' ', '')
-  path = "ext-tools/semi-xmlrpc-tester/assets/#{environment}"
-  buildhosts = {
-    sle15sp3: $sle15sp3_buildhost,
-    sle12sp5: $sle12sp5_buildhost
-  }
-  config_items = {
-    SERVER_URL: $server.full_hostname,
-    BUILDHOST: buildhosts[environment.to_sym].full_hostname,
-    RBS: $proxy.full_hostname
-  }
-  config_items.each do |key, value|
-    raise StandardError, "Cannot set #{key}!" unless system("sed -i s'/#{key}/#{value}/'g #{path}/config.json")
-  end
-end
-
-When(/^I execute "([^"]*)" for "([^"]*)" via semi-xmlrpc-tester$/) do |scenario, environment|
-  environment = environment.downcase.gsub(' ', '')
-  path = 'ext-tools/semi-xmlrpc-tester'
-  system("cd #{path}; ./semi-xmlrpc-tester #{environment} #{scenario} -y --silent") or raise StandardError, "Scenario '#{scenario}' provided by semi-xmlrpc-tester failed!"
+Then(/^the image for "([^"]*)" should exist on the branch server$/) do |host|
+  image = compute_kiwi_profile_name(host)
+  images, _code = $proxy.run('ls /srv/saltboot/image/')
+  raise "Image #{image} for #{host} does not exist" unless images.include? image
 end

@@ -145,16 +145,26 @@ def get_system_name(host)
   system_name = host
 
   case host
+  # The PXE boot minion and the terminals are not directly accessible on the network,
+  # therefore they are not represented by a twopence node
   when 'pxeboot_minion'
-    # The PXE boot minion is not directly accessible on the network,
-    # therefore it is not represented by a twopence node
     output, _code = $server.run('salt-key')
     system_name = output.split.find do |word|
       word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/ || word =~ /pxeboot-/
     end
     system_name = 'pxeboot.example.org' if system_name.nil?
-  when 'sle12sp5_terminal', 'sle15sp3_terminal'
-    system_name = host + '.example.org'
+  when 'sle12sp5_terminal'
+    output, _code = $server.run('salt-key')
+    system_name = output.split.find do |word|
+      word =~ /example.sle12sp5terminal-/
+    end
+    system_name = 'sle12sp5terminal.example.org' if system_name.nil?
+  when 'sle15sp3_terminal'
+    output, _code = $server.run('salt-key')
+    system_name = output.split.find do |word|
+      word =~ /example.sle15sp3terminal-/
+    end
+    system_name = 'sle15sp3terminal.example.org' if system_name.nil?
   else
     begin
       node = get_target(host)

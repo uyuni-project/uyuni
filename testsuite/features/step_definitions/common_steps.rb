@@ -730,18 +730,6 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
-Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used$/) do |select_system, host|
-  node = get_target(host)
-  record = get_target(select_system)
-  if node.full_hostname.include? 'tf.local'
-    output, _code = record.run("ip address show dev eth0")
-    ip = output.split("\n")[2].split[1].split('/')[0]
-    node.run("echo '#{record.public_ip} #{record.full_hostname} #{record.hostname}' >> /etc/hosts")
-  else
-    log 'Record not added - avahi domain is not detected'
-  end
-end
-
 # Repository steps
 
 # Enable tools repositories (both stable and development)
