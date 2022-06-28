@@ -1482,10 +1482,10 @@ DATA = {
      },
      'openeuler2203-x86_64-uyuni': {
          'BASECHANNEL' : 'openeuler2203-x86_64', 'PKGLIST' : OPENEULER2203,
-         'DEST' : DOCUMENT_ROOT + '/pub/repositories/openeuler/22/3/bootstrap/'
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/openEuler/22.03/bootstrap/'
      },
      'openeuler2203-aarch64-uyuni': {
          'BASECHANNEL' : 'openeuler2203-aarch64', 'PKGLIST' : OPENEULER2203,
-         'DEST' : DOCUMENT_ROOT + '/pub/repositories/openeuler/22/3/bootstrap/'
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/openEuler/22.03/bootstrap/'
      }
 }
