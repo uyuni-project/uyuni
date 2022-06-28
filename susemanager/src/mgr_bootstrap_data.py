@@ -664,6 +664,10 @@ PKGLISTASTRALINUXOREL = [
     "gnupg",
 ]
 
+OPENEULER2203 = [
+        "venv-salt-minion",
+]
+
 DATA = {
     'SLE-11-SP1-i586' : {
         'PDID' : 684, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
@@ -1477,11 +1481,11 @@ DATA = {
          'TYPE' : 'deb'
      },
      'openeuler2203-x86_64-uyuni': {
-         'BASECHANNEL' : 'openeuler2203-x86_64', 'PKGLIST' : RES8,
+         'BASECHANNEL' : 'openeuler2203-x86_64', 'PKGLIST' : OPENEULER2203,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/openeuler/22/3/bootstrap/'
      },
      'openeuler2203-aarch64-uyuni': {
-         'BASECHANNEL' : 'openeuler2203-aarch64', 'PKGLIST' : RES8,
+         'BASECHANNEL' : 'openeuler2203-aarch64', 'PKGLIST' : OPENEULER2203,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/openeuler/22/3/bootstrap/'
      }
 }
