@@ -47,6 +47,7 @@ Feature: Build OS images
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[OS Image Build Host]" text
     When I wait until the image build "suse_os_image" is completed
+    And I wait until the image inspection for "pxeboot_minion" is completed
     And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image for "pxeboot_minion"
 

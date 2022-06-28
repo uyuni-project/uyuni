@@ -28,8 +28,8 @@ end
 
 # determine profile for PXE boot and terminal tests
 def compute_image(host)
-  # TODO: make the terminals derive from sumaform's pxe_boot module
-  #       so we can also specify the desired image as an environment variable
+  # TODO: now that the terminals derive from sumaform's pxe_boot module,
+  #       we could also specify the desired image as an environment variable
   case host
   when 'pxeboot_minion'
     $pxeboot_image
@@ -75,6 +75,20 @@ def compute_kiwi_profile_name(host)
     # 'POS_Image_JeOS6_41' for 4.1 branch
     # 'POS_Image_JeOS6_42' for 4.2 branch
     'POS_Image_JeOS6_head'
+  else
+    raise "Is #{image} a supported image version?"
+  end
+end
+
+def compute_kiwi_profile_version(host)
+  image = compute_image(host)
+  case image
+  when 'sles15sp3', 'sles15sp3o', 'sles15sp2', 'sles15sp2o'
+    '7.0.0'
+  when 'sles15sp1', 'sles15sp1o'
+    raise 'This is not a supported image version.'
+  when 'sles12sp5', 'sles12sp5o'
+    '6.0.0'
   else
     raise "Is #{image} a supported image version?"
   end
@@ -551,11 +565,14 @@ When(/^I enter the image filename for "([^"]*)" relative to profiles as "([^"]*)
 end
 
 When(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
-  # after build, the name and version is updated from Kiwi sources
-  steps %(
-    When I wait at most 3300 seconds until event "Image Build #{image_name}" is completed
-    And I wait at most 300 seconds until event "Image Inspect 1//#{image_name}:latest" is completed
-  )
+  step %(When I wait at most 3300 seconds until event "Image Build #{image_name}" is completed)
+end
+
+When(/^I wait until the image inspection for "([^"]*)" is completed$/) do |host|
+  # After build, the name and version are updated from Kiwi sources
+  name = compute_kiwi_profile_name(host)
+  version = compute_kiwi_profile_version(host)
+  step %(When I wait at most 300 seconds until event "Image Inspect 1//#{name}:#{version}" is completed)
 end
 
 When(/^I am on the image store of the Kiwi image for organization "([^"]*)"$/) do |org|
