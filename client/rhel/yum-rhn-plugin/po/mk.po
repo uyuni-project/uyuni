@@ -11,25 +11,26 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-31 17:14+0000\n"
-"PO-Revision-Date: 2015-03-17 12:22+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2022-06-28 05:13+0000\n"
+"Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
+"Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
+"yum-rhn-plugin/mk/>\n"
 "Language: mk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../rhnplugin.py:49
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error communicating with {PRODUCT_NAME} ."
-msgstr "Имаше проблем при комуницирањето со RHN."
+msgstr "Имаше проблем при комуницирањето со {PRODUCT_NAME}."
 
 #: ../rhnplugin.py:64
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} or RHN Classic support will be disabled."
-msgstr "Поддршката за RHN канали ќе биде исклучена."
+msgstr "Поддршката за {PRODUCT_NAME} или RHN Classic ќе биде исклучена."
 
 #. If non-root notify user Spacewalk repo not accessible
 #: ../rhnplugin.py:71
@@ -37,38 +38,41 @@ msgid ""
 "*Note* Spacewalk repositories are not listed below. You must run this "
 "command as root to access Spacewalk repositories."
 msgstr ""
+"*Обелешка* Spacewalk репозитории не се наведени подоле. Мора да ја "
+"егзекутирате оваа команда како root за да ги пристапите Spacewalk "
+"репозиториите."
 
 #: ../rhnplugin.py:87
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error parsing the {PRODUCT_NAME} Proxy settings."
-msgstr "Имаше грешка при анализирањето на RHN proxy сетинзите."
+msgstr "Имаше грешка при анализирањето на {PRODUCT_NAME} proxy подесувањата."
 
 #: ../rhnplugin.py:99
 msgid "Either --version, --help or no commands entered"
-msgstr ""
+msgstr "Или --version, --help или нема воведена команд(а/и)"
 
 #: ../rhnplugin.py:104
 msgid "Cleaning"
-msgstr ""
+msgstr "Чистење"
 
 #: ../rhnplugin.py:113
 #, python-brace-format
 msgid "Using list of {PRODUCT_NAME} repos from cache"
-msgstr ""
+msgstr "Се користи листа од {PRODUCT_NAME} репозитории од кеш"
 
 #: ../rhnplugin.py:129
 #, python-brace-format
 msgid "This system is not registered with RHN Classic or {PRODUCT_NAME}."
-msgstr ""
+msgstr "Овој систем не е регистриран со RHN Classic или {PRODUCT_NAME}."
 
 #: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
-msgstr ""
+msgstr "Можете да користите rhn_register да се регистрирате."
 
 #: ../rhnplugin.py:136
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} channel support will be disabled."
-msgstr "Поддршката за RHN канали ќе биде исклучена."
+msgstr "Поддршката за {PRODUCT_NAME} канали ќе биде исклучена."
 
 #: ../rhnplugin.py:140
 msgid "This system is not subscribed to any channels."
@@ -80,11 +84,13 @@ msgid ""
 "This system may not be registered to RHN Classic or {PRODUCT_NAME}. SystemId "
 "could not be acquired."
 msgstr ""
+"Овој систем не може да се регистрира со RHN Classic или {PRODUCT_NAME}. "
+"SystemId неможе да се најде."
 
 #: ../rhnplugin.py:158
 #, python-brace-format
 msgid "This system is receiving updates from RHN Classic or {PRODUCT_NAME} ."
-msgstr ""
+msgstr "Овој систем добива ажурирања од RHN Classic или {PRODUCT_NAME} ."
 
 #: ../rhnplugin.py:268
 msgid "Package profile information could not be sent."
@@ -92,13 +98,13 @@ msgstr "Информацијата за профилот на пакетот н�
 
 #: ../rhnplugin.py:276
 msgid "Error Message:"
-msgstr ""
+msgstr "Грешка:"
 
 #: ../rhnplugin.py:277
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Ве молиме, егзекутирајте го rhn_register како root на овој клиент"
 
 #: ../rhnplugin.py:356
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid "Missing required login information for {PRODUCT_NAME}: %s"
-msgstr "Изгубена потребна информација за логирање во RHN: %s"
+msgstr "Недостига потребна информација за логирање во {PRODUCT_NAME}: %s"
