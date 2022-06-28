@@ -397,6 +397,10 @@ RES8_X86 = [
     "dmidecode"
 ]
 
+RES9 = [
+    "venv-salt-minion", 
+]
+
 AMAZONLINUX2 = [
     "dwz",
     "groff-base",
@@ -1429,6 +1433,14 @@ DATA = {
         'BASECHANNEL' : 'oraclelinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/8/bootstrap/'
     },
+    'oracle-9-x86_64-uyuni' : {
+        'BASECHANNEL' : 'oraclelinux9-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
+    },
+    'oracle-9-aarch64-uyuni' : {
+        'BASECHANNEL' : 'oraclelinux9-aarch64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
+    },
     'amazonlinux-2-x86_64' : {
         'PDID' : [-22, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2/bootstrap/'
@@ -1472,7 +1484,11 @@ DATA = {
     'RHEL8-x86_64-uyuni' : {
         'BASECHANNEL' : 'rhel8-pool-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
-    },    
+    },
+    'RHEL9-x86_64-uyuni' : {
+        'BASECHANNEL' : 'rhel9-pool-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
+    },
     'alibaba-2-x86_64-uyuni': {
         'BASECHANNEL': 'alibaba-2-x86_64', 'PKGLIST': RES7 + RES7_X86,
         'DEST': DOCUMENT_ROOT + '/pub/repositories/alibaba/2/bootstrap/'
@@ -1496,6 +1512,22 @@ DATA = {
     'almalinux-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'almalinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/8/bootstrap/'
+    },
+    'almalinux-9-x96_64-uyuni' : {
+        'BASECHANNEL' : 'almalinux9-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
+    },
+    'almalinux-9-aarch64-uyuni' : {
+        'BASECHANNEL' : 'almalinux9-aarch64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
+    },
+    'almalinux-9-ppc64le-uyuni' : {
+        'BASECHANNEL' : 'almalinux9-ppc64le', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
+    },
+    'almalinux-9-s390x-uyuni' : {
+        'BASECHANNEL' : 'almalinux9-s390x', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
     },
     'rockylinux-8-x86_64' : {
         'PDID' : [-24, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
