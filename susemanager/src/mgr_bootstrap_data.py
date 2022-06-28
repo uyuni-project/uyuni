@@ -232,6 +232,10 @@ RES9 = [
     "venv-salt-minion", 
 ]
 
+OPENEULER2203 = [
+        "venv-salt-minion",
+]
+
 AMAZONLINUX2 = [
     "dwz",
     "groff-base",
@@ -662,10 +666,6 @@ PKGLISTASTRALINUXOREL = [
     "salt-common",
     "salt-minion",
     "gnupg",
-]
-
-OPENEULER2203 = [
-        "venv-salt-minion",
 ]
 
 DATA = {
