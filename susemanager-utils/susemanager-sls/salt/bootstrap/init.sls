@@ -81,7 +81,7 @@ no_ssh_push_key_authorized:
   {%- endif %}
   #end of expections
 {%- elif grains['os_family'] == 'openEuler' %}
-  {%- set os_base = grains['os']|lower %} 
+  {%- set os_base = grains['os'] %} 
   {% set osrelease = grains['osrelease_info'][0] %}
 {%- endif %}
 
