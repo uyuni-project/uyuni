@@ -82,6 +82,9 @@ no_ssh_push_key_authorized:
     {%- set os_base = 'openEuler' %}
   {%- endif %}
   #end of expections
+{%- elif grains['os_family'] == 'openEuler' %}
+  {%- set os_base = grains['os']|lower %} 
+  {% set osrelease = grains['osrelease_info'][0] %}
 {%- endif %}
 
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/bootstrap/' %}
