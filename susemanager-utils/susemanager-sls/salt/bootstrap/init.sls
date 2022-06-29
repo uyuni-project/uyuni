@@ -63,7 +63,7 @@ no_ssh_push_key_authorized:
 # RedHat OS Family
 {%- if grains['os_family'] == 'RedHat' %}
   ## This common part should cover most of distro e.g. Centos
-  {%- set os_base = grains['os'] %} 
+  {%- set os_base = grains['os']|lower %} 
   {% set osrelease = grains['osrelease_info'][0] %}
   #exception to the family rule
   {%- if 'redhat' in grains['osfullname']|lower  %}
