@@ -85,7 +85,6 @@ no_ssh_push_key_authorized:
   {% set osrelease = grains['osrelease_info'][0] %}
 {%- endif %}
 
-#{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/bootstrap/' %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ grains['os_family'] ~ '/' ~ grains['osrelease'] ~ '/bootstrap/' %}
 
 {%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' or grains['os_family'] == 'Suse'%}
