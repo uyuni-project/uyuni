@@ -1,0 +1,1 @@
+./susemanager-utils/susemanager-sls/salt/certs/redhat.sls

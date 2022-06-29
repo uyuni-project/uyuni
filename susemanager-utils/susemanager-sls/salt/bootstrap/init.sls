@@ -61,7 +61,7 @@ no_ssh_push_key_authorized:
 
 
 # RedHat OS Family
-{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
+{%- if grains['os_family'] == 'RedHat' %}
   ## This common part should cover most of distro e.g. Centos
   {%- set os_base = grains['os']|lower %} 
   {% set osrelease = grains['osrelease_info'][0] %}
@@ -78,8 +78,6 @@ no_ssh_push_key_authorized:
     {%- set os_base = 'alibaba' %}
   {%- elif 'oracle' in grains['osfullname']|lower %}
     {%- set os_base = 'oracle' %}
-  {%- elif 'openEuler' in grains['osfullname']|lower %}
-    {%- set os_base = 'openEuler' %}
   {%- endif %}
   #end of expections
 {%- elif grains['os_family'] == 'openEuler' %}
