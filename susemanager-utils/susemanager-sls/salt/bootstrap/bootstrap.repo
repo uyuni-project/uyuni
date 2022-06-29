@@ -9,7 +9,7 @@ type=rpm-md
 baseurl={{bootstrap_repo_url}}
 gpgcheck=0
 enabled=1
-{%- if grains['os_family'] == 'RedHat' and grains['osmajorrelease'] >= 8 %}
+{%- if (grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler') and grains['osmajorrelease'] >= 8 %}
 module_hotfixes=1
 {%- elif grains['os_family'] == 'Suse' %}
 autorefresh=1

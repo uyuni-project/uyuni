@@ -61,7 +61,7 @@ no_ssh_push_key_authorized:
 
 
 # RedHat OS Family
-{%- if grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
   ## This common part should cover most of distro e.g. Centos
   {%- set os_base = grains['os']|lower %} 
   {% set osrelease = grains['osrelease_info'][0] %}
@@ -78,13 +78,15 @@ no_ssh_push_key_authorized:
     {%- set os_base = 'alibaba' %}
   {%- elif 'oracle' in grains['osfullname']|lower %}
     {%- set os_base = 'oracle' %}
+  {%- elif 'openEuler' in grains['osfullname']|lower %}
+    {%- set os_base = 'openEuler' %}
   {%- endif %}
   #end of expections
 {%- endif %}
 
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/bootstrap/' %}
 
-{%- if grains['os_family'] == 'RedHat' or  grains['os_family'] == 'Suse'%}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' or grains['os_family'] == 'Suse'%}
   {% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
   {%- if 'status' not in bootstrap_repo_request %}
     {{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
@@ -112,7 +114,7 @@ bootstrap_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
     - name: /etc/zypp/repos.d/susemanager:bootstrap.repo
-{%- elif grains['os_family'] == 'RedHat' %}
+{%- elif grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
     - name: /etc/yum.repos.d/susemanager:bootstrap.repo
 {%- elif grains['os_family'] == 'Debian' %}
     - name: /etc/apt/sources.list.d/susemanager_bootstrap.list
@@ -222,6 +224,20 @@ salt-install-contextvars:
 
 {%- if not transactional %}
 {% include 'bootstrap/remove_traditional_stack.sls' %}
+
+mgr_update_basic_pkgs:
+  pkg.latest:
+    - pkgs:
+      - openssl
+{%- if grains['os_family'] == 'Suse' and grains['osrelease'] in ['11.3', '11.4'] and grains['cpuarch'] in ['i586', 'x86_64'] %}
+      - pmtools
+{%- elif grains['cpuarch'] in ['aarch64', 'x86_64'] %}
+      - dmidecode
+{%- endif %}
+{%- if grains['os_family'] == 'Suse' %}
+      - zypper
+{%- elif grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
+      - yum
 {%- endif %}
 
 # Manage minion key files in case they are provided in the pillar
