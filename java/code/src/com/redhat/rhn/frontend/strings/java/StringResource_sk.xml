@@ -9466,43 +9466,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="arm Debian" xml:space="preserve">
         <source>arm Debian</source>
-        <target/>
+        <target>arm Debian</target>
       </trans-unit>
       <trans-unit id="mips Debian" xml:space="preserve">
         <source>mips Debian</source>
-        <target/>
+        <target>mips Debian</target>
       </trans-unit>
       <trans-unit id="AArch64" xml:space="preserve">
         <source>ARM aarch64</source>
-        <target/>
+        <target>ARM aarch64</target>
       </trans-unit>
       <trans-unit id="PPC64LE" xml:space="preserve">
         <source>PPC64LE</source>
-        <target/>
+        <target>PPC64LE</target>
       </trans-unit>
       <trans-unit id="probeparam.passnomatch" xml:space="preserve">
         <source>The Password and Password Confirm did not match.</source>
-        <target/>
+        <target>Heslo a potvrdenie hesla sa nezhodujú.</target>
       </trans-unit>
       <trans-unit id="permission.configadmin.needed" xml:space="preserve">
         <source>The requested function requires a Configuration Admin or Organizational Admin role.</source>
-        <target/>
+        <target>Požadovaná funkcia vyžaduje rolu administrátora konfigurácie alebo administrátora organizácie.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscripttype" xml:space="preserve">
         <source>Only script types of "pre" and "post" are allowed for kickstarts.</source>
-        <target/>
+        <target>Pre položky kickstart sú povolené len typy skriptov "pre" a "post".</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscriptname" xml:space="preserve">
         <source>Script Name must be larger than 0 and fewer than 40 characters.</source>
-        <target/>
+        <target>Názov skriptu musí byť väčší ako 0 a menší ako 40 znakov.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscript" xml:space="preserve">
         <source>You have specified an invalid kickstart script.</source>
-        <target/>
+        <target>Zadali ste neplatný skript kickstart.</target>
       </trans-unit>
       <trans-unit id="filter.kickstart.label" xml:space="preserve">
         <source>Label</source>
-        <target/>
+        <target>Označenie</target>
       </trans-unit>
       <trans-unit id="package.remove.cant.rollback" xml:space="preserve">
         <source>One or more of the packages you have selected for removal below are not contained in
