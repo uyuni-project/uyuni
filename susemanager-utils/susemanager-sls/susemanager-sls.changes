@@ -81,6 +81,9 @@ Wed Jul 27 14:17:08 CEST 2022 - jgonzalez@suse.com
     by setting proper globals with using LazyLoader
 
 -------------------------------------------------------------------
+- Add openEuler 22.03 support 
+
+-------------------------------------------------------------------
 Tue Jun 21 18:39:32 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.23-1
