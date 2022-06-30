@@ -9508,43 +9508,45 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
         <source>One or more of the packages you have selected for removal below are not contained in
             a software channel that this system is subscribed to.  If you choose to continue with the removal
             you will not be able to rollback this system to this snapshot or any prior snapshot.</source>
-        <target/>
+        <target>Jeden alebo viacero balíkov, ktoré ste vybrali na odstránenie nižšie, nie sú obsiahnuté
+            v softvérovom kanáli, ku ktorému je tento systém prihlásený.  Ak sa rozhodnete pokračovať v odstraňovaní
+            nebudete môcť tento systém vrátiť späť na túto snímku ani na žiadnu predchádzajúcu snímku.</target>
       </trans-unit>
       <trans-unit id="list.filter.iprange" xml:space="preserve">
         <source>Single Ip Address</source>
-        <target/>
+        <target>Jedna IP adresa</target>
       </trans-unit>
       <trans-unit id="api.kickstart.iprange.duplicate" xml:space="preserve">
         <source>The Ip Range specified, {0}, conflicts with an existing Ip Range.</source>
-        <target/>
+        <target>Zadaný rozsah Ip {0} je v konflikte s existujúcim rozsahom Ip.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.ip.invalid" xml:space="preserve">
         <source>The Ip Address specified, {0}, is not valid..</source>
-        <target/>
+        <target>Zadaná Ip adresa, {0}, nie je platná.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.filelist.exists" xml:space="preserve">
         <source>A file list with label {0} already exists.</source>
-        <target/>
+        <target>Zoznam súborov s označením {0} už existuje.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.filelist.notfound" xml:space="preserve">
         <source>A file list with label {0} could not be found.</source>
-        <target/>
+        <target>Zoznam súborov s označením {0} sa nepodarilo nájsť.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.keys.exists" xml:space="preserve">
         <source>The specified key conflicts with an existing key.</source>
-        <target/>
+        <target>Zadaný kľúč je v konflikte s existujúcim kľúčom.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.keys.delete" xml:space="preserve">
         <source>The specified key cannot be deleted.</source>
-        <target/>
+        <target>Zadaný kľúč nie je možné vymazať.</target>
       </trans-unit>
       <trans-unit id="Compare" xml:space="preserve">
         <source>Compare</source>
-        <target/>
+        <target>Porovnať</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.alreadyexists" xml:space="preserve">
         <source>A Custom Key with this label already exists.</source>
-        <target/>
+        <target>Vlastný kľúč s týmto označením už existuje.</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.tooshort" xml:space="preserve">
         <source>A Custom Key label and description must be at least two characters long.</source>
