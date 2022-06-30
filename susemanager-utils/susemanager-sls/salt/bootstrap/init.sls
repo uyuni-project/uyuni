@@ -80,7 +80,10 @@ no_ssh_push_key_authorized:
     {%- set os_base = 'oracle' %}
   {%- endif %}
   #end of expections
-{%- elif grains['os_family'] == 'openEuler' %}
+{%- endif %}
+
+# openEuler Family. This OS is based in RedHat, but declares a separate family
+{%- if grains['os_family'] == 'openEuler' %}
   {%- set os_base = grains['os'] %} 
   {% set osrelease = grains['osrelease_info'][0] %}
 {%- endif %}
