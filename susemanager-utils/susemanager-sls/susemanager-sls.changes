@@ -1,3 +1,6 @@
+- Add openEuler 22.03 support 
+- Prevent possible tracebacks on calling module.run from mgrcompat
+  by setting proper globals with using LazyLoader
 -------------------------------------------------------------------
 Thu Jan 26 12:27:21 CET 2023 - jgonzalez@suse.com
 
@@ -79,9 +82,6 @@ Wed Jul 27 14:17:08 CEST 2022 - jgonzalez@suse.com
   * Add port parameter to mgrutil.remove_ssh_known_host
   * Prevent possible tracebacks on calling module.run from mgrcompat
     by setting proper globals with using LazyLoader
-
--------------------------------------------------------------------
-- Add openEuler 22.03 support 
 
 -------------------------------------------------------------------
 Tue Jun 21 18:39:32 CEST 2022 - jgonzalez@suse.com
