@@ -132,6 +132,8 @@ public class SystemsController {
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/list/virtual",
                 withCsrfToken(withDocsLocale(withUser(this::virtualListPage))), jade);
+        get("/manager/systems/list/all",
+                withCsrfToken(withDocsLocale(withUser(this::allListPage))), jade);
         get("/manager/systems/details/mgr-server-info/:sid",
                 withCsrfToken(withDocsLocale(withUserAndServer(this::mgrServerInfoPage))),
                 jade);
@@ -271,6 +273,20 @@ public class SystemsController {
         Map<String, Object> data = new HashMap<>();
         data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
         return new ModelAndView(data, "templates/systems/virtual-list.jade");
+    }
+
+    /**
+     * Get the all systems list page
+     *
+     * @param requestIn the request
+     * @param responseIn the response
+     * @param userIn the user
+     * @return the jade rendered template
+     */
+    private ModelAndView allListPage(Request requestIn, Response responseIn, User userIn) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
+        return new ModelAndView(data, "templates/systems/all-list.jade");
     }
 
     /**
