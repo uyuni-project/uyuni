@@ -1,0 +1,56 @@
+-------------------------------------------------------------------
+Tue Feb 15 10:07:52 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.2-1
+  * Remove EL6 support
+  * Fix Apache user/group for EL
+
+-------------------------------------------------------------------
+Mon Aug 09 10:45:38 CEST 2021 - jgonzalez@suse.com
+
+- version 4.3.1-1
+- Bump version to 4.3.0
+
+-------------------------------------------------------------------
+Wed Jan 27 13:16:56 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Added Apache as prerequisite for RHEL and Fedora (due to required users).
+- Removed RHEL specific folder rights from SPEC file.
+
+-------------------------------------------------------------------
+Thu Dec 03 13:59:47 CET 2020 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- Added RHEL8 compatibility.
+
+-------------------------------------------------------------------
+Fri Sep 18 11:59:01 CEST 2020 - jgonzalez@suse.com
+
+- version 4.2.1-1
+- Update package version to 4.2.0
+
+-------------------------------------------------------------------
+Wed Nov 27 17:11:33 CET 2019 - jgonzalez@suse.com
+
+- version 4.1.1-1
+- Bump version to 4.1.0 (bsc#1154940)
+- create susemanager group in uyuni-base-server
+- uyuni-base-common is not really required at buildtime, so
+  remove respective BuildRequires
+- move /usr/share/rhn/config-defaults to uyuni-base-common
+- make packages distribution agnostic
+- fix permission of /etc/rhn; add Requires and BuildRequires
+
+-------------------------------------------------------------------
+Tue Aug  6 13:27:54 CEST 2019 - mantel@suse.de
+
+- add /usr/share/rhn to uyuni-base-common
+
+-------------------------------------------------------------------
+Tue Aug  6 11:26:21 CEST 2019 - mantel@suse.de
+
+- Initial release of package uyuni-base and subpackages
+  uyuni-base-common, uyuni-base-server and uyuni-base-proxy
+
+-------------------------------------------------------------------
