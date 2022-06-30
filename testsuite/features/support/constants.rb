@@ -1,14 +1,16 @@
 # Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-ADDRESSES = { 'network'        => '0',
-              'sle_client'     => '2',
-              'sle_minion'     => '3',
-              'pxeboot_minion' => '4',
-              'range begin'    => '128',
-              'range end'      => '253',
-              'proxy'          => '254',
-              'broadcast'      => '255' }.freeze
+ADDRESSES = { 'network'           => '0',
+              'sle_client'        => '2',
+              'sle_minion'        => '3',
+              'pxeboot_minion'    => '4',
+              'sle12sp5_terminal' => '5',
+              'sle15sp3_terminal' => '6',
+              'range begin'       => '128',
+              'range end'         => '253',
+              'proxy'             => '254',
+              'broadcast'         => '255' }.freeze
 
 FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'IP'                              => 'branch_network#ip',
@@ -55,6 +57,7 @@ FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'second OS image'                 => 'partitioning#0#partitions#1#image',
               'third OS image'                  => 'partitioning#0#partitions#2#image',
               'third filesystem format'         => 'partitioning#0#partitions#2#format',
+              'third partition flags'           => 'partitioning#0#partitions#2#flags',
               'timezone name'                   => 'timezone#name',
               'language'                        => 'keyboard_and_language#language',
               'keyboard layout'                 => 'keyboard_and_language#keyboard_layout' }.freeze

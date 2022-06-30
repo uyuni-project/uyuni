@@ -228,7 +228,7 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
     cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
-  elsif host.include? 'minion' or host.include? 'build_host'
+  elsif host.include? 'minion' or host.include? 'build'
     cmd = 'salt'
     extra_cmd = ''
   end

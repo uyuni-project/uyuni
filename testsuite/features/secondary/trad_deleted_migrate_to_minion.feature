@@ -21,7 +21,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-SUSE-KEY-x86_64" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
 
@@ -101,7 +101,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-SUSE-KEY-x86_64" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
 
