@@ -460,6 +460,9 @@ def deployApache(apache_cert_content, server_key_content):
         f.write(apache_cert_content)
     # exists on server and proxy
     os.system("/usr/bin/spacewalk-setup-httpd")
+    log(
+"""After changing the server certificate please execute:
+$> spacewalk-service stop """)
 
 
 def deployJabberd(jabber_cert_content):
@@ -485,6 +488,7 @@ def deployPg(server_key_content):
         os.chmod(PG_KEY_FILE, int("0600", 8))
         os.chown(PG_KEY_FILE, pg_uid, pg_gid)
 
+        log("""$> systemctl restart postgresql.service """)
 
 def deployCAUyuni(certData):
     for h, ca in certData.items():
@@ -504,6 +508,11 @@ def deployCAUyuni(certData):
     # in case a systemd timer try to do the same
     time.sleep(3)
     os.system("/usr/share/rhn/certs/update-ca-cert-trust.sh")
+    log(
+"""$> spacewalk-service start
+
+As the CA certificate has been changed, please deploy the CA to all registered clients.
+On salt-managed clients, you can do this by applying the highstate.""")
 
 
 def checks(server_key_content,server_cert_content, certData):
