@@ -1,3 +1,4 @@
+- display messages to restart services after certificate change
 - improve CA Chain checking by comparing authorityKeyIdentifier
   with subjectKeyIdentifier
 
