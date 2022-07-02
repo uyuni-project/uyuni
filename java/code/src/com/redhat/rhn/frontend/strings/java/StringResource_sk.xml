@@ -9550,113 +9550,113 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="system.customkey.error.tooshort" xml:space="preserve">
         <source>A Custom Key label and description must be at least two characters long.</source>
-        <target/>
+        <target>Označenie a popis vlastného kľúča musia byť dlhé aspoň dva znaky.</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.toolong" xml:space="preserve">
         <source>A Custom Key label can only be 64 characters long at maximum.</source>
-        <target/>
+        <target>Označenie vlastného kľúča môže mať maximálne 64 znakov.</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.descr_toolong" xml:space="preserve">
         <source>A Custom Key description can only be 4000 characters long at maximum.</source>
-        <target/>
+        <target>Popis vlastného kľúča môže mať maximálne 4000 znakov.</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.invalid" xml:space="preserve">
         <source>A Custom Key label can only contain letters, numbers, hyphens (-), and underscores (_).</source>
-        <target/>
+        <target>Označenie vlastného kľúča môže obsahovať len písmená, číslice, pomlčky (-) a podčiarkovníky (_).</target>
       </trans-unit>
       <trans-unit id="system.customkey.addsuccess" xml:space="preserve">
         <source>Successfully added 1 custom key.</source>
-        <target/>
+        <target>Úspešne bol pridaný 1 vlastný kľúč.</target>
       </trans-unit>
       <trans-unit id="system.customkey.deletesuccess" xml:space="preserve">
         <source>Successfully deleted 1 custom key.</source>
-        <target/>
+        <target>Úspešne bol vymazaný 1 vlastný kľúč.</target>
       </trans-unit>
       <trans-unit id="channel.java.package.deletesuccess" xml:space="preserve">
         <source>Successfully deleted {0} packages.</source>
-        <target/>
+        <target>Úspešne boli vymazané {0} balíky.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartinstalltype" xml:space="preserve">
         <source>Invalid autoinstall type: {0}.</source>
-        <target/>
+        <target>Neplatný typ automatickej inštalácie: {0}.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgfp" xml:space="preserve">
         <source>Invalid GPG Fingerprint</source>
-        <target/>
+        <target>Neplatný odtlačok GPG</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgkey" xml:space="preserve">
         <source>Invalid GPG Key Id</source>
-        <target/>
+        <target>Neplatné Id kľúča GPG</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgurl" xml:space="preserve">
         <source>Invalid GPG Url</source>
-        <target/>
+        <target>Neplatné Url GPG</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname" xml:space="preserve">
         <source>Invalid Channel Name</source>
-        <target/>
+        <target>Nesprávny názov kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.missing" xml:space="preserve">
         <source>Channel name must be specified</source>
-        <target/>
+        <target>Názov kanála musí byť zadaný</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.regex" xml:space="preserve">
         <source>Invalid channel name, please see the format described below</source>
-        <target/>
+        <target>Nesprávny názov kanála, prosím, pozrite si formát opísaný nižšie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
         <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target/>
+        <target>Názov kanála musí mať aspoň 6 znakov, začínať písmenom a môže obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_'), číslice, medzery, zátvorky a lomky ('/').</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
-        <target/>
+        <target>Kanály @@VENDOR_NAME@@ vyžadujú oprávnenia administrátora</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.minlength" xml:space="preserve">
         <source>Channel name must be at least {0} characters long</source>
-        <target/>
+        <target>Názov kanála musí mať aspoň {0} znakov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.maxlength" xml:space="preserve">
         <source>Channel name can not exceed {0} characters long</source>
-        <target/>
+        <target>Názov kanála nesmie byť dlhší ako {0} znakov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.nameinuse" xml:space="preserve">
         <source>The channel name '{0}' is already in use, please enter a different name</source>
-        <target/>
+        <target>Názov kanála '{0}' sa už používa, prosím, zadajte iný názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.namereserved" xml:space="preserve">
         <source>The channel name '{0}' is reserved, please enter a different name</source>
-        <target/>
+        <target>Názov kanála '{0}' je rezervovaný, prosím, zadajte iný názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
