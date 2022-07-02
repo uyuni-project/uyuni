@@ -34,6 +34,8 @@ export type ElementDefinition = {
   $newItemValue?: any;
   $prototype?: any;
   $itemName?: any;
+  $cols?: number;
+  $rows?: number;
   /** DEPRECATED, use `$visible` instead */
   $visibleIf?: () => boolean;
 };
@@ -274,6 +276,8 @@ export function generateFormulaComponentForId(
         name={element.$name}
         id={id}
         className="form-control"
+        cols={get(element.$cols, "")}
+        rows={get(element.$rows, 5)}
         onChange={formulaForm.handleChange}
         placeholder={element.$placeholder}
         title={element.$help}
