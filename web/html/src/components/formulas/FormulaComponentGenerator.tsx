@@ -266,6 +266,24 @@ export function generateFormulaComponentForId(
       </div>,
       element.$help
     );
+  else if (element.$type === "textarea")
+    return wrapper(
+      element.$name,
+      required,
+      <textarea
+        name={element.$name}
+        id={id}
+        className="form-control"
+        onChange={formulaForm.handleChange}
+        placeholder={element.$placeholder}
+        title={element.$help}
+        disabled={isDisabled}
+        required={required}
+      >
+        {value}
+      </textarea>,
+      element.$help
+    );
   else {
     Loggerhead.error("Unknown $type: " + element.$type);
     return wrapper(element.$name, required, <div>{JSON.stringify(value)}</div>);
