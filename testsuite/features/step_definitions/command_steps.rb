@@ -987,7 +987,16 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host
         end
   log 'Creating the boostrap repository on the server:'
   log '  ' + cmd
-  $server.run(cmd)
+  begin
+    $server.run(cmd)
+  rescue => exception
+    log 'Error'
+    log exception
+    #verification_cmd = %q{find /var/log/rhn/ -name mgr-create-bootstrap-repo.log -exec tac {} + | sed "/'\/usr\/sbin\/mgr-create-bootstrap-repo'/q" | grep ERROR}
+    #error_output = $server.run(verification_cmd).to_s
+    #log error_output
+  end
+  
 end
 
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
