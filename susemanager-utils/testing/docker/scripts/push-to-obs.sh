@@ -8,13 +8,14 @@ help() {
   echo ""
   echo "Syntax: "
   echo ""
-  echo "${SCRIPT} -d <API1|PROJECT1>[,<API2|PROJECT2>...] -c OSC_CFG_FILE [-p PACKAGE1,PACKAGE2,...,PACKAGEN] [-v] [-t] [-n PROJECT]"
+  echo "${SCRIPT} -d <API1|PROJECT1>[,<API2|PROJECT2>...] -c OSC_CFG_FILE -s SSH_PRIVATE_KEY [-p PACKAGE1,PACKAGE2,...,PACKAGEN] [-v] [-t] [-n PROJECT]"
   echo ""
   echo "Where: "
   echo "  -d  Comma separated list of destionations in the format API/PROJECT,"
   echo "      for example https://api.opensuse.org|systemsmanagement:Uyuni:Master"
   echo "  -p  Comma separated list of packages. If absent, all packages are submitted"
   echo "  -c  Path to the OSC credentials (usually ~/.osrc)"
+  echo "  -s  Path to the private key used for MFA"
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
   echo "  -n  If used, update PROJECT instead of the projects specified with -d"
@@ -24,11 +25,12 @@ help() {
 
 OSC_EXPAND="FALSE"
 
-while getopts ":d:c:p:n:vthe" opts; do
+while getopts ":d:c:s:p:n:vthe" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
     p) PACKAGES="$(echo ${OPTARG}|tr ',' ' ')";;
     c) export OSCRC=${OPTARG};;
+    s) export SSHKEY=${OPTARG};;
     v) export VERBOSE=1;;
     t) export TEST=1;;
     n) export OBS_TEST_PROJECT=${OPTARG};;
