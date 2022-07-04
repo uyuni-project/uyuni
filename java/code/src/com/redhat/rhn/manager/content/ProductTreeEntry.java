@@ -70,6 +70,9 @@ public class ProductTreeEntry {
 
     private List<String> tags = Collections.emptyList();
 
+    @SerializedName("gpg_info")
+    private List<GpgInfoEntry> gpgInfo = Collections.emptyList();
+
     /**
      * Here only for gson
      */
@@ -77,28 +80,28 @@ public class ProductTreeEntry {
     }
 
     /**
-     *
-     * @param channelLabelIn channel label
+     * @param channelLabelIn       channel label
      * @param parentChannelLabelIn parent channel label
-     * @param channelNameIn channel name
-     * @param productIdIn product id
-     * @param repositoryIdIn repository id
-     * @param parentProductIdIn parent product id
-     * @param rootProductIdIn root product id
-     * @param updateTagIn update tag
-     * @param signedIn signed flag
-     * @param mandatoryIn mandatory flag
-     * @param recommendedIn recommended flag
-     * @param urlIn repo url
-     * @param releaseStageIn release stage
-     * @param productTypeIn product type
-     * @param tagsIn tags
+     * @param channelNameIn        channel name
+     * @param productIdIn          product id
+     * @param repositoryIdIn       repository id
+     * @param parentProductIdIn    parent product id
+     * @param rootProductIdIn      root product id
+     * @param updateTagIn          update tag
+     * @param signedIn             signed flag
+     * @param mandatoryIn          mandatory flag
+     * @param recommendedIn        recommended flag
+     * @param urlIn                repo url
+     * @param releaseStageIn       release stage
+     * @param productTypeIn        product type
+     * @param tagsIn               tags
+     * @param gpgInfoIn            gpg info
      */
     public ProductTreeEntry(String channelLabelIn, Optional<String> parentChannelLabelIn, String channelNameIn,
                             long productIdIn, long repositoryIdIn, Optional<Long> parentProductIdIn,
                             long rootProductIdIn, Optional<String> updateTagIn, boolean signedIn, boolean mandatoryIn,
                             boolean recommendedIn, String urlIn, ReleaseStage releaseStageIn,
-                            Optional<ProductType> productTypeIn, List<String> tagsIn) {
+                            Optional<ProductType> productTypeIn, List<String> tagsIn, List<GpgInfoEntry> gpgInfoIn) {
         this.channelLabel = channelLabelIn;
         this.parentChannelLabel = parentChannelLabelIn;
         this.channelName = channelNameIn;
@@ -114,6 +117,7 @@ public class ProductTreeEntry {
         this.releaseStage = releaseStageIn;
         this.productType = productTypeIn;
         this.tags = tagsIn;
+        this.gpgInfo = gpgInfoIn;
     }
 
     /**
@@ -222,15 +226,22 @@ public class ProductTreeEntry {
     }
 
     /**
+     * @return the gpg key info
+     */
+    public List<GpgInfoEntry> getGpgInfo() {
+        return gpgInfo;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("root", getRootProductId())
-        .append("product", getProductId())
-        .append("repo", getRepositoryId())
-        .append("channel", getChannelLabel())
-        .append("parent", getParentChannelLabel());
+                .append("product", getProductId())
+                .append("repo", getRepositoryId())
+                .append("channel", getChannelLabel())
+                .append("parent", getParentChannelLabel());
         return builder.toString();
     }
 }
