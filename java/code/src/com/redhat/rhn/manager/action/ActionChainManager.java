@@ -530,7 +530,6 @@ public class ActionChainManager {
 
     }
 
-
     /**
      * Schedules one or more package installation actions on one or more servers.
      * @param user the user scheduling actions
