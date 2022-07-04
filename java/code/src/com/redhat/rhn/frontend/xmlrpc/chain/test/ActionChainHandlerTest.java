@@ -219,7 +219,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         errataIds.add(this.errata.getId().intValue());
         errataIds.add(this.errata2.getId().intValue());
         assertEquals(true, this.ach.addErrataUpdate(this.admin,
-                                                    this.server.getId().intValue(),
+                                                    List.of(this.server.getId().intValue()),
                                                     errataIds,
                                                     CHAIN_LABEL) > 0);
 

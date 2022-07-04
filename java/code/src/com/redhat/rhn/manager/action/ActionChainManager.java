@@ -52,7 +52,6 @@ import com.suse.manager.utils.MinionServerUtils;
 import org.apache.commons.io.FileUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -510,30 +509,6 @@ public class ActionChainManager {
     /**
      * Schedules an Errata update on a server.
      * @param user the user scheduling actions
-     * @param server the affected server
-     * @param errataIds a list of erratas IDs
-     * @param earliest the earliest execution date
-     * @param actionChain the action chain
-     * @return list of scheduled action ids
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static List<Long> scheduleErrataUpdate(User user, Server server, List<Integer> errataIds,
-                                              Date earliest, ActionChain actionChain) throws TaskomaticApiException  {
-
-        // This won't actually apply the errata because we're passing in an action chain
-        return ErrataManager.applyErrata(user,
-                errataIds.stream().map(Integer::longValue).collect(Collectors.toList()),
-                earliest,
-                actionChain,
-                Arrays.asList(server.getId())
-        );
-
-    }
-
-    /**
-     * Schedules an Errata update on a server.
-     * @param user the user scheduling actions
      * @param servers the affected servers
      * @param errataIds a list of erratas IDs
      * @param earliest the earliest execution date
@@ -542,7 +517,7 @@ public class ActionChainManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static List<Long> scheduleErrataUpdates(User user, List<Server> servers, List<Integer> errataIds,
+    public static List<Long> scheduleErrataUpdate(User user, List<Server> servers, List<Integer> errataIds,
                                               Date earliest, ActionChain actionChain) throws TaskomaticApiException  {
 
         // This won't actually apply the errata because we're passing in an action chain
