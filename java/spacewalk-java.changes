@@ -1,3 +1,4 @@
+- Fix Intenal Server Error when URI contains invalid sysid (bsc#1186011)
 - Fix notification message on system properties update to ensure
   style consistency (bsc#1172179)
 - Fix containerized proxy configuration machine name
