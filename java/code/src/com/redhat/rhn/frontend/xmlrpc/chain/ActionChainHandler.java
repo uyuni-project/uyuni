@@ -254,6 +254,30 @@ public class ActionChainHandler extends BaseHandler {
      * Schedule Errata update.
      *
      * @param loggedInUser The current user
+     * @param sid Server ID.
+     * @param errataIds a list of erratas IDs
+     * @param chainLabel Label of the action chain
+     * @return action id if successful, exception otherwise
+     *
+     * @apidoc.doc Adds Errata update to an Action Chain.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "System ID")
+     * @apidoc.param #array_single_desc("int", "errataIds", "Errata ID")
+     * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Integer addErrataUpdate(User loggedInUser,
+                                   Integer sid,
+                                   List<Integer> errataIds,
+                                   String chainLabel) {
+
+        return addErrataUpdate(loggedInUser, List.of(sid), errataIds, chainLabel);
+    }
+
+    /**
+     * Schedule Errata update.
+     *
+     * @param loggedInUser The current user
      * @param sids a list of Server IDs
      * @param errataIds a list of erratas IDs
      * @param chainLabel Label of the action chain
@@ -295,7 +319,6 @@ public class ActionChainHandler extends BaseHandler {
 
         return actionIds.get(0).intValue();
     }
-
 
     /**
      * Adds an action to remove installed packages on the system.
