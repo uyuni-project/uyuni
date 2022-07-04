@@ -18,6 +18,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.Errata;
@@ -214,11 +215,16 @@ public class Access extends BaseHandler {
         Map map = (Map) ctx;
         Long sid = getAsLong(map.get("sid"));
         User user = (User) map.get("user");
-        Server server = SystemManager.lookupByIdAndUser(sid, user);
-        if (server == null) {
+        try {
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            if (server == null) {
+                return false;
+            }
+            return server.hasEntitlement(EntitlementManager.MANAGEMENT);
+        }
+        catch (LookupException e) {
             return false;
         }
-        return server.hasEntitlement(EntitlementManager.MANAGEMENT);
     }
 
     /**
@@ -234,9 +240,14 @@ public class Access extends BaseHandler {
         boolean ret = false;
         if (sid != null) {
             User user = (User) map.get("user");
-            Server server = SystemManager.lookupByIdAndUser(sid, user);
-            if (server != null) {
-                ret = server.hasEntitlement(EntitlementManager.SALT);
+            try {
+                Server server = SystemManager.lookupByIdAndUser(sid, user);
+                if (server != null) {
+                    ret = server.hasEntitlement(EntitlementManager.SALT);
+                }
+            }
+            catch (LookupException e) {
+                // expected
             }
         }
         return ret;
