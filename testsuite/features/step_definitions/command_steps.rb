@@ -175,7 +175,7 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
     package.gsub! "suma", "uyuni"
   end
   node = get_target(host)
-  if host.include? 'ubuntu'
+  if host.include? 'deb_'
     node.wait_while_process_running('apt-get')
     pkg_version = package.split('-')[-1]
     pkg_name = package.delete_suffix("-#{pkg_version}")
@@ -208,7 +208,7 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   end
 end
 
-When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
+When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
   salt =
     if $is_cloud_provider
@@ -482,15 +482,6 @@ end
 
 Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
-end
-
-When(/^I import the GPG keys for "([^"]*)"$/) do |host|
-  node = get_target(host)
-  gpg_keys = get_gpg_keys(node)
-  gpg_keys.each do |key|
-    gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
-    node.run("cd /tmp/ && curl --output #{key} #{$server.full_hostname}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
-  end
 end
 
 When(/^the server starts mocking an IPMI host$/) do
@@ -794,10 +785,10 @@ When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   # node.run('salt-call state.apply channels.disablelocalrepos') does not work
 end
 
-When(/^I (enable|disable) Ubuntu "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
+When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  raise "#{node.hostname} is not a Ubuntu host." unless os_family =~ /^ubuntu/
+  raise "#{node.hostname} is not a Debian-like host." unless os_family =~ /^ubuntu/
 
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
 end
@@ -894,11 +885,11 @@ end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if host.include? 'rh_'
     cmd = "yum -y install #{package}"
     successcodes = [0]
     not_found_msg = 'No package'
-  elsif host.include? 'ubuntu'
+  elsif host.include? 'deb_'
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
@@ -913,11 +904,11 @@ end
 
 When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if host.include? 'rh_'
     cmd = "yum -y downgrade #{package}"
     successcodes = [0]
     not_found_msg = 'No package'
-  elsif host.include? 'ubuntu'
+  elsif host.include? 'deb_'
     cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
@@ -932,10 +923,10 @@ end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if host.include? 'rh_'
     cmd = "yum -y remove #{package}"
     successcodes = [0]
-  elsif host.include? 'ubuntu'
+  elsif host.include? 'deb_'
     cmd = "dpkg --remove #{package}"
     successcodes = [0]
   else
@@ -962,7 +953,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   node = get_target(host)
   if host == 'sle_minion'
     cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
-  elsif host.include? 'ubuntu'
+  elsif host == 'deb_minion'
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
@@ -1439,7 +1430,7 @@ end
 
 When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
   node = get_target(host)
-  next unless host.include? 'ceos'
+  next unless host.include? 'rh_'
 
   node.run('yum -y clean all')
   node.run('yum -y makecache')

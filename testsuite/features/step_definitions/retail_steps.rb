@@ -156,7 +156,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
   end
   # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
-  nodes = [$ceos_minion]
+  nodes = [$rh_minion]
   file = '/etc/sysconfig/network-scripts/ifcfg-eth1'
   conf2 = 'GATEWAYDEV=eth0'
   file2 = '/etc/sysconfig/network'
@@ -167,7 +167,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
   end
   # /etc/netplan/01-netcfg.yaml
-  nodes = [$ubuntu_minion]
+  nodes = [$deb_minion]
   source = File.dirname(__FILE__) + '/../upload_files/01-netcfg.yaml'
   dest = '/etc/netplan/01-netcfg.yaml'
   nodes.each do |node|
@@ -474,7 +474,7 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   elsif host == 'sle15sp3_terminal'
     mac = $sle15sp3_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
-  elsif host.include? 'ubuntu'
+  elsif host.include? 'deb_'
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')
     mac = output.split("\n")[1].split[1]

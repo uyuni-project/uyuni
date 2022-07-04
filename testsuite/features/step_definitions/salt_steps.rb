@@ -305,7 +305,7 @@ def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
     cmd = 'salt'
-  elsif %w[ssh_minion ceos_minion ubuntu_minion].include?(minion)
+  elsif %w[ssh_minion rh_minion deb_minion].include?(minion)
     cmd = 'mgr-salt-ssh'
   else
     raise 'Invalid target'
@@ -436,9 +436,9 @@ When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
   if %w[sle_minion ssh_minion sle_client].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{pkgs}", check_errors: false)
-  elsif %w[ceos_minion].include?(host)
+  elsif %w[rh_minion].include?(host)
     target.run("test -e /usr/bin/yum && yum -y remove #{pkgs}", check_errors: false)
-  elsif %w[ubuntu_minion].include?(host)
+  elsif %w[deb_minion].include?(host)
     pkgname = "salt-common salt-minion" if $product != 'Uyuni'
     target.run("test -e /usr/bin/apt && apt -y remove #{pkgs}", check_errors: false)
   end
@@ -449,9 +449,9 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
   pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
   if %w[sle_minion ssh_minion sle_client].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
-  elsif %w[ceos_minion].include?(host)
+  elsif %w[rh_minion].include?(host)
     target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
-  elsif %w[ubuntu_minion].include?(host)
+  elsif %w[deb_minion].include?(host)
     pkgs = "salt-common salt-minion" if $product != 'Uyuni'
     target.run("test -e /usr/bin/apt && apt -y install #{pkgs}", check_errors: false)
   end
@@ -481,7 +481,7 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if host.include? 'ceos'
+  if host.include? 'centos'
     node.run("yum -y remove --setopt=clean_requirements_on_remove=1 #{pkgs}", check_errors: false)
   elsif (host.include? 'ubuntu') || (host.include? 'debian')
     pkgs = "salt-common salt-minion" if $product != 'Uyuni'

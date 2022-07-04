@@ -18,28 +18,28 @@ Set up the following environment variables:
 * `CLIENT` the traditional client
 * `MINION` the Salt minion
 * `BUILD_HOST` the Docker and Kiwi build host
-* `SSHMINION` the SSH-managed Salt minion
-* `CENTOSMINION` the CentOS Salt minion
-* `UBUNTUMINION` the Ubuntu Salt minion
+* `SSH_MINION` the SSH-managed Salt minion
+* `RH_MINION` the Redhat-like Salt minion
+* `DEB_MINION` the Debian-like Salt minion
 
 Once you have the machines configured, you can run the testsuite.
 
 - To run all standard tests, from the controller:
 
 ```console
-export SERVER="${PREFIX}suma3pg.tf.local"
+export SERVER="${PREFIX}srv.tf.local"
 export CLIENT="${PREFIX}cli-sles15.tf.local"
 export MINION="${PREFIX}min-sles15.tf.local"
 export BUILD_HOST="${PREFIX}min-build.tf.local"
-export SSHMINION="${PREFIX}minssh-sles15.tf.local"
-export CENTOSMINION="${PREFIX}mincentos7.tf.local"
-export UBUNTUMINION="${PREFIX}min-ubuntu.tf.local"
+export SSH_MINION="${PREFIX}minssh-sles15.tf.local"
+export RH_MINION="${PREFIX}min-centos7.tf.local"
+export DEB_MINION="${PREFIX}min-ubuntu2004.tf.local"
 run-testsuite
 ```
 
 - To run the tests from your local machine you must do some extra steps:
 ```console
-zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_15.2/
+zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_15.4/
 zypper install *twopence*
 ```
 ```console

@@ -45,12 +45,12 @@
 # tests to be rewritten using the "dummy" packages instead of real synced packages
 # - features/secondary/allcli_software_channels_dependencies.feature
 
-- features/secondary/min_centos_salt_install_package_and_patch.feature
-- features/secondary/min_centos_monitoring.feature
+- features/secondary/min_rh_salt_install_package_and_patch.feature
+- features/secondary/min_rh_monitoring.feature
 - features/secondary/minssh_salt_install_package.feature
 - features/secondary/minssh_ansible_control_node.feature
-- features/secondary/min_ubuntu_salt_install_with_staging.feature
-- features/secondary/min_ubuntu_salt_install_package.feature
+- features/secondary/min_deb_salt_install_with_staging.feature
+- features/secondary/min_deb_salt_install_package.feature
 - features/secondary/min_bootstrap_api.feature
 - features/secondary/min_bootstrap_negative.feature
 - features/secondary/min_bootstrap_reactivation.feature

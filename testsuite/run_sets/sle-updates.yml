@@ -19,7 +19,7 @@
 # initialize clients
 - features/init_clients/sle_client.feature
 - features/init_clients/sle_minion.feature
-- features/init_clients/min_ubuntu_salt.feature
+- features/init_clients/min_deb_salt.feature
 - features/init_clients/buildhost_bootstrap.feature
 
 # these features sync real channels (last core features)

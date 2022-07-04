@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
@@ -55,14 +55,14 @@ Feature: Manage a group of systems
     When I follow "Groups" in the content area
     Then I should see a "new-systems-group" text
 
-@centos_minion
-  Scenario: Add the CentOS minion to the group in a different way
+@rh_minion
+  Scenario: Add the RedHat-like minion to the group in a different way
     When I follow the left menu "Systems > System Groups"
     Then I should see a "System Groups" text
     When I follow "new-systems-group"
     And I follow "Target Systems"
     Then I should see a "The following are systems that may be added to this group." text
-    When I check the "ceos_minion" client
+    When I check the "rh_minion" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group" text
 
@@ -85,7 +85,7 @@ Feature: Manage a group of systems
     And I should see a "General System Configuration" text
     And the "locale" formula should be unchecked
 
-@centos_minion
+@rh_minion
   Scenario: Apply the highstate to the group
     When I follow the left menu "Systems > System Groups"
     Then I should see a "System Groups" text
@@ -112,7 +112,7 @@ Feature: Manage a group of systems
     And I click on "Leave Selected Groups"
     Then I should see a "1 system groups removed." text
 
-  # CentOS minion is intentionally not removed from group
+  # RedHat-like minion is intentionally not removed from group
 
   Scenario: Cleanup: uninstall formula from the server
     When I manually uninstall the "locale" formula from the server

@@ -74,8 +74,8 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
    * "buildhost": feature using Kiwi and Docker build host
    * "minkvm": feature testing KVM host SLES minions
    * "minxen": feature testing Xen host SLES minions
-   * "ubuntu": feature testing Ubuntu
-   * "centos": feature testing CentOS (should become "rhes" in the future when we start using Extended Support images)
+   * "rh": feature testing a RedHat-like minion
+   * "deb": feature testing a Debian-like minion
    * "trad": feature testing traditional client
    * "allcli: feature testing all clients
  * `<topic>` must contain "salt" or "docker" for features related to salt or docker, and is then specific to the feature.

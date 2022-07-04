@@ -120,7 +120,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "openSUSE Leap 15.3 aarch64" product has been added
 
-@ceos7_minion
+@centos7_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 7
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
@@ -130,7 +130,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7" product has been added
 
-@ceos8_minion
+@centos8_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 8
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text

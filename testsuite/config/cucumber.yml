@@ -3,7 +3,7 @@ action_chains: --tags @scope_action_chains
 ansible: --tags @scope_ansible
 api: --tags @scope_api
 building_container_images: --tags @scope_building_container_images
-centos: --tags @centos_minion
+centos: --tags @rh_minion
 changing_software_channels: --tags @scope_changing_software_channels
 cobbler: --tags @scope_cobbler
 configuration_channels: --tags @scope_configuration_channels
@@ -35,7 +35,7 @@ subscription_matching: --tags @scope_subscription_matching
 sumatoolbox: --tags @scope_sumatoolbox
 tomcat: --tags @scope_tomcat
 traditional_client: --tags @scope_traditional_client
-ubuntu: --tags @scope_ubuntu
+ubuntu: --tags @scope_deb
 virtual_host_manager: --tags @scope_virtual_host_manager
 virtualization: --tags @scope_virtualization
 visualization: --tags @scope_visualization

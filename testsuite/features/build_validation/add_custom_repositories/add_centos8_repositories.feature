@@ -1,7 +1,7 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@ceos8_minion
+@centos8_minion
 Feature: Add the CentOS 8 distribution custom repositories
   In order to use CentOS 8 channels with Red Hat "modules"
   As a SUSE Manager administrator

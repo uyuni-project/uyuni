@@ -9,9 +9,10 @@ raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
 warn 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
-warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
-warn 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
-warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
+warn 'Build host IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
+warn 'RedHat-like minion IP address or domain name variable empty' if ENV['RH_MINION'].nil?
+warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEB_MINION'].nil?
+warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
 warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
 warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
 warn 'XEN server minion IP address or domain name variable empty' if ENV['VIRTHOST_XEN_URL'].nil?
@@ -35,7 +36,7 @@ $xen_server = twopence_init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_X
 $nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
 
 if $build_validation
-  # Define twopence objects for QAM or Build Validation environment
+  # Define twopence objects for Build Validation environment
   $sle12sp4_client = twopence_init("ssh:#{ENV['SLE12SP4_CLIENT']}") if ENV['SLE12SP4_CLIENT']
   $sle12sp4_minion = twopence_init("ssh:#{ENV['SLE12SP4_MINION']}") if ENV['SLE12SP4_MINION']
   $sle12sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP4_SSHMINION']}") if ENV['SLE12SP4_SSHMINION']
@@ -57,11 +58,11 @@ if $build_validation
   $sle15sp4_client = twopence_init("ssh:#{ENV['SLE15SP4_CLIENT']}") if ENV['SLE15SP4_CLIENT']
   $sle15sp4_minion = twopence_init("ssh:#{ENV['SLE15SP4_MINION']}") if ENV['SLE15SP4_MINION']
   $sle15sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP4_SSHMINION']}") if ENV['SLE15SP4_SSHMINION']
-  $ceos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
-  $ceos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
-  $ceos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
-  $ceos8_minion = twopence_init("ssh:#{ENV['CENTOS8_MINION']}") if ENV['CENTOS8_MINION']
-  $ceos8_ssh_minion = twopence_init("ssh:#{ENV['CENTOS8_SSHMINION']}") if ENV['CENTOS8_SSHMINION']
+  $centos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
+  $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
+  $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
+  $centos8_minion = twopence_init("ssh:#{ENV['CENTOS8_MINION']}") if ENV['CENTOS8_MINION']
+  $centos8_ssh_minion = twopence_init("ssh:#{ENV['CENTOS8_SSHMINION']}") if ENV['CENTOS8_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
@@ -82,8 +83,8 @@ if $build_validation
              $sle15sp2_client, $sle15sp2_minion, $sle15sp2_ssh_minion,
              $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
              $sle15sp4_client, $sle15sp4_minion, $sle15sp4_ssh_minion,
-             $ceos7_client, $ceos7_minion, $ceos7_ssh_minion,
-             $ceos8_minion, $ceos8_ssh_minion,
+             $centos7_client, $centos7_minion, $centos7_ssh_minion,
+             $centos8_minion, $centos8_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
              $debian9_minion, $debian9_ssh_minion,
@@ -96,11 +97,11 @@ else
   # Define twopence objects for QA environment
   $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
   $minion = twopence_init("ssh:#{ENV['MINION']}") if ENV['MINION']
-  $ssh_minion = twopence_init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
-  $ceos_minion = twopence_init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
-  $ubuntu_minion = twopence_init("ssh:#{ENV['UBUNTUMINION']}") if ENV['UBUNTUMINION']
+  $ssh_minion = twopence_init("ssh:#{ENV['SSH_MINION']}") if ENV['SSH_MINION']
+  $rh_minion = twopence_init("ssh:#{ENV['RH_MINION']}") if ENV['RH_MINION']
+  $deb_minion = twopence_init("ssh:#{ENV['DEB_MINION']}") if ENV['DEB_MINION']
   $build_host = twopence_init("ssh:#{ENV['BUILD_HOST']}") if ENV['BUILD_HOST']
-  $nodes += [$client, $minion, $ssh_minion, $ceos_minion, $ubuntu_minion, $build_host]
+  $nodes += [$client, $minion, $ssh_minion, $rh_minion, $deb_minion, $build_host]
 end
 
 # Lavanda library module extension
@@ -254,9 +255,9 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle_client'                => $client,
                   'sle_minion'                => $minion,
                   'ssh_minion'                => $ssh_minion,
-                  'ceos_client'               => $ceos_minion,
-                  'ceos_minion'               => $ceos_minion,
-                  'ubuntu_minion'             => $ubuntu_minion,
+                  'rh_client'                 => $rh_minion,
+                  'rh_minion'                 => $rh_minion,
+                  'deb_minion'                => $deb_minion,
                   'build_host'                => $build_host,
                   'kvm_server'                => $kvm_server,
                   'xen_server'                => $xen_server,
@@ -281,11 +282,11 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp4_client'           => $sle15sp4_client,
                   'sle15sp4_minion'           => $sle15sp4_minion,
                   'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
-                  'ceos7_client'              => $ceos7_client,
-                  'ceos7_minion'              => $ceos7_minion,
-                  'ceos7_ssh_minion'          => $ceos7_ssh_minion,
-                  'ceos8_minion'              => $ceos8_minion,
-                  'ceos8_ssh_minion'          => $ceos8_ssh_minion,
+                  'centos7_client'            => $centos7_client,
+                  'centos7_minion'            => $centos7_minion,
+                  'centos7_ssh_minion'        => $centos7_ssh_minion,
+                  'centos8_minion'            => $centos8_minion,
+                  'centos8_ssh_minion'        => $centos8_ssh_minion,
                   'ubuntu1804_minion'         => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,
@@ -326,9 +327,9 @@ def client_public_ip(host)
   end
 
   interface = case host
-              when /^sle/, /^opensuse/, /^ssh/, /^ceos/, /^debian9/, /^debian10/, 'server', 'proxy', 'build_host'
+              when /^sle/, /^opensuse/, /^ssh/, /^rh_/, /^centos/, /^debian9/, /^debian10/, 'server', 'proxy', 'build_host'
                 'eth0'
-              when /^debian11/, /^ubuntu/
+              when /^deb_/, /^debian11/, /^ubuntu/
                 $is_cloud_provider ? 'eth0' : 'ens3'
               when 'kvm_server', 'xen_server'
                 'br0'

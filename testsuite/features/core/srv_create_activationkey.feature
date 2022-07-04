@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC
+# Copyright (c) 2010-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Create activation keys
@@ -24,15 +24,15 @@ Feature: Create activation keys
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
-@ubuntu_minion
-  Scenario: Create an activation key for Ubuntu
+@deb_minion
+  Scenario: Create an activation key for Debian-like minion
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
-    And I enter "Ubuntu Test Key" as "description"
-    And I enter "UBUNTU-KEY" as "key"
+    And I enter "Debian-like Test Key" as "description"
+    And I enter "DEB-KEY" as "key"
     And I select "Test-Channel-Deb-AMD64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key Ubuntu Test Key has been created" text
+    Then I should see a "Activation key Debian-like Test Key has been created" text
     And I should see a "Details" link
     And I should see a "Packages" link
     And I should see a "Configuration" link in the content area

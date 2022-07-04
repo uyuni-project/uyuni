@@ -49,9 +49,9 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-@centos_minion
-  Scenario: Subscribe a CentOS minion to the configuration channel
-    When I am on the Systems overview page of this "ceos_minion"
+@rh_minion
+  Scenario: Subscribe a RedHat-like minion to the configuration channel
+    When I am on the Systems overview page of this "rh_minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -60,9 +60,9 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-@ubuntu_minion
-  Scenario: Subscribe a Ubuntu minion to the configuration channel
-    When I am on the Systems overview page of this "ubuntu_minion"
+@deb_minion
+  Scenario: Subscribe a Debian-like minion to the configuration channel
+    When I am on the Systems overview page of this "deb_minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -102,15 +102,15 @@ Feature: Management of configuration of all types of clients in a single channel
     When I wait until file "/etc/s-mgr/config" exists on "sle_minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_minion"
 
-@centos_minion
-  Scenario: Check that file has been created on CentOS minion
-    When I wait until file "/etc/s-mgr/config" exists on "ceos_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos_minion"
+@rh_minion
+  Scenario: Check that file has been created on RedHat-like minion
+    When I wait until file "/etc/s-mgr/config" exists on "rh_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "rh_minion"
 
-@ubuntu_minion
-  Scenario: Check that file has been created on Ubuntu minion
-    When I wait until file "/etc/s-mgr/config" exists on "ubuntu_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu_minion"
+@deb_minion
+  Scenario: Check that file has been created on Debian-like minion
+    When I wait until file "/etc/s-mgr/config" exists on "deb_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "deb_minion"
 
 @ssh_minion
   Scenario: Check that file has been created on SSH minion
@@ -123,17 +123,17 @@ Feature: Management of configuration of all types of clients in a single channel
     And I apply highstate on "sle_minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_minion"
 
-@centos_minion
-  Scenario: Apply highstate to override changed content on CentOS minion
-    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ceos_minion"
-    And I apply highstate on "ceos_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos_minion"
+@rh_minion
+  Scenario: Apply highstate to override changed content on RedHat-like minion
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "rh_minion"
+    And I apply highstate on "rh_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "rh_minion"
 
-@ubuntu_minion
-  Scenario: Apply highstate to override changed content on Ubuntu minion
-    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ubuntu_minion"
-    And I apply highstate on "ubuntu_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu_minion"
+@deb_minion
+  Scenario: Apply highstate to override changed content on Debian-like minion
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "deb_minion"
+    And I apply highstate on "deb_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "deb_minion"
 
 @ssh_minion
   Scenario: Apply highstate to override changed content on SSH minion
@@ -141,25 +141,25 @@ Feature: Management of configuration of all types of clients in a single channel
     And I apply highstate on "ssh_minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh_minion"
 
-@centos_minion
-  Scenario: Unsubscribe CentOS minion and delete configuration files
+@rh_minion
+  Scenario: Unsubscribe RedHat-like minion and delete configuration files
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
-    And I check the "ceos_minion" client
+    And I check the "rh_minion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
-    And I destroy "/etc/s-mgr" directory on "ceos_minion"
+    And I destroy "/etc/s-mgr" directory on "rh_minion"
 
-@ubuntu_minion
-  Scenario: Unsubscribe Ubuntu minion and delete configuration files
+@deb_minion
+  Scenario: Unsubscribe Debian-like minion and delete configuration files
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
-    And I check the "ubuntu_minion" client
+    And I check the "deb_minion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
-    And I destroy "/etc/s-mgr" directory on "ubuntu_minion"
+    And I destroy "/etc/s-mgr" directory on "deb_minion"
 
 @ssh_minion
   Scenario: Unsubscribe SSH minion and delete configuration files

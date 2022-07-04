@@ -98,25 +98,25 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLES 15 SP4 Salt SSH minion
     When I create the bootstrap repository for "sle15sp4_ssh_minion" on the server
 
-@ceos7_client
+@centos7_client
   Scenario: Create the bootstrap repository for a CentOS 7 traditional client
-    When I create the bootstrap repository for "ceos7_client" on the server
+    When I create the bootstrap repository for "centos7_client" on the server
 
-@ceos7_minion
+@centos7_minion
   Scenario: Create the bootstrap repository for a CentOS 7 Salt minion
-    When I create the bootstrap repository for "ceos7_minion" on the server
+    When I create the bootstrap repository for "centos7_minion" on the server
 
-@ceos7_ssh_minion
+@centos7_ssh_minion
   Scenario: Create the bootstrap repository for a CentOS 7 Salt SSH minion
-    When I create the bootstrap repository for "ceos7_ssh_minion" on the server
+    When I create the bootstrap repository for "centos7_ssh_minion" on the server
 
-@ceos8_minion
+@centos8_minion
   Scenario: Create the bootstrap repository for a CentOS 8 Salt minion
-    When I create the bootstrap repository for "ceos8_minion" on the server
+    When I create the bootstrap repository for "centos8_minion" on the server
 
-@ceos8_ssh_minion
+@centos8_ssh_minion
   Scenario: Create the bootstrap repository for a CentOS 8 Salt SSH minion
-    When I create the bootstrap repository for "ceos8_ssh_minion" on the server
+    When I create the bootstrap repository for "centos8_ssh_minion" on the server
 
 @ubuntu1804_minion
   Scenario: Create the bootstrap repository for a Ubuntu 18.04 Salt minion

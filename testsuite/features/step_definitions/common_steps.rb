@@ -38,7 +38,7 @@ end
 Then(/^the OS version for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   os_version, os_family = get_os_version(node)
-  # skip this test for centos and ubuntu systems
+  # skip this test for RedHat-like and Debian-like systems
   step %(I should see a "#{os_version.gsub!('-SP', ' SP')}" text) if os_family.include? 'sles'
 end
 
@@ -855,7 +855,7 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   node = get_target(client)
   if client.include? 'sle'
     node.run('zypper --non-interactive install wget', timeout: 500)
-  else # As Ubuntu has no support, must be CentOS/SLES_ES
+  else # As Debian-like has no support, must be RedHat-like
     node.run('yum install wget', timeout: 600)
   end
   registration_url = if $proxy.nil?

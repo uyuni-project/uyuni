@@ -145,12 +145,12 @@ Before('@sle_minion') do
   skip_this_scenario unless $minion
 end
 
-Before('@centos_minion') do
-  skip_this_scenario unless $ceos_minion
+Before('@rh_minion') do
+  skip_this_scenario unless $rh_minion
 end
 
-Before('@ubuntu_minion') do
-  skip_this_scenario unless $ubuntu_minion
+Before('@deb_minion') do
+  skip_this_scenario unless $deb_minion
 end
 
 Before('@pxeboot_minion') do
@@ -173,24 +173,24 @@ Before('@virthost_xen') do
   skip_this_scenario unless $xen_server
 end
 
-Before('@ceos7_minion') do
-  skip_this_scenario unless $ceos7_minion
+Before('@centos7_minion') do
+  skip_this_scenario unless $centos7_minion
 end
 
-Before('@ceos7_ssh_minion') do
-  skip_this_scenario unless $ceos7_ssh_minion
+Before('@centos7_ssh_minion') do
+  skip_this_scenario unless $centos7_ssh_minion
 end
 
-Before('@ceos7_client') do
-  skip_this_scenario unless $ceos7_client
+Before('@centos7_client') do
+  skip_this_scenario unless $centos7_client
 end
 
-Before('@ceos8_minion') do
-  skip_this_scenario unless $ceos8_minion
+Before('@centos8_minion') do
+  skip_this_scenario unless $centos8_minion
 end
 
-Before('@ceos8_ssh_minion') do
-  skip_this_scenario unless $ceos8_ssh_minion
+Before('@centos8_ssh_minion') do
+  skip_this_scenario unless $centos8_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do
@@ -340,7 +340,7 @@ end
 Before('@suse_minion') do |scenario|
   filename = scenario.location.file
   skip_this_scenario unless filename.include? 'minion'
-  skip_this_scenario unless (filename.include? 'sle') || (filename.include? 'suse')
+  skip_this_scenario unless (filename.include? 'sle') || (filename.include? 'opensuse')
 end
 
 Before('@skip_for_debianlike') do |scenario|

@@ -1,7 +1,7 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@ceos7_minion
+@centos7_minion
 Feature: Add the CentOS 7 distribution custom repositories
 
   Scenario: Download the iso of CentOS 7 DVD and mount it on the server
@@ -15,7 +15,7 @@ Feature: Add the CentOS 7 distribution custom repositories
     And I follow "Create Channel"
     And I enter "Custom Channel for CentOS 7 DVD" as "Channel Name"
     And I enter "centos-7-iso" as "Channel Label"
-    And I select the parent channel for the "ceos7_minion" from "Parent Channel"
+    And I select the parent channel for the "centos7_minion" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for CentOS 7 DVD created" text

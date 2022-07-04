@@ -6,7 +6,7 @@ require 'timeout'
 
 def client_raw_repodata_dir(channel)
   "/var/cache/zypp/raw/spacewalk:#{channel}/repodata"
-  # it would be "/var/cache/yum/#{channel}" for CentOS
+  # it would be "/var/cache/yum/#{channel}" for a RedHat-like client
 end
 
 def client_system_id_to_i

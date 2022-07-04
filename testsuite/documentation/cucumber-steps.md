@@ -38,9 +38,9 @@ Possible values are currently:
 | SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
 | SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` | ```"minion"``` |
 | SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
-| SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh_minion"``` | ```"minion"``` |
-| CentOS Salt minion | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"``` | ```"minion"``` |
-| Ubuntu Salt minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu_minion"``` | ```"minion"``` |
+| SLES Salt SSH minion | ```$ssh_minion``` | ```$SSH_MINION``` | ```"ssh_minion"``` | ```"minion"``` |
+| RedHat-like Salt minion | ```$rh_minion``` | ```$RH_MINION``` | ```"rh_minion"``` | ```"minion"``` |
+| Debian-like Salt minion | ```$deb_minion``` | ```$DEB_MINION``` | ```"deb_minion"``` | ```"minion"``` |
 | PXE-boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
 | KVM virtual host minion | ```$kvm_server``` | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"``` | ```"virthost"``` |
 | Xen virtual host minion | ```$xen_server``` | ```$VIRTHOST_XEN_URL``` and ```$VIRTHOST_XEN_PASSWORD``` | ```"xen_server"``` | ```"virthost"``` |
@@ -403,7 +403,7 @@ Note that the text area variant handles the new lines characters while the other
 
 ```cucumber
   When I run "rhn_check -vvv" on "sle_client"
-  When I run "apt update" on "ubuntu_minion" with logging
+  When I run "apt update" on "deb_minion" with logging
 ```
 
 * Run an arbitrary command and expect it to fail
@@ -440,7 +440,7 @@ Note that the text area variant handles the new lines characters while the other
 ```cucumber
   When I shutdown the spacewalk service
   When I restart the spacewalk service
-  When I wait until "salt-minion" service is up and running on "ceos_minion"
+  When I wait until "salt-minion" service is up and running on "rh_minion"
   Then service "bind" is enabled on "proxy"
   Then service "dhcpd" is running on "proxy"
 ```
@@ -528,7 +528,7 @@ Note that the text area variant handles the new lines characters while the other
 * Register (with ```rhnreg_ks```)
 
 ```cucumber
-  When I register "ceos_minion" as traditional client
+  When I register "rh_minion" as traditional client
 ```
 
 * Test registration (with API)
@@ -566,7 +566,7 @@ Note that the text area variant handles the new lines characters while the other
 * Wait for task completion
 
 ```cucumber
-  When I wait until onboarding is completed for "ceos_minion"
+  When I wait until onboarding is completed for "rh_minion"
   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 ```
 
@@ -578,9 +578,9 @@ Note that the text area variant handles the new lines characters while the other
 * Control Salt service
 
 ```cucumber
-  When I stop salt-minion on "ceos_minion"
-  When I start salt-minion on "ceos_minion"
-  When I restart salt-minion on "ceos_minion"
+  When I stop salt-minion on "rh_minion"
+  When I start salt-minion on "rh_minion"
+  When I restart salt-minion on "rh_minion"
 ```
 
 * Control Salt processes
@@ -607,7 +607,7 @@ Note that the text area variant handles the new lines characters while the other
 ```cucumber
   When I accept "sle_minion" key
   When I reject "sle_minion" from the Pending section
-  When I delete "ceos_minion" key in the Salt master
+  When I delete "rh_minion" key in the Salt master
   When I delete "sle_minion" from the Rejected section
   When I wait until Salt master sees "sle_minion" as "rejected"
   When I wait until the list of "all" keys contains the hostname of "sle_minion"

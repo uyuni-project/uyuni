@@ -25,15 +25,15 @@
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
 - features/secondary/trad_lock_packages.feature
-- features/secondary/min_centos_openscap_audit.feature
-- features/secondary/min_centos_remote-command.feature
-- features/secondary/min_centos_ssh.feature
-- features/secondary/trad_centos_client.feature
+- features/secondary/min_rh_openscap_audit.feature
+- features/secondary/min_rh_remote-command.feature
+- features/secondary/min_rh_ssh.feature
+- features/secondary/trad_rh_client.feature
 # temporarily disabled by the RRTGs
-#- features/secondary/trad_centos_migrate_to_min.feature
-- features/secondary/min_ubuntu_openscap_audit.feature
-- features/secondary/min_ubuntu_remote-command.feature
-- features/secondary/min_ubuntu_ssh.feature
+#- features/secondary/trad_rh_migrate_to_min.feature
+- features/secondary/min_deb_openscap_audit.feature
+- features/secondary/min_deb_remote-command.feature
+- features/secondary/min_deb_ssh.feature
 - features/secondary/minssh_bootstrap_api.feature
 - features/secondary/min_bootstrap_ssh_key.feature
 - features/secondary/min_bootstrap_script.feature
