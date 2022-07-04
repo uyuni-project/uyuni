@@ -29,10 +29,9 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
-  # In the current HEAD runs with 15 SP4, this package is already installed
-  # Scenario: Install TFTP boot package on the server
-  #  When I install package tftpboot-installation on the server
-  #  And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+   Scenario: Install TFTP boot package on the server
+    When I install package tftpboot-installation on the server
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
 
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
