@@ -21,6 +21,9 @@ suseProductSCCRepository
                                    CONSTRAINT suse_prdrepo_mand_ck
                                    CHECK (mandatory in ('Y', 'N')),
     update_tag             VARCHAR(128),
+    gpg_key_url            VARCHAR(256),
+    gpg_key_id             VARCHAR(14),
+    gpg_key_fp             VARCHAR(50),
     created                TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
     modified               TIMESTAMPTZ
