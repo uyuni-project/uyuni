@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC.
+# Copyright (c) 2010-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'nokogiri'
@@ -71,8 +71,8 @@ def get_gpg_keys(node, target = $server)
   if os_family =~ /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
     os_version = 12 if os_version =~ /^15/
-    # SLE11 and SLE12 gpg keys don't contain service pack strings
-    os_version = os_version.split('-')[0] if os_version =~ /^1[12]/
+    # SLE12 GPG keys don't contain service pack strings
+    os_version = os_version.split('-')[0] if os_version =~ /^12/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", check_errors: false)
   elsif os_family =~ /^centos/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", check_errors: false)

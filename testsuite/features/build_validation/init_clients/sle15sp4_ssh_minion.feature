@@ -17,7 +17,7 @@ Feature: Bootstrap a SLES 15 SP4 Salt SSH minion
     And I enter the hostname of "sle15sp4_ssh_minion" as "hostname"
     And I enter "linux" as "password"
     And I select "1-sle15sp4_ssh_minion_key" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle15sp4_ssh_minion"

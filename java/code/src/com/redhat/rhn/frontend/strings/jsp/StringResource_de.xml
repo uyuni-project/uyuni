@@ -13852,7 +13852,7 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
       </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-tooltip" xml:space="preserve">
           <source> Deploy configuration files to systems on registration</source>
-        <target>Konfigurationsdateien bei Systemen einsetzen, wenn sie mit diesem Aktivierungsschlüssel angemeldet werden.</target>
+        <target> Konfigurationsdateien bei Systemen einsetzen, wenn sie mit diesem Aktivierungsschlüssel angemeldet werden.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>

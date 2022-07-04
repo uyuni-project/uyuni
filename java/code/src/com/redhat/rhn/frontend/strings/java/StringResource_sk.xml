@@ -9296,173 +9296,173 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="profile" xml:space="preserve">
         <source>Idref of Profile</source>
-        <target/>
+        <target>Idref profilu</target>
       </trans-unit>
       <trans-unit id="satisfied" xml:space="preserve">
         <source>Satisfied</source>
-        <target/>
+        <target>Uspokojivé</target>
       </trans-unit>
       <trans-unit id="dissatisfied" xml:space="preserve">
         <source>Dissatisfied</source>
-        <target/>
+        <target>Neuspokojivé</target>
       </trans-unit>
       <trans-unit id="satisfactionUnknown" xml:space="preserve">
         <source>Unknown</source>
-        <target/>
+        <target>Neznáme</target>
       </trans-unit>
       <trans-unit id="filter.clearfilter" xml:space="preserve">
         <source>The list below is filtered.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Clear filter to see all items.&lt;/strong&gt; &lt;/a&gt;</source>
-        <target/>
+        <target>Nižšie uvedený zoznam je filtrovaný.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Ak chcete zobraziť všetky položky, vymažte filter.&lt;/strong&gt; &lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="listtag.clearfilter" xml:space="preserve">
         <source>Clear filter </source>
-        <target/>
+        <target>Vymažte filter </target>
       </trans-unit>
       <trans-unit id="listtag.seeall" xml:space="preserve">
         <source>to see all {0} items.  </source>
-        <target/>
+        <target>aby ste videli všetky {0} položky.  </target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessage" xml:space="preserve">
         <source>The list of {0} item(s) below is filtered.</source>
-        <target/>
+        <target>Nižšie uvedený zoznam {0} položky(iek) je filtrovaný.</target>
       </trans-unit>
       <trans-unit id="listtag.all_items_in_filter" xml:space="preserve">
         <source>The list below is not filtered, because the term you entered to filter by, '&lt;strong&gt;{0}&lt;/strong&gt;', returned matches for every item in the list. Try to filter by a more unique term.</source>
-        <target/>
+        <target>Nižšie uvedený zoznam nie je filtrovaný, pretože výraz, ktorý ste zadali na filtrovanie, '&lt;strong&gt;{0}&lt;/strong&gt;', vrátil zhody pre každú položku v zozname. Skúste filtrovať podľa jedinečnejšieho výrazu.</target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessageempty" xml:space="preserve">
         <source>The empty list below is filtered.</source>
-        <target/>
+        <target>Nižšie uvedený prázdny zoznam je filtrovaný.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidguestnamelength" xml:space="preserve">
         <source>Length of guest names must be at least {0} characters.</source>
-        <target/>
+        <target>Dĺžka názvov hostí musí byť aspoň {0} znakov.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidmemvalue" xml:space="preserve">
         <source>Memory Allocation must be a positive value greater than 0.</source>
-        <target/>
+        <target>Alokácia pamäte musí byť kladná hodnota väčšia ako 0.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidcpuvalue" xml:space="preserve">
         <source>Virtual CPUs must be set to a positive value greater than 0 and less than {0}.</source>
-        <target/>
+        <target>Virtuálne CPU musia byť nastavené na kladnú hodnotu väčšiu ako 0 a menšiu ako {0}.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidstoragevalue" xml:space="preserve">
         <source>Only natural numbers are accepted as storage values.</source>
-        <target/>
+        <target>Iba prirodzené čísla sú akceptované ako hodnoty úložiska.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidmacaddressvalue" xml:space="preserve">
         <source>MAC Addresses must be of the form XX:XX:XX:XX:XX:XX where all X's are hexedecimal values.</source>
-        <target/>
+        <target>Adresy MAC musia mať tvar XX:XX:XX:XX:XX:XX:XX, kde všetky X sú hexadecimálne hodnoty.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.duplicatemacaddressvalue" xml:space="preserve">
         <source>MAC Addresses must be unique. This MAC Address has already been recorded. Please choose a different MAC Address.</source>
-        <target/>
+        <target>Adresy MAC musia byť unikátne. Táto adresa MAC už bola zaznamenaná. Vyberte, prosím, inú adresu MAC.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.duplicateipaddressvalue" xml:space="preserve">
         <source>IP Addresses must be unique, and IP Address for &lt;strong&gt;{0}&lt;/strong&gt; has already been recorded. Please choose a different IP Address.</source>
-        <target/>
+        <target>IP adresy musia byť unikátne a IP adresa pre &lt;strong&gt;{0}&lt;/strong&gt; už bola zaznamenaná. Vyberte, prosím, inú IP adresu.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidregexp" xml:space="preserve">
         <source>Guest name can only contain alphanumeric characters, hyphens ('-'), periods ('.') and underscores ('_')</source>
-        <target/>
+        <target>Názov hosťa môže obsahovať len alfanumerické znaky, pomlčky ('-'), bodky ('.') a podčiarkovníky ('_')</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewChannels" xml:space="preserve">
         <source>View Associated Channels</source>
-        <target/>
+        <target>Zobraziť pridružené kanály</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewErrata" xml:space="preserve">
         <source>View Associated Patches</source>
-        <target/>
+        <target>Zobraziť pridružené opravy</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.submit" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>Potvrdiť</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.success" xml:space="preserve">
         <source>Successfully added {1} package(s) and {0} patches to channel {2}.</source>
-        <target/>
+        <target>Úspešne pridané {1} balík(y) a {0} opráv do kanála {2}.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.permsfailure" xml:space="preserve">
         <source>You do not have sufficient permissions to perform this action.</source>
-        <target/>
+        <target>Na vykonanie tejto akcie nemáte dostatočné oprávnenia.</target>
       </trans-unit>
       <!-- The following resources need to be updated for each
               schema change (see rhnChannelArch.sql) -->
       <trans-unit id="IA-32" xml:space="preserve">
         <source>IA-32</source>
-        <target/>
+        <target>IA-32</target>
       </trans-unit>
       <trans-unit id="IA-32 Debian" xml:space="preserve">
         <source>IA-32 Debian</source>
-        <target/>
+        <target>IA-32 Debian</target>
       </trans-unit>
       <trans-unit id="IA-64" xml:space="preserve">
         <source>IA-64</source>
-        <target/>
+        <target>IA-64</target>
       </trans-unit>
       <trans-unit id="IA-64 Debian" xml:space="preserve">
         <source>IA-64 Debian</source>
-        <target/>
+        <target>IA-64 Debian</target>
       </trans-unit>
       <trans-unit id="Sparc" xml:space="preserve">
         <source>Sparc</source>
-        <target/>
+        <target>Sparc</target>
       </trans-unit>
       <trans-unit id="Sparc Debian" xml:space="preserve">
         <source>Sparc Debian</source>
-        <target/>
+        <target>Sparc Debian</target>
       </trans-unit>
       <trans-unit id="Alpha" xml:space="preserve">
         <source>Alpha</source>
-        <target/>
+        <target>Alpha</target>
       </trans-unit>
       <trans-unit id="Alpha Debian" xml:space="preserve">
         <source>Alpha Debian</source>
-        <target/>
+        <target>Alpha Debian</target>
       </trans-unit>
       <trans-unit id="s390" xml:space="preserve">
         <source>s390</source>
-        <target/>
+        <target>s390</target>
       </trans-unit>
       <trans-unit id="s390 Debian" xml:space="preserve">
         <source>s390 Debian</source>
-        <target/>
+        <target>s390 Debian</target>
       </trans-unit>
       <trans-unit id="s390x" xml:space="preserve">
         <source>s390x</source>
-        <target/>
+        <target>s390x</target>
       </trans-unit>
       <trans-unit id="iSeries" xml:space="preserve">
         <source>iSeries</source>
-        <target/>
+        <target>iSeries</target>
       </trans-unit>
       <trans-unit id="pSeries" xml:space="preserve">
         <source>pSeries</source>
-        <target/>
+        <target>pSeries</target>
       </trans-unit>
       <trans-unit id="x86_64" xml:space="preserve">
         <source>x86_64</source>
-        <target/>
+        <target>x86_64</target>
       </trans-unit>
       <trans-unit id="AMD64 Debian" xml:space="preserve">
         <source>AMD64 Debian</source>
-        <target/>
+        <target>AMD64 Debian</target>
       </trans-unit>
       <trans-unit id="PPC" xml:space="preserve">
         <source>PPC</source>
-        <target/>
+        <target>PPC</target>
       </trans-unit>
       <trans-unit id="PowerPC Debian" xml:space="preserve">
         <source>PowerPC Debian</source>
-        <target/>
+        <target>PowerPC Debian</target>
       </trans-unit>
       <trans-unit id="ARM soft. FP" xml:space="preserve">
         <source>ARM soft. FP</source>
-        <target/>
+        <target>ARM soft. FP</target>
       </trans-unit>
       <trans-unit id="ARM hard. FP" xml:space="preserve">
         <source>ARM hard. FP</source>
-        <target/>
+        <target>ARM hard. FP</target>
       </trans-unit>
       <trans-unit id="arm Debian" xml:space="preserve">
         <source>arm Debian</source>
@@ -11215,14 +11215,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+      <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
         <source>Please fill in login.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

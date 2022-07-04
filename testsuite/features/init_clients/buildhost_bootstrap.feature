@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 SUSE LLC
+# Copyright (c) 2016-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @buildhost
@@ -14,7 +14,7 @@ Feature: Bootstrap a Salt build host via the GUI
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
-     And I select the hostname of "proxy" from "proxies"
+     And I select the hostname of "proxy" from "proxies" if present
      And I click on "Bootstrap"
      And I wait until I see "Successfully bootstrapped host!" text
 
@@ -54,7 +54,7 @@ Feature: Bootstrap a Salt build host via the GUI
     And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
     And I should see a "System properties changed" text
 
-  Scenario: Turn the SLES build host into a OS image build host
+  Scenario: Turn the SLES build host into an OS image build host
     Given I am on the Systems overview page of this "build_host"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area

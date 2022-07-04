@@ -1,3 +1,6 @@
+- Prevent possible tracebacks on calling module.run from mgrcompat
+  by setting proper globals with using LazyLoader
+
 -------------------------------------------------------------------
 Tue Jun 21 18:39:32 CEST 2022 - jgonzalez@suse.com
 

@@ -55,16 +55,12 @@ end
 # Warning: this can be confused by failures in previous scenarios
 # so it should be used only in the first image building scenario
 When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are built correctly on the Image List page$/) do |timeout, count|
-  os_version, os_family = get_os_version($build_host)
-  # don't run this for sles11 (docker feature is not there)
-  unless os_family =~ /^sles/ && os_version =~ /^11/
-    repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
-      step %(I follow the left menu "Images > Image List")
-      step %(I wait until I do not see "There are no entries to show." text)
-      raise 'error detected while building images' if has_xpath?("//tr[td[text()='Container Image']][td//*[contains(@title, 'Failed')]]")
-      break if has_xpath?("//tr[td[text()='Container Image']][td//*[contains(@title, 'Built')]]", count: count)
-      sleep 5
-    end
+  repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
+    step %(I follow the left menu "Images > Image List")
+    step %(I wait until I do not see "There are no entries to show." text)
+    raise 'error detected while building images' if has_xpath?("//tr[td[text()='Container Image']][td//*[contains(@title, 'Failed')]]")
+    break if has_xpath?("//tr[td[text()='Container Image']][td//*[contains(@title, 'Built')]]", count: count)
+    sleep 5
   end
 end
 

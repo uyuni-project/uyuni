@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2021 SUSE LLC
+# Copyright (c) 2010-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -233,18 +233,6 @@ Before('@debian11_ssh_minion') do
   skip_this_scenario unless $debian11_ssh_minion
 end
 
-Before('@sle11sp4_ssh_minion') do
-  skip_this_scenario unless $sle11sp4_ssh_minion
-end
-
-Before('@sle11sp4_minion') do
-  skip_this_scenario unless $sle11sp4_minion
-end
-
-Before('@sle11sp4_client') do
-  skip_this_scenario unless $sle11sp4_client
-end
-
 Before('@sle12sp4_ssh_minion') do
   skip_this_scenario unless $sle12sp4_ssh_minion
 end
@@ -327,14 +315,6 @@ end
 
 Before('@sle15sp4_client') do
   skip_this_scenario unless $sle15sp4_client
-end
-
-Before('@sle11sp4_buildhost') do
-  skip_this_scenario unless $sle11sp4_buildhost
-end
-
-Before('@sle11sp3_terminal') do
-  skip_this_scenario unless $sle11sp3_terminal_mac
 end
 
 Before('@sle12sp5_buildhost') do

@@ -255,21 +255,6 @@ end
 #
 When(/^I click on "([^"]*)"$/) do |text|
   click_button_and_wait(text, match: :first)
-
-  # In case of a search reindex not having finished yet, keeps retrying until successful search or timeout
-  if text == 'Search' && has_text?('Could not connect to search server.', wait: 0)
-    click_button(text, match: :first, wait: false)
-    start = Time.new
-    timeout = 10
-    while (has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)) &&
-          (Time.new - start <= timeout)
-
-      click_button(text, match: :first, wait: false)
-    end
-    if Time.new - start > timeout
-      raise 'Could not perform a successful search after reindexation'
-    end
-  end
 end
 
 #
@@ -434,23 +419,22 @@ Given(/^I am on the "([^"]*)" page of this "([^"]*)"$/) do |page, host|
   )
 end
 
-When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, hostname|
+When(/^I enter the hostname of "([^"]*)" as "([^"]*)"$/) do |host, field|
   system_name = get_system_name(host)
   log "The hostname of #{host} is #{system_name}"
-  step %(I enter "#{system_name}" as "#{hostname}")
+  step %(I enter "#{system_name}" as "#{field}")
 end
 
-When(/^I select the hostname of "([^"]*)" from "([^"]*)"$/) do |host, hostname|
-  case host
-  when 'proxy'
-    # don't select anything if not in the list
-    next if $proxy.nil?
-    step %(I select "#{$proxy.full_hostname}" from "#{hostname}")
-  when 'sle_minion'
-    step %(I select "#{$minion.full_hostname}" from "#{hostname}")
-  when 'build_host'
-    step %(I select "#{$build_host.full_hostname}" from "#{hostname}")
+When(/^I select the hostname of "([^"]*)" from "([^"]*)"((?: if present)?)$/) do |host, field, if_present|
+  begin
+    node = get_target(host)
+  rescue
+    raise "Host #{host} not found" if if_present.empty?
+
+    log "Host #{host} is not deployed, not trying to select it"
+    return
   end
+  step %(I select "#{node.full_hostname}" from "#{field}")
 end
 
 When(/^I follow this "([^"]*)" link$/) do |host|
@@ -1105,6 +1089,19 @@ Then(/^I should land on system's overview page$/) do
     And I should see a "System Properties" text
     And I should see a "Subscribed Channels" text
         )
+end
+
+# In case of a search reindex not having finished yet, keep retrying until successful search or timeout
+When(/^I click on the search button$/) do
+  click_button_and_wait('Search', match: :first)
+  # after a search reindex, the UI will show a "Could not connect to search server" followed by a false "No matches found" for a while
+  if has_text?('Could not connect to search server.', wait: 0)
+    repeat_until_timeout(message: 'Could not perform a successful search after reindexation', timeout: 10) do
+      break unless has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)
+      sleep 1
+      click_button('Search', match: :first, wait: false)
+    end
+  end
 end
 
 When(/^I enter "([^"]*)" hostname on the search field$/) do |host|
