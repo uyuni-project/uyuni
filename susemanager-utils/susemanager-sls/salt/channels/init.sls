@@ -1,6 +1,8 @@
 include:
   - util.syncstates
   - certs
+  - channels.gpg-keys
+
 
 {%- if grains['os_family'] == 'RedHat' %}
 
@@ -145,5 +147,4 @@ mgrchannels_install_products:
 {%- endif %}
 {%- endif %}
 
-{% include 'channels/gpg-keys.sls' %}
 {%- endif %}
