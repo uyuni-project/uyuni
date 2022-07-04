@@ -8,24 +8,34 @@
 {%- if grains['os_family'] == 'Debian' %}
 {%- set apt_version = salt['pkg.version']("apt") %}
 {%- set apt_support_acd = apt_version and salt['pkg.version_cmp'](apt_version, "1.6.10") > 0 %}
+{%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'].startswith('file:///') %}
+{%- set trust_string = '[signed-by=' ~ args['gpgkeyurl'][7:] ~ ']' %}
+{%- else %}
+{%- set trust_string = '[trusted=yes]' %}
+{%- endif %}
 
 {%- if apt_support_acd %}
-deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} {{protocol}}://{{hostname}}:{{port}}/rhn/manager/download {{ chan }}/
+deb {{ trust_string }} {{protocol}}://{{hostname}}:{{port}}/rhn/manager/download {{ chan }}/
 {%- else %}
-deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/rhn/manager/download {{ chan }}/
+deb {{ trust_string }} {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/rhn/manager/download {{ chan }}/
 {%- endif %}
 {%- else %}
 [{{ args['alias'] }}]
 name={{ args['name'] }}
 enabled={{ args['enabled'] }}
+{%- if args['gpgkeyurl'] is defined %}
+gpgkey={{ args['gpgkeyurl'] }}
+{%- if salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
+file:///etc/pki/rpm-gpg/mgr-gpg-pub.key
+{%- endif %}
+{%- elif salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
+gpgkey=file:///etc/pki/rpm-gpg/mgr-gpg-pub.key
+{%- endif %}
 {%- if grains['os_family'] == 'RedHat' %}
 baseurl={{protocol}}://{{hostname}}:{{port}}/rhn/manager/download/{{ chan }}
 susemanager_token={{ args['token'] }}
 gpgcheck={{ 1 if args['gpgcheck'] == "1" or args['pkg_gpgcheck'] != "0" else 0 }}
 repo_gpgcheck={{ args['gpgcheck'] }}
-{%- if salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
-gpgkey=https://{{ args['host'] }}/pub/mgr-gpg-pub.key
-{%- endif %}
 {%- if grains['osmajorrelease'] >= 8 and args['cloned_nonmodular'] %}
 module_hotfixes=1
 {%- endif %}
