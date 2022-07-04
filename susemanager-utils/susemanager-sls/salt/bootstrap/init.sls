@@ -16,9 +16,10 @@ no_ssh_push_key_authorized:
     - source: salt://salt_ssh/mgr_ssh_id.pub
     - comment: susemanager-default-contact-method
 
-# disable all susemanager:* repos
-{% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
+# disable all repos, except of repos flagged with keep:* (should be none)
+{% set repos_disabled = {'match_str': 'keep:', 'matching': false} %}
 {%- include 'channels/disablelocalrepos.sls' %}
+{% do repos_disabled.update({'skip': true}) %}
 
 # SUSE OS Family
 {%- if grains['os_family'] == 'Suse' %}
@@ -173,21 +174,6 @@ salt-install-contextvars:
       - pkg: salt-minion-package
 
 {% include 'bootstrap/remove_traditional_stack.sls' %}
-
-mgr_update_basic_pkgs:
-  pkg.latest:
-    - pkgs:
-      - openssl
-{%- if grains['os_family'] == 'Suse' and grains['osrelease'] in ['11.3', '11.4'] and grains['cpuarch'] in ['i586', 'x86_64'] %}
-      - pmtools
-{%- elif grains['cpuarch'] in ['aarch64', 'x86_64'] %}
-      - dmidecode
-{%- endif %}
-{%- if grains['os_family'] == 'Suse' %}
-      - zypper
-{%- elif grains['os_family'] == 'RedHat' %}
-      - yum
-{%- endif %}
 
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}

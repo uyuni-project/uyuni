@@ -65,5 +65,10 @@ authorize_own_key:
       - file: ownership_own_ssh_key
       - ssh_auth: no_own_key_authorized
 
+# disable all repos, except of repos flagged with keep:* (should be none)
+{% set repos_disabled = {'match_str': 'keep:', 'matching': false} %}
+{% include 'channels/disablelocalrepos.sls' %}
+{% do repos_disabled.update({'skip': true}) %}
+
 {% include 'channels/gpg-keys.sls' %}
 {% include 'bootstrap/remove_traditional_stack.sls' %}
