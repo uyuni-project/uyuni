@@ -9603,7 +9603,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname" xml:space="preserve">
         <source>Invalid Channel Name</source>
-        <target>Nesprávny názov kanála</target>
+        <target>Neplatný názov kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
@@ -9617,7 +9617,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.regex" xml:space="preserve">
         <source>Invalid channel name, please see the format described below</source>
-        <target>Nesprávny názov kanála, prosím, pozrite si formát opísaný nižšie</target>
+        <target>Neplatný názov kanála, prosím, pozrite si formát opísaný nižšie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
@@ -9663,67 +9663,67 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel" xml:space="preserve">
         <source>Invalid Channel Label</source>
-        <target/>
+        <target>Neplatné označenie kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.missing" xml:space="preserve">
         <source>Channel label must be specified</source>
-        <target/>
+        <target>Označenie kanála musí byť zadané</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.regex" xml:space="preserve">
         <source>Invalid channel label, please see the format described below</source>
-        <target/>
+        <target>Neplatné označenie kanála, prosím, pozrite si formát opísaný nižšie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
         <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target/>
+        <target>Označenie kanála musí mať aspoň 6 znakov, začínať písmenom alebo číslicou a môže obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_') a číslice.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
-        <target/>
+        <target>Kanály @@VENDOR_NAME@@ vyžadujú oprávnenia administrátora</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.minlength" xml:space="preserve">
         <source>Channel label must be at least {0} characters long</source>
-        <target/>
+        <target>Označenie kanála musí mať aspoň {0} znakov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.labelinuse" xml:space="preserve">
         <source>The channel label '{0}' is already in use, please enter a different name</source>
-        <target/>
+        <target>Označenie kanála '{0}' sa už používa, prosím, zadajte iný názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.labelreserved" xml:space="preserve">
         <source>The channel label '{0}' is reserved, please enter a different name</source>
-        <target/>
+        <target>Označenie kanála '{0}' je rezervované, prosím, zadajte iný názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelsummary" xml:space="preserve">
         <source>Invalid Channel Summary</source>
-        <target/>
+        <target>Súhrn neplatných kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.configuration.channel.deleted" xml:space="preserve">
         <source>Channel &lt;strong&gt;'{0}'&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;'{0}'&lt;/strong&gt; bol vymazaný.</target>
       </trans-unit>
       <trans-unit id="distribution.tree.exists" xml:space="preserve">
         <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
