@@ -84,8 +84,10 @@ no_ssh_push_key_authorized:
 
 # openEuler Family. This OS is based in RedHat, but declares a separate family
 {%- if grains['os_family'] == 'openEuler' %}
-  {%- set os_base = grains['os'] %} 
-  {% set osrelease = grains['osrelease_info'][0] %}
+  {% set os_base = grains['os'] %}
+  {% set osrelease_major = grains['osrelease_info'][0] %}
+  {% set osrelease_minor = '0' ~ grains['osrelease_info'][1] %}
+  {% set osrelease = osrelease_major|string ~ '.' ~ osrelease_minor|string %}
 {%- endif %}
 
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/bootstrap/' %}
