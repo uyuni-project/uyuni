@@ -62,7 +62,7 @@ Feature: Build container images
   Scenario: Build same images with different versions
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
-    And I wait at most 1000 seconds until all "5" container images are built correctly in the GUI
+    And I wait at most 1000 seconds until all "5" container images are built correctly in the Image List page
 
   Scenario: Delete image via API calls
     When I delete the image "suse_key" with version "Latest_key-activation1" via API calls
@@ -73,7 +73,7 @@ Feature: Build container images
   Scenario: Rebuild the images
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
-    And I wait at most 1000 seconds until all "5" container images are built correctly in the GUI
+    And I wait at most 1000 seconds until all "5" container images are built correctly in the Image List page
 
   Scenario: Build an image via the GUI
     When I follow the left menu "Images > Build"
