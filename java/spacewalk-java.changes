@@ -1,5 +1,6 @@
 - new API endpoint for addErrataUpdate, that take 
   multiple servers as argument
+- Show reboot alert message on all system detail pages (bsc#1199779)
 - Show patch as installed in CVE Audit even if successor patch affects
   additional packages (bsc#1199646)
 - Fix refresh action confirmation message when no system is selected
