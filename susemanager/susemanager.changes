@@ -1,3 +1,5 @@
+- Add clients tool product to generate 
+  bootstrap repo on OpenSUSE 15.x (bsc#1201189)
 - Make the Salt Bundle optional for bootstrap repositories
   for Debian 9 and SUSE Manager Proxy 4.2
 
