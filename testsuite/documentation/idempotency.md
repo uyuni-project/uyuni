@@ -27,7 +27,7 @@ If you remove a traditional client or minion, **always re-add** the base channel
 
 ## CentOS and Ubuntu minions
 
-CentOS and Ubuntu clients are always registered as SSH salt minions by defaut.
+CentOS and Ubuntu clients are always registered as Salt minions by defaut.
 
 
 ## Patches tests
