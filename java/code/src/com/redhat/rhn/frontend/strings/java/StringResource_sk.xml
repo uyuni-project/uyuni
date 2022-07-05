@@ -9727,43 +9727,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="distribution.tree.exists" xml:space="preserve">
         <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
-        <target/>
+        <target>Už existuje distribúcia s názvom '{0}'.  Prosím, vyberte iný názov.</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ Channels cannot be deleted, only custom channels can.</source>
-        <target/>
+        <target>Kanály @@VENDOR_NAME@@ nemôžu byť vymazané, iba vlastné kanály.</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.haschild" xml:space="preserve">
         <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
-        <target/>
+        <target>Tento kanál má pridružené kanály potomkov.  Najskôr musíte vymazať tieto kanály a až potom vymazať rodiča.</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.hasclones" xml:space="preserve">
         <source>Unable to delete channel. The channel you have tried to delete has been cloned. You must delete the clones before you can delete this channel. Cloned channels include ({0}{1}).</source>
-        <target/>
+        <target>Nie je možné odstrániť kanál. Kanál, ktorý ste sa pokúsili vymazať, bol klonovaný. Pred vymazaním tohto kanála musíte vymazať klony. Klonované kanály zahŕňajú ({0}{1}).</target>
       </trans-unit>
       <trans-unit id="api.kickstart.tree.notfound" xml:space="preserve">
         <source>The autoinstallable tree could not be found.  You may not have access to the requested tree.</source>
-        <target/>
+        <target>Automaticky inštalovateľný strom sa nepodarilo nájsť.  Možno nemáte prístup k požadovanému stromu.</target>
       </trans-unit>
       <trans-unit id="message.channelcreated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;{0}&lt;/strong&gt; vytvorený.</target>
       </trans-unit>
       <trans-unit id="message.channelcloned" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; cloned from channel &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;{0}&lt;/strong&gt; klonovaný z kanála &lt;strong&gt;{1}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="message.cloneselect" xml:space="preserve">
         <source>You may now wish to clone the patches associated with &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Teraz možno budete chcieť klonovať opravy spojené s &lt;strong&gt;{0}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="message.channeldeleted" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
       </trans-unit>
       <trans-unit id="message.channel.delete.systemssubscribed" xml:space="preserve">
         <source>There are currently systems subscribed to this channel. Please confirm system channel removal by selecting the unsubscribe checkbox.</source>
-        <target/>
+        <target>V súčasnosti sú k tomuto kanálu prihlásené systémy. Prosím, potvrďte odstránenie systémového kanála výberom zaškrtávacieho poľa odhlásenia.</target>
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.has-distros" xml:space="preserve">
         <source>There are currently autoinstallable distributions associated to this channel. Please disassociate or delete the autoinstallable distributions before proceeding to delete the channel.</source>
