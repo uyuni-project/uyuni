@@ -11,6 +11,7 @@ warn 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
 warn 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
+warn 'Ubuntu minion IP address or domain name variable empty' if ENV['UBUNTUMINION'].nil?
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
 warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
 warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
