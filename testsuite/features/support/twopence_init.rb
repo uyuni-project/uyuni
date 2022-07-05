@@ -13,7 +13,7 @@ warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
 warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
 warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
-warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
+warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
 warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
 warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
 warn 'XEN server minion IP address or domain name variable empty' if ENV['VIRTHOST_XEN_URL'].nil?
@@ -101,7 +101,7 @@ else
   # Define twopence objects for QA environment
   $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
   $minion = twopence_init("ssh:#{ENV['MINION']}") if ENV['MINION']
-  $ssh_minion = twopence_init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
+  $ssh_minion = twopence_init("ssh:#{ENV['SSH_MINION']}") if ENV['SSH_MINION']
   $rhlike_minion = twopence_init("ssh:#{ENV['RHLIKE_MINION']}") if ENV['RHLIKE_MINION']
   $deblike_minion = twopence_init("ssh:#{ENV['DEBLIKE_MINION']}") if ENV['DEBLIKE_MINION']
   $build_host = twopence_init("ssh:#{ENV['BUILD_HOST']}") if ENV['BUILD_HOST']
