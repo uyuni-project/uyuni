@@ -26,6 +26,7 @@ COPY tftp_wrapper.py /usr/bin/tftp_wrapper.py
 RUN chmod +x /usr/bin/tftp_wrapper.py
 
 # Define slim image
+ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni
