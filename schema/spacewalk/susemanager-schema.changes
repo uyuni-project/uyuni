@@ -1,3 +1,4 @@
+- add gpg key info to suseProductSCCRepository
 - Move ImageSync pillars to database (bsc#1199157)
 
 -------------------------------------------------------------------
