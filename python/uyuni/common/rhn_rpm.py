@@ -116,6 +116,9 @@ class RPM_Header:
 
     __bool__ = __nonzero__
 
+    def get(self, name, default=None):
+        return self.hdr[name] if name in self.hdr else default
+
     def modularity_label(self):
         """
         Get modularity label tag.
