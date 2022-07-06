@@ -1,39 +1,43 @@
-- Keep the websocket connections alive with ping/pong frames (bsc#1199874)
-- Fix missing remote command history events for big output (bsc#1199656)
-- Improve CLM channel cloning performance (bsc#1199523)
-- fix api log message references the wrong user (bsc#1179962)
-- Show patch as installed in CVE Audit even if successor patch affects
-  additional packages (bsc#1199646)
-- fix download of packages with caret sign in the version due
-  to missing url decode
-- Prefer the Salt Bundle with Cobbler snippets configuration
-  (minion_script and redhat_register_using_salt) (bsc#1198646)
-- During re-activation, recalculate grains if 
-  contact method has been changed (bsc#1199677)
-- Hide authentication data in PAYG UI (bsc#1199679)
-- autoinstallation: missing whitespace after install URL (bsc#1199888)
-- Improved handling of error messages during bootstrapping
-- skip forwarding data to scc if no credentials are available
-- Change system details lock tab name to lock/unlock (bsc#1193032)
-- Added a notification to inform the administrators about the product end-of-life
-- Set profile tag has no-mandatory in XCCDF result (bsc#1194262)
-- provisioning thought proxy should use proxy for self_update (bsc#1199036)
-- Allow removing duplicated packages names in the same Salt action (bsc#1198686)
-- fix NoSuchElementException when pkg install date is missing
-- Improve API documentation
-- Fix outdated documentation and release notes links
-- Fix error message in Kubernetes VHM creation dialog
-- Add createAppStreamFilters() XMLRPC function
-- Correct concurrency error on payg taskomatic task
-  for updating certificates (#17783)
-- Fix ACL rules for config diff download for SLS files (bsc#1198914)
-- fix package selection for ubuntu errata install (bsc#1199049)
-- fix invalid link to action schedule
-- add schedulePackageUpdate() XMLRPC function (bsc#1197507)
-- update server needed cache after adding Ubuntu Errata (bsc#1196977)
-- check if file exists before sending it to xsendfile (bsc#1198191)
-- Display usertime instead of server time for clm issue date filter (bsc#1198429)
-- Redesign the auto errata task to schedule combined actions (bsc#1197429)
+-------------------------------------------------------------------
+Wed Jul 06 15:56:37 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.39-1
+  * Keep the websocket connections alive with ping/pong frames (bsc#1199874)
+  * Fix missing remote command history events for big output (bsc#1199656)
+  * Improve CLM channel cloning performance (bsc#1199523)
+  * fix api log message references the wrong user (bsc#1179962)
+  * Show patch as installed in CVE Audit even if successor patch affects
+    additional packages (bsc#1199646)
+  * fix download of packages with caret sign in the version due
+    to missing url decode
+  * Prefer the Salt Bundle with Cobbler snippets configuration
+    (minion_script and redhat_register_using_salt) (bsc#1198646)
+  * During re-activation, recalculate grains if 
+    contact method has been changed (bsc#1199677)
+  * Hide authentication data in PAYG UI (bsc#1199679)
+  * autoinstallation: missing whitespace after install URL (bsc#1199888)
+  * Improved handling of error messages during bootstrapping
+  * skip forwarding data to scc if no credentials are available
+  * Change system details lock tab name to lock/unlock (bsc#1193032)
+  * Added a notification to inform the administrators about the product end-of-life
+  * Set profile tag has no-mandatory in XCCDF result (bsc#1194262)
+  * provisioning thought proxy should use proxy for self_update (bsc#1199036)
+  * Allow removing duplicated packages names in the same Salt action (bsc#1198686)
+  * fix NoSuchElementException when pkg install date is missing
+  * Improve API documentation
+  * Fix outdated documentation and release notes links
+  * Fix error message in Kubernetes VHM creation dialog
+  * Add createAppStreamFilters() XMLRPC function
+  * Correct concurrency error on payg taskomatic task
+    for updating certificates (#17783)
+  * Fix ACL rules for config diff download for SLS files (bsc#1198914)
+  * fix package selection for ubuntu errata install (bsc#1199049)
+  * fix invalid link to action schedule
+  * add schedulePackageUpdate() XMLRPC function (bsc#1197507)
+  * update server needed cache after adding Ubuntu Errata (bsc#1196977)
+  * check if file exists before sending it to xsendfile (bsc#1198191)
+  * Display usertime instead of server time for clm issue date filter (bsc#1198429)
+  * Redesign the auto errata task to schedule combined actions (bsc#1197429)
 
 -------------------------------------------------------------------
 Fri Jun 17 11:25:33 CEST 2022 - jmassaguerpla@suse.de
