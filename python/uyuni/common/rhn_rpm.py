@@ -108,6 +108,9 @@ class RPM_Header:
             item = [sstr(i) if isinstance(i, bytes) else i for i in item]
         return item
 
+    def get(self, name, default=None):
+        return self.hdr[name] if name in self.hdr else default
+
     def __len__(self):
         return len(self.hdr)
 
