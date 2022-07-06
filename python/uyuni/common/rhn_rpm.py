@@ -108,9 +108,6 @@ class RPM_Header:
             item = [sstr(i) if isinstance(i, bytes) else i for i in item]
         return item
 
-    def get(self, name, default=None):
-        return self.hdr[name] if name in self.hdr else default
-
     def __len__(self):
         return len(self.hdr)
 
@@ -118,6 +115,9 @@ class RPM_Header:
         return bool(self.hdr)
 
     __bool__ = __nonzero__
+
+    def get(self, name, default=None):
+        return self.hdr[name] if name in self.hdr else default
 
     def modularity_label(self):
         """
