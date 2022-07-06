@@ -34,6 +34,7 @@ RUN chown squid:squid /var/cache/squid
 RUN chmod a+x /var/log
 
 # Define slim image
+ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS slim
 
 USER squid

@@ -27,6 +27,7 @@ COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
 # Define slim image
+ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni
