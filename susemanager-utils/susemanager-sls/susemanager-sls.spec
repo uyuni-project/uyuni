@@ -40,7 +40,7 @@ Source:         %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/susemanager-utils/susemanager-sls/%{name}-rpmlintrc
 Requires(pre):  coreutils
 Requires(posttrans): spacewalk-admin
-Requires:       susemanager-build-keys-web >= 12.0.1
+Requires:       susemanager-build-keys-web >= 15.4.2
 %if 0%{?build_py3}
 BuildRequires:  python3-pytest
 BuildRequires:  python3-salt
