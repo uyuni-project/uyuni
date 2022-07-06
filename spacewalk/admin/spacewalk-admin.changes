@@ -1,4 +1,8 @@
-- clarify schema upgrade check message (bsc#1198999)
+-------------------------------------------------------------------
+Wed Jul 06 15:56:14 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.11-1
+  * clarify schema upgrade check message (bsc#1198999)
 
 -------------------------------------------------------------------
 Tue Mar 29 14:22:48 CEST 2022 - jmassaguerpla@suse.de
