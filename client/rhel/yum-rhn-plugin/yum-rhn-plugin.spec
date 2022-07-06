@@ -28,7 +28,7 @@ Summary:        Spacewalk support for yum
 License:        GPL-2.0-only
 Group:          System Environment/Base
 Name:           yum-rhn-plugin
-Version:        4.2.11
+Version:        4.2.12
 Release:        1%{?dist}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 Url:            https://github.com/uyuni-project/uyuni
