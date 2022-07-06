@@ -1,4 +1,8 @@
-- fix caching of debian packages in the proxy (bsc#1199401)
+-------------------------------------------------------------------
+Wed Jul 06 15:56:39 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.11-1
+  * fix caching of debian packages in the proxy (bsc#1199401)
 
 -------------------------------------------------------------------
 Tue Mar 29 14:23:15 CEST 2022 - jmassaguerpla@suse.de
