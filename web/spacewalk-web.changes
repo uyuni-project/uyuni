@@ -1,12 +1,16 @@
-- Stylesheets and relevant assets are now provided by spacewalk-web
-- Remove nodejs-packaging as a build requirement
-- Hide authentication data in PAYG UI (bsc#1199679)
-- Improved handling of error messages during bootstrapping
-- Added support for end of life notifications
-- Improved test integration for dropdowns
-- Upgrade moment to 2.29.2
-- Fix outdated documentation and release notes links
-- Fix mimetype in kubeconfig validation request (bsc#1199019)
+-------------------------------------------------------------------
+Wed Jul 06 15:56:50 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.28-1
+  * Stylesheets and relevant assets are now provided by spacewalk-web
+  * Remove nodejs-packaging as a build requirement
+  * Hide authentication data in PAYG UI (bsc#1199679)
+  * Improved handling of error messages during bootstrapping
+  * Added support for end of life notifications
+  * Improved test integration for dropdowns
+  * Upgrade moment to 2.29.2
+  * Fix outdated documentation and release notes links
+  * Fix mimetype in kubeconfig validation request (bsc#1199019)
 
 -------------------------------------------------------------------
 Wed May 04 14:08:53 CEST 2022 - jmassaguerpla@suse.de
