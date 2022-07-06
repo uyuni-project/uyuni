@@ -786,23 +786,25 @@ When(/^I enable repositories before installing Docker$/) do
   os_family = $build_host.os_family
 
   # Distribution
-  repos = "os_pool_repo os_update_repo"
+  repos = $is_cloud_provider ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
   log $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  unless $is_cloud_provider
+    repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  end
 
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if os_family =~ /^sles/ && os_version =~ /^15/
+  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_cloud_provider
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
 
   # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_cloud_provider
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
@@ -815,23 +817,25 @@ When(/^I disable repositories after installing Docker$/) do
   os_family = $build_host.os_family
 
   # Distribution
-  repos = "os_pool_repo os_update_repo"
+  repos = $is_cloud_provider ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
   log $build_host.run("zypper mr --disable #{repos}")
 
   # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  unless $is_cloud_provider
+    repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  end
 
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if os_family =~ /^sles/ && os_version =~ /^15/
+  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_cloud_provider
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
 
   # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_cloud_provider
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
