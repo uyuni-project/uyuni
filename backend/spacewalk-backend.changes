@@ -1,7 +1,11 @@
-- Fix traceback on calling spacewalk-repo-sync --show-packages
-  (bsc#1193238)
-- Fix virt_notify SQL syntax error (bsc#1199528)
-- store create-bootstrap logs in spacewalk-debug
+-------------------------------------------------------------------
+Wed Jul 06 15:56:17 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.23-1
+  * Fix traceback on calling spacewalk-repo-sync --show-packages
+    (bsc#1193238)
+  * Fix virt_notify SQL syntax error (bsc#1199528)
+  * store create-bootstrap logs in spacewalk-debug
 
 -------------------------------------------------------------------
 Thu Jun 16 16:21:35 CEST 2022 - jmassaguerpla@suse.de
