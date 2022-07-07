@@ -1,3 +1,4 @@
+- traditional stack bootstrap: install product packages (bsc#1201142)
 - display messages to restart services after certificate change
 - improve CA Chain checking by comparing authorityKeyIdentifier
   with subjectKeyIdentifier
