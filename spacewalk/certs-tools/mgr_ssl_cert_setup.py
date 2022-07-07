@@ -234,6 +234,7 @@ def getCertData(cert):
             "-issuer",
             "-issuer_hash",
             "-modulus",
+            "-ext", "subjectKeyIdentifier,authorityKeyIdentifier"
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -244,7 +245,10 @@ def getCertData(cert):
             "Unable to parse the certificate: {}".format(out.stderr.decode("utf-8"))
         )
         return None
+    nextval = ""
     for line in out.stdout.decode("utf-8").splitlines():
+        if line.strip() == "":
+            continue
         if line.startswith("subject="):
             data["subject"] = line[8:].strip()
         elif line.startswith("issuer="):
@@ -255,9 +259,20 @@ def getCertData(cert):
             data["enddate"] = line[9:].strip()
         elif line.startswith("Modulus="):
             data["modulus"] = line[8:].strip()
+        elif line.startswith("X509v3 Subject Key Identifier"):
+            nextval = "subjectKeyIdentifier"
+        elif line.startswith("X509v3 Authority Key Identifier"):
+            nextval = "authorityKeyIdentifier"
+        elif line.startswith("    "):
+            if nextval == "subjectKeyIdentifier":
+                data["subjectKeyIdentifier"] = line.strip().upper()
+            elif nextval == "authorityKeyIdentifier" and line.startswith("    keyid:"):
+                data["authorityKeyIdentifier"] = line[10:].strip().upper()
         elif "subject_hash" not in data:
+            # subject_hash comes first without key to identify it
             data["subject_hash"] = line.strip()
         else:
+            # second issue_hash without key to identify this value
             data["issuer_hash"] = line.strip()
     data["isca"] = isCA(cert)
     data["content"] = cert
@@ -339,6 +354,8 @@ def checkCompleteCAChain(server_cert_content, certData):
 
     subject = certData[serverCertHash]["subject"]
     ihash = certData[serverCertHash]["issuer_hash"]
+    issuerKeyId = certData[serverCertHash]["authorityKeyIdentifier"]
+
     if not ihash or ihash not in certData:
         raise CertCheckError("No CA found for server certificate")
 
@@ -353,11 +370,17 @@ def checkCompleteCAChain(server_cert_content, certData):
     )
 
     while ihash in certData:
+        keyId = certData[ihash]["subjectKeyIdentifier"]
+        if not (keyId and issuerKeyId and keyId == issuerKeyId):
+            raise CertCheckError(
+                "Incomplete CA Chain. Key Identifiers do not match. Unable to find issuer of '{}'".format(subject)
+            )
         if not certData[ihash]["isca"]:
             raise CertCheckError("CA missing basic constraints extension")
 
         subject = certData[ihash]["subject"]
         nexthash = certData[ihash]["issuer_hash"]
+        issuerKeyId = certData[ihash]["authorityKeyIdentifier"]
         isValid(certData[ihash]["startdate"], certData[ihash]["enddate"], subject)
 
         if nexthash == ihash:
@@ -437,6 +460,9 @@ def deployApache(apache_cert_content, server_key_content):
         f.write(apache_cert_content)
     # exists on server and proxy
     os.system("/usr/bin/spacewalk-setup-httpd")
+    log(
+"""After changing the server certificate please execute:
+$> spacewalk-service stop """)
 
 
 def deployJabberd(jabber_cert_content):
@@ -462,6 +488,7 @@ def deployPg(server_key_content):
         os.chmod(PG_KEY_FILE, int("0600", 8))
         os.chown(PG_KEY_FILE, pg_uid, pg_gid)
 
+        log("""$> systemctl restart postgresql.service """)
 
 def deployCAUyuni(certData):
     for h, ca in certData.items():
@@ -481,6 +508,11 @@ def deployCAUyuni(certData):
     # in case a systemd timer try to do the same
     time.sleep(3)
     os.system("/usr/share/rhn/certs/update-ca-cert-trust.sh")
+    log(
+"""$> spacewalk-service start
+
+As the CA certificate has been changed, please deploy the CA to all registered clients.
+On salt-managed clients, you can do this by applying the highstate.""")
 
 
 def checks(server_key_content,server_cert_content, certData):

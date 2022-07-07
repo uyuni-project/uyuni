@@ -2,6 +2,12 @@
 - fileutils.py uses context manager for apache users.
 
 -------------------------------------------------------------------
+Wed Jul 06 16:24:17 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Fix reposync issue about 'rpm.hdr' object has no attribute 'get'
+
+-------------------------------------------------------------------
 Tue Apr 19 12:14:45 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.4-1

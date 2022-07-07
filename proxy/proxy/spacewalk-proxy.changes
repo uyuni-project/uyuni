@@ -1,3 +1,5 @@
+- Move certificates dependencies from broker to proxy package
+
 -------------------------------------------------------------------
 Fri May 20 00:09:53 CEST 2022 - jgonzalez@suse.com
 

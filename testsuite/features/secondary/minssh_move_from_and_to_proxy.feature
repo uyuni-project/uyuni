@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ssh_minion
@@ -25,7 +25,7 @@ Feature: Move a ssh minion from a proxy to direct connection
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-SUSE-SSH-KEY-x86_64" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ssh_minion"
@@ -67,7 +67,7 @@ Feature: Move a ssh minion from a proxy to direct connection
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     And I follow "Change" in the content area
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Change Proxy"
     And I wait until I see "scheduled" text
     And I follow "Events"

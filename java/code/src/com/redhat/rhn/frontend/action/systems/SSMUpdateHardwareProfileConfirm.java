@@ -89,7 +89,7 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
                 ActionMessages msgs = new ActionMessages();
                 ActionMessage msg = new ActionMessage("ssm.hw.systems.confirmmessage");
 
-                if (set.size() > 1) {
+                if (set.size() != 1) {
                     msg = new ActionMessage("ssm.hw.systems.confirmmessage.multiple", set.size());
                 }
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

@@ -61,6 +61,7 @@ namespace :utils do
   task :generate_smoke_tests do
     clients = Rake::FileList['features/build_validation/init_clients/*.feature']
     clients.reject! { |client| client.include? 'proxy' }
+    clients.reject! { |client| (client.include? 'buildhost') || (client.include? 'terminal') }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke('features/build_validation/smoke_tests/smoke_tests.template',
                                            File.basename(client,'.feature'),

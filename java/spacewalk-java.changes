@@ -1,3 +1,19 @@
+- Fixed date format on scheduler related messages (bsc#1195455)
+- Improved dropdown layout handling
+- Fix download CSV
+- Hide authentication data in PAYG UI (bsc#1199679)
+- Clean grub2 reinstall entry in autoyast snippet (bsc#1199950)
+- Show reboot alert message on all system detail pages (bsc#1199779)
+- Show patch as installed in CVE Audit even if successor patch affects
+  additional packages (bsc#1199646)
+- Fix refresh action confirmation message when no system is selected
+- Fix Intenal Server Error when URI contains invalid sysid (bsc#1186011)
+- Fix notification message on system properties update to ensure
+  style consistency (bsc#1172179)
+- Fix containerized proxy configuration machine name
+- Improve CLM channel cloning performance (bsc#1199523)
+- Keep the websocket connections alive with ping/pong frames (bsc#1199874)
+
 -------------------------------------------------------------------
 Tue Jun 21 18:31:05 CEST 2022 - jgonzalez@suse.com
 

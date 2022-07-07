@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Sanity checks
@@ -36,27 +36,6 @@ Feature: Sanity checks
     And reverse resolution should work for "proxy"
     And "proxy" should communicate with the server using public interface
     And the clock from "proxy" should be exact
-
-@sle11sp4_client
-  Scenario: The SLES 11 SP4 traditional client is healthy
-    Then "sle11sp4_client" should have a FQDN
-    And reverse resolution should work for "sle11sp4_client"
-    And "sle11sp4_client" should communicate with the server using public interface
-    And the clock from "sle11sp4_client" should be exact
-
-@sle11sp4_minion
-  Scenario: The SLES 11 SP4 minion is healthy
-    Then "sle11sp4_minion" should have a FQDN
-    And reverse resolution should work for "sle11sp4_minion"
-    And "sle11sp4_minion" should communicate with the server using public interface
-    And the clock from "sle11sp4_minion" should be exact
-
-@sle11sp4_ssh_minion
-  Scenario: The SLES 11 SP4 Salt SSH minion is healthy
-    Then "sle11sp4_ssh_minion" should have a FQDN
-    And reverse resolution should work for "sle11sp4_ssh_minion"
-    And "sle11sp4_ssh_minion" should communicate with the server using public interface
-    And the clock from "sle11sp4_ssh_minion" should be exact
 
 @sle12sp4_client
   Scenario: The SLES 12 SP4 traditional client is healthy
@@ -309,13 +288,6 @@ Feature: Sanity checks
     And reverse resolution should work for "debian11_ssh_minion"
     And "debian11_ssh_minion" should communicate with the server using public interface
     And the clock from "debian11_ssh_minion" should be exact
-
-@sle11sp4_buildhost
-  Scenario: The SLES 11 SP4 build host is healthy
-    Then "sle11sp4_buildhost" should have a FQDN
-    And reverse resolution should work for "sle11sp4_buildhost"
-    And "sle11sp4_buildhost" should communicate with the server using public interface
-    And the clock from "sle11sp4_buildhost" should be exact
 
 @sle12sp5_buildhost
   Scenario: The SLES 12 SP5 build host is healthy

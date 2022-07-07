@@ -1,5 +1,13 @@
 - Replace apache users to root for RHEL.
-- Update server-migrator to dist-upgrade to openSUSE 15.4
+- Make the Salt Bundle optional for bootstrap repositories
+  for Debian 9 and SUSE Manager Proxy 4.2
+
+-------------------------------------------------------------------
+Wed Jun 22 11:16:33 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.17-1
+  * fix pg-migrate-x-to-y.sh comment: migration without creating backup 
+    use -f option
 
 -------------------------------------------------------------------
 Tue Jun 21 18:32:40 CEST 2022 - jgonzalez@suse.com

@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-21 12:55+0000\n"
-"PO-Revision-Date: 2022-05-18 03:13+0000\n"
+"POT-Creation-Date: 2022-06-22 04:14+0000\n"
+"PO-Revision-Date: 2022-06-22 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1137,6 +1137,7 @@ msgstr "製品カタログの更新を行なっています..."
 #: ../html/src/manager/admin/setup/products/products.tsx:214
 msgid "The following product installations failed. Please check log files."
 msgstr ""
+"次の製品のインストールに失敗しました。 ログファイルを確認してください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
@@ -4047,7 +4048,7 @@ msgstr "従量課金制の認証データの更新が失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:54
 msgid "End of Life Period"
-msgstr ""
+msgstr "サポート期間の終了"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
@@ -4478,9 +4479,8 @@ msgid "Keys"
 msgstr "キー"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:154
-#, fuzzy
 msgid "Search by name or fingerprint"
-msgstr "名前またはプロジェクトでフィルタ"
+msgstr "名前または指紋で検索"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
@@ -4737,14 +4737,13 @@ msgstr ""
 "をサブスクライブします。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
-#, fuzzy
 msgid "Error Details"
-msgstr "詳細"
+msgstr "エラーの詳細"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
 msgid "Close"
-msgstr ""
+msgstr "閉じる"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
@@ -4768,11 +4767,11 @@ msgstr "しばらくすると現われるはずです"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
-msgstr ""
+msgstr "このエラーの詳細を表示する"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
 msgid "Unable to bootstrap host. The following errors have happened:"
-msgstr ""
+msgstr "ホストをブートストラップできません。 次のエラーが発生しました。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
