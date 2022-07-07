@@ -1372,7 +1372,7 @@ if [ "$INSTALLER" == zypper ]; then
         fi
     fi
     if [ $FULLY_UPDATE_THIS_BOX -eq 1 ]; then
-        zypper --non-interactive up
+        zypper --non-interactive dup
     fi
 elif [ "$INSTALLER" == yum ]; then
     yum repolist
