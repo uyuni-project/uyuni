@@ -1,3 +1,4 @@
+- Improved dropdown layout handling
 - Fix download CSV
 - Hide authentication data in PAYG UI (bsc#1199679)
 - Clean grub2 reinstall entry in autoyast snippet (bsc#1199950)
