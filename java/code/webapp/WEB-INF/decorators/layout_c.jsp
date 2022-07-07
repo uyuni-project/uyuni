@@ -14,6 +14,7 @@
   </head>
   <body onload="<decorator:getProperty property="body.onload" />">
     <div class="senna-loading-bar"></div>
+    <div id="menu-portal-target"></div>
     <header class="navbar-pf">
       <jsp:include page="/WEB-INF/includes/header.jsp" />
     </header>
