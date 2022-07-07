@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-17 10:11+0000\n"
-"PO-Revision-Date: 2022-05-17 09:12+0000\n"
+"PO-Revision-Date: 2022-07-07 10:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -319,7 +319,7 @@ msgstr "联系方法：%s"
 #: ../src/spacecmd/activationkey.py:970 ../src/spacecmd/kickstart.py:432
 #: ../src/spacecmd/system.py:3111
 msgid "Software Channels"
-msgstr "软件频道"
+msgstr "软件通道"
 
 #: ../src/spacecmd/activationkey.py:978 ../src/spacecmd/configchannel.py:806
 #: ../src/spacecmd/configchannel.py:920 ../src/spacecmd/system.py:3120
