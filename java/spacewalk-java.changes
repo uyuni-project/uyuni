@@ -1,4 +1,5 @@
 - Fix download CSV
+- Hide authentication data in PAYG UI (bsc#1199679)
 - Clean grub2 reinstall entry in autoyast snippet (bsc#1199950)
 - Show reboot alert message on all system detail pages (bsc#1199779)
 - Show patch as installed in CVE Audit even if successor patch affects

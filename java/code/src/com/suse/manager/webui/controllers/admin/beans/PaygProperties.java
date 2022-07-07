@@ -38,6 +38,10 @@ public class PaygProperties {
     private String bastionKey;
     @SerializedName("bastion_key_password")
     private String bastionKeyPassword;
+    @SerializedName("instance_edit")
+    private Boolean instanceEdit;
+    @SerializedName("bastion_edit")
+    private Boolean bastionEdit;
 
     /**
      * default constructor
@@ -60,6 +64,8 @@ public class PaygProperties {
      * @param bastionPasswordIn
      * @param bastionKeyIn
      * @param bastionKeyPasswordIn
+     * @param instanceEditIn
+     * @param bastionEditIn
      */
     public PaygProperties(String descriptionIn,
                           String hostIn, String portIn,
@@ -67,7 +73,8 @@ public class PaygProperties {
                           String keyIn, String keyPasswordIn,
                           String bastionHostIn, String bastionPortIn,
                           String bastionUsernameIn, String bastionPasswordIn,
-                          String bastionKeyIn, String bastionKeyPasswordIn) {
+                          String bastionKeyIn, String bastionKeyPasswordIn,
+                          Boolean instanceEditIn, Boolean bastionEditIn) {
         this.description = descriptionIn;
         this.host = hostIn;
         this.port = portIn;
@@ -81,6 +88,8 @@ public class PaygProperties {
         this.bastionPassword = bastionPasswordIn;
         this.bastionKey = bastionKeyIn;
         this.bastionKeyPassword = bastionKeyPasswordIn;
+        this.instanceEdit = instanceEditIn;
+        this.bastionEdit = bastionEditIn;
     }
 
     public String getDescription() {
@@ -185,5 +194,21 @@ public class PaygProperties {
 
     public void setBastionKeyPassword(String bastionKeyPasswordIn) {
         this.bastionKeyPassword = bastionKeyPasswordIn;
+    }
+
+    public Boolean isInstanceEdit() {
+        return instanceEdit;
+    }
+
+    public void setInstanceEdit(Boolean instanceEditIn) {
+        instanceEdit = instanceEditIn;
+    }
+
+    public Boolean isBastionEdit() {
+        return bastionEdit;
+    }
+
+    public void setBastionEdit(Boolean bastionEditIn) {
+        bastionEdit = bastionEditIn;
     }
 }
