@@ -33,6 +33,11 @@ Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
+Then(/^I turn off disable_local_repos for all clients/) do
+  $server.run("echo \"mgr_disable_local_repos: False\" > /srv/pillar/disable_local_repos_off.sls")
+  step %(I install a salt pillar top file for "salt_bundle_config, disable_local_repos_off" with target "*" on the server)
+end
+
 Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
   node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
