@@ -1,3 +1,4 @@
+- Fixed date format on scheduler related messages (bsc#1195455)
 - Improved dropdown layout handling
 - Fix download CSV
 - Hide authentication data in PAYG UI (bsc#1199679)
