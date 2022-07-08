@@ -139,6 +139,7 @@ public class SystemsController {
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
                 withUser(this::getAccessibleChannelChildren));
         get("/manager/api/systems/list/virtual", asJson(withUser(this::virtualSystems)));
+        get("/manager/api/systems/list/all", asJson(withUser(this::allSystems)));
     }
 
     private Object virtualSystems(Request request, Response response, User user) {
@@ -164,6 +165,28 @@ public class SystemsController {
                 })
                 .collect(Collectors.toList());
         return json(response, new PagedDataResultJson<>(systems, virtual.getTotalSize()));
+    }
+
+    private Object allSystems(Request request, Response response, User user) {
+        PageControlHelper pageHelper = new PageControlHelper(request, "hostServerName");
+
+        DataResult<SystemOverview> systems = SystemManager.systemList(user, null);
+        if ("id".equals(pageHelper.getFunction())) {
+            return json(response, systems.stream()
+                    .filter(SystemOverview::isSelectable)
+                    .map(SystemOverview::getId)
+                    .collect(Collectors.toList())
+            );
+        }
+
+        systems = pageHelper.processPageControl(systems, new HashMap<>());
+        systems.stream()
+                .forEach(system -> {
+                    if (system.getId() != null) {
+                        system.updateStatusType(user);
+                    }
+                });
+        return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize()));
     }
 
     /**
