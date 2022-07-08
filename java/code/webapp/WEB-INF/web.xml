@@ -252,26 +252,6 @@
     <servlet-class>com.redhat.rhn.frontend.servlets.OvalServlet</servlet-class>
    </servlet>
 
-  <!--
-      AJAX servlet
-   -->
-   <servlet>
-     <servlet-name>dwr</servlet-name>
-     <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-     <init-param>
-       <param-name>debug</param-name>
-       <param-value>false</param-value>
-     </init-param>
-     <init-param>
-       <param-name>org.directwebremoting.extend.ScriptSessionManager</param-name>
-       <param-value>org.directwebremoting.impl.TransientScriptSessionManager</param-value>
-     </init-param>
-    <init-param>
-        <param-name>accessLogLevel</param-name>
-        <param-value>EXCEPTION</param-value>
-    </init-param>
-   </servlet>
-
   <!-- Simple Servlet to reload resources off disk -->
   <servlet>
     <servlet-name>ResourceReloadServlet</servlet-name>
@@ -302,11 +282,6 @@
   <servlet-mapping>
     <servlet-name>action</servlet-name>
     <url-pattern>*.do</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>dwr</servlet-name>
-    <url-pattern>/dwr/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

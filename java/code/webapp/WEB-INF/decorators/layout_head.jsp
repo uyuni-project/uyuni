@@ -63,10 +63,8 @@
     <script src="/javascript/legacy/select2/select2.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
+    <script src="/javascript/ajax.js?cb=${cb_version}"></script>
 
-    <script src="/rhn/dwr/engine.js?cb=${cb_version}"></script>
-    <script src="/rhn/dwr/util.js?cb=${cb_version}"></script>
-    <script src="/rhn/dwr/interface/DWRItemSelector.js?cb=${cb_version}"></script>
     <script src="/javascript/legacy/jquery.timepicker.js?cb=${cb_version}"></script>
     <script src="/javascript/bootstrap-datepicker.js?cb=${cb_version}"></script>
 

@@ -20,7 +20,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.SetLabels;
-import com.redhat.rhn.frontend.taglibs.DWRItemSelector;
+import com.redhat.rhn.frontend.taglibs.ItemSelector;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
@@ -85,7 +85,7 @@ public class SetController {
                     .filter(item -> data.get(item).equals(add))
                     .collect(Collectors.toList());
             try {
-                return DWRItemSelector.updateSetFromRequest(request.raw(), setLabel,
+                return ItemSelector.updateSetFromRequest(request.raw(), setLabel,
                         changes.toArray(new String[0]), add, user);
             }
             catch (Exception e) {

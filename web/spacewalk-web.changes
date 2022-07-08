@@ -1,3 +1,4 @@
+- Remove DWR library
 - Add reboot needed indicator to systems list
 - Move web dependencies from susemanager-frontend-libs to
   spacewalk-web
