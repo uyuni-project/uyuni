@@ -2,7 +2,6 @@
 
 <html>
     <body>
-        <script type="text/javascript" src="/rhn/dwr/interface/ProxySettingsRenderer.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard-proxy-settings.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <div class="responsive-wizard">

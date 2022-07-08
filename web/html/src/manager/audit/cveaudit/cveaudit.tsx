@@ -113,11 +113,12 @@ class CVEAudit extends React.Component<Props, State> {
     const list = isAdd ? items : removed;
 
     this.setState({ selectedItems: items }, () => {
-      DWRItemSelector.select("system_list", list, isAdd, (res) => {
-        // TODO: If you touch this code, please get rid of this `eval()` call, see https://github.com/SUSE/spacewalk/issues/15069
-        // eslint-disable-next-line no-eval
-        dwr.util.setValue("header_selcount", eval(res).header, { escapeHtml: false });
-      });
+      const data = {
+        label: "system_list",
+        values: list,
+        checked: isAdd,
+      };
+      Network.post("/rhn/ajax/item-selector", data);
     });
   };
 

@@ -22,9 +22,6 @@ import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
-
 import java.util.Arrays;
 import java.util.Set;
 
@@ -32,9 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * DWRItemSelector
+ * ItemSelector
  */
-public class DWRItemSelector {
+public class ItemSelector {
     public static final String JSON_HEADER = "X-JSON";
     public static final String IDS = "ids";
     public static final String CHECKED = "checked";
@@ -43,15 +40,14 @@ public class DWRItemSelector {
     /**
      * Dwr Item selector updates the RHNset
      * when its passed the setLabel, and ids to update
+     * @param req the request
      * @param setLabel the set label
      * @param ids the ids to update
      * @param on true if the items were to be added
      * @return the selected
      * @throws Exception on exceptions
      */
-    public String select(String setLabel, String[] ids, boolean on) throws Exception {
-        WebContext ctx = WebContextFactory.get();
-        HttpServletRequest req = ctx.getHttpServletRequest();
+    public String select(HttpServletRequest req, String setLabel, String[] ids, boolean on) {
         User user = new RequestContext(req).getCurrentUser();
         Integer size = updateSetFromRequest(req, setLabel, ids, on, user);
         if (size == null) {
@@ -69,11 +65,9 @@ public class DWRItemSelector {
      * @param isOn true to add, false to remove
      * @param user the user updating the set
      * @return the final count of items in the set
-     *
-     * @throws Exception if anything bad happens
      */
     public static Integer updateSetFromRequest(HttpServletRequest req,
-            String setLabel, String[] which, boolean isOn, User user) throws Exception {
+            String setLabel, String[] which, boolean isOn, User user) {
         if (which == null) {
             return null;
         }
@@ -111,7 +105,7 @@ public class DWRItemSelector {
     private String getResponse(int setSize, String setLabel) {
         StringBuilder responseText = new StringBuilder();
         LocalizationService ls = LocalizationService.getInstance();
-        Boolean systemsRelated = RhnSetDecl.SYSTEMS.getLabel().equals(setLabel);
+        boolean systemsRelated = RhnSetDecl.SYSTEMS.getLabel().equals(setLabel);
         if (systemsRelated) {
             StringBuilder headerMessage = new StringBuilder();
             headerMessage.append("<span id='spacewalk-set-system_list-counter'")
@@ -139,6 +133,6 @@ public class DWRItemSelector {
         responseText.append("\"pagination\":\"")
                     .append(paginationMessage)
                     .append("\"");
-        return  "({" + responseText + "})";
+        return  "{" + responseText + "}";
     }
 }

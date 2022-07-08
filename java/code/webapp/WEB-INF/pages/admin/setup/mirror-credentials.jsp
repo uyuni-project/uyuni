@@ -6,7 +6,6 @@
 
 <html>
     <body>
-        <script type="text/javascript" src="/rhn/dwr/interface/MirrorCredentialsRenderer.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard-mirror-credentials.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
         <!-- MODAL: Edit credentials -->
@@ -118,7 +117,7 @@
                             <div class="row" id="mirror-credentials">
                                 <div class="col-sm-9" id="listset-container">
                                     <rhn:icon type="spinner"></rhn:icon>
-                                    <script>MirrorCredentialsRenderer.renderCredentials(makeRendererHandler("listset-container", false));</script>
+                                    <script>ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback, "text/html");</script>
                                 </div>
                                 <div class="col-sm-3 hidden-xs" id="wizard-faq">
                                     <h4><bean:message key="mirror-credentials.jsp.info.h1" /></h4>
