@@ -1,3 +1,4 @@
+- Enable basic support for Ubuntu 22.04
 - Add port parameter to mgrutil.remove_ssh_known_host
 - Prevent possible tracebacks on calling module.run from mgrcompat
   by setting proper globals with using LazyLoader

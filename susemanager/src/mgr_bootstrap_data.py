@@ -653,6 +653,10 @@ PKGLISTUBUNTU2004 = [
     "venv-salt-minion",
 ]
 
+PKGLISTUBUNTU2204 = [
+    "venv-salt-minion",
+]
+
 PKGLISTDEBIAN9 = [
     "apt-transport-https",
     "bsdmainutils",
@@ -1573,6 +1577,11 @@ DATA = {
     'ubuntu-20.04-amd64-uyuni' : {
         'BASECHANNEL' : 'ubuntu-20.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU2004,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/20/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'ubuntu-22.04-amd64-uyuni' : {
+        'BASECHANNEL' : 'ubuntu-22.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU2204,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/22/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian9-amd64' : {
