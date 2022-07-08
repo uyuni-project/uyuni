@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uyuni-proxy
+  namespace: "{{ .Values.namespace }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uyuni-proxy
+  template:
+    metadata:
+      labels:
+        app: uyuni-proxy
+    spec:
+      containers:
+        - name: httpd
+          image: "{{ .Values.repository }}/proxy-httpd:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          - name: httpd-secret-volume
+            mountPath: /etc/uyuni/httpd.yaml
+            subPath: httpd.yaml
+            readOnly: true
+          - name: package-cache
+            mountPath: /var/cache/rhn
+          - name: tftp-boot
+            mountPath: /srv/tftpboot
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+        - name: salt-broker
+          image: "{{ .Values.repository }}/proxy-salt-broker:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          ports:
+            - containerPort: 4505
+            - containerPort: 4506
+        - name: squid
+          image: "{{ .Values.repository }}/proxy-squid:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          - name: squid-cache
+            mountPath: /var/cache/squid
+          ports:
+            - containerPort: 8088
+        - name: ssh
+          image: "{{ .Values.repository }}/proxy-ssh:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          - name: ssh-secret-volume
+            mountPath: /etc/uyuni/ssh.yaml
+            subPath: ssh.yaml
+            readOnly: true
+          ports:
+            - containerPort: 22
+        - name: tftpd
+          image: "{{ .Values.repository }}/proxy-tftpd:{{ .Values.version | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/uyuni/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          - name: tftp-boot
+            mountPath: /srv/tftpboot
+            readOnly: true
+          ports:
+            - containerPort: 69
+              protocol: UDP
+      volumes:
+        - name: config-volume
+          configMap:
+            name: proxy-configmap
+            items:
+              - key: config.yaml
+                path: config.yaml
+        - name: httpd-secret-volume
+          secret:
+            secretName: proxy-secret
+            items:
+              - key: httpd.yaml
+                path: httpd.yaml
+        - name: ssh-secret-volume
+          secret:
+            secretName: proxy-secret
+            items:
+              - key: ssh.yaml
+                path: ssh.yaml
+        - name: package-cache
+          persistentVolumeClaim:
+            claimName: package-cache-pv-claim
+        - name: tftp-boot
+          persistentVolumeClaim:
+            claimName: tftp-boot-pv-claim
+        - name: squid-cache
+          persistentVolumeClaim:
+            claimName: squid-cache-pv-claim

@@ -181,12 +181,14 @@ public class MgrUtilRunner {
      * Removes a hostname from a user's ~/.ssh/known_hosts file.
      * @param user the user for which to remove the hostname
      * @param hostname hotname to remove
+     * @param port port to remove
      * @return the execution result
      */
-    public static RunnerCall<RemoveKnowHostResult> removeSSHKnowHost(String user, String hostname) {
+    public static RunnerCall<RemoveKnowHostResult> removeSSHKnowHost(String user, String hostname, int port) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("user", user);
         args.put("hostname", hostname);
+        args.put("port", port);
         return new RunnerCall<>("mgrutil.remove_ssh_known_host", Optional.of(args), new TypeToken<>() { });
     }
 

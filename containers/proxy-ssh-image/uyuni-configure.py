@@ -5,9 +5,14 @@ import re
 import shutil
 import yaml
 
-# read from file
-with open("/etc/uyuni/config.yaml") as source:
+config_path = "/etc/uyuni/"
+
+# read from files
+with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
+
+with open(config_path + "ssh.yaml") as sshSource:
+    sshConfig = yaml.safe_load(sshSource).get("ssh")
 
     SSH_PUSH_KEY_FILE="id_susemanager_ssh_push"
     SSH_PUSH_USER="mgrsshtunnel"
@@ -23,9 +28,11 @@ with open("/etc/uyuni/config.yaml") as source:
     os.system(f'chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}')
     os.system(f'chmod 700 {SSH_PUSH_KEY_DIR}')
 
-    # copy the ssh push server/parent key files
-    shutil.copyfile("/etc/uyuni/server_ssh_push", f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}")
-    shutil.copyfile("/etc/uyuni/server_ssh_push.pub", f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub")
+    # store the ssh push server/parent key files
+    with open(f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}", "w") as file:
+        file.write(sshConfig.get("server_ssh_push"))
+    with open(f"{SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub", "w") as file:
+        file.write(sshConfig.get("server_ssh_push_pub"))
     
     # change owner to {SSH_PUSH_USER}
     os.system(f'chown {SSH_PUSH_USER}:{SSH_PUSH_USER} {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}')
@@ -34,7 +41,8 @@ with open("/etc/uyuni/config.yaml") as source:
     os.system(f'chmod 644 {SSH_PUSH_KEY_DIR}/{SSH_PUSH_KEY_FILE}.pub')
 
     # Authorize the server to ssh into this container
-    shutil.copyfile("/etc/uyuni/server_ssh_key.pub", f"{SSH_PUSH_KEY_DIR}/authorized_keys")
+    with open(f"{SSH_PUSH_KEY_DIR}/authorized_keys", "w") as file:
+        file.write(sshConfig.get("server_ssh_key_pub"))
 
     # append to existing config file
     with open("/etc/ssh/sshd_config", "r+") as config_file:

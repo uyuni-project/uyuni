@@ -1233,7 +1233,12 @@ public class SaltService implements SystemQuery, SaltApi {
      */
     @Override
     public Optional<MgrUtilRunner.RemoveKnowHostResult> removeSaltSSHKnownHost(String hostname) {
-        RunnerCall<MgrUtilRunner.RemoveKnowHostResult> call = MgrUtilRunner.removeSSHKnowHost("salt", hostname);
+        return removeSaltSSHKnownHost(hostname, SaltSSHService.SSH_DEFAULT_PORT);
+    }
+
+    @Override
+    public Optional<MgrUtilRunner.RemoveKnowHostResult> removeSaltSSHKnownHost(String hostname, int port) {
+        RunnerCall<MgrUtilRunner.RemoveKnowHostResult> call = MgrUtilRunner.removeSSHKnowHost("salt", hostname, port);
         return callSync(call);
     }
 
