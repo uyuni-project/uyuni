@@ -25,6 +25,7 @@ import static spark.Spark.post;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.SystemsExistException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
@@ -119,14 +120,19 @@ public class ProxyController {
                     data.getRootCA(), data.getIntermediateCAs(), data.getProxyCertPair(),
                     data.getCaPair(), data.getCaPassword(), data.getCertData());
             String filename = data.getProxyFqdn().split("\\.")[0];
-            request.session().attribute(filename + "-config.zip", config);
+            request.session().attribute(filename + "-config.tar.gz", config);
 
-            return json(response, filename + "-config.zip");
+            return json(response, filename + "-config.tar.gz");
         }
         catch (IOException | InstantiationException e) {
             LOG.error("Failed to generate proxy container configuration", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
                     "Failed to generate proxy container configuration");
+        }
+        catch (SystemsExistException e) {
+            String msg = String.format("Cannot create proxy as an existing system has FQDN '%s'", data.getProxyFqdn());
+            LOG.error(msg);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
         }
         catch (RhnRuntimeException e) {
             return json(response, HttpStatus.SC_BAD_REQUEST, e.getMessage());
@@ -145,7 +151,7 @@ public class ProxyController {
      */
     public byte[] containerConfigFile(Request request, Response response, User user) {
         String filename = request.params("filename");
-        if (!request.session().attributes().contains(filename) || !filename.endsWith("-config.zip")) {
+        if (!request.session().attributes().contains(filename) || !filename.endsWith("-config.tar.gz")) {
             return json(response, HttpStatus.SC_BAD_REQUEST, "Configuration file wasn't generated").getBytes();
         }
         Object config = request.session().attribute(filename);
@@ -154,7 +160,7 @@ public class ProxyController {
             request.session().removeAttribute(filename);
             response.header("Content-Disposition", "attachment; filename=\"" + filename + "\"");
             response.header("Content-Length", Integer.toString(data.length));
-            response.type("application/zip");
+            response.type("application/gzip");
             return data;
         }
         return json(response, HttpStatus.SC_BAD_REQUEST, "Invalid configuration file data").getBytes();

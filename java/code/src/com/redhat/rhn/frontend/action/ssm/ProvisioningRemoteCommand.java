@@ -243,7 +243,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
                 if (actionChain == null) {
                     infoMessages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "ssm.operations.provisioning.remotecommand.form.schedule.succeed",
-                        label, LocalizationService.getInstance().formatDate(scheduleDate)));
+                        label, LocalizationService.getInstance().formatCustomDate(scheduleDate)));
                 }
                 else {
                     infoMessages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(

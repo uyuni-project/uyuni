@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: package-cache-pv-claim
+  namespace: "{{ .Values.namespace }}"
+spec:
+{{- if .Values.persistentVolume.storageClass }}
+{{- if (eq "-" .Values.persistentVolume.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.persistentVolume.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: "{{ .Values.persistentVolume.package_cache_size }}"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: squid-cache-pv-claim
+  namespace: "{{ .Values.namespace }}"
+spec:
+{{- if .Values.persistentVolume.storageClass }}
+{{- if (eq "-" .Values.persistentVolume.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.persistentVolume.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: "{{ .Values.max_cache_size_mb }}Mi"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tftp-boot-pv-claim
+  namespace: "{{ .Values.namespace }}"
+spec:
+{{- if .Values.persistentVolume.storageClass }}
+{{- if (eq "-" .Values.persistentVolume.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.persistentVolume.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: "{{ .Values.persistentVolume.tftp_boot_size }}"
+---

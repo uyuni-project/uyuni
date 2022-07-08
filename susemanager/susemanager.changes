@@ -1,3 +1,6 @@
+- Add Oracle Linux 9 bootstrap repositories for Uyuni
+- Add AlmaLinux 9 bootstrap repositories for Uyuni
+- Add Red Hat Enterprise Linux 9 repositories for Uyuni
 - Make the Salt Bundle optional for bootstrap repositories
   for Debian 9 and SUSE Manager Proxy 4.2
 

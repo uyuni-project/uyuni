@@ -1,5 +1,12 @@
 - new API endpoint for addErrataUpdate, that take 
   multiple servers as argument
+- Cleanup salt known_hosts when generating proxy containers config
+- Modify proxy containers configuration files set output
+- Change proxy containers config to tarball with yaml files
+- Fixed date format on scheduler related messages (bsc#1195455)
+- Improved dropdown layout handling
+- Fix download CSV
+- Hide authentication data in PAYG UI (bsc#1199679)
 - Clean grub2 reinstall entry in autoyast snippet (bsc#1199950)
 - Show reboot alert message on all system detail pages (bsc#1199779)
 - Show patch as installed in CVE Audit even if successor patch affects
