@@ -7,18 +7,20 @@ function saveProxySettings() {
   hostname = jQuery('#http-proxy-input-hostname').val();
   username = jQuery('#http-proxy-input-username').val();
   password = jQuery('#http-proxy-input-password').val();
-  ProxySettingsRenderer.saveProxySettings({'hostname': hostname, 'username': username, 'password': password},
-    makeAjaxHandler(function(settings) {
-      console.log("Proxy settings saved!");
-      jQuery('#http-proxy-save').prop('disabled', false);
-      // TODO make sure it succeeded
-      setProxySettings(settings);
-      setProxySettingsEditable(false);
+  
+  function onSuccess(res) {
+    settings = JSON.parse(res);
+    console.log("Proxy settings saved!");
+    jQuery('#http-proxy-save').prop('disabled', false);
+    // TODO make sure it succeeded
+    setProxySettings(settings);
+    setProxySettingsEditable(false);
 
-      // Force refresh of the cache
-      verifyProxySettings(true);
-    })
-  );
+    // Force refresh of the cache
+    verifyProxySettings(true);
+  }
+
+  ajax('save-proxy-settings', { hostname, username, password }, onSuccess)
 }
 
 // sets in the UI if the proxy settings were verified
@@ -33,11 +35,7 @@ function setProxySettingsVerified(valid) {
 // verify the proxy settings on the server side, pass true to refresh the cache
 function verifyProxySettings(forceRefresh) {
   showSpinner('http-proxy-verify');
-  ProxySettingsRenderer.verifyProxySettings(forceRefresh,
-    makeAjaxHandler(function(valid) {
-    console.log("verified proxy: " + valid);
-    setProxySettingsVerified(valid);
-  }));
+  ajax('verify-proxy-settings', { forceRefresh }, setProxySettingsVerified)
 }
 
 // just sets the given settings in the form
@@ -57,18 +55,20 @@ function setProxySettings(settings) {
 // if there is no proxy set
 function retrieveProxySettings() {
   showSpinner('http-proxy-verify');
-  ProxySettingsRenderer.retrieveProxySettings(
-    makeAjaxHandler(function(settings) {
-      setProxySettings(settings);
-      console.log(JSON.stringify(settings));
+  
+  function onSuccess(res) {
+    settings = JSON.parse(res)
+    setProxySettings(settings);
+    console.log(res);
 
-      if (settings.hostname) {
-        verifyProxySettings(false);
-      } else {
-        setProxySettingsEditable(true);
-      }
-    })
-  );
+    if (settings.hostname) {
+      verifyProxySettings(false);
+    } else {
+      setProxySettingsEditable(true);
+    }
+  }
+
+  ajax('retrieve-proxy-settings', '', onSuccess)
 }
 
 // Switches the proxy settings into an (non)editable form

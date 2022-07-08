@@ -16,6 +16,9 @@
 package com.redhat.rhn.frontend.action.renderers;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Interface for rendering fragments asynchronously
  *
@@ -26,8 +29,10 @@ public interface FragmentRenderer {
 
     /**
      * Render content, please
+     * @param request the request
+     * @param response the response
      * @return generated content
      * @throws Exception sometimes things just don't work out
      */
-    String renderAsync() throws Exception;
+    String renderAsync(HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

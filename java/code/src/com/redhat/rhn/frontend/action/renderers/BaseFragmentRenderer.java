@@ -21,9 +21,10 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.apache.commons.lang3.StringUtils;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,16 +40,13 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
      * {@inheritDoc}
      * @throws Exception sometimes things just don't work out
      */
-    public String renderAsync() throws Exception {
-        WebContext ctx = WebContextFactory.get();
-        HttpServletRequest req = ctx.getHttpServletRequest();
+    public String renderAsync(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestContext rhnCtx = new RequestContext(req);
         User user = rhnCtx.getCurrentUser();
         PageControl pc = new PageControl();
         pc.setStart(1);
         pc.setPageSize(PAGE_SIZE);
         render(user, pc, req);
-        HttpServletResponse resp = ctx.getHttpServletResponse();
         return RendererHelper.renderRequest(
                 getPageUrl(),
                 req,
@@ -60,10 +58,8 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
      * @param user logged in user
      * @param pc  controls list displays
      * @param req incoming request
-     * @throws Exception sometimes things just don't work out
      */
-    protected abstract void render(User user, PageControl pc, HttpServletRequest req)
-        throws Exception;
+    protected abstract void render(User user, PageControl pc, HttpServletRequest req);
 
     /**
      * Hook method for child classes to return a URL to the page
