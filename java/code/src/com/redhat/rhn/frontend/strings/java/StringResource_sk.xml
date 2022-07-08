@@ -6566,7 +6566,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
-        <target>Automatická inštalácia nebola naplánovaná na &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt;, pretože profil balíkov neobsahoval balík 'up2date'. Môže byť potrebná aktualizácia profilu balíkov tohto systému.</target>
+        <target>Automatická inštalácia nebola naplánovaná pre &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt;, pretože profil balíkov neobsahoval balík 'up2date'. Môže byť potrebná aktualizácia profilu balíkov tohto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -9767,43 +9767,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.has-distros" xml:space="preserve">
         <source>There are currently autoinstallable distributions associated to this channel. Please disassociate or delete the autoinstallable distributions before proceeding to delete the channel.</source>
-        <target/>
+        <target>V súčasnosti sú k tomuto kanálu priradené automaticky inštalovateľné distribúcie. Pred pokračovaním vo vymazávaní kanála zrušte priradenie alebo vymažte automaticky inštalovateľné distribúcie.</target>
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.no-taskomatic" xml:space="preserve">
         <source>The scheduling service appears down, channel cannot be deleted at the moment. Please contact your administrator.</source>
-        <target/>
+        <target>Služba plánovania sa zdá byť nefunkčná, kanál nie je možné momentálne vymazať. Prosím, kontaktujte svojho administrátora.</target>
       </trans-unit>
       <trans-unit id="message.channelupdated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;{0}&lt;/strong&gt; aktualizovaný.</target>
       </trans-unit>
       <trans-unit id="message.failactionsuccess" xml:space="preserve">
         <source>Status of action &lt;strong&gt;{0}&lt;/strong&gt; has been set to failed.</source>
-        <target/>
+        <target>Stav akcie &lt;strong&gt;{0}&lt;/strong&gt; bol nastavený na neúspešný.</target>
       </trans-unit>
       <trans-unit id="message.syncscheduled" xml:space="preserve">
         <source>Repository sync scheduled for {0}.</source>
-        <target/>
+        <target>Synchronizácia repozitára naplánovaná pre {0}.</target>
       </trans-unit>
       <trans-unit id="message.syncinprogress" xml:space="preserve">
         <source>Repository sync is running.</source>
-        <target/>
+        <target>Synchronizácia repozitára beží.</target>
       </trans-unit>
       <trans-unit id="message.channelsubscribers" xml:space="preserve">
         <source>Per-User subscription restrictions may be applied in the Subscribers tab</source>
-        <target/>
+        <target>Obmedzenia predplatného na používateľa možno uplatniť na karte Predplatitelia</target>
       </trans-unit>
       <trans-unit id="message.bunch.singlescheduled" xml:space="preserve">
         <source>Single run of &lt;strong&gt;{0}&lt;/strong&gt; bunch was scheduled for {1}.</source>
-        <target/>
+        <target>Samostatné spustenie skupiny &lt;strong&gt;{0}&lt;/strong&gt; bolo naplánované pre {1}.</target>
       </trans-unit>
       <trans-unit id="message.schedulecreated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target/>
+        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; vytvorený.</target>
       </trans-unit>
       <trans-unit id="message.scheduleupdated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been updated.</source>
-        <target/>
+        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; bol aktualizovaný.</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
