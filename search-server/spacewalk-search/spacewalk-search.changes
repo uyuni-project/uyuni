@@ -1,3 +1,5 @@
+- Migrated from log4j1.x.x to log4j2.x.x
+
 -------------------------------------------------------------------
 Tue Jun 21 18:31:24 CEST 2022 - jgonzalez@suse.com
 
