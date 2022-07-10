@@ -9807,43 +9807,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
-        <target/>
+        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; už nie je aktívny. Je súčasťou systému len pre informačné účely a bude automaticky vymazaný.</target>
       </trans-unit>
       <trans-unit id="message.scheduledisabled" xml:space="preserve">
         <source>Please set frequency for the new schedule.</source>
-        <target/>
+        <target>Prosím, nastavte frekvenciu pre nový plán.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.notenoughmemory" xml:space="preserve">
         <source>Red Hat Enterprise Linux 7 and higher guests require at least 1024 MB of memory.</source>
-        <target/>
+        <target>Hostia Red Hat Enterprise Linux 7 a vyššie vyžadujú aspoň 1024 MB pamäte.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.notenoughmemorysuse" xml:space="preserve">
         <source>SUSE Linux Enterprise Server guests require at least 512 MB of memory.</source>
-        <target/>
+        <target>Hostia SUSE Linux Enterprise Server vyžadujú aspoň 512 MB pamäte.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidvirt" xml:space="preserve">
         <source>Para-Virtualization is unsupported with the selected autoinstallable tree or distribution.</source>
-        <target/>
+        <target>Para-virtualizácia nie je podporovaná s vybraným automaticky inštalovateľným stromom alebo distribúciou.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.nodistribution" xml:space="preserve">
         <source>Selected kickstartable tree isn't available at the moment. Please check cobbler functionality.</source>
-        <target/>
+        <target>Vybraný strom schopný kickstart momentálne nie je k dispozícii. Prosím, skontrolujte funkčnosť pre cobbler.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt" xml:space="preserve">
         <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
-        <target/>
+        <target>Vybrali ste distribúciu alebo automaticky inštalovateľný strom, ktorý nie je kompatibilný s aktuálne vybraným typom virtualizácie.  Prosím, pred pokusom o nastavenie distribúcie vyberte inú distribúciu alebo zmeňte vybraný typ virtualizácie tohto profilu.</target>
       </trans-unit>
       <trans-unit id="snapshots.childchannel" xml:space="preserve">
         <source>Child Channels Updated</source>
-        <target/>
+        <target>Kanály potomkov aktualizované</target>
       </trans-unit>
       <trans-unit id="snapshots.basechannel" xml:space="preserve">
         <source>Base Channel Updated</source>
-        <target/>
+        <target>Základný kanál aktualizovaný</target>
       </trans-unit>
       <trans-unit id="snapshots.entitlements" xml:space="preserve">
         <source>System Types Updated</source>
