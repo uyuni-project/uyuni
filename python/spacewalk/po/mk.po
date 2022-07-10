@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-01 18:13+0000\n"
-"PO-Revision-Date: 2022-07-10 04:12+0000\n"
+"PO-Revision-Date: 2022-07-10 19:15+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -53,11 +53,13 @@ msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
+"Додека работеше '%s': се фати\n"
+"%s : %s\n"
 
 #: ../server/apacheRequest.py:606
 #, python-format
 msgid "Invalid URI %s"
-msgstr ""
+msgstr "Невалиден URI %s"
 
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
@@ -69,30 +71,33 @@ msgid ""
 "                   %s Account has been deactivated on this server.\n"
 "                   Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"                   %s Акаунт беше деактивиран на овој сервер.\n"
+"                   Молиме контактирајте го вашиот Орг Администратор за помош."
 
 #: ../server/handlers/applet/applet.py:78
 #, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr ""
+msgstr "Вашиот систем не беше најден во датабазата на {PRODUCT_NAME}"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this server."
-msgstr ""
+msgstr "ISS е исклучен на овој сервер."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
-msgstr ""
+msgstr "Серверот \"%s\" не е вклучен за ISS."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
-msgstr ""
+msgstr "Се очекуваше име на пакет, а не: %s"
 
 #: ../server/handlers/xmlrpc/errata.py:115
 #, python-format
 msgid "Expected a package, not: %s"
-msgstr ""
+msgstr "Се очекуваше пакет, а не: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
@@ -101,11 +106,11 @@ msgstr ""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
-msgstr ""
+msgstr "Невалиден клуч за сесија"
 
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
-msgstr ""
+msgstr "Оваа идентификација за серверот повеќе не постои"
 
 #: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
