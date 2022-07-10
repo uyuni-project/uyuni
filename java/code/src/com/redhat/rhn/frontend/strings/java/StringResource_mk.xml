@@ -4,119 +4,119 @@
     <body>
       <trans-unit id="0" xml:space="preserve">
         <source>0</source>
-        <target/>
+        <target>0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1" xml:space="preserve">
         <source>1</source>
-        <target/>
+        <target>1</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.0.0" xml:space="preserve">
         <source>2.0.0</source>
-        <target/>
+        <target>2.0.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.0.1" xml:space="preserve">
         <source>2.0.1</source>
-        <target/>
+        <target>2.0.1</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2" xml:space="preserve">
         <source>2</source>
-        <target/>
+        <target>2</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.4.0" xml:space="preserve">
         <source>2.4.0</source>
-        <target/>
+        <target>2.4.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.5.0" xml:space="preserve">
         <source>2.5.0</source>
-        <target/>
+        <target>2.5.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.6.0" xml:space="preserve">
         <source>2.6.0</source>
-        <target/>
+        <target>2.6.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.7.0" xml:space="preserve">
         <source>2.7.0</source>
-        <target/>
+        <target>2.7.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.8.0" xml:space="preserve">
         <source>2.8.0</source>
-        <target/>
+        <target>2.8.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2.9.0" xml:space="preserve">
         <source>2.9.0</source>
-        <target/>
+        <target>2.9.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.0.0" xml:space="preserve">
         <source>3.0.0</source>
-        <target/>
+        <target>3.0.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.1.0" xml:space="preserve">
         <source>3.1.0</source>
-        <target/>
+        <target>3.1.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.1.5" xml:space="preserve">
         <source>3.1.5</source>
-        <target/>
+        <target>3.1.5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.2.0" xml:space="preserve">
         <source>3.2.0</source>
-        <target/>
+        <target>3.2.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.3.0" xml:space="preserve">
         <source>3.3.0</source>
-        <target/>
+        <target>3.3.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3" xml:space="preserve">
         <source>3</source>
-        <target/>
+        <target>3</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -207,42 +207,42 @@
       </trans-unit>
       <trans-unit id="yes" xml:space="preserve">
         <source>Yes</source>
-        <target/>
+        <target>Да</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="no" xml:space="preserve">
         <source>No</source>
-        <target/>
+        <target>Не</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Enabled" xml:space="preserve">
         <source>Enabled</source>
-        <target/>
+        <target>Вклучено</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Disabled" xml:space="preserve">
         <source>Disabled</source>
-        <target/>
+        <target>Исклучено</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Tip" xml:space="preserve">
         <source>Tip</source>
-        <target/>
+        <target>Совет</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Note" xml:space="preserve">
         <source>Note</source>
-        <target/>
+        <target>Белешка</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
@@ -263,7 +263,7 @@
       </trans-unit>
       <trans-unit id="Examples" xml:space="preserve">
         <source>Examples</source>
-        <target/>
+        <target>Примери</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
@@ -277,7 +277,7 @@
       </trans-unit>
       <trans-unit id="About Spacewalk" xml:space="preserve">
         <source>About</source>
-        <target/>
+        <target>За програмата</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
