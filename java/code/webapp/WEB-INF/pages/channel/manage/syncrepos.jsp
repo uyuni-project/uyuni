@@ -108,17 +108,32 @@
 
         <br/>
 
-        <jsp:include page="/WEB-INF/pages/common/fragments/repeat-task-picker.jspf">
-            <jsp:param name="widget" value="date"/>
-        </jsp:include>
+        <c:if test='${scheduleEditable}'>
+            <jsp:include page="/WEB-INF/pages/common/fragments/repeat-task-picker.jspf">
+                <jsp:param name="widget" value="date"/>
+            </jsp:include>
 
-        <div class="text-right">
-            <button type="submit" value="<bean:message key='schedule.button'/>" class="btn btn-default"
-                    name="dispatch" ${inactive ? 'disabled' : ''}>
-                <rhn:icon type="repo-schedule-sync"/>
-                <bean:message key="schedule.button"/>
-            </button>
-        </div>
+            <div class="text-right">
+                <button type="submit" value="<bean:message key='schedule.button'/>" class="btn btn-default"
+                        name="dispatch" ${inactive ? 'disabled' : ''}>
+                    <rhn:icon type="repo-schedule-sync"/>
+                    <bean:message key="schedule.button"/>
+                </button>
+            </div>
+        </c:if>
+
+        <c:if test='${not scheduleEditable}'>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><bean:message key="schedule.header"/></h4>
+                </div>
+
+              <div class="panel-body">
+                  <bean:message key="channel.manage.sync.scheduledisabled.jsp"/>
+              </div>
+            </div>
+        </c:if>
+
 
     </rl:listset>
 
