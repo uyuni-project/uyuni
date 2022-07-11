@@ -794,37 +794,37 @@ end
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
-          mand_repos = ""
-          opt_repos = ""
-          repos.split(' ').map do |repo|
-            if repo =~ /_ltss_/
-              opt_repos = "#{opt_repos} #{repo}"
+  cmd = ''
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    mand_repos = ''
+    opt_repos = ''
+    repos.split(' ').map do |repo|
+      if repo =~ /_ltss_/
+        opt_repos = "#{opt_repos} #{repo}"
+      else
+        mand_repos = "#{mand_repos} #{repo}"
+      end
+    end
+    cmd = "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos}"
+  elsif os_family =~ /^centos/
+    repos.split(' ').map do |repo|
+      cmd = "#{cmd} && " if not cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
             else
-              mand_repos = "#{mand_repos} #{repo}"
+              "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
             end
-          end
-          "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos};"
-        else
-          cmd_list = if action == 'enable'
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     else
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     end
-          cmd_list.reduce(:+)
-        end
+    end
+  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
+    repos.split(' ').map do |repo|
+      cmd = "#{cmd} && " if not cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+            else
+              "#{cmd}sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list"
+            end
+    end
+  end
   node.run(cmd, check_errors: error_control.empty?)
 end
 # rubocop:enable Metrics/BlockLength
