@@ -83,6 +83,15 @@ if [ ! -f ${CREDENTIALS} ]; then
   exit 1
 fi
 
+if [ "${SSHKEY}" != "" ]; then
+  if [ ! -f ${SSHKEY} ]; then
+    echo "ERROR: File ${SSHKEY} does not exist!"
+    exit 1
+  fi
+  MOUNTSSHKEY="--mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa"
+  USESSHKEY="-s /root/.ssh/id_rsa"
+fi
+
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
@@ -98,30 +107,30 @@ PIDS=""
 for p in ${PACKAGES};do
     pkg_dir=$(cat rel-eng/packages/${p} | tr -s " " | cut -d" " -f 2)
     CHOWN_CMD="${CHOWN_CMD}; chown -f -R $(id -u):$(id -g) /manager/$pkg_dir"
-    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -s /root/.ssh/id_rsa -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
+    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc ${USESSHKEY} -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
         echo "Building ${p} in parallel"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc --mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
         pid=${!}
         PIDS="${PIDS} ${pid}"
         ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
     else
         echo "Building ${p}"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc --mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
 
 for p in ${IMAGES};do
-    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -s /root/.ssh/id_rsa -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
+    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc  ${USESSHKEY} -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
         echo "Building ${p} in parallel"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc --mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
         pid=${!}
         PIDS="${PIDS} ${pid}"
         ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
     else
         echo "Building ${p}"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc --mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
 
