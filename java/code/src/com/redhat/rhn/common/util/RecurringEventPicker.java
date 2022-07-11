@@ -17,6 +17,8 @@ package com.redhat.rhn.common.util;
 import com.redhat.rhn.frontend.context.Context;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -47,6 +49,8 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public class RecurringEventPicker {
+
+    private static final Logger LOGGER = LogManager.getLogger(RecurringEventPicker.class);
 
     private static final String STATUS_DISABLED = "disabled";
 
@@ -275,7 +279,9 @@ public class RecurringEventPicker {
         else if (cronEntry != null) {
             if (cronEntry.split(WHITE_SPACE).length < 6) {
                 //The Cron Entry is too short
-                return null;
+                LOGGER.warn("Error while loading picker: ignoring invalid expression cron '{}'", cronEntry);
+                p.setStatus(STATUS_DISABLED);
+                return p;
             }
 
             // here do it the other way around, set the time pickers from
@@ -406,9 +412,7 @@ public class RecurringEventPicker {
      */
     public String getDayOfWeekString() {
         String num = getCronValue(5);
-        if (num == null || !StringUtils.isNumeric(num) ||
-                getDayNames().length  < Integer.parseInt(num) ||
-                Integer.parseInt(num) < 1) {
+        if (!StringUtils.isNumeric(num) || getDayNames().length < Integer.parseInt(num) || Integer.parseInt(num) < 1) {
             return null;
         }
         return getDayNames()[Integer.parseInt(num) - 1];
