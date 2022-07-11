@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import logging
 import os
 import subprocess
 import re
@@ -18,24 +19,24 @@ def getIPs(fqdn: str) -> Tuple[str, str]:
     ipv4, ipv6 = "", ""
 
     if len(ipv4s) == 0 and len(ipv6s) == 0:
-       print("FATAL: Cannot determine proxy IPv4 nor IPv6 from FQDN {}".format(fqdn))
+       logging.critical("Cannot determine proxy IPv4 nor IPv6 from FQDN {}".format(fqdn))
        sys.exit(1)
 
     try:
        ipv4 = ipv4s.pop()
        if len(ipv4s) > 0:
-          print("WARNING: Cannot determine unique IPv4 address for the proxy. TFTP sync may not work. Using IPv4 {}".format(ipv4))
+          logging.warning("Cannot determine unique IPv4 address for the proxy. TFTP sync may not work. Using IPv4 {}".format(ipv4))
     except KeyError:
-       print("WARNING: No IPv4 address detected for proxy. If this is single stack IPv6 setup this warning can be ignored")
+       logging.warning("No IPv4 address detected for proxy. If this is single stack IPv6 setup this warning can be ignored")
 
     try:
        ipv6 = ipv6s.pop()
        if len(ipv6s) > 0:
-          print("Multiple IPv6 addresses resolved, using IPv6 {}".format(ipv6))
+          logging.debug("Multiple IPv6 addresses resolved, using IPv6 {}".format(ipv6))
     except KeyError:
-       print("WARNING: No IPv6 address detected for proxy. If this is single stack IPv4 setup this warning can be ignored")
+       logging.warning("No IPv6 address detected for proxy. If this is single stack IPv4 setup this warning can be ignored")
 
-    print(f"DEBUG: detected ips '{ipv4}', '{ipv6}' for fqdn {fqdn}")
+    logging.debug(f"Detected ips '{ipv4}', '{ipv6}' for fqdn {fqdn}")
     return (ipv4, ipv6)
 
 # read from files
@@ -53,7 +54,7 @@ with open(config_path + "httpd.yaml") as httpdSource:
         container_version = subprocess.run(["rpm", "-q", "--queryformat", "%{version}", "spacewalk-proxy-common"],
                 stdout=subprocess.PIPE, universal_newlines=True).stdout
         if not container_version.startswith(major_version):
-            print("FATAL: Proxy container image version (%s) doesn't match server major version (%s)".format(
+            logging.critical("Proxy container image version (%s) doesn't match server major version (%s)".format(
                 container_version, major_version), file=sys.stderr)
             sys.exit(1)
     
