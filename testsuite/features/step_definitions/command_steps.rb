@@ -1506,10 +1506,14 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
 end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
-  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
+  common_repos = if os_family =~ /^opensuse/ || os_family =~ /^sles/
+                   'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
+                 else
+                   'tools_pool_repo tools_update_repo'
+                 end
+  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
   end
