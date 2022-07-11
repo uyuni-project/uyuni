@@ -3,7 +3,6 @@
 import os
 import subprocess
 import re
-import shutil
 import yaml
 import socket
 import sys

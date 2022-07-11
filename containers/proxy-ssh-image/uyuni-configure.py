@@ -2,7 +2,6 @@
 
 import os
 import re
-import shutil
 import yaml
 
 config_path = "/etc/uyuni/"
