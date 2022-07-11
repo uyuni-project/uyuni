@@ -1,3 +1,4 @@
+- Do not print console messages, use python logging instead
 - Mirror the whole server pub folder (bsc#1199802)
 - Modify proxy containers configuration files set output
 
