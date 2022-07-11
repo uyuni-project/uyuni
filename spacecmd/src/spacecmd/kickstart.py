@@ -2414,7 +2414,7 @@ def do_kickstart_importjson(self, args):
 
     if not args:
         logging.error(_N("Error, no filename passed"))
-        self.help_kickstart_import()
+        self.help_kickstart_importjson()
         return 1
 
     for filename in args:
