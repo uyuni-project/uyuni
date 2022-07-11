@@ -43,6 +43,9 @@ def getIPs(fqdn: str) -> Tuple[str, str]:
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
 
+    if config.get('log_level') is not None:
+        logging.getLogger().setLevel(logging.getLevelName(config.get('log_level')))
+
 with open(config_path + "httpd.yaml") as httpdSource:
     httpdConfig = yaml.safe_load(httpdSource).get("httpd")
    
