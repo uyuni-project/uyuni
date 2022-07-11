@@ -1,3 +1,5 @@
+- Added a new configuration property to allow custom channels to
+  be synced together with vendor channels.
 - add onlyRelevant argument to addErrataUpdate API
 - fix taskomatic task remain in progress
 
