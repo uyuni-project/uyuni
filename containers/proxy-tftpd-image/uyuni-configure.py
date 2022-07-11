@@ -11,6 +11,9 @@ config_path = "/etc/uyuni/"
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
    
+    if config.get('log_level') is not None:
+        logging.getLogger().setLevel(logging.getLevelName(config.get('log_level')))
+
     # store SSL CA certificate
     os.mkdir("/usr/share/uyuni/")
     with open("/usr/share/uyuni/ca.crt", "w") as file:
