@@ -19,6 +19,7 @@ import fnmatch
 from optparse import OptionParser, Option
 import re
 from uyuni.common.cli import getUsernamePassword, xmlrpc_login, xmlrpc_logout
+from uyuni.common.context_managers import cfg_component
 
 try:
     import xmlrpclib
@@ -245,6 +246,14 @@ Create everything as well as unlimited activation key for every channel:
                action="store_true"),
     ]
 
+    # Read the configuration to figure out if channel should be synced automatically on creation
+    sync_channels = False
+    with cfg_component("java") as CFG:
+        try:
+            sync_channels = CFG.unify_custom_channel_management.lower() in ["1", "y", "true", "yes", "on"]
+        except (AttributeError, ValueError):
+            pass
+
     parser = ExtOptionParser(usage=usage, option_list=option_list, examples=examples)
     (options, args) = parser.parse_args()
     config = ConfigParser.ConfigParser()
@@ -322,7 +331,7 @@ Create everything as well as unlimited activation key for every channel:
 
     existing_repo_urls = get_existing_repos(client)
     if existing_repo_urls is None:
-        sys.stderr.write("Unable to get exsiting repositories from server.\n")
+        sys.stderr.write("Unable to get existing repositories from server.\n")
         sys.exit(2)
 
     for (base_channel_label, create_channel) in sorted(base_channels.items()):
@@ -361,6 +370,9 @@ Create everything as well as unlimited activation key for every channel:
                                                            base_info['repo_url'])
                         client.channel.software.associateRepo(key,
                                                               base_info['label'], base_info['yum_repo_label'])
+
+                    if sync_channels:
+                        client.channel.software.syncRepo(key, base_info['label'])
                 except xmlrpclib.Fault as e:
                     if e.faultCode == 1200:  # ignore if channel exists
                         sys.stdout.write("INFO: %s exists\n" % base_info['label'])
@@ -442,6 +454,8 @@ Create everything as well as unlimited activation key for every channel:
                                                            child_info['repo_url'])
                         client.channel.software.associateRepo(key,
                                                               child_info['label'], child_info['yum_repo_label'])
+                    if sync_channels:
+                        client.channel.software.syncRepo(key, child_info['label'])
                 except xmlrpclib.Fault as e:
                     if e.faultCode == 1200:  # ignore if channel exists
                         sys.stderr.write("WARNING: %s: %s\n" % (
