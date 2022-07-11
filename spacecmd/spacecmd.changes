@@ -1,3 +1,4 @@
+- Fix tracebacks on spacecmd kickstart_export (bsc#1200591)
 - Change proxy container config default filename to end with tar.gz
 
 -------------------------------------------------------------------
