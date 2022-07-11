@@ -834,3 +834,15 @@ echo 'some more hello'
             "label": "testing-testing",
         }])
         assert details["advanced_opts"] == expected
+
+    def test_help_kickstart_importjson(self, shell):
+        """
+        Test do_kickstart_importjson showing proper help if no arguments
+
+        :param shell:
+        :return:
+        """
+        spacecmd.kickstart.do_kickstart_importjson(shell, "")
+
+        assert shell.help_kickstart_importjson.called
+        assert not shell.help_kickstart_import.called
