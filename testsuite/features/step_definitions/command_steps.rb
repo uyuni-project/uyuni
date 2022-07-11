@@ -1511,13 +1511,14 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
 end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
-  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
+  repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
+    repositories.concat(' os_pool_repo os_update_repo')
+    repositories.concat(' tools_additional_repo') unless $product == 'Uyuni'
   end
+  step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
 end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
