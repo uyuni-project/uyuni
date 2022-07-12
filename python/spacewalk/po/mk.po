@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-01 18:13+0000\n"
-"PO-Revision-Date: 2022-07-10 19:15+0000\n"
+"PO-Revision-Date: 2022-07-12 07:12+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -115,20 +115,20 @@ msgstr "Оваа идентификација за серверот повеќе
 #: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
 msgid "Invalid action value type %s (%s)"
-msgstr ""
+msgstr "Невалидна вредност за тип на акција %s (%s)"
 
 #: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
 msgid "Action %s does not belong to server %s"
-msgstr ""
+msgstr "Акцијата %s не припаѓа на серверот %s"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
-msgstr ""
+msgstr "Недостигаат потребни податоци"
 
 #: ../server/handlers/xmlrpc/registration.py:200
 msgid "Required members missing"
-msgstr ""
+msgstr "Недостасуваат потребни корисници"
 
 #: ../server/handlers/xmlrpc/registration.py:209
 msgid "Attempt to register a system to an invalid username"
