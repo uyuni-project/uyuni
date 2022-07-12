@@ -27,7 +27,7 @@ TFTP_USER="tftp"
 TFTP_OPTIONS="{config.get('tftp_options', '')} "
 TFTP_DIRECTORY="{tftp_root}"''')
 
-    os.system("chmod 640 {}".format(tftp_config))
+    os.system(f"chmod 640 {tftp_config}")
 
 # Make sure we can read 
 if not os.access(tftp_root, os.R_OK | os.X_OK):
