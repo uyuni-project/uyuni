@@ -497,11 +497,13 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
 
-When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|
+When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |files, host|
   system_name = host == "*" ? "*" : get_system_name(host)
   script = "base:\n" \
-            "  '#{system_name}':\n" \
-            "    - '#{file}'\n"
+            "  '#{system_name}':\n"
+  files.split(/, */).each do |file|
+    script += "    - '#{file}'\n"
+  end
   path = generate_temp_file('top.sls', script)
   inject_salt_pillar_file(path, 'top.sls')
   `rm #{path}`

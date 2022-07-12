@@ -58,7 +58,7 @@ Feature: Repos file generation based on custom pillar data
 
   Scenario: Cleanup: remove the custom RPM download point
     When I delete a salt "pillar" file with name "pkg_endpoint.sls" on the server
-    When I delete a salt "pillar" file with name "top.sls" on the server
+    And I install a salt pillar top file for "disable_local_repos_off, salt_bundle_config" with target "*" on the server
     And I refresh the pillar data
 
   Scenario: Cleanup: subscribe the SLES minion to a channel
