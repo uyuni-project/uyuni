@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="warn" name="UyuniConfig">
+    <Appenders> 
+        <RollingFile name="rootAppender" fileName="/var/log/rhn/search/rhn_search_daemon.log" filePattern="rhn_search_daemon-%i.log">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+        <RollingFile name="SearchAppender" fileName="/var/log/rhn/search/rhn_search.log" filePattern="rhn_search-%i.log">
+            <PatternLayout pattern="[%d] %-5p - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- XmlRpc Logging -->
+        <Logger name="com.redhat.satellite" level="info" >
+            <AppenderRef ref="SearchAppender" />
+        </Logger>
+        <Logger name="org.quartz" level="warn" >
+            <AppenderRef ref="SearchAppender" />
+        </Logger>
+        <!--
+        <Logger name="net.rkbloom.logdriver.LogPreparedStatement" level="debug" />
+        <Logger name="net.rkbloom.logdriver.LogStatement" level="debug" />
+        <Logger name="net.rkbloom.logdriver.LogCallableStatement" level="debug" />
+        <Logger name="net.rkbloom.logdriver.LogConnection" level="debug" />
+        <Logger name="com.redhat.satellite.search.rpc.handlers" level="debug" >
+            <AppenderRef ref="SearchAppender" />
+        </Logger>
+        <Logger name="com.redhat.satellite.search.index.IndexManager" level="debug" >
+            <AppenderRef ref="SearchAppender" />
+        </Logger>
+        <Logger name="com.redhat.satellite.search.ngram.NGramQueryParser" level="debug" >
+            <AppenderRef ref="SearchAppender" />
+        </Logger>        
+        <Logger name="com.redhat.satellite.search.scheduler.tasks" level="debug" >
+            <AppenderRef ref="SearchAppender" />
+        </Logger>
+        <Logger name="com.redhat.satellite.search.rpc.handlers" level="debug" >
+            <AppenderRef ref="SearchAppender" />
+        </Logger>
+        -->
+        <!-- SqlMap logging configuration -->
+        <!--
+        <Logger name="com.ibatis" level="debug" />
+        <Logger name="com.ibatis.common.jdbc.SimpleDataSource" level="debug" />
+        <Logger name="com.ibatis.sqlmap.engine.cache.CacheModel" level="debug" />
+        <Logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientImpl" level="debug" />
+        <Logger name="com.ibatis.sqlmap.engine.builder.xml.SqlMapParser" level="debug" >
+        <Logger name="com.ibatis.common.util.StopWatch" level="debug" />
+        <Logger name="java.sql.Connection" level="debug" />
+        <Logger name="java.sql.Statement" level="debug" />
+        <Logger name="java.sql.PreparedStatement" level="debug" />
+        <Logger name="java.sql.ResultSet" level="debug" >            
+        -->            
+        <Root level="info"><AppenderRef ref="rootAppender" /></Root>
+    </Loggers>
+</Configuration>

@@ -85,8 +85,8 @@ Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Obsoletes:      rhn-search < 5.3.0
-Requires:       log4j12
-BuildRequires:  log4j12
+Requires:       log4j
+BuildRequires:  log4j
 
 %description
 This package contains the code for the Full Text Search Server for
@@ -121,7 +121,7 @@ install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_sbindir}
 install -p -m 644 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
 install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
-install -p -m 644 src/config/log4j.properties $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes/log4j.properties
+install -p -m 644 src/config/log4j.xml $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes/log4j.xml
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
 
 # add rc link
@@ -166,7 +166,7 @@ rm -f $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/junit.jar
 %attr(644, root, root) %{_unitdir}/rhn-search.service
 %{_prefix}/share/rhn/config-defaults/rhn_search.conf
 %{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
-%{_prefix}/share/rhn/search/classes/log4j.properties
+%{_prefix}/share/rhn/search/classes/log4j.xml
 %{_sysconfdir}/logrotate.d/rhn-search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search/indexes

@@ -19,13 +19,14 @@ import com.redhat.satellite.search.index.ngram.NGramAnalyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.StringReader;
 
 public class NGramAnalyzerTest extends NGramTestSetup {
 
-        private static Logger log = Logger.getLogger(NGramAnalyzerTest.class);
+        private static Logger log = LogManager.getLogger(NGramAnalyzerTest.class);
 
     public NGramAnalyzerTest() {
         super();

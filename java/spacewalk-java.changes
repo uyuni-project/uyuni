@@ -1,5 +1,6 @@
 - new API endpoint for addErrataUpdate, that take 
   multiple servers as argument
+- Convert formula integer values when upgrading (bsc#1200347)
 - Cleanup salt known_hosts when generating proxy containers config
 - Modify proxy containers configuration files set output
 - Change proxy containers config to tarball with yaml files
@@ -18,6 +19,7 @@
 - Fix containerized proxy configuration machine name
 - Improve CLM channel cloning performance (bsc#1199523)
 - Keep the websocket connections alive with ping/pong frames (bsc#1199874)
+- add detection of Ubuntu 22.04
 
 -------------------------------------------------------------------
 Tue Jun 21 18:31:05 CEST 2022 - jgonzalez@suse.com

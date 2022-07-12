@@ -247,6 +247,20 @@ Feature: Sanity checks
     And "ubuntu2004_ssh_minion" should communicate with the server using public interface
     And the clock from "ubuntu2004_ssh_minion" should be exact
 
+@ubuntu2204_minion
+  Scenario: The Ubuntu 22.04 minion is healthy
+    Then "ubuntu2204_minion" should have a FQDN
+    And reverse resolution should work for "ubuntu2204_minion"
+    And "ubuntu2204_minion" should communicate with the server using public interface
+    And the clock from "ubuntu2204_minion" should be exact
+
+@ubuntu2204_ssh_minion
+  Scenario: The Ubuntu 22.04 Salt SSH minion is healthy
+    Then "ubuntu2204_ssh_minion" should have a FQDN
+    And reverse resolution should work for "ubuntu2204_ssh_minion"
+    And "ubuntu2204_ssh_minion" should communicate with the server using public interface
+    And the clock from "ubuntu2204_ssh_minion" should be exact
+
 @debian9_minion
   Scenario: The Debian 9 minion is healthy
     Then "debian9_minion" should have a FQDN

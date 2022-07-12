@@ -1,3 +1,4 @@
+- Add repositories for Ubuntu 22.04 LTS
 - Add AlmaLinux 9 and Oracle Linux 9 to spacewalk-common-channels
 - Add missing SLES 15 SP4 client tools repositories to
   spacewalk-common-channels.ini

@@ -17,7 +17,8 @@ package com.redhat.satellite.search.rpc.handlers;
 
 import com.redhat.satellite.search.db.ResultHandler;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +31,7 @@ import java.util.List;
  * @version $Rev $
  */
 class VisibilityResultsHandler implements ResultHandler {
-    private static Logger log = Logger
+    private static Logger log = LogManager
             .getLogger(VisibilityResultsHandler.class);
     private List<String> results = new ArrayList<String>();
 
