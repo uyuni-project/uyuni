@@ -19,24 +19,24 @@ def getIPs(fqdn: str) -> Tuple[str, str]:
     ipv4, ipv6 = "", ""
 
     if len(ipv4s) == 0 and len(ipv6s) == 0:
-       logging.critical("Cannot determine proxy IPv4 nor IPv6 from FQDN {}".format(fqdn))
+       logging.critical("Cannot determine proxy IPv4 nor IPv6 from FQDN %s", fqdn)
        sys.exit(1)
 
     try:
        ipv4 = ipv4s.pop()
        if len(ipv4s) > 0:
-          logging.warning("Cannot determine unique IPv4 address for the proxy. TFTP sync may not work. Using IPv4 {}".format(ipv4))
+          logging.warning("Cannot determine unique IPv4 address for the proxy. TFTP sync may not work. Using IPv4 %s", ipv4)
     except KeyError:
        logging.warning("No IPv4 address detected for proxy. If this is single stack IPv6 setup this warning can be ignored")
 
     try:
        ipv6 = ipv6s.pop()
        if len(ipv6s) > 0:
-          logging.debug("Multiple IPv6 addresses resolved, using IPv6 {}".format(ipv6))
+          logging.debug("Multiple IPv6 addresses resolved, using IPv6 %s", ipv6)
     except KeyError:
        logging.warning("No IPv6 address detected for proxy. If this is single stack IPv4 setup this warning can be ignored")
 
-    logging.debug(f"Detected ips '{ipv4}', '{ipv6}' for fqdn {fqdn}")
+    logging.debug("Detected ips '%s', '%s' for fqdn %s", ipv4, ipv6, fqdn)
     return (ipv4, ipv6)
 
 # read from files
@@ -57,8 +57,7 @@ with open(config_path + "httpd.yaml") as httpdSource:
         container_version = subprocess.run(["rpm", "-q", "--queryformat", "%{version}", "spacewalk-proxy-common"],
                 stdout=subprocess.PIPE, universal_newlines=True).stdout
         if not container_version.startswith(major_version):
-            logging.critical("Proxy container image version (%s) doesn't match server major version (%s)".format(
-                container_version, major_version), file=sys.stderr)
+            logging.critical("Proxy container image version (%s) doesn't match server major version (%s)", container_version, major_version, file=sys.stderr)
             sys.exit(1)
     
     # store the systemid content
@@ -129,9 +128,9 @@ with open(config_path + "httpd.yaml") as httpdSource:
         requireIPv4 = ""
         requireIPv6 = ""
         if len(proxyIPv4) > 0:
-           requireIPv4 = "Require ip {}".format(proxyIPv4)
+           requireIPv4 = f"Require ip {proxyIPv4}"
         if len(proxyIPv6) > 0:
-           requireIPv6 = "Require ip {}".format(proxyIPv6)
+           requireIPv6 = f"Require ip {proxyIPv6}"
         file.write(f'''<Directory "/srv/www/tftpsync">
     <RequireAny>
         {requireIPv4}
