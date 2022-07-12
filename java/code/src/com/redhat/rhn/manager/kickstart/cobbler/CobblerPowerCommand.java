@@ -128,7 +128,7 @@ public class CobblerPowerCommand extends CobblerCommand {
             }
             if (success) {
                 if (server != null) {
-                    log.debug("Power management operation {} on {} succeded", operation.toString(), server.getId());
+                    log.debug("Power management operation {} on {} succeded", operation, server.getId());
                     LocalizationService localizationService = LocalizationService
                             .getInstance();
                     ServerHistoryEvent event = new ServerHistoryEvent();
@@ -144,16 +144,16 @@ public class CobblerPowerCommand extends CobblerCommand {
                     server.getHistory().add(event);
                 }
                 else {
-                    log.debug("Power management operation {} on {} succeded", operation.toString(), name);
+                    log.debug("Power management operation {} on {} succeded", operation, name);
                 }
 
                 return null;
             }
             if (server != null) {
-                log.error("{} on {} failed", operation.toString(), server.getId());
+                log.error("{} on {} failed", operation, server.getId());
             }
             else {
-                log.error("{} on {} failed", operation.toString(), name);
+                log.error("{} on {} failed", operation, name);
             }
             return new ValidatorError("cobbler.powermanagement.command_failed");
         }

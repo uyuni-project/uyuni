@@ -1890,7 +1890,7 @@ public class ChannelManager extends BaseManager {
 
         log.debug("listBaseEusChannelsByVersionReleaseAndServerArch()");
         log.debug("   version = {}", version);
-        log.debug("   release = {}", pevr.toString());
+        log.debug("   release = {}", pevr);
         log.debug("   serverArch = {}", serverArch);
         SelectMode m = ModeFactory.getMode("Channel_queries",
                     "base_eus_channels_by_version_release_server_arch");

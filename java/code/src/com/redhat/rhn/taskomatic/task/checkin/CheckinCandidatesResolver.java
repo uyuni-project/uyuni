@@ -79,8 +79,8 @@ public class CheckinCandidatesResolver {
             long compareValue = currentTimestamp - randomThreshold;
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug(String.format("Candidate: %s, Last check-in: %s, Random threshold in hours: %s ",
-                        s.getName(), s.getLastCheckin().toString(), SystemCheckinUtils.toHours(randomThreshold)));
+                LOG.debug("Candidate: {}, Last check-in: {}, Random threshold in hours: {} ",
+                        s.getName(), s.getLastCheckin(), SystemCheckinUtils.toHours(randomThreshold));
             }
 
             if (lastCheckin < compareValue) {

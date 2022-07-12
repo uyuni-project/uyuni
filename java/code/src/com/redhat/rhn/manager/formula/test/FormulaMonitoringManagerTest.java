@@ -89,7 +89,7 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     public void testIsMonitoringCleanupNeeded() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
-        FormulaFactory.setMetadataDirOfficial(metadataDir.toString() + File.separator);
+        FormulaFactory.setMetadataDirOfficial(metadataDir + File.separator);
 
         // No group or system level assignment of the `prometheus-exporters` Formula
         assertFalse(manager.isMonitoringCleanupNeeded(minion));

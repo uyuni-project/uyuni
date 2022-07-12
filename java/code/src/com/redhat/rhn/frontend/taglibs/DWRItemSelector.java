@@ -139,6 +139,6 @@ public class DWRItemSelector {
         responseText.append("\"pagination\":\"")
                     .append(paginationMessage)
                     .append("\"");
-        return  "({" + responseText.toString() + "})";
+        return  "({" + responseText + "})";
     }
 }

@@ -85,7 +85,7 @@ public class HubReportDbUpdateDriver implements QueueDriver<MgrServerInfo> {
             // Do not return candidates we are talking to already
             for (MgrServerInfo s : currentMgrServerInfos) {
                 if (candidates.contains(s)) {
-                    log.debug("Skipping system: " + s.getServer().getName());
+                    log.debug("Skipping system: {}", s.getServer().getName());
                     candidates.remove(s);
                 }
             }

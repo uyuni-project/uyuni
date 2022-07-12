@@ -86,7 +86,7 @@ public class CreateProfileAction extends RhnAction {
                     forward = strutsDelegate.forwardParams(mapping.findForward("created"),
                             params);
                     if (log.isDebugEnabled() && (forward != null)) {
-                        log.debug("Where are we going [{}]", forward.toString());
+                        log.debug("Where are we going [{}]", forward);
                     }
                 }
                 else {

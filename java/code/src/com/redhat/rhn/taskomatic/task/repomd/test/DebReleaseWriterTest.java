@@ -45,7 +45,7 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        prefix = Files.createTempDirectory("debreleasewriter").toAbsolutePath().toString() + File.separator;
+        prefix = Files.createTempDirectory("debreleasewriter").toAbsolutePath() + File.separator;
     }
 
     @Test

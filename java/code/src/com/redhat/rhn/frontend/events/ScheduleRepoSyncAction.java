@@ -69,7 +69,7 @@ public class ScheduleRepoSyncAction implements MessageAction {
                 new TaskomaticApi().scheduleSingleRepoSync(channels);
             }
             catch (TaskomaticApiException e) {
-                logger.error("Could not schedule repository synchronization for: {}", channels.toString());
+                logger.error("Could not schedule repository synchronization for: {}", channels);
                 logger.error(e);
             }
         }

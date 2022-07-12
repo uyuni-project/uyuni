@@ -370,7 +370,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         StringBuilder output = new StringBuilder();
         for (Object errataIn : erratas) {
             Errata e = (Errata) errataIn;
-            output.append(e.toString());
+            output.append(e);
         }
         FileWriter fr = new FileWriter(new File("errataout" + erratas.size() +  ".txt"));
         fr.write(output.toString());

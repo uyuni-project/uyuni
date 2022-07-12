@@ -195,7 +195,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
             ResultSet rs = null;
             try {
                 statement = connection.createStatement();
-                String query = "SELECT * FROM rhnSet WHERE user_id = " + uid.toString();
+                String query = "SELECT * FROM rhnSet WHERE user_id = " + uid;
                 rs = statement.executeQuery(query);
 
                 assertNotNull(rs);

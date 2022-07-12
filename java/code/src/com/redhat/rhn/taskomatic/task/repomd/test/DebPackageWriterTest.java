@@ -101,7 +101,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
             pkgDto.setExtraTags(extraTags.get(pkgDto.getId()));
         }
 
-        try (DebPackageWriter writer = new DebPackageWriter(channel, tmpDir.normalize().toString() + File.separator)) {
+        try (DebPackageWriter writer = new DebPackageWriter(channel, tmpDir.normalize() + File.separator)) {
             for (PackageDto pkgDto: packageBatch) {
                 writer.addPackage(pkgDto);
             }

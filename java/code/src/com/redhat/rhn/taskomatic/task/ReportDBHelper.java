@@ -76,7 +76,7 @@ public class ReportDBHelper {
         DataResult<Map<String, String>> order = orderquery.execute();
         String ordercolumns = order.stream().findFirst().map(o -> o.getOrDefault("order", "ctid")).orElse("ctid");
 
-        log.debug("Order Columns of " + table + " by: " + ordercolumns);
+        log.debug("Order Columns of {} by: {}", table, ordercolumns);
         return ordercolumns;
     }
 

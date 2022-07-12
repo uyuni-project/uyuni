@@ -59,7 +59,7 @@ public class DumpFilter implements Filter {
             log.debug("Remote Addr: {}", request.getRemoteAddr());
             log.debug("SessionId: {}", request.getRequestedSessionId());
             log.debug("uri: {}", request.getRequestURI());
-            log.debug("url: {}", request.getRequestURL().toString());
+            log.debug("url: {}", request.getRequestURL());
             log.debug("Servlet path: {}", request.getServletPath());
             log.debug("Server Name: {}", request.getServerName());
             log.debug("Server Port: {}", request.getServerPort());
@@ -79,7 +79,7 @@ public class DumpFilter implements Filter {
         if (log.isDebugEnabled()) {
             log.debug("Returned from chain.doFilter() -----------------------");
             log.debug("Handle Response, not much to print");
-            log.debug("Response: {}", resp.toString());
+            log.debug("Response: {}", resp);
             log.debug("Leaving doFilter() ===================================");
         }
     }

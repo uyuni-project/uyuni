@@ -133,7 +133,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     boolean actualBase = product.getChannels().stream().anyMatch(c ->
                         StringUtils.isBlank(c.getParentLabel()));
                     if (actualBase != ep.isBase()) {
-                        failures.add("Product " + product.toString() + " should be " +
+                        failures.add("Product " + product + " should be " +
                             (ep.isBase() ? "a base product" : "an extension product") +
                             " but it's not");
                     }
@@ -142,7 +142,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                         .filter(c -> !ep.getChannelLabels().contains(toChannelLabel(c)))
                         .collect(Collectors.toList());
 
-                    unexpectedChannels.forEach(c -> failures.add("Product " + product.toString() +
+                    unexpectedChannels.forEach(c -> failures.add("Product " + product +
                             " has unexpected channel " + toChannelLabel(c)));
 
                     List<String> missingChannels = ep.getChannelLabels().stream().filter(
@@ -150,7 +150,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                             .anyMatch(c -> toChannelLabel(c).equals(label))
                     ).collect(Collectors.toList());
 
-                    missingChannels.forEach(c -> failures.add("Product " + product.toString() +
+                    missingChannels.forEach(c -> failures.add("Product " + product +
                             " does not have expected channel " + c));
                 }
                 else {

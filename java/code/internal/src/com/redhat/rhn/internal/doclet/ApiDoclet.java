@@ -306,7 +306,7 @@ public abstract class ApiDoclet implements Doclet {
 
         @Override
         public String visitEntity(EntityTree node, Void p) {
-            return "&" + node.getName().toString() + ";";
+            return "&" + node.getName() + ";";
         }
 
         @Override

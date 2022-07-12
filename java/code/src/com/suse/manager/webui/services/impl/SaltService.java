@@ -568,7 +568,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     LOG.error("Error sending email: {}", javaMailException.getMessage());
                 }
                 catch (InterruptedException e1) {
-                    LOG.error("Interrupted during sleep: {}", e1);
+                    LOG.error("Interrupted during sleep", e1);
                 }
             }
         }

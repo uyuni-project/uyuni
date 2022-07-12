@@ -321,8 +321,7 @@ public class PackagesSearchHandler extends BaseHandler {
                             true, null, PackageSearchAction.WHERE_ALL);
         }
         catch (MalformedURLException | XmlRpcFault e) {
-            log.info("Caught Exception :{}", e);
-            e.printStackTrace();
+            log.info("Caught Exception", e);
             throw new SearchServerCommException();
         }
         // Connection error

@@ -620,10 +620,10 @@ public class ContentSyncManager {
             orphanChannels.forEach(c -> Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
                 () -> log.error("No repository found for channel: '{}'", c.getLabel()),
                 repo -> {
-                    log.debug("configure orphan repo {}", repo.toString());
+                    log.debug("configure orphan repo {}", repo);
                     repo.getBestAuth().ifPresentOrElse(
                             a -> createOrUpdateContentSource(a, c, mirrorUrl),
-                            () -> log.info("No Auth available for {}", repo.toString())
+                            () -> log.info("No Auth available for {}", repo)
                             );
                 }
             ));
@@ -652,8 +652,8 @@ public class ContentSyncManager {
                 auth = bestAuth;
             }
             String overwriteUrl = contentSourceUrlOverwrite(auth.getRepo(), auth.getUrl(), mirrorUrl);
-            log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: '%s'",
-                    cs.getSourceUrl(), overwriteUrl, auth.getUrl(), mirrorUrl));
+            log.debug("Linked ContentSource: '{}' OverwriteURL: '{}' AuthUrl: '{}' Mirror: '{}'",
+                    cs.getSourceUrl(), overwriteUrl, auth.getUrl(), mirrorUrl);
             if (!cs.getSourceUrl().equals(overwriteUrl)) {
                 log.debug("Change URL to : {}", overwriteUrl);
                 cs.setSourceUrl(overwriteUrl);
@@ -679,8 +679,8 @@ public class ContentSyncManager {
         for (SCCRepositoryAuth a : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {
             ContentSource cs = a.getContentSource();
             String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
-            log.debug(String.format("Linked ContentSource: '%s' OverwriteURL: '%s' AuthUrl: '%s' Mirror: %s",
-                    cs.getSourceUrl(), overwriteUrl, a.getUrl(), mirrorUrl));
+            log.debug("Linked ContentSource: '{}' OverwriteURL: '{}' AuthUrl: '{}' Mirror: {}",
+                    cs.getSourceUrl(), overwriteUrl, a.getUrl(), mirrorUrl);
             if (!cs.getSourceUrl().equals(overwriteUrl)) {
                 log.debug("Source and overwrite urls differ: {} != {}", cs.getSourceUrl(), overwriteUrl);
                 return true;
@@ -697,7 +697,7 @@ public class ContentSyncManager {
                     lastRefreshDate,
                     () -> true,
                     modifiedCache -> {
-                        log.debug("Last sync more than 24 hours ago: {} ({})", modifiedCache.toString(), t.toString());
+                        log.debug("Last sync more than 24 hours ago: {} ({})", modifiedCache, t);
                         return t.after(modifiedCache) ? true : false;
                     }
             );
@@ -2312,7 +2312,7 @@ public class ContentSyncManager {
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
                 boolean res = Files.isReadable(testUrlPath);
-                log.debug("accessibleUrl:{} {}", testUrlPath.toString(), res);
+                log.debug("accessibleUrl:{} {}", testUrlPath, res);
                 return res;
             }
             else {
@@ -2321,7 +2321,7 @@ public class ContentSyncManager {
                 // Verify the mirrored repo by sending a HEAD request
                 int status = MgrSyncUtils.sendHeadRequest(testUri.toString(),
                         user, password).getStatusLine().getStatusCode();
-                log.debug("accessibleUrl: {} returned status {}", testUri.toString(), status);
+                log.debug("accessibleUrl: {} returned status {}", testUri, status);
                 return (status == HttpURLConnection.HTTP_OK);
             }
         }

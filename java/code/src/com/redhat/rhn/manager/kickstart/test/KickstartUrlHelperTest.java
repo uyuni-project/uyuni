@@ -88,7 +88,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
                     ksdata.getKickstartDefaults().getKstree().getLabel();
         }
         else {
-            expected = KickstartUrlHelper.KS_DIST + "/org/" + orgId.toString() + "/" +
+            expected = KickstartUrlHelper.KS_DIST + "/org/" + orgId + "/" +
                     ksdata.getKickstartDefaults().getKstree().getLabel();
         }
        assertEquals(expected, helper.getKickstartMediaPath());
@@ -103,7 +103,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
                     ksdata.getKickstartDefaults().getKstree().getLabel();
         }
         else {
-            expected = expected + "/org/" + orgId.toString() + "/" +
+            expected = expected + "/org/" + orgId + "/" +
                     ksdata.getKickstartDefaults().getKstree().getLabel();
         }
         assertEquals(expected, helper.getKickstartMediaUrl());
