@@ -109,7 +109,7 @@ import java.util.stream.Stream;
 public class ActionFactory extends HibernateFactory {
 
     private static ActionFactory singleton = new ActionFactory();
-    private static Logger log = LogManager.getLogger(ActionFactory.class);
+    private static final Logger LOG = LogManager.getLogger(ActionFactory.class);
     private static Set actionArchTypes;
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
@@ -137,7 +137,7 @@ public class ActionFactory extends HibernateFactory {
                 }
             }
             catch (HibernateException he) {
-                log.error("Error loading ActionArchTypes from DB", he);
+                LOG.error("Error loading ActionArchTypes from DB", he);
                 throw new
                 HibernateRuntimeException("Error loading ActionArchTypes from db");
             }
@@ -241,7 +241,7 @@ public class ActionFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**
@@ -940,10 +940,8 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIds server Ids for which action is scheduled
      */
     public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
-        if (log.isDebugEnabled()) {
-            log.debug("Action status {} is going to b set for these servers: {}",
-                    ActionFactory.STATUS_PICKED_UP.getName(), serverIds);
-        }
+        LOG.debug("Action status {} is going to b set for these servers: {}",
+                ActionFactory.STATUS_PICKED_UP.getName(), serverIds);
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
@@ -958,9 +956,7 @@ public class ActionFactory extends HibernateFactory {
      * @param status {@link ActionStatus} object that needs to be set
      */
     public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
-        if (log.isDebugEnabled()) {
-            log.debug("Action status {} is going to b set for these servers: {}", status.getName(), serverIds);
-        }
+        LOG.debug("Action status {} is going to b set for these servers: {}", status.getName(), serverIds);
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", status.getId());

@@ -22,9 +22,6 @@ import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,9 +30,6 @@ import java.util.stream.Collectors;
  * Class for generating minion pillar data containing CustomInfo information of minions
  */
 public class MinionCustomInfoPillarGenerator implements MinionPillarGenerator {
-
-    /** Logger */
-    private static final Logger LOG = LogManager.getLogger(MinionCustomInfoPillarGenerator.class);
 
     public static final MinionCustomInfoPillarGenerator INSTANCE = new MinionCustomInfoPillarGenerator();
 

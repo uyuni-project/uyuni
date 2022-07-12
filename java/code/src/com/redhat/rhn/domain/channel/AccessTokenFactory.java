@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 public class AccessTokenFactory extends HibernateFactory {
 
     private static AccessTokenFactory singleton = new AccessTokenFactory();
-    private static Logger log = LogManager.getLogger(AccessToken.class);
+    private static final Logger LOG = LogManager.getLogger(AccessTokenFactory.class);
 
     /**
      * Queries an AccessToken by id.
@@ -190,7 +190,7 @@ public class AccessTokenFactory extends HibernateFactory {
                 return regenerate(token);
             }
             catch (JoseException e) {
-                log.error("Could not regenerate token with id: {}", token.getId(), e);
+                LOG.error("Could not regenerate token with id: {}", token.getId(), e);
                 e.printStackTrace();
                 return token;
             }
@@ -259,7 +259,7 @@ public class AccessTokenFactory extends HibernateFactory {
             return Optional.of(newToken);
         }
         catch (JoseException e) {
-            log.error("Could not generate token for minion: {}", minion.getId(), e);
+            LOG.error("Could not generate token for minion: {}", minion.getId(), e);
             e.printStackTrace();
             return Optional.empty();
         }
@@ -304,6 +304,6 @@ public class AccessTokenFactory extends HibernateFactory {
 
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 }

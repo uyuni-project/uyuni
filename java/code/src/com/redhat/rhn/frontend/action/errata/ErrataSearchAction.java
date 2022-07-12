@@ -27,6 +27,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
@@ -54,6 +56,8 @@ import redstone.xmlrpc.XmlRpcFault;
  * SearchAction
  */
 public class ErrataSearchAction extends BaseSearchAction {
+
+    private static final Logger LOG = LogManager.getLogger(ErrataSearchAction.class);
 
     protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
                     DynaActionForm form)

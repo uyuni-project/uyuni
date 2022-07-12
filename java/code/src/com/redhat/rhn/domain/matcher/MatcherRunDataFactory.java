@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class MatcherRunDataFactory extends HibernateFactory {
 
-    private static Logger log;
+    private static final Logger LOG = LogManager.getLogger(MatcherRunDataFactory.class);
 
     /**
      * Wipes the old data, stores new MatcherRunData.
@@ -54,9 +54,6 @@ public class MatcherRunDataFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(MatcherRunDataFactory.class);
-        }
-        return log;
+        return LOG;
     }
 }

@@ -36,7 +36,7 @@ import java.util.Objects;
 public class SatConfigFactory extends HibernateFactory {
 
     private static SatConfigFactory singleton = new SatConfigFactory();
-    private static Logger log = LogManager.getLogger(CommonFactory.class);
+    private static final Logger LOG = LogManager.getLogger(SatConfigFactory.class);
 
     public static final String EXT_AUTH_DEFAULT_ORGID = "extauth_default_orgid";
     public static final String EXT_AUTH_USE_ORGUNIT = "extauth_use_orgunit";
@@ -48,7 +48,7 @@ public class SatConfigFactory extends HibernateFactory {
 
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**
@@ -72,7 +72,7 @@ public class SatConfigFactory extends HibernateFactory {
                 return Long.parseLong(stringValue);
             }
             catch (NumberFormatException nfe) {
-                log.error("Satellite configuration '{}' value ({}) cannot be converted to Long.", key, stringValue);
+                LOG.error("Satellite configuration '{}' value ({}) cannot be converted to Long.", key, stringValue);
             }
         }
         return null;
@@ -92,7 +92,7 @@ public class SatConfigFactory extends HibernateFactory {
         if (!dr.isEmpty()) {
             return (String) dr.get(0).get("value");
         }
-        log.error("'{}' not found within the satellite configuration.", key);
+        LOG.error("'{}' not found within the satellite configuration.", key);
         return null;
     }
 

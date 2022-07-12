@@ -35,7 +35,7 @@ import java.util.Optional;
 public class ManagerInfoFactory extends HibernateFactory {
 
     private static ManagerInfoFactory singleton = new ManagerInfoFactory();
-    private static Logger log = LogManager.getLogger(CommonFactory.class);
+    private static final Logger LOG = LogManager.getLogger(ManagerInfoFactory.class);
 
     private ManagerInfoFactory() {
         super();
@@ -43,7 +43,7 @@ public class ManagerInfoFactory extends HibernateFactory {
 
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**

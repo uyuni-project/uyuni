@@ -38,10 +38,7 @@ import java.util.Set;
  */
 public class EntitlementManager extends BaseManager {
 
-    /**
-     * Logger for this class
-     */
-    private static Logger log = LogManager.getLogger(EntitlementManager.class);
+    private static final Logger LOG = LogManager.getLogger(EntitlementManager.class);
 
     //  ENTITLEMENTS
     public static final Entitlement MANAGEMENT = new ManagementEntitlement();
@@ -117,6 +114,7 @@ public class EntitlementManager extends BaseManager {
         else if (ANSIBLE_CONTROL_NODE_ENTITLED.equals(name)) {
             return ANSIBLE_CONTROL_NODE;
         }
+        LOG.debug("Unknown entitlement: {}", name);
         return null;
     }
 

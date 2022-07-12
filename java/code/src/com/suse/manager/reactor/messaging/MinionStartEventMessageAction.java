@@ -31,7 +31,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class MinionStartEventMessageAction implements MessageAction {
 
-    /* Logger for this class */
     private static final Logger LOG = LogManager.getLogger(MinionStartEventMessageAction.class);
 
     // Reference to the SaltService instance
@@ -48,7 +47,9 @@ public class MinionStartEventMessageAction implements MessageAction {
 
     @Override
     public void execute(EventMessage msg) {
-        String minionId = ((MinionStartEventMessage) msg).getMinionId();
+        MinionStartEventMessage startMsg = (MinionStartEventMessage)msg;
+        LOG.debug("Handle minion start event message for minion {}", startMsg.getMinionId());
+        String minionId = startMsg.getMinionId();
         MinionServerFactory.findByMinionId(minionId)
                 .ifPresent(minion -> {
             // Sync grains, modules and beacons, also update uptime and required grains on every minion restart
