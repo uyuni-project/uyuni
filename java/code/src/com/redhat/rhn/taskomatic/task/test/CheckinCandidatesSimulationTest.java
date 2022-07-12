@@ -217,7 +217,7 @@ public class CheckinCandidatesSimulationTest  {
      */
     private void printResults(HashMap<Integer, List<Integer>> results) {
         System.out.println("\n--> Hour statistics: ");
-        System.out.println("Key set: " + results.keySet().toString());
+        System.out.println("Key set: " + results.keySet());
         for (int h = 12; h <= 24; h++) {
             List<Integer> l = results.get(h);
             if (l == null) {

@@ -71,11 +71,11 @@ public abstract class RhnJavaJob implements RhnJob {
     public void appendExceptionToLogError(Exception e) {
         log.error("Executing a task threw an exception: {}", e.getClass().getName());
         log.error("Message: {}", e.getMessage());
-        log.error("Cause: {}", e.getCause());
+        log.error("Cause:", e.getCause());
 
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
-        log.error("Stack trace:{}", errors.toString());
+        log.error("Stack trace:{}", errors);
     }
 
     /**

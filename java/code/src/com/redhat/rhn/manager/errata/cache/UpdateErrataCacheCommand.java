@@ -81,11 +81,8 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
         for (Object oIn : dr) {
             Map item = (Map) oIn;
             Long sid = (Long) item.get("id");
-            if (log.isDebugEnabled() && sid != null) {
-                log.debug("Working on server [{}]", sid.toString());
-            }
-            Long serverId = sid;
-            processServer(serverId);
+            log.debug("Working on server [{}]", sid);
+            processServer(sid);
             handleTransaction();
         }
 

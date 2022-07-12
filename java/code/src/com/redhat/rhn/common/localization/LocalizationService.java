@@ -280,7 +280,7 @@ public class LocalizationService {
             // Try again with DEFAULT_LOCALE
             if (msgLogger.isDebugEnabled()) {
                 msgLogger.debug("Resolving message \"{}\" for locale {} failed -  trying again with default locale {}",
-                        messageId, userLocale, DEFAULT_LOCALE.toString());
+                        messageId, userLocale, DEFAULT_LOCALE);
             }
             try {
                 mess = XmlMessages.getInstance().format(z, DEFAULT_LOCALE,
@@ -289,7 +289,7 @@ public class LocalizationService {
             catch (MissingResourceException mre) {
                 if (msgLogger.isDebugEnabled()) {
                     msgLogger.debug("Resolving message \"{}\" for default locale {} failed", messageId,
-                            DEFAULT_LOCALE.toString());
+                            DEFAULT_LOCALE);
                 }
                 return getMissingMessageString(messageId);
             }

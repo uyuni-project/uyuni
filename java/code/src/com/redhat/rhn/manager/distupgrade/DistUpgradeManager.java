@@ -703,7 +703,7 @@ public class DistUpgradeManager extends BaseManager {
         for (SUSEProductSet t : allMigrationTargets) {
             if (installedProducts.get().getAddonProducts().isEmpty()) {
                 migrationTargets.add(t);
-                logger.debug("Found valid migration target: {}", t.toString());
+                logger.debug("Found valid migration target: {}", t);
                 continue;
             }
             List<SUSEProduct> missingAddonSuccessors = installedProducts.get().getAddonProducts()
@@ -712,13 +712,15 @@ public class DistUpgradeManager extends BaseManager {
                 .collect(Collectors.toList());
 
             if (missingAddonSuccessors.isEmpty()) {
-                logger.debug("Found valid migration target: {}", t.toString());
+                logger.debug("Found valid migration target: {}", t);
                 migrationTargets.add(t);
             }
             else {
                 List<String> missing = missingAddonSuccessors.stream().map(SUSEProduct::getFriendlyName)
                         .collect(Collectors.toList());
-                logger.warn("No migration target found for '{}'. Skipping", String.join(", ", missing));
+                if (logger.isWarnEnabled()) {
+                    logger.warn("No migration target found for '{}'. Skipping", String.join(", ", missing));
+                }
                 missingSuccessorExtensions.ifPresent(l -> l.addAll(missing));
             }
         }

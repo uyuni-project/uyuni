@@ -229,7 +229,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
                 this.ksdata.removeCommand("repo", false);
                 this.ksdata.removeCommand("key", true);
                 logger.debug("updateKickstartableTree(Long, String, String, Long)" +
-                        " - end - return value=" + null);
+                        " - end - return value=null");
             }
             return null;
         }

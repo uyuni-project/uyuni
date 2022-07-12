@@ -52,8 +52,7 @@ public class CancelRescheduleStrategy implements RescheduleStrategy {
                         .map(Server::getId)
                         .collect(Collectors.toList());
                 ActionManager.cancelActions(user, Collections.singletonList(action), Optional.of(serverIds));
-                LOG.info(String.format("Cancel action '%s' for servers '%s'",
-                        action.toString(), serverIds.toString()));
+                LOG.info("Cancel action '{}' for servers '{}'", action, serverIds);
             }
         }
         catch (TaskomaticApiException | RuntimeException e) {

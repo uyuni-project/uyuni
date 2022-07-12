@@ -331,8 +331,8 @@ public class FormulaFactory {
                     }
                 }
                 else {
-                    LOG.warn("Minion \"" + server.getMinionId() + "\" pillar \"" + formula +
-                            "\" already in database, not migrating pillar file");
+                    LOG.warn("Minion \"{}\" pillar \"{}\" already in database, not migrating pillar file",
+                            server.getMinionId(), formula);
                 }
                 FileUtils.deleteFile(new File(getPillarDir() +
                         server.getMinionId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());

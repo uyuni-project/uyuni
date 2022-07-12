@@ -211,7 +211,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         if (!uncommittedEvents.isEmpty()) {
             List<Long> ids = uncommittedEvents.stream().map(SaltEvent::getId).collect(toList());
             List<Long> deletedIds = SaltEventFactory.deleteSaltEvents(ids);
-            LOG.error("Events {} were lost", deletedIds.toString());
+            LOG.error("Events {} were lost", deletedIds);
         }
 
         if (exception instanceof PGEventListenerException) {

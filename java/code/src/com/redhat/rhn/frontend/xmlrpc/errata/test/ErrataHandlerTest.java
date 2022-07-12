@@ -758,7 +758,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         Errata result = ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, admin.getOrg());
         assertEquals(errata, result);
-        assertEquals(advisoryName + "-" + errata.getAdvisoryRel().toString(),
+        assertEquals(advisoryName + "-" + errata.getAdvisoryRel(),
                 result.getAdvisory());
 
     }

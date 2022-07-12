@@ -492,7 +492,7 @@ public class ActivationKeyManager {
                 List<Long> cids = ChannelManager.findChildChannelsWithPackage(key.getOrg(),
                         bcid, packageName, false);
                 Collections.sort(cids);
-                log.warn("sorted cids: {}", cids.toString());
+                log.warn("sorted cids: {}", cids);
                 if (cids.isEmpty()) {
                     // nothing to do
                     log.warn("No child channel of {} contains {}", bcid, packageName);

@@ -67,14 +67,14 @@ class XmlResourceBundleParser  extends DefaultHandler {
                 if (messages.containsKey(currKey)) {
                     log.warn("Duplicate message key found in XML Resource file: {}", currKey);
                 }
-                log.debug("Adding: [{}] value: [{}]", currKey, thisText.toString());
+                log.debug("Adding: [{}] value: [{}]", currKey, thisText);
                 messages.put(currKey, thisText.toString());
             }
             // For other languages we use target and overwrite the previously
             // placed "source" tag.  Depends on the fact that the target tag
             // comes after the source tag.
             if (qualifiedName.equals("target")) {
-                log.debug("Adding: [{}] value: [{}]", currKey, thisText.toString());
+                log.debug("Adding: [{}] value: [{}]", currKey, thisText);
                 messages.put(currKey, thisText.toString());
             }
         }

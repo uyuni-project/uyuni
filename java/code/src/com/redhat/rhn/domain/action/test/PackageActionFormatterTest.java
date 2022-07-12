@@ -45,7 +45,7 @@ public class PackageActionFormatterTest extends BaseTestCaseWithUser {
         PackageActionDetails details = ((Set<PackageActionDetails>) action.getDetails())
             .iterator().next();
         String expected = "<a href=\"/rhn/software/packages/Details.do?pid=" +
-            details.getPackageId().toString() + "\">" + details.getPackageName().getName() +
+                details.getPackageId() + "\">" + details.getPackageName().getName() +
             "</a>";
         String result = formatter.getRelatedObjectDescription();
 

@@ -563,7 +563,7 @@ public class DownloadController {
      */
     private static Object downloadFile(Request request, Response response, File file) {
         if (!file.exists()) {
-            log.info("404 - File not found: " + file.getAbsolutePath());
+            log.info("404 - File not found: {}", file.getAbsolutePath());
             halt(HttpStatus.SC_NOT_FOUND, "File not found: " + request.url());
         }
         response.header("Content-Type", "application/octet-stream");

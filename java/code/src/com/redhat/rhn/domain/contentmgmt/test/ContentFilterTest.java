@@ -414,8 +414,8 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         ZonedDateTime criteriaDate = ZonedDateTime.parse("2019-05-01T00:00:00+00:00",
                 DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         assertTrue(filter.test(erratum3),
-                erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()).toString() +
-                        " should be equal " +  criteriaDate.toString());
+                erratum3.getIssueDate().toInstant().atZone(ZoneId.systemDefault()) +
+                        " should be equal " + criteriaDate);
     }
 
     /**

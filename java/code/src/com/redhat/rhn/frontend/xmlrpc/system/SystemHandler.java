@@ -7769,10 +7769,10 @@ public class SystemHandler extends BaseHandler {
                         .filter(ps -> {
                             if (log.isDebugEnabled()) {
                                 if (ps.getIsEveryChannelSynced()) {
-                                    log.debug("{} is completely synced.", ps.toString());
+                                    log.debug("{} is completely synced.", ps);
                                 }
                                 else {
-                                    log.debug("Discarding {}. Is not completely synced.", ps.toString());
+                                    log.debug("Discarding {}. Is not completely synced.", ps);
                                 }
                             }
                             return ps.getIsEveryChannelSynced();

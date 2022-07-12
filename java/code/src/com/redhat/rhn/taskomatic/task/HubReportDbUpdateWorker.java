@@ -85,8 +85,8 @@ public class HubReportDbUpdateWorker implements QueueWorker {
         Set<Map.Entry<String, Object>> tableEntry = result.get(0).entrySet();
         tableEntry.removeIf(t -> {
             if (t.getValue() == null) {
-                log.warn("Table '" + t.getKey() + "' does not exist in server " + serverId + ": " +
-                        "this table will not be updated");
+                log.warn("Table '{}' does not exist in server {}: this table will not be updated",
+                        t.getKey(), serverId);
                 return true;
             }
             return false;

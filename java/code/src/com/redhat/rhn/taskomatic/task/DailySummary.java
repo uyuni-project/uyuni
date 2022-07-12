@@ -410,12 +410,12 @@ public class DailySummary extends RhnJavaJob {
         body.append(formattedNonErrataActions);
 
         // finally put all this together
-        msg.append(hdr.toString());
+        msg.append(hdr);
         msg.append("\n");
-        msg.append(body.toString());
+        msg.append(body);
         msg.append("\n\n");
         if (!errataSynopsis.isEmpty()) {
-            msg.append(legend.toString());
+            msg.append(legend);
         }
         return msg.toString();
     }

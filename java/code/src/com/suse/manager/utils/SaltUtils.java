@@ -283,7 +283,7 @@ public class SaltUtils {
         List<String> functions = function.map(x -> x.fold(Arrays::asList, List::of)).orElseGet(List::of);
 
         if (functions.isEmpty()) {
-            LOG.error("NULL function for: " + server.getName() + callResult.toString());
+            LOG.error("NULL function for: {}{}", server.getName(), callResult);
             throw new BadParameterException("function must not be NULL");
         }
 
@@ -960,11 +960,11 @@ public class SaltUtils {
                                         serverAction.setResultMsg("Success");
                                     }
                                     catch (Exception e) {
-                                        LOG.error("Error processing SCAP results file {}", resultsFile.toString(), e);
+                                        LOG.error("Error processing SCAP results file {}", resultsFile, e);
                                         serverAction.setStatus(ActionFactory.STATUS_FAILED);
                                         serverAction.setResultMsg(
                                                 "Error processing SCAP results file " +
-                                                        resultsFile.toString() + ": " +
+                                                        resultsFile + ": " +
                                                         e.getMessage());
                                     }
                                 }
