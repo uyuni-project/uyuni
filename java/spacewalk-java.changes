@@ -1,3 +1,5 @@
+- Fix conflict when system is assigned to multiple instances of
+  the same formula (bsc#1194394)
 - Fix initial profile and build host on Image Build page (bsc#1199659)
 - Convert formula integer values when upgrading (bsc#1200347)
 - Cleanup salt known_hosts when generating proxy containers config
