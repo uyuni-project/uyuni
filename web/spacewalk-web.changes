@@ -1,3 +1,4 @@
+- Fix initial profile and build host on Image Build page (bsc#1199659)
 - Handle multi line error messages in proxy containers config creation
 - Hide authentication data in PAYG UI (bsc#1199679)
 - add textarea to formulas

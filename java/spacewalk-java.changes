@@ -1,3 +1,4 @@
+- Fix initial profile and build host on Image Build page (bsc#1199659)
 - Convert formula integer values when upgrading (bsc#1200347)
 - Cleanup salt known_hosts when generating proxy containers config
 - Modify proxy containers configuration files set output
