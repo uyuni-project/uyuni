@@ -1,3 +1,6 @@
+- Fix conflict when system is assigned to multiple instances of
+  the same formula (bsc#1194394)
+
 -------------------------------------------------------------------
 Wed Jul 06 15:56:37 CEST 2022 - jmassaguerpla@suse.de
 
