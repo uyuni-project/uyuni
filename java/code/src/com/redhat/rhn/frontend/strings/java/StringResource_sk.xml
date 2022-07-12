@@ -9847,43 +9847,43 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="snapshots.entitlements" xml:space="preserve">
         <source>System Types Updated</source>
-        <target/>
+        <target>Typy systémov aktualizované</target>
       </trans-unit>
       <trans-unit id="errata.updates.noncritical" xml:space="preserve">
         <source>Non-Critical</source>
-        <target/>
+        <target>Nekritické</target>
       </trans-unit>
       <trans-unit id="snapshots.configchannel" xml:space="preserve">
         <source>Configuration Channels Updated</source>
-        <target/>
+        <target>Konfiguračné kanály aktualizované</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.neversynced" xml:space="preserve">
         <source>This channel has never been synced to external repositories.</source>
-        <target/>
+        <target>Tento kanál nebol nikdy synchronizovaný s externými repozitármi.</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.updated" xml:space="preserve">
         <source>{0} repository information was successfully updated</source>
-        <target/>
+        <target>Informácie o repozitári {0} boli úspešne aktualizované</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
-        <target/>
+        <target>Označenie repozitára '{0}' sa už používa, prosím, zadajte iný názov</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
-        <target/>
+        <target>Typ repozitára '{0}' je neplatný alebo sa už používa s daným url, prosím, vyberte iný typ</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinuse" xml:space="preserve">
         <source>There's already a defined repository with given url, please reuse it.</source>
-        <target/>
+        <target>Už existuje definovaný repozitár s daným url, prosím, použite ho znova.</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve">
         <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
-        <target/>
+        <target>Zadané url je neplatné. Prosím, zadajte url s platnou syntaxou (napr. uveďte protokol).</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.clientcertmissing" xml:space="preserve">
         <source>Please set SSL Client Certificate, if you've set SSL Client Key.</source>
-        <target/>
+        <target>Prosím, nastavte certifikát klienta SSL, ak ste nastavili kľúč klienta SSL.</target>
       </trans-unit>
       <trans-unit id="ssm.provision.errors" xml:space="preserve">
         <source>Skipped {0} system(s):</source>
