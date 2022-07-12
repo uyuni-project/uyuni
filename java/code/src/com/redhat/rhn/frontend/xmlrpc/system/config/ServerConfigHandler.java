@@ -46,9 +46,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.utils.MinionServerUtils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,7 +69,6 @@ import java.util.stream.Stream;
  */
 public class ServerConfigHandler extends BaseHandler {
 
-    private static Logger log = LogManager.getLogger(ServerConfigHandler.class);
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 

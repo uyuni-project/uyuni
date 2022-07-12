@@ -53,7 +53,7 @@ import redstone.xmlrpc.XmlRpcFault;
  *
  */
 public abstract class BaseSearchAction extends RhnAction {
-    protected static final Logger LOG = LogManager.getLogger(BaseSearchAction.class);
+    private static final Logger LOG = LogManager.getLogger(BaseSearchAction.class);
 
     /** Channel-arches a default package-search should look in */
     public static final String[] DEFAULT_ARCHES = { "channel-ia32", "channel-ia64",

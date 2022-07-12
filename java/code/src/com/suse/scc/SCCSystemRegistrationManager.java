@@ -53,7 +53,7 @@ import java.util.stream.IntStream;
 
 public class SCCSystemRegistrationManager {
 
-    private final Logger LOG = LogManager.getLogger(SCCSystemRegistrationManager.class);
+    private static final Logger LOG = LogManager.getLogger(SCCSystemRegistrationManager.class);
     private final SCCClient sccClient;
 
     /**

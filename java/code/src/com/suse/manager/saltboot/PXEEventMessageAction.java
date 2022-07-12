@@ -18,15 +18,13 @@ package com.suse.manager.saltboot;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 
-import com.suse.manager.reactor.messaging.ImageSyncedEventMessageAction;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
 public class PXEEventMessageAction implements MessageAction {
-    private static final Logger LOG = LogManager.getLogger(ImageSyncedEventMessageAction.class);
+    private static final Logger LOG = LogManager.getLogger(PXEEventMessageAction.class);
 
     @Override
     public void execute(EventMessage msg) {

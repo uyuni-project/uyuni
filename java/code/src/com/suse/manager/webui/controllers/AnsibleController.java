@@ -73,12 +73,11 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class AnsibleController {
 
+    private static final Logger LOG = LogManager.getLogger(AnsibleController.class);
     private static final Gson GSON = Json.GSON;
     private static final Yaml YAML = new Yaml(new SafeConstructor());
 
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
-
-    private static Logger log = LogManager.getLogger(AnsibleController.class);
 
     private AnsibleController() { }
 
@@ -178,6 +177,9 @@ public class AnsibleController {
      */
     public static String listTypedPathsByMinion(Request req, Response res, User user) {
         String pathType = req.params("pathType");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("path type: {}", pathType.replaceAll("[\n\r\t]", "_"));
+        }
         long minionServerId = Long.parseLong(req.params("minionServerId"));
         List<AnsiblePathJson> paths;
 

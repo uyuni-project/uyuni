@@ -92,8 +92,8 @@ import java.util.stream.Stream;
  */
 public class ContentManager {
 
-    private static final String DELIMITER = "-";
     private static final Logger LOG = LogManager.getLogger(ContentManager.class);
+    private static final String DELIMITER = "-";
     private ModulemdApi modulemdApi;
 
     /**
@@ -110,8 +110,6 @@ public class ContentManager {
     public ContentManager(ModulemdApi modulemdApiIn) {
         this.modulemdApi = Objects.requireNonNullElseGet(modulemdApiIn, ModulemdApi::new);
     }
-
-    private static Logger log = LogManager.getLogger(ContentManager.class);
 
     /**
      * Create a Content Project
@@ -834,7 +832,7 @@ public class ContentManager {
         tgt.asCloned().ifPresentOrElse(
                 t -> t.setOriginal(newSource),
                 () -> {
-                    log.info("Channel is not a clone: {}. Adding clone info.", tgt);
+                    LOG.info("Channel is not a clone: {}. Adding clone info.", tgt);
                     ChannelManager.addCloneInfo(newSource.getId(), tgt.getId());
                 });
 
@@ -1031,7 +1029,7 @@ public class ContentManager {
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
         tgtChannel.getPackages().clear();
-        log.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
+        LOG.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
                 srcChannel.getPackages().size(), filters.size()));
         Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
         tgtChannel.getPackages().addAll(newPackages);
@@ -1054,7 +1052,7 @@ public class ContentManager {
      * @param user the {@link User}
      */
     private void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
-        log.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
+        LOG.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
                 src.getErratas().size(), errataFilters.size()));
         Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterEntities(src.getErratas(), errataFilters);
         Set<Errata> includedErrata = partitionedErrata.getLeft();

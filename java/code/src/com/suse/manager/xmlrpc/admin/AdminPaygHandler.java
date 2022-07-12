@@ -22,9 +22,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +33,6 @@ import java.util.Map;
  * @apidoc.doc Provides methods to access and modify pay-as-you-go ssh connection data
  */
 public class AdminPaygHandler extends BaseHandler {
-
-    private static final Logger LOG = LogManager.getLogger(AdminPaygHandler.class);
 
     private PaygAdminManager paygAdminManager;
 

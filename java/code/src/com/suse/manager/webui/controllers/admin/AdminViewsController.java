@@ -33,9 +33,6 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +48,6 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class AdminViewsController {
 
-    private static Logger log = LogManager.getLogger(AdminViewsController.class);
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()

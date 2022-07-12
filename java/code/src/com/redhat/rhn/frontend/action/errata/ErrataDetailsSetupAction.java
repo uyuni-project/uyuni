@@ -50,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ErrataDetailsSetupAction extends RhnAction {
 
-    private static final Logger LOGGER = LogManager.getLogger(ErrataManager.class);
+    private static final Logger LOG = LogManager.getLogger(ErrataDetailsSetupAction.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -137,7 +137,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
             id = parser.getAnnouncementId(errata);
         }
         catch (ErrataParsingException ex) {
-            LOGGER.info("Unable to parse errata metadata", ex);
+            LOG.info("Unable to parse errata metadata", ex);
             return null;
         }
 

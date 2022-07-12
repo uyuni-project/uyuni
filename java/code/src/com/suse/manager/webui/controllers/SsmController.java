@@ -52,8 +52,6 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -71,9 +69,6 @@ import spark.Response;
  * Controller class providing backend code for the SSM pages.
  */
 public class SsmController {
-
-    /** Logger */
-    private static final Logger LOG = LogManager.getLogger(SsmController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
