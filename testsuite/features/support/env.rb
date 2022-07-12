@@ -8,7 +8,7 @@ require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
 require 'cucumber'
-#require 'simplecov'
+require 'simplecov'
 require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
@@ -16,7 +16,7 @@ require 'multi_test'
 require 'set'
 
 ## code coverage analysis
-# SimpleCov.start
+SimpleCov.start
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
