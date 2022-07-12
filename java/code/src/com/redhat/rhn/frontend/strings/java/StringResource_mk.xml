@@ -1587,7 +1587,7 @@
       </trans-unit>
       <trans-unit id="error.password_mismatch" xml:space="preserve">
         <source>Passwords do not match.</source>
-        <target/>
+        <target>Лозинките не се совпаѓаат.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
@@ -1596,7 +1596,7 @@
       </trans-unit>
       <trans-unit id="error.user_invalid_prefix" xml:space="preserve">
         <source>Invalid prefix [{0}]. Must be one of {1}.</source>
-        <target/>
+        <target>Невалиден префикс [{0}]. Мора да биде еден од {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
