@@ -1517,7 +1517,7 @@ DATA = {
         'BASECHANNEL' : 'almalinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/8/bootstrap/'
     },
-    'almalinux-9-x96_64-uyuni' : {
+    'almalinux-9-x86_64-uyuni' : {
         'BASECHANNEL' : 'almalinux9-x86_64', 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
     },
