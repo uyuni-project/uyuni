@@ -1,3 +1,4 @@
+- Move ImageSync pillars to database (bsc#1199157)
 - Convert formula integer values when upgrading (bsc#1200347)
 - Cleanup salt known_hosts when generating proxy containers config
 - Modify proxy containers configuration files set output
