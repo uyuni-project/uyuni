@@ -807,8 +807,8 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
     end
     cmd = "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos}"
   elsif os_family =~ /^centos/
-    repos.split(' ').map do |repo|
-      cmd = "#{cmd} && " if not cmd.empty?
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
       cmd = if action == 'enable'
               "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
             else
@@ -816,8 +816,8 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
             end
     end
   elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
-    repos.split(' ').map do |repo|
-      cmd = "#{cmd} && " if not cmd.empty?
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
       cmd = if action == 'enable'
               "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
             else
