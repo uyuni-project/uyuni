@@ -16,8 +16,8 @@ require 'multi_test'
 require 'set'
 
 ## code coverage analysis
-SimpleCov.root('../')
-SimpleCov.coverage_dir('cov')
+SimpleCov.root('~/')
+SimpleCov.coverage_dir('cov_results')
 SimpleCov.start
 
 
