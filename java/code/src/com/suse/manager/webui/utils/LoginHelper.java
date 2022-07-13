@@ -251,7 +251,9 @@ public class LoginHelper {
             extGroups.add(extGroupName);
 
         }
-        log.warn("REMOTE_USER_GROUP_{}: {}", nGroupsStr, StringUtils.join(extGroups.toArray(), ";"));
+        if (log.isWarnEnabled()) {
+            log.warn("REMOTE_USER_GROUP_{}: {}", nGroupsStr, StringUtils.join(extGroups.toArray(), ";"));
+        }
         return extGroups;
     }
 

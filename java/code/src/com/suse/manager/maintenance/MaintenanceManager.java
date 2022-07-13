@@ -804,7 +804,7 @@ public class MaintenanceManager {
             }
             return true;
         }
-        log.debug(String.format("Action '%s' outside of maintenance window '%s'", action, schedule.getName()));
+        log.debug("Action '{}' outside of maintenance window '{}'", action, schedule.getName());
         return false;
     }
 

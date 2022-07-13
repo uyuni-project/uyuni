@@ -688,7 +688,9 @@ public class SaltSSHService {
             extraFilerefs.ifPresent(sshConfigBuilder::extraFilerefs);
             SaltSSHConfig sshConfig = sshConfigBuilder.build();
 
-            LOG.debug("Local callSyncSSH: {}", SaltService.localCallToString(call));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Local callSyncSSH: {}", SaltService.localCallToString(call));
+            }
             return SaltService.adaptException(call.callSyncSSH(saltClient, target, sshConfig, PW_AUTH)
                     .whenComplete((r, e) -> {
                         if (roster.isPresent()) {

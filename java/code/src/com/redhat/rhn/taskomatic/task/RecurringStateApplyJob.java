@@ -77,11 +77,10 @@ public class RecurringStateApplyJob extends RhnJavaJob {
     }
 
     private void cleanSchedule(String scheduleName) {
-        log.warn(String.format("Can't find a recurring action data for schedule '%s'. " +
-                "Cleaning the schedule!", scheduleName));
+        log.warn("Can't find a recurring action data for schedule '{}'. Cleaning the schedule!", scheduleName);
         int result = new TaskoXmlRpcHandler().unscheduleBunch(null, scheduleName);
         if (result != 1) {
-            log.error(String.format("Error cleaning schedule '%s'", scheduleName));
+            log.error("Error cleaning schedule '{}'", scheduleName);
         }
     }
 }

@@ -134,7 +134,7 @@ public class Notification {
                 );
         }
         else {
-            LOG.debug(String.format("Session not registered or broken: [id:%s]", session.getId()));
+            LOG.debug("Session not registered or broken: [id:{}]", session.getId());
         }
     }
 
@@ -172,8 +172,7 @@ public class Notification {
                     session.getBasicRemote().sendText(message);
                 }
                 else {
-                    LOG.debug(String.format("Could not send websocket message. Session [id:%s] is already closed.",
-                            session.getId()));
+                    LOG.debug("Could not send websocket message. Session [id:{}] is already closed.", session.getId());
                     handbreakSession(session);
                 }
             }

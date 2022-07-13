@@ -113,8 +113,10 @@ public class ConfigChannelSaltManager {
     public synchronized void generateConfigChannelFiles(ConfigChannel channel,
             Optional<String> oldChannelLabel) {
         try {
-            LOG.debug("Generating file structure for configuration channel: {} (old channel label: {}).",
-                    channel.getLabel(), oldChannelLabel.orElse("<empty>"));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Generating file structure for configuration channel: {} (old channel label: {}).",
+                        channel.getLabel(), oldChannelLabel.orElse("<empty>"));
+            }
             doGenerateConfigChannelFiles(channel);
         }
         catch (IOException e) {

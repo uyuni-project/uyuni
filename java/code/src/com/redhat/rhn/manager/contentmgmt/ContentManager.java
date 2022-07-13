@@ -75,7 +75,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -1029,8 +1028,7 @@ public class ContentManager {
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
         tgtChannel.getPackages().clear();
-        LOG.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
-                srcChannel.getPackages().size(), filters.size()));
+        LOG.debug("Filtering {} entities through {} filter(s)", srcChannel.getPackages().size(), filters.size());
         Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
         tgtChannel.getPackages().addAll(newPackages);
         ChannelFactory.save(tgtChannel);
@@ -1052,8 +1050,7 @@ public class ContentManager {
      * @param user the {@link User}
      */
     private void alignErrata(Channel src, Channel tgt, Collection<ErrataFilter> errataFilters, User user) {
-        LOG.debug(MessageFormat.format("Filtering {0} entities through {1} filter(s)",
-                src.getErratas().size(), errataFilters.size()));
+        LOG.debug("Filtering {} entities through {} filter(s)", src.getErratas().size(), errataFilters.size());
         Pair<Set<Errata>, Set<Errata>> partitionedErrata = filterEntities(src.getErratas(), errataFilters);
         Set<Errata> includedErrata = partitionedErrata.getLeft();
         Set<Errata> excludedErrata = partitionedErrata.getRight();

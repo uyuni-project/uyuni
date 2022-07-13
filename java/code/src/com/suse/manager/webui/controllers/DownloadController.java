@@ -65,7 +65,7 @@ import spark.Response;
  */
 public class DownloadController {
 
-    private static Logger log = LogManager.getLogger(DownloadController.class);
+    private static final Logger LOG = LogManager.getLogger(DownloadController.class);
 
     private static final Key KEY = TokenBuilder.getKeyForSecret(
             TokenBuilder.getServerSecret().orElseThrow(
@@ -382,7 +382,7 @@ public class DownloadController {
 
         }
         catch (URISyntaxException e) {
-            log.error("Unable to parse: {}", request.url());
+            LOG.error("Unable to parse: {}", request.url());
             halt(HttpStatus.SC_INTERNAL_SERVER_ERROR,
                     String.format("url '%s' is malformed", request.url()));
         }
@@ -399,7 +399,7 @@ public class DownloadController {
                 pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch(),
                 pkgInfo.getChecksum());
         if (pkg == null) {
-            log.error(String.format("%s: Package not found in channel: %s", path, channel));
+            LOG.error("{}: Package not found in channel: {}", path, channel);
             halt(HttpStatus.SC_NOT_FOUND,
                  String.format("%s not found in %s", basename, channel));
         }
@@ -462,13 +462,15 @@ public class DownloadController {
         String header = request.headers("X-Mgr-Auth");
         header = StringUtils.isNotBlank(header) ? header : getTokenForDebian(request);
         if (queryParams.isEmpty() && StringUtils.isBlank(header)) {
-            log.info(String.format("Forbidden: You need a token to access %s", request.pathInfo()));
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Forbidden: You need a token to access {}", request.pathInfo().replaceAll("[\n\r\t]", "_"));
+            }
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("You need a token to access %s", request.pathInfo()));
         }
         if ((queryParams.size() > 1 && header == null) ||
                 (!queryParams.isEmpty() && header != null)) {
-            log.info("Bad Request: Only one token is accepted");
+            LOG.info("Bad Request: Only one token is accepted");
             halt(HttpStatus.SC_BAD_REQUEST, "Only one token is accepted");
         }
         if (!queryParams.isEmpty()) {
@@ -504,7 +506,7 @@ public class DownloadController {
 
         AccessTokenFactory.lookupByToken(token).ifPresent(obj -> {
             if (!obj.getValid()) {
-                log.info(String.format("Forbidden: invalid token %s to access %s", token, filename));
+                LOG.info(String.format("Forbidden: invalid token %s to access %s", token, filename));
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
         });
@@ -514,7 +516,7 @@ public class DownloadController {
             if (Opt.fold(Optional.ofNullable(claims.getExpirationTime()),
                     () -> false,
                     exp -> exp.isBefore(NumericDate.now()))) {
-                log.info("Forbidden: Token expired");
+                LOG.info("Forbidden: Token expired");
                 halt(HttpStatus.SC_FORBIDDEN, "Token expired");
             }
 
@@ -523,12 +525,12 @@ public class DownloadController {
                     // new versions of getStringListClaimValue() return an empty list instead of null
                     .filter(l -> !l.isEmpty());
             Opt.consume(channelClaim,
-                    () -> log.info(String.format("Token %s does provide access to any channel", token)),
+                    () -> LOG.info(String.format("Token %s does provide access to any channel", token)),
                     channels -> {
                 if (!channels.contains(channel)) {
-                    log.info(String.format("Forbidden: Token %s does not provide access to channel %s",
+                    LOG.info(String.format("Forbidden: Token %s does not provide access to channel %s",
                                            token, channel));
-                    log.info(String.format("Token allow access only to the following channels: %s",
+                    LOG.info(String.format("Token allow access only to the following channels: %s",
                                            String.join(",", channels)));
                     halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
                 }
@@ -537,17 +539,17 @@ public class DownloadController {
             // enforce org claim
             Optional<Long> orgClaim = Optional.ofNullable(claims.getClaimValue("org", Long.class));
             Opt.consume(orgClaim, () -> {
-                log.info("Forbidden: Token does not specify the organization");
+                LOG.info("Forbidden: Token does not specify the organization");
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
             }, orgId -> {
                 if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
-                    log.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
+                    LOG.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
                     halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
                 }
             });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
-            log.info(String.format("Forbidden: Token %s is not valid to access %s in %s: %s",
+            LOG.info(String.format("Forbidden: Token %s is not valid to access %s in %s: %s",
                     token, filename, channel, e.getMessage()));
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
@@ -563,7 +565,7 @@ public class DownloadController {
      */
     private static Object downloadFile(Request request, Response response, File file) {
         if (!file.exists()) {
-            log.info("404 - File not found: {}", file.getAbsolutePath());
+            LOG.info("404 - File not found: {}", file.getAbsolutePath());
             halt(HttpStatus.SC_NOT_FOUND, "File not found: " + request.url());
         }
         response.header("Content-Type", "application/octet-stream");
