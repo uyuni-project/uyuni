@@ -148,7 +148,7 @@ BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 0.19
+BuildRequires:  salt-netapi-client >= 0.20
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
@@ -219,7 +219,7 @@ Requires:       netty
 Requires:       objectweb-asm
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
-Requires:       salt-netapi-client >= 0.19
+Requires:       salt-netapi-client >= 0.20
 Requires:       snakeyaml
 Requires:       spark-core
 Requires:       spark-template-jade
@@ -789,7 +789,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/jade4j.jar
 %{jardir}/jose4j.jar
 %{jardir}/netty*.jar
-%{jardir}/salt-netapi-client.jar
+%{jardir}/salt-netapi-clientsalt-netapi-client.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/spark-core.jar

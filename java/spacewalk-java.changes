@@ -1,5 +1,9 @@
 - Fix conflict when system is assigned to multiple instances of
   the same formula (bsc#1194394)
+- Fix the confirm message on the refresh action by adding a link
+  to pending actions on it (bsc#1172705)
+- require new salt-netapi-client version
+- Clean grub2 reinstall entry in autoyast snippet (bsc#11
 
 -------------------------------------------------------------------
 Wed Jul 06 15:56:37 CEST 2022 - jmassaguerpla@suse.de

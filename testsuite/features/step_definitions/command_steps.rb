@@ -794,37 +794,37 @@ end
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
-          mand_repos = ""
-          opt_repos = ""
-          repos.split(' ').map do |repo|
-            if repo =~ /_ltss_/
-              opt_repos = "#{opt_repos} #{repo}"
+  cmd = ''
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    mand_repos = ''
+    opt_repos = ''
+    repos.split(' ').map do |repo|
+      if repo =~ /_ltss_/
+        opt_repos = "#{opt_repos} #{repo}"
+      else
+        mand_repos = "#{mand_repos} #{repo}"
+      end
+    end
+    cmd = "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos}"
+  elsif os_family =~ /^centos/
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
             else
-              mand_repos = "#{mand_repos} #{repo}"
+              "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
             end
-          end
-          "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos};"
-        else
-          cmd_list = if action == 'enable'
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     else
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     end
-          cmd_list.reduce(:+)
-        end
+    end
+  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+            else
+              "#{cmd}sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list"
+            end
+    end
+  end
   node.run(cmd, check_errors: error_control.empty?)
 end
 # rubocop:enable Metrics/BlockLength
@@ -1506,13 +1506,14 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
 end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
-  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
+  repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
+    repositories.concat(' os_pool_repo os_update_repo')
+    repositories.concat(' tools_additional_repo') unless $product == 'Uyuni'
   end
+  step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
 end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
