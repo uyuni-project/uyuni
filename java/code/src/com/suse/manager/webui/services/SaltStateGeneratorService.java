@@ -36,12 +36,14 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -54,7 +56,6 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.SaltConfigChannelState;
 import com.suse.manager.webui.utils.SaltPillar;
-import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 
 import org.apache.logging.log4j.LogManager;
@@ -245,6 +246,20 @@ public enum SaltStateGeneratorService {
                 bundle.getId().replace('.', '-') + "." + PILLAR_IMAGE_DATA_FILE_EXT;
     }
 
+    private String getImageSyncedPillarCategory(ServerGroup branch, String name, String version) {
+        Optional<ImageInfo> imageOpt = Optional.empty();
+        String[] versionParts = version.split("-");
+
+        if (versionParts.length == 2) {
+            imageOpt = ImageInfoFactory.lookupByName(name,
+                            versionParts[0], Long.valueOf(versionParts[1]), branch.getOrg());
+        }
+
+        String category = imageOpt.map(image -> "SyncedImage" + image.getId())
+                          .orElseGet(() -> "LegacySyncedImage-" + name + "-" + version);
+        return category;
+    }
+
     /**
      * Generate OS Image specific pillar for Branch group, containing synced flag
      * @param branch the ServerGroup for which the pillar is created
@@ -253,13 +268,22 @@ public enum SaltStateGeneratorService {
      */
     public void createImageSyncedPillar(ServerGroup branch, String name, String version) {
 
+        LOG.debug("Adding image {}-{} synced pillar for group {}", name, version, branch.getName());
+
         try {
-            SaltPillar pillar = new SaltPillar();
             Map<String, Object> imagePillarDetails = Collections.singletonMap("synced", true);
             Map<String, Object> imagePillarBase = Collections.singletonMap(version, imagePillarDetails);
             Map<String, Object> imagePillar = Collections.singletonMap(name, imagePillarBase);
+            Map<String, Object> topPillar = Collections.singletonMap("images", imagePillar);
 
-            pillar.add("images", imagePillar);
+            String category = getImageSyncedPillarCategory(branch, name, version);
+
+            branch.getPillarByCategory(category).orElseGet(() -> {
+                Pillar pillar = new Pillar(category, Collections.emptyMap(), branch);
+                branch.getPillars().add(pillar);
+                return pillar;
+            }).setPillar(topPillar);
+            ServerGroupFactory.save(branch);
 
             Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
                     "group" + branch.getId().toString()
@@ -269,12 +293,8 @@ public enum SaltStateGeneratorService {
                     name.replace('.', '-') + "-" + version + "." + PILLAR_IMAGE_DATA_FILE_EXT
             );
 
-            if (!dirPath.toFile().exists()) {
-                dirPath.toFile().mkdirs();
-            }
+            Files.deleteIfExists(filePath);
 
-            SaltStateGenerator saltStateGenerator = new SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(pillar);
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
@@ -289,20 +309,34 @@ public enum SaltStateGeneratorService {
      * @param version the OS image version
      */
     public void removeImageSyncedPillar(ServerGroup branch, String name, String version) {
-        try {
-            Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
-                    "group" + branch.getId().toString()
-            );
 
-            Path filePath = dirPath.resolve(
-                    name.replace('.', '-') + "-" + version + "." + PILLAR_IMAGE_DATA_FILE_EXT
-            );
+        LOG.debug("Removing image {}-{} synced pillar for group {}", name, version, branch.getName());
 
-            Files.deleteIfExists(filePath);
-        }
-        catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
+        String category = getImageSyncedPillarCategory(branch, name, version);
+        branch.getPillarByCategory(category).ifPresentOrElse(
+            pillar -> {
+                branch.getPillars().remove(pillar);
+                HibernateFactory.getSession().delete(pillar);
+            },
+            () -> {
+                try {
+                    Path dirPath = Paths.get(SUMA_PILLAR_IMAGES_DATA_PATH).resolve(
+                        "group" + branch.getId().toString()
+                    );
+
+                    Path filePath = dirPath.resolve(
+                        name.replace('.', '-') + "-" + version + "." + PILLAR_IMAGE_DATA_FILE_EXT
+                    );
+
+                    Files.deleteIfExists(filePath);
+                }
+                catch (IOException e) {
+                    LOG.error(e.getMessage(), e);
+                }
+            }
+        );
+        ServerGroupFactory.save(branch);
+
     }
 
 
