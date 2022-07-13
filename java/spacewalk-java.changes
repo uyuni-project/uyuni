@@ -4,6 +4,13 @@
 - Clean grub2 reinstall entry in autoyast snippet (bsc#1199950)
 
 -------------------------------------------------------------------
+Wed Jul 13 09:20:13 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.40-1
+  * Fix conflict when system is assigned to multiple instances of
+    the same formula (bsc#1194394)
+
+-------------------------------------------------------------------
 Wed Jul 06 15:56:37 CEST 2022 - jmassaguerpla@suse.de
 
 - version 4.2.39-1
