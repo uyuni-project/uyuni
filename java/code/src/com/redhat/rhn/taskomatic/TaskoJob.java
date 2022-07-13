@@ -171,8 +171,10 @@ public class TaskoJob implements Job {
                                     HibernateFactory.closeSession();
                                 }
 
-                                log.debug("{} ({}) ... {}", task.getName(), schedule.getJobLabel(),
-                                        taskRun.getStatus().toLowerCase());
+                                if (log.isDebugEnabled()) {
+                                    log.debug("{} ({}) ... {}", task.getName(), schedule.getJobLabel(),
+                                            taskRun.getStatus().toLowerCase());
+                                }
                                 if (((taskRun.getStatus() == TaskoRun.STATUS_FINISHED) ||
                                         (taskRun.getStatus() == TaskoRun.STATUS_FAILED)) &&
                                         (taskRun.getStatus() != lastStatus.get(task.getName()))) {
@@ -210,8 +212,10 @@ public class TaskoJob implements Job {
         }
         HibernateFactory.closeSession();
         log.info("{}: bunch {} FINISHED", schedule.getJobLabel(), schedule.getBunch().getName());
-        log.debug("{}: bunch {} START: {} END: {}", schedule.getJobLabel(), schedule.getBunch().getName(),
-                TIMESTAMP_FORMAT.format(start), TIMESTAMP_FORMAT.format(Instant.now()));
+        if (log.isDebugEnabled()) {
+            log.debug("{}: bunch {} START: {} END: {}", schedule.getJobLabel(), schedule.getBunch().getName(),
+                    TIMESTAMP_FORMAT.format(start), TIMESTAMP_FORMAT.format(Instant.now()));
+        }
     }
 
     /**
