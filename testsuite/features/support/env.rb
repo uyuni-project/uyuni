@@ -16,7 +16,10 @@ require 'multi_test'
 require 'set'
 
 ## code coverage analysis
+SimpleCov.root('../')
+SimpleCov.coverage_dir('cov')
 SimpleCov.start
+
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
