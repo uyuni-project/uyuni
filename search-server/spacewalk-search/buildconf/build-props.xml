@@ -1,13 +1,13 @@
 <project name="build-props">
 
-  <available file="${java.lib.dir}/log4j/log4j-core.jar" type="file" property="log4j-core" value="log4j/log4j-core" />
-  <available file="${java.lib.dir}/log4j/log4j-api.jar" type="file" property="log4j-api" value="log4j/log4j-api" />
+  <available file="${java_libdir}/log4j/log4j-core.jar" type="file" property="log4j-core" value="log4j/log4j-core" />
+  <available file="${java_libdir}/log4j/log4j-api.jar" type="file" property="log4j-api" value="log4j/log4j-api" />
   <property name="log4j-jars" value="${log4j-core} ${log4j-api}"/>
 
   <property name="ivy.settings.file" value="buildconf/ivyconf.xml" />
 
   <property name="c3p0" value="c3p0"/>
-  <available file="/usr/share/java/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
+  <available file="${java_libdir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
 
   <property name="jpackage.jars"
       value="${c3p0} cglib commons-cli commons-codec commons-lang3

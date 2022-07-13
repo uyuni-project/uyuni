@@ -1,4 +1,8 @@
 <project name="search-server" basedir="." default="all">
+    <condition property="java_libdir" value="${JAVA_LIBDIR}" else="/usr/share/java">
+      <isset property="JAVA_LIBDIR"/>
+    </condition>
+
     <import file="buildconf/build-utils.xml" />
     <import file="buildconf/build-props.xml" />
 

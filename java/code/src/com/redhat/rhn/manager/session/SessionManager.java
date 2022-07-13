@@ -85,6 +85,7 @@ public class SessionManager extends BaseManager {
 
         s.setExpires(TimeUtils.currentTimeSeconds() + duration);
         WebSessionFactory.save(s);
+        WebSessionFactory.getSession().flush();
         return s;
     }
 
