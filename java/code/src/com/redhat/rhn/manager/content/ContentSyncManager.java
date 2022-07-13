@@ -1883,9 +1883,11 @@ public class ContentSyncManager {
                                 hasAuth;
                     });
 
-        log.debug("{}: {} {}", product.getFriendlyName(), isAccessible, entries.stream()
-                .map(SUSEProductSCCRepository::getChannelLabel)
-                .collect(Collectors.joining(",")));
+            if (log.isDebugEnabled()) {
+                log.debug("{}: {} {}", product.getFriendlyName(), isAccessible, entries.stream()
+                        .map(SUSEProductSCCRepository::getChannelLabel)
+                        .collect(Collectors.joining(",")));
+            }
 
              if (isAccessible) {
                  return Stream.concat(

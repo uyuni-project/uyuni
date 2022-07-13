@@ -95,53 +95,62 @@ public class DumpFilter implements Filter {
     }
 
     private void logCookies(Cookie[] cookies) {
-        if (cookies == null) {
-            log.debug("There are NO cookies to log");
-            return;
-        }
+        if (log.isDebugEnabled()) {
+            if (cookies == null) {
+                log.debug("There are NO cookies to log");
+                return;
+            }
 
-        for (Cookie cookieIn : cookies) {
-            log.debug(ReflectionToStringBuilder.toString(cookieIn));
+            for (Cookie cookieIn : cookies) {
+                log.debug(ReflectionToStringBuilder.toString(cookieIn));
+            }
         }
     }
 
     private void logHeaders(HttpServletRequest req) {
-        Enumeration items = req.getHeaderNames();
-        while (items.hasMoreElements()) {
-            String name = (String) items.nextElement();
-            Enumeration hdrs = req.getHeaders(name);
-            while (hdrs.hasMoreElements()) {
-                log.debug("Header: name [{}] value [{}]", name, (String) hdrs.nextElement());
+        if (log.isDebugEnabled()) {
+            Enumeration items = req.getHeaderNames();
+            while (items.hasMoreElements()) {
+                String name = (String) items.nextElement();
+                Enumeration hdrs = req.getHeaders(name);
+                while (hdrs.hasMoreElements()) {
+                    log.debug("Header: name [{}] value [{}]", name, (String) hdrs.nextElement());
+                }
             }
-
         }
     }
 
     private void logSession(HttpSession session) {
-        log.debug(ReflectionToStringBuilder.toString(session));
+        if (log.isDebugEnabled()) {
+            log.debug(ReflectionToStringBuilder.toString(session));
+        }
     }
 
     private void logParameters(HttpServletRequest req) {
-        Enumeration items = req.getParameterNames();
-        while (items.hasMoreElements()) {
-            String name = (String) items.nextElement();
-            String[] values = req.getParameterValues(name);
-            for (String valueIn : values) {
-                log.debug("Parameter: name [{}] value [{}]", name, valueIn);
+        if (log.isDebugEnabled()) {
+            Enumeration items = req.getParameterNames();
+            while (items.hasMoreElements()) {
+                String name = (String) items.nextElement();
+                String[] values = req.getParameterValues(name);
+                for (String valueIn : values) {
+                    log.debug("Parameter: name [{}] value [{}]", name, valueIn);
+                }
             }
         }
     }
 
     private void logAttributes(HttpServletRequest req) {
-        Enumeration items = req.getAttributeNames();
-        while (items.hasMoreElements()) {
-            String name = (String) items.nextElement();
-            Object obj = req.getAttribute(name);
-            if (obj != null) {
-                log.debug("Attribute: name [{}] value [{}]", name, ReflectionToStringBuilder.toString(obj));
-            }
-            else {
-                log.debug("Attribute: name [{}] value [null]", name);
+        if (log.isDebugEnabled()) {
+            Enumeration items = req.getAttributeNames();
+            while (items.hasMoreElements()) {
+                String name = (String) items.nextElement();
+                Object obj = req.getAttribute(name);
+                if (obj != null) {
+                    log.debug("Attribute: name [{}] value [{}]", name, ReflectionToStringBuilder.toString(obj));
+                }
+                else {
+                    log.debug("Attribute: name [{}] value [null]", name);
+                }
             }
         }
     }

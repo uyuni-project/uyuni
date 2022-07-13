@@ -226,7 +226,7 @@ public class SystemDetailsEditAction extends RhnAction {
             try {
                 maintenanceManager.assignScheduleToSystems(user, schedule, Collections.singleton(s.getId()),
                         cancelAffected);
-                log.debug(String.format("System %s assigned to schedule %s.", s.getId(), schedule.getName()));
+                log.debug("System {} assigned to schedule {}.", s.getId(), schedule.getName());
             }
             catch (IllegalArgumentException e) {
                 log.debug(e);
@@ -238,7 +238,7 @@ public class SystemDetailsEditAction extends RhnAction {
             // Retract schedule
             String scheduleName = s.getMaintenanceScheduleOpt().get().getName();
             maintenanceManager.retractScheduleFromSystems(user, Collections.singleton(s.getId()));
-            log.debug(String.format("System %s unassigned from schedule %s.", s.getId(), scheduleName));
+            log.debug("System {} unassigned from schedule {}.", s.getId(), scheduleName);
         }
 
         if (!success) {

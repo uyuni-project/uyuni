@@ -126,10 +126,10 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
                     CobblerXMLRPCHelper.getAutomatedConnection(),
                     candidate.getCobblerId());
             if (hasDistroKernelOptions(distro)) {
-                log.info(String.format("Kernel options of kickstartable tree id %d are" +
-                        " empty, but corresponding fields in its cobbler distro (uid %s)" +
+                log.info("Kernel options of kickstartable tree id {} are" +
+                        " empty, but corresponding fields in its cobbler distro (uid {})" +
                         " are populated. Aligning the kickstartable tree with the cobbler" +
-                        " distro now.", candidate.getId(), distro.getUid()));
+                        " distro now.", candidate.getId(), distro.getUid());
                 candidate.setKernelOptions(distro.convertOptionsMap(distro.getKernelOptions().get()));
                 candidate.setKernelOptionsPost(distro.convertOptionsMap(distro.getKernelOptionsPost().get()));
                 KickstartFactory.saveKickstartableTree(candidate);

@@ -312,8 +312,9 @@ public class SsmManager {
         }
 
         if (!newBaseIsCompatible) {
+            String baseChannelId = Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none");
             LOG.error("New base id={} not compatible with base id={} for serverId={}", srvChange.getNewBaseId().get(),
-                    Optional.ofNullable(srv.getBaseChannel()).map(b -> b.getId() + "").orElse("none"), srv.getId());
+                    baseChannelId, srv.getId());
             return new ChannelSelectionResult(srv, "incompatible_base");
         }
         else {

@@ -605,8 +605,8 @@ public class HardwareMapper {
                         virtTypeLabel = "qemu";
                         break;
                     default:
-                        LOG.info(String.format("Detected virtual instance type '%s' for minion '%s'",
-                                virtTypeLabel, server.getMinionId()));
+                        LOG.info("Detected virtual instance type '{}' for minion '{}'",
+                                virtTypeLabel, server.getMinionId());
                 }
                 if (virtSubtype.startsWith("Amazon EC2")) {
                     switch (virtTypeLowerCase) {
@@ -626,10 +626,10 @@ public class HardwareMapper {
 
                 if (type == null) { // fallback
                     type = VirtualInstanceFactory.getInstance().getFullyVirtType();
-                    LOG.warn(String.format(
-                            "Can't find virtual instance type for string '%s'. " +
-                            "Defaulting to '%s' for minion '%s'",
-                            virtTypeLowerCase, type.getLabel(), server.getMinionId()));
+                    LOG.warn(
+                            "Can't find virtual instance type for string '{}'. " +
+                            "Defaulting to '{}' for minion '{}'",
+                            virtTypeLowerCase, type.getLabel(), server.getMinionId());
                 }
 
             }

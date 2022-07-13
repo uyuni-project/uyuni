@@ -196,7 +196,9 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     private Method findPerfectMethod(List params, List<Method> matchedMethods) {
         //now lets try to find one that matches parameters exactly
         for (Method currMethod : matchedMethods) {
-            log.debug("findPerfectMethod test:{}", currMethod.toGenericString());
+            if (log.isDebugEnabled()) {
+                log.debug("findPerfectMethod test:{}", currMethod.toGenericString());
+            }
             Class[] types = currMethod.getParameterTypes();
             for (int i = 0; i < types.length; i++) {
                 if (log.isDebugEnabled()) {

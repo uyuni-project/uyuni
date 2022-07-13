@@ -179,10 +179,12 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 "repomd.xml");
         Date mdlastModified = new Date(theFile.lastModified());
         Date dblastModified = channel.getLastModified();
-        log.info("File Modified Date:{}", LocalizationService.getInstance().
-                formatCustomDate(mdlastModified));
-        log.info("Channel Modified Date:{}", LocalizationService.getInstance().
-                formatCustomDate(dblastModified));
+        if (log.isInfoEnabled()) {
+            log.info("File Modified Date:{}", LocalizationService.getInstance().
+                    formatCustomDate(mdlastModified));
+            log.info("Channel Modified Date:{}", LocalizationService.getInstance().
+                    formatCustomDate(dblastModified));
+        }
         // We need to cut some digits from ms, we don't want to be very accurate. However
         // removing ms completely will not work either.
         Long mdfasttimeCut = mdlastModified.getTime() / 100;

@@ -156,8 +156,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
         String cobblerKickstartFileName = profile.buildCobblerFileName();
         if (!Path.of(cobblerKickstartFileName).equals(kickstartPath)) {
             try {
-                log.info(String.format("Updating cobbler profile, setting 'kickstart' to: %s",
-                        cobblerKickstartFileName));
+                log.info("Updating cobbler profile, setting 'kickstart' to: {}", cobblerKickstartFileName);
                 String handle = (String) invokeXMLRPC("get_profile_handle",
                         cobblerProfile.get("name"), xmlRpcToken);
                 invokeXMLRPC("modify_profile", handle, "kickstart", cobblerKickstartFileName,

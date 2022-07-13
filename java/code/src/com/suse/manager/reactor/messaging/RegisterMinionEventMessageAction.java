@@ -492,8 +492,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     osfamily.equals("Debian") ? "debian-linux" : "redhat-linux");
             ServerArch arch = ServerFactory.lookupServerArchByLabel(serverArch);
             if (arch == null) {
-                LOG.error(String.format("Unable to find the server architecture for " +
-                        "osfamily: '%s' and osarch: '%s'", osfamily, osarch));
+                LOG.error("Unable to find the server architecture for " +
+                        "osfamily: '{}' and osarch: '{}'", osfamily, osarch);
                 throw new IllegalArgumentException("Unable to get the server architecture");
             }
             minion.setServerArch(arch);

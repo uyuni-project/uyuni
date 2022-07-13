@@ -239,13 +239,13 @@ public class SystemsController {
          if (server.isMgrServer()) {
              Optional<MinionServer> minion = server.asMinionServer();
              if (minion.isEmpty()) {
-                 LOG.error(String.format("System (%s) not a minion", sidStr));
+                 LOG.error("System ({}) not a minion", sidStr);
                  return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
              }
              SystemManager.setReportDbUser(minion.get(), true);
          }
          else {
-             LOG.error(String.format("System (%s) not a Mgr Server", sidStr));
+             LOG.error("System ({}) not a Mgr Server", sidStr);
              return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
          }
          return json(response, ResultJson.success());

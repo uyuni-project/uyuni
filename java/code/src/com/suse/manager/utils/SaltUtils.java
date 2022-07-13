@@ -1507,8 +1507,8 @@ public class SaltUtils {
         Info second = secondEntry.getValue();
 
         if (first.getInstallDateUnixTime().isEmpty() && second.getInstallDateUnixTime().isEmpty()) {
-            LOG.warn(String.format("Got duplicate packages NEVRA and the install timestamp is missing." +
-                    " Taking the first one. First:  %s, second: %s", first, second));
+            LOG.warn("Got duplicate packages NEVRA and the install timestamp is missing." +
+                    " Taking the first one. First:  {}, second: {}", first, second);
             return firstEntry;
         }
 
@@ -1790,11 +1790,10 @@ public class SaltUtils {
             return Collections.emptySet();
         }
 
-        LOG.debug(String.format(
-                "Detected minion %s as a RedHat compatible system: %s %s %s %s",
+        LOG.debug("Detected minion {} as a RedHat compatible system: {} {} {} {}",
                 server.getMinionId(),
                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                rhelProductInfo.get().getRelease(), server.getServerArch().getName()));
+                rhelProductInfo.get().getRelease(), server.getServerArch().getName());
 
         return rhelProductInfo.get().getSuseProduct().map(product -> {
             String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
@@ -1832,11 +1831,10 @@ public class SaltUtils {
              return Collections.emptySet();
          }
 
-         LOG.debug(String.format(
-                 "Detected image %s:%s as a RedHat compatible system: %s %s %s %s",
+         LOG.debug("Detected image {}:{} as a RedHat compatible system: {} {} {} {}",
                  image.getName(), image.getVersion(),
                  rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                 rhelProductInfo.get().getRelease(), image.getImageArch().getName()));
+                 rhelProductInfo.get().getRelease(), image.getImageArch().getName());
 
          return rhelProductInfo.get().getSuseProduct().map(product -> {
              String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");

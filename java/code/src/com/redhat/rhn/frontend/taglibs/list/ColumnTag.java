@@ -366,12 +366,11 @@ public class ColumnTag extends BodyTagSupport {
                 parent.setDefaultsortdir(sortDir);
             }
             else if (!parent.getDefaultSortAttr().equals(sortName)) {
-                String msg = "Trying to set  column [%s] as the default sort." +
-                "The default sort column has already been set for [%s]." +
-                        " Can't reset it to [%s].";
+                String msg = "Trying to set  column [{}] as the default sort." +
+                "The default sort column has already been set for [{}]." +
+                        " Can't reset it to [{}].";
 
-                LOG.warn(String.format(msg, sortName,
-                                        parent.getDefaultSortAttr(), sortName));
+                LOG.warn(msg, sortName, parent.getDefaultSortAttr(), sortName);
             }
         }
         else {
