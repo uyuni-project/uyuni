@@ -16,7 +16,7 @@ require 'multi_test'
 require 'set'
 
 ## code coverage analysis
-SimpleCov.root('~/')
+SimpleCov.root('/home/jenkins/')
 SimpleCov.coverage_dir('cov_results')
 SimpleCov.start
 
