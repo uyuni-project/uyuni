@@ -46,7 +46,7 @@ Feature: Bootstrap a Salt minion via the GUI
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64 (BETA)" text
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
     And I click on "Select Channels"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"

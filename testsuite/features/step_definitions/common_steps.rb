@@ -222,7 +222,7 @@ When(/^I check the MAC address value$/) do
 end
 
 Then(/^I should see the CPU frequency of the client$/) do
-  get_cpu_freq = "cat /proc/cpuinfo  | grep 'cpu MHz'" # | awk '{print $4}'"
+  get_cpu_freq = "cat /proc/cpuinfo  | grep -i 'CPU MHz'" # | awk '{print $4}'"
   cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, 'root', 600)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
