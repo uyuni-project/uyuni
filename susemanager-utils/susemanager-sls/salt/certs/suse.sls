@@ -31,6 +31,10 @@ update-ca-certificates:
     - runas: root
     - onchanges:
       - file: mgr_ca_cert
+    - retry:
+        attempts: 5
+        interval: 5
+        until: True
 {%- if grains['saltversioninfo'][0] >= 3002 %} # Workaround for bsc#1188641
     - unless:
       - fun: service.status
