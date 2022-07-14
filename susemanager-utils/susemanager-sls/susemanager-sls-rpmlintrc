@@ -1,0 +1,1 @@
+addFilter("non-executable-script .*/usr/share/susemanager/salt.*")
