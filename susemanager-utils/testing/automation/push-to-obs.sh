@@ -71,6 +71,10 @@ if [ "${SSHKEY}" != "" ]; then
     echo "ERROR: File ${SSHKEY} does not exist!"
     exit 1
   fi
+  if [ ! -f ${SSHKEY}.pub ]; then
+    echo "ERROR: File ${SSHKEY}.pub does not exist!"
+    exit 1
+  fi
   MOUNTSSHKEY="--mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa --mount type=bind,source=${SSHKEY}.pub,target=/root/.ssh/id_rsa.pub"
   USESSHKEY="-s /root/.ssh/id_rsa"
 fi
