@@ -1128,24 +1128,14 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  case host
-  when 'kvm_server'
-    # use virtio bus for KVM
-    node.run(
-      "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=virtio "\
-      "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
-      "--serial file,path=/tmp/#{vm_name}.console.log "\
-      "--import --hvm --noautoconsole --noreboot --osinfo sle15sp4"
-    )
-  when 'xen_server'
-    # Use ide bus for Xen
-    node.run(
-      "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=ide "\
-      "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
-      "--serial file,path=/tmp/#{vm_name}.console.log "\
-      "--import --hvm --noautoconsole --noreboot --osinfo sle15sp4"
-    )
-  end
+  # Use 'ide' bus for Xen and 'virtio' bus for KVM
+  bus_type = host == 'xen_server' ? 'ide' : 'virtio'
+  node.run(
+    "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=#{bus_type} "\
+    "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
+    "--serial file,path=/tmp/#{vm_name}.console.log "\
+    "--import --hvm --noautoconsole --noreboot --osinfo sle15sp4"
+  )
 end
 
 When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
