@@ -10434,15 +10434,15 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target>Como você adicionou o tipo de sistema de monitoramento, atribuímos automaticamente a fórmula de exportadores do Prometheus ao sistema. Aplique o &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; para instalar e ativar os exportadores de métricas do Prometheus.</target>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <target state="needs-adaptation">Como você adicionou o tipo de sistema de monitoramento, atribuímos automaticamente a fórmula de exportadores do Prometheus ao sistema. Aplique o &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; para instalar e ativar os exportadores de métricas do Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
-        <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target>Como você adicionou o tipo de sistema de monitoramento, atribuímos automaticamente a fórmula de exportadores do Prometheus ao sistema. Por favor aplique o &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; para instalar e ativar os exportadores de métricas do Prometheus.</target>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <target state="needs-adaptation">Como você adicionou o tipo de sistema de monitoramento, atribuímos automaticamente a fórmula de exportadores do Prometheus ao sistema. Por favor aplique o &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; para instalar e ativar os exportadores de métricas do Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10963,18 +10963,18 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <target state="translated">Atualização de rede virtual</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;Nó de controle Ansible&lt;/strong&gt; tipo foi aplicado. Esta ação&lt;em&gt;não&lt;/em&gt;resultar na aplicação do estado. Para aplicar o estado, use a &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;página de estados&lt;/a&gt; ou execute &lt;code class="text-info"&gt;state.highstate&lt; /code&gt; a partir da linha de comando.</target>
+        <target state="needs-adaptation">&lt;strong&gt;Nó de controle Ansible&lt;/strong&gt; tipo foi aplicado. Esta ação&lt;em&gt;não&lt;/em&gt;resultar na aplicação do estado. Para aplicar o estado, use a &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;página de estados&lt;/a&gt; ou execute &lt;code class="text-info"&gt;state.highstate&lt; /code&gt; a partir da linha de comando.</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;Nó de controle Ansible&lt;/strong&gt; tipo foi aplicado. Esta ação &lt;em&gt;não&lt;/em&gt; resultar na aplicação do estado. Para aplicar o estado, use a&lt; a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;página de estados&lt;/a&gt; ou execute &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; a partir da linha de comando.</target>
+        <target state="needs-adaptation">&lt;strong&gt;Nó de controle Ansible&lt;/strong&gt; tipo foi aplicado. Esta ação &lt;em&gt;não&lt;/em&gt; resultar na aplicação do estado. Para aplicar o estado, use a&lt; a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;página de estados&lt;/a&gt; ou execute &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; a partir da linha de comando.</target>
       </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
