@@ -1,5 +1,5 @@
 - set Channel GPG Key info from SCC data
-- set GPG Key Url as channel pillar data
+- set GPG Key Url as channel pillar data (bsc#1199984)
 - new API endpoint for addErrataUpdate, that take 
   multiple servers as argument
 - Move ImageSync pillars to database (bsc#1199157)

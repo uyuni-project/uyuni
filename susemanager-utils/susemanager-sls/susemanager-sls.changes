@@ -1,5 +1,5 @@
-- disable local repos before bootstrap and at highstate
-- deploy GPG keys to the clients and define trust in channels
+- disable local repos before bootstrap and at highstate (bsc#1191925)
+- deploy GPG keys to the clients and define trust in channels (bsc#1199984)
 - Enable basic support for Ubuntu 22.04
 - Add port parameter to mgrutil.remove_ssh_known_host
 - Prevent possible tracebacks on calling module.run from mgrcompat
