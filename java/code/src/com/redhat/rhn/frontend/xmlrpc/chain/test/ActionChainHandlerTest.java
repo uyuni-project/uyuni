@@ -66,6 +66,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
@@ -85,6 +86,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     private static final String SCRIPT_SAMPLE = "#!/bin/bash\nexit 0;";
     private static final String B64_SCRIPT_SAMPLE = Base64.getEncoder().encodeToString(SCRIPT_SAMPLE.getBytes());
     private Server server;
+    private Server server2;
     private Package pkg;
     private Package channelPackage;
     private Errata errata;
@@ -104,10 +106,15 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         super.setUp();
 
         this.server = ServerFactoryTest.createTestServer(this.admin, true);
+        this.server2 = ServerFactoryTest.createTestServer(this.admin, true);
 
         // Add capabilities
         SystemManagerTest.giveCapability(this.server.getId(), "script.run", 1L);
         SystemManagerTest.giveCapability(this.server.getId(),
+                                         SystemManager.CAP_CONFIGFILES_DEPLOY, 2L);
+
+        SystemManagerTest.giveCapability(this.server2.getId(), "script.run", 1L);
+        SystemManagerTest.giveCapability(this.server2.getId(),
                                          SystemManager.CAP_CONFIGFILES_DEPLOY, 2L);
 
         // Channels
@@ -118,12 +125,13 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         this.channelPackage = PackageTest.createTestPackage(this.admin.getOrg());
         channel.addPackage(this.channelPackage);
         this.server.addChannel(channel);
+        this.server2.addChannel(channel);
 
         // Add errata available to the installation
         this.errata = ErrataFactoryTest.createTestErrata(this.admin.getOrg().getId());
         this.errata2 = ErrataFactoryTest.createTestErrata(this.admin.getOrg().getId());
 
-        // Install one package on the server
+        // Install one package on the servers
         InstalledPackage ipkg = new InstalledPackage();
         ipkg.setArch(this.pkg.getPackageArch());
         ipkg.setEvr(this.pkg.getPackageEvr());
@@ -132,12 +140,26 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         Set<InstalledPackage> serverPkgs = server.getPackages();
         serverPkgs.add(ipkg);
 
+        InstalledPackage ipkg2 = new InstalledPackage();
+        ipkg2.setArch(this.pkg.getPackageArch());
+        ipkg2.setEvr(this.pkg.getPackageEvr());
+        ipkg2.setName(this.pkg.getPackageName());
+        ipkg2.setServer(this.server);
+        Set<InstalledPackage> serverPkgs2 = server2.getPackages();
+        serverPkgs2.add(ipkg);
+
         ServerFactory.save(this.server);
+        ServerFactory.save(this.server2);
 
         ErrataCacheManager.insertNeededErrataCache(
                 this.server.getId(), this.errata.getId(), this.pkg.getId());
 
+        ErrataCacheManager.insertNeededErrataCache(
+                this.server2.getId(), this.errata2.getId(), this.pkg.getId());
+
         this.server = ActionChainHandlerTest.reload(this.server);
+        this.server2 = ActionChainHandlerTest.reload(this.server2);
+
         ach = new ActionChainHandler();
         actionChain = ActionChainFactory.createActionChain(CHAIN_LABEL, admin);
     }
@@ -197,7 +219,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         errataIds.add(this.errata.getId().intValue());
         errataIds.add(this.errata2.getId().intValue());
         assertEquals(true, this.ach.addErrataUpdate(this.admin,
-                                                    this.server.getId().intValue(),
+                                                    List.of(this.server.getId().intValue()),
                                                     errataIds,
                                                     CHAIN_LABEL) > 0);
 
@@ -205,6 +227,19 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         assertEquals(ActionFactory.TYPE_ERRATA,
                      actionChain.getEntries().iterator().next()
                              .getAction().getActionType());
+
+        assertEquals(true, this.ach.addErrataUpdate(this.admin,
+                Arrays.asList(this.server.getId().intValue(), this.server2.getId().intValue()),
+                errataIds,
+                CHAIN_LABEL) > 0);
+
+        /* an action is created for each server, so after the next step
+         * the action will be 3
+         */
+        assertEquals(3, actionChain.getEntries().size());
+        assertEquals(ActionFactory.TYPE_ERRATA,
+                actionChain.getEntries().iterator().next()
+                            .getAction().getActionType());
     }
 
     /**

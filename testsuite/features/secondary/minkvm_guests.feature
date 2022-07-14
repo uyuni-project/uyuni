@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021 SUSE LLC
+# Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_virtualization
@@ -17,7 +17,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "root" as "user"
     And I enter "kvm_server" password
     And I select "1-SUSE-KEY-x86_64" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "kvm_server"

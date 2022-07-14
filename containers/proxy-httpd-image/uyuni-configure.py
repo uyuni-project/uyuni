@@ -39,9 +39,12 @@ def getIPs(fqdn: str) -> Tuple[str, str]:
     print(f"DEBUG: detected ips '{ipv4}', '{ipv6}' for fqdn {fqdn}")
     return (ipv4, ipv6)
 
-# read from file
+# read from files
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
+
+with open(config_path + "httpd.yaml") as httpdSource:
+    httpdConfig = yaml.safe_load(httpdSource).get("httpd")
    
     server_version = config.get("server_version")
     # Only check version for SUSE Manager, not Uyuni
@@ -55,18 +58,21 @@ with open(config_path + "config.yaml") as source:
                 container_version, major_version), file=sys.stderr)
             sys.exit(1)
     
-
-    # copy the systemid file
-    shutil.copyfile(config_path + "system_id.xml", "/etc/sysconfig/rhn/systemid")
+    # store the systemid content
+    with open("/etc/sysconfig/rhn/systemid", "w") as file:
+        file.write(httpdConfig.get("system_id"))
     
-    # copy SSL CA certificate
-    shutil.copyfile(config_path + "ca.crt", "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT")
+    # store SSL CA certificate
+    with open("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w") as file:
+        file.write(config.get("ca_crt"))
     os.symlink("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT")
     os.system("/usr/sbin/update-ca-certificates")
 
-    # copy server certificate files
-    shutil.copyfile(config_path + "server.crt", "/etc/apache2/ssl.crt/server.crt")
-    shutil.copyfile(config_path + "server.key", "/etc/apache2/ssl.key/server.key")
+    # store server certificate files
+    with open("/etc/apache2/ssl.crt/server.crt", "w") as file:
+        file.write(httpdConfig.get("server_crt"))
+    with open("/etc/apache2/ssl.key/server.key", "w") as file:
+        file.write(httpdConfig.get("server_key"))
 
     with open("/etc/apache2/httpd.conf", "r+") as file:
         file_content = file.read()

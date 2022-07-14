@@ -134,12 +134,16 @@ import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
 
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.IDN;
@@ -162,8 +166,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * SystemManager
@@ -776,13 +778,15 @@ public class SystemManager extends BaseManager {
     }
 
     private void removeSaltSSHKnownHosts(Server server) {
+        Integer sshPort = server.getProxyInfo() != null ? server.getProxyInfo().getSshPort() : null;
+        int port = sshPort != null ? sshPort : SaltSSHService.SSH_DEFAULT_PORT;
         Optional.ofNullable(server.getHostname()).ifPresent(hostname -> {
             Optional<MgrUtilRunner.RemoveKnowHostResult> result =
-                    saltApi.removeSaltSSHKnownHost(hostname);
+                    saltApi.removeSaltSSHKnownHost(hostname, port);
             boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
             if (!removed) {
-                log.warn("Hostname " + hostname + " could not be removed from " +
-                        "/var/lib/salt/.ssh/known_hosts: " + result.map(r -> r.getComment()).orElse(""));
+                log.warn("Hostname {}:{} could not be removed from /var/lib/salt/.ssh/known_hosts: {}", hostname, port,
+                        result.map(r -> r.getComment()).orElse(""));
             }
         });
     }
@@ -2164,6 +2168,8 @@ public class SystemManager extends BaseManager {
         if (existing.isPresent()) {
             Server server = existing.get();
             if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
+                // The SSH key is going to change remove it from the known hosts
+                removeSaltSSHKnownHosts(server);
                 return server;
             }
             throw new SystemsExistException(List.of(server.getId()));
@@ -2223,80 +2229,103 @@ public class SystemManager extends BaseManager {
                                              SSLCertPair proxyCertKey,
                                              SSLCertPair caPair, String caPassword, SSLCertData certData)
             throws IOException, InstantiationException, SSLCertGenerationException {
+        /* Prepare the archive streams where the config files will be stored into */
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+        BufferedOutputStream bufOut = new BufferedOutputStream(bytesOut);
+        GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(bufOut);
+        TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzOut);
+
+        /**
+         * config.yaml
+         */
+        Map<String, Object> config = new HashMap<>();
+
+        config.put("server", server);
+        config.put("max_cache_size_mb", maxCache);
+        config.put("email", email);
+        config.put("server_version", ConfigDefaults.get().getProductVersion());
+        config.put("proxy_fqdn", proxyName);
+
         SSLCertPair proxyPair = proxyCertKey;
         String rootCaCert = rootCA;
         if (proxyCertKey == null || !proxyCertKey.isComplete()) {
             proxyPair = new SSLCertManager().generateCertificate(caPair, caPassword, certData);
             rootCaCert = caPair.getCertificate();
         }
+        config.put("ca_crt", rootCaCert);
 
-        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-        ZipOutputStream zipOut = new ZipOutputStream(bytesOut);
+        addTarEntry(tarOut, "config.yaml", YamlHelper.INSTANCE.dumpPlain(config).getBytes(), 0644);
+        /**
+         * config.yaml
+         */
 
-        Map<String, Object> config = new HashMap<>();
-        config.put("server", server);
-        config.put("max_cache_size_mb", maxCache);
-        config.put("email", email);
-        config.put("server_version", ConfigDefaults.get().getProductVersion());
-        config.put("proxy_fqdn", proxyName);
+        /**
+         * httpd.yaml
+         */
+        Map<String, Object> httpdRootConfig = new HashMap<>();
+        Map<String, Object> httpdConfig = new HashMap<>();
+
         Server proxySystem = getOrCreateProxySystem(user, proxyName, proxyPort);
-
-        zipOut.putNextEntry(new ZipEntry("config.yaml"));
-        zipOut.write(YamlHelper.INSTANCE.dump(config).getBytes());
-        zipOut.closeEntry();
-
         ClientCertificate cert = SystemManager.createClientCertificate(proxySystem);
-        zipOut.putNextEntry(new ZipEntry("system_id.xml"));
-        zipOut.write(cert.asXml().getBytes());
-        zipOut.closeEntry();
+        httpdConfig.put("system_id", cert.asXml());
+
+        // Check the SSL files using mgr-ssl-cert-setup
+        try {
+            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair,
+                    intermediateCAs != null ? intermediateCAs : Collections.emptyList());
+            httpdConfig.put("server_crt", certificate);
+            httpdConfig.put("server_key", proxyPair.getKey());
+        }
+        catch (IllegalArgumentException err) {
+            throw new RhnRuntimeException("Certificate check failure: " + err.getMessage());
+        }
+
+        httpdRootConfig.put("httpd", httpdConfig);
+        addTarEntry(tarOut, "httpd.yaml", YamlHelper.INSTANCE.dumpPlain(httpdRootConfig).getBytes(), 0600);
+        /**
+         * httpd.yaml
+         */
+
+        /**
+         * ssh.yaml
+         */
+        Map<String, Object> sshRootConfig = new HashMap<>();
+        Map<String, Object> sshConfig = new HashMap<>();
 
         MgrUtilRunner.SshKeygenResult result = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH)
                 .orElseThrow(raiseAndLog("Could not generate salt-ssh public key."));
         if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
             throw raiseAndLog("Generating salt-ssh public key failed: " + result.getStderr()).get();
         }
-
-        zipOut.putNextEntry(new ZipEntry("server_ssh_key.pub"));
-        zipOut.write(result.getPublicKey().getBytes());
-        zipOut.closeEntry();
+        sshConfig.put("server_ssh_key_pub", result.getPublicKey());
 
         // Create the proxy SSH keys
         result = saltApi.generateSSHKey(null).orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
         if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
             throw raiseAndLog("Generating proxy salt-ssh SSH keys failed: " + result.getStderr()).get();
         }
-        // Add the SSH keys to the zip
-        zipOut.putNextEntry(new ZipEntry("server_ssh_push"));
-        zipOut.write(result.getKey().getBytes());
-        zipOut.closeEntry();
+        sshConfig.put("server_ssh_push", result.getKey());
+        sshConfig.put("server_ssh_push_pub", result.getPublicKey());
 
-        zipOut.putNextEntry(new ZipEntry("server_ssh_push.pub"));
-        zipOut.write(result.getPublicKey().getBytes());
-        zipOut.closeEntry();
+        sshRootConfig.put("ssh", sshConfig);
+        addTarEntry(tarOut, "ssh.yaml", YamlHelper.INSTANCE.dumpPlain(sshRootConfig).getBytes(), 0600);
+        /**
+         * ssh.yaml
+         */
 
-        // Check the SSL files using mgr-ssl-cert-setup
-        try {
-            String certificate = saltApi.checkSSLCert(rootCaCert, proxyPair,
-                    intermediateCAs != null ? intermediateCAs : Collections.emptyList());
-            zipOut.putNextEntry(new ZipEntry("server.crt"));
-            zipOut.write(certificate.getBytes());
-            zipOut.closeEntry();
-
-            zipOut.putNextEntry(new ZipEntry("server.key"));
-            zipOut.write(proxyPair.getKey().getBytes());
-            zipOut.closeEntry();
-        }
-        catch (IllegalArgumentException err) {
-            throw new RhnRuntimeException("Certificate check failure: " + err.getMessage());
-        }
-
-        zipOut.putNextEntry(new ZipEntry("ca.crt"));
-        zipOut.write(rootCaCert.getBytes());
-        zipOut.closeEntry();
-
-        zipOut.close();
+        tarOut.finish();
+        tarOut.close();
 
         return bytesOut.toByteArray();
+    }
+
+    private void addTarEntry(TarArchiveOutputStream tarOut, String name, byte[] data, int mode) throws IOException {
+        TarArchiveEntry entry = new TarArchiveEntry(name);
+        entry.setSize(data.length);
+        entry.setMode(mode);
+        tarOut.putArchiveEntry(entry);
+        tarOut.write(data);
+        tarOut.closeArchiveEntry();
     }
 
     /**

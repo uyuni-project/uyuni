@@ -1,6 +1,0 @@
-{
-  "image-synchronize": {
-    "in_highstate": true,
-    "default_boot_image": "POS_Image_JeOS6-6.0.0"
-  }
-}

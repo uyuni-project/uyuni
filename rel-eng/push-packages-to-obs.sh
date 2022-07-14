@@ -250,6 +250,16 @@ while read PKG_NAME; do
     continue
   }
 
+  # check which endpoint we are using to match the product
+  if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+      PRODUCT_VERSION=$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+  else
+      # Uyuni settings
+      PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+  fi
+  # to lowercase with ",," and replace spaces " " with "-"
+  PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
+
   if [ -f "$SRPM_PKG_DIR/Dockerfile" ]; then
       # check which endpoint we are using to match the product
       if [ "${OSCAPI}" == "https://api.suse.de" ]; then
@@ -261,15 +271,19 @@ while read PKG_NAME; do
           sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
-
-          PRODUCT_VERSION=$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
-      else
-          # Uyuni settings
-          PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
       fi
-      # to lowercase with ",," and replace spaces " " with "-"
-      PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
       sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
+  fi
+
+  if [ -f "$SRPM_PKG_DIR/Chart.yaml" ]; then
+      if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+          # SUSE Manager settings
+          VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
+          sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
+          sed "s/^home: .*$/home: https:\/\/www.suse.com\/products\/suse-manager\//" -i $SRPM_PKG_DIR/Chart.yaml
+          sed "s/version: 0.0/version: ${VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
+      fi
+      sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
   fi
 
   # update from obs (create missing package on the fly)

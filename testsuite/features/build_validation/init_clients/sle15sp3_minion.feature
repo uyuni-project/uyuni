@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle15sp3_minion
@@ -18,7 +18,7 @@ Feature: Bootstrap a SLES 15 SP3 Salt minion
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-sle15sp3_minion_key" from "activationKeys"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle15sp3_minion"

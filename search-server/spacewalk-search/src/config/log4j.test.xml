@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="warn" name="UyuniConfig">
+    <Appenders> 
+        <Console name="rootAppender" >
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <Filters>
+                <ThresholdFilter level="WARN" />
+            </Filters>
+        </Console>
+        <RollingFile name="SearchAppender" fileName="test_rhn_search.log" filePattern="test_rhn_search-%i.log">
+            <PatternLayout pattern="[%d] %-5p - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="5" />
+            <Filters>
+                <ThresholdFilter level="DEBUG" />
+            </Filters>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.redhat.satellite" level="info" >
+            <AppenderRef ref="SearchAppender" />
+        </Logger>
+        <Logger name="java.sql.ResultSet" level="warn" />
+        <Logger name="com.redhat.satellite.search.index.ngram.tests" level="debug" >
+            <AppenderRef ref="rootAppender" />
+        </Logger>        
+        <Root level="info"><AppenderRef ref="rootAppender" /></Root>
+    </Loggers>
+</Configuration>

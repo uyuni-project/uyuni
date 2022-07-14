@@ -1,4 +1,8 @@
 <project name="search-server" basedir="." default="all">
+    <condition property="java_libdir" value="${JAVA_LIBDIR}" else="/usr/share/java">
+      <isset property="JAVA_LIBDIR"/>
+    </condition>
+
     <import file="buildconf/build-utils.xml" />
     <import file="buildconf/build-props.xml" />
 
@@ -72,7 +76,7 @@
         <junit>
             <sysproperty key="rhn.config.dir" value="/etc/rhn" />
             <sysproperty key="search.config.dir" value="src/config/search" />
-            <sysproperty key="log4j.configuration" value="log4j.test.properties" />
+            <sysproperty key="log4j.configuration" value="log4j.test.xml" />
             <classpath refid="test.classpath" />
             <formatter type="brief" usefile="false" />
             <formatter type="xml" />

@@ -31,7 +31,8 @@ import com.redhat.satellite.search.scheduler.tasks.IndexSnapshotTagsTask;
 import com.redhat.satellite.search.scheduler.tasks.IndexSystemsTask;
 import com.redhat.satellite.search.scheduler.tasks.IndexXccdfIdentTask;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.picocontainer.Startable;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
@@ -52,7 +53,7 @@ import java.util.Date;
  * @version $Rev $
  */
 public class ScheduleManager implements Startable {
-    private static Logger log = Logger.getLogger(ScheduleManager.class);
+    private static Logger log = LogManager.getLogger(ScheduleManager.class);
     private Scheduler scheduler;
     private DatabaseManager databaseManager;
     private IndexManager indexManager;

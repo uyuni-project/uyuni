@@ -17,7 +17,17 @@ use Pod::Usage qw(pod2usage);
 use POSIX ":sys_wait_h";
 use Fcntl qw(F_GETFD F_SETFD FD_CLOEXEC);
 use Socket;
-use Net::LibIDN ();
+
+eval {
+    require Net::LibIDN2;
+    Net::LibIDN2->import();
+    sub idn_to_ascii { return Net::LibIDN2::idn2_lookup_u8( shift ) }
+    1;
+} or do {
+    my $error = $@;
+    require Net::LibIDN;
+    Net::LibIDN->import( qw(idn_to_ascii) );
+};
 
 use Params::Validate qw(validate);
 Params::Validate::validation_options(strip_leading => "-");
@@ -249,7 +259,7 @@ sub load_answer_file {
     close FH;
   }
   if ($answers->{'db-host'}) {
-    $answers->{'db-host'} = Net::LibIDN::idn_to_ascii($answers->{'db-host'}, "utf8");
+    $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
   }
   return;
 }
@@ -713,7 +723,7 @@ sub postgresql_get_database_answers {
         -answer => \$answers->{'db-host'});
 
     if ($answers->{'db-host'} ne '') {
-        $answers->{'db-host'} = Net::LibIDN::idn_to_ascii($answers->{'db-host'}, "utf8");
+        $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
         ask(
             -noninteractive => $opts->{"non-interactive"},
             -question => "Port",
@@ -773,7 +783,7 @@ sub postgresql_get_reportdb_answers {
         -answer => \$answers->{'report-db-host'});
 
     if ($answers->{'report-db-host'} ne '') {
-        $answers->{'report-db-host'} = Net::LibIDN::idn_to_ascii($answers->{'report-db-host'}, "utf8");
+        $answers->{'report-db-host'} = idn_to_ascii($answers->{'report-db-host'}, "utf8");
         ask(
             -noninteractive => $opts->{"non-interactive"},
             -question => "Port",

@@ -121,7 +121,7 @@ Feature: PXE boot a Retail terminal
     And I click on "Create Group"
     Then I should see a "System group HWTYPE:Intel-Genuine created." text
 
-  Scenario: Create terminal branch group
+  Scenario: Create branch terminals group
     When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "example" as "name"
@@ -179,12 +179,12 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in partitions section
     And I enter "p3" in third partition id field
     And I enter "/" in third mount point field
-    And I enter the image name in third OS image field
+    And I enter the image name for "pxeboot_minion" in third OS image field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
   Scenario: PXE boot the PXE boot minion
-    When I reboot the PXE boot minion
+    When I reboot the terminal "pxeboot_minion"
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
     And I follow the left menu "Systems > Overview"
@@ -196,7 +196,7 @@ Feature: PXE boot a Retail terminal
     And I follow "Software Channels" in the content area
     And I wait until radio button "Test-Channel-x86_64" is checked, refreshing the page
     And I wait until event "Package List Refresh scheduled by (none)" is completed
-    Then the PXE boot minion should have been reformatted
+    Then "pxeboot_minion" should have been reformatted
 
   Scenario: Check connection from terminal to branch server
     Given I am on the Systems overview page of this "pxeboot_minion"

@@ -1,3 +1,7 @@
+- display messages to restart services after certificate change
+- improve CA Chain checking by comparing authorityKeyIdentifier
+  with subjectKeyIdentifier
+
 -------------------------------------------------------------------
 Thu Jun 09 13:43:22 CEST 2022 - jgonzalez@suse.com
 

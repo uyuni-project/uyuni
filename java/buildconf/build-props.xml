@@ -67,6 +67,10 @@
     <available file="${java.lib.dir}/apache-commons-validator.jar" />
   </condition>
 
+  <condition property="commons-compress" value="apache-commons-compress" else="commons-compress">
+    <available file="${java.lib.dir}/apache-commons-compress.jar" />
+  </condition>
+
   <available file="${java.lib.dir}/log4j/log4j-core.jar" type="file" property="log4j-core" value="log4j/log4j-core" />
   <available file="${java.lib.dir}/log4j/log4j-api.jar" type="file" property="log4j-api" value="log4j/log4j-api" />
   <property name="log4j-jars" value="${log4j-core} ${log4j-api}"/>
@@ -136,8 +140,8 @@
   <property name="common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
-             ${javamail} smtp jdom ${jmock-jars}
+             commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator}
+             ${commons-compress} ${hibernate} ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
@@ -192,8 +196,8 @@
   <property name="install.common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
-             ${tomcat-jars} ${javamail} jdom jsch dwr
+             commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator}
+             ${commons-compress} ${hibernate} ${tomcat-jars} ${javamail} jdom jsch dwr
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
@@ -204,7 +208,7 @@
       value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
-             ${commons-lang} commons-logging
+             ${commons-lang} commons-logging ${commons-compress}
              ${commons-validator} concurrent dom4j ${hibernate} ${jta11-jars}
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jcommon jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc

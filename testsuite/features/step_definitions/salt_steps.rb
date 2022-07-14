@@ -155,10 +155,10 @@ Then(/^"(.*?)" should be registered$/) do |host|
   $api_test.auth.logout
 end
 
-Then(/^the PXE boot minion should have been reformatted$/) do
-  system_name = get_system_name('pxeboot_minion')
+Then(/^"(.*?)" should have been reformatted$/) do |host|
+  system_name = get_system_name(host)
   output, _code = $server.run("salt #{system_name} file.file_exists /intact")
-  raise 'Minion is intact' unless output.include? 'False'
+  raise "Minion #{host} is intact" unless output.include? 'False'
 end
 
 # user salt steps

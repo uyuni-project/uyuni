@@ -1,33 +1,33 @@
-# Creating systemd services
+# General usage
 
+In order to run the containers, generate a configuration using one of:
 
-## First things first
+* `spacecmd proxy_container_config` command,
+* `spacecmd proxy_container_config_generate_cert` command
+* or the web UI
 
-Create the pod; create containers and add them to the pod.
+Unpack the configuration file in `/etc/uyuni/proxy` and start the services by running `systemctl start pod-proxy-pod.service`.
 
+Edit the `/etc/sysconfig/uyuni-proxy-systemd-services` file if you need to add more options to the `podman` pod running command.
 
-## Generate systemd services
+# Advanced options
 
-```
-mkdir systemd-services-generation
-cd systemd-services-generation
+In order to change the default images registry, namespace and tag, edit the `NAMESPACE` and `TAG` variables in `/etc/sysconfig/uyuni-proxy-systemd-services` file.
+Restart the `uyuni-proxy-pod` service is required to apply the change.
 
-podman generate systemd --files --name --new proxy-pod
+# Required volumes
 
-# replace KillMode=none with TimeoutStopSec=60 as per https://github.com/containers/podman/pull/8889
-sed -i 's/KillMode=none/TimeoutStopSec=60/' *-proxy-*.service
+In order to persist the caches and tftp boot files, the pod uses volumes.
+Those are automatically created when the containers are started, but you can create and populate them in advance.
+The volume names are:
 
-mv *-proxy-*.service /etc/systemd/system/.
-```
+* uyuni-proxy-squid-cache
+* uyuni-proxy-rhn-cache
+* uyuni-proxy-tftpboot
 
+See the `podman-volume-create` and `podman-volume-import` man pages for more information on how to create custom volumes.
 
-## Start services
-```
-systemctl daemon-reload
-systemctl start pod-proxy-pod.service
-```
+# Getting logs
 
-
-## NOTE
-
-Remember to customize and parameterize values that are meant to be, because `podman generate systemd` will create services with the output value of each parameter based on the created/running instances.
+You can get logs from the `uyuni-proxy-*` services using `journalctl`.
+You can also use `podman logs` using the same names.

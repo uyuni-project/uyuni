@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 SUSE LLC.
+# Copyright (c) 2016-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 require 'require_all'
 require 'twopence'
@@ -66,6 +66,8 @@ if $build_validation
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
   $ubuntu2004_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2004_SSHMINION']}") if ENV['UBUNTU2004_SSHMINION']
+  $ubuntu2204_minion = twopence_init("ssh:#{ENV['UBUNTU2204_MINION']}") if ENV['UBUNTU2204_MINION']
+  $ubuntu2204_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2204_SSHMINION']}") if ENV['UBUNTU2204_SSHMINION']
   $debian9_minion = twopence_init("ssh:#{ENV['DEBIAN9_MINION']}") if ENV['DEBIAN9_MINION']
   $debian9_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN9_SSHMINION']}") if ENV['DEBIAN9_SSHMINION']
   $debian10_minion = twopence_init("ssh:#{ENV['DEBIAN10_MINION']}") if ENV['DEBIAN10_MINION']
@@ -86,6 +88,7 @@ if $build_validation
              $ceos8_minion, $ceos8_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
+             $ubuntu2204_minion, $ubuntu2204_ssh_minion,
              $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
@@ -145,16 +148,26 @@ def get_system_name(host)
   system_name = host
 
   case host
+  # The PXE boot minion and the terminals are not directly accessible on the network,
+  # therefore they are not represented by a twopence node
   when 'pxeboot_minion'
-    # The PXE boot minion is not directly accessible on the network,
-    # therefore it is not represented by a twopence node
     output, _code = $server.run('salt-key')
     system_name = output.split.find do |word|
       word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/ || word =~ /pxeboot-/
     end
     system_name = 'pxeboot.example.org' if system_name.nil?
-  when 'sle12sp5_terminal', 'sle15sp3_terminal'
-    system_name = host + '.example.org'
+  when 'sle12sp5_terminal'
+    output, _code = $server.run('salt-key')
+    system_name = output.split.find do |word|
+      word =~ /example.sle12sp5terminal-/
+    end
+    system_name = 'sle12sp5terminal.example.org' if system_name.nil?
+  when 'sle15sp3_terminal'
+    output, _code = $server.run('salt-key')
+    system_name = output.split.find do |word|
+      word =~ /example.sle15sp3terminal-/
+    end
+    system_name = 'sle15sp3terminal.example.org' if system_name.nil?
   else
     begin
       node = get_target(host)
@@ -280,6 +293,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,
                   'ubuntu2004_ssh_minion'     => $ubuntu2004_ssh_minion,
+                  'ubuntu2204_minion'         => $ubuntu2204_minion,
+                  'ubuntu2204_ssh_minion'     => $ubuntu2204_ssh_minion,
                   'debian9_minion'            => $debian9_minion,
                   'debian9_ssh_minion'        => $debian9_ssh_minion,
                   'debian10_minion'           => $debian10_minion,

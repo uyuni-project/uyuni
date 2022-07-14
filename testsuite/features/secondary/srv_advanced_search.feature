@@ -17,7 +17,7 @@ Feature: Advanced Search
     And I enter "sle_minion" hostname on the search field
     And I select "Hostname" from "Field to Search"
     And I check "invertlabel"
-    And I click on "Search"
+    And I click on the search button
     Then I should see a "No results found." text
 
   Scenario: One search result for City
@@ -26,7 +26,7 @@ Feature: Advanced Search
     And I enter "Little Whinging" on the search field
     And I select "City" from "Field to Search"
     And I check "fineGrainedlabel"
-    And I click on "Search"
+    And I click on the search button
     Then I should land on system's overview page
 
   Scenario: One search result for State/Province
@@ -35,7 +35,7 @@ Feature: Advanced Search
     And I enter "Surrey" on the search field
     And I select "State/Province" from "Field to Search"
     And I check "fineGrainedlabel"
-    And I click on "Search"
+    And I click on the search button
     Then I should land on system's overview page
 
   Scenario: One search result for Country
@@ -44,7 +44,7 @@ Feature: Advanced Search
     And I enter "PT" on the search field
     And I select "Country Code" from "Field to Search"
     And I check "fineGrainedlabel"
-    And I click on "Search"
+    And I click on the search button
     Then I should land on system's overview page
 
   Scenario: One search result for hostname using "Fine grained search results"
@@ -52,12 +52,12 @@ Feature: Advanced Search
     And I enter "sle_minion" hostname on the search field
     And I select "Hostname" from "Field to Search"
     And I check "fineGrainedlabel"
-    And I click on "Search"
+    And I click on the search button
     Then I should land on system's overview page
 
   Scenario: List results for hostname
     When I follow the left menu "Systems > Advanced Search"
     And I enter "sle_minion" hostname on the search field
     And I select "Hostname" from "Field to Search"
-    And I click on "Search"
+    And I click on the search button
     Then I should see "sle_minion" hostname as first search result

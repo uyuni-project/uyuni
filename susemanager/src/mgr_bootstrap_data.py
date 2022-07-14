@@ -397,6 +397,10 @@ RES8_X86 = [
     "dmidecode"
 ]
 
+RES9 = [
+    "venv-salt-minion", 
+]
+
 AMAZONLINUX2 = [
     "dwz",
     "groff-base",
@@ -431,7 +435,7 @@ AMAZONLINUX2 = [
     "zip"
 ]
 
-PKGLIST15_SALT = [
+PKGLIST15_SALT_NO_BUNDLE = [
     "libpgm-5_2-0",
     "libsodium23",
     "libzmq5",
@@ -461,7 +465,14 @@ PKGLIST15_SALT = [
     "salt",
     "python3-salt",
     "salt-minion",
+]
+
+PKGLIST15_SALT = PKGLIST15_SALT_NO_BUNDLE + [
     "venv-salt-minion",
+]
+
+PKGLIST15_SALT_OPT_BUNDLE = PKGLIST15_SALT_NO_BUNDLE + [
+    "venv-salt-minion*",
 ]
 
 PKGLIST15SP0SP1_SALT = [
@@ -642,6 +653,10 @@ PKGLISTUBUNTU2004 = [
     "venv-salt-minion",
 ]
 
+PKGLISTUBUNTU2204 = [
+    "venv-salt-minion",
+]
+
 PKGLISTDEBIAN9 = [
     "apt-transport-https",
     "bsdmainutils",
@@ -701,7 +716,7 @@ PKGLISTDEBIAN9 = [
     "dmidecode",
     "gnupg",
     "gnupg1",
-    "venv-salt-minion",
+    "venv-salt-minion*",
 ]
 
 
@@ -1247,7 +1262,7 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SUMA-42-PROXY-x86_64' : {
-        'PDID' : [2145, 2225], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2145, 2225], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT_OPT_BUNDLE + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP4-aarch64' : {
@@ -1422,6 +1437,14 @@ DATA = {
         'BASECHANNEL' : 'oraclelinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/8/bootstrap/'
     },
+    'oracle-9-x86_64-uyuni' : {
+        'BASECHANNEL' : 'oraclelinux9-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
+    },
+    'oracle-9-aarch64-uyuni' : {
+        'BASECHANNEL' : 'oraclelinux9-aarch64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
+    },
     'amazonlinux-2-x86_64' : {
         'PDID' : [-22, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2/bootstrap/'
@@ -1465,7 +1488,11 @@ DATA = {
     'RHEL8-x86_64-uyuni' : {
         'BASECHANNEL' : 'rhel8-pool-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
-    },    
+    },
+    'RHEL9-x86_64-uyuni' : {
+        'BASECHANNEL' : 'rhel9-pool-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
+    },
     'alibaba-2-x86_64-uyuni': {
         'BASECHANNEL': 'alibaba-2-x86_64', 'PKGLIST': RES7 + RES7_X86,
         'DEST': DOCUMENT_ROOT + '/pub/repositories/alibaba/2/bootstrap/'
@@ -1489,6 +1516,22 @@ DATA = {
     'almalinux-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'almalinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/8/bootstrap/'
+    },
+    'almalinux-9-x86_64-uyuni' : {
+        'BASECHANNEL' : 'almalinux9-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
+    },
+    'almalinux-9-aarch64-uyuni' : {
+        'BASECHANNEL' : 'almalinux9-aarch64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
+    },
+    'almalinux-9-ppc64le-uyuni' : {
+        'BASECHANNEL' : 'almalinux9-ppc64le', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
+    },
+    'almalinux-9-s390x-uyuni' : {
+        'BASECHANNEL' : 'almalinux9-s390x', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
     },
     'rockylinux-8-x86_64' : {
         'PDID' : [-24, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
@@ -1534,6 +1577,11 @@ DATA = {
     'ubuntu-20.04-amd64-uyuni' : {
         'BASECHANNEL' : 'ubuntu-20.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU2004,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/20/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'ubuntu-22.04-amd64-uyuni' : {
+        'BASECHANNEL' : 'ubuntu-22.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU2204,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/22/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian9-amd64' : {

@@ -89,7 +89,7 @@ public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listab
                 ActionMessages msgs = new ActionMessages();
                 ActionMessage msg = new ActionMessage("ssm.sw.systems.confirmmessage");
 
-                if (set.size() > 1) {
+                if (set.size() != 1) {
                     msg = new ActionMessage("ssm.sw.systems.confirmmessage.multiple", set.size());
                 }
 

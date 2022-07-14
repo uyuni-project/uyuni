@@ -32,15 +32,9 @@ import com.suse.manager.api.SerializedApiResponse;
  *              #prop("string", "hostname")
  *              #prop("int", "port")
  *              #prop("string", "username")
- *              #prop("string", "password")
- *              #prop("string", "key")
- *              #prop("string", "key_password")
  *              #prop("string", "bastion_hostname")
  *              #prop("int", "bastion_port")
  *              #prop("string", "bastion_username")
- *              #prop("string", "bastion_password")
- *              #prop("string", "bastion_key")
- *              #prop("string", "bastion_key_password")
  *      #struct_end()
  */
 public class PaygSshDataSerializer extends ApiResponseSerializer<PaygSshData> {
@@ -57,15 +51,9 @@ public class PaygSshDataSerializer extends ApiResponseSerializer<PaygSshData> {
                 .add("hostname", src.getHost())
                 .add("port", src.getPort())
                 .add("username", src.getUsername())
-                .add("password", src.getPassword())
-                .add("key", src.getKey())
-                .add("key_password", src.getKeyPassword())
                 .add("bastion_hostname", src.getBastionHost())
                 .add("bastion_port", src.getBastionPort())
                 .add("bastion_username", src.getBastionUsername())
-                .add("bastion_password", src.getBastionPassword())
-                .add("bastion_key", src.getBastionKey())
-                .add("bastion_key_password", src.getBastionKeyPassword())
                 .build();
     }
 }

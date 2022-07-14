@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2021 SUSE LLC.
+# Copyright (c) 2015-2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @sle_minion
@@ -44,7 +44,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle_minion"
@@ -84,7 +84,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select the hostname of "proxy" from "proxies"
+    And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle_minion"

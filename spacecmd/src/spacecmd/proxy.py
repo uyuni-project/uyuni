@@ -42,7 +42,7 @@ parameters:
   KEY         path to the proxy certificate private key in PEM format
 
 options:
-  -o, --output Path where to create the generated configuration. Default: 'config.zip'
+  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
   -p, --ssh-port SSH port the proxy listens one. Default: 22
   -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy
             certicate in PEM format. May be provided multiple times.
@@ -58,7 +58,7 @@ def do_proxy_container_config(self, args):
     arg_parser.add_argument('-i', '--intermediate-ca', action='append', default=[])
     arg_parser.add_argument('-c', '--certificate', default='')
     arg_parser.add_argument('-k', '--key', default='')
-    arg_parser.add_argument('-o', '--output', default='config.zip')
+    arg_parser.add_argument('-o', '--output', default='config.tar.gz')
     arg_parser.add_argument('-p', '--ssh-port', type=int, default=22)
 
     args, options = parse_command_arguments(args, arg_parser)
@@ -95,7 +95,7 @@ parameters:
   EMAIL       the email of the proxy administrator
 
 options:
-  -o, --output Path where to create the generated configuration. Default: 'config.zip'
+  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
   -p, --ssh-port SSH port the proxy listens one. Default: 22
   --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.
            Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.
@@ -117,7 +117,7 @@ examples:
 
 def do_proxy_container_config_generate_cert(self, args):
     arg_parser = get_argument_parser()
-    arg_parser.add_argument('-o', '--output', default='config.zip')
+    arg_parser.add_argument('-o', '--output', default='config.tar.gz')
     arg_parser.add_argument('-p', '--ssh-port', type=int, default=22)
     arg_parser.add_argument('--ca-cert', default='/root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT')
     arg_parser.add_argument('--ca-key', default='/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY')

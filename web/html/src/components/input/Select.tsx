@@ -192,8 +192,7 @@ export function Select(props: Props) {
             isClearable: isClearable,
             styles: bootstrapStyles,
             isMulti: props.isMulti,
-            // TODO: Create a separate div in body so we don't invalidate the layout every time, see https://github.com/SUSE/spacewalk/issues/17076
-            menuPortalTarget: document.body,
+            menuPortalTarget: document.getElementById("menu-portal-target"),
           },
           withTestAttributes(props["data-testid"], props.name)
         );

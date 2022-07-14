@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { paygProperties } from "manager/admin/payg/payg";
 
-import { Form, Text } from "components/input";
+import { Form, Password, Text } from "components/input";
 import { InputBase } from "components/input/InputBase";
 
 type PropsForm = {
@@ -39,6 +39,11 @@ export const PaygSshDataFormFields = (props: PropsFields) => {
   let prefix = props.isInstance ? "" : "bastion_";
   return (
     <React.Fragment>
+      {props.editing && (
+        <div className="alert alert-info" style={{ marginTop: "0px" }}>
+          {t("When editing the SSH connection all needed credentials must be re-provided.")}
+        </div>
+      )}
       <div className="row">
         <Text
           required={props.isInstance}
@@ -69,7 +74,7 @@ export const PaygSshDataFormFields = (props: PropsFields) => {
         />
       </div>
       <div className="row">
-        <Text name={prefix + "password"} label={t("Password")} labelClass="col-md-2" divClass="col-md-10" />
+        <Password name={prefix + "password"} label={t("Password")} labelClass="col-md-2" divClass="col-md-10" />
       </div>
       <div className="row">
         <InputBase name={prefix + "key"} label={t("SSH Private Key")} labelClass="col-md-2" divClass="col-md-10">
@@ -92,7 +97,7 @@ export const PaygSshDataFormFields = (props: PropsFields) => {
         </InputBase>
       </div>
       <div className="row">
-        <Text
+        <Password
           name={prefix + "key_password"}
           label={t("SSH Private Key Passphrase")}
           labelClass="col-md-2"

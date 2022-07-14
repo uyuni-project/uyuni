@@ -29,7 +29,8 @@ import com.redhat.satellite.search.config.ConfigException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Manages DB activity - connections, running queries, etc
@@ -39,7 +40,7 @@ public class DatabaseManager {
 
     private SqlSessionFactory sessionFactory = null;
     private static boolean isOracle;
-    private static Logger log = Logger.getLogger(DatabaseManager.class);
+    private static Logger log = LogManager.getLogger(DatabaseManager.class);
 
 
     /**

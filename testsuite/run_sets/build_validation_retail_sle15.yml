@@ -1,10 +1,13 @@
 # This file describes the order of features in a Build Validation test suite run.
 
-## NOTE: This stage can't be run in parallel
+## NOTE: This stage has to be run after preparing the proxy
 
-## Prepare configuration for retail terminal and buildhost
-- features/build_validation/retail/sle15_deployment_preparation.feature
-## Build Kiwi images for all retail terminal (expected time of building is around 1 hour / 20 minutes for each terminal)
-- features/build_validation/retail/build_sle15_kiwi_image.feature
+## Prepare configuration for terminal
+- features/build_validation/retail/sle15sp3_terminal_prepare.feature
+
+## Build Kiwi image
+## (expected time of building is around 20 minutes)
+- features/build_validation/retail/sle15sp3_buildhost_build_kiwi_image.feature
+
 ## Deployment of retail terminal
-- features/build_validation/retail/deploy_sle15_terminal.feature
+- features/build_validation/retail/sle15sp3_terminal_deploy.feature

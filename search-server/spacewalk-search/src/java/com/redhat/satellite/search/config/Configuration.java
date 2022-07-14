@@ -18,7 +18,8 @@ package com.redhat.satellite.search.config;
 import com.redhat.satellite.search.config.translator.TranslatorRegistry;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +49,7 @@ import java.util.TreeSet;
  */
 public class Configuration {
 
-    private static Logger logger = Logger.getLogger(Configuration.class);
+    private static Logger logger = LogManager.getLogger(Configuration.class);
 
     //
     // Location of config files

@@ -327,7 +327,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
                             new ActionMessage("ssm.overview.provisioning" +
                                 ".remotecommand.succeed", server.getId().toString(),
                                 action.getId().toString(), LocalizationService
-                                    .getInstance().formatDate(action.getEarliestAction())));
+                                    .getInstance().formatCustomDate(action.getEarliestAction())));
                     }
                     else {
                         infoMessages.add(ActionMessages.GLOBAL_MESSAGE,

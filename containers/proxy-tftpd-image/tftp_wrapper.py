@@ -122,7 +122,7 @@ def get_arguments():
         "--configFile", type=str, default="/etc/uyuni/config.yaml", help="Path to configuration file"
     )
     parser.add_argument(
-        "--caPath", type=str, default="/etc/uyuni/ca.crt", help="Path to CA certificate"
+        "--caPath", type=str, default="/usr/share/uyuni/ca.crt", help="Path to CA certificate"
     )
     return parser.parse_args()
 
