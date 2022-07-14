@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-22 04:14+0000\n"
+"POT-Creation-Date: 2022-07-14 10:09+0000\n"
 "PO-Revision-Date: 2022-06-20 08:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -53,7 +53,7 @@ msgstr "필수 필드 입력: {0}"
 msgid "Invalid format of fields: {0}"
 msgstr "잘못된 필드 유형: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:216
+#: ../html/src/components/FormulaForm.tsx:211
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -61,19 +61,19 @@ msgstr ""
 "이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습"
 "니다."
 
-#: ../html/src/components/FormulaForm.tsx:265
+#: ../html/src/components/FormulaForm.tsx:260
 msgid "Expand All Sections"
 msgstr "전체 섹션 확장"
 
-#: ../html/src/components/FormulaForm.tsx:272
+#: ../html/src/components/FormulaForm.tsx:267
 msgid "Collapse All Sections"
 msgstr "전체 섹션 축소"
 
-#: ../html/src/components/FormulaForm.tsx:337
+#: ../html/src/components/FormulaForm.tsx:332
 msgid "Unnamed"
 msgstr "이름 없음"
 
-#: ../html/src/components/FormulaForm.tsx:346
+#: ../html/src/components/FormulaForm.tsx:341
 msgid "Search by formula's group name"
 msgstr "수식 그룹 이름을 기준으로 검색"
 
@@ -245,7 +245,7 @@ msgstr "취소"
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:117
-#: ../html/src/manager/admin/payg/payg.tsx:68
+#: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
 #: ../html/src/manager/images/image-profiles.tsx:136
@@ -308,7 +308,7 @@ msgstr "수식"
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
-#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:153
+#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
 msgid "Reset"
 msgstr "재설정"
@@ -390,8 +390,8 @@ msgid "required"
 msgstr "필수"
 
 #: ../html/src/components/input/Password.stories.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:68
 #: ../html/src/manager/login/uyuni/login.tsx:65
@@ -902,15 +902,15 @@ msgid ""
 "effect."
 msgstr " 구성 변경 사항이 적용되려면 Tomcat 및 Taskomatic이 필요합니다."
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:39
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:41
 msgid "Add new pay-as-you-go ssh connection data"
 msgstr "새 용량제 SSH 연결 데이터 추가"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:46
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:48
 msgid "Add pay-as-you-go ssh data"
 msgstr "용량제 SSH 데이터 추가"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:47
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
 #: ../html/src/manager/images/image-profile-edit.tsx:503
 #: ../html/src/manager/images/image-profiles.tsx:147
@@ -929,11 +929,11 @@ msgstr "용량제 SSH 데이터 추가"
 msgid "Create"
 msgstr "만들기"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:68
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:70
 msgid "Pay-as-you-go connection Description"
 msgstr "용량제 연결 설명"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:71
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
@@ -947,11 +947,11 @@ msgstr "용량제 연결 설명"
 msgid "Description"
 msgstr "설명"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:75
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:77
 msgid "Instance SSH connection data"
 msgstr "인스턴스 SSH 연결 데이터"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:80
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:82
 msgid "Bastion SSH connection data"
 msgstr "베스천 SSH 연결 데이터"
 
@@ -966,8 +966,8 @@ msgid "Filter by any value"
 msgstr "값을 기준으로 필터링"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr "호스트"
@@ -1013,7 +1013,7 @@ msgstr ""
 "십시오."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
 msgid "Pay-as-you-go properties updated successfully"
 msgstr "용량제 속성 업데이트됨"
 
@@ -1030,52 +1030,57 @@ msgstr "속성을 편집하는 중..."
 msgid "Last Status Update"
 msgstr "최신 상태 업데이트"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
 msgid "Edit "
 msgstr "편집 "
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:70
 msgid "Editing ssh connection data.."
 msgstr "SSH 연결 데이터 편집 중..."
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
+msgid ""
+"When editing the SSH connection all needed credentials must be re-provided."
+msgstr ""
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr "SSH 포트"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr "사용자"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr "SSH 개인 키"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 개인 키 비밀번호"
 
-#: ../html/src/manager/admin/payg/payg.tsx:58
+#: ../html/src/manager/admin/payg/payg.tsx:60
 msgid "The instance you are looking for does not exist or has been deleted"
 msgstr "찾고 있는 인스턴스가 없거나 삭제되었습니다."
 
-#: ../html/src/manager/admin/payg/payg.tsx:65
+#: ../html/src/manager/admin/payg/payg.tsx:67
 msgid "Instance Hostname: {0}"
 msgstr "인스턴스 호스트 이름: {0}"
 
-#: ../html/src/manager/admin/payg/payg.tsx:74
+#: ../html/src/manager/admin/payg/payg.tsx:76
 msgid "Delete Pay-as-you-go"
 msgstr "용량제 삭제"
 
-#: ../html/src/manager/admin/payg/payg.tsx:77
+#: ../html/src/manager/admin/payg/payg.tsx:79
 #: ../html/src/manager/content-management/project/project.tsx:119
 msgid "Are you sure you want to delete project"
 msgstr "프로젝트를 삭제하시겠습니까"
@@ -2836,7 +2841,7 @@ msgstr "가져오기"
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:378
+#: ../html/src/manager/proxy/container-config.tsx:386
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
@@ -3955,7 +3960,7 @@ msgid "Package States"
 msgstr "패키지 상태"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:310
+#: ../html/src/manager/proxy/container-config.tsx:318
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
@@ -4125,139 +4130,140 @@ msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr "프록시 구성 생성 진행 중: 응답을 기다리는 중..."
 
-#: ../html/src/manager/proxy/container-config.tsx:134
+#: ../html/src/manager/proxy/container-config.tsx:142
 msgid "Request interrupted or invalid response received from the server."
 msgstr "요청이 중단되거나 서버로부터 유효하지 않은 응답이 수신되었습니다."
 
-#: ../html/src/manager/proxy/container-config.tsx:171
-#: ../html/src/manager/proxy/container-config.tsx:187
+#: ../html/src/manager/proxy/container-config.tsx:179
+#: ../html/src/manager/proxy/container-config.tsx:195
 msgid "Container Based Proxy Configuration"
 msgstr "컨테이너 기반 프록시 구성"
 
-#: ../html/src/manager/proxy/container-config.tsx:177
+#: ../html/src/manager/proxy/container-config.tsx:185
+#, fuzzy
 msgid ""
 "You can generate a set of configuration files and certificates in order to "
 "register and run a container-based proxy. Once the following form is filled "
-"out and submitted you will get a .zip archive to download."
+"out and submitted you will get a .tar.gz archive to download."
 msgstr ""
 "컨테이너 기반 프록시를 등록 및 실행하기 위해 구성 파일과 인증서 세트를 생성"
 "할 수 있습니다. 다음 양식을 작성한 후 제출하면 다운로드할 .zip 아카이브가 제"
 "공됩니다."
 
-#: ../html/src/manager/proxy/container-config.tsx:191
+#: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Proxy FQDN"
 msgstr "프록시 FQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:192
+#: ../html/src/manager/proxy/container-config.tsx:200
 msgid "The FQDN of the machine where the containers are hosted"
 msgstr "컨테이너가 호스팅되는 시스템의 FQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:194
+#: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
 msgstr "예: proxy.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:200
+#: ../html/src/manager/proxy/container-config.tsx:208
 msgid "Parent FQDN"
 msgstr "상위 FQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:202
+#: ../html/src/manager/proxy/container-config.tsx:210
 msgid "e.g., server.domain.com"
 msgstr "예: server.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:203
+#: ../html/src/manager/proxy/container-config.tsx:211
 msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr "연결할 상위(서버 또는 프록시)의 FQDN입니다."
 
-#: ../html/src/manager/proxy/container-config.tsx:209
+#: ../html/src/manager/proxy/container-config.tsx:217
 msgid "Proxy SSH port"
 msgstr "프록시 SSH 포트"
 
-#: ../html/src/manager/proxy/container-config.tsx:210
+#: ../html/src/manager/proxy/container-config.tsx:218
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr "포트 범위: 1 - 65535"
 
-#: ../html/src/manager/proxy/container-config.tsx:219
+#: ../html/src/manager/proxy/container-config.tsx:227
 msgid "Max Squid cache size"
 msgstr "최대 Squid 캐시 크기"
 
-#: ../html/src/manager/proxy/container-config.tsx:220
+#: ../html/src/manager/proxy/container-config.tsx:228
 msgid "The maximum value of the Squid cache in Megabytes"
 msgstr "메가바이트 단위의 Squid 캐시 최대값"
 
-#: ../html/src/manager/proxy/container-config.tsx:223
+#: ../html/src/manager/proxy/container-config.tsx:231
 msgid "e.g., 2048"
 msgstr "예: 2048"
 
-#: ../html/src/manager/proxy/container-config.tsx:230
+#: ../html/src/manager/proxy/container-config.tsx:238
 msgid "Proxy admin email"
 msgstr "프록시 관리자 전자 메일"
 
-#: ../html/src/manager/proxy/container-config.tsx:231
+#: ../html/src/manager/proxy/container-config.tsx:239
 msgid "The container-based proxy administrator email address"
 msgstr "컨테이너 기반 프록시 관리자 전자 메일 주소"
 
-#: ../html/src/manager/proxy/container-config.tsx:232
+#: ../html/src/manager/proxy/container-config.tsx:240
 msgid "e.g., proxy.admin@mycompany.com"
 msgstr "예: proxy.admin@mycompany.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:239
-#: ../html/src/manager/proxy/container-config.tsx:240
+#: ../html/src/manager/proxy/container-config.tsx:247
+#: ../html/src/manager/proxy/container-config.tsx:248
 msgid "SSL certificate"
 msgstr "SSL 인증서"
 
-#: ../html/src/manager/proxy/container-config.tsx:248
-#: ../html/src/manager/proxy/container-config.tsx:373
+#: ../html/src/manager/proxy/container-config.tsx:256
+#: ../html/src/manager/proxy/container-config.tsx:381
 msgid "Generate"
 msgstr "생성"
 
-#: ../html/src/manager/proxy/container-config.tsx:249
+#: ../html/src/manager/proxy/container-config.tsx:257
 msgid "Use existing"
 msgstr "기존 항목 사용"
 
-#: ../html/src/manager/proxy/container-config.tsx:256
+#: ../html/src/manager/proxy/container-config.tsx:264
 msgid "CA certificate"
 msgstr "CA 인증서"
 
-#: ../html/src/manager/proxy/container-config.tsx:257
-#: ../html/src/manager/proxy/container-config.tsx:266
-#: ../html/src/manager/proxy/container-config.tsx:323
+#: ../html/src/manager/proxy/container-config.tsx:265
+#: ../html/src/manager/proxy/container-config.tsx:274
+#: ../html/src/manager/proxy/container-config.tsx:331
 msgid "To sign the SSL certificate in PEM format"
 msgstr "PEM 형식의 SSL 인증서에 서명"
 
-#: ../html/src/manager/proxy/container-config.tsx:265
+#: ../html/src/manager/proxy/container-config.tsx:273
 msgid "CA private key"
 msgstr "CA 개인 키"
 
-#: ../html/src/manager/proxy/container-config.tsx:274
+#: ../html/src/manager/proxy/container-config.tsx:282
 msgid "CA password"
 msgstr "CA 비밀번호"
 
-#: ../html/src/manager/proxy/container-config.tsx:275
+#: ../html/src/manager/proxy/container-config.tsx:283
 msgid "The CA private key password"
 msgstr "CA 개인 키 비밀번호"
 
-#: ../html/src/manager/proxy/container-config.tsx:283
+#: ../html/src/manager/proxy/container-config.tsx:291
 msgid "SSL Certificate data"
 msgstr "SSL 인증서 데이터"
 
-#: ../html/src/manager/proxy/container-config.tsx:290
+#: ../html/src/manager/proxy/container-config.tsx:298
 msgid "Alternate CNAMEs"
 msgstr "대체 CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:298
+#: ../html/src/manager/proxy/container-config.tsx:306
 msgid "CNAME"
 msgstr "CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:304
+#: ../html/src/manager/proxy/container-config.tsx:312
 msgid "2-letter country code"
 msgstr "2자 국가 코드"
 
-#: ../html/src/manager/proxy/container-config.tsx:311
+#: ../html/src/manager/proxy/container-config.tsx:319
 msgid "City"
 msgstr "시/도"
 
-#: ../html/src/manager/proxy/container-config.tsx:312
+#: ../html/src/manager/proxy/container-config.tsx:320
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
@@ -4265,36 +4271,36 @@ msgstr "시/도"
 msgid "Organization"
 msgstr "조직"
 
-#: ../html/src/manager/proxy/container-config.tsx:313
+#: ../html/src/manager/proxy/container-config.tsx:321
 msgid "Organization Unit"
 msgstr "조직 단위"
 
-#: ../html/src/manager/proxy/container-config.tsx:314
+#: ../html/src/manager/proxy/container-config.tsx:322
 msgid "Email"
 msgstr "전자 메일"
 
-#: ../html/src/manager/proxy/container-config.tsx:322
+#: ../html/src/manager/proxy/container-config.tsx:330
 msgid "The root CA"
 msgstr "루트 CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:332
+#: ../html/src/manager/proxy/container-config.tsx:340
 msgid "Intermediate CAs"
 msgstr "중간 CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:342
+#: ../html/src/manager/proxy/container-config.tsx:350
 msgid "CA file in PEM format"
 msgstr "PEM 형식의 CA 파일"
 
-#: ../html/src/manager/proxy/container-config.tsx:353
+#: ../html/src/manager/proxy/container-config.tsx:361
 msgid "Proxy certificate"
 msgstr "프록시 인증서"
 
-#: ../html/src/manager/proxy/container-config.tsx:354
-#: ../html/src/manager/proxy/container-config.tsx:363
+#: ../html/src/manager/proxy/container-config.tsx:362
+#: ../html/src/manager/proxy/container-config.tsx:371
 msgid "In PEM format"
 msgstr "PEM 형식"
 
-#: ../html/src/manager/proxy/container-config.tsx:362
+#: ../html/src/manager/proxy/container-config.tsx:370
 msgid "Proxy SSL private key"
 msgstr "프록시 SSL 개인 키"
 
