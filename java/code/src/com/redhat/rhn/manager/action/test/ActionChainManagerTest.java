@@ -115,7 +115,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         List<Integer> errataIds = singletonList(e.getId().intValue());
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-        List<Long> actions = ActionChainManager.scheduleErrataUpdate(user, s,
+        List<Long> actions = ActionChainManager.scheduleErrataUpdate(user, List.of(s),
                 errataIds, new Date(), actionChain);
 
         assertEquals(1, actionChain.getEntries().size());

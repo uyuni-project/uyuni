@@ -1,3 +1,5 @@
+- new API endpoint for addErrataUpdate, that take 
+  multiple servers as argument
 - Move ImageSync pillars to database (bsc#1199157)
 - Fix conflict when system is assigned to multiple instances of
   the same formula (bsc#1194394)
