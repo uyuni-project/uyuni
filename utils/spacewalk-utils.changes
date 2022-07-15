@@ -1,3 +1,4 @@
+- change gpg key urls to file urls where possible
 - spacewalk-hostname-rename now correctly replaces the hostname for
   the mgr-sync configuration file (bsc#1198356)
 - spacewalk-hostname-rename now utilizes the "--apache2-conf-dir"
