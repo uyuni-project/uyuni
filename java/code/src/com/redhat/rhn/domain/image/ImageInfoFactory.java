@@ -651,6 +651,7 @@ public class ImageInfoFactory extends HibernateFactory {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<DeltaImageInfo> criteria = builder.createQuery(DeltaImageInfo.class);
         Root<DeltaImageInfo> root = criteria.from(DeltaImageInfo.class);
+        criteria.where(builder.equal(root.get("sourceImageInfo").get("org"), org));
         return getSession().createQuery(criteria).getResultList();
     }
 
