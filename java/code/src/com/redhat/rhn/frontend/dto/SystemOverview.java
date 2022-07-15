@@ -66,6 +66,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private boolean mgrServer;
     private boolean proxy;
     private List entitlement;
+    private String entitlementLevel;
     private List serverGroupTypeId;
     private List entitlementPermanent;
     private List entitlementIsBase;
@@ -555,6 +556,10 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns the entitlementLevel.
      */
     public String getEntitlementLevel() {
+        return entitlementLevel;
+    }
+
+    private String computeEntitlementLevel() {
         // Get the entitlements for this row. If not null, loop through and get
         // localized versions of the labels and make into a comma-delimited list
         LocalizationService ls = LocalizationService.getInstance();
@@ -624,6 +629,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
      */
     public void setEntitlement(List entitlementIn) {
         this.entitlement = entitlementIn;
+        this.entitlementLevel = computeEntitlementLevel();
     }
 
     /**
