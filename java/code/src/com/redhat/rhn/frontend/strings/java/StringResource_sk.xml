@@ -9887,83 +9887,83 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="ssm.provision.errors" xml:space="preserve">
         <source>Skipped {0} system(s):</source>
-        <target/>
+        <target>Preskočené {0} systémy:</target>
       </trans-unit>
       <trans-unit id="ssm.provision.records.created" xml:space="preserve">
         <source>Successfully created records for {0} system(s).{1}</source>
-        <target/>
+        <target>Úspešne vytvorené záznamy pre {0} systém(y).{1}</target>
       </trans-unit>
       <trans-unit id="ssm.provision.scheduled" xml:space="preserve">
         <source>Successfully scheduled {0} system(s) for provisioning.{1}</source>
-        <target/>
+        <target>Úspešne naplánované {0} systémy na poskytovanie.{1}</target>
       </trans-unit>
       <trans-unit id="ssm.package.install.operationname" xml:space="preserve">
         <source>Schedule Package Installations</source>
-        <target/>
+        <target>Naplánovať inštalácie balíkov</target>
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve">
         <source>Schedule Package Upgrades</source>
-        <target/>
+        <target>Naplánovať aktualizácie balíkov</target>
       </trans-unit>
       <trans-unit id="ssm.package.verify.operationname" xml:space="preserve">
         <source>Schedule Package Verifications</source>
-        <target/>
+        <target>Naplánovať overenia balíkov</target>
       </trans-unit>
       <trans-unit id="ssm.server.delete.operationname" xml:space="preserve">
         <source>Server Delete</source>
-        <target/>
+        <target>Vymazanie servera</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmmessage" xml:space="preserve">
         <source>Systems Transferred</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Systémy prenesené</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmbutton" xml:space="preserve">
         <source>Transfer Systems</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Preniesť systémy</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.orgnone" xml:space="preserve">
         <source>This organization has no trusted organizations.  Systems can only be migrated between organizations with defined trusts.</source>
-        <target/>
+        <target>Táto organizácia nemá žiadne dôveryhodné organizácie.  Systémy je možné migrovať medzi organizáciami len s definovanými dôveryhodnosťami.</target>
       </trans-unit>
       <trans-unit id="ssm.misc.changeprefs.changed" xml:space="preserve">
         <source>Preferences changed for selected systems.</source>
-        <target/>
+        <target>Predvoľby sa zmenili pre vybrané systémy.</target>
       </trans-unit>
       <trans-unit id="ssm.misc.changeprefs.updatesscheduled" xml:space="preserve">
         <source>Selected systems will be fully updated in accordance with new Auto Errata Update setting.</source>
-        <target/>
+        <target>Vybrané systémy budú kompletne aktualizované v súlade s novým nastavením automatickej aktualizácie opráv chýb.</target>
       </trans-unit>
       <trans-unit id="channel.manage.merge.finished" xml:space="preserve">
         <source>{0} Package(s) have been added and {1} Package(s) have been removed from the channel.</source>
-        <target/>
+        <target>{0} balík(y) boli pridané a {1} balík(y) boli odstránené z kanála.</target>
       </trans-unit>
       <trans-unit id="system.select.inactive" xml:space="preserve">
         <source>Select Inactive</source>
-        <target/>
+        <target>Vybrať neaktívne</target>
       </trans-unit>
       <trans-unit id="package.jsp.key" xml:space="preserve">
         <source>Signing Key</source>
-        <target/>
+        <target>Podpisový kľúč</target>
       </trans-unit>
       <trans-unit id="package.jsp.key.unkown" xml:space="preserve">
         <source>(Unknown)</source>
-        <target/>
+        <target>(Neznámy)</target>
       </trans-unit>
       <trans-unit id="request.post.check" xml:space="preserve">
         <source>This action requires a POST request, but this was not one.</source>
-        <target/>
+        <target>Táto akcia vyžaduje požiadavku POST, ale táto to nebola.</target>
       </trans-unit>
       <trans-unit id="channeltarget.success" xml:space="preserve">
         <source>Subscribed {0} system(s) to {1}.</source>
-        <target/>
+        <target>Prihlásené {0} systém(y) k {1}.</target>
       </trans-unit>
       <trans-unit id="error.config.revnum.too-old" xml:space="preserve">
         <source>The specified revision number must be greater than the current revision number.</source>
-        <target/>
+        <target>Zadané číslo revízie musí byť väčšie ako aktuálne číslo revízie.</target>
       </trans-unit>
       <trans-unit id="error.config.revnum.invalid" xml:space="preserve">
         <source>Please specify a valid revision number.</source>
-        <target/>
+        <target>Prosím, zadajte platné číslo revízie.</target>
       </trans-unit>
       <trans-unit id="ssm.subscription.operation.label" xml:space="preserve">
         <source>Channel Subscription Updates</source>
