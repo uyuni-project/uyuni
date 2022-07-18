@@ -16,7 +16,7 @@ require 'multi_test'
 require 'set'
 
 ## code coverage analysis
-SimpleCov.root('/home/jenkins/')
+SimpleCov.root('/home/jenkins/jenkins-build/workspace/uyuni-prs-ci-tests-qe/jenkins_pipelines/uyuni_prs/')
 SimpleCov.coverage_dir('cov_results')
 SimpleCov.start
 
