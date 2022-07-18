@@ -1,4 +1,4 @@
-FROM registry.suse.com/suse/sle15:15.4
+FROM registry.mgr.suse.de/suse/sle15:15.4
 MAINTAINER Admin User "noemail@example.com"
 
 ARG repo
