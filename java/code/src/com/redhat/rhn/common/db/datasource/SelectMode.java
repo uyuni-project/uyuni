@@ -133,6 +133,7 @@ public class SelectMode extends BaseMode implements Serializable {
     public void elaborate(List resultList, Map<String, ?> parameters) {
         // find the requested elaborator.
         for (CachedStatement cs : elaborators) {
+            cs.restoreSessionIfClosed();
             Collection elaborated = cs.executeElaborator(resultList, this, parameters);
             resultList.clear();
             resultList.addAll(elaborated);

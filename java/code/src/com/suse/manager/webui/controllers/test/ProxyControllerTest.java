@@ -71,8 +71,8 @@ public class ProxyControllerTest extends BaseControllerTestCase {
         String content = FileUtils.readStringFromFile(path);
         Request request = SparkTestUtils.createMockRequestWithBody("/manager/api/proxy/container-config",
                 Collections.emptyMap(), content);
-        assertEquals("\"pxy-config.zip\"", proxyController.generateContainerConfig(request, response, user));
-        assertEquals(data, request.session().attribute("pxy-config.zip"));
+        assertEquals("\"pxy-config.tar.gz\"", proxyController.generateContainerConfig(request, response, user));
+        assertEquals(data, request.session().attribute("pxy-config.tar.gz"));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class ProxyControllerTest extends BaseControllerTestCase {
         String content = FileUtils.readStringFromFile(path);
         Request request = SparkTestUtils.createMockRequestWithBody("/manager/api/proxy/container-config",
                 Collections.emptyMap(), content);
-        assertEquals("\"pxy-config.zip\"", proxyController.generateContainerConfig(request, response, user));
-        assertEquals(data, request.session().attribute("pxy-config.zip"));
+        assertEquals("\"pxy-config.tar.gz\"", proxyController.generateContainerConfig(request, response, user));
+        assertEquals(data, request.session().attribute("pxy-config.tar.gz"));
     }
 }

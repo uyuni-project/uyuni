@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { paygProperties } from "manager/admin/payg/payg";
 
+const passHidden = "*****";
 type Props = {
   payg: paygProperties;
   isInstance: boolean;
@@ -24,17 +25,21 @@ const PaygShhDataView = (props: Props) => {
       </dl>
       <dl className="row">
         <dt className="col-xs-2">{t("Password")}</dt>
-        <dd className="col-xs-10">{props.isInstance ? props.payg.password : props.payg.bastion_password}</dd>
+        <dd className="col-xs-10">
+          {(props.isInstance ? props.payg.password : props.payg.bastion_password) || passHidden}
+        </dd>
       </dl>
       <dl className="row">
         <dt className="col-xs-2">{t("SSH Private Key")}</dt>
         <dd className="col-xs-10" style={{ whiteSpace: "pre-wrap" }}>
-          {props.isInstance ? props.payg.key : props.payg.bastion_key}
+          {(props.isInstance ? props.payg.key : props.payg.bastion_key) || passHidden}
         </dd>
       </dl>
       <dl className="row">
         <dt className="col-xs-2">{t("SSH Private Key Passphrase")}</dt>
-        <dd className="col-xs-10">{props.isInstance ? props.payg.key_password : props.payg.bastion_key_password}</dd>
+        <dd className="col-xs-10">
+          {(props.isInstance ? props.payg.key_password : props.payg.bastion_key_password) || passHidden}
+        </dd>
       </dl>
     </div>
   );

@@ -56,7 +56,6 @@ IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
 
 # SUSE Manager static pillar data.
 MANAGER_STATIC_PILLAR = [
-    'gpgkeys'
 ]
 
 formulas_metadata_cache = dict()

@@ -565,14 +565,14 @@ When(/^I enter the image filename for "([^"]*)" relative to profiles as "([^"]*)
 end
 
 When(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
-  step %(When I wait at most 3300 seconds until event "Image Build #{image_name}" is completed)
+  step %(I wait at most 3300 seconds until event "Image Build #{image_name}" is completed)
 end
 
 When(/^I wait until the image inspection for "([^"]*)" is completed$/) do |host|
   # After build, the name and version are updated from Kiwi sources
   name = compute_kiwi_profile_name(host)
   version = compute_kiwi_profile_version(host)
-  step %(When I wait at most 300 seconds until event "Image Inspect 1//#{name}:#{version}" is completed)
+  step %(I wait at most 300 seconds until event "Image Inspect 1//#{name}:#{version}" is completed)
 end
 
 When(/^I am on the image store of the Kiwi image for organization "([^"]*)"$/) do |org|

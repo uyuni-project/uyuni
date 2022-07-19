@@ -34,6 +34,8 @@ export type ElementDefinition = {
   $newItemValue?: any;
   $prototype?: any;
   $itemName?: any;
+  $cols?: number;
+  $rows?: number;
   /** DEPRECATED, use `$visible` instead */
   $visibleIf?: () => boolean;
 };
@@ -264,6 +266,26 @@ export function generateFormulaComponentForId(
           checked={value}
         />
       </div>,
+      element.$help
+    );
+  else if (element.$type === "textarea")
+    return wrapper(
+      element.$name,
+      required,
+      <textarea
+        name={element.$name}
+        id={id}
+        className="form-control"
+        cols={get(element.$cols, "")}
+        rows={get(element.$rows, 5)}
+        onChange={formulaForm.handleChange}
+        placeholder={element.$placeholder}
+        title={element.$help}
+        disabled={isDisabled}
+        required={required}
+      >
+        {value}
+      </textarea>,
       element.$help
     );
   else {

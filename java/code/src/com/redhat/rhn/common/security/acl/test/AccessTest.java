@@ -239,6 +239,9 @@ public class AccessTest extends BaseTestCaseWithUser {
         context.put("sid", new String[] {s.getId().toString()});
         assertFalse(acl.evalAcl(context, "system_has_management_entitlement()"));
 
+        // Intentionally invalid sysid
+        context.put("sid", new String[] { "999900099900" });
+        assertFalse(acl.evalAcl(context, "system_has_management_entitlement()"));
 
     }
 
@@ -269,6 +272,10 @@ public class AccessTest extends BaseTestCaseWithUser {
         s = ServerFactoryTest.createUnentitledTestServer(user, true,
                 ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
         context.put("sid", new String[] {s.getId().toString()});
+        assertFalse(acl.evalAcl(context, "system_has_salt_entitlement()"));
+
+        // Intentionally invalid sysid
+        context.put("sid", new String[] { "999900099900" });
         assertFalse(acl.evalAcl(context, "system_has_salt_entitlement()"));
     }
 

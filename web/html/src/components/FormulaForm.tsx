@@ -201,14 +201,9 @@ class FormulaForm extends React.Component<Props, State> {
 
   getMessageText = (msg) => {
     if (!this.props.messageTexts[msg] && defaultMessageTexts[msg]) {
-      return t(defaultMessageTexts[msg]);
+      return defaultMessageTexts[msg];
     }
-    /**
-     * TODO: There is a bug here, in some uses messageTexts can also contain elements,
-     * a-la in group-formula.renderer.tsx. This case is not accounted for and needs
-     * separate consideration.
-     */
-    return this.props.messageTexts[msg] ? t(this.props.messageTexts[msg]) : msg;
+    return this.props.messageTexts[msg] ? this.props.messageTexts[msg] : msg;
   };
 
   render() {

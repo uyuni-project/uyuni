@@ -4,7 +4,7 @@ import { Messages } from "components/messages";
 
 type SuccessType = boolean | undefined;
 
-export const ContainerConfigMessages = (success: SuccessType, messagesIn: string[], loading: boolean) => {
+export const ContainerConfigMessages = (success: SuccessType, messagesIn: React.ReactNode[], loading: boolean) => {
   if (success) {
     return (
       <Messages

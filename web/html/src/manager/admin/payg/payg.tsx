@@ -27,6 +27,8 @@ export type paygProperties = {
   bastion_password: string;
   bastion_key: string;
   bastion_key_password: string;
+  instance_edit: boolean;
+  bastion_edit: boolean;
 };
 
 export type PaygFullType = {

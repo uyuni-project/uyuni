@@ -22,7 +22,8 @@ import com.redhat.satellite.search.scheduler.ScheduleManager;
 import com.redhat.satellite.search.tests.BaseTestCase;
 import com.redhat.satellite.search.tests.TestUtil;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ import redstone.xmlrpc.XmlRpcFault;
 
 public class IndexHandlerTest extends BaseTestCase {
 
-    private static Logger log = Logger.getLogger(IndexHandlerTest.class);
+    private static Logger log = LogManager.getLogger(IndexHandlerTest.class);
 
     @Override
     @SuppressWarnings("unchecked")

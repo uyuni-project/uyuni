@@ -29,6 +29,8 @@ const CreateProject = () => {
       bastion_password: "",
       bastion_key: "",
       bastion_key_password: "",
+      instance_edit: false,
+      bastion_edit: false,
     },
     errors: {},
   });

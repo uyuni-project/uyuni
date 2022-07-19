@@ -498,6 +498,28 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup an image info by name, version, revision and org.
+     *
+     * @param name             the name
+     * @param version          the version/tag
+     * @param revision         the revision number
+     * @param org              the organization
+     * @return the optional ImageInfo
+     */
+    public static Optional<ImageInfo> lookupByName(String name, String version, long revision, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
+
+        Root<ImageInfo> root = query.from(ImageInfo.class);
+        query.where(builder.and(
+                builder.equal(root.get("name"), name),
+                builder.equal(root.get("version"), version),
+                builder.equal(root.get("revisionNumber"), revision),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
      * List all image overviews from a given organization
      * @param org the organization
      * @return Returns a list of ImageProfiles

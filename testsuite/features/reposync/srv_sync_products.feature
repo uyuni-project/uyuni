@@ -1,4 +1,4 @@
-# Copyright 2017-2021 SUSE LLC
+# Copyright 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -55,26 +55,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add the initial product for the service pack migration
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
-    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP2 x86_64"
-    Then I should see a "Basesystem Module 15 SP2 x86_64" text
-    And I should see that the "Basesystem Module 15 SP2 x86_64" product is "recommended"
-    When I select "SUSE Linux Enterprise Server 15 SP2 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP2 x86_64" selected
-    And I should see the "Basesystem Module 15 SP2 x86_64" selected
-    # Comment following 3 lines if you wish to re-enable testing with beta client tools for SLE15
-#    And I open the sub-list of the product "Basesystem Module 15 SP2 x86_64"
-#    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" on SUSE Manager
-#    And I deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" as a SUSE Manager product
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
-    Then the SLE15 SP2 product should be added
-
-@scc_credentials
-  Scenario: Add a product with recommended enabled
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP3" as the filtered product description
     And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" text
     And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 x86_64"
@@ -92,8 +72,28 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP3 product should be added
 
 @scc_credentials
+  Scenario: Add a product with recommended enabled
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP4 x86_64"
+    Then I should see a "Basesystem Module 15 SP4 x86_64" text
+    And I should see that the "Basesystem Module 15 SP4 x86_64" product is "recommended"
+    When I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
+    And I should see the "Basesystem Module 15 SP4 x86_64" selected
+    # Comment following 3 lines if you wish to re-enable testing with beta client tools for SLE15
+#    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
+#    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" on SUSE Manager
+#    And I deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" as a SUSE Manager product
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
+    Then the SLE15 SP4 product should be added
+
+@scc_credentials
   Scenario: Installer update channels got enabled when products were added
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     Then I should get "    [I] SLES12-SP5-Installer-Updates for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-installer-updates-x86_64]"
-    And I should get "    [I] SLE15-SP2-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP2 x86_64 [sle15-sp2-installer-updates-x86_64]"
     And I should get "    [I] SLE15-SP3-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP3 x86_64 [sle15-sp3-installer-updates-x86_64]"
+    And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"

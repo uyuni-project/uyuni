@@ -33,6 +33,11 @@ Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
+Then(/^I turn off disable_local_repos for all clients/) do
+  $server.run("echo \"mgr_disable_local_repos: False\" > /srv/pillar/disable_local_repos_off.sls")
+  step %(I install a salt pillar top file for "salt_bundle_config, disable_local_repos_off" with target "*" on the server)
+end
+
 Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
   node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
@@ -806,37 +811,37 @@ end
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
-          mand_repos = ""
-          opt_repos = ""
-          repos.split(' ').map do |repo|
-            if repo =~ /_ltss_/
-              opt_repos = "#{opt_repos} #{repo}"
+  cmd = ''
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    mand_repos = ''
+    opt_repos = ''
+    repos.split(' ').map do |repo|
+      if repo =~ /_ltss_/
+        opt_repos = "#{opt_repos} #{repo}"
+      else
+        mand_repos = "#{mand_repos} #{repo}"
+      end
+    end
+    cmd = "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos}"
+  elsif os_family =~ /^centos/
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
             else
-              mand_repos = "#{mand_repos} #{repo}"
+              "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
             end
-          end
-          "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos};"
-        else
-          cmd_list = if action == 'enable'
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     else
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     end
-          cmd_list.reduce(:+)
-        end
+    end
+  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+            else
+              "#{cmd}sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list"
+            end
+    end
+  end
   node.run(cmd, check_errors: error_control.empty?)
 end
 # rubocop:enable Metrics/BlockLength
@@ -946,7 +951,7 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
 end
 
 When(/^I install package tftpboot-installation on the server$/) do
-  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm')
+  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
   packages = output.split("\n")
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
@@ -1123,10 +1128,14 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
-           "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
-           "--serial file,path=/tmp/#{vm_name}.console.log "\
-           "--import --hvm --noautoconsole --noreboot")
+  # Use 'ide' bus for Xen and 'virtio' bus for KVM
+  bus_type = host == 'xen_server' ? 'ide' : 'virtio'
+  node.run(
+    "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=#{bus_type} "\
+    "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
+    "--serial file,path=/tmp/#{vm_name}.console.log "\
+    "--import --hvm --noautoconsole --noreboot --osinfo sle15sp4"
+  )
 end
 
 When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
@@ -1511,13 +1520,14 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
 end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
-  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
+  repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
+    repositories.concat(' os_pool_repo os_update_repo')
+    repositories.concat(' tools_additional_repo') unless $product == 'Uyuni'
   end
+  step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
 end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
@@ -1534,7 +1544,7 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
 end
 
 When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
+  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
   $server.run("mkdir -p #{target_dirs}")
   base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
   source_dir = "/var/autoinstall/"
@@ -1542,8 +1552,8 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
   return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
   return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
-  return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
-  return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
+  return_codes << file_inject($server, base_dir + 'sles15sp4/initrd', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
+  return_codes << file_inject($server, base_dir + 'sles15sp4/linux', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
 end
 

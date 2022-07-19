@@ -1398,7 +1398,8 @@ public class ContentSyncManager {
                         e.getUrl(),
                         e.getReleaseStage(),
                         e.getProductType(),
-                        e.getTags()
+                        e.getTags(),
+                        e.getGpgInfo()
                 );
             }
             else {
@@ -1540,8 +1541,7 @@ public class ContentSyncManager {
                 // If the product is release the id should be stable
                 // so we don't do the fuzzy matching to reduce unexpected behaviour
                 if (productJson.getReleaseStage() == ReleaseStage.released) {
-                    return Opt.fold(
-                            Optional.ofNullable(dbProductsById.get(productJson.getId())),
+                    return Opt.fold(Optional.ofNullable(dbProductsById.get(productJson.getId())),
                             () -> {
                                 SUSEProduct prod = createNewProduct(productJson, channelFamilyMap, packageArchMap);
                                 dbProductsById.put(prod.getProductId(), prod);
@@ -1569,8 +1569,7 @@ public class ContentSyncManager {
                                             productJson.getReleaseType(),
                                             productJson.getArch(),
                                             false
-                                    ))
-                            ),
+                                    ))),
                             () -> {
                                 SUSEProduct prod = createNewProduct(productJson, channelFamilyMap, packageArchMap);
                                 dbProductsById.put(prod.getProductId(), prod);
@@ -1641,6 +1640,12 @@ public class ContentSyncManager {
                             prodRepoLink.setProduct(product);
                             prodRepoLink.setRepository(repo);
                             prodRepoLink.setRootProduct(root);
+                            if (!entry.getGpgInfo().isEmpty()) {
+                                // we use only the 1st entry
+                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo().get(0).getUrl());
+                                prodRepoLink.setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
+                                prodRepoLink.setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
+                            }
                             dbProductReposByIds.put(ids, prodRepoLink);
 
                             if (productIdsSwitchedToReleased.contains(entry.getProductId())) {
@@ -1650,6 +1655,7 @@ public class ContentSyncManager {
                             return prodRepoLink;
                         }, prodRepoLink -> {
                             if (entry.getReleaseStage() != ReleaseStage.released) {
+                                // Only allowed to change in Alpha or Beta stage
                                 prodRepoLink.setUpdateTag(entry.getUpdateTag().orElse(null));
                                 prodRepoLink.setChannelLabel(entry.getChannelLabel());
                                 prodRepoLink.setParentChannelLabel(entry.getParentChannelLabel().orElse(null));
@@ -1673,9 +1679,21 @@ public class ContentSyncManager {
                                             prodRepoLink.getChannelLabel(), entry.getChannelLabel());
                                 }
                             }
+                            // Allowed to change also in released stage
                             prodRepoLink.setChannelName(entry.getChannelName());
                             prodRepoLink.setMandatory(entry.isMandatory());
                             prodRepoLink.getRepository().setSigned(entry.isSigned());
+                            if (!entry.getGpgInfo().isEmpty()) {
+                                // we use only the 1st entry
+                                prodRepoLink.setGpgKeyUrl(entry.getGpgInfo().get(0).getUrl());
+                                prodRepoLink.setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
+                                prodRepoLink.setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
+                            }
+                            else {
+                                prodRepoLink.setGpgKeyUrl(null);
+                                prodRepoLink.setGpgKeyId(null);
+                                prodRepoLink.setGpgKeyFingerprint(null);
+                            }
 
                             if (productIdsSwitchedToReleased.contains(entry.getProductId())) {
                                 channelsToCleanup.add(entry.getChannelLabel());
@@ -1986,6 +2004,9 @@ public class ContentSyncManager {
                     dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
                     dbChannel.setUpdateTag(productrepo.getUpdateTag());
                     dbChannel.setInstallerUpdates(productrepo.getRepository().isInstallerUpdates());
+                    dbChannel.setGPGKeyUrl(productrepo.getGpgKeyUrl());
+                    dbChannel.setGPGKeyId(productrepo.getGpgKeyId());
+                    dbChannel.setGPGKeyFp(productrepo.getGpgKeyFingerprint());
                     ChannelFactory.save(dbChannel);
 
                     // update Mandatory Flag
@@ -2053,6 +2074,9 @@ public class ContentSyncManager {
                     dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
                     dbChannel.setUpdateTag(productrepo.getUpdateTag());
                     dbChannel.setInstallerUpdates(repository.isInstallerUpdates());
+                    dbChannel.setGPGKeyUrl(productrepo.getGpgKeyUrl());
+                    dbChannel.setGPGKeyId(productrepo.getGpgKeyId());
+                    dbChannel.setGPGKeyFp(productrepo.getGpgKeyFingerprint());
 
                     // Create or link the content source
                     Optional<SCCRepositoryAuth> auth = repository.getBestAuth();

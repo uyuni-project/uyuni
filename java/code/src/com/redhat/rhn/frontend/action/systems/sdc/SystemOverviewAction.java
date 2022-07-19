@@ -131,12 +131,6 @@ public class SystemOverviewAction extends RhnAction {
             createErrorMessage(request, "packagelist.jsp.modulespresent", null);
         }
 
-        s.asMinionServer().ifPresent(minion -> {
-            if (minion.doesOsSupportsTransactionalUpdate()) {
-                createErrorMessage(request, "overview.jsp.transactionalupdate.reboot", null);
-            }
-        });
-
         request.setAttribute("rebootRequired", rebootRequired);
         request.setAttribute("unentitled", s.getEntitlements().isEmpty());
         request.setAttribute("entitlements", entitlements);

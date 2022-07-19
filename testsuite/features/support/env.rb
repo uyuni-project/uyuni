@@ -209,6 +209,14 @@ Before('@ubuntu2004_ssh_minion') do
   skip_this_scenario unless $ubuntu2004_ssh_minion
 end
 
+Before('@ubuntu2204_minion') do
+  skip_this_scenario unless $ubuntu2204_minion
+end
+
+Before('@ubuntu2204_ssh_minion') do
+  skip_this_scenario unless $ubuntu2204_ssh_minion
+end
+
 Before('@debian9_minion') do
   skip_this_scenario unless $debian9_minion
 end

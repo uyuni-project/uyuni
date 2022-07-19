@@ -73,8 +73,6 @@ Requires:       perl(Term::Completion::Path)
 Requires:       curl
 Requires:       patch
 Requires:       perl-Frontier-RPC
-Requires:       perl-Mail-RFC822-Address
-Requires:       perl-Net-LibIDN
 Requires:       perl-XML-LibXML
 Requires:       perl-XML-SAX
 Requires:       perl-libwww-perl
@@ -103,7 +101,11 @@ Requires:       (python-PyYAML or PyYAML)
 %endif
 Requires:       curl
 Requires:       perl-Mail-RFC822-Address
+%if 0%{?rhel}
+Requires:       perl-Net-LibIDN2
+%else
 Requires:       perl-Net-LibIDN
+%endif
 Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5

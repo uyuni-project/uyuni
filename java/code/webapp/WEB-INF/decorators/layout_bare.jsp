@@ -22,6 +22,7 @@
     </rhn:require>
   </head>
   <body onload="<decorator:getProperty property="body.onload" />">
+    <div id="menu-portal-target"></div>
     <div class="spacewalk-main-column-layout">
       <section id="spacewalk-content">
         <decorator:body />

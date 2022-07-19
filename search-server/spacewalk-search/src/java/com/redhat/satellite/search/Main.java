@@ -21,7 +21,8 @@ import com.redhat.satellite.search.index.IndexManager;
 import com.redhat.satellite.search.rpc.RpcServer;
 import com.redhat.satellite.search.scheduler.ScheduleManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -29,7 +30,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  */
 public class Main {
 
-    private static Logger log = Logger.getLogger(Main.class);
+    private static Logger log = LogManager.getLogger(Main.class);
     private static final Class[] COMPONENTS = {DatabaseManager.class,
                                                IndexManager.class,
                                                RpcServer.class,

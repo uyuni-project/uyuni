@@ -211,26 +211,6 @@ public class FormulaController {
     }
 
     /**
-     * Convert the doubles that could be integers into integers: this is critical for formulas
-     * Since we don't serialize the values anymore.
-     *
-     * @param map the map to iterate on.
-     */
-    private void convertIntegers(Map<String, Object> map) {
-        for (String key : map.keySet()) {
-            Object value = map.get(key);
-            if (value instanceof Double) {
-                if (((Double)value) % 1 == 0) {
-                    map.put(key, ((Double)value).intValue());
-                }
-            }
-            else if (value instanceof Map) {
-                convertIntegers((Map<String, Object>) value);
-            }
-        }
-    }
-
-    /**
      * Save formula data for group or server
      * @param request the http request
      * @param response the http response
@@ -240,7 +220,7 @@ public class FormulaController {
     public String saveFormula(Request request, Response response, User user) {
         // Get data from request
         Map<String, Object> map = GSON.fromJson(request.body(), new TypeToken<Map<String, Object>>() { }.getType());
-        convertIntegers(map);
+        FormulaFactory.convertIntegers(map);
         Long id = Long.valueOf((String) map.get("id"));
         String formulaName = (String) map.get("formula_name");
         StateTargetType type = StateTargetType.valueOf((String) map.get("type"));

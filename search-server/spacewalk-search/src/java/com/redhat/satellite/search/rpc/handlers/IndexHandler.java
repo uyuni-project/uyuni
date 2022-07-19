@@ -23,7 +23,8 @@ import com.redhat.satellite.search.index.Result;
 import com.redhat.satellite.search.index.QueryParseException;
 import com.redhat.satellite.search.scheduler.ScheduleManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.search.BooleanQuery;
 
 import java.sql.SQLException;
@@ -45,7 +46,7 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class IndexHandler {
 
-    private static Logger log = Logger.getLogger(IndexHandler.class);
+    private static Logger log = LogManager.getLogger(IndexHandler.class);
     private IndexManager indexManager;
     private DatabaseManager databaseManager;
     public static final int QUERY_ERROR = 100;

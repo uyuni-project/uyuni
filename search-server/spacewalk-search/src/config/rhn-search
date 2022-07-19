@@ -13,7 +13,7 @@ SEARCH_PARAMS="-Dfile.encoding=UTF-8 -Xms${SEARCH_INIT_MEMORY}m -Xmx${SEARCH_MAX
 JAVACMD="/usr/bin/java -Djava.library.path=${SEARCH_LIBRARY_PATH} -classpath ${SEARCH_CLASSPATH} ${SEARCH_PARAMS}"
 
 if [[ $# -eq 0 ]]; then
-    $JAVACMD -Dlog4j.configuration=file:"/usr/share/rhn/search/classes/log4j.properties" com.redhat.satellite.search.Main
+    $JAVACMD -Dlog4j.configuration=file:"/usr/share/rhn/search/classes/log4j.xml" com.redhat.satellite.search.Main
 else
     case $1 in 
         'cleanindex')

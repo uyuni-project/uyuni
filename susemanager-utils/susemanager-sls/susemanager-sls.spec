@@ -37,9 +37,10 @@ Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
+Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/susemanager-utils/susemanager-sls/%{name}-rpmlintrc
 Requires(pre):  coreutils
 Requires(posttrans): spacewalk-admin
-Requires:       susemanager-build-keys-web >= 12.0.1
+Requires:       susemanager-build-keys-web >= 15.4.2
 %if 0%{?build_py3}
 BuildRequires:  python3-pytest
 BuildRequires:  python3-salt
@@ -96,7 +97,6 @@ cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
 cp -R modules/runners/* %{buildroot}/usr/share/susemanager/modules/runners
 cp -R modules/engines/* %{buildroot}/usr/share/susemanager/modules/engines
 cp -R modules/roster/* %{buildroot}/usr/share/susemanager/modules/roster
-cp -R pillar_data/* %{buildroot}/usr/share/susemanager/pillar_data
 cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
 cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
 cp -R reactor/* %{buildroot}/usr/share/susemanager/reactor

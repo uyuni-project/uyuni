@@ -15,6 +15,7 @@
 package com.suse.manager.ssl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -130,5 +131,20 @@ public class SSLCertData {
     @Override
     public int hashCode() {
         return Objects.hash(cn, cnames, country, state, city, org, orgUnit, email);
+    }
+
+    /**
+     * calculate machine name
+     *
+     * @return machine name
+     */
+    public String getMachineName() {
+        List<String> dataList = Arrays.asList(this.getCn().split("\\."));
+        if (dataList.size() > 2) {
+            return String.join(".", dataList.subList(0, dataList.size() - 2));
+        }
+        else {
+            return String.join(".");
+        }
     }
 }
