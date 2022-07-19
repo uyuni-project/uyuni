@@ -327,6 +327,8 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp3-updates-x86_64
     sle-module-basesystem15-sp3-updates-x86_64
     sle-module-server-applications15-sp3-updates-x86_64
+    sle-module-public-cloud15-sp3-updates-x86_64
+    sle-module-public-cloud15-sp3-pool-x86_64
   ],
   '15-SP4' =>
   %w[
