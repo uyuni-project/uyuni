@@ -333,12 +333,12 @@ Before('@sle12sp5_terminal') do
   skip_this_scenario unless $sle12sp5_terminal_mac
 end
 
-Before('@sle15sp3_buildhost') do
-  skip_this_scenario unless $sle15sp3_buildhost
+Before('@sle15sp4_buildhost') do
+  skip_this_scenario unless $sle15sp4_buildhost
 end
 
-Before('@sle15sp3_terminal') do
-  skip_this_scenario unless $sle15sp3_terminal_mac
+Before('@sle15sp4_terminal') do
+  skip_this_scenario unless $sle15sp4_terminal_mac
 end
 
 Before('@opensuse153arm_minion') do

@@ -1,18 +1,18 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@sle15sp3_terminal
-Feature: Prepare prerequisites for SLES 15 SP3 terminal deployment
+@sle15sp4_terminal
+Feature: Prepare prerequisites for SLES 15 SP4 terminal deployment
 
-  Scenario: Prepare activation key for SLES 15 SP3 terminal
+  Scenario: Prepare activation key for SLES 15 SP4 terminal
     When I am logged in API as user "admin" and password "admin"
-    And I create an activation key including custom channels for "sle15sp3_terminal" via API
+    And I create an activation key including custom channels for "sle15sp4_terminal" via API
     And I logout from API
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Create hardware type group for SLES 15 SP3 terminal
+  Scenario: Create hardware type group for SLES 15 SP4 terminal
     When I follow the left menu "Systems > System Groups"
     And I follow "Create Group"
     And I enter "HWTYPE:HP-ProLiantDL360Gen9" as "name"
@@ -20,7 +20,7 @@ Feature: Prepare prerequisites for SLES 15 SP3 terminal deployment
     And I click on "Create Group"
     Then I should see a "System group HWTYPE:HP-ProLiantDL360Gen9 created." text
 
-  Scenario: Enable Saltboot formula for hardware type group SLES 15 SP3 terminal
+  Scenario: Enable Saltboot formula for hardware type group SLES 15 SP4 terminal
     When I follow the left menu "Systems > System Groups"
     And I follow "HWTYPE:HP-ProLiantDL360Gen9" in the content area
     And I follow "Formulas" in the content area
@@ -28,7 +28,7 @@ Feature: Prepare prerequisites for SLES 15 SP3 terminal deployment
     And I click on "Save"
     Then the "saltboot" formula should be checked
 
-  Scenario: Parametrize the Saltboot formula SLES 15 SP3 terminal
+  Scenario: Parametrize the Saltboot formula SLES 15 SP4 terminal
     When I follow the left menu "Systems > System Groups"
     And I follow "HWTYPE:HP-ProLiantDL360Gen9" in the content area
     And I follow "Formulas" in the content area
@@ -50,6 +50,6 @@ Feature: Prepare prerequisites for SLES 15 SP3 terminal deployment
     And I enter "p3" in third partition id field
     And I enter "/" in third mount point field
     And I select "boot" in third partition flags field
-    And I enter the image name for "sle15sp3_terminal" in third OS image field
+    And I enter the image name for "sle15sp4_terminal" in third OS image field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text

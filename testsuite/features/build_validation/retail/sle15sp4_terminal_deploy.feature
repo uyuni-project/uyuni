@@ -3,8 +3,8 @@
 
 @proxy
 @private_net
-@sle15sp3_terminal
-Feature: PXE boot a SLES 15 SP3 retail terminal
+@sle15sp4_terminal
+Feature: PXE boot a SLES 15 SP4 retail terminal
   In order to use SUSE Manager for Retail solution
   As the system administrator
   I PXE boot one of the terminals
@@ -12,27 +12,27 @@ Feature: PXE boot a SLES 15 SP3 retail terminal
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: PXE boot the SLES 15 SP3 retail terminal
-    When I reboot the terminal "sle15sp3_terminal"
-    And I wait at most 180 seconds until Salt master sees "sle15sp3_terminal" as "unaccepted"
-    And I accept "sle15sp3_terminal" key in the Salt master
+  Scenario: PXE boot the SLES 15 SP4 retail terminal
+    When I reboot the terminal "sle15sp4_terminal"
+    And I wait at most 180 seconds until Salt master sees "sle15sp4_terminal" as "unaccepted"
+    And I accept "sle15sp4_terminal" key in the Salt master
     And I follow the left menu "Systems > Overview"
-    And I wait until I see the name of "sle15sp3_terminal", refreshing the page
-    And I follow this "sle15sp3_terminal" link
+    And I wait until I see the name of "sle15sp4_terminal", refreshing the page
+    And I follow this "sle15sp4_terminal" link
     And I wait until event "Apply states [util.syncstates, saltboot] scheduled" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I wait until radio button "SLE-Product-SLES15-SP3-Pool" is checked, refreshing the page
+    And I wait until radio button "SLE-Product-SLES15-SP4-Pool" is checked, refreshing the page
     And I wait until event "Package List Refresh scheduled" is completed
-    Then "sle15sp3_terminal" should have been reformatted
+    Then "sle15sp4_terminal" should have been reformatted
 
-  Scenario: Check connection from SLES 15 SP3 retail terminal to branch server
-    Given I am on the Systems overview page of this "sle15sp3_terminal"
+  Scenario: Check connection from SLES 15 SP4 retail terminal to branch server
+    Given I am on the Systems overview page of this "sle15sp4_terminal"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
 
-  Scenario: Install a package on the SLES 15 SP3 retail terminal
+  Scenario: Install a package on the SLES 15 SP4 retail terminal
     When I follow "Software" in the content area
     And I follow "Install"
     And I enter "rust" as the filtered package name
@@ -43,7 +43,7 @@ Feature: PXE boot a SLES 15 SP3 retail terminal
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled" is completed
 
-  Scenario: Remove a package on the SLES 15 SP3 retail terminal
+  Scenario: Remove a package on the SLES 15 SP4 retail terminal
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "rust" as the filtered package name
