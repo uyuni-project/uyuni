@@ -625,7 +625,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(3, ImageInfoFactory.listImageInfos(org).size());
         assertEquals(2, ImageInfoFactory.listDeltaImageInfos(org).size());
         assertEquals(2, org.getPillars().size()); //each delta has a pillar
+        HibernateFactory.getSession().clear();
 
+        img3 = TestUtils.reload(img3);
         // deleting a target image should delete also the delta
         ImageInfoFactory.delete(img3, saltApiMock);
 
@@ -636,6 +638,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, ImageInfoFactory.listDeltaImageInfos(org).size());
         assertEquals(1, org.getPillars().size());
 
+        delta1 = TestUtils.reload(delta1);
         // deleting a delta should not delete the images
         ImageInfoFactory.deleteDeltaImage(delta1, saltApiMock);
 
@@ -646,6 +649,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, ImageInfoFactory.listDeltaImageInfos(org).size());
         assertEquals(0, org.getPillars().size());
 
+        img1 = TestUtils.reload(img1);
         // deleting a source image should delete also the delta
         ImageInfoFactory.delete(img1, saltApiMock);
 
