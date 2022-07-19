@@ -4,6 +4,7 @@
 require 'timeout'
 require 'nokogiri'
 require 'pg'
+require 'set'
 
 # Sanity checks
 
@@ -339,7 +340,7 @@ end
 # This function is written as a state machine. It bails out if no process is seen during
 # 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
-  do_not_kill = compute_list_to_leave_running
+  do_not_kill = compute_channels_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
   while reposync_not_running_streak <= 60 && reposync_left_running_streak <= 7200
@@ -355,6 +356,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
     if do_not_kill.include? channel
+      $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
       sleep 1
@@ -384,12 +386,29 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", check_errors: false)
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/products.xml", check_errors: false)
       break if code.zero?
       sleep 10
     end
   rescue StandardError => e
     log e.message # It might be that the MU repository is wrong, but we want to continue in any case
+  end
+end
+
+When(/I wait until all synchronized channels have finished$/) do
+  $channels_synchronized.each do |channel|
+    repeat_until_timeout(timeout: 7200, message: "Channel '#{channel}' not fully synced") do
+      # products.xml is the last file to be written when the server synchronize a channel,
+      # therefore we wait until it exist
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/products.xml", check_errors: false)
+      if code.zero?
+        # We want to check if no .new files exists.
+        # On a re-sync, the old files stay, the new one have this suffix until it's ready.
+        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/products.xml.new", check_errors: false)
+        break unless new_code.zero?
+      end
+      sleep 10
+    end
   end
 end
 
