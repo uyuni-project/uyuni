@@ -141,6 +141,17 @@ with open(config_path + "httpd.yaml") as httpdSource:
 WSGIScriptAlias /tftpsync/add /srv/www/tftpsync/add
 WSGIScriptAlias /tftpsync/delete /srv/www/tftpsync/delete''')
 
+    with open("/etc/apache2/conf.d/cobbler-proxy.conf", "w") as file:
+        file.write(f'''ProxyPass /cobbler_api https://{config['server']}/download/cobbler_api
+ProxyPassReverse /cobbler_api https://{config['server']}/download/cobbler_api
+RewriteRule ^/cblr/svc/op/ks/(.*)$ /download/$0 [P,L]
+RewriteRule ^/cblr/svc/op/autoinstall/(.*)$ /download/$0 [P,L]
+ProxyPass /cblr https://{config['server']}/cblr
+ProxyPassReverse /cblr https://{config['server']}/cblr
+ProxyPass /cobbler https://{config['server']}/cobbler
+ProxyPassReverse /cobbler https://{config['server']}/cobbler
+        ''')
+
     with open("/etc/apache2/conf.d/susemanager-pub.conf", "w") as file:
         file.write("WSGIScriptAlias /pub /usr/share/rhn/wsgi/xmlrpc.py")
 
