@@ -75,7 +75,7 @@ if $build_validation
   $debian11_minion = twopence_init("ssh:#{ENV['DEBIAN11_MINION']}") if ENV['DEBIAN11_MINION']
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
-  $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
+  $sle15sp4_buildhost = twopence_init("ssh:#{ENV['SLE15SP4_BUILDHOST']}") if ENV['SLE15SP4_BUILDHOST']
   $opensuse153arm_minion = twopence_init("ssh:#{ENV['OPENSUSE153ARM_MINION']}") if ENV['OPENSUSE153ARM_MINION']
   $nodes += [$sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
@@ -93,7 +93,7 @@ if $build_validation
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
              $sle12sp5_buildhost,
-             $sle15sp3_buildhost,
+             $sle15sp4_buildhost,
              $opensuse153arm_minion]
 else
   # Define twopence objects for QA environment
@@ -162,12 +162,12 @@ def get_system_name(host)
       word =~ /example.sle12sp5terminal-/
     end
     system_name = 'sle12sp5terminal.example.org' if system_name.nil?
-  when 'sle15sp3_terminal'
+  when 'sle15sp4_terminal'
     output, _code = $server.run('salt-key')
     system_name = output.split.find do |word|
-      word =~ /example.sle15sp3terminal-/
+      word =~ /example.sle15sp4terminal-/
     end
-    system_name = 'sle15sp3terminal.example.org' if system_name.nil?
+    system_name = 'sle15sp4terminal.example.org' if system_name.nil?
   else
     begin
       node = get_target(host)
@@ -241,7 +241,7 @@ $use_salt_bundle = use_salt_bundle
 $pxeboot_mac = ENV['PXEBOOT_MAC']
 $pxeboot_image = ENV['PXEBOOT_IMAGE'] || 'sles15sp3o'
 $sle12sp5_terminal_mac = ENV['SLE12SP5_TERMINAL_MAC']
-$sle15sp3_terminal_mac = ENV['SLE15SP3_TERMINAL_MAC']
+$sle15sp4_terminal_mac = ENV['SLE15SP4_TERMINAL_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
@@ -302,7 +302,7 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'debian11_minion'           => $debian11_minion,
                   'debian11_ssh_minion'       => $debian11_ssh_minion,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
-                  'sle15sp3_buildhost'        => $sle15sp3_buildhost,
+                  'sle15sp4_buildhost'        => $sle15sp4_buildhost,
                   'opensuse153arm_minion'     => $opensuse153arm_minion }
 
 # This is the inverse of `node_by_host`.

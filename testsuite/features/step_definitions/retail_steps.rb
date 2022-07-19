@@ -37,6 +37,8 @@ def compute_image(host)
     'sles12sp5o'
   when 'sle15sp3_terminal'
     'sles15sp3o'
+  when 'sle15sp4_terminal'
+    'sles15sp4o'
   else
     raise "Is #{host} a supported terminal?"
   end
@@ -45,7 +47,7 @@ end
 def compute_kiwi_profile_filename(host)
   image = compute_image(host)
   case image
-  when 'sles15sp3', 'sles15sp3o'
+  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
     # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
     $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
   when 'sles15sp2', 'sles15sp2o'
@@ -64,7 +66,7 @@ end
 def compute_kiwi_profile_name(host)
   image = compute_image(host)
   case image
-  when 'sles15sp3', 'sles15sp3o'
+  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
     # 'POS_Image_JeOS7_42' for 4.2 branch
     $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
   when 'sles15sp2', 'sles15sp2o'
@@ -83,7 +85,7 @@ end
 def compute_kiwi_profile_version(host)
   image = compute_image(host)
   case image
-  when 'sles15sp3', 'sles15sp3o', 'sles15sp2', 'sles15sp2o'
+  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
     '7.0.0'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not a supported image version.'
@@ -231,8 +233,8 @@ When(/^I reboot the terminal "([^"]*)"$/) do |host|
     mac = $pxeboot_mac
   elsif host == 'sle12sp5_terminal'
     mac = $sle12sp5_terminal_mac
-  elsif host == 'sle15sp3_terminal'
-    mac = $sle15sp3_terminal_mac
+  elsif host == 'sle15sp4_terminal'
+    mac = $sle15sp4_terminal_mac
   end
   mac = mac.tr(':', '')
   hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
@@ -471,8 +473,8 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   elsif host == 'sle12sp5_terminal'
     mac = $sle12sp5_terminal_mac
     mac = 'EE:EE:EE:00:00:05' if mac.nil?
-  elsif host == 'sle15sp3_terminal'
-    mac = $sle15sp3_terminal_mac
+  elsif host == 'sle15sp4_terminal'
+    mac = $sle15sp4_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
   elsif host.include? 'ubuntu'
     node = get_target(host)
