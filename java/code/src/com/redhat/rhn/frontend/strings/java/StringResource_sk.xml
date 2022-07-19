@@ -9967,11 +9967,11 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="ssm.subscription.operation.label" xml:space="preserve">
         <source>Channel Subscription Updates</source>
-        <target/>
+        <target>Aktualizácie predplatného kanálov</target>
       </trans-unit>
       <trans-unit id="ssm.base.subscription.operation.label" xml:space="preserve">
         <source>Base Channel Subscription Updates</source>
-        <target/>
+        <target>Aktualizácie predplatného základných kanálov</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.distro.syncfail" xml:space="preserve">
         <source>
@@ -9990,36 +9990,51 @@ Please check:
 
 for more detailed errors. If you don't resolve the errors the autoinstallable
 tree will not be usable for autoinstalling.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">
+Nasleduje zoznam chýb, ktoré sa zhromaždili pri pokusoch @@PRODUCT_NAME@@ o synchronizáciu
+automaticky inštalovateľných distribúcií z @@PRODUCT_NAME@@ do severa Cobbler.
+Tieto chyby musia byť opravené, aby boli distribúcie k dispozícii pre systémy
+automatickej inštalácie:
+
+{0}
+
+Prosím, skontrolujte:
+
+/var/log/rhn/rhn_taskomatic_daemon.log and
+/var/log/rhn/rhn_web_ui.log
+/var/log/cobbler/cobbler.log
+
+či nie sú k dispozícii podrobnejšie informácie o chybách. Ak chyby nevyriešite, automaticky
+inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</target>
       </trans-unit>
       <trans-unit id="errata.delete.msg" xml:space="preserve">
         <source>Successfully deleted {0} patches.</source>
-        <target/>
+        <target>Úspešne boli vymazané {0} opravy.</target>
       </trans-unit>
       <trans-unit id="message.syncschedule.disabled" xml:space="preserve">
         <source>Schedule has been disabled</source>
-        <target/>
+        <target>Plán bol zakázaný</target>
       </trans-unit>
       <trans-unit id="repos.jsp.message.invalidcron" xml:space="preserve">
         <source>Invalid schedule entry: {0}</source>
-        <target/>
+        <target>Neplatný záznam plánu: {0}</target>
       </trans-unit>
       <!-- SUSE Studio -->
       <trans-unit id="credentials.message.updated" xml:space="preserve">
         <source>Your credentials were successfully updated.</source>
-        <target/>
+        <target>Vaše prihlasovacie údaje boli úspešne aktualizované.</target>
       </trans-unit>
       <trans-unit id="credentials.message.deleted" xml:space="preserve">
         <source>Your credentials were successfully deleted.</source>
-        <target/>
+        <target>Vaše prihlasovacie údaje boli úspešne vymazané.</target>
       </trans-unit>
       <trans-unit id="credentials.message.incomplete" xml:space="preserve">
         <source>Your credentials are incomplete, at least username and password are needed.</source>
-        <target/>
+        <target>Vaše prihlasovacie údaje sú neúplné, je potrebné aspoň používateľské meno a heslo.</target>
       </trans-unit>
       <trans-unit id="images.message.error.nocreds" xml:space="preserve">
         <source>It looks like you did not enter valid credentials for talking to SUSE Studio, please check &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt;.</source>
-        <target/>
+        <target>Vyzerá to, že ste nezadali platné prihlasovacie údaje na komunikáciu so službou SUSE Studio, prosím, skontrolujte &lt;a href="/rhn/account/Credentials.do"&gt;tu&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="images.message.error.connection" xml:space="preserve">
         <source>There was a problem connecting to SUSE Studio, you might want to review your configuration &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt; or try again later.</source>
