@@ -1,3 +1,4 @@
+- Enable Rocky Linux 9 for monitoring
 - Added a new configuration property to allow custom channels to
   be synced together with vendor channels.
 - add onlyRelevant argument to addErrataUpdate API
