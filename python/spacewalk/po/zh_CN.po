@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-01 18:13+0000\n"
-"PO-Revision-Date: 2020-12-29 08:37+0000\n"
-"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
+"PO-Revision-Date: 2022-07-20 04:12+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -194,7 +194,7 @@ msgstr "不允许您执行管理任务"
 #, python-format
 msgid ""
 "You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "不允许您管理频道 %s 或不存在的频道"
+msgstr "不允许您管理通道 %s 或不存在的通道"
 
 #: ../server/importlib/userAuth.py:204
 #, python-format
@@ -213,8 +213,7 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"您的帐户无权访问与 (release='%(release)s', "
-"arch='%(arch)s')%(www_activation)s 匹配的任何频道"
+"您的帐户无权访问与 (release='%(release)s', arch='%(arch)s')%(www_activation)s 匹配的任何通道"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
@@ -241,7 +240,7 @@ msgstr ""
 "\n"
 "体系结构和操作系统发行版的组合无效 (%s, %s)。\n"
 "您的系统已注册，但不会接收更新，\n"
-"因为它无法订阅基础频道。\n"
+"因为它无法订阅基础通道。\n"
 "请联系您的组织管理员以取得帮助。\n"
 
 #: ../server/rhnChannel.py:2286
@@ -302,11 +301,11 @@ msgstr "不支持体系结构 `%s'"
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr "为令牌 `%s' 指派了多个基础频道"
+msgstr "为令牌 `%s' 指派了多个基础通道"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
-msgstr "有冲突的基础频道"
+msgstr "有冲突的基础通道"
 
 #: ../server/rhnServer/server_token.py:190
 #, python-format
@@ -534,7 +533,7 @@ msgstr ""
 
 #: ../common/rhnException.py:89
 msgid "Channel error"
-msgstr "频道错误"
+msgstr "通道错误"
 
 #: ../common/rhnException.py:90
 msgid "Client session token is invalid."
@@ -558,19 +557,19 @@ msgstr "不允许您在此系统上执行管理任务。"
 
 #: ../common/rhnException.py:96
 msgid "The system is already subscribed to the specified channel."
-msgstr "系统已订阅指定的频道。"
+msgstr "系统已订阅指定的通道。"
 
 #: ../common/rhnException.py:97
 msgid "The system is not currently subscribed to the specified channel."
-msgstr "系统目前未订阅指定的频道。"
+msgstr "系统目前未订阅指定的通道。"
 
 #: ../common/rhnException.py:98
 msgid "The specified channel does not exist."
-msgstr "指定的频道不存在。"
+msgstr "指定的通道不存在。"
 
 #: ../common/rhnException.py:99
 msgid "Invalid channel version."
-msgstr "无效频道版本。"
+msgstr "无效通道版本。"
 
 #: ../common/rhnException.py:100
 msgid ""
@@ -716,7 +715,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     未找到与您的系统匹配的基础频道。\n"
+"     未找到与您的系统匹配的基础通道。\n"
 "     "
 
 #: ../common/rhnException.py:152
@@ -728,18 +727,18 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     您对指定的频道没有订阅权限。\n"
-"     请咨询您组织的频道管理员或\n"
+"     您对指定的通道没有订阅权限。\n"
+"     请咨询您组织的通道管理员或\n"
 "     组织管理员以了解更多详细。\n"
 "     "
 
 #: ../common/rhnException.py:157
 msgid "You can not unsubscribe from base channel."
-msgstr "无法取消订阅基础频道。"
+msgstr "无法取消订阅基础通道。"
 
 #: ../common/rhnException.py:158
 msgid "SUSE Manager or Proxy channel can not be subscribed."
-msgstr "无法订阅 SUSE Manager 或代理频道。"
+msgstr "无法订阅 SUSE Manager 或代理通道。"
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:161
@@ -872,7 +871,7 @@ msgstr "传递了无效的数据类型"
 
 #: ../common/rhnException.py:215
 msgid "Unable to retrieve channel"
-msgstr "无法检索频道"
+msgstr "无法检索通道"
 
 #: ../common/rhnException.py:216
 msgid "Unable to retrieve package"
@@ -908,11 +907,11 @@ msgstr "不匹配的版本"
 
 #: ../common/rhnException.py:224
 msgid "Invalid channel version"
-msgstr "无效的频道版本"
+msgstr "无效的通道版本"
 
 #: ../common/rhnException.py:225
 msgid "No comps file for channel"
-msgstr "频道没有 comps 文件"
+msgstr "通道没有 comps 文件"
 
 #: ../common/rhnException.py:226
 msgid "Unable to retrieve comps file"
@@ -933,7 +932,7 @@ msgstr "文件包含二进制数据"
 
 #: ../common/rhnException.py:232
 msgid "Configuration channel is not empty"
-msgstr "配置频道不为空"
+msgstr "配置通道不为空"
 
 #: ../common/rhnException.py:233
 msgid "Permission error"
@@ -949,15 +948,15 @@ msgstr "未指定模板分隔符"
 
 #: ../common/rhnException.py:236
 msgid "Configuration channel does not exist"
-msgstr "配置频道不存在"
+msgstr "配置通道不存在"
 
 #: ../common/rhnException.py:237
 msgid "Configuration channel already exists"
-msgstr "配置频道已存在"
+msgstr "配置通道已存在"
 
 #: ../common/rhnException.py:238
 msgid "File missing from configuration channel"
-msgstr "配置频道中缺少文件"
+msgstr "配置通道中缺少文件"
 
 #: ../common/rhnException.py:239
 msgid "Different revision of this file is uploaded"
@@ -965,7 +964,7 @@ msgstr "上载了此文件的不同版本"
 
 #: ../common/rhnException.py:240
 msgid "File already uploaded to configuration channel"
-msgstr "文件已上载到配置频道"
+msgstr "文件已上载到配置通道"
 
 #: ../common/rhnException.py:241
 msgid "File size exceeds remaining quota space"
@@ -1078,11 +1077,11 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 "\n"
-"错误：从您的临时储存库访问频道数据时出现\n"
-"       问题。您是否已将频道 ISO 中的所有数据\n"
-"       迁移到此目录？如果是，请再次检查频道\n"
+"错误：从您的临时软件源访问通道数据时出现\n"
+"       问题。您是否已将通道 ISO 中的所有数据\n"
+"       迁移到此目录？如果是，请再次检查通道\n"
 "       ISO，确保不缺少任何 ISO，然后以交互方式\n"
-"       重新装入并重新填充临时储存库 (%s)。\n"
+"       重新挂载并重新填充临时软件源 (%s)。\n"
 
 #: ../satellite_tools/messages.py:39
 #, python-format
@@ -1123,10 +1122,10 @@ msgid ""
 "       %s\n"
 msgstr ""
 "\n"
-"错误：如果不同步子频道的父频道，则无法同步该\n"
-"       子频道。父频道需要：(a) 事先已经过同步，\n"
-"       或 (b) 配合所需的子频道一起同步。此事务缺少\n"
-"       父频道：\n"
+"错误：如果不同步子通道的父通道，则无法同步该\n"
+"       子通道。父通道需要：(a) 事先已经过同步，\n"
+"       或 (b) 配合所需的子通道一起同步。此事务缺少\n"
+"       父通道：\n"
 "       %s\n"
 
 #: ../satellite_tools/messages.py:59
@@ -1138,7 +1137,7 @@ msgid ""
 "%s"
 msgstr ""
 "\n"
-"错误：未赋权您同步此频道集中的频道。\n"
+"错误：未赋权您同步此通道集中的通道。\n"
 "请联系您的 SUSE Manager 联系人\n"
 "%s"
 
@@ -1223,7 +1222,7 @@ msgstr "   * 警告：此过程可能需要较长时间。"
 
 #: ../satellite_tools/messages.py:82
 msgid "Linking packages to channels"
-msgstr "将软件包链接到频道"
+msgstr "将软件包链接到通道"
 
 #: ../satellite_tools/messages.py:83
 #, python-format
@@ -1366,8 +1365,8 @@ msgid ""
 "content on disk via Channel Dump ISOs."
 msgstr ""
 "错误：不再支持使用 RHN Classic Hosted 进行在线内容同步。\n"
-"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道"
-"转储 ISO 从磁盘上的本地内容同步，否则请改用 cdn-sync 命令。"
+"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过通道转储 ISO 从磁盘上的本地内容同步，否则请改用 "
+"cdn-sync 命令。"
 
 #: ../satellite_tools/satsync.py:541
 #, python-format
@@ -1437,11 +1436,11 @@ msgstr "%s 数据完整"
 
 #: ../satellite_tools/satsync.py:664
 msgid "Retrieving / parsing channel data"
-msgstr "正在检索/分析频道数据"
+msgstr "正在检索/分析通道数据"
 
 #: ../satellite_tools/satsync.py:717
 msgid "Channel data complete"
-msgstr "频道数据完整"
+msgstr "通道数据完整"
 
 #: ../satellite_tools/satsync.py:735
 #, python-format
@@ -1468,19 +1467,19 @@ msgstr "."
 
 #: ../satellite_tools/satsync.py:757
 msgid "   p = previously imported/synced channel"
-msgstr "   p = 以前导入/同步的频道"
+msgstr "   p = 以前导入/同步的通道"
 
 #: ../satellite_tools/satsync.py:758
 msgid "   . = channel not yet imported/synced"
-msgstr "   . = 尚未导入/同步的频道"
+msgstr "   . = 尚未导入/同步的通道"
 
 #: ../satellite_tools/satsync.py:764
 msgid "   e = channel no longer supported (end-of-service)"
-msgstr "   e = 不再支持的频道（服务终止）"
+msgstr "   e = 不再支持的通道（服务终止）"
 
 #: ../satellite_tools/satsync.py:766
 msgid "   ? = channel label invalid --- typo?"
-msgstr "   ? = 频道标签无效 --- 拼写错误？"
+msgstr "   ? = 通道标签无效 --- 拼写错误？"
 
 #: ../satellite_tools/satsync.py:770
 #, python-format
@@ -1494,7 +1493,7 @@ msgstr "      %s %-40s %4s %s"
 
 #: ../satellite_tools/satsync.py:772
 msgid "base-channels"
-msgstr "基础频道"
+msgstr "基础通道"
 
 #: ../satellite_tools/satsync.py:785 ../satellite_tools/satsync.py:1619
 msgid "NONE RELEVANT"
@@ -1519,25 +1518,25 @@ msgstr "?"
 #: ../satellite_tools/satsync.py:830
 #, python-format
 msgid "XXX: imported channels: %s"
-msgstr "XXX：已导入频道：%s"
+msgstr "XXX：已导入通道：%s"
 
 #: ../satellite_tools/satsync.py:831
 #, python-format
 msgid "XXX:   cached channels: %s"
-msgstr "XXX：已缓存频道：%s"
+msgstr "XXX：已缓存通道：%s"
 
 #: ../satellite_tools/satsync.py:836
 msgid "XXX: list channels called"
-msgstr "XXX：已调用列出频道命令"
+msgstr "XXX：已调用列出通道命令"
 
 #: ../satellite_tools/satsync.py:854
 msgid "ERROR: these channels either do not exist or are not available:"
-msgstr "错误：这些频道不存在或者不可用："
+msgstr "错误：这些通道不存在或者不可用："
 
 #: ../satellite_tools/satsync.py:858
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
-msgstr "       （要查看频道标签列表：%s --list-channels）"
+msgstr "       （要查看通道标签列表：%s --list-channels）"
 
 #: ../satellite_tools/satsync.py:903
 #, python-format
@@ -1620,7 +1619,7 @@ msgstr "正在下载 kickstart 树文件"
 #: ../satellite_tools/satsync.py:1520
 #, python-format
 msgid "Grabbing all patches for channel %s"
-msgstr "正在抓取频道 %s 的所有补丁"
+msgstr "正在抓取通道 %s 的所有补丁"
 
 #: ../satellite_tools/satsync.py:1570
 msgid "Downloading patch data"
@@ -1628,7 +1627,7 @@ msgstr "正在下载补丁数据"
 
 #: ../satellite_tools/satsync.py:1572
 msgid "Forcing download of all patch data for requested channels."
-msgstr "正在强制下载所请求频道的所有补丁数据。"
+msgstr "正在强制下载所请求通道的所有补丁数据。"
 
 #: ../satellite_tools/satsync.py:1587
 msgid "Downloading patch data complete"
@@ -1665,12 +1664,12 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1725
 msgid "Importing channel patches"
-msgstr "正在导入频道补丁"
+msgstr "正在导入通道补丁"
 
 #: ../satellite_tools/satsync.py:1730
 #, python-format
 msgid "Importing %s patches for channel %s."
-msgstr "正在导入 %s 补丁（用于频道 %s）。"
+msgstr "正在导入 %s 补丁（用于通道 %s）。"
 
 #. Incomplete configuration
 #: ../satellite_tools/satsync.py:2129
@@ -1707,7 +1706,7 @@ msgstr "备用 SSL CA 证书（证书文件的完整路径）"
 
 #: ../satellite_tools/satsync.py:2223
 msgid "process data for this channel only"
-msgstr "仅处理此频道的数据"
+msgstr "仅处理此通道的数据"
 
 #: ../satellite_tools/satsync.py:2225
 msgid ""
@@ -1718,7 +1717,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:2228
 msgid "existing custom channels will also be synced (unless -c is used)"
-msgstr "也会同步现有的自定义频道（除非使用 -c）"
+msgstr "也会同步现有的自定义通道（除非使用 -c）"
 
 #: ../satellite_tools/satsync.py:2230
 #, python-format
@@ -1761,7 +1760,7 @@ msgstr "要从中导入内容的父 SUSE Manager"
 
 #: ../satellite_tools/satsync.py:2248
 msgid "list all available channels and exit"
-msgstr "列出所有可用频道并退出"
+msgstr "列出所有可用通道并退出"
 
 #: ../satellite_tools/satsync.py:2250
 msgid "help on all error codes mgr-inter-sync returns"
@@ -1769,7 +1768,7 @@ msgstr "有关 mgr-inter-sync 返回的所有错误代码的帮助"
 
 #: ../satellite_tools/satsync.py:2252
 msgid "source mount point for import - disk update only"
-msgstr "用于导入的源装入点 - 仅限磁盘更新"
+msgstr "用于导入的源挂载点 - 仅限磁盘更新"
 
 #: ../satellite_tools/satsync.py:2254
 msgid "do not process patch data"
@@ -1823,9 +1822,7 @@ msgstr "从本地转储导入时不要去除 RPM"
 msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
-msgstr ""
-"主服务器的从属服务器的完全限定域名。仅当与 --mount-point 结合使用时才有效。如"
-"果您想要导入组织数据和频道权限，则必须指定此选项。"
+msgstr "主服务器的从属服务器的完全限定域名。仅当与 --mount-point 结合使用时才有效。如果您想要导入组织数据和通道权限，则必须指定此选项。"
 
 #: ../satellite_tools/satsync.py:2288
 #, python-format
@@ -1892,8 +1889,8 @@ msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
-"错误：当前未导入任何频道；请尝试运行 mgr-inter-sync --list-channels；然后运"
-"行 mgr-inter-sync -c chn0 -c chn1..."
+"错误：当前未导入任何通道；请尝试运行 mgr-inter-sync --list-channels；然后运行 mgr-inter-sync -c "
+"chn0 -c chn1..."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
@@ -1964,7 +1961,7 @@ msgstr "  11 - 分析 XML 流时出错"
 
 #: ../satellite_tools/satsync.py:2499
 msgid "  12 - Channel do not exist"
-msgstr "  12 - 频道不存在"
+msgstr "  12 - 通道不存在"
 
 #: ../satellite_tools/satsync.py:2500
 msgid "  13 - SQL error during importing package metadata"
@@ -1972,7 +1969,7 @@ msgstr "  13 - 导入软件包元数据期间发生 SQL 错误"
 
 #: ../satellite_tools/satsync.py:2501
 msgid "  14 - SQL error during linking channel packages"
-msgstr "  14 - 链接频道软件包期间发生 SQL 错误"
+msgstr "  14 - 链接通道软件包期间发生 SQL 错误"
 
 #: ../satellite_tools/satsync.py:2502
 msgid "  15 - SQL error during xml processing"
@@ -1986,7 +1983,7 @@ msgstr "  16 - 未在配置文件中设置 server.mount_point"
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Manager database"
-msgstr "  17 - 检索已导入到 SUSE Manager 数据库的频道期间发生 SQL 错误"
+msgstr "  17 - 检索已导入到 SUSE Manager 数据库的通道期间发生 SQL 错误"
 
 #: ../satellite_tools/satsync.py:2505
 msgid "  18 - Wrong db connection string in rhn.conf"
