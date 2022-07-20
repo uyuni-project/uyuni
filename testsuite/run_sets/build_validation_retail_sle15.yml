@@ -7,7 +7,7 @@
 
 ## Build Kiwi image
 ## (expected time of building is around 20 minutes)
-- features/build_validation/retail/sle15sp4buildhost_build_kiwi_image.feature
+- features/build_validation/retail/sle15sp4_buildhost_build_kiwi_image.feature
 
 ## Deployment of retail terminal
 - features/build_validation/retail/sle15sp4_terminal_deploy.feature
