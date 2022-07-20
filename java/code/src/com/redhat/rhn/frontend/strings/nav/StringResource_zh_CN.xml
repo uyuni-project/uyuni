@@ -189,14 +189,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target state="translated">订阅频道</target>
+        <target state="translated">订阅通道</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.unsubscribe" xml:space="preserve">
         <source>Unsubscribe from Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target state="translated">取消订阅频道</target>
+        <target state="translated">取消订阅通道</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.enable" xml:space="preserve">
         <source>Enable Configuration</source>
@@ -238,14 +238,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target state="translated">所有频道</target>
+        <target state="translated">所有通道</target>
       </trans-unit>
       <trans-unit id="channel.nav.shared" xml:space="preserve">
         <source>Shared</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target state="translated">共享频道</target>
+        <target state="translated">共享通道</target>
       </trans-unit>
       <trans-unit id="channel.nav.vendor" xml:space="preserve">
         <source>@@VENDOR_NAME@@</source>
@@ -259,21 +259,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target state="translated">热门频道</target>
+        <target state="translated">热门通道</target>
       </trans-unit>
       <trans-unit id="channel.nav.custom" xml:space="preserve">
         <source>My Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target state="translated">我的频道</target>
+        <target state="translated">我的通道</target>
       </trans-unit>
       <trans-unit id="channel.nav.retired" xml:space="preserve">
         <source>Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target state="translated">已撤销频道</target>
+        <target state="translated">已撤销通道</target>
       </trans-unit>
       <trans-unit id="config.nav.managed" xml:space="preserve">
         <source>Managed</source>
@@ -301,7 +301,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target state="translated">频道</target>
+        <target state="translated">通道</target>
       </trans-unit>
       <trans-unit id="config.nav.files" xml:space="preserve">
         <source>Files</source>
@@ -526,21 +526,21 @@
       </trans-unit>
       <trans-unit id="nav.sdc.config.manage_channels" xml:space="preserve">
           <source>Manage Configuration Channels</source>
-        <target state="translated">管理配置频道</target>
+        <target state="translated">管理配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.list_unsubscribe_channels" xml:space="preserve">
           <source>List/Unsubscribe from Channels</source>
-        <target state="translated">列出/取消订阅频道</target>
+        <target state="translated">列出/取消订阅通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.subscribe_channels" xml:space="preserve">
           <source>Subscribe to Channels</source>
-        <target state="translated">订阅频道</target>
+        <target state="translated">订阅通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -1076,7 +1076,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">储存库</target>
+        <target state="translated">软件源</target>
       </trans-unit>
       <trans-unit id="Managers" xml:space="preserve">
         <source>Managers</source>
@@ -1132,14 +1132,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target state="translated">使用的频道</target>
+        <target state="translated">使用的通道</target>
       </trans-unit>
       <trans-unit id="Channels Provided" xml:space="preserve">
         <source>Channels Provided</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target state="translated">提供的频道</target>
+        <target state="translated">提供的通道</target>
       </trans-unit>
       <trans-unit id="Subscriptions" xml:space="preserve">
         <source>Subscriptions</source>
@@ -1154,7 +1154,7 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-        <target state="translated">子频道</target>
+        <target state="translated">子通道</target>
       </trans-unit>
       <trans-unit id="Chat" xml:space="preserve">
           <source>Chat</source>
@@ -1168,7 +1168,7 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-        <target state="translated">基本频道</target>
+        <target state="translated">基本通道</target>
       </trans-unit>
       <!-- Activation Keys nav -->
       <trans-unit id="activation-keys.nav.activated_systems" xml:space="preserve">
