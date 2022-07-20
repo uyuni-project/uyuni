@@ -1,5 +1,5 @@
 
-repository: registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni
+repository: registry.opensuse.org/uyuni
 version: latest
 
 ## Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
