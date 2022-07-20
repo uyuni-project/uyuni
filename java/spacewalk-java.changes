@@ -1,3 +1,4 @@
+- Changed logout method to POST on HTTP API (bsc#1199663)
 - Turned API information endpoints public (bsc#1199817)
 - Fix typo and ordering of JSON over HTTP API example scripts
 - Improved log handling in HTTP API (bsc#1199662)
