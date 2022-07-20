@@ -33,7 +33,7 @@ Feature: Be able to list available products and enable them
     And I should get "Product successfully added"
 
   @cloud
-  Scenario: Enable "Public Cloud Module 15 SP3 x86_64" for migration on cloud
+  Scenario: Enable "Public Cloud Module 15 SP4 x86_64" for migration on cloud
     When I enable product "Public Cloud Module 15 SP4 x86_64"
     Then I should get "Adding channels required by 'Public Cloud Module 15 SP4 x86_64' product"
     And I should get "- sle-module-public-cloud15-sp4-pool-x86_64"
