@@ -1550,6 +1550,22 @@ DATA = {
         'BASECHANNEL' : 'rockylinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/8/bootstrap/'
     },
+    'rockylinux-9-x86_64-uyuni' : {
+        'BASECHANNEL' : 'rockylinux9-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/9/bootstrap/'
+    },
+    'rockylinux-9-aarch64-uyuni' : {
+        'BASECHANNEL' : 'rockylinux9-aarch64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/9/bootstrap/'
+    },
+    'rockylinux-9-ppc64le-uyuni' : {
+        'BASECHANNEL' : 'rockylinux9-ppc64le', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/9/bootstrap/'
+    },
+    'rockylinux-9-s390x-uyuni' : {
+        'BASECHANNEL' : 'rockylinux9-s390x', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/9/bootstrap/'
+    },
     'ubuntu-16.04-amd64' : {
         'PDID' : [-2, 1917], 'BETAPDID' : [2061], 'PKGLIST' : PKGLISTUBUNTU1604,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/16/4/bootstrap/',
