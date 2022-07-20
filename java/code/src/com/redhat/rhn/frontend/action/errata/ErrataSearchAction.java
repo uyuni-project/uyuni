@@ -193,7 +193,7 @@ public class ErrataSearchAction extends BaseSearchAction {
                 ConfigDefaults.get().getSearchServerUrl(), true);
         String path = null;
         List args = new ArrayList();
-        args.add(sessionId);
+        args.add(sessionId.toString());
         // do a package search instead of an errata one. This uses
         // a different lucene index to find pkgs then reconciles
         // them with the errata later.

@@ -63,6 +63,22 @@ public class DatabaseHandler {
     }
 
     /**
+     * Search database - using session id as String to avoid Integer overflow
+     *
+     * @param sessionId
+     *            user's application session id
+     * @param namespace
+     *            namespace query is located in
+     * @param query
+     *            search query
+     * @return list of document ids as results
+     * @throws XmlRpcFault something bad happened
+     */
+    public List<Result> search(String sessionId, String namespace, String query)
+            throws XmlRpcFault {
+        return search(Long.parseLong(sessionId), namespace, query);
+    }
+    /**
      * Search database
      *
      * @param sessionId
