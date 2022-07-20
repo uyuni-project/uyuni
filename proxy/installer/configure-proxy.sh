@@ -330,7 +330,7 @@ systemctl is-active --quiet salt-minion && PYTHON_ENV="/usr/bin/python3 -u "
 systemctl is-active --quiet venv-salt-minion && PYTHON_ENV="/usr/lib/venv-salt-minion/bin/python "
 
 if [[ -n $PYTHON_ENV ]]; then
-    $PYTHON_ENV /usr/sbin/fetch-certificate $SYSTEMID_PATH
+    $PYTHON_ENV /usr/share/rhn/proxy-installer/fetch-certificate.py $SYSTEMID_PATH
     MASTER_CONF=/etc/salt/minion.d/susemanager.conf
     if [ -f /etc/venv-salt-minion/minion.d/susemanager.conf ]; then
         MASTER_CONF=/etc/venv-salt-minion/minion.d/susemanager.conf
