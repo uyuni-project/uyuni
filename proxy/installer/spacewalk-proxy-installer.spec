@@ -24,6 +24,9 @@
 %define apacheconfdir %{_sysconfdir}/apache2
 %endif
 
+%define rhnroot %{_usr}/share/rhn
+%define pythondir %{rhnroot}/proxy-installer
+
 Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
@@ -96,6 +99,7 @@ install -m 644 rhn.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 cobbler-proxy.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 insights-proxy.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 755 configure-proxy.sh $RPM_BUILD_ROOT/%{_usr}/sbin
+install -m 644 fetch-certificate.py  $RPM_BUILD_ROOT%{pythondir}
 install -m 755 spacewalk-setup-httpd $RPM_BUILD_ROOT/%{_bindir}
 install -m 644 get_system_id.xslt $RPM_BUILD_ROOT%{_usr}/share/rhn/
 install -m 644 rhn-proxy-activate.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
@@ -109,7 +113,6 @@ do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
 install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT/%{_usr}/sbin/rhn-proxy-activate
-install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certificate
 
 %check
 
@@ -150,7 +153,8 @@ fi
 %{_usr}/share/rhn/installer/jabberd/*.xml
 %{_usr}/share/rhn/get_system_id.xslt
 %{_usr}/sbin/rhn-proxy-activate
-%{_usr}/sbin/fetch-certificate
+%dir %{pythondir}
+%{pythondir}/fetch-certificate.py
 %{_bindir}/spacewalk-setup-httpd
 %doc answers.txt
 %license LICENSE
