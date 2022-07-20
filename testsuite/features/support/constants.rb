@@ -345,7 +345,7 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-basesystem15-sp4-updates-x86_64
     sle-module-server-applications15-sp4-updates-x86_64
     sle-module-public-cloud15-sp4-updates-x86_64
-    sle-module-public-cloud15-sp4-pool-x86_64Q
+    sle-module-public-cloud15-sp4-pool-x86_64
   ]
 }.freeze
 
