@@ -976,11 +976,6 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-# WORKAROUND: --flush option does not seem to work in case of hash mismatch with same version
-When(/^I clean up all bootstrap repositories on the server$/) do
-  $server.run('rm -rf /srv/www/htdocs/pub/repositories/*')
-end
-
 When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
   base_channel = BASE_CHANNEL_BY_CLIENT[host]
   channel = CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]

@@ -4,11 +4,7 @@
 Feature: Create bootstrap repositories
   In order to be able to enroll clients with MU repositories
   As the system administrator
-  I create all bootstrap repos with --custom-repos option
-
-# WORKAROUND: --flush option does not seem to work in case of hash mismatch with same version
-  Scenario: Clean up all bootstrap repositories on the server
-    When I clean up all bootstrap repositories on the server
+  I create all bootstrap repos with --with-custom-channels option
 
 @proxy
   Scenario: Create the bootstrap repository for the SUSE Manager proxy
