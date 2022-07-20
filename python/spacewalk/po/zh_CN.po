@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-01 18:13+0000\n"
+"POT-Creation-Date: 2022-07-20 04:14+0000\n"
 "PO-Revision-Date: 2022-07-20 04:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -213,7 +213,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"您的帐户无权访问与 (release='%(release)s', arch='%(arch)s')%(www_activation)s 匹配的任何通道"
+"您的帐户无权访问与 (release='%(release)s', "
+"arch='%(arch)s')%(www_activation)s 匹配的任何通道"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
@@ -1365,8 +1366,8 @@ msgid ""
 "content on disk via Channel Dump ISOs."
 msgstr ""
 "错误：不再支持使用 RHN Classic Hosted 进行在线内容同步。\n"
-"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过通道转储 ISO 从磁盘上的本地内容同步，否则请改用 "
-"cdn-sync 命令。"
+"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过通道"
+"转储 ISO 从磁盘上的本地内容同步，否则请改用 cdn-sync 命令。"
 
 #: ../satellite_tools/satsync.py:541
 #, python-format
@@ -1822,7 +1823,9 @@ msgstr "从本地转储导入时不要去除 RPM"
 msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
-msgstr "主服务器的从属服务器的完全限定域名。仅当与 --mount-point 结合使用时才有效。如果您想要导入组织数据和通道权限，则必须指定此选项。"
+msgstr ""
+"主服务器的从属服务器的完全限定域名。仅当与 --mount-point 结合使用时才有效。如"
+"果您想要导入组织数据和通道权限，则必须指定此选项。"
 
 #: ../satellite_tools/satsync.py:2288
 #, python-format
@@ -1889,8 +1892,8 @@ msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
-"错误：当前未导入任何通道；请尝试运行 mgr-inter-sync --list-channels；然后运行 mgr-inter-sync -c "
-"chn0 -c chn1..."
+"错误：当前未导入任何通道；请尝试运行 mgr-inter-sync --list-channels；然后运"
+"行 mgr-inter-sync -c chn0 -c chn1..."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
