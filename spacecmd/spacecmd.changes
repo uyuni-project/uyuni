@@ -1,3 +1,4 @@
+- Fix missing argument on system_listmigrationtargets (bsc#1201003)
 - Show correct help on calling kickstart_importjson with no arguments
 - Fix tracebacks on spacecmd kickstart_export (bsc#1200591)
 - Change proxy container config default filename to end with tar.gz

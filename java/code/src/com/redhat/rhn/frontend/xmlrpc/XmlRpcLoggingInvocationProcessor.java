@@ -18,8 +18,9 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.api.LoggingInvocationProcessor;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,15 +34,11 @@ import redstone.xmlrpc.XmlRpcInvocationInterceptor;
  * LoggingInvocationProcessor extends the marquee-xmlrpc library to allow
  * us to log method calls.
  */
-public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
-    private static Logger log = LogManager.getLogger(LoggingInvocationProcessor.class);
-    private static ThreadLocal<User> caller = new ThreadLocal<>();
+public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
+        implements XmlRpcInvocationInterceptor {
+    private static Logger log = LogManager.getLogger(XmlRpcLoggingInvocationProcessor.class);
 
-    private static ThreadLocal timer = new ThreadLocal() {
-        protected synchronized Object initialValue() {
-            return new StopWatch();
-        }
-    };
+    private static ThreadLocal<User> caller = new ThreadLocal<>();
 
     /**
      * {@inheritDoc}
@@ -82,31 +79,17 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
      * {@inheritDoc}
      */
     public Object after(XmlRpcInvocation invocation, Object returnValue) {
-        StringBuffer buf = new StringBuffer();
-        try {
-            // Create the call in a separate buffer for reuse
-
-            buf.append("REQUESTED FROM: ");
-            buf.append(RhnXmlRpcServer.getCallerIp());
-            buf.append(" CALL: ");
-            String call = invocation.getHandlerName() + "." + invocation.getMethodName() + "(" +
-                    processArguments(invocation.getHandlerName(), invocation.getMethodName(),
-                            invocation.getArguments()) + ")";
-            buf.append(call);
-            buf.append(" CALLER: (");
-            buf.append(getCallerLogin());
-            buf.append(") TIME: ");
-
-            getStopWatch().stop();
-
-            buf.append(getStopWatch().getTime() / 1000.00);
-            buf.append(" seconds");
-
-            log.info(buf);
-        }
-        catch (RuntimeException e) {
-            log.error("postProcess error CALL: {} {}", invocation.getHandlerName(), invocation.getMethodName(), e);
-        }
+        StringBuffer arguments = processArguments(
+            invocation.getHandlerName(),
+            invocation.getMethodName(),
+            invocation.getArguments()
+        );
+        afterProcess(
+            invocation.getHandlerName(),
+            invocation.getMethodName(),
+            arguments,
+            RhnXmlRpcServer.getCallerIp()
+        );
 
         return returnValue;
     }
@@ -174,28 +157,6 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         return ret;
     }
 
-    // determines whether the value should be hidden from logging
-    private static boolean preventValueLogging(String handler, String method, int argPosition) {
-        String handlerAndMethod = handler + "." + method;
-        switch (handlerAndMethod) {
-            case "auth.login":
-                return argPosition == 1;
-            case "system.bootstrap":
-                return argPosition == 4;
-            case "system.bootstrapWithPrivateKey":
-                return argPosition == 4 || argPosition == 5;
-            case "admin.payg.create":
-                return argPosition == 5 || argPosition == 6 || argPosition == 7 ||
-                        argPosition == 11 || argPosition == 12 || argPosition == 13;
-            case "admin.payg.setDetails":
-                return argPosition == 1;
-            case "proxy.container_config":
-                return argPosition == 8 || argPosition == 6 || argPosition == 7;
-            default:
-                return false;
-        }
-    }
-
     /**
      * If the key is a sessionKey, we'll return the username, otherwise we'll
      * return (unknown).
@@ -238,16 +199,9 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         return StringUtils.isNumeric(keyParts[0]);
     }
 
-    private static StopWatch getStopWatch() {
-        return (StopWatch) timer.get();
-    }
-
-    private String getCallerLogin() {
-        String ret = "none";
-        if (getCaller() != null) {
-            ret = getCaller().getLogin();
-        }
-        return ret;
+    @Override
+    protected String getCallerLogin() {
+        return getCallerLogin(getCaller());
     }
 
     private static User getCaller() {

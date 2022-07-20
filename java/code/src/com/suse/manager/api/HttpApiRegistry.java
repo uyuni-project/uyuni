@@ -74,6 +74,7 @@ public class HttpApiRegistry {
      */
     public void initRoutes() {
         final int[] methodCount = {0};
+        new HttpApiLoggingInvocationProcessor().register();
 
         handlerFactory.getKeys().forEach(namespace -> {
             BaseHandler handler = handlerFactory.getHandler(namespace).get();
