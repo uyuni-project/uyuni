@@ -1711,7 +1711,7 @@ public class ErrataManager extends BaseManager {
     public static List<Long> applyErrata(User user, List errataIds, Date earliest,
             ActionChain actionChain, List<Long> serverIds)
         throws TaskomaticApiException {
-        return applyErrata(user, errataIds, earliest, actionChain, serverIds, true, false);
+        return applyErrata(user, errataIds, earliest, actionChain, serverIds, false, false);
     }
 
     /**
@@ -1725,10 +1725,8 @@ public class ErrataManager extends BaseManager {
      * @param earliest schedule time
      * @param actionChain the action chain to add the action to or null
      * @param serverIds server ids
-     * @param onlyRelevant If true not all erratas are applied to all systems.
-     *        Systems get only the erratas relevant for them.
-     *        If false, InvalidErrataException is thrown if an errata does not apply
-     *        to a system.
+     * @param onlyRelevant If true, InvalidErrataException is thrown if an errata
+     * does not apply to a system.
      * @param allowVendorChange true if vendor change allowed
      * @return list of action ids
      * @throws TaskomaticApiException if there was a Taskomatic error
@@ -1744,7 +1742,7 @@ public class ErrataManager extends BaseManager {
 
         // if required, check that all specified errata ids are applicable
         // throw Exception if that's not the case
-        if (!onlyRelevant) {
+        if (onlyRelevant) {
             boolean allRelevant = errataIds.isEmpty() ||
                     (errataIds.stream()
                     .allMatch(eid -> serverApplicableErrataMap.values().stream()

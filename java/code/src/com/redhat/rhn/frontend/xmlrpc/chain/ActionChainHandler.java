@@ -291,9 +291,42 @@ public class ActionChainHandler extends BaseHandler {
      * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Integer addErrataUpdate(User loggedInUser,
+                                   List<Integer> sids,
+                                   List<Integer> errataIds,
+                                   String chainLabel) {
+
+        return addErrataUpdate(loggedInUser, sids, errataIds, chainLabel, false);
+    }
+
+    /**
+     * Schedule Errata update.
+     *
+     * @param loggedInUser The current user
+     * @param sids a list of Server IDs
+     * @param errataIds a list of erratas IDs
+     * @param chainLabel Label of the action chain
+     * @param onlyRelevant If true not all 
+     *        erratas are applied to all systems. Systems get only the erratas relevant for them.
+     *        If false, InvalidErrataException is thrown if an errata does not apply
+     *        to a system.
+     * @return action id if successful, exception otherwise
+     *
+     * @apidoc.doc Adds Errata update to an Action Chain.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single_desc("int", "sids", "System IDs")
+     * @apidoc.param #array_single_desc("int", "errataIds", "Errata ID")
+     * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
+     * @apidoc.param #param_desc("boolean", "onlyRelevant", "If true not all 
+     *        erratas are applied to all systems. Systems get only the erratas relevant for them.
+     *        If false, InvalidErrataException is thrown if an errata does not apply
+     *        to a system.")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action ID of the scheduled action")
+     */
+    public Integer addErrataUpdate(User loggedInUser,
                                     List<Integer> sids,
                                     List<Integer> errataIds,
-                                    String chainLabel) {
+                                    String chainLabel,
+                                    Boolean onlyRelevant) {
         if (errataIds.isEmpty()) {
             throw new InvalidParameterException("No specified Erratas.");
         }
@@ -305,7 +338,7 @@ public class ActionChainHandler extends BaseHandler {
 
             actionIds = ActionChainManager.scheduleErrataUpdate(loggedInUser,
                     serverIds,
-                    errataIds, new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
+                    errataIds, new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel), onlyRelevant);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             // this err should never be thrown
