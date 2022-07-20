@@ -1,3 +1,4 @@
+- Fix hibernate error on deleting an image with delta
 - Changed logout method to POST on HTTP API (bsc#1199663)
 - Turned API information endpoints public (bsc#1199817)
 - Fix typo and ordering of JSON over HTTP API example scripts
