@@ -62,6 +62,7 @@ public class ApiHandler extends BaseHandler {
      * @apidoc.doc Returns the server version.
      * @apidoc.returntype #param("string", "version")
      */
+    @ReadOnly
     public String systemVersion() {
         return ConfigDefaults.get().getProductVersion();
     }

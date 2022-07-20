@@ -1,5 +1,144 @@
 = Sample Scripts
 
+== JSON over HTTP API scripts
+
+=== HTTP login with Curl
+
+Below is an example of the login process using an authentication token with the JSON over HTTP API.
+
+The JSON over HTTP API uses authentication tokens for access. The token is sent in a
+cookie called `pxt-session-cookie` in a response to a call to the `auth.login` endpoint.
+The `auth.login` endpoint accepts a POST request with a JSON body that has `login` and
+`password` properties in a top-level object.
+
+[source,bash]
+----
+$ API=https://manager.example.com/rhn/manager/api
+$ curl -H "Content-Type: application/json" -d '{"login": "myusername", "password": "mypass"}' -i $API/auth/login
+
+HTTP/1.1 200 200
+...
+Set-Cookie: pxt-session-cookie=&lt;tokenhash&gt;; ...
+...
+{"success":true,"messages":[]}
+----
+
+Once the login is successful, the retrieved cookie must be added to each subsequent request for authenticated access.
+
+
+=== HTTP GET example
+
+Below is an example of an HTTP GET call to the `contentmanagement.lookupProject` API.
+In a GET request, method parameters must be sent as query string key-value pairs.
+
+_The JSON output is pretty-printed for clarity._
+
+[source,bash]
+----
+$ API=https://manager.example.com/rhn/manager/api
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
+> $API/contentmanagement/lookupProject?projectLabel=myproject
+{
+  "success": true,
+  "result": {
+    "name": "My Project",
+    "description": "My CLM project",
+    "id": 1,
+    "label": "myproject",
+    "orgId": 1
+  }
+}
+----
+
+
+=== HTTP POST example
+
+Below is an example of an HTTP POST call to the `contentmanagement.createProject` API.
+In a POST request, method parameters can be sent as query string key-value pairs, as a JSON object in the request body, or a mix of both. `object` type parameters cannot be represented as a query string element and therefore must be sent in the request body.
+The following examples show both approaches.
+
+_The JSON output is pretty-printed for clarity._
+
+==== Using the query string
+
+[source,bash]
+----
+$ API=https://manager.example.com/rhn/manager/api
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" -X POST \
+> "$API/contentmanagement/createProject?projectLabel=myproject&name=My%20Project&description="
+{
+  "success": true,
+  "result": {
+    "name": "My Project",
+    "id": 1,
+    "label": "myproject",
+    "orgId": 1
+  }
+}
+----
+
+==== Using the request body
+
+The request body must be a top-level JSON object that contains all the parameters as its properties.
+
+[source,bash]
+----
+$ API=https://manager.example.com/rhn/manager/api
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
+> -d '{"projectLabel":"myproject","name":"My Project","description":""}' \
+> $API/contentmanagement/createProject
+{
+  "success": true,
+  "result": {
+    "name": "My Project",
+    "id": 1,
+    "label": "myproject",
+    "orgId": 1
+  }
+}
+----
+
+
+===Python 3 example
+
+Below is an example of the `system.listActiveSystems` call being used.
+
+[source,python]
+----
+#!/usr/bin/env python3
+import requests
+import pprint
+
+MANAGER_URL = "https://manager.example.com/rhn/manager/api"
+MANAGER_LOGIN = "username"
+MANAGER_PASSWORD = "password"
+SSLVERIFY = "/path/to/CA" # or False to disable verify;
+
+data = {"login": MANAGER_LOGIN, "password": MANAGER_PASSWORD}
+response = requests.post(MANAGER_URL + '/auth/login', json=data, verify=SSLVERIFY)
+print("LOGIN: {}:{}".format(response.status_code, response.json()))
+
+cookies = response.cookies
+res2 = requests.get(MANAGER_URL + '/system/listActiveSystems', cookies=cookies, verify=SSLVERIFY)
+print("RETCODE: {}".format(res2.status_code))
+pprint.pprint(res2.json())
+
+sysinfo = res2.json()['result'][0]
+
+note = {"sid": sysinfo['id'], "subject": "Title", "body": "Content of the Note"}
+res2 = requests.post(MANAGER_URL + '/system/addNote', json=note, cookies=cookies, verify=SSLVERIFY)
+print("RETCODE: {}".format(res2.status_code))
+pprint.pprint(res2.json())
+
+res2 = requests.get(MANAGER_URL + '/system/listNotes?sid={}'.format(sysinfo['id']), cookies=cookies, verify=SSLVERIFY)
+print("RETCODE: {}".format(res2.status_code))
+pprint.pprint(res2.json())
+
+res2 = requests.post(MANAGER_URL + '/auth/logout', cookies=cookies, verify=SSLVERIFY)
+print("RETCODE: {}".format(res2.status_code))
+pprint.pprint(res2.json())
+----
+
 == XMLRPC Scripts
 
 === Perl Example
@@ -146,144 +285,4 @@ for channel in channels do
 end
 
 @client.call('auth.logout', @key)
-----
-
-
-== HTTP over JSON API scripts
-
-=== HTTP login with Curl
-
-Below is an example of the login process using an authentication token with the HTTP over JSON API.
-
-The HTTP over JSON API uses authentication tokens for access. The token is sent in a
-cookie called `pxt-session-cookie` in a response to a call to the `auth.login` endpoint.
-The `auth.login` endpoint accepts a POST request with a JSON body that has `login` and
-`password` properties in a top-level object.
-
-[source,bash]
-----
-$ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" -d '{"login": "myusername", "password": "mypass"}' -i $API/auth/login
-
-HTTP/1.1 200 200
-...
-Set-Cookie: pxt-session-cookie=&lt;tokenhash&gt;; ...
-...
-{"success":true,"messages":[]}
-----
-
-Once the login is successful, the retrieved cookie must be added to each subsequent request for authenticated access.
-
-
-=== HTTP GET example
-
-Below is an example of an HTTP GET call to the `contentmanagement.lookupProject` API.
-In a GET request, method parameters must be sent as query string key-value pairs.
-
-_The JSON output is pretty-printed for clarity._
-
-[source,bash]
-----
-$ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
-> $API/contentmanagement/lookupProject?projectLabel=myproject
-{
-  "success": true,
-  "result": {
-    "name": "My Project",
-    "description": "My CLM project",
-    "id": 1,
-    "label": "myproject",
-    "orgId": 1
-  }
-}
-----
-
-
-=== HTTP POST example
-
-Below is an example of an HTTP POST call to the `contentmanagement.createProject` API.
-In a POST request, method parameters can be sent as query string key-value pairs, as a JSON object in the request body, or a mix of both. `object` type parameters cannot be represented as a query string element and therefore must be sent in the request body.
-The following examples show both approaches.
-
-_The JSON output is pretty-printed for clarity._
-
-==== Using the query string
-
-[source,bash]
-----
-$ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" -X POST \
-> "$API/contentmanagement/createProject?projectLabel=myproject&name=My%20Project&description="
-{
-  "success": true,
-  "result": {
-    "name": "My Project",
-    "id": 1,
-    "label": "myproject",
-    "orgId": 1
-  }
-}
-----
-
-==== Using the request body
-
-The request body must be a top-level JSON object that contains all the parameters as its properties.
-
-[source,bash]
-----
-$ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
-> -d '{"projectLabel":"myproject","name":"My Project","description":""}' \
-> $API/contentmanagement/createProject
-{
-  "success": true,
-  "result": {
-    "name": "My Project",
-    "id": 1,
-    "label": "myproject",
-    "orgId": 1
-  }
-}
-----
-
-
-===Python 3 example
-
-Below is an example of the `system.listActiveSystems` call being used.
-
-[source,python]
-----
-#!/usr/bin/env python3
-import requests
-import pprint
-
-MANAGER_URL = "https://manager.example.com/rhn/manager/api"
-MANAGER_LOGIN = "username"
-MANAGER_PASSWORD = "password"
-SSLVERIFY = "/path/to/CA" # or False to disable verify;
-
-data = {"login": MANAGER_LOGIN, "password": MANAGER_PASSWORD}
-response = requests.post(MANAGER_URL + '/auth/login', json=data, verify=SSLVERIFY)
-print("LOGIN: {}:{}".format(response.status_code, response.json()))
-
-cookies = response.cookies
-res2 = requests.get(MANAGER_URL + '/system/listActiveSystems', cookies=cookies, verify=SSLVERIFY)
-print("RETCODE: {}".format(res2.status_code))
-pprint.pprint(res2.json())
-
-sysinfo = res2.json()['result'][0]
-
-note = {"sid": sysinfo['id'], "subject": "Title", "body": "Content of the Note"}
-res2 = requests.post(MANAGER_URL + '/system/addNote', json=note, cookies=cookies, verify=SSLVERIFY)
-print("RETCODE: {}".format(res2.status_code))
-pprint.pprint(res2.json())
-
-res2 = requests.get(MANAGER_URL + '/system/listNotes?sid={}'.format(sysinfo['id']), cookies=cookies, verify=SSLVERIFY)
-print("RETCODE: {}".format(res2.status_code))
-pprint.pprint(res2.json())
-
-res2 = requests.post(MANAGER_URL + '/auth/logout', cookies=cookies, verify=SSLVERIFY)
-print("RETCODE: {}".format(res2.status_code))
-pprint.pprint(res2.json())
 ----
