@@ -1,3 +1,4 @@
+- Add Rocky Linux 9 and EPEL 9 key
 - improve schema compatibility with Amazon RDS
 
 -------------------------------------------------------------------
