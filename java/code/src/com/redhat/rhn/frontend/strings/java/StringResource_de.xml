@@ -8710,7 +8710,7 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected" xml:space="preserve">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
-        <target>Sie versuchen, ein Erratum zu veröffentlichen, haben jedoch keine Channels ausgewählt, in denen dieses veröffentlicht werden soll.  Errata müssen in mindestens einem Channel veröffentlicht werden.</target>
+        <target>Sie versuchen, ein Erratum zu veröffentlichen, haben jedoch keine Channels ausgewählt, in denen dieses veröffentlicht werden soll. Errata müssen in mindestens einem Channel veröffentlicht werden.</target>
       </trans-unit>
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
@@ -10163,14 +10163,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
