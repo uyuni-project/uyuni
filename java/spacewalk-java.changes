@@ -1,3 +1,4 @@
+- Fix initial profile and build host on Image Build page (bsc#1199659)
 - Fix the confirm message on the refresh action by adding a link
   to pending actions on it (bsc#1172705)
 - require new salt-netapi-client version

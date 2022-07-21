@@ -1,3 +1,5 @@
+- Fix initial profile and build host on Image Build page (bsc#1199659)
+
 -------------------------------------------------------------------
 Wed Jul 06 15:56:50 CEST 2022 - jmassaguerpla@suse.de
 
