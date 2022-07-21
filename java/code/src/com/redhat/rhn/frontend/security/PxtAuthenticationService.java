@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.security;
 import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 
+import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.webui.utils.LoginHelper;
 
 import org.apache.commons.collections.set.UnmodifiableSet;
@@ -67,6 +68,9 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         // password-reset-link destination
         set.add("/rhn/ResetLink");
         set.add("/rhn/ResetPasswordSubmit");
+
+        // HTTP API public endpoints
+        set.addAll(HttpApiRegistry.getUnautenticatedRoutes());
 
         UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
 

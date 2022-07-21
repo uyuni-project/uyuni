@@ -129,7 +129,6 @@ public class RegistrationUtils {
         List<String> statesToApply = new ArrayList<>();
         statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
         statesToApply.add(ApplyStatesEventMessage.CHANNELS);
-        statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
         statesToApply.add(ApplyStatesEventMessage.PACKAGES);
         if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);

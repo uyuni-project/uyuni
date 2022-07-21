@@ -29,48 +29,48 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
-  Scenario: Install TFTP boot package on the server
+   Scenario: Install TFTP boot package on the server
     When I install package tftpboot-installation on the server
-    And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be installed on "server"
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
 
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
-    And I enter "SLE-15-SP2-TFTP" as "label"
-    And I enter "/usr/share/tftpboot-installation/SLE-15-SP2-x86_64/" as "basepath"
-    And I select "SLE-Product-SLES15-SP2-Pool for x86_64" from "channelid"
+    And I enter "SLE-15-SP4-TFTP" as "label"
+    And I enter "/usr/share/tftpboot-installation/SLE-15-SP4-x86_64/" as "basepath"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
-    And I should see a "SLE-15-SP2-TFTP" link
+    And I should see a "SLE-15-SP4-TFTP" link
 
   # WORKAROUND bsc#1195842
   # Default cobbler kernel parameters are wrong in case of proxy
   Scenario: Fix kernel parameters
     When I follow the left menu "Systems > Autoinstallation > Distributions"
-    And I follow "SLE-15-SP2-TFTP"
-    And I enter "useonlinerepo insecure=1 install=http://proxy.example.org/ks/dist/SLE-15-SP2-TFTP self_update=http://proxy.example.org/ks/dist/child/sle15-sp2-installer-updates-x86_64/SLE-15-SP2-TFTP" as "kernelopts"
+    And I follow "SLE-15-SP4-TFTP"
+    And I enter "useonlinerepo insecure=1 install=http://proxy.example.org/ks/dist/SLE-15-SP4-TFTP self_update=http://proxy.example.org/ks/dist/child/sle15-sp4-installer-updates-x86_64/SLE-15-SP4-TFTP" as "kernelopts"
     And I click on "Update Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distribution Updated" text
 
   Scenario: Create auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/Autoyast File"
-    And I enter "15-sp2-cobbler" as "kickstartLabel"
-    And I select "SLE-15-SP2-TFTP" from "kstreeId"
-    And I attach the file "/sle-15-sp2-autoyast.xml" to "fileUpload"
+    And I enter "15-sp4-cobbler" as "kickstartLabel"
+    And I select "SLE-15-SP4-TFTP" from "kstreeId"
+    And I attach the file "/sle-15-sp4-autoyast.xml" to "fileUpload"
     And I click on "Create"
-    Then I should see a "Autoinstallation: 15-sp2-cobbler" text
+    Then I should see a "Autoinstallation: 15-sp4-cobbler" text
     And I should see a "Autoinstallation Details" text
 
   Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP2-TFTP\nregistration_key=1-SUSE-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
+    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-SUSE-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
     And I click on "Update Variables"
     And I follow "Autoinstallation File"
-    Then I should see a "SLE-15-SP2-TFTP" text
+    Then I should see a "SLE-15-SP4-TFTP" text
 
   Scenario: Set up tftp installation
     When I configure tftp on the "server"
@@ -109,19 +109,19 @@ Feature: PXE boot a terminal with Cobbler
 
   Scenario: Cleanup: remove the auto installation profile
     Given I follow the left menu "Systems > Autoinstallation > Profiles"
-    When I follow "15-sp2-cobbler"
+    When I follow "15-sp4-cobbler"
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
-    Then I should not see a "15-sp2-cobbler" text
+    Then I should not see a "15-sp4-cobbler" text
 
   Scenario: Cleanup: remove the auto installation distribution
     Given I follow the left menu "Systems > Autoinstallation > Distributions"
-    When I follow "SLE-15-SP2-TFTP"
+    When I follow "SLE-15-SP4-TFTP"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP2-x86_64" from this "server"
-    And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be uninstalled on "server"
-    Then I should not see a "SLE-15-SP2-TFTP" text
+    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+    Then I should not see a "SLE-15-SP4-TFTP" text
 
   Scenario: Cleanup: delete the PXE boot minion
     Given I am on the Systems overview page of this "pxeboot_minion"

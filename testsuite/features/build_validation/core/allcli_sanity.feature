@@ -310,12 +310,12 @@ Feature: Sanity checks
     And "sle12sp5_buildhost" should communicate with the server using public interface
     And the clock from "sle12sp5_buildhost" should be exact
 
-@sle15sp3_buildhost
-  Scenario: The SLES 15 SP3 build host is healthy
-    Then "sle15sp3_buildhost" should have a FQDN
-    And reverse resolution should work for "sle15sp3_buildhost"
-    And "sle15sp3_buildhost" should communicate with the server using public interface
-    And the clock from "sle15sp3_buildhost" should be exact
+@sle15sp4_buildhost
+  Scenario: The SLES 15 SP4 build host is healthy
+    Then "sle15sp4_buildhost" should have a FQDN
+    And reverse resolution should work for "sle15sp4_buildhost"
+    And "sle15sp4_buildhost" should communicate with the server using public interface
+    And the clock from "sle15sp4_buildhost" should be exact
 
 @opensuse153arm_minion
   Scenario: The openSUSE 15.3 ARM minion is healthy

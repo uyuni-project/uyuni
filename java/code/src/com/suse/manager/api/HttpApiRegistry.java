@@ -32,6 +32,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import spark.Route;
@@ -73,6 +74,7 @@ public class HttpApiRegistry {
      */
     public void initRoutes() {
         final int[] methodCount = {0};
+        new HttpApiLoggingInvocationProcessor().register();
 
         handlerFactory.getKeys().forEach(namespace -> {
             BaseHandler handler = handlerFactory.getHandler(namespace).get();
@@ -118,11 +120,22 @@ public class HttpApiRegistry {
     }
 
     /**
+     * Contains the endpoints that should be exposed without requiring any authentication.
+     * @return a Set containing the URL to the public endpoints
+     */
+    public static Set<String> getUnautenticatedRoutes() {
+        return Set.of(
+            "/rhn/manager/api/api/getVersion",
+            "/rhn/manager/api/api/systemVersion"
+        );
+    }
+
+    /**
      * Register login/logout endpoints from {@link LoginController} to 'auth' namespace
      */
     private void registerAuthEndpoints() {
         registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/login", LoginController::login);
-        registrationHelper.addGetRoute(HTTP_API_ROOT + "auth/logout", withUser(LoginController::logout));
+        registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/logout", withUser(LoginController::logout));
     }
 
     /**

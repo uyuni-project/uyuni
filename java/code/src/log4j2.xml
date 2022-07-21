@@ -6,7 +6,7 @@
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
-        <RollingFile name="xmlRpcFileAppender" fileName="/var/log/rhn/rhn_web_api.log" filePattern="rhn_web_api-%i.log">
+        <RollingFile name="apiLogFileAppender" fileName="/var/log/rhn/rhn_web_api.log" filePattern="rhn_web_api-%i.log">
             <PatternLayout pattern="[%d] %-5p - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
@@ -29,7 +29,7 @@
             <PatternLayout pattern="[%d] %-5p - %m%n" />
         </File>
         -->
-        <FailOver name="xmlRpcFailOverAppender" primary="xmlRpcFileAppender">
+        <FailOver name="xmlRpcFailOverAppender" primary="apiLogFileAppender">
             <FailOvers>
                 <AppenderRef ref="rootAppender" />
             </FailOvers>
@@ -64,8 +64,12 @@
         <Logger name="com.redhat.rhn.common.security.acl" level="warn" />
 
         <!-- XML-RPC logging -->
-        <Logger name="com.redhat.rhn.frontend.xmlrpc.LoggingInvocationProcessor" level="info" additivity="false">
+        <Logger name="com.redhat.rhn.frontend.xmlrpc.XmlRpcLoggingInvocationProcessor" level="info" additivity="false">
             <AppenderRef ref="xmlRpcFailOverAppender" />
+        </Logger>
+
+        <Logger name="com.suse.manager.api.LoggingInvocationProcessor" level="info" additivity="false">
+            <AppenderRef ref="apiLogFileAppender" />
         </Logger>
 
         <!-- Frontend logs -->

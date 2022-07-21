@@ -17,7 +17,8 @@ help() {
   echo "  -d  Comma separated list of destionations in the format API/PROJECT,"
   echo "      for example https://api.opensuse.org|systemsmanagement:Uyuni:Master"
   echo "  -c  Path to the OSC credentials (usually ~/.osrc)"
-  echo "  -s  Path to the private key used for MFA"
+  echo "  -s  Path to the private key used for MFA, a file ending with .pub must also"
+  echo "      exist, containing the public key"
   echo "  -p  Comma separated list of packages. If absent, all packages are submitted"
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
@@ -88,7 +89,11 @@ if [ "${SSHKEY}" != "" ]; then
     echo "ERROR: File ${SSHKEY} does not exist!"
     exit 1
   fi
-  MOUNTSSHKEY="--mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa"
+  if [ ! -f ${SSHKEY}.pub ]; then
+    echo "ERROR: File ${SSHKEY}.pub does not exist!"
+    exit 1
+  fi
+  MOUNTSSHKEY="--mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa --mount type=bind,source=${SSHKEY}.pub,target=/root/.ssh/id_rsa.pub"
   USESSHKEY="-s /root/.ssh/id_rsa"
 fi
 

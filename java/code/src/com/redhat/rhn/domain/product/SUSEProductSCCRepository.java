@@ -39,14 +39,12 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "suseProductSCCRepository", uniqueConstraints =
-        @UniqueConstraint(columnNames = { "product_id", "root_product_id", "repo_id"}))
-@NamedQueries(
-        {
-                @NamedQuery(
-                        name = "SUSEProductSCCRepository.lookupByLabel",
-                        query = "select pr from SUSEProductSCCRepository pr where pr.channelLabel = :label")
-        }
-)
+@UniqueConstraint(columnNames = {"product_id", "root_product_id", "repo_id"}))
+@NamedQueries({
+        @NamedQuery(
+                name = "SUSEProductSCCRepository.lookupByLabel",
+                query = "select pr from SUSEProductSCCRepository pr where pr.channelLabel = :label")
+})
 public class SUSEProductSCCRepository extends BaseDomainHelper {
 
     private Long id;
@@ -58,6 +56,9 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     private String channelName;
     private boolean mandatory;
     private String updateTag;
+    private String gpgKeyUrl;
+    private String gpgKeyId;
+    private String gpgKeyFingerprint;
 
     /**
      * @return Returns the id.
@@ -65,8 +66,7 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prdrepo_seq")
-    @SequenceGenerator(name = "prdrepo_seq", sequenceName = "suse_prdrepo_id_seq",
-                       allocationSize = 1)
+    @SequenceGenerator(name = "prdrepo_seq", sequenceName = "suse_prdrepo_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -140,6 +140,30 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     }
 
     /**
+     * @return Returns the GPG key URL
+     */
+    @Column(name = "gpg_key_url")
+    public String getGpgKeyUrl() {
+        return gpgKeyUrl;
+    }
+
+    /**
+     * @return Returns the GPG key id
+     */
+    @Column(name = "gpg_key_id")
+    public String getGpgKeyId() {
+        return gpgKeyId;
+    }
+
+    /**
+     * @return Returns the GPG Key Fingerprint
+     */
+    @Column(name = "gpg_key_fp")
+    public String getGpgKeyFingerprint() {
+        return gpgKeyFingerprint;
+    }
+
+    /**
      * @param idIn The id to set.
      */
     public void setId(Long idIn) {
@@ -208,6 +232,27 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     @Transient
     public boolean isRoot() {
         return getParentChannelLabel() == null;
+    }
+
+    /**
+     * @param gpgKeyUrlIn The GPG Key Url
+     */
+    public void setGpgKeyUrl(String gpgKeyUrlIn) {
+        gpgKeyUrl = gpgKeyUrlIn;
+    }
+
+    /**
+     * @param gpgKeyIdIn the GPG Key ID
+     */
+    public void setGpgKeyId(String gpgKeyIdIn) {
+        gpgKeyId = gpgKeyIdIn;
+    }
+
+    /**
+     * @param gpgKeyFingerprintIn the GPG Key Fingerprint
+     */
+    public void setGpgKeyFingerprint(String gpgKeyFingerprintIn) {
+        gpgKeyFingerprint = gpgKeyFingerprintIn;
     }
 
     @Override

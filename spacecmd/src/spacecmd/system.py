@@ -4535,7 +4535,7 @@ def help_system_listmigrationtargets(self):
 def do_system_listmigrationtargets(self, args):
     arg_parser = get_argument_parser()
 
-    (args, ) = parse_command_arguments(args, arg_parser)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
         self.help_system_listmigrationtargets()

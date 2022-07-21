@@ -6,7 +6,7 @@ ADDRESSES = { 'network'           => '0',
               'sle_minion'        => '3',
               'pxeboot_minion'    => '4',
               'sle12sp5_terminal' => '5',
-              'sle15sp3_terminal' => '6',
+              'sle15sp4_terminal' => '6',
               'range begin'       => '128',
               'range end'         => '253',
               'proxy'             => '254',
@@ -148,8 +148,8 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'sle15sp4_client' => 'SLES15-SP4-Pool',
                            'sle15sp4_minion' => 'SLES15-SP4-Pool',
                            'sle15sp4_ssh_minion' => 'SLES15-SP4-Pool',
-                           'sle15sp3_buildhost' => 'SLES15-SP3-Pool',
-                           'sle15sp3_terminal' => 'SLES15-SP3-Pool',
+                           'sle15sp4_buildhost' => 'SLES15-SP4-Pool',
+                           'sle15sp4_terminal' => 'SLES15-SP4-Pool',
                            'ceos7_client' => 'RHEL x86_64 Server 7',
                            'ceos7_minion' => 'RHEL x86_64 Server 7',
                            'ceos7_ssh_minion' => 'RHEL x86_64 Server 7',
@@ -273,12 +273,18 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   # 'default' is required for auto-installation tests.
   'default' =>
   %w[
-    sle-product-sles15-sp2-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp2
-    sle-module-basesystem15-sp2-pool-x86_64
-    sle-product-sles15-sp2-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp2
-    sle-module-basesystem15-sp2-updates-x86_64
+    sle-product-sles15-sp4-pool-x86_64
+    sle-manager-tools15-pool-x86_64-sp4
+    sle-manager-tools15-beta-pool-x86_64-sp4
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-basesystem15-sp4-pool-x86_64
+    sle-module-server-applications15-sp4-pool-x86_64
+    sle-product-sles15-sp4-updates-x86_64
+    sle-manager-tools15-updates-x86_64-sp4
+    sle-manager-tools15-beta-updates-x86_64-sp4
+    sle-module-containers15-sp4-updates-x86_64
+    sle-module-basesystem15-sp4-updates-x86_64
+    sle-module-server-applications15-sp4-updates-x86_64
   ],
   '12-SP4' =>
   %w[
@@ -358,5 +364,5 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   ]
 }.freeze
 
-MIGRATE_SSH_MINION_FROM = '15-SP2'.freeze
-MIGRATE_SSH_MINION_TO = '15-SP3'.freeze
+MIGRATE_SSH_MINION_FROM = '15-SP3'.freeze
+MIGRATE_SSH_MINION_TO = '15-SP4'.freeze
