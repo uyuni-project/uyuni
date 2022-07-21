@@ -1,3 +1,4 @@
+- Add method to handle session id as String
 - Migrated from log4j1.x.x to log4j2.x.x
 
 -------------------------------------------------------------------
