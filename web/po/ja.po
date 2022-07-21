@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-14 10:09+0000\n"
-"PO-Revision-Date: 2022-06-22 04:13+0000\n"
+"POT-Creation-Date: 2022-07-21 07:25+0000\n"
+"PO-Revision-Date: 2022-07-20 23:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1047,6 +1047,7 @@ msgstr "ssh接続データを編集しています.."
 msgid ""
 "When editing the SSH connection all needed credentials must be re-provided."
 msgstr ""
+"SSH接続を編集する際には、必要なすべての資格情報を再提供する必要があります。"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
@@ -4192,15 +4193,14 @@ msgid "Container Based Proxy Configuration"
 msgstr "コンテナベースのプロキシ設定"
 
 #: ../html/src/manager/proxy/container-config.tsx:185
-#, fuzzy
 msgid ""
 "You can generate a set of configuration files and certificates in order to "
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .tar.gz archive to download."
 msgstr ""
 "コンテナベースのプロキシを登録して実行するために、一連の設定ファイルと証明書"
-"を生成できます。次のフォームに入力して送信すると、ダウンロードする.zipアーカ"
-"イブが取得されます。"
+"を生成できます。次のフォームに入力して送信すると、ダウンロードする .tar.gz"
+"アーカイブが取得されます。"
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Proxy FQDN"

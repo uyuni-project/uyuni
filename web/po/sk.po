@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-14 10:09+0000\n"
-"PO-Revision-Date: 2022-06-08 18:13+0000\n"
+"POT-Creation-Date: 2022-07-21 07:25+0000\n"
+"PO-Revision-Date: 2022-07-16 15:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1046,6 +1046,8 @@ msgstr "Úprava údajov pripojenia ssh.."
 msgid ""
 "When editing the SSH connection all needed credentials must be re-provided."
 msgstr ""
+"Pri úprave pripojenia SSH je potrebné opätovne zadať všetky potrebné "
+"prihlasovacie údaje."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
@@ -4185,7 +4187,6 @@ msgid "Container Based Proxy Configuration"
 msgstr "Konfigurácia proxy založeného na kontajneroch"
 
 #: ../html/src/manager/proxy/container-config.tsx:185
-#, fuzzy
 msgid ""
 "You can generate a set of configuration files and certificates in order to "
 "register and run a container-based proxy. Once the following form is filled "
@@ -4193,7 +4194,7 @@ msgid ""
 msgstr ""
 "Môžete vygenerovať sadu konfiguračných súborov a certifikátov na registráciu "
 "a spustenie proxy servera založeného na kontajneroch. Po vyplnení a odoslaní "
-"nasledujúceho formulára dostanete na stiahnutie archív .zip."
+"nasledujúceho formulára dostanete na stiahnutie archív .tar.gz."
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Proxy FQDN"

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 13:12+0100\n"
-"PO-Revision-Date: 2021-03-10 13:38+0000\n"
+"PO-Revision-Date: 2022-07-20 04:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "dnf-plugin-spacewalk-master/zh_CN/>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../spacewalk.py:41
 msgid "Spacewalk based repositories will be disabled."
-msgstr "将会禁用基于 Spacewalk 的储存库。"
+msgstr "将会禁用基于 Spacewalk 的软件源。"
 
 #: ../spacewalk.py:42
 msgid "Spacewalk channel support will be disabled."
-msgstr "将禁用 Spacewalk 频道支持。"
+msgstr "将禁用 Spacewalk 通道支持。"
 
 #: ../spacewalk.py:43
 msgid "There was an error communicating with Spacewalk server."
@@ -37,7 +37,7 @@ msgstr "此系统未在 Spacewalk 服务器中注册。"
 
 #: ../spacewalk.py:45
 msgid "This system is not subscribed to any channels."
-msgstr "此系统未订阅任何频道。"
+msgstr "此系统未订阅任何通道。"
 
 #: ../spacewalk.py:46
 msgid "SystemId could not be acquired."
@@ -57,7 +57,7 @@ msgid ""
 "For security reasons packages from Spacewalk based repositories can be "
 "verified only with locally installed gpg keys. GPG key '%s' has been "
 "rejected."
-msgstr "出于安全原因，来自基于 Spacewalk 的储存库的软件包只能通过本地安装的 gpg 密钥校验。GPG 密码 \"%s\" 已被拒绝。"
+msgstr "出于安全原因，来自基于 Spacewalk 的软件源的软件包只能通过本地安装的 gpg 密钥校验。GPG 密码 \"%s\" 已被拒绝。"
 
 #: ../spacewalk.py:50
 msgid "Package profile information could not be sent."
