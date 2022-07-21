@@ -790,7 +790,7 @@ When(/^I enable repositories before installing Docker$/) do
   log $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
-  if !$is_cloud_provider
+  unless $is_cloud_provider
     repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
     log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   end
@@ -821,7 +821,7 @@ When(/^I disable repositories after installing Docker$/) do
   log $build_host.run("zypper mr --disable #{repos}")
 
   # Tools
-  if !$is_cloud_provider
+  unless $is_cloud_provider
     repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
     log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   end
