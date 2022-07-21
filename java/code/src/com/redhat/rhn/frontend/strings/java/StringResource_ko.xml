@@ -11047,7 +11047,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
-        <target state="final">선택적 OVAL  파일(쉼표로 구분)</target>
+        <target state="final">선택적 OVAL 파일(쉼표로 구분)</target>
       </trans-unit>
       <trans-unit id="taskomatic.payg.success" xml:space="preserve" approved="yes">
         <source>Credentials successfully updated</source>
