@@ -259,6 +259,8 @@ while read PKG_NAME; do
   fi
   # to lowercase with ",," and replace spaces " " with "-"
   PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
+  # Remove leading zero from Uyuni release and add potentially missing micro part
+  SEMANTIC_VERSION=$(echo ${PRODUCT_VERSION} | sed 's/\([0-9]\+\)\.0\?\([1-9][0-9]*\)\(\.\([0-9]\+\)\)\?\( .\+\)\?/\1.\2.\4\5/' | sed 's/\.$/.0/')
 
   if [ -f "$SRPM_PKG_DIR/Dockerfile" ]; then
       # check which endpoint we are using to match the product
@@ -281,9 +283,15 @@ while read PKG_NAME; do
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
           sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
           sed "s/^home: .*$/home: https:\/\/www.suse.com\/products\/suse-manager\//" -i $SRPM_PKG_DIR/Chart.yaml
-          sed "s/version: 0.0/version: ${VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
+          CHART_TAR=$(ls ${SRPM_PKG_DIR}/*.tar)
+          mkdir ${SRPM_PKG_DIR}/tar
+          tar xf $CHART_TAR -C ${SRPM_PKG_DIR}/tar
+          sed "s/^repository: .\+$/repository: registry.suse.com\/suse\/manager\/${VERSION}/" -i ${SRPM_PKG_DIR}/tar/values.yaml
+          tar cf $CHART_TAR -C ${SRPM_PKG_DIR}/tar .
+          rm -rf ${SRPM_PKG_DIR}/tar
       fi
-      sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
+      sed "s/version: 0.0.0/version: ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
+      sed "s/%PKG_VERSION%/${SEMANTIC_VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
   fi
 
   # update from obs (create missing package on the fly)

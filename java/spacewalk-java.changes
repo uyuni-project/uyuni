@@ -1,4 +1,5 @@
 - Modify parameter type when communicating with the search server (bsc#1187028)
+- Fix hibernate error on deleting an image with delta
 - Changed logout method to POST on HTTP API (bsc#1199663)
 - Turned API information endpoints public (bsc#1199817)
 - Fix typo and ordering of JSON over HTTP API example scripts
