@@ -312,6 +312,14 @@ public class FormulaFactory {
      */
     public static void saveServerFormulaData(Map<String, Object> formData, String minionId, String formulaName)
             throws IOException {
+        // Check if formula is really enabled for the system. If not, explicitly enable it.
+        // This may happen when overriding group formula on system level
+        List<String> enabledFormulas = getFormulasByMinionId(minionId);
+        if (!enabledFormulas.contains(formulaName)) {
+            enabledFormulas.add(formulaName);
+            saveServerFormulas(minionId, enabledFormulas);
+        }
+
         // Add the monitoring entitlement if at least one of the exporters is enabled
         if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
             MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
@@ -608,7 +616,12 @@ public class FormulaFactory {
         }
 
         // Save selected Formulas
-        groupFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
+        if (selectedFormulas.isEmpty()) {
+            groupFormulas.remove(groupId.toString());
+        }
+        else {
+            groupFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
+        }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
             writer.write(GSON.toJson(groupFormulas));
         }
