@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-20 04:14+0000\n"
+"POT-Creation-Date: 2022-07-21 11:57+0000\n"
 "PO-Revision-Date: 2018-03-16 04:50+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish\n"
@@ -165,7 +165,7 @@ msgstr "Nieprawidłowa wartość „%s” dla %s (%s)"
 msgid "Invalid system_id/action_id pair."
 msgstr "Nieprawidłowa para system_id/action_id."
 
-#: ../server/handlers/xmlrpc/up2date.py:249
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Nieprawidłowa wartość %s (%s)"

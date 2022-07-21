@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-20 04:14+0000\n"
+"POT-Creation-Date: 2022-07-21 11:57+0000\n"
 "PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
@@ -172,7 +172,7 @@ msgstr "%s(%s)에 유효하지 않은 값 '%s'"
 msgid "Invalid system_id/action_id pair."
 msgstr "유효하지 않은 system_id/action_id 쌍입니다."
 
-#: ../server/handlers/xmlrpc/up2date.py:249
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "유효하지 않은 값 %s(%s)"

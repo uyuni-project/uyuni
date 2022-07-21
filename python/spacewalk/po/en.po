@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RHN 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-20 04:14+0000\n"
+"POT-Creation-Date: 2022-07-21 11:57+0000\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Jens Maucher <jens.maucher@gmx.de>\n"
 "Language-Team: English <https://l10n.opensuse.org/projects/uyuni/backend/en/"
@@ -377,7 +377,7 @@ msgstr "Ungültiger Wert '%s' für %s (%s)"
 msgid "Invalid system_id/action_id pair."
 msgstr "Ungültiges system_id/action_id-Paar."
 
-#: ../server/handlers/xmlrpc/up2date.py:249
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Ungültiger Wert %s (%s)"
