@@ -1,3 +1,7 @@
+- Check if system has all formulas correctly assigned
+  (bsc#1201607)
+- Remove group formula assignements and data on group delete
+  (bsc#1201606)
 - Process salt events in FIFO order (bsc#1203532)
 - Added a warning message for traditional stack deprecation
 - Fix rendering of ssm/MigrateSystems page (bsc#1204651)
