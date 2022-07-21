@@ -273,12 +273,18 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   # 'default' is required for auto-installation tests.
   'default' =>
   %w[
-    sle-product-sles15-sp2-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp2
-    sle-module-basesystem15-sp2-pool-x86_64
-    sle-product-sles15-sp2-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp2
-    sle-module-basesystem15-sp2-updates-x86_64
+    sle-product-sles15-sp4-pool-x86_64
+    sle-manager-tools15-pool-x86_64-sp4
+    sle-manager-tools15-beta-pool-x86_64-sp4
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-basesystem15-sp4-pool-x86_64
+    sle-module-server-applications15-sp4-pool-x86_64
+    sle-product-sles15-sp4-updates-x86_64
+    sle-manager-tools15-updates-x86_64-sp4
+    sle-manager-tools15-beta-updates-x86_64-sp4
+    sle-module-containers15-sp4-updates-x86_64
+    sle-module-basesystem15-sp4-updates-x86_64
+    sle-module-server-applications15-sp4-updates-x86_64
   ],
   '12-SP4' =>
   %w[
