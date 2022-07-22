@@ -48,8 +48,7 @@ Feature: Correct timezone display
       """
     And I enter "00:00" as "date_timepicker_widget_input"
     And I click on "Schedule"
-    # WORKAROUND for bsc #1195455, If the below line gets red, they probably fixed the bug, then we should remove AM from the below text
-    Then I should see a "12:00:00 AM MYT" text
+    Then I should see a "00:00:00 MYT" text
     
   Scenario: Login as the new Malaysian user if the previous scenario failed
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
