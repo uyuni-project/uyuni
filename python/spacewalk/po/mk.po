@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2022-07-12 07:12+0000\n"
+"PO-Revision-Date: 2022-07-22 08:12+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -1168,15 +1168,15 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:311
 msgid "hours"
-msgstr ""
+msgstr "саати"
 
 #: ../satellite_tools/satsync.py:311
 msgid "minutes"
-msgstr ""
+msgstr "минути"
 
 #: ../satellite_tools/satsync.py:311
 msgid "seconds"
-msgstr ""
+msgstr "секунди"
 
 #: ../satellite_tools/satsync.py:357
 msgid ""
@@ -1192,7 +1192,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:404
 msgid "Skipping..."
-msgstr ""
+msgstr "Се прескокнува..."
 
 #: ../satellite_tools/satsync.py:442
 #, python-format
@@ -1275,8 +1275,9 @@ msgid "   ------- %s PARSE/IMPORT ERROR -------"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:608
+#, fuzzy
 msgid "   ---------------------------------------"
-msgstr ""
+msgstr "   ---------------------------------------"
 
 #: ../satellite_tools/satsync.py:611
 #, python-format
@@ -1304,15 +1305,15 @@ msgstr ""
 #: ../satellite_tools/satsync.py:742
 #, python-format
 msgid "%10s"
-msgstr ""
+msgstr "%10s"
 
 #: ../satellite_tools/satsync.py:749
 msgid "p"
-msgstr ""
+msgstr "p"
 
 #: ../satellite_tools/satsync.py:751
 msgid "."
-msgstr ""
+msgstr "."
 
 #: ../satellite_tools/satsync.py:757
 msgid "   p = previously imported/synced channel"
@@ -1333,7 +1334,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:770
 #, python-format
 msgid "   %s:"
-msgstr ""
+msgstr "   %s:"
 
 #: ../satellite_tools/satsync.py:771
 #, python-format
