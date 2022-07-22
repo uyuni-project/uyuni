@@ -93,6 +93,9 @@ with open(config_path + "httpd.yaml") as httpdSource:
     with open("/etc/rhn/rhn.conf", "w") as file:
         file.write(f'''# Automatically generated Uyuni Proxy Server configuration file.
         # -------------------------------------------------------------------------
+        
+        # Debug log level
+        debug = {config.get("debug_log_level", 4)}
 
         # SSL CA certificate location
         proxy.ca_chain = /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
