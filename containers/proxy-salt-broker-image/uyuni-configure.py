@@ -15,6 +15,10 @@ with open("/etc/uyuni/config.yaml") as source:
         # Debug log level
         debug = {config.get("debug_log_level", 4)}
         
+        # Logs redirect
+        proxy.broker.log_file = stdout
+        proxy.redirect.log_file = stdout
+        
         # Hostname of Uyuni, SUSE Manager Server or another proxy
         rhn_parent={config['server']}''')
 
