@@ -549,6 +549,7 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
   <elaborator name="entitlements"/>
   <elaborator name="is_virtual_guest" />
   <elaborator name="is_virtual_host" />
+  <elaborator name="system_extra_packages" />
 </mode>
 
 <mode name="visible_to_user_physical_list" class="com.redhat.rhn.frontend.dto.SystemOverview">
@@ -1314,6 +1315,36 @@ ORDER BY S.ID
   FROM  rhnServerOverview
   WHERE  server_id IN (%s)
 ORDER BY  UPPER(COALESCE(SERVER_NAME, '(none)')), SERVER_ID
+</query>
+
+<query name="system_extra_packages" params="">
+  SELECT sp.server_id AS id,
+         count(sp.name_id) AS extra_pkg_count
+  FROM rhnServerPackage sp
+    LEFT OUTER JOIN (SELECT sc.server_id,
+                            cp.package_id,
+                            p.name_id,
+                            p.evr_id,
+                            p.package_arch_id
+                     FROM rhnPackage p,
+                          rhnServerChannel sc,
+                          rhnServerPackage sp2,
+                          rhnChannelPackage cp,
+                          rhnUserServerPerms usp2
+                     WHERE cp.package_id = p.id
+                       AND cp.channel_id = sc.channel_id
+                       AND sc.server_id = usp2.server_id
+                       AND sc.server_id = sp2.server_id
+                       AND sp2.server_id in (%s)
+                       AND sp2.name_id = p.name_id
+                       AND sp2.evr_id = p.evr_id
+                       AND sp2.package_arch_id = p.package_arch_id
+                     ) scp ON (scp.server_id = sp.server_id AND
+                               sp.name_id = scp.name_id AND
+                               sp.evr_id = scp.evr_id AND
+                               sp.package_arch_id = scp.package_arch_id)
+  WHERE scp.package_id IS NULL AND sp.server_id in (%s)
+  GROUP BY sp.server_id
 </query>
 
 <mode name="visible_to_user_with_schedules" class="com.redhat.rhn.frontend.dto.SystemScheduleDto">
