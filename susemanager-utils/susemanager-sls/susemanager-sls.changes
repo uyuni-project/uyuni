@@ -1,3 +1,4 @@
+- Fix issue bootstrap issue with Debian 9 because missing python3-contextvars (bsc#1201782)
 - Fix deploy of SLE Micro CA Certificate (bsc#1200276)
 - disable local repos before bootstrap and at highstate (bsc#1191925)
 - deploy GPG keys to the clients and define trust in channels (bsc#1199984)
