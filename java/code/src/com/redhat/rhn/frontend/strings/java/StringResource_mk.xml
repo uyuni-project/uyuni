@@ -123,56 +123,56 @@
       </trans-unit>
       <trans-unit id="3.4.0" xml:space="preserve">
         <source>3.4.0</source>
-        <target/>
+        <target>3.4.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.5.0" xml:space="preserve">
         <source>3.5.0</source>
-        <target/>
+        <target>3.5.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.6.0" xml:space="preserve">
         <source>3.6.0</source>
-        <target/>
+        <target>3.6.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.6.5" xml:space="preserve">
         <source>3.6.5</source>
-        <target/>
+        <target>3.6.5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3.7.0" xml:space="preserve">
         <source>3.7.0</source>
-        <target/>
+        <target>3.7.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4" xml:space="preserve">
         <source>4</source>
-        <target/>
+        <target>4</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4.0.0" xml:space="preserve">
         <source>4.0.0</source>
-        <target/>
+        <target>4.0.0</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5" xml:space="preserve">
         <source>5</source>
-        <target/>
+        <target>5</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1242,7 +1242,7 @@
       </trans-unit>
       <trans-unit id="user prefix  " xml:space="preserve">
         <source> </source>
-        <target/>
+        <target state="needs-translation"> </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
