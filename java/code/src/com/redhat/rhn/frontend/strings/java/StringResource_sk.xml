@@ -10038,46 +10038,46 @@ inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</t
       </trans-unit>
       <trans-unit id="images.message.error.connection" xml:space="preserve">
         <source>There was a problem connecting to SUSE Studio, you might want to review your configuration &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt; or try again later.</source>
-        <target/>
+        <target>Vyskytol sa problém s pripojením k SUSE Studio, možno budete chcieť skontrolovať svoju konfiguráciu &lt;a href="/rhn/account/Credentials.do"&gt;tu&lt;/a&gt; alebo to skúste neskôr.</target>
       </trans-unit>
       <trans-unit id="images.message.success.scheduled" xml:space="preserve">
         <source>Image deployment scheduled: {0}</source>
-        <target/>
+        <target>Nasadenie obrazov naplánované: {0}</target>
       </trans-unit>
       <trans-unit id="help.credentials.rerequest" xml:space="preserve">
         <source>An email has already been sent. You may request this action only every {0} seconds.</source>
-        <target/>
+        <target>Email už bol odoslaný. O túto akciu môžete požiadať len každých {0} sekúnd.</target>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Informácie o obnovení hesla odoslané na {0}. Ak ju nedostanete, uistite sa, že máte zaregistrovaný účet s prihlasovacím menom a uvedeným emailom.</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
-        <target/>
+        <target>Zadaná emailová adresa a prihlasovacie meno sa nezhodujú.</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidlogin" xml:space="preserve">
         <source>Supplied login does not exist.</source>
-        <target/>
+        <target>Uvedené prihlasovacie meno neexistuje.</target>
       </trans-unit>
       <trans-unit id="help.credentials.nologins" xml:space="preserve">
         <source>There are no registered accounts with that email address.</source>
-        <target/>
+        <target>S touto emailovou adresou nie sú zaregistrované žiadne účty.</target>
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
         <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Nájdené prihlasovacie meno(á) odoslané na {0}. Ak ju nedostanete, uistite sa, že máte zaregistrovaný účet s prihlasovacím menom a uvedeným emailom.</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Vybraný systém má k dispozícii viacero kanálov potomkov, ktoré obsahujú balík mgr-cfg. Musíte sa ručne prihlásiť k požadovanému kanálu potomka a potom skúsiť túto akciu znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>
-        <target/>
+        <target>Externé odkazy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
