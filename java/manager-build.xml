@@ -6,9 +6,9 @@
 
  Requirements & configuration:
 
- https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
+ https://github.com/uyuni-project/uyuni/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties -->
   <property file="buildconf/manager-developer-build.properties" />
 
