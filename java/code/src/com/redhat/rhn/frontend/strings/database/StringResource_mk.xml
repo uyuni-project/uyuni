@@ -5,14 +5,14 @@
       <!-- Action Statuses -->
       <trans-unit id="Queued" xml:space="preserve">
         <source>Queued</source>
-        <target/>
+        <target>Во редица</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Picked Up" xml:space="preserve">
         <source>Picked Up</source>
-        <target/>
+        <target>Подигнато</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
@@ -41,14 +41,14 @@
       </trans-unit>
       <trans-unit id="Spacewalk Provisioning Entitled Servers" xml:space="preserve">
         <source>Provisioning</source>
-        <target/>
+        <target>Провизионирање</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk Monitoring Entitled Servers" xml:space="preserve">
         <source>Monitoring</source>
-        <target/>
+        <target>Мониторинг</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
@@ -56,7 +56,7 @@
       <!--  Human Readable version of the entitlement labels -->
       <trans-unit id="bootstrap_entitled" xml:space="preserve">
         <source>Bootstrap</source>
-        <target/>
+        <target>Бутстрап</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="unentitled" xml:space="preserve">
         <source>&lt;em&gt;(none)&lt;/em&gt;</source>
-        <target/>
+        <target>&lt;em&gt;(ниеден)&lt;/em&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -83,7 +83,7 @@
       </trans-unit>
       <trans-unit id="base" xml:space="preserve">
         <source>Base</source>
-        <target/>
+        <target>База</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -92,7 +92,7 @@
       </trans-unit>
       <trans-unit id="add-on" xml:space="preserve">
         <source>Add-On</source>
-        <target/>
+        <target>Додаток</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -101,7 +101,7 @@
       </trans-unit>
       <trans-unit id="virtualization_host" xml:space="preserve">
         <source>Virtualization Host</source>
-        <target/>
+        <target>Хост за виртуализација</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -132,35 +132,35 @@
       </trans-unit>
       <trans-unit id="Asia/Tokyo" xml:space="preserve">
         <source>(GMT+0900) Japan</source>
-        <target/>
+        <target>(GMT+0900) Јапонија</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Seoul" xml:space="preserve">
         <source>(GMT+0900) Korea</source>
-        <target/>
+        <target>(GMT+0900) Кореја</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Perth" xml:space="preserve">
         <source>(GMT+0800) Australia (Western)</source>
-        <target/>
+        <target>(GMT+0800) Австралија (Западна)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Europe/Moscow" xml:space="preserve">
         <source>(GMT+0400) Russia (Moscow)</source>
-        <target/>
+        <target>(GMT+0400) Русија (Москва)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Africa/Johannesburg" xml:space="preserve">
         <source>(GMT+0200) South Africa (Johannesburg)</source>
-        <target/>
+        <target>(GMT+0200) Јужна Африка (Јоханесбург)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
