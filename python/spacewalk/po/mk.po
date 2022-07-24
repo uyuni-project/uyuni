@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2022-07-22 08:12+0000\n"
+"PO-Revision-Date: 2022-07-24 23:12+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -150,7 +150,7 @@ msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1127
 msgid "Privacy Statement"
-msgstr ""
+msgstr "Изјава за Приватност"
 
 #: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
@@ -391,7 +391,7 @@ msgstr ""
 
 #: ../common/rhnException.py:56
 msgid "Permission denied."
-msgstr ""
+msgstr "Не е дозволено."
 
 #: ../common/rhnException.py:57
 msgid "Object not found."
@@ -493,7 +493,7 @@ msgstr ""
 
 #: ../common/rhnException.py:89
 msgid "Channel error"
-msgstr ""
+msgstr "Канална грешка"
 
 #: ../common/rhnException.py:90
 msgid "Client session token is invalid."
@@ -509,7 +509,7 @@ msgstr ""
 
 #: ../common/rhnException.py:93
 msgid "Invalid action"
-msgstr ""
+msgstr "Невалидна акција"
 
 #: ../common/rhnException.py:94
 msgid "You are not allowed to perform administrative tasks on this system."
@@ -675,7 +675,7 @@ msgstr ""
 
 #: ../common/rhnException.py:169
 msgid "Invalid username"
-msgstr ""
+msgstr "Невалидно име на корисник"
 
 #. 140-159 applet errors
 #: ../common/rhnException.py:172
@@ -803,7 +803,7 @@ msgstr ""
 
 #: ../common/rhnException.py:223
 msgid "Mismatching versions"
-msgstr ""
+msgstr "Верзиите не се согласуваат"
 
 #: ../common/rhnException.py:224
 msgid "Invalid channel version"
@@ -836,7 +836,7 @@ msgstr ""
 
 #: ../common/rhnException.py:233
 msgid "Permission error"
-msgstr ""
+msgstr "Грешка во дозволата"
 
 #: ../common/rhnException.py:234
 msgid "Content missing for configuration file"
@@ -929,7 +929,7 @@ msgstr ""
 #: ../common/rhnException.py:356
 #, python-format
 msgid "Explanation: %s"
-msgstr ""
+msgstr "Објаснување: %s"
 
 #: ../common/rhnTB.py:201
 #, python-format
@@ -1044,12 +1044,12 @@ msgstr ""
 #: ../satellite_tools/messages.py:72
 #, python-format
 msgid "       success: %d"
-msgstr ""
+msgstr "       успех: %d"
 
 #: ../satellite_tools/messages.py:73
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       неуспех:  %d"
 
 #: ../satellite_tools/messages.py:74
 #, python-format
@@ -1154,7 +1154,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:285
 msgid "Repeated failures"
-msgstr ""
+msgstr "Повторени неуспеси"
 
 #: ../satellite_tools/satsync.py:290
 #, python-format
@@ -1220,7 +1220,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:541
 #, python-format
 msgid "   url: %s"
-msgstr ""
+msgstr "   урл: %s"
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
@@ -1275,7 +1275,6 @@ msgid "   ------- %s PARSE/IMPORT ERROR -------"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:608
-#, fuzzy
 msgid "   ---------------------------------------"
 msgstr "   ---------------------------------------"
 
@@ -1363,7 +1362,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:815
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../satellite_tools/satsync.py:830
 #, python-format
@@ -1485,7 +1484,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1592 ../satellite_tools/satsync.py:1613
 msgid "Downloading:"
-msgstr ""
+msgstr "Симнува:"
 
 #: ../satellite_tools/satsync.py:1595
 msgid " - complete"
@@ -1501,7 +1500,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1651
 msgid "Importing:  "
-msgstr ""
+msgstr "Импортира:  "
 
 #. not in the cache
 #: ../satellite_tools/satsync.py:1719
