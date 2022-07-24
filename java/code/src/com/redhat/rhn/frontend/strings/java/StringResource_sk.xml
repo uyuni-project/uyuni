@@ -10084,11 +10084,11 @@ inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</t
       </trans-unit>
       <trans-unit id="formula.accessdenied" xml:space="preserve">
         <source>You do not have access.</source>
-        <target/>
+        <target>Nemáte prístup.</target>
       </trans-unit>
       <trans-unit id="Home" xml:space="preserve">
         <source>Home</source>
-        <target/>
+        <target>Domov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -10100,7 +10100,12 @@ inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</t
 Thank you for using @@PRODUCT_NAME@@.
 --the @@PRODUCT_NAME@@ Team
 </source>
-        <target/>
+        <target>
+
+
+Ďakujeme, že používate @@PRODUCT_NAME@@.
+--Tím @@PRODUCT_NAME@@
+</target>
       </trans-unit>
       <trans-unit id="email.satellitecert.satbodyend" xml:space="preserve">
         <source>
@@ -10111,19 +10116,26 @@ on how to renew your @@PRODUCT_NAME@@ Certificate.
 Thank you for using @@PRODUCT_NAME@@.
 --the @@PRODUCT_NAME@@ Team
 </source>
-        <target/>
+        <target>
+Prosím, kontaktujte svojho regionálneho @@VENDOR_NAME@@ zástupcu zákazníckeho servisu
+pre informácie o tom, ako si obnovíte svoj certifikát @@PRODUCT_NAME@@.
+
+
+Ďakujeme, že používate @@PRODUCT_NAME@@.
+--Tím @@PRODUCT_NAME@@
+</target>
       </trans-unit>
       <trans-unit id="alphabar.label" xml:space="preserve">
         <source>Select first character</source>
-        <target/>
+        <target>Vybrať prvý znak</target>
       </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
         <source>We're sorry, but the custom key could not be found.</source>
-        <target/>
+        <target>Je nám ľúto, ale vlastný kľúč sa nepodarilo nájsť.</target>
       </trans-unit>
       <trans-unit id="errata.multi" xml:space="preserve">
         <source>Combined Patch Update: {0} - {1} (and {2} more patches)</source>
-        <target/>
+        <target>Kombinovaná aktualizácia opráv: {0} - {1} (a {2} ďalšie opravy)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Combined Patch Update: RHSA-2004:577 - Security Advisory (and 4 more patches)</context>
@@ -10131,18 +10143,21 @@ Thank you for using @@PRODUCT_NAME@@.
       </trans-unit>
       <trans-unit id="kickstart.schedule.invalid.contact.method.jsp" xml:space="preserve">
         <source>System &lt;strong&gt;{0}&lt;/strong&gt; has an incompatible contact method.</source>
-        <target/>
+        <target>Systém &lt;strong&gt;{0}&lt;/strong&gt; má nekompatibilnú metódu kontaktu.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option1.jsp" xml:space="preserve">
         <source>Begin autoinstallation at the next system check in.</source>
-        <target/>
+        <target>Začať automatickú inštaláciu pri ďalšom prihlásení systému.</target>
       </trans-unit>
       <trans-unit id="isodownload.rest.description" xml:space="preserve">
         <source>
 Below please find complete sets of ISO images for the &lt;strong&gt;older releases&lt;/strong&gt; of {0}.
 Note that only one set of ISO images is necessary to install any particular release of {0}.
 </source>
-        <target/>
+        <target>
+Nižšie nájdete kompletné sady obrazov ISO pre &lt;strong&gt;staršie vydania&lt;/strong&gt; {0}.
+Treba poznamenať, že na inštaláciu konkrétneho vydania {0} je potrebná len jedna sada obrazov ISO.
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ListCustomData.do</context>
         </context-group>
