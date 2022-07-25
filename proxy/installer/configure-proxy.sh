@@ -325,7 +325,7 @@ SQUID_DIR=/etc/squid
 UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
 
-PYTHON_ENV=""
+PYTHON_CMD=""
 systemctl is-active --quiet salt-minion && PYTHON_CMD="/usr/bin/python3"
 systemctl is-active --quiet venv-salt-minion && PYTHON_CMD="/usr/lib/venv-salt-minion/bin/python"
 
