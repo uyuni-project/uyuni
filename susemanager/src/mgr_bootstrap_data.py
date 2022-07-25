@@ -748,6 +748,7 @@ PKGLISTDEBIAN10 = [
     "salt-common",
     "salt-minion",
     "gnupg",
+    "python3-gnupg",
 ]
 
 PKGLISTDEBIAN11 = [
