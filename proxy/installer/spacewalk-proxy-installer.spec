@@ -91,6 +91,7 @@ mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man8
 mkdir -p $RPM_BUILD_ROOT/%{_usr}/sbin
 mkdir -p $RPM_BUILD_ROOT/%{_usr}/share/rhn/installer/jabberd
+mkdir -p $RPM_BUILD_ROOT%{pythondir}
 mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
 
 install -m 755 -d $RPM_BUILD_ROOT%{defaultdir}
