@@ -326,8 +326,8 @@ UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
 
 PYTHON_ENV=""
-systemctl is-active --quiet salt-minion && PYTHON_ENV="/usr/bin/python3 "
-systemctl is-active --quiet venv-salt-minion && PYTHON_ENV="/usr/lib/venv-salt-minion/bin/python "
+systemctl is-active --quiet salt-minion && PYTHON_CMD="/usr/bin/python3"
+systemctl is-active --quiet venv-salt-minion && PYTHON_CMD="/usr/lib/venv-salt-minion/bin/python"
 
 if [[ -n $PYTHON_ENV ]]; then
     $PYTHON_ENV /usr/share/rhn/proxy-installer/fetch-certificate.py $SYSTEMID_PATH
