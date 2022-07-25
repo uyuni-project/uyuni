@@ -142,6 +142,7 @@ salt-minion-package:
 {%- if salt_minion_name == 'salt-minion' and grains['os_family'] == 'Debian' and grains['pythonversion'][0] >= 3 and grains['pythonversion'][1] < 7 %}
   {%- if not (grains['os'] == 'Ubuntu' and grains['osrelease_info'][0] == 16) and not (grains['os'] == 'Debian' and grains['osrelease_info'][0] == 9) %}
     {%- set contextvars_needed = True %}
+  {%- endif %}
 {%- endif %}
 
 {% if contextvars_needed %}
