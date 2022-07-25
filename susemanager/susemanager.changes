@@ -1,3 +1,4 @@
+- Add missing python3-gnupg to Debian10 bootstrap repo (bsc#1201842)
 - Add clients tool product to generate 
   bootstrap repo on OpenSUSE 15.x (bsc#1201189)
 - Add Oracle Linux 9 bootstrap repositories for Uyuni
