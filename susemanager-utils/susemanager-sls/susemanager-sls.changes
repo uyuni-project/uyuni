@@ -1,3 +1,5 @@
+- Fix issue bootstrap issue with Debian 9 because missing python3-contextvars (bsc#1201782)
+
 -------------------------------------------------------------------
 Wed Jul 06 15:56:58 CEST 2022 - jmassaguerpla@suse.de
 
