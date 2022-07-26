@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 26 13:39:59 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.35-1
+  * Add missing python3-gnupg to Debian10 bootstrap repo (bsc#1201842)
+
+-------------------------------------------------------------------
 Wed Jul 06 15:56:53 CEST 2022 - jmassaguerpla@suse.de
 
 - version 4.2.34-1
