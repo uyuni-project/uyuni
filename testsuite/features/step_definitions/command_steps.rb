@@ -1601,7 +1601,7 @@ When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
-  raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql")
+  raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql.gz")
 end
 
 Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|
