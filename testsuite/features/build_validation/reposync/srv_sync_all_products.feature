@@ -19,6 +19,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4 x86_64"
     And I select "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" selected
+    And I select "Containers Module 12 x86_64" as a product
+    Then I should see the "Containers Module 12 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
 
@@ -29,6 +31,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Enterprise Server 12 SP5" as the filtered product description
     And I select "SUSE Linux Enterprise Server 12 SP5 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 12 SP5 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4 x86_64"
+    And I select "Containers Module 12 x86_64" as a product
+    Then I should see the "Containers Module 12 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
 
@@ -56,6 +61,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP1 x86_64"
     And I select "SUSE Linux Enterprise Server LTSS 15 SP1 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP1 x86_64" selected
+    And I open the sub-list of the product "Basesystem Module 15 SP1 x86_64"
+    And I select "Containers Module 15 SP1 x86_64" as a product
+    Then I should see the "Containers Module 15 SP1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" product has been added
 
@@ -70,6 +78,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "Basesystem Module 15 SP2 x86_64"
     And I select "Desktop Applications Module 15 SP2 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP2 x86_64" selected
+    And I select "Containers Module 15 SP2 x86_64" as a product
+    Then I should see the "Containers Module 15 SP2 x86_64" selected
     When I open the sub-list of the product "Desktop Applications Module 15 SP2 x86_64"
     And I select "Development Tools Module 15 SP2 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP2 x86_64" selected
@@ -87,6 +97,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
     And I select "Desktop Applications Module 15 SP3 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP3 x86_64" selected
+    And I select "Containers Module 15 SP3 x86_64" as a product
+    Then I should see the "Containers Module 15 SP3 x86_64" selected
     When I open the sub-list of the product "Desktop Applications Module 15 SP3 x86_64"
     And I select "Development Tools Module 15 SP3 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP3 x86_64" selected
@@ -105,6 +117,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
     And I select "Desktop Applications Module 15 SP4 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
+    And I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
     And I select "Development Tools Module 15 SP4 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP4 x86_64" selected
