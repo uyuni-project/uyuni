@@ -339,11 +339,12 @@ end
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
+# rubocop:disable Metrics/BlockLength
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_channels_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 60 && reposync_left_running_streak <= 7200
+  while reposync_not_running_streak <= 60
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -367,8 +368,11 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     pid = process.split(' ')[0]
     $server.run("kill #{pid}", check_errors: false)
     log "Reposync of channel #{channel} killed"
+
+    raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
