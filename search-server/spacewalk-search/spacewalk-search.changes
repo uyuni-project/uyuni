@@ -1,5 +1,9 @@
-- Add method to handle session id as String
-- Migrated from log4j1.x.x to log4j2.x.x
+-------------------------------------------------------------------
+Wed Jul 27 14:19:43 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.6-1
+  * Add method to handle session id as String
+  * Migrated from log4j1.x.x to log4j2.x.x
 
 -------------------------------------------------------------------
 Tue Jun 21 18:31:24 CEST 2022 - jgonzalez@suse.com
