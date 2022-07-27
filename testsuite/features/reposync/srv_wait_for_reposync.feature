@@ -16,5 +16,5 @@ Feature: Wait for reposync activity to finish in CI context
   Scenario: Kill running reposyncs or wait for them to finish
     When I kill all running spacewalk-repo-sync, excepted the ones needed to bootstrap
 
-  Scenario: I wait for all valid channels to be synced
-    When I wait until all valid channels has been synced
+  Scenario: Wait until all synchronized channels have finished
+    When I wait until all synchronized channels have finished

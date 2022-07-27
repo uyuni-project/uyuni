@@ -3,6 +3,7 @@
 
 require 'timeout'
 require 'nokogiri'
+require 'set'
 
 # Sanity checks
 
@@ -339,6 +340,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
     if do_not_kill.include? channel
+      $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
       sleep 1
@@ -377,12 +379,18 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   end
 end
 
-When(/I wait until all valid channels has been synced$/) do
-  valid_channels = compute_channels_to_leave_running
-  valid_channels.each do |channel|
+When(/I wait until all synchronized channels have finished$/) do
+  $channels_synchronized.each do |channel|
     repeat_until_timeout(timeout: 7200, message: "Channel '#{channel}' not fully synced") do
+      # products.xml is the last file to be written when the server synchronize a channel,
+      # therefore we wait until it exist
       _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/products.xml", check_errors: false)
-      break if code.zero?
+      if code.zero?
+        # We want to check if no .new files exists.
+        # On a re-sync, the old files stay, the new one have this suffix until it's ready.
+        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/products.xml.new", check_errors: false)
+        break unless new_code.zero?
+      end
       sleep 10
     end
   end
