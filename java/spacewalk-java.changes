@@ -1,3 +1,4 @@
+- Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
 - Reduce the length of image channel URL (bsc#1201220)
 - Fixed system search
 - update java dependencies
