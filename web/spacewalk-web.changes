@@ -1,7 +1,11 @@
-- Fix initial profile and build host on Image Build page (bsc#1199659)
-- Handle multi line error messages in proxy containers config creation
-- Hide authentication data in PAYG UI (bsc#1199679)
-- add textarea to formulas
+-------------------------------------------------------------------
+Wed Jul 27 14:19:02 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.22-1
+  * Fix initial profile and build host on Image Build page (bsc#1199659)
+  * Handle multi line error messages in proxy containers config creation
+  * Hide authentication data in PAYG UI (bsc#1199679)
+  * add textarea to formulas
 
 -------------------------------------------------------------------
 Tue Jun 21 18:32:18 CEST 2022 - jgonzalez@suse.com
