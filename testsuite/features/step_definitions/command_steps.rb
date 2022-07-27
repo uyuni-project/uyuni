@@ -385,11 +385,11 @@ When(/I wait until all synchronized channels have finished$/) do
     repeat_until_timeout(timeout: 7200, message: "Channel '#{channel}' not fully synced") do
       # products.xml is the last file to be written when the server synchronize a channel,
       # therefore we wait until it exist
-      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/products.xml", check_errors: false)
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
       if code.zero?
         # We want to check if no .new files exists.
         # On a re-sync, the old files stay, the new one have this suffix until it's ready.
-        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/products.xml.new", check_errors: false)
+        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
         break unless new_code.zero?
       end
       sleep 10
