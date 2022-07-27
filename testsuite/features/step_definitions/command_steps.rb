@@ -381,6 +381,7 @@ end
 
 When(/I wait until all synchronized channels have finished$/) do
   $channels_synchronized.each do |channel|
+    log "I wait until '#{channel}' synchronized channel has finished"
     repeat_until_timeout(timeout: 7200, message: "Channel '#{channel}' not fully synced") do
       # products.xml is the last file to be written when the server synchronize a channel,
       # therefore we wait until it exist
