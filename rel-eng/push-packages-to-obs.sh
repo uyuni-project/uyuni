@@ -104,7 +104,7 @@ function tar_diff_p1() {
     *.obscpio) (FDIR=${PWD}; cd $tdir/R; cpio -id < "${FDIR}/$rtar");;
     *) tar_cat "$rtar" | tar xf - -C "$tdir/R" || return 2;;
   esac
-  if $DIFF -r "$tdir/L"/* "$tdir/R"/*; then
+  if $DIFF -r "$tdir/L"/. "$tdir/R"/.; then
     echo "Content $ltar and $rtar is the same"
     return 0
   else
