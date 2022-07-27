@@ -18,8 +18,13 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.frontend.filter.Matcher;
+import com.redhat.rhn.frontend.filter.NumberMatcher;
 import com.redhat.rhn.frontend.filter.ResultsFilter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,6 +36,9 @@ import java.util.Map;
  * for showing data.
  */
 public class ListControl {
+
+    private static final Logger LOG = LogManager.getLogger(ListControl.class);
+
     private boolean indexData;
     private String filterColumn;
     private String filterData;
@@ -156,12 +164,30 @@ public class ListControl {
 
         if (customFilter == null) {
            Matcher matcher = Matcher.DEFAULT_MATCHER;
+           boolean matcherSet = false;
            di = dr.iterator();
-            while (di.hasNext()) {
-                if (!matcher.include(di.next(), filterData, filterColumn)) {
-                    di.remove();
-                }
-            }
+           while (di.hasNext()) {
+               Object item = di.next();
+
+               // No need to look for the matcher at every row, just adjust at the first one.
+               if (!matcherSet) {
+                   Method method = null;
+                   try {
+                       method = item.getClass().getMethod(StringUtil.beanify("get " + filterColumn));
+                       Class<?> type = method.getReturnType();
+                       if (Number.class.isAssignableFrom(type)) {
+                           matcher = new NumberMatcher();
+                       }
+                       matcherSet = true;
+                   }
+                   catch (NoSuchMethodException e) {
+                       LOG.error("Could not find function for {}.{} field", item.getClass().getName(), filterColumn);
+                   }
+               }
+               if (!matcher.include(item, filterData, filterColumn)) {
+                   di.remove();
+               }
+           }
         }
         else {
             customFilter.filterData(dr, filterData, filterColumn);
