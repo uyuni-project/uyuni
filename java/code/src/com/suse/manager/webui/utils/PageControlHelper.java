@@ -152,8 +152,31 @@ public class PageControlHelper {
      * @return Data result modified (filtered) by the page control
      */
     public <T> DataResult<T> processPageControl(DataResult<T> dataResult, Map<String, Object> elabParams) {
+        return processPageControl(dataResult, elabParams, false);
+    }
+
+    /**
+     * Process the page controls against a {@link DataResult},
+     * running any elaborators attached after the data is filtered, sorted and paginated
+     *
+     * A snippet from: {@link com.redhat.rhn.manager.BaseManager#processPageControl}
+     *
+     * @param dataResult the data result
+     * @param elabParams named parameters for the elaboration query
+     * @param elaborateEarly TEMPORARY, USE WITH CARE SINCE THIS MAY KILL POSTGRES
+     * @param <T> the type of the data items
+     * @return Data result modified (filtered) by the page control
+     */
+    public <T> DataResult<T> processPageControl(DataResult<T> dataResult, Map<String, Object> elabParams,
+                                                boolean elaborateEarly) {
         if (elabParams != null) {
             dataResult.setElaborationParams(elabParams);
+        }
+
+        // Elaborate the data before filtering to allow filtering on all the values.
+        // This is clearly not generating good performances!
+        if (elaborateEarly && elabParams != null) {
+            dataResult.elaborate(elabParams);
         }
 
         PageControl pc = this.getPageControl();
@@ -173,7 +196,7 @@ public class PageControlHelper {
         }
 
         //elaborate the data result to get the detailed information.
-        if (elabParams != null) {
+        if (!elaborateEarly && elabParams != null) {
             dataResult.elaborate(elabParams);
         }
 

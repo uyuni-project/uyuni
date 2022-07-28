@@ -179,7 +179,8 @@ public class SystemsController {
             );
         }
 
-        systems = pageHelper.processPageControl(systems, new HashMap<>());
+        // TODO Plan queries no needing eearly elaborators for SQL querying performance optimization
+        systems = pageHelper.processPageControl(systems, new HashMap<>(), true);
         systems.stream()
                 .forEach(system -> {
                     if (system.getId() != null) {
