@@ -15,9 +15,10 @@
 package com.redhat.rhn.frontend.filter;
 
 import com.redhat.rhn.common.util.MethodUtil;
-import com.redhat.rhn.common.util.StringUtil;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -33,12 +34,14 @@ class StringMatcher implements Matcher {
                     StringUtils.isBlank(filterColumn)) {
             return true; ///show all if I entered a blank value
         }
-        String value = MethodUtil.callMethod(obj,
-                StringUtil.beanify("get " +
-                                    filterColumn),
-                                new Object[0]).toString();
-        if (!StringUtils.isBlank(value)) {
-            return value.toUpperCase().contains(filterData.toUpperCase());
+        try {
+            String value = MethodUtil.getAccessor(obj, filterColumn).invoke(obj).toString();
+            if (!StringUtils.isBlank(value)) {
+                return value.toUpperCase().contains(filterData.toUpperCase());
+            }
+        }
+        catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            return false;
         }
         return false;
     }

@@ -173,7 +173,7 @@ public class ListControl {
                if (!matcherSet) {
                    Method method = null;
                    try {
-                       method = item.getClass().getMethod(StringUtil.beanify("get " + filterColumn));
+                       method = MethodUtil.getAccessor(item, filterColumn);
                        Class<?> type = method.getReturnType();
                        if (Number.class.isAssignableFrom(type)) {
                            matcher = new NumberMatcher();

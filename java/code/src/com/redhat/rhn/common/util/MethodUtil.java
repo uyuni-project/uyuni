@@ -66,18 +66,19 @@ public class MethodUtil {
      * Invoke a static method from a class. Note that if more than one method
      * qualifies for calling, eg. more than one method is found with compatible
      * parameters, the actual invocation target is undefined.
-     * @param clazz The Class to search for the specified method
+     *
+     * @param clazz  The Class to search for the specified method
      * @param method The method to execute.
-     * @param args the Arguments to the method.
+     * @param args   the Arguments to the method.
      * @return The result of the called method.
-     * @throws NoSuchMethodException If the method can't be found
-     * @throws IllegalAccessException if the method cannot be accessed
+     * @throws NoSuchMethodException     If the method can't be found
+     * @throws IllegalAccessException    if the method cannot be accessed
      * @throws InvocationTargetException if the method throws an exception
      */
     public static Object invokeStaticMethod(Class clazz, String method,
                                             Object[] args)
-        throws NoSuchMethodException, IllegalAccessException,
-               InvocationTargetException {
+            throws NoSuchMethodException, IllegalAccessException,
+            InvocationTargetException {
         Method[] meths = clazz.getMethods();
 
         for (Method methIn : meths) {
@@ -92,6 +93,30 @@ public class MethodUtil {
             }
         }
         throw new NoSuchMethodException("Could not find " + method + " in " + clazz);
+    }
+
+    /**
+     * Get the accessor method for a field
+     *
+     * @param o the object to inspect
+     * @param field the field to access
+     * @return the accessor
+     * @throws NoSuchMethodException if no accessor can be found
+     */
+    public static Method getAccessor(Object o, String field) throws NoSuchMethodException {
+        Method method = null;
+        try {
+            method = o.getClass().getMethod(StringUtil.beanify("get " + field));
+        }
+        catch (NoSuchMethodException e) {
+            try {
+                method = o.getClass().getMethod(StringUtil.beanify("is " + field));
+            }
+            catch (NoSuchMethodException err) {
+                throw new NoSuchMethodException("No accessor for field " + field);
+            }
+        }
+        return method;
     }
 
     /**

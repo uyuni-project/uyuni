@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.filter;
 
-import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.common.util.MethodUtil;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -60,7 +60,7 @@ public class NumberMatcher implements Matcher {
 
         Object value = null;
         try {
-            value = obj.getClass().getMethod(StringUtil.beanify("get " + filterColumn)).invoke(obj);
+            value = MethodUtil.getAccessor(obj, filterColumn).invoke(obj);
         }
         catch (Exception eIn) {
             LOG.error("Could not find function for {}.{} field", obj.getClass().getName(), filterColumn);
