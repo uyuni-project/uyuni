@@ -390,6 +390,8 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
+      # solv is the last file to be written when the server synchronizes a channel,
+      # therefore we wait until it exist
       _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
       break if code.zero?
       log "I am still waiting for '#{channel}' channel to be synchronized."
@@ -403,17 +405,7 @@ end
 When(/I wait until all synchronized channels have finished$/) do
   $channels_synchronized.each do |channel|
     log "I wait until '#{channel}' synchronized channel has finished"
-    repeat_until_timeout(timeout: 7200, message: "Channel '#{channel}' not fully synced") do
-      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
-      if code.zero?
-        # We want to check if no .new files exists.
-        # On a re-sync, the old files stay, the new one have this suffix until it's ready.
-        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
-        break unless new_code.zero?
-      end
-      log "I am still waiting for '#{channel}' channel to be synchronized."
-      sleep 10
-    end
+    step %(I wait until the channel "#{channel}" has been synced)
   end
 end
 
