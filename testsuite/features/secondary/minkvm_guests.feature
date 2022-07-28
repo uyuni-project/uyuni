@@ -242,6 +242,89 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
+# Start provisioning scenarios
+
+@scc_credentials
+  Scenario: Create auto installation distribution
+    And I install package tftpboot-installation on the server
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    And I follow "Create Distribution"
+    And I enter "SLE-15-SP4-TFTP" as "label"
+    And I enter "/usr/share/tftpboot-installation/SLE-15-SP4-x86_64/" as "basepath"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channelid"
+    And I select "SUSE Linux Enterprise 15" from "installtype"
+    And I enter "useonlinerepo insecure=1" as "kernelopts"
+    And I click on "Create Autoinstallable Distribution"
+    Then I should see a "Autoinstallable Distributions" text
+    And I should see a "SLE-15-SP4-TFTP" link
+
+@scc_credentials
+  Scenario: Create auto installation profile
+    And I follow the left menu "Systems > Autoinstallation > Profiles"
+    And I follow "Upload Kickstart/Autoyast File"
+    When I enter "15-sp4-kvm" as "kickstartLabel"
+    And I select "SLE-15-SP4-TFTP" from "kstreeId"
+    And I select "KVM Virtualized Guest" from "virtualizationTypeLabel"
+    And I attach the file "/sle-15-sp4-autoyast.xml" to "fileUpload"
+    And I click on "Create"
+    Then I should see a "Autoinstallation: 15-sp4-kvm" text
+    And I should see a "Autoinstallation Details" text
+
+@scc_credentials
+  Scenario: Configure auto installation profile
+    When I enter "self_update=0" as "kernel_options"
+    And I click on "Update"
+    And I follow "Variables"
+    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
+    And I click on "Update Variables"
+    And I follow "Autoinstallation File"
+    Then I should see a "SLE-15-SP4-TFTP" text
+
+@scc_credentials
+  Scenario: Create an auto installing KVM virtual machine
+    Given I am on the "Virtualization" page of this "kvm_server"
+    And I wait until the channel "sle-module-basesystem15-sp4-updates-x86_64" has been synced
+    When I follow "Create Guest"
+    And I wait until I see "General" text
+    And I enter "test-vm2" as "name"
+    And I select "15-sp4-kvm" from "cobbler_profile"
+    And I select "test-net0" from "network0_source"
+    And I click on "Create"
+    Then I should see a "Hosted Virtual Systems" text
+    When I wait until I see "test-vm2" text
+    And I wait until table row for "test-vm2" contains button "Stop"
+    # Test the VM boot params
+    Then "test-vm2" virtual machine on "kvm_server" should boot using autoyast
+    And "test-vm2" virtual machine on "kvm_server" should stop on reboot
+    And "test-vm2" virtual machine on "kvm_server" should boot on hard disk at next start
+    And "test-vm2" virtual machine on "kvm_server" should not stop on reboot at next start
+    When I click on "Graphical Console" in row "test-vm2"
+    And I switch to last opened window
+    And I wait until I see the VNC graphical console
+    And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
+    When I close the last opened window
+
+@scc_credentials
+  Scenario: Cleanup: remove the auto installation profile
+    And I follow the left menu "Systems > Autoinstallation > Profiles"
+    When I follow "15-sp4-kvm"
+    And I follow "Delete Autoinstallation"
+    And I click on "Delete Autoinstallation"
+    Then I should not see a "15-sp4-kvm" text
+
+@scc_credentials
+  Scenario: Cleanup: remove the auto installation distribution
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
+    And I follow "SLE-15-SP4-TFTP"
+    And I follow "Delete Distribution"
+    And I click on "Delete Distribution"
+    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+    Then I should not see a "SLE-15-SP4-TFTP" text
+
+# End of provisioning scenarios
+
   Scenario: Refresh a virtual storage pool for KVM
     When I follow "Storage"
     And I wait until I do not see "Loading..." text
@@ -367,89 +450,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Update"
     Then I should see a "Virtual Networks" text
     And "test-net2" virtual network on "kvm_server" should have "192.168.130.1" IPv4 address with 24 prefix
-
-# Start provisioning scenarios
-
-@scc_credentials
-  Scenario: Create auto installation distribution
-    And I install package tftpboot-installation on the server
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
-    When I follow the left menu "Systems > Autoinstallation > Distributions"
-    And I follow "Create Distribution"
-    And I enter "SLE-15-SP4-TFTP" as "label"
-    And I enter "/usr/share/tftpboot-installation/SLE-15-SP4-x86_64/" as "basepath"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channelid"
-    And I select "SUSE Linux Enterprise 15" from "installtype"
-    And I enter "useonlinerepo insecure=1" as "kernelopts"
-    And I click on "Create Autoinstallable Distribution"
-    Then I should see a "Autoinstallable Distributions" text
-    And I should see a "SLE-15-SP4-TFTP" link
-
-@scc_credentials
-  Scenario: Create auto installation profile
-    And I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "Upload Kickstart/Autoyast File"
-    When I enter "15-sp4-kvm" as "kickstartLabel"
-    And I select "SLE-15-SP4-TFTP" from "kstreeId"
-    And I select "KVM Virtualized Guest" from "virtualizationTypeLabel"
-    And I attach the file "/sle-15-sp4-autoyast.xml" to "fileUpload"
-    And I click on "Create"
-    Then I should see a "Autoinstallation: 15-sp4-kvm" text
-    And I should see a "Autoinstallation Details" text
-
-@scc_credentials
-  Scenario: Configure auto installation profile
-    When I enter "self_update=0" as "kernel_options"
-    And I click on "Update"
-    And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
-    And I click on "Update Variables"
-    And I follow "Autoinstallation File"
-    Then I should see a "SLE-15-SP4-TFTP" text
-
-@scc_credentials
-  Scenario: Create an auto installing KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    And I wait until the channel "sle-module-basesystem15-sp4-updates-x86_64" has been synced
-    When I follow "Create Guest"
-    And I wait until I see "General" text
-    And I enter "test-vm2" as "name"
-    And I select "15-sp4-kvm" from "cobbler_profile"
-    And I select "test-net0" from "network0_source"
-    And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
-    When I wait until I see "test-vm2" text
-    And I wait until table row for "test-vm2" contains button "Stop"
-    # Test the VM boot params
-    Then "test-vm2" virtual machine on "kvm_server" should boot using autoyast
-    And "test-vm2" virtual machine on "kvm_server" should stop on reboot
-    And "test-vm2" virtual machine on "kvm_server" should boot on hard disk at next start
-    And "test-vm2" virtual machine on "kvm_server" should not stop on reboot at next start
-    When I click on "Graphical Console" in row "test-vm2"
-    And I switch to last opened window
-    And I wait until I see the VNC graphical console
-    And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
-    When I close the last opened window
-
-@scc_credentials
-  Scenario: Cleanup: remove the auto installation profile
-    And I follow the left menu "Systems > Autoinstallation > Profiles"
-    When I follow "15-sp4-kvm"
-    And I follow "Delete Autoinstallation"
-    And I click on "Delete Autoinstallation"
-    Then I should not see a "15-sp4-kvm" text
-
-@scc_credentials
-  Scenario: Cleanup: remove the auto installation distribution
-    When I follow the left menu "Systems > Autoinstallation > Distributions"
-    And I follow "SLE-15-SP4-TFTP"
-    And I follow "Delete Distribution"
-    And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
-    Then I should not see a "SLE-15-SP4-TFTP" text
-
-# End of provisioning scenarios
 
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
