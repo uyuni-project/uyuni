@@ -1,3 +1,6 @@
+- remove python-tornado from bootstrap repo, since no longer
+  required for salt version >= 3004
+
 -------------------------------------------------------------------
 Wed Jul 27 14:18:17 CEST 2022 - jgonzalez@suse.com
 
