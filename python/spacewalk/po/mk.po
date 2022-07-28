@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2022-07-24 23:12+0000\n"
+"PO-Revision-Date: 2022-07-28 09:04+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -1256,7 +1256,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:602
 msgid "ERROR: exception (during parse) occurred: "
-msgstr ""
+msgstr "ГРЕШКА: исклучок (при анализа) се случи: "
 
 #: ../satellite_tools/satsync.py:603
 #, python-format
@@ -1272,7 +1272,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:606
 #, python-format
 msgid "   ------- %s PARSE/IMPORT ERROR -------"
-msgstr ""
+msgstr "   ------- %s ГРЕШКА ПРИ ПАРСИРАЊЕ/ИМПОРТИРАЊЕ -------"
 
 #: ../satellite_tools/satsync.py:608
 msgid "   ---------------------------------------"
@@ -1285,21 +1285,21 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:664
 msgid "Retrieving / parsing channel data"
-msgstr ""
+msgstr "Превземање / парсирање податоци на канал"
 
 #: ../satellite_tools/satsync.py:717
 msgid "Channel data complete"
-msgstr ""
+msgstr "Податоци на канал завршено"
 
 #: ../satellite_tools/satsync.py:735
 #, python-format
 msgid "%10s import from %s"
-msgstr ""
+msgstr "%10s импортирано од %s"
 
 #: ../satellite_tools/satsync.py:738
 #, python-format
 msgid "%10s import from %s - %s"
-msgstr ""
+msgstr "%10s импортирано од %s - %s"
 
 #: ../satellite_tools/satsync.py:742
 #, python-format
@@ -1316,19 +1316,19 @@ msgstr "."
 
 #: ../satellite_tools/satsync.py:757
 msgid "   p = previously imported/synced channel"
-msgstr ""
+msgstr "   p = претходно импортиран/синхронизиран канал"
 
 #: ../satellite_tools/satsync.py:758
 msgid "   . = channel not yet imported/synced"
-msgstr ""
+msgstr "   . = каналот сè уште не е импортиран/синхронизиран"
 
 #: ../satellite_tools/satsync.py:764
 msgid "   e = channel no longer supported (end-of-service)"
-msgstr ""
+msgstr "   e = каналот повеќе не е поддржан (крај-на-услуга)"
 
 #: ../satellite_tools/satsync.py:766
 msgid "   ? = channel label invalid --- typo?"
-msgstr ""
+msgstr "   ? = етикетата на каналот е невалидна --- печатна грешка?"
 
 #: ../satellite_tools/satsync.py:770
 #, python-format
@@ -1338,7 +1338,7 @@ msgstr "   %s:"
 #: ../satellite_tools/satsync.py:771
 #, python-format
 msgid "      %s %-40s %4s %s"
-msgstr ""
+msgstr "      %s %-40s %4s %s"
 
 #: ../satellite_tools/satsync.py:772
 msgid "base-channels"
