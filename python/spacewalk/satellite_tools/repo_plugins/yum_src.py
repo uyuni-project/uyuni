@@ -288,6 +288,8 @@ class UpdateNotice(object):
         if elem.tag == 'update':
             for attrib in ('from', 'type', 'status', 'version'):
                 self._md[attrib] = elem.attrib.get(attrib)
+            if self._md["version"] is None:
+                self._md["version"] = "0"
             for child in elem:
                 if child.tag == 'id':
                     if not child.text:
