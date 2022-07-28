@@ -398,7 +398,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
         # On a re-sync, the old files stay, the new one have this suffix until it's ready.
         _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
         break unless new_code.zero?
-      break if code.zero?
+      end
       log "I am still waiting for '#{channel}' channel to be synchronized."
       sleep 10
     end
