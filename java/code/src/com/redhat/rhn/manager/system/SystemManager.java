@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -77,6 +78,7 @@ import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
+import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
@@ -113,6 +115,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateDriver;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -3056,6 +3059,19 @@ public class SystemManager extends BaseManager {
         return retval;
     }
 
+
+    /**
+     * Returns the list of all the system Ids
+     *
+     * @return list of the system ids
+     */
+    public static List<Long> listSystemIds() {
+        SelectMode mode = ModeFactory.getMode("System_queries", "system_ids");
+        Map<String, Object> params = new HashMap<>();
+        DataResult<Map<String, Object>> dr = mode.execute(params);
+        return dr.stream().map(data -> (Long)data.get("id")).collect(Collectors.toList());
+    }
+
     /**
      * list systems that can be subscribed to a particular child channel
      * @param user the user
@@ -3920,5 +3936,17 @@ public class SystemManager extends BaseManager {
                         pillar,
                         ApplyStatesEventMessage.REPORTDB_USER
                 ));
+    }
+
+    /**
+     * Update the suseSystemOverview table data for a system
+     * @param sid the ID of the system to update
+     */
+    public static void updateSystemOverview(Long sid) {
+        // We need the server to be already in the database to update it
+        if (sid != null &&
+                TaskFactory.lookup(OrgFactory.getSatelliteOrg(), SystemsOverviewUpdateDriver.TASK_NAME, sid) == null) {
+            TaskFactory.createTask(OrgFactory.getSatelliteOrg(), SystemsOverviewUpdateDriver.TASK_NAME, sid);
+        }
     }
 }
