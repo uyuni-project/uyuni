@@ -19,6 +19,7 @@ type ChildrenArgsProps = {
   selectedItems: Array<any>;
   deletable?: boolean | ((row: any) => boolean);
   criteria?: string;
+  criteriaField?: string;
 };
 
 type Props = {
@@ -51,6 +52,8 @@ type Props = {
 
   /** the React Object that contains the filter search field */
   searchField?: React.ReactComponentElement<typeof SearchField>;
+
+  defaultSearchField?: string;
 
   /** the initial number of how many row-per-page to show. If it's 0 table header and footer are hidden */
   initialItemsPerPage?: number;
@@ -96,6 +99,7 @@ type State = {
   itemsPerPage: number;
   totalItems: number;
   criteria?: string;
+  criteriaField?: string;
   sortColumnKey: string | null;
   sortDirection: number;
   loading: boolean;
@@ -117,6 +121,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       itemsPerPage: this.props.initialItemsPerPage || pageSize,
       totalItems: 0,
       criteria: undefined,
+      criteriaField: this.props.defaultSearchField,
       sortColumnKey: this.props.initialSortColumnKey || null,
       sortDirection: this.props.initialSortDirection || 1,
       loading: false,
@@ -161,6 +166,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       currPage,
       this.state.itemsPerPage,
       this.state.criteria,
+      this.state.criteriaField,
       this.state.sortColumnKey,
       this.state.sortDirection
     );
@@ -342,6 +348,21 @@ export class TableDataHandler extends React.Component<Props, State> {
       });
     };
 
+    const handleSearchPanelSelectField = () => {
+      this.setState({ loading: true }, () => {
+        this.state.provider.getIds(
+          (promise) =>
+            promise
+              .then((data) => {
+                const selected = selectedItems;
+                this.setSelection(selected.concat(data.filter((id) => !selected.includes(id))));
+              })
+              .finally(() => this.setState({ loading: false })),
+          this.state.criteriaField
+        );
+      });
+    };
+
     const emptyText = this.props.emptyText || t("There are no entries to show.");
     const loadingText = this.props.loadingText || t("Loading...");
 
@@ -398,6 +419,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                   selectedItems: selectedItems,
                   deletable: this.props.deletable,
                   criteria: this.state.criteria,
+                  criteriaField: this.state.criteria,
                 })}
               </div>
             </div>

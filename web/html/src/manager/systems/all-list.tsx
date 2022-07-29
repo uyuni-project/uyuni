@@ -140,20 +140,6 @@ export function AllSystems(props: Props) {
         />
 
         <Column
-          columnKey="groupCount"
-          comparator={Utils.sortByText}
-          header={t("Groups")}
-          cell={(item) => {
-            if (item.groupCount != 0) {
-              return (
-                <a href={`/rhn/systems/details/packages/ExtraPackagesList.do?sid=${item.id}`}>{item.groupCount}</a>
-              );
-            }
-            return 0;
-          }}
-        />
-
-        <Column
           columnKey="channelLabels"
           comparator={Utils.sortByText}
           header={t("Base Channel")}
