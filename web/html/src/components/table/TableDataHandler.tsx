@@ -19,6 +19,7 @@ type ChildrenArgsProps = {
   selectedItems: Array<any>;
   deletable?: boolean | ((row: any) => boolean);
   criteria?: string;
+  criteriaField?: string;
 };
 
 type Props = {
@@ -98,6 +99,7 @@ type State = {
   itemsPerPage: number;
   totalItems: number;
   criteria?: string;
+  criteriaField?: string;
   sortColumnKey: string | null;
   sortDirection: number;
   loading: boolean;
@@ -164,6 +166,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       currPage,
       this.state.itemsPerPage,
       this.state.criteria,
+      this.state.criteriaField,
       this.state.sortColumnKey,
       this.state.sortDirection
     );
@@ -219,6 +222,10 @@ export class TableDataHandler extends React.Component<Props, State> {
 
   onSearch = (criteria?: string): void => {
     this.setState({ currentPage: 1, criteria: criteria }, () => this.getData());
+  };
+
+  onSearchField = (criteriaField?: string): void => {
+    this.setState({ currentPage: 1, criteriaField: criteriaField }, () => this.getData());
   };
 
   onItemsPerPageChange = (itemsPerPage: number): void => {
@@ -348,6 +355,21 @@ export class TableDataHandler extends React.Component<Props, State> {
       });
     };
 
+    const handleSearchPanelSelectField = () => {
+      this.setState({ loading: true }, () => {
+        this.state.provider.getIds(
+          (promise) =>
+            promise
+              .then((data) => {
+                const selected = selectedItems;
+                this.setSelection(selected.concat(data.filter((id) => !selected.includes(id))));
+              })
+              .finally(() => this.setState({ loading: false })),
+          this.state.criteriaField
+        );
+      });
+    };
+
     const emptyText = this.props.emptyText || t("There are no entries to show.");
     const loadingText = this.props.loadingText || t("Loading...");
     const isSelectable = typeof this.props.selectable !== "undefined" && this.props.selectable !== false;
@@ -363,7 +385,9 @@ export class TableDataHandler extends React.Component<Props, State> {
                   toItem={toItem}
                   itemCount={itemCount}
                   criteria={this.state.criteria}
+                  criteriaField={this.state.criteriaField}
                   onSearch={this.onSearch}
+                  onSearchField={this.onSearchField}
                   onClear={handleSearchPanelClear}
                   onSelectAll={handleSearchPanelSelectAll}
                   selectedCount={selectedItems.length}
@@ -405,6 +429,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                   selectedItems: selectedItems,
                   deletable: this.props.deletable,
                   criteria: this.state.criteria,
+                  criteriaField: this.state.criteria,
                 })}
               </div>
             </div>
