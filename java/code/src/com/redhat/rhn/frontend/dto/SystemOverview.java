@@ -26,10 +26,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
@@ -79,6 +81,11 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private static final  String NONE_VALUE = "(none)";
     private Long lastBoot;
     private String statusType;
+    private Boolean requiresReboot = null;
+    private Boolean kickstarting = null;
+    private Long actionsCount = null;
+    private Long packageActionsCount = null;
+    private Long unscheduledErrataCount = null;
 
     public static final String STATUS_TYPE_UNENTITLED = "unentitled";
     public static final String STATUS_TYPE_AWOL = "awol";
@@ -109,15 +116,16 @@ public class SystemOverview extends BaseDto implements Serializable  {
         else if (checkinOverdue()) {
             type = STATUS_TYPE_AWOL;
         }
-        else if (SystemManager.isKickstarting(user, sid)) {
+        else if (Optional.ofNullable(kickstarting).orElse(SystemManager.isKickstarting(user, sid))) {
             type = STATUS_TYPE_KICKSTARTING;
         }
         else if (getEnhancementErrata() + getBugErrata() +
                      getSecurityErrata() > 0 &&
-                     !SystemManager.hasUnscheduledErrata(user, sid)) {
+                     Optional.ofNullable(unscheduledErrataCount).map(count -> count == 0)
+                             .orElse(SystemManager.hasUnscheduledErrata(user, sid))) {
             type = STATUS_TYPE_UPDATES_SCHEDULED;
         }
-        else if (SystemManager.countActions(sid) > 0) {
+        else if (Optional.ofNullable(actionsCount).orElse(Long.valueOf(SystemManager.countActions(sid))) > 0) {
             type = STATUS_TYPE_ACTIONS_SCHEDULED;
         }
         else if ((getEnhancementErrata() == null ||
@@ -125,7 +133,8 @@ public class SystemOverview extends BaseDto implements Serializable  {
                  getBugErrata() == 0 &&
                  getSecurityErrata() == 0 &&
                  getOutdatedPackages() == 0 &&
-                 SystemManager.countPackageActions(sid) == 0) {
+                 Optional.ofNullable(packageActionsCount)
+                         .orElse(Long.valueOf(SystemManager.countPackageActions(sid))) == 0) {
 
             type = STATUS_TYPE_UP2DATE;
         }
@@ -151,6 +160,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     public void setStatusDisplay(String statusDisplayIn) {
         this.statusDisplay = statusDisplayIn;
     }
+
     /**
      * @return Returns the isRhnProxy.
      */
@@ -488,7 +498,11 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns the name.
      */
     public String getName() {
-        return name;
+        if (name != null) {
+            return name;
+        }
+        // Fallback to serverName as both are set in the legacy queries
+        return serverName;
     }
     /**
      * @param nameIn The name to set.
@@ -559,6 +573,16 @@ public class SystemOverview extends BaseDto implements Serializable  {
         return entitlementLevel;
     }
 
+    /**
+     * Used to load the entitlement levels from the suseSystemOverview table
+     *
+     * @param entitlementLevelIn the comma-separated entitlements levels
+     */
+    public void setEntitlementLevel(String entitlementLevelIn) {
+        entitlement = Arrays.asList(entitlementLevelIn.split(","));
+        entitlementLevel = computeEntitlementLevel();
+    }
+
     private String computeEntitlementLevel() {
         // Get the entitlements for this row. If not null, loop through and get
         // localized versions of the labels and make into a comma-delimited list
@@ -625,6 +649,8 @@ public class SystemOverview extends BaseDto implements Serializable  {
         return entitlement;
     }
     /**
+     * Used by the legacy rhnServerOverview view mapping
+     *
      * @param entitlementIn The entitlement to set.
      */
     public void setEntitlement(List entitlementIn) {
@@ -682,11 +708,12 @@ public class SystemOverview extends BaseDto implements Serializable  {
     }
 
     /**
-     * @param selectableIn Whether a server is selectable one if selectable,
-     * null if not selectable
+     * Used by the suseSystemOverview table mapping.
+     *
+     * @param selectableIn whether the server is selectable
      */
-    public void setSelectable(Long selectableIn) {
-        selectable = (selectableIn != null);
+    public void setSelectable(Boolean selectableIn) {
+        selectable = selectableIn != null && selectableIn;
     }
 
     /**
@@ -810,6 +837,24 @@ public class SystemOverview extends BaseDto implements Serializable  {
     }
 
     /**
+     * Used by the suseSystemOverview table mapping
+     *
+     * @param isGuest whether the system is a virtual machine
+     */
+    public void setVirtualGuest(Boolean isGuest) {
+        isVirtualGuest = isGuest;
+    }
+
+    /**
+     * Used by the suseSystemOverview table mapping
+     *
+     * @param isHost whether the system is a virtualzation host
+     */
+    public void setVirtualHost(Boolean isHost) {
+        isVirtualHost = isHost;
+    }
+
+    /**
      * @return Returns the totalErrataCount.
      */
     public Long getTotalErrataCount() {
@@ -838,6 +883,13 @@ public class SystemOverview extends BaseDto implements Serializable  {
      */
     public String getStatusType() {
         return this.statusType;
+    }
+
+    /**
+     * @return if the system needs to be rebooted
+     */
+    public Boolean getRequiresReboot() {
+        return requiresReboot;
     }
 
     /**
