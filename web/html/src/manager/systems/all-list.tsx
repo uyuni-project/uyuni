@@ -5,7 +5,6 @@ import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
-
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
@@ -14,6 +13,17 @@ type Props = {
   docsLocale: string;
   isAdmin: boolean;
 };
+
+const allListOptions = [
+  { value: "name", label: "System" },
+  { value: "statusType", label: "Updates" },
+  { value: "totalErrataCount", label: "Patches" },
+  { value: "outdatedPackages", label: "Packages" },
+  { value: "extraPkgCount", label: "Extra Packages" },
+  { value: "configFilesWithDifferences", label: "Config Diffs" },
+  { value: "channelLabels", label: "Base Channel" },
+  { value: "entitlementLevel", label: "System Type" },
+];
 
 export function AllSystems(props: Props) {
   const [selectedSystems, setSelectedSystems] = React.useState<String[]>([]);
@@ -55,7 +65,17 @@ export function AllSystems(props: Props) {
         selectable={(item) => item.hasOwnProperty("id")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
-        searchField={<SearchField filter={searchData} placeholder={t("Filter by System Name")} />}
+        searchField={
+          <SearchField
+            options={allListOptions}
+            isClearable={true}
+            isSearchable={true}
+            filter={searchData}
+            defaultValue={null}
+            placeholder={t("Select an option to filter...")}
+          />
+        }
+        defaultSearchField="name"
         emptyText={t("No Systems.")}
       >
         <Column
