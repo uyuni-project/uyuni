@@ -129,4 +129,10 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'mgr-update-reporting-hub-bunch', 'Update Reporting DB with data from other susemanager servers', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'system-overview-update-queue-bunch', 'Process system overview update requests', null);
+
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'update-system-overview-bunch', 'Update the DB table gathering the systems data to show in lists', null);
+
 commit;

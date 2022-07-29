@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -113,6 +114,8 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.taskomatic.task.TaskConstants;
+import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateDriver;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -150,6 +153,7 @@ import java.io.IOException;
 import java.net.IDN;
 import java.security.SecureRandom;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -3056,6 +3060,19 @@ public class SystemManager extends BaseManager {
         return retval;
     }
 
+
+    /**
+     * Returns the list of all the system Ids
+     *
+     * @return list of the system ids
+     */
+    public static List<Long> listSystemIds() {
+        SelectMode mode = ModeFactory.getMode("System_queries", "system_ids");
+        Map<String, Object> params = new HashMap<>();
+        DataResult<Map<String, Object>> dr = mode.execute(params);
+        return dr.stream().map(data -> (Long)data.get("id")).collect(Collectors.toList());
+    }
+
     /**
      * list systems that can be subscribed to a particular child channel
      * @param user the user
@@ -3920,5 +3937,23 @@ public class SystemManager extends BaseManager {
                         pillar,
                         ApplyStatesEventMessage.REPORTDB_USER
                 ));
+    }
+
+    /**
+     * Update the suseSystemOverview table data for a system
+     * @param sid the ID of the system to update
+     */
+    public static void updateSystemOverview(Long sid) {
+        // We need the server to be already in the database to update it
+        if (sid != null) {
+            WriteMode mode = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
+                    "insert_into_task_queue");
+            Map<String, Object> params = new HashMap<>();
+            params.put("org_id", OrgFactory.getSatelliteOrg().getId());
+            params.put("task_name", SystemsOverviewUpdateDriver.TASK_NAME);
+            params.put("task_data", sid);
+            params.put("earliest", new Timestamp(System.currentTimeMillis()));
+            mode.executeUpdate(params);
+        }
     }
 }
