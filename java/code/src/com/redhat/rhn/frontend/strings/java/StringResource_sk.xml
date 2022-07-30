@@ -10241,52 +10241,52 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="help.jsp.refguide.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Reference Guide</source>
-        <target/>
+        <target>Referenčná príručka @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.detailed" xml:space="preserve">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
-        <target/>
+        <target>Podrobné inštrukcie na používanie @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="help.jsp.gettingstarted.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Getting Started Guide</source>
-        <target/>
+        <target>Úvodná príručka @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Best Practices Guide</source>
-        <target/>
+        <target>Príručka osvedčených postupov @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Advanced Topics Guide</source>
-        <target/>
+        <target>Príručka pre pokročilé témy @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled" xml:space="preserve">
         <source>A single base type is required for all systems registered to @@PRODUCT_NAME@@</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Pre všetky systémy zaregistrované k @@PRODUCT_NAME@@ sa vyžaduje jeden základný typ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.satcert-check-bunch" xml:space="preserve">
         <source>Checks whether the @@PRODUCT_NAME@@ certificate has not expired</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Kontroluje, či platnosť certifikátu @@PRODUCT_NAME@@ nevypršala</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="image_admin" xml:space="preserve">
         <source>Image Administrator</source>
-        <target/>
+        <target>Administrátor obrazov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satellite.expired" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Platnosť vášho certifikátu @@PRODUCT_NAME@@ vypršala. Prosím, kontaktujte @@VENDOR_NAME@@ pre nový certifikát.</target>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Platnosť vášho certifikátu @@PRODUCT_NAME@@ vypršala. Váš @@PRODUCT_NAME@@ je v {0} dni z {1} dní obmedzeného obdobia a čoskoro prestane fungovať. Prosím, kontaktujte @@VENDOR_NAME@@ pre nový certifikát.</target>
       </trans-unit>
       <trans-unit id="satellite.graceperiod" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
