@@ -1200,13 +1200,9 @@ type=rpm-md
         params['checksum_type'] = checksum_type
         params['checksum'] = checksum_value
         params['bytes_range'] = bytes_range
-        params['proxy'] = self.proxy_url
-        params['proxy_username'] = self.proxy_user
-        params['proxy_password'] = self.proxy_pass
         params['http_headers'] = self.http_headers
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
-        # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
 
     def get_file(self, path, local_base=None):
