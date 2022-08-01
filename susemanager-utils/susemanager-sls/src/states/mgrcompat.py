@@ -13,7 +13,6 @@ from __future__ import absolute_import
 
 # Import salt libs
 from salt.utils.odict import OrderedDict
-from salt.states import module
 
 import logging
 
@@ -26,12 +25,6 @@ def __virtual__():
     '''
     This module is always enabled while 'module.run' is available.
     '''
-    module.__salt__ = __salt__
-    module.__opts__ = __opts__
-    module.__pillar__ = __pillar__
-    module.__grains__ = __grains__
-    module.__context__ = __context__
-    module.__utils__ = __utils__
     return __virtualname__
 
 def _tailor_kwargs_to_new_syntax(name, **kwargs):
@@ -82,7 +75,7 @@ def module_run(**kwargs):
     else:
         new_kwargs = kwargs
 
-    ret = module.run(**new_kwargs)
+    ret = __states__['module.run'](**new_kwargs)
     if use_new_syntax:
         if ret['changes']:
             changes = ret['changes'].pop(old_name)

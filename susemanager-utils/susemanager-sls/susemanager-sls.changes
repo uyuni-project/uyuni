@@ -1,3 +1,5 @@
+- Prevent possible tracebacks on calling module.run from mgrcompat
+  by setting proper globals with using LazyLoader
 - Fix deploy of SLE Micro CA Certificate (bsc#1200276)
 
 -------------------------------------------------------------------
