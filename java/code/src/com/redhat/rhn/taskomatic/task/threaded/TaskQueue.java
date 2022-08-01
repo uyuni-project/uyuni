@@ -167,6 +167,9 @@ public class TaskQueue {
      */
     public void waitForEmptyQueue() throws InterruptedException {
         synchronized (emptyQueueWait) {
+            if (queueSize == 0) {
+                return;
+            }
             emptyQueueWait.wait();
         }
     }
