@@ -1,3 +1,5 @@
+ - pg-migrate-x-to-y.sh: improve output (bsc#1201260)
+
 -------------------------------------------------------------------
 Wed Jul 27 14:18:17 CEST 2022 - jgonzalez@suse.com
 
