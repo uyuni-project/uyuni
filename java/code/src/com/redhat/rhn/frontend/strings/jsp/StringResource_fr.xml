@@ -5701,7 +5701,7 @@ organisation. Vous pouvez accorder ou retirer le rôle d'administrateur d'organi
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} hardware {1} will be refreshed.</source>
+          <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
           <target state="needs-adaptation">Le matériel {1} {0} va être réactualisé.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
@@ -5737,7 +5737,7 @@ organisation. Vous pouvez accorder ou retirer le rôle d'administrateur d'organi
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} package {1} will be refreshed.</source>
+          <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
           <target state="needs-adaptation">Le paquetage {1} {0} va être réactualisé.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
@@ -29334,6 +29334,20 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
       <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
+            </context-group>
+        <target state="new"/>
   </trans-unit>
       </body>
   </file>
