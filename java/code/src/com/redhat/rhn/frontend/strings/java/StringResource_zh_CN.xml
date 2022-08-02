@@ -9972,7 +9972,7 @@ tree will not be usable for autoinstalling.</source>
         <source>An email has already been sent. You may request this action only every {0} seconds.</source>
         <target state="translated">已经发送了一封电子邮件。您每 {0} 秒只能请求一次此操作。</target>
       </trans-unit>
-      <trans-unit id="help.credentials.passwordsent" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
         <target state="final">已将口令重设置信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的登录信息和电子邮件注册的帐户。</target>
       </trans-unit>
@@ -9988,7 +9988,7 @@ tree will not be usable for autoinstalling.</source>
         <source>There are no registered accounts with that email address.</source>
         <target state="translated">没有使用该电子邮件地址注册的帐户。</target>
       </trans-unit>
-      <trans-unit id="help.credentials.loginssent" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.loginssent" xml:space="preserve">
         <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
         <target state="final">已将找到的登录信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的电子邮件注册的帐户。</target>
       </trans-unit>
@@ -11045,224 +11045,224 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
         <target state="final">无法获取通道模块。有关详细信息，请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="ovalfiles" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ovalfiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
         <target state="final">可选 OVAL 文件（逗号分隔）</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.success" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.success" xml:space="preserve">
         <source>Credentials successfully updated</source>
         <target state="final">已成功更新身份凭证</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.pending" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.pending" xml:space="preserve">
         <source>Waiting to be processed.</source>
         <target state="final">正在等待处理。</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.error_instance" xml:space="preserve">
         <source>Error getting instance data: {0}</source>
         <target state="final">获取实例数据时出错：{0}</target>
       </trans-unit>
-      <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="taskomatic.payg.error_unknown" xml:space="preserve">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
         <target state="final">提取身份验证数据时发生未知错误。请校验 /var/log/rhn/ 中的日志</target>
       </trans-unit>
-      <trans-unit id="payg.description_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.description_required" xml:space="preserve">
         <source>Description is required.</source>
         <target state="final">必须提供说明。</target>
       </trans-unit>
-      <trans-unit id="payg.description_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.description_to_long" xml:space="preserve">
         <source>Description must not exceed 255 characters.</source>
         <target state="final">说明不能超过 255 个字符。</target>
       </trans-unit>
-      <trans-unit id="payg.host_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.host_required" xml:space="preserve">
         <source>Host is required.</source>
         <target state="final">必须指定主机。</target>
       </trans-unit>
-      <trans-unit id="payg.host_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.host_to_long" xml:space="preserve">
         <source>Host must not exceed 255 characters.</source>
         <target state="final">主机不能超过 255 个字符。</target>
       </trans-unit>
-      <trans-unit id="payg.port_invalid" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.port_invalid" xml:space="preserve">
         <source>Invalid value for the port</source>
         <target state="final">端口值无效</target>
       </trans-unit>
-      <trans-unit id="payg.username_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.username_required" xml:space="preserve">
         <source>Username is required.</source>
         <target state="final">必须指定用户名。</target>
       </trans-unit>
-      <trans-unit id="payg.username_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
         <target state="final">用户名不能超过 32 个字符。</target>
       </trans-unit>
-      <trans-unit id="payg.password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
         <target state="final">口令不能超过 32 个字符。</target>
       </trans-unit>
-      <trans-unit id="payg.key_password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.key_password_to_long" xml:space="preserve">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
         <target state="final">SSH 私用密钥通行口令不能超过 32 个字符。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_host_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_host_to_long" xml:space="preserve">
         <source>Bastion host must not exceed 255 characters.</source>
         <target state="final">堡垒主机不能超过 255 个字符。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_host_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_host_required" xml:space="preserve">
         <source>Bastion host is required if any other bastion property is set.</source>
         <target state="final">如果设置了其他堡垒属性，则必须指定堡垒主机。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_port_invalid" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_port_invalid" xml:space="preserve">
         <source>Invalid value for the bastion port</source>
         <target state="final">堡垒端口值无效</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_username_required" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_username_required" xml:space="preserve">
         <source>Username is required.</source>
         <target state="final">必须指定用户名。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_username_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
         <target state="final">用户名不能超过 32 个字符。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
         <target state="final">口令不能超过 32 个字符。</target>
       </trans-unit>
-      <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.bastion_key_password_to_long" xml:space="preserve">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
         <target state="final">堡垒 SSH 私用密钥通行口令不能超过 32 个字符。</target>
       </trans-unit>
-      <trans-unit id="payg.ssh_data_created" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.ssh_data_created" xml:space="preserve">
         <source>Pay-as-you-go {0} created successfully</source>
         <target state="final">已成功创建 Pay-as-you-go {0}</target>
       </trans-unit>
-      <trans-unit id="payg.host_exists" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.host_exists" xml:space="preserve">
         <source>Pay-as-you-go host already exists</source>
         <target state="final">Pay-as-you-go 主机已存在</target>
       </trans-unit>
-      <trans-unit id="payg.ssh_data_deleted" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="payg.ssh_data_deleted" xml:space="preserve">
         <source>Pay-as-you-go {0} deleted successfully</source>
         <target state="final">已成功删除 Pay-as-you-go {0}</target>
       </trans-unit>
-      <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
         <target state="final">更新以下位置的身份验证数据时出错： &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
-      <trans-unit id="task.status.update-payg-auth" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.update-payg-auth" xml:space="preserve">
         <source>Pay-as-you-go authentication update</source>
         <target state="final">Pay-as-you-go 身份验证更新</target>
       </trans-unit>
-      <trans-unit id="task.status.update-payg-hosts" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.update-payg-hosts" xml:space="preserve">
         <source>Pay-as-you-go update RMT hosts</source>
         <target state="final">Pay-as-you-go 更新 RMT 主机</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
         <target state="final">产品数据需要刷新。</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.notfound" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.notfound" xml:space="preserve">
         <source>Product cannot be found: missing identifier {0}.</source>
         <target state="final">找不到产品：缺少标识符 {0}。</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.labelconflict" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.labelconflict" xml:space="preserve">
         <source>There are conflicting channel labels {0}.</source>
         <target state="final">存在冲突的通道标签 {0}。</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.parentconflict" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.parentconflict" xml:space="preserve">
         <source>A parent product conflicts with existing channels.</source>
         <target state="final">父产品与现有通道冲突。</target>
       </trans-unit>
-      <trans-unit id="setup.product.error.unknown" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="setup.product.error.unknown" xml:space="preserve">
         <source>Unexpected error while adding the product.</source>
         <target state="final">添加产品时发生意外错误。</target>
       </trans-unit>
-      <trans-unit id="cveaudit.notfound" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
         <target state="final">在我们的数据库中找不到指定的 CVE 编号。您可以从下面提供的链接获取有关此 CVE 的详细信息。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
         <target state="final">应用引导状态时出错。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="container.based.proxy.config" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="container.based.proxy.config" xml:space="preserve">
         <source>Proxy Configuration</source>
         <target state="final">代理配置</target>
       </trans-unit>
-      <trans-unit id="Peripheral Server" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">外设服务器</target>
       </trans-unit>
-      <trans-unit id="Report Database Schema" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Report Database Schema" xml:space="preserve">
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">报告数据库纲要</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error" xml:space="preserve">
         <source>An unexpected error has occurred during bootstrap.</source>
         <target state="final">引导期间发生意外错误。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
         <target state="final">引导期间应用状态失败 (retcode={0})。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.execution" xml:space="preserve">
         <source>An error has occurred during salt execution: {0}.</source>
         <target state="final">Salt 执行期间发生错误：{0}。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
         <source>function {0} not available</source>
         <target state="final">函数 {0} 不可用</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
         <source>module {0} is not supported</source>
         <target state="final">不支持模块 {0}</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
         <source>unable to parse json</source>
         <target state="final">无法分析 json</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
         <target state="final">无法建立 SSH 连接</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
         <target state="final">无法生成 salt-ssh 公共密钥。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
         <source>Generating salt-ssh public key failed: {0}.</source>
         <target state="final">生成 salt-ssh 公共密钥失败：{0}。</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expired.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
         <target state="final">@@PRODUCT_NAME@@ {0} 的生命周期已结束</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expired.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final"><p>@@PRODUCT_NAME@@ {0} 的生命周期已结束。对其的标准支持已于 <strong>{1}</strong>结束。要继续享受支持，<strong>必须</strong>升级此 @@PRODUCT_NAME@@ 服务器实例。</p>
           <p>有关如何升级 @@PRODUCT_NAME@@ 的其他信息，请查看官方文档<em>安装/升级指南</em>的<em>升级</em>章节。</p></target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
         <target state="final">@@PRODUCT_NAME@@ {0} 的生命周期即将结束</target>
       </trans-unit>
-      <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final"><p>@@PRODUCT_NAME@@ {0} 的生命周期即将结束。对其的标准支持将于 <strong>{1}</strong>结束，请考虑在此之前升级此服务器实例。</p>
           <p>有关如何升级 @@PRODUCT_NAME@@ 的其他信息，请查看官方文档<em>安装/升级指南</em>的<em>升级</em>章节。</p></target>
       </trans-unit>
-      <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
         <target state="final">请填写有效的电子邮件。</target>
       </trans-unit>
-      <trans-unit id="help.credentials.emptylogin" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="help.credentials.emptylogin" xml:space="preserve">
         <source>Please fill in login.</source>
         <target state="final">请填写登录信息。</target>
       </trans-unit>
