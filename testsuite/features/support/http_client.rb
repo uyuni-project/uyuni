@@ -15,7 +15,7 @@ class HttpClient
     call_type =
       if short_name.start_with?('list', 'get', 'is', 'find') ||
          name.start_with?('system.search.', 'packages.search.') ||
-         ['auth.logout', 'errata.applicableToChannels'].include?(name)
+         ['errata.applicableToChannels'].include?(name)
         'GET'
       else
         'POST'

@@ -1,5 +1,8 @@
-- Revert proxy listChannels token caching pr#4548
-- cleanup leftovers from removing unused xmlrpc endpoint
+-------------------------------------------------------------------
+Wed Jul 27 14:16:43 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.15-1
+  * cleanup leftovers from removing unused xmlrpc endpoint
 
 -------------------------------------------------------------------
 Tue Jun 21 18:30:19 CEST 2022 - jgonzalez@suse.com

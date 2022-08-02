@@ -1,6 +1,10 @@
-- update GPG key urls in channels set by spacewalk-common-channels
-- add gpg key info to suseProductSCCRepository (bsc#1199984)
-- Move ImageSync pillars to database (bsc#1199157)
+-------------------------------------------------------------------
+Wed Jul 27 14:11:40 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.13-1
+  * update GPG key urls in channels set by spacewalk-common-channels
+  * add gpg key info to suseProductSCCRepository (bsc#1199984)
+  * Move ImageSync pillars to database (bsc#1199157)
 
 -------------------------------------------------------------------
 Mon May 30 14:59:28 CEST 2022 - jgonzalez@suse.com

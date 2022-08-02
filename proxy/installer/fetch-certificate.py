@@ -1,4 +1,3 @@
-#!/usr/bin/python -u
 #pylint: disable=invalid-name
 
 import os
