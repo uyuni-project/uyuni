@@ -1,8 +1,9 @@
 #! /bin/bash
 
 set -x
+export LC_ALL=C
 
-SAFE_BRANCHNAMES=(master-weblate)
+SAFE_BRANCHNAMES=(weblate-Manager-4.2)
 SAFE_BRANCHNAMES+=($ADDITIONAL_SAFE_BRANCHNAME)
 GIT_ROOT_DIR=$(git rev-parse --show-toplevel)
 
