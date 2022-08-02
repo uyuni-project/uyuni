@@ -5706,7 +5706,7 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} hardware {1} will be refreshed.</source>
+          <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <target state="needs-adaptation">{0} hardware {1} será atualizado.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
@@ -5742,7 +5742,7 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} package {1} will be refreshed.</source>
+          <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <target state="needs-adaptation">{0} pacote {1} será atualizado.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
@@ -29360,6 +29360,20 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
       <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
+            </context-group>
+        <target state="new"/>
   </trans-unit>
       </body>
   </file>
