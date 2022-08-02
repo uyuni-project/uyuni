@@ -5761,7 +5761,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage" xml:space="preserve">
           <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <target state="final"><a href="/rhn/schedule/PendingActions.do">已安排</a>刷新 1 个硬件配置文件。</target>
         <context-group name="ctx">
@@ -5797,7 +5797,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage" xml:space="preserve">
           <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <target state="final"><a href="/rhn/schedule/PendingActions.do">已安排</a>刷新 1 个软件包配置文件。</target>
         <context-group name="ctx">
@@ -8337,7 +8337,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="pkg.lock.menu" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="pkg.lock.menu" xml:space="preserve">
         <source>Lock / Unlock</source>
         <target state="final">锁定/解锁</target>
         <context-group name="ctx">
@@ -24625,7 +24625,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.activation.header" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.activation.header" xml:space="preserve">
         <source>System Reactivation Key</source>
         <target state="final">系统重新激活密钥</target>
         <context-group name="ctx">
@@ -28937,7 +28937,7 @@ given channel.</source>
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
         <target state="final">在此系统上安装的 <strong>Salt</strong> 软件包版本已过时。在启动产品迁移之前，请将该软件包更新到最新版本。</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
         <target state="final">找不到某些已安装的扩展的后继版本。迁移期间，将会根据所选的目标去除其中的部分或全部产品，因此请小心操作：</target>
       </trans-unit>
@@ -29077,7 +29077,7 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
         <target>已存在使用此用户名的身份凭证</target>
       </trans-unit>
-      <trans-unit id="copyright.jsp.title" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
         <target state="final">版权所有 (c) 2011 - 2022 SUSE LLC。</target>
       </trans-unit>
@@ -29647,64 +29647,64 @@ given channel.</source>
         <source>AppStreams</source>
         <target state="final">AppStream</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.misc.proxy" xml:space="preserve">
           <source>Connect minions to another &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
         <target state="final">将受控端连接到其他&lt;a href="/rhn/manager/systems/ssm/proxy"&gt;代理服务器&lt;/a&gt;</target>
       </trans-unit>
-      <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.misc.index.tabs.proxy" xml:space="preserve">
           <source>Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
         <target state="final">代理</target>
       </trans-unit>
-      <trans-unit id="sdc.details.connection.change" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.connection.change" xml:space="preserve">
         <source>Change</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
         <target state="final">更改</target>
       </trans-unit>
-      <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="details.jsp.vendoradvisory" xml:space="preserve">
         <source>Vendor Advisory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
         <target state="final">供应商建议</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
         <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
         <target state="final">从配置的 Pay-as-you-go 云实例收集身份验证数据</target>
       </trans-unit>
-      <trans-unit id="Pay-as-you-go" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Pay-as-you-go" xml:space="preserve">
         <source>Pay-as-you-go</source>
         <target state="final">Pay-as-you-go</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
         <target state="final">更新报告数据库</target>
       </trans-unit>
-      <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.mgr-update-reporting" xml:space="preserve">
         <source>Update Reporting Database</source>
         <target state="final">更新报告数据库</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.sshport" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.overview.sshport" xml:space="preserve">
         <source>SSH Port:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
         <target state="final">SSH 端口：</target>
       </trans-unit>
-      <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="systemlist.jsp.ismgrserver" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
@@ -29716,29 +29716,29 @@ given channel.</source>
         </context-group>
         <target state="final">外设服务器</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
         <target state="final">更新集线器报告数据库</target>
       </trans-unit>
-      <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
         <target state="final">更新集线器报告数据库</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
         <source>Following installed products will be removed from the system during migration:</source>
         <target state="final">迁移期间将从系统中去除已安装的以下产品：</target>
       </trans-unit>
-      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
             </context-group>
         <target state="final"><a href="/rhn/schedule/PendingActions.do">已安排</a>刷新 {0} 个硬件配置文件。</target>
       </trans-unit>
-      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
