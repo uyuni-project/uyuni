@@ -16,5 +16,5 @@ Feature: Wait for reposync activity to finish after adding products
   Scenario: Wait for running reposyncs to finish after adding products
     When I wait until all spacewalk-repo-sync finished
 
-  Scenario: Verify the reposync went fine
+  Scenario: Verify the reposync went fine after adding products
     Then the reposync logs should not report errors

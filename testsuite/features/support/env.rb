@@ -13,12 +13,16 @@ require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
+require 'set'
 
 ## code coverage analysis
 # SimpleCov.start
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
+
+# Channels triggered by our tests to be synchronized
+$channels_synchronized = Set[]
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success

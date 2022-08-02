@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 06 15:56:55 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.23-1
+  * Add schema directory for susemanager-schema-4.2.22
+
+-------------------------------------------------------------------
 Wed May 04 14:08:59 CEST 2022 - jmassaguerpla@suse.de
 
 - version 4.2.22-1

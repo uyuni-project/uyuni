@@ -134,10 +134,18 @@ salt-minion-package:
     - require:
       - file: bootstrap_repo
 
-{# These two dependencies are only needed on DEB based distros with Python version < 3.7 #}
-{# We cannot make these packages as hard depedendencies for Salt package because this is only needed for Ubuntu 18.04 #}
-{# and we only maintain a single DEB package for all DEB based distros #}
-{% if salt_minion_name == 'salt-minion' and grains['os_family'] == 'Debian' and grains['pythonversion'][0] >= 3 and grains['pythonversion'][1] < 7 %}
+{# We must install "python3-contextvars" on DEB based distros, running Salt 3004, with Python version < 3.7, like Ubuntu 18.04 #}
+{# We cannot make this package a hard depedendency for Salt DEB package because this is only needed in Ubuntu 18.04 #}
+{# DEB based distros with Python version >= 3.7 does not need this package - package is not existing in such cases #}
+{# Since we only maintain a single DEB package for all DEB based distros, we need to explicitely install the package here #}
+{%- set contextvars_needed = False %}
+{%- if salt_minion_name == 'salt-minion' and grains['os_family'] == 'Debian' and grains['pythonversion'][0] >= 3 and grains['pythonversion'][1] < 7 %}
+  {%- if not (grains['os'] == 'Ubuntu' and grains['osrelease_info'][0] == 16) and not (grains['os'] == 'Debian' and grains['osrelease_info'][0] == 9) %}
+    {%- set contextvars_needed = True %}
+  {%- endif %}
+{%- endif %}
+
+{% if contextvars_needed %}
 salt-install-contextvars:
   pkg.installed:
     - name: python3-contextvars

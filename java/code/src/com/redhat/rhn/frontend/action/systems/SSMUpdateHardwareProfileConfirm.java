@@ -85,15 +85,14 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
             ActionFactory.save(a);
             try {
                 TASKOMATIC_API.scheduleActionExecution(a);
-                ActionMessages msg = new ActionMessages();
-                String profileStr = "profiles";
-                if (set.size() == 1) {
-                    profileStr = "profile";
+                ActionMessages msgs = new ActionMessages();
+                ActionMessage msg = new ActionMessage("ssm.hw.systems.confirmmessage");
+
+                if (set.size() != 1) {
+                    msg = new ActionMessage("ssm.hw.systems.confirmmessage.multiple", set.size());
                 }
-                msg.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("ssm.hw.systems.confirmmessage", set.size(),
-                        profileStr));
-                getStrutsDelegate().saveMessages(request, msg);
+                msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+                getStrutsDelegate().saveMessages(request, msgs);
 
                 return getStrutsDelegate().forwardParams(
                         mapping.findForward("success"), params);

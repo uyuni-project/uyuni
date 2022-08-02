@@ -3,6 +3,7 @@
 
 require 'timeout'
 require 'nokogiri'
+require 'set'
 
 # Sanity checks
 
@@ -322,11 +323,12 @@ end
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
+# rubocop:disable Metrics/BlockLength
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
-  do_not_kill = compute_list_to_leave_running
+  do_not_kill = compute_channels_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 60 && reposync_left_running_streak <= 7200
+  while reposync_not_running_streak <= 60
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -339,6 +341,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
     if do_not_kill.include? channel
+      $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
       sleep 1
@@ -349,8 +352,11 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     pid = process.split(' ')[0]
     $server.run("kill #{pid}", check_errors: false)
     log "Reposync of channel #{channel} killed"
+
+    raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
@@ -368,12 +374,27 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", check_errors: false)
-      break if code.zero?
+      # solv is the last file to be written when the server synchronizes a channel,
+      # therefore we wait until it exist
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
+      if code.zero?
+        # We want to check if no .new files exists.
+        # On a re-sync, the old files stay, the new one have this suffix until it's ready.
+        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
+        break unless new_code.zero?
+      end
+      log "I am still waiting for '#{channel}' channel to be synchronized."
       sleep 10
     end
   rescue StandardError => e
     log e.message # It might be that the MU repository is wrong, but we want to continue in any case
+  end
+end
+
+When(/I wait until all synchronized channels have finished$/) do
+  $channels_synchronized.each do |channel|
+    log "I wait until '#{channel}' synchronized channel has finished"
+    step %(I wait until the channel "#{channel}" has been synced)
   end
 end
 
@@ -794,37 +815,37 @@ end
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
-          mand_repos = ""
-          opt_repos = ""
-          repos.split(' ').map do |repo|
-            if repo =~ /_ltss_/
-              opt_repos = "#{opt_repos} #{repo}"
+  cmd = ''
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    mand_repos = ''
+    opt_repos = ''
+    repos.split(' ').map do |repo|
+      if repo =~ /_ltss_/
+        opt_repos = "#{opt_repos} #{repo}"
+      else
+        mand_repos = "#{mand_repos} #{repo}"
+      end
+    end
+    cmd = "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos}"
+  elsif os_family =~ /^centos/
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
             else
-              mand_repos = "#{mand_repos} #{repo}"
+              "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
             end
-          end
-          "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos};"
-        else
-          cmd_list = if action == 'enable'
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     else
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     end
-          cmd_list.reduce(:+)
-        end
+    end
+  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+            else
+              "#{cmd}sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list"
+            end
+    end
+  end
   node.run(cmd, check_errors: error_control.empty?)
 end
 # rubocop:enable Metrics/BlockLength
@@ -1506,13 +1527,14 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
 end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
-  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
+  repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
+    repositories.concat(' os_pool_repo os_update_repo')
+    repositories.concat(' tools_additional_repo') unless $product == 'Uyuni'
   end
+  step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
 end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
@@ -1563,7 +1585,7 @@ When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
-  raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql")
+  raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql.gz")
 end
 
 Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|

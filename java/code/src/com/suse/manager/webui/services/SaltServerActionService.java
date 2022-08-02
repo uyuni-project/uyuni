@@ -160,6 +160,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
@@ -2617,7 +2618,8 @@ public class SaltServerActionService {
                         *  stay in picked up, in this way SSHPushDriver::getCandidates can schedule a reboot correctly
                         */
                         if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-                            saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult, function);
+                            saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
+                                    Optional.of(Xor.right(function)));
                         }
                         else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
                             sa.setStatus(ActionFactory.STATUS_PICKED_UP);
@@ -2628,7 +2630,8 @@ public class SaltServerActionService {
                         minion.updateServerInfo();
 
                         // Perform a package profile update in the end if necessary
-                        if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, Optional.of(jsonResult))) {
+                        if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(Optional.of(Xor.right(function)),
+                                Optional.of(jsonResult))) {
                             LOG.info("Scheduling a package profile update");
 
                             Action pkgList;
@@ -2729,7 +2732,8 @@ public class SaltServerActionService {
      * @param function the Salt function executed.
      */
     public void handleAction(long actionId, String minionId, int retcode, boolean success,
-                                    String jobId, JsonElement jsonResult, String function) {
+                                    String jobId, JsonElement jsonResult,
+                                    Optional<Xor<String[], String>> function) {
         // Lookup the corresponding action
         Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
         if (action.isPresent()) {

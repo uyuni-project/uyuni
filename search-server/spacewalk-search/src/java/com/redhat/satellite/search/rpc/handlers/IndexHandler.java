@@ -66,6 +66,23 @@ public class IndexHandler {
     }
 
     /**
+     * Search index - using session id as String to avoid Integer overflow
+     *
+     * @param sessionId
+     *            user's application session id
+     * @param indexName
+     *            index to use
+     * @param query
+     *            search query
+     * @return list of document ids as results
+     * @throws XmlRpcFault something bad happened
+     */
+    public List<Result> search(String sessionId, String indexName, String query, boolean isFineGrained)
+            throws XmlRpcFault {
+        return search(Long.parseLong(sessionId), indexName, query, DEFAULT_LANG, isFineGrained);
+    }
+
+    /**
      * Search index -
      * assumes English language as default language
      *

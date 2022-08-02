@@ -85,15 +85,15 @@ public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listab
                         (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, now,
                         serverIds);
                 ActionFactory.save(a);
-                ActionMessages msg = new ActionMessages();
-                String profileStr = "profiles";
-                if (set.size() == 1) {
-                    profileStr = "profile";
+                ActionMessages msgs = new ActionMessages();
+                ActionMessage msg = new ActionMessage("ssm.sw.systems.confirmmessage");
+
+                if (set.size() != 1) {
+                    msg = new ActionMessage("ssm.sw.systems.confirmmessage.multiple", set.size());
                 }
-                msg.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("ssm.sw.systems.confirmmessage", set.size(),
-                        profileStr));
-                getStrutsDelegate().saveMessages(request, msg);
+
+                msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+                getStrutsDelegate().saveMessages(request, msgs);
                 return getStrutsDelegate().forwardParams(
                         mapping.findForward("success"), params);
             }

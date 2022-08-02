@@ -27,9 +27,6 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.frontend.context.Context;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -42,7 +39,12 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.log4j.Logger;
 
@@ -152,8 +154,8 @@ public class MinionActionUtils {
                             }
                             else {
                                 saltUtils.updateServerAction(sa, 0L,
-                                        true, info.getJid(), o, info.getFunction());
-                                saltUtils.handlePackageChanges(info.getFunction(), o,
+                                        true, info.getJid(), o, Optional.of(Xor.right(info.getFunction())));
+                                saltUtils.handlePackageChanges(Optional.of(Xor.right(info.getFunction())), o,
                                         server);
                                 return sa;
                             }

@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Wait for reposync activity to finish in CI context
@@ -15,3 +15,6 @@ Feature: Wait for reposync activity to finish in CI context
 
   Scenario: Kill running reposyncs or wait for them to finish
     When I kill all running spacewalk-repo-sync, excepted the ones needed to bootstrap
+
+  Scenario: Wait until all synchronized channels have finished
+    When I wait until all synchronized channels have finished

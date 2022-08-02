@@ -16,16 +16,14 @@ var options = {
   storeScreenshots: true,
   noInlineScreenshots: true,
   ignoreBadJsonFile: true,
-  name: 'SUSE Manager Testsuite',
+  name: 'SUSE Manager 4.2 Testsuite',
   brandTitle: ' ',
-  // metadata: {
-  //   "App Version":"",
-  //   "Test Environment": "",
-  //   "Browser": "",
-  //   "Platform": "",
-  //   "Parallel": "",
-  //   "Executed": ""
-  // }
+  metadata: {
+    "App Version":"4.2",
+    "Browser": "Chrome",
+    "Platform": "x86_64",
+    "Parallel": "Disabled"
+  }
 };
 
 reporter.generate(options);

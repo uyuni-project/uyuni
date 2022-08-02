@@ -1,5 +1,9 @@
-- spacewalk-setup-cobbler assumes /etc/apache2/conf.d now as a
-  default instead of /etc/httpd/conf.d (bsc#1198356)
+-------------------------------------------------------------------
+Wed Jul 06 15:56:44 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.11-1
+  * spacewalk-setup-cobbler assumes /etc/apache2/conf.d now as a
+    default instead of /etc/httpd/conf.d (bsc#1198356)
 
 -------------------------------------------------------------------
 Wed Feb 02 13:52:39 CET 2022 - jmassaguerpla@suse.de
