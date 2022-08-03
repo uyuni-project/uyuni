@@ -376,21 +376,21 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
-    And I enter "SLE-15-SP4-TFTP" as "label"
+    And I enter "SLE-15-SP4-KVM" as "label"
     And I enter "/usr/share/tftpboot-installation/SLE-15-SP4-x86_64/" as "basepath"
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I enter "useonlinerepo insecure=1" as "kernelopts"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
-    And I should see a "SLE-15-SP4-TFTP" link
+    And I should see a "SLE-15-SP4-KVM" link
 
 @scc_credentials
   Scenario: Create auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/Autoyast File"
     When I enter "15-sp4-kvm" as "kickstartLabel"
-    And I select "SLE-15-SP4-TFTP" from "kstreeId"
+    And I select "SLE-15-SP4-KVM" from "kstreeId"
     And I select "KVM Virtualized Guest" from "virtualizationTypeLabel"
     And I attach the file "/sle-15-sp4-autoyast.xml" to "fileUpload"
     And I click on "Create"
@@ -402,10 +402,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
+    And I enter "distrotree=SLE-15-SP4-KVM\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
     And I click on "Update Variables"
     And I follow "Autoinstallation File"
-    Then I should see a "SLE-15-SP4-TFTP" text
+    Then I should see a "SLE-15-SP4-KVM" text
 
 @scc_credentials
   Scenario: Create an auto installing KVM virtual machine
@@ -445,12 +445,12 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @scc_credentials
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
-    And I follow "SLE-15-SP4-TFTP"
+    And I follow "SLE-15-SP4-KVM"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
     And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
-    Then I should not see a "SLE-15-SP4-TFTP" text
+    Then I should not see a "SLE-15-SP4-KVM" text
 
 # End of provisioning scenarios
 
