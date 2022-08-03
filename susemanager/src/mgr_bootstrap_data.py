@@ -256,6 +256,10 @@ ENHANCE12SP5_X86 = [
     "Mesa-libglapi0",
     "python-gobject",
     "typelib-1_0-Pango-1_0",
+    "python-py",
+    "python-certifi",
+    "python-chardet",
+    "python-urllib3",
 ]
 
 RES6 = [
