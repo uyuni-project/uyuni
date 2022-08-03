@@ -6943,12 +6943,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ipmilan" xml:space="preserve">
-        <source>IPMI</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
         <source>Redfish</source>
         <context-group name="ctx">
