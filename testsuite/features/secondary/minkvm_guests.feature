@@ -425,16 +425,19 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm2" virtual machine on "kvm_server" should stop on reboot
     And "test-vm2" virtual machine on "kvm_server" should boot on hard disk at next start
     And "test-vm2" virtual machine on "kvm_server" should not stop on reboot at next start
+    And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
+
+@scc_credentials
+  Scenario: VNC console for the auto installing KVM virtual machine
     When I click on "Graphical Console" in row "test-vm2"
     And I switch to last opened window
     And I wait until I see the VNC graphical console
-    And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
-    When I close the last opened window
+    And I close the last opened window
 
 @scc_credentials
   Scenario: Cleanup: remove the auto installation profile
-    And I follow the left menu "Systems > Autoinstallation > Profiles"
-    When I follow "15-sp4-kvm"
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
+    And I follow "15-sp4-kvm"
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
     Then I should not see a "15-sp4-kvm" text
