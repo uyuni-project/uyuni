@@ -396,7 +396,13 @@ end
 Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   case section
   when 'Admin'
-    step %(I am authorized as "admin" with password "admin")
+    if $username
+      step %(I am authorized as "#{$username}" with password "#{$password}")
+      step %(I am logged in API as user "#{$username}" and password "#{$password}")
+    else
+      step %(I am authorized as "admin" with password "admin")
+      step %(I am logged in API as user "admin" and password "admin")
+    end
   when 'Images'
     step %(I am authorized as "kiwikiwi" with password "kiwikiwi")
   end

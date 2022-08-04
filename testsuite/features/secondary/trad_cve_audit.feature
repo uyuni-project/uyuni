@@ -80,7 +80,6 @@ Feature: CVE Audit on traditional clients
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-    And I am logged in API as user "admin" and password "admin"
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for this client
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"

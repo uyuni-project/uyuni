@@ -162,12 +162,19 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
 end
 
 # user salt steps
-Given(/^I am authorized as an example user with no roles$/) do
+Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, password|
   $api_test.auth.login('admin', 'admin')
-  @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
-  $api_test.user.create_user(@username, 'linux')
-  step %(I am authorized as "#{@username}" with password "linux")
-  $api_test.auth.logout
+  $username = user
+  $password = password
+  $api_test.auth.create($username, $password, $username, $username, 'test@mail.com')
+  $api_test.auth.add_role($username, 'satellite_admin')
+  $api_test.auth.add_role($username, 'org_admin')
+  $api_test.auth.add_role($username, 'channel_admin')
+  $api_test.auth.add_role($username, 'config_admin')
+  $api_test.auth.add_role($username, 'system_group_admin')
+  $api_test.auth.add_role($username, 'activation_key_admin')
+  $api_test.auth.add_role($username, 'image_admin')
+  puts "New user #{$username} created"
 end
 
 When(/^I click on preview$/) do

@@ -4,9 +4,11 @@
 @scope_api
 Feature: IPMI Power management API
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Setup an IPMI host for API test
     When the server starts mocking an IPMI host
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Check the power management settings for API test
     When I want to operate on this "sle_client"
