@@ -1110,7 +1110,7 @@ public class ConfigDefaults {
      * @return true if automatic sync is active, false otherwise
      */
     public boolean isCustomChannelManagementUnificationEnabled() {
-        return Config.get().getBoolean(UNIFY_CUSTOM_CHANNEL_MANAGEMENT);
+        return Config.get().getBoolean(UNIFY_CUSTOM_CHANNEL_MANAGEMENT, true);
     }
 
 }

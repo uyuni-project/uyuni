@@ -247,7 +247,7 @@ Create everything as well as unlimited activation key for every channel:
     ]
 
     # Read the configuration to figure out if channel should be synced automatically on creation
-    sync_channels = False
+    sync_channels = True
     with cfg_component("java") as CFG:
         try:
             sync_channels = CFG.unify_custom_channel_management.lower() in ["1", "y", "true", "yes", "on"]
