@@ -10,6 +10,7 @@ Feature: OpenSCAP audit of Salt minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "sle_minion"
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Install the OpenSCAP packages on the SLE minion
     When I enable repository "os_pool_repo os_update_repo" on this "sle_minion"
