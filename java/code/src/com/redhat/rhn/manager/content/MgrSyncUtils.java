@@ -257,6 +257,9 @@ public class MgrSyncUtils {
                 if (oldMirrorPath.exists()) {
                     mirrorPath = oldMirrorPath;
                 }
+                else {
+                    mirrorPath = new File(dataPath.getAbsolutePath(), path);
+                }
             }
         }
         Path cleanPath = mirrorPath.toPath().normalize();
