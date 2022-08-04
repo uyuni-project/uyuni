@@ -14,6 +14,7 @@ Feature: Build container images
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Create a simple image profile without activation key
     When I follow the left menu "Images > Profiles"
