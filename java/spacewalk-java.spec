@@ -33,13 +33,11 @@
 %define apache_group    www
 %define salt_user_group salt
 %define apache2         apache2
-%define java_version    11
 %else
 %define serverdir       %{_sharedstatedir}
 %define apache_group    apache
 %define salt_user_group salt
 %define apache2         httpd
-%define java_version    1:11
 %endif
 
 %define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
@@ -108,15 +106,13 @@ BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
 BuildRequires:  (gnu-jaf or jakarta-activation)
+BuildRequires:  java-11-openjdk-devel
 %if 0%{?rhel} || 0%{?fedora}
 BuildRequires:  glassfish-jaxb-core
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
 BuildRequires:  istack-commons-runtime
-BuildRequires:  java-11-openjdk-devel
 BuildRequires:  (glassfish-jaxb-api or jaxb-api)
-%else
-BuildRequires:  java-devel >= %{java_version}
 %endif
 BuildRequires:  java-saml
 BuildRequires:  javamail
@@ -204,11 +200,7 @@ Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       jade4j
-%if 0%{?rhel}
 Requires:       java-11-openjdk
-%else
-Requires:       java >= %{java_version}
-%endif
 Requires:       java-saml
 Requires:       javamail
 Requires:       javapackages-tools
@@ -374,11 +366,7 @@ Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
-%if 0%{?rhel}
 Requires:       java-11-openjdk
-%else
-Requires:       java >= %{java_version}
-%endif
 Requires:       log4j
 Requires:       javassist
 Requires:       jboss-logging

@@ -1,3 +1,5 @@
+- explicitly require java-11-openjdk
+
 -------------------------------------------------------------------
 Wed Jul 27 14:18:34 CEST 2022 - jgonzalez@suse.com
 
