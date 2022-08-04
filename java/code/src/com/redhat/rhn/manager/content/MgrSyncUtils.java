@@ -258,7 +258,11 @@ public class MgrSyncUtils {
                     mirrorPath = oldMirrorPath;
                 }
                 else {
-                    mirrorPath = new File(dataPath.getAbsolutePath(), path);
+                    // mirror in a common folder (bsc#1202144)
+                    File commonMirrorPath = Paths.get(dataPath.getAbsolutePath(), path).toFile();
+                    if (commonMirrorPath.exists()) {
+                        mirrorPath = commonMirrorPath;
+                    }
                 }
             }
         }
