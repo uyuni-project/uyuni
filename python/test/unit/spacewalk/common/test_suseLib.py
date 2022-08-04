@@ -116,3 +116,26 @@ class SuseLibTest(unittest.TestCase):
 
         self.assertEqual((HTTP_PROXY, 'user', None), suseLib.get_proxy())
 
+    def test_URL_getURL_with_stipPw(self):
+        self.assertEqual(
+            suseLib.URL("https://example.org/path/to/repo").getURL(stripPw=True),
+            "https://example.org/path/to/repo",
+        )
+        self.assertEqual(
+            suseLib.URL("https://example.org/path/to/repo?someTokenToHide").getURL(
+                stripPw=True
+            ),
+            "https://example.org/path/to/repo?<token>",
+        )
+        self.assertEqual(
+            suseLib.URL("https://user:paSSw0rd@example.org/path/to/repo").getURL(
+                stripPw=True
+            ),
+            "https://user:<secret>@example.org/path/to/repo",
+        )
+        self.assertEqual(
+            suseLib.URL(
+                "https://user:paSSw0rd@example.org/path/to/repo?someTokenToHide"
+            ).getURL(stripPw=True),
+            "https://user:<secret>@example.org/path/to/repo?<token>",
+        )
