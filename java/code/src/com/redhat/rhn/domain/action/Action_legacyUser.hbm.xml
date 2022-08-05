@@ -652,7 +652,7 @@ select {ra.*}
     SELECT sa.server.id
         FROM ServerAction sa
         JOIN sa.server s
-        WHERE sa.server.class = com.redhat.rhn.domain.server.MinionServer AND action_id = :id
+        WHERE type(s) = com.redhat.rhn.domain.server.MinionServer AND action_id = :id
     ]]>
     </query>
     
@@ -661,7 +661,7 @@ select {ra.*}
         SELECT sa
             FROM ServerAction AS sa
                 JOIN sa.server AS s
-            WHERE s.class != com.redhat.rhn.domain.server.MinionServer
+            WHERE type(s) != com.redhat.rhn.domain.server.MinionServer
                 AND action_id = :id
     ]]>
     </query>
@@ -672,7 +672,7 @@ select {ra.*}
             FROM ServerAction AS sa
                 JOIN sa.server AS s
                 JOIN s.contactMethod AS c
-            WHERE sa.server.class = com.redhat.rhn.domain.server.MinionServer
+            WHERE type(s) = com.redhat.rhn.domain.server.MinionServer
                 AND action_id = :id
     ]]>
     </query>
