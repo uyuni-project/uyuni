@@ -95,7 +95,7 @@ with open(config_path + "httpd.yaml") as httpdSource:
         # -------------------------------------------------------------------------
         
         # Debug log level
-        debug = {config.get("debug_log_level", 4)}
+        debug = {config.get("log_level", 1)}
         
         # Logs redirect
         proxy.broker.log_file = stdout
