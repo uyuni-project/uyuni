@@ -1,3 +1,4 @@
+- fix state.apply result parsing in test mode (bsc#1201913)
 - require tomcat native interface to prevent misleading warning
   in tomcat startup log (bsc#1202455)
 - Reduce the length of image channel URL (bsc#1201220)
