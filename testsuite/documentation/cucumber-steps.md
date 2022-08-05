@@ -34,7 +34,6 @@ Possible values are currently:
 | --------- | ----------- | -------------------------- | -------------- | --------------- |
 | Uyuni server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
 | Uyuni proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
-| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
 | SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` | ```"minion"``` |
 | SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSH_MINION``` | ```"ssh_minion"``` | ```"minion"``` |
@@ -180,13 +179,13 @@ To check for the initial log in, prefer ```Then I am logged in```.
 * Go to details of a given client
 
 ```gherkin
-  When I am on the Systems overview page of this "sle_client"
+  When I am on the Systems overview page of this "sle_minion"
 ```
 
 * Go to a tab page of a given client
 
 ```gherkin
-  When I am on the "Virtualization" page of this "sle_client"
+  When I am on the "Virtualization" page of this "sle_minion"
 ```
 
 * Go to configuration of "SUSE Test" organization
@@ -308,7 +307,7 @@ The check box can be identified by name, id or label text.
 ```gherkin
   When I check the row with the "virgo-dummy-3456" link
   When I check the row with the "suse_docker_admin" text
-  When I check the "sle_client" client
+  When I check the "sle_minion" client
   When I check "New Test Channel" in the list
   When I uncheck "hoag-dummy-1.1-1.1" in the list
 ```
@@ -379,7 +378,7 @@ Note that the text area variant handles the new lines characters while the other
 * Run an arbitrary command and expect it to succeed
 
 ```gherkin
-  When I run "rhn_check -vvv" on "sle_client"
+  When I run "zypper up" on "sle_minion"
   When I run "apt update" on "deblike_minion" with logging
 ```
 
@@ -407,7 +406,7 @@ Note that the text area variant handles the new lines characters while the other
   When I wait for "milkyway-dummy" to be uninstalled on "sle_minion"
   When I wait until refresh package list on "sle_minion" is finished
   When I wait until package "virgo-dummy" is installed on "sle_minion" via spacecmd
-  Then "man" should be installed on "sle_client"
+  Then "man" should be installed on "sle_minion"
   Then "milkyway-dummy" should not be installed on "sle_minion"
   Then spacecmd should show packages "virgo-dummy-1.0 milkyway-dummy" installed on "sle_minion"
 ```
@@ -434,7 +433,7 @@ Note that the text area variant handles the new lines characters while the other
 
 ```gherkin
   When I wait until file "/root/foobar" exists on "sle_minion"
-  Then file "/etc/mgr-test-file.cnf" should exist on "sle_client"
+  Then file "/etc/mgr-test-file.cnf" should exist on "sle_minion"
   When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
   Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should exist on server
   Then file "/srv/susemanager/salt/manager_org_1/s-mgr/config/init.sls" should not exist on server
@@ -446,7 +445,7 @@ Note that the text area variant handles the new lines characters while the other
 
 ```gherkin
   When I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value" on server
-  Then file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle_client"
+  Then file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle_minion"
 
   When I get the contents of the remote file "/etc/salt/master.d/susemanager.conf"
   Then it should contain a "rest_cherrypy:" text
@@ -457,7 +456,7 @@ Note that the text area variant handles the new lines characters while the other
 * Wait for reboot to finish
 
 ```gherkin
-  When I wait and check that "sle_client" has rebooted
+  When I wait and check that "sle_minion" has rebooted
 ```
 
 ### Uyuni utilities
@@ -474,7 +473,7 @@ Note that the text area variant handles the new lines characters while the other
 * Execute mgr-bootstrap
 
 ```gherkin
-  When I execute mgr-bootstrap "--script=bootstrap-test.sh --traditional"
+  When I execute mgr-bootstrap "--script=bootstrap-test.sh"
 ```
 
 * Execute mgr-create-bootstrap-repo
@@ -497,12 +496,6 @@ Note that the text area variant handles the new lines characters while the other
 ```
 
 ### Registration and channels
-
-* Register (with ```rhnreg_ks```)
-
-```gherkin
-  When I register "rhlike_minion" as traditional client
-```
 
 * Test registration (with API)
 
@@ -528,7 +521,7 @@ Note that the text area variant handles the new lines characters while the other
 * HTTP file transfer
 
 ```gherkin
-  When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle_client"
+  When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle_minion"
 ```
 
 ### Events
@@ -708,10 +701,10 @@ When implementing a step, to run a command on a target, use:
 
 ```ruby
 $server.run("uptime")
-$client.run("uptime", check_errors: false)
+$minion.run("uptime", check_errors: false)
 $minion.run("uptime", check_errors: true)
 $minion.run("uptime", check_errors: true, timeout: 300)
-$client.run("uptime", check_errors: false, timeout: 500, user: 'root')
+$minion.run("uptime", check_errors: false, timeout: 500, user: 'root')
 ```
 
 Arguments taken by method ```run``` are:
@@ -729,7 +722,7 @@ retry several times until ```DEFAULT_TIMEOUT```.
 When implementing a step, to get the FQDN of the host, use:
 
 ```ruby
-  STDOUT.puts $client.full_hostname
+  STDOUT.puts $minion.full_hostname
 ```
 
 ### Converting between host name and target

@@ -38,28 +38,20 @@ $nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
 
 if $build_validation
   # Define twopence objects for Build Validation environment
-  $sle12sp4_client = twopence_init("ssh:#{ENV['SLE12SP4_CLIENT']}") if ENV['SLE12SP4_CLIENT']
   $sle12sp4_minion = twopence_init("ssh:#{ENV['SLE12SP4_MINION']}") if ENV['SLE12SP4_MINION']
   $sle12sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP4_SSHMINION']}") if ENV['SLE12SP4_SSHMINION']
-  $sle12sp5_client = twopence_init("ssh:#{ENV['SLE12SP5_CLIENT']}") if ENV['SLE12SP5_CLIENT']
   $sle12sp5_minion = twopence_init("ssh:#{ENV['SLE12SP5_MINION']}") if ENV['SLE12SP5_MINION']
   $sle12sp5_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP5_SSHMINION']}") if ENV['SLE12SP5_SSHMINION']
-  $sle15_client = twopence_init("ssh:#{ENV['SLE15_CLIENT']}") if ENV['SLE15_CLIENT']
   $sle15_minion = twopence_init("ssh:#{ENV['SLE15_MINION']}") if ENV['SLE15_MINION']
   $sle15_ssh_minion = twopence_init("ssh:#{ENV['SLE15_SSHMINION']}") if ENV['SLE15_SSHMINION']
-  $sle15sp1_client = twopence_init("ssh:#{ENV['SLE15SP1_CLIENT']}") if ENV['SLE15SP1_CLIENT']
   $sle15sp1_minion = twopence_init("ssh:#{ENV['SLE15SP1_MINION']}") if ENV['SLE15SP1_MINION']
   $sle15sp1_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP1_SSHMINION']}") if ENV['SLE15SP1_SSHMINION']
-  $sle15sp2_client = twopence_init("ssh:#{ENV['SLE15SP2_CLIENT']}") if ENV['SLE15SP2_CLIENT']
   $sle15sp2_minion = twopence_init("ssh:#{ENV['SLE15SP2_MINION']}") if ENV['SLE15SP2_MINION']
   $sle15sp2_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP2_SSHMINION']}") if ENV['SLE15SP2_SSHMINION']
-  $sle15sp3_client = twopence_init("ssh:#{ENV['SLE15SP3_CLIENT']}") if ENV['SLE15SP3_CLIENT']
   $sle15sp3_minion = twopence_init("ssh:#{ENV['SLE15SP3_MINION']}") if ENV['SLE15SP3_MINION']
   $sle15sp3_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP3_SSHMINION']}") if ENV['SLE15SP3_SSHMINION']
-  $sle15sp4_client = twopence_init("ssh:#{ENV['SLE15SP4_CLIENT']}") if ENV['SLE15SP4_CLIENT']
   $sle15sp4_minion = twopence_init("ssh:#{ENV['SLE15SP4_MINION']}") if ENV['SLE15SP4_MINION']
   $sle15sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP4_SSHMINION']}") if ENV['SLE15SP4_SSHMINION']
-  $centos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
   $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $rocky8_minion = twopence_init("ssh:#{ENV['ROCKY8_MINION']}") if ENV['ROCKY8_MINION']
@@ -79,14 +71,14 @@ if $build_validation
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp4_buildhost = twopence_init("ssh:#{ENV['SLE15SP4_BUILDHOST']}") if ENV['SLE15SP4_BUILDHOST']
   $opensuse153arm_minion = twopence_init("ssh:#{ENV['OPENSUSE153ARM_MINION']}") if ENV['OPENSUSE153ARM_MINION']
-  $nodes += [$sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
-             $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
-             $sle15_client, $sle15_minion, $sle15_ssh_minion,
-             $sle15sp1_client, $sle15sp1_minion, $sle15sp1_ssh_minion,
-             $sle15sp2_client, $sle15sp2_minion, $sle15sp2_ssh_minion,
-             $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
-             $sle15sp4_client, $sle15sp4_minion, $sle15sp4_ssh_minion,
-             $centos7_client, $centos7_minion, $centos7_ssh_minion,
+  $nodes += [$sle12sp4_minion, $sle12sp4_ssh_minion,
+             $sle12sp5_minion, $sle12sp5_ssh_minion,
+             $sle15_minion, $sle15_ssh_minion,
+             $sle15sp1_minion, $sle15sp1_ssh_minion,
+             $sle15sp2_minion, $sle15sp2_ssh_minion,
+             $sle15sp3_minion, $sle15sp3_ssh_minion,
+             $sle15sp4_minion, $sle15sp4_ssh_minion,
+             $centos7_minion, $centos7_ssh_minion,
              $rocky8_minion, $rocky8_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
@@ -99,13 +91,12 @@ if $build_validation
              $opensuse153arm_minion]
 else
   # Define twopence objects for QA environment
-  $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
   $minion = twopence_init("ssh:#{ENV['MINION']}") if ENV['MINION']
   $ssh_minion = twopence_init("ssh:#{ENV['SSH_MINION']}") if ENV['SSH_MINION']
   $rhlike_minion = twopence_init("ssh:#{ENV['RHLIKE_MINION']}") if ENV['RHLIKE_MINION']
   $deblike_minion = twopence_init("ssh:#{ENV['DEBLIKE_MINION']}") if ENV['DEBLIKE_MINION']
   $build_host = twopence_init("ssh:#{ENV['BUILD_HOST']}") if ENV['BUILD_HOST']
-  $nodes += [$client, $minion, $ssh_minion, $rhlike_minion, $deblike_minion, $build_host]
+  $nodes += [$minion, $ssh_minion, $rhlike_minion, $deblike_minion, $build_host]
 end
 
 # Lavanda library module extension
@@ -261,37 +252,27 @@ end
 $node_by_host = { 'localhost'                 => $localhost,
                   'server'                    => $server,
                   'proxy'                     => $proxy,
-                  'sle_client'                => $client,
                   'sle_minion'                => $minion,
                   'ssh_minion'                => $ssh_minion,
-                  'rhlike_client'             => $rhlike_minion,
                   'rhlike_minion'             => $rhlike_minion,
                   'deblike_minion'            => $deblike_minion,
                   'build_host'                => $build_host,
                   'kvm_server'                => $kvm_server,
                   'xen_server'                => $xen_server,
-                  'sle12sp4_client'           => $sle12sp4_client,
                   'sle12sp4_minion'           => $sle12sp4_minion,
                   'sle12sp4_ssh_minion'       => $sle12sp4_ssh_minion,
-                  'sle12sp5_client'           => $sle12sp5_client,
                   'sle12sp5_minion'           => $sle12sp5_minion,
                   'sle12sp5_ssh_minion'       => $sle12sp5_ssh_minion,
-                  'sle15_client'              => $sle15_client,
                   'sle15_minion'              => $sle15_minion,
                   'sle15_ssh_minion'          => $sle15_ssh_minion,
-                  'sle15sp1_client'           => $sle15sp1_client,
                   'sle15sp1_minion'           => $sle15sp1_minion,
                   'sle15sp1_ssh_minion'       => $sle15sp1_ssh_minion,
-                  'sle15sp2_client'           => $sle15sp2_client,
                   'sle15sp2_minion'           => $sle15sp2_minion,
                   'sle15sp2_ssh_minion'       => $sle15sp2_ssh_minion,
-                  'sle15sp3_client'           => $sle15sp3_client,
                   'sle15sp3_minion'           => $sle15sp3_minion,
                   'sle15sp3_ssh_minion'       => $sle15sp3_ssh_minion,
-                  'sle15sp4_client'           => $sle15sp4_client,
                   'sle15sp4_minion'           => $sle15sp4_minion,
                   'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
-                  'centos7_client'            => $centos7_client,
                   'centos7_minion'            => $centos7_minion,
                   'centos7_ssh_minion'        => $centos7_ssh_minion,
                   'rocky8_minion'            => $rocky8_minion,

@@ -108,33 +108,7 @@ Inside of the test suite, the scenarios that are tagged with
 @ssh_minion
 ```
 
-are executed only if the SSH minion is available.
-
-## Testing with a traditional client
-
-Using a traditional client with the test suite is not mandatory.
-
-If you do not want a traditional client, do not define `CLIENT` environment
-variable before you run the test suite. That's all.
-
-If you want a traditional client, make this variable point to the machine that
-will be the traditional client:
-
-```bash
-export CLIENT=mytraditionalclient.example.com
-```
-
-and then run the test suite.
-
-Inside of the test suite, the scenarios that are tagged with
-
-```
-@sle_client
-```
-
-are executed only if the traditional client is available.
-
-## Testing with a Red Hat-like minion
+### Testing with a Red Hat-like minion
 
 Using a Red Hat-like minion (CentOS, Alma, Rocky, ...) with the test suite
 is not mandatory.

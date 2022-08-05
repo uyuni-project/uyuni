@@ -1,8 +1,7 @@
-# Copyright (c) 2015-2021 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_cve_audit
-@scope_traditional_client
 Feature: Support for new CVE-ID syntax
 
   Scenario: Log in as admin user
@@ -18,11 +17,11 @@ Feature: Support for new CVE-ID syntax
     And I should see a "CVE-1999-99781" link
 
   Scenario: Check local metadata for long CVE IDs
-    When I refresh the metadata for "sle_client"
-    Then I should have 'reference.*id="CVE-1999-12345' in the patch metadata
-    And I should have 'reference.*id="CVE-1999-99781' in the patch metadata
-    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-12345' in the patch metadata
-    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-99781' in the patch metadata
+    When I refresh the metadata for "sle_minion"
+    Then I should have 'reference.*id="CVE-1999-12345' in the patch metadata for "sle_minion"
+    And I should have 'reference.*id="CVE-1999-99781' in the patch metadata for "sle_minion"
+    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-12345' in the patch metadata for "sle_minion"
+    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-99781' in the patch metadata for "sle_minion"
 
   Scenario: Search for CVE ID with the new format
     When I follow the left menu "Patches > Advanced Search"

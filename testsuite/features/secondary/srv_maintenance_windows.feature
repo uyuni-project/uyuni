@@ -2,6 +2,8 @@
 # Licensed under the terms of the MIT license.
 
 @scope_maintenance_windows
+@sle_minion
+@rhlike_minion
 Feature: Maintenance windows
 
   Scenario: Log in as admin user
@@ -64,7 +66,7 @@ Feature: Maintenance windows
   Scenario: Assign systems to a multi schedule using SSM
     When I follow the left menu "Systems > Overview"
     And I follow "Clear"
-    And I check the "sle_client" client
+    And I check the "rhlike_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area
     And I select "SAP Maintenance Window" from "scheduleId"
@@ -88,9 +90,15 @@ Feature: Maintenance windows
     And I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
 
+  Scenario: Remove a package and update package list
+    When I remove package "virgo-dummy" from this "rhlike_minion" without error control
+    Given I am on the Systems overview page of this "rhlike_minion"
+    When I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I wait until event "Package List Refresh scheduled by admin" is completed
+
   Scenario: Schedule package installation action
-    When I remove package "virgo-dummy" from this "sle_client" without error control
-    Given I am on the Systems overview page of this "sle_client"
+    Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Software" in the content area
     And I follow "Install"
     And I check "virgo-dummy" in the list
@@ -102,7 +110,6 @@ Feature: Maintenance windows
   Scenario: Detach systems from schedules
     When I follow the left menu "Systems > Overview"
     And I follow "Clear"
-    And I check the "sle_client" client
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area

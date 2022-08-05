@@ -86,14 +86,13 @@ things that make a computer program efficient are second class citizens with Cuc
   * "minxen": feature testing Xen host SLES minions
   * "rhlike": feature testing Red Hat-like minions (CentOS, Alma, Rocky, ...)
   * "deblike": feature testing Debian-like minions (Debian, Ubuntu, ...)
-  * "trad": feature testing traditional client
   * "allcli: feature testing all clients
 * `<topic>` must contain "salt" or "docker" for features related to Salt or Docker, and is then specific to the feature.
 * Inside `init_clients` features we'll see the features in charge of the bootstrap process for each client. They will
 follow the format:
   * Continuous Integration test suite (`features/init_clients`): `<distribution>`_`<client|minion|ssh_minion>`.
   Example: `sle_ssh_minion.feature`
-  * Build Validation test suite (`features/build_validation/init_clients`): `<distribution><version>`_`<client|minion|ssh_minion>`.
+  * Build Validation test suite (`features/build_validation/init_clients`): `<distribution><version>`_`<minion|ssh_minion>`.
   Example: `sle15sp4_ssh_minion.feature`
 * File name examples: `srv_reboot_server.feature`, `srv_salt_ping.feature`, `srv_salt_service.feature`,
 `min_salt_bootstrap.feature`, or `min_ping.feature`

@@ -14,7 +14,6 @@ Set up the following environment variables:
 
 * `SERVER` the Uyuni server you are testing against
 * `PROXY` the Uyuni proxy (don't declare this variable if there is no proxy)
-* `CLIENT` the traditional client
 * `MINION` the Salt minion
 * `BUILD_HOST` the Docker and Kiwi build host
 * `SSH_MINION` the SSH-managed Salt minion

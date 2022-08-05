@@ -181,7 +181,7 @@ end
 
 When(/^I list image profiles via API$/) do
   ima_profiles = $api_test.image.profile.list_image_profiles
-  log $ima_profiles
+  log ima_profiles
   imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone' }
   raise "label of container should be fakeone! #{imagelabel[0]['label']} != 'fakeone'" unless imagelabel[0]['label'] == 'fakeone'
 end

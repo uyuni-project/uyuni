@@ -15,7 +15,7 @@ Feature: Salt SSH action chain
     And I remove package "virgo-dummy" from this "ssh_minion" without error control
     And I install package "milkyway-dummy" on this "ssh_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "ssh_minion"
-    And I run "zypper -n ref" on "ssh_minion"
+    And I refresh the metadata for "ssh_minion"
 
   Scenario: Pre-requisite: refresh package list and check newly installed packages on SSH minion
     When I refresh packages list via spacecmd on "ssh_minion"

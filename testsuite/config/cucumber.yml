@@ -35,7 +35,6 @@ sp_migration: --tags @scope_sp_migration
 subscription_matching: --tags @scope_subscription_matching
 sumatoolbox: --tags @scope_sumatoolbox
 tomcat: --tags @scope_tomcat
-traditional_client: --tags @scope_traditional_client
 virtual_host_manager: --tags @scope_virtual_host_manager
 virtualization: --tags @scope_virtualization
 visualization: --tags @scope_visualization
