@@ -37,13 +37,6 @@ Feature: Sanity checks
     And "proxy" should communicate with the server using public interface
     And the clock from "proxy" should be exact
 
-@sle_client
-  Scenario: The traditional client is healthy
-    Then "sle_client" should have a FQDN
-    And reverse resolution should work for "sle_client"
-    And "sle_client" should communicate with the server using public interface
-    And the clock from "sle_client" should be exact
-
 @sle_minion
   Scenario: The minion is healthy
     Then "sle_minion" should have a FQDN

@@ -1,22 +1,20 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@sle_client
+@sle_minion
 @scope_cve_audit
-@scope_traditional_client
-Feature: CVE Audit on traditional clients
+Feature: CVE Audit on SLE Salt Minions
   In order to check if systems are patched against certain vulnerabilities
   As an authorized user
-  I want to see the traditional clients that need to be patched
+  I want to see the Salt Minions that need to be patched
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
-    When I enable repository "test_repo_rpm_pool" on this "sle_client"
-    And I install old package "milkyway-dummy-1.0" on this "sle_client"
-    And I run "zypper -n ref" on "sle_client"
-    And I run "rhn_check -vvv" on "sle_client"
+    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
+    And I install old package "milkyway-dummy-1.0" on this "sle_minion"
+    And I refresh the metadata for "sle_minion"
     And I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -42,7 +40,7 @@ Feature: CVE Audit on traditional clients
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
-    Then I should see "sle_client" as link
+    Then I should see "sle_minion" as link
     And I should see a "Affected, at least one patch available in an assigned channel" text
     And I should see a "Install a new patch on this system" link
     And I should see a "milkyway-dummy-2345" text
@@ -50,7 +48,7 @@ Feature: CVE Audit on traditional clients
     And I should see a "Status" button
     And I should see a "Name" button
     And I should see a "extra CVE data update" link
-    Then I follow "Install a new patch on this system" on "sle_client" row
+    Then I follow "Install a new patch on this system" on "sle_minion" row
     And I should see a "Relevant Patches" text
 
   Scenario: Search for an unknown CVE number
@@ -67,10 +65,10 @@ Feature: CVE Audit on traditional clients
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
     Then I should see a "Affected, at least one patch available in an assigned channel" text
-    When I check the "sle_client" client
+    When I check the "sle_minion" client
     Then I should see a "system selected" text
     When I follow the left menu "Systems > Overview"
-    Then I should see "sle_client" as link
+    Then I should see "sle_minion" as link
     And I follow "Clear"
 
   Scenario: List systems by patch status via API before patch
@@ -82,33 +80,32 @@ Feature: CVE Audit on traditional clients
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
     And I am logged in API as user "admin" and password "admin"
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9979"
-    Then I should get status "NOT_AFFECTED" for this client
+    Then I should get status "NOT_AFFECTED" for "sle_minion"
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
-    Then I should get status "AFFECTED_PATCH_APPLICABLE" for this client
+    Then I should get status "AFFECTED_PATCH_APPLICABLE" for "sle_minion"
     And I should get the test channel
     And I should get the "milkyway-dummy-2345" patch
     Then I logout from API
 
   Scenario: Apply patches
-    Given I am on the Systems overview page of this "sle_client"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
     And I check "milkyway-dummy-2345" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
-    And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "patch update has been scheduled" text
+    And I wait until event "Patch Update: milkyway-dummy-2345" is completed
 
   Scenario: List systems by patch status via API after patch
     When I am logged in API as user "admin" and password "admin"
     And I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
-    Then I should get status "PATCHED" for this client
+    Then I should get status "PATCHED" for "sle_minion"
     When I logout from API
 
   Scenario: Cleanup: remove installed packages
-    When I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
-    And I remove package "milkyway-dummy" from this "sle_client" without error control
-    And I run "rhn_check -vvv" on "sle_client" without error control
+    When I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
+    And I remove package "milkyway-dummy" from this "sle_minion" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM after CVE audit tests
     When I follow "Clear"

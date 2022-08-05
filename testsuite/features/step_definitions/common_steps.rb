@@ -67,7 +67,6 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
-  node = get_target(host)
   $api_test.auth.login('admin', 'admin')
   client_id = $api_test.system.search_by_name(get_system_name(host)).first['id']
   $api_test.auth.logout
@@ -75,7 +74,6 @@ Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
 end
 
 Then(/^the system name for "([^"]*)" should be correct$/) do |host|
-  node = get_target(host)
   system_name = get_system_name(host)
   step %(I should see a "#{system_name}" text)
 end
@@ -179,9 +177,10 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
 end
 
 # spacewalk errors steps
-Then(/^the up2date logs on client should contain no Traceback error$/) do
+Then(/^the up2date logs on "([^"]*)" should contain no Traceback error$/) do |host|
+  node = get_target(host)
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
-  _out, code = $client.run(cmd)
+  _out, code = node.run(cmd)
   raise 'error found, check the client up2date logs' if code.nonzero?
 end
 
@@ -210,25 +209,28 @@ When(/^I enter as remote command this script in$/) do |multiline|
 end
 
 # bare metal
-When(/^I check the ram value$/) do
+When(/^I check the ram value of the "([^"]*)"$/) do |host|
+  node = get_target(host)
   get_ram_value = "grep MemTotal /proc/meminfo |awk '{print $2}'"
-  ram_value, _local, _remote, _code = $client.test_and_store_results_together(get_ram_value, 'root', 600)
+  ram_value, _local, _remote, _code = node.test_and_store_results_together(get_ram_value, 'root', 600)
   ram_value = ram_value.gsub(/\s+/, '')
   ram_mb = ram_value.to_i / 1024
   step %(I should see a "#{ram_mb}" text)
 end
 
-When(/^I check the MAC address value$/) do
+When(/^I check the MAC address value of the "([^"]*)"$/) do |host|
+  node = get_target(host)
   get_mac_address = 'cat /sys/class/net/eth0/address'
-  mac_address, _local, _remote, _code = $client.test_and_store_results_together(get_mac_address, 'root', 600)
+  mac_address, _local, _remote, _code = node.test_and_store_results_together(get_mac_address, 'root', 600)
   mac_address = mac_address.gsub(/\s+/, '')
   mac_address.downcase!
   step %(I should see a "#{mac_address}" text)
 end
 
-Then(/^I should see the CPU frequency of the client$/) do
+Then(/^I should see the CPU frequency of the "([^"]*)"$/) do |host|
+  node = get_target(host)
   get_cpu_freq = "cat /proc/cpuinfo  | grep -i 'CPU MHz'" # | awk '{print $4}'"
-  cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, 'root', 600)
+  cpu_freq, _local, _remote, _code = node.test_and_store_results_together(get_cpu_freq, 'root', 600)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
   cpu = cpu[0].gsub(/[^\d]/, '')
@@ -289,17 +291,15 @@ When(/^I remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do
   ct.system_remove(system)
 end
 
-When(/^I trigger cobbler system record$/) do
-  # not for SSH-push traditional client
+When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
   space = 'spacecmd -u admin -p admin'
-  host = $client.full_hostname
+  system_name = get_system_name(host)
   $server.run("#{space} clear_caches")
-  out, _code = $server.run("#{space} system_details #{host}")
+  out, _code = $server.run("#{space} system_details #{system_name}")
   unless out.include? 'ssh-push-tunnel'
-    # normal traditional client
     steps %(
       Given I am authorized as "testing" with password "testing"
-      And I follow this "sle_client" link
+      And I follow this "#{host}" link
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
@@ -389,40 +389,37 @@ Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) 
 end
 
 # metadata steps
-# these steps currently work only for traditional clients
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  raise 'Invalid target.' unless host == 'sle_client'
-  target = $client
+  target = get_target(host)
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:test-channel-#{arch}/repodata/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
 Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  raise 'Invalid target.' unless host == 'sle_client'
-  target = $client
+  target = get_target(host)
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:test-channel-#{arch}/repodata/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
 Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
-  raise 'Invalid target.' unless host == 'sle_client'
-  node = $client
+  node = get_target(host)
   arch, _code = node.run('uname -m')
   arch.chomp!
-  dir_file = client_raw_repodata_dir("test-channel-#{arch}")
+  dir_file = "/var/cache/zypp/raw/susemanager:test-channel-#{arch}/repodata/"
   _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
   raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
 end
 
-Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
-  arch, _code = $client.run('uname -m')
+Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, host|
+  node = get_target(host)
+  arch, _code = node.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*updateinfo.xml.gz"
-  $client.run(cmd, timeout: 500)
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:test-channel-#{arch}/repodata/*updateinfo.xml.gz"
+  node.run(cmd, timeout: 500)
 end
 
 # package steps
@@ -558,9 +555,6 @@ end
 
 When(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
-  # within(:xpath, xpath) do
-  #   raise unless find('i.fa-angle-down').click
-  # end
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
@@ -689,7 +683,7 @@ When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filena
 end
 
 # rubocop:disable Metrics/BlockLength
-When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |client_type, host, key, target_type|
+When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |host, key, target_type|
   # Use server if proxy is not defined as proxy is not mandatory
   target = $proxy
   if target_type.include? 'server' or $proxy.nil?
@@ -698,18 +692,17 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   end
 
   # Prepare bootstrap script for different types of clients
-  client = client_type == 'traditional' ? '--traditional' : ''
   force_bundle = $use_salt_bundle ? '--force-bundle' : ''
 
   node = get_target(host)
   gpg_keys = get_gpg_keys(node, target)
-  cmd = "mgr-bootstrap #{client} #{force_bundle} &&
+  cmd = "mgr-bootstrap #{force_bundle} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
   sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=#{gpg_keys.join(',')}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
-  output, = target.run(cmd)
+  output, = target.run(cmd, verbose: true)
   unless output.include? key
     log output
     raise "Key: #{key} not included"
@@ -722,7 +715,7 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   return_code = file_inject(target, source, dest)
   raise 'File injection failed' unless return_code.zero?
   system_name = get_system_name(host)
-  output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}")
+  output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)
   unless output.include? '-bootstrap complete-'
     log output
     raise "Bootstrap didn't finish properly"
@@ -845,53 +838,21 @@ When(/^I disable repositories after installing Docker$/) do
 end
 
 # Register client
-Given(/^I update the profile of this client$/) do
-  step %(I update the profile of "sle_client")
-end
 
 Given(/^I update the profile of "([^"]*)"$/) do |client|
   node = get_target(client)
   node.run('rhn-profile-sync', timeout: 500)
 end
 
-When(/^I register "([^"]*)" as traditional client$/) do |client|
-  step %(I register "#{client}" as traditional client with activation key "1-SUSE-KEY-x86_64")
-end
-
-And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
-  node = get_target(client)
-  if client.include? 'sle'
-    node.run('zypper --non-interactive install wget', timeout: 500)
-  else # As Debian-like has no support for traditional clients, it must be Red Hat-like
-    node.run('yum install wget', timeout: 600)
-  end
-  registration_url = if $proxy.nil?
-                       "https://#{$server.full_hostname}/XMLRPC"
-                     else
-                       "https://#{$proxy.full_hostname}/XMLRPC"
-                     end
-  command1 = "wget --no-check-certificate -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server.full_hostname}/pub/RHN-ORG-TRUSTED-SSL-CERT"
-  # Replace unicode chars \xHH with ? in the output (otherwise, they might break Cucumber formatters).
-  log node.run(command1, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
-  command2 = "rhnreg_ks --force --serverUrl=#{registration_url} --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --activationkey=#{key}"
-  log node.run(command2, timeout: 500).to_s.gsub(/(\\x\h+){1,}/, '?')
-end
-
-When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) do |host, is_salt|
+When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   steps %(
     When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
+    And I wait at most 500 seconds until event "Hardware List Refresh" is completed
+    And I wait at most 500 seconds until event "Apply states" is completed
+    And I wait at most 500 seconds until event "Package List Refresh" is completed
   )
-  if get_client_type(host) == 'traditional' and is_salt.empty?
-    get_target(host).run('rhn_check -vvv')
-  else
-    steps %(
-      And I wait at most 500 seconds until event "Hardware List Refresh" is completed
-      And I wait at most 500 seconds until event "Apply states" is completed
-      And I wait at most 500 seconds until event "Package List Refresh" is completed
-    )
-  end
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
@@ -899,7 +860,7 @@ Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
   system_name = get_system_name(host)
   repeat_until_timeout(message: "system #{system_name} is not in the list yet") do
     $server.run("spacecmd -u admin -p admin clear_caches")
-    result, code = $server.run(command, check_errors: false)
+    result, _code = $server.run(command, check_errors: false, verbose: true)
     break if result.include? system_name
     sleep 1
   end
@@ -908,12 +869,6 @@ end
 Then(/^I should see "([^"]*)" as link$/) do |host|
   system_name = get_system_name(host)
   step %(I should see a "#{system_name}" link)
-end
-
-Then(/^I should see a text describing the OS release$/) do
-  os_family = $client.os_family
-  release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
-  step %(I should see a "OS: #{release}" text)
 end
 
 When(/^I remember when I scheduled an action$/) do
@@ -1062,6 +1017,8 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
     xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='SUBSCRIBE']"
   when 'Unsubscribe'
     xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='UNSUBSCRIBE']"
+  else
+    log "Target Radio #{target_radio} not supported"
   end
 
   case target_status
@@ -1069,6 +1026,8 @@ And(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_r
     raise "xpath: #{xpath} is not selected" if find(:xpath, xpath)['checked'].nil?
   when 'unselected'
     raise "xpath: #{xpath} is selected" unless find(:xpath, xpath)['checked'].nil?
+  else
+    log "Target status #{target_status} not supported"
   end
 end
 
@@ -1339,7 +1298,7 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distr
   iso_dir = "/var/cache/cobbler"
   out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}", verbose: true)
   raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
-  profiles = ['orchid', 'flame', 'pearl']
+  profiles = %w[orchid flame pearl]
   isolinux_profiles = []
   cobbler_profiles = []
   profiles.each do |profile|

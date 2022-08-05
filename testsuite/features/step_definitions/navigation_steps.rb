@@ -382,6 +382,8 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
     step %(I am authorized as "admin" with password "admin")
   when 'Images'
     step %(I am authorized as "kiwikiwi" with password "kiwikiwi")
+  else
+    log "Section #{section} not supported"
   end
 end
 
@@ -482,8 +484,10 @@ end
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
   begin
     page.reset!
-  rescue NoMethodError
-    log 'The browser session could not be cleaned.'
+  rescue NoMethodError => e
+    log "The browser session could not be cleaned because there is no browser available: #{e.message}"
+  rescue StandardError => e
+    log "The browser session could not be cleaned for unknown issue: #{e.message}"
   ensure
     visit Capybara.app_host
   end

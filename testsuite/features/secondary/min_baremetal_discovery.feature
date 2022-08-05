@@ -1,20 +1,20 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_traditional_client
+@sle_minion
 Feature: Bare metal discovery
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Delete the normal traditional client for bare metal feature
-    Given I am on the Systems overview page of this "sle_client"
+  Scenario: Delete the Salt Minion for bare metal feature
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     Then I should see a "System profile" text
     When I wait until I see "has been deleted" text
-    Then "sle_client" should not be registered
+    Then "sle_minion" should not be registered
 
 @susemanager
   Scenario: Enable bare metal discovery
@@ -36,34 +36,34 @@ Feature: Bare metal discovery
     Then I should see a "Automatic bare-metal system discovery has been successfully enabled" text
     And the PXE default profile should be enabled
 
-  Scenario: Register a client for bare metal discovery
-    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-spacewalk-bootstrap-activation-key" from the proxy
-    Then I should see "sle_client" via spacecmd
+  Scenario: Register a SLE Minion for bare metal discovery
+    When I bootstrap "sle_minion" using bootstrap script with activation key "1-spacewalk-bootstrap-activation-key" from the proxy
+    Then I should see "sle_minion" via spacecmd
 
-  Scenario: Check registration values of client
-    Given I am on the Systems overview page of this "sle_client"
+  Scenario: Check registration values of SLE Minion
+    Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "System Info" text
     And I should see a "Edit These Properties" link
     And I should not see a "[Management]" text
 
-  Scenario: See the client in unprovisioned systems list
+  Scenario: See the SLE Minion in unprovisioned systems list
     When I follow the left menu "Systems > System List > Unprovisioned Systems"
     Then I should see a "Unprovisioned Systems" text
     And I should see a "Detected on" text
     And I should see a "Number of CPUs" text
     And I should see a "2" text
     And I should see a "Clock frequency" text
-    And I should see the CPU frequency of the client
+    And I should see the CPU frequency of the "sle_minion"
     And I should see a "RAM" text
-    And I check the ram value
+    And I check the ram value of the "sle_minion"
     And I should see a "Number of disks" text
     And I should see a "1" text
     And I should see a "MAC Address(es)" text
-    And I check the MAC address value
+    And I check the MAC address value of the "sle_minion"
 
   Scenario: Check unprovisioned system details
     When I follow the left menu "Systems > System List"
-    When I follow this "sle_client" link
+    When I follow this "sle_minion" link
     Then I should see a "Details" link in the content area
     And I should not see a "Software" link in the content area
     And I should not see a "Configuration" link in the content area
@@ -80,7 +80,7 @@ Feature: Bare metal discovery
     And I should not see a "Custom Info" link in the content area
 
   Scenario: Check Provisioning page for this client
-    Given I am on the Systems overview page of this "sle_client"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Provisioning" in the content area
     Then I should see a "Autoinstallation" link in the content area
     And I should not see a "Snapshots" link in the content area
@@ -90,7 +90,7 @@ Feature: Bare metal discovery
 
   Scenario: Check SSM with bare metal system
     Given I am on the Systems page
-    When I check the "sle_client" client
+    When I check the "sle_minion" client
     And I wait for "30" seconds
     Then I follow the left menu "Systems > System Set Manager > Overview"
 
@@ -110,12 +110,12 @@ Feature: Bare metal discovery
     And I follow "Clear"
 
   Scenario: Cleanup: delete the bare metal system profile
-    Given I am on the Systems overview page of this "sle_client"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "sle_client" should not be registered
+    Then "sle_minion" should not be registered
 
 @susemanager
   Scenario: Cleanup: disable bare metal discovery
@@ -137,9 +137,17 @@ Feature: Bare metal discovery
     Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text
     And the PXE default profile should be disabled
 
-  Scenario: Cleanup: register a traditional client after bare metal tests
-    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
-    Then I should see "sle_client" via spacecmd
+  Scenario: Cleanup: register a Salt Minion after bare metal tests
+    When I follow the left menu "Systems > Bootstrapping"
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "sle_minion" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
+    And I select the hostname of "proxy" from "proxies" if present
+    And I click on "Bootstrap"
+    And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
     When I follow "Clear"

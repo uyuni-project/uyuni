@@ -3,9 +3,8 @@
 
 @scope_monitoring
 @sle_minion
-@sle_client
 Feature: Advanced Search
-  In order to check and maintain the clients and minions
+  In order to check and maintain the minions
   As an authorized user
   I want to be able to search for specific systems according to location or other characteristics
 

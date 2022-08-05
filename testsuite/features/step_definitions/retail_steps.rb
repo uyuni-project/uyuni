@@ -144,7 +144,7 @@ end
 When(/^I set up the private network on the terminals$/) do
   proxy = net_prefix + ADDRESSES['proxy']
   # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
-  nodes = [$client, $minion]
+  nodes = [$minion]
   conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
   file = '/etc/sysconfig/network/ifcfg-eth1'
   script2 = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
@@ -191,14 +191,13 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   # we need "host" utility
   step "I install package \"bind-utils\" on this \"#{host}\""
   # direct name resolution
-  ['proxy.example.org', 'dns.google.com'].each do |dest|
+  %w[proxy.example.org dns.google.com].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
     raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     log "#{output}"
   end
   # reverse name resolution
-  client = net_prefix + '2'
-  [client, '8.8.8.8'].each do |dest|
+  [node.private_ip, '8.8.8.8'].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
     raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     log "#{output}"
@@ -306,8 +305,6 @@ When(/^I prepare the retail configuration file on server$/) do
   sed_values << "s/<PXEBOOT_MAC>/#{$pxeboot_mac}/; "
   sed_values << "s/<MINION>/#{ADDRESSES['sle_minion']}/; "
   sed_values << "s/<MINION_MAC>/#{get_mac_address('sle_minion')}/; "
-  sed_values << "s/<CLIENT>/#{ADDRESSES['sle_client']}/; "
-  sed_values << "s/<CLIENT_MAC>/#{get_mac_address('sle_client')}/; "
   sed_values << "s/<IMAGE>/#{compute_kiwi_profile_name('pxeboot_minion')}/"
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
@@ -365,10 +362,9 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field$/) do |host, fiel
     'broadcast address'               => 'dhcpd#subnets#0#broadcast_address',
     'routers'                         => 'dhcpd#subnets#0#routers#0',
     'next server'                     => 'dhcpd#subnets#0#next_server',
-    'pxeboot next server'             => 'dhcpd#hosts#2#next_server',
+    'pxeboot next server'             => 'dhcpd#hosts#1#next_server',
     'first reserved IP'               => 'dhcpd#hosts#0#fixed_address',
     'second reserved IP'              => 'dhcpd#hosts#1#fixed_address',
-    'third reserved IP'               => 'dhcpd#hosts#2#fixed_address',
     'internal network address'        => 'tftpd#listen_ip',
     'vsftpd internal network address' => 'vsftpd_config#listen_address'
   }
@@ -382,10 +378,9 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
     'listen interfaces'            => 'dhcpd#listen_interfaces#0',
     'network mask'                 => 'dhcpd#subnets#0#netmask',
     'filename'                     => 'dhcpd#subnets#0#filename',
-    'pxeboot filename'             => 'dhcpd#hosts#2#filename',
+    'pxeboot filename'             => 'dhcpd#hosts#1#filename',
     'first reserved hostname'      => 'dhcpd#hosts#0#$key',
     'second reserved hostname'     => 'dhcpd#hosts#1#$key',
-    'third reserved hostname'      => 'dhcpd#hosts#2#$key',
     'virtual network IPv4 address' => 'default_net#ipv4#gateway',
     'first IPv4 address for DHCP'  => 'default_net#ipv4#dhcp_start',
     'last IPv4 address for DHCP'   => 'default_net#ipv4#dhcp_end',

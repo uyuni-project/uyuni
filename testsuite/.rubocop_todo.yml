@@ -476,7 +476,6 @@ Style/MissingElse:
     - 'features/step_definitions/navigation_steps.rb'
     - 'features/step_definitions/retail_steps.rb'
     - 'features/step_definitions/salt_steps.rb'
-    - 'features/support/client_stack.rb'
     - 'features/support/commonlib.rb'
     - 'features/support/env.rb'
     - 'features/support/http_client.rb'

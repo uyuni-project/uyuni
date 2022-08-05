@@ -21,10 +21,10 @@ Each client must be correctly registered (in bootstrapped state) at the beginnin
 
 ## Base channel
 
-As a standard status, we require that traditional clients and Salt minions have the **base channel assigned**. The base
+As a standard status, we require that Salt minions have the **base channel assigned**. The base
 channel is where the test packages are located.
 
-If you remove a traditional client or minion, **always re-add** the base channel, otherwise all package and patch tests
+If you remove a minion, **always re-add** the base channel, otherwise all package and patch tests
 will fail.
 
 ## Red Hat-like and Debian-like minions
@@ -54,7 +54,7 @@ Typical workflow for testing patches:
 5) cleanup: remove packages and patches and disable the BuildRepo
 
 Examples:
-Take a look at this feature: ``features/secondary/trad_check_patches_install.feature``
+Take a look at this feature: ``features/secondary/min_check_patches_install.feature``
 
 ## Build host
 

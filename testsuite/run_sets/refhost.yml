@@ -17,7 +17,6 @@
 - features/core/srv_docker.feature
 
 # initialize clients
-- features/init_clients/sle_client.feature
 - features/init_clients/sle_minion.feature
 - features/init_clients/sle_ssh_minion.feature
 - features/init_clients/min_rhlike_salt.feature
