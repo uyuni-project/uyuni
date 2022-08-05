@@ -24,8 +24,27 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 public class PublicChannelFamily extends BaseDomainHelper {
 
+    /** The id, which is also the associated channel family id */
+    private long id;
+
     /** The channel family. */
     private ChannelFamily channelFamily;
+
+    /**
+     * Gets the channel family id.
+     * @return the channel family id.
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the channel family id.
+     * @param idIn The channel family id to set.
+     */
+    public void setId(long idIn) {
+        this.id = idIn;
+    }
 
     /**
      * Gets the channel family.
