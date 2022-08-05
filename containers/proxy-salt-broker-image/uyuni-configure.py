@@ -9,18 +9,7 @@ with open("/etc/uyuni/config.yaml") as source:
 
     # write to file
     with open("/etc/rhn/rhn.conf", "w") as dest:
-        dest.write(f'''# Automatically generated Uyuni Proxy Server configuration file.
-        # -------------------------------------------------------------------------
-        
-        # Debug log level
-        debug = {config.get("debug_log_level", 4)}
-        
-        # Logs redirect
-        proxy.broker.log_file = stdout
-        proxy.redirect.log_file = stdout
-        
-        # Hostname of Uyuni, SUSE Manager Server or another proxy
-        rhn_parent={config['server']}''')
+       dest.write(f"rhn_parent={config['server']}")
 
     # read to existing config file
     with open("/etc/salt/broker", "r+") as config_file:
