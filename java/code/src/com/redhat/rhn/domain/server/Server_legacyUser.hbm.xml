@@ -344,7 +344,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <query name="Server.findNonZypperTradClientsIds">
         <![CDATA[SELECT s.id
                  FROM Server s
-                 WHERE s.class != com.redhat.rhn.domain.server.MinionServer
+                 WHERE type(s) != com.redhat.rhn.domain.server.MinionServer
                      AND s.id in (:serverIds)
                      AND NOT EXISTS (SELECT 1
                                      FROM com.redhat.rhn.domain.server.InstalledPackage as p
@@ -411,7 +411,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <![CDATA[
         SELECT s.minionId, s.id
             FROM Server AS s
-            WHERE s.class = com.redhat.rhn.domain.server.MinionServer
+            WHERE type(s) = com.redhat.rhn.domain.server.MinionServer
                 AND s.minionId IN (:minionIds)
     ]]>
     </query>
