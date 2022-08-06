@@ -799,7 +799,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             });
 
         SCCRepository ptfRepo = SCCCachingFactory.lookupRepositoryBySccId(9999L).orElse(null);
-        assertNotNull("PTF repo not found", ptfRepo);
+        assertNotNull(ptfRepo, "PTF repo not found");
 
         slesChanged.getRepositories().stream()
             .filter(pr -> !pr.isMandatory())
@@ -853,7 +853,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             });
 
         SCCRepository ptfRepo = SCCCachingFactory.lookupRepositoryBySccId(15000L).orElse(null);
-        assertNotNull("PTF repo not found", ptfRepo);
+        assertNotNull(ptfRepo, "PTF repo not found");
 
         // test basesystem module PTFs for SLES root product
         SUSEProduct basesystem = SUSEProductFactory.lookupByProductId(1946L);
@@ -1887,7 +1887,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     });
 
                 SCCRepository ptfRepo = SCCCachingFactory.lookupRepositoryBySccId(15004L).orElse(null);
-                assertNotNull("PTF repo not found", ptfRepo);
+                assertNotNull(ptfRepo, "PTF repo not found");
 
                 SUSEProduct tools = SUSEProductFactory.lookupByProductId(2113L);
                 tools.getRepositories().stream()
