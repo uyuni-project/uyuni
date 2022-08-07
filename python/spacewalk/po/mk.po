@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2022-07-28 09:04+0000\n"
+"PO-Revision-Date: 2022-08-07 07:08+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -102,7 +102,7 @@ msgstr "Се очекуваше пакет, а не: %s"
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
+msgstr "SUSE Manager Proxy сервис не е уклучен за сервер профилот: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -132,21 +132,23 @@ msgstr "Недостасуваат потребни корисници"
 
 #: ../server/handlers/xmlrpc/registration.py:209
 msgid "Attempt to register a system to an invalid username"
-msgstr ""
+msgstr "Пробај да се регистрира систем кон инвалидно корисничко име"
 
 #: ../server/handlers/xmlrpc/registration.py:841
 msgid "Invalid system release version requested"
-msgstr ""
+msgstr "Невалидна системска верзија беше побарана"
 
 #: ../server/handlers/xmlrpc/registration.py:1065
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Неможеше да се најде валиден мрежен интерфејс, и ipaddr и ip6addr nе беа "
+"најдени."
 
 #: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "{PRODUCT_NAME} Влезна Порака"
 
 #: ../server/handlers/xmlrpc/registration.py:1127
 msgid "Privacy Statement"
@@ -154,12 +156,12 @@ msgstr "Изјава за Приватност"
 
 #: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "Се очекуваше речник како аргумент на продуктот"
 
 #: ../server/handlers/xmlrpc/registration.py:1376
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "Невалидна вредност '%s' за %s (%s)"
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
@@ -168,16 +170,16 @@ msgstr ""
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
-msgstr ""
+msgstr "Невалидна вредност %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
-msgstr ""
+msgstr "Не сте овластени да ги менаџирате пакетите во нул организација"
 
 #: ../server/importlib/userAuth.py:103
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
-msgstr ""
+msgstr "Не сте овластени да ги менаџирате пакетите во %s организација"
 
 #: ../server/importlib/userAuth.py:121
 msgid "You are not allowed to perform administrative tasks"
