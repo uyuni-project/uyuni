@@ -2,7 +2,7 @@
 #
 # VERSION               1.0.0
 
-FROM registry.mgr.suse.de:5000/systemsmanagement/uyuni/master/docker/containers/uyuni-master-testsuite
+FROM registry.mgr.suse.de:5000/cucutest/systemsmanagement/uyuni/master/docker/containers/uyuni-master-testsuite
 MAINTAINER Michael Calmer "mc@suse.com"
 
 ARG repo
