@@ -662,6 +662,7 @@ type=rpm-md
 
         :returns: str
         """
+        ret_url = None
         query_params = {}
         if self.proxy_hostname:
             query_params['proxy'] = quote(self.proxy_hostname)
@@ -689,7 +690,7 @@ type=rpm-md
             return "{0}&{1}".format(url, new_query)
         parsed_url = urlparse(url)
         existing_query = parsed_url.query
-        combined_query = "&".join(filter(None, [existing_query, new_query]))
+        combined_query = "&".join([q for q in [existing_query, new_query] if q])
         return urlunparse((
             parsed_url.scheme,
             parsed_url.netloc,
