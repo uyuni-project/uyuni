@@ -18,7 +18,7 @@ Set up the following environment variables:
 * `CLIENT` the traditional client
 * `MINION` the Salt minion
 * `BUILD_HOST` the Docker and Kiwi build host
-* `SSHMINION` the SSH-managed Salt minion
+* `SSH_MINION` the SSH-managed Salt minion
 * `RHLIKE_MINION` the Red Hat-like Salt minion
 * `DEBLIKE_MINION` the Debian-like Salt minion
 
@@ -31,7 +31,7 @@ export SERVER="${PREFIX}srv.tf.local"
 export CLIENT="${PREFIX}cli-sles15.tf.local"
 export MINION="${PREFIX}min-sles15.tf.local"
 export BUILD_HOST="${PREFIX}min-build.tf.local"
-export SSHMINION="${PREFIX}minssh-sles15.tf.local"
+export SSH_MINION="${PREFIX}minssh-sles15.tf.local"
 export RHLIKE_MINION="${PREFIX}min-rocky8.tf.local"
 export DEBLIKE_MINION="${PREFIX}min-ubuntu2204.tf.local"
 run-testsuite

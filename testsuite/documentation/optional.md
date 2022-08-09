@@ -81,13 +81,13 @@ are executed only if the Docker and Kiwi build host is available.
 
 Using a SSH minion with the testsuite is not mandatory.
 
-If you do not want a SSH minion, do not define `SSHMINION` environment
+If you do not want a SSH minion, do not define `SSH_MINION` environment
 variable before you run the testsuite. That's all.
 
 If you want a SSH minion, make this variable point to the machine that
 will be the SSH minion:
 ```bash
-export SSHMINION=myssh.example.com
+export SSH_MINION=myssh.example.com
 ```
 and then run the testsuite.
 
