@@ -38,7 +38,7 @@ end
 Then(/^the OS version for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   os_version, os_family = get_os_version(node)
-  # skip this test for centos and ubuntu systems
+  # skip this test for Red Hat-like and Debian-like systems
   step %(I should see a "#{os_version.gsub!('-SP', ' SP')}" text) if os_family.include? 'sles'
 end
 
@@ -853,7 +853,7 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   node = get_target(client)
   if client.include? 'sle'
     node.run('zypper --non-interactive install wget', timeout: 500)
-  else # As Ubuntu has no support, must be CentOS/SLES_ES
+  else # As Debian-like has no support for traditional clients, it must be Red Hat-like
     node.run('yum install wget', timeout: 600)
   end
   registration_url = if $proxy.nil?
@@ -1169,7 +1169,7 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
     if repository_exist? unique_repo_name
       log "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
-      content_type = (client.include? 'ubuntu') || (client.include? 'debian') ? 'deb' : 'yum'
+      content_type = deb_host?(client) ? 'deb' : 'yum'
       steps %(
         When I follow the left menu "Software > Manage > Repositories"
         And I follow "Create Repository"

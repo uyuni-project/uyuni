@@ -2,11 +2,11 @@
 
 ## Init clients BEGIN ###
 
-- features/build_validation/init_clients/ceos7_client.feature
-- features/build_validation/init_clients/ceos7_minion.feature
-- features/build_validation/init_clients/ceos7_ssh_minion.feature
-- features/build_validation/init_clients/ceos8_minion.feature
-- features/build_validation/init_clients/ceos8_ssh_minion.feature
+- features/build_validation/init_clients/centos7_client.feature
+- features/build_validation/init_clients/centos7_minion.feature
+- features/build_validation/init_clients/centos7_ssh_minion.feature
+- features/build_validation/init_clients/centos8_minion.feature
+- features/build_validation/init_clients/centos8_ssh_minion.feature
 
 - features/build_validation/init_clients/sle12sp4_client.feature
 - features/build_validation/init_clients/sle12sp4_minion.feature

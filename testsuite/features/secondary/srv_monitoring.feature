@@ -1,10 +1,14 @@
 # Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
 # This feature is a dependency for:
-# - features/secondary/min_monitoring.feature : If this feature fails could let monitoring feature disabled for SLE minion
-# - features/secondary/min_centos_monitoring.feature : If this feature fails could let monitoring feature disabled for CentOS minion
+# - features/secondary/min_monitoring.feature: if this feature fails,
+#   it could let the monitoring feature disabled for the SLE minion
+# - features/secondary/min_rhlike_monitoring.feature: if this feature fails,
+#   it could let the monitoring feature disabled for the Red Hat-like minion
+#
 # This feature depends on:
-# - sumaform : As it is configuring monitoring to be enabled after deployment
+# - sumaform: as it is configuring monitoring to be enabled after deployment
 
 @scope_monitoring
 Feature: Disable and re-enable monitoring of the server
