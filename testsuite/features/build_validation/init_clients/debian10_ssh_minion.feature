@@ -1,7 +1,7 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-#  1) bootstrap a new Debian minion via salt-ssh
+#  1) bootstrap a new Debian 10 minion via salt-ssh
 #  2) subscribe it to a base channel for testing
 
 @debian10_ssh_minion

@@ -494,15 +494,6 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
-When(/^I import the GPG keys for "([^"]*)"$/) do |host|
-  node = get_target(host)
-  gpg_keys = get_gpg_keys(node)
-  gpg_keys.each do |key|
-    gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
-    node.run("cd /tmp/ && curl --output #{key} #{$server.full_hostname}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
-  end
-end
-
 When(/^the server starts mocking an IPMI host$/) do
   ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
