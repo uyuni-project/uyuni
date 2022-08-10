@@ -47,6 +47,7 @@ Release:        0
 %if "%{_vendor}" == "debbuild"
 Group:          python
 %else
+Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 Group:          Development/Libraries
 %endif
 URL:            https://github.com/uyuni-project/uyuni

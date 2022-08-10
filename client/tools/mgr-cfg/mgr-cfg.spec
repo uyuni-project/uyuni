@@ -76,6 +76,7 @@ Obsoletes:      %{oldname} < %{oldversion}
 Summary:        Spacewalk Configuration Client Libraries
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
+Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 Group:          admin
 %else
 Group:          Applications/System

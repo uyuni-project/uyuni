@@ -37,6 +37,7 @@ Release:        0
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
+Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 Group:          utils
 %else
 Group:          System Environment/Base
