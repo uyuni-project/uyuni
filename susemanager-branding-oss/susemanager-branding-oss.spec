@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-branding-oss
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,16 +15,16 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 %if 0%{?suse_version}
 %global wwwdocroot /srv/www/htdocs
 %else
 %global wwwdocroot %{_localstatedir}/www/html
 %endif
 
-
 Name:           susemanager-branding-oss
-Version:        4.3.3
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        SUSE Manager branding oss specific files
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -40,13 +40,12 @@ BuildRequires:  SUSE-Manager-Server-release
 ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
 %endif
 Provides:       susemanager-branding = %{version}
-Conflicts:      otherproviders(susemanager-branding)
 Conflicts:      oracle-server
+Conflicts:      otherproviders(susemanager-branding)
 
 %description
 A collection of files which are specific for
 SUSE Manager oss flavors.
-
 
 %prep
 %setup -q

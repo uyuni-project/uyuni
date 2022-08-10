@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy-installer
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,7 +18,7 @@
 
 
 #!BuildIgnore:  udev-mini libudev-mini1
-%if 0%{?fedora} || 0%{?rhel} 
+%if 0%{?fedora} || 0%{?rhel}
 %define apacheconfdir %{_sysconfdir}/httpd
 %else
 %define apacheconfdir %{_sysconfdir}/apache2
@@ -31,8 +31,8 @@ Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.10
-Release:        1
+Version:        4.4.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

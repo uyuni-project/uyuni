@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-daemon
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -32,13 +32,12 @@
 %define rhnsd		 mgr-daemon
 #
 Name:           mgr-daemon
-Version:        4.3.5
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
 Group:          utils
-Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          System Environment/Base
 %endif
@@ -61,32 +60,32 @@ Obsoletes:      spacewalksd < 5.0.38
 
 %if 0%{?suse_version}
 Requires(post): aaa_base
-Requires(preun): aaa_base
+Requires(preun):aaa_base
 BuildRequires:  sysconfig
 %if 0%{?suse_version} >=1210
 BuildRequires:  pkgconfig(systemd)
 %{?systemd_requires}
 %else
-Requires(preun): %fillup_prereq %insserv_prereq
+Requires(preun):%fillup_prereq %insserv_prereq
 %endif
 %else
 %if 0%{?fedora}
 Requires(post): chkconfig
-Requires(preun): chkconfig
+Requires(preun):chkconfig
 Requires(post): systemd-sysv
-Requires(preun): systemd-sysv
+Requires(preun):systemd-sysv
 Requires(post): systemd-units
-Requires(preun): systemd-units
+Requires(preun):systemd-units
 BuildRequires:  systemd-units
 %else
 %if 0%{?rhel} >= 8
 BuildRequires:  systemd-rpm-macros
 %endif
 Requires(post): chkconfig
-Requires(preun): chkconfig
+Requires(preun):chkconfig
 # This is for /sbin/service
-Requires(preun): initscripts
-Requires(postun): initscripts
+Requires(preun):initscripts
+Requires(postun):initscripts
 %endif
 %endif
 %endif
@@ -96,8 +95,8 @@ BuildRequires:  init-system-helpers
 %if 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504
 BuildRequires:  systemd
 Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
+Requires(preun):systemd
+Requires(postun):systemd
 %endif
 %endif
 
@@ -296,6 +295,7 @@ fi
 %{_unitdir}/rhnsd.timer
 %{_unitdir}/spacewalk-update-status.service
 %else
+
 %files -f rhnsd.lang
 %defattr(-,root,root)
 %dir %{_sysconfdir}/sysconfig/rhn

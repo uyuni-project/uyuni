@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-utils
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,9 +16,10 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 Name:           spacewalk-utils
-Version:        4.3.13
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
 Group:          Productivity/Other

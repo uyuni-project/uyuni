@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,12 +16,13 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.11
-Release:        1
+Version:        4.4.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -71,7 +72,7 @@ Requires:       spacewalk-backend >= 1.7.24
 Requires:       spacewalk-setup-jabberd
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       sos
-Requires(preun): initscripts
+Requires(preun):initscripts
 %endif
 BuildRequires:  /usr/bin/docbook2man
 
@@ -84,8 +85,8 @@ Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-proxy-package-manager
 %if 0%{?suse_version}
-Requires:       apache2-prefork
 Requires:       apache2-mod_wsgi-python3
+Requires:       apache2-prefork
 %else
 Requires:       mod_ssl
 Requires:       python3-mod_wsgi

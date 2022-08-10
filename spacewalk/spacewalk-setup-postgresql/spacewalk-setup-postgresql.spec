@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup-postgresql
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,8 +18,8 @@
 
 
 Name:           spacewalk-setup-postgresql
-Version:        4.3.4
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -29,15 +29,15 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?suse_version}
 %if 0%{?sle_version} >= 150400
-Requires:       postgresql14-server
 Requires:       postgresql14-contrib
+Requires:       postgresql14-server
 %else
-Requires:       postgresql13-server
 Requires:       postgresql13-contrib
+Requires:       postgresql13-server
 %endif
 %else
-Requires:       postgresql-server > 12
 Requires:       postgresql-contrib >= 12
+Requires:       postgresql-server > 12
 %endif
 Requires:       lsof
 Requires:       spacewalk-dobby
