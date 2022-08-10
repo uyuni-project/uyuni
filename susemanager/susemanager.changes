@@ -1,3 +1,5 @@
+- remove python-tornado from bootstrap repo, since no longer
+  required for salt version >= 3000
 - add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)
 - revert "bootstrap repo: set optional packages"
 
