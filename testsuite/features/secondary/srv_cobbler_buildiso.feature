@@ -40,23 +40,28 @@ Feature: Cobbler buildiso
     When I run Cobbler buildiso for distro "testdistro" and all profiles
     And I check Cobbler buildiso ISO "profile_all" with xorriso
     And I check the Cobbler parameter "nameserver" with value "9.9.9.9" in the isolinux.cfg
+    And I cleanup xorriso temp files
 
   Scenario: Run Cobbler buildiso with selected profile in the cobbler buildiso context
     When I run Cobbler buildiso for distro "testdistro" and profile "orchid"
     And I check Cobbler buildiso ISO "orchid" with xorriso
+    And I cleanup xorriso temp files
 
   # TODO: Fails unless https://github.com/cobbler/cobbler/issues/2995 is fixed
   Scenario: Run Cobbler buildiso with selected profile and without dns entries in the cobbler buildiso context
     When I run Cobbler buildiso for distro "testdistro" and profile "orchid" without dns entries
     And I check Cobbler buildiso ISO "orchid" with xorriso
+    And I cleanup xorriso temp files
 
   Scenario: Run Cobbler buildiso airgapped with all profiles in the cobbler buildiso context
     When I run Cobbler buildiso "airgapped" for distro "testdistro"
     And I check Cobbler buildiso ISO "airgapped" with xorriso
+    And I cleanup xorriso temp files
 
   Scenario: Run Cobbler buildiso standalone with all profiles in the cobbler buildiso context
     When I run Cobbler buildiso "standalone" for distro "testdistro"
     And I check Cobbler buildiso ISO "standalone" with xorriso
+    And I cleanup xorriso temp files
 
   Scenario: Cleanup: delete test distro and profiles in the cobbler buildiso context
     Given I am authorized as "testing" with password "testing"

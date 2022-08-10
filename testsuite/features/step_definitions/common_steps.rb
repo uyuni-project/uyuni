@@ -1438,6 +1438,10 @@ EOF")
   raise "error in verifying Cobbler buildiso image with xorriso.\nLogs:\n#{out}" if code.nonzero?
 end
 
+When(/^I cleanup xorriso temp files$/) do
+  $server.run('rm /var/cache/cobbler/xorriso_*', check_errors: false)
+end
+
 Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
   result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}", verbose: true)
   puts("cobbler #{item} edit --name #{name} #{param}=#{value}")
