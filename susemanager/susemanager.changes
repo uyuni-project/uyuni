@@ -1,3 +1,4 @@
+- pg-migrate-x-to-y.sh: improve output (bsc#1201260)
 - remove python-tornado from bootstrap repo, since no longer
   required for salt version >= 3000
 - add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)
