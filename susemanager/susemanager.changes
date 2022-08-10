@@ -1,3 +1,5 @@
+- add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)
+
 -------------------------------------------------------------------
 Wed Jul 27 14:18:17 CEST 2022 - jgonzalez@suse.com
 
