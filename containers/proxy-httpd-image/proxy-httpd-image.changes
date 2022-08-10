@@ -6,6 +6,7 @@ Wed Jul 27 12:22:52 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
   * Do not print console messages, use python logging instead
   * Mirror the whole server pub folder (bsc#1199802)
   * Modify proxy containers configuration files set output
+  * Set MIT license for Dockerfile
 
 -------------------------------------------------------------------
 Tue May 24 13:27:51 UTC 2022 - Julio González Gil <jgonzalez@suse.com>

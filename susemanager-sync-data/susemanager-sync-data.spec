@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sync-data
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -17,8 +17,8 @@
 
 
 Name:           susemanager-sync-data
-Version:        4.3.8
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Productivity/Other
@@ -28,7 +28,7 @@ Requires:       spacewalk-java-lib >= 2.5.59.7
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
-%description 
+%description
 This package contains data files with information used to channel syncing
 
 %prep

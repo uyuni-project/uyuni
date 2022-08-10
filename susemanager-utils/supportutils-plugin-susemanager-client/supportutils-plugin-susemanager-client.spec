@@ -1,7 +1,7 @@
 #
 # spec file for package supportutils-plugin-susemanager-client
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -17,8 +17,8 @@
 
 
 Name:           supportutils-plugin-susemanager-client
-Version:        4.3.2
-Release:        1
+Version:        4.4.0
+Release:        0
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager Client
 License:        GPL-2.0-only
@@ -27,8 +27,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       supportconfig-plugin-resource
 Requires:       supportconfig-plugin-tag
-Supplements:    packageand(spacewalk-check:supportutils)
 Supplements:    packageand(salt-minion:supportutils)
+Supplements:    packageand(spacewalk-check:supportutils)
 
 %description
 Extends supportconfig functionality to include system information for
@@ -37,6 +37,7 @@ plugin-susemanagerclient.txt.
 
 %prep
 %setup -q
+
 %build
 gzip -9f susemanagerclient-plugin.8
 

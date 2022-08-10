@@ -41,7 +41,6 @@ Layout/ClosingHeredocIndentation:
 Layout/EmptyLineAfterGuardClause:
   Exclude:
     - 'features/step_definitions/api_common.rb'
-    - 'features/step_definitions/centos_tradclient.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/docker_steps.rb'
@@ -364,7 +363,6 @@ Style/Copyright:
 Style/DateTime:
   Exclude:
     - 'features/step_definitions/api_common.rb'
-    - 'features/step_definitions/centos_tradclient.rb'
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/datepicker_steps.rb'
     - 'features/step_definitions/docker_steps.rb'
@@ -399,7 +397,6 @@ Style/FrozenStringLiteralComment:
 Style/GlobalVars:
   Exclude:
     - 'features/step_definitions/api_common.rb'
-    - 'features/step_definitions/centos_tradclient.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/docker_steps.rb'

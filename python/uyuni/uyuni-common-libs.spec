@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-common-libs
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -16,7 +16,7 @@
 #
 
 
-%global debug_package %{nil} 
+%global debug_package %{nil}
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1500 || 0%{?rhel} >= 8
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
@@ -47,8 +47,8 @@ Name:           uyuni-common-libs
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
-Version:        4.3.5
-Release:        1
+Version:        4.4.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes

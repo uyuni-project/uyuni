@@ -54,7 +54,7 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Check the channel.repo file to see the custom RPM download point
     Given I am on the Systems overview page of this "sle_minion"
     Then the susemanager repo file should exist on the "sle_minion"
-    And I should see "ftp", "scc.com" and "445" in the repo file on the "sle_minion"
+    And I should see "ftp", "minima-mirror.mgr.prv.suse.net" and "445" in the repo file on the "sle_minion"
 
   Scenario: Cleanup: remove the custom RPM download point
     When I delete a salt "pillar" file with name "pkg_endpoint.sls" on the server

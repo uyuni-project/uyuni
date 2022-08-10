@@ -184,40 +184,40 @@ Feature: Sanity checks
     And "sle15sp4_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp4_ssh_minion" should be exact
 
-@ceos7_client
+@centos7_client
   Scenario: The CentOS 7 traditional client is healthy
-    Then "ceos7_client" should have a FQDN
-    And reverse resolution should work for "ceos7_client"
-    And "ceos7_client" should communicate with the server using public interface
-    And the clock from "ceos7_client" should be exact
+    Then "centos7_client" should have a FQDN
+    And reverse resolution should work for "centos7_client"
+    And "centos7_client" should communicate with the server using public interface
+    And the clock from "centos7_client" should be exact
 
-@ceos7_minion
+@centos7_minion
   Scenario: The CentOS 7 Salt minion is healthy
-    Then "ceos7_minion" should have a FQDN
-    And reverse resolution should work for "ceos7_minion"
-    And "ceos7_minion" should communicate with the server using public interface
-    And the clock from "ceos7_minion" should be exact
+    Then "centos7_minion" should have a FQDN
+    And reverse resolution should work for "centos7_minion"
+    And "centos7_minion" should communicate with the server using public interface
+    And the clock from "centos7_minion" should be exact
 
-@ceos7_ssh_minion
+@centos7_ssh_minion
   Scenario: The CentOS 7 Salt SSH minion is healthy
-    Then "ceos7_ssh_minion" should have a FQDN
-    And reverse resolution should work for "ceos7_ssh_minion"
-    And "ceos7_ssh_minion" should communicate with the server using public interface
-    And the clock from "ceos7_ssh_minion" should be exact
+    Then "centos7_ssh_minion" should have a FQDN
+    And reverse resolution should work for "centos7_ssh_minion"
+    And "centos7_ssh_minion" should communicate with the server using public interface
+    And the clock from "centos7_ssh_minion" should be exact
 
-@ceos8_minion
+@centos8_minion
   Scenario: The CentOS 8 Salt minion is healthy
-    Then "ceos8_minion" should have a FQDN
-    And reverse resolution should work for "ceos8_minion"
-    And "ceos8_minion" should communicate with the server using public interface
-    And the clock from "ceos8_minion" should be exact
+    Then "centos8_minion" should have a FQDN
+    And reverse resolution should work for "centos8_minion"
+    And "centos8_minion" should communicate with the server using public interface
+    And the clock from "centos8_minion" should be exact
 
-@ceos8_ssh_minion
+@centos8_ssh_minion
   Scenario: The CentOS 8 Salt SSH minion is healthy
-    Then "ceos8_ssh_minion" should have a FQDN
-    And reverse resolution should work for "ceos8_ssh_minion"
-    And "ceos8_ssh_minion" should communicate with the server using public interface
-    And the clock from "ceos8_ssh_minion" should be exact
+    Then "centos8_ssh_minion" should have a FQDN
+    And reverse resolution should work for "centos8_ssh_minion"
+    And "centos8_ssh_minion" should communicate with the server using public interface
+    And the clock from "centos8_ssh_minion" should be exact
 
 @ubuntu1804_minion
   Scenario: The Ubuntu 18.04 Salt minion is healthy

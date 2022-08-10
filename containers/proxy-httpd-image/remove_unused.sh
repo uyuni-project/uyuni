@@ -3,9 +3,6 @@
 
 set -xe
 
-# remove rpm-build and its dependencies
-rpm -e diffutils
-
 # remove perl and its dependencies
 rpm -e --nodeps perl
 
@@ -13,3 +10,4 @@ rpm -e --nodeps perl
 rm -rf /usr/share/locale
 
 zypper clean --all
+

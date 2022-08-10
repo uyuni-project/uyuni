@@ -27,7 +27,9 @@
   <general>
 $SNIPPET('spacewalk/sles_no_signature_checks')
 <mode><confirm config:type="boolean">false</confirm></mode>
-<storage><partition_alignment config:type="symbol">align_optimal</partition_alignment><start_multipath config:type="boolean">false</start_multipath></storage>
+<storage>
+  <start_multipath config:type="boolean">false</start_multipath>
+</storage>
 </general>
   <partitioning config:type="list">
     <drive>
@@ -51,7 +53,6 @@ $SNIPPET('spacewalk/sles_no_signature_checks')
     </dns>
   </networking>
   <software>
-    <image/>
     <install_recommended config:type="boolean">true</install_recommended>
     <instsource/>
     <packages config:type="list">

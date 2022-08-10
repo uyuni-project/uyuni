@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-client-tools
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -72,16 +72,16 @@ Name:           spacewalk-client-tools
 Summary:        Support programs and libraries for Spacewalk
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
+Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 Group:          admin
-Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          System Environment/Base
 %endif
-Version:        4.3.11
+Version:        4.4.0
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/rhel/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
-Release:        1
+Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
 BuildArch:      noarch
@@ -122,12 +122,12 @@ Requires:       coreutils
 %endif
 BuildRequires:  rpm
 
-Conflicts:      up2date < 5.0.0
-Conflicts:      yum-rhn-plugin < 1.6.4-1
-Conflicts:      rhncfg < 5.9.23-1
-Conflicts:      spacewalk-koan < 0.2.7-1
 Conflicts:      rhn-kickstart < 5.4.3-1
 Conflicts:      rhn-virtualization-host < 5.4.36-2
+Conflicts:      rhncfg < 5.9.23-1
+Conflicts:      spacewalk-koan < 0.2.7-1
+Conflicts:      up2date < 5.0.0
+Conflicts:      yum-rhn-plugin < 1.6.4-1
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
@@ -239,7 +239,7 @@ Requires:       python-dbus
 Requires:       python-gi
 Requires:       python-newt
 Requires:       python-pyudev
-Requires(preun): python-minimal
+Requires(preun):python-minimal
 Requires(post): python-minimal
 %endif
 
@@ -294,7 +294,7 @@ Requires:       python3-dbus
 Requires:       python3-gi
 Requires:       python3-newt
 Requires:       python3-pyudev
-Requires(preun): python3-minimal
+Requires(preun):python3-minimal
 Requires(post): python3-minimal
 %endif
 
@@ -346,7 +346,7 @@ Obsoletes:      python2-rhn-check < %{version}-%{release}
 Requires:       spacewalk-check = %{version}-%{release}
 
 %if "%{_vendor}" == "debbuild"
-Requires(preun): python-minimal
+Requires(preun):python-minimal
 Requires(post): python-minimal
 %endif
 
@@ -363,7 +363,7 @@ Obsoletes:      python3-rhn-check < %{version}-%{release}
 Requires:       spacewalk-check = %{version}-%{release}
 
 %if "%{_vendor}" == "debbuild"
-Requires(preun): python3-minimal
+Requires(preun):python3-minimal
 Requires(post): python3-minimal
 %endif
 
@@ -411,7 +411,7 @@ Requires:       python-newt
 %endif
 
 %if "%{_vendor}" == "debbuild"
-Requires(preun): python-minimal
+Requires(preun):python-minimal
 Requires(post): python-minimal
 %endif
 
@@ -433,7 +433,7 @@ Requires:       newt-python3
 %endif
 
 %if "%{_vendor}" == "debbuild"
-Requires(preun): python3-minimal
+Requires(preun):python3-minimal
 Requires(post): python3-minimal
 %endif
 
@@ -490,7 +490,7 @@ Requires:       python-glade2
 Requires:       python-gnome2
 Requires:       python-gtk2
 Requires:       usermode
-Requires(preun): python-minimal
+Requires(preun):python-minimal
 Requires(post): python-minimal
 %endif
 
@@ -524,7 +524,7 @@ Requires:       libgtk-3-bin
 
 Requires:       fonts-liberation
 Requires:       python3-gi
-Requires(preun): python3-minimal
+Requires(preun):python3-minimal
 Requires(post): python3-minimal
 %endif
 
@@ -727,6 +727,7 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/locale/
 /var/lib/up2date/
 %else
+
 %files -f rhn-client-tools.lang
 %endif
 %defattr(-,root,root,-)

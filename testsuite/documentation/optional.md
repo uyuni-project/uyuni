@@ -81,13 +81,13 @@ are executed only if the Docker and Kiwi build host is available.
 
 Using a SSH minion with the testsuite is not mandatory.
 
-If you do not want a SSH minion, do not define `SSHMINION` environment
+If you do not want a SSH minion, do not define `SSH_MINION` environment
 variable before you run the testsuite. That's all.
 
 If you want a SSH minion, make this variable point to the machine that
 will be the SSH minion:
 ```bash
-export SSHMINION=myssh.example.com
+export SSH_MINION=myssh.example.com
 ```
 and then run the testsuite.
 
@@ -119,46 +119,48 @@ Inside of the testsuite, the scenarios that are tagged with
 are executed only if the traditional client is available.
 
 
-### Testing with a CentOS minion
+### Testing with a Red Hat-like minion
 
-Using a CentOS minion with the testsuite is not mandatory.
+Using a Red Hat-like minion (CentOS, Alma, Rocky, ...) with the test suite
+is not mandatory.
 
-If you do not want a CentOS minion, do not define `CENTOSMINION` environment
-variable before you run the testsuite. That's all.
+If you do not want a Red Hat-like minion, do not define `RHLIKE_MINION`
+environment variable before you run the test suite. That's all.
 
-If you want a CentOS minion, make this variable point to the machine that
-will be the CentOS minion:
+If you want a Red Hat-like minion, make this variable point to the machine
+that will be the Red Hat-like minion:
 ```bash
-export CENTOSMINION=myceos.example.com
+export RHLIKE_MINION=rocky8.example.com
 ```
-and then run the testsuite.
+and then run the test suite.
 
-Inside of the testsuite, the scenarios that are tagged with
+Inside of the test suite, the scenarios that are tagged with
 ```
-@centos_minion
+@rhlike_minion
 ```
-are executed only if the CentOS minion is available.
+are executed only if the Red Hat-like minion is available.
 
 
-### Testing with an Ubuntu minion
+### Testing with a Debian-like minion
 
-Using an Ubuntu minion with the testsuite is not mandatory.
+Using a Debian-like minion (Debian, Ubuntu, ...) with the test suite
+is not mandatory.
 
-If you do not want an Ubuntu minion, do not define `UBUNTUMINION` environment
-variable before you run the testsuite. That's all.
+If you do not want a Debian-like minion, do not define `DEBLIKE_MINION`
+environment variable before you run the test suite. That's all.
 
-If you want an Ubuntu minion, make this variable point to the machine that
-will be the Ubuntu minion:
+If you want a Debian-like minion, make this variable point to the machine
+that will be the Debian-like minion:
 ```bash
-export UBUNTUMINION=ubuntu.example.com
+export DEBLIKE_MINION=ubuntu2204.example.com
 ```
-and then run the testsuite.
+and then run the test suite.
 
-Inside of the testsuite, the scenarios that are tagged with
+Inside of the test suite, the scenarios that are tagged with
 ```
-@ubuntu_minion
+@deblike_minion
 ```
-are executed only if the Ubuntu minion is available.
+are executed only if the Debian-like minion is available.
 
 
 ### Testing Uyuni

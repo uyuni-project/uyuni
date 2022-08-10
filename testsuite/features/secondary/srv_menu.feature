@@ -1,7 +1,8 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
 # This feature depends on:
-# This features expect empty content in all the UI pages, so depends in almost all our features
+# empty content in all the UI pages, so it depends on almost all our features
 # TODO: Ideally we should refactor this Cucumber feature to only verify UI static content,
 #       only then we can move this feature to our parallel tests
 
@@ -77,13 +78,13 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Channels" link in the left menu
     And I should see a "Files" link in the left menu
 
-  Scenario: The files menu under the configuaration menu
+  Scenario: The files menu under the configuration menu
     When I follow the left menu "Configuration > Files"
     Then I should see a "Centrally-Managed Configuration Files" text
     And I should see a "Centrally Managed" link in the left menu
     And I should see a "Locally Managed" link in the left menu
 
-  Scenario: The systems submenu in the configuaration menu
+  Scenario: The systems submenu in the configuration menu
     When I follow the left menu "Configuration > Systems"
     Then I should see a "Managed Systems" text
     And I should see a "Managed" link in the left menu
