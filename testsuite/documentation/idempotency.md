@@ -25,9 +25,9 @@ As a standard status, we require that traditional clients and Salt minions have 
 If you remove a traditional client or minion, **always re-add** the base channel, otherwise all package and patch tests will fail.
 
 
-## CentOS and Ubuntu minions
+## Red Hat-like and Debian-like minions
 
-CentOS and Ubuntu clients are always registered as Salt minions by defaut.
+Red Hat-like and Debian-like clients are always registered as Salt minions by defaut.
 
 
 ## Patches tests

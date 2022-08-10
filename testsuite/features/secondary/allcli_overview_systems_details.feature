@@ -30,7 +30,7 @@ Feature: The system details of each minion and client provides an overview of th
     And I should see several text fields for "sle_client"
 
 @sle_minion
-  Scenario: SLE Minion hardware refresh
+  Scenario: SLE minion hardware refresh
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
@@ -50,50 +50,50 @@ Feature: The system details of each minion and client provides an overview of th
     And the uptime for "sle_minion" should be correct
     And I should see several text fields for "sle_minion"
 
-@centos_minion
-  Scenario: CentOS Minion hardware refresh
-    Given I am on the Systems overview page of this "ceos_minion"
+@rhlike_minion
+  Scenario: Red Hat-like minion hardware refresh
+    Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
-@centos_minion
-  Scenario: CentOS minion grains are displayed correctly on the details page
-    Given I am on the Systems overview page of this "ceos_minion"
-    Then the hostname for "ceos_minion" should be correct
-    And the kernel for "ceos_minion" should be correct
-    And the OS version for "ceos_minion" should be correct
-    And the IPv4 address for "ceos_minion" should be correct
-    And the IPv6 address for "ceos_minion" should be correct
-    And the system ID for "ceos_minion" should be correct
-    And the system name for "ceos_minion" should be correct
-    And the uptime for "ceos_minion" should be correct
-    And I should see several text fields for "ceos_minion"
+@rhlike_minion
+  Scenario: Red Hat-like minion grains are displayed correctly on the details page
+    Given I am on the Systems overview page of this "rhlike_minion"
+    Then the hostname for "rhlike_minion" should be correct
+    And the kernel for "rhlike_minion" should be correct
+    And the OS version for "rhlike_minion" should be correct
+    And the IPv4 address for "rhlike_minion" should be correct
+    And the IPv6 address for "rhlike_minion" should be correct
+    And the system ID for "rhlike_minion" should be correct
+    And the system name for "rhlike_minion" should be correct
+    And the uptime for "rhlike_minion" should be correct
+    And I should see several text fields for "rhlike_minion"
 
-@ubuntu_minion
-  Scenario: Ubuntu Minion hardware refresh
-    Given I am on the Systems overview page of this "ubuntu_minion"
+@deblike_minion
+  Scenario: Debian-like minion hardware refresh
+    Given I am on the Systems overview page of this "deblike_minion"
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
-@ubuntu_minion
-  Scenario: Ubuntu minion grains are displayed correctly on the details page
-    Given I am on the Systems overview page of this "ubuntu_minion"
-    Then the hostname for "ubuntu_minion" should be correct
-    And the kernel for "ubuntu_minion" should be correct
-    And the OS version for "ubuntu_minion" should be correct
-    And the IPv4 address for "ubuntu_minion" should be correct
-    And the IPv6 address for "ubuntu_minion" should be correct
-    And the system ID for "ubuntu_minion" should be correct
-    And the system name for "ubuntu_minion" should be correct
-    And the uptime for "ubuntu_minion" should be correct
-    And I should see several text fields for "ubuntu_minion"
+@deblike_minion
+  Scenario: Debian-like minion grains are displayed correctly on the details page
+    Given I am on the Systems overview page of this "deblike_minion"
+    Then the hostname for "deblike_minion" should be correct
+    And the kernel for "deblike_minion" should be correct
+    And the OS version for "deblike_minion" should be correct
+    And the IPv4 address for "deblike_minion" should be correct
+    And the IPv6 address for "deblike_minion" should be correct
+    And the system ID for "deblike_minion" should be correct
+    And the system name for "deblike_minion" should be correct
+    And the uptime for "deblike_minion" should be correct
+    And I should see several text fields for "deblike_minion"
 
 @ssh_minion
-  Scenario: SSH Minion hardware refresh
+  Scenario: SSH-managed minion hardware refresh
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
