@@ -4,7 +4,7 @@
     <body>
       <!-- Generic column headings. The intent is that these can be reused across multiple pages.-->
       <trans-unit id="column.architecture">
-          <source>Architecture</source>
+          <source>Arcchitecture</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/PackageList</context>
           </context-group>
