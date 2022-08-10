@@ -1,3 +1,6 @@
+- reportdb access: force new report_db_sslrootcert if
+  previous default is set
+
 -------------------------------------------------------------------
 Fri May 20 00:16:12 CEST 2022 - jgonzalez@suse.com
 

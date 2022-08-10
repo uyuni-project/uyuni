@@ -164,6 +164,8 @@ if [ -z $POSTGRES_LANG ]; then
     [ ! -z $LC_CTYPE ] && POSTGRES_LANG=$LC_CTYPE
 fi
 
+echo "$(timestamp)   Running initdb using postgres user"
+echo "$(timestamp)   Any suggested command from the console should be run using postgres user"
 su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data --locale=$POSTGRES_LANG"
 if [ $? -eq 0 ]; then
     echo "$(timestamp)   Successfully initialized new postgresql $NEW_VERSION database."
@@ -176,7 +178,8 @@ else
     exit 1
 fi
 
-echo "$(timestamp)   Upgrade database to new version postgresql $NEW_VERSION..."
+echo "$(timestamp)   Running pg_upgrade using postgres user to upgrade database to new version postgresql $NEW_VERSION..."
+echo "$(timestamp)   Any suggested command from the console should be run using postgres user"
 su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_VERSION/bin --new-bindir=/usr/lib/postgresql$NEW_VERSION/bin --old-datadir=/var/lib/pgsql/data-pg$OLD_VERSION --new-datadir=/var/lib/pgsql/data $FAST_UPGRADE"
 if [ $? -eq 0 ]; then
     echo "$(timestamp)   Successfully upgraded database to postgresql $NEW_VERSION."

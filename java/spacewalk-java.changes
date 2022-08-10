@@ -1,4 +1,5 @@
 - add onlyRelevant argument to addErrataUpdate API
+- fix taskomatic task remain in progress
 
 -------------------------------------------------------------------
 Wed Jul 27 14:18:34 CEST 2022 - jgonzalez@suse.com
