@@ -305,10 +305,8 @@ public class ActionChainHandler extends BaseHandler {
      * @param sids a list of Server IDs
      * @param errataIds a list of erratas IDs
      * @param chainLabel Label of the action chain
-     * @param onlyRelevant If true not all 
-     *        erratas are applied to all systems. Systems get only the erratas relevant for them.
-     *        If false, InvalidErrataException is thrown if an errata does not apply
-     *        to a system.
+     * @param onlyRelevant If true, InvalidErrataException
+     * is thrown if an errata does not apply to a system.
      * @return action id if successful, exception otherwise
      *
      * @apidoc.doc Adds Errata update to an Action Chain.
@@ -316,7 +314,7 @@ public class ActionChainHandler extends BaseHandler {
      * @apidoc.param #array_single_desc("int", "sids", "System IDs")
      * @apidoc.param #array_single_desc("int", "errataIds", "Errata ID")
      * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @apidoc.param #param_desc("boolean", "onlyRelevant", "If true, InvalidErrataException 
+     * @apidoc.param #param_desc("boolean", "onlyRelevant", "If true, InvalidErrataException
      * is thrown if an errata does not apply to a system.")
      * @apidoc.returntype #param_desc("int", "actionId", "The action ID of the scheduled action")
      */
