@@ -1405,7 +1405,7 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)" without
   iso_dir = "/var/cache/cobbler"
   out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile} --exclude-dns", verbose: true)
   raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
-  result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o nameserver")
+  result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o nameserver", check_errors: false)
   # we have to fail here if the command suceeds
   raise "error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found.\nLogs:\n#{result}" if code.zero?
 end
