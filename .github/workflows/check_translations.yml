@@ -53,7 +53,7 @@ jobs:
         fi
     - name: Add label
       if: ${{ env.translation_needed }}
-      uses: andymckay/labeler@1.0.4
+      uses: andymckay/labeler@master
       with:
         add-labels: "needs-translation"
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
