@@ -38,7 +38,7 @@ Possible values are currently:
 | SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
 | SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` | ```"minion"``` |
 | SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
-| SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh_minion"``` | ```"minion"``` |
+| SLES Salt SSH minion | ```$ssh_minion``` | ```$SSH_MINION``` | ```"ssh_minion"``` | ```"minion"``` |
 | Red Hat-like Salt minion | ```$rhlike_minion``` | ```$RHLIKE_MINION``` | ```"rhlike_minion"``` | ```"minion"``` |
 | Debian-like Salt minion | ```$deblike_minion``` | ```$DEBLIKE_MINION``` | ```"deblike_minion"``` | ```"minion"``` |
 | PXE-boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
