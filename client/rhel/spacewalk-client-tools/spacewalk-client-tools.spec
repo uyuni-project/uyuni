@@ -72,6 +72,7 @@ Name:           spacewalk-client-tools
 Summary:        Support programs and libraries for Spacewalk
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
+Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 Group:          admin
 %else
 Group:          System Environment/Base
