@@ -56,4 +56,4 @@ jobs:
       uses: andymckay/labeler@1.0.4
       with:
         add-labels: "needs-translation"
-
+        access_token: ${{ github.token }}
