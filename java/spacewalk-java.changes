@@ -1,3 +1,4 @@
+- add onlyRelevant argument to addErrataUpdate API
 - fix taskomatic task remain in progress
 
 -------------------------------------------------------------------
