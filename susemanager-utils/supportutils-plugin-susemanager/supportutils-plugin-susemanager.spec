@@ -1,7 +1,7 @@
 #
 # spec file for package supportutils-plugin-susemanager
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -17,8 +17,8 @@
 
 
 Name:           supportutils-plugin-susemanager
-Version:        4.3.4
-Release:        1
+Version:        4.4.0
+Release:        0
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager
 License:        GPL-2.0-only
@@ -31,11 +31,12 @@ Requires:       susemanager
 Supplements:    packageand(spacewalk-common:supportutils)
 
 %description
-Extends supportconfig functionality to include system information about 
+Extends supportconfig functionality to include system information about
 SUSE Manager. The supportconfig saves the plugin output to plugin-susemanager.txt.
 
 %prep
 %setup -q
+
 %build
 gzip -9f susemanager-plugin.8
 

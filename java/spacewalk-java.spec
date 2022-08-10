@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-java
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -59,8 +59,8 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.35
-Release:        1
+Version:        4.4.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
@@ -90,18 +90,18 @@ BuildRequires:  cglib
 %if 0%{?suse_version}
 BuildRequires:  classmate
 %endif
+BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  %{apache_commons_fileupload}
 BuildRequires:  %{apache_commons_validator}
-BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{ehcache}
 BuildRequires:  apache-commons-el
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  google-gson >= 2.2.4
-BuildRequires:  hibernate-types
 BuildRequires:  hibernate-commons-annotations
+BuildRequires:  hibernate-types
 BuildRequires:  hibernate5
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
@@ -160,9 +160,9 @@ BuildRequires:  tomcat >= 7
 BuildRequires:  tomcat-lib >= 7
 BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
-BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  woodstox
 BuildRequires:  xmlsec
+BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
@@ -192,14 +192,14 @@ Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
 Requires:       (glassfish-jaxb-api or jaxb-api)
 %if 0%{?rhel}
-Recommends:       rng-tools
+Recommends:     rng-tools
 %endif
 %endif
-Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_compress}
+Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
-Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
+Requires:       hibernate-types
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       ical4j
@@ -235,11 +235,11 @@ Requires:       tomcat-taglibs-standard
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
 Requires:       %{apache_commons_fileupload}
-Requires:       log4j
 Requires:       apache-commons-el
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
+Requires:       log4j
 Requires:       log4j-slf4j
 Requires:       redstone-xmlrpc
 Requires:       simple-core
@@ -369,8 +369,8 @@ Requires:       classmate
 Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
-Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
+Requires:       hibernate-types
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
@@ -379,12 +379,12 @@ Requires:       java-11-openjdk
 %else
 Requires:       java >= %{java_version}
 %endif
-Requires:       log4j
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
+Requires:       log4j
 Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
@@ -640,7 +640,6 @@ else
     " > .mfiles-postgresql
 fi
 
-
 # install apidoc sources
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
 install -m 644 build/reports/apidocs/docbook/susemanager_api_doc.xml $RPM_BUILD_ROOT%{_docdir}/%{name}/xml/susemanager_api_doc.xml
@@ -694,7 +693,7 @@ systemctl start rngd ||:
 
 %post -n spacewalk-taskomatic
 %if 0%{?rhel}
-%systemd_post taskomatic.service 
+%systemd_post taskomatic.service
 %else
 %service_add_post taskomatic.service
 %endif

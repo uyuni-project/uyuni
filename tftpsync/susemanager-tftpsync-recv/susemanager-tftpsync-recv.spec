@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-tftpsync-recv
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -18,12 +18,12 @@
 
 %if 0%{?suse_version} > 1320 || 0%{?rhel}
 # SLE15 builds on Python 3
-%global build_py3   1   
+%global build_py3   1
 %endif
 
 Name:           susemanager-tftpsync-recv
-Version:        4.3.6
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Reciever for SUSE Manager tftp sync
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -54,7 +54,6 @@ Requires(pre):  uyuni-base-common
 Use SUSE Manager Proxy as installation server. Provide the capability
 that cobbler on a SUSE Manager Server distribute PXE config and images
 to the proxies.
-
 
 %prep
 %setup -q

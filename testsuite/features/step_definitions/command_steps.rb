@@ -181,7 +181,7 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
     package.gsub! "suma", "uyuni"
   end
   node = get_target(host)
-  if host.include? 'ubuntu'
+  if deb_host?(host)
     node.wait_while_process_running('apt-get')
     pkg_version = package.split('-')[-1]
     pkg_name = package.delete_suffix("-#{pkg_version}")
@@ -214,7 +214,7 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   end
 end
 
-When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
+When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
   salt =
     if $is_cloud_provider
@@ -390,8 +390,16 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/products.xml", check_errors: false)
-      break if code.zero?
+      # solv is the last file to be written when the server synchronizes a channel,
+      # therefore we wait until it exist
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
+      if code.zero?
+        # We want to check if no .new files exists.
+        # On a re-sync, the old files stay, the new one have this suffix until it's ready.
+        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
+        break unless new_code.zero?
+      end
+      log "I am still waiting for '#{channel}' channel to be synchronized."
       sleep 10
     end
   rescue StandardError => e
@@ -402,18 +410,7 @@ end
 When(/I wait until all synchronized channels have finished$/) do
   $channels_synchronized.each do |channel|
     log "I wait until '#{channel}' synchronized channel has finished"
-    repeat_until_timeout(timeout: 7200, message: "Channel '#{channel}' not fully synced") do
-      # products.xml is the last file to be written when the server synchronize a channel,
-      # therefore we wait until it exist
-      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
-      if code.zero?
-        # We want to check if no .new files exists.
-        # On a re-sync, the old files stay, the new one have this suffix until it's ready.
-        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
-        break unless new_code.zero?
-      end
-      sleep 10
-    end
+    step %(I wait until the channel "#{channel}" has been synced)
   end
 end
 
@@ -513,15 +510,6 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
-When(/^I import the GPG keys for "([^"]*)"$/) do |host|
-  node = get_target(host)
-  gpg_keys = get_gpg_keys(node)
-  gpg_keys.each do |key|
-    gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
-    node.run("cd /tmp/ && curl --output #{key} #{$server.full_hostname}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
-  end
-end
-
 When(/^the server starts mocking an IPMI host$/) do
   ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
@@ -619,7 +607,7 @@ When(/^I synchronize the tftp configuration on the proxy with the server$/) do
   raise 'cobbler sync failed' if out.include? 'Push failed'
 end
 
-When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
+When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
   raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
 
   node = get_target(host)
@@ -628,7 +616,7 @@ When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do 
   when 'local boot'
     script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT local/'"
   when 'target profile'
-    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp2-cobbler:1:SUSETest/'"
+    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/'"
   end
   node.run("sed -i #{script} #{target}")
 end
@@ -823,10 +811,9 @@ When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   # node.run('salt-call state.apply channels.disablelocalrepos') does not work
 end
 
-When(/^I (enable|disable) Ubuntu "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
+When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
-  raise "#{node.hostname} is not a Ubuntu host." unless os_family =~ /^ubuntu/
+  raise "#{node.hostname} is not a Debian-like host." unless deb_host?(host)
 
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
 end
@@ -923,11 +910,11 @@ end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     cmd = "yum -y install #{package}"
     successcodes = [0]
     not_found_msg = 'No package'
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
@@ -942,11 +929,11 @@ end
 
 When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     cmd = "yum -y downgrade #{package}"
     successcodes = [0]
     not_found_msg = 'No package'
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
@@ -961,10 +948,10 @@ end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     cmd = "yum -y remove #{package}"
     successcodes = [0]
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "dpkg --remove #{package}"
     successcodes = [0]
   else
@@ -989,9 +976,9 @@ end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
-  if host == 'sle_minion'
+  if suse_host?(host)
     cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
@@ -1467,7 +1454,7 @@ end
 
 When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
   node = get_target(host)
-  next unless host.include? 'ceos'
+  next unless rh_host?(host)
 
   node.run('yum -y clean all')
   node.run('yum -y makecache')

@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-virtualization
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -45,8 +45,8 @@ Name:           mgr-virtualization
 Summary:        Spacewalk action support for virualization
 License:        GPL-2.0-only
 Group:          System Environment/Base
-Version:        4.3.6
-Release:        1
+Version:        4.4.0
+Release:        0
 Provides:       rhn-virtualization = %{oldversion}
 Obsoletes:      rhn-virtualization < %{oldversion}
 
@@ -93,6 +93,7 @@ BuildRequires:  rhn-client-tools
 %else
 Requires:       chkconfig
 %endif
+
 %description -n python2-%{name}-common
 This package contains files that are needed by the rhn-virtualization-host
 package.
@@ -125,10 +126,10 @@ Requires:       %{pythonX}-%{name}-host = %{version}-%{release}
 
 %if 0%{?default_py3}
 BuildRequires:  systemd
-Requires(pre): systemd
+Requires(pre):  systemd
 Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
+Requires(preun):systemd
+Requires(postun):systemd
 %else
 %if 0%{?suse_version}
 Requires:       cron
@@ -155,6 +156,7 @@ Requires:       python-curl
 %else
 Requires:       python-pycurl
 %endif
+
 %description -n python2-%{name}-host
 Python 2 files for %{name}-host.
 %endif

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/proxy:latest
 #!BuildTag: uyuni/proxy:%PKG_VERSION%
 #!BuildTag: uyuni/proxy:%PKG_VERSION%-build%RELEASE%
