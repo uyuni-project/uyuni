@@ -525,10 +525,36 @@ public class ActionChainManager {
                 errataIds.stream().map(Integer::longValue).collect(Collectors.toList()),
                 earliest,
                 actionChain,
-                servers.stream().map(Server::getId).collect(Collectors.toList())
+                servers.stream().map(Server::getId).collect(Collectors.toList()), true, false
         );
 
     }
+
+    /**
+     * Schedules an Errata update on a server.
+     * @param user the user scheduling actions
+     * @param servers the affected servers
+     * @param errataIds a list of erratas IDs
+     * @param earliest the earliest execution date
+     * @param actionChain the action chain
+     * @param onlyRelevant If true, InvalidErrataException is thrown if an errata
+     * does not apply to a system.
+     * @return list of scheduled action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static List<Long> scheduleErrataUpdate(User user, List<Server> servers, List<Integer> errataIds,
+                                              Date earliest, ActionChain actionChain, boolean onlyRelevant)
+                                                      throws TaskomaticApiException  {
+
+        // This won't actually apply the errata because we're passing in an action chain
+        return ErrataManager.applyErrata(user,
+                errataIds.stream().map(Integer::longValue).collect(Collectors.toList()),
+                earliest,
+                actionChain,
+                servers.stream().map(Server::getId).collect(Collectors.toList()), onlyRelevant, false);
+    }
+
 
     /**
      * Schedules one or more package installation actions on one or more servers.
