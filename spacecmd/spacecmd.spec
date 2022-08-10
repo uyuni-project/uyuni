@@ -1,7 +1,7 @@
 #
 # spec file for package spacecmd
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 # Copyright (c) 2011 Aron Parsons <aronparsons@gmail.com>
 #
@@ -44,12 +44,11 @@
 %endif
 
 Name:           spacecmd
-Version:        4.3.14
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 License:        GPL-3.0-or-later
 %if "%{_vendor}" == "debbuild"
-Packager:       Uyuni packagers <uyuni-devel@lists.opensuse.org>
 Group:          admin
 %else
 Group:          Applications/System
@@ -61,7 +60,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 
-%if "%{_vendor}" == "debbuild" || 0%{?rhel} 
+%if "%{_vendor}" == "debbuild" || 0%{?rhel}
 BuildRequires:  gettext
 %endif
 %if "%{_vendor}" == "debbuild"

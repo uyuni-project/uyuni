@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup-jabberd
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,8 +18,8 @@
 
 
 Name:           spacewalk-setup-jabberd
-Version:        4.3.1
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Tools to setup jabberd for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System

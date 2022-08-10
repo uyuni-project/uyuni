@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-web
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -38,8 +38,8 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.23
-Release:        1
+Version:        4.4.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 Source1:        node-modules.tar.gz
@@ -55,8 +55,8 @@ BuildRequires:  apache2
 BuildRequires:  nodejs-default
 %else
 BuildRequires:  nodejs
-BuildRequires:  perl-srpm-macros
 BuildRequires:  perl-macros
+BuildRequires:  perl-srpm-macros
 %endif
 
 %description
@@ -125,7 +125,6 @@ Provides:       rhn-base = 5.3.0
 This package includes the core RHN:: packages necessary to manipulate the
 database.  This includes RHN::* and RHN::DB::*.
 
-
 %package -n spacewalk-base-minimal
 Summary:        Core of Perl modules for %{name} package
 License:        GPL-2.0-only
@@ -152,7 +151,6 @@ Requires:       spacewalk-base-minimal = %{version}-%{release}
 %description -n spacewalk-base-minimal-config
 Configuration file for spacewalk-base-minimal package.
 
-
 %package -n spacewalk-dobby
 Summary:        Perl modules and scripts to administer a PostgreSQL database
 License:        GPL-2.0-only
@@ -166,7 +164,6 @@ Conflicts:      spacewalk-oracle
 %description -n spacewalk-dobby
 Dobby is collection of Perl modules and scripts to administer a PostgreSQL
 database.
-
 
 %prep
 %setup -q
@@ -217,7 +214,6 @@ popd
 %if 0%{?sle_version} && ! (0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora})
 sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_web.conf
 %endif
-
 
 %find_lang spacewalk-web
 

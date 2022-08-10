@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-remote-utils
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -22,8 +22,8 @@
 %endif
 
 Name:           spacewalk-remote-utils
-Version:        4.3.3
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Utilities to interact with a Spacewalk server remotely.
 License:        GPL-2.0-only
 Group:          Applications/System

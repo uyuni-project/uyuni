@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-schema
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -24,8 +24,8 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.3.13
-Release:        1
+Version:        4.4.0
+Release:        0
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/schema/spacewalk/%{name}-rpmlintrc
 
@@ -35,12 +35,12 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  fdupes
+BuildRequires:  perl-macros
 BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
 BuildRequires:  perl(File::Find)
-BuildRequires:  perl-macros
-Requires:       %{sbinpath}/restorecon
 Requires:       %{name}-utility
+Requires:       %{sbinpath}/restorecon
 
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
