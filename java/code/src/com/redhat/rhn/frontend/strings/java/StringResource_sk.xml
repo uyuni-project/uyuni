@@ -10344,19 +10344,19 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.minion-action-cleanup-bunch" xml:space="preserve">
         <source>Cleanup actions for Minions</source>
-        <target/>
+        <target>Akcie čistenia pre klientov minion</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.notifications-cleanup-bunch" xml:space="preserve">
         <source>Cleanup expired notification messages</source>
-        <target/>
+        <target>Čistenie správ s upozorneniami, ktorým vypršala platnosť</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.minion-checkin-bunch" xml:space="preserve">
         <source>Perform a regular check-in on minions</source>
-        <target/>
+        <target>Vykonať pravidelné prihlásenie na klientoch minion</target>
       </trans-unit>
       <trans-unit id="server.contact-method.default" xml:space="preserve">
         <source>Default</source>
-        <target/>
+        <target>Predvolené</target>
       </trans-unit>
       <trans-unit id="server.contact-method.ssh-push" xml:space="preserve">
         <source>Push via SSH</source>
@@ -10368,33 +10368,33 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.nav.title" xml:space="preserve">
         <source>Content Lifecycle</source>
-        <target/>
+        <target>Životný cyklus obsahu</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.projects" xml:space="preserve">
         <source>Projects</source>
-        <target/>
+        <target state="needs-translation">Projekty</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.filters" xml:space="preserve">
         <source>Filters</source>
-        <target/>
+        <target>Filtre</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound" xml:space="preserve">
         <source>Module '{0}' not found.</source>
-        <target/>
+        <target>Modul '{0}' nebol nájdený.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.moduleconflict" xml:space="preserve">
         <source>Module '{0}' conflicts with module '{1}'. Resolution not possible.</source>
-        <target/>
+        <target>Modul '{0}' je v konflikte s modulom '{1}'. Riešenie nie je možné.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror.formodule" xml:space="preserve">
         <source>Some of the modular dependencies cannot be resolved for module '{0}'.</source>
-        <target/>
+        <target>Niektoré modulárne závislosti nie je možné vyriešiť pre modul '{0}'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
