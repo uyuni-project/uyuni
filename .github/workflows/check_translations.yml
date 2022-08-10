@@ -52,8 +52,8 @@ jobs:
           echo "translation_needed=0" >> $GITHUB_ENV
         fi
     - name: Add label
-      if: ${{ env.translation_needed }} 
+      if: ${{ env.translation_needed }}
       uses: andymckay/labeler@1.0.4
       with:
         add-labels: "needs-translation"
-        access_token: ${{ github.token }}
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
