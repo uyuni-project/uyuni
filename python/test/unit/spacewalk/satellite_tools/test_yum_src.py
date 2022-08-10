@@ -19,6 +19,7 @@ import shutil
 import os
 import solv
 import unittest
+from urllib.parse import quote
 import xml.etree.ElementTree as etree
 try:
     from io import StringIO
@@ -26,7 +27,7 @@ except ImportError:
     from StringIO import StringIO
 from collections import namedtuple
 
-from mock import Mock, MagicMock, patch
+from mock import Mock, MagicMock, patch, mock_open
 
 from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
 from spacewalk.satellite_tools.repo_plugins.yum_src import UpdateNotice
@@ -212,6 +213,47 @@ class YumSrcTest(unittest.TestCase):
                 "http://host2/base/arch1/os/",
                 "http://host3/base/arch1/os/",
             ])
+
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
+    @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
+    @patch("spacewalk.common.rhnLog", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
+    def test_proxy_usage_with_mirrorlist(self):
+        cs = self._make_dummy_cs()
+        proxy_url = "http://proxy.example.com:8080"
+        proxy_user = "user"
+        proxy_pass = "pass"
+        cs.proxy_hostname = proxy_url
+        cs.proxy_user = proxy_user
+        cs.proxy_pass = proxy_pass
+        expected_url_list = []
+        url_list = [
+            "http://example/base/arch1/os/\n",
+            "http://example/\n",
+            "http://example.com/\n",
+            "https://example.org/repo/path/?token\n",
+            ]
+        for url in url_list:
+            expected_url_list.append("{}?proxy={}&proxyuser={}&proxypass={}".format(url,
+                                                                                    quote(proxy_url),
+                                                                                    proxy_user,
+                                                                                    proxy_pass
+                                                                                    ))
+        grabber_mock = Mock()
+
+        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
+            with open(os.path.join(self.repo.root, "mirrorlist.txt"), "w") as fake_list:
+                fake_list.writelines([
+                    "http://example/base/arch1/os/\n",
+                    "http://example/\n",
+                    "http://example.com/\n",
+                    "https://example.org/repo/path/?token\n",
+                ])
+            mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+
+            self.assertEqual(mirrors, expected_url_list)
 
     def test_update_notice_parse(self):
         update_notice_xml = StringIO(
