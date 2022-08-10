@@ -46,10 +46,13 @@ jobs:
         if [ $(git diff origin_check_translations check_translations | wc -l) -ne 0 ];then
           echo "Translations are needed"
           git diff origin_check_translations check_translations
-          exit -1
+          echo "translation_needed=1" >> $GITHUB_ENV
+        else
+          echo "Translations not needed"
+          echo "translation_needed=0" >> $GITHUB_ENV
         fi
     - name: Add label
-      if: ${{ failure() }}
+      if: ${{ env.translation_needed }} 
       uses: andymckay/labeler@1.0.4
       with:
         add-labels: "needs-translation"
