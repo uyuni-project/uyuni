@@ -2,17 +2,17 @@
 # Licensed under the terms of the MIT license.
 
 @sle15sp2_minion
-Feature: Migrate a SLES 15 SP2 Salt minion to 15 SP3
+Feature: Migrate a SLES 15 SP2 Salt minion to 15 SP4
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Migrate this minion to SLE 15 SP3
+  Scenario: Migrate this minion to SLE 15 SP4
     Given I am on the Systems overview page of this "sle15sp2_minion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" text
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
     And I click on "Select Channels"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
@@ -27,7 +27,7 @@ Feature: Migrate a SLES 15 SP2 Salt minion to 15 SP3
     And I wait at most 600 seconds until event "Product Migration" is completed
     And I wait until event "Package List Refresh" is completed
     And I follow "Details" in the content area
-    Then I wait until I see "SUSE Linux Enterprise Server 15 SP3" text, refreshing the page
+    Then I wait until I see "SUSE Linux Enterprise Server 15 SP4" text, refreshing the page
     And vendor change should be enabled for product migration on "sle15sp2_minion"
 
   Scenario: Install the latest Salt on this minion
