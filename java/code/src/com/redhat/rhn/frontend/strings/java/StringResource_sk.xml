@@ -9458,11 +9458,11 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="ARM soft. FP" xml:space="preserve">
         <source>ARM soft. FP</source>
-        <target/>
+        <target>ARM soft. FP</target>
       </trans-unit>
       <trans-unit id="ARM hard. FP" xml:space="preserve">
         <source>ARM hard. FP</source>
-        <target/>
+        <target>ARM hard. FP</target>
       </trans-unit>
       <trans-unit id="arm Debian" xml:space="preserve">
         <source>arm Debian</source>
@@ -9470,7 +9470,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="mips Debian" xml:space="preserve">
         <source>mips Debian</source>
-        <target/>
+        <target>mips Debian</target>
       </trans-unit>
       <trans-unit id="AArch64" xml:space="preserve">
         <source>ARM aarch64</source>
@@ -10372,7 +10372,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.nav.projects" xml:space="preserve">
         <source>Projects</source>
-        <target state="needs-translation">Projekty</target>
+        <target state="translated">Projekty</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.filters" xml:space="preserve">
         <source>Filters</source>
