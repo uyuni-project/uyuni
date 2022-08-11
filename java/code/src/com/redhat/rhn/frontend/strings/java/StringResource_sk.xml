@@ -10100,7 +10100,12 @@ inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</t
 Thank you for using @@PRODUCT_NAME@@.
 --the @@PRODUCT_NAME@@ Team
 </source>
-        <target/>
+        <target>
+
+
+Ďakujeme, že používate @@PRODUCT_NAME@@.
+--Tím @@PRODUCT_NAME@@
+</target>
       </trans-unit>
       <trans-unit id="email.satellitecert.satbodyend" xml:space="preserve">
         <source>
@@ -10222,7 +10227,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="help.jsp.detailed" xml:space="preserve">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
-        <target/>
+        <target>Podrobné inštrukcie na používanie @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="help.jsp.gettingstarted.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Getting Started Guide</source>
@@ -10279,7 +10284,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="distupgrade.upgrade" xml:space="preserve">
         <source>Product Migration</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Migrácia produktov</target>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
@@ -10383,7 +10388,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.nav.projects" xml:space="preserve">
         <source>Projects</source>
-        <target/>
+        <target>Projekty</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.filters" xml:space="preserve">
         <source>Filters</source>
