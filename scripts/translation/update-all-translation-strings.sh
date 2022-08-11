@@ -1,8 +1,9 @@
 #! /bin/bash
 
 set -x
+export LC_ALL=C
 
-SAFE_BRANCHNAMES=(master-weblate new-translation-strings)
+SAFE_BRANCHNAMES=(weblate-Manager-4.3)
 SAFE_BRANCHNAMES+=($ADDITIONAL_SAFE_BRANCHNAME)
 GIT_ROOT_DIR=$(git rev-parse --show-toplevel)
 
@@ -47,7 +48,7 @@ function update_xliff() {
     for tfile in $GIT_ROOT_DIR/$XLIFF_DIR/* ; do
         sed -i '1s/<?xml .*/<?xml version="1.0" encoding="UTF-8"?>/' $tfile
         sed -i 's/ \/>/\/>/g' $tfile
-	if [ -n "$(tail -c -1 "$tfile")" ]; then
+        if [ -n "$(tail -c -1 "$tfile")" ]; then
             echo >> $tfile
         fi
     done
