@@ -10406,7 +10406,7 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="contentmanagement.nav.projects" xml:space="preserve">
         <source>Projects</source>
-        <target state="needs-translation">Projekty</target>
+        <target state="translated">Projekty</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.filters" xml:space="preserve">
         <source>Filters</source>
