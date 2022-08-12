@@ -145,32 +145,43 @@ public class SaltActionChainGeneratorService {
             }
             Optional<Long> nextActionId = nextActionId(states, i);
 
-            if (mustSplit(state, minion)) {
-                if (isSaltUpgrade(state)) {
-                    fileStates.add(
-                            endChunk(actionChain, chunk, nextActionId,
-                                    prevRequisiteRef(fileStates), sshExtraFileRefs));
-                    fileStates.add(state);
-                    fileStates.add(stopIfPreviousFailed(prevRequisiteRef(fileStates)));
-                    fileStates.add(forceRestartServiceIfNeeded("force_restart_if_needed",
-                            prevRequisiteRef(Collections.singletonList(state))));
-                    saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
-                    fileStates.clear();
-                    chunk++;
-                    fileStates.add(checkSaltUpgradeChunk(state));
+            if (isSaltUpgrade(state)) {
+                fileStates.add(
+                        endChunk(actionChain, chunk, nextActionId,
+                                prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.empty()));
+                fileStates.add(state);
+                fileStates.add(stopIfPreviousFailed(prevRequisiteRef(fileStates)));
+                fileStates.add(forceRestartServiceIfNeeded("force_restart_if_needed",
+                        prevRequisiteRef(Collections.singletonList(state))));
+                saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
+                fileStates.clear();
+                chunk++;
+                fileStates.add(checkSaltUpgradeChunk(state));
+            }
+            else if (isRebootAction(state)) {
+                if (minion.isTransactionalUpdate()) {
+                    if (i < states.size() - 1) {
+                        fileStates.add(
+                                endChunk(actionChain, chunk, nextActionId,
+                                        prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.of(true)));
+                    }
+                    else {
+                        fileStates.add(endLastChunk(Optional.of(true)));
+                    }
                 }
-                else {
+                else { // it's not transactional update
                     fileStates.add(state);
                     if (i < states.size() - 1) {
                         fileStates.add(
                                 endChunk(actionChain, chunk, nextActionId,
-                                        prevRequisiteRef(fileStates), sshExtraFileRefs));
+                                        prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.empty()));
                     }
-
-                    saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
-                    chunk++;
-                    fileStates.clear();
                 }
+
+                saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
+
+                chunk++;
+                fileStates.clear();
             }
             else {
                 fileStates.add(state);
@@ -199,7 +210,8 @@ public class SaltActionChainGeneratorService {
     }
 
     private SaltState endChunk(ActionChain actionChain, int chunk, Optional<Long> nextActionId,
-                               Optional<Pair<String, String>> lastRef, Optional<String> sshExtraFileRefs) {
+                               Optional<Pair<String, String>> lastRef, Optional<String> sshExtraFileRefs,
+                               Optional<Boolean> rebootRequired) {
         Map<String, Object> args = new LinkedHashMap<>(2);
         args.put("actionchain_id", actionChain.getId());
         args.put("chunk", chunk + 1);
@@ -207,8 +219,18 @@ public class SaltActionChainGeneratorService {
                 args.put("next_action_id", actionId));
         sshExtraFileRefs.ifPresent(refs ->
                 args.put("ssh_extra_filerefs", refs));
+        rebootRequired.ifPresent(refs ->
+                args.put("reboot_required", refs));
         SaltModuleRun modRun = new SaltModuleRun("schedule_next_chunk", "mgractionchains.next", args);
         lastRef.ifPresent(ref -> modRun.addRequire(ref.getKey(), ref.getValue()));
+        return modRun;
+    }
+
+    private SaltState endLastChunk(Optional<Boolean> rebootRequired) {
+        Map<String, Object> args = new LinkedHashMap<>(2);
+        rebootRequired.ifPresent(refs ->
+                args.put("reboot_required", refs));
+        SaltModuleRun modRun = new SaltModuleRun("schedule_next_chunk", "mgractionchains.clean", args);
         return modRun;
     }
 
@@ -317,31 +339,42 @@ public class SaltActionChainGeneratorService {
         return false;
     }
 
-    private boolean mustSplit(SaltState state, MinionSummary minion) {
-        boolean split = false;
+    private boolean isRebootAction(SaltState state) {
         if (state instanceof SaltModuleRun) {
-            SaltModuleRun moduleRun = (SaltModuleRun)state;
-
-            Optional<String> mods = getModsString(moduleRun);
-
-            if (mods.isPresent() &&
-                    mods.get().contains(PACKAGES_PKGINSTALL) && isSaltUpgrade(state) &&
-                    !minion.isSshPush()) {
-                // split only for regular minions, salt-ssh minions don't have a salt-minion process
-                split = true;
-            }
-            else if (mods.isPresent() &&
-                    mods.get().contains(PACKAGES_PATCHINSTALL) && isSaltUpgrade(state)) {
-                split = true;
-            }
-            else if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {
-                split = true;
+            SaltModuleRun moduleRun = (SaltModuleRun) state;
+            if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {
+                return true;
             }
         }
         else if (state instanceof SaltSystemReboot) {
-            split = true;
+            return true;
         }
-        return split;
+        return false;
+    }
+
+    private boolean isUpgradeWithRebootRequired(SaltState state, MinionSummary minion) {
+        if (state instanceof SaltModuleRun) {
+            SaltModuleRun moduleRun = (SaltModuleRun) state;
+
+            Optional<String> mods = getModsString(moduleRun);
+
+            if (mods.isPresent() && mods.get().contains(PACKAGES_PKGINSTALL) &&
+                    isSaltUpgrade(state) && !minion.isSshPush()) {
+                // split only for regular minions, salt-ssh minions don't have a
+                // salt-minion process
+                return true;
+            }
+            else if (mods.isPresent() && mods.get().contains(PACKAGES_PATCHINSTALL) &&
+                    isSaltUpgrade(state)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    private boolean mustSplit(SaltState state, MinionSummary minion) {
+        return isUpgradeWithRebootRequired(state, minion) || isRebootAction(state);
     }
 
     private Optional<String> getModsString(SaltModuleRun moduleRun) {

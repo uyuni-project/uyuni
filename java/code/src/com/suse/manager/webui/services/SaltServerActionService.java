@@ -894,12 +894,11 @@ public class SaltServerActionService {
         // convert local calls to salt state objects
         Map<MinionSummary, List<SaltState>> statesPerMinion = new HashMap<>();
         minionCalls.forEach((minion, serverActionCalls) -> {
-            boolean isSshPush = minion.isSshPush();
             List<SaltState> states = serverActionCalls.stream()
                     .flatMap(saCalls -> {
                         ServerAction sa = saCalls.getKey();
                         List<LocalCall<?>> calls = saCalls.getValue();
-                        return convertToState(actionChain.getId(), sa, calls, isSshPush).stream();
+                        return convertToState(actionChain.getId(), sa, calls, minion).stream();
                     }).collect(Collectors.toList());
 
             statesPerMinion.put(minion, states);
@@ -960,7 +959,7 @@ public class SaltServerActionService {
     }
 
     private List<SaltState> convertToState(long actionChainId, ServerAction serverAction,
-                                           List<LocalCall<?>> calls, boolean isSshPush) {
+                                           List<LocalCall<?>> calls, MinionSummary minion) {
         String stateId = SaltActionChainGeneratorService.createStateId(actionChainId,
                 serverAction.getParentAction().getId());
 
@@ -971,42 +970,35 @@ public class SaltServerActionService {
             switch(fun) {
                 case "state.apply":
                     List<String> mods = (List<String>)kwargs.get("mods");
-                    if (CollectionUtils.isEmpty(mods)) {
-                        if (isSshPush) {
-                            // Apply highstate using a custom top.
-                            // The custom top is needed because salt-ssh invokes
-                            // "salt-call --local" and this needs a top file in order to apply the highstate
-                            // and salt-ssh doesn't pack one automatically in the state tarball
-                            return new SaltModuleRun(stateId,
-                                    "state.top",
-                                    serverAction.getParentAction().getId(),
-                                    singletonMap("topfn",
-                                            saltActionChainGeneratorService
-                                                    .getActionChainTopPath(actionChainId,
-                                                            serverAction.getParentAction().getId())),
-                                    emptyMap());
-                        }
-                        else {
-                            return new SaltModuleRun(stateId,
-                                    "state.apply",
-                                    serverAction.getParentAction().getId(),
-                                    emptyMap(),
-                                    createStateApplyKwargs(kwargs));
-                        }
 
+                    if (minion.isSshPush() && CollectionUtils.isEmpty(mods)) {
+                        // Apply highstate using a custom top.
+                        // The custom top is needed because salt-ssh invokes
+                        // "salt-call --local" and this needs a top file in order to apply the highstate
+                        // and salt-ssh doesn't pack one automatically in the state tarball
+                        return new SaltModuleRun(stateId,
+                                "state.top",
+                                serverAction.getParentAction().getId(),
+                                singletonMap("topfn",
+                                        saltActionChainGeneratorService
+                                        .getActionChainTopPath(actionChainId,
+                                                serverAction.getParentAction().getId())),
+                                emptyMap());
                     }
-                    return new SaltModuleRun(stateId,
-                            "state.apply",
-                            serverAction.getParentAction().getId(),
-                            !mods.isEmpty() ?
-                                    singletonMap("mods", mods) : emptyMap(),
-                            createStateApplyKwargs(kwargs));
+                    else {
+                        return new SaltModuleRun(stateId,
+                                "state.apply",
+                                        serverAction.getParentAction().getId(),
+                                        !mods.isEmpty() ?
+                                                singletonMap("mods", mods) : emptyMap(),
+                                                createStateApplyKwargs(kwargs));
+                    }
                 case "system.reboot":
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,
                             serverAction.getParentAction().getId(), time);
                 default:
-                    throw new RuntimeException("Salt module call" + fun + " can't be converted to a state.");
+                    throw new RuntimeException("Salt module call " + fun + " can't be converted to a state.");
             }
         }).collect(Collectors.toList());
     }
