@@ -62,8 +62,8 @@ if $build_validation
   $centos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
   $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
-  $centos8_minion = twopence_init("ssh:#{ENV['CENTOS8_MINION']}") if ENV['CENTOS8_MINION']
-  $centos8_ssh_minion = twopence_init("ssh:#{ENV['CENTOS8_SSHMINION']}") if ENV['CENTOS8_SSHMINION']
+  $rocky8_minion = twopence_init("ssh:#{ENV['ROCKY8_MINION']}") if ENV['ROCKY8_MINION']
+  $rocky8_ssh_minion = twopence_init("ssh:#{ENV['ROCKY8_SSHMINION']}") if ENV['ROCKY8_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
@@ -85,7 +85,7 @@ if $build_validation
              $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
              $sle15sp4_client, $sle15sp4_minion, $sle15sp4_ssh_minion,
              $centos7_client, $centos7_minion, $centos7_ssh_minion,
-             $centos8_minion, $centos8_ssh_minion,
+             $rocky8_minion, $rocky8_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
              $debian9_minion, $debian9_ssh_minion,
@@ -284,8 +284,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'centos7_client'            => $centos7_client,
                   'centos7_minion'            => $centos7_minion,
                   'centos7_ssh_minion'        => $centos7_ssh_minion,
-                  'centos8_minion'            => $centos8_minion,
-                  'centos8_ssh_minion'        => $centos8_ssh_minion,
+                  'rocky8_minion'            => $rocky8_minion,
+                  'rocky8_ssh_minion'        => $rocky8_ssh_minion,
                   'ubuntu1804_minion'         => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,
