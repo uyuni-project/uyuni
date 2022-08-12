@@ -189,12 +189,12 @@ Before('@centos7_client') do
   skip_this_scenario unless $centos7_client
 end
 
-Before('@centos8_minion') do
-  skip_this_scenario unless $centos8_minion
+Before('@rocky8_minion') do
+  skip_this_scenario unless $rocky8_minion
 end
 
-Before('@centos8_ssh_minion') do
-  skip_this_scenario unless $centos8_ssh_minion
+Before('@rocky8_ssh_minion') do
+  skip_this_scenario unless $rocky8_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do
