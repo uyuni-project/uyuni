@@ -27,7 +27,7 @@ except ImportError:
     from StringIO import StringIO
 from collections import namedtuple
 
-from mock import Mock, MagicMock, patch, mock_open
+from mock import Mock, MagicMock, patch
 
 from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
 from spacewalk.satellite_tools.repo_plugins.yum_src import UpdateNotice
@@ -230,17 +230,22 @@ class YumSrcTest(unittest.TestCase):
         cs.proxy_pass = proxy_pass
         expected_url_list = []
         url_list = [
-            "http://example/base/arch1/os/\n",
-            "http://example/\n",
-            "http://example.com/\n",
-            "https://example.org/repo/path/?token\n",
+            "http://example/base/arch1/os/",
+            "http://example/",
+            "http://example.com/",
+            "https://example.org/repo/path/?token",
             ]
         for url in url_list:
-            expected_url_list.append("{}?proxy={}&proxyuser={}&proxypass={}".format(url,
-                                                                                    quote(proxy_url),
-                                                                                    proxy_user,
-                                                                                    proxy_pass
-                                                                                    ))
+            if "?" in url:
+                query = "&"
+            else:
+                query = "?"
+            expected_url_list.append("{}{}proxy={}&proxyuser={}&proxypass={}".format(url,
+                                                                                     query,
+                                                                                     quote(proxy_url),
+                                                                                     proxy_user,
+                                                                                     proxy_pass
+                                                                                     ))
         grabber_mock = Mock()
 
         with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
@@ -254,6 +259,39 @@ class YumSrcTest(unittest.TestCase):
             mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
 
             self.assertEqual(mirrors, expected_url_list)
+
+    def test_prep_zypp_repo_url_with_proxy(self):
+        cs = self._make_dummy_cs()
+        url_list = ["http://example.com/",
+                    "https://example.com/",
+                    "https://example.org/repo/path/?token",
+                    "uln://example.com/",
+                    "uln:///channel"
+                    ]
+        uln_list = [False, False, False, True, True]
+        proxy_url = "http://proxy.example.com:8080"
+        proxy_user = "user"
+        proxy_pass = "pass"
+        cs.proxy_hostname = proxy_url
+        cs.proxy_user = proxy_user
+        cs.proxy_pass = proxy_pass
+
+        for i in range(0, len(url_list)):
+            if uln_list[i] or "?" in url_list[i]:
+                query = "&"
+            else:
+                query = "?"
+
+            expected_url = "{}{}proxy={}&proxyuser={}&proxypass={}".format(url_list[i],
+                                                                           query,
+                                                                           quote(proxy_url),
+                                                                           proxy_user,
+                                                                           proxy_pass
+                                                                           )
+
+            comp_url = cs._prep_zypp_repo_url(url_list[i], uln_list[i])
+
+            assert expected_url == comp_url
 
     def test_update_notice_parse(self):
         update_notice_xml = StringIO(
