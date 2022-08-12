@@ -10401,52 +10401,52 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror" xml:space="preserve">
         <source>Some of the modular dependencies cannot be resolved.</source>
-        <target/>
+        <target>Niektoré modulárne závislosti nie je možné vyriešiť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodulefilters" xml:space="preserve">
         <source>No module filters attached. Module metadata will be cloned to target.</source>
-        <target/>
+        <target>Nie sú pripojené žiadne filtre modulov. Metadáta modulu budú klonované do cieľa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodularsources" xml:space="preserve">
         <source>No modular source attached. Module filters will be ignored.</source>
-        <target/>
+        <target>Nie je pripojený žiadny modulárny zdroj. Filtre modulov sa budú ignorovať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>
-        <target/>
+        <target>Audit CVE</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmitool" xml:space="preserve">
         <source>IPMI</source>
-        <target/>
+        <target>IPMI</target>
       </trans-unit>
       <trans-unit id="setup-wizard.next" xml:space="preserve">
         <source>Next</source>
-        <target/>
+        <target>Ďalej</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.empty" xml:space="preserve">
         <source>No credentials</source>
-        <target/>
+        <target>Žiadne prihlasovanie údaje</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.actions" xml:space="preserve">
         <source>Actions</source>
-        <target/>
+        <target>Akcie</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.verify" xml:space="preserve">
         <source>verify credentials</source>
-        <target/>
+        <target>overiť prihlasovanie údaje</target>
       </trans-unit>
       <trans-unit id="subscriptionmatching.nav.title" xml:space="preserve">
         <source>Subscription Matching</source>
-        <target/>
+        <target>Priraďovanie predplatného</target>
       </trans-unit>
       <trans-unit id="foreign_entitled" xml:space="preserve">
         <source>Foreign</source>
