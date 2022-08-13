@@ -89,9 +89,10 @@ def application(environ, start_response):
         content = "No file content"
     else:
         path = os.path.join(CFG.TFTPBOOT, directory)
+        tfname = None
         try:
             if not os.path.exists(path):
-                os.makedirs(path)
+                os.makedirs(path, exist_ok=True)
 
             rfname = os.path.join(path, file_name)
             tfname = "%s.tmp" % (rfname)
