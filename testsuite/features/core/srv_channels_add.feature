@@ -98,3 +98,7 @@ Feature: Adding channels
     # End of WORKAROUND
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-Deb-AMD64 created." text
+
+  Scenario: Wait for Channels generated initial metadata
+    When I wait until the channel "test-channel-x86_64" has been synced
+    And I wait until the channel "test-channel-i586" has been synced
