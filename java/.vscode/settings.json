@@ -7,6 +7,6 @@
             "-Drhn.config.dir=${workspaceFolder}/buildconf/test",
             "-Dlog4j2.configurationFile=${workspaceFolder}/buildconf/test/log4j2.properties"
          ]
-    }
+    },
+    "ant.buildFilenames": "manager-build.xml"
 }
-
