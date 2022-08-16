@@ -73,10 +73,7 @@ public class MockModulemdApi extends ModulemdApi {
     }
 
     @Override
-    public List<String> getAllPackages(List<Channel> sources) {
-        // Dummy call to trigger RepositoryNotModular exception:
-        getMetadataPaths(sources);
-
+    public List<String> getAllPackages(Modules modules) {
         // Mock list
         try {
             return doGetAllPackages();
