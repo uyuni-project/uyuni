@@ -1,8 +1,7 @@
+#!/usr/bin/env ruby
 # source 'https://rubygems.org'
 #
 # gem 'nokogiri'
-
-#!/usr/bin/env ruby
 
 require 'open-uri'
 require 'optparse'
@@ -135,7 +134,7 @@ class MaintenanceCrawler
         return URI.join(@root_url, url).to_s
     end
   end
-  
+
   # Output the current completions/total_queued to the console
   # Defaults to single-line-update but verbose (-v) mode triggers full output
   def print_status(url)
