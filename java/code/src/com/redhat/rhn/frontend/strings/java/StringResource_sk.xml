@@ -10499,21 +10499,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target/>
+        <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavenia ISO obrazu&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;sstránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.virtualization_host" xml:space="preserve">
         <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; for more info.</source>
-        <target/>
+        <target>Keďže ste do systému pridali typ virtualizačného systému, vykonali sme tiež niekoľko ďalších krokov, aby sme zabezpečili, že váš systém bude schopný lepšie spravovať virtuálnych hostí. Viac informácií nájdete v &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
         <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <target/>
+        <target>Keďže ste do systému pridali typ virtualizačného systému, vykonali sme tiež niekoľko ďalších krokov, aby sme zabezpečili, že váš systém bude schopný lepšie spravovať virtuálnych hostí.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10534,26 +10534,26 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
-        <target/>
+        <target>Vyskytol sa problém s priradením vzorca exportérov Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Bootstrapping" xml:space="preserve">
         <source>Bootstrapping</source>
-        <target/>
+        <target>Zavádzanie</target>
       </trans-unit>
       <trans-unit id="salt_entitled" xml:space="preserve">
         <source>Salt</source>
-        <target/>
+        <target>Salt</target>
       </trans-unit>
       <trans-unit id="task.status.matcher" xml:space="preserve">
         <source>Subscription Matcher Run</source>
-        <target/>
+        <target>Spustenie Priraďovača predplatného</target>
       </trans-unit>
       <trans-unit id="task.status.gatherer" xml:space="preserve">
         <source>Virtual Host Manager Data Refresh</source>
-        <target/>
+        <target>Obnovenie údajov správcu virtuálnych hostiteľov</target>
       </trans-unit>
       <trans-unit id="task.status.minion-action-cleanup" xml:space="preserve">
         <source>Minion Action Cleanup</source>
