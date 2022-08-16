@@ -43,28 +43,29 @@ import java.util.stream.Stream;
 
 /**
  * Resolves dependencies in a content management project
- *
+ * <p>
  * At the moment, dependency resolution only works with module filters and modular dependencies. This class can be
  * enhanced to resolve package dependencies as well.
- *
+ * <p>
  * The resolution process takes the complete list of filters as input and queries the libmodulemd API with all the
  * module streams in filters. A module filter represents a selected module in one of the modular sources (filter rules
  * have no effect for module filters). The API returns all the related packages that must be allowed/denied as per
  * current module selection. In return, all module filters are translated into a collection of package filters by the
  * following rules:
- *
- * 1. All modular packages are denied (deny by nevra)
- * 2. For each package publicly provided by a module, all the packages from other sources with the same package name
- *    are denied. As a result, a specific package is only provided exclusively by the module to prevent any conflicts
- *    (deny by name).
- * 3. Modular packages from selected modules are overridden to be allowed (allow by nevra)
- *
- * This algorithm only runs if there are any module filters in the input list. Otherwise the process is bypassed and no
+ * <p>
+ * <ol>
+ * <li>All modular packages are denied (deny by nevra)
+ * <li>For each package publicly provided by a module, all the packages from other sources with the same package name
+ *    are denied. As a result, a specific package is provided exclusively by the module to prevent any conflicts (deny
+ *    by name).
+ * <li>Modular packages from selected modules are overridden to be allowed (allow by nevra)
+ * </ol>
+ * <p>
+ * This algorithm only runs if there are any module filters in the input list. Otherwise, the process is bypassed and no
  * filter transformation is done.
  *
- * The resolve deny-allow override problem:
- *
- * One problem with this approach is that the allow filters will override any further deny filters defined by the user
+ * <h3>The resolve deny-allow override problem</h3>
+ * One problem with this approach is that the ALLOW filters will override any further deny filters defined by the user
  * on those packages. We need to figure out if this is an important case and if so, come up with a different solution.
  *
  * @see com.redhat.rhn.manager.contentmgmt.test.DependencyResolverTest#testModuleFiltersForeignPackagesSelected
