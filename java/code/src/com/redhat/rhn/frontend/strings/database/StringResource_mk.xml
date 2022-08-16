@@ -111,21 +111,21 @@
       <!-- TimeZones -->
       <trans-unit id="Australia/Brisbane" xml:space="preserve">
         <source>(GMT+1000) Australia (Eastern Standard)</source>
-        <target/>
+        <target>(GMT+1000) Австралија (источен стандард)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Sydney" xml:space="preserve">
         <source>(GMT+1000) Australia (Eastern Daylight)</source>
-        <target/>
+        <target>(GMT+1000) Австралија (Источно летно време)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Adelaide" xml:space="preserve">
         <source>(GMT+0930) Australia Adelaide</source>
-        <target/>
+        <target>(GMT+0930) Австралија Аделаида</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -167,56 +167,56 @@
       </trans-unit>
       <trans-unit id="Europe/Bucharest" xml:space="preserve">
         <source>(GMT+0200) Europe (Eastern)</source>
-        <target/>
+        <target>(GMT+0200) Европа (Источна)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Europe/Paris" xml:space="preserve">
         <source>(GMT+0100) Europe (Central)</source>
-        <target/>
+        <target>(GMT+0100) Европа (Централна)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GMT" xml:space="preserve">
         <source>(GMT+0000) Greenwich Mean Time</source>
-        <target/>
+        <target>(GMT+0000) Време на Гринич</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/St_Johns" xml:space="preserve">
         <source>(GMT-0330) Canada (Newfoundland)</source>
-        <target/>
+        <target>(GMT-0330) Канада (Њуфаундленд)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Halifax" xml:space="preserve">
         <source>(GMT-0400) Canada (Atlantic)</source>
-        <target/>
+        <target>(GMT-0400) Канада (Атлантик)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/New_York" xml:space="preserve">
         <source>(GMT-0500) United States (Eastern)</source>
-        <target/>
+        <target>(GMT-0500) Соединетите Американски Држави (Исток)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Chicago" xml:space="preserve">
         <source>(GMT-0600) United States (Central)</source>
-        <target/>
+        <target>(GMT-0600) Соединетите Американски Држави (Централно)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Regina" xml:space="preserve">
         <source>(GMT-0600) Canada (Regina)</source>
-        <target/>
+        <target>(GMT-0600) Канада (Регина)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
