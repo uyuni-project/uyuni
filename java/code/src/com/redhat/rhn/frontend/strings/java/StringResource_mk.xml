@@ -3875,42 +3875,42 @@ user before attempting to deactivate their account.</source>
       </trans-unit>
       <trans-unit id="timetag.hours" xml:space="preserve">
         <source>hours</source>
-        <target/>
+        <target>саати</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.minute" xml:space="preserve">
         <source>minute</source>
-        <target/>
+        <target>минути</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.minutes" xml:space="preserve">
         <source>minutes</source>
-        <target/>
+        <target>минути</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.second" xml:space="preserve">
         <source>second</source>
-        <target/>
+        <target>секунда</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.seconds" xml:space="preserve">
         <source>seconds</source>
-        <target/>
+        <target>секунди</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timetag.oneunit" xml:space="preserve">
         <source>{0} {1}</source>
-        <target/>
+        <target>{0} {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/util/StringUtil</context>
           <context context-type="paramnotes">14 days</context>
