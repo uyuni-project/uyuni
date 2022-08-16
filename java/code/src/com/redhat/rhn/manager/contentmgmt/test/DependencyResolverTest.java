@@ -179,7 +179,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
 
         // DENY filters for all modular packages
         // Deny-all rule for all modular packages (are overridden by ALLOW filters for the selected modules)
-        api.getAllPackages(singletonList(modularChannel))
+        api.getAllPackages(modularChannel.getLatestModules())
                 .forEach(p -> assertTrue(filters.stream().anyMatch(f -> isDenyNevraEquals(f, p))));
     }
 

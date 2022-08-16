@@ -36,6 +36,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.log4j.Logger;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -231,7 +232,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         assertNull(c.getModules());
         assertFalse(c.isModular());
 
-        c.setModules(new Modules());
+        c.addModules(new Modules("filename", new Date()));
         assertNotNull(c.getModules());
         assertTrue(c.isModular());
     }
