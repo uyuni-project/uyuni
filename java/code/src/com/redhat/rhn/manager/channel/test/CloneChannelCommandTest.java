@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.channel.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,6 +29,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.Date;
+import java.util.Set;
 
 public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 
@@ -74,20 +78,28 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testCloneModularSource() throws Exception {
         Channel original = createBaseChannel();
-        Modules modules = new Modules();
-        modules.setChannel(original);
-        modules.setRelativeFilename("blablafilename");
-        original.setModules(modules);
+        Modules modules = new Modules("blablafilename1", new Date());
+        original.addModules(modules);
+
+        modules = new Modules("blablafilename2", new Date());
+        original.addModules(modules);
+
         assertTrue(original.isModular());
 
         CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, original);
         ccc.setUser(user);
         Channel clone = ccc.create();
-        Modules originalModules = original.getModules();
-        Modules cloneModules = clone.getModules();
-        assertEquals(originalModules.getRelativeFilename(), cloneModules.getRelativeFilename());
-        assertEquals(clone, cloneModules.getChannel());
-        assertFalse(originalModules.getId().equals(cloneModules.getId()));
+        Set<Modules> originalModules = original.getModules();
+        Set<Modules> cloneModules = clone.getModules();
+
+        assertEquals(2, cloneModules.size());
+        cloneModules.forEach(m -> {
+            Modules orig = originalModules.stream()
+                    .filter(o -> m.getRelativeFilename().equals(o.getRelativeFilename())).findFirst().get();
+            assertEquals(orig.getLastModified(), m.getLastModified());
+            assertEquals(clone, m.getChannel());
+            assertNotEquals(orig.getId(), m.getId());
+        });
     }
 
     /**
@@ -96,10 +108,8 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testStripModularMetadata() throws Exception {
         Channel original = createBaseChannel();
-        Modules modules = new Modules();
-        modules.setChannel(original);
-        modules.setRelativeFilename("blablafilename");
-        original.setModules(modules);
+        Modules modules = new Modules("blablafilename", new Date());
+        original.addModules(modules);
         assertTrue(original.isModular());
 
         CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, original);

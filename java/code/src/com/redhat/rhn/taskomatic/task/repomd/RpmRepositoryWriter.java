@@ -490,7 +490,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 method = channel.getClass().getMethod("getComps");
             }
             else if (metadataType.equals(MODULES)) {
-                method = channel.getClass().getMethod("getModules");
+                method = channel.getClass().getMethod("getLatestModules");
             }
         }
         catch (NoSuchMethodException e) {
