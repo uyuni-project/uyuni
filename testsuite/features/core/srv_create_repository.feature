@@ -41,6 +41,7 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
     And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-x86_64." text
 
@@ -67,6 +68,7 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
     And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-i586." text
 
@@ -101,6 +103,7 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Repositories" in the content area
     And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-Deb-AMD64." text
 
