@@ -1,3 +1,4 @@
+- Keep older module metadata files in database (bsc#1201893)
 - Fix setting of last modified date in channel clone procedure
 
 -------------------------------------------------------------------

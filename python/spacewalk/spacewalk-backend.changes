@@ -1,3 +1,4 @@
+- Keep older module metadata files in database (bsc#1201893)
 - Added an optional component_type property to the LOG object 
   and included it to a log message
 - Add an optional component property to the log messages
