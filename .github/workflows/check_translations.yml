@@ -27,6 +27,7 @@ jobs:
       with:
         add-labels: "needs-translation"
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        access_token: ${{ github.token }}
 
     - name: Checkout repo
       uses: actions/checkout@v2
