@@ -1,3 +1,4 @@
+- Fix table header layout for unselectable tables
 - Fix initial profile and build host on Image Build page (bsc#1199659)
 
 -------------------------------------------------------------------
