@@ -133,7 +133,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7" product has been added
 
-@centos8_minion
+@rocky8_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 8
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text

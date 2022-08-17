@@ -1308,11 +1308,23 @@ public class ChannelFactory extends HibernateFactory {
      * List all vendor channels (org is null)
      * @return list of vendor channels
      */
-    @SuppressWarnings("unchecked")
     public static List<Channel> listVendorChannels() {
-        Map<String, Object> params = new HashMap<>();
-        List<Channel> result = singleton.listObjectsByNamedQuery(
-                "Channel.findVendorChannels", params);
+        @SuppressWarnings("unchecked")
+        List<Channel> result = singleton.listObjectsByNamedQuery("Channel.findVendorChannels", Collections.emptyMap());
+        if (result != null) {
+            return result;
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * List all custom channels (org is not null) with at least one repository
+     * @return list of vendor channels
+     */
+    public static List<Channel> listCustomChannelsWithRepositories() {
+        @SuppressWarnings("unchecked")
+        List<Channel> result =
+            singleton.listObjectsByNamedQuery("Channel.findCustomChannelsWithRepositories", Collections.emptyMap());
         if (result != null) {
             return result;
         }

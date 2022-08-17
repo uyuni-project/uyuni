@@ -47,7 +47,7 @@ begin
         and a.attrelid in (
             select c.oid from pg_catalog.pg_class c
             where relkind = 'r' and pg_catalog.pg_table_is_visible(c.oid) and relowner = (
-                select oid from pg_catalog.pg_authid where rolname = current_user
+                select oid from pg_catalog.pg_roles where rolname = current_user
             )
         ) loop
         begin

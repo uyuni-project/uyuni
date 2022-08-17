@@ -355,6 +355,11 @@ public class ConfigDefaults {
      */
     public static final String DEFAULT_DOCS_LOCALE = "web.docs_locale";
 
+    /**
+     * Specify if custom channels are synced together with vendor channels
+     */
+    public static final String UNIFY_CUSTOM_CHANNEL_MANAGEMENT = "java.unify_custom_channel_management";
+
     private ConfigDefaults() {
     }
 
@@ -1098,4 +1103,14 @@ public class ConfigDefaults {
     public boolean isForwardRegistrationEnabled() {
         return Config.get().getBoolean(FORWARD_REGISTRATION);
     }
+
+    /**
+     * Returns true if custom channel are synced automatically with vendor channels
+     *
+     * @return true if automatic sync is active, false otherwise
+     */
+    public boolean isCustomChannelManagementUnificationEnabled() {
+        return Config.get().getBoolean(UNIFY_CUSTOM_CHANNEL_MANAGEMENT);
+    }
+
 }

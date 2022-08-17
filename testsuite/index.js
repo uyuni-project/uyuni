@@ -16,7 +16,7 @@ var options = {
   storeScreenshots: true,
   noInlineScreenshots: true,
   ignoreBadJsonFile: true,
-  name: 'Uyuni/Head Testsuite',
+  name: 'SUSE Manager 4.3 Testsuite',
   brandTitle: ' ',
   metadata: {
     "App Version":"Uyuni/Head",
