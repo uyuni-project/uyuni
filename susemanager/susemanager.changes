@@ -1,3 +1,5 @@
+- mgr-create-bootstrap-repo: flush directory also when called
+  for a specific label (bsc#1200573)
 - pg-migrate-x-to-y.sh: improve output (bsc#1201260)
 - remove python-tornado from bootstrap repo, since no longer
   required for salt version >= 3000
