@@ -23,43 +23,11 @@ jobs:
       with:
         access_token: ${{ github.token }}
     - name: Add label
-      uses: andymckay/labeler@master
-      with:
-        add-labels: "needs-translation"
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        access_token: ${{ github.token }}
-
-    - name: Checkout repo
-      uses: actions/checkout@v2
-
-    - name: Setup tooling
-      run: sudo apt-get install -y make git gettext intltool python3
-
-    - name: Setup git
-      run: |
-        git config --global user.name "Galaxy CI"
-        git config --global user.email "galaxy-ci@suse.de" 
-        git switch -c check_translations
-        git branch origin_check_translations
-
-    - name: Update all translations files
-      run: ADDITIONAL_SAFE_BRANCHNAME=check_translations scripts/translation/update-all-translation-strings.sh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Check if there has been changes on translation files
-      run: |
-        if [ $(git diff origin_check_translations check_translations | wc -l) -ne 0 ];then
-          echo "Translations are needed"
-          git diff origin_check_translations check_translations
-          echo "translation_needed=1" >> $GITHUB_ENV
-        else
-          echo "Translations not needed"
-          echo "translation_needed=0" >> $GITHUB_ENV
-        fi
-    - name: Add label
-      if: ${{ env.translation_needed }}
       uses: andymckay/labeler@master
       with:
         add-labels: "needs-translation"
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
+
+
