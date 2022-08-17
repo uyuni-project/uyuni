@@ -1,3 +1,4 @@
+- Fixed system search
 - update java dependencies
 - Enable Rocky Linux 9 for monitoring
 - Added a new configuration property to allow custom channels to
