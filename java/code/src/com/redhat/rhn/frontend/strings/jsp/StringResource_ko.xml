@@ -29735,6 +29735,13 @@ given channel.</source>
             </context-group>
         <target state="final">패키지 프로파일 {0}개가 새로 고침될 &lt;a href="/rhn/schedule/PendingActions.do"&gt;예정&lt;/a&gt;입니다.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve">
+        <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

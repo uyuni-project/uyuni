@@ -10100,7 +10100,12 @@ inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</t
 Thank you for using @@PRODUCT_NAME@@.
 --the @@PRODUCT_NAME@@ Team
 </source>
-        <target/>
+        <target>
+
+
+Ďakujeme, že používate @@PRODUCT_NAME@@.
+--Tím @@PRODUCT_NAME@@
+</target>
       </trans-unit>
       <trans-unit id="email.satellitecert.satbodyend" xml:space="preserve">
         <source>
@@ -10222,7 +10227,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="help.jsp.detailed" xml:space="preserve">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
-        <target/>
+        <target>Podrobné inštrukcie na používanie @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="help.jsp.gettingstarted.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Getting Started Guide</source>
@@ -10279,7 +10284,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="distupgrade.upgrade" xml:space="preserve">
         <source>Product Migration</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Migrácia produktov</target>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
@@ -10383,7 +10388,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.nav.projects" xml:space="preserve">
         <source>Projects</source>
-        <target/>
+        <target>Projekty</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.filters" xml:space="preserve">
         <source>Filters</source>
@@ -10412,159 +10417,159 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror" xml:space="preserve">
         <source>Some of the modular dependencies cannot be resolved.</source>
-        <target/>
+        <target>Niektoré modulárne závislosti nie je možné vyriešiť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodulefilters" xml:space="preserve">
         <source>No module filters attached. Module metadata will be cloned to target.</source>
-        <target/>
+        <target>Nie sú pripojené žiadne filtre modulov. Metadáta modulu budú klonované do cieľa.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodularsources" xml:space="preserve">
         <source>No modular source attached. Module filters will be ignored.</source>
-        <target/>
+        <target>Nie je pripojený žiadny modulárny zdroj. Filtre modulov sa budú ignorovať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>
-        <target/>
+        <target>Audit CVE</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmitool" xml:space="preserve">
         <source>IPMI</source>
-        <target/>
+        <target>IPMI</target>
       </trans-unit>
       <trans-unit id="setup-wizard.next" xml:space="preserve">
         <source>Next</source>
-        <target/>
+        <target>Ďalej</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.empty" xml:space="preserve">
         <source>No credentials</source>
-        <target/>
+        <target>Žiadne prihlasovanie údaje</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.actions" xml:space="preserve">
         <source>Actions</source>
-        <target/>
+        <target>Akcie</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.verify" xml:space="preserve">
         <source>verify credentials</source>
-        <target/>
+        <target>overiť prihlasovanie údaje</target>
       </trans-unit>
       <trans-unit id="subscriptionmatching.nav.title" xml:space="preserve">
         <source>Subscription Matching</source>
-        <target/>
+        <target>Priraďovanie predplatného</target>
       </trans-unit>
       <trans-unit id="foreign_entitled" xml:space="preserve">
         <source>Foreign</source>
-        <target/>
+        <target>Cudzie</target>
       </trans-unit>
       <trans-unit id="visualization.nav.title" xml:space="preserve">
         <source>Visualization</source>
-        <target/>
+        <target>Vizualizácia</target>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
-        <target/>
+        <target>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Pridať alebo odstrániť&lt;/a&gt; typy prídavných systémov</target>
       </trans-unit>
       <trans-unit id="system_entitlements.invalid" xml:space="preserve">
         <source>Invalid system type selected.</source>
-        <target/>
+        <target>Vybraný neplatný typ systému.</target>
       </trans-unit>
       <trans-unit id="system_entitlements.addon.error" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; systém(y) sa nepodarilo nastaviť na &lt;strong&gt;{1}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="system_entitlements.addon.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; systém(y) nastavené na &lt;strong&gt;{1}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="system_entitlements.addon.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;{1}&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
-        <target/>
+        <target>Odstránené &lt;strong&gt;{1}&lt;/strong&gt; z &lt;strong&gt;{0}&lt;/strong&gt; systému(ov).</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host" xml:space="preserve">
         <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target/>
+        <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavený kontajnermi&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target/>
+        <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavený kontajnermi&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target/>
+        <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavenia ISO obrazu&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;sstránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target/>
+        <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavenia ISO obrazu&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;sstránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.virtualization_host" xml:space="preserve">
         <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; for more info.</source>
-        <target/>
+        <target>Keďže ste do systému pridali typ virtualizačného systému, vykonali sme tiež niekoľko ďalších krokov, aby sme zabezpečili, že váš systém bude schopný lepšie spravovať virtuálnych hostí. Viac informácií nájdete v &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
         <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <target/>
+        <target>Keďže ste do systému pridali typ virtualizačného systému, vykonali sme tiež niekoľko ďalších krokov, aby sme zabezpečili, že váš systém bude schopný lepšie spravovať virtuálnych hostí.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Bol použitý typ &lt;strong&gt;Monitorovania&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Bol použitý typ &lt;strong&gt;Monitorovania&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
-        <target/>
+        <target>Vyskytol sa problém s priradením vzorca exportérov Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Bootstrapping" xml:space="preserve">
         <source>Bootstrapping</source>
-        <target/>
+        <target>Zavádzanie</target>
       </trans-unit>
       <trans-unit id="salt_entitled" xml:space="preserve">
         <source>Salt</source>
-        <target/>
+        <target>Salt</target>
       </trans-unit>
       <trans-unit id="task.status.matcher" xml:space="preserve">
         <source>Subscription Matcher Run</source>
-        <target/>
+        <target>Spustenie Priraďovača predplatného</target>
       </trans-unit>
       <trans-unit id="task.status.gatherer" xml:space="preserve">
         <source>Virtual Host Manager Data Refresh</source>
-        <target/>
+        <target>Obnovenie údajov správcu virtuálnych hostiteľov</target>
       </trans-unit>
       <trans-unit id="task.status.minion-action-cleanup" xml:space="preserve">
         <source>Minion Action Cleanup</source>
