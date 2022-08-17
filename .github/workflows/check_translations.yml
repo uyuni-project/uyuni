@@ -25,7 +25,7 @@ jobs:
     - name: Add label
       uses: andymckay/labeler@master
       with:
-        add-labels: "test"
+        add-labels: "needs-translation"
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
 
     - name: Checkout repo
