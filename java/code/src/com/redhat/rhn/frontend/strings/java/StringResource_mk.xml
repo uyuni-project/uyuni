@@ -179,28 +179,28 @@
       </trans-unit>
       <trans-unit id="6" xml:space="preserve">
         <source>6</source>
-        <target/>
+        <target>6</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7" xml:space="preserve">
         <source>7</source>
-        <target/>
+        <target>7</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8" xml:space="preserve">
         <source>8</source>
-        <target/>
+        <target>8</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9" xml:space="preserve">
         <source>9</source>
-        <target/>
+        <target>9</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="Warning" xml:space="preserve">
         <source>Warning</source>
-        <target/>
+        <target>Предупредување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
@@ -270,7 +270,7 @@
       </trans-unit>
       <trans-unit id="none specified" xml:space="preserve">
         <source>none specified</source>
-        <target/>
+        <target>не е избрано</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
@@ -284,56 +284,56 @@
       </trans-unit>
       <trans-unit id="Account" xml:space="preserve">
         <source>Account</source>
-        <target/>
+        <target>Акаунт</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Account Deactivation" xml:space="preserve">
         <source>Account Deactivation</source>
-        <target/>
+        <target>Деактивација на акаунт</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Activation Keys" xml:space="preserve">
         <source>Activation Keys</source>
-        <target/>
+        <target>Клучеви за активирање</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Addresses" xml:space="preserve">
         <source>Addresses</source>
-        <target/>
+        <target>Адреси</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type B" xml:space="preserve">
         <source>Billing Address</source>
-        <target/>
+        <target>Платежни Адреси</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type M" xml:space="preserve">
         <source>Mailing Address</source>
-        <target/>
+        <target>Поштени Адреси</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address type S" xml:space="preserve">
         <source>Shipping Address</source>
-        <target/>
+        <target>Шипинг Адреса</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address not filled in" xml:space="preserve">
         <source>Address not filled in</source>
-        <target/>
+        <target>Адресата не е воведена</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
@@ -347,7 +347,7 @@
       </trans-unit>
       <trans-unit id="Advanced Search" xml:space="preserve">
         <source>Advanced Search</source>
-        <target/>
+        <target>Напредно Пребарување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -361,18 +361,18 @@
       </trans-unit>
       <trans-unit id="All" xml:space="preserve">
         <source>All</source>
-        <target/>
+        <target>Сите</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="url" xml:space="preserve">
         <source>url</source>
-        <target/>
+        <target>УРЛ</target>
       </trans-unit>
       <trans-unit id="alphabet" xml:space="preserve">
         <source>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</source>
-        <target/>
+        <target>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</target>
         <context-group name="ctx">
           <context context-type="sourcefile">On List pages with an alpha filter bar.
                                         Used to generate the list of links based on
@@ -382,7 +382,7 @@
       </trans-unit>
       <trans-unit id="API" xml:space="preserve">
         <source>API</source>
-        <target/>
+        <target>АПИ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1242,7 +1242,7 @@
       </trans-unit>
       <trans-unit id="user prefix  " xml:space="preserve">
         <source> </source>
-        <target state="needs-translation"> </target>
+        <target state="translated"> </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -11162,7 +11162,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@ {0} се приближува на крајот на животот</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
