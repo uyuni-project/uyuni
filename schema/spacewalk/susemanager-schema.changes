@@ -1,3 +1,5 @@
+- Fix setting of last modified date in channel clone procedure
+
 -------------------------------------------------------------------
 Mon Sep 26 12:23:06 UTC 2022 - marina.latini@suse.com
 
