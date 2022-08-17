@@ -689,10 +689,8 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
            if os.path.exists(destdir):
                dirprefix, lastdir = os.path.split(destdir)
                destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
-               if options.dryrun:
-                   log("Move directory: {0}".format(destdir))
-               else:
-                   log("FLUSH: move destdir to old", 2)
+               log("FLUSH: move destdir '{0}' to old".format(destdir))
+               if not options.dryrun:
                    os.rename(destdir, destdirold)
            doall = True
        for label in labels:
@@ -753,10 +751,8 @@ def main():
             if os.path.exists(destdir):
                 dirprefix, lastdir = os.path.split(destdir)
                 destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
-                if opts.dryrun:
-                    log("Move directory: {0}".format(destdir))
-                else:
-                    log("FLUSH: move destdir to old", 2)
+                log("FLUSH: move destdir '{0}' to old".format(destdir))
+                if not opts.dryrun:
                     os.rename(destdir, destdirold)
         r = create_repo(elabel, opts, mgr_bootstrap_data, additional=args)
     elif opts.list:
@@ -765,6 +761,14 @@ def main():
         if opts.create not in mgr_bootstrap_data.DATA:
             log_error("'%s' not found" % opts.create)
             sys.exit(1)
+        if opts.flush:
+            destdir = os.path.normpath(mgr_bootstrap_data.DATA[opts.create]['DEST'])
+            if os.path.exists(destdir):
+                dirprefix, lastdir = os.path.split(destdir)
+                destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+                log("FLUSH: move destdir '{0}' to old".format(destdir))
+                if not opts.dryrun:
+                    os.rename(destdir, destdirold)
         r = create_repo(opts.create, opts, mgr_bootstrap_data, additional=args)
     releaseLOCK()
     return r
