@@ -918,21 +918,21 @@
       </trans-unit>
       <trans-unit id="Critical Query Time" xml:space="preserve">
         <source>Critical Query Time</source>
-        <target/>
+        <target>Критично Време на Барање</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Queue Length" xml:space="preserve">
         <source>Critical Queue Length</source>
-        <target/>
+        <target>Критична Должина на Ред</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical RAM Free" xml:space="preserve">
         <source>Critical RAM Free</source>
-        <target/>
+        <target>Критична Слободна Меморија(RAM)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2424,35 +2424,35 @@
       </trans-unit>
       <trans-unit id="metrics.Idle sessions" xml:space="preserve">
         <source>Idle sessions</source>
-        <target/>
+        <target>Неактивни Сесии</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Idle threads" xml:space="preserve">
         <source>Idle threads</source>
-        <target/>
+        <target>Неактивни тредови</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Inodes pct used" xml:space="preserve">
         <source>Inodes pct used</source>
-        <target/>
+        <target>Инодови % користени</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Input rate" xml:space="preserve">
         <source>Input rate</source>
-        <target/>
+        <target>Рата на влез</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Invocation rate" xml:space="preserve">
         <source>Invocation rate</source>
-        <target/>
+        <target>Рата на повикување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2473,35 +2473,35 @@
       </trans-unit>
       <trans-unit id="metrics.Line rate" xml:space="preserve">
         <source>Line rate</source>
-        <target/>
+        <target>Рата на линија</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Lines" xml:space="preserve">
         <source>Lines</source>
-        <target/>
+        <target>Линии</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Low exec time" xml:space="preserve">
         <source>Low exec time</source>
-        <target/>
+        <target>Кратко време на извршување</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per child" xml:space="preserve">
         <source>Max transferred per child</source>
-        <target/>
+        <target>Максимално префрлено на чајлд</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per slot" xml:space="preserve">
         <source>Max transferred per slot</source>
-        <target/>
+        <target>Максимално префрлено на слот</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2914,7 +2914,7 @@
       </trans-unit>
       <trans-unit id="All" xml:space="preserve">
         <source>All</source>
-        <target/>
+        <target>Сите</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
