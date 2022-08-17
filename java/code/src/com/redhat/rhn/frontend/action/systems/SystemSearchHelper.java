@@ -260,7 +260,7 @@ public class SystemSearchHelper {
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
         List args = new ArrayList();
-        args.add(sessionId);
+        args.add(sessionId.toString());
         args.add(index);
         args.add(query);
         args.add(isFineGrained);
