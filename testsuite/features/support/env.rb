@@ -425,11 +425,6 @@ Before('@skip_if_cloud') do
   skip_this_scenario if $is_cloud_provider
 end
 
-# do test only if in cloud
-Before('@cloud') do
-  skip_this_scenario unless $is_cloud_provider
-end
-
 # have more infos about the errors
 def debug_server_on_realtime_failure
   STDOUT.puts '=> /var/log/rhn/rhn_web_ui.log'
