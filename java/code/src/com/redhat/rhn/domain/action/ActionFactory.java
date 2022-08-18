@@ -754,18 +754,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Delete the server actions associated with the given set of parent actions.
-     * @param parentActions Set of parent actions.
-     */
-    public static void deleteServerActionsByParent(Set parentActions) {
-        Session session = HibernateFactory.getSession();
-
-        Query serverActionsToDelete =
-                session.getNamedQuery("ServerAction.deleteByParentActions");
-        serverActionsToDelete.setParameterList("actions", parentActions);
-        serverActionsToDelete.executeUpdate();
-    }
-    /**
      * Lookup a List of Action objects for a given Server.
      * @param user the user doing the search
      * @param serverIn you want to limit the list of Actions to
