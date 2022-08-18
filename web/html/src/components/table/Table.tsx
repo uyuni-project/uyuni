@@ -72,7 +72,7 @@ type TableProps = {
   additionalFilters?: Array<React.ReactNode>;
 
   /** Default search field */
-  defaultSearchField?: string;
+  defaultSearchField?: any;
 };
 
 function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {

@@ -217,8 +217,8 @@ export class TableDataHandler extends React.Component<Props, State> {
     return lastPage > 0 ? lastPage : 1;
   };
 
-  onSearch = (criteria?: string): void => {
-    this.setState({ currentPage: 1, criteria: criteria }, () => this.getData());
+  onSearch = (criteria?: string, criteriaField?: any): void => {
+    this.setState({ currentPage: 1, criteria: criteria, criteriaField: criteriaField }, () => this.getData());
   };
 
   onItemsPerPageChange = (itemsPerPage: number): void => {
@@ -365,6 +365,7 @@ export class TableDataHandler extends React.Component<Props, State> {
 
     const emptyText = this.props.emptyText || t("There are no entries to show.");
     const loadingText = this.props.loadingText || t("Loading...");
+    const isSelectable = typeof this.props.selectable !== "undefined" && this.props.selectable !== false;
 
     return (
       <div className="spacewalk-list">
@@ -381,7 +382,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                   onClear={handleSearchPanelClear}
                   onSelectAll={handleSearchPanelSelectAll}
                   selectedCount={selectedItems.length}
-                  selectable={this.props.selectable != null}
+                  selectable={isSelectable}
                 >
                   {this.props.searchField}
                   {this.props.additionalFilters?.map((filter, i) => (
