@@ -1,7 +1,7 @@
 #
 # spec file for package yum-rhn-plugin
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -29,8 +29,8 @@ Summary:        Spacewalk support for yum
 License:        GPL-2.0-only
 Group:          System Environment/Base
 Name:           yum-rhn-plugin
-Version:        4.3.5
-Release:        1
+Version:        4.4.0
+Release:        0
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

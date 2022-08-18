@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-cfg
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -33,7 +33,7 @@
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
-%global __python /usr/bin/python2 
+%global __python /usr/bin/python2
 %endif
 
 %if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || (0%{?suse_version} && 0%{?sle_version} < 150000) || 0%{?ubuntu} || 0%{?debian}
@@ -69,15 +69,15 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.3.6
-Release:        1
+Version:        4.4.0
+Release:        0
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Summary:        Spacewalk Configuration Client Libraries
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
+Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 Group:          admin
-Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          Applications/System
 %endif
@@ -143,7 +143,7 @@ BuildRequires:  python < 3
 
 %if "%{_vendor}" == "debbuild"
 # For scriptlets
-Requires(preun): python-minimal
+Requires(preun):python-minimal
 Requires(post): python-minimal
 %endif
 
@@ -168,7 +168,7 @@ BuildRequires:  python3-rpm-macros
 %endif
 %if "%{_vendor}" == "debbuild"
 # For scriptlets
-Requires(preun): python3-minimal
+Requires(preun):python3-minimal
 Requires(post): python3-minimal
 %endif
 
@@ -199,7 +199,7 @@ Obsoletes:      python2-%{oldname}-client < %{oldversion}
 Requires:       %{name}-client = %{version}-%{release}
 %if "%{_vendor}" == "debbuild"
 # For scriptlets
-Requires(preun): python-minimal
+Requires(preun):python-minimal
 Requires(post): python-minimal
 %endif
 
@@ -216,7 +216,7 @@ Obsoletes:      python3-%{oldname}-client < %{oldversion}
 Requires:       %{name}-client = %{version}-%{release}
 %if "%{_vendor}" == "debbuild"
 # For scriptlets
-Requires(preun): python3-minimal
+Requires(preun):python3-minimal
 Requires(post): python3-minimal
 %endif
 
@@ -246,7 +246,7 @@ Obsoletes:      python2-%{oldname}-management < %{oldversion}
 Requires:       %{name}-management = %{version}-%{release}
 %if "%{_vendor}" == "debbuild"
 # For scriptlets
-Requires(preun): python-minimal
+Requires(preun):python-minimal
 Requires(post): python-minimal
 %endif
 
@@ -263,7 +263,7 @@ Obsoletes:      python3-%{oldname}-management < %{oldversion}
 Requires:       %{name}-management = %{version}-%{release}
 %if "%{_vendor}" == "debbuild"
 # For scriptlets
-Requires(preun): python3-minimal
+Requires(preun):python3-minimal
 Requires(post): python3-minimal
 %endif
 
@@ -294,7 +294,7 @@ Requires:       %{name}-actions = %{version}-%{release}
 Requires:       python2-%{name}-client
 %if "%{_vendor}" == "debbuild"
 # For scriptlets
-Requires(preun): python-minimal
+Requires(preun):python-minimal
 Requires(post): python-minimal
 %endif
 
@@ -312,7 +312,7 @@ Requires:       %{name}-actions = %{version}-%{release}
 Requires:       python3-%{name}-client
 %if "%{_vendor}" == "debbuild"
 # For scriptlets
-Requires(preun): python3-minimal
+Requires(preun):python3-minimal
 Requires(post): python3-minimal
 %endif
 
@@ -373,7 +373,7 @@ popd
 
 %post
 if [ -f %{_localstatedir}/log/rhncfg-actions ]
-then 
+then
 chown root %{_localstatedir}/log/rhncfg-actions
 chmod 600 %{_localstatedir}/log/rhncfg-actions
 fi

@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-backend
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -32,7 +32,7 @@
 %global apache_user root
 %global apache_group root
 %global apache_pkg httpd
-%global documentroot %{_localstatedir}/www/html 
+%global documentroot %{_localstatedir}/www/html
 %global m2crypto python3-m2crypto
 %global sslrootcert %{_sysconfdir}/pki/ca-trust/source/anchors/
 %endif
@@ -51,8 +51,8 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.3.15
-Release:        1
+Version:        4.4.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -383,7 +383,7 @@ fi
 %else
 %service_add_post spacewalk-diskcheck.service spacewalk-diskcheck.timer
 %endif
-if test -f /var/log/rhn/rhn_server_satellite.log; then 
+if test -f /var/log/rhn/rhn_server_satellite.log; then
     chown -f %{apache_user}:%{apache_group} /var/log/rhn/rhn_server_satellite.log
 fi
 

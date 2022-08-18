@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -47,8 +47,8 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.3.18
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -84,7 +84,10 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 
 %if 0%{?suse_version}
-BuildRequires:  %fillup_prereq %insserv_prereq tftp postgresql-init
+BuildRequires:  %fillup_prereq
+BuildRequires:  %insserv_prereq
+BuildRequires:  postgresql-init
+BuildRequires:  tftp
 Requires(pre):  %fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(preun):%fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(post): user(%{apache_user})
@@ -288,7 +291,6 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %endif
 # Cleanup
 sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
-
 
 %files -f susemanager.lang
 %defattr(-,root,root,-)

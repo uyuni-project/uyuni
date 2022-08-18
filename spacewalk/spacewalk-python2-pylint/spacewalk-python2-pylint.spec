@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-python2-pylint
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,8 +18,8 @@
 
 
 Name:           spacewalk-python2-pylint
-Version:        4.3.1
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Pylint configuration for python2 spacewalk python packages
 License:        GPL-2.0-only
 Group:          Development/Debuggers

@@ -3623,7 +3623,7 @@ public class SystemHandler extends BaseHandler {
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sids, List<Integer> errataIds,
                                           Date earliestOccurrence, Boolean allowModules) {
 
-        return scheduleApplyErrata(loggedInUser, sids, errataIds, earliestOccurrence, allowModules, false);
+        return scheduleApplyErrata(loggedInUser, sids, errataIds, earliestOccurrence, allowModules, true);
     }
 
     /**

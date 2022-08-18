@@ -1,3 +1,6 @@
+- Prevent tracebacks on running spacewalk-repo-sync
+  on loading update notice with no version specified in the meta data
+
 -------------------------------------------------------------------
 Wed Jul 27 14:16:43 CEST 2022 - jgonzalez@suse.com
 

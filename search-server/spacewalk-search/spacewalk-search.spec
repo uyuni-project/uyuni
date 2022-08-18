@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -29,10 +29,10 @@
 
 Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
-License:        GPL-2.0-only AND Apache-2.0
+License:        Apache-2.0 AND GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.6
-Release:        1
+Version:        4.4.0
+Release:        0
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
 # git clone https://github.com/spacewalkproject/spacewalk.git
@@ -43,6 +43,7 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
+BuildRequires:  %{oro}
 BuildRequires:  ant
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
@@ -51,7 +52,6 @@ BuildRequires:  apache-commons-logging
 BuildRequires:  apache-mybatis
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
-BuildRequires:  %{oro}
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
 BuildRequires:  lucene == 2.4.1
@@ -69,6 +69,7 @@ BuildRequires:  systemd-rpm-macros
 BuildRequires:  uyuni-base-common
 BuildRequires:  zip
 Requires(pre):  uyuni-base-common
+Requires:       %{oro}
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
@@ -76,7 +77,6 @@ Requires:       apache-commons-logging
 Requires:       apache-mybatis
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       %{oro}
 Requires:       javapackages-tools
 Requires:       lucene == 2.4.1
 Requires:       objectweb-asm

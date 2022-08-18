@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sls
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -29,17 +29,16 @@
 %global wwwdocroot %{serverdir}/www/html
 %endif
 
-
 Name:           susemanager-sls
-Version:        4.3.24
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/susemanager-utils/susemanager-sls/%{name}-rpmlintrc
 Requires(pre):  coreutils
-Requires(posttrans): spacewalk-admin
+Requires(posttrans):spacewalk-admin
 Requires:       susemanager-build-keys-web >= 15.4.2
 %if 0%{?build_py3}
 BuildRequires:  python3-pytest

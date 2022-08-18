@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.channel.manage;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.util.RecurringEventPicker;
@@ -24,7 +25,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -40,7 +40,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * SyncRepositoriesAction
  */
-public class SyncRepositoriesAction extends RhnAction implements Listable {
+public class SyncRepositoriesAction extends RhnAction implements Listable<ContentSource> {
 
     private static final String REPOSYNC_LOCKFILE = "/run/spacewalk-repo-sync.pid";
 
@@ -116,23 +115,19 @@ public class SyncRepositoriesAction extends RhnAction implements Listable {
                     "repos.jsp.message.taskomaticdown", null);
         }
 
-        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker(
-                request, "date", oldCronExpr);
+        request.setAttribute("scheduleEditable",
+            oldCronExpr != null || !ConfigDefaults.get().isCustomChannelManagementUnificationEnabled());
 
-
+        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker(request, "date", oldCronExpr);
         if (context.isSubmitted()) {
-            StrutsDelegate strutsDelegate = getStrutsDelegate();
-
             // check user permissions first
             if (!UserManager.verifyChannelAdmin(user, chan)) {
-                createErrorMessage(request,
-                        "frontend.actions.channels.manager.add.permsfailure", null);
+                createErrorMessage(request, "frontend.actions.channels.manager.add.permsfailure", null);
                 return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
             }
 
             if (chan.getSources().isEmpty()) {
-                createErrorMessage(request,
-                        "repos.jsp.channel.norepos", null);
+                createErrorMessage(request, "repos.jsp.channel.norepos", null);
                 return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
             }
 
@@ -149,42 +144,31 @@ public class SyncRepositoriesAction extends RhnAction implements Listable {
                 if (context.wasDispatched("repos.jsp.button-sync")) {
                     // schedule one time repo sync
                     taskomatic.scheduleSingleRepoSync(chan, user, mparams);
-                    createSuccessMessage(request, "message.syncscheduled",
-                            chan.getName());
+                    createSuccessMessage(request, "message.syncscheduled", chan.getName());
 
                 }
                 else if (context.wasDispatched("schedule.button")) {
-                    if ((picker.isDisabled() ||
-                            StringUtils.isEmpty(picker.getCronEntry())) &&
-                                oldCronExpr != null) {
+                    if ((picker.isDisabled() || StringUtils.isEmpty(picker.getCronEntry())) && oldCronExpr != null) {
                         taskomatic.unscheduleRepoSync(chan, user);
-                        createSuccessMessage(request, "message.syncschedule.disabled",
-                                chan.getName());
+                        createSuccessMessage(request, "message.syncschedule.disabled", chan.getName());
                     }
                     else if (!StringUtils.isEmpty(picker.getCronEntry())) {
-                        Date date = taskomatic.scheduleRepoSync(chan, user,
-                                picker.getCronEntry(), mparams);
-                        createSuccessMessage(request, "message.syncscheduled",
-                                chan.getName());
+                        taskomatic.scheduleRepoSync(chan, user, picker.getCronEntry(), mparams);
+                        createSuccessMessage(request, "message.syncscheduled", chan.getName());
                     }
                 }
             }
             catch (TaskomaticApiException e) {
                 if (e.getMessage().contains("InvalidParamException")) {
-                    createErrorMessage(request,
-                            "repos.jsp.message.invalidcron", picker.getCronEntry());
+                    createErrorMessage(request, "repos.jsp.message.invalidcron", picker.getCronEntry());
                 }
                 else {
-                    createErrorMessage(request,
-                            "repos.jsp.message.schedulefailed", null);
+                    createErrorMessage(request, "repos.jsp.message.schedulefailed", null);
                 }
                 return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
             }
 
-            Map forwardParams = new HashMap();
-            forwardParams.put("cid", chan.getId());
-            return getStrutsDelegate().forwardParams(mapping.findForward("success"),
-                    forwardParams);
+            return getStrutsDelegate().forwardParams(mapping.findForward("success"), Map.of("cid", chan.getId()));
         }
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

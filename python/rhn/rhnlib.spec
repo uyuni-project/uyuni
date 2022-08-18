@@ -1,7 +1,7 @@
 #
 # spec file for package rhnlib
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -34,7 +34,6 @@
 %endif
 %endif
 
-
 %if "%{_vendor}" == "debbuild"
 # For making sure we can set the right args for deb distros
 %global is_deb 1
@@ -43,12 +42,12 @@
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
 Name:           rhnlib
-Version:        4.3.4
-Release:        1
+Version:        4.4.0
+Release:        0
 %if "%{_vendor}" == "debbuild"
 Group:          python
-Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
+Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 Group:          Development/Libraries
 %endif
 URL:            https://github.com/uyuni-project/uyuni
@@ -90,20 +89,20 @@ Requires:       pyOpenSSL
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python-dev
 BuildRequires:  rpm
-Requires(preun): python-minimal
+Requires(preun):python-minimal
 Requires(post): python-minimal
 Requires:       python-openssl
 Obsoletes:      python-rhn
 Conflicts:      python-rhn
 %endif
 
-Conflicts:      rhncfg < 5.10.45
-Conflicts:      spacewalk-proxy-installer < 1.3.2
 Conflicts:      rhn-client-tools < 1.3.3
 Conflicts:      rhn-custom-info < 5.4.7
-Conflicts:      rhnpush < 5.5.10
+Conflicts:      rhncfg < 5.10.45
 Conflicts:      rhnclient < 0.10
+Conflicts:      rhnpush < 5.5.10
 Conflicts:      spacewalk-proxy < 1.3.6
+Conflicts:      spacewalk-proxy-installer < 1.3.2
 
 Provides:       rhnlib = %{version}-%{release}
 Obsoletes:      rhnlib < %{version}-%{release}
@@ -129,18 +128,18 @@ Requires:       python3-pyOpenSSL
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python3-dev
 BuildRequires:  rpm
-Requires(preun): python3-minimal
+Requires(preun):python3-minimal
 Requires(post): python3-minimal
 Requires:       python3-openssl
 %endif
 
-Conflicts:      rhncfg < 5.10.45
-Conflicts:      spacewalk-proxy-installer < 1.3.2
 Conflicts:      rhn-client-tools < 1.3.3
 Conflicts:      rhn-custom-info < 5.4.7
-Conflicts:      rhnpush < 5.5.10
+Conflicts:      rhncfg < 5.10.45
 Conflicts:      rhnclient < 0.10
+Conflicts:      rhnpush < 5.5.10
 Conflicts:      spacewalk-proxy < 1.3.6
+Conflicts:      spacewalk-proxy-installer < 1.3.2
 
 %description -n python3-rhnlib
 rhnlib is a collection of python modules used by the Spacewalk software.
@@ -158,7 +157,6 @@ do
   ln -s $pyfile
 done
 popd
-
 
 if [ ! -e setup.py ]; then
     sed -e 's/@VERSION@/%{version}/' -e 's/@NAME@/%{name}/' setup.py.in > setup.py

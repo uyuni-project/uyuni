@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-admin
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -28,14 +28,14 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.3.9
-Release:        1
+Version:        4.4.0
+Release:        0
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       %{pythonX}
 Requires:       lsof
-Requires:       spacewalk-base
 Requires:       procps
+Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
 BuildRequires:  /usr/bin/pod2man
 %if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
@@ -92,6 +92,11 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/salt-se
 %post
 if [ -x /usr/bin/systemctl ]; then
     /usr/bin/systemctl daemon-reload || :
+fi
+
+# Fix Uyuni issue 5718: this should happen upgrading from version between 2022.02 and 2022.05
+if grep -E "^report_db_sslrootcert[[:space:]]*=[[:space:]]*/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT" /etc/rhn/rhn.conf; then
+    sed -i "s|^report_db_sslrootcert[[:space:]]*=.*|report_db_sslrootcert = /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT|" /etc/rhn/rhn.conf
 fi
 
 %files

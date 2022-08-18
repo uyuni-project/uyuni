@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-custom-info
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -25,8 +25,8 @@ Name:           mgr-custom-info
 Summary:        Set and list custom values for Spacewalk-enabled machines
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.3.3
-Release:        1
+Version:        4.4.0
+Release:        0
 # 5.4.43.2 was the last version+1 before renaming to mgr-custom-info
 Provides:       rhn-custom-info = 5.4.44
 Obsoletes:      rhn-custom-info < 5.4.44

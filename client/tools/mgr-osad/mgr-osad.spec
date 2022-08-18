@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-osad
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -49,8 +49,8 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.3.6
-Release:        1
+Version:        4.4.0
+Release:        0
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 URL:            https://github.com/uyuni-project/uyuni
@@ -75,7 +75,7 @@ BuildRequires:  systemd
 %if 0%{?suse_version}
 # provides chkconfig on SUSE
 Requires(post): aaa_base
-Requires(preun): aaa_base
+Requires(preun):aaa_base
 # to make chkconfig test work during build
 BuildRequires:  sysconfig
 BuildRequires:  syslog
@@ -86,17 +86,17 @@ Requires:       %insserv_prereq
 %else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires(post): chkconfig
-Requires(preun): chkconfig
+Requires(preun):chkconfig
 Requires(post): systemd-sysv
-Requires(preun): systemd-sysv
+Requires(preun):systemd-sysv
 Requires(post): systemd-units
-Requires(preun): systemd-units
+Requires(preun):systemd-units
 BuildRequires:  systemd-units
 %else
 Requires(post): chkconfig
-Requires(preun): chkconfig
+Requires(preun):chkconfig
 # This is for /sbin/service
-Requires(preun): initscripts
+Requires(preun):initscripts
 %endif
 %endif
 
@@ -201,12 +201,12 @@ Conflicts:      %{name} > %{version}-%{release}
 %if 0%{?suse_version}
 # provides chkconfig on SUSE
 Requires(post): aaa_base
-Requires(preun): aaa_base
+Requires(preun):aaa_base
 %else
 Requires(post): chkconfig
-Requires(preun): chkconfig
+Requires(preun):chkconfig
 # This is for /sbin/service
-Requires(preun): initscripts
+Requires(preun):initscripts
 %endif
 
 %description -n mgr-osa-dispatcher

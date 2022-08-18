@@ -1,3 +1,7 @@
+- spacewalk-common-channels now syncs the channels automatically
+  on creation, if the new configuration property named
+  'unify_custom_channel_management' is enabled
+
 -------------------------------------------------------------------
 Wed Jul 27 14:09:58 CEST 2022 - jgonzalez@suse.com
 

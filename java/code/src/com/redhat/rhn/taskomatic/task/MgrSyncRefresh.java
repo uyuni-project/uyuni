@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
@@ -63,8 +64,7 @@ public class MgrSyncRefresh extends RhnJavaJob {
         boolean noRepoSync = false;
         if (context.getJobDetail().getJobDataMap().containsKey(NO_REPO_SYNC_KEY)) {
             try {
-                noRepoSync = context.getJobDetail().getJobDataMap().
-                        getBooleanValue(NO_REPO_SYNC_KEY);
+                noRepoSync = context.getJobDetail().getJobDataMap().getBooleanValue(NO_REPO_SYNC_KEY);
             }
             catch (ClassCastException e) {
                 // if the provided value is not a bool we treat the presence of
@@ -112,9 +112,15 @@ public class MgrSyncRefresh extends RhnJavaJob {
             try {
                 // Schedule sync of all vendor channels
                 if (!noRepoSync) {
+                    final TaskomaticApi taskoApi = new TaskomaticApi();
+
                     log.debug("Scheduling synchronization of all vendor channels");
-                    new TaskomaticApi().scheduleSingleRepoSync(
-                            ChannelFactory.listVendorChannels());
+                    taskoApi.scheduleSingleRepoSync(ChannelFactory.listVendorChannels());
+
+                    if (ConfigDefaults.get().isCustomChannelManagementUnificationEnabled()) {
+                        log.debug("Scheduling synchronization of all custom channels");
+                        taskoApi.scheduleSingleRepoSync(ChannelFactory.listCustomChannelsWithRepositories());
+                    }
                 }
             }
             catch (TaskomaticApiException e) {
