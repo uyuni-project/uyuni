@@ -118,7 +118,7 @@ Requires(pre):  uyuni-base-server
 Requires:       firewalld
 %endif
 Requires:       postfix
-Requires:       reprepro
+Requires:       reprepro >= 5.4
 # mgr-setup want to call mksubvolume for btrfs filesystems
 Recommends:     snapper
 # mgr-setup calls dig
