@@ -1318,3 +1318,13 @@ When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
   log "Reactivation Key: #{react_key}"
   step %(I enter "#{react_key}" as "reactivationKey")
 end
+
+Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
+  _output, code = $server.run("ss --listening --numeric | grep :#{port}", check_errors: false, verbose: true)
+  port_opened = code.zero?
+  if selection == 'closed'
+    raise "Port '#{port}' open although it should not be!" if port_opened
+  else
+    raise "Port '#{port}' not open although it should be!" unless port_opened
+  end
+end
