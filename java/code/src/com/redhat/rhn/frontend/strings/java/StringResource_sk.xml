@@ -10573,31 +10573,31 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="task.status.minion-action-cleanup" xml:space="preserve">
         <source>Minion Action Cleanup</source>
-        <target/>
+        <target>Čistenie akcií klientov minion</target>
       </trans-unit>
       <trans-unit id="toolbar.create.systems" xml:space="preserve">
         <source>Add Systems</source>
-        <target/>
+        <target>Pridať systémy</target>
       </trans-unit>
       <trans-unit id="system.event.pending.canceled.taskscheduler.down" xml:space="preserve">
         <source>Could not cancel event(s). Please make sure that the task scheduler is running.</source>
-        <target/>
+        <target>Nepodarilo sa zrušiť udalosť(i). Prosím, uistite sa, že je spustený plánovač úloh.</target>
       </trans-unit>
       <trans-unit id="message.actionCancelServerFailure.taskscheduler.down" xml:space="preserve">
         <source>Could not cancel action. Please make sure that the task scheduler is running.</source>
-        <target/>
+        <target>Nepodarilo sa zrušiť akciu. Prosím, uistite sa, že je spustený plánovač úloh.</target>
       </trans-unit>
       <trans-unit id="message.actionsCancelledWithErrors" xml:space="preserve">
         <source>{0} action(s) could not be canceled or canceled only partially. {1} action(s) canceled completely.</source>
-        <target/>
+        <target>{0} akciu(ie) nebolo možné zrušiť alebo sa zrušili len čiastočne. {1} akcia(ie) bola(i) zrušené kompletne.</target>
       </trans-unit>
       <trans-unit id="formula.folders.unreachable" xml:space="preserve">
         <source>System folder(s) from salt-formula are unreachable. Check if folders(s) exists and have the correct permissions (755): {0}</source>
-        <target/>
+        <target>Systémový priečinok(y) zo salt-vzorca je nedostupný. Skontrolujte, či priečinok(y) existuje a má správne oprávnenia (755): {0}</target>
       </trans-unit>
       <trans-unit id="Stores" xml:space="preserve">
         <source>Stores</source>
-        <target/>
+        <target>Úložiská</target>
       </trans-unit>
       <trans-unit id="message.channel.deleted.state.scheduled" xml:space="preserve">
         <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
@@ -10643,7 +10643,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="SUSE Manager Administrators" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Administrators</source>
-        <target/>
+        <target>Administrátori @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Sync Schedule" xml:space="preserve">
         <source>Sync Schedule</source>
@@ -10663,7 +10663,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
-        <target/>
+        <target>Salt</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
