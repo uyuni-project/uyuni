@@ -7,6 +7,7 @@ on:
       - master
     paths:
       - 'web/html/src/package.json'
+      - '.github/workflows/frontend-dependency-audit.yml'
 
 jobs:
   frontend_dependency_audit:
