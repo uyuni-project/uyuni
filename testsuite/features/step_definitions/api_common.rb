@@ -16,7 +16,7 @@ When(/^I logout from API$/) do
   $api_test.auth.logout
 end
 
-## system namespace
+## system namespace test
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)

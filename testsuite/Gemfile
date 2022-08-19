@@ -21,7 +21,7 @@ gem 'parallel_tests'
 gem 'simplecov'
 gem 'rubocop'
 # Pre-requisite:
-# Add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro> and install twopence RPMs
+# add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro> and install twopence RPMs
 # or build and install from https://github.com/openSUSE/twopence
 gem 'twopence'
 gem 'pg'

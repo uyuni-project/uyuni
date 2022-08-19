@@ -2,7 +2,7 @@
 #
 # If you create new features, please see conventions about naming of the
 # feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
-# as well as guidelines about idempotency in "Idempotency" chapter.
+# as well as guidelines about idempotency in "Idempotency" chapter. TEST
 
 ## Secondary features BEGIN ##
 

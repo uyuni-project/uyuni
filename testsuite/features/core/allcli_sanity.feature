@@ -1,5 +1,6 @@
 # Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+# Test
 
 Feature: Sanity checks
   In order to use the product
