@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'web/html/src/**'
+      - '.github/workflows/automatic-frontend-lint-fix-pr.yml'
 
 jobs:
   frontend_lint_fix_pr:
