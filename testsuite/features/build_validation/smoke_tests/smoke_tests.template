@@ -182,6 +182,7 @@ Feature: Smoke tests for <client>
     When I wait until "prometheus" service is active on "<client>"
     And I visit "Prometheus" endpoint of this "<client>"
 
+@skip_for_traditional
   Scenario: Test Prometheus exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Formulas" in the content area
@@ -203,9 +204,9 @@ Feature: Smoke tests for <client>
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by admin" is completed
     # Visit monitoring endpoints on the minion
-    When I wait until "prometheus-node_exporter" service is active on "<client>"
+    When I wait until "node" exporter service is active on "<client>"
     And I visit "Prometheus node exporter" endpoint of this "<client>"
-    And I wait until "prometheus-apache_exporter" service is active on "<client>"
+    And I wait until "apache" exporter service is active on "<client>"
     And I visit "Prometheus apache exporter" endpoint of this "<client>"
-    And I wait until "prometheus-postgres_exporter" service is active on "<client>"
+    And I wait until "postgres" exporter service is active on "<client>"
     And I visit "Prometheus postgres exporter" endpoint of this "<client>"
