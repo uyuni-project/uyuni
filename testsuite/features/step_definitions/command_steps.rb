@@ -258,6 +258,15 @@ Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, hos
   node.run_until_ok(cmd)
 end
 
+Then(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  # necessary since Debian like OSes use different names for the services
+  separator = deb_host?(name) ? "-" : "_"
+  full_service = "prometheus-#{service}#{separator}exporter"
+  cmd = "systemctl is-active #{full_service}"
+  node.run_until_ok(cmd)
+end
+
 When(/^I enable product "([^"]*)"$/) do |prd|
   list_output, _code = $server.run("mgr-sync list products", check_errors: false, buffer_size: 1_000_000)
   executed = false
