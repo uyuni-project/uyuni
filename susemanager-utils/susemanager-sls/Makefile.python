@@ -2,7 +2,7 @@ THIS_MAKEFILE := $(realpath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(dir $(THIS_MAKEFILE))
 include $(CURRENT_DIR)../../rel-eng/Makefile.python
 
-# Docker tests variables
+# Docker tests variables test
 DOCKER_CONTAINER_BASE = systemsmanagement/uyuni/master/docker/containers/uyuni-master
 DOCKER_REGISTRY       = registry.opensuse.org
 DOCKER_RUN_EXPORT     = "PYTHONPATH=$PYTHONPATH"
