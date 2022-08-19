@@ -121,6 +121,7 @@ import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -2704,6 +2705,7 @@ public class SaltServerActionService {
                                 jsonResult,
                                 function);
                         ActionFactory.save(sa);
+                        SystemManager.updateSystemOverview(sa.getServer());
                     }
                     catch (Exception e) {
                         LOG.error("Error processing Salt job return", e);

@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -100,9 +101,11 @@ public class KickstartCleanup extends RhnJavaJob {
             actionId = findTopmostParentAction(actionId);
             if (oldServerId != null) {
                 ActionFactory.removeActionForSystem(actionId, oldServerId);
+                SystemManager.updateSystemOverview(oldServerId);
             }
             if (newServerId != null) {
                 ActionFactory.removeActionForSystem(actionId, newServerId);
+                SystemManager.updateSystemOverview(newServerId);
             }
         }
         markFailed(sessionId, failedStateId);

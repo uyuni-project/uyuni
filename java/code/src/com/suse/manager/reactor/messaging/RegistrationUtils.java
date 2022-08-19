@@ -291,6 +291,7 @@ public class RegistrationUtils {
 
         server.setChannels(
                 filterCompatibleChannelsForServerArch(server.getServerArch(), unfilteredChannels, activationKey));
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     /**

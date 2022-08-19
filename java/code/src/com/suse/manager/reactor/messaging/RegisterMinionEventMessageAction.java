@@ -735,8 +735,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         "System type was changed from Management to Salt");
                 minion.getHistory().add(historyEvent);
 
+                SystemManager.updateSystemOverview(minion.getId());
                 return minion;
-
             }
         }
 

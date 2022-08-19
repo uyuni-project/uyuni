@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -455,6 +456,7 @@ public class KickstartSession {
         this.setState(KickstartFactory.SESSION_STATE_FAILED);
         this.setAction(null);
         this.addHistory(this.getState(), messageIn);
+        SystemManager.updateSystemOverview(this.currentServer());
     }
 
     /**
@@ -465,6 +467,7 @@ public class KickstartSession {
         this.setState(KickstartFactory.SESSION_STATE_COMPLETE);
         this.setAction(null);
         this.addHistory(this.getState(), messageIn);
+        SystemManager.updateSystemOverview(this.currentServer());
     }
 
     /**
