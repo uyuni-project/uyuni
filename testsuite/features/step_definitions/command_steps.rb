@@ -962,7 +962,7 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
 end
 
 When(/^I install package tftpboot-installation on the server$/) do
-  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm')
+  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP3-x86_64-*.noarch.rpm')
   packages = output.split("\n")
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
