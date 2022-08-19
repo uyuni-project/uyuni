@@ -20,7 +20,7 @@ jobs:
 
     - name: Cache dependencies
       id: cache-dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: java/lib
         key: ${{ runner.os }}-java-lib-${{ hashFiles('java/buildconf/ivy/*.*') }}
