@@ -57,11 +57,11 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
   Scenario: Visit monitoring endpoints on the minion
     When I wait until "prometheus" service is active on "sle_minion"
     And I visit "Prometheus" endpoint of this "sle_minion"
-    And I wait until "prometheus-node_exporter" service is active on "sle_minion"
+    And I wait until "node" exporter service is active on "sle_minion"
     And I visit "Prometheus node exporter" endpoint of this "sle_minion"
-    And I wait until "prometheus-apache_exporter" service is active on "sle_minion"
+    And I wait until "apache" exporter service is active on "sle_minion"
     And I visit "Prometheus apache exporter" endpoint of this "sle_minion"
-    And I wait until "prometheus-postgres_exporter" service is active on "sle_minion"
+    And I wait until "postgres" exporter service is active on "sle_minion"
     And I visit "Prometheus postgres exporter" endpoint of this "sle_minion"
 
   Scenario: Cleanup: undo Prometheus and Prometheus exporter formulas
