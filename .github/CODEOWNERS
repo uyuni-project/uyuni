@@ -57,8 +57,11 @@ branding/ @uyuni-project/frontend
 .github/workflows/typescript-compilation.yml @uyuni-project/frontend
 .yarnrc @uyuni-project/frontend
 
-# Testsuite
+# QE
 testsuite/ @uyuni-project/qe
+.github/Maintenance_Update.md @uyuni-project/qe
+.github/workflows/rubocop.yml @uyuni-project/qe
+.rubocop.yml @uyuni-project/qe
 
 # mgr-libmod
 susemanager-utils/mgr-libmod/ @cbbayburt
