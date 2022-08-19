@@ -40,6 +40,7 @@ import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
@@ -370,7 +371,10 @@ public class ServerFactory extends HibernateFactory {
         boolean serversUpdated = insertServersToGroup(serverIdsToAdd, serverGroup.getId());
 
         if (serversUpdated) {
-            servers.stream().forEach(s -> s.addGroup(serverGroup));
+            servers.stream().forEach(s -> {
+                s.addGroup(serverGroup);
+                SystemManager.updateSystemOverview(s);
+            });
             if (serverGroup.isManaged()) {
                 updatePermissionsForServerGroup(serverGroup.getId());
             }
@@ -450,7 +454,10 @@ public class ServerFactory extends HibernateFactory {
         boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
 
         if (serversUpdated) {
-            servers.stream().forEach(s -> s.removeGroup(serverGroup));
+            servers.stream().forEach(s -> {
+                s.removeGroup(serverGroup);
+                SystemManager.updateSystemOverview(s);
+            });
             if (serverGroup.isManaged()) {
                 updatePermissionsForServerGroup(serverGroup.getId());
             }

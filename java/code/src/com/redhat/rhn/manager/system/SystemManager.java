@@ -1910,6 +1910,8 @@ public class SystemManager extends BaseManager {
 
         m.execute(in, new HashMap<>());
 
+        SystemManager.updateSystemOverview(server.getId());
+
         /*
          * This is f-ing hokey, but we need to be sure to refresh the
          * server object since
@@ -2053,6 +2055,8 @@ public class SystemManager extends BaseManager {
         params.put("server_id", sid);
         params.put("channel_id", cid);
         m.execute(params, new HashMap<>());
+
+        SystemManager.updateSystemOverview(sid);
     }
 
     /**
@@ -3947,6 +3951,17 @@ public class SystemManager extends BaseManager {
         if (sid != null &&
                 TaskFactory.lookup(OrgFactory.getSatelliteOrg(), SystemsOverviewUpdateDriver.TASK_NAME, sid) == null) {
             TaskFactory.createTask(OrgFactory.getSatelliteOrg(), SystemsOverviewUpdateDriver.TASK_NAME, sid);
+        }
+    }
+
+
+    /**
+     * Update the suseSystemOverview table data for a system
+     * @param server the server to update. Checked for null value
+     */
+    public static void updateSystemOverview(Server server) {
+        if (server != null) {
+            updateSystemOverview(server.getId());
         }
     }
 }

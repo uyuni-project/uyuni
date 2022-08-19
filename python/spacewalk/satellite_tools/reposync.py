@@ -701,6 +701,9 @@ class RepoSync(object):
                 log(0, '  Regenerating bootstrap repositories.')
                 subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
 
+        # update the server overview with new package / errata stats
+        self.update_servers()
+
         # update permissions
         fileutils.createPath(os.path.join(mount_point, 'rhn'))  # if the directory exists update ownership only
         for root, dirs, files in os.walk(os.path.join(mount_point, 'rhn')):
@@ -718,6 +721,23 @@ class RepoSync(object):
         if sync_error == 0 and failed_packages > 0:
             sync_error = failed_packages
         return elapsed_time, sync_error
+
+    def update_servers(self):
+        """
+        Update the server overview table for the systems subscribed to the synced channel
+        """
+        server_ids = rhnSQL.fetchall_dict("""
+            SELECT S.id as id
+            FROM rhnServerChannel SC,
+                 rhnServer S
+            WHERE S.id = SC.server_id
+              AND SC.channel_id = :channel_id""", channel_id=self.channel["id"])
+
+        if server_ids is not None:
+            log(0, "  Updating overview of {} systems".format(len(server_ids)))
+            for row in server_ids:
+                taskomatic.add_to_system_overview_update_queue(row["id"])
+            rhnSQL.commit()
 
     def set_ks_tree_type(self, tree_type='externally-managed'):
         self.ks_tree_type = tree_type

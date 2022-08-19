@@ -80,6 +80,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -162,6 +163,7 @@ public class ActionFactory extends HibernateFactory {
         for (long id : ids) {
             try {
                 removeActionForSystem(actionId, id);
+                SystemManager.updateSystemOverview(id);
             }
             catch (Exception e) {
                 failed++;
@@ -195,6 +197,7 @@ public class ActionFactory extends HibernateFactory {
         return involvedSystems.stream().map(Server::getId).mapToInt(sid -> {
             try {
                 removeActionForSystem(actionId, sid);
+                SystemManager.updateSystemOverview(sid);
                 return 0;
             }
             catch (Exception e) {
@@ -218,6 +221,7 @@ public class ActionFactory extends HibernateFactory {
         for (Map action : dr) {
             removeActionForSystem((Long) action.get("id"), serverId);
         }
+        SystemManager.updateSystemOverview(serverId);
     }
 
     /**
@@ -697,6 +701,11 @@ public class ActionFactory extends HibernateFactory {
         }
 
         singleton.saveObject(actionIn);
+        if (actionIn.getServerActions() != null) {
+            actionIn.getServerActions().stream()
+                    .map(sa -> sa.getServerId())
+                    .forEach(sid -> SystemManager.updateSystemOverview(sid));
+        }
         return actionIn;
     }
 
@@ -706,6 +715,9 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void remove(Action actionIn) {
         singleton.removeObject(actionIn);
+        actionIn.getServerActions().stream()
+                .map(sa -> sa.getServerId())
+                .forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -855,6 +867,10 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("failed", ActionFactory.STATUS_FAILED)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
         removeInvalidResults(action);
+        action.getServerActions().stream()
+                .filter(sa -> sa.isFailed())
+                .map(sa -> sa.getServerId())
+                .forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -868,6 +884,9 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
         removeInvalidResults(action);
+        action.getServerActions().stream()
+                .map(sa -> sa.getServerId())
+                .forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -894,6 +913,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("queued", ActionFactory.STATUS_QUEUED)
         .setParameter("server", server).executeUpdate();
         removeInvalidResults(action);
+        SystemManager.updateSystemOverview(server);
     }
 
     /**
@@ -935,6 +955,7 @@ public class ActionFactory extends HibernateFactory {
         parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
 
         udpateByIds(serverIds, "Action.updateServerActionsPickedUp", "server_ids", parameters);
+        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -950,6 +971,7 @@ public class ActionFactory extends HibernateFactory {
         parameters.put("status", status.getId());
 
         udpateByIds(serverIds, "Action.updateServerActions", "server_ids", parameters);
+        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -958,6 +980,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void save(ServerAction serverActionIn) {
         singleton.saveObject(serverActionIn);
+        SystemManager.updateSystemOverview(serverActionIn.getServerId());
     }
 
     /**

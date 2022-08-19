@@ -203,6 +203,7 @@ public class ActionManager extends BaseManager {
             throw new IllegalStateException("Action " + actionId +
                     " must be in Pending state on " + "server " + serverId);
         }
+        SystemManager.updateSystemOverview(serverId);
         return 1;
     }
 
@@ -414,6 +415,7 @@ public class ActionManager extends BaseManager {
                         failSystemAction(user, sa.getServerId(), sa.getParentAction().getId(),
                                 "Canceled by " + user.getLogin());
                     }
+                    SystemManager.updateSystemOverview(sa.getServerId());
                 });
 
         // run post-actions
@@ -444,6 +446,9 @@ public class ActionManager extends BaseManager {
         // now, delete them
         for (Action action : actions) {
             deleteActionsByIdAndType(action.getId(), action.getActionType().getId());
+            action.getServerActions().stream()
+                    .map(sa -> sa.getServerId())
+                    .forEach(sid -> SystemManager.updateSystemOverview(sid));
         }
     }
 

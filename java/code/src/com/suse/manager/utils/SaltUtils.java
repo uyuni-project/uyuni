@@ -404,6 +404,7 @@ public class SaltUtils {
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
         });
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     /**
@@ -915,6 +916,7 @@ public class SaltUtils {
                     cresult.setCreated(new Date());
                     cresult.setModified(new Date());
                     cra.setConfigRevisionActionResult(cresult);
+                    SystemManager.updateSystemOverview(cra.getServer());
                 }
             }
         });
@@ -1499,6 +1501,7 @@ public class SaltUtils {
         ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
 
         packages.addAll(createPackagesFromSalt(packagesToAdd, server));
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     private static Map.Entry<String, Info> resolveDuplicatePackage(Map.Entry<String, Info> firstEntry,
