@@ -260,10 +260,9 @@ end
 
 Then(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
-  # necessary since Debian like OSes use different names for the services
-  separator = deb_host?(name) ? "-" : "_"
-  full_service = "prometheus-#{service}#{separator}exporter"
-  cmd = "systemctl is-active #{full_service}"
+  # necessary since Debian-like OSes use different names for the services
+  separator = deb_host?(host) ? "-" : "_"
+  cmd = "systemctl is-active prometheus-#{service}#{separator}exporter"
   node.run_until_ok(cmd)
 end
 
