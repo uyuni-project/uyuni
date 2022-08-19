@@ -49,8 +49,10 @@ web/ @uyuni-project/frontend
 branding/ @uyuni-project/frontend
 *.jsp @uyuni-project/frontend
 *.jspf @uyuni-project/frontend
+.github/workflows/automatic-frontend-lint-fix-pr.yml @uyuni-project/frontend
+.github/workflows/frontend-dependency-audit.yml @uyuni-project/frontend
+.github/workflows/frontend-lint.yml @uyuni-project/frontend
 .github/workflows/javascript-build.yml @uyuni-project/frontend
-.github/workflows/javascript-lint.yml @uyuni-project/frontend
 .github/workflows/javascript-unit-tests.yml @uyuni-project/frontend
 .github/workflows/typescript-compilation.yml @uyuni-project/frontend
 .yarnrc @uyuni-project/frontend
