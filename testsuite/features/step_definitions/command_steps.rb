@@ -252,13 +252,13 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   $server.run_until_ok("#{cmd} #{system_name} state.highstate")
 end
 
-Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
+When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
   node.run_until_ok(cmd)
 end
 
-Then(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
+When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   # necessary since Debian-like OSes use different names for the services
   separator = deb_host?(host) ? "-" : "_"
