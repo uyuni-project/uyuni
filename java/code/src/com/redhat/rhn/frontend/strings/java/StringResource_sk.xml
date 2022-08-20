@@ -9572,7 +9572,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="channel.java.package.deletesuccess" xml:space="preserve">
         <source>Successfully deleted {0} packages.</source>
-        <target/>
+        <target>Úspešne boli vymazané {0} balíky.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartinstalltype" xml:space="preserve">
         <source>Invalid autoinstall type: {0}.</source>
