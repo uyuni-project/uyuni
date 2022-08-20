@@ -10601,45 +10601,45 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="message.channel.deleted.state.scheduled" xml:space="preserve">
         <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
-        <target/>
+        <target>Automatická aplikácia stavu kanála bola &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;úspešne naplánovaná&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.channel.disable.delete.contentlifecycle.environment.in.use" xml:space="preserve">
         <source>This channel cannot be deleted. It is currently used in the Content Lifecycle Project '{0}' in the Environment '{1}'</source>
-        <target/>
+        <target>Tento kanál nie je možné vymazať. V súčasnosti sa používa v projekte životného cyklu obsahu '{0}' v prostredí '{1}'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channels.subscribe.target.systems.channel.scheduled" xml:space="preserve">
         <source>Subscribing {0} system(s) to channel {1} has been scheduled.</source>
-        <target/>
+        <target>Prihlásenie {0} systému(ov) ku kanálu {1} bolo naplánované.</target>
       </trans-unit>
       <trans-unit id="channels.not.supported.for.minions" xml:space="preserve">
         <source>Local/Sandbox channels are not supported for minions.</source>
-        <target/>
+        <target>Miestne/Sandbox kanály nie sú podporované pre klientov minion.</target>
       </trans-unit>
       <trans-unit id="state.channels.not.supported.for.traditional" xml:space="preserve">
         <source>A state channel cannot be assigned to traditional system.</source>
-        <target/>
+        <target>Stavový kanál nie je možné priradiť tradičnému systému.</target>
       </trans-unit>
       <trans-unit id="directories.symlink.not.supported.for.minions" xml:space="preserve">
         <source>Directories/Symlinks are not supported in state channel.</source>
-        <target/>
+        <target>Adresáre/symbolické odkazy nie sú podporované v stavovom kanáli.</target>
       </trans-unit>
       <trans-unit id="update.init.sls.with.updateinitsls.method" xml:space="preserve">
         <source>Please use 'updateInitSls' method for updating init.sls file.</source>
-        <target/>
+        <target>Prosím, použite metódu 'updateInitSls' na aktualizáciu súboru init.sls.</target>
       </trans-unit>
       <trans-unit id="editable.init.sls.only.for.state.channels" xml:space="preserve">
         <source>init.sls file can only be edited for state channels.</source>
-        <target/>
+        <target>Súbor init.sls sa dá len upraviť pre stavové kanály.</target>
       </trans-unit>
       <trans-unit id="state.channel.through.apply.config.channel.method" xml:space="preserve">
         <source>State channels can be applied through system.config.scheduleApplyConfigChannel method or from UI.</source>
-        <target/>
+        <target>Stavové kanály možno použiť cez metódu system.config.scheduleApplyConfigChannel alebo z UI.</target>
       </trans-unit>
       <trans-unit id="SUSE Manager Administrators" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Administrators</source>
@@ -10647,11 +10647,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="Sync Schedule" xml:space="preserve">
         <source>Sync Schedule</source>
-        <target/>
+        <target>Sync plán</target>
       </trans-unit>
       <trans-unit id="Virtualization Hierarchy" xml:space="preserve">
         <source>Virtualization Hierarchy</source>
-        <target/>
+        <target>Hierarchia virtualizácie</target>
       </trans-unit>
       <trans-unit id="Proxy Hierarchy" xml:space="preserve">
         <source>Proxy Hierarchy</source>
