@@ -32,7 +32,7 @@ artifacts:
     jar: redstone-xmlrpc-[0-9.]+
     repository: Uyuni_Other
   - artifact: mybatis
-    package: apache-mybatis
+    package: mybatis
     repository: Uyuni_Other
   - artifact: quartz
     repository: Uyuni_Other
