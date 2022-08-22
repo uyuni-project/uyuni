@@ -1,3 +1,5 @@
+- Copy grains file with util.mgr_switch_to_venv_minion state apply
+
 -------------------------------------------------------------------
 Wed Jul 27 14:17:08 CEST 2022 - jgonzalez@suse.com
 
