@@ -19,6 +19,8 @@ import shutil
 import os
 import solv
 import unittest
+import pytest
+from urllib.parse import quote
 try:
     from io import StringIO
 except ImportError:
@@ -63,6 +65,10 @@ class YumSrcTest(unittest.TestCase):
         yum_src.ContentSource.setup_repo = real_setup_repo
 
         return cs
+
+    @pytest.fixture(autouse=True)
+    def set_temp_path(self, tmpdir):
+        self.tmpdir = tmpdir.strpath
 
     def setUp(self):
         patch('spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs').start()
@@ -195,11 +201,13 @@ class YumSrcTest(unittest.TestCase):
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
     def test_mirror_list_arch(self):
         cs = self._make_dummy_cs()
+        fake_mirrorlist_file = self.tmpdir + "/mirrorlist.txt"
+        self.repo.root = self.tmpdir
         cs.channel_arch = "arch1"
         grabber_mock = Mock()
 
         with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
-            with open(os.path.join(self.repo.root, "mirrorlist.txt"), "w") as fake_list:
+            with open(fake_mirrorlist_file, "w") as fake_list:
                 fake_list.writelines([
                     "http://host1/base/$basearch/os/\n",
                     "http://host2/base/$BASEARCH/os/\n",
@@ -211,3 +219,84 @@ class YumSrcTest(unittest.TestCase):
                 "http://host2/base/arch1/os/",
                 "http://host3/base/arch1/os/",
             ])
+
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
+    @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
+    @patch("spacewalk.common.rhnLog", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
+    def test_proxy_usage_with_mirrorlist(self):
+        cs = self._make_dummy_cs()
+        fake_mirrorlist_file = self.tmpdir + "/mirrorlist.txt"
+        self.repo.root = self.tmpdir
+        proxy_url = "http://proxy.example.com:8080"
+        proxy_user = "user"
+        proxy_pass = "pass"
+        cs.proxy_hostname = proxy_url
+        cs.proxy_user = proxy_user
+        cs.proxy_pass = proxy_pass
+        expected_url_list = []
+        url_list = [
+            "http://example/base/arch1/os/",
+            "http://example/",
+            "http://example.com/",
+            "https://example.org/repo/path/?token",
+            ]
+        for url in url_list:
+            if "?" in url:
+                separator = "&"
+            else:
+                separator = "?"
+            expected_url_list.append("{}{}proxy={}&proxyuser={}&proxypass={}".format(url,
+                                                                                     separator,
+                                                                                     quote(proxy_url),
+                                                                                     proxy_user,
+                                                                                     proxy_pass
+                                                                                     ))
+        grabber_mock = Mock()
+
+        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
+            with open(fake_mirrorlist_file, "w") as fake_list:
+                fake_list.writelines([
+                    "http://example/base/arch1/os/\n",
+                    "http://example/\n",
+                    "http://example.com/\n",
+                    "https://example.org/repo/path/?token\n",
+                ])
+            mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+
+            self.assertEqual(mirrors, expected_url_list)
+
+    def test_prep_zypp_repo_url_with_proxy(self):
+        cs = self._make_dummy_cs()
+        urls = [("http://example.com/", False),
+                ("https://example.com/", False),
+                ("https://example.org/repo/path/?token", False),
+                ("uln://example.com/", True),
+                ("uln:///channel", True)
+                ]
+        proxy_url = "http://proxy.example.com:8080"
+        proxy_user = "user"
+        proxy_pass = "pass"
+        cs.proxy_hostname = proxy_url
+        cs.proxy_user = proxy_user
+        cs.proxy_pass = proxy_pass
+
+        for url, is_uln in urls:
+            if is_uln or "?" in url:
+                separator = "&"
+            else:
+                separator = "?"
+
+            expected_url = "{}{}proxy={}&proxyuser={}&proxypass={}".format(url,
+                                                                           separator,
+                                                                           quote(proxy_url),
+                                                                           proxy_user,
+                                                                           proxy_pass
+                                                                           )
+
+            comp_url = cs._prep_zypp_repo_url(url, is_uln)
+
+            assert expected_url == comp_url
+
