@@ -5,10 +5,12 @@ on:
     branches:
       - master
     paths:
-      - 'java/**.java' 
+      - 'java/**.java'
+      - '.github/workflows/java-checkstyle.yml'
   pull_request:
     paths:
       - 'java/**.java'
+      - '.github/workflows/java-checkstyle.yml'
 
 jobs:
   checkstyle:
