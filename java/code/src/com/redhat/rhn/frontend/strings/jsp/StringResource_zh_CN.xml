@@ -29745,13 +29745,13 @@ given channel.</source>
             </context-group>
         <target state="final"><a href="/rhn/schedule/PendingActions.do">已安排</a>刷新 {0} 个软件包配置文件。</target>
       </trans-unit>
-    <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve">
+      <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve" approved="yes">
         <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">自动同步自定义通道功能已启用。此通道将自动与供应商通道一起同步。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
