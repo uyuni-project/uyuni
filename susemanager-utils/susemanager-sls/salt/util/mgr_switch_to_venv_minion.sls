@@ -34,6 +34,15 @@ mgr_copy_salt_minion_configs:
     - onlyif:
       - ([ {{ venv_managed_minion }} = "False" ])
 
+mgr_copy_salt_minion_grains:
+  file.copy:
+    - name: /etc/venv-salt-minion/grains
+    - source: /etc/salt/grains
+    - require:
+      - pkg: mgr_venv_salt_minion_pkg
+    - onlyif:
+      - test -f /etc/salt/grains
+
 mgr_copy_salt_minion_keys:
   cmd.run:
     - name: cp -r /etc/salt/pki/minion/minion* /etc/venv-salt-minion/pki/minion/
