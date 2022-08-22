@@ -1,3 +1,4 @@
+- Fixed formula deselection in systemgroup (bsc#1202271)
 - Added a new configuration property to allow custom channels to
   be synced together with vendor channels.
 - add onlyRelevant argument to addErrataUpdate API
