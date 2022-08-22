@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'testsuite/features/**.rb'
+      - '.github/workflows/rubocop.yml'
 
 jobs:
   rubocop:
