@@ -772,9 +772,9 @@
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="permission.jsp.title.subscribechannel" xml:space="preserve">
+      <trans-unit id="permission.jsp.title.subscribechannel" xml:space="preserve" approved="yes">
           <source>Cannot subscribe to channel.</source>
-        <target state="translated">无法订阅频道。</target>
+        <target state="final">无法订阅通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -4030,14 +4030,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target state="translated">请在下面选择应与此补丁关联的频道。此补丁所指代软件包的数量显示在频道名称后面。如果您不希望将此补丁应用到某个特定频道，请在下面将其取消选择。</target>
       </trans-unit>
-      <trans-unit id="errata.channels.updated.singular" xml:space="preserve">
+      <trans-unit id="errata.channels.updated.singular" xml:space="preserve" approved="yes">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
           <context context-type="paramnotes">Errata foobar has been
                 successfully assigned to 1 channel.</context>
         </context-group>
-        <target state="translated">已成功将补丁 &lt;strong&gt;{0}&lt;/strong&gt; 指派给 &lt;strong&gt;{1} &lt;/strong&gt; 个频道。</target>
+        <target state="final">已成功将补丁 &lt;strong&gt;{0}&lt;/strong&gt; 指派给 &lt;strong&gt;{1} &lt;/strong&gt; 个通道。</target>
       </trans-unit>
       <trans-unit id="errata.channels.updated.plural" xml:space="preserve">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channels.</source>
@@ -4228,14 +4228,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target state="translated">添加软件包</target>
       </trans-unit>
-      <trans-unit id="errata.edit.packages.add.instructions" xml:space="preserve">
+      <trans-unit id="errata.edit.packages.add.instructions" xml:space="preserve" approved="yes">
         <source>This is the list of available packages. To add packages to this patch, select them and click 'Add Packages'.&lt;br/&gt;The drop-down list below allows you to restrict the set of available packages by channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
             </context>
         </context-group>
-        <target state="translated">以下是可用的软件包列表。要将软件包添加到此补丁中，请选择它们，并单击 "添加软件包"。&lt;br/&gt;您可以使用下面的下拉列表限制频道可用的软件包集。</target>
+        <target state="final">以下是可用的软件包列表。要将软件包添加到此补丁中，请选择它们，并单击 "添加软件包"。&lt;br/&gt;您可以使用下面的下拉列表限制通道可用的软件包集。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel" xml:space="preserve">
         <source>View: </source>
@@ -8597,12 +8597,12 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
         <target state="translated">为您的组织提供的频道</target>
       </trans-unit>
-      <trans-unit id="orgtrustdetails.jsp.channelsconsumed" xml:space="preserve">
+      <trans-unit id="orgtrustdetails.jsp.channelsconsumed" xml:space="preserve" approved="yes">
         <source>Channels Consumed from your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target state="translated">通过您的组织使用的频道</target>
+        <target state="final">通过您的组织使用的通道</target>
       </trans-unit>
       <trans-unit id="orgtrust.jsp.channelconsume.summary" xml:space="preserve">
         <source>Below is a list of channels your organization is sharing with &lt;strong&gt;{0}&lt;/strong&gt;. This list also shows how many packages are in each channel and how many systems in that organization are consuming from these shared channels. If you would like to modify how many of these channels are shared, click on the channel's name for more details. </source>
@@ -9336,12 +9336,12 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
         <target state="translated">已更新</target>
       </trans-unit>
-      <trans-unit id="cloneerrata.jsp.potentialchannels" xml:space="preserve">
+      <trans-unit id="cloneerrata.jsp.potentialchannels" xml:space="preserve" approved="yes">
         <source>Potential Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target state="translated">可能的频道</target>
+        <target state="final">可能的通道</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.alreadycloned" xml:space="preserve">
         <source>Already Cloned?</source>
@@ -10196,17 +10196,17 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target state="translated">删除储存库</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.toolbar" xml:space="preserve">
+      <trans-unit id="repos.jsp.toolbar" xml:space="preserve" approved="yes">
         <source>Create Repository</source>
-        <target state="translated">创建储存库</target>
+        <target state="final">创建软件源</target>
       </trans-unit>
       <trans-unit id="repos.jsp.header" xml:space="preserve">
         <source>Repositories</source>
         <target state="translated">储存库</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.header2" xml:space="preserve">
+      <trans-unit id="repos.jsp.header2" xml:space="preserve" approved="yes">
         <source>Create Repository</source>
-        <target state="translated">创建储存库</target>
+        <target state="final">创建软件源</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.label" xml:space="preserve">
         <source>Repository Label</source>
@@ -10268,9 +10268,9 @@ Please note that some manual configuration of these scripts may still be require
         <source>Save Repositories</source>
         <target state="translated">保存储存库</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.channel.header" xml:space="preserve">
+      <trans-unit id="repos.jsp.channel.header" xml:space="preserve" approved="yes">
         <source>Repository</source>
-        <target state="translated">储存库</target>
+        <target state="final">软件源</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.status" xml:space="preserve">
         <source>Sync Status</source>
@@ -13471,9 +13471,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization is entitled to but are no longer supported by @@VENDOR_NAME@@ because they have reached their 'end-of-life' date.</source>
         <target>下面列出的软件频道是&lt;strong&gt;已淘汰的频道&lt;/strong&gt;，您的组织对这些频道拥有权利，但由于它们已到达 "生命周期结束" 日期，因此不再享受 @@VENDOR_NAME@@ 的支持。</target>
       </trans-unit>
-      <trans-unit id="channels.manage.jsp.toolbar" xml:space="preserve">
+      <trans-unit id="channels.manage.jsp.toolbar" xml:space="preserve" approved="yes">
         <source>Software Channel Management</source>
-        <target state="translated">软件频道管理</target>
+        <target state="final">软件通道管理</target>
       </trans-unit>
       <trans-unit id="channels.manage.jsp.header1" xml:space="preserve">
         <source>The following software channels are owned by your organization.</source>
@@ -16265,9 +16265,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
       </trans-unit>
       <!-- Configuration Common -->
-      <trans-unit id="config.common.globalAlt" xml:space="preserve">
+      <trans-unit id="config.common.globalAlt" xml:space="preserve" approved="yes">
           <source>centrally-managed configuration channel</source>
-        <target state="translated">集中管理的配置频道</target>
+        <target state="final">集中管理的配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Management Pages</context>
         </context-group>
@@ -18779,9 +18779,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="configoverview.jsp.configchannels" xml:space="preserve">
+      <trans-unit id="configoverview.jsp.configchannels" xml:space="preserve" approved="yes">
           <source>Configuration Channels:</source>
-        <target state="translated">配置频道：</target>
+        <target state="final">配置通道：</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview.do</context>
         </context-group>
@@ -20062,9 +20062,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.config.subscribeconfirm.jsp.summary" xml:space="preserve">
+      <trans-unit id="ssm.config.subscribeconfirm.jsp.summary" xml:space="preserve" approved="yes">
           <source>The systems listed below will be subscribed to the configuration channels listed below.</source>
-        <target state="translated">下列系统将订阅以下配置频道。</target>
+        <target state="final">下列系统将订阅以下配置通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/SubscribeConfirm.do</context>
         </context-group>
@@ -23806,9 +23806,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <!-- configuration/sdc/rankchannels.jsp  -->
-      <trans-unit id="sdc.config.rank.jsp.update" xml:space="preserve">
+      <trans-unit id="sdc.config.rank.jsp.update" xml:space="preserve" approved="yes">
           <source>Update Channel Rankings</source>
-        <target state="translated">更新频道排名</target>
+        <target state="final">更新通道排名</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
@@ -25107,12 +25107,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;这些频道不是此 Guest 的主机的 @@ENTERPRISE_LINUX_NAME@@ 订阅的一部分。订阅这些频道将消耗额外的软件权利。为主机系统应用不同的虚拟系统权利将影响哪些频道具有此标记。</target>
       </trans-unit>
-      <trans-unit id="sdc.channels.edit.fastrackBetaWarning" xml:space="preserve">
+      <trans-unit id="sdc.channels.edit.fastrackBetaWarning" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; 'FasTrack' and Beta child software channels are not available with Extended Update Support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;扩展的更新支持中不提供 "FasTrack" 和 Beta 子软件频道。</target>
+        <target state="final">&lt;strong&gt;警告：&lt;/strong&gt;扩展的更新支持中不提供 "FasTrack" 和 Beta 子软件通道。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.no_base_channel" xml:space="preserve">
         <source>(none, disable service)</source>
@@ -25142,12 +25142,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">无</target>
       </trans-unit>
-      <trans-unit id="sdc.channels.confirmNewBase.toBeSubscribedTo" xml:space="preserve">
+      <trans-unit id="sdc.channels.confirmNewBase.toBeSubscribedTo" xml:space="preserve" approved="yes">
         <source>If you confirm the modifications of this system's base software channel it will be subscribed to the following software channels:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">如果您确认修改此系统的基础软件频道，此系统将订阅以下软件频道：</target>
+        <target state="final">如果您确认修改此系统的基础软件通道，此系统将订阅以下软件通道：</target>
       </trans-unit>
       <trans-unit id="sdc.channels.confirmNewBase.otherChannelsWarning" xml:space="preserve">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; If you have installed packages from any channels that are highlighted above, those packages will &lt;strong&gt;no longer receive software updates&lt;/strong&gt;, including &lt;strong&gt;critical security updates&lt;/strong&gt;, when this system is moved to Extended Update Support.</source>
@@ -26035,9 +26035,9 @@ given channel.</source>
         <source>This channel contains no packages.</source>
         <target state="translated">此频道中没有任何软件包。</target>
       </trans-unit>
-      <trans-unit id="package.jsp.list" xml:space="preserve">
+      <trans-unit id="package.jsp.list" xml:space="preserve" approved="yes">
         <source>This channel contains the following packages:</source>
-        <target state="translated">此频道中包含以下软件包：</target>
+        <target state="final">此通道中包含以下软件包：</target>
       </trans-unit>
       <trans-unit id="package.jsp.provider" xml:space="preserve">
         <source>Content Provider</source>
@@ -26063,10 +26063,10 @@ given channel.</source>
         <source>Unknown</source>
         <target state="translated">未知</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.package.remove" xml:space="preserve">
+      <trans-unit id="channel.jsp.package.remove" xml:space="preserve" approved="yes">
         <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.
         </source>
-        <target state="translated">下面是您选择要从此频道去除的软件包列表。从此频道去除软包不会影响订阅此频道的系统或适用的补丁。
+        <target state="final">下面是您选择要从此通道去除的软件包列表。从此通道去除软包不会影响订阅此通道的系统或适用的补丁。
         </target>
       </trans-unit>
       <trans-unit id="channel.jsp.details.title" xml:space="preserve">
@@ -26143,11 +26143,11 @@ given channel.</source>
         <source>No packages found for this criteria.</source>
         <target>未找到符合此准则的软件包。</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.package.addmessage" xml:space="preserve">
+      <trans-unit id="channel.jsp.package.addmessage" xml:space="preserve" approved="yes">
         <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below.
 
             Only packages of a compatible arch will be shown</source>
-        <target state="translated">以下是您可以添加到此频道的软件包列表。"频道" 复选框可用于限制可用的软件包集。要在此频道中添加软件包，请在此处选择它，然后单击下面的 "添加软件包"。
+        <target state="final">以下是您可以添加到此通道的软件包列表。"通道" 复选框可用于限制可用的软件包集。要在此通道中添加软件包，请在此处选择它，然后单击下面的 "添加软件包"。
 
             只显示兼容体系结构的软件包</target>
       </trans-unit>
@@ -26247,9 +26247,9 @@ given channel.</source>
         <source>Confirm</source>
         <target state="translated">确认</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.package.mergesuccess" xml:space="preserve">
+      <trans-unit id="channel.jsp.package.mergesuccess" xml:space="preserve" approved="yes">
         <source>{0} change(s) have been made to {1} channel.</source>
-        <target state="translated">对 {1} 频道进行了 {0} 项更改。</target>
+        <target state="final">对 {1} 通道进行了 {0} 项更改。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.listtitle" xml:space="preserve">
         <source>This channel contains the following patches:</source>
@@ -26443,9 +26443,9 @@ given channel.</source>
 
             此过程可能需要几秒钟时间。请耐心等待，不要再次单击下面的按钮。</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.manage.package.channel" xml:space="preserve">
+      <trans-unit id="channel.jsp.manage.package.channel" xml:space="preserve" approved="yes">
         <source>Channel</source>
-        <target state="translated">频道</target>
+        <target state="final">通道</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.nopackages" xml:space="preserve">
         <source>No channel selected</source>
@@ -27091,14 +27091,14 @@ given channel.</source>
         </context-group>
         <target state="translated">可信组织</target>
       </trans-unit>
-      <trans-unit id="channel.delete.jsp.orgsparagraph" xml:space="preserve">
+      <trans-unit id="channel.delete.jsp.orgsparagraph" xml:space="preserve" approved="yes">
         <source>Channel deletion will affect any Trusted Organizations that have systems
             subscribed to the {0} channel.
          </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="translated">删除频道会影响其系统已订阅 {0} 频道的
+        <target state="final">删除通道会影响其系统已订阅 {0} 通道的
             任何可信组织。
          </target>
       </trans-unit>
@@ -27202,12 +27202,12 @@ given channel.</source>
         <target state="translated">此频道是&lt;strong&gt;专用&lt;/strong&gt;频道，任何
         其他组织都不能访问此频道。</target>
       </trans-unit>
-      <trans-unit id="channel.edit.jsp.allusers" xml:space="preserve">
+      <trans-unit id="channel.edit.jsp.allusers" xml:space="preserve" approved="yes">
         <source>All users within your organization may subscribe to this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">您组织中的所有用户都可订阅此频道。</target>
+        <target state="final">您组织中的所有用户都可订阅此通道。</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.selectedusers" xml:space="preserve">
         <source>Only selected users within your organization may subscribe to this channel.</source>
@@ -27766,12 +27766,12 @@ given channel.</source>
         </context-group>
         <target state="translated">克隆补丁</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.errata.listempty" xml:space="preserve">
+      <trans-unit id="channel.jsp.errata.listempty" xml:space="preserve" approved="yes">
         <source>There are no patches associated with this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target state="translated">没有与此频道关联的补丁。</target>
+        <target state="final">没有与此通道关联的补丁。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.confirmremove" xml:space="preserve">
         <source>Confirm Removal</source>
@@ -29684,184 +29684,184 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.system" xml:space="preserve">
         <source>System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.nosystems" xml:space="preserve">
         <source>No Virtual Systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.name" xml:space="preserve">
         <source>System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.host" xml:space="preserve">
         <source>Host</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.hoststatus" xml:space="preserve">
         <source>{0} Active Virtual Systems, {1} Total.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
           <context context-type="paramnotes">3 Active Virtual Systems, 10 Total.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.viewall" xml:space="preserve">
         <source>View All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.updates" xml:space="preserve">
         <source>Updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.state" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.channel" xml:space="preserve">
         <source>Base Software Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.disabled_checkbox_title" xml:space="preserve">
         <source>You cannot select this system - it is not registered to @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.content" xml:space="preserve">
         <source>Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.free_form" xml:space="preserve">
         <source>Free Form</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.content_title" xml:space="preserve">
         <source>Content &amp; Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.title" xml:space="preserve">
         <source>Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.jsp.summary" xml:space="preserve">
         <source>Summary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.jsp.imgAlt" xml:space="preserve">
         <source>search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.jsp.toolbar" xml:space="preserve">
         <source>Document Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.jsp.pagesummary" xml:space="preserve">
         <source>Document Search will return links to pages matching your search term. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.jsp.instructions" xml:space="preserve">
         <source>Specify your search criteria below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.jsp.searchfor" xml:space="preserve">
         <source>Search For:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.jsp.whatsearch" xml:space="preserve">
         <source>What to search:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.jsp.nopages" xml:space="preserve">
         <source>No pages found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="docsearch.jsp.pagetitle" xml:space="preserve">
         <source>Page Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
+      </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-      </body>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
