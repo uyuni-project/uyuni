@@ -29749,13 +29749,13 @@ given channel.</source>
             </context-group>
         <target state="final">{0} パッケージプロファイル&lt;a href="/hrhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
       </trans-unit>
-    <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve">
+      <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve" approved="yes">
         <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">カスタムチャンネルの自動同期が有効になっています。このチャンネルは、ベンダチャンネルと自動的に同期されます。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
