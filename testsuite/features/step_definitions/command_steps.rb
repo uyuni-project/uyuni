@@ -599,7 +599,7 @@ When(/^I synchronize the tftp configuration on the proxy with the server$/) do
   raise 'cobbler sync failed' if out.include? 'Push failed'
 end
 
-When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
+When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
   raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
 
   node = get_target(host)

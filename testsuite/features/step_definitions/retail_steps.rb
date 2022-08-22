@@ -210,7 +210,7 @@ When(/^I restart the network on the PXE boot minion$/) do
   $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
-When(/^I reboot the terminal "([^"]*)"$/) do |host|
+When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   # we might have no or any IPv4 address on that machine
   # convert MAC address to IPv6 link-local address
   if host == 'pxeboot_minion'
@@ -229,7 +229,7 @@ When(/^I reboot the terminal "([^"]*)"$/) do |host|
   dest = '/tmp/' + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
+  $proxy.run("expect -f /tmp/#{file} #{ipv6} #{context}")
 end
 
 When(/^I create bootstrap script for "([^"]+)" hostname and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |host, key|
