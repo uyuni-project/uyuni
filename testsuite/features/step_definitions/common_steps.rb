@@ -354,7 +354,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     node.run('yum clean all && yum makecache', timeout: 600)
   elsif os_family =~ /^ubuntu/
     node.run('apt-get update')
@@ -744,7 +744,7 @@ When(/^I enable client tools repositories on "([^"]*)"$/) do |host|
   when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-  when /^centos/
+  when /^(centos|rocky)/
     repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
@@ -766,7 +766,7 @@ When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
   when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-  when /^centos/
+  when /^(centos|rocky)/
     repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")

@@ -789,7 +789,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
     end
     cmd = "zypper mr --#{action} #{opt_repos} ||:;" unless opt_repos.empty?
     cmd += "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     repos.split(' ').each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
       cmd = if action == 'enable'
@@ -847,7 +847,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     pkgs = 'openscap-utils openscap-content scap-security-guide'
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     pkgs = 'openscap-utils scap-security-guide-redhat'
   elsif os_family =~ /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'
