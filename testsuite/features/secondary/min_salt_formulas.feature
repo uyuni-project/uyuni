@@ -10,9 +10,11 @@ Feature: Use salt formulas
    Scenario: Log in as admin user
       Given I am authorized for the "Admin" section
 
-   Scenario: Install the locale formula package on the server
+   Scenario: Install the locale formula package on the server and enable repositories on minion
      When I manually install the "locale" formula on the server
      And I synchronize all Salt dynamic modules on "sle_minion"
+     And I enable repository "os_pool_repo os_update_repo" on this "sle_minion"
+     And I refresh the metadata for "sle_minion"
 
   Scenario: The new formula appears on the server
      When I follow the left menu "Salt > Formula Catalog"
@@ -160,8 +162,10 @@ Feature: Use salt formulas
      And the keymap on "sle_minion" should be "us.map.gz"
      And the language on "sle_minion" should be "en_US.UTF-8"
 
-  Scenario: Cleanup: uninstall formula package from the server
+  Scenario: Cleanup: uninstall formula package from the server adn disable repositories on the minion
      And I manually uninstall the "locale" formula from the server
+     And I disable repository "os_pool_repo os_update_repo" on this "sle_minion"
+     And I refresh the metadata for "sle_minion
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
      When I follow "Clear"
