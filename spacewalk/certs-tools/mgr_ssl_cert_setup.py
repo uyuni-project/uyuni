@@ -278,6 +278,9 @@ def getCertData(cert):
     data["content"] = cert
     if data["subject"] == data["issuer"]:
         data["root"] = True
+        # Some Root CAs might not have their authorityKeyIdentifier set to themself
+        if data["isca"] and "authorityKeyIdentifier" not in data:
+            data["authorityKeyIdentifier"] = data["subjectKeyIdentifier"]
     else:
         data["root"] = False
 
