@@ -32,7 +32,7 @@ Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
-custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
+custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
@@ -93,7 +93,12 @@ After do |scenario|
   if scenario.failed?
     begin
       Dir.mkdir("screenshots") unless File.directory?("screenshots")
-      path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+      if scenario.name.is_a? String
+        path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+      else
+        path = "screenshots/some_scenario_#{rand(200)}.png"
+        log "WARN: Couldn't retrieve scenario name as a string. #{scenario.name} is returned instead."
+      end
       page.driver.browser.save_screenshot(path)
       attach path, 'image/png'
       attach current_url, 'text/plain'
@@ -122,9 +127,14 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
-  if has_css?('.senna-loading', wait: 0)
-    log 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
-    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+  next unless Capybara::Session.instance_created?
+
+  begin
+    if has_css?('.senna-loading', wait: 0)
+      log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+    end
+  rescue StandardError
+    next
   end
 end
 

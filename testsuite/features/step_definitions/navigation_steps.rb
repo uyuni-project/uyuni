@@ -373,13 +373,7 @@ end
 #
 
 Given(/^I am not authorized$/) do
-  begin
-    page.reset!
-  rescue NoMethodError
-    log 'The browser session could not be cleaned.'
-  ensure
-    visit Capybara.app_host
-  end
+  web_driver_session_reset
   raise "Button 'Sign In' not visible" unless find_button('Sign In').visible?
 end
 
@@ -502,13 +496,7 @@ end
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
-  begin
-    page.reset!
-  rescue NoMethodError
-    log 'The browser session could not be cleaned.'
-  ensure
-    visit Capybara.app_host
-  end
+  web_driver_session_reset
   next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
 
   find(:xpath, "//header//i[@class='fa fa-sign-out']").click if all(:xpath, "//header//i[@class='fa fa-sign-out']").any?
