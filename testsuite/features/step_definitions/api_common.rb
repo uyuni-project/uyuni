@@ -279,7 +279,7 @@ Then(/^I get the description "([^"]*)" for the activation key$/) do |description
   raise unless details['description'] == description
 end
 
-When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
+When(/^I create an activation key including custom ((?: test)?) channels for "([^"]*)" via API$/) do |client, test_channel|
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
   base_channel = LABEL_BY_BASE_CHANNEL[BASE_CHANNEL_BY_CLIENT[client]]
@@ -298,6 +298,9 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
     selected_child_channels = ["custom_channel_#{client.sub('buildhost', 'minion')}", "custom_channel_#{client.sub('buildhost', 'client')}"]
   elsif client.include? 'terminal'
     selected_child_channels = ["custom_channel_#{client.sub('terminal', 'minion')}", "custom_channel_#{client.sub('terminal', 'client')}"]
+  elsif !test_channel.empty?
+    custom_test_channel = deb_host?(client)? "test-channel-deb-amd64" : "test-channel-x86_64"
+    selected_child_channels = [custom_test_channel]
   else
     custom_channel = "custom_channel_#{client}"
     selected_child_channels = [custom_channel]
