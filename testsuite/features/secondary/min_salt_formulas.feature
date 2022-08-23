@@ -10,7 +10,7 @@ Feature: Use salt formulas
    Scenario: Log in as admin user
       Given I am authorized for the "Admin" section
 
-   Scenario: Install the locale formula package on the server and enable repositories on minion
+   Scenario: Install the locale formula package on the server and enable repositories on the minion
      When I manually install the "locale" formula on the server
      And I synchronize all Salt dynamic modules on "sle_minion"
      And I enable repository "os_pool_repo os_update_repo" on this "sle_minion"
