@@ -28,7 +28,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-centos7-xccdf.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-centos8-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
@@ -38,7 +38,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     When I follow "Audit" in the content area
     And I follow "xccdf_org.open-scap_testresult_standard"
     Then I should see a "Details of XCCDF Scan" text
-    And I should see a "RHEL-7" text
+    And I should see a "RHEL-8" text
     And I should see a "XCCDF Rule Results" text
     When I enter "pass" as the filtered XCCDF result type
     And I click on the filter button
