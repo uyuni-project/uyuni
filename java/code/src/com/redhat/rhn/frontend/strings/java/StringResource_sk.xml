@@ -9615,7 +9615,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.regex" xml:space="preserve">
         <source>Invalid channel name, please see the format described below</source>
-        <target/>
+        <target>Neplatný názov kanála, prosím, pozrite si formát opísaný nižšie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
@@ -9707,7 +9707,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.labelreserved" xml:space="preserve">
         <source>The channel label '{0}' is reserved, please enter a different name</source>
-        <target/>
+        <target>Označenie kanála '{0}' je rezervované, prosím, zadajte iný názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
