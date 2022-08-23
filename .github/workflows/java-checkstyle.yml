@@ -6,10 +6,12 @@ on:
       - master
     paths:
       - 'java/**.java'
+      - 'java/**.xml'
       - '.github/workflows/java-checkstyle.yml'
   pull_request:
     paths:
       - 'java/**.java'
+      - 'java/**.xml'
       - '.github/workflows/java-checkstyle.yml'
 
 jobs:
