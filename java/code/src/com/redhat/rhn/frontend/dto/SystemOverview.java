@@ -168,10 +168,10 @@ public class SystemOverview extends BaseDto implements Serializable  {
         return proxy;
     }
     /**
-     * @param serverId The server id, null if not a proxy
+     * @param isProxy flag indicating if the system is a proxy
      */
-    public void setIsProxy(Long serverId) {
-        this.proxy = (serverId != null);
+    public void setProxy(Boolean isProxy) {
+        this.proxy = Optional.ofNullable(isProxy).orElse(false);
     }
     /**
      * @return Returns the isMgrServer.
@@ -180,10 +180,10 @@ public class SystemOverview extends BaseDto implements Serializable  {
         return mgrServer;
     }
     /**
-     * @param serverId The server id, null if not a uyuni server
+     * @param isMgrServer flag indicating if the server is an Uyuni server
      */
-    public void setIsMgrServer(Long serverId) {
-        this.mgrServer = (serverId != null);
+    public void setMgrServer(Boolean isMgrServer) {
+        this.mgrServer = Optional.ofNullable(isMgrServer).orElse(false);
     }
     /**
      * @return Returns the bugErrata.
