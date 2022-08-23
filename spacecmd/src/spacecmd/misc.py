@@ -405,6 +405,7 @@ def do_login(self, args):
     self.server = server
 
     logging.info(_N('Connected to %s as %s'), server_url, username)
+    _show_traditional_stack_message(self)
 
     return True
 
@@ -460,6 +461,18 @@ def do_whoamitalkingto(self, args):
 
 ####################
 
+def _show_traditional_stack_message(self):
+    n_systems = len(self.client.system.listSystems(self.session))
+    n_salt_systems = len(
+        self.client.system.listSystemsWithEntitlement(self.session, 'salt_entitled')
+    )
+
+    if n_systems > n_salt_systems:
+        logging.warning((
+            'The traditional stack is deprecated as of the release of SUSE manager 4.3. '
+            'It will be unsupported in the next major release, version 4.4 or greater. '
+            'Consider migrating to salt minions before this release.'
+        ))
 
 def tab_complete_errata(self, text):
     options = self.do_errata_list('', True)

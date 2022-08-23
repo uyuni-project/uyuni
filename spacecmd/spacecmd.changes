@@ -1,3 +1,4 @@
+- Added a warning message for traditional stack deprecation
 - Stop always showing help for valid proxy_container_config calls
 - Remove "Undefined return code" from debug messages (bsc#1203283)
 

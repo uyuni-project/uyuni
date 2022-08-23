@@ -1,3 +1,4 @@
+- Added a warning message for traditional stack deprecation
 - Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
 
 -------------------------------------------------------------------
