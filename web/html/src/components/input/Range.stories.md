@@ -2,29 +2,29 @@
 import { SubmitButton } from "components/buttons";
 
 import { Form } from "./Form";
-import { Text } from "./Text";
+import { Range } from "./Range";
 
 const model = {
-  name: "John",
+  port_start: "1000",
+  port_end: "1100",
 };
 
 <Form
   model={model}
   onChange={(newModel) => {
-    model["name"] = newModel["name"];
+    model["port_start"] = newModel["port_start"];
+    model["port_end"] = newModel["port_end"];
   }}
   onSubmit={() => console.log(model)}
   divClass="col-md-12"
   formDirection="form-horizontal"
 >
-  <Text
-    name="name"
-    label={t("Name")}
+  <Range
+    prefix="port"
+    label={t("Port range")}
     required
-    invalidHint={t("Minimum 2 characters")}
     labelClass="col-md-3"
     divClass="col-md-6"
-    validators={[(value) => value.length > 2]}
   />
   <SubmitButton className="btn-success" text={t("Submit")} />
 </Form>
