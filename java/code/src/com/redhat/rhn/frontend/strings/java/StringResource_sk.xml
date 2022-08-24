@@ -10673,11 +10673,11 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="Proxy Hierarchy" xml:space="preserve">
         <source>Proxy Hierarchy</source>
-        <target/>
+        <target>Hierarchia proxy</target>
       </trans-unit>
       <trans-unit id="Systems Grouping" xml:space="preserve">
         <source>Systems Grouping</source>
-        <target/>
+        <target>Zoskupovanie systémov</target>
       </trans-unit>
       <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
@@ -10688,41 +10688,41 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="Foreign Entitled Servers" xml:space="preserve">
         <source>Foreign</source>
-        <target/>
+        <target>Cudzie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Formula Catalog" xml:space="preserve">
         <source>Formula Catalog</source>
-        <target/>
+        <target>Katalóg vzorcov</target>
       </trans-unit>
       <trans-unit id="Non Compliant" xml:space="preserve">
         <source>Non Compliant</source>
-        <target/>
+        <target>Nevyhovujúce</target>
       </trans-unit>
       <trans-unit id="help.jsp.gettingstarted" xml:space="preserve">
         <source>Get started with setting up a @@PRODUCT_NAME@@ server</source>
-        <target/>
+        <target>Začať s nastavením servera @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices" xml:space="preserve">
         <source>This document describes @@VENDOR_NAME@@ recommended best practices for @@PRODUCT_NAME@@</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Tento dokument opisuje @@VENDOR_NAME@@ odporúčané osvedčené postupy pre @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics" xml:space="preserve">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>
-        <target/>
+        <target>Pokročilé témy o @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Best Practices Guide" xml:space="preserve">
         <source>Best Practices Guide</source>
-        <target/>
+        <target>Príručka osvedčených postupov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Advanced Topics Guide" xml:space="preserve">
         <source>Advanced Topics Guide</source>
-        <target/>
+        <target>Príručka pre pokročilé témy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
