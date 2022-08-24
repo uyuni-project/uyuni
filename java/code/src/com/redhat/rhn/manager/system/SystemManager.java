@@ -894,6 +894,20 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Returns list of all systems visible to user based on the overview table.
+     * @param user Currently logged in user.
+     * @param pc PageControl
+     * @return list of SystemOverviews.
+     */
+    public static DataResult<SystemOverview> systemListNew(User user, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "visible_to_user_new");
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", user.getId());
+        Map<String, Object> elabParams = new HashMap<>();
+        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+    }
+
+    /**
      * Returns list of all physical systems visible to user.
      * @param user Currently logged in user.
      * @param pc PageControl

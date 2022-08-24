@@ -553,6 +553,16 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
   <elaborator name="is_virtual_host" />
 </mode>
 
+<mode name="visible_to_user_new" class="com.redhat.rhn.frontend.dto.SystemOverview">
+  <query params="user_id">
+      SELECT DISTINCT O.*
+      FROM suseSystemOverview O,
+      rhnUserServerPerms USP
+      WHERE O.id = USP.server_id
+      AND USP.user_id = :user_id
+  </query>
+</mode>
+
 <mode name="system_ids">
   <query>SELECT id FROM rhnServer;</query>
 </mode>
