@@ -172,7 +172,7 @@ public class SystemsController {
     private Object allSystems(Request request, Response response, User user) {
         PageControlHelper pageHelper = new PageControlHelper(request, "hostServerName");
 
-        DataResult<SystemOverview> systems = SystemManager.systemList(user, null);
+        DataResult<SystemOverview> systems = SystemManager.systemListNew(user, null);
         if ("id".equals(pageHelper.getFunction())) {
             return json(response, systems.stream()
                     .filter(SystemOverview::isSelectable)
