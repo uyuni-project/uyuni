@@ -39,6 +39,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.IncompatibleArchException;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import java.util.stream.Stream;
+
 /**
  * Channel
  */
@@ -914,6 +916,15 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * @return the clonedChannels
      */
+
+    /**
+     * Returns all cloned channels of this channel which includes all clones of clones.
+     * @return all cloned channels
+     */
+    public Stream<ClonedChannel> allClonedChannels() {
+        return getClonedChannels().stream().flatMap(c -> Stream.concat(Stream.of(c), c.allClonedChannels()));
+    }
+
     public Set<ClonedChannel> getClonedChannels() {
         return clonedChannels;
     }
@@ -944,6 +955,16 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public Channel getOriginal() {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Creates a Stream starting with this channel and waking up the getOriginal chain
+     * until getting to the original non cloned channel.
+     *
+     * @return stream of channels
+     */
+    public Stream<Channel> originChain() {
+        return Stream.iterate(this, c -> c != null, c -> c.isCloned() ? c.getOriginal() : null);
     }
 
     /**
