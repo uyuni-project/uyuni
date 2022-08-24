@@ -217,7 +217,7 @@ When(/^vendor change should be enabled for (?:[^"]*) on "([^"]*)"$/) do |host|
   node = get_target(host)
   pattern = '--allow-vendor-change'
   log = '/var/log/zypper.log'
-  rotated_log = "#{log}-#{Time.now.strftime('%Y%m%d')}.xz"
+  rotated_log = "#{log}-#{Time.now.localtime.strftime('%Y%m%d')}.xz"
   _, return_code = node.run("grep -- #{pattern} #{log} || xzdec #{rotated_log} | grep -- #{pattern}")
 
   raise 'Vendor change option not found in logs' unless return_code.zero?
