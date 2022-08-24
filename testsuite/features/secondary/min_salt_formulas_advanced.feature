@@ -234,5 +234,6 @@ Feature: Use advanced features of Salt formulas
      Then I should see a "System group" text
      Then I should see a "test-formula-group" text
      And I should see a "deleted" text
+     When I refresh the pillar data
      And I wait until there is no pillar refresh salt job active
      Then the pillar data for "testing" should be empty on "sle_minion"
