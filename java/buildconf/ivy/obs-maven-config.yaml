@@ -82,7 +82,7 @@ artifacts:
   - artifact: concurrentlinkedhashmap-lru
     repository: Uyuni_Other
   - artifact: dom4j
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: dwr
     repository: Uyuni_Other
   - artifact: ehcache-core
@@ -174,33 +174,33 @@ artifacts:
     repository: Leap
   - artifact: netty-buffer
     package: netty
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-codec
     package: netty
     jar: netty-codec.jar
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-common
     package: netty
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-handler
     package: netty
     jar: netty-handler.jar
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-resolver
     package: netty
     jar: netty-resolver.jar
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-transport
     package: netty
     jar: netty-transport.jar
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-transport-native-unix-common
     package: netty
     jar: netty-transport-native-unix-common.jar
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-transport-native-unix-common-linux-x86_64
     package: netty
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: client
     package: ongres-scram-client
     repository: Leap
