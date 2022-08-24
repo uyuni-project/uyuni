@@ -580,6 +580,8 @@ class ContentSource:
 
         returnlist = _replace_and_check_url(returnlist)
 
+        returnlist = [self._prep_zypp_repo_url(url, False) for url in returnlist]
+
         try:
            # Write the final mirrorlist that is going to be pass to Zypper
            with open(mirrorlist_path, 'w') as mirrorlist_file:
@@ -658,7 +660,6 @@ type=rpm-md
 
         :returns: str
         """
-        ret_url = None
         query_params = {}
         if self.proxy_hostname:
             query_params['proxy'] = quote(self.proxy_hostname)
@@ -681,11 +682,20 @@ type=rpm-md
         if self.sslclientkey:
             query_params['ssl_clientkey'] = self.sslclientkey
         new_query = unquote(urlencode(query_params, doseq=True))
-        if self.authtoken or uln_repo:
-            ret_url = "{0}&{1}".format(url, new_query)
-        else:
-            ret_url = "{0}?{1}".format(url, new_query) if new_query else url
-        return ret_url
+        # urlparse cannot handle uln urls, so we need to keep this check
+        if uln_repo:
+            return "{0}&{1}".format(url, new_query)
+        parsed_url = urlparse(url)
+        existing_query = parsed_url.query
+        combined_query = "&".join([q for q in [existing_query, new_query] if q])
+        return urlunparse((
+            parsed_url.scheme,
+            parsed_url.netloc,
+            parsed_url.path,
+            parsed_url.params,
+            combined_query,
+            parsed_url.fragment
+        ))
 
     def _md_exists(self, tag):
         """
