@@ -511,6 +511,8 @@ PKGLIST15_TRAD = [
     "zypp-plugin-spacewalk",
     "python3-zypp-plugin",
     "python3-zypp-plugin-spacewalk",
+    "python3-apipkg",
+    "python3-iniconfig",
 ]
 
 PKGLIST15_X86_ARM = [
