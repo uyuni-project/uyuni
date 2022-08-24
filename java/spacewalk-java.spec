@@ -141,7 +141,7 @@ BuildRequires:  libxml2-tools
 BuildRequires:  log4j
 BuildRequires:  log4j-slf4j
 BuildRequires:  netty
-BuildRequires:  objectweb-asm
+BuildRequires:  objectweb-asm >= 9.2
 BuildRequires:  perl
 BuildRequires:  pgjdbc-ng
 BuildRequires:  postgresql-jdbc
@@ -224,7 +224,7 @@ Requires:       jpa-api
 Requires:       libsolv-tools
 Requires:       mgr-libmod
 Requires:       netty
-Requires:       objectweb-asm
+Requires:       objectweb-asm >= 9.2
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       salt-netapi-client >= 0.20
