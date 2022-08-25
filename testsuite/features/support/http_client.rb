@@ -13,7 +13,7 @@ class HttpClient
   def prepare_call(name, params)
     short_name = name.split('.')[-1]
     call_type =
-      if short_name.start_with?('list', 'get', 'is', 'find') ||
+      if short_name.start_with?('list', 'get', 'is', 'find', 'system') ||
          name.start_with?('system.search.', 'packages.search.') ||
          ['errata.applicableToChannels'].include?(name)
         'GET'
