@@ -1,3 +1,4 @@
+- Fix migration of image actions (bsc#1202272)
 - improve schema compatibility with Amazon RDS
 
 -------------------------------------------------------------------
