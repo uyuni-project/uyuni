@@ -259,6 +259,15 @@ public class FormulaFactory {
      */
     public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId, Org org,
             String formulaName) throws IOException {
+
+        // If e.g. API or tests skip adding formulas and tries to write data directly,
+        // ensure formula is enabled for group
+        List<String> formulas = getFormulasByGroupId(groupId);
+        if (!formulas.contains(formulaName)) {
+            formulas.add(formulaName);
+            saveGroupFormulas(groupId, formulas, org);
+        }
+
         File file = new File(getGroupPillarDir() +
                 groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
         try {
