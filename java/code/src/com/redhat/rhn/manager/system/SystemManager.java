@@ -125,6 +125,7 @@ import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
+import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -171,6 +172,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
 
 /**
  * SystemManager
@@ -900,11 +902,11 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     public static DataResult<SystemOverview> systemListNew(User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "visible_to_user_new");
-        Map<String, Object> params = new HashMap<>();
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return new PagedSqlQueryBuilder()
+                .select("O.*")
+                .from("suseSystemOverview O, rhnUserServerPerms USP")
+                .where("O.id = USP.server_id AND USP.user_id = :user_id")
+                .run(Map.of("user_id", user.getId()), pc, SystemOverview.class);
     }
 
     /**

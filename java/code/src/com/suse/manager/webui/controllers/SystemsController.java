@@ -45,6 +45,7 @@ import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -56,6 +57,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.PageControlHelper;
@@ -79,6 +81,7 @@ import org.apache.struts.action.ActionMessages;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -86,7 +89,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -170,25 +176,64 @@ public class SystemsController {
     }
 
     private Object allSystems(Request request, Response response, User user) {
-        PageControlHelper pageHelper = new PageControlHelper(request, "hostServerName");
+        PageControlHelper pageHelper = new PageControlHelper(request, "server_name");
+        PageControl pc = pageHelper.getPageControl();
 
-        DataResult<SystemOverview> systems = SystemManager.systemListNew(user, null);
+        Map<String, Consumer<PageControl>> mapping = Map.of(
+                "total_errata_count",
+                pageControl -> pageControl.setFilterColumn("security_errata + bug_errata + enhancement_errata"),
+                "system_kind",
+                pageControl -> {
+                    List<String> values = List.of("proxy", "mgr_server", "virtual_host", "virtual_guest", "physical");
+                    if (values.contains(pageControl.getFilterData())) {
+                        pageControl.setFilterColumn(pageControl.getFilterData());
+                        pageControl.setFilterData("physical".equals(pageControl.getFilterData()) ? "false" : "true");
+                    }
+                    else {
+                        // Don't filter if the value is invalid
+                        pageControl.setFilter(false);
+                    }
+                },
+            "created_days",
+                pageControl -> {
+                    pageControl.setFilterColumn("created");
+                    Matcher matcher = Pattern.compile("^([<>!=]*) *(\\d+)$").matcher(pageControl.getFilterData());
+                    if (matcher.matches()) {
+                        Long value = Long.parseLong(matcher.group(2));
+                        pageControl.setFilterData(matcher.group(1) +
+                                DateTimeFormatter.ISO_LOCAL_DATE.format(
+                                        LocalDateTime.now().minusDays(value).toLocalDate()));
+                    }
+                    else {
+                        pageControl.setFilter(false);
+                    }
+                }
+        );
+        if (pc.getFilterColumn() != null && mapping.containsKey(pc.getFilterColumn())) {
+            mapping.get(pc.getFilterColumn()).accept(pc);
+        }
+
+        // When getting ids for the select all we just get all systems ID matching the filter, no paging
         if ("id".equals(pageHelper.getFunction())) {
+            pc.setStart(1);
+            pc.setPageSize(0); // Setting to zero means getting them all
+
+            List<SystemOverview> systems = new PagedSqlQueryBuilder()
+                    .select("O.id, O.selectable")
+                    .from("suseSystemOverview O, rhnUserServerPerms USP")
+                    .where("O.id = USP.server_id AND USP.user_id = :user_id")
+                    .run(Map.of("user_id", user.getId()), pc, SystemOverview.class);
+
             return json(response, systems.stream()
                     .filter(SystemOverview::isSelectable)
                     .map(SystemOverview::getId)
-                    .collect(Collectors.toList())
-            );
+                    .collect(Collectors.toList()));
         }
 
-        systems = pageHelper.processPageControl(systems, new HashMap<>());
-        systems.stream()
-                .forEach(system -> {
-                    if (system.getId() != null) {
-                        system.updateStatusType(user);
-                    }
-                });
-        return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize()));
+        DataResult<SystemOverview> systems = SystemManager.systemListNew(user, pc);
+        RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
+
+        return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize(), ssmSet.getElementValues()));
     }
 
     /**
