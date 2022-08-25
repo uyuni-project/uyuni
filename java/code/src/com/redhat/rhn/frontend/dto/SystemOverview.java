@@ -33,11 +33,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.persistence.Tuple;
+
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
  */
-public class SystemOverview extends BaseDto implements Serializable  {
+public class SystemOverview extends BaseTupleDto implements Serializable {
 
     private Long id;
     private Long channelId;
@@ -96,6 +98,66 @@ public class SystemOverview extends BaseDto implements Serializable  {
     public static final String STATUS_TYPE_CRITICAL = "critical";
     public static final String STATUS_TYPE_UPDATES = "updates";
 
+
+    /**
+     * Default constructor
+     */
+    public SystemOverview() {
+    }
+
+    /**
+     * Constructor used to populate using JQPL DTO projection from the data of suseSystemOverview
+     *
+     * @param tuple JPA tuple
+     */
+    public SystemOverview(Tuple tuple) {
+        id = ((Number)tuple.get("id")).longValue();
+        selectable = getTupleValue(tuple, "selectable", Boolean.class).orElse(Boolean.FALSE);
+
+        // To speed up selection, when querying the selection we only get 2 fields, ignore the others
+        if (tuple.getElements().size() > 2) {
+            serverName = getTupleValue(tuple, "server_name", String.class).orElse(null);
+            name = serverName;
+            channelId = getTupleValue(tuple, "channel_id", Number.class).map(Number::longValue).orElse(0L);
+            created = getTupleValue(tuple, "created", Date.class).orElse(null);
+            creatorName = getTupleValue(tuple, "creator_name", String.class).orElse(null);
+            modified = getTupleValue(tuple, "modified", Date.class).orElse(null);
+            groupCount = getTupleValue(tuple, "group_count", Number.class).map(Number::longValue).orElse(0L);
+            securityErrata = getTupleValue(tuple, "security_errata", Number.class).map(Number::longValue).orElse(0L);
+            bugErrata = getTupleValue(tuple, "bug_errata", Number.class).map(Number::longValue).orElse(0L);
+            enhancementErrata = getTupleValue(tuple, "enhancement_errata", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            outdatedPackages = getTupleValue(tuple, "outdated_packages", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            configFilesWithDifferences = getTupleValue(tuple, "config_files_with_differences", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            channelLabels = getTupleValue(tuple, "channel_labels", String.class).orElse(null);
+            lastCheckin = getTupleValue(tuple, "last_checkin", Date.class).orElse(null);
+            mgrServer = getTupleValue(tuple, "mgr_server", Boolean.class).orElse(false);
+            proxy = getTupleValue(tuple, "proxy", Boolean.class).orElse(Boolean.FALSE);
+            setEntitlementLevel(getTupleValue(tuple, "entitlement_level", String.class).orElse(null));
+            isVirtualHost = getTupleValue(tuple, "virtual_host", Boolean.class).orElse(Boolean.FALSE);
+            isVirtualGuest = getTupleValue(tuple, "virtual_guest", Boolean.class).orElse(Boolean.FALSE);
+            extraPkgCount = getTupleValue(tuple, "extra_pkg_count", Number.class).map(Number::longValue).orElse(0L);
+            requiresReboot = getTupleValue(tuple, "requires_reboot", Boolean.class).orElse(Boolean.FALSE);
+            kickstarting = getTupleValue(tuple, "kickstarting", Boolean.class).orElse(Boolean.FALSE);
+            actionsCount = getTupleValue(tuple, "actions_count", Number.class).map(Number::longValue).orElse(0L);
+            packageActionsCount = getTupleValue(tuple, "package_actions_count", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            unscheduledErrataCount = getTupleValue(tuple, "unscheduled_errata_count", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            statusType = getTupleValue(tuple, "status_type", String.class).orElse(null);
+        }
+    }
+
+    private static <T> Optional<T> getTupleValue(Tuple tuple, String name, Class<T> clazz) {
+        try {
+            return Optional.ofNullable(tuple.get(name, clazz));
+        }
+        catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
 
     /**
      * Compute the system status and update the corresponding field.
@@ -579,8 +641,10 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @param entitlementLevelIn the comma-separated entitlements levels
      */
     public void setEntitlementLevel(String entitlementLevelIn) {
-        entitlement = Arrays.asList(entitlementLevelIn.split(","));
-        entitlementLevel = computeEntitlementLevel();
+        if (entitlementLevelIn != null) {
+            entitlement = Arrays.asList(entitlementLevelIn.split(","));
+            entitlementLevel = computeEntitlementLevel();
+        }
     }
 
     private String computeEntitlementLevel() {
