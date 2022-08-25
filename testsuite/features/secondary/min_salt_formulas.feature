@@ -163,7 +163,7 @@ Feature: Use salt formulas
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Cleanup: uninstall formula package from the server
-     And I manually uninstall the "locale" formula from the server
+     When I manually uninstall the "locale" formula from the server
      And I disable repository "os_pool_repo os_update_repo" on this "sle_minion"
      And I refresh the metadata for "sle_minion
 
