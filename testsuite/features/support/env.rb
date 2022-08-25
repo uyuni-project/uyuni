@@ -58,22 +58,20 @@ Capybara.register_driver(:headless_chrome) do |app|
   # Chrome driver options
   chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
   chrome_options << 'headless' unless $debug_mode
+
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: {
+    'goog:chromeOptions': {
       args: chrome_options,
-      w3c: false,
       prefs: {
         'download.default_directory': '/tmp/downloads'
       }
-    },
-    unexpectedAlertBehaviour: 'accept',
-    unhandledPromptBehavior: 'accept'
+    }
   )
 
   Capybara::Selenium::Driver.new(
     app,
     browser: :chrome,
-    desired_capabilities: capabilities,
+    capabilities: capabilities,
     http_client: client
   )
 end
