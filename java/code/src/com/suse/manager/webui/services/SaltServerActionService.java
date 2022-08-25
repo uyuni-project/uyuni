@@ -1481,6 +1481,26 @@ public class SaltServerActionService {
         }
     }
 
+    private String getChannelUrl(MinionServer minion, String channelLabel) {
+        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(minion.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        tokenBuilder.setExpirationTimeMinutesInTheFuture(
+            Config.get().getInt(ConfigDefaults.TEMP_TOKEN_LIFETIME)
+        );
+        tokenBuilder.onlyChannels(Collections.singleton(channelLabel));
+        String token = "";
+        try {
+            token = tokenBuilder.getToken();
+        }
+        catch (JoseException e) {
+            LOG.error("Could not generate token for {}", channelLabel, e);
+        }
+
+        String host = minion.getChannelHost();
+
+        return "https://" + host + "/rhn/manager/download/" + channelLabel + "?" + token;
+    }
+
     private Map<LocalCall<?>, List<MinionSummary>> imageBuildAction(
             List<MinionSummary> minionSummaries, Optional<String> version,
             ImageProfile profile, User user, Long actionId) {
@@ -1493,31 +1513,7 @@ public class SaltServerActionService {
         //TODO: optimal scheduling would be to group by host and orgid
         Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
                 Collectors.toMap(minion -> {
-
-                    //TODO: refactor ActivationKeyHandler.listChannels to share this logic
-                    DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(minion.getOrg().getId());
-                    tokenBuilder.useServerSecret();
-                    tokenBuilder.setExpirationTimeMinutesInTheFuture(
-                            Config.get().getInt(
-                                    ConfigDefaults.TEMP_TOKEN_LIFETIME
-                            )
-                    );
-                    if (profile.getToken() != null) {
-                        tokenBuilder.onlyChannels(profile.getToken().getChannels()
-                                .stream().map(Channel::getLabel)
-                                .collect(Collectors.toSet()));
-                    }
-                    String t = "";
-                    try {
-                        t = tokenBuilder.getToken();
-                    }
-                    catch (JoseException e) {
-                        e.printStackTrace();
-                    }
-                    final String token = t;
-
                     Map<String, Object> pillar = new HashMap<>();
-                    String host = minion.getChannelHost();
 
                     profile.asDockerfileProfile().ifPresent(dockerfileProfile -> {
                         Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
@@ -1550,9 +1546,7 @@ public class SaltServerActionService {
                                     "name=" + s.getName() + "\n\n" +
                                     "enabled=1\n\n" +
                                     "autorefresh=1\n\n" +
-                                    "baseurl=https://" + host +
-                                    ":443/rhn/manager/download/" + s.getLabel() + "?" +
-                                    token + "\n\n" +
+                                    "baseurl=" + getChannelUrl(minion, s.getLabel()) + "\n\n" +
                                     "type=rpm-md\n\n" +
                                     "gpgcheck=1\n\n" +
                                     "repo_gpgcheck=0\n\n" +
@@ -1574,9 +1568,7 @@ public class SaltServerActionService {
                         final ActivationKey activationKey = ActivationKeyFactory.lookupByToken(profile.getToken());
                         Set<Channel> channels = activationKey.getChannels();
                         for (Channel channel: channels) {
-                            repos.add("https://" + host +
-                                    "/rhn/manager/download/" + channel.getLabel() + "?" +
-                                    token);
+                            repos.add(getChannelUrl(minion, channel.getLabel()));
                         }
                         pillar.put("kiwi_repositories", repos);
                         pillar.put("activation_key", activationKey.getKey());

@@ -1,3 +1,4 @@
+- Reduce the length of image channel URL (bsc#1201220)
 - Fixed system search
 - update java dependencies
 - Enable Rocky Linux 9 for monitoring
