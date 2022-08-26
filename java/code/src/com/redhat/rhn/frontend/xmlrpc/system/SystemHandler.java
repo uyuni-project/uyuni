@@ -6463,10 +6463,10 @@ public class SystemHandler extends BaseHandler {
                 nameservers.get(0), netmask, hostName);
         rec.setHostName(hostName);
         rec.setGateway(gateway);
-        rec.setNameServers(nameservers);
-        Map<String, Object> meta = rec.getKsMeta();
+        rec.setNameServers(Optional.of(nameservers));
+        Map<String, Object> meta = rec.getKsMeta().get();
         meta.put(KickstartFormatter.STATIC_NETWORK_VAR, command);
-        rec.setKsMeta(meta);
+        rec.setKsMeta(Optional.of(meta));
         rec.save();
         return 1;
     }
@@ -6509,7 +6509,7 @@ public class SystemHandler extends BaseHandler {
         String nm6 = (String) data6.get("netmask");
         String gw6 = (String) data6.get("gateway");
 
-        Map<String, Object> meta = rec.getKsMeta();
+        Map<String, Object> meta = rec.getKsMeta().get();
         String ipv6GatewayMeta = (String) meta.get(KickstartFormatter.USE_IPV6_GATEWAY);
         boolean preferIpv6Gateway = false;
         if (ipv6GatewayMeta != null && ipv6GatewayMeta.equals("true")) {
@@ -6523,9 +6523,9 @@ public class SystemHandler extends BaseHandler {
 
         rec.setHostName(hostName);
         rec.setGateway((preferIpv6Gateway) ? gw6 : gw4);
-        rec.setNameServers(nameservers);
+        rec.setNameServers(Optional.of(nameservers));
         meta.put(KickstartFormatter.STATIC_NETWORK_VAR, command);
-        rec.setKsMeta(meta);
+        rec.setKsMeta(Optional.of(meta));
         rec.save();
         return 1;
     }
@@ -6793,7 +6793,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         rec.enableNetboot(netboot);
-        rec.setKsMeta(variables);
+        rec.setKsMeta(Optional.of(variables));
         rec.save();
 
         return 1;

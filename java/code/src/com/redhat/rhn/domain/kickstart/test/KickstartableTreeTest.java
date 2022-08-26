@@ -48,10 +48,10 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * KickstartableTreeTest
@@ -219,20 +219,20 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
 
         createKickstartTreeItems(k);
 
-        Distro.Builder builder = new Distro.Builder();
+        Distro.Builder<String> builder = new Distro.Builder<>();
 
         Distro d = builder.setName(k.getLabel())
                 .setKernel(k.getDefaultKernelPaths()[0])
                 .setInitrd(k.getDefaultInitrdPaths()[0])
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(Optional.empty())
                 .setBreed(k.getInstallType().getCobblerBreed())
                 .setOsVersion(k.getInstallType().getCobblerOsVersion())
                 .setArch(k.getChannel().getChannelArch().cobblerArch())
-                .setKernelOptions(k.getKernelOptions())
-                .setKernelOptionsPost(k.getKernelOptionsPost())
+                .setKernelOptions(Optional.of(k.getKernelOptions()))
+                .setKernelOptionsPost(Optional.of(k.getKernelOptionsPost()))
                 .build(CobblerXMLRPCHelper.getConnection("test"));
 
-        Distro xend = builder.setKsmeta(new HashMap<>())
+        Distro xend = builder.setKsmeta(Optional.empty())
                 .build(CobblerXMLRPCHelper.getConnection("test"));
 
         k.setCobblerId(d.getUid());

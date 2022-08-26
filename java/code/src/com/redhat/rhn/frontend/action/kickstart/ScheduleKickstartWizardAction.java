@@ -540,17 +540,51 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             Distro distro = Distro.lookupById(con,
                     cmd.getKsdata().getTree().getCobblerId());
 
-            ctx.getRequest().setAttribute("distro_kernel_params",
-                    distro.getKernelOptionsString());
-            ctx.getRequest().setAttribute("distro_post_kernel_params",
-                    distro.getKernelOptionsPostString());
+            if (distro.getKernelOptions().isEmpty()) {
+                ctx.getRequest().setAttribute("distro_kernel_params",
+                        Distro.INHERIT_KEY);
+            }
+            else {
+                ctx.getRequest().setAttribute("distro_kernel_params",
+                        (distro.getKernelOptions().get() instanceof Map) ?
+                            distro.convertOptionsMap(distro.getKernelOptions().get()) :
+                            distro.getKernelOptions().get());
+            }
+            if (distro.getKernelOptionsPost().isEmpty()) {
+                ctx.getRequest().setAttribute("distro_post_kernel_params",
+                        Distro.INHERIT_KEY);
+            }
+            else {
+                ctx.getRequest().setAttribute("distro_post_kernel_params",
+                        (distro.getKernelOptionsPost().get() instanceof Map) ?
+                            distro.convertOptionsMap(distro.getKernelOptionsPost().get()) :
+                            distro.getKernelOptionsPost().get());
+            }
 
             org.cobbler.Profile profile = org.cobbler.Profile.
-                    lookupById(con, cmd.getKsdata().getCobblerId());
-            ctx.getRequest().setAttribute("profile_kernel_params",
-                    profile.getKernelOptionsString());
-            ctx.getRequest().setAttribute("profile_post_kernel_params",
-                    profile.getKernelOptionsPostString());
+                        lookupById(con, cmd.getKsdata().getCobblerId());
+
+            if (profile.getKernelOptions().isEmpty()) {
+                ctx.getRequest().setAttribute("profile_kernel_params",
+                        org.cobbler.Profile.INHERIT_KEY);
+            }
+            else {
+                ctx.getRequest().setAttribute("profile_kernel_params",
+                        (profile.getKernelOptions().get() instanceof Map) ?
+                             profile.convertOptionsMap(profile.getKernelOptions().get()) :
+                             profile.getKernelOptions().get());
+            }
+            if (profile.getKernelOptionsPost().isEmpty()) {
+                ctx.getRequest().setAttribute("profile_post_kernel_params",
+                        org.cobbler.Profile.INHERIT_KEY);
+            }
+            else {
+                ctx.getRequest().setAttribute("profile_post_kernel_params",
+                        (profile.getKernelOptionsPost().get() instanceof Map) ?
+                             profile.convertOptionsMap(profile.getKernelOptionsPost().get()) :
+                             profile.getKernelOptionsPost().get());
+            }
+
             if (cmd.getServer().getCobblerId() != null) {
                 SystemRecord rec = SystemRecord.
                         lookupById(con, cmd.getServer().getCobblerId());
@@ -558,11 +592,24 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     profile.getName().equals(rec.getProfile().getName())) {
                     if (StringUtils.isBlank(form.getString(KERNEL_PARAMS_TYPE))) {
                         form.set(KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
-                        form.set(KERNEL_PARAMS, rec.getKernelOptionsString());
+                        if (rec.getKernelOptions().isEmpty()) {
+                            form.set(KERNEL_PARAMS, org.cobbler.Profile.INHERIT_KEY);
+                        }
+                        else {
+                            form.set(KERNEL_PARAMS,
+                                    profile.convertOptionsMap(rec.getKernelOptions().get()));
+                        }
                     }
+
                     if (StringUtils.isBlank(form.getString(POST_KERNEL_PARAMS_TYPE))) {
                         form.set(POST_KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
-                        form.set(POST_KERNEL_PARAMS, rec.getKernelOptionsPostString());
+                        if (rec.getKernelOptionsPost().isEmpty()) {
+                            form.set(POST_KERNEL_PARAMS, org.cobbler.Profile.INHERIT_KEY);
+                        }
+                        else {
+                            form.set(POST_KERNEL_PARAMS,
+                                    profile.convertOptionsMap(rec.getKernelOptionsPost().get()));
+                        }
                     }
                 }
             }
@@ -990,9 +1037,9 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             ret = profile.getDistro();
         }
         if (!isPost) {
-            return ret.getKernelOptionsString();
+            return ret.convertOptionsMap(ret.getKernelOptions().get());
         }
-        return ret.getKernelOptionsPostString();
+        return ret.convertOptionsMap(ret.getKernelOptionsPost().get());
 
     }
 }
