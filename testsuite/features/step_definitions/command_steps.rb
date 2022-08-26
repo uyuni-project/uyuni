@@ -1014,11 +1014,6 @@ When(/^I install "([^"]*)" product on the proxy$/) do |product|
   log "Installed #{product} product: #{out}"
 end
 
-When(/^I adapt zyppconfig$/) do
-   cmd = "sed -i 's/^rpm.install.excludedocs =.*$/rpm.install.excludedocs = no/' /etc/zypp/zypp.conf"
-   $proxy.run(cmd)
-end
-
 When(/^I install proxy pattern on the proxy$/) do
   pattern = $product == 'Uyuni' ? 'uyuni_proxy' : 'suma_proxy'
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
