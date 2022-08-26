@@ -165,7 +165,7 @@ Feature: Use salt formulas
   Scenario: Cleanup: uninstall formula package from the server
      When I manually uninstall the "locale" formula from the server
      And I disable repository "os_pool_repo os_update_repo" on this "sle_minion"
-     And I refresh the metadata for "sle_minion
+     And I refresh the metadata for "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
      When I follow "Clear"
