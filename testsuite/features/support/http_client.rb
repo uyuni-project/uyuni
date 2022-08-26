@@ -33,9 +33,9 @@ class HttpClient
     [call_type, url]
   end
 
-  def call(name, params = {})
+  def call(name, params: {})
     # Get session cookie from previous calls
-    if params.nil?
+    if params.nil? || params.empty?
       session_cookie = nil
     else
       session_cookie = params[:sessionKey]
