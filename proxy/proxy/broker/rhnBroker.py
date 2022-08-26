@@ -664,9 +664,12 @@ class BrokerHandler(SharedHandler):
         self.cachedClientInfo['X-RHN-Server-ID'] = self.clientServerId
         log_debug(4, 'Retrieved token from cache: %s' % self.cachedClientInfo)
 
+        authChannels = [x[0] for x in self.authChannels]
+        log_debug(4, "Auth channels: '%s'" % authChannels)
+
         # Compare the two things
-        if not _dictEquals(token, self.cachedClientInfo,
-                           ['X-RHN-Auth-Channels']):
+        if not _dictEquals(token, self.cachedClientInfo, ['X-RHN-Auth-Channels']) or \
+                channel not in authChannels:
             # Maybe the client logged in through a different load-balanced
             # proxy? Check validity of the token the client passed us.
             updatedToken = self.proxyAuth.update_client_token_if_valid(
