@@ -1,5 +1,9 @@
-- renew the cached token when requested channel is not listed in
-  the old token (bsc#1202724)
+-------------------------------------------------------------------
+Fri Aug 26 09:35:04 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * renew the cached token when requested channel is not listed in
+    the old token (bsc#1202724)
 
 -------------------------------------------------------------------
 Wed Jul 27 14:09:14 CEST 2022 - jgonzalez@suse.com
