@@ -43,6 +43,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * CobblerCommandTest
@@ -76,7 +77,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     }
 
     @Test
-    public void testProfileCreate() throws Exception {
+    public void testProfileCreate() {
         CobblerProfileCreateCommand cmd = new CobblerProfileCreateCommand(
                 ksdata, user);
         assertNull(cmd.store());
@@ -85,7 +86,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     }
 
     @Test
-    public void testProfileEdit() throws Exception {
+    public void testProfileEdit() {
         // create one first
         CobblerProfileCreateCommand cmd = new CobblerProfileCreateCommand(
                 ksdata, user);
@@ -101,7 +102,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     }
 
     @Test
-    public void testProfileDelete() throws Exception {
+    public void testProfileDelete() {
         CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
                 ksdata, user);
         assertNull(createCmd.store());
@@ -158,10 +159,10 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         Distro distro = Distro.lookupById(con, cobblerId);
         Map<String, Object> kernelOptions = new HashMap<>();
         kernelOptions.put("option1", "val1");
-        distro.setKernelOptions(kernelOptions);
+        distro.setKernelOptions(Optional.of(kernelOptions));
         Map<String, Object> kernelOptionsPost = new HashMap<>();
         kernelOptionsPost.put("otherOption", "val2");
-        distro.setKernelOptionsPost(kernelOptionsPost);
+        distro.setKernelOptionsPost(Optional.of(kernelOptionsPost));
 
         // backsync
         CobblerDistroSyncCommand syncCommand = new CobblerDistroSyncCommand();
@@ -203,14 +204,14 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     }
 
     @Test
-    public void testDistroDelete() throws Exception {
+    public void testDistroDelete() {
         CobblerDistroDeleteCommand cmd = new
             CobblerDistroDeleteCommand(ksdata.getTree(), user);
         assertNull(cmd.store());
     }
 
     @Test
-    public void testLogin() throws Exception {
+    public void testLogin() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
         user = reload(user);

@@ -319,6 +319,35 @@ public class Config {
     }
 
     /**
+     * get the config entry for string s
+     *
+     * @param s string to get the value of
+     * @return the value
+     */
+    public Double getDouble(String s) {
+        String val = getString(s);
+        if (val == null) {
+            return null;
+        }
+        return Double.valueOf(val);
+    }
+
+    /**
+     * get the config entry for string s, if no value is found return the defaultValue specified.
+     *
+     * @param s string to get the value of
+     * @param defaultValue Default value if entry is not found.
+     * @return the value
+     */
+    public double getDouble(String s, double defaultValue) {
+        Double val = getDouble(s);
+        if (val == null) {
+            return defaultValue;
+        }
+        return val;
+    }
+
+    /**
      * Parses a comma-delimited list of values as a java.util.List
      * @param name config entry name
      * @return instance of java.util.List populated with config values

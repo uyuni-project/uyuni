@@ -1691,7 +1691,7 @@ public class ActionManager extends BaseManager {
         Profile cProfile = Profile.lookupById(CobblerXMLRPCHelper.getConnection(
                 pcmd.getUser()), pcmd.getKsdata().getCobblerId());
         if (pcmd.getVirtBridge() == null) {
-            kad.setVirtBridge(cProfile.getVirtBridge());
+            kad.setVirtBridge(cProfile.getVirtBridge().get());
         }
         else {
             kad.setVirtBridge(pcmd.getVirtBridge());

@@ -50,8 +50,9 @@ import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * JUnit test case for the KickstartLister class.
@@ -160,11 +161,11 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
     @Test
     public void testListCobblerProfiles() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
-        Distro distro = new Distro.Builder()
+        Distro distro = new Distro.Builder<Map<String, Object>>()
                 .setName("test-distro")
                 .setKernel("test-kernel")
                 .setInitrd("test-initrd")
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(Optional.empty())
                 .build(connection);
         Profile.create(connection, "test-profile", distro);
         KickstartLister kickstartLister = KickstartLister.getInstance();

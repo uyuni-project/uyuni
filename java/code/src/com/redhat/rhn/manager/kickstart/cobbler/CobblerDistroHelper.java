@@ -22,6 +22,7 @@ import org.cobbler.Distro;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Singleton helper with methods for creating/updating cobbler
@@ -54,18 +55,18 @@ public class CobblerDistroHelper {
      */
     public Distro createDistroFromTree(CobblerConnection cobblerConnection,
                                        KickstartableTree tree) {
-        Map<String, String> ksmeta = createKsMetadataFromTree(tree);
+        Map<String, Object> ksmeta = createKsMetadataFromTree(tree);
 
-        Distro distro = new Distro.Builder()
+        Distro distro = new Distro.Builder<String>()
                 .setName(tree.getCobblerDistroName())
                 .setKernel(tree.getKernelPath())
                 .setInitrd(tree.getInitrdPath())
-                .setKsmeta(ksmeta)
+                .setKsmeta(Optional.of(ksmeta))
                 .setBreed(tree.getInstallType().getCobblerBreed())
                 .setOsVersion(tree.getInstallType().getCobblerOsVersion())
                 .setArch(tree.getChannel().getChannelArch().cobblerArch())
-                .setKernelOptions(tree.getKernelOptions())
-                .setKernelOptionsPost(tree.getKernelOptionsPost())
+                .setKernelOptions(Optional.of(tree.getKernelOptions()))
+                .setKernelOptionsPost(Optional.of(tree.getKernelOptionsPost()))
                 .build(cobblerConnection);
 
         tree.setCobblerId(distro.getUid());
@@ -82,18 +83,18 @@ public class CobblerDistroHelper {
      */
     public Distro createXenDistroFromTree(CobblerConnection cobblerConnection,
                                           KickstartableTree tree) {
-        Map<String, String> ksmeta = createKsMetadataFromTree(tree);
+        Map<String, Object> ksmeta = createKsMetadataFromTree(tree);
 
-        Distro xen = new Distro.Builder()
+        Distro xen = new Distro.Builder<String>()
                 .setName(tree.getCobblerXenDistroName())
                 .setKernel(tree.getKernelXenPath())
                 .setInitrd(tree.getInitrdXenPath())
-                .setKsmeta(ksmeta)
+                .setKsmeta(Optional.of(ksmeta))
                 .setBreed(tree.getInstallType().getCobblerBreed())
                 .setOsVersion(tree.getInstallType().getCobblerOsVersion())
                 .setArch(tree.getChannel().getChannelArch().cobblerArch())
-                .setKernelOptions(tree.getKernelOptions())
-                .setKernelOptionsPost(tree.getKernelOptionsPost())
+                .setKernelOptions(Optional.of(tree.getKernelOptions()))
+                .setKernelOptionsPost(Optional.of(tree.getKernelOptionsPost()))
                 .build(cobblerConnection);
 
         tree.setCobblerXenId(xen.getId());
@@ -107,17 +108,17 @@ public class CobblerDistroHelper {
      * @param tree tree containing information for updating the new Distro
      */
      public void updateDistroFromTree(Distro distro, KickstartableTree tree) {
-        Map<String, String> ksmeta = createKsMetadataFromTree(tree);
+        Map<String, Object> ksmeta = createKsMetadataFromTree(tree);
 
         distro.setName(CobblerCommand.makeCobblerName(tree));
         distro.setInitrd(tree.getInitrdPath());
         distro.setKernel(tree.getKernelPath());
         distro.setBreed(tree.getInstallType().getCobblerBreed());
         distro.setOsVersion(tree.getInstallType().getCobblerOsVersion());
-        distro.setKsMeta(ksmeta);
+        distro.setKsMeta(Optional.of(ksmeta));
         distro.setArch(tree.getChannel().getChannelArch().cobblerArch());
-        distro.setKernelOptions(tree.getKernelOptions());
-        distro.setKernelOptionsPost(tree.getKernelOptionsPost());
+        distro.setKernelOptions(Optional.of(tree.getKernelOptions()));
+        distro.setKernelOptionsPost(Optional.of(tree.getKernelOptionsPost()));
         distro.save();
     }
 
@@ -128,21 +129,21 @@ public class CobblerDistroHelper {
      * @param tree tree containing information for updating the new Distro
      */
     public void updateXenDistroFromTree(Distro distro, KickstartableTree tree) {
-        Map<String, String> ksmeta = createKsMetadataFromTree(tree);
+        Map<String, Object> ksmeta = createKsMetadataFromTree(tree);
 
         distro.setKernel(tree.getKernelXenPath());
         distro.setInitrd(tree.getInitrdXenPath());
         distro.setBreed(tree.getInstallType().getCobblerBreed());
         distro.setOsVersion(tree.getInstallType().getCobblerOsVersion());
-        distro.setKsMeta(ksmeta);
+        distro.setKsMeta(Optional.of(ksmeta));
         distro.setArch(tree.getChannel().getChannelArch().cobblerArch());
-        distro.setKernelOptions(tree.getKernelOptions());
-        distro.setKernelOptionsPost(tree.getKernelOptionsPost());
+        distro.setKernelOptions(Optional.of(tree.getKernelOptions()));
+        distro.setKernelOptionsPost(Optional.of(tree.getKernelOptionsPost()));
         distro.save();
     }
 
-    private Map<String, String> createKsMetadataFromTree(KickstartableTree tree) {
-        Map<String, String> ksmeta = new HashMap<>();
+    private Map<String, Object> createKsMetadataFromTree(KickstartableTree tree) {
+        Map<String, Object> ksmeta = new HashMap<>();
 
         KickstartUrlHelper helper = new KickstartUrlHelper(tree);
         ksmeta.put(KickstartUrlHelper.COBBLER_MEDIA_VARIABLE,
