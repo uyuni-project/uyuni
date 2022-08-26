@@ -44,7 +44,7 @@ class HandlerWrap:
             # upstream all requests
             componentType = getComponentType(req)
             initCFG(componentType)
-            initLOG(CFG.LOG_FILE, CFG.DEBUG)
+            initLOG(CFG.LOG_FILE, CFG.DEBUG, f"wsgi_{componentType}")
             log_debug(1, 'New request, component %s' % (componentType, ))
 
         # Instantiate the handlers

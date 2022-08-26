@@ -76,7 +76,7 @@ def set_close_on_exec(fd):
 # Init the log
 
 
-def initLOG(log_file="stderr", level=0):
+def initLOG(log_file="stderr", level=0, component=""):
     global LOG
 
     # check if it already setup
@@ -95,8 +95,8 @@ def initLOG(log_file="stderr", level=0):
     log_path = os.path.dirname(log_file)
     if log_file not in ('stderr', 'stdout') \
             and log_path and not os.path.exists(os.path.dirname(log_file)):
-        log_stderr("WARNING: log path not found; attempting to create %s" %
-                   log_path, sys.exc_info()[:2])
+        log_stderr("WARNING: log path not found; attempting to create %s for %s" %
+                   (log_path, component), sys.exc_info()[:2])
 
         # fetch uid, gid so we can do a "chown ..."
         if isSUSE():
@@ -108,13 +108,13 @@ def initLOG(log_file="stderr", level=0):
             os.makedirs(log_path)
             os.chown(log_path, apache_uid, apache_gid)
         except:
-            log_stderr("ERROR: unable to create log file path %s" % log_path,
+            log_stderr("ERROR: unable to create log file path %s for %s" % (log_path, component),
                        sys.exc_info()[:2])
             return
 
     # At this point, LOG is None and log_file is not None
     # Get a new LOG
-    LOG = rhnLog(log_file, level)
+    LOG = rhnLog(log_file, level, component)
     return 0
 
 # Convenient macro-type debugging function
@@ -166,8 +166,9 @@ def log_setreq(req):
 
 class rhnLog:
 
-    def __init__(self, log_file, level):
+    def __init__(self, log_file, level, component):
         self.level = level
+        self.component = component
         self.log_info = "0.0.0.0: "
         self.file = log_file
         self.pid = os.getpid()
@@ -223,6 +224,8 @@ class rhnLog:
         msg = "%s%s.%s" % (self.log_info, module, tbStack[callid][2])
         if args:
             msg = "%s%s" % (msg, repr(args))
+        if self.component:
+            msg = "%s%s" % (self.component, msg)
         self.writeMessage(msg)
 
     # send a message to the log file w/some extra data (time stamp, etc).
