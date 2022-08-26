@@ -1,3 +1,4 @@
+- Reduce the length of image channel URL (bsc#1201220)
 - Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
 - fix symlinks pointing to ongres-stringprep
 - Modify parameter type when communicating with the search server (bsc#1187028)
