@@ -109,17 +109,12 @@ BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
-BuildRequires:  jakarta-activation
-%if 0%{?rhel} || 0%{?fedora}
-BuildRequires:  glassfish-jaxb-core
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
 BuildRequires:  istack-commons-runtime
 BuildRequires:  java-11-openjdk-devel
 BuildRequires:  (glassfish-jaxb-api or jaxb-api)
-%else
-BuildRequires:  java-devel >= %{java_version}
-%endif
+BuildRequires:  (glassfish-activation-api or jakarta-activation)
 BuildRequires:  java-saml
 BuildRequires:  javamail
 BuildRequires:  javapackages-tools
@@ -134,6 +129,7 @@ BuildRequires:  jsch
 BuildRequires:  jta
 BuildRequires:  libxml2
 %if 0%{?rhel}
+BuildRequires:  glassfish-jaxb-core
 BuildRequires:  libxml2-devel
 %else
 BuildRequires:  libxml2-tools
@@ -186,16 +182,14 @@ Requires:       %{ehcache}
 Requires:       cobbler = 3.1.2
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       jakarta-activation
-%if 0%{?rhel} || 0%{?fedora}
-Requires:       glassfish-jaxb-core
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
 Requires:       (glassfish-jaxb-api or jaxb-api)
+Requires:       (glassfish-activtion-api or jakarta-activation)
 %if 0%{?rhel}
+Requires:       glassfish-jaxb-core
 Recommends:     rng-tools
-%endif
 %endif
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
@@ -208,11 +202,7 @@ Requires:       mvn(org.hibernate:hibernate-ehcache)
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       jade4j
-%if 0%{?rhel}
 Requires:       java-11-openjdk
-%else
-Requires:       java >= %{java_version}
-%endif
 Requires:       java-saml
 Requires:       javamail
 Requires:       javapackages-tools
@@ -379,11 +369,7 @@ Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
-%if 0%{?rhel}
 Requires:       java-11-openjdk
-%else
-Requires:       java >= %{java_version}
-%endif
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon
