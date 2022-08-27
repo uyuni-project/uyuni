@@ -10223,7 +10223,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="help.jsp.refguide.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Reference Guide</source>
-        <target/>
+        <target>Referenčná príručka @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.detailed" xml:space="preserve">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
