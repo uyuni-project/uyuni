@@ -131,9 +131,6 @@ artifacts:
     repository: Leap
   - artifact: jade4j
     repository: Uyuni_Other
-  - artifact: jakarta-activation-api
-    package: jakarta-activation
-    repository: Uyuni_Other
   - artifact: jakarta-persistence-api
     package: jpa-api
     repository: Uyuni_Other

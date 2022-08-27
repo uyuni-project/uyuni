@@ -49,7 +49,6 @@
         <dependency org="suse" name="jackson-core" rev="2.10.2" />
         <dependency org="suse" name="jackson-databind" rev="2.10.5.1" />
         <dependency org="suse" name="jade4j" rev="1.2.7" />
-        <dependency org="suse" name="jakarta-activation-api" rev="2.1.0" />
         <dependency org="suse" name="jakarta-persistence-api" rev="2.2.2" />
         <dependency org="suse" name="java-saml" rev="2.4.0" />
         <dependency org="suse" name="java-saml-core" rev="2.4.0" />
