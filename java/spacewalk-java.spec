@@ -178,7 +178,7 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 %if 0%{?suse_version}
 Requires:       classmate
 Requires:       glassfish-jaxb-api
-Requires:       glassfish-activtion-api
+Requires:       glassfish-activation-api
 %endif
 Requires:       %{ehcache}
 Requires:       cobbler = 3.1.2
