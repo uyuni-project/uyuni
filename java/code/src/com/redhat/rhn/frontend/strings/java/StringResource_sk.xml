@@ -9482,7 +9482,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="probeparam.passnomatch" xml:space="preserve">
         <source>The Password and Password Confirm did not match.</source>
-        <target/>
+        <target>Heslo a potvrdenie hesla sa nezhodujú.</target>
       </trans-unit>
       <trans-unit id="permission.configadmin.needed" xml:space="preserve">
         <source>The requested function requires a Configuration Admin or Organizational Admin role.</source>
@@ -9833,7 +9833,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt" xml:space="preserve">
         <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
-        <target/>
+        <target>Vybrali ste distribúciu alebo automaticky inštalovateľný strom, ktorý nie je kompatibilný s aktuálne vybraným typom virtualizácie.  Prosím, pred pokusom o nastavenie distribúcie vyberte inú distribúciu alebo zmeňte vybraný typ virtualizácie tohto profilu.</target>
       </trans-unit>
       <trans-unit id="snapshots.childchannel" xml:space="preserve">
         <source>Child Channels Updated</source>
@@ -9933,7 +9933,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="channel.manage.merge.finished" xml:space="preserve">
         <source>{0} Package(s) have been added and {1} Package(s) have been removed from the channel.</source>
-        <target/>
+        <target>{0} balík(y) boli pridané a {1} balík(y) boli odstránené z kanála.</target>
       </trans-unit>
       <trans-unit id="system.select.inactive" xml:space="preserve">
         <source>Select Inactive</source>
@@ -10207,7 +10207,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="help.jsp.refguide.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Reference Guide</source>
-        <target/>
+        <target>Referenčná príručka @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.detailed" xml:space="preserve">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
