@@ -177,6 +177,8 @@ Requires:       cglib
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 %if 0%{?suse_version}
 Requires:       classmate
+Requires:       glassfish-jaxb-api
+Requires:       glassfish-activtion-api
 %endif
 Requires:       %{ehcache}
 Requires:       cobbler = 3.1.2
@@ -185,10 +187,10 @@ Requires:       dwr >= 3
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
-Requires:       (glassfish-jaxb-api or jaxb-api)
-Requires:       (glassfish-activtion-api or jakarta-activation)
 %if 0%{?rhel}
 Requires:       glassfish-jaxb-core
+Requires:       jaxb-api
+Requires:       jakarta-activation
 Recommends:     rng-tools
 %endif
 Requires:       %{apache_commons_compress}
