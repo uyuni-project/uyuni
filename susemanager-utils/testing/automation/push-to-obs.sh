@@ -97,6 +97,9 @@ if [ "${SSHKEY}" != "" ]; then
   USESSHKEY="-s /root/.ssh/id_rsa"
 fi
 
+COOKIEJAR=$(mktemp /tmp/osc_cookiejar.XXXXXX)
+MOUNTCOOKIEJAR="--mount type=bind,source=${COOKIEJAR},target=/root/.osc_cookiejar"
+
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
@@ -115,13 +118,13 @@ for p in ${PACKAGES};do
     CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc ${USESSHKEY} -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
         echo "Building ${p} in parallel"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
         pid=${!}
         PIDS="${PIDS} ${pid}"
         ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
     else
         echo "Building ${p}"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
 
@@ -135,7 +138,7 @@ for p in ${IMAGES};do
         ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
     else
         echo "Building ${p}"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
 
@@ -160,6 +163,9 @@ for i in $PIDS;do
         PRET=-1
     fi
 done
+
+# cleanup temp file
+rm -f ${COOKIEJAR}
 
 if [ $PRET -ne 0 ];then
     echo "The following packages failed to build:"
