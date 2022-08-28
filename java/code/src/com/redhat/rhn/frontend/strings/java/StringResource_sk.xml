@@ -6566,7 +6566,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
-        <target>Automatická inštalácia nebola naplánovaná na &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt;, pretože profil balíkov neobsahoval balík 'up2date'. Môže byť potrebná aktualizácia profilu balíkov tohto systému.</target>
+        <target>Automatická inštalácia nebola naplánovaná pre &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt;, pretože profil balíkov neobsahoval balík 'up2date'. Môže byť potrebná aktualizácia profilu balíkov tohto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -9466,510 +9466,512 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="arm Debian" xml:space="preserve">
         <source>arm Debian</source>
-        <target/>
+        <target>arm Debian</target>
       </trans-unit>
       <trans-unit id="mips Debian" xml:space="preserve">
         <source>mips Debian</source>
-        <target/>
+        <target>mips Debian</target>
       </trans-unit>
       <trans-unit id="AArch64" xml:space="preserve">
         <source>ARM aarch64</source>
-        <target/>
+        <target>ARM aarch64</target>
       </trans-unit>
       <trans-unit id="PPC64LE" xml:space="preserve">
         <source>PPC64LE</source>
-        <target/>
+        <target>PPC64LE</target>
       </trans-unit>
       <trans-unit id="probeparam.passnomatch" xml:space="preserve">
         <source>The Password and Password Confirm did not match.</source>
-        <target/>
+        <target>Heslo a potvrdenie hesla sa nezhodujú.</target>
       </trans-unit>
       <trans-unit id="permission.configadmin.needed" xml:space="preserve">
         <source>The requested function requires a Configuration Admin or Organizational Admin role.</source>
-        <target/>
+        <target>Požadovaná funkcia vyžaduje rolu administrátora konfigurácie alebo administrátora organizácie.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscripttype" xml:space="preserve">
         <source>Only script types of "pre" and "post" are allowed for kickstarts.</source>
-        <target/>
+        <target>Pre položky kickstart sú povolené len typy skriptov "pre" a "post".</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscriptname" xml:space="preserve">
         <source>Script Name must be larger than 0 and fewer than 40 characters.</source>
-        <target/>
+        <target>Názov skriptu musí byť väčší ako 0 a menší ako 40 znakov.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscript" xml:space="preserve">
         <source>You have specified an invalid kickstart script.</source>
-        <target/>
+        <target>Zadali ste neplatný skript kickstart.</target>
       </trans-unit>
       <trans-unit id="filter.kickstart.label" xml:space="preserve">
         <source>Label</source>
-        <target/>
+        <target>Označenie</target>
       </trans-unit>
       <trans-unit id="package.remove.cant.rollback" xml:space="preserve">
         <source>One or more of the packages you have selected for removal below are not contained in
             a software channel that this system is subscribed to.  If you choose to continue with the removal
             you will not be able to rollback this system to this snapshot or any prior snapshot.</source>
-        <target/>
+        <target>Jeden alebo viacero balíkov, ktoré ste vybrali na odstránenie nižšie, nie sú obsiahnuté
+            v softvérovom kanáli, ku ktorému je tento systém prihlásený.  Ak sa rozhodnete pokračovať v odstraňovaní
+            nebudete môcť tento systém vrátiť späť na túto snímku ani na žiadnu predchádzajúcu snímku.</target>
       </trans-unit>
       <trans-unit id="list.filter.iprange" xml:space="preserve">
         <source>Single Ip Address</source>
-        <target/>
+        <target>Jedna IP adresa</target>
       </trans-unit>
       <trans-unit id="api.kickstart.iprange.duplicate" xml:space="preserve">
         <source>The Ip Range specified, {0}, conflicts with an existing Ip Range.</source>
-        <target/>
+        <target>Zadaný rozsah Ip {0} je v konflikte s existujúcim rozsahom Ip.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.ip.invalid" xml:space="preserve">
         <source>The Ip Address specified, {0}, is not valid..</source>
-        <target/>
+        <target>Zadaná Ip adresa, {0}, nie je platná.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.filelist.exists" xml:space="preserve">
         <source>A file list with label {0} already exists.</source>
-        <target/>
+        <target>Zoznam súborov s označením {0} už existuje.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.filelist.notfound" xml:space="preserve">
         <source>A file list with label {0} could not be found.</source>
-        <target/>
+        <target>Zoznam súborov s označením {0} sa nepodarilo nájsť.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.keys.exists" xml:space="preserve">
         <source>The specified key conflicts with an existing key.</source>
-        <target/>
+        <target>Zadaný kľúč je v konflikte s existujúcim kľúčom.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.keys.delete" xml:space="preserve">
         <source>The specified key cannot be deleted.</source>
-        <target/>
+        <target>Zadaný kľúč nie je možné vymazať.</target>
       </trans-unit>
       <trans-unit id="Compare" xml:space="preserve">
         <source>Compare</source>
-        <target/>
+        <target>Porovnať</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.alreadyexists" xml:space="preserve">
         <source>A Custom Key with this label already exists.</source>
-        <target/>
+        <target>Vlastný kľúč s týmto označením už existuje.</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.tooshort" xml:space="preserve">
         <source>A Custom Key label and description must be at least two characters long.</source>
-        <target/>
+        <target>Označenie a popis vlastného kľúča musia byť dlhé aspoň dva znaky.</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.toolong" xml:space="preserve">
         <source>A Custom Key label can only be 64 characters long at maximum.</source>
-        <target/>
+        <target>Označenie vlastného kľúča môže mať maximálne 64 znakov.</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.descr_toolong" xml:space="preserve">
         <source>A Custom Key description can only be 4000 characters long at maximum.</source>
-        <target/>
+        <target>Popis vlastného kľúča môže mať maximálne 4000 znakov.</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.invalid" xml:space="preserve">
         <source>A Custom Key label can only contain letters, numbers, hyphens (-), and underscores (_).</source>
-        <target/>
+        <target>Označenie vlastného kľúča môže obsahovať len písmená, číslice, pomlčky (-) a podčiarkovníky (_).</target>
       </trans-unit>
       <trans-unit id="system.customkey.addsuccess" xml:space="preserve">
         <source>Successfully added 1 custom key.</source>
-        <target/>
+        <target>Úspešne bol pridaný 1 vlastný kľúč.</target>
       </trans-unit>
       <trans-unit id="system.customkey.deletesuccess" xml:space="preserve">
         <source>Successfully deleted 1 custom key.</source>
-        <target/>
+        <target>Úspešne bol vymazaný 1 vlastný kľúč.</target>
       </trans-unit>
       <trans-unit id="channel.java.package.deletesuccess" xml:space="preserve">
         <source>Successfully deleted {0} packages.</source>
-        <target/>
+        <target>Úspešne boli vymazané {0} balíky.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartinstalltype" xml:space="preserve">
         <source>Invalid autoinstall type: {0}.</source>
-        <target/>
+        <target>Neplatný typ automatickej inštalácie: {0}.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgfp" xml:space="preserve">
         <source>Invalid GPG Fingerprint</source>
-        <target/>
+        <target>Neplatný odtlačok GPG</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgkey" xml:space="preserve">
         <source>Invalid GPG Key Id</source>
-        <target/>
+        <target>Neplatné Id kľúča GPG</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgurl" xml:space="preserve">
         <source>Invalid GPG Url</source>
-        <target/>
+        <target>Neplatné Url GPG</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname" xml:space="preserve">
         <source>Invalid Channel Name</source>
-        <target/>
+        <target>Neplatný názov kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.missing" xml:space="preserve">
         <source>Channel name must be specified</source>
-        <target/>
+        <target>Názov kanála musí byť zadaný</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.regex" xml:space="preserve">
         <source>Invalid channel name, please see the format described below</source>
-        <target/>
+        <target>Neplatný názov kanála, prosím, pozrite si formát opísaný nižšie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
         <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target/>
+        <target>Názov kanála musí mať aspoň 6 znakov, začínať písmenom a môže obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_'), číslice, medzery, zátvorky a lomky ('/').</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
-        <target/>
+        <target>Kanály @@VENDOR_NAME@@ vyžadujú oprávnenia administrátora</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.minlength" xml:space="preserve">
         <source>Channel name must be at least {0} characters long</source>
-        <target/>
+        <target>Názov kanála musí mať aspoň {0} znakov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.maxlength" xml:space="preserve">
         <source>Channel name can not exceed {0} characters long</source>
-        <target/>
+        <target>Názov kanála nesmie byť dlhší ako {0} znakov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.nameinuse" xml:space="preserve">
         <source>The channel name '{0}' is already in use, please enter a different name</source>
-        <target/>
+        <target>Názov kanála '{0}' sa už používa, prosím, zadajte iný názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.namereserved" xml:space="preserve">
         <source>The channel name '{0}' is reserved, please enter a different name</source>
-        <target/>
+        <target>Názov kanála '{0}' je rezervovaný, prosím, zadajte iný názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel" xml:space="preserve">
         <source>Invalid Channel Label</source>
-        <target/>
+        <target>Neplatné označenie kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.missing" xml:space="preserve">
         <source>Channel label must be specified</source>
-        <target/>
+        <target>Označenie kanála musí byť zadané</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.regex" xml:space="preserve">
         <source>Invalid channel label, please see the format described below</source>
-        <target/>
+        <target>Neplatné označenie kanála, prosím, pozrite si formát opísaný nižšie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
         <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target/>
+        <target>Označenie kanála musí mať aspoň 6 znakov, začínať písmenom alebo číslicou a môže obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_') a číslice.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
-        <target/>
+        <target>Kanály @@VENDOR_NAME@@ vyžadujú oprávnenia administrátora</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.minlength" xml:space="preserve">
         <source>Channel label must be at least {0} characters long</source>
-        <target/>
+        <target>Označenie kanála musí mať aspoň {0} znakov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.labelinuse" xml:space="preserve">
         <source>The channel label '{0}' is already in use, please enter a different name</source>
-        <target/>
+        <target>Označenie kanála '{0}' sa už používa, prosím, zadajte iný názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.labelreserved" xml:space="preserve">
         <source>The channel label '{0}' is reserved, please enter a different name</source>
-        <target/>
+        <target>Označenie kanála '{0}' je rezervované, prosím, zadajte iný názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelsummary" xml:space="preserve">
         <source>Invalid Channel Summary</source>
-        <target/>
+        <target>Súhrn neplatných kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.configuration.channel.deleted" xml:space="preserve">
         <source>Channel &lt;strong&gt;'{0}'&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;'{0}'&lt;/strong&gt; bol vymazaný.</target>
       </trans-unit>
       <trans-unit id="distribution.tree.exists" xml:space="preserve">
         <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
-        <target/>
+        <target>Už existuje distribúcia s názvom '{0}'.  Prosím, vyberte iný názov.</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ Channels cannot be deleted, only custom channels can.</source>
-        <target/>
+        <target>Kanály @@VENDOR_NAME@@ nemôžu byť vymazané, iba vlastné kanály.</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.haschild" xml:space="preserve">
         <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
-        <target/>
+        <target>Tento kanál má pridružené kanály potomkov.  Najskôr musíte vymazať tieto kanály a až potom vymazať rodiča.</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.hasclones" xml:space="preserve">
         <source>Unable to delete channel. The channel you have tried to delete has been cloned. You must delete the clones before you can delete this channel. Cloned channels include ({0}{1}).</source>
-        <target/>
+        <target>Nie je možné odstrániť kanál. Kanál, ktorý ste sa pokúsili vymazať, bol klonovaný. Pred vymazaním tohto kanála musíte vymazať klony. Klonované kanály zahŕňajú ({0}{1}).</target>
       </trans-unit>
       <trans-unit id="api.kickstart.tree.notfound" xml:space="preserve">
         <source>The autoinstallable tree could not be found.  You may not have access to the requested tree.</source>
-        <target/>
+        <target>Automaticky inštalovateľný strom sa nepodarilo nájsť.  Možno nemáte prístup k požadovanému stromu.</target>
       </trans-unit>
       <trans-unit id="message.channelcreated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;{0}&lt;/strong&gt; vytvorený.</target>
       </trans-unit>
       <trans-unit id="message.channelcloned" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; cloned from channel &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;{0}&lt;/strong&gt; klonovaný z kanála &lt;strong&gt;{1}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="message.cloneselect" xml:space="preserve">
         <source>You may now wish to clone the patches associated with &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target>Teraz možno budete chcieť klonovať opravy spojené s &lt;strong&gt;{0}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="message.channeldeleted" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
       </trans-unit>
       <trans-unit id="message.channel.delete.systemssubscribed" xml:space="preserve">
         <source>There are currently systems subscribed to this channel. Please confirm system channel removal by selecting the unsubscribe checkbox.</source>
-        <target/>
+        <target>V súčasnosti sú k tomuto kanálu prihlásené systémy. Prosím, potvrďte odstránenie systémového kanála výberom zaškrtávacieho poľa odhlásenia.</target>
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.has-distros" xml:space="preserve">
         <source>There are currently autoinstallable distributions associated to this channel. Please disassociate or delete the autoinstallable distributions before proceeding to delete the channel.</source>
-        <target/>
+        <target>V súčasnosti sú k tomuto kanálu priradené automaticky inštalovateľné distribúcie. Pred pokračovaním vo vymazávaní kanála zrušte priradenie alebo vymažte automaticky inštalovateľné distribúcie.</target>
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.no-taskomatic" xml:space="preserve">
         <source>The scheduling service appears down, channel cannot be deleted at the moment. Please contact your administrator.</source>
-        <target/>
+        <target>Služba plánovania sa zdá byť nefunkčná, kanál nie je možné momentálne vymazať. Prosím, kontaktujte svojho administrátora.</target>
       </trans-unit>
       <trans-unit id="message.channelupdated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
-        <target/>
+        <target>Kanál &lt;strong&gt;{0}&lt;/strong&gt; aktualizovaný.</target>
       </trans-unit>
       <trans-unit id="message.failactionsuccess" xml:space="preserve">
         <source>Status of action &lt;strong&gt;{0}&lt;/strong&gt; has been set to failed.</source>
-        <target/>
+        <target>Stav akcie &lt;strong&gt;{0}&lt;/strong&gt; bol nastavený na neúspešný.</target>
       </trans-unit>
       <trans-unit id="message.syncscheduled" xml:space="preserve">
         <source>Repository sync scheduled for {0}.</source>
-        <target/>
+        <target>Synchronizácia repozitára naplánovaná pre {0}.</target>
       </trans-unit>
       <trans-unit id="message.syncinprogress" xml:space="preserve">
         <source>Repository sync is running.</source>
-        <target/>
+        <target>Synchronizácia repozitára beží.</target>
       </trans-unit>
       <trans-unit id="message.channelsubscribers" xml:space="preserve">
         <source>Per-User subscription restrictions may be applied in the Subscribers tab</source>
-        <target/>
+        <target>Obmedzenia predplatného na používateľa možno uplatniť na karte Predplatitelia</target>
       </trans-unit>
       <trans-unit id="message.bunch.singlescheduled" xml:space="preserve">
         <source>Single run of &lt;strong&gt;{0}&lt;/strong&gt; bunch was scheduled for {1}.</source>
-        <target/>
+        <target>Samostatné spustenie skupiny &lt;strong&gt;{0}&lt;/strong&gt; bolo naplánované pre {1}.</target>
       </trans-unit>
       <trans-unit id="message.schedulecreated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target/>
+        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; vytvorený.</target>
       </trans-unit>
       <trans-unit id="message.scheduleupdated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been updated.</source>
-        <target/>
+        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; bol aktualizovaný.</target>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target/>
+        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
-        <target/>
+        <target>Plán &lt;strong&gt;{0}&lt;/strong&gt; už nie je aktívny. Je súčasťou systému len pre informačné účely a bude automaticky vymazaný.</target>
       </trans-unit>
       <trans-unit id="message.scheduledisabled" xml:space="preserve">
         <source>Please set frequency for the new schedule.</source>
-        <target/>
+        <target>Prosím, nastavte frekvenciu pre nový plán.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.notenoughmemory" xml:space="preserve">
         <source>Red Hat Enterprise Linux 7 and higher guests require at least 1024 MB of memory.</source>
-        <target/>
+        <target>Hostia Red Hat Enterprise Linux 7 a vyššie vyžadujú aspoň 1024 MB pamäte.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.notenoughmemorysuse" xml:space="preserve">
         <source>SUSE Linux Enterprise Server guests require at least 512 MB of memory.</source>
-        <target/>
+        <target>Hostia SUSE Linux Enterprise Server vyžadujú aspoň 512 MB pamäte.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidvirt" xml:space="preserve">
         <source>Para-Virtualization is unsupported with the selected autoinstallable tree or distribution.</source>
-        <target/>
+        <target>Para-virtualizácia nie je podporovaná s vybraným automaticky inštalovateľným stromom alebo distribúciou.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.nodistribution" xml:space="preserve">
         <source>Selected kickstartable tree isn't available at the moment. Please check cobbler functionality.</source>
-        <target/>
+        <target>Vybraný strom schopný kickstart momentálne nie je k dispozícii. Prosím, skontrolujte funkčnosť pre cobbler.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt" xml:space="preserve">
         <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
-        <target/>
+        <target>Vybrali ste distribúciu alebo automaticky inštalovateľný strom, ktorý nie je kompatibilný s aktuálne vybraným typom virtualizácie.  Prosím, pred pokusom o nastavenie distribúcie vyberte inú distribúciu alebo zmeňte vybraný typ virtualizácie tohto profilu.</target>
       </trans-unit>
       <trans-unit id="snapshots.childchannel" xml:space="preserve">
         <source>Child Channels Updated</source>
-        <target/>
+        <target>Kanály potomkov aktualizované</target>
       </trans-unit>
       <trans-unit id="snapshots.basechannel" xml:space="preserve">
         <source>Base Channel Updated</source>
-        <target/>
+        <target>Základný kanál aktualizovaný</target>
       </trans-unit>
       <trans-unit id="snapshots.entitlements" xml:space="preserve">
         <source>System Types Updated</source>
-        <target/>
+        <target>Typy systémov aktualizované</target>
       </trans-unit>
       <trans-unit id="errata.updates.noncritical" xml:space="preserve">
         <source>Non-Critical</source>
-        <target/>
+        <target>Nekritické</target>
       </trans-unit>
       <trans-unit id="snapshots.configchannel" xml:space="preserve">
         <source>Configuration Channels Updated</source>
-        <target/>
+        <target>Konfiguračné kanály aktualizované</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.neversynced" xml:space="preserve">
         <source>This channel has never been synced to external repositories.</source>
-        <target/>
+        <target>Tento kanál nebol nikdy synchronizovaný s externými repozitármi.</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.updated" xml:space="preserve">
         <source>{0} repository information was successfully updated</source>
-        <target/>
+        <target>Informácie o repozitári {0} boli úspešne aktualizované</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
-        <target/>
+        <target>Označenie repozitára '{0}' sa už používa, prosím, zadajte iný názov</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
-        <target/>
+        <target>Typ repozitára '{0}' je neplatný alebo sa už používa s daným url, prosím, vyberte iný typ</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinuse" xml:space="preserve">
         <source>There's already a defined repository with given url, please reuse it.</source>
-        <target/>
+        <target>Už existuje definovaný repozitár s daným url, prosím, použite ho znova.</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve">
         <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
-        <target/>
+        <target>Zadané url je neplatné. Prosím, zadajte url s platnou syntaxou (napr. uveďte protokol).</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.clientcertmissing" xml:space="preserve">
         <source>Please set SSL Client Certificate, if you've set SSL Client Key.</source>
-        <target/>
+        <target>Prosím, nastavte certifikát klienta SSL, ak ste nastavili kľúč klienta SSL.</target>
       </trans-unit>
       <trans-unit id="ssm.provision.errors" xml:space="preserve">
         <source>Skipped {0} system(s):</source>
-        <target/>
+        <target>Preskočené {0} systémy:</target>
       </trans-unit>
       <trans-unit id="ssm.provision.records.created" xml:space="preserve">
         <source>Successfully created records for {0} system(s).{1}</source>
-        <target/>
+        <target>Úspešne vytvorené záznamy pre {0} systém(y).{1}</target>
       </trans-unit>
       <trans-unit id="ssm.provision.scheduled" xml:space="preserve">
         <source>Successfully scheduled {0} system(s) for provisioning.{1}</source>
-        <target/>
+        <target>Úspešne naplánované {0} systémy na poskytovanie.{1}</target>
       </trans-unit>
       <trans-unit id="ssm.package.install.operationname" xml:space="preserve">
         <source>Schedule Package Installations</source>
-        <target/>
+        <target>Naplánovať inštalácie balíkov</target>
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve">
         <source>Schedule Package Upgrades</source>
-        <target/>
+        <target>Naplánovať aktualizácie balíkov</target>
       </trans-unit>
       <trans-unit id="ssm.package.verify.operationname" xml:space="preserve">
         <source>Schedule Package Verifications</source>
-        <target/>
+        <target>Naplánovať overenia balíkov</target>
       </trans-unit>
       <trans-unit id="ssm.server.delete.operationname" xml:space="preserve">
         <source>Server Delete</source>
-        <target/>
+        <target>Vymazanie servera</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmmessage" xml:space="preserve">
         <source>Systems Transferred</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Systémy prenesené</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmbutton" xml:space="preserve">
         <source>Transfer Systems</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Preniesť systémy</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.orgnone" xml:space="preserve">
         <source>This organization has no trusted organizations.  Systems can only be migrated between organizations with defined trusts.</source>
-        <target/>
+        <target>Táto organizácia nemá žiadne dôveryhodné organizácie.  Systémy je možné migrovať medzi organizáciami len s definovanými dôveryhodnosťami.</target>
       </trans-unit>
       <trans-unit id="ssm.misc.changeprefs.changed" xml:space="preserve">
         <source>Preferences changed for selected systems.</source>
-        <target/>
+        <target>Predvoľby sa zmenili pre vybrané systémy.</target>
       </trans-unit>
       <trans-unit id="ssm.misc.changeprefs.updatesscheduled" xml:space="preserve">
         <source>Selected systems will be fully updated in accordance with new Auto Errata Update setting.</source>
-        <target/>
+        <target>Vybrané systémy budú kompletne aktualizované v súlade s novým nastavením automatickej aktualizácie opráv chýb.</target>
       </trans-unit>
       <trans-unit id="channel.manage.merge.finished" xml:space="preserve">
         <source>{0} Package(s) have been added and {1} Package(s) have been removed from the channel.</source>
-        <target/>
+        <target>{0} balík(y) boli pridané a {1} balík(y) boli odstránené z kanála.</target>
       </trans-unit>
       <trans-unit id="system.select.inactive" xml:space="preserve">
         <source>Select Inactive</source>
-        <target/>
+        <target>Vybrať neaktívne</target>
       </trans-unit>
       <trans-unit id="package.jsp.key" xml:space="preserve">
         <source>Signing Key</source>
-        <target/>
+        <target>Podpisový kľúč</target>
       </trans-unit>
       <trans-unit id="package.jsp.key.unkown" xml:space="preserve">
         <source>(Unknown)</source>
-        <target/>
+        <target>(Neznámy)</target>
       </trans-unit>
       <trans-unit id="request.post.check" xml:space="preserve">
         <source>This action requires a POST request, but this was not one.</source>
-        <target/>
+        <target>Táto akcia vyžaduje požiadavku POST, ale táto to nebola.</target>
       </trans-unit>
       <trans-unit id="channeltarget.success" xml:space="preserve">
         <source>Subscribed {0} system(s) to {1}.</source>
-        <target/>
+        <target>Prihlásené {0} systém(y) k {1}.</target>
       </trans-unit>
       <trans-unit id="error.config.revnum.too-old" xml:space="preserve">
         <source>The specified revision number must be greater than the current revision number.</source>
-        <target/>
+        <target>Zadané číslo revízie musí byť väčšie ako aktuálne číslo revízie.</target>
       </trans-unit>
       <trans-unit id="error.config.revnum.invalid" xml:space="preserve">
         <source>Please specify a valid revision number.</source>
-        <target/>
+        <target>Prosím, zadajte platné číslo revízie.</target>
       </trans-unit>
       <trans-unit id="ssm.subscription.operation.label" xml:space="preserve">
         <source>Channel Subscription Updates</source>
-        <target/>
+        <target>Aktualizácie predplatného kanálov</target>
       </trans-unit>
       <trans-unit id="ssm.base.subscription.operation.label" xml:space="preserve">
         <source>Base Channel Subscription Updates</source>
-        <target/>
+        <target>Aktualizácie predplatného základných kanálov</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.distro.syncfail" xml:space="preserve">
         <source>
@@ -9988,36 +9990,51 @@ Please check:
 
 for more detailed errors. If you don't resolve the errors the autoinstallable
 tree will not be usable for autoinstalling.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">
+Nasleduje zoznam chýb, ktoré sa zhromaždili pri pokusoch @@PRODUCT_NAME@@ o synchronizáciu
+automaticky inštalovateľných distribúcií z @@PRODUCT_NAME@@ do severa Cobbler.
+Tieto chyby musia byť opravené, aby boli distribúcie k dispozícii pre systémy
+automatickej inštalácie:
+
+{0}
+
+Prosím, skontrolujte:
+
+/var/log/rhn/rhn_taskomatic_daemon.log and
+/var/log/rhn/rhn_web_ui.log
+/var/log/cobbler/cobbler.log
+
+či nie sú k dispozícii podrobnejšie informácie o chybách. Ak chyby nevyriešite, automaticky
+inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</target>
       </trans-unit>
       <trans-unit id="errata.delete.msg" xml:space="preserve">
         <source>Successfully deleted {0} patches.</source>
-        <target/>
+        <target>Úspešne boli vymazané {0} opravy.</target>
       </trans-unit>
       <trans-unit id="message.syncschedule.disabled" xml:space="preserve">
         <source>Schedule has been disabled</source>
-        <target/>
+        <target>Plán bol zakázaný</target>
       </trans-unit>
       <trans-unit id="repos.jsp.message.invalidcron" xml:space="preserve">
         <source>Invalid schedule entry: {0}</source>
-        <target/>
+        <target>Neplatný záznam plánu: {0}</target>
       </trans-unit>
       <!-- SUSE Studio -->
       <trans-unit id="credentials.message.updated" xml:space="preserve">
         <source>Your credentials were successfully updated.</source>
-        <target/>
+        <target>Vaše prihlasovacie údaje boli úspešne aktualizované.</target>
       </trans-unit>
       <trans-unit id="credentials.message.deleted" xml:space="preserve">
         <source>Your credentials were successfully deleted.</source>
-        <target/>
+        <target>Vaše prihlasovacie údaje boli úspešne vymazané.</target>
       </trans-unit>
       <trans-unit id="credentials.message.incomplete" xml:space="preserve">
         <source>Your credentials are incomplete, at least username and password are needed.</source>
-        <target/>
+        <target>Vaše prihlasovacie údaje sú neúplné, je potrebné aspoň používateľské meno a heslo.</target>
       </trans-unit>
       <trans-unit id="images.message.error.nocreds" xml:space="preserve">
         <source>It looks like you did not enter valid credentials for talking to SUSE Studio, please check &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt;.</source>
-        <target/>
+        <target>Vyzerá to, že ste nezadali platné prihlasovacie údaje na komunikáciu so službou SUSE Studio, prosím, skontrolujte &lt;a href="/rhn/account/Credentials.do"&gt;tu&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="images.message.error.connection" xml:space="preserve">
         <source>There was a problem connecting to SUSE Studio, you might want to review your configuration &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt; or try again later.</source>
@@ -10513,15 +10530,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target/>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
-        <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target/>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10923,18 +10940,18 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="new"/>
       </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>

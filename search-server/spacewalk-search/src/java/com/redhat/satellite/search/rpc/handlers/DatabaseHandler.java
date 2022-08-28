@@ -22,7 +22,8 @@ import com.redhat.satellite.search.index.Result;
 import com.redhat.satellite.search.index.QueryParseException;
 import com.redhat.satellite.search.scheduler.ScheduleManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import redstone.xmlrpc.XmlRpcFault;
 
@@ -46,7 +47,7 @@ import java.util.Map;
  */
 public class DatabaseHandler {
 
-    private static Logger log = Logger.getLogger(DatabaseHandler.class);
+    private static Logger log = LogManager.getLogger(DatabaseHandler.class);
     private DatabaseManager databaseManager;
     /**
      * Constructor
@@ -62,6 +63,22 @@ public class DatabaseHandler {
         databaseManager = dbMgr;
     }
 
+    /**
+     * Search database - using session id as String to avoid Integer overflow
+     *
+     * @param sessionId
+     *            user's application session id
+     * @param namespace
+     *            namespace query is located in
+     * @param query
+     *            search query
+     * @return list of document ids as results
+     * @throws XmlRpcFault something bad happened
+     */
+    public List<Result> search(String sessionId, String namespace, String query)
+            throws XmlRpcFault {
+        return search(Long.parseLong(sessionId), namespace, query);
+    }
     /**
      * Search database
      *

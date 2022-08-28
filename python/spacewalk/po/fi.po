@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-01 18:13+0000\n"
+"POT-Creation-Date: 2022-07-21 11:57+0000\n"
 "PO-Revision-Date: 2021-03-23 15:57+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/backend/fi/"
@@ -171,7 +171,7 @@ msgstr "Virheellinen arvo ”%s” kohteelle %s (%s)"
 msgid "Invalid system_id/action_id pair."
 msgstr "Virheellinen järjestelmä/toimintatunniste-pari."
 
-#: ../server/handlers/xmlrpc/up2date.py:249
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Virheellinen arvo %s (%s)"

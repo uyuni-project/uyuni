@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-config
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -31,8 +31,8 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.3.8
-Release:        1
+Version:        4.4.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -45,12 +45,12 @@ BuildRequires:  perl-generators
 %endif
 %if 0%{?rhel} || 0%{?fedora}
 Requires(post): chkconfig
-Requires(preun): chkconfig
+Requires(preun):chkconfig
 # This is for /sbin/service
-Requires(preun): initscripts
+Requires(preun):initscripts
 %endif
 # We need package httpd to be able to assign group apache in files section
-Requires(pre): %{apachepkg}
+Requires(pre):  %{apachepkg}
 Requires:       openssl
 BuildRequires:  uyuni-base-common
 Requires(pre):  uyuni-base-common
@@ -61,8 +61,8 @@ Requires(pre):  uyuni-base-common
 BuildRequires:  openssl
 BuildRequires:  sudo
 %endif
-Requires:       (apache2-mod_xsendfile or mod_xsendfile)
 Requires:       diffutils
+Requires:       (apache2-mod_xsendfile or mod_xsendfile)
 
 %description
 Common Spacewalk configuration files and templates.
@@ -154,7 +154,6 @@ if [ -L /etc/pki/tls/private/spacewalk.key ]; then
   cp /etc/pki/tls/private/spacewalk.key /etc/pki/tls/private/uyuni.key
 fi
 
-
 %post
 %if 0%{?suse_version}
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
@@ -189,7 +188,6 @@ if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task" /etc/rhn/rhn.conf >/de
 fi
 ### END
 
-
 %posttrans
 # restore the cert if we lost it
 if [ -e /etc/pki/tls/certs/uyuni.crt ]; then
@@ -207,12 +205,14 @@ if [ -e /etc/pki/tls/private/uyuni.key ]; then
   fi
 fi
 
-if [ ! -f /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ] ; then
+if [ -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT ] ; then
+  if [ ! -f /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ] ; then
     if diff -qs /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT ; then
-        mv /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+      mv /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
     else
-        cp /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+      cp /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
     fi
+  fi
 fi
 
 %changelog

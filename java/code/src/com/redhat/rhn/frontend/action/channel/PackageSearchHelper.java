@@ -81,7 +81,7 @@ public class PackageSearchHelper {
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
         List<Object> args = new ArrayList<>();
-        args.add(sessionId);
+        args.add(sessionId.toString());
         args.add("package");
         args.add(preprocessSearchString(searchString, mode, pkgArchLabels));
         args.add(fineGrained);

@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-koan
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -35,8 +35,8 @@ Summary:        Support package for spacewalk koan interaction
 License:        GPL-2.0-only
 Group:          System Environment/Kernel
 Name:           spacewalk-koan
-Version:        4.3.5
-Release:        1
+Version:        4.4.0
+Release:        0
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/tools/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni

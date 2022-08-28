@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -29,10 +29,10 @@
 
 Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
-License:        GPL-2.0-only AND Apache-2.0
+License:        Apache-2.0 AND GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.5
-Release:        1
+Version:        4.4.0
+Release:        0
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
 # git clone https://github.com/spacewalkproject/spacewalk.git
@@ -43,15 +43,17 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
+BuildRequires:  %{oro}
 BuildRequires:  ant
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-lang3
 BuildRequires:  apache-commons-logging
-BuildRequires:  apache-mybatis
+BuildRequires:  mvn(org.mybatis:mybatis)
+BuildRequires:  mvn(org.apache.commons:commons-ognl)
+BuildRequires:  mvn(javassist:javassist)
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
-BuildRequires:  %{oro}
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
 BuildRequires:  lucene == 2.4.1
@@ -69,14 +71,16 @@ BuildRequires:  systemd-rpm-macros
 BuildRequires:  uyuni-base-common
 BuildRequires:  zip
 Requires(pre):  uyuni-base-common
+Requires:       %{oro}
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
-Requires:       apache-mybatis
+Requires:       mvn(org.mybatis:mybatis)
+Requires:       mvn(org.apache.commons:commons-ognl)
+Requires:       mvn(javassist:javassist)
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
-Requires:       %{oro}
 Requires:       javapackages-tools
 Requires:       lucene == 2.4.1
 Requires:       objectweb-asm
@@ -85,8 +89,8 @@ Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Obsoletes:      rhn-search < 5.3.0
-Requires:       log4j12
-BuildRequires:  log4j12
+Requires:       log4j
+BuildRequires:  log4j
 
 %description
 This package contains the code for the Full Text Search Server for
@@ -121,7 +125,7 @@ install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_sbindir}
 install -p -m 644 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
 install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
-install -p -m 644 src/config/log4j.properties $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes/log4j.properties
+install -p -m 644 src/config/log4j.xml $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/classes/log4j.xml
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
 
 # add rc link
@@ -166,7 +170,7 @@ rm -f $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/junit.jar
 %attr(644, root, root) %{_unitdir}/rhn-search.service
 %{_prefix}/share/rhn/config-defaults/rhn_search.conf
 %{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
-%{_prefix}/share/rhn/search/classes/log4j.properties
+%{_prefix}/share/rhn/search/classes/log4j.xml
 %{_sysconfdir}/logrotate.d/rhn-search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search/indexes

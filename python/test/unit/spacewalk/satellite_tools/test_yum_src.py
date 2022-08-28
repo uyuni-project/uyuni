@@ -19,6 +19,9 @@ import shutil
 import os
 import solv
 import unittest
+import pytest
+from urllib.parse import quote
+import xml.etree.ElementTree as etree
 try:
     from io import StringIO
 except ImportError:
@@ -28,6 +31,7 @@ from collections import namedtuple
 from mock import Mock, MagicMock, patch
 
 from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
+from spacewalk.satellite_tools.repo_plugins.yum_src import UpdateNotice
 
 class YumSrcTest(unittest.TestCase):
 
@@ -63,6 +67,10 @@ class YumSrcTest(unittest.TestCase):
         yum_src.ContentSource.setup_repo = real_setup_repo
 
         return cs
+
+    @pytest.fixture(autouse=True)
+    def set_temp_path(self, tmpdir):
+        self.tmpdir = tmpdir.strpath
 
     def setUp(self):
         patch('spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs').start()
@@ -148,7 +156,6 @@ class YumSrcTest(unittest.TestCase):
         self.assertEqual(patches[0], 'patches')
         self.assertEqual(len(patches[1]), 2)
 
-
     @patch("uyuni.common.context_managers.initCFG", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
@@ -195,11 +202,13 @@ class YumSrcTest(unittest.TestCase):
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
     def test_mirror_list_arch(self):
         cs = self._make_dummy_cs()
+        fake_mirrorlist_file = self.tmpdir + "/mirrorlist.txt"
+        self.repo.root = self.tmpdir
         cs.channel_arch = "arch1"
         grabber_mock = Mock()
 
         with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
-            with open(os.path.join(self.repo.root, "mirrorlist.txt"), "w") as fake_list:
+            with open(fake_mirrorlist_file, "w") as fake_list:
                 fake_list.writelines([
                     "http://host1/base/$basearch/os/\n",
                     "http://host2/base/$BASEARCH/os/\n",
@@ -211,3 +220,138 @@ class YumSrcTest(unittest.TestCase):
                 "http://host2/base/arch1/os/",
                 "http://host3/base/arch1/os/",
             ])
+
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
+    @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
+    @patch("spacewalk.common.rhnLog", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.etree.parse", MagicMock(side_effect=Exception))
+    def test_proxy_usage_with_mirrorlist(self):
+        cs = self._make_dummy_cs()
+        fake_mirrorlist_file = self.tmpdir + "/mirrorlist.txt"
+        self.repo.root = self.tmpdir
+        proxy_url = "http://proxy.example.com:8080"
+        proxy_user = "user"
+        proxy_pass = "pass"
+        cs.proxy_hostname = proxy_url
+        cs.proxy_user = proxy_user
+        cs.proxy_pass = proxy_pass
+        expected_url_list = []
+        url_list = [
+            "http://example/base/arch1/os/",
+            "http://example/",
+            "http://example.com/",
+            "https://example.org/repo/path/?token",
+            ]
+        for url in url_list:
+            if "?" in url:
+                separator = "&"
+            else:
+                separator = "?"
+            expected_url_list.append("{}{}proxy={}&proxyuser={}&proxypass={}".format(url,
+                                                                                     separator,
+                                                                                     quote(proxy_url),
+                                                                                     proxy_user,
+                                                                                     proxy_pass
+                                                                                     ))
+        grabber_mock = Mock()
+
+        with patch("spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab", grabber_mock):
+            with open(fake_mirrorlist_file, "w") as fake_list:
+                fake_list.writelines([
+                    "http://example/base/arch1/os/\n",
+                    "http://example/\n",
+                    "http://example.com/\n",
+                    "https://example.org/repo/path/?token\n",
+                ])
+            mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+
+            self.assertEqual(mirrors, expected_url_list)
+
+    def test_prep_zypp_repo_url_with_proxy(self):
+        cs = self._make_dummy_cs()
+        urls = [("http://example.com/", False),
+                ("https://example.com/", False),
+                ("https://example.org/repo/path/?token", False),
+                ("uln://example.com/", True),
+                ("uln:///channel", True)
+                ]
+        proxy_url = "http://proxy.example.com:8080"
+        proxy_user = "user"
+        proxy_pass = "pass"
+        cs.proxy_hostname = proxy_url
+        cs.proxy_user = proxy_user
+        cs.proxy_pass = proxy_pass
+
+        for url, is_uln in urls:
+            if is_uln or "?" in url:
+                separator = "&"
+            else:
+                separator = "?"
+
+            expected_url = "{}{}proxy={}&proxyuser={}&proxypass={}".format(url,
+                                                                           separator,
+                                                                           quote(proxy_url),
+                                                                           proxy_user,
+                                                                           proxy_pass
+                                                                           )
+
+            comp_url = cs._prep_zypp_repo_url(url, is_uln)
+
+            assert expected_url == comp_url
+
+    def test_update_notice_parse(self):
+        update_notice_xml = StringIO(
+            """<?xml version="1.0" encoding="UTF-8"?>
+<updates>
+    <update from="exampleProvider" type="security" status="stable" version="1">
+        <id>exampleProvider-test-1</id>
+        <title>Testing Update Notice</title>
+        <severity>Moderate</severity>
+        <release>exampleProvider</release>
+        <issued date="2022-01-16"></issued>
+        <references>
+            <reference href="https://nvd.nist.gov/vuln/detail/CVE-0000-01234" id="CVE-0000-01234" title="CVE-0000-01234" type="cve"></reference>
+        </references>
+        <description>Testing Update Notice</description>
+        <pkglist>
+            <collection>
+                <name>exampleProvider</name>
+                <package arch="noarch" name="testing" release="1" version="1.0.0">
+                    <filename>testing-1.0.0-1.noarch.rpm</filename>
+                </package>
+            </collection>
+        </pkglist>
+    </update>
+    <update from="exampleProvider" type="security" status="stable">
+        <id>exampleProvider-test-0</id>
+        <title>Testing Update Notice</title>
+        <severity>Moderate</severity>
+        <release>exampleProvider</release>
+        <issued date="2022-01-16"></issued>
+        <references>
+            <reference href="https://nvd.nist.gov/vuln/detail/CVE-0000-12345" id="CVE-0000-12345" title="CVE-0000-12345" type="cve"></reference>
+        </references>
+        <description>Testing Update Notice</description>
+        <pkglist>
+            <collection>
+                <name>exampleProvider</name>
+                <package arch="noarch" name="testing0" release="1" version="1.0.0">
+                    <filename>testing0-1.0.0-1.noarch.rpm</filename>
+                </package>
+            </collection>
+        </pkglist>
+    </update>
+</updates>
+            """
+        )
+        expected_list = [
+            {"update_id": "exampleProvider-test-1", "version": "1"},
+            {"update_id": "exampleProvider-test-0", "version": "0"},
+        ]
+        for un_elem in etree.parse(update_notice_xml).getroot():
+            expected = expected_list.pop(0)
+            un = UpdateNotice(un_elem)
+            for un_key in expected.keys():
+                self.assertEqual(un[un_key], expected[un_key])

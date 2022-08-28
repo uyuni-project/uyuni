@@ -1,6 +1,27 @@
 - Replace apache users to root for RHEL.
-- Make the Salt Bundle optional for bootstrap repositories
-  for Debian 9 and SUSE Manager Proxy 4.2
+- create bootstrap repository data for Ubuntu 22.04 Vendor Channels
+- remove obsoleted sysv init script (bsc#1191857)
+- Add Rocky Linux 9 bootstrap repositories for Uyuni
+- mgr-create-bootstrap-repo: flush directory also when called
+  for a specific label (bsc#1200573)
+- pg-migrate-x-to-y.sh: improve output (bsc#1201260)
+- remove python-tornado from bootstrap repo, since no longer
+  required for salt version >= 3000
+- add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)
+
+-------------------------------------------------------------------
+Wed Jul 27 14:18:17 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.18-1
+  * Add missing python3-gnupg to Debian10 bootstrap repo (bsc#1201842)
+  * Add clients tool product to generate 
+    bootstrap repo on OpenSUSE 15.x (bsc#1201189)
+  * Add Oracle Linux 9 bootstrap repositories for Uyuni
+  * Add AlmaLinux 9 bootstrap repositories for Uyuni
+  * Add Red Hat Enterprise Linux 9 repositories for Uyuni
+  * Make the Salt Bundle optional for bootstrap repositories
+    for Debian 9 and SUSE Manager Proxy 4.2
+  * Enable bootstrapping for Ubuntu 22.04 LTS
 
 -------------------------------------------------------------------
 Wed Jun 22 11:16:33 CEST 2022 - jgonzalez@suse.com

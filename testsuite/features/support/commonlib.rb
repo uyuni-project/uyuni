@@ -26,14 +26,14 @@ end
 # This function computes a list of reposyncs to avoid killing, because they might be involved in bootstrapping.
 #
 # This is a safety net only, the best thing to do is to not start the reposync at all.
-def compute_list_to_leave_running
+def compute_channels_to_leave_running
   # keep the repos needed for the auto-installation tests
   do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
   [$minion, $build_host, $sshminion].each do |node|
     next unless node
     os_version, os_family = get_os_version(node)
     next unless os_family == 'sles'
-    raise "Can't build list of reposyncs to leave running" unless ['12-SP4', '12-SP5', '15-SP2', '15-SP3'].include? os_version
+    raise "Can't build list of reposyncs to leave running" unless ['12-SP4', '12-SP5', '15-SP3', '15-SP4'].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
   do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_FROM]
@@ -176,6 +176,18 @@ def get_client_type(name)
   end
 end
 
+def suse_host?(name)
+  (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
+end
+
+def rh_host?(name)
+  (name.include? 'rhlike') || (name.include? 'centos') || (name.include? 'alma') || (name.include? 'rocky')
+end
+
+def deb_host?(name)
+  (name.include? 'deblike') || (name.include? 'debian') || (name.include? 'ubuntu')
+end
+
 def repository_exist?(repo)
   $api_test.auth.login('admin', 'admin')
   repo_list = $api_test.channel.software.list_user_repos
@@ -187,8 +199,9 @@ def generate_repository_name(repo_url)
   repo_name = repo_url.strip
   repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
   repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/Maintenance:/'
-  repo_name.delete_prefix! 'http://minima-mirror-qam.mgr.prv.suse.net/ibs/SUSE:/Maintenance:/'
+  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/'
   repo_name.gsub!('/', '_')
+  repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
 end
 

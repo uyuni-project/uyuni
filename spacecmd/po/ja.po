@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-17 10:11+0000\n"
-"PO-Revision-Date: 2022-05-17 17:12+0000\n"
+"POT-Creation-Date: 2022-07-21 07:28+0000\n"
+"PO-Revision-Date: 2022-07-20 23:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -1362,11 +1362,11 @@ msgstr "configchannel_import: JSON ファイルから設定チャンネルをイ
 msgid "usage: configchannel_import <JSONFILES...>"
 msgstr "使用方法: configchannel_import <JSONファイル...>"
 
-#: ../src/spacecmd/configchannel.py:1286 ../src/spacecmd/kickstart.py:2410
+#: ../src/spacecmd/configchannel.py:1286 ../src/spacecmd/kickstart.py:2416
 msgid "Error, no filename passed"
 msgstr "エラーです、ファイル名を指定していません"
 
-#: ../src/spacecmd/configchannel.py:1294 ../src/spacecmd/kickstart.py:2418
+#: ../src/spacecmd/configchannel.py:1294 ../src/spacecmd/kickstart.py:2424
 #, python-format
 msgid "Error, could not read json data from %s"
 msgstr "エラーです、 JSON データを %s から読み込めませんでした"
@@ -2457,8 +2457,8 @@ msgstr "使用方法: kickstart_delete プロファイル_1 プロファイル_2
 msgid "usage: kickstart_delete \"PROF*\""
 msgstr "使用方法: kickstart_delete \"PROF*\""
 
-#: ../src/spacecmd/kickstart.py:208 ../src/spacecmd/kickstart.py:2678
-#: ../src/spacecmd/kickstart.py:2734 ../src/spacecmd/kickstart.py:2778
+#: ../src/spacecmd/kickstart.py:208 ../src/spacecmd/kickstart.py:2684
+#: ../src/spacecmd/kickstart.py:2740 ../src/spacecmd/kickstart.py:2784
 msgid "No valid kickstart labels passed as arguments!"
 msgstr "パラメータで正しいキックスタートラベルを指定していません！"
 
@@ -3141,12 +3141,12 @@ msgstr ""
 "\n"
 "注意 : プロファイルを指定しない場合、全てのキックスタートをエクスポートします"
 
-#: ../src/spacecmd/kickstart.py:2351
+#: ../src/spacecmd/kickstart.py:2357
 #, python-format
 msgid "Exporting ALL kickstart profiles to %s"
 msgstr "全てのキックスタートプロファイルを %s にエクスポートしています"
 
-#: ../src/spacecmd/kickstart.py:2359
+#: ../src/spacecmd/kickstart.py:2365
 msgid ""
 "Error, no valid kickstart profile passed, check name is  correct with "
 "spacecmd kickstart_list"
@@ -3154,41 +3154,41 @@ msgstr ""
 "エラーが発生しました。正しいキックスタートプロファイルを指定していません。 "
 "spacecmd kickstart_list コマンドで名前をご確認ください"
 
-#: ../src/spacecmd/kickstart.py:2379
+#: ../src/spacecmd/kickstart.py:2385
 #, python-format
 msgid "Exporting ks %s to %s"
 msgstr "ks %s を %s にエクスポートしています"
 
-#: ../src/spacecmd/kickstart.py:2386
+#: ../src/spacecmd/kickstart.py:2392
 #, python-format
 msgid "File %s exists, "
 msgstr "ファイル %s は存在しています。 "
 
-#: ../src/spacecmd/kickstart.py:2387
+#: ../src/spacecmd/kickstart.py:2393
 msgid "confirm overwrite file? (y/n)"
 msgstr "上書きしてよろしいですか？ (y/n)"
 
-#: ../src/spacecmd/kickstart.py:2390
+#: ../src/spacecmd/kickstart.py:2396
 msgid "Error saving exported kickstart profiles to file"
 msgstr ""
 "エクスポートしたキックスタートプロファイルをファイルに保存する際にエラーが発"
 "生しました"
 
-#: ../src/spacecmd/kickstart.py:2400
+#: ../src/spacecmd/kickstart.py:2406
 msgid "kickstart_import: import kickstart profile(s) from json file"
 msgstr ""
 "kickstart_import: JSON ファイルからキックスタートプロファイルをインポートする"
 
-#: ../src/spacecmd/kickstart.py:2401
+#: ../src/spacecmd/kickstart.py:2407
 msgid "usage: kickstart_import <JSONFILES...>"
 msgstr "使用方法: kickstart_import <JSON_ファイル...>"
 
-#: ../src/spacecmd/kickstart.py:2422
+#: ../src/spacecmd/kickstart.py:2428
 #, python-format
 msgid "Error importing kickstart %s"
 msgstr "キックスタート %s をインポートする際にエラーが発生しました"
 
-#: ../src/spacecmd/kickstart.py:2435
+#: ../src/spacecmd/kickstart.py:2441
 #, python-format
 msgid "ERROR : kickstart profile %s already exists! Skipping!"
 msgstr ""
@@ -3196,37 +3196,37 @@ msgstr ""
 "す！"
 
 #. create the ks, we need to drop the org prefix from the ks name
-#: ../src/spacecmd/kickstart.py:2439
+#: ../src/spacecmd/kickstart.py:2445
 #, python-format
 msgid "Found ks %s"
 msgstr "ks %s が見つかりました"
 
-#: ../src/spacecmd/kickstart.py:2495
+#: ../src/spacecmd/kickstart.py:2501
 #, python-format
 msgid "Error adding %s script"
 msgstr "%s スクリプトの追加時にエラーが発生しました"
 
-#: ../src/spacecmd/kickstart.py:2503
+#: ../src/spacecmd/kickstart.py:2509
 #, python-format
 msgid "failed to add ip range %s-%s, continuing"
 msgstr "IP 範囲 %s-%s を追加する処理が失敗しました。続行しています"
 
-#: ../src/spacecmd/kickstart.py:2517
+#: ../src/spacecmd/kickstart.py:2523
 #, python-format
 msgid "failed to add file preservation %s, skipping"
 msgstr "ファイル保持 %s の追加に失敗しました。読み飛ばしています"
 
-#: ../src/spacecmd/kickstart.py:2519
+#: ../src/spacecmd/kickstart.py:2525
 #, python-format
 msgid "file preservation list %s doesn't exist, skipping"
 msgstr "ファイル保持リスト %s は存在していません。読み飛ばしています"
 
-#: ../src/spacecmd/kickstart.py:2530
+#: ../src/spacecmd/kickstart.py:2536
 #, python-format
 msgid "Actvationkey %s does not exist on the "
 msgstr "アクティベーションキー %s が "
 
-#: ../src/spacecmd/kickstart.py:2541
+#: ../src/spacecmd/kickstart.py:2547
 #, python-format
 msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
 msgstr "GPG/SSL 鍵 %s が Spacewalk サーバ内に存在しません。読み飛ばしています"
@@ -3234,7 +3234,7 @@ msgstr "GPG/SSL 鍵 %s が Spacewalk サーバ内に存在しません。読み�
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
 #. fixup may be required
-#: ../src/spacecmd/kickstart.py:2550
+#: ../src/spacecmd/kickstart.py:2556
 msgid ""
 "Due to API ommissions, there are some settings which cannot be imported, "
 "please check and fixup manually if necessary"
@@ -3242,71 +3242,71 @@ msgstr ""
 "API ではいくつかの設定が省略されているため、インポートできない設定がありま"
 "す。インポートされた内容をご確認のうえ、必要であれば調整してください"
 
-#: ../src/spacecmd/kickstart.py:2552
+#: ../src/spacecmd/kickstart.py:2558
 msgid " * Details->Preserve ks.cfg"
 msgstr " * 詳細->ks.cfg を保持"
 
-#: ../src/spacecmd/kickstart.py:2553
+#: ../src/spacecmd/kickstart.py:2559
 msgid " * Details->Comment"
 msgstr " * 詳細->コメント"
 
-#: ../src/spacecmd/kickstart.py:2557
+#: ../src/spacecmd/kickstart.py:2563
 msgid " * Details->Organization Default Profile"
 msgstr " * 詳細->企業／組織のデフォルトプロファイル"
 
 #. No way to set the kernel options
-#: ../src/spacecmd/kickstart.py:2559
+#: ../src/spacecmd/kickstart.py:2565
 msgid " * Details->Kernel Options"
 msgstr " * 詳細->カーネルオプション"
 
-#: ../src/spacecmd/kickstart.py:2563
+#: ../src/spacecmd/kickstart.py:2569
 #, python-format
 msgid " * Details->Post Kernel Options : %s"
 msgstr " * 詳細->カーネルの後のオプション : %s"
 
-#: ../src/spacecmd/kickstart.py:2579
+#: ../src/spacecmd/kickstart.py:2585
 msgid "no kickstart label given"
 msgstr "キックスタートラベルが指定されていません"
 
-#: ../src/spacecmd/kickstart.py:2582
+#: ../src/spacecmd/kickstart.py:2588
 msgid "invalid kickstart label "
 msgstr "キックスタートラベルが正しくありません "
 
-#: ../src/spacecmd/kickstart.py:2599
+#: ../src/spacecmd/kickstart.py:2605
 msgid "kickstart_diff: diff kickstart files"
 msgstr "kickstart_diff: キックスタートファイルの差分を抽出"
 
-#: ../src/spacecmd/kickstart.py:2601
+#: ../src/spacecmd/kickstart.py:2607
 msgid "usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "使用方法: kickstart_diff 比較元チャンネル 比較先チャンネル"
 
-#: ../src/spacecmd/kickstart.py:2650
+#: ../src/spacecmd/kickstart.py:2656
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
 msgstr "kickstart_getupdatetype: キックスタートプロファイルの更新タイプを取得"
 
-#: ../src/spacecmd/kickstart.py:2651
+#: ../src/spacecmd/kickstart.py:2657
 msgid "usage: kickstart_getupdatetype PROFILE"
 msgstr "使用方法: kickstart_getupdatetype プロファイル"
 
-#: ../src/spacecmd/kickstart.py:2652
+#: ../src/spacecmd/kickstart.py:2658
 msgid "usage: kickstart_getupdatetype PROFILE1 PROFILE2"
 msgstr "使用方法: kickstart_getupdatetype プロファイル_1 プロファイル_2"
 
-#: ../src/spacecmd/kickstart.py:2653
+#: ../src/spacecmd/kickstart.py:2659
 msgid "usage: kickstart_getupdatetype \"PROF*\""
 msgstr "使用方法: kickstart_getupdatetype \"PROF*\""
 
-#: ../src/spacecmd/kickstart.py:2684 ../src/spacecmd/kickstart.py:2740
-#: ../src/spacecmd/kickstart.py:2784
+#: ../src/spacecmd/kickstart.py:2690 ../src/spacecmd/kickstart.py:2746
+#: ../src/spacecmd/kickstart.py:2790
 #, python-format
 msgid "kickstart label %s doesn't exist!"
 msgstr "キックスタートラベル %s が存在しません！"
 
-#: ../src/spacecmd/kickstart.py:2700
+#: ../src/spacecmd/kickstart.py:2706
 msgid "kickstart_setupdatetype: Set the update type for a kickstart profile(s)"
 msgstr "kickstart_setupdatetype: キックスタートプロファイルの更新タイプを設定"
 
-#: ../src/spacecmd/kickstart.py:2701
+#: ../src/spacecmd/kickstart.py:2707
 msgid ""
 "usage: kickstart_setupdatetype [options] KS_LABEL)\n"
 "\n"
@@ -3318,69 +3318,69 @@ msgstr ""
 "オプション:\n"
 "    -u (更新タイプ) ['red_hat', 'all', 'none']"
 
-#: ../src/spacecmd/kickstart.py:2715
+#: ../src/spacecmd/kickstart.py:2721
 msgid "Update Types"
 msgstr "更新タイプ"
 
-#: ../src/spacecmd/kickstart.py:2720
+#: ../src/spacecmd/kickstart.py:2726
 msgid "Update Type [none]:"
 msgstr "更新タイプ [none]:"
 
-#: ../src/spacecmd/kickstart.py:2751
+#: ../src/spacecmd/kickstart.py:2757
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
 msgstr ""
 "kickstart_getsoftwaredetails: キックスタートプロファイルのソフトウェア詳細を"
 "取得"
 
-#: ../src/spacecmd/kickstart.py:2752
+#: ../src/spacecmd/kickstart.py:2758
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
 msgstr "使用方法: kickstart_getsoftwaredetails キックスタートラベル"
 
-#: ../src/spacecmd/kickstart.py:2753
+#: ../src/spacecmd/kickstart.py:2759
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 msgstr ""
 "使用方法: kickstart_getsoftwaredetails キックスタートラベル_1 キックスタート"
 "ラベル_2 ..."
 
-#: ../src/spacecmd/kickstart.py:2790
+#: ../src/spacecmd/kickstart.py:2796
 #, python-format
 msgid "noBase:        %s"
 msgstr "ベース無し:        %s"
 
-#: ../src/spacecmd/kickstart.py:2791
+#: ../src/spacecmd/kickstart.py:2797
 #, python-format
 msgid "ignoreMissing: %s"
 msgstr "存在しないものを無視: %s"
 
-#: ../src/spacecmd/kickstart.py:2793
+#: ../src/spacecmd/kickstart.py:2799
 #, python-format
 msgid "Kickstart Label: %s"
 msgstr "キックスタートラベル: %s"
 
-#: ../src/spacecmd/kickstart.py:2794
+#: ../src/spacecmd/kickstart.py:2800
 #, python-format
 msgid "noBase:          %s"
 msgstr "ベース無し:          %s"
 
-#: ../src/spacecmd/kickstart.py:2795
+#: ../src/spacecmd/kickstart.py:2801
 #, python-format
 msgid "ignoreMissing:   %s"
 msgstr "存在しないものを無視:   %s"
 
-#: ../src/spacecmd/kickstart.py:2804
+#: ../src/spacecmd/kickstart.py:2810
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
 msgstr ""
 "kickstart_setsoftwaredetails: キックスタートプロファイルのソフトウェア詳細を"
 "設定。"
 
-#: ../src/spacecmd/kickstart.py:2805
+#: ../src/spacecmd/kickstart.py:2811
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
 "使用方法: kickstart_setsoftwaredetails プロファイル キックスタートパッケージ"
 "情報 値"
 
-#: ../src/spacecmd/kickstart.py:2806
+#: ../src/spacecmd/kickstart.py:2812
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
 "KICKSTART_PACKAGES_INFO VALUE"
@@ -3388,11 +3388,11 @@ msgstr ""
 "使用方法: kickstart_setsoftwaredetails プロファイル キックスタートパッケージ"
 "情報 値 キックスタートパッケージ情報 値"
 
-#: ../src/spacecmd/kickstart.py:2842
+#: ../src/spacecmd/kickstart.py:2848
 msgid "Selected profile does not exist"
 msgstr "選択したプロファイルは存在しません"
 
-#: ../src/spacecmd/kickstart.py:2845 ../src/spacecmd/kickstart.py:2850
+#: ../src/spacecmd/kickstart.py:2851 ../src/spacecmd/kickstart.py:2856
 msgid "Enter valid input"
 msgstr "正しい入力を行なってください"
 
@@ -4194,7 +4194,7 @@ msgid ""
 "\n"
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
-"'config.zip'\n"
+"'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
 "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
 "            certicate in PEM format. May be provided multiple times.\n"
@@ -4208,9 +4208,8 @@ msgstr ""
 "\n"
 "パラメータ:\n"
 "  PROXY_FQDN  作成するプロキシの完全修飾ドメイン名。\n"
-"  SERVER_FQDN   プロキシに接続するサーバの完全修飾ドメイン名。\n"
-"  MAX_CACHE   最大キャッシュサイズ(MB単位)。ストレージの60％は適切な値で"
-"す。\n"
+"  SERVER_FQDN プロキシに接続するサーバの完全修飾ドメイン名。\n"
+"  MAX_CACHE   最大キャッシュサイズ(MB単位)。ストレージの60%は適切な値です。\n"
 "  EMAIL      プロキシ管理者の電子メール\n"
 "  CA          PEM形式でプロキシ証明書に署名するために使用されるルートCAへのパ"
 "ス\n"
@@ -4251,7 +4250,7 @@ msgid ""
 "\n"
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
-"'config.zip'\n"
+"'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
 "  --ca-crt path to the certificate of the CA to use to generate a new proxy "
 "certificate.\n"

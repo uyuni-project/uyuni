@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-certs-tools
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -17,7 +17,7 @@
 #
 # needsbinariesforbuild
 
-# package renaming fun :(
+
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
@@ -31,13 +31,12 @@
 %global rhnroot %{_datadir}/rhn
 %global __python /usr/bin/python3
 
-
 Name:           spacewalk-certs-tools
 Summary:        Spacewalk SSL Key/Cert Tool
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.13
-Release:        1
+Version:        4.4.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

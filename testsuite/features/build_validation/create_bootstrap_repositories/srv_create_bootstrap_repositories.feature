@@ -4,11 +4,7 @@
 Feature: Create bootstrap repositories
   In order to be able to enroll clients with MU repositories
   As the system administrator
-  I create all bootstrap repos with --custom-repos option
-
-# WORKAROUND: --flush option does not seem to work in case of hash mismatch with same version
-  Scenario: Clean up all bootstrap repositories on the server
-    When I clean up all bootstrap repositories on the server
+  I create all bootstrap repos with --with-custom-channels option
 
 @proxy
   Scenario: Create the bootstrap repository for the SUSE Manager proxy
@@ -98,25 +94,25 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLES 15 SP4 Salt SSH minion
     When I create the bootstrap repository for "sle15sp4_ssh_minion" on the server
 
-@ceos7_client
+@centos7_client
   Scenario: Create the bootstrap repository for a CentOS 7 traditional client
-    When I create the bootstrap repository for "ceos7_client" on the server
+    When I create the bootstrap repository for "centos7_client" on the server
 
-@ceos7_minion
+@centos7_minion
   Scenario: Create the bootstrap repository for a CentOS 7 Salt minion
-    When I create the bootstrap repository for "ceos7_minion" on the server
+    When I create the bootstrap repository for "centos7_minion" on the server
 
-@ceos7_ssh_minion
+@centos7_ssh_minion
   Scenario: Create the bootstrap repository for a CentOS 7 Salt SSH minion
-    When I create the bootstrap repository for "ceos7_ssh_minion" on the server
+    When I create the bootstrap repository for "centos7_ssh_minion" on the server
 
-@ceos8_minion
-  Scenario: Create the bootstrap repository for a CentOS 8 Salt minion
-    When I create the bootstrap repository for "ceos8_minion" on the server
+@rocky8_minion
+  Scenario: Create the bootstrap repository for a Rocky 8 Salt minion
+    When I create the bootstrap repository for "rocky8_minion" on the server
 
-@ceos8_ssh_minion
-  Scenario: Create the bootstrap repository for a CentOS 8 Salt SSH minion
-    When I create the bootstrap repository for "ceos8_ssh_minion" on the server
+@rocky8_ssh_minion
+  Scenario: Create the bootstrap repository for a Rocky 8 Salt SSH minion
+    When I create the bootstrap repository for "rocky8_ssh_minion" on the server
 
 @ubuntu1804_minion
   Scenario: Create the bootstrap repository for a Ubuntu 18.04 Salt minion
@@ -133,6 +129,14 @@ Feature: Create bootstrap repositories
 @ubuntu2004_ssh_minion
   Scenario: Create the bootstrap repository for a Ubuntu 20.04 Salt SSH minion
     When I create the bootstrap repository for "ubuntu2004_ssh_minion" on the server
+
+@ubuntu2204_minion
+  Scenario: Create the bootstrap repository for a Ubuntu 22.04 minion
+    When I create the bootstrap repository for "ubuntu2204_minion" on the server
+
+@ubuntu2204_ssh_minion
+  Scenario: Create the bootstrap repository for a Ubuntu 22.04 Salt SSH minion
+    When I create the bootstrap repository for "ubuntu2204_ssh_minion" on the server
 
 @debian9_minion
   Scenario: Create the bootstrap repository for a Debian 9 minion

@@ -1,4 +1,13 @@
 - Moved static Apache Webserver users to config file.
+- Make reposync use the configured http proxy with mirrorlist (bsc#1198168)
+- Prevent tracebacks on running spacewalk-repo-sync
+  on loading update notice with no version specified in the meta data
+
+-------------------------------------------------------------------
+Wed Jul 27 14:16:43 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.15-1
+  * cleanup leftovers from removing unused xmlrpc endpoint
 
 -------------------------------------------------------------------
 Tue Jun 21 18:30:19 CEST 2022 - jgonzalez@suse.com

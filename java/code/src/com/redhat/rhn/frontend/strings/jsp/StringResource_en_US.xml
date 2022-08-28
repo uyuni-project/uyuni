@@ -23468,6 +23468,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve">
+        <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="extauth.org.message" xml:space="preserve">
         <source>Even externally authenticated users need to be created within @@PRODUCT_NAME@@. You may specify, in what organization new users shall be created. An option is to use the Org. Unit set on IPA server that has to match the organization name. Another option is to set a default organization, where all the newly created users will be created.</source>
         <context-group name="ctx">

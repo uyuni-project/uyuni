@@ -10,6 +10,7 @@
 
 # initialize Uyuni server
 - features/core/srv_first_settings.feature
+- features/core/srv_disable_local_repos_off.feature
 - features/core/srv_organization_credentials.feature
 - features/core/srv_user_preferences.feature
 - features/core/srv_channels_add.feature

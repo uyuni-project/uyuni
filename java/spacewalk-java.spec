@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-java
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -47,6 +47,7 @@
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
 %define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
+%define apache_commons_compress    (apache-commons-compress or jakarta-commons-compress)
 
 %if 0%{?is_opensuse}
 %define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
@@ -58,8 +59,8 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.3.34
-Release:        1
+Version:        4.4.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
@@ -89,6 +90,7 @@ BuildRequires:  cglib
 %if 0%{?suse_version}
 BuildRequires:  classmate
 %endif
+BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  %{apache_commons_fileupload}
 BuildRequires:  %{apache_commons_validator}
@@ -100,22 +102,19 @@ BuildRequires:  dwr >= 3
 BuildRequires:  google-gson >= 2.2.4
 BuildRequires:  hibernate-types
 BuildRequires:  hibernate-commons-annotations
-BuildRequires:  hibernate5
+BuildRequires:  mvn(org.hibernate:hibernate-core)
+BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
+BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
-BuildRequires:  (gnu-jaf or jakarta-activation)
-%if 0%{?rhel} || 0%{?fedora}
-BuildRequires:  glassfish-jaxb-core
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
 BuildRequires:  istack-commons-runtime
 BuildRequires:  java-11-openjdk-devel
 BuildRequires:  (glassfish-jaxb-api or jaxb-api)
-%else
-BuildRequires:  java-devel >= %{java_version}
-%endif
+BuildRequires:  (glassfish-activation-api or jakarta-activation)
 BuildRequires:  java-saml
 BuildRequires:  javamail
 BuildRequires:  javapackages-tools
@@ -130,14 +129,15 @@ BuildRequires:  jsch
 BuildRequires:  jta
 BuildRequires:  libxml2
 %if 0%{?rhel}
+BuildRequires:  glassfish-jaxb-core
 BuildRequires:  libxml2-devel
 %else
 BuildRequires:  libxml2-tools
 %endif
 BuildRequires:  log4j
 BuildRequires:  log4j-slf4j
-BuildRequires:  netty < 4.1.45
-BuildRequires:  objectweb-asm
+BuildRequires:  netty
+BuildRequires:  objectweb-asm >= 9.2
 BuildRequires:  perl
 BuildRequires:  pgjdbc-ng
 BuildRequires:  postgresql-jdbc
@@ -158,9 +158,9 @@ BuildRequires:  tomcat >= 7
 BuildRequires:  tomcat-lib >= 7
 BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
-BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  woodstox
 BuildRequires:  xmlsec
+BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
@@ -177,35 +177,34 @@ Requires:       cglib
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 %if 0%{?suse_version}
 Requires:       classmate
+Requires:       glassfish-jaxb-api
+Requires:       glassfish-activation-api
 %endif
 Requires:       %{ehcache}
 Requires:       cobbler = 3.1.2
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       (gnu-jaf or jakarta-activation)
-%if 0%{?rhel} || 0%{?fedora}
-Requires:       glassfish-jaxb-core
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
-Requires:       (glassfish-jaxb-api or jaxb-api)
 %if 0%{?rhel}
-Recommends:       rng-tools
+Requires:       glassfish-jaxb-core
+Requires:       jaxb-api
+Requires:       jakarta-activation
+Recommends:     rng-tools
 %endif
-%endif
+Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
 Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
-Requires:       hibernate5
+Requires:       mvn(org.hibernate:hibernate-core)
+Requires:       mvn(org.hibernate:hibernate-c3p0)
+Requires:       mvn(org.hibernate:hibernate-ehcache)
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       jade4j
-%if 0%{?rhel}
 Requires:       java-11-openjdk
-%else
-Requires:       java >= %{java_version}
-%endif
 Requires:       java-saml
 Requires:       javamail
 Requires:       javapackages-tools
@@ -216,8 +215,8 @@ Requires:       jose4j
 Requires:       jpa-api
 Requires:       libsolv-tools
 Requires:       mgr-libmod
-Requires:       netty < 4.1.45
-Requires:       objectweb-asm
+Requires:       netty
+Requires:       objectweb-asm >= 9.2
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       salt-netapi-client >= 0.20
@@ -232,11 +231,11 @@ Requires:       tomcat-taglibs-standard
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
 Requires:       %{apache_commons_fileupload}
-Requires:       log4j
 Requires:       apache-commons-el
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
+Requires:       log4j
 Requires:       log4j-slf4j
 Requires:       redstone-xmlrpc
 Requires:       simple-core
@@ -366,22 +365,19 @@ Requires:       classmate
 Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
-Requires:       hibernate-types
 Requires:       hibernate-commons-annotations
-Requires:       hibernate5
+Requires:       mvn(org.hibernate:hibernate-core)
+Requires:       mvn(org.hibernate:hibernate-c3p0)
+Requires:       mvn(org.hibernate:hibernate-ehcache)
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
-%if 0%{?rhel}
 Requires:       java-11-openjdk
-%else
-Requires:       java >= %{java_version}
-%endif
-Requires:       log4j
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
+Requires:       log4j
 Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
@@ -637,7 +633,6 @@ else
     " > .mfiles-postgresql
 fi
 
-
 # install apidoc sources
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
 install -m 644 build/reports/apidocs/docbook/susemanager_api_doc.xml $RPM_BUILD_ROOT%{_docdir}/%{name}/xml/susemanager_api_doc.xml
@@ -691,7 +686,7 @@ systemctl start rngd ||:
 
 %post -n spacewalk-taskomatic
 %if 0%{?rhel}
-%systemd_post taskomatic.service 
+%systemd_post taskomatic.service
 %else
 %service_add_post taskomatic.service
 %endif

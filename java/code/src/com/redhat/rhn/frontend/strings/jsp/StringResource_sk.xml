@@ -21721,7 +21721,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve">
           <source>Schedule Package Upgrades</source>
-        <target/>
+        <target>Naplánovať aktualizácie balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>

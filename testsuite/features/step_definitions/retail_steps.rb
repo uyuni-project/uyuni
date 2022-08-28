@@ -37,6 +37,8 @@ def compute_image(host)
     'sles12sp5o'
   when 'sle15sp3_terminal'
     'sles15sp3o'
+  when 'sle15sp4_terminal'
+    'sles15sp4o'
   else
     raise "Is #{host} a supported terminal?"
   end
@@ -45,7 +47,7 @@ end
 def compute_kiwi_profile_filename(host)
   image = compute_image(host)
   case image
-  when 'sles15sp3', 'sles15sp3o'
+  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
     # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
     $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
   when 'sles15sp2', 'sles15sp2o'
@@ -64,7 +66,7 @@ end
 def compute_kiwi_profile_name(host)
   image = compute_image(host)
   case image
-  when 'sles15sp3', 'sles15sp3o'
+  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
     # 'POS_Image_JeOS7_42' for 4.2 branch
     $product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
   when 'sles15sp2', 'sles15sp2o'
@@ -83,7 +85,7 @@ end
 def compute_kiwi_profile_version(host)
   image = compute_image(host)
   case image
-  when 'sles15sp3', 'sles15sp3o', 'sles15sp2', 'sles15sp2o'
+  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
     '7.0.0'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not a supported image version.'
@@ -156,7 +158,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
   end
   # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
-  nodes = [$ceos_minion]
+  nodes = [$rhlike_minion]
   file = '/etc/sysconfig/network-scripts/ifcfg-eth1'
   conf2 = 'GATEWAYDEV=eth0'
   file2 = '/etc/sysconfig/network'
@@ -167,7 +169,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
   end
   # /etc/netplan/01-netcfg.yaml
-  nodes = [$ubuntu_minion]
+  nodes = [$deblike_minion]
   source = File.dirname(__FILE__) + '/../upload_files/01-netcfg.yaml'
   dest = '/etc/netplan/01-netcfg.yaml'
   nodes.each do |node|
@@ -224,15 +226,15 @@ When(/^I restart the network on the PXE boot minion$/) do
   $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
-When(/^I reboot the terminal "([^"]*)"$/) do |host|
+When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   # we might have no or any IPv4 address on that machine
   # convert MAC address to IPv6 link-local address
   if host == 'pxeboot_minion'
     mac = $pxeboot_mac
   elsif host == 'sle12sp5_terminal'
     mac = $sle12sp5_terminal_mac
-  elsif host == 'sle15sp3_terminal'
-    mac = $sle15sp3_terminal_mac
+  elsif host == 'sle15sp4_terminal'
+    mac = $sle15sp4_terminal_mac
   end
   mac = mac.tr(':', '')
   hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
@@ -243,7 +245,7 @@ When(/^I reboot the terminal "([^"]*)"$/) do |host|
   dest = '/tmp/' + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
+  $proxy.run("expect -f /tmp/#{file} #{ipv6} #{context}")
 end
 
 When(/^I create bootstrap script for "([^"]+)" hostname and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |host, key|
@@ -471,10 +473,10 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   elsif host == 'sle12sp5_terminal'
     mac = $sle12sp5_terminal_mac
     mac = 'EE:EE:EE:00:00:05' if mac.nil?
-  elsif host == 'sle15sp3_terminal'
-    mac = $sle15sp3_terminal_mac
+  elsif host == 'sle15sp4_terminal'
+    mac = $sle15sp4_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
-  elsif host.include? 'ubuntu'
+  elsif (host.include? 'deblike') || (host.include? 'debian11') || (host.include? 'ubuntu')
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')
     mac = output.split("\n")[1].split[1]

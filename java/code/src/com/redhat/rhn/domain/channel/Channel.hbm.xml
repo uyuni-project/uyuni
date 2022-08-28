@@ -642,6 +642,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[select distinct c.channelArch.label from com.redhat.rhn.domain.channel.Channel as c]]>
     </query>
 
+    <query name="Channel.findCustomChannelsWithRepositories">
+        <![CDATA[from com.redhat.rhn.domain.channel.Channel as c
+                where c.org is not null and c.sources is not empty]]>
+    </query>
+
     <query name="Channel.findVendorChannels">
         <![CDATA[from com.redhat.rhn.domain.channel.Channel as c
                  where c.org is null]]>

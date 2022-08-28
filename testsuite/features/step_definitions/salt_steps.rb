@@ -305,7 +305,7 @@ def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
     cmd = 'salt'
-  elsif %w[ssh_minion ceos_minion ubuntu_minion].include?(minion)
+  elsif %w[ssh_minion rhlike_minion deblike_minion].include?(minion)
     cmd = 'mgr-salt-ssh'
   else
     raise 'Invalid target'
@@ -434,11 +434,11 @@ end
 When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if %w[sle_minion ssh_minion sle_client].include?(host)
+  if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{pkgs}", check_errors: false)
-  elsif %w[ceos_minion].include?(host)
+  elsif rh_host?(host)
     target.run("test -e /usr/bin/yum && yum -y remove #{pkgs}", check_errors: false)
-  elsif %w[ubuntu_minion].include?(host)
+  elsif deb_host?(host)
     pkgname = "salt-common salt-minion" if $product != 'Uyuni'
     target.run("test -e /usr/bin/apt && apt -y remove #{pkgs}", check_errors: false)
   end
@@ -447,11 +447,11 @@ end
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if %w[sle_minion ssh_minion sle_client].include?(host)
+  if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
-  elsif %w[ceos_minion].include?(host)
+  elsif rh_host?(host)
     target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
-  elsif %w[ubuntu_minion].include?(host)
+  elsif deb_host?(host)
     pkgs = "salt-common salt-minion" if $product != 'Uyuni'
     target.run("test -e /usr/bin/apt && apt -y install #{pkgs}", check_errors: false)
   end
@@ -481,9 +481,9 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if host.include? 'ceos'
+  if rh_host?(host)
     node.run("yum -y remove --setopt=clean_requirements_on_remove=1 #{pkgs}", check_errors: false)
-  elsif (host.include? 'ubuntu') || (host.include? 'debian')
+  elsif deb_host?(host)
     pkgs = "salt-common salt-minion" if $product != 'Uyuni'
     node.run("apt-get --assume-yes remove #{pkgs} && apt-get --assume-yes purge #{pkgs} && apt-get --assume-yes autoremove", check_errors: false)
   else
@@ -497,11 +497,13 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
 
-When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|
+When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |files, host|
   system_name = host == "*" ? "*" : get_system_name(host)
   script = "base:\n" \
-            "  '#{system_name}':\n" \
-            "    - '#{file}'\n"
+            "  '#{system_name}':\n"
+  files.split(/, */).each do |file|
+    script += "    - '#{file}'\n"
+  end
   path = generate_temp_file('top.sls', script)
   inject_salt_pillar_file(path, 'top.sls')
   `rm #{path}`

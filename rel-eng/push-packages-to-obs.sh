@@ -104,7 +104,7 @@ function tar_diff_p1() {
     *.obscpio) (FDIR=${PWD}; cd $tdir/R; cpio -id < "${FDIR}/$rtar");;
     *) tar_cat "$rtar" | tar xf - -C "$tdir/R" || return 2;;
   esac
-  if $DIFF -r "$tdir/L"/* "$tdir/R"/*; then
+  if $DIFF -r "$tdir/L"/. "$tdir/R"/.; then
     echo "Content $ltar and $rtar is the same"
     return 0
   else
@@ -250,6 +250,18 @@ while read PKG_NAME; do
     continue
   }
 
+  # check which endpoint we are using to match the product
+  if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+      PRODUCT_VERSION=$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+  else
+      # Uyuni settings
+      PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+  fi
+  # to lowercase with ",," and replace spaces " " with "-"
+  PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
+  # Remove leading zero from Uyuni release and add potentially missing micro part
+  SEMANTIC_VERSION=$(echo ${PRODUCT_VERSION} | sed 's/\([0-9]\+\)\.0\?\([1-9][0-9]*\)\(\.\([0-9]\+\)\)\?\( .\+\)\?/\1.\2.\4\5/' | sed 's/\.$/.0/')
+
   if [ -f "$SRPM_PKG_DIR/Dockerfile" ]; then
       # check which endpoint we are using to match the product
       if [ "${OSCAPI}" == "https://api.suse.de" ]; then
@@ -261,15 +273,25 @@ while read PKG_NAME; do
           sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
-
-          PRODUCT_VERSION=$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
-      else
-          # Uyuni settings
-          PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
       fi
-      # to lowercase with ",," and replace spaces " " with "-"
-      PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
       sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
+  fi
+
+  if [ -f "$SRPM_PKG_DIR/Chart.yaml" ]; then
+      if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+          # SUSE Manager settings
+          VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
+          sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
+          sed "s/^home: .*$/home: https:\/\/www.suse.com\/products\/suse-manager\//" -i $SRPM_PKG_DIR/Chart.yaml
+          CHART_TAR=$(ls ${SRPM_PKG_DIR}/*.tar)
+          mkdir ${SRPM_PKG_DIR}/tar
+          tar xf $CHART_TAR -C ${SRPM_PKG_DIR}/tar
+          sed "s/^repository: .\+$/repository: registry.suse.com\/suse\/manager\/${VERSION}/" -i ${SRPM_PKG_DIR}/tar/values.yaml
+          tar cf $CHART_TAR -C ${SRPM_PKG_DIR}/tar .
+          rm -rf ${SRPM_PKG_DIR}/tar
+      fi
+      sed "s/version: 0.0.0/version: ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
+      sed "s/%PKG_VERSION%/${SEMANTIC_VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
   fi
 
   # update from obs (create missing package on the fly)

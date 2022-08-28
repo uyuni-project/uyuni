@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-01 18:13+0000\n"
+"POT-Creation-Date: 2022-07-21 11:57+0000\n"
 "PO-Revision-Date: 2021-09-21 12:12+0000\n"
 "Last-Translator: Francesco Esposito <email@francescoesposito.org>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/backend/it/"
@@ -172,7 +172,7 @@ msgstr "Valore '%s' non valido per %s (%s)"
 msgid "Invalid system_id/action_id pair."
 msgstr "Coppia system_id/action_id non valida."
 
-#: ../server/handlers/xmlrpc/up2date.py:249
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Valore non valido %s (%s)"

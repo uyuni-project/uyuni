@@ -4,6 +4,7 @@
 require 'timeout'
 require 'nokogiri'
 require 'pg'
+require 'set'
 
 # Sanity checks
 
@@ -31,6 +32,11 @@ Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
   raise 'cannot do reverse resolution' unless return_code.zero?
   raise "reverse resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
   raise "reverse resolution for #{node.full_hostname} returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
+end
+
+Then(/^I turn off disable_local_repos for all clients/) do
+  $server.run("echo \"mgr_disable_local_repos: False\" > /srv/pillar/disable_local_repos_off.sls")
+  step %(I install a salt pillar top file for "salt_bundle_config, disable_local_repos_off" with target "*" on the server)
 end
 
 Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
@@ -175,7 +181,7 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
     package.gsub! "suma", "uyuni"
   end
   node = get_target(host)
-  if host.include? 'ubuntu'
+  if deb_host?(host)
     node.wait_while_process_running('apt-get')
     pkg_version = package.split('-')[-1]
     pkg_name = package.delete_suffix("-#{pkg_version}")
@@ -208,7 +214,7 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   end
 end
 
-When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
+When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
   salt =
     if $is_cloud_provider
@@ -246,9 +252,17 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   $server.run_until_ok("#{cmd} #{system_name} state.highstate")
 end
 
-Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
+When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
+  node.run_until_ok(cmd)
+end
+
+When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  # necessary since Debian-like OSes use different names for the services
+  separator = deb_host?(host) ? "-" : "_"
+  cmd = "systemctl is-active prometheus-#{service}#{separator}exporter"
   node.run_until_ok(cmd)
 end
 
@@ -333,11 +347,12 @@ end
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
+# rubocop:disable Metrics/BlockLength
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
-  do_not_kill = compute_list_to_leave_running
+  do_not_kill = compute_channels_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 60 && reposync_left_running_streak <= 7200
+  while reposync_not_running_streak <= 60
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -350,6 +365,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
     if do_not_kill.include? channel
+      $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
       sleep 1
@@ -360,8 +376,11 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     pid = process.split(' ')[0]
     $server.run("kill #{pid}", check_errors: false)
     log "Reposync of channel #{channel} killed"
+
+    raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
@@ -379,12 +398,27 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", check_errors: false)
-      break if code.zero?
+      # solv is the last file to be written when the server synchronizes a channel,
+      # therefore we wait until it exist
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
+      if code.zero?
+        # We want to check if no .new files exists.
+        # On a re-sync, the old files stay, the new one have this suffix until it's ready.
+        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
+        break unless new_code.zero?
+      end
+      log "I am still waiting for '#{channel}' channel to be synchronized."
       sleep 10
     end
   rescue StandardError => e
     log e.message # It might be that the MU repository is wrong, but we want to continue in any case
+  end
+end
+
+When(/I wait until all synchronized channels have finished$/) do
+  $channels_synchronized.each do |channel|
+    log "I wait until '#{channel}' synchronized channel has finished"
+    step %(I wait until the channel "#{channel}" has been synced)
   end
 end
 
@@ -484,15 +518,6 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
-When(/^I import the GPG keys for "([^"]*)"$/) do |host|
-  node = get_target(host)
-  gpg_keys = get_gpg_keys(node)
-  gpg_keys.each do |key|
-    gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
-    node.run("cd /tmp/ && curl --output #{key} #{$server.full_hostname}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
-  end
-end
-
 When(/^the server starts mocking an IPMI host$/) do
   ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
@@ -590,7 +615,7 @@ When(/^I synchronize the tftp configuration on the proxy with the server$/) do
   raise 'cobbler sync failed' if out.include? 'Push failed'
 end
 
-When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
+When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
   raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
 
   node = get_target(host)
@@ -599,7 +624,7 @@ When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do 
   when 'local boot'
     script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT local/'"
   when 'target profile'
-    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp2-cobbler:1:SUSETest/'"
+    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/'"
   end
   node.run("sed -i #{script} #{target}")
 end
@@ -794,10 +819,9 @@ When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   # node.run('salt-call state.apply channels.disablelocalrepos') does not work
 end
 
-When(/^I (enable|disable) Ubuntu "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
+When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
-  raise "#{node.hostname} is not a Ubuntu host." unless os_family =~ /^ubuntu/
+  raise "#{node.hostname} is not a Debian-like host." unless deb_host?(host)
 
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
 end
@@ -806,37 +830,37 @@ end
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  cmd = if os_family =~ /^opensuse/ || os_family =~ /^sles/
-          mand_repos = ""
-          opt_repos = ""
-          repos.split(' ').map do |repo|
-            if repo =~ /_ltss_/
-              opt_repos = "#{opt_repos} #{repo}"
+  cmd = ''
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    mand_repos = ''
+    opt_repos = ''
+    repos.split(' ').map do |repo|
+      if repo =~ /_ltss_/
+        opt_repos = "#{opt_repos} #{repo}"
+      else
+        mand_repos = "#{mand_repos} #{repo}"
+      end
+    end
+    cmd = "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos}"
+  elsif os_family =~ /^centos/
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
             else
-              mand_repos = "#{mand_repos} #{repo}"
+              "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
             end
-          end
-          "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos};"
-        else
-          cmd_list = if action == 'enable'
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     else
-                       repos.split(' ').map do |repo|
-                         if os_family =~ /^centos/
-                           "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
-                           "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
-                         end
-                       end
-                     end
-          cmd_list.reduce(:+)
-        end
+    end
+  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
+    repos.split(' ').each do |repo|
+      cmd = "#{cmd} && " unless cmd.empty?
+      cmd = if action == 'enable'
+              "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+            else
+              "#{cmd}sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list"
+            end
+    end
+  end
   node.run(cmd, check_errors: error_control.empty?)
 end
 # rubocop:enable Metrics/BlockLength
@@ -894,11 +918,11 @@ end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     cmd = "yum -y install #{package}"
     successcodes = [0]
     not_found_msg = 'No package'
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
@@ -913,11 +937,11 @@ end
 
 When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     cmd = "yum -y downgrade #{package}"
     successcodes = [0]
     not_found_msg = 'No package'
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
@@ -932,10 +956,10 @@ end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     cmd = "yum -y remove #{package}"
     successcodes = [0]
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "dpkg --remove #{package}"
     successcodes = [0]
   else
@@ -946,7 +970,7 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
 end
 
 When(/^I install package tftpboot-installation on the server$/) do
-  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm')
+  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
   packages = output.split("\n")
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
@@ -960,20 +984,15 @@ end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
-  if host == 'sle_minion'
+  if suse_host?(host)
     cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
     result, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
   end
-end
-
-# WORKAROUND: --flush option does not seem to work in case of hash mismatch with same version
-When(/^I clean up all bootstrap repositories on the server$/) do
-  $server.run('rm -rf /srv/www/htdocs/pub/repositories/*')
 end
 
 When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
@@ -993,11 +1012,6 @@ end
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
   out, = $proxy.run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{product}")
   log "Installed #{product} product: #{out}"
-end
-
-When(/^I adapt zyppconfig$/) do
-   cmd = "sed -i 's/^rpm.install.excludedocs =.*$/rpm.install.excludedocs = no/' /etc/zypp/zypp.conf"
-   $proxy.run(cmd)
 end
 
 When(/^I install proxy pattern on the proxy$/) do
@@ -1123,10 +1137,14 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
-  node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
-           "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
-           "--serial file,path=/tmp/#{vm_name}.console.log "\
-           "--import --hvm --noautoconsole --noreboot")
+  # Use 'ide' bus for Xen and 'virtio' bus for KVM
+  bus_type = host == 'xen_server' ? 'ide' : 'virtio'
+  node.run(
+    "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=#{bus_type} "\
+    "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
+    "--serial file,path=/tmp/#{vm_name}.console.log "\
+    "--import --hvm --noautoconsole --noreboot --osinfo sle15sp4"
+  )
 end
 
 When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
@@ -1439,7 +1457,7 @@ end
 
 When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
   node = get_target(host)
-  next unless host.include? 'ceos'
+  next unless rh_host?(host)
 
   node.run('yum -y clean all')
   node.run('yum -y makecache')
@@ -1511,13 +1529,21 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
 end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
-  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_version, os_family = get_os_version(node)
+  repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
+    repositories.concat(' os_pool_repo os_update_repo')
+    if $product != 'Uyuni'
+      repositories.concat(' tools_additional_repo')
+      # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
+      # But the tools_update_repo's priority doesn't allow to cope with the obsoletes option from firewalld.
+      if os_version.to_f >= 15.3
+        node.run('zypper addlock -r tools_additional_repo firewalld-prometheus-config')
+      end
+    end
   end
+  step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
 end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
@@ -1534,7 +1560,7 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
 end
 
 When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
+  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
   $server.run("mkdir -p #{target_dirs}")
   base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
   source_dir = "/var/autoinstall/"
@@ -1542,8 +1568,8 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
   return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
   return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
-  return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
-  return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
+  return_codes << file_inject($server, base_dir + 'sles15sp4/initrd', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
+  return_codes << file_inject($server, base_dir + 'sles15sp4/linux', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
 end
 
@@ -1572,7 +1598,7 @@ When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
-  raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql")
+  raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql.gz")
 end
 
 Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|

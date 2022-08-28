@@ -424,6 +424,15 @@
     <delete dir="${report.dir}/apidocs/${template.dir}/handlers/" />
   </target>
 
+  <target name="apidoc-validate" description="Validate the API documentation" depends="apidoc-docbook">
+      <exec executable="/usr/bin/xmllint" failonerror="true">
+          <arg value="--xinclude"/>
+          <arg value="--postvalid"/>
+          <arg value="${report.dir}/apidocs/docbook/book.xml"/>
+      </exec>
+      <echo message="${line.separator}The generated API documentation is valid."/>
+  </target>
+
   <target name="apidoc" description="Generate the api documentation" depends="compile">
     <path id="javadocpath">
       <pathelement location="build/classes" />

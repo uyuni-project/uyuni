@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Utility class helping to generate and check SSL certificates
@@ -99,8 +100,9 @@ public class SSLCertManager {
         catch (RhnRuntimeException | IOException err) {
             String msg = err.getMessage();
             if (msg.startsWith(ExecHelper.TOOL_FAILED_MSG)) {
-                msg = msg.substring(ExecHelper.TOOL_FAILED_MSG.length()).replaceAll("^$", "")
-                        .replace("ERROR: ", "").strip();
+                msg = Pattern.compile("\\A.*ERROR: ", Pattern.DOTALL).matcher(
+                        msg.substring(ExecHelper.TOOL_FAILED_MSG.length()).replaceAll("(?m)^\n", "")
+                ).replaceAll("").strip();
             }
             throw new SSLCertGenerationException(msg);
         }

@@ -1,6 +1,8 @@
+{% if repos_disabled is not defined or repos_disabled.get('skip', false) == false %}
 # disable all spacewalk:* repos
 {% set repos_disabled = {'match_str': 'spacewalk:', 'matching': true} %}
 {%- include 'channels/disablelocalrepos.sls' %}
+{% endif %}
 
 include:
   - util.syncstates

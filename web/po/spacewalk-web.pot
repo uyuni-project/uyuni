@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-22 04:14+0000\n"
+"POT-Creation-Date: 2022-07-21 07:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,25 +50,25 @@ msgstr ""
 msgid "Invalid format of fields: {0}"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:216
+#: ../html/src/components/FormulaForm.tsx:211
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:265
+#: ../html/src/components/FormulaForm.tsx:260
 msgid "Expand All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:272
+#: ../html/src/components/FormulaForm.tsx:267
 msgid "Collapse All Sections"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:337
+#: ../html/src/components/FormulaForm.tsx:332
 msgid "Unnamed"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:346
+#: ../html/src/components/FormulaForm.tsx:341
 msgid "Search by formula's group name"
 msgstr ""
 
@@ -237,7 +237,7 @@ msgstr ""
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:117
-#: ../html/src/manager/admin/payg/payg.tsx:68
+#: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
 #: ../html/src/manager/images/image-profiles.tsx:136
@@ -297,7 +297,7 @@ msgstr ""
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
-#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:153
+#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
 msgid "Reset"
 msgstr ""
@@ -379,8 +379,8 @@ msgid "required"
 msgstr ""
 
 #: ../html/src/components/input/Password.stories.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:68
 #: ../html/src/manager/login/uyuni/login.tsx:65
@@ -875,15 +875,15 @@ msgid ""
 "effect."
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:39
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:41
 msgid "Add new pay-as-you-go ssh connection data"
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:46
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:48
 msgid "Add pay-as-you-go ssh data"
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:47
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
 #: ../html/src/manager/images/image-profile-edit.tsx:503
 #: ../html/src/manager/images/image-profiles.tsx:147
@@ -902,11 +902,11 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:68
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:70
 msgid "Pay-as-you-go connection Description"
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:71
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
@@ -920,11 +920,11 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:75
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:77
 msgid "Instance SSH connection data"
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:80
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:82
 msgid "Bastion SSH connection data"
 msgstr ""
 
@@ -939,8 +939,8 @@ msgid "Filter by any value"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr ""
@@ -984,7 +984,7 @@ msgid ""
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
 msgid "Pay-as-you-go properties updated successfully"
 msgstr ""
 
@@ -1001,52 +1001,57 @@ msgstr ""
 msgid "Last Status Update"
 msgstr ""
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
 msgid "Edit "
 msgstr ""
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:70
 msgid "Editing ssh connection data.."
 msgstr ""
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
+msgid ""
+"When editing the SSH connection all needed credentials must be re-provided."
+msgstr ""
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr ""
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr ""
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr ""
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr ""
 
-#: ../html/src/manager/admin/payg/payg.tsx:58
+#: ../html/src/manager/admin/payg/payg.tsx:60
 msgid "The instance you are looking for does not exist or has been deleted"
 msgstr ""
 
-#: ../html/src/manager/admin/payg/payg.tsx:65
+#: ../html/src/manager/admin/payg/payg.tsx:67
 msgid "Instance Hostname: {0}"
 msgstr ""
 
-#: ../html/src/manager/admin/payg/payg.tsx:74
+#: ../html/src/manager/admin/payg/payg.tsx:76
 msgid "Delete Pay-as-you-go"
 msgstr ""
 
-#: ../html/src/manager/admin/payg/payg.tsx:77
+#: ../html/src/manager/admin/payg/payg.tsx:79
 #: ../html/src/manager/content-management/project/project.tsx:119
 msgid "Are you sure you want to delete project"
 msgstr ""
@@ -2767,7 +2772,7 @@ msgstr ""
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:378
+#: ../html/src/manager/proxy/container-config.tsx:386
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
@@ -3868,7 +3873,7 @@ msgid "Package States"
 msgstr ""
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:310
+#: ../html/src/manager/proxy/container-config.tsx:318
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
@@ -4035,136 +4040,136 @@ msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:134
+#: ../html/src/manager/proxy/container-config.tsx:142
 msgid "Request interrupted or invalid response received from the server."
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:171
-#: ../html/src/manager/proxy/container-config.tsx:187
+#: ../html/src/manager/proxy/container-config.tsx:179
+#: ../html/src/manager/proxy/container-config.tsx:195
 msgid "Container Based Proxy Configuration"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:177
+#: ../html/src/manager/proxy/container-config.tsx:185
 msgid ""
 "You can generate a set of configuration files and certificates in order to "
 "register and run a container-based proxy. Once the following form is filled "
-"out and submitted you will get a .zip archive to download."
+"out and submitted you will get a .tar.gz archive to download."
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:191
+#: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Proxy FQDN"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:192
+#: ../html/src/manager/proxy/container-config.tsx:200
 msgid "The FQDN of the machine where the containers are hosted"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:194
+#: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:200
+#: ../html/src/manager/proxy/container-config.tsx:208
 msgid "Parent FQDN"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:202
+#: ../html/src/manager/proxy/container-config.tsx:210
 msgid "e.g., server.domain.com"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:203
+#: ../html/src/manager/proxy/container-config.tsx:211
 msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:209
+#: ../html/src/manager/proxy/container-config.tsx:217
 msgid "Proxy SSH port"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:210
+#: ../html/src/manager/proxy/container-config.tsx:218
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:219
+#: ../html/src/manager/proxy/container-config.tsx:227
 msgid "Max Squid cache size"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:220
+#: ../html/src/manager/proxy/container-config.tsx:228
 msgid "The maximum value of the Squid cache in Megabytes"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:223
+#: ../html/src/manager/proxy/container-config.tsx:231
 msgid "e.g., 2048"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:230
+#: ../html/src/manager/proxy/container-config.tsx:238
 msgid "Proxy admin email"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:231
+#: ../html/src/manager/proxy/container-config.tsx:239
 msgid "The container-based proxy administrator email address"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:232
+#: ../html/src/manager/proxy/container-config.tsx:240
 msgid "e.g., proxy.admin@mycompany.com"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:239
-#: ../html/src/manager/proxy/container-config.tsx:240
+#: ../html/src/manager/proxy/container-config.tsx:247
+#: ../html/src/manager/proxy/container-config.tsx:248
 msgid "SSL certificate"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:248
-#: ../html/src/manager/proxy/container-config.tsx:373
+#: ../html/src/manager/proxy/container-config.tsx:256
+#: ../html/src/manager/proxy/container-config.tsx:381
 msgid "Generate"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:249
+#: ../html/src/manager/proxy/container-config.tsx:257
 msgid "Use existing"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:256
+#: ../html/src/manager/proxy/container-config.tsx:264
 msgid "CA certificate"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:257
-#: ../html/src/manager/proxy/container-config.tsx:266
-#: ../html/src/manager/proxy/container-config.tsx:323
+#: ../html/src/manager/proxy/container-config.tsx:265
+#: ../html/src/manager/proxy/container-config.tsx:274
+#: ../html/src/manager/proxy/container-config.tsx:331
 msgid "To sign the SSL certificate in PEM format"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:265
+#: ../html/src/manager/proxy/container-config.tsx:273
 msgid "CA private key"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:274
+#: ../html/src/manager/proxy/container-config.tsx:282
 msgid "CA password"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:275
+#: ../html/src/manager/proxy/container-config.tsx:283
 msgid "The CA private key password"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:283
+#: ../html/src/manager/proxy/container-config.tsx:291
 msgid "SSL Certificate data"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:290
+#: ../html/src/manager/proxy/container-config.tsx:298
 msgid "Alternate CNAMEs"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:298
+#: ../html/src/manager/proxy/container-config.tsx:306
 msgid "CNAME"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:304
+#: ../html/src/manager/proxy/container-config.tsx:312
 msgid "2-letter country code"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:311
+#: ../html/src/manager/proxy/container-config.tsx:319
 msgid "City"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:312
+#: ../html/src/manager/proxy/container-config.tsx:320
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
@@ -4172,36 +4177,36 @@ msgstr ""
 msgid "Organization"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:313
+#: ../html/src/manager/proxy/container-config.tsx:321
 msgid "Organization Unit"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:314
+#: ../html/src/manager/proxy/container-config.tsx:322
 msgid "Email"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:322
+#: ../html/src/manager/proxy/container-config.tsx:330
 msgid "The root CA"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:332
+#: ../html/src/manager/proxy/container-config.tsx:340
 msgid "Intermediate CAs"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:342
+#: ../html/src/manager/proxy/container-config.tsx:350
 msgid "CA file in PEM format"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:353
+#: ../html/src/manager/proxy/container-config.tsx:361
 msgid "Proxy certificate"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:354
-#: ../html/src/manager/proxy/container-config.tsx:363
+#: ../html/src/manager/proxy/container-config.tsx:362
+#: ../html/src/manager/proxy/container-config.tsx:371
 msgid "In PEM format"
 msgstr ""
 
-#: ../html/src/manager/proxy/container-config.tsx:362
+#: ../html/src/manager/proxy/container-config.tsx:370
 msgid "Proxy SSL private key"
 msgstr ""
 

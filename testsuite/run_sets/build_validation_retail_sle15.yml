@@ -3,11 +3,11 @@
 ## NOTE: This stage has to be run after preparing the proxy
 
 ## Prepare configuration for terminal
-- features/build_validation/retail/sle15sp3_terminal_prepare.feature
+- features/build_validation/retail/sle15sp4_terminal_prepare.feature
 
 ## Build Kiwi image
 ## (expected time of building is around 20 minutes)
-- features/build_validation/retail/sle15sp3_buildhost_build_kiwi_image.feature
+- features/build_validation/retail/sle15sp4_buildhost_build_kiwi_image.feature
 
 ## Deployment of retail terminal
-- features/build_validation/retail/sle15sp3_terminal_deploy.feature
+- features/build_validation/retail/sle15sp4_terminal_deploy.feature

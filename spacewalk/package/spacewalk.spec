@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,13 +18,13 @@
 
 
 Name:           spacewalk
-Version:        4.3.4
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
-Source:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
+Source:         https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
@@ -128,7 +128,7 @@ Conflicts:      postgresql15-contrib
 %endif # if sle_Version
 
 %description postgresql
-Spacewalk is a systems management application that will 
+Spacewalk is a systems management application that will
 inventory, provision, update and control your Linux machines.
 Version for PostgreSQL database backend.
 

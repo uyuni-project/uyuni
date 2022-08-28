@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jul 27 14:02:50 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.10-1
+  * spacewalk-setup-cobbler assumes /etc/apache2/conf.d now as a
+    default instead of /etc/httpd/conf.d (bsc#1198356)
+  * Allow alternative usage of perl-Net-LibIDN2.
+
+-------------------------------------------------------------------
 Wed May 04 15:23:20 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.9-1

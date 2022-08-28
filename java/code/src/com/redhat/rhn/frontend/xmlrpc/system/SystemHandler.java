@@ -121,7 +121,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
-import com.redhat.rhn.frontend.xmlrpc.LoggingInvocationProcessor;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.ModulesNotAllowedException;
 import com.redhat.rhn.frontend.xmlrpc.NoActionInScheduleException;
@@ -147,6 +146,7 @@ import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.UndefinedCustomFieldsException;
 import com.redhat.rhn.frontend.xmlrpc.UnrecognizedCountryException;
 import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
+import com.redhat.rhn.frontend.xmlrpc.XmlRpcLoggingInvocationProcessor;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
 import com.redhat.rhn.manager.MissingCapabilityException;
@@ -3623,7 +3623,7 @@ public class SystemHandler extends BaseHandler {
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sids, List<Integer> errataIds,
                                           Date earliestOccurrence, Boolean allowModules) {
 
-        return scheduleApplyErrata(loggedInUser, sids, errataIds, earliestOccurrence, allowModules, false);
+        return scheduleApplyErrata(loggedInUser, sids, errataIds, earliestOccurrence, allowModules, true);
     }
 
     /**
@@ -8010,7 +8010,7 @@ public class SystemHandler extends BaseHandler {
     /**
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      *
-     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
      *
      * @param user the current user
      * @param host hostname or IP address of the target machine
@@ -8045,7 +8045,7 @@ public class SystemHandler extends BaseHandler {
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      * Use SSH private key for authentication.
      *
-     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
      *
      * @param user the current user
      * @param host hostname or IP address of the target machine
@@ -8082,7 +8082,7 @@ public class SystemHandler extends BaseHandler {
     /**
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      *
-     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
      *
      * @param user the current user
      * @param host hostname or IP address of the target machine
@@ -8119,7 +8119,7 @@ public class SystemHandler extends BaseHandler {
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      * Use SSH private key for authentication.
      *
-     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
      *
      * @param user the current user
      * @param host hostname or IP address of the target machine
@@ -8158,7 +8158,7 @@ public class SystemHandler extends BaseHandler {
     /**
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      *
-     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
      *
      * @param user the current user
      * @param host hostname or IP address of the target machine
@@ -8195,7 +8195,7 @@ public class SystemHandler extends BaseHandler {
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      * Use SSH private key for authentication.
      *
-     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
      *
      * @param user the current user
      * @param host hostname or IP address of the target machine
@@ -8235,7 +8235,7 @@ public class SystemHandler extends BaseHandler {
     /**
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      *
-     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
      *
      * @param user the current user
      * @param host hostname or IP address of the target machine
@@ -8275,7 +8275,7 @@ public class SystemHandler extends BaseHandler {
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      * Use SSH private key for authentication.
      *
-     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link LoggingInvocationProcessor}
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
      *
      * @param user the current user
      * @param host hostname or IP address of the target machine

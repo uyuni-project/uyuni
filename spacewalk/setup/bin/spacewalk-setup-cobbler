@@ -22,12 +22,12 @@ from shutil import copyfile
 parser = argparse.ArgumentParser(description='Setup Cobbler for Uyuni.')
 parser.add_argument('--cobbler-config-directory', '-c', dest='cobbler_config_directory', default="/etc/cobbler/",
                     help='The directory where "settings" and "modules.conf" are in.')
-parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_directory', default="/etc/httpd",
+parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_directory', default="/etc/apache2/conf.d",
                     help='The directory where the Apache config file "cobbler.conf" is in.')
 
 COBBLER_CONFIG_DIRECTORY = "/etc/cobbler/"
 COBBLER_CONFIG_FILES = ["modules.conf", "settings"]
-HTTPD_CONFIG_DIRECTORY = "/etc/httpd/conf.d/"
+HTTPD_CONFIG_DIRECTORY = "/etc/apache2/conf.d/"
 COBBLER_HTTP_CONFIG = "cobbler.conf"
 
 

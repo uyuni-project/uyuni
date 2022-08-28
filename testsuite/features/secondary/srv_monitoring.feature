@@ -1,10 +1,14 @@
 # Copyright (c) 2019-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
 # This feature is a dependency for:
-# - features/secondary/min_monitoring.feature : If this feature fails could let monitoring feature disabled for SLE minion
-# - features/secondary/min_centos_monitoring.feature : If this feature fails could let monitoring feature disabled for CentOS minion
+# - features/secondary/min_monitoring.feature: if this feature fails,
+#   it could let the monitoring feature disabled for the SLE minion
+# - features/secondary/min_rhlike_monitoring.feature: if this feature fails,
+#   it could let the monitoring feature disabled for the Red Hat-like minion
+#
 # This feature depends on:
-# - sumaform : As it is configuring monitoring to be enabled after deployment
+# - sumaform: as it is configuring monitoring to be enabled after deployment
 
 @scope_monitoring
 Feature: Disable and re-enable monitoring of the server
@@ -22,8 +26,8 @@ Feature: Disable and re-enable monitoring of the server
     And I should see a list item with text "System" and a failing bullet
     And I should see a list item with text "PostgreSQL database" and a failing bullet
     And I should see a list item with text "Server self monitoring" and a warning bullet
-    And I should see a list item with text "Taskomatic (Java JMX)" and a failing bullet
-    And I should see a list item with text "Tomcat (Java JMX)" and a failing bullet
+    And I should see a list item with text "Taskomatic (Java JMX)" and a warning bullet
+    And I should see a list item with text "Tomcat (Java JMX)" and a warning bullet
     And I should see a "Restarting Tomcat and Taskomatic is needed for the configuration changes to take effect." text
 
   Scenario: Restart spacewalk services to apply config changes after disabling monitoring

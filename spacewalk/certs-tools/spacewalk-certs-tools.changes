@@ -1,6 +1,14 @@
-- display messages to restart services after certificate change
-- improve CA Chain checking by comparing authorityKeyIdentifier
-  with subjectKeyIdentifier
+- fix mgr-ssl-cert-setup for root CAs which do not set
+  authorityKeyIdentifier
+
+-------------------------------------------------------------------
+Wed Jul 27 14:13:56 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.14-1
+  * traditional stack bootstrap: install product packages (bsc#1201142)
+  * display messages to restart services after certificate change
+  * improve CA Chain checking by comparing authorityKeyIdentifier
+    with subjectKeyIdentifier
 
 -------------------------------------------------------------------
 Thu Jun 09 13:43:22 CEST 2022 - jgonzalez@suse.com

@@ -6,7 +6,7 @@ ADDRESSES = { 'network'           => '0',
               'sle_minion'        => '3',
               'pxeboot_minion'    => '4',
               'sle12sp5_terminal' => '5',
-              'sle15sp3_terminal' => '6',
+              'sle15sp4_terminal' => '6',
               'range begin'       => '128',
               'range end'         => '253',
               'proxy'             => '254',
@@ -76,9 +76,9 @@ BULLET_STYLE = { 'failing' => 'fa-times text-danger',
 PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'sle_minion' => 'bison',
                       'ssh_minion' => 'bison',
-                      'ceos_client' => 'autoconf',
-                      'ceos_minion' => 'autoconf',
-                      'ubuntu_minion' => 'bison',
+                      'rhlike_client' => 'autoconf',
+                      'rhlike_minion' => 'autoconf',
+                      'deblike_minion' => 'bison',
                       'sle12sp4_client' => 'bison',
                       'sle12sp4_minion' => 'bison',
                       'sle12sp4_ssh_minion' => 'bison',
@@ -100,15 +100,17 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'sle15sp4_client' => 'bison',
                       'sle15sp4_minion' => 'bison',
                       'sle15sp4_ssh_minion' => 'bison',
-                      'ceos7_client' => 'autoconf',
-                      'ceos7_minion' => 'autoconf',
-                      'ceos7_ssh_minion' => 'autoconf',
-                      'ceos8_minion' => 'autoconf',
-                      'ceos8_ssh_minion' => 'autoconf',
+                      'centos7_client' => 'autoconf',
+                      'centos7_minion' => 'autoconf',
+                      'centos7_ssh_minion' => 'autoconf',
+                      'rocky8_minion' => 'autoconf',
+                      'rocky8_ssh_minion' => 'autoconf',
                       'ubuntu1804_minion' => 'bison',
                       'ubuntu1804_ssh_minion' => 'bison',
                       'ubuntu2004_minion' => 'bison',
                       'ubuntu2004_ssh_minion' => 'bison',
+                      'ubuntu2204_minion' => 'bison',
+                      'ubuntu2204_ssh_minion' => 'bison',
                       'debian9_minion' => 'bison',
                       'debian9_ssh_minion' => 'bison',
                       'debian10_minion' => 'bison',
@@ -118,11 +120,11 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'opensuse153arm_minion' => 'bison' }.freeze
 
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
-                           'sle_client' => 'SLES12-SP4-Pool',
-                           'sle_minion' => 'SLES12-SP4-Pool',
-                           'ssh_minion' => 'SLES12-SP4-Pool',
-                           'ceos_minion' => 'RHEL7-Pool for x86_64',
-                           'ubuntu_minion' => 'ubuntu-18.04-pool',
+                           'sle_client' => 'SLES15-SP4-Pool',
+                           'sle_minion' => 'SLES15-SP4-Pool',
+                           'ssh_minion' => 'SLES15-SP4-Pool',
+                           'rhlike_minion' => 'RHEL7-Pool for x86_64',
+                           'deblike_minion' => 'ubuntu-2004-amd64-main',
                            'sle12sp4_client' => 'SLES12-SP4-Pool',
                            'sle12sp4_minion' => 'SLES12-SP4-Pool',
                            'sle12sp4_ssh_minion' => 'SLES12-SP4-Pool',
@@ -146,17 +148,19 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'sle15sp4_client' => 'SLES15-SP4-Pool',
                            'sle15sp4_minion' => 'SLES15-SP4-Pool',
                            'sle15sp4_ssh_minion' => 'SLES15-SP4-Pool',
-                           'sle15sp3_buildhost' => 'SLES15-SP3-Pool',
-                           'sle15sp3_terminal' => 'SLES15-SP3-Pool',
-                           'ceos7_client' => 'RHEL x86_64 Server 7',
-                           'ceos7_minion' => 'RHEL x86_64 Server 7',
-                           'ceos7_ssh_minion' => 'RHEL x86_64 Server 7',
-                           'ceos8_minion' => 'no-appstream-result-RHEL8-Pool for x86_64',
-                           'ceos8_ssh_minion' => 'no-appstream-result-RHEL8-Pool for x86_64',
+                           'sle15sp4_buildhost' => 'SLES15-SP4-Pool',
+                           'sle15sp4_terminal' => 'SLES15-SP4-Pool',
+                           'centos7_client' => 'RHEL x86_64 Server 7',
+                           'centos7_minion' => 'RHEL x86_64 Server 7',
+                           'centos7_ssh_minion' => 'RHEL x86_64 Server 7',
+                           'rocky8_minion' => 'no-appstream-result-RHEL8-Pool for x86_64',
+                           'rocky8_ssh_minion' => 'no-appstream-result-RHEL8-Pool for x86_64',
                            'ubuntu1804_minion' => 'ubuntu-18.04-pool',
                            'ubuntu1804_ssh_minion' => 'ubuntu-18.04-pool',
                            'ubuntu2004_minion' => 'ubuntu-2004-amd64-main',
                            'ubuntu2004_ssh_minion' => 'ubuntu-2004-amd64-main',
+                           'ubuntu2204_minion' => 'ubuntu-2204-amd64-main',
+                           'ubuntu2204_ssh_minion' => 'ubuntu-2204-amd64-main',
                            'debian9_minion' => 'debian-9-pool',
                            'debian9_ssh_minion' => 'debian-9-pool',
                            'debian10_minion' => 'debian-10-pool',
@@ -177,6 +181,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-prod
                           'no-appstream-result-RHEL8-Pool for x86_64' => 'no-appstream-result-rhel8-pool-x86_64',
                           'ubuntu-18.04-pool' => 'ubuntu-18.04-pool-amd64',
                           'ubuntu-2004-amd64-main' => 'ubuntu-2004-amd64-main-amd64',
+                          'ubuntu-2204-amd64-main' => 'ubuntu-2204-amd64-main-amd64',
                           'debian-9-pool' => 'debian-9-pool-amd64',
                           'debian-10-pool' => 'debian-10-pool-amd64',
                           'debian-11-pool' => 'debian-11-pool-amd64',
@@ -194,6 +199,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' =>
                                     'no-appstream-result-RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
+                                    'ubuntu-2204-amd64-main' => 'ubuntu-22.04-amd64',
                                     'debian-9-pool' => 'debian9-amd64',
                                     'debian-10-pool' => 'debian10-amd64',
                                     'debian-11-pool' => 'debian11-amd64',
@@ -211,6 +217,7 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-P
                                            'no-appstream-result-RHEL8-Pool for x86_64' => nil,
                                            'ubuntu-18.04-pool' => nil,
                                            'ubuntu-2004-amd64-main' => nil,
+                                           'ubuntu-2204-amd64-main' => nil,
                                            'debian-9-pool' => 'debian-9-pool-amd64',
                                            'debian-10-pool' => 'debian-10-pool-amd64',
                                            'debian-11-pool' => 'debian-11-pool-amd64',
@@ -220,8 +227,8 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_client' => 'x86_64',
                       'sle_minion' => 'x86_64',
                       'ssh_minion' => 'x86_64',
-                      'ceos_minion' => 'x86_64',
-                      'ubuntu_minion' => 'amd64',
+                      'rhlike_minion' => 'x86_64',
+                      'deblike_minion' => 'amd64',
                       'sle12sp4_client' => 'x86_64',
                       'sle12sp4_minion' => 'x86_64',
                       'sle12sp4_ssh_minion' => 'x86_64',
@@ -243,15 +250,17 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle15sp4_client' => 'x86_64',
                       'sle15sp4_minion' => 'x86_64',
                       'sle15sp4_ssh_minion' => 'x86_64',
-                      'ceos7_client' => 'x86_64',
-                      'ceos7_minion' => 'x86_64',
-                      'ceos7_ssh_minion' => 'x86_64',
-                      'ceos8_minion' => 'x86_64',
-                      'ceos8_ssh_minion' => 'x86_64',
+                      'centos7_client' => 'x86_64',
+                      'centos7_minion' => 'x86_64',
+                      'centos7_ssh_minion' => 'x86_64',
+                      'rocky8_minion' => 'x86_64',
+                      'rocky8_ssh_minion' => 'x86_64',
                       'ubuntu1804_minion' => 'amd64',
                       'ubuntu1804_ssh_minion' => 'amd64',
                       'ubuntu2004_minion' => 'amd64',
                       'ubuntu2004_ssh_minion' => 'amd64',
+                      'ubuntu2204_minion' => 'amd64',
+                      'ubuntu2204_ssh_minion' => 'amd64',
                       'debian9_minion' => 'amd64',
                       'debian9_ssh_minion' => 'amd64',
                       'debian10_minion' => 'amd64',
@@ -264,12 +273,18 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   # 'default' is required for auto-installation tests.
   'default' =>
   %w[
-    sle-product-sles15-sp2-pool-x86_64
-    sle-manager-tools15-pool-x86_64-sp2
-    sle-module-basesystem15-sp2-pool-x86_64
-    sle-product-sles15-sp2-updates-x86_64
-    sle-manager-tools15-updates-x86_64-sp2
-    sle-module-basesystem15-sp2-updates-x86_64
+    sle-product-sles15-sp4-pool-x86_64
+    sle-manager-tools15-pool-x86_64-sp4
+    sle-manager-tools15-beta-pool-x86_64-sp4
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-basesystem15-sp4-pool-x86_64
+    sle-module-server-applications15-sp4-pool-x86_64
+    sle-product-sles15-sp4-updates-x86_64
+    sle-manager-tools15-updates-x86_64-sp4
+    sle-manager-tools15-beta-updates-x86_64-sp4
+    sle-module-containers15-sp4-updates-x86_64
+    sle-module-basesystem15-sp4-updates-x86_64
+    sle-module-server-applications15-sp4-updates-x86_64
   ],
   '12-SP4' =>
   %w[
@@ -349,5 +364,5 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   ]
 }.freeze
 
-MIGRATE_SSH_MINION_FROM = '15-SP2'.freeze
-MIGRATE_SSH_MINION_TO = '15-SP3'.freeze
+MIGRATE_SSH_MINION_FROM = '15-SP3'.freeze
+MIGRATE_SSH_MINION_TO = '15-SP4'.freeze

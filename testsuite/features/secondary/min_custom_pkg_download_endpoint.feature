@@ -54,11 +54,11 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Check the channel.repo file to see the custom RPM download point
     Given I am on the Systems overview page of this "sle_minion"
     Then the susemanager repo file should exist on the "sle_minion"
-    And I should see "ftp", "scc.com" and "445" in the repo file on the "sle_minion"
+    And I should see "ftp", "minima-mirror.mgr.prv.suse.net" and "445" in the repo file on the "sle_minion"
 
   Scenario: Cleanup: remove the custom RPM download point
     When I delete a salt "pillar" file with name "pkg_endpoint.sls" on the server
-    When I delete a salt "pillar" file with name "top.sls" on the server
+    And I install a salt pillar top file for "disable_local_repos_off, salt_bundle_config" with target "*" on the server
     And I refresh the pillar data
 
   Scenario: Cleanup: subscribe the SLES minion to a channel

@@ -377,19 +377,28 @@ public class Config {
      * @return the value
      */
     public boolean getBoolean(String s) {
+        return getBoolean(s, false);
+    }
+
+    /**
+     * get the config entry for string s
+     *
+     * @param s string to get the value of
+     * @param defaultValue the default value
+     * @return the value
+     */
+    public boolean getBoolean(String s, boolean defaultValue) {
         String value = getString(s);
         if (logger.isDebugEnabled()) {
             logger.debug("getBoolean() - {} is : {}", s, value);
         }
         if (value == null) {
-            return false;
+            return defaultValue;
         }
 
         //need to check the possible true values
         // tried to use BooleanUtils, but that didn't
         // get the job done for an integer as a String.
-
-
         for (String trueValue : TRUE_VALUES) {
             if (trueValue.equalsIgnoreCase(value)) {
                 if (logger.isDebugEnabled()) {

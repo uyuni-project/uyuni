@@ -23,7 +23,8 @@ import com.redhat.satellite.search.index.Result;
 import com.redhat.satellite.search.index.QueryParseException;
 import com.redhat.satellite.search.scheduler.ScheduleManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.search.BooleanQuery;
 
 import java.sql.SQLException;
@@ -45,7 +46,7 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class IndexHandler {
 
-    private static Logger log = Logger.getLogger(IndexHandler.class);
+    private static Logger log = LogManager.getLogger(IndexHandler.class);
     private IndexManager indexManager;
     private DatabaseManager databaseManager;
     public static final int QUERY_ERROR = 100;
@@ -63,6 +64,23 @@ public class IndexHandler {
             ScheduleManager schedMgr) {
         indexManager = idxManager;
         databaseManager = dbMgr;
+    }
+
+    /**
+     * Search index - using session id as String to avoid Integer overflow
+     *
+     * @param sessionId
+     *            user's application session id
+     * @param indexName
+     *            index to use
+     * @param query
+     *            search query
+     * @return list of document ids as results
+     * @throws XmlRpcFault something bad happened
+     */
+    public List<Result> search(String sessionId, String indexName, String query, boolean isFineGrained)
+            throws XmlRpcFault {
+        return search(Long.parseLong(sessionId), indexName, query, DEFAULT_LANG, isFineGrained);
     }
 
     /**

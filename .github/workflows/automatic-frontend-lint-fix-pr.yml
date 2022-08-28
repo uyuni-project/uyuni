@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'web/html/src/**'
+      - '.github/workflows/automatic-frontend-lint-fix-pr.yml'
 
 jobs:
   frontend_lint_fix_pr:
@@ -16,10 +17,10 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -28,7 +29,7 @@ jobs:
       run: echo "::set-output name=dir::$(yarn cache dir)"
 
     - name: Use Yarn cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: yarn-cache
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -43,7 +44,7 @@ jobs:
 
     # If there's any changes, create a PR, see https://github.com/marketplace/actions/create-pull-request
     - name: Create PR
-      uses: peter-evans/create-pull-request@v3
+      uses: peter-evans/create-pull-request@v4
       with:
         # Delete the branch after merger
         delete-branch: true

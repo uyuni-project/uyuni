@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -15,8 +15,8 @@ Feature: Setup Uyuni proxy
 
   Scenario: Install proxy software
     When I refresh the metadata for "proxy"
-    # uncomment when product is out:
-    # When I install "SUSE-Manager-Proxy" product on the proxy
+    # TODO: uncomment when SCC product becomes available
+    # And I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy
     And I let squid use avahi on the proxy
 

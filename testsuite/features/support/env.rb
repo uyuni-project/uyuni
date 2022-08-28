@@ -13,12 +13,16 @@ require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
+require 'set'
 
 ## code coverage analysis
 # SimpleCov.start
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
+
+# Channels triggered by our tests to be synchronized
+$channels_synchronized = Set[]
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -145,12 +149,12 @@ Before('@sle_minion') do
   skip_this_scenario unless $minion
 end
 
-Before('@centos_minion') do
-  skip_this_scenario unless $ceos_minion
+Before('@rhlike_minion') do
+  skip_this_scenario unless $rhlike_minion
 end
 
-Before('@ubuntu_minion') do
-  skip_this_scenario unless $ubuntu_minion
+Before('@deblike_minion') do
+  skip_this_scenario unless $deblike_minion
 end
 
 Before('@pxeboot_minion') do
@@ -173,24 +177,24 @@ Before('@virthost_xen') do
   skip_this_scenario unless $xen_server
 end
 
-Before('@ceos7_minion') do
-  skip_this_scenario unless $ceos7_minion
+Before('@centos7_minion') do
+  skip_this_scenario unless $centos7_minion
 end
 
-Before('@ceos7_ssh_minion') do
-  skip_this_scenario unless $ceos7_ssh_minion
+Before('@centos7_ssh_minion') do
+  skip_this_scenario unless $centos7_ssh_minion
 end
 
-Before('@ceos7_client') do
-  skip_this_scenario unless $ceos7_client
+Before('@centos7_client') do
+  skip_this_scenario unless $centos7_client
 end
 
-Before('@ceos8_minion') do
-  skip_this_scenario unless $ceos8_minion
+Before('@rocky8_minion') do
+  skip_this_scenario unless $rocky8_minion
 end
 
-Before('@ceos8_ssh_minion') do
-  skip_this_scenario unless $ceos8_ssh_minion
+Before('@rocky8_ssh_minion') do
+  skip_this_scenario unless $rocky8_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do
@@ -207,6 +211,14 @@ end
 
 Before('@ubuntu2004_ssh_minion') do
   skip_this_scenario unless $ubuntu2004_ssh_minion
+end
+
+Before('@ubuntu2204_minion') do
+  skip_this_scenario unless $ubuntu2204_minion
+end
+
+Before('@ubuntu2204_ssh_minion') do
+  skip_this_scenario unless $ubuntu2204_ssh_minion
 end
 
 Before('@debian9_minion') do
@@ -325,12 +337,12 @@ Before('@sle12sp5_terminal') do
   skip_this_scenario unless $sle12sp5_terminal_mac
 end
 
-Before('@sle15sp3_buildhost') do
-  skip_this_scenario unless $sle15sp3_buildhost
+Before('@sle15sp4_buildhost') do
+  skip_this_scenario unless $sle15sp4_buildhost
 end
 
-Before('@sle15sp3_terminal') do
-  skip_this_scenario unless $sle15sp3_terminal_mac
+Before('@sle15sp4_terminal') do
+  skip_this_scenario unless $sle15sp4_terminal_mac
 end
 
 Before('@opensuse153arm_minion') do

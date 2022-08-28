@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 1
     - uses: actions/setup-ruby@v1
     - id: files
-      uses: Ana06/get-changed-files@v2.0.0
+      uses: Ana06/get-changed-files@v2.1.0
       with:
         filter: '*.changes'
     - name: Run changelog checker
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Remind the author with a comment
-      uses: peter-evans/create-or-update-comment@v1
+      uses: peter-evans/create-or-update-comment@v2
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |

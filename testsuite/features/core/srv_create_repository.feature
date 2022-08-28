@@ -30,7 +30,10 @@ Feature: Add a repository to a channel
   Scenario: Add the repository to the x86_64 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-x86_64"
-    And I follow "Repositories" in the content area
+    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
+    And I click on "Update Channel"
+    Then I should see a "Channel Test-Channel-x86_64 updated" text
+    When I follow "Repositories" in the content area
     And I select the "Test-Repository-x86_64" repo
     And I click on "Save Repositories"
     Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
@@ -41,6 +44,7 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
     And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-x86_64." text
 
@@ -56,7 +60,10 @@ Feature: Add a repository to a channel
   Scenario: Add the repository to the i586 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-i586"
-    And I follow "Repositories" in the content area
+    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
+    And I click on "Update Channel"
+    Then I should see a "Channel Test-Channel-i586 updated" text
+    When I follow "Repositories" in the content area
     And I select the "Test-Repository-i586" repo
     And I click on "Save Repositories"
     Then I should see a "Test-Channel-i586 repository information was successfully updated" text
@@ -67,27 +74,22 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
     And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-i586." text
 
-@ubuntu_minion
-  Scenario: Add a test repository for Ubuntu
+@deblike_minion
+  Scenario: Add a test repository for Debian-like
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "Test-Repository-Deb" as "label"
     And I select "deb" from "contenttype"
     And I enter "http://localhost/pub/TestRepoDebUpdates/" as "url"
-    # WORKAROUND
-    # GPG verification of Debian-like repos was added and the TestRepoDebUpdates repo
-    # is signed by a GPG key that is not in the keyring. This workaround temporarily
-    # disables GPG check, before this is properly handled at sumaform/terraform level.
-    And I uncheck "metadataSigned"
-    # End of WORKAROUND
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
-@ubuntu_minion
-  Scenario: Add the Ubuntu repository to the AMD64 channel
+@deblike_minion
+  Scenario: Add the Debian-like repository to the AMD64 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Repositories" in the content area
@@ -95,12 +97,13 @@ Feature: Add a repository to a channel
     And I click on "Save Repositories"
     Then I should see a "Test-Channel-Deb-AMD64 repository information was successfully updated" text
 
-@ubuntu_minion
-  Scenario: Synchronize the Ubuntu repository in the AMD64 channel
+@deblike_minion
+  Scenario: Synchronize the Debian-like repository in the AMD64 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Repositories" in the content area
     And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-Deb-AMD64." text
 
@@ -126,7 +129,7 @@ Feature: Add a repository to a channel
     And I follow "Packages" in the content area
     And I wait until I see "blackhole-dummy" text, refreshing the page
 
-@ubuntu_minion
+@deblike_minion
   Scenario: Reposync handles wrong encoding on DEB attributes
     When I follow the left menu "Software > Channel List"
     And I follow "Test-Channel-Deb-AMD64"

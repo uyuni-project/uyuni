@@ -32,12 +32,17 @@ artifacts:
     jar: redstone-xmlrpc-[0-9.]+
     repository: Uyuni_Other
   - artifact: mybatis
-    package: apache-mybatis
+    package: mybatis
     repository: Uyuni_Other
   - artifact: quartz
     repository: Uyuni_Other
-  - artifact: log4j
-    package: log4j12
+  - artifact: log4j-core
+    jar: log4j-core.jar
+    package: log4j
+    repository: Leap
+  - artifact: log4j-api
+    jar: log4j-api.jar
+    package: log4j
     repository: Leap
   - artifact: c3p0
     repository: Leap

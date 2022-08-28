@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -47,8 +47,8 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.3.17
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -84,7 +84,10 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 
 %if 0%{?suse_version}
-BuildRequires:  %fillup_prereq %insserv_prereq tftp postgresql-init
+BuildRequires:  %fillup_prereq
+BuildRequires:  %insserv_prereq
+BuildRequires:  postgresql-init
+BuildRequires:  tftp
 Requires(pre):  %fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(preun):%fillup_prereq %insserv_prereq tftp postgresql-init
 Requires(post): user(%{apache_user})
@@ -115,7 +118,7 @@ Requires(pre):  uyuni-base-server
 Requires:       firewalld
 %endif
 Requires:       postfix
-Requires:       reprepro
+Requires:       reprepro >= 5.4
 # mgr-setup want to call mksubvolume for btrfs filesystems
 Recommends:     snapper
 # mgr-setup calls dig
@@ -179,13 +182,11 @@ ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
 ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
-mkdir -p %{buildroot}/%{_sysconfdir}/init.d
 mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
 mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults
 install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
-install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
 make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
 
@@ -239,11 +240,6 @@ popd
 
 %post
 POST_ARG=$1
-%if 0%{?suse_version}
-%{fillup_and_insserv susemanager}
-%else
-%systemd_post %{name}
-%endif
 if [ -f /etc/sysconfig/atftpd ]; then
   . /etc/sysconfig/atftpd
   if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
@@ -289,7 +285,6 @@ sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 # Cleanup
 sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 
-
 %files -f susemanager.lang
 %defattr(-,root,root,-)
 %doc COPYING
@@ -306,7 +301,6 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{_datadir}/YaST2/clients/*.rb
 %{_datadir}/YaST2/scrconf/*.scr
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
-%{_sysconfdir}/init.d/susemanager
 %if 0%{?is_opensuse}
 %{_datadir}/applications/YaST2/org.uyuni-project.yast2.Uyuni.desktop
 %else

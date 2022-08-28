@@ -15,7 +15,8 @@
 
 package com.redhat.satellite.search.rpc;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +37,7 @@ import simple.http.Response;
  */
 public class XmlRpcInvoker implements ProtocolHandler {
 
-    private static Logger log = Logger.getLogger(XmlRpcInvoker.class);
+    private static Logger log = LogManager.getLogger(XmlRpcInvoker.class);
     private XmlRpcServer server;
 
     /**

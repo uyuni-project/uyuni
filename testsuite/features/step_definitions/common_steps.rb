@@ -38,7 +38,7 @@ end
 Then(/^the OS version for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   os_version, os_family = get_os_version(node)
-  # skip this test for centos and ubuntu systems
+  # skip this test for Red Hat-like and Debian-like systems
   step %(I should see a "#{os_version.gsub!('-SP', ' SP')}" text) if os_family.include? 'sles'
 end
 
@@ -222,7 +222,7 @@ When(/^I check the MAC address value$/) do
 end
 
 Then(/^I should see the CPU frequency of the client$/) do
-  get_cpu_freq = "lscpu  | grep 'CPU MHz'" # | awk '{print $4}'"
+  get_cpu_freq = "cat /proc/cpuinfo  | grep -i 'CPU MHz'" # | awk '{print $4}'"
   cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, 'root', 600)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
@@ -261,7 +261,7 @@ Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
-  ct.distro_create(distro, '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
+  ct.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
 When(/^I trigger cobbler system record$/) do
@@ -601,7 +601,7 @@ Then(/^the SLE12 SP5 product should be added$/) do
   raise unless output.include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
 end
 
-Then(/^the SLE15 (SP2|SP3) product should be added$/) do |sp_version|
+Then(/^the SLE15 (SP3|SP4) product should be added$/) do |sp_version|
   output, _code = $server.run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   raise unless output.include? "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
   raise unless output.include? "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
@@ -855,7 +855,7 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   node = get_target(client)
   if client.include? 'sle'
     node.run('zypper --non-interactive install wget', timeout: 500)
-  else # As Ubuntu has no support, must be CentOS/SLES_ES
+  else # As Debian-like has no support for traditional clients, it must be Red Hat-like
     node.run('yum install wget', timeout: 600)
   end
   registration_url = if $proxy.nil?
@@ -1170,7 +1170,7 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
     if repository_exist? unique_repo_name
       log "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
-      content_type = (client.include? 'ubuntu') || (client.include? 'debian') ? 'deb' : 'yum'
+      content_type = deb_host?(client) ? 'deb' : 'yum'
       steps %(
         When I follow the left menu "Software > Manage > Repositories"
         And I follow "Create Repository"
@@ -1332,11 +1332,11 @@ When(/^I schedule a task to update ReportDB$/) do
 end
 
 Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
-  output, _code = $server.run("lsof -i -P -n  | grep #{port}  || echo 'closed'", check_errors: false)
-  case selection
-  when 'open'
-    raise "Port '#{port}' not open although it should be!" if output == "closed\n"
-  when 'closed'
-    raise "Port '#{port}' open although it should not be!" if output != "closed\n"
+  _output, code = $server.run("ss --listening --numeric | grep :#{port}", check_errors: false, verbose: true)
+  port_opened = code.zero?
+  if selection == 'closed'
+    raise "Port '#{port}' open although it should not be!" if port_opened
+  else
+    raise "Port '#{port}' not open although it should be!" unless port_opened
   end
 end

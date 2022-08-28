@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-22 04:14+0000\n"
-"PO-Revision-Date: 2022-06-20 06:12+0000\n"
+"POT-Creation-Date: 2022-07-21 07:25+0000\n"
+"PO-Revision-Date: 2022-07-20 04:12+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -52,25 +52,25 @@ msgstr "请输入必填字段：{0}"
 msgid "Invalid format of fields: {0}"
 msgstr "无效的字段格式：{0}"
 
-#: ../html/src/components/FormulaForm.tsx:216
+#: ../html/src/components/FormulaForm.tsx:211
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
 
-#: ../html/src/components/FormulaForm.tsx:265
+#: ../html/src/components/FormulaForm.tsx:260
 msgid "Expand All Sections"
 msgstr "展开所有部分"
 
-#: ../html/src/components/FormulaForm.tsx:272
+#: ../html/src/components/FormulaForm.tsx:267
 msgid "Collapse All Sections"
 msgstr "折叠所有部分"
 
-#: ../html/src/components/FormulaForm.tsx:337
+#: ../html/src/components/FormulaForm.tsx:332
 msgid "Unnamed"
 msgstr "未命名"
 
-#: ../html/src/components/FormulaForm.tsx:346
+#: ../html/src/components/FormulaForm.tsx:341
 msgid "Search by formula's group name"
 msgstr "按公式的组名称搜索"
 
@@ -111,13 +111,13 @@ msgstr "正在装载日程安排程序..."
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
 msgid "State Configuration Channel"
-msgstr "状态配置频道"
+msgstr "状态配置通道"
 
 #: ../html/src/components/config-channels.tsx:26
 #: ../html/src/components/ranking-table.tsx:23
 #: ../html/src/components/salt-state-popup.tsx:14
 msgid "Normal Configuration Channel"
-msgstr "常规配置频道"
+msgstr "常规配置通道"
 
 #: ../html/src/components/config-channels.tsx:74
 msgid "There are unsaved changes. Do you want to proceed?"
@@ -175,11 +175,11 @@ msgstr "重新排序"
 
 #: ../html/src/components/config-channels.tsx:324
 msgid "Configuration Channels"
-msgstr "配置频道"
+msgstr "配置通道"
 
 #: ../html/src/components/config-channels.tsx:333
 msgid "Search in configuration channels"
-msgstr "在配置频道中搜索"
+msgstr "在配置通道中搜索"
 
 #: ../html/src/components/config-channels.tsx:338
 #: ../html/src/manager/header/search/search.tsx:81
@@ -191,7 +191,7 @@ msgstr "搜索"
 
 #: ../html/src/components/config-channels.tsx:349
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr "通过拖放操作编辑配置频道的排名。"
+msgstr "通过拖放操作编辑配置通道的排名。"
 
 #: ../html/src/components/config-channels.tsx:353
 msgid "There are no states assigned."
@@ -199,11 +199,11 @@ msgstr "未指派任何状态。"
 
 #: ../html/src/components/config-channels.tsx:361
 msgid "Channel Name"
-msgstr "频道名称"
+msgstr "通道名称"
 
 #: ../html/src/components/config-channels.tsx:362
 msgid "Channel Label"
-msgstr "频道标签"
+msgstr "通道标签"
 
 #: ../html/src/components/config-channels.tsx:363
 msgid "Assign"
@@ -241,7 +241,7 @@ msgstr "取消"
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:117
-#: ../html/src/manager/admin/payg/payg.tsx:68
+#: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
 #: ../html/src/manager/images/image-profiles.tsx:136
@@ -303,7 +303,7 @@ msgstr "公式"
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
-#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:153
+#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
 msgid "Reset"
 msgstr "重设置"
@@ -385,8 +385,8 @@ msgid "required"
 msgstr "必填"
 
 #: ../html/src/components/input/Password.stories.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:68
 #: ../html/src/manager/login/uyuni/login.tsx:65
@@ -573,7 +573,7 @@ msgstr "没有可显示的项。"
 
 #: ../html/src/components/salt-state-popup.tsx:50
 msgid "Configuration Channel: {0}"
-msgstr "配置频道：{0}"
+msgstr "配置通道：{0}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
@@ -597,7 +597,7 @@ msgstr "编辑"
 
 #: ../html/src/components/salt-state-popup.tsx:61
 msgid "Edit Configuration Channel"
-msgstr "编辑配置频道"
+msgstr "编辑配置通道"
 
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
@@ -655,23 +655,23 @@ msgstr "帮助"
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:25
 msgid "Base channel not found or not authorized."
-msgstr "找不到或未授权基础频道。"
+msgstr "找不到或未授权基础通道。"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:19
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:8
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:26
 msgid "Child channel not found or not authorized."
-msgstr "找不到或未授权子频道。"
+msgstr "找不到或未授权子通道。"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:20
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:9
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:27
 msgid "Invalid channel id"
-msgstr "无效的频道 ID"
+msgstr "无效的通道 ID"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:22
 msgid "Required channels"
-msgstr "必需的频道"
+msgstr "必需的通道"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:24
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:28
@@ -680,7 +680,7 @@ msgstr "无"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Require this channel"
-msgstr "需要此频道"
+msgstr "需要此通道"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "Restart is needed for the configuration changes to take effect."
@@ -881,15 +881,15 @@ msgid ""
 "effect."
 msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:39
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:41
 msgid "Add new pay-as-you-go ssh connection data"
 msgstr "添加新的 Pay-as-you-go SSH 连接数据"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:46
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:48
 msgid "Add pay-as-you-go ssh data"
 msgstr "添加 Pay-as-you-go SSH 数据"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:47
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
 #: ../html/src/manager/images/image-profile-edit.tsx:503
 #: ../html/src/manager/images/image-profiles.tsx:147
@@ -908,11 +908,11 @@ msgstr "添加 Pay-as-you-go SSH 数据"
 msgid "Create"
 msgstr "创建"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:68
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:70
 msgid "Pay-as-you-go connection Description"
 msgstr "Pay-as-you-go 连接说明"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:71
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
@@ -926,11 +926,11 @@ msgstr "Pay-as-you-go 连接说明"
 msgid "Description"
 msgstr "说明"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:75
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:77
 msgid "Instance SSH connection data"
 msgstr "实例 SSH 连接数据"
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:80
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:82
 msgid "Bastion SSH connection data"
 msgstr "堡垒 SSH 连接数据"
 
@@ -945,8 +945,8 @@ msgid "Filter by any value"
 msgstr "按任意值过滤"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr "主机"
@@ -990,7 +990,7 @@ msgid ""
 msgstr "请求已中断，或者从服务器收到了无效响应。请重试。"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:28
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
 msgid "Pay-as-you-go properties updated successfully"
 msgstr "已成功更新 Pay-as-you-go 属性"
 
@@ -1007,52 +1007,57 @@ msgstr "正在编辑属性..."
 msgid "Last Status Update"
 msgstr "上次状态更新"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:47
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
 msgid "Edit "
 msgstr "编辑 "
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:70
 msgid "Editing ssh connection data.."
 msgstr "正在编辑 SSH 连接数据..."
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
+msgid ""
+"When editing the SSH connection all needed credentials must be re-provided."
+msgstr "编辑 SSH 连接时，必须重新提供所有需要的身份凭证。"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr "SSH 端口"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr "用户"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr "SSH 私用密钥"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 私用密钥通行口令"
 
-#: ../html/src/manager/admin/payg/payg.tsx:58
+#: ../html/src/manager/admin/payg/payg.tsx:60
 msgid "The instance you are looking for does not exist or has been deleted"
 msgstr "您要查找的实例不存在或已删除"
 
-#: ../html/src/manager/admin/payg/payg.tsx:65
+#: ../html/src/manager/admin/payg/payg.tsx:67
 msgid "Instance Hostname: {0}"
 msgstr "实例主机名：{0}"
 
-#: ../html/src/manager/admin/payg/payg.tsx:74
+#: ../html/src/manager/admin/payg/payg.tsx:76
 msgid "Delete Pay-as-you-go"
 msgstr "删除 Pay-as-you-go"
 
-#: ../html/src/manager/admin/payg/payg.tsx:77
+#: ../html/src/manager/admin/payg/payg.tsx:79
 #: ../html/src/manager/content-management/project/project.tsx:119
 msgid "Are you sure you want to delete project"
 msgstr "您确定要删除项目吗"
@@ -1099,7 +1104,7 @@ msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
-"没有可用的 SUSE Manager Server 订阅。需要客户端工具频道的产品将不显示。"
+"没有可用的 SUSE Manager Server 订阅。需要客户端工具通道的产品将不显示。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:188
 msgid "The product catalog refresh is running..."
@@ -1184,19 +1189,19 @@ msgstr "体系结构"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:644
 msgid "Channels"
-msgstr "频道"
+msgstr "通道"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid " channels sync failed"
-msgstr " 频道同步失败"
+msgstr " 通道同步失败"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:823
 msgid " channels sync in progress"
-msgstr " 频道同步正在进行"
+msgstr " 通道同步正在进行"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:831
 msgid " channels synced"
-msgstr " 频道已同步"
+msgstr " 通道已同步"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:856
 msgid "To enable this product, the parent product should be selected first"
@@ -1232,31 +1237,31 @@ msgstr "SCC 产品目录刷新正在进行"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:961
 msgid "Scheduling channels product resync"
-msgstr "正在安排频道产品重新同步"
+msgstr "正在安排通道产品重新同步"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:964
 msgid "Channels product resync scheduled"
-msgstr "已安排频道产品重新同步"
+msgstr "已安排通道产品重新同步"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:967
 msgid "Schedule channels product resync"
-msgstr "安排频道产品重新同步"
+msgstr "安排通道产品重新同步"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1028
 msgid "Show product's channels"
-msgstr "显示产品的频道"
+msgstr "显示产品的通道"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1060
 msgid "Product Channels - "
-msgstr "产品频道 - "
+msgstr "产品通道 - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1065
 msgid "Mandatory Channels"
-msgstr "必需频道"
+msgstr "必需通道"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1072
 msgid "Optional Channels"
-msgstr "可选频道"
+msgstr "可选通道"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "not synced"
@@ -1377,7 +1382,7 @@ msgstr "服务器错误，请查看日志文件。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
 msgid "Affected, patches available in channels which are not assigned"
-msgstr "受影响，频道中有可用补丁，但未指派"
+msgstr "受影响，通道中有可用补丁，但未指派"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
 msgid "Affected, patches available in a Product Migration target"
@@ -1385,7 +1390,7 @@ msgstr "受影响，产品迁移目标中有可用补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
 msgid "Affected, at least one patch available in an assigned channel"
-msgstr "受影响，指派的频道中至少有一个可用补丁"
+msgstr "受影响，指派的通道中至少有一个可用补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
 msgid "Not affected"
@@ -1470,7 +1475,7 @@ msgstr "补丁可用，但系统需要迁移到更新的产品。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
 msgid "Patch available, but needs to be cloned into Channel."
-msgstr "补丁可用，但需要克隆到频道中。"
+msgstr "补丁可用，但需要克隆到通道中。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:380
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:407
@@ -1485,14 +1490,14 @@ msgstr "重构建"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:399
 msgid "Patch available but needs to be cloned into Channel."
-msgstr "补丁可用，但需要克隆到频道中。"
+msgstr "补丁可用，但需要克隆到通道中。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:402
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
 msgid "Channel"
-msgstr "频道"
+msgstr "通道"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
 msgid "Errata"
@@ -2284,7 +2289,7 @@ msgstr "正在构建项目..."
 msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
-msgstr "该项目包含的频道具有未同步的补丁。将根据您的组织设置同步这些补丁。"
+msgstr "该项目包含的通道具有未同步的补丁。将根据您的组织设置同步这些补丁。"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:109
 msgid "Version Message"
@@ -2352,11 +2357,11 @@ msgstr "新建"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:24
 msgid "Cloning channels"
-msgstr "克隆频道"
+msgstr "克隆通道"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
 msgid "Waiting for repositories data to be generated"
-msgstr "正在等待生成储存库数据"
+msgstr "正在等待生成软件源数据"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
 #: ../html/src/manager/images/image-view.tsx:505
@@ -2487,21 +2492,21 @@ msgstr "版本历史记录"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
 msgid "New base channel"
-msgstr "新基础频道"
+msgstr "新基础通道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:177
 msgid "New Base Channel"
-msgstr "新建基础频道"
+msgstr "新建基础通道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:180
 msgid "Choose the channel to be elected as the new base channel"
-msgstr "选择要用作新基础频道的频道"
+msgstr "选择要用作新基础通道的通道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:589
 msgid "Child Channels"
-msgstr "子频道"
+msgstr "子通道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:218
 msgid "Clear Search"
@@ -2509,19 +2514,19 @@ msgstr "清除搜索"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
 msgid "This channel requires:"
-msgstr "此频道需要："
+msgstr "此通道需要："
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
 msgid "This channel is required by:"
-msgstr "以下对象需要此频道："
+msgstr "以下对象需要此通道："
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
-msgstr "建议使用此频道"
+msgstr "建议使用此通道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:75
 msgid "This channel is mandatory"
-msgstr "必须使用此频道"
+msgstr "必须使用此通道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:76
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:149
@@ -2532,7 +2537,7 @@ msgstr "必需"
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/empty-child.tsx:8
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:98
 msgid "no child channels"
-msgstr "无子频道"
+msgstr "无子通道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:37
 #: ../html/src/manager/images/image-stores.tsx:184
@@ -2560,7 +2565,7 @@ msgstr "已成功编辑源"
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:148
 #: ../html/src/manager/images/image-build.tsx:287
 msgid "Software Channels"
-msgstr "软件频道"
+msgstr "软件通道"
 
 #: ../html/src/manager/errors/not-found.tsx:7
 msgid "Page Not Found"
@@ -2598,7 +2603,7 @@ msgstr "如果您觉得您错误抵达了此页面，请联系我们并描述您
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
-msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
+msgstr "已为此组中的每个受控端服务器安排了配置通道应用"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:16
@@ -2748,7 +2753,7 @@ msgstr "已安排映像导入。"
 #: ../html/src/manager/images/image-import.tsx:222
 #: ../html/src/manager/images/image-profile-edit.tsx:386
 msgid "There are no channels assigned to this key."
-msgstr "未将任何频道指派到此密钥。"
+msgstr "未将任何通道指派到此密钥。"
 
 #: ../html/src/manager/images/image-import.tsx:242
 msgid "Import Image"
@@ -2782,7 +2787,7 @@ msgstr "导入"
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:378
+#: ../html/src/manager/proxy/container-config.tsx:386
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
@@ -3823,7 +3828,7 @@ msgstr "剧本的执行已"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
-msgstr "应用配置频道 "
+msgstr "应用配置通道 "
 
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:62
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
@@ -3884,7 +3889,7 @@ msgid "Package States"
 msgstr "软件包状态"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:310
+#: ../html/src/manager/proxy/container-config.tsx:318
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
@@ -3906,15 +3911,15 @@ msgstr "载入失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:34
 msgid "Channel sync failed"
-msgstr "频道同步失败"
+msgstr "通道同步失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:38
 msgid "Channel sync finished"
-msgstr "频道同步已完成"
+msgstr "通道同步已完成"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:42
 msgid "Creating Bootstrap Repository failed"
-msgstr "创建引导储存库失败"
+msgstr "创建引导软件源失败"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:46
 msgid "State apply failed"
@@ -3957,7 +3962,7 @@ msgstr "重试载入"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:391
 msgid "Retry repo sync"
-msgstr "重试储存库同步"
+msgstr "重试软件源同步"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:415
 msgid "Unread Messages"
@@ -4040,7 +4045,7 @@ msgstr "连接到服务器时出错。请刷新页面以重试。"
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
-msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
+msgstr "已为此组中的每个受控端服务器安排了配置通道应用"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
@@ -4051,138 +4056,138 @@ msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr "正在生成代理配置：正在等待响应..."
 
-#: ../html/src/manager/proxy/container-config.tsx:134
+#: ../html/src/manager/proxy/container-config.tsx:142
 msgid "Request interrupted or invalid response received from the server."
 msgstr "请求已中断，或者从服务器收到了无效响应。"
 
-#: ../html/src/manager/proxy/container-config.tsx:171
-#: ../html/src/manager/proxy/container-config.tsx:187
+#: ../html/src/manager/proxy/container-config.tsx:179
+#: ../html/src/manager/proxy/container-config.tsx:195
 msgid "Container Based Proxy Configuration"
 msgstr "基于容器的代理配置"
 
-#: ../html/src/manager/proxy/container-config.tsx:177
+#: ../html/src/manager/proxy/container-config.tsx:185
 msgid ""
 "You can generate a set of configuration files and certificates in order to "
 "register and run a container-based proxy. Once the following form is filled "
-"out and submitted you will get a .zip archive to download."
+"out and submitted you will get a .tar.gz archive to download."
 msgstr ""
 "您可以生成一组配置文件和证书以注册并运行基于容器的代理。填写并提交下面的表单"
-"后，系统将提供一个 .zip 存档供您下载。"
+"后，系统将提供一个 .tar.gz 存档供您下载。"
 
-#: ../html/src/manager/proxy/container-config.tsx:191
+#: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Proxy FQDN"
 msgstr "代理 FQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:192
+#: ../html/src/manager/proxy/container-config.tsx:200
 msgid "The FQDN of the machine where the containers are hosted"
 msgstr "托管容器的计算机的 FQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:194
+#: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
 msgstr "例如 proxy.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:200
+#: ../html/src/manager/proxy/container-config.tsx:208
 msgid "Parent FQDN"
 msgstr "父 FQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:202
+#: ../html/src/manager/proxy/container-config.tsx:210
 msgid "e.g., server.domain.com"
 msgstr "例如 server.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:203
+#: ../html/src/manager/proxy/container-config.tsx:211
 msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr "要连接到的父项（服务器或代理）的 FQDN。"
 
-#: ../html/src/manager/proxy/container-config.tsx:209
+#: ../html/src/manager/proxy/container-config.tsx:217
 msgid "Proxy SSH port"
 msgstr "代理 SSH 端口"
 
-#: ../html/src/manager/proxy/container-config.tsx:210
+#: ../html/src/manager/proxy/container-config.tsx:218
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr "端口范围：1 - 65535"
 
-#: ../html/src/manager/proxy/container-config.tsx:219
+#: ../html/src/manager/proxy/container-config.tsx:227
 msgid "Max Squid cache size"
 msgstr "最大 Squid 缓存大小"
 
-#: ../html/src/manager/proxy/container-config.tsx:220
+#: ../html/src/manager/proxy/container-config.tsx:228
 msgid "The maximum value of the Squid cache in Megabytes"
 msgstr "Squid 缓存的最大值 (MB)"
 
-#: ../html/src/manager/proxy/container-config.tsx:223
+#: ../html/src/manager/proxy/container-config.tsx:231
 msgid "e.g., 2048"
 msgstr "例如 2048"
 
-#: ../html/src/manager/proxy/container-config.tsx:230
+#: ../html/src/manager/proxy/container-config.tsx:238
 msgid "Proxy admin email"
 msgstr "代理管理员电子邮件"
 
-#: ../html/src/manager/proxy/container-config.tsx:231
+#: ../html/src/manager/proxy/container-config.tsx:239
 msgid "The container-based proxy administrator email address"
 msgstr "基于容器的代理管理员电子邮件地址"
 
-#: ../html/src/manager/proxy/container-config.tsx:232
+#: ../html/src/manager/proxy/container-config.tsx:240
 msgid "e.g., proxy.admin@mycompany.com"
 msgstr "例如 proxy.admin@mycompany.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:239
-#: ../html/src/manager/proxy/container-config.tsx:240
+#: ../html/src/manager/proxy/container-config.tsx:247
+#: ../html/src/manager/proxy/container-config.tsx:248
 msgid "SSL certificate"
 msgstr "SSL 证书"
 
-#: ../html/src/manager/proxy/container-config.tsx:248
-#: ../html/src/manager/proxy/container-config.tsx:373
+#: ../html/src/manager/proxy/container-config.tsx:256
+#: ../html/src/manager/proxy/container-config.tsx:381
 msgid "Generate"
 msgstr "生成"
 
-#: ../html/src/manager/proxy/container-config.tsx:249
+#: ../html/src/manager/proxy/container-config.tsx:257
 msgid "Use existing"
 msgstr "使用现有的"
 
-#: ../html/src/manager/proxy/container-config.tsx:256
+#: ../html/src/manager/proxy/container-config.tsx:264
 msgid "CA certificate"
 msgstr "CA 证书"
 
-#: ../html/src/manager/proxy/container-config.tsx:257
-#: ../html/src/manager/proxy/container-config.tsx:266
-#: ../html/src/manager/proxy/container-config.tsx:323
+#: ../html/src/manager/proxy/container-config.tsx:265
+#: ../html/src/manager/proxy/container-config.tsx:274
+#: ../html/src/manager/proxy/container-config.tsx:331
 msgid "To sign the SSL certificate in PEM format"
 msgstr "为 PEM 格式的 SSL 证书签名"
 
-#: ../html/src/manager/proxy/container-config.tsx:265
+#: ../html/src/manager/proxy/container-config.tsx:273
 msgid "CA private key"
 msgstr "CA 私用密钥"
 
-#: ../html/src/manager/proxy/container-config.tsx:274
+#: ../html/src/manager/proxy/container-config.tsx:282
 msgid "CA password"
 msgstr "CA 口令"
 
-#: ../html/src/manager/proxy/container-config.tsx:275
+#: ../html/src/manager/proxy/container-config.tsx:283
 msgid "The CA private key password"
 msgstr "CA 私用密钥口令"
 
-#: ../html/src/manager/proxy/container-config.tsx:283
+#: ../html/src/manager/proxy/container-config.tsx:291
 msgid "SSL Certificate data"
 msgstr "SSL 证书数据"
 
-#: ../html/src/manager/proxy/container-config.tsx:290
+#: ../html/src/manager/proxy/container-config.tsx:298
 msgid "Alternate CNAMEs"
 msgstr "备用 CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:298
+#: ../html/src/manager/proxy/container-config.tsx:306
 msgid "CNAME"
 msgstr "CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:304
+#: ../html/src/manager/proxy/container-config.tsx:312
 msgid "2-letter country code"
 msgstr "2 位字母国家/地区代码"
 
-#: ../html/src/manager/proxy/container-config.tsx:311
+#: ../html/src/manager/proxy/container-config.tsx:319
 msgid "City"
 msgstr "城市"
 
-#: ../html/src/manager/proxy/container-config.tsx:312
+#: ../html/src/manager/proxy/container-config.tsx:320
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
@@ -4190,36 +4195,36 @@ msgstr "城市"
 msgid "Organization"
 msgstr "组织"
 
-#: ../html/src/manager/proxy/container-config.tsx:313
+#: ../html/src/manager/proxy/container-config.tsx:321
 msgid "Organization Unit"
 msgstr "组织单位"
 
-#: ../html/src/manager/proxy/container-config.tsx:314
+#: ../html/src/manager/proxy/container-config.tsx:322
 msgid "Email"
 msgstr "电子邮件"
 
-#: ../html/src/manager/proxy/container-config.tsx:322
+#: ../html/src/manager/proxy/container-config.tsx:330
 msgid "The root CA"
 msgstr "根 CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:332
+#: ../html/src/manager/proxy/container-config.tsx:340
 msgid "Intermediate CAs"
 msgstr "中间 CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:342
+#: ../html/src/manager/proxy/container-config.tsx:350
 msgid "CA file in PEM format"
 msgstr "PEM 格式的 CA 文件"
 
-#: ../html/src/manager/proxy/container-config.tsx:353
+#: ../html/src/manager/proxy/container-config.tsx:361
 msgid "Proxy certificate"
 msgstr "代理证书"
 
-#: ../html/src/manager/proxy/container-config.tsx:354
-#: ../html/src/manager/proxy/container-config.tsx:363
+#: ../html/src/manager/proxy/container-config.tsx:362
+#: ../html/src/manager/proxy/container-config.tsx:371
 msgid "In PEM format"
 msgstr "PEM 格式"
 
-#: ../html/src/manager/proxy/container-config.tsx:362
+#: ../html/src/manager/proxy/container-config.tsx:370
 msgid "Proxy SSL private key"
 msgstr "代理 SSL 私用密钥"
 
@@ -4399,11 +4404,11 @@ msgstr "没有适用的系统。"
 
 #: ../html/src/manager/state/highstate-summary.tsx:22
 msgid "State channel"
-msgstr "状态频道"
+msgstr "状态通道"
 
 #: ../html/src/manager/state/highstate-summary.tsx:23
 msgid "Config channel"
-msgstr "配置频道"
+msgstr "配置通道"
 
 #: ../html/src/manager/state/highstate-summary.tsx:25
 msgid "internal"
@@ -4577,11 +4582,11 @@ msgstr "SUSE Manager Default"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:58
 msgid "Loading child channels.."
-msgstr "正在装载子频道..."
+msgstr "正在装载子通道..."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:107
 msgid "Base Channel:"
-msgstr "基础频道："
+msgstr "基础通道："
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:128
 msgid "${defaultChannelName}"
@@ -4593,13 +4598,13 @@ msgstr "${this.getDefaultBase().name}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:148
 msgid "Child Channels:"
-msgstr "子频道："
+msgstr "子通道："
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
-msgstr "使用此激活密钥注册的所有系统都将订阅所选子频道。"
+msgstr "使用此激活密钥注册的所有系统都将订阅所选子通道。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
@@ -4719,7 +4724,7 @@ msgstr "代理"
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
-msgstr "代理的主机名不是完全限定的。这可能导致在访问频道时出现问题。"
+msgstr "代理的主机名不是完全限定的。这可能导致在访问通道时出现问题。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:622
 msgid "Disable SSH strict host key checking during bootstrap process"
@@ -4832,19 +4837,19 @@ msgstr "在 Taskomatic 中安排作业时出错。请查看日志。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:33
 msgid "Could not determine system default channel."
-msgstr "无法确定系统默认频道。"
+msgstr "无法确定系统默认通道。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:34
 msgid "Channel change is invalid."
-msgstr "频道更改无效。"
+msgstr "通道更改无效。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:35
 msgid "Selected base is not compatible with system."
-msgstr "选定的基础频道与系统不兼容。"
+msgstr "选定的基础通道与系统不兼容。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:36
 msgid "No base channel change found."
-msgstr "未找到基础频道更改。"
+msgstr "未找到基础通道更改。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:40
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:217
@@ -4862,12 +4867,12 @@ msgstr "取消订阅"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:142
 msgid "System Default Base Channel"
-msgstr "系统默认基础频道"
+msgstr "系统默认基础通道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
 msgid "Base Channel"
-msgstr "基础频道"
+msgstr "基础通道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
 msgid ""
@@ -4877,9 +4882,9 @@ msgid ""
 "version and processor type. Systems will be unsubscribed from all channels, "
 "and subscribed to their new base channels. "
 msgstr ""
-"作为频道管理员，您可以更改系统订阅的基础频道。有效频道是您的组织创建的频道，"
-"或者适用于您操作系统版本和处理器类型的默认 SUSE 基础频道。系统将取消订阅所有"
-"频道，然后订阅其新的基础频道。 "
+"作为通道管理员，您可以更改系统订阅的基础通道。有效通道是您的组织创建的通道，"
+"或者适用于您操作系统版本和处理器类型的默认 SUSE 基础通道。系统将取消订阅所有"
+"通道，然后订阅其新的基础通道。 "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:156
 msgid ""
@@ -4889,21 +4894,21 @@ msgstr "此操作可能会对适用于系统的软件包和补丁造成重大影
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:173
 msgid "Current base Channel"
-msgstr "当前基础频道"
+msgstr "当前基础通道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:198
 msgid "Desired base Channel"
-msgstr "所需基础频道"
+msgstr "所需基础通道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:219
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:449
 msgid "SUSE Channels"
-msgstr "SUSE 频道"
+msgstr "SUSE 通道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:224
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:475
 msgid "Custom Channels"
-msgstr "自定义频道"
+msgstr "自定义通道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:235
 msgid "Systems subscribed to"
@@ -4913,7 +4918,7 @@ msgstr "系统已订阅"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:638
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:658
 msgid "(Couldn't determine new base channel)"
-msgstr "（无法确定新的基础频道）"
+msgstr "（无法确定新的基础通道）"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:448
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:673
@@ -4940,28 +4945,28 @@ msgstr "取消订阅"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:545
 msgid "Below is a list of channels in your organization. "
-msgstr "下面是您组织中的频道列表。 "
+msgstr "下面是您组织中的通道列表。 "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:547
 msgid "To make no changes for a channel, check Do Nothing for that channel."
-msgstr "要防止对某个频道进行更改，请选中该频道对应的 \"不执行任何操作\"。"
+msgstr "要防止对某个通道进行更改，请选中该通道对应的 \"不执行任何操作\"。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:548
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
-msgstr "要让选定的系统订阅某个频道，请选中该频道对应的 \"已订阅\"。"
+msgstr "要让选定的系统订阅某个通道，请选中该通道对应的 \"已订阅\"。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:549
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
-msgstr "要让选定的系统取消订阅某个频道，请选中该频道对应的 \"已取消订阅\"。"
+msgstr "要让选定的系统取消订阅某个通道，请选中该通道对应的 \"已取消订阅\"。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:559
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:728
 msgid "Systems to subscribe to"
-msgstr "要订阅以下频道的系统"
+msgstr "要订阅以下通道的系统"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:650
 msgid "(None)"
@@ -4973,11 +4978,11 @@ msgstr " （系统默认）"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:710
 msgid "Channel Changes Overview"
-msgstr "频道更改概览"
+msgstr "通道更改概览"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:757
 msgid "Channel Changes Actions"
-msgstr "频道更改操作"
+msgstr "通道更改操作"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:786
 msgid "Scheduled"
@@ -4985,7 +4990,7 @@ msgstr "已安排"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:792
 msgid "Unknown error. Could not schedule channel change"
-msgstr "未知错误。无法安排频道更改"
+msgstr "未知错误。无法安排通道更改"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:913
 msgid "Some changes scheduled successfully."
@@ -4993,7 +4998,7 @@ msgstr "已成功安排某些更改。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1046
 msgid "Channel changes scheduled."
-msgstr "已安排频道更改。"
+msgstr "已安排通道更改。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:224
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:438
@@ -5002,7 +5007,7 @@ msgstr "（无，禁用服务）"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:367
 msgid "Changing the channels has been "
-msgstr "更改频道 "
+msgstr "更改通道 "
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:568
 msgid ""
@@ -5010,8 +5015,8 @@ msgid ""
 "system will be unsubscribed from all software channels, and subscribed to "
 "the new base software channel."
 msgstr ""
-"您可以更改系统订阅的基础软件频道。该系统将取消订阅所有软件频道，然后订阅新的"
-"基础软件频道。"
+"您可以更改系统订阅的基础软件通道。该系统将取消订阅所有软件通道，然后订阅新的"
+"基础软件通道。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:594
 msgid ""
@@ -5019,7 +5024,7 @@ msgid ""
 "checkboxes indicate channels that can't be manually subscribed or "
 "unsubscribed from."
 msgstr ""
-"此系统已订阅下面选中的频道（如果有）。已禁用的复选框表示相应的频道不可手动订"
+"此系统已订阅下面选中的通道（如果有）。已禁用的复选框表示相应的通道不可手动订"
 "阅或取消订阅。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:613
@@ -5027,11 +5032,11 @@ msgstr ""
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:692
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:693
 msgid "No child channels available."
-msgstr "无可用子频道。"
+msgstr "无可用子通道。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:646
 msgid "Confirm Software Channel Change"
-msgstr "确认软件频道更改"
+msgstr "确认软件通道更改"
 
 #: ../html/src/manager/systems/virtual-list.tsx:42
 msgid "Virtual Systems"
@@ -5052,7 +5057,7 @@ msgstr "虚拟系统"
 #: ../html/src/manager/systems/virtual-list.tsx:101
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
 msgid "Base Software Channel"
-msgstr "基础软件频道"
+msgstr "基础软件通道"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:54
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
@@ -6043,7 +6048,7 @@ msgstr "例如 client.nue.sles"
 #. Base channel filter
 #: ../html/src/manager/visualization/hierarchy.tsx:139
 msgid "Filter by system base channel"
-msgstr "按系统基础频道过滤"
+msgstr "按系统基础通道过滤"
 
 #: ../html/src/manager/visualization/hierarchy.tsx:139
 msgid "e.g., SLE12"

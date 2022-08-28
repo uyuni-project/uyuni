@@ -16,9 +16,10 @@ no_ssh_push_key_authorized:
     - source: salt://salt_ssh/mgr_ssh_id.pub
     - comment: susemanager-default-contact-method
 
-# disable all susemanager:* repos
-{% set repos_disabled = {'match_str': 'susemanager:', 'matching': true} %}
+# disable all repos, except of repos flagged with keep:* (should be none)
+{% set repos_disabled = {'match_str': 'keep:', 'matching': false} %}
 {%- include 'channels/disablelocalrepos.sls' %}
+{% do repos_disabled.update({'skip': true}) %}
 
 # SUSE OS Family
 {%- if grains['os_family'] == 'Suse' %}
@@ -144,10 +145,18 @@ salt-minion-package:
     - require:
       - file: bootstrap_repo
 
-{# These two dependencies are only needed on DEB based distros with Python version < 3.7 #}
-{# We cannot make these packages as hard depedendencies for Salt package because this is only needed for Ubuntu 18.04 #}
-{# and we only maintain a single DEB package for all DEB based distros #}
-{% if salt_minion_name == 'salt-minion' and grains['os_family'] == 'Debian' and grains['pythonversion'][0] >= 3 and grains['pythonversion'][1] < 7 %}
+{# We must install "python3-contextvars" on DEB based distros, running Salt 3004, with Python version < 3.7, like Ubuntu 18.04 #}
+{# We cannot make this package a hard depedendency for Salt DEB package because this is only needed in Ubuntu 18.04 #}
+{# DEB based distros with Python version >= 3.7 does not need this package - package is not existing in such cases #}
+{# Since we only maintain a single DEB package for all DEB based distros, we need to explicitely install the package here #}
+{%- set contextvars_needed = False %}
+{%- if salt_minion_name == 'salt-minion' and grains['os_family'] == 'Debian' and grains['pythonversion'][0] >= 3 and grains['pythonversion'][1] < 7 %}
+  {%- if not (grains['os'] == 'Ubuntu' and grains['osrelease_info'][0] == 16) and not (grains['os'] == 'Debian' and grains['osrelease_info'][0] == 9) %}
+    {%- set contextvars_needed = True %}
+  {%- endif %}
+{%- endif %}
+
+{% if contextvars_needed %}
 salt-install-contextvars:
   pkg.installed:
     - name: python3-contextvars
@@ -173,21 +182,6 @@ salt-install-contextvars:
       - pkg: salt-minion-package
 
 {% include 'bootstrap/remove_traditional_stack.sls' %}
-
-mgr_update_basic_pkgs:
-  pkg.latest:
-    - pkgs:
-      - openssl
-{%- if grains['os_family'] == 'Suse' and grains['osrelease'] in ['11.3', '11.4'] and grains['cpuarch'] in ['i586', 'x86_64'] %}
-      - pmtools
-{%- elif grains['cpuarch'] in ['aarch64', 'x86_64'] %}
-      - dmidecode
-{%- endif %}
-{%- if grains['os_family'] == 'Suse' %}
-      - zypper
-{%- elif grains['os_family'] == 'RedHat' %}
-      - yum
-{%- endif %}
 
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}

@@ -1,3 +1,15 @@
+- Process date values in spacecmd api calls (bsc#1198903)
+- Improve Proxy FQDN hint message
+
+-------------------------------------------------------------------
+Wed Jul 27 14:05:24 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.14-1
+  * Fix missing argument on system_listmigrationtargets (bsc#1201003)
+  * Show correct help on calling kickstart_importjson with no arguments
+  * Fix tracebacks on spacecmd kickstart_export (bsc#1200591)
+  * Change proxy container config default filename to end with tar.gz
+
 -------------------------------------------------------------------
 Fri May 20 00:02:50 CEST 2022 - jgonzalez@suse.com
 

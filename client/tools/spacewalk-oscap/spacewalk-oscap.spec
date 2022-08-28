@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-oscap
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -29,8 +29,8 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:           spacewalk-oscap
-Version:        4.3.5
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        OpenSCAP plug-in for rhn-check
 License:        GPL-2.0-only
 Group:          Applications/System

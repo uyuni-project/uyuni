@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.channel.manage;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
@@ -24,7 +25,10 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -42,7 +46,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * RepositoriesAction
  */
-public class RepositoriesAction extends RhnAction implements Listable {
+public class RepositoriesAction extends RhnAction implements Listable<ContentSource> {
+
+    private static final Logger LOGGER = LogManager.getLogger(RepositoriesAction.class);
 
     /**
      *
@@ -82,16 +88,36 @@ public class RepositoriesAction extends RhnAction implements Listable {
         helper.execute();
 
         if (helper.isDispatched()) {
-            Set<ContentSource> foo = chan.getSources();
-            foo.clear();
-            Set<String> set = helper.getSet();
-            for (String id : set) {
-                Long sgid = Long.valueOf(id);
-                ContentSource tmp = ChannelFactory.lookupContentSource(sgid, user.getOrg());
-                foo.add(tmp);
+            Set<ContentSource> channelRepos = chan.getSources();
+
+            boolean doRepoSync = false;
+            // If automatic sync is enabled, refresh if new repositories have been added
+            if (ConfigDefaults.get().isCustomChannelManagementUnificationEnabled()) {
+                doRepoSync = helper.getSet()
+                                   .stream()
+                                   .map(Long::valueOf)
+                                   .anyMatch(id -> channelRepos.stream().noneMatch(repo -> id.equals(repo.getId())));
             }
 
+            channelRepos.clear();
+            helper.getSet()
+                  .stream()
+                  .map(Long::valueOf)
+                  .map(repoId -> ChannelFactory.lookupContentSource(repoId, user.getOrg()))
+                  .forEach(channelRepos::add);
+
             ChannelFactory.save(chan);
+
+            if (doRepoSync) {
+                TaskomaticApi taskoApi = new TaskomaticApi();
+
+                try {
+                    taskoApi.scheduleSingleRepoSync(chan, user);
+                }
+                catch (com.redhat.rhn.taskomatic.TaskomaticApiException ex) {
+                    LOGGER.error("Unable to schedule single sync for channel {}", chan.getLabel(), ex);
+                }
+            }
 
             StrutsDelegate strutsDelegate = getStrutsDelegate();
             strutsDelegate.saveMessage("channel.edit.repo.updated",

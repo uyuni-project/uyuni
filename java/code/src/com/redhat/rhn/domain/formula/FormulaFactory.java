@@ -319,7 +319,8 @@ public class FormulaFactory {
                     if (dataFile.exists()) {
                         try {
                             data = Optional.ofNullable((Map<String, Object>) GSON.fromJson(
-                                    new BufferedReader(new FileReader(dataFile)), Map.class));
+                                    new BufferedReader(new FileReader(dataFile)), Map.class))
+                                .map(FormulaFactory::convertIntegers);
                             data.ifPresent(d -> {
                                 Pillar pillar = new Pillar(PREFIX + formula, d, server);
                                 server.getPillars().add(pillar);
@@ -541,7 +542,8 @@ public class FormulaFactory {
         if (data.isEmpty() && dataFile.exists()) {
             try {
                 data = Optional.ofNullable(
-                        (Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class));
+                        (Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
+                    .map(FormulaFactory::convertIntegers);
             }
             catch (FileNotFoundException e) {
             }
@@ -639,6 +641,28 @@ public class FormulaFactory {
                 }
             });
         }
+    }
+
+    /**
+     * Convert the doubles that could be integers into integers: this is critical for formulas
+     * Since we don't serialize the values anymore.
+     *
+     * @param map the map to iterate on.
+     * @return the converted map
+     */
+    public static Map<String, Object> convertIntegers(Map<String, Object> map) {
+        for (String key : map.keySet()) {
+            Object value = map.get(key);
+            if (value instanceof Double) {
+                if (((Double)value) % 1 == 0) {
+                    map.put(key, ((Double)value).intValue());
+                }
+            }
+            else if (value instanceof Map) {
+                convertIntegers((Map<String, Object>) value);
+            }
+        }
+        return map;
     }
 
     private static boolean serverHasMonitoringFormulaEnabled(MinionServer minion) {

@@ -2326,7 +2326,13 @@ def export_kickstart_getdetails(self, profile, kickstarts):
     # and now sort all the lists
     for i in details.keys():
         if isinstance(details[i], list):
-            details[i].sort()
+            # Use `name` value of the dict on sorting list of the dicts
+            # advanced_opts is a list of dicts with `name` and `arguments` keys
+            details[i].sort(
+                key=lambda elem: elem["name"]
+                if isinstance(elem, dict) and "name" in elem
+                else elem
+            )
 
     return details
 
@@ -2408,7 +2414,7 @@ def do_kickstart_importjson(self, args):
 
     if not args:
         logging.error(_N("Error, no filename passed"))
-        self.help_kickstart_import()
+        self.help_kickstart_importjson()
         return 1
 
     for filename in args:

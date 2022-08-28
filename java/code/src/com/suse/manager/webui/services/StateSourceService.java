@@ -51,7 +51,7 @@ public class StateSourceService {
         // Index formulas for anchors
         List<String> activeFormulas = FormulaFactory.getCombinedFormulasByServer(minion);
         Map<String, Integer> formulaIndex = IntStream.range(0, activeFormulas.size()).boxed()
-                .collect(Collectors.toMap(activeFormulas::get, i -> i));
+                .collect(Collectors.toMap(activeFormulas::get, i -> i, (orig, dup) -> orig));
 
         // System states
         Stream<StateSourceDto> stateOrigins = StateFactory.latestConfigChannels(minion).stream()

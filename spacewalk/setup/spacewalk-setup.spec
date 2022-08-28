@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2022 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -35,8 +35,8 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.3.9
-Release:        1
+Version:        4.4.0
+Release:        0
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -73,8 +73,6 @@ Requires:       perl(Term::Completion::Path)
 Requires:       curl
 Requires:       patch
 Requires:       perl-Frontier-RPC
-Requires:       perl-Mail-RFC822-Address
-Requires:       perl-Net-LibIDN
 Requires:       perl-XML-LibXML
 Requires:       perl-XML-SAX
 Requires:       perl-libwww-perl
@@ -103,7 +101,11 @@ Requires:       (python-PyYAML or PyYAML)
 %endif
 Requires:       curl
 Requires:       perl-Mail-RFC822-Address
+%if 0%{?rhel}
+Requires:       perl-Net-LibIDN2
+%else
 Requires:       perl-Net-LibIDN
+%endif
 Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5
@@ -208,7 +210,7 @@ install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/states
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/metadata
 
 %post
-if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then 
+if [ $1 == 2 -a -e /etc/tomcat/server.xml ]; then
 #during upgrade, setup new connectionTimeout if the user didn't change it
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.post-script-backup
     xsltproc %{_datadir}/spacewalk/setup/server_update.xml.xsl /etc/tomcat/server.xml.post-script-backup > /etc/tomcat/server.xml

@@ -78,6 +78,7 @@ import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -142,6 +143,9 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
@@ -151,9 +155,12 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -163,7 +170,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -172,8 +178,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
@@ -1967,22 +1971,27 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
                 rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null);
-        Map<String, String> content = readZipData(actual);
-        assertEquals(sshPushKey, content.get("server_ssh_push"));
-        assertEquals(sshPushPubKey, content.get("server_ssh_push.pub"));
-        assertEquals(apacheCert, content.get("server.crt"));
-        assertEquals(key, content.get("server.key"));
-        assertEquals(rootCA, content.get("ca.crt"));
-        assertEquals(sshPubKey, content.get("server_ssh_key.pub"));
-        assertTrue(content.containsKey("system_id.xml"));
-        Map<String, String> yaml = content.get("config.yaml").lines()
-                .map(line -> line.split(": "))
-                .collect(Collectors.toMap(line -> line[0], line -> line[1]));
-        assertEquals(serverName, yaml.get("server"));
-        assertEquals(Long.toString(maxCache), yaml.get("max_cache_size_mb"));
-        assertEquals(email, yaml.get("email"));
-        assertEquals(ConfigDefaults.get().getProductVersion(), yaml.get("server_version"));
-        assertEquals(proxyName, yaml.get("proxy_fqdn"));
+        Map<String, String> content = readTarData(actual);
+
+        Map<String, Object> configYaml = new Yaml().load(content.get("config.yaml"));
+        assertEquals(serverName, configYaml.get("server"));
+        assertEquals(maxCache, Long.valueOf((int)configYaml.get("max_cache_size_mb")));
+        assertEquals(email, configYaml.get("email"));
+        assertEquals(ConfigDefaults.get().getProductVersion(), configYaml.get("server_version"));
+        assertEquals(proxyName, configYaml.get("proxy_fqdn"));
+        assertEquals(rootCA, configYaml.get("ca_crt"));
+
+        Map<String, Map<String, Object>> httpdRootYaml = new Yaml().load(content.get("httpd.yaml"));
+        Map<String, Object> httpdYaml = httpdRootYaml.get("httpd");
+        assertEquals(apacheCert, httpdYaml.get("server_crt").toString());
+        assertEquals(key, httpdYaml.get("server_key"));
+        assertTrue(httpdYaml.containsKey("system_id"));
+
+        Map<String, Map<String, Object>> sshRootYaml = new Yaml().load(content.get("ssh.yaml"));
+        Map<String, Object> sshYaml = sshRootYaml.get("ssh");
+        assertEquals(sshPushKey, sshYaml.get("server_ssh_push"));
+        assertEquals(sshPushPubKey, sshYaml.get("server_ssh_push_pub"));
+        assertEquals(sshPubKey, sshYaml.get("server_ssh_key_pub"));
     }
 
     @Test
@@ -1991,6 +2000,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         String proxyName = "pxy.mgr.lab";
         createTestProxy(proxyName);
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).removeSaltSSHKnownHost(with(proxyName), with(8022));
+            will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
+        }});
         testCreateProxyContainerConfig();
     }
 
@@ -1999,27 +2012,32 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 user, true, ServerFactoryTest.TYPE_SERVER_PROXY, new Date());
         proxy.setName(fqdn);
         proxy.setHostname(fqdn);
+        proxy.getFqdns().add(new ServerFQDN(proxy, fqdn));
         proxy.getProxyInfo().setVersion(null);
+        proxy.getProxyInfo().setSshPort(8022);
 
         systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
+        ServerFactory.save(proxy);
+        TestUtils.saveAndFlush(proxy);
     }
 
-    private Map<String, String> readZipData(byte[] data) throws IOException {
+    private Map<String, String> readTarData(byte[] data) throws IOException {
         File tempFile = File.createTempFile("mgrtest", null);
         tempFile.deleteOnExit();
-        FileUtils.writeByteArrayToFile(tempFile, data);
-        Map<String, String> zipContent = new HashMap<>();
-        try (ZipFile zip = new ZipFile(tempFile)) {
-            Enumeration<? extends ZipEntry> entries = zip.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                zipContent.put(entry.getName(), new String(zip.getInputStream(entry).readAllBytes()));
+        Map<String, String> tarContent = new HashMap<>();
+        try (InputStream is = new ByteArrayInputStream(data);
+             GzipCompressorInputStream gzIn = new GzipCompressorInputStream(is);
+             TarArchiveInputStream tarIn = new TarArchiveInputStream(gzIn)) {
+            ArchiveEntry entry;
+            while ((entry = tarIn.getNextTarEntry()) != null) {
+                tarContent.put(entry.getName(), new String(tarIn.readAllBytes()));
             }
         }
         catch (IOException ignored) {
-
+            ignored.printStackTrace();
         }
-        return zipContent;
+
+        return tarContent;
     }
 
     private Long createHistoryEntry(Server server, String s) {
