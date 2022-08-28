@@ -10729,43 +10729,43 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="Virtual Host Managers" xml:space="preserve">
         <source>Virtual Host Managers</source>
-        <target/>
+        <target>Správcovia virtuálnych hostiteľov</target>
       </trans-unit>
       <trans-unit id="Remote Commands" xml:space="preserve">
         <source>Remote Commands</source>
-        <target/>
+        <target>Vzdialené príkazy</target>
       </trans-unit>
       <trans-unit id="Images" xml:space="preserve">
         <source>Images</source>
-        <target/>
+        <target>Obrazy</target>
       </trans-unit>
       <trans-unit id="Build" xml:space="preserve">
         <source>Build</source>
-        <target/>
+        <target>Zostaviť</target>
       </trans-unit>
       <trans-unit id="recurring_action.no_permissions" xml:space="preserve">
         <source>User has no permissions to do the action</source>
-        <target/>
+        <target>Používateľ nemá oprávnenia na vykonanie akcie</target>
       </trans-unit>
       <trans-unit id="recurring_action.empty_name" xml:space="preserve">
         <source>Recurring Action name must be provided</source>
-        <target/>
+        <target>Musí byť uvedený názov opakujúcej sa akcie</target>
       </trans-unit>
       <trans-unit id="recurring_action.action_name_exists" xml:space="preserve">
         <source>Recurring Action with given name already exists</source>
-        <target/>
+        <target>Opakujúca sa akcia s daným názvom už existuje</target>
       </trans-unit>
       <trans-unit id="recurring_action.taskomatic_error" xml:space="preserve">
         <source>Error when scheduling the action. Check if Taskomatic is running.</source>
-        <target/>
+        <target>Chyba pri plánovaní akcie. Skontrolujte, či je spustený Taskomatic.</target>
       </trans-unit>
       <trans-unit id="recurring_action.invalid_cron" xml:space="preserve">
         <source>Invalid Quartz expression provided.</source>
-        <target/>
+        <target>Zadaný neplatný výraz Quartz.</target>
       </trans-unit>
       <trans-unit id="notification.channelsyncfailed" xml:space="preserve">
         <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
-        <target/>
+        <target>Chyba pri synchronizácii kanála: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="notification.channelsyncfinished" xml:space="preserve">
         <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
