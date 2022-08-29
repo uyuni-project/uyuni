@@ -1,5 +1,4 @@
-- Added passing a component type property to the LOG object 
-  when initializing the logger 
+- Prefix log messages with the component name to ease analysis
 
 -------------------------------------------------------------------
 Fri Aug 26 09:35:04 CEST 2022 - jgonzalez@suse.com
