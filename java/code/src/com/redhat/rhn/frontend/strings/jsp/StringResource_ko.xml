@@ -29726,14 +29726,14 @@ given channel.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
             </context-group>
-        <target state="final">하드웨어 프로파일 {0}개가 새로 고침될 &lt;a href="/rhn/schedule/PendingActions.do"&gt;예정&lt;/a&gt;입니다.</target>
+        <target state="final">{0} 하드웨어 프로파일 &lt;a href="/rhn/schedule/PendingActions.do"&gt;새로 고침&lt;/a&gt;이 예정되었습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
             </context-group>
-        <target state="final">패키지 프로파일 {0}개가 새로 고침될 &lt;a href="/rhn/schedule/PendingActions.do"&gt;예정&lt;/a&gt;입니다.</target>
+        <target state="final">{0} 패키지 프로파일 &lt;a href="/rhn/schedule/PendingActions.do"&gt;새로 고침&lt;/a&gt;이 예정되었습니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve" approved="yes">
         <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
