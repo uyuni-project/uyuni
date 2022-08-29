@@ -1,4 +1,4 @@
-import "../../../../branding/css/uyuni.less";
+import "../manager/polyfills";
 
 import moment from "moment-timezone";
 
