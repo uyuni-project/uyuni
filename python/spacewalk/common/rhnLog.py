@@ -225,7 +225,7 @@ class rhnLog:
         if args:
             msg = "%s%s" % (msg, repr(args))
         if self.component:
-            msg = "%s%s" % (self.component, msg)
+            msg = "%s %s" % (self.component, msg)
         self.writeMessage(msg)
 
     # send a message to the log file w/some extra data (time stamp, etc).
