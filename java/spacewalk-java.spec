@@ -263,10 +263,6 @@ BuildRequires:  checkstyle
 %if ! 0%{?omit_tests} > 0
 BuildRequires:  translate-toolkit
 %endif
-Obsoletes:      rhn-java < 5.3.0
-Obsoletes:      rhn-java-sat < 5.3.0
-Provides:       rhn-java = %{version}-%{release}
-Provides:       rhn-java-sat = %{version}-%{release}
 
 %description
 This package contains the code for the Java version of the Spacewalk Web Site.
@@ -276,10 +272,6 @@ Summary:        Configuration files for Spacewalk Java
 Group:          Applications/Internet
 Requires(post): %{apache2}
 Requires(post): tomcat
-Obsoletes:      rhn-java-config < 5.3.0
-Obsoletes:      rhn-java-config-sat < 5.3.0
-Provides:       rhn-java-config = %{version}-%{release}
-Provides:       rhn-java-config-sat = %{version}-%{release}
 
 %description config
 This package contains the configuration files for the Spacewalk Java web
@@ -288,10 +280,6 @@ application and taskomatic process.
 %package lib
 Summary:        Jar files for Spacewalk Java
 Group:          Applications/Internet
-Obsoletes:      rhn-java-lib < 5.3.0
-Obsoletes:      rhn-java-lib-sat < 5.3.0
-Provides:       rhn-java-lib = %{version}-%{release}
-Provides:       rhn-java-lib-sat = %{version}-%{release}
 Requires:       /usr/bin/sudo
 
 %description lib
@@ -398,10 +386,6 @@ Requires:       classmate
 %endif
 
 Conflicts:      quartz < 2.0
-Obsoletes:      taskomatic < 5.3.0
-Obsoletes:      taskomatic-sat < 5.3.0
-Provides:       taskomatic = %{version}-%{release}
-Provides:       taskomatic-sat = %{version}-%{release}
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.
