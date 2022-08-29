@@ -5764,7 +5764,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage" xml:space="preserve">
           <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="final">1つのハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">1つのハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5800,7 +5800,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage" xml:space="preserve">
           <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="final">1つのパッケージプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">1つのパッケージプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
@@ -29740,14 +29740,14 @@ given channel.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
             </context-group>
-        <target state="final">{0} ハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">{0} ハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
             <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
             </context-group>
-        <target state="final">{0} パッケージプロファイル&lt;a href="/hrhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">{0} パッケージプロファイル&lt;a href="/hrhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve" approved="yes">
         <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
