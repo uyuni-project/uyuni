@@ -59,7 +59,7 @@ def test_mgrnet_dns_fqdns():
         check_calls[cmd].append(ip)
         rc = 0
         if ":" in ip:
-            # the conversation is not very accurate here, but it's enough for testing
+            # the conversion is not very accurate here, but it's enough for testing
             ptr = "{}.ip6.arpa".format(".".join(reversed([*ip.replace(":", "")])))
         else:
             ptr = "{}.in-addr.arpa".format(".".join(reversed(ip.split())))
