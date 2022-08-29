@@ -215,6 +215,11 @@ mkdir -p %{buildroot}/%{_sysconfdir}/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_sysconfdir}/firewalld/services
 %endif
 
+%if 0%{?sle_version} && !0%{?is_opensuse}
+# this script migrate the server to Uyuni. It should not be available on SUSE Manager
+rm -f %{buildroot}/%{_prefix}/lib/susemanager/bin/server-migrator.sh
+%endif
+
 make -C po install PREFIX=$RPM_BUILD_ROOT
 
 %find_lang susemanager
