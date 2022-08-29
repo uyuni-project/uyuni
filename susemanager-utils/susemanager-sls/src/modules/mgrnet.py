@@ -17,7 +17,7 @@ def __virtual__():
     Only works on POSIX-like systems having 'host' or 'nslookup' available
     """
     if not (__utils__["path.which"]("host") or __utils__["path.which"]("nslookup")):
-        log.debug("Neither 'host' nor 'nslookup' is available on the system")
+        return (False, "Neither 'host' nor 'nslookup' is available on the system")
     return True
 
 

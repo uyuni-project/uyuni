@@ -12,6 +12,26 @@ mgrnet.__salt__ = {}
 mgrnet.__utils__ = {}
 
 
+def test_mgrnet_virtual():
+    """
+    Test __virtual__ function for the possible cases
+    when either 'host' or 'nslookup' is available or none of them
+    """
+
+    with patch.dict(
+        mgrnet.__utils__,
+        {"path.which": MagicMock(side_effect=[True, False, True, False, False])},
+    ):
+        ret = mgrnet.__virtual__()
+        assert ret is True
+
+        ret = mgrnet.__virtual__()
+        assert ret is True
+
+        ret = mgrnet.__virtual__()
+        assert ret[0] is False
+
+
 def test_mgrnet_dns_fqdns():
     """
     Test getting possible FQDNs with DNS tools
