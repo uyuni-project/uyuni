@@ -5764,7 +5764,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage" xml:space="preserve">
           <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="needs-adaptation">1つのハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">1つのハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5800,7 +5800,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage" xml:space="preserve">
           <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="needs-adaptation">1つのパッケージプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
+        <target state="final">1つのパッケージプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
@@ -28943,9 +28943,9 @@ given channel.</source>
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
         <target state="translated">インストールされている &lt;strong&gt;Salt&lt;/strong&gt; パッケージのバージョンが古くなっています。製品移行を行なう前に、パッケージを最新バージョンに更新してください。</target>
       </trans-unit>
-      <trans-unit approved="yes" id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
+      <trans-unit approved="no" id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
-        <target state="needs-adaptation">インストール済み拡張の一部では、後継が見つかりませんでした。移行中に、選択したターゲットに応じて、これらの製品の一部またはすべてが削除されるため、注意して続行してください。</target>
+        <target state="translated">このシステムに対して利用可能な移行先がありません。後継のないインストール済み拡張が見つかりました:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -29083,9 +29083,9 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
         <target>このユーザ名の資格情報は既に存在しています</target>
       </trans-unit>
-      <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
+      <trans-unit approved="no" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2021 SUSE LLC.</source>
-        <target state="needs-adaptation">Copyright (c) 2011 - 2021 SUSE LLC.</target>
+        <target state="translated">Copyright (c) 2011 - 2021 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29683,189 +29683,189 @@ given channel.</source>
         <source>Pay-as-you-go</source>
         <target state="final">従量課金制</target>
       </trans-unit>
-      <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve">
+      <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve" approved="yes">
         <source>Virtual Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.system" xml:space="preserve">
+        <target state="final">仮想システム</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.system" xml:space="preserve" approved="yes">
         <source>System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.nosystems" xml:space="preserve">
+        <target state="final">システム</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.nosystems" xml:space="preserve" approved="yes">
         <source>No Virtual Systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.name" xml:space="preserve">
+        <target state="final">仮想システムがありません。</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.name" xml:space="preserve" approved="yes">
         <source>System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.host" xml:space="preserve">
+        <target state="final">システム</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.host" xml:space="preserve" approved="yes">
         <source>Host</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.hoststatus" xml:space="preserve">
+        <target state="final">ホスト</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.hoststatus" xml:space="preserve" approved="yes">
         <source>{0} Active Virtual Systems, {1} Total.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
           <context context-type="paramnotes">3 Active Virtual Systems, 10 Total.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.viewall" xml:space="preserve">
+        <target state="final">{0} 個の有効な仮想システム、合計 {1} 個。</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.viewall" xml:space="preserve" approved="yes">
         <source>View All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.updates" xml:space="preserve">
+        <target state="final">すべてを表示</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.updates" xml:space="preserve" approved="yes">
         <source>Updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.state" xml:space="preserve">
+        <target state="final">更新</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.state" xml:space="preserve" approved="yes">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.channel" xml:space="preserve">
+        <target state="final">状態</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.channel" xml:space="preserve" approved="yes">
         <source>Base Software Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.disabled_checkbox_title" xml:space="preserve">
+        <target state="final">ベースソフトウェアチャンネル</target>
+      </trans-unit>
+      <trans-unit id="virtuallist.jsp.disabled_checkbox_title" xml:space="preserve" approved="yes">
         <source>You cannot select this system - it is not registered to @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.content" xml:space="preserve">
+        <target state="final">このシステムは選択できません - @@PRODUCT_NAME@@ に登録されていません</target>
+      </trans-unit>
+      <trans-unit id="docsearch.content" xml:space="preserve" approved="yes">
         <source>Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.free_form" xml:space="preserve">
+        <target state="final">内容</target>
+      </trans-unit>
+      <trans-unit id="docsearch.free_form" xml:space="preserve" approved="yes">
         <source>Free Form</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.content_title" xml:space="preserve">
+        <target state="final">自由形式</target>
+      </trans-unit>
+      <trans-unit id="docsearch.content_title" xml:space="preserve" approved="yes">
         <source>Content &amp; Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.title" xml:space="preserve">
+        <target state="final">内容 &amp; タイトル</target>
+      </trans-unit>
+      <trans-unit id="docsearch.title" xml:space="preserve" approved="yes">
         <source>Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.summary" xml:space="preserve">
+        <target state="final">タイトル</target>
+      </trans-unit>
+      <trans-unit id="docsearch.jsp.summary" xml:space="preserve" approved="yes">
         <source>Summary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.imgAlt" xml:space="preserve">
+        <target state="final">概要</target>
+      </trans-unit>
+      <trans-unit id="docsearch.jsp.imgAlt" xml:space="preserve" approved="yes">
         <source>search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.toolbar" xml:space="preserve">
+        <target state="final">検索</target>
+      </trans-unit>
+      <trans-unit id="docsearch.jsp.toolbar" xml:space="preserve" approved="yes">
         <source>Document Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.pagesummary" xml:space="preserve">
+        <target state="final">ドキュメント検索</target>
+      </trans-unit>
+      <trans-unit id="docsearch.jsp.pagesummary" xml:space="preserve" approved="yes">
         <source>Document Search will return links to pages matching your search term. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.instructions" xml:space="preserve">
+        <target state="final">ドキュメント検索を使用すると、検索用語に一致したページのリンクが返されます。 </target>
+      </trans-unit>
+      <trans-unit id="docsearch.jsp.instructions" xml:space="preserve" approved="yes">
         <source>Specify your search criteria below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.searchfor" xml:space="preserve">
+        <target state="final">検索条件を以下に指定してください。</target>
+      </trans-unit>
+      <trans-unit id="docsearch.jsp.searchfor" xml:space="preserve" approved="yes">
         <source>Search For:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.whatsearch" xml:space="preserve">
+        <target state="final">検索対象:</target>
+      </trans-unit>
+      <trans-unit id="docsearch.jsp.whatsearch" xml:space="preserve" approved="yes">
         <source>What to search:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.nopages" xml:space="preserve">
+        <target state="final">検索:</target>
+      </trans-unit>
+      <trans-unit id="docsearch.jsp.nopages" xml:space="preserve" approved="yes">
         <source>No pages found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.pagetitle" xml:space="preserve">
+        <target state="final">ページは見つかりませんでした。</target>
+      </trans-unit>
+      <trans-unit id="docsearch.jsp.pagetitle" xml:space="preserve" approved="yes">
         <source>Page Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
+        <target state="final">ページタイトル</target>
+      </trans-unit>
+      <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve" approved="yes">
             <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
             </context-group>
-        <target state="new"/>
-  </trans-unit>
-      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
+        <target state="final">{0} ハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
+      </trans-unit>
+      <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve" approved="yes">
             <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
             </context-group>
-        <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">{0} パッケージプロファイル&lt;a href="/hrhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
