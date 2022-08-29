@@ -1,3 +1,5 @@
+- require tomcat native interface to prevent misleading warning
+  in tomcat startup log (bsc#1202455)
 - Reduce the length of image channel URL (bsc#1201220)
 - Fixed formula deselection in systemgroup (bsc#1202271)
 - Added a new configuration property to allow custom channels to
