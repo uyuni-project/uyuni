@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-29 04:15+0000\n"
+"POT-Creation-Date: 2022-08-29 08:14+0000\n"
 "PO-Revision-Date: 2022-08-29 08:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -1046,7 +1046,8 @@ msgstr "ssh接続データを編集しています.."
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
 msgid ""
 "When editing the SSH connection all needed credentials must be re-provided."
-msgstr "SSH接続を編集する際には、必要なすべての資格情報を再提供する必要があります。"
+msgstr ""
+"SSH接続を編集する際には、必要なすべての資格情報を再提供する必要があります。"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
