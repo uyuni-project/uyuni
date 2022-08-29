@@ -1,3 +1,5 @@
+- Added passing a component type property to the LOG object 
+  when initializing the logger 
 - renew the cached token when requested channel is not listed in
   the old token (bsc#1202724)
 
