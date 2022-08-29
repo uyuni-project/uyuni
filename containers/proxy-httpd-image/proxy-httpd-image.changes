@@ -1,5 +1,4 @@
-- Added a custom version of the mod_log_config.conf 
-  for httpd logging in container
+- Prefix log messages with a package name to ease analysis
 
 -------------------------------------------------------------------
 Mon Sep 26 12:40:41 UTC 2022 - Marina Latini <marina.latini@suse.com>

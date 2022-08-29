@@ -95,8 +95,8 @@ def initLOG(log_file="stderr", level=0, component=""):
     log_path = os.path.dirname(log_file)
     if log_file not in ('stderr', 'stdout') \
             and log_path and not os.path.exists(os.path.dirname(log_file)):
-        log_stderr("WARNING: log path not found; attempting to create %s for %s" %
-                   (log_path, component), sys.exc_info()[:2])
+        log_stderr("{} WARNING: log path not found; attempting to create {}".format(component, log_path), 
+                   sys.exc_info()[:2])
 
         # fetch uid, gid so we can do a "chown ..."
         if isSUSE():
@@ -108,7 +108,7 @@ def initLOG(log_file="stderr", level=0, component=""):
             os.makedirs(log_path)
             os.chown(log_path, apache_uid, apache_gid)
         except:
-            log_stderr("ERROR: unable to create log file path %s for %s" % (log_path, component),
+            log_stderr("{} ERROR: unable to create log file path {}".format(component, log_path),
                        sys.exc_info()[:2])
             return
 
