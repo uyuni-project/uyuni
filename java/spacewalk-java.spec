@@ -253,6 +253,9 @@ Requires:       xerces-j2
 Requires:       xmlsec
 Requires(pre):  tomcat >= 7
 Requires:       tomcat-lib >= 7
+# libtcnative-1-0 is only recommended in tomcat.
+# We want it always to prevent warnings about openssl cannot be used
+Requires:       libtcnative-1-0
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires(pre):  salt
 
