@@ -1,3 +1,6 @@
+- Added an optional component_type property to the LOG object 
+  and included it to a log message
+
 -------------------------------------------------------------------
 Mon Sep 26 12:19:00 UTC 2022 - marina.latini@suse.com
 
