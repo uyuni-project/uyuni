@@ -5,19 +5,19 @@ import { Check } from "./Check";
 import { Form } from "./Form";
 
 const model = {
-  force: false,
+  booleanValue: false,
 };
 
 <Form
   model={model}
-  onSubmit={() => alert(`May the force${model["force"] ? "" : " NOT"} be with you`)}
+  onSubmit={() => console.log(model)}
   divClass="col-md-12"
   formDirection="form-horizontal"
   onChange={(newModel) => {
-    model["force"] = newModel["force"];
+    model["booleanValue"] = newModel["booleanValue"];
   }}
 >
-  <Check name="force" label="Force action" divClass="col-md-6 col-md-offset-3" />
-  <SubmitButton id="submit-btn" className="btn-success" text={t("Submit")} />
+  <Check name="booleanValue" label="Boolean value" divClass="col-md-6 col-md-offset-3" />
+  <SubmitButton className="btn-success" text={t("Submit")} />
 </Form>
 ```
