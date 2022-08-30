@@ -12,16 +12,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2021-03-31 12:58+0000\n"
+"PO-Revision-Date: 2022-08-30 04:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend-4-3/"
+"ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -213,8 +213,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"귀하의 계정은 (릴리스='%(release)s', 아키텍처='%(arch)s')%(www_activation)에 "
-"일치하는 채널에 액세스할 수 있는 권한이 없습니다."
+"귀하의 계정은 (릴리스='%(release)s', 아키텍처='%(arch)s')%(www_activation)에 일치하는 채널에 액세스할 "
+"수 있는 권한이 없습니다."
 
 #: ../server/rhnChannel.py:2014
 #, python-format
@@ -612,8 +612,7 @@ msgstr ""
 "     사용자 그룹 구성원 한도에 도달했습니다..\n"
 "\n"
 "     계정의 현재 설정에서 다른 시스템 프로파일 추가를 허용하지 않습니다.\n"
-"     조직 관리자에게 문의하여 귀하의 계정을 구독할 수 있는 최대 시스템 프로파"
-"일 수를\n"
+"     조직 관리자에게 문의하여 귀하의 계정을 구독할 수 있는 최대 시스템 프로파일 수를\n"
 "     수정해야 하는지 확인하십시오.\n"
 "     "
 
@@ -704,9 +703,7 @@ msgstr "이 등록 토큰을 사용하여 등록한 시스템이 너무 많습�
 
 #: ../common/rhnException.py:145
 msgid "Token contains invalid, obsoleted or insufficient settings"
-msgstr ""
-"토큰에 유효하지 않거나 더 이상 사용되지 않거나 충분하지 않는 설정이 포함되어 "
-"있습니다."
+msgstr "토큰에 유효하지 않거나 더 이상 사용되지 않거나 충분하지 않는 설정이 포함되어 있습니다."
 
 #: ../common/rhnException.py:146
 msgid "Conflicting activation tokens"
@@ -996,8 +993,7 @@ msgstr "SCAP 결과 파일 전달이 잘못되거나 완전하지 않습니다."
 
 #: ../common/rhnException.py:248
 msgid "Error composing directory path for detailed SCAP results"
-msgstr ""
-"자세한 SCAP 결과에 대한 디렉토리 경로를 구성하는 동안 오류가 발생했습니다."
+msgstr "자세한 SCAP 결과에 대한 디렉토리 경로를 구성하는 동안 오류가 발생했습니다."
 
 #: ../common/rhnException.py:249
 msgid "Error composing file path for detailed SCAP results"
@@ -1084,8 +1080,7 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 "\n"
-"오류: 임시 리포지토리에서 채널 데이터에 액세스하는 동안 오류가 발생했습니"
-"다.\n"
+"오류: 임시 리포지토리에서 채널 데이터에 액세스하는 동안 오류가 발생했습니다.\n"
 "       채널 ISO에서 이 디렉토리로 모든 데이터를 마이그레이션하셨습니까?\n"
 "       그러한 경우, 채널 ISO를 다시 확인하고 데이터가 모두 있는지 확인한 후\n"
 "       반복해서 다시 마운트하고 임시 리포지토리(%s)를 다시 채우십시오.\n"
@@ -1131,8 +1126,7 @@ msgid ""
 msgstr ""
 "\n"
 "오류: 상위 채널이 동기화되지 않은 경우 하위 채널을 동기화할 수 없습니다.\n"
-"       상위 채널이 (a) 이전에 동기화되거나 (b) 원하는 하위 채널과 함께 동기화"
-"되어야 합니다.\n"
+"       상위 채널이 (a) 이전에 동기화되거나 (b) 원하는 하위 채널과 함께 동기화되어야 합니다.\n"
 "       이 트랜잭션에서 누락된 상위 채널:\n"
 "       %s\n"
 
