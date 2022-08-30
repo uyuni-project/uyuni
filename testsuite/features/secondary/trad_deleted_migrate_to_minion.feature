@@ -33,14 +33,14 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:.*Salt" regex, refreshing the page
 
-  @proxy
+@proxy
   Scenario: Check connection from migrated minion to proxy in a deleted client context
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
-  @proxy
+@proxy
   Scenario: Check registration on proxy of migrated minion in a deleted client context
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
@@ -55,7 +55,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     And I wait until I see "has been deleted" text
     Then "sle_client" should not be registered
 
-  @susemanager
+@susemanager
   Scenario: Register minion again as traditional client in a deleted client context
     When I enable client tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
@@ -63,7 +63,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 
-  @uyuni
+@uyuni
   Scenario: Register minion again as traditional client in a deleted client context
     When I enable client tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
