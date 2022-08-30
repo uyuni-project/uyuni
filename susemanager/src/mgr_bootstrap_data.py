@@ -459,6 +459,8 @@ PKGLIST15_SALT = [
     "salt",
     "python3-salt",
     "salt-minion",
+    "python3-apipkg",
+    "python3-iniconfig",
 ]
 
 ONLYSLE15 = [
@@ -511,8 +513,6 @@ PKGLIST15_TRAD = [
     "zypp-plugin-spacewalk",
     "python3-zypp-plugin",
     "python3-zypp-plugin-spacewalk",
-    "python3-apipkg",
-    "python3-iniconfig",
 ]
 
 PKGLIST15_X86_ARM = [
