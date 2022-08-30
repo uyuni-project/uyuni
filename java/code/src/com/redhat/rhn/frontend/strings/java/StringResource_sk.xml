@@ -10735,43 +10735,43 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.channelsyncfinished" xml:space="preserve">
         <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
-        <target/>
+        <target>Synchronizácia kanála &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; dokončená</target>
       </trans-unit>
       <trans-unit id="notification.onboardingfailed" xml:space="preserve">
         <source>Error registering minion id: {0}</source>
-        <target/>
+        <target>Chyba pri registrácii minion id: {0}</target>
       </trans-unit>
       <trans-unit id="notification.bootstraprepofailed" xml:space="preserve">
         <source>Error generating bootstrap repo for: {0}</source>
-        <target/>
+        <target>Chyba pri generovaní repo zavádzania pre: {0}</target>
       </trans-unit>
       <trans-unit id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
-        <target/>
+        <target>Chyba pri spustení state.apply na: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.name.empty" xml:space="preserve">
         <source>Calendar name required</source>
-        <target/>
+        <target>Vyžaduje sa názov kalendára</target>
       </trans-unit>
       <trans-unit id="maintenance.schedule.name.empty" xml:space="preserve">
         <source>Schedule name required</source>
-        <target/>
+        <target>Vyžaduje sa názov plánu</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.data.empty" xml:space="preserve">
         <source>Calendar data required</source>
-        <target/>
+        <target>Vyžadujú sa údaje kalendára</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.exists" xml:space="preserve">
         <source>Calendar '{0}' already exists</source>
-        <target/>
+        <target>Kalendár '{0}' už existuje</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.fetch.error" xml:space="preserve">
         <source>Error fetching calendar data from '{0}'</source>
-        <target/>
+        <target>Chyba pri načítaní údajov kalendára z '{0}'</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.not.exists" xml:space="preserve">
         <source>Calendar '{0}' does not exist</source>
-        <target/>
+        <target>Kalendár '{0}' neexistuje</target>
       </trans-unit>
       <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve">
         <source>Schedule with id '{0}' does not exist</source>
