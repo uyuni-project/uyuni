@@ -1,3 +1,20 @@
+- add missing packages on SLES 15
+- remove server-migrator.sh from SUSE Manager installations (bsc#1202728)
+- mgr-create-bootstrap-repo: flush directory also when called
+  for a specific label (bsc#1200573)
+- add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)
+- remove python-tornado from bootstrap repo, since no longer
+  required for salt version >= 3000
+- add openSUSE 15.4 product (bsc#1201527)
+- add clients tool product to generate bootstrap repo on openSUSE 15.x
+  (bsc#1201189)
+
+-------------------------------------------------------------------
+Tue Jul 26 13:39:59 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.35-1
+  * Add missing python3-gnupg to Debian10 bootstrap repo (bsc#1201842)
+
 -------------------------------------------------------------------
 Wed Jul 06 15:56:53 CEST 2022 - jmassaguerpla@suse.de
 

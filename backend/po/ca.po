@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"POT-Creation-Date: 2022-08-30 12:02+0200\n"
 "PO-Revision-Date: 2022-04-01 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
@@ -17,11 +17,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../server/configFilesHandler.py:129
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -32,6 +32,197 @@ msgstr ""
 "                   El compte %s s'ha desactivat en aquest servidor.\n"
 "                   Poseu-vos en contacte amb l'administrador de "
 "l'organització per obtenir més ajuda."
+
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "El sistema no s'ha trobat a la base de dades de {PRODUCT_NAME}"
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "ISS està desactivat en aquest servidor."
+
+#: ../server/handlers/sat/auth.py:50
+#, python-format
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "El servidor \"%s\" no està habilitat per a l'ISS."
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Parell system_id / action_id no vàlid."
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"El servei d'intermediari de SUSE Manager no està habilitat per al perfil del "
+"servidor: %s"
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "la clau de sessió no és vàlida"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Aquest ID de servidor ja no existeix"
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Valor no vàlid %s (%s)"
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "S'esperava un nom de paquet, no %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "S'esperava un paquet, no: %s"
+
+#: ../server/handlers/xmlrpc/registration.py:196
+msgid "Required data missing"
+msgstr "Falten les dades necessàries"
+
+#: ../server/handlers/xmlrpc/registration.py:200
+msgid "Required members missing"
+msgstr "Membres obligatoris desapareguts"
+
+#: ../server/handlers/xmlrpc/registration.py:209
+msgid "Attempt to register a system to an invalid username"
+msgstr "Intenteu registrar un sistema amb un nom d'usuari no vàlid"
+
+#: ../server/handlers/xmlrpc/registration.py:841
+msgid "Invalid system release version requested"
+msgstr "S'ha sol·licitat una versió de llançament del sistema no vàlida."
+
+#: ../server/handlers/xmlrpc/registration.py:1065
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr ""
+"No s'ha pogut trobar una interfície de xarxa vàlida, no s'han trobat ni "
+"ipaddr ni ip6addr."
+
+#: ../server/handlers/xmlrpc/registration.py:1117
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "Missatge de benvinguda de {PRODUCT_NAME}"
+
+#: ../server/handlers/xmlrpc/registration.py:1127
+msgid "Privacy Statement"
+msgstr "Declaració de privacitat"
+
+#: ../server/handlers/xmlrpc/registration.py:1148
+msgid "Expected a dictionary as a product argument"
+msgstr "S'esperava un diccionari com a argument de producte."
+
+#: ../server/handlers/xmlrpc/registration.py:1376
+#, python-format
+msgid "Invalid value '%s' for %s (%s)"
+msgstr "El valor %s no és vàlid per a %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "Tipus de valor d'acció no vàlid: %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "L'acció %s no pertany al servidor %s"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "No esteu autoritzat per gestionar els paquets de l'organització nul·la"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "No esteu autoritzat per gestionar els paquets de l'organització %s"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "No esteu autoritzat per realitzar les tasques administratives"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr ""
+"No esteu autoritzat per gestionar el canal %s, o no existeix aquest canal"
+
+#: ../server/importlib/userAuth.py:204
+#, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"               El compte %s s'ha desactivat en aquest servidor.\n"
+"               Poseu-vos en contacte amb l'administrador de l'organització "
+"per obtenir més ajuda."
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Servei no habilitat per al perfil del sistema: \"%s\""
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "El testimoni `%s' té més d'un canal base assignat"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Canals bàsics conflictius"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "No s'ha pogut afegir el servidor al grup %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "S'ha assolit el recompte màxim d'ús de %s"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"No s'admet l'apilament de testimonis de reregistre amb diferents drets de "
+"base."
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "No es va poder tovar el testimoni '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Testimonis d'organitzacions que no coincideixen"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "La sessió de Kickstart no coincideix"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "No s'admet l'apilament de testimonis de reregistre."
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "L'arquitectura %s no és compatible."
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -104,6 +295,59 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "testimoni incomplet del servidor intermediari: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr ""
+"La signatura de l'intermediari enviada %s no coincideix amb la nostra %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "s'ha rebutjat l'autenticació d'intermediari"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Es va rebre una petició no vàlida (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"MISSATGE IMPORTANT SEGÜENT:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Mentre s'executava '%s': es va capturar\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "L'URI %s no és vàlid"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "S'ha sol·licitat el paquet RPM %s no vàlid."
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Paquet no trobat"
+
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
 msgstr "Combinació de nom d'usuari i contrasenya no vàlida"
@@ -163,250 +407,6 @@ msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "No es poden registrar els noms d'usuari que acaben en %s."
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Es va rebre una petició no vàlida (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"MISSATGE IMPORTANT SEGÜENT:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Mentre s'executava '%s': es va capturar\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "L'URI %s no és vàlid"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "No esteu autoritzat per gestionar els paquets de l'organització nul·la"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "No esteu autoritzat per gestionar els paquets de l'organització %s"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "No esteu autoritzat per realitzar les tasques administratives"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
-"No esteu autoritzat per gestionar el canal %s, o no existeix aquest canal"
-
-#: ../server/importlib/userAuth.py:204
-#, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"               El compte %s s'ha desactivat en aquest servidor.\n"
-"               Poseu-vos en contacte amb l'administrador de l'organització "
-"per obtenir més ajuda."
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "S'ha sol·licitat el paquet RPM %s no vàlid."
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Paquet no trobat"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "testimoni incomplet del servidor intermediari: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
-"La signatura de l'intermediari enviada %s no coincideix amb la nostra %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "s'ha rebutjat l'autenticació d'intermediari"
-
-#: ../server/handlers/xmlrpc/registration.py:196
-msgid "Required data missing"
-msgstr "Falten les dades necessàries"
-
-#: ../server/handlers/xmlrpc/registration.py:200
-msgid "Required members missing"
-msgstr "Membres obligatoris desapareguts"
-
-#: ../server/handlers/xmlrpc/registration.py:209
-msgid "Attempt to register a system to an invalid username"
-msgstr "Intenteu registrar un sistema amb un nom d'usuari no vàlid"
-
-#: ../server/handlers/xmlrpc/registration.py:841
-msgid "Invalid system release version requested"
-msgstr "S'ha sol·licitat una versió de llançament del sistema no vàlida."
-
-#: ../server/handlers/xmlrpc/registration.py:1065
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"No s'ha pogut trobar una interfície de xarxa vàlida, no s'han trobat ni "
-"ipaddr ni ip6addr."
-
-#: ../server/handlers/xmlrpc/registration.py:1117
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "Missatge de benvinguda de {PRODUCT_NAME}"
-
-#: ../server/handlers/xmlrpc/registration.py:1127
-msgid "Privacy Statement"
-msgstr "Declaració de privacitat"
-
-#: ../server/handlers/xmlrpc/registration.py:1148
-msgid "Expected a dictionary as a product argument"
-msgstr "S'esperava un diccionari com a argument de producte."
-
-#: ../server/handlers/xmlrpc/registration.py:1376
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "El valor %s no és vàlid per a %s (%s)"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"El servei d'intermediari de SUSE Manager no està habilitat per al perfil del "
-"servidor: %s"
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "la clau de sessió no és vàlida"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Aquest ID de servidor ja no existeix"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Parell system_id / action_id no vàlid."
-
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "S'esperava un nom de paquet, no %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "S'esperava un paquet, no: %s"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Tipus de valor d'acció no vàlid: %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "L'acció %s no pertany al servidor %s"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Valor no vàlid %s (%s)"
-
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "El sistema no s'ha trobat a la base de dades de {PRODUCT_NAME}"
-
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "ISS està desactivat en aquest servidor."
-
-#: ../server/handlers/sat/auth.py:50
-#, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "El servidor \"%s\" no està habilitat per a l'ISS."
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "El testimoni `%s' té més d'un canal base assignat"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Canals bàsics conflictius"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "No s'ha pogut afegir el servidor al grup %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "S'ha assolit el recompte màxim d'ús de %s"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"No s'admet l'apilament de testimonis de reregistre amb diferents drets de "
-"base."
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "No es va poder tovar el testimoni '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Testimonis d'organitzacions que no coincideixen"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "La sessió de Kickstart no coincideix"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "No s'admet l'apilament de testimonis de reregistre."
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "L'arquitectura %s no és compatible."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Servei no habilitat per al perfil del sistema: \"%s\""
 
 #: ../common/rhnTB.py:205
 #, python-format
@@ -1081,46 +1081,11 @@ msgstr "Informació de la classe d'error: %s\n"
 msgid "Explanation: %s"
 msgstr "Explicació: %s"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ enviament de registre com a correu electrònic +++"
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "Informe de sincronització de %s de %s"
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ correu electrònic sol·licitat, però no hi ha res per enviar +++"
-
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "El format de %s hauria de ser com a mínim AAAAMMDD.\n"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"%s (especificat a la línia d'ordres)\n"
-"no s'ha pogut obrir ni llegir:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"%s no s'ha pogut obrir\n"
-"ni escriure-hi:\n"
-"%s"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1316,6 +1281,19 @@ msgstr "Importació d'arbres de taules d'inici (%d)"
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Arbres de taules d'inici importats (%d)"
+
+#: ../satellite_tools/reposync.py:120 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ enviament de registre com a correu electrònic +++"
+
+#: ../satellite_tools/reposync.py:123
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "Informe de sincronització de %s de %s"
+
+#: ../satellite_tools/reposync.py:133 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ correu electrònic sol·licitat, però no hi ha res per enviar +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -2103,6 +2081,28 @@ msgstr "  28 - error: --master només és vàlid amb --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERROR: versió d'abocament desconeguda, proveu-ne una de %s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"%s (especificat a la línia d'ordres)\n"
+"no s'ha pogut obrir ni llegir:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"%s no s'ha pogut obrir\n"
+"ni escriure-hi:\n"
+"%s"
 
 #, fuzzy
 #~ msgid "Invalid crash name"

@@ -13,12 +13,16 @@ require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
+require 'set'
 
 ## code coverage analysis
 # SimpleCov.start
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
+
+# Channels triggered by our tests to be synchronized
+$channels_synchronized = Set[]
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -28,7 +32,7 @@ Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
-custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
+custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
@@ -89,7 +93,12 @@ After do |scenario|
   if scenario.failed?
     begin
       Dir.mkdir("screenshots") unless File.directory?("screenshots")
-      path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+      if scenario.name.is_a? String
+        path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
+      else
+        path = "screenshots/some_scenario_#{rand(200)}.png"
+        log "WARN: Couldn't retrieve scenario name as a string. #{scenario.name} is returned instead."
+      end
       page.driver.browser.save_screenshot(path)
       attach path, 'image/png'
       attach current_url, 'text/plain'
@@ -118,9 +127,14 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
-  if has_css?('.senna-loading', wait: 0)
-    log 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
-    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+  next unless Capybara::Session.instance_created?
+
+  begin
+    if has_css?('.senna-loading', wait: 0)
+      log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+    end
+  rescue StandardError
+    next
   end
 end
 
@@ -143,12 +157,12 @@ Before('@sle_minion') do
   skip_this_scenario unless $minion
 end
 
-Before('@centos_minion') do
-  skip_this_scenario unless $ceos_minion
+Before('@rhlike_minion') do
+  skip_this_scenario unless $rhlike_minion
 end
 
-Before('@ubuntu_minion') do
-  skip_this_scenario unless $ubuntu_minion
+Before('@deblike_minion') do
+  skip_this_scenario unless $deblike_minion
 end
 
 Before('@pxeboot_minion') do
@@ -171,24 +185,24 @@ Before('@virthost_xen') do
   skip_this_scenario unless $xen_server
 end
 
-Before('@ceos7_minion') do
-  skip_this_scenario unless $ceos7_minion
+Before('@centos7_minion') do
+  skip_this_scenario unless $centos7_minion
 end
 
-Before('@ceos7_ssh_minion') do
-  skip_this_scenario unless $ceos7_ssh_minion
+Before('@centos7_ssh_minion') do
+  skip_this_scenario unless $centos7_ssh_minion
 end
 
-Before('@ceos7_client') do
-  skip_this_scenario unless $ceos7_client
+Before('@centos7_client') do
+  skip_this_scenario unless $centos7_client
 end
 
-Before('@ceos8_minion') do
-  skip_this_scenario unless $ceos8_minion
+Before('@rocky8_minion') do
+  skip_this_scenario unless $rocky8_minion
 end
 
-Before('@ceos8_ssh_minion') do
-  skip_this_scenario unless $ceos8_ssh_minion
+Before('@rocky8_ssh_minion') do
+  skip_this_scenario unless $rocky8_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do

@@ -142,7 +142,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
   end
   # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
-  nodes = [$ceos_minion]
+  nodes = [$rhlike_minion]
   file = '/etc/sysconfig/network-scripts/ifcfg-eth1'
   conf2 = 'GATEWAYDEV=eth0'
   file2 = '/etc/sysconfig/network'
@@ -153,7 +153,7 @@ When(/^I set up the private network on the terminals$/) do
     node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart network")
   end
   # /etc/netplan/01-netcfg.yaml
-  nodes = [$ubuntu_minion]
+  nodes = [$deblike_minion]
   source = File.dirname(__FILE__) + '/../upload_files/01-netcfg.yaml'
   dest = '/etc/netplan/01-netcfg.yaml'
   nodes.each do |node|
@@ -210,7 +210,7 @@ When(/^I restart the network on the PXE boot minion$/) do
   $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
-When(/^I reboot the terminal "([^"]*)"$/) do |host|
+When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   # we might have no or any IPv4 address on that machine
   # convert MAC address to IPv6 link-local address
   if host == 'pxeboot_minion'
@@ -229,7 +229,7 @@ When(/^I reboot the terminal "([^"]*)"$/) do |host|
   dest = '/tmp/' + file
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
-  $proxy.run("expect -f /tmp/#{file} #{ipv6}")
+  $proxy.run("expect -f /tmp/#{file} #{ipv6} #{context}")
 end
 
 When(/^I create bootstrap script for "([^"]+)" hostname and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |host, key|
@@ -460,7 +460,7 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   elsif host == 'sle15sp3_terminal'
     mac = $sle15sp3_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
-  elsif host.include? 'ubuntu'
+  elsif (host.include? 'deblike') || (host.include? 'debian11') || (host.include? 'ubuntu')
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')
     mac = output.split("\n")[1].split[1]

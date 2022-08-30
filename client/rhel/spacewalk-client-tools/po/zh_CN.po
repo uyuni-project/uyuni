@@ -31,11 +31,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2022-06-20 06:12+0000\n"
+"POT-Creation-Date: 2022-08-30 12:02+0200\n"
+"PO-Revision-Date: 2022-08-26 05:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"spacewalk-client-tools/zh_CN/>\n"
+"spacewalk-client-tools-4-2/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -124,7 +124,7 @@ msgstr "找不到 SystemId"
 
 #: ../src/up2date_client/rhnChannel.py:119
 msgid "This system may not be updated until it is associated with a channel."
-msgstr "此系统只有在关联到某个频道后才可更新。"
+msgstr "此系统只有在关联到某个通道后才可更新。"
 
 #: ../src/up2date_client/rhncli.py:65
 msgid "Show additional output. Repeat for more detail."
@@ -217,6 +217,269 @@ msgstr "发生了错误："
 #: ../src/up2date_client/rhncli.py:234
 msgid "See /var/log/up2date for more information"
 msgstr "有关详细信息，请查看 /var/log/up2date"
+
+#: ../src/up2date_client/rhnreg.py:76
+msgid "Warning: unable to enable rhnsd with systemd"
+msgstr "警告：无法使用 systemd 启用 rhnsd"
+
+#: ../src/up2date_client/rhnreg.py:82
+msgid "Warning: unable to enable rhnsd with chkconfig"
+msgstr "警告：无法使用 chkconfig 启用 rhnsd"
+
+#: ../src/up2date_client/rhnregGui.py:147
+#: ../src/up2date_client/rhnregGui.py:164
+msgid "Notice"
+msgstr "注意"
+
+#: ../src/up2date_client/rhnregGui.py:157
+#: ../src/up2date_client/rhnregGui.py:171
+#: ../src/up2date_client/rhnreg_constants.py:244
+msgid "Warning"
+msgstr "警告"
+
+#: ../src/up2date_client/rhnregGui.py:272
+msgid "There was an error while applying your choice."
+msgstr "应用您的选择时出错。"
+
+#: ../src/up2date_client/rhnregGui.py:291
+msgid "You specified an invalid protocol. Only https and http are allowed."
+msgstr "您指定了无效协议。只允许 https 和 http。"
+
+#: ../src/up2date_client/rhnregGui.py:305
+msgid ""
+"You will not be able to successfully register this system without contacting "
+"a Spacewalk server."
+msgstr "在不联系 Spacewalk 服务器的情况下无法成功注册此系统。"
+
+#: ../src/up2date_client/rhnregGui.py:325
+msgid "Cannot contact selected server"
+msgstr "无法联系所选服务器"
+
+#: ../src/up2date_client/rhnregGui.py:326
+#, python-brace-format
+msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
+msgstr "无法联系 ”{HOST}\" 上的 {PRODUCT_NAME} 或 Proxy。"
+
+#: ../src/up2date_client/rhnregGui.py:328
+#, python-format
+msgid ""
+"Double-check the location - is '%s' correct? If not, you can correct it and "
+"try again."
+msgstr "请反复检查位置 - '%s' 是否正确？如果不正确，请更正后重试。"
+
+#: ../src/up2date_client/rhnregGui.py:331
+msgid "Make sure the network connection on this system is operational."
+msgstr "确保此系统上的网络连接正常。"
+
+#: ../src/up2date_client/rhnregGui.py:341
+msgid "There was an error communicating with Spacewalk server."
+msgstr "与 Spacewalk 服务器通讯时出错。"
+
+#: ../src/up2date_client/rhnregGui.py:342
+msgid "The server may be in outage mode. You may have to try connecting later."
+msgstr "该服务器可能处于服务中断模式。您可以需要稍后尝试连接。"
+
+#: ../src/up2date_client/rhnregGui.py:344
+msgid "You may be running a client that is incompatible with the server."
+msgstr "您可能正在运行一个与服务器不兼容的客户端。"
+
+#: ../src/up2date_client/rhnregGui.py:377
+#, python-format
+msgid ""
+"Please enter your account information for the <b>%s</b> Spacewalk server:"
+msgstr "请输入您的 <b>%s</b> Spacewalk 服务器帐户信息："
+
+#: ../src/up2date_client/rhnregGui.py:416
+msgid "You must enter a login."
+msgstr "必须输入登录名。"
+
+#: ../src/up2date_client/rhnregGui.py:422
+msgid "You must enter a password."
+msgstr "必须输入口令。"
+
+#: ../src/up2date_client/rhnregGui.py:435
+msgid "There was an error while logging in."
+msgstr "登录时出错。"
+
+#: ../src/up2date_client/rhnregGui.py:462
+msgid ""
+"There was an error communicating with the registration server.  The message "
+"was:\n"
+msgstr "与注册服务器通讯时出错。消息：\n"
+
+#: ../src/up2date_client/rhnregGui.py:603
+msgid "There was an error while assembling information for the profile."
+msgstr "汇编配置文件信息时出错。"
+
+#: ../src/up2date_client/rhnregGui.py:624
+msgid "Error running hardware profile"
+msgstr "运行硬件配置文件时出错"
+
+#: ../src/up2date_client/rhnregGui.py:655
+msgid "There was an error while populating the profile."
+msgstr "填充配置文件时出错。"
+
+#: ../src/up2date_client/rhnregGui.py:675
+msgid "You must choose a name for this profile."
+msgstr "必须为此配置文件选择一个名称。"
+
+#: ../src/up2date_client/rhnregGui.py:689
+msgid "There was an error while creating the profile."
+msgstr "创建配置文件时出错。"
+
+#: ../src/up2date_client/rhnregGui.py:700
+msgid "Registering system and sending profile information.  Please wait."
+msgstr "正在注册系统并发送配置文件信息。请稍候。"
+
+#: ../src/up2date_client/rhnregGui.py:719
+msgid "Registering System"
+msgstr "正在注册系统"
+
+#: ../src/up2date_client/rhnregGui.py:734
+#: ../src/up2date_client/rhnregGui.py:739
+#: ../src/up2date_client/rhnregGui.py:744
+#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
+#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
+#: ../src/up2date_client/tui.py:998
+msgid "Problem registering system:\n"
+msgstr "注册系统时出现问题：\n"
+
+#: ../src/up2date_client/rhnregGui.py:751
+#, python-format
+msgid ""
+"The installation number [ %s ] provided is not a valid installation number. "
+"Please go back to the previous screen and fix it."
+msgstr "提供的安装号 [ %s ] 无效。请返回上一屏幕修正。"
+
+#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
+msgid "Problem registering system."
+msgstr "注册系统时出现问题。"
+
+#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
+msgid "Problem writing out system id to disk."
+msgstr "将系统 ID 写出到磁盘时出现问题。"
+
+#: ../src/up2date_client/rhnregGui.py:777
+msgid "There was a problem registering this system."
+msgstr "注册此系统时出现问题。"
+
+#: ../src/up2date_client/rhnregGui.py:790
+msgid "Sending hardware information"
+msgstr "正在发送硬件信息"
+
+#: ../src/up2date_client/rhnregGui.py:795
+msgid "Problem sending hardware information."
+msgstr "发送硬件信息时出现问题。"
+
+#. #            for row in range(self.regPackageArea.n_rows):
+#. #                rowData = self.regPackageArea.get_row_data(row)
+#. #                if rowData[0] == 1:
+#. #                    selection.append(rowData[1])
+#. #            print("gh270")
+#. #            selectedPackages = []
+#. #            for pkg in packageList:
+#. #                if pkg[0] in selection:
+#. #                    selectedPackages.append(pkg)
+#: ../src/up2date_client/rhnregGui.py:819
+msgid "Sending package information"
+msgstr "正在发送软件包信息"
+
+#: ../src/up2date_client/rhnregGui.py:824
+msgid "Problem sending package information."
+msgstr "发送软件包信息时出现问题。"
+
+#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
+"无法打开 %s\n"
+"未启用 %s。\n"
+
+#: ../src/up2date_client/rhnregGui.py:910
+msgid "There was an error while installing the certificate."
+msgstr "安装证书时出错。"
+
+#: ../src/up2date_client/rhnregGui.py:936
+msgid "You must select a certificate."
+msgstr "必须选择一个证书。"
+
+#. TODO Modify rhnlib to raise a unique exception for the not a
+#. cert file case.
+#: ../src/up2date_client/rhnregGui.py:966
+msgid ""
+"There was an SSL error. This could be because the file you picked was not a "
+"certificate file."
+msgstr "发生 SSL 错误。这可能是因为选取的文件不是证书文件。"
+
+#. TODO Provide better messages
+#: ../src/up2date_client/rhnregGui.py:974
+msgid "Something went wrong while installing the new certificate:\n"
+msgstr "安装新证书时出现问题：\n"
+
+#: ../src/up2date_client/rhnregGui.py:1027
+#: ../src/up2date_client/rhnregGui.py:1028
+#: ../src/up2date_client/rhnregGui.py:1029
+msgid "unknown"
+msgstr "未知"
+
+#: ../src/up2date_client/rhnregGui.py:1133
+msgid "There was an error getting the list of hardware."
+msgstr "获取硬件列表时出错。"
+
+#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
+#, python-format
+msgid "%d MHz"
+msgstr "%d MHz"
+
+#: ../src/up2date_client/rhnregGui.py:1149
+#, python-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: ../src/up2date_client/rhnregGui.py:1194
+msgid "There was an error building the list of packages."
+msgstr "获取软件包列表时出错。"
+
+#: ../src/up2date_client/rhnregGui.py:1209
+msgid "Package"
+msgstr "软件包"
+
+#: ../src/up2date_client/rhnregGui.py:1214
+msgid "Arch"
+msgstr "体系结构"
+
+#: ../src/up2date_client/rhnregGui.py:1221
+msgid "Building a list of RPM packages installed on your system.  Please wait."
+msgstr "正在构建要在您系统上安装的 RPM 软件包列表。请稍候。"
+
+#: ../src/up2date_client/rhnregGui.py:1252
+msgid ""
+"There was an error loading your configuration.  Make sure that\n"
+"you have read access to /etc/sysconfig/rhn."
+msgstr ""
+"装载配置时出错。请确保\n"
+"您对 /etc/sysconfig/rhn 拥有读取访问权限。"
+
+#: ../src/up2date_client/rhnregGui.py:1294
+#, python-format
+msgid ""
+"There was an error saving your configuration. Make sure that\n"
+"you own %s."
+msgstr ""
+"保存配置时出错。请确保\n"
+"您拥有 %s。"
+
+#: ../src/up2date_client/rhnregGui.py:1324
+#, python-format
+msgid ""
+"This error shouldn't have happened. If you'd like to help us improve this "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
+"parts of '%s' would be very helpful. Thanks!"
+msgstr ""
+"此错误不应发生。如果您想帮助我们改进此程序，请在 bugzilla.suse.com 上报告 "
+"Bug。最好是在您的报告中包含 \"%s\" 的相关部分。谢谢！"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -471,7 +734,7 @@ msgstr "确认选择该操作系统发行版"
 msgid ""
 "Your system will be subscribed to the base software channel to receive all "
 "available updates."
-msgstr "您的系统将订阅基础软件频道以接收所有可用更新。"
+msgstr "您的系统将订阅基础软件通道以接收所有可用更新。"
 
 #. Hardware Window
 #: ../src/up2date_client/rhnreg_constants.py:109
@@ -632,11 +895,11 @@ msgstr "已激活以下产品/服务的订阅："
 
 #: ../src/up2date_client/rhnreg_constants.py:174
 msgid "Software Channel Subscriptions:"
-msgstr "软件频道订阅："
+msgstr "软件通道订阅："
 
 #: ../src/up2date_client/rhnreg_constants.py:175
 msgid "This system will receive updates from the following software channels:"
-msgstr "此系统将从以下软件频道接收更新："
+msgstr "此系统将从以下软件通道接收更新："
 
 #: ../src/up2date_client/rhnreg_constants.py:177
 #, python-brace-format
@@ -647,7 +910,7 @@ msgid ""
 "to the appropriate software channels."
 msgstr ""
 "警告：只有上面列出的已安装产品才能获得更新和支持。如果您想要获得其他产品的更"
-"新，请登录到 {PRODUCT_NAME} Web 界面，并让此系统订阅相应的软件频道。"
+"新，请登录到 {PRODUCT_NAME} Web 界面，并让此系统订阅相应的软件通道。"
 
 #: ../src/up2date_client/rhnreg_constants.py:183
 #, python-format
@@ -678,7 +941,7 @@ msgstr ""
 msgid ""
 "You were unable to be subscribed to the following software channels because "
 "there were insufficient subscriptions available in your account:"
-msgstr "由于您帐户中可用的订阅不足，您无法订阅以下软件频道："
+msgstr "由于您帐户中可用的订阅不足，您无法订阅以下软件通道："
 
 #: ../src/up2date_client/rhnreg_constants.py:193
 #, python-brace-format
@@ -691,10 +954,10 @@ msgid ""
 "subscribe this system to software channels via the software > software "
 "channels tab."
 msgstr ""
-"此系统无法订阅任何软件频道。您的系统将不会接收任何软件更新来保持其安全和受支"
+"此系统无法订阅任何软件通道。您的系统将不会接收任何软件更新来保持其安全和受支"
 "持状态。请将此问题告知您的 {PRODUCT_NAME} 管理员。在帐户中提供相应的活动订阅"
 "后，您可以在 {PRODUCT_NAME} Web 界面中浏览到此系统的配置文件，然后通过 \"软件"
-"\" > \"软件频道\" 选项卡在此系统中订阅软件频道。"
+"\" > \"软件通道\" 选项卡在此系统中订阅软件通道。"
 
 #: ../src/up2date_client/rhnreg_constants.py:199
 msgid "Service Level:"
@@ -778,7 +1041,7 @@ msgid ""
 msgstr ""
 "检测到通用默认激活密钥\n"
 "在您的帐户中检测到了通用默认激活密钥。这意味着，用于将系统连接到 "
-"{PRODUCT_NAME} Server 或 {PRODUCT_NAME} Proxy 的一组属性（软件频道订阅、软件"
+"{PRODUCT_NAME} Server 或 {PRODUCT_NAME} Proxy 的一组属性（软件通道订阅、软件"
 "包安装、系统组成员资格等）是由该激活密钥而不是安装号确定的。有关激活密钥的更"
 "多细节，另请参见《{PRODUCT_NAME} 参考指南》。\n"
 "通用默认激活密钥：%s"
@@ -787,12 +1050,6 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:243
 msgid "Fatal Error"
 msgstr "严重错误"
-
-#: ../src/up2date_client/rhnreg_constants.py:244
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
-msgid "Warning"
-msgstr "警告"
 
 #: ../src/up2date_client/rhnreg_constants.py:245
 #, python-format, python-brace-format
@@ -916,7 +1173,7 @@ msgid ""
 "Are you sure you would like to continue?"
 msgstr ""
 "您的系统将订阅 %s\n"
-"基础软件频道。您无法将\n"
+"基础软件通道。您无法将\n"
 "此系统迁移到更低的发行版\n"
 "（可以迁移动到更高的发行版）。\n"
 "您确定要继续吗？"
@@ -957,263 +1214,6 @@ msgstr "是，继续"
 #: ../src/up2date_client/rhnreg_constants.py:312
 msgid "Press <space> to deselect the option."
 msgstr "按 <空格键> 可取消选择该选项。"
-
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "注意"
-
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "应用您的选择时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr "您指定了无效协议。只允许 https 和 http。"
-
-#: ../src/up2date_client/rhnregGui.py:305
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr "在不联系 Spacewalk 服务器的情况下无法成功注册此系统。"
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "无法联系所选服务器"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, python-brace-format
-msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "无法联系 ”{HOST}\" 上的 {PRODUCT_NAME} 或 Proxy。"
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr "请反复检查位置 - '%s' 是否正确？如果不正确，请更正后重试。"
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "确保此系统上的网络连接正常。"
-
-#: ../src/up2date_client/rhnregGui.py:341
-msgid "There was an error communicating with Spacewalk server."
-msgstr "与 Spacewalk 服务器通讯时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr "该服务器可能处于服务中断模式。您可以需要稍后尝试连接。"
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr "您可能正在运行一个与服务器不兼容的客户端。"
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr "请输入您的 <b>%s</b> Spacewalk 服务器帐户信息："
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "必须输入登录名。"
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "必须输入口令。"
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "登录时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr "与注册服务器通讯时出错。消息：\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "汇编配置文件信息时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "运行硬件配置文件时出错"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "填充配置文件时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "必须为此配置文件选择一个名称。"
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "创建配置文件时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr "正在注册系统并发送配置文件信息。请稍候。"
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "正在注册系统"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:986
-#: ../src/up2date_client/tui.py:990 ../src/up2date_client/tui.py:994
-#: ../src/up2date_client/tui.py:998
-msgid "Problem registering system:\n"
-msgstr "注册系统时出现问题：\n"
-
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr "提供的安装号 [ %s ] 无效。请返回上一屏幕修正。"
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
-msgid "Problem registering system."
-msgstr "注册系统时出现问题。"
-
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1009
-msgid "Problem writing out system id to disk."
-msgstr "将系统 ID 写出到磁盘时出现问题。"
-
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "注册此系统时出现问题。"
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "正在发送硬件信息"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "发送硬件信息时出现问题。"
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "正在发送软件包信息"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "发送软件包信息时出现问题。"
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1058
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-"无法打开 %s\n"
-"未启用 %s。\n"
-
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "安装证书时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "必须选择一个证书。"
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr "发生 SSL 错误。这可能是因为选取的文件不是证书文件。"
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "安装新证书时出现问题：\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "未知"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "获取硬件列表时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "获取软件包列表时出错。"
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "软件包"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "体系结构"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr "正在构建要在您系统上安装的 RPM 软件包列表。请稍候。"
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"装载配置时出错。请确保\n"
-"您对 /etc/sysconfig/rhn 拥有读取访问权限。"
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"保存配置时出错。请确保\n"
-"您拥有 %s。"
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.suse.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"此错误不应发生。如果您想帮助我们改进此程序，请在 bugzilla.suse.com 上报告 "
-"Bug。最好是在您的报告中包含 \"%s\" 的相关部分。谢谢！"
-
-#: ../src/up2date_client/rhnreg.py:76
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "警告：无法使用 systemd 启用 rhnsd"
-
-#: ../src/up2date_client/rhnreg.py:82
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "警告：无法使用 chkconfig 启用 rhnsd"
 
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
@@ -1401,10 +1401,6 @@ msgstr ""
 "    中将某个激活密钥设置为通用默认值，您可以\n"
 "    禁用此密钥并重试，以避免使用管理权利。"
 
-#: ../src/bin/rhn_check.py:426
-msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr "正在尝试运行多个 mgr_check 实例。正在退出。\n"
-
 #: ../src/bin/rhn-profile-sync.py:37
 msgid ""
 "You need to register this system by running `rhn_register` before using this "
@@ -1422,6 +1418,10 @@ msgstr "正在更新硬件配置文件..."
 #: ../src/bin/rhn-profile-sync.py:52
 msgid "Updating virtualization profile..."
 msgstr "正在更新虚拟化配置文件..."
+
+#: ../src/bin/rhn_check.py:426
+msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
+msgstr "正在尝试运行多个 mgr_check 实例。正在退出。\n"
 
 #: ../src/bin/rhn_register.py:38
 msgid "Do not attempt to use X"
@@ -1458,7 +1458,7 @@ msgstr "指定激活密钥"
 #: ../src/bin/rhnreg_ks.py:64
 msgid ""
 "Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr "在此系统中订阅与系统的 redhat-release 关联的 EUS 频道"
+msgstr "在此系统中订阅与系统的 redhat-release 关联的 EUS 通道"
 
 #: ../src/bin/rhnreg_ks.py:66
 msgid "[Deprecated] Read contact info from stdin"
@@ -1535,27 +1535,27 @@ msgstr ""
 
 #: ../src/bin/spacewalk-channel.py:98
 msgid "name of channel you want to (un)subscribe"
-msgstr "要订阅（或取消订阅）的频道名称"
+msgstr "要订阅（或取消订阅）的通道名称"
 
 #: ../src/bin/spacewalk-channel.py:100
 msgid "subscribe to channel"
-msgstr "订阅频道"
+msgstr "订阅通道"
 
 #: ../src/bin/spacewalk-channel.py:102
 msgid "unsubscribe from channel"
-msgstr "取消订阅频道"
+msgstr "取消订阅通道"
 
 #: ../src/bin/spacewalk-channel.py:104
 msgid "list channels"
-msgstr "列出频道"
+msgstr "列出通道"
 
 #: ../src/bin/spacewalk-channel.py:106
 msgid "show base channel of a system"
-msgstr "显示系统的基础频道"
+msgstr "显示系统的基础通道"
 
 #: ../src/bin/spacewalk-channel.py:108
 msgid "list all available child channels"
-msgstr "列出所有可用的子频道"
+msgstr "列出所有可用的子通道"
 
 #: ../src/bin/spacewalk-channel.py:110
 msgid "verbose output"
@@ -1575,35 +1575,35 @@ msgstr "错误：这些参数在此上下文中没有意义（请尝试 --help�
 
 #: ../src/bin/spacewalk-channel.py:163
 msgid "ERROR: you have to specify at least one channel"
-msgstr "错误：必须至少指定一个频道"
+msgstr "错误：必须至少指定一个通道"
 
 #: ../src/bin/spacewalk-channel.py:169
 msgid "ERROR: this action does not require channel"
-msgstr "ERROR：此操作不需要频道"
+msgstr "ERROR：此操作不需要通道"
 
 #: ../src/bin/spacewalk-channel.py:176
 #, python-format
 msgid "Channel(s): %s successfully added"
-msgstr "已成功添加频道：%s"
+msgstr "已成功添加通道：%s"
 
 #: ../src/bin/spacewalk-channel.py:178
 #, python-format
 msgid "Error during adding channel(s) %s"
-msgstr "添加频道 %s 期间出错"
+msgstr "添加通道 %s 期间出错"
 
 #: ../src/bin/spacewalk-channel.py:185
 #, python-format
 msgid "Channel(s): %s successfully removed"
-msgstr "已成功去除频道：%s"
+msgstr "已成功去除通道：%s"
 
 #: ../src/bin/spacewalk-channel.py:187
 #, python-format
 msgid "Error during removal of channel(s) %s"
-msgstr "删除频道 %s 期间出错"
+msgstr "删除通道 %s 期间出错"
 
 #: ../src/bin/spacewalk-channel.py:194
 msgid "This system is not associated with any channel."
-msgstr "此系统未与任何频道相关联。"
+msgstr "此系统未与任何通道相关联。"
 
 #: ../src/bin/spacewalk-channel.py:196
 msgid "Unable to locate SystemId file. Is this system registered?"
@@ -2153,7 +2153,7 @@ msgid ""
 "be able to move this system to an earlier minor release channel if you "
 "continue (you will be able to move to a later release.)"
 msgstr ""
-"您的系统将订阅基础软件频道。如果您继续，则无法将此系统迁移到更低的次要发行版"
+"您的系统将订阅基础软件通道。如果您继续，则无法将此系统迁移到更低的次要发行版"
 "（可以迁移到更高的发行版。）"
 
 #: ../data/rh_register.glade.h:115
@@ -2281,13 +2281,13 @@ msgid ""
 "<b>_Limited updates</b> will be provided to this system, maintaining "
 "compatibility with the selected minor release software channel:"
 msgstr ""
-"将为此系统提供<b>有限更新</b>，以便与选定的次要发行版软件频道保持兼容(_L)："
+"将为此系统提供<b>有限更新</b>，以便与选定的次要发行版软件通道保持兼容(_L)："
 
 #: ../data/rh_register.glade.h:146
 msgid ""
 "Limited updates will be provided to this system, maintaining compatibility "
 "with the selected minor release software channel:"
-msgstr "将为此系统提供有限更新，以便与选定的次要发行版软件频道保持兼容："
+msgstr "将为此系统提供有限更新，以便与选定的次要发行版软件通道保持兼容："
 
 #: ../data/rh_register.glade.h:147
 msgid "_Minor release:"
@@ -2314,7 +2314,7 @@ msgid ""
 "in the main 'Red Hat Enterprise Linux x' software channel."
 msgstr ""
 "将为此系统提供<b>所有可用更新</b>。如果持续更新的话，此系统将始终等同于 'Red "
-"Hat Enterprise Linux x' 主要软件频道中的最新次要发行版(_A)。"
+"Hat Enterprise Linux x' 主要软件通道中的最新次要发行版(_A)。"
 
 #: ../data/rh_register.glade.h:153
 msgid ""
@@ -2323,7 +2323,7 @@ msgid ""
 "'Red Hat Enterprise Linux x' software channel."
 msgstr ""
 "将为此系统提供所有可用更新。如果持续更新的话，此系统将始终等同于 'Red Hat "
-"Enterprise Linux x' 主要软件频道中的最新次要发行版。"
+"Enterprise Linux x' 主要软件通道中的最新次要发行版。"
 
 #: ../data/rh_register.glade.h:154
 msgid ""

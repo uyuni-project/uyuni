@@ -5763,8 +5763,8 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} hardware {1} will be refreshed.</source>
-        <target state="needs-adaptation">하드웨어 프로파일 1개가 새로 고침될 &lt;a href="/rhn/schedule/PendingActions.do"&gt;예정&lt;/a&gt;입니다.</target>
+          <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
+        <target state="final">하드웨어 프로파일 1개가 새로 고침될 &lt;a href="/rhn/schedule/PendingActions.do"&gt;예정&lt;/a&gt;입니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5799,8 +5799,8 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage" xml:space="preserve">
-          <source>{0} package {1} will be refreshed.</source>
-        <target state="needs-adaptation">패키지 프로파일 1개가 새로 고침될 &lt;a href="/rhn/schedule/PendingActions.do"&gt;예정&lt;/a&gt;입니다.</target>
+          <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
+        <target state="final">패키지 프로파일 1개가 새로 고침될 &lt;a href="/rhn/schedule/PendingActions.do"&gt;예정&lt;/a&gt;입니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
@@ -28933,7 +28933,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
-        <target state="needs-adaptation">설치된 일부 확장에 대한 후속 작업을 찾을 수 없습니다. 마이그레이션하는 동안 선택한 대상에 따라 이러한 제품 중 일부 또는 전체가 제거되므로 주의하여 진행하십시오.</target>
+        <target state="final">이 시스템에 사용할 수 있는 마이그레이션이 없습니다. 설치된 일부 확장에 대한 후속 작업을 찾을 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
@@ -29073,7 +29073,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2021 SUSE LLC.</source>
-        <target state="needs-adaptation">Copyright (c) 2011 - 2022 SUSE LLC.</target>
+        <target state="final">Copyright (c) 2011 - 2021 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29669,175 +29669,189 @@ given channel.</source>
         <source>Pay-as-you-go</source>
         <target state="final">용량제</target>
       </trans-unit>
-      <trans-unit id="virtuallist.jsp.toolbar" xml:space="preserve">
+      <trans-unit approved="yes" id="virtuallist.jsp.toolbar" xml:space="preserve">
         <source>Virtual Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.system" xml:space="preserve">
+        <target state="final">가상 시스템</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="virtuallist.jsp.system" xml:space="preserve">
         <source>System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.nosystems" xml:space="preserve">
+        <target state="final">시스템</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="virtuallist.jsp.nosystems" xml:space="preserve">
         <source>No Virtual Systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.name" xml:space="preserve">
+        <target state="final">가상 시스템이 없습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="virtuallist.jsp.name" xml:space="preserve">
         <source>System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.host" xml:space="preserve">
+        <target state="final">시스템</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="virtuallist.jsp.host" xml:space="preserve">
         <source>Host</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.hoststatus" xml:space="preserve">
+        <target state="final">호스트</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="virtuallist.jsp.hoststatus" xml:space="preserve">
         <source>{0} Active Virtual Systems, {1} Total.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
           <context context-type="paramnotes">3 Active Virtual Systems, 10 Total.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.viewall" xml:space="preserve">
+        <target state="final">활성 가상 시스템 {0}개, 총 {1}개.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="virtuallist.jsp.viewall" xml:space="preserve">
         <source>View All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.updates" xml:space="preserve">
+        <target state="final">모두 보기</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="virtuallist.jsp.updates" xml:space="preserve">
         <source>Updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.state" xml:space="preserve">
+        <target state="final">업데이트</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="virtuallist.jsp.state" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">상태</target>
+      </trans-unit>
       <trans-unit id="virtuallist.jsp.channel" xml:space="preserve">
         <source>Base Software Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="virtuallist.jsp.disabled_checkbox_title" xml:space="preserve">
+        <target state="translated">기본 소프트웨어 채널</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="virtuallist.jsp.disabled_checkbox_title" xml:space="preserve">
         <source>You cannot select this system - it is not registered to @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualSystemsList.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.content" xml:space="preserve">
+        <target state="final">이 시스템은 선택할 수 없습니다. @@PRODUCT_NAME@@에 등록되어 있지 않습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.content" xml:space="preserve">
         <source>Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.free_form" xml:space="preserve">
+        <target state="final">컨텐트</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.free_form" xml:space="preserve">
         <source>Free Form</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.content_title" xml:space="preserve">
+        <target state="final">자유 형식</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.content_title" xml:space="preserve">
         <source>Content &amp; Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.title" xml:space="preserve">
+        <target state="final">컨텐트 &amp; 제목</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.title" xml:space="preserve">
         <source>Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.summary" xml:space="preserve">
+        <target state="final">제목</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.jsp.summary" xml:space="preserve">
         <source>Summary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.imgAlt" xml:space="preserve">
+        <target state="final">요약</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.jsp.imgAlt" xml:space="preserve">
         <source>search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.toolbar" xml:space="preserve">
+        <target state="final">검색</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.jsp.toolbar" xml:space="preserve">
         <source>Document Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.pagesummary" xml:space="preserve">
+        <target state="final">문서 검색</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.jsp.pagesummary" xml:space="preserve">
         <source>Document Search will return links to pages matching your search term. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.instructions" xml:space="preserve">
+        <target state="final">문서 검색은 검색어와 일치하는 페이지에 대한 링크를 반환합니다. </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.jsp.instructions" xml:space="preserve">
         <source>Specify your search criteria below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.searchfor" xml:space="preserve">
+        <target state="final">아래에서 검색 기준을 지정하십시오.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.jsp.searchfor" xml:space="preserve">
         <source>Search For:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.whatsearch" xml:space="preserve">
+        <target state="final">검색:</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.jsp.whatsearch" xml:space="preserve">
         <source>What to search:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.nopages" xml:space="preserve">
+        <target state="final">검색 대상:</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.jsp.nopages" xml:space="preserve">
         <source>No pages found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="docsearch.jsp.pagetitle" xml:space="preserve">
+        <target state="final">페이지를 찾을 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="docsearch.jsp.pagetitle" xml:space="preserve">
         <source>Page Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">페이지 제목</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
+            </context-group>
+        <target state="final">{0} 하드웨어 프로파일 &lt;a href="/rhn/schedule/PendingActions.do"&gt;새로 고침&lt;/a&gt;이 예정되었습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
+            <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
+        <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
+            </context-group>
+        <target state="final">{0} 패키지 프로파일 &lt;a href="/rhn/schedule/PendingActions.do"&gt;새로 고침&lt;/a&gt;이 예정되었습니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

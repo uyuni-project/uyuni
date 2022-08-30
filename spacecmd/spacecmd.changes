@@ -1,3 +1,7 @@
+- Process date values in spacecmd api calls (bsc#1198903)
+- Show correct help on calling kickstart_importjson with no arguments
+- Fix tracebacks on spacecmd kickstart_export (bsc#1200591)
+
 -------------------------------------------------------------------
 Wed Jul 06 15:56:08 CEST 2022 - jmassaguerpla@suse.de
 

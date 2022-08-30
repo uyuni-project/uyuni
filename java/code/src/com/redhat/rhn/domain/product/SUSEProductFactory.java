@@ -274,24 +274,35 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return a stream of synced {@link Channel}
      */
     public static Stream<Channel> findSyncedMandatoryChannels(String channelLabel) {
-        return findSyncProductChannelByLabel(channelLabel).map(suseProductChannel -> {
-
-            Channel channel = ChannelFactory.lookupByLabel(channelLabel);
-            Channel baseChannel = Optional.ofNullable(channel.getParentChannel()).orElse(channel);
-
-            SUSEProductChannel baseProductChannel = findSyncProductChannelByLabel(baseChannel.getLabel())
-                    .orElseThrow(() -> new NoSuchElementException("No product channel found for " + baseChannel +
-                            " of " + channel));
-            Stream<SUSEProductChannel> suseProductChannelStream = findSyncedMandatoryChannels(
-                        suseProductChannel.getProduct(),
-                        baseProductChannel.getProduct(),
-                        baseChannel.getLabel()
-            );
-            return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream)
-                    .filter(pc -> pc.getChannel().getChannelArch().equals(channel.getChannelArch()));
-        }).orElse(Stream.empty())
-          .filter(pc -> pc.isMandatory())
-          .map(pc -> pc.getChannel());
+        Channel channel = ChannelFactory.lookupByLabel(channelLabel);
+        Channel baseChannel = Optional.ofNullable(channel.getParentChannel()).orElse(channel);
+        if (channel.isCloned()) {
+            return channel.originChain().filter(c -> !c.isCloned()).findFirst().map(original -> {
+                return findSyncedMandatoryChannels(original.getLabel())
+                        .flatMap(c -> c.allClonedChannels())
+                        .filter(c ->
+                                (c.getParentChannel() != null && c.getParentChannel()
+                                        .equals(channel.getParentChannel())) || c.equals(channel.getParentChannel())
+                        )
+                        .map(c -> (Channel) c);
+            }).orElse(Stream.empty());
+        }
+        else {
+            return findSyncProductChannelByLabel(channelLabel).map(suseProductChannel -> {
+                        SUSEProductChannel baseProductChannel = findSyncProductChannelByLabel(baseChannel.getLabel())
+                                .orElseThrow(() -> new NoSuchElementException("No product channel found for " +
+                                        baseChannel + " of " + channel));
+                        Stream<SUSEProductChannel> suseProductChannelStream = findSyncedMandatoryChannels(
+                                suseProductChannel.getProduct(),
+                                baseProductChannel.getProduct(),
+                                baseChannel.getLabel()
+                        );
+                        return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream)
+                                .filter(pc -> pc.getChannel().getChannelArch().equals(channel.getChannelArch()));
+                    }).orElse(Stream.empty())
+                    .filter(SUSEProductChannel::isMandatory)
+                    .map(SUSEProductChannel::getChannel);
+        }
     }
 
     /**

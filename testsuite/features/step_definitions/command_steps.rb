@@ -3,6 +3,7 @@
 
 require 'timeout'
 require 'nokogiri'
+require 'set'
 
 # Sanity checks
 
@@ -174,7 +175,7 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
     package.gsub! "suma", "uyuni"
   end
   node = get_target(host)
-  if host.include? 'ubuntu'
+  if deb_host?(host)
     node.wait_while_process_running('apt-get')
     pkg_version = package.split('-')[-1]
     pkg_name = package.delete_suffix("-#{pkg_version}")
@@ -203,7 +204,7 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   end
 end
 
-When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
+When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
   result, return_code = node.run("zcat /usr/share/doc/salt-minion/changelog.Debian.gz")
   result.split("\n")[0, 15].each do |line|
@@ -216,7 +217,7 @@ When(/^vendor change should be enabled for (?:[^"]*) on "([^"]*)"$/) do |host|
   node = get_target(host)
   pattern = '--allow-vendor-change'
   log = '/var/log/zypper.log'
-  rotated_log = "#{log}-#{Time.now.strftime('%Y%m%d')}.xz"
+  rotated_log = "#{log}-#{Time.now.localtime.strftime('%Y%m%d')}.xz"
   _, return_code = node.run("grep -- #{pattern} #{log} || xzdec #{rotated_log} | grep -- #{pattern}")
 
   raise 'Vendor change option not found in logs' unless return_code.zero?
@@ -235,9 +236,17 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   $server.run_until_ok("cd /tmp; #{cmd} #{system_name} state.highstate #{extra_cmd}")
 end
 
-Then(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
+When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
+  node.run_until_ok(cmd)
+end
+
+When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  # necessary since Debian-like OSes use different names for the services
+  separator = deb_host?(host) ? "-" : "_"
+  cmd = "systemctl is-active prometheus-#{service}#{separator}exporter"
   node.run_until_ok(cmd)
 end
 
@@ -322,11 +331,12 @@ end
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
+# rubocop:disable Metrics/BlockLength
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
-  do_not_kill = compute_list_to_leave_running
+  do_not_kill = compute_channels_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 60 && reposync_left_running_streak <= 7200
+  while reposync_not_running_streak <= 60
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -339,6 +349,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
     if do_not_kill.include? channel
+      $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
       reposync_left_running_streak += 1
       sleep 1
@@ -349,8 +360,11 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     pid = process.split(' ')[0]
     $server.run("kill #{pid}", check_errors: false)
     log "Reposync of channel #{channel} killed"
+
+    raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
@@ -368,12 +382,27 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", check_errors: false)
-      break if code.zero?
+      # solv is the last file to be written when the server synchronizes a channel,
+      # therefore we wait until it exist
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
+      if code.zero?
+        # We want to check if no .new files exists.
+        # On a re-sync, the old files stay, the new one have this suffix until it's ready.
+        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
+        break unless new_code.zero?
+      end
+      log "I am still waiting for '#{channel}' channel to be synchronized."
       sleep 10
     end
   rescue StandardError => e
     log e.message # It might be that the MU repository is wrong, but we want to continue in any case
+  end
+end
+
+When(/I wait until all synchronized channels have finished$/) do
+  $channels_synchronized.each do |channel|
+    log "I wait until '#{channel}' synchronized channel has finished"
+    step %(I wait until the channel "#{channel}" has been synced)
   end
 end
 
@@ -473,15 +502,6 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
-When(/^I import the GPG keys for "([^"]*)"$/) do |host|
-  node = get_target(host)
-  gpg_keys = get_gpg_keys(node)
-  gpg_keys.each do |key|
-    gpg_key_import_cmd = host.include?('ubuntu') ? 'apt-key add' : 'rpm --import'
-    node.run("cd /tmp/ && curl --output #{key} #{$server.full_hostname}/pub/#{key} && #{gpg_key_import_cmd} /tmp/#{key}")
-  end
-end
-
 When(/^the server starts mocking an IPMI host$/) do
   ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
@@ -579,7 +599,7 @@ When(/^I synchronize the tftp configuration on the proxy with the server$/) do
   raise 'cobbler sync failed' if out.include? 'Push failed'
 end
 
-When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
+When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
   raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
 
   node = get_target(host)
@@ -588,7 +608,7 @@ When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do 
   when 'local boot'
     script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT local/'"
   when 'target profile'
-    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp2-cobbler:1:SUSETest/'"
+    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp3-cobbler:1:SUSETest/'"
   end
   node.run("sed -i #{script} #{target}")
 end
@@ -782,10 +802,9 @@ When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   # node.run('salt-call state.apply channels.disablelocalrepos') does not work
 end
 
-When(/^I (enable|disable) Ubuntu "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
+When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
-  raise "#{node.hostname} is not a Ubuntu host." unless os_family =~ /^ubuntu/
+  raise "#{node.hostname} is not a Debian-like host." unless deb_host?(host)
 
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
 end
@@ -899,11 +918,11 @@ end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     cmd = "yum -y install #{package}"
     successcodes = [0]
     not_found_msg = 'No package'
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
@@ -918,11 +937,11 @@ end
 
 When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     cmd = "yum -y downgrade #{package}"
     successcodes = [0]
     not_found_msg = 'No package'
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
@@ -937,10 +956,10 @@ end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     cmd = "yum -y remove #{package}"
     successcodes = [0]
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "dpkg --remove #{package}"
     successcodes = [0]
   else
@@ -951,7 +970,7 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
 end
 
 When(/^I install package tftpboot-installation on the server$/) do
-  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm')
+  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP3-x86_64-*.noarch.rpm')
   packages = output.split("\n")
   pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
   # Reverse sort the package name to get the latest version first and install it
@@ -965,9 +984,9 @@ end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
-  if host == 'sle_minion'
+  if suse_host?(host)
     cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
-  elsif host.include? 'ubuntu'
+  elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
@@ -1434,7 +1453,7 @@ end
 
 When(/^I refresh the packages list via package manager on "([^"]*)"$/) do |host|
   node = get_target(host)
-  next unless host.include? 'ceos'
+  next unless rh_host?(host)
 
   node.run('yum -y clean all')
   node.run('yum -y makecache')
@@ -1507,11 +1526,18 @@ end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_version, os_family = get_os_version(node)
   repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     repositories.concat(' os_pool_repo os_update_repo')
-    repositories.concat(' tools_additional_repo') unless $product == 'Uyuni'
+    if $product != 'Uyuni'
+      repositories.concat(' tools_additional_repo')
+      # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
+      # But the tools_update_repo's priority doesn't allow to cope with the obsoletes option from firewalld.
+      if os_version.to_f >= 15.3
+        node.run('zypper addlock -r tools_additional_repo firewalld-prometheus-config')
+      end
+    end
   end
   step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
 end
@@ -1526,7 +1552,7 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
 end
 
 When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
+  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP3-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
   $server.run("mkdir -p #{target_dirs}")
   base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
   source_dir = "/var/autoinstall/"
@@ -1534,8 +1560,8 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
   return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
   return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
-  return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
-  return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
+  return_codes << file_inject($server, base_dir + 'sles15sp3/initrd', source_dir + 'SLES15-SP3-x86_64/DVD1/boot/x86_64/loader/initrd')
+  return_codes << file_inject($server, base_dir + 'sles15sp3/linux', source_dir + 'SLES15-SP3-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
 end
 
@@ -1564,7 +1590,7 @@ When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
-  raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql")
+  raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql.gz")
 end
 
 Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|

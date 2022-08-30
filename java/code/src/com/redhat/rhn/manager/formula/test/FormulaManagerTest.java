@@ -156,6 +156,37 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Test removing group with formulas remove formulas file as well
+     * @throws Exception
+     */
+    public void testRemoveGroupWithFormulaData() throws Exception {
+        String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
+        Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
+        ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
+        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
+
+        context().checking(new Expectations(){{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
+
+        long groupId = group.getId();
+        manager.saveGroupFormulaData(user, groupId, formulaName, contents);
+        Map<String, Object> savedFormulaData =
+                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupId)
+                        .orElseGet(Collections::emptyMap);
+        assertFalse(savedFormulaData.isEmpty());
+        assertTrue(manager.hasGroupFormulaAssigned(formulaName, groupId));
+
+        ServerGroupTestUtils.removeManaged(user, group);
+
+        Map<String, Object> savedFormulaDataRemoved =
+                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, groupId)
+                        .orElseGet(Collections::emptyMap);
+        assertFalse(manager.hasGroupFormulaAssigned(formulaName, groupId));
+        assertTrue(savedFormulaDataRemoved.isEmpty());
+    }
+
+    /**
      * Test the enable formula method
      * @throws Exception if the formula cannot be enabled
      */
@@ -194,6 +225,44 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(savedFormulaData);
         assertEquals(contents,savedFormulaData);
         assertEquals( true, savedFormulaData.equals(contents));
+    }
+
+    /**
+     * Test the saving of server formula data when group formula is already assigned
+     * When saving server data to group assigned formula, make sure server formula is assigned
+     * @throws Exception
+     */
+    public void testSaveServerFormulaDataForGroupFormula() throws Exception {
+        String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
+        Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
+        ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.addGroup(group);
+        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
+        manager.saveGroupFormulaData(user, group.getId(), formulaName, contents);
+        Map<String, Object> savedFormulaData =
+                FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName, group.getId())
+                        .orElseGet(Collections::emptyMap);
+        assertNotNull(savedFormulaData);
+        assertEquals(contents,savedFormulaData);
+
+        List<String> formulasServer = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+        assertTrue(formulasServer.isEmpty());
+
+        Map<String, Object> contentsServer = Json.GSON.fromJson(contentsData, Map.class);
+        ((Map<String, Object>)contentsServer.get("dhcpd")).replace("domain_name", "server_domain_test");
+        manager.saveServerFormulaData(user,minion.getId(), formulaName, contentsServer);
+        Map<String, Object> savedFormulaSystemData =
+                FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minion.getMinionId())
+                        .orElseGet(Collections::emptyMap);
+        assertNotNull(savedFormulaData);
+        assertEquals(contentsServer,savedFormulaSystemData);
+
+        List<String> formulasServerNew = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+        assertTrue(formulasServerNew.contains(formulaName));
     }
 
     /**

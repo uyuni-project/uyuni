@@ -10,7 +10,7 @@ text
 
 nfs --server 192.0.2.1 --dir /install/fedora/2/i386/os
 
-# RedHat likes to set UTF8, which under RH 9 causes various problems...
+# Red Hat likes to set UTF-8, which under RH 9 causes various problems...
 lang en_US
 langsupport --default en_US en_US
 

@@ -1,3 +1,16 @@
+- Copy grains file with util.mgr_switch_to_venv_minion state apply
+- Remove the message 'rpm: command not found' on using Salt SSH
+  with Debian based systems which has no Salt Bundle
+- Prevent possible tracebacks on calling module.run from mgrcompat
+  by setting proper globals with using LazyLoader
+- Fix deploy of SLE Micro CA Certificate (bsc#1200276)
+
+-------------------------------------------------------------------
+Tue Jul 26 13:41:02 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.26-1
+  * Fix issue bootstrap issue with Debian 9 because missing python3-contextvars (bsc#1201782)
+
 -------------------------------------------------------------------
 Wed Jul 06 15:56:58 CEST 2022 - jmassaguerpla@suse.de
 

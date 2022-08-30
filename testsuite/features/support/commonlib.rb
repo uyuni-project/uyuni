@@ -26,7 +26,7 @@ end
 # This function computes a list of reposyncs to avoid killing, because they might be involved in bootstrapping.
 #
 # This is a safety net only, the best thing to do is to not start the reposync at all.
-def compute_list_to_leave_running
+def compute_channels_to_leave_running
   # keep the repos needed for the auto-installation tests
   do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
   [$minion, $build_host, $sshminion].each do |node|
@@ -161,6 +161,18 @@ def get_client_type(name)
   end
 end
 
+def suse_host?(name)
+  (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
+end
+
+def rh_host?(name)
+  (name.include? 'rhlike') || (name.include? 'centos') || (name.include? 'alma') || (name.include? 'rocky')
+end
+
+def deb_host?(name)
+  (name.include? 'deblike') || (name.include? 'debian') || (name.include? 'ubuntu')
+end
+
 def repository_exist?(repo)
   $api_test.auth.login('admin', 'admin')
   repo_list = $api_test.channel.software.list_user_repos
@@ -200,4 +212,12 @@ def get_uptime_from_host(host)
   hours = (minutes / 60.0) # 60 minutes
   days = (hours / 24.0) # 24 hours
   { seconds: seconds, minutes: minutes, hours: hours, days: days }
+end
+
+def web_driver_session_reset
+  page.reset! if Capybara::Session.instance_created?
+rescue NoMethodError
+  log 'The browser session could not be cleaned.'
+ensure
+  visit Capybara.app_host
 end

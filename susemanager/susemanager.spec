@@ -45,7 +45,7 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.2.34
+Version:        4.2.35
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -206,6 +206,11 @@ install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_p
 %else
 mkdir -p %{buildroot}/%{_sysconfdir}/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_sysconfdir}/firewalld/services
+%endif
+
+%if 0%{?sle_version} && !0%{?is_opensuse}
+# this script migrate the server to Uyuni. It should not be available on SUSE Manager
+rm -f %{buildroot}/%{_prefix}/lib/susemanager/bin/server-migrator.sh
 %endif
 
 make -C po install PREFIX=$RPM_BUILD_ROOT

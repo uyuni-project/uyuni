@@ -626,8 +626,8 @@ if [ -e %{_javadir}/ongres-stringprep/stringprep.jar ]; then
     ln -s -f %{_javadir}/ongres-stringprep/stringprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_stringprep.jar
     ln -s -f %{_javadir}/ongres-stringprep/saslprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_saslprep.jar
     echo "
-%{jardir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_stringprep.jar
-%{jardir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_saslprep.jar
+%{jardir}/ongres-stringprep_stringprep.jar
+%{jardir}/ongres-stringprep_saslprep.jar
 %{_prefix}/share/rhn/search/lib/ongres-stringprep_stringprep.jar
 %{_prefix}/share/rhn/search/lib/ongres-stringprep_saslprep.jar
     " > .mfiles-postgresql

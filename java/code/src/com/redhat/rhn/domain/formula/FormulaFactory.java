@@ -259,6 +259,15 @@ public class FormulaFactory {
      */
     public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId, Org org,
             String formulaName) throws IOException {
+
+        // If e.g. API or tests skip adding formulas and tries to write data directly,
+        // ensure formula is enabled for group
+        List<String> formulas = getFormulasByGroupId(groupId);
+        if (!formulas.contains(formulaName)) {
+            formulas.add(formulaName);
+            saveGroupFormulas(groupId, formulas, org);
+        }
+
         File file = new File(getGroupPillarDir() +
                 groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
         try {
@@ -312,6 +321,14 @@ public class FormulaFactory {
      */
     public static void saveServerFormulaData(Map<String, Object> formData, String minionId, String formulaName)
             throws IOException {
+        // Check if formula is really enabled for the system. If not, explicitly enable it.
+        // This may happen when overriding group formula on system level
+        List<String> enabledFormulas = getFormulasByMinionId(minionId);
+        if (!enabledFormulas.contains(formulaName)) {
+            enabledFormulas.add(formulaName);
+            saveServerFormulas(minionId, enabledFormulas);
+        }
+
         // Add the monitoring entitlement if at least one of the exporters is enabled
         if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
             MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
@@ -608,7 +625,12 @@ public class FormulaFactory {
         }
 
         // Save selected Formulas
-        groupFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
+        if (selectedFormulas.isEmpty()) {
+            groupFormulas.remove(groupId.toString());
+        }
+        else {
+            groupFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
+        }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
             writer.write(GSON.toJson(groupFormulas));
         }
