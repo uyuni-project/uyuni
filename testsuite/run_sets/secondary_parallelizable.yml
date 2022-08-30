@@ -36,13 +36,12 @@
 - features/secondary/srv_payg_ssh_connection.feature
 - features/secondary/srv_push_package.feature
 - features/secondary/trad_spacewalk_channel.feature
-# TODO: temporarily disabled by the RRTG
-# - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
+- features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
 - features/secondary/allcli_system_group.feature
 - features/secondary/allcli_config_channel.feature
 - features/secondary/allcli_software_channels.feature
-# tests to be rewritten using the "dummy" packages instead of real synced packages
+# TODO: tests to be rewritten using the "dummy" packages instead of real synced packages
 # - features/secondary/allcli_software_channels_dependencies.feature
 
 - features/secondary/min_rhlike_salt_install_package_and_patch.feature

@@ -29,7 +29,7 @@
 - features/secondary/min_rhlike_remote_command.feature
 - features/secondary/min_rhlike_ssh.feature
 - features/secondary/trad_rhlike_client.feature
-# temporarily disabled by the RRTGs
+# TODO: temporarily disabled by the RRTGs
 #- features/secondary/trad_rhlike_migrate_to_min.feature
 - features/secondary/min_deblike_openscap_audit.feature
 - features/secondary/min_deblike_remote_command.feature
@@ -51,7 +51,7 @@
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_action_chain.feature
-# temporarily disabled by the RRTGs
+# TODO: temporarily disabled by the RRTGs
 #- features/secondary/trad_deleted_migrate_to_minion.feature
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
