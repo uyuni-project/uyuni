@@ -286,6 +286,16 @@ public class ConfigTest extends RhnBaseTestCase {
         }
     }
 
+    @Test
+    public void testGetDouble() {
+        assertEquals(Double.valueOf(10.0), c.getDouble("prefix.double"));
+    }
+
+    @Test
+    public void testGetFloat() {
+        assertEquals(Float.valueOf(10.0f), c.getFloat("prefix.float"));
+    }
+
     /**
      * define comma separated value in rhn_prefix.conf,
      * call using StringArrayElem, verify all values are in array.

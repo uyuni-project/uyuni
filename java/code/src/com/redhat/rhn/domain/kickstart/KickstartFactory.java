@@ -448,8 +448,8 @@ public class KickstartFactory extends HibernateFactory {
         }
         Profile p = Profile.lookupById(CobblerXMLRPCHelper.getAutomatedConnection(),
                 ksdataIn.getCobblerId());
-        if (p != null && p.getKsMeta() != null) {
-            Map ksmeta = p.getKsMeta();
+        if (p != null && p.getKsMeta().isPresent()) {
+            Map<String, Object> ksmeta = p.getKsMeta().get();
             for (Object oIn : ksmeta.keySet()) {
                 String name = (String) oIn;
                 log.debug("fixing ksmeta: {}", name);

@@ -31,6 +31,7 @@ import org.cobbler.XmlRpcException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -163,10 +164,10 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
         SystemRecord rec = SystemRecord.lookupByName(
                 CobblerXMLRPCHelper.getConnection(user), getCobblerSystemRecordName());
         if (rec != null) {
-            rec.setVirtRam(memoryMB);
-            rec.setVirtFileSize(diskSizeGb);
-            rec.setVirtCpus(vcpus);
-            rec.setVirtPath(diskPath);
+            rec.setVirtRam(Optional.of(memoryMB));
+            rec.setVirtFileSize(Optional.of(diskSizeGb));
+            rec.setVirtCpus(Optional.of(vcpus));
+            rec.setVirtPath(Optional.of(diskPath));
             rec.save();
         }
     }

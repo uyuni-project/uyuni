@@ -301,10 +301,18 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
             Profile prf = Profile.lookupById(
                     CobblerXMLRPCHelper.getConnection(this.getUser()), dto.getCobblerId());
             if (prf != null) {
-                dto.setVirtBridge(prf.getVirtBridge());
-                dto.setVirtCpus(prf.getVirtCpus());
-                dto.setVirtMemory(prf.getVirtRam());
-                dto.setVirtSpace(prf.getVirtFileSize());
+                if (prf.getVirtBridge().isPresent()) {
+                    dto.setVirtBridge(prf.getVirtBridge().get());
+                }
+                if (prf.getVirtCpus().isPresent()) {
+                    dto.setVirtCpus(prf.getVirtCpus().get());
+                }
+                if (prf.getVirtRam().isPresent()) {
+                    dto.setVirtMemory(prf.getVirtRam().get());
+                }
+                if (prf.getVirtFileSize().isPresent()) {
+                    dto.setVirtSpace(prf.getVirtFileSize().get());
+                }
             }
             else {
                 itr.remove();

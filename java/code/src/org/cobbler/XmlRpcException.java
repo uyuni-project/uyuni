@@ -17,11 +17,18 @@ package org.cobbler;
 
 
 /**
+ * Exception that signals that the remote server has thrown an exception.
+ *
+ * @see <a href="http://xmlrpc.com/spec.md#fault-example">XML-RPC Spec - Fault example</a>
  * @author paji
  */
 public class XmlRpcException extends RuntimeException {
     /**
+     * This is important for serializing objects back into the memory in many cases. Define this to not use the default
+     * computation.
      *
+     * @see <a href="https://stackoverflow.com/a/285809/4730773">Stackoverflow</a>
+     * @see java.io.Serializable
      */
     private static final long serialVersionUID = 1L;
 

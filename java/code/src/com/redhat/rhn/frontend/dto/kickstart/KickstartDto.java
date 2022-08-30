@@ -35,7 +35,7 @@ public class KickstartDto extends BaseDto {
     private String cobblerId;
     private String cobblerUrl;
     private int virtMemory;
-    private int virtSpace;
+    private double virtSpace;
     private int virtCpus;
     private String virtBridge;
     private String macAddress;
@@ -216,7 +216,7 @@ public class KickstartDto extends BaseDto {
     /**
      * @return Returns the virtSpace.
      */
-    public int getVirtSpace() {
+    public double getVirtSpace() {
         return virtSpace;
     }
 
@@ -224,7 +224,7 @@ public class KickstartDto extends BaseDto {
     /**
      * @param virtSpaceIn The virtSpace to set.
      */
-    public void setVirtSpace(int virtSpaceIn) {
+    public void setVirtSpace(double virtSpaceIn) {
         this.virtSpace = virtSpaceIn;
     }
 

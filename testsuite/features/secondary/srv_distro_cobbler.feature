@@ -17,7 +17,7 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Create dummy profile
     Given cobblerd is running
     And distro "testdistro" exists
-    Then create profile "testprofile" as user "testing" with password "testing"
+    Then create profile "testprofile" for distro "testdistro" as user "testing" with password "testing"
 
   Scenario: Check cobbler created distro and profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
