@@ -50,6 +50,27 @@ Feature: Add a repository to a channel
     When I ensure the channel "test-channel-x86_64" has started syncing
     And I disable source package syncing
 
+  Scenario: Add the repository to the x86_64 child channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Test-Channel-x86_64 Child Channel"
+    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
+    And I click on "Update Channel"
+    Then I should see a "Channel Test-Channel-x86_64 updated" text
+    When I follow "Repositories" in the content area
+    And I select the "Test-Repository-x86_64" repo
+    And I click on "Save Repositories"
+    Then I should see a "Test-Channel-x86_64 Child Channel repository information was successfully updated" text
+
+  Scenario: Synchronize the repository in the x86_64 child channel
+    When I enable source package syncing
+    And I follow the left menu "Software > Manage > Channels"
+    And I follow "Test-Channel-x86_64 Child Channel"
+    And I follow "Repositories" in the content area
+    And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Test-Channel-x86_64 Child Channel." text
+
   Scenario: Add a test repository for i586
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
@@ -107,6 +128,25 @@ Feature: Add a repository to a channel
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-Deb-AMD64." text
+
+  @deblike_minion
+  Scenario: Add the Debian-like repository to the AMD64 child channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Test-Channel-Deb-AMD64 Child Channel"
+    And I follow "Repositories" in the content area
+    And I select the "Test-Repository-Deb" repo
+    And I click on "Save Repositories"
+    Then I should see a "Test-Channel-Deb-AMD64 Child Channel repository information was successfully updated" text
+
+@deblike_minion
+  Scenario: Synchronize the Debian-like repository in the AMD64 channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Test-Channel-Deb-AMD64 Child Channel"
+    And I follow "Repositories" in the content area
+    And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Test-Channel-Deb-AMD64 Child Channel." text
 
   Scenario: Refresh the errata cache
     When I follow the left menu "Admin > Task Schedules"

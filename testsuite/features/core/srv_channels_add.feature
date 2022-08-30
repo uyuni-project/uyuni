@@ -98,6 +98,23 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-Deb-AMD64 created." text
 
+Scenario: Add Debian-like AMD64 child channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Create Channel"
+    And I enter "Test-Channel-Deb-AMD64 Child Chnnel" as "Channel Name"
+    And I enter "test-channel-deb-amd64-child-channel" as "Channel Label"
+    And I select "Test-Channel-Deb-AMD64" from "Parent Channel"
+    And I select "AMD64 Debian" from "Architecture:"
+    And I enter "Test-Channel-Deb-AMD64 child channel for testing" as "Channel Summary"
+    And I enter "No more description for base channel." as "Channel Description"
+    # WORKAROUND
+    # GPG verification of Debian-like repos is possible with an own GPG key.
+    # This is not yet part of the testsuite and we run with disabled checkes for Ubuntu/Debian
+    And I uncheck "gpg_check"
+    # End of WORKAROUND
+    And I click on "Create Channel"
+    Then I should see a "Channel Test-Channel-Deb-AMD64 Child Channel created." text
+
   Scenario: Wait for Channels generated initial metadata
     When I wait until the channel "test-channel-x86_64" has been synced
     And I wait until the channel "test-channel-i586" has been synced

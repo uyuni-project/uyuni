@@ -7,7 +7,23 @@ Feature: Create an activation key for <client>
   As the testing user
   I want to use activation keys
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
+  Scenario: Clone the child custom channel including test repositories
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
+    And I select the custom architecture channel for "<client>" as the origin channel
+    And I choose "current"
+    And I click on "Clone Channel"
+    And I enter "Test-Channel-x86_64 Child Channel for <client>" as "Channel Name"
+    And I enter "test-channel-for-<client>" as "Channel Label"
+    And I select the parent channel for the "<client>" from "Parent Channel"
+    And I click on "Clone Channel"
+    Then I should see a "Test-Channel-x86_64 Child Channel for <client>" text
+
+
   Scenario: Create an activation key with the channel and child channels for a <client>
     When I am logged in API as user "admin" and password "admin"
-    And I create an activation key including custom test channels for "<client>" via API
+    And I create an activation key including custom channels for "<client>" via API
     And I logout from API
