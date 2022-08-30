@@ -1,3 +1,6 @@
+- Remove the message 'rpm: command not found' on using Salt SSH
+  with Debian based systems which has no Salt Bundle
+
 -------------------------------------------------------------------
 Wed Jul 27 14:17:08 CEST 2022 - jgonzalez@suse.com
 
