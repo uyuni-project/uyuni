@@ -1,3 +1,4 @@
+- Copy grains file with util.mgr_switch_to_venv_minion state apply
 - Remove the message 'rpm: command not found' on using Salt SSH
   with Debian based systems which has no Salt Bundle
 
