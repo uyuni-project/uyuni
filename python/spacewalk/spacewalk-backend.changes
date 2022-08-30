@@ -1,3 +1,4 @@
+- Upgrade Cobbler requirement to 3.3.3 or later
 - Make reposync use the configured http proxy with mirrorlist (bsc#1198168)
 
 -------------------------------------------------------------------
