@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2022-08-18 06:13+0000\n"
+"PO-Revision-Date: 2022-08-30 07:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "backend-4-3/mk/>\n"
@@ -142,6 +142,8 @@ msgstr ""
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Неможеше да се најде валиден мрежен интерфејс, и ipaddr и ip6addr nе беа "
+"најдени."
 
 #: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
@@ -686,7 +688,7 @@ msgstr ""
 
 #: ../common/rhnException.py:169
 msgid "Invalid username"
-msgstr ""
+msgstr "Невалидно име на корисник"
 
 #. 140-159 applet errors
 #: ../common/rhnException.py:172
