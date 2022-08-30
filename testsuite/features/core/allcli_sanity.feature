@@ -65,19 +65,19 @@ Feature: Sanity checks
     And "ssh_minion" should communicate with the server using public interface
     And the clock from "ssh_minion" should be exact
 
-@centos_minion
-  Scenario: The CentOS minion is healthy
-    Then "ceos_minion" should have a FQDN
-    And reverse resolution should work for "ceos_minion"
-    And "ceos_minion" should communicate with the server using public interface
-    And the clock from "ceos_minion" should be exact
+@rhlike_minion
+  Scenario: The Red Hat-like minion is healthy
+    Then "rhlike_minion" should have a FQDN
+    And reverse resolution should work for "rhlike_minion"
+    And "rhlike_minion" should communicate with the server using public interface
+    And the clock from "rhlike_minion" should be exact
 
-@ubuntu_minion
-  Scenario: The Ubuntu minion is healthy
-    Then "ubuntu_minion" should have a FQDN
-    And reverse resolution should work for "ubuntu_minion"
-    And "ubuntu_minion" should communicate with the server using public interface
-    And the clock from "ubuntu_minion" should be exact
+@deblike_minion
+  Scenario: The Debian-like minion is healthy
+    Then "deblike_minion" should have a FQDN
+    And reverse resolution should work for "deblike_minion"
+    And "deblike_minion" should communicate with the server using public interface
+    And the clock from "deblike_minion" should be exact
 
 @virthost_kvm
   Scenario: The KVM host is healthy

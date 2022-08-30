@@ -1,7 +1,7 @@
 # Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-#  1) bootstrap a new Debian minion
+#  1) bootstrap a new Debian 9 minion
 #  2) subscribe it to a base channel for testing
 
 @debian9_minion

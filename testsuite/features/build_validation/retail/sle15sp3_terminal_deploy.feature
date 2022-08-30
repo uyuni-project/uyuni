@@ -13,7 +13,7 @@ Feature: PXE boot a SLES 15 SP3 retail terminal
     Given I am authorized for the "Admin" section
 
   Scenario: PXE boot the SLES 15 SP3 retail terminal
-    When I reboot the terminal "sle15sp3_terminal"
+    When I reboot the Retail terminal "sle15sp3_terminal"
     And I wait at most 180 seconds until Salt master sees "sle15sp3_terminal" as "unaccepted"
     And I accept "sle15sp3_terminal" key in the Salt master
     And I follow the left menu "Systems > Overview"

@@ -278,7 +278,7 @@ def pillar_get(key, minion)
   if minion == 'sle_minion'
     cmd = 'salt'
     extra_cmd = ''
-  elsif %w[ssh_minion ceos_minion ubuntu_minion].include?(minion)
+  elsif %w[ssh_minion rhlike_minion deblike_minion].include?(minion)
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W 2>/dev/null'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
@@ -407,22 +407,22 @@ end
 # salt-ssh steps
 When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  if %w[sle_minion ssh_minion sle_client].include?(host)
+  if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", check_errors: false)
-  elsif %w[ceos_minion].include?(host)
+  elsif rh_host?(host)
     target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", check_errors: false)
-  elsif %w[ubuntu_minion].include?(host)
+  elsif deb_host?(host)
     target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", check_errors: false)
   end
 end
 
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  if %w[sle_minion ssh_minion sle_client].include?(host)
+  if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y salt salt-minion", check_errors: false)
-  elsif %w[ceos_minion].include?(host)
+  elsif rh_host?(host)
     target.run("test -e /usr/bin/yum && yum -y install salt salt-minion", check_errors: false)
-  elsif %w[ubuntu_minion].include?(host)
+  elsif deb_host?(host)
     target.run("test -e /usr/bin/apt && apt -y install salt-common salt-minion", check_errors: false)
   end
 end
@@ -450,9 +450,9 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
-  if host.include? 'ceos'
+  if rh_host?(host)
     node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)
-  elsif (host.include? 'ubuntu') || (host.include? 'debian')
+  elsif deb_host?(host)
     node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', check_errors: false)
   else
     node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion spacewalk-proxy-salt', check_errors: false)

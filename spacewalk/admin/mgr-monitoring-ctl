@@ -10,7 +10,7 @@ elif  [[ $1 == "--help" ]]; then
   echo "    disable  Disable server monitoring"
   echo "    status   Show status of monitored server components"
   echo ""
-  echo "To enable PostgreSQL monitoring additional connection details have to be provided by setting `pillar_data`."
+  echo "To enable PostgreSQL monitoring additional connection details have to be provided by setting 'pillar_data'."
   echo "It is expected to be a JSON object with following keys:"
   echo "    db_user  Username"
   echo "    db_pass  Password"
