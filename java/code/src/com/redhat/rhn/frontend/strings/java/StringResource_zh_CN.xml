@@ -441,7 +441,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">创建软件频道</target>
+        <target state="translated">创建软件通道</target>
       </trans-unit>
       <trans-unit id="Audit" xml:space="preserve">
         <source>Audit</source>
@@ -483,25 +483,25 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">频道管理</target>
+        <target state="translated">通道管理</target>
       </trans-unit>
       <trans-unit id="Channel Permissions" xml:space="preserve">
         <source>Channel Permissions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">频道权限</target>
+        <target state="translated">通道权限</target>
       </trans-unit>
       <trans-unit id="Channels" xml:space="preserve">
         <source>Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">频道</target>
+        <target state="translated">通道</target>
       </trans-unit>
       <trans-unit id="Channel List" xml:space="preserve">
         <source>Channel List</source>
-        <target>频道列表</target>
+        <target>通道列表</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -546,7 +546,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">配置频道</target>
+        <target state="translated">配置通道</target>
       </trans-unit>
       <trans-unit id="Create Account" xml:space="preserve">
         <source>Create Account</source>
@@ -751,14 +751,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">管理储存库</target>
+        <target state="translated">管理软件源</target>
       </trans-unit>
       <trans-unit id="Distribution Channel Mapping" xml:space="preserve">
         <source>Distribution Channel Mapping</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">分发频道映射</target>
+        <target state="translated">分发通道映射</target>
       </trans-unit>
       <trans-unit id="Monitoring" xml:space="preserve">
         <source>Monitoring</source>
@@ -1010,7 +1010,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">软件频道</target>
+        <target state="translated">软件通道</target>
       </trans-unit>
       <trans-unit id="Status" xml:space="preserve">
         <source>Status</source>
@@ -1389,7 +1389,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="translated">频道管理员</target>
+        <target state="translated">通道管理员</target>
       </trans-unit>
       <trans-unit id="Organization Administrators" xml:space="preserve">
         <source>Organization Administrators</source>
@@ -2209,14 +2209,14 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Destination Configuration Channel: sandbox for postmaster.devel</context>
         </context-group>
-        <target state="translated">目标配置频道：{0}</target>
+        <target state="translated">目标配置通道：{0}</target>
       </trans-unit>
       <trans-unit id="config.upload.channels" xml:space="preserve">
         <source>Destination Configuration Channels:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target state="translated">目标配置频道：</target>
+        <target state="translated">目标配置通道：</target>
       </trans-unit>
       <trans-unit id="config.upload.filenames" xml:space="preserve">
         <source>Files for Upload:</source>
@@ -2230,7 +2230,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="translated">以下软件包在与 kickstart 文件 {0} 关联的任何频道中都未提供。要使所有 kickstart 功能都正常工作，这些软件包至少应该存在于与此文件关联的其中一个频道中。</target>
+        <target state="translated">以下软件包在与 kickstart 文件 {0} 关联的任何通道中都未提供。要使所有 kickstart 功能都正常工作，这些软件包至少应该存在于与此文件关联的其中一个通道中。</target>
       </trans-unit>
       <trans-unit approved="yes" id="kickstart.invalidchannel.satmessage" xml:space="preserve">
         <source>&lt;div style="text-align: left;"&gt;
@@ -2266,23 +2266,23 @@ available for this kickstart profile to function properly.
 &lt;p&gt;要解决此问题，请检查以下事项：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-此 kickstart 配置文件的基础频道的客户端工具频道是否
+此 kickstart 配置文件的基础通道的客户端工具通道是否
 适用于您的组织？如果不适用，则您需要
-向 @@PRODUCT_NAME@@ 管理员请求客户端工具频道的权利。
+向 @@PRODUCT_NAME@@ 管理员请求客户端工具通道的权利。
 &lt;/li&gt;
 &lt;li&gt;
-确保此 kickstart 配置文件的基础频道的客户端工具频道
+确保此 kickstart 配置文件的基础通道的客户端工具通道
 适用于您的 @@PRODUCT_NAME@@。如果不适用，请联系
-您的 @@PRODUCT_NAME@@ 管理员并请求对客户端工具频道运行 mgr-inter-sync，
+您的 @@PRODUCT_NAME@@ 管理员并请求对客户端工具通道运行 mgr-inter-sync，
 然后重试。
 &lt;/li&gt;
 &lt;li&gt;
-确保 kickstart 基础频道的工具频道中提供了对应于
+确保 kickstart 基础通道的工具通道中提供了对应于
 此 kickstart 的 spacewalk-koan 软件包。如果未提供，
 则您需要提供此软件包才能使此 kickstart 配置文件正常运行。
 &lt;/li&gt;
 &lt;li&gt;
-此 kickstart 的基础频道中是否提供了上面列出的软件包？
+此 kickstart 的基础通道中是否提供了上面列出的软件包？
 如果未提供，则您需要提供此软件包才能使
 此 kickstart 配置文件正常运行。
 &lt;/li&gt;
@@ -2315,14 +2315,14 @@ and try again.
 &lt;p&gt;要解决此问题，请检查以下事项：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-此 kickstart 配置文件的基础频道的 "appstream" 子软件
-频道是否适用于您的组织？如果不适用，则您需要
-向 @@PRODUCT_NAME@@ 管理员请求 "appstream" 子软件频道的权利。
+此 kickstart 配置文件的基础通道的 "appstream" 子软件
+通道是否适用于您的组织？如果不适用，则您需要
+向 @@PRODUCT_NAME@@ 管理员请求 "appstream" 子软件通道的权利。
 &lt;/li&gt;
 &lt;li&gt;
-确保此 kickstart 配置文件的基础频道的 "appstream" 子软件
-频道适用于您的 @@PRODUCT_NAME@@。如果不适用，请联系
-您的 @@PRODUCT_NAME@@ 管理员并请求对 appstream 频道运行 cdn-sync，
+确保此 kickstart 配置文件的基础通道的 "appstream" 子软件
+通道适用于您的 @@PRODUCT_NAME@@。如果不适用，请联系
+您的 @@PRODUCT_NAME@@ 管理员并请求对 appstream 通道运行 cdn-sync，
 然后重试。
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2758,7 +2758,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">频道管理员</target>
+        <target state="translated">通道管理员</target>
       </trans-unit>
       <trans-unit id="coma_admin" xml:space="preserve">
         <source>Coma CMS Administrator</source>
@@ -3120,7 +3120,7 @@ and try again.
         </context-group>
         <target state="translated">搜索服务器中缺少索引文件。如果数据库中存在数据，可运行 /usr/sbin/rhn-search cleanindexx 重新生成索引，然后重新启动 rhn-search</target>
       </trans-unit>
-      <trans-unit id="packages.search.index_files_missing_for_docs" xml:space="preserve">
+      <trans-unit approved="yes" id="packages.search.index_files_missing_for_docs" xml:space="preserve">
         <source>Index files were missing from search-server for your locale. The search operation was performed using the default locale. Assuming data exists in database for your locale, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
@@ -3128,7 +3128,7 @@ and try again.
           <context context-type="sourcefile">/rhn/help/Search</context>
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target state="translated">您的区域设置对应的搜索服务器中缺少索引文件。已使用默认区域设置执行搜索操作。如果您区域设置的数据库中存在数据，可以运行 /usr/sbin/rhn-search cleanindex 来重新生成索引，然后重新启动 rhn-search。</target>
+        <target state="final">您的区域设置对应的搜索服务器中缺少索引文件。已使用默认区域设置执行搜索操作。如果您区域设置的数据库中存在数据，可以运行 /usr/sbin/rhn-search cleanindex 来重新生成索引，然后重新启动 rhn-search</target>
       </trans-unit>
       <trans-unit id="packages.search.could_not_execute_query" xml:space="preserve">
         <source>Could not execute query '{0}'.</source>
@@ -3694,13 +3694,13 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">解决方案</target>
       </trans-unit>
-      <trans-unit id="buglistId" xml:space="preserve">
+      <trans-unit approved="yes" id="buglistId" xml:space="preserve">
         <source>Bug ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
             /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target state="translated">Bug ID</target>
+        <target state="final">Bug ID</target>
       </trans-unit>
       <trans-unit id="buglistSummary" xml:space="preserve">
         <source>Bug Summary</source>
@@ -4014,7 +4014,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles</context>
         </context-group>
-        <target state="translated">此系统必须订阅基础频道，您才能创建软件包配置文件。</target>
+        <target state="translated">此系统必须订阅基础通道，您才能创建软件包配置文件。</target>
       </trans-unit>
       <trans-unit id="erratum.delete" xml:space="preserve">
         <source>Deleted patches &lt;strong&gt;{0}&lt;/strong&gt;.</source>
@@ -4807,12 +4807,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">希腊</target>
       </trans-unit>
-      <trans-unit id="GS" xml:space="preserve">
+      <trans-unit approved="yes" id="GS" xml:space="preserve">
         <source>S. Georgia &amp; S. Sandwich Isls.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target state="translated">南乔治亚岛和南桑威奇群岛</target>
+        <target state="final">南乔治亚岛和南桑威奇群岛</target>
       </trans-unit>
       <trans-unit id="GT" xml:space="preserve">
         <source>Guatemala</source>
@@ -4842,12 +4842,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">圭亚那</target>
       </trans-unit>
-      <trans-unit id="HK" xml:space="preserve">
+      <trans-unit approved="yes" id="HK" xml:space="preserve">
         <source>Hong Kong S.A.R.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target state="translated">香港特别行政区</target>
+        <target state="final">香港特别行政区</target>
       </trans-unit>
       <trans-unit id="HM" xml:space="preserve">
         <source>Heard and McDonald Islands</source>
@@ -6325,7 +6325,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit.do</context>
         </context-group>
-        <target state="translated">未找到指定的基础频道和 kickstart 树。</target>
+        <target state="translated">未找到指定的基础通道和 kickstart 树。</target>
       </trans-unit>
       <trans-unit id="kickstart.software.changeencryption" xml:space="preserve">
         <source>This kickstart profile uses a different type of encryption by default than the root password is currently using. You must reset the root password to encrypt it with the new method.</source>
@@ -6521,14 +6521,14 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">未找到与此系统兼容的配置文件。您可能尚未创建任何自动安装配置文件，或者此系统没有基础频道。</target>
+        <target state="translated">未找到与此系统兼容的配置文件。您可能尚未创建任何自动安装配置文件，或者此系统没有基础通道。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nobasechannel" xml:space="preserve">
         <source>System {0} cannot be autoinstalled because it does not have a base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">无法自动安装系统 {0}，因为它没有基础频道。</target>
+        <target state="translated">无法自动安装系统 {0}，因为它没有基础通道。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nosuchdevice" xml:space="preserve">
         <source>System {0} cannot be autoinstalled because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
@@ -6537,26 +6537,26 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">无法自动安装系统 {0}，因为它没有 &lt;strong&gt; {1} &lt;/strong&gt; 网络设备。</target>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.schedule.nopackage" xml:space="preserve">
         <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">根据此系统的当前基础频道和所需目标频道 {0}，找不到需要的 @@PRODUCT_NAME@@ 置备软件包：</target>
+        <target state="final">根据此系统的当前基础通道和所需目标通道 {0}，找不到需要的 @@PRODUCT_NAME@@ 置备软件包</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
         <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">您没有属于 &lt;strong&gt;{0}&lt;/strong&gt; 当前基础频道的 @@PRODUCT_NAME@@ 置备频道的剩余订阅。</target>
+        <target state="translated">您没有属于 &lt;strong&gt;{0}&lt;/strong&gt; 当前基础通道的 @@PRODUCT_NAME@@ 置备通道的剩余订阅。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
         <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">您在 &lt;strong&gt;{1}&lt;/strong&gt; 当前基础频道中没有频道 {0} 的剩余订阅。</target>
+        <target state="translated">您在 &lt;strong&gt;{1}&lt;/strong&gt; 当前基础通道中没有通道 {0} 的剩余订阅。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
@@ -6605,7 +6605,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target state="translated">要以无人值守方式安装系统，需要使用 up2date {0} 或更高版本。&lt;strong&gt;{2}&lt;/strong&gt; 已安装 {1}，但我们在此系统的频道中未找到 up2date 版本，无法将其升级到所需或更高的版本。</target>
+        <target state="translated">要以无人值守方式安装系统，需要使用 up2date {0} 或更高版本。&lt;strong&gt;{2}&lt;/strong&gt; 已安装 {1}，但我们在此系统的通道中未找到 up2date 版本，无法将其升级到所需或更高的版本。</target>
       </trans-unit>
       <trans-unit id="kickstart.state.guesttimedout" xml:space="preserve">
         <source>&lt;p&gt;The guest system has not communicated with @@PRODUCT_NAME@@ in the past {0} minutes. The install process might be progressing slowly due to hardware constraints, or it might be frozen.&lt;/p&gt; &lt;p&gt;You may wish to troubleshoot this issue by running &lt;em&gt;virsh console &lt;strong&gt;guestname&lt;/strong&gt;&lt;/em&gt; on the host system. This command will allow you to connect to the text console of the guest as it is installing, which may provide additional information about this guest system's installation status.&lt;/p&gt;</source>
@@ -6675,7 +6675,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target state="translated">未找到所选频道的树</target>
+        <target state="translated">未找到所选通道的树</target>
       </trans-unit>
       <trans-unit id="kickstart.edit.software.nofiles.jsp" xml:space="preserve">
         <source>No files found for selected kickstart tree</source>
@@ -7075,7 +7075,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
         </context-group>
-        <target state="translated">系统已成功取消订阅配置频道。</target>
+        <target state="translated">系统已成功取消订阅配置通道。</target>
       </trans-unit>
       <trans-unit id="unsubscribe.ssm.successes" xml:space="preserve">
         <source>Systems successfully unsubscribed from configuration channels.</source>
@@ -7083,29 +7083,29 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
           <context context-type="paramnotes">3 systems successfully unsubscribed from configuration channels.</context>
         </context-group>
-        <target state="translated">系统已成功取消订阅配置频道。</target>
+        <target state="translated">系统已成功取消订阅配置通道。</target>
       </trans-unit>
       <!-- config-channel form bean I18N -->
-      <trans-unit id="cofName" xml:space="preserve">
+      <trans-unit approved="yes" id="cofName" xml:space="preserve">
         <source>Configuration channel name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">配置频道名称</target>
+        <target state="final">配置通道名称</target>
       </trans-unit>
       <trans-unit id="cofLabel" xml:space="preserve">
         <source>Configuration channel label</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">配置频道标签</target>
+        <target state="translated">配置通道标签</target>
       </trans-unit>
       <trans-unit id="cofDescription" xml:space="preserve">
         <source>Configuration channel description</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">配置频道说明</target>
+        <target state="translated">配置通道说明</target>
       </trans-unit>
       <!-- config-file form-bean I18N -->
       <trans-unit id="cffUid" xml:space="preserve">
@@ -7249,14 +7249,14 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target state="translated">频道</target>
+        <target state="translated">通道</target>
       </trans-unit>
       <trans-unit id="cloneerrata.anychannel" xml:space="preserve">
         <source>Any managed channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target state="translated">任何管理的频道</target>
+        <target state="translated">任何管理的通道</target>
       </trans-unit>
       <trans-unit id="traceback_mail" xml:space="preserve">
         <source>Email address</source>
@@ -7835,21 +7835,21 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="config.channels_0" xml:space="preserve">
         <source>No configuration channels</source>
-        <target state="translated">没有配置频道</target>
+        <target state="translated">没有配置通道</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.channels_1" xml:space="preserve">
         <source>1 configuration channel</source>
-        <target state="translated">1 个配置频道</target>
+        <target state="translated">1 个配置通道</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.channels_2" xml:space="preserve">
         <source>{0} configuration channels</source>
-        <target state="translated">{0} 个配置频道</target>
+        <target state="translated">{0} 个配置通道</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
@@ -7859,7 +7859,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target state="translated">（无权访问父频道）</target>
+        <target state="translated">（无权访问父通道）</target>
       </trans-unit>
       <trans-unit id="kickstart.script.toolarge" xml:space="preserve">
         <source>The script must be smaller than {0} characters.</source>
@@ -7915,12 +7915,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">只能在安装了 "隔离代理" 的 @@PRODUCT_NAME@@ 服务器中使用这个功能，根据您使用的操作系统以及所需电源管理基础结构，需要的软件包可能为 "fence-agents"、"fence-agents-all" 或 "fence-agents-ipmilan"。请安装隔离代理。如果您的操作系统无法使用隔离代理，将不会支持电源管理功能。</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Advanced Lights Out Manager</target>
+        <target state="final">Advanced Lights Out Manager</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.apc" xml:space="preserve">
         <source>APC</source>
@@ -7936,19 +7936,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">通过 SNMP 使用 APC</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.baytech" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.baytech" xml:space="preserve">
         <source>BayTech</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">BayTech</target>
+        <target state="final">BayTech</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.bladecenter" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.bladecenter" xml:space="preserve">
         <source>BladeCenter</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">BladeCenter</target>
+        <target state="final">BladeCenter</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.brocade" xml:space="preserve">
         <source>BROCADE</source>
@@ -7964,19 +7964,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">通过 PAP 使用 Bull FAME</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.cisco_mds" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.cisco_mds" xml:space="preserve">
         <source>Cisco MDS</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Cisco MDS</target>
+        <target state="final">Cisco MDS</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.cisco_ucs" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.cisco_ucs" xml:space="preserve">
         <source>Cisco UCS</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Cisco UCS</target>
+        <target state="final">Cisco UCS</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.cpint" xml:space="preserve">
         <source>GFS on s390 and zSeries</source>
@@ -7985,75 +7985,75 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">s390 及 zSeries 中的 GFS</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.drac" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.drac" xml:space="preserve">
         <source>Dell DRAC</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Dell DRAC</target>
+        <target state="final">Dell DRAC</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.drac5" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.drac5" xml:space="preserve">
         <source>Dell DRAC 5</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Dell DRAC 5</target>
+        <target state="final">Dell DRAC 5</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
         <source>Eaton SNMP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Eaton SNMP</target>
+        <target state="final">Eaton SNMP</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.egenera" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.egenera" xml:space="preserve">
         <source>Egenera</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Egenera</target>
+        <target state="final">Egenera</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.eps" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.eps" xml:space="preserve">
         <source>ePowerSwitch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">ePowerSwitch</target>
+        <target state="final">ePowerSwitch</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.hds_cb" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.hds_cb" xml:space="preserve">
         <source>Hitachi HDS Compute Blade</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Hitachi HDS Compute Blade</target>
+        <target state="final">Hitachi HDS Compute Blade</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.hpblade" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.hpblade" xml:space="preserve">
         <source>HP Blade</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">HP Blade</target>
+        <target state="final">HP Blade</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ibmblade" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ibmblade" xml:space="preserve">
         <source>IBM Blade</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">IBM Blade</target>
+        <target state="final">IBM Blade</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ifmib" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ifmib" xml:space="preserve">
         <source>Cisco IF-MIB</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Cisco IF-MIB</target>
+        <target state="final">Cisco IF-MIB</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ilo" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ilo" xml:space="preserve">
         <source>HP Integrated Lights-Out</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">HP Integrated Lights-Out</target>
+        <target state="final">HP Integrated Lights-Out</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ilo_mp" xml:space="preserve">
         <source>HP Integrated Lights-Out Management Processor</source>
@@ -8097,19 +8097,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">IBM LPAR</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.mcdata" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.mcdata" xml:space="preserve">
         <source>McData</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">McData</target>
+        <target state="final">McData</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.netio" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.netio" xml:space="preserve">
         <source>Koukaam NETIO</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Koukaam NETIO</target>
+        <target state="final">Koukaam NETIO</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ovh" xml:space="preserve">
         <source>OVH</source>
@@ -8118,40 +8118,40 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">OVH</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rackswitch" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rackswitch" xml:space="preserve">
         <source>IBM RackSwitch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">IBM RackSwitch</target>
+        <target state="final">IBM RackSwitch</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rhevm" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rhevm" xml:space="preserve">
         <source>Red Hat Enterprise Virtualization Manager</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Red Hat Enterprise Virtualization Manager</target>
+        <target state="final">Red Hat Enterprise Virtualization Manager</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rsa" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rsa" xml:space="preserve">
         <source>IBM Remote Supervisor Adapter</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">IBM Remote Supervisor Adapter</target>
+        <target state="final">IBM Remote Supervisor Adapter</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rsb" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rsb" xml:space="preserve">
         <source>Fujitsu-Siemens RSB</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Fujitsu-Siemens RSB</target>
+        <target state="final">Fujitsu-Siemens RSB</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.sanbox2" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.sanbox2" xml:space="preserve">
         <source>QLogic SANbox2</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">QLogic SANbox2</target>
+        <target state="final">QLogic SANbox2</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.scsi" xml:space="preserve">
         <source>SCSI-3</source>
@@ -8160,26 +8160,26 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">SCSI-3</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.virsh" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.virsh" xml:space="preserve">
         <source>libvirt</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">libvirt</target>
+        <target state="final">libvirt</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.vixel" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.vixel" xml:space="preserve">
         <source>Vixel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Vixel</target>
+        <target state="final">Vixel</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.vmware" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.vmware" xml:space="preserve">
         <source>VMWare</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">VMWare</target>
+        <target state="final">VMWare</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.vmware_soap" xml:space="preserve">
         <source>VMWare via SOAP</source>
@@ -8188,19 +8188,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">通过 SOAP 使用 VMWare</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.wti" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.wti" xml:space="preserve">
         <source>WTI PowerSwitch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">WTI PowerSwitch</target>
+        <target state="final">WTI PowerSwitch</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.xcat" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.xcat" xml:space="preserve">
         <source>Extreme Cloud Administration Toolkit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Extreme Cloud Administration Toolkit</target>
+        <target state="final">Extreme Cloud Administration Toolkit</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.xenapi" xml:space="preserve">
         <source>Xen</source>
@@ -8508,42 +8508,42 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Subscribers.do</context>
         </context-group>
-        <target state="translated">已成功更新 {0} 个频道订阅。</target>
+        <target state="translated">已成功更新 {0} 个通道订阅。</target>
       </trans-unit>
       <trans-unit id="channels.managers.updated" xml:space="preserve">
         <source>{0} channel manager(s) successfully updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">已成功更新 {0} 个频道管理器。</target>
+        <target state="translated">已成功更新 {0} 个通道管理器。</target>
       </trans-unit>
       <trans-unit approved="yes" id="sdc.activation.kickstarting" xml:space="preserve">
         <source>There is a kickstart session in progress for this system.  Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete.  Using this key manually could cause unintended side-effects.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
-        <target state="needs-adaptation">此系统的一个 kickstart 会话正在进行。修改此激活密钥可能导致 kickstart 会话完成时，系统重新注册失败。手动使用此密钥可能会导致意想不到的副作用。</target>
+        <target state="final">此系统的一个 kickstart 会话正在进行。修改此激活密钥可能导致 kickstart 会话完成时，系统重新注册失败。手动使用此密钥可能会导致意想不到的副作用。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.base_channel_updated" xml:space="preserve">
         <source>System's Base Channel has been updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">已更新系统的基础频道。</target>
+        <target state="translated">已更新系统的基础通道。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.child_channels_updated" xml:space="preserve">
         <source>Child channel subscriptions updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">已更新子频道订阅。</target>
+        <target state="translated">已更新子通道订阅。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.failed_channels" xml:space="preserve">
         <source>Note:  Some channel subscriptions could not be updated because there were no available subscriptions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target state="translated">注意：因为没有可用的订阅，可能未更新某些频道订阅。</target>
+        <target state="translated">注意：因为没有可用的订阅，可能未更新某些通道订阅。</target>
       </trans-unit>
       <trans-unit id="ssm.groups.changed" xml:space="preserve">
         <source>System Group membership changed.</source>
@@ -8631,42 +8631,42 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/UploadFile</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target state="translated">此频道中已存在名为 "{0}" 的文件。</target>
+        <target state="translated">此通道中已存在名为 "{0}" 的文件。</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
         <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">无法自动为系统订阅 @@PRODUCT_NAME@@ 工具频道。此频道包含虚拟化所需的软件包。原因很可能是缺少频道权利。</target>
+        <target state="translated">无法自动为系统订阅 @@PRODUCT_NAME@@ 工具通道。此通道包含虚拟化所需的软件包。原因很可能是缺少通道权利。</target>
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">找到多个包含软件包 {0} 的子频道。请手动为此系统订阅合适的子频道。</target>
+        <target state="translated">找到多个包含软件包 {0} 的子通道。请手动为此系统订阅合适的子通道。</target>
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">找到多个包含软件包 {0} 的子频道。请手动为此系统订阅合适的子频道，并安排安装此软件包。</target>
+        <target state="translated">找到多个包含软件包 {0} 的子通道。请手动为此系统订阅合适的子通道，并安排安装此软件包。</target>
       </trans-unit>
       <trans-unit id="system.entitle.novirtchannel" xml:space="preserve">
         <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">无法自动为系统订阅 RHEL 虚拟化频道。此频道包含虚拟化所需的软件包。原因很可能是缺少频道权利。</target>
+        <target state="translated">无法自动为系统订阅 RHEL 虚拟化通道。此通道包含虚拟化所需的软件包。原因很可能是缺少通道权利。</target>
       </trans-unit>
       <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
         <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">找不到包含 {0} 软件包的频道。使用 @@PRODUCT_NAME@@ 管理虚拟 Guest 需要此软件包。</target>
+        <target state="translated">找不到包含 {0} 软件包的通道。使用 @@PRODUCT_NAME@@ 管理虚拟 Guest 需要此软件包。</target>
       </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
@@ -8680,7 +8680,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target state="translated">注意：要在 @@PRODUCT_NAME@@ 中为此系统启用并使用虚拟化功能，请安装关联的工具子频道中的 mgr-virtualization-host 软件包。有关为主机系统启用虚拟化的任何其他注意事项和要求，请查看文档。</target>
+        <target state="translated">注意：要在 @@PRODUCT_NAME@@ 中为此系统启用并使用虚拟化功能，请安装关联的工具子通道中的 mgr-virtualization-host 软件包。有关为主机系统启用虚拟化的任何其他注意事项和要求，请查看文档。</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
@@ -8838,7 +8838,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected" xml:space="preserve">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
-        <target state="translated">您正在尝试发布补丁，但尚未选择任何要发布此补丁的频道。补丁必须至少在一个频道中发布。</target>
+        <target state="translated">您正在尝试发布补丁，但尚未选择任何要发布此补丁的通道。补丁必须至少在一个通道中发布。</target>
       </trans-unit>
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
@@ -8854,31 +8854,31 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.channel.software.channelsubscription" xml:space="preserve">
         <source>Unable to subscribe this system to the requested channel: "{0}"</source>
-        <target state="translated">无法为此系统订阅请求的频道："{0}"</target>
+        <target state="translated">无法为此系统订阅请求的通道："{0}"</target>
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel" xml:space="preserve">
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
-        <target state="translated">选择订阅了多个基础频道。频道 {0} 和 {1} 均已选择订阅，但一个系统只能订阅一个基础频道。</target>
+        <target state="translated">选择订阅了多个基础通道。通道 {0} 和 {1} 均已选择订阅，但一个系统只能订阅一个基础通道。</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannellist" xml:space="preserve">
         <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
-        <target state="translated">提供的频道列表无效。必须包含频道标签或 ID 列表，但不能是二者的混合。</target>
+        <target state="translated">提供的通道列表无效。必须包含通道标签或 ID 列表，但不能是二者的混合。</target>
       </trans-unit>
       <trans-unit id="channel.invalidchannelarch" xml:space="preserve">
         <source>The channel arch specified ({0}) is invalid.</source>
-        <target state="translated">指定的频道系统结构 ({0}) 无效。</target>
+        <target state="translated">指定的通道系统结构 ({0}) 无效。</target>
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannellabel" xml:space="preserve">
         <source>The channel label specified ({0}) already exists.</source>
-        <target state="translated">指定的频道标签 ({0}) 已存在。</target>
+        <target state="translated">指定的通道标签 ({0}) 已存在。</target>
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannelname" xml:space="preserve">
         <source>The channel name specified ({0}) already exists.</source>
-        <target>指定的频道名称 ({0}) 已存在。</target>
+        <target>指定的通道名称 ({0}) 已存在。</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannelaccess" xml:space="preserve">
         <source>The channel access ({0}) is not allowed for this operation.</source>
-        <target state="translated">频道访问权限 ({0}) 不允许执行此操作。</target>
+        <target state="translated">通道访问权限 ({0}) 不允许执行此操作。</target>
       </trans-unit>
       <trans-unit id="Certificate Administrators" xml:space="preserve">
         <source>Certificate Administrators</source>
@@ -8950,7 +8950,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateTypeAndNoBase" xml:space="preserve">
         <source>The kickstartable tree {0} has no base channel. The only valid update type with a no-base kickstartable tree is 'none'.</source>
-        <target state="translated">可无人值守安装树 {0} 没有基础频道。非基础可无人值守安装树唯一有效的更新类型是 "无"。</target>
+        <target state="translated">可无人值守安装树 {0} 没有基础通道。非基础可无人值守安装树唯一有效的更新类型是 "无"。</target>
       </trans-unit>
       <trans-unit id="api.package.invalidpackagearch" xml:space="preserve">
         <source>The package arch specified ({0}) is invalid.</source>
@@ -9038,7 +9038,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="channelLabels" xml:space="preserve">
         <source>Channel Labels</source>
-        <target state="translated">频道标签</target>
+        <target state="translated">通道标签</target>
       </trans-unit>
       <trans-unit id="entitlementLevel" xml:space="preserve">
         <source>System Type Level</source>
@@ -9098,7 +9098,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cpuMHz" xml:space="preserve">
+      <trans-unit approved="yes" id="cpuMHz" xml:space="preserve">
         <source>CPU MHz</source>
         <target>CPU MHz</target>
         <context-group name="ctx">
@@ -9292,7 +9292,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewChannels" xml:space="preserve">
         <source>View Associated Channels</source>
-        <target state="translated">浏览关联频道</target>
+        <target state="translated">浏览关联通道</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewErrata" xml:space="preserve">
         <source>View Associated Patches</source>
@@ -9304,7 +9304,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.success" xml:space="preserve">
         <source>Successfully added {1} package(s) and {0} patches to channel {2}.</source>
-        <target state="translated">已成功向频道 {2} 添加 {1} 个软件包和 {0} 个补丁。</target>
+        <target state="translated">已成功向通道 {2} 添加 {1} 个软件包和 {0} 个补丁。</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.permsfailure" xml:space="preserve">
         <source>You do not have sufficient permissions to perform this action.</source>
@@ -9356,13 +9356,13 @@ Follow this url to see the full list of inactive systems:
         <source>s390x</source>
         <target state="translated">s390x</target>
       </trans-unit>
-      <trans-unit id="iSeries" xml:space="preserve">
+      <trans-unit approved="yes" id="iSeries" xml:space="preserve">
         <source>iSeries</source>
-        <target state="translated">iSeries</target>
+        <target state="final">iSeries</target>
       </trans-unit>
-      <trans-unit id="pSeries" xml:space="preserve">
+      <trans-unit approved="yes" id="pSeries" xml:space="preserve">
         <source>pSeries</source>
-        <target state="translated">pSeries</target>
+        <target state="final">pSeries</target>
       </trans-unit>
       <trans-unit id="x86_64" xml:space="preserve">
         <source>x86_64</source>
@@ -9380,21 +9380,21 @@ Follow this url to see the full list of inactive systems:
         <source>PowerPC Debian</source>
         <target state="translated">PowerPC Debian</target>
       </trans-unit>
-      <trans-unit id="ARM soft. FP" xml:space="preserve">
+      <trans-unit approved="yes" id="ARM soft. FP" xml:space="preserve">
         <source>ARM soft. FP</source>
-        <target state="translated">ARM soft. FP</target>
+        <target state="final">ARM soft. FP</target>
       </trans-unit>
-      <trans-unit id="ARM hard. FP" xml:space="preserve">
+      <trans-unit approved="yes" id="ARM hard. FP" xml:space="preserve">
         <source>ARM hard. FP</source>
-        <target state="translated">ARM hard. FP</target>
+        <target state="final">ARM hard. FP</target>
       </trans-unit>
       <trans-unit id="arm Debian" xml:space="preserve">
         <source>arm Debian</source>
         <target state="translated">arm Debian</target>
       </trans-unit>
-      <trans-unit id="mips Debian" xml:space="preserve">
+      <trans-unit approved="yes" id="mips Debian" xml:space="preserve">
         <source>mips Debian</source>
-        <target state="translated">mips Debian</target>
+        <target state="final">mips Debian</target>
       </trans-unit>
       <trans-unit id="AArch64" xml:space="preserve">
         <source>ARM aarch64</source>
@@ -9433,7 +9433,7 @@ Follow this url to see the full list of inactive systems:
             a software channel that this system is subscribed to.  If you choose to continue with the removal
             you will not be able to rollback this system to this snapshot or any prior snapshot.</source>
         <target state="translated">您选择去除的一个或多个软件包
-            未包含在此系统所订阅的软件频道中。如果您选择继续去除，
+            未包含在此系统所订阅的软件通道中。如果您选择继续去除，
             您将无法将此系统回滚到此快照或以前的任何一个快照。</target>
       </trans-unit>
       <trans-unit id="list.filter.iprange" xml:space="preserve">
@@ -9530,57 +9530,57 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道名称无效</target>
+        <target state="translated">通道名称无效</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.missing" xml:space="preserve">
         <source>Channel name must be specified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">必须指定频道名称</target>
+        <target state="translated">必须指定通道名称</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelname.regex" xml:space="preserve">
+      <trans-unit approved="yes" id="edit.channel.invalidchannelname.regex" xml:space="preserve">
         <source>Invalid channel name, please see the format described below</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道名称无效，请查看下面说明的格式</target>
+        <target state="final">通道名称无效，请查看下面说明的格式</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
         <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target state="translated">频道名称至少须包含 6 个字符，必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
+        <target state="translated">通道名称至少须包含 6 个字符，必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">@@VENDOR_NAME@@ 频道需要管理员特权</target>
+        <target state="translated">@@VENDOR_NAME@@ 通道需要管理员特权</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.minlength" xml:space="preserve">
         <source>Channel name must be at least {0} characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道名称必须至少包含 {0} 个字符</target>
+        <target state="translated">通道名称必须至少包含 {0} 个字符</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.maxlength" xml:space="preserve">
         <source>Channel name can not exceed {0} characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道名称长度不能超过 {0} 个字符</target>
+        <target state="translated">通道名称长度不能超过 {0} 个字符</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.nameinuse" xml:space="preserve">
         <source>The channel name '{0}' is already in use, please enter a different name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道名称 "{0}" 已被使用，请输入其他名称</target>
+        <target state="translated">通道名称 "{0}" 已被使用，请输入其他名称</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.namereserved" xml:space="preserve">
         <source>The channel name '{0}' is reserved, please enter a different name</source>
-        <target>频道名称 "{0}" 是保留的名称，请输入其他名称</target>
+        <target>通道名称 "{0}" 是保留的名称，请输入其他名称</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
@@ -9590,50 +9590,50 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道标签无效</target>
+        <target state="translated">通道标签无效</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.missing" xml:space="preserve">
         <source>Channel label must be specified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">必须指定频道标签</target>
+        <target state="translated">必须指定通道标签</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.regex" xml:space="preserve">
         <source>Invalid channel label, please see the format described below</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道标签无效，请查看下面说明的格式</target>
+        <target state="translated">通道标签无效，请查看下面说明的格式</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
         <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target state="translated">频道标签至少须包含 6 个字符，必须以字母或数字开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_") 和数字。</target>
+        <target state="translated">通道标签至少须包含 6 个字符，必须以字母或数字开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_") 和数字。</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">@@VENDOR_NAME@@ 频道需要管理员特权</target>
+        <target state="translated">@@VENDOR_NAME@@ 通道需要管理员特权</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.minlength" xml:space="preserve">
         <source>Channel label must be at least {0} characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道标签必须至少包含 {0} 个字符</target>
+        <target state="translated">通道标签必须至少包含 {0} 个字符</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.labelinuse" xml:space="preserve">
         <source>The channel label '{0}' is already in use, please enter a different name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道标签 "{0}" 已被使用，请输入其他名称</target>
+        <target state="translated">通道标签 "{0}" 已被使用，请输入其他名称</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.labelreserved" xml:space="preserve">
         <source>The channel label '{0}' is reserved, please enter a different name</source>
-        <target>频道标签 "{0}" 是保留的标签，请输入其他名称</target>
+        <target>通道标签 "{0}" 是保留的标签，请输入其他名称</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
@@ -9643,11 +9643,11 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="translated">频道摘要无效</target>
+        <target state="translated">通道摘要无效</target>
       </trans-unit>
       <trans-unit id="message.configuration.channel.deleted" xml:space="preserve">
         <source>Channel &lt;strong&gt;'{0}'&lt;/strong&gt; has been deleted.</source>
-        <target>已删除频道 &lt;strong&gt;"{0}"&lt;/strong&gt;。</target>
+        <target>已删除通道 &lt;strong&gt;"{0}"&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="distribution.tree.exists" xml:space="preserve">
         <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
@@ -9655,15 +9655,15 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.channel.delete.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ Channels cannot be deleted, only custom channels can.</source>
-        <target state="translated">无法删除 @@VENDOR_NAME@@ 频道，只能删除自定义频道。</target>
+        <target state="translated">无法删除 @@VENDOR_NAME@@ 通道，只能删除自定义通道。</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.haschild" xml:space="preserve">
         <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
-        <target state="translated">此频道有关联的子频道。您在删除父频道前必须先删除那些频道。</target>
+        <target state="translated">此通道有关联的子通道。您在删除父通道前必须先删除那些通道。</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.hasclones" xml:space="preserve">
         <source>Unable to delete channel. The channel you have tried to delete has been cloned. You must delete the clones before you can delete this channel. Cloned channels include ({0}{1}).</source>
-        <target>无法删除频道。您尝试删除的频道已克隆。必须先删除克隆版本才能删除此频道。克隆的频道包含 ({0}{1})。</target>
+        <target>无法删除通道。您尝试删除的通道已克隆。必须先删除克隆版本才能删除此通道。克隆的通道包含 ({0}{1})。</target>
       </trans-unit>
       <trans-unit id="api.kickstart.tree.notfound" xml:space="preserve">
         <source>The autoinstallable tree could not be found.  You may not have access to the requested tree.</source>
@@ -9671,11 +9671,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.channelcreated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target state="translated">已创建频道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已创建通道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.channelcloned" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; cloned from channel &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target state="translated">已从频道 &lt;strong&gt;{1}&lt;/strong&gt; 克隆频道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已从通道 &lt;strong&gt;{1}&lt;/strong&gt; 克隆通道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.cloneselect" xml:space="preserve">
         <source>You may now wish to clone the patches associated with &lt;strong&gt;{0}&lt;/strong&gt;.</source>
@@ -9683,23 +9683,23 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.channeldeleted" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target state="translated">已删除频道 &lt;strong&gt;{0}lt;/strong&gt;。</target>
+        <target state="translated">已删除通道 &lt;strong&gt;{0}lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.channel.delete.systemssubscribed" xml:space="preserve">
         <source>There are currently systems subscribed to this channel. Please confirm system channel removal by selecting the unsubscribe checkbox.</source>
-        <target state="translated">目前有系统订阅了此频道。请通过选择取消订阅复选框来确认要去除的系统频道。</target>
+        <target state="translated">目前有系统订阅了此通道。请通过选择取消订阅复选框来确认要去除的系统通道。</target>
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.has-distros" xml:space="preserve">
         <source>There are currently autoinstallable distributions associated to this channel. Please disassociate or delete the autoinstallable distributions before proceeding to delete the channel.</source>
-        <target state="translated">目前有与此频道关联的可自动安装发行套件。请在继续删除频道前取消关联或删除这些可自动安装发行套件。</target>
+        <target state="translated">目前有与此通道关联的可自动安装发行套件。请在继续删除通道前取消关联或删除这些可自动安装发行套件。</target>
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.no-taskomatic" xml:space="preserve">
         <source>The scheduling service appears down, channel cannot be deleted at the moment. Please contact your administrator.</source>
-        <target>日程安排服务似乎已关闭，目前无法删除频道。请联系您的管理员。</target>
+        <target>日程安排服务似乎已关闭，目前无法删除通道。请联系您的管理员。</target>
       </trans-unit>
       <trans-unit id="message.channelupdated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
-        <target state="translated">已更新频道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="translated">已更新通道 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.failactionsuccess" xml:space="preserve">
         <source>Status of action &lt;strong&gt;{0}&lt;/strong&gt; has been set to failed.</source>
@@ -9707,11 +9707,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.syncscheduled" xml:space="preserve">
         <source>Repository sync scheduled for {0}.</source>
-        <target state="translated">已为 {0} 安排储存库同步。</target>
+        <target state="translated">已为 {0} 安排软件源同步。</target>
       </trans-unit>
       <trans-unit id="message.syncinprogress" xml:space="preserve">
         <source>Repository sync is running.</source>
-        <target>储存库同步正在运行。</target>
+        <target>软件源同步正在运行。</target>
       </trans-unit>
       <trans-unit id="message.channelsubscribers" xml:space="preserve">
         <source>Per-User subscription restrictions may be applied in the Subscribers tab</source>
@@ -9763,11 +9763,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="snapshots.childchannel" xml:space="preserve">
         <source>Child Channels Updated</source>
-        <target state="translated">已更新子频道</target>
+        <target state="translated">已更新子通道</target>
       </trans-unit>
       <trans-unit id="snapshots.basechannel" xml:space="preserve">
         <source>Base Channel Updated</source>
-        <target state="translated">已更新基础频道</target>
+        <target state="translated">已更新基础通道</target>
       </trans-unit>
       <trans-unit id="snapshots.entitlements" xml:space="preserve">
         <source>System Types Updated</source>
@@ -9779,27 +9779,27 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="snapshots.configchannel" xml:space="preserve">
         <source>Configuration Channels Updated</source>
-        <target state="translated">已更新配置频道</target>
+        <target state="translated">已更新配置通道</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.neversynced" xml:space="preserve">
         <source>This channel has never been synced to external repositories.</source>
-        <target state="translated">此频道从未与外部储存库同步过。</target>
+        <target state="translated">此通道从未与外部软件源同步过。</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.updated" xml:space="preserve">
         <source>{0} repository information was successfully updated</source>
-        <target state="translated">已成功更新 {0} 储存库信息</target>
+        <target state="translated">已成功更新 {0} 软件源信息</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
-        <target state="translated">储存库标签 "{0}" 已被使用，请选择其他标签</target>
+        <target state="translated">软件源标签 "{0}" 已被使用，请选择其他标签</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
-        <target>储存库类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
+        <target>软件源类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinuse" xml:space="preserve">
         <source>There's already a defined repository with given url, please reuse it.</source>
-        <target state="translated">已有定义的储存库使用给定 URL，请重复使用该储存库。</target>
+        <target state="translated">已有定义的软件源使用给定 URL，请重复使用该软件源。</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve">
         <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
@@ -9859,7 +9859,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="channel.manage.merge.finished" xml:space="preserve">
         <source>{0} Package(s) have been added and {1} Package(s) have been removed from the channel.</source>
-        <target state="translated">此频道中已添加 {0} 个软件包，已去除 {1} 个软件包。</target>
+        <target state="translated">此通道中已添加 {0} 个软件包，已去除 {1} 个软件包。</target>
       </trans-unit>
       <trans-unit id="system.select.inactive" xml:space="preserve">
         <source>Select Inactive</source>
@@ -9891,11 +9891,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="ssm.subscription.operation.label" xml:space="preserve">
         <source>Channel Subscription Updates</source>
-        <target state="translated">频道订阅更新</target>
+        <target state="translated">通道订阅更新</target>
       </trans-unit>
       <trans-unit id="ssm.base.subscription.operation.label" xml:space="preserve">
         <source>Base Channel Subscription Updates</source>
-        <target state="translated">基础频道订阅更新</target>
+        <target state="translated">基础通道订阅更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="kickstart.cobbler.distro.syncfail" xml:space="preserve">
         <source>
@@ -9915,10 +9915,10 @@ Please check:
 for more detailed errors.  If you don't resolve the errors the autoinstallable
 tree will not be usable for autoinstalling.
         </source>
-        <target state="needs-adaptation">
+        <target state="final">
 下面是当 @@PRODUCT_NAME@@ 尝试将可自动安装的发行套件从
 @@PRODUCT_NAME@@ 同步到 Cobbler 时所收集到的错误列表。
-必须更正这些错误，才能使用该发行套件来
+必须更正这些错误，才能使用这些发行套件来
 自动安装系统：
 
 {0}
@@ -9929,8 +9929,9 @@ tree will not be usable for autoinstalling.
 /var/log/rhn/rhn_web_ui.log
 /var/log/cobbler/cobbler.log
 
-来了解更详细的错误。如果您不解决这些错误，可自动安装
-树将不可用于自动安装。</target>
+以获取更详细的错误信息。如果您不解决这些错误，可自动安装
+树将不可用于自动安装。
+        </target>
       </trans-unit>
       <trans-unit id="errata.delete.msg" xml:space="preserve">
         <source>Successfully deleted {0} patches.</source>
@@ -9998,7 +9999,7 @@ tree will not be usable for autoinstalling.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="translated">选定的系统具有多个包含 mgr-cfg 软件包的可用子频道。您必须手动订阅所需的子频道，然后重试此操作。</target>
+        <target state="translated">选定的系统具有多个包含 mgr-cfg 软件包的可用子通道。您必须手动订阅所需的子通道，然后重试此操作。</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>
@@ -10105,8 +10106,8 @@ Note that only one set of ISO images is necessary to install any particular rele
         <source>
 Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
 </source>
-        <target state="needs-adaptation">
-下面是可用于频道 {0} 的所有频道内容 ISO。如果您觉得下面缺少了任何频道内容 ISO，请确保您的 @@PRODUCT_NAME@@ 权利证书已上载到 @@PRODUCT_NAME@@ 并且正确标识了目标频道。
+        <target state="final">
+下面是可用于通道 {0} 的所有通道内容 ISO。如果您觉得下面缺少了任何通道内容 ISO，请确保您的 @@PRODUCT_NAME@@ 权利证书已上载到 @@PRODUCT_NAME@@，并正确标识了目标通道。
 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
@@ -10119,9 +10120,9 @@ You will want to download &lt;strong&gt;Base Channel Content ISOs&lt;/strong&gt;
 Alternatively, you will want to download &lt;strong&gt;Incremental Channel Content ISOs&lt;/strong&gt; if you want to update channels that you have already imported into your @@PRODUCT_NAME@@.
 </source>
         <target state="translated">
-频道内容 ISO分为两种类型：基础频道内容 ISO 和增量频道内容 ISO。
-如果您最初只是需要在新的 @@PRODUCT_NAME@@ 中填充频道内容，请下载&lt;strong&gt;基础频道内容 ISO&lt;/strong&gt;。
-或者，如果您要更新已导入 @@PRODUCT_NAME@@ 的频道，请下载&lt;strong&gt;增量频道内容 ISO&lt;/strong&gt;。
+通道内容 ISO分为两种类型：基础通道内容 ISO 和增量通道内容 ISO。
+如果您最初只是需要在新的 @@PRODUCT_NAME@@ 中填充通道内容，请下载&lt;strong&gt;基础通道内容 ISO&lt;/strong&gt;。
+或者，如果您要更新已导入 @@PRODUCT_NAME@@ 的通道，请下载&lt;strong&gt;增量通道内容 ISO&lt;/strong&gt;。
 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
@@ -10132,7 +10133,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
 &lt;strong&gt;Note:&lt;/strong&gt; Additional documentation on using @@PRODUCT_NAME@@ Channel Content ISOs is available in the &lt;em&gt;@@PRODUCT_NAME@@ Installation Guide&lt;/em&gt;, section 6.2.2.
 </source>
         <target state="translated">
-&lt;strong&gt;注意：&lt;/strong&gt;《&lt;em&gt;@@PRODUCT_NAME@@ 安装指南&lt;/em&gt;》的第 6.2.2 节提供了有关使用 @@PRODUCT_NAME@@ 频道内容 ISO 的更多文档内容。
+&lt;strong&gt;注意：&lt;/strong&gt;《&lt;em&gt;@@PRODUCT_NAME@@ 安装指南&lt;/em&gt;》的第 6.2.2 节提供了有关使用 @@PRODUCT_NAME@@ 通道内容 ISO 的更多文档内容。
 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
@@ -10140,21 +10141,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="isodownload.channel-dumps.view-base" xml:space="preserve">
         <source>View Base Channel Content ISOs for @@PRODUCT_NAME@@</source>
-        <target>查看 @@PRODUCT_NAME@@ 的基础频道内容 ISO</target>
+        <target>查看 @@PRODUCT_NAME@@ 的基础通道内容 ISO</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="isodownload.channel-dumps.view-incr" xml:space="preserve">
         <source>View Incremental Channel Content ISOs for @@PRODUCT_NAME@@</source>
-        <target>查看 @@PRODUCT_NAME@@ 的增量频道内容 ISO</target>
+        <target>查看 @@PRODUCT_NAME@@ 的增量通道内容 ISO</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.deploy.warning" xml:space="preserve">
         <source>Changes to channel assignments will take effect at next highstate application</source>
-        <target>对频道指派所做的更改将会在下次对应用程序运行 highstate 时生效</target>
+        <target>对通道指派所做的更改将会在下次对应用程序运行 highstate 时生效</target>
       </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.provis_tip" xml:space="preserve">
         <source>Allows various advanced functionality such as autoinstallation and configuration file provisioning.</source>
@@ -10207,7 +10208,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="satellite.expired" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
-        <target state="needs-adaptation">您的 @@PRODUCT_NAME@@ 证书已失效。请联系 @@VENDOR_NAME@@ 获取新证书。</target>
+        <target state="final">您的 @@PRODUCT_NAME@@ 证书已失效。请联系 @@VENDOR_NAME@@ 获取新证书。</target>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
@@ -10215,7 +10216,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="satellite.graceperiod" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
-        <target state="needs-adaptation">您的 @@PRODUCT_NAME@@ 证书已失效。请联系 @@VENDOR_NAME@@ 获取新证书。您的 @@PRODUCT_NAME@@ 将在 {0} 天后变成非活动状态。</target>
+        <target state="final">您的 @@PRODUCT_NAME@@ 证书已失效。请联系 @@VENDOR_NAME@@ 获取新证书。您的 @@PRODUCT_NAME@@ 将在 {0} 天后进入非活动状态。</target>
       </trans-unit>
       <trans-unit id="restricted.forbidden" xml:space="preserve">
         <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
@@ -10243,7 +10244,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="task.status.repo-sync" xml:space="preserve">
         <source>Repository Sync</source>
-        <target>储存库同步</target>
+        <target>软件源同步</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-push" xml:space="preserve">
         <source>SSH Server Push</source>
@@ -10251,7 +10252,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="task.status.cve-server-channels" xml:space="preserve">
         <source>CVE Server Channels</source>
-        <target>CVE 服务器频道</target>
+        <target>CVE 服务器通道</target>
       </trans-unit>
       <trans-unit id="task.status.mgr-sync-refresh" xml:space="preserve">
         <source>Refresh mgr-sync data</source>
@@ -10275,7 +10276,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="task.status.token-cleanup" xml:space="preserve">
         <source>Cleanup channel tokens</source>
-        <target>清理频道令牌</target>
+        <target>清理通道令牌</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch" xml:space="preserve">
         <source>Registers @@PRODUCT_NAME@@ clients</source>
@@ -10283,7 +10284,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch" xml:space="preserve">
         <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
-        <target state="translated">同步 @@PRODUCT_NAME@@ 储存库</target>
+        <target state="translated">同步 @@PRODUCT_NAME@@ 软件源</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch" xml:space="preserve">
         <source>Manages clients via SSH Server Push</source>
@@ -10295,7 +10296,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-sync-refresh-bunch" xml:space="preserve">
         <source>Refreshes data about channels, products and subscriptions</source>
-        <target>刷新有关频道、产品和订阅的数据</target>
+        <target>刷新有关通道、产品和订阅的数据</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.gatherer-matcher-bunch" xml:space="preserve">
         <source>Runs Virtual Host Gatherer on Virtual Host Managers and processes its results. After this Subscription Matcher job is run.</source>
@@ -10502,33 +10503,33 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="message.channel.deleted.state.scheduled" xml:space="preserve">
         <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;已成功安排&lt;/a&gt;频道状态自动应用</target>
+        <target>&lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;已成功安排&lt;/a&gt;通道状态自动应用</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.channel.disable.delete.contentlifecycle.environment.in.use" xml:space="preserve">
         <source>This channel cannot be deleted. It is currently used in the Content Lifecycle Project '{0}' in the Environment '{1}'</source>
-        <target>无法删除此频道。环境 "{1}" 中的内容生命周期项目 "{0}" 中目前已在使用它</target>
+        <target>无法删除此通道。环境 "{1}" 中的内容生命周期项目 "{0}" 中目前已在使用它</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channels.subscribe.target.systems.channel.scheduled" xml:space="preserve">
         <source>Subscribing {0} system(s) to channel {1} has been scheduled.</source>
-        <target>已安排 {0} 个系统订阅频道 {1}。</target>
+        <target>已安排 {0} 个系统订阅通道 {1}。</target>
       </trans-unit>
       <trans-unit id="channels.not.supported.for.minions" xml:space="preserve">
         <source>Local/Sandbox channels are not supported for minions.</source>
-        <target>受控端不支持本地/沙箱频道。</target>
+        <target>受控端不支持本地/沙箱通道。</target>
       </trans-unit>
       <trans-unit id="state.channels.not.supported.for.traditional" xml:space="preserve">
         <source>A state channel cannot be assigned to traditional system.</source>
-        <target>无法将状态频道指派到传统系统。</target>
+        <target>无法将状态通道指派到传统系统。</target>
       </trans-unit>
       <trans-unit id="directories.symlink.not.supported.for.minions" xml:space="preserve">
         <source>Directories/Symlinks are not supported in state channel.</source>
-        <target>状态频道中不支持目录/符号链接。</target>
+        <target>状态通道中不支持目录/符号链接。</target>
       </trans-unit>
       <trans-unit id="update.init.sls.with.updateinitsls.method" xml:space="preserve">
         <source>Please use 'updateInitSls' method for updating init.sls file.</source>
@@ -10536,11 +10537,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="editable.init.sls.only.for.state.channels" xml:space="preserve">
         <source>init.sls file can only be edited for state channels.</source>
-        <target>只能编辑状态频道的 init.sls 文件。</target>
+        <target>只能编辑状态通道的 init.sls 文件。</target>
       </trans-unit>
       <trans-unit id="state.channel.through.apply.config.channel.method" xml:space="preserve">
         <source>State channels can be applied through system.config.scheduleApplyConfigChannel method or from UI.</source>
-        <target>可以通过 system.config.scheduleApplyConfigChannel 方法或 UI 应用状态频道。</target>
+        <target>可以通过 system.config.scheduleApplyConfigChannel 方法或 UI 应用状态通道。</target>
       </trans-unit>
       <trans-unit id="SUSE Manager Administrators" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Administrators</source>
@@ -10648,11 +10649,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.channelsyncfailed" xml:space="preserve">
         <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
-        <target>同步频道时出错：&lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</target>
+        <target>同步通道时出错：&lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="notification.channelsyncfinished" xml:space="preserve">
         <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
-        <target>已完成频道 &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; 的同步</target>
+        <target>已完成通道 &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; 的同步</target>
       </trans-unit>
       <trans-unit id="notification.onboardingfailed" xml:space="preserve">
         <source>Error registering minion id: {0}</source>
@@ -10660,7 +10661,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.bootstraprepofailed" xml:space="preserve">
         <source>Error generating bootstrap repo for: {0}</source>
-        <target>为 {0} 生成引导储存库时出错</target>
+        <target>为 {0} 生成引导软件源时出错</target>
       </trans-unit>
       <trans-unit id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
@@ -10833,12 +10834,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Some of the specified servers cannot be found</source>
         <target state="translated">找不到指定的某些服务器</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.redfish" xml:space="preserve">
         <source>Redfish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Redfish</target>
+        <target state="final">Redfish</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
@@ -10917,7 +10918,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target state="translated">储存库标签 "{0}" 无效。储存库标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
+        <target state="translated">软件源标签 "{0}" 无效。软件源标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
       </trans-unit>
       <trans-unit approved="yes" id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
@@ -10969,14 +10970,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em>不会</em>导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 &lt;strong&gt;Ansible 控制节点&lt;/strong&gt;类型。此操作将&lt;em&gt;不会&lt;/em&gt;导致应用状态。要应用状态，请使用&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状态页&lt;/a&gt;，或者在命令行中运行 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;。</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em>不会</em>导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 &lt;strong&gt;Ansible 控制节点&lt;/strong&gt;类型。此操作将&lt;em&gt;不会&lt;/em&gt;导致应用状态。要应用状态，请使用&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状态页&lt;/a&gt;，或者在命令行中运行 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;。</target>
       </trans-unit>
       <trans-unit approved="yes" id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
@@ -11044,7 +11045,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="contentmanagement.modules_error" xml:space="preserve">
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
-        <target state="final">无法获取频道模块。有关详细信息，请查看服务器日志。</target>
+        <target state="final">无法获取通道模块。有关详细信息，请查看服务器日志。</target>
       </trans-unit>
       <trans-unit approved="yes" id="ovalfiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
@@ -11167,11 +11168,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="setup.product.error.labelconflict" xml:space="preserve">
         <source>There are conflicting channel labels {0}.</source>
-        <target state="final">存在冲突的频道标签 {0}。</target>
+        <target state="final">存在冲突的通道标签 {0}。</target>
       </trans-unit>
       <trans-unit approved="yes" id="setup.product.error.parentconflict" xml:space="preserve">
         <source>A parent product conflicts with existing channels.</source>
-        <target state="final">父产品与现有频道冲突。</target>
+        <target state="final">父产品与现有通道冲突。</target>
       </trans-unit>
       <trans-unit approved="yes" id="setup.product.error.unknown" xml:space="preserve">
         <source>Unexpected error while adding the product.</source>
@@ -11224,8 +11225,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit approved="yes" id="notification.endoflife.expired.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-        <target state="needs-adaptation"><p>@@PRODUCT_NAME@@ {0} 的生命周期已结束。对其的标准支持已于 <strong>{1}</strong>结束。要继续享受支持，<strong>必须</strong>升级此 @@PRODUCT_NAME@@ 服务器实例。</p>
-          <p>有关如何升级 @@PRODUCT_NAME@@ 的其他信息，请查看官方文档<em>安装/升级指南</em>的<em>升级</em>章节。</p></target>
+        <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0} 的生命周期已结束。对其的标准支持已于 &lt;strong&gt;{1}&lt;/strong&gt;结束。要继续享受支持，&lt;strong&gt;必须&lt;/strong&gt;升级此 @@PRODUCT_NAME@@ 服务器实例。&lt;/p&gt;
+          &lt;p&gt;有关如何升级 @@PRODUCT_NAME@@ 的其他信息，请查看官方文档&lt;em&gt;升级指南&lt;/em&gt;。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
@@ -11234,8 +11235,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit approved="yes" id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the &lt;em&gt;Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-        <target state="needs-adaptation"><p>@@PRODUCT_NAME@@ {0} 的生命周期即将结束。对其的标准支持将于 <strong>{1}</strong>结束，请考虑在此之前升级此服务器实例。</p>
-          <p>有关如何升级 @@PRODUCT_NAME@@ 的其他信息，请查看官方文档<em>安装/升级指南</em>的<em>升级</em>章节。</p></target>
+        <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0} 的生命周期即将结束。对其的标准支持将于 &lt;strong&gt;{1}&lt;/strong&gt;结束，请考虑在此之前升级此服务器实例。&lt;/p&gt;
+          &lt;p&gt;有关如何升级 @@PRODUCT_NAME@@ 的其他信息，请查看官方文档&lt;em&gt;升级指南&lt;/em&gt;。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
@@ -11245,37 +11246,37 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Please fill in login.</source>
         <target state="final">请填写登录信息。</target>
       </trans-unit>
-    <trans-unit id="login.jsp.satbody2" xml:space="preserve">
+      <trans-unit approved="yes" id="login.jsp.satbody2" xml:space="preserve">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="login.jsp.satbody3" xml:space="preserve">
+        <target state="final">有关 @@PRODUCT_NAME@@ 的细节，请访问我们的网站 &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;。 </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="login.jsp.satbody3" xml:space="preserve">
         <source> </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="cluster_admin" xml:space="preserve">
+        <target state="final"> </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="cluster_admin" xml:space="preserve">
         <source>Cluster Administrator</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="clusters.nav.title" xml:space="preserve">
+        <target state="final">群集管理员</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="clusters.nav.title" xml:space="preserve">
         <source>Clusters</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="clusters.nav.overview" xml:space="preserve">
+        <target state="final">群集</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="clusters.nav.overview" xml:space="preserve">
         <source>Overview</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="clusters.nav.add" xml:space="preserve">
+        <target state="final">概览</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="clusters.nav.add" xml:space="preserve">
         <source>Add</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="cluster.join_precondition_package_name" xml:space="preserve">
+        <target state="final">添加</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="cluster.join_precondition_package_name" xml:space="preserve">
         <source>Package {0} not found in subscribed channels</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">在订阅的通道中找不到软件包 {0}</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

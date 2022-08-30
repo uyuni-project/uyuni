@@ -19,10 +19,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-02 11:53+0200\n"
-"PO-Revision-Date: 2022-06-08 18:13+0000\n"
+"POT-Creation-Date: 2022-08-30 12:03+0200\n"
+"PO-Revision-Date: 2022-08-03 18:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-2/sk/"
+">\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -342,137 +343,28 @@ msgstr "Zobraziť/skryť heslo"
 msgid "Toggle section visibility"
 msgstr "Prepnúť viditeľnosť sekcie"
 
-#: ../html/src/components/input/DateTime.stories.tsx:29
-msgid "Time"
-msgstr "Čas"
-
-#: ../html/src/components/input/DateTime.stories.tsx:30
-#: ../html/src/components/input/FormMultiInput.stories.tsx:72
-#: ../html/src/components/input/FormMultiInput.stories.tsx:122
-#: ../html/src/components/input/FormMultiInput.stories.tsx:164
-#: ../html/src/components/input/FormMultiInput.stories.tsx:233
-#: ../html/src/components/input/Password.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:39
-#: ../html/src/components/input/Radio.stories.tsx:66
-#: ../html/src/components/input/Radio.stories.tsx:93
-#: ../html/src/components/input/Radio.stories.tsx:121
-#: ../html/src/components/input/Range.stories.tsx:46
-#: ../html/src/components/input/Select.stories.tsx:35
-#: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
-msgid "Submit"
-msgstr "Podať"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:28
-#: ../html/src/components/input/FormMultiInput.stories.tsx:89
-#: ../html/src/components/input/FormMultiInput.stories.tsx:139
-#: ../html/src/components/input/FormMultiInput.stories.tsx:188
-msgid "Users"
-msgstr "Používatelia"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:53
-#: ../html/src/components/input/Text.stories.tsx:29
-msgid "First Name"
-msgstr "Krstné meno"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:55
-#: ../html/src/components/input/FormMultiInput.stories.tsx:64
-#: ../html/src/components/input/FormMultiInput.stories.tsx:114
-#: ../html/src/components/input/FormMultiInput.stories.tsx:216
-#: ../html/src/components/input/FormMultiInput.stories.tsx:224
-#: ../html/src/components/input/InputBase.test.tsx:43
-#: ../html/src/components/input/InputBase.test.tsx:69
-#: ../html/src/components/input/InputBase.test.tsx:97
-#: ../html/src/components/input/Text.stories.tsx:31
-#: ../html/src/components/input/Text.stories.tsx:40
-msgid "Minimum 2 characters"
-msgstr "Minimálne 2 znaky"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:62
-msgid "Last Name"
-msgstr "Priezvisko"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:112
-#: ../html/src/manager/login/login.tsx:162
-msgid "Login"
-msgstr "Prihlasovacie meno"
-
-#: ../html/src/components/input/FormMultiInput.tsx:148
+#: ../html/src/components/input/FormMultiInput.tsx:151
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:94
 msgid "Remove"
 msgstr "Odstrániť"
+
+#: ../html/src/components/input/InputBase.test.tsx:43
+#: ../html/src/components/input/InputBase.test.tsx:69
+#: ../html/src/components/input/InputBase.test.tsx:97
+msgid "Minimum 2 characters"
+msgstr "Minimálne 2 znaky"
 
 #: ../html/src/components/input/InputBase.tsx:276
 msgid "required"
 msgstr "požadované"
 
-#: ../html/src/components/input/Password.stories.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/login.tsx:173
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
-msgid "Password"
-msgstr "Heslo"
-
-#: ../html/src/components/input/Password.stories.tsx:31
-msgid "Minimum 4 characters"
-msgstr "Minimálne 4 znaky"
-
-#: ../html/src/components/input/Radio.stories.tsx:29
-#: ../html/src/components/input/Radio.stories.tsx:55
-#: ../html/src/components/input/Radio.stories.tsx:83
-#: ../html/src/components/input/Radio.stories.tsx:110
-#: ../html/src/components/input/Select.stories.tsx:29
-#: ../html/src/components/input/Select.stories.tsx:122
-msgid "Level"
-msgstr "Úroveň"
-
-#: ../html/src/components/input/Radio.stories.tsx:34
-#: ../html/src/components/input/Radio.stories.tsx:61
-#: ../html/src/components/input/Radio.stories.tsx:88
-#: ../html/src/components/input/Radio.stories.tsx:116
-msgid "Beginner"
-msgstr "Začiatočník"
-
-#: ../html/src/components/input/Radio.stories.tsx:35
-#: ../html/src/components/input/Radio.stories.tsx:62
-#: ../html/src/components/input/Radio.stories.tsx:89
-#: ../html/src/components/input/Radio.stories.tsx:117
-msgid "Normal"
-msgstr "Normálny"
-
-#: ../html/src/components/input/Radio.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:63
-#: ../html/src/components/input/Radio.stories.tsx:90
-#: ../html/src/components/input/Radio.stories.tsx:118
-msgid "Expert"
-msgstr "Expert"
-
-#: ../html/src/components/input/Range.stories.tsx:33
-msgid "Port range"
-msgstr "Rozsah portov"
-
-#: ../html/src/components/input/Range.stories.tsx:35
 #: ../html/src/components/input/Range.test.tsx:71
 msgid "Both values need to be positive integers"
 msgstr "Obe hodnoty musia byť kladné celé čísla"
 
-#: ../html/src/components/input/Select.stories.tsx:54
-msgid "Flavor"
-msgstr "Druh"
-
-#: ../html/src/components/input/Select.stories.tsx:56
 #: ../html/src/components/input/Select.test.tsx:58
 msgid "Start typing..."
 msgstr "Začať písať..."
-
-#: ../html/src/components/input/Select.stories.tsx:57
-msgid "No flavors"
-msgstr "Žiadne druhy"
 
 #: ../html/src/components/input/Select.test.tsx:59
 msgid "No flavor"
@@ -664,7 +556,7 @@ msgstr "Vybrať všetko"
 msgid "Loading..."
 msgstr "Načítava sa..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:369
+#: ../html/src/components/table/TableDataHandler.tsx:370
 msgid "items per page"
 msgstr "položiek na stránku"
 
@@ -1069,6 +961,8 @@ msgstr "Úprava údajov pripojenia ssh.."
 msgid ""
 "When editing the SSH connection all needed credentials must be re-provided."
 msgstr ""
+"Pri úprave pripojenia SSH je potrebné opätovne zadať všetky potrebné "
+"prihlasovacie údaje."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
@@ -1081,6 +975,16 @@ msgstr "Port SSH"
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:465
 msgid "User"
 msgstr "Používateľ"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/login.tsx:173
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
+msgid "Password"
+msgstr "Heslo"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
@@ -3729,6 +3633,10 @@ msgstr "Zistiť viac o"
 msgid "Sign In"
 msgstr "Prihlásiť sa"
 
+#: ../html/src/manager/login/login.tsx:162
+msgid "Login"
+msgstr "Prihlasovacie meno"
+
 #: ../html/src/manager/login/use-login-api.ts:14
 msgid "Either the password or username is incorrect."
 msgstr "Heslo alebo používateľské meno je nesprávne."
@@ -5387,6 +5295,11 @@ msgstr "Cesta k zdieľanému priečinku klastra pre definície VM"
 msgid "Graphics"
 msgstr "Grafika"
 
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
+#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
+msgid "Submit"
+msgstr "Podať"
+
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
 msgid "Retry"
 msgstr "Znovu"
@@ -6269,6 +6182,42 @@ msgstr "nedefinované"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "Time"
+#~ msgstr "Čas"
+
+#~ msgid "Users"
+#~ msgstr "Používatelia"
+
+#~ msgid "First Name"
+#~ msgstr "Krstné meno"
+
+#~ msgid "Last Name"
+#~ msgstr "Priezvisko"
+
+#~ msgid "Minimum 4 characters"
+#~ msgstr "Minimálne 4 znaky"
+
+#~ msgid "Level"
+#~ msgstr "Úroveň"
+
+#~ msgid "Beginner"
+#~ msgstr "Začiatočník"
+
+#~ msgid "Normal"
+#~ msgstr "Normálny"
+
+#~ msgid "Expert"
+#~ msgstr "Expert"
+
+#~ msgid "Port range"
+#~ msgstr "Rozsah portov"
+
+#~ msgid "Flavor"
+#~ msgstr "Druh"
+
+#~ msgid "No flavors"
+#~ msgstr "Žiadne druhy"
 
 #~ msgid "Delete project"
 #~ msgstr "Vymazať projekt"
