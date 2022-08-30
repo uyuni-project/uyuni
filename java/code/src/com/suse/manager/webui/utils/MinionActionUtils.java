@@ -20,9 +20,11 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.frontend.context.Context;
@@ -155,8 +157,14 @@ public class MinionActionUtils {
                             else {
                                 saltUtils.updateServerAction(sa, 0L,
                                         true, info.getJid(), o, Optional.of(Xor.right(info.getFunction())));
-                                saltUtils.handlePackageChanges(Optional.of(Xor.right(info.getFunction())), o,
-                                        server);
+                                if (sa.getParentAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
+                                    ApplyStatesAction applyStatesAction =
+                                            (ApplyStatesAction) HibernateFactory.unproxy(sa.getParentAction());
+                                    if (!applyStatesAction.getDetails().isTest()) {
+                                        saltUtils.handlePackageChanges(Optional.of(Xor.right(info.getFunction())),
+                                                o, server);
+                                    }
+                                }
                                 return sa;
                             }
                         }).orElseGet(() -> {

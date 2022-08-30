@@ -1,3 +1,5 @@
+- renew the cached token when requested channel is not listed in
+  the old token (bsc#1202724)
 - Revert proxy listChannels token caching pr#4548
 
 -------------------------------------------------------------------

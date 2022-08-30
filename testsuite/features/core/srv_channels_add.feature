@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2021 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Adding channels
@@ -81,7 +81,7 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-x86_64 Child Channel created." text
 
-  Scenario: Add Ubuntu AMD64 base channel
+  Scenario: Add Debian-like AMD64 base channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Test-Channel-Deb-AMD64" as "Channel Name"
@@ -98,3 +98,7 @@ Feature: Adding channels
     # End of WORKAROUND
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-Deb-AMD64 created." text
+
+  Scenario: Wait for Channels generated initial metadata
+    When I wait until the channel "test-channel-x86_64" has been synced
+    And I wait until the channel "test-channel-i586" has been synced

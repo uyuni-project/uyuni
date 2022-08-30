@@ -161,6 +161,18 @@ def get_client_type(name)
   end
 end
 
+def suse_host?(name)
+  (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
+end
+
+def rh_host?(name)
+  (name.include? 'rhlike') || (name.include? 'centos') || (name.include? 'alma') || (name.include? 'rocky')
+end
+
+def deb_host?(name)
+  (name.include? 'deblike') || (name.include? 'debian') || (name.include? 'ubuntu')
+end
+
 def repository_exist?(repo)
   $api_test.auth.login('admin', 'admin')
   repo_list = $api_test.channel.software.list_user_repos
@@ -200,4 +212,12 @@ def get_uptime_from_host(host)
   hours = (minutes / 60.0) # 60 minutes
   days = (hours / 24.0) # 24 hours
   { seconds: seconds, minutes: minutes, hours: hours, days: days }
+end
+
+def web_driver_session_reset
+  page.reset! if Capybara::Session.instance_created?
+rescue NoMethodError
+  log 'The browser session could not be cleaned.'
+ensure
+  visit Capybara.app_host
 end

@@ -25,15 +25,15 @@
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
 - features/secondary/trad_lock_packages.feature
-- features/secondary/min_centos_openscap_audit.feature
-- features/secondary/min_centos_remote-command.feature
-- features/secondary/min_centos_ssh.feature
-- features/secondary/trad_centos_client.feature
-# temporarily disabled by the RRTGs
-#- features/secondary/trad_centos_migrate_to_min.feature
-- features/secondary/min_ubuntu_openscap_audit.feature
-- features/secondary/min_ubuntu_remote-command.feature
-- features/secondary/min_ubuntu_ssh.feature
+- features/secondary/min_rhlike_openscap_audit.feature
+- features/secondary/min_rhlike_remote_command.feature
+- features/secondary/min_rhlike_ssh.feature
+- features/secondary/trad_rhlike_client.feature
+# TODO: temporarily disabled by the RRTGs
+#- features/secondary/trad_rhlike_migrate_to_min.feature
+- features/secondary/min_deblike_openscap_audit.feature
+- features/secondary/min_deblike_remote_command.feature
+- features/secondary/min_deblike_ssh.feature
 - features/secondary/minssh_bootstrap_api.feature
 - features/secondary/min_bootstrap_ssh_key.feature
 - features/secondary/min_bootstrap_script.feature
@@ -51,7 +51,7 @@
 - features/secondary/min_empty_system_profiles.feature
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_action_chain.feature
-# temporarily disabled by the RRTGs
+# TODO: temporarily disabled by the RRTGs
 #- features/secondary/trad_deleted_migrate_to_minion.feature
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature

@@ -1,4 +1,4 @@
-# Ubuntu netplan configuration for the testsuite
+# Debian-like netplan configuration for the test suite
 network:
   version: 2
   renderer: networkd

@@ -27,7 +27,7 @@ Below is the list of Ruby gems used by the testsuite. It may change over time as
 
 ### Standard Ruby Library
 
-* ```date```, ```time``: date and time manipulation functions
+* ```date```, ```time```: date and time manipulation functions
 * ```base64```, ```json```, ```nokogiri```: support for various encodings and data formats: base64, json, XML
 * ```net```, ```openssl```, ```uri```: support for network access
 * ```securerandom```: UUIDs and other random generation
