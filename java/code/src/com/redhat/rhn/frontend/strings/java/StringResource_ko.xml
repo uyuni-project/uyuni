@@ -450,7 +450,7 @@
         </context-group>
         <target>감사</target>
       </trans-unit>
-      <trans-unit id="OpenSCAP" xml:space="preserve">
+      <trans-unit id="OpenSCAP" xml:space="preserve" approved="yes">
         <source>OpenSCAP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -1177,7 +1177,7 @@
         </context-group>
         <target>Hr.</target>
       </trans-unit>
-      <trans-unit id="user prefix Miss" xml:space="preserve">
+      <trans-unit id="user prefix Miss" xml:space="preserve" approved="yes">
         <source>Miss</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
@@ -1191,7 +1191,7 @@
         </context-group>
         <target>Mr.</target>
       </trans-unit>
-      <trans-unit id="user prefix Mrs." xml:space="preserve">
+      <trans-unit id="user prefix Mrs." xml:space="preserve" approved="yes">
         <source>Mrs.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
@@ -7017,7 +7017,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="config_channel.server_import" xml:space="preserve">
+      <trans-unit id="config_channel.server_import" xml:space="preserve" approved="yes">
         <source>Sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
@@ -7913,7 +7913,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve" approved="yes">
         <source>Advanced Lights Out Manager</source>
         <target>Advanced Lights Out Manager</target>
         <context-group name="ctx">
@@ -7934,14 +7934,14 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.baytech" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.baytech" xml:space="preserve" approved="yes">
         <source>BayTech</source>
         <target>BayTech</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.bladecenter" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.bladecenter" xml:space="preserve" approved="yes">
         <source>BladeCenter</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -7962,14 +7962,14 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.cisco_mds" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.cisco_mds" xml:space="preserve" approved="yes">
         <source>Cisco MDS</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Cisco MDS</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.cisco_ucs" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.cisco_ucs" xml:space="preserve" approved="yes">
         <source>Cisco UCS</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -7983,91 +7983,91 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.drac" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.drac" xml:space="preserve" approved="yes">
         <source>Dell DRAC</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Dell DRAC</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.drac5" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.drac5" xml:space="preserve" approved="yes">
         <source>Dell DRAC 5</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Dell DRAC 5</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.eaton_snmp" xml:space="preserve" approved="yes">
         <source>Eaton SNMP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Eaton SNMP</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.egenera" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.egenera" xml:space="preserve" approved="yes">
         <source>Egenera</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Egenera</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.eps" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.eps" xml:space="preserve" approved="yes">
         <source>ePowerSwitch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>ePowerSwitch</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.hds_cb" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.hds_cb" xml:space="preserve" approved="yes">
         <source>Hitachi HDS Compute Blade</source>
         <target>Hitachi HDS Compute Blade</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.hpblade" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.hpblade" xml:space="preserve" approved="yes">
         <source>HP Blade</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>HP Blade</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ibmblade" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.ibmblade" xml:space="preserve" approved="yes">
         <source>IBM Blade</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>IBM Blade</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ifmib" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.ifmib" xml:space="preserve" approved="yes">
         <source>Cisco IF-MIB</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Cisco IF-MIB</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ilo" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.ilo" xml:space="preserve" approved="yes">
         <source>HP Integrated Lights-Out</source>
         <target>HP Integrated Lights-Out</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ilo_mp" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.ilo_mp" xml:space="preserve" approved="yes">
         <source>HP Integrated Lights-Out Management Processor</source>
         <target>HP Integrated Lights-Out Management Processor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.intelmodular" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.intelmodular" xml:space="preserve" approved="yes">
         <source>Intel Modular Server</source>
         <target>Intel Modular Server</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ipdu" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.ipdu" xml:space="preserve" approved="yes">
         <source>HP Intelligent Power Distribution Unit</source>
         <target>HP Intelligent Power Distribution Unit</target>
         <context-group name="ctx">
@@ -8081,7 +8081,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>IPMI</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ldom" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.ldom" xml:space="preserve" approved="yes">
         <source>SPARC Logical Domains</source>
         <target>SPARC Logical Domains</target>
         <context-group name="ctx">
@@ -8095,14 +8095,14 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>IBM LPAR</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.mcdata" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.mcdata" xml:space="preserve" approved="yes">
         <source>McData</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>McData</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.netio" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.netio" xml:space="preserve" approved="yes">
         <source>Koukaam NETIO</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -8116,35 +8116,35 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>OVH</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rackswitch" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.rackswitch" xml:space="preserve" approved="yes">
         <source>IBM RackSwitch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>IBM RackSwitch</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rhevm" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.rhevm" xml:space="preserve" approved="yes">
         <source>Red Hat Enterprise Virtualization Manager</source>
         <target>Red Hat Enterprise Virtualization Manager</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rsa" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.rsa" xml:space="preserve" approved="yes">
         <source>IBM Remote Supervisor Adapter</source>
         <target>IBM Remote Supervisor Adapter</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.rsb" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.rsb" xml:space="preserve" approved="yes">
         <source>Fujitsu-Siemens RSB</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>Fujitsu-Siemens RSB</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.sanbox2" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.sanbox2" xml:space="preserve" approved="yes">
         <source>QLogic SANbox2</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -8158,14 +8158,14 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>SCSI-3</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.virsh" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.virsh" xml:space="preserve" approved="yes">
         <source>libvirt</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
         <target>libvirt</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.vixel" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.vixel" xml:space="preserve" approved="yes">
         <source>Vixel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -8186,14 +8186,14 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.wti" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.wti" xml:space="preserve" approved="yes">
         <source>WTI PowerSwitch</source>
         <target>WTI PowerSwitch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.xcat" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.xcat" xml:space="preserve" approved="yes">
         <source>Extreme Cloud Administration Toolkit</source>
         <target>Extreme Cloud Administration Toolkit</target>
         <context-group name="ctx">
@@ -9096,7 +9096,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cpuMHz" xml:space="preserve">
+      <trans-unit id="cpuMHz" xml:space="preserve" approved="yes">
         <source>CPU MHz</source>
         <target>CPU MHz</target>
         <context-group name="ctx">
@@ -9152,7 +9152,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="xid" xml:space="preserve">
+      <trans-unit id="xid" xml:space="preserve" approved="yes">
         <source>Xid</source>
         <target>Xid</target>
       </trans-unit>
@@ -9354,11 +9354,11 @@ Follow this url to see the full list of inactive systems:
         <source>s390x</source>
         <target>s390x</target>
       </trans-unit>
-      <trans-unit id="iSeries" xml:space="preserve">
+      <trans-unit id="iSeries" xml:space="preserve" approved="yes">
         <source>iSeries</source>
         <target>iSeries</target>
       </trans-unit>
-      <trans-unit id="pSeries" xml:space="preserve">
+      <trans-unit id="pSeries" xml:space="preserve" approved="yes">
         <source>pSeries</source>
         <target>pSeries</target>
       </trans-unit>
@@ -9378,11 +9378,11 @@ Follow this url to see the full list of inactive systems:
         <source>PowerPC Debian</source>
         <target>PowerPC Debian</target>
       </trans-unit>
-      <trans-unit id="ARM soft. FP" xml:space="preserve">
+      <trans-unit id="ARM soft. FP" xml:space="preserve" approved="yes">
         <source>ARM soft. FP</source>
         <target>ARM soft. FP</target>
       </trans-unit>
-      <trans-unit id="ARM hard. FP" xml:space="preserve">
+      <trans-unit id="ARM hard. FP" xml:space="preserve" approved="yes">
         <source>ARM hard. FP</source>
         <target>ARM hard. FP</target>
       </trans-unit>
@@ -9390,7 +9390,7 @@ Follow this url to see the full list of inactive systems:
         <source>arm Debian</source>
         <target>arm Debian</target>
       </trans-unit>
-      <trans-unit id="mips Debian" xml:space="preserve">
+      <trans-unit id="mips Debian" xml:space="preserve" approved="yes">
         <source>mips Debian</source>
         <target>mips Debian</target>
       </trans-unit>
@@ -9576,7 +9576,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>채널 이름 '{0}'은(는) 이미 사용 중입니다. 다른 이름을 입력하십시오.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelname.namereserved" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannelname.namereserved" xml:space="preserve" approved="yes">
         <source>The channel name '{0}' is reserved, please enter a different name</source>
         <target>채널 이름 '{0}'은(는) 예약된 이름입니다. 다른 이름을 입력하십시오.</target>
         <context-group name="ctx">
@@ -10831,12 +10831,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Some of the specified servers cannot be found</source>
         <target state="translated">지정된 일부 서버를 찾을 수 없음</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve" approved="yes">
         <source>Redfish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">Redfish</target>
+        <target state="final">Redfish</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
