@@ -11241,34 +11241,34 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Please fill in login.</source>
         <target state="final">ログイン情報を入力してください。</target>
       </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="login.jsp.satbody2" xml:space="preserve">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
         <target state="final">@@PRODUCT_NAME@@ に関する詳細については、&lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt; Web サイトをご覧ください。 </target>
       </trans-unit>
-      <trans-unit id="login.jsp.satbody3" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="login.jsp.satbody3" xml:space="preserve">
         <source> </source>
         <target state="final"> </target>
       </trans-unit>
-      <trans-unit id="cluster_admin" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="cluster_admin" xml:space="preserve">
         <source>Cluster Administrator</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
         <target state="final">クラスタ管理者</target>
       </trans-unit>
-      <trans-unit id="clusters.nav.title" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="clusters.nav.title" xml:space="preserve">
         <source>Clusters</source>
         <target state="final">クラスタ</target>
       </trans-unit>
-      <trans-unit id="clusters.nav.overview" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="clusters.nav.overview" xml:space="preserve">
         <source>Overview</source>
         <target state="final">概要</target>
       </trans-unit>
-      <trans-unit id="clusters.nav.add" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="clusters.nav.add" xml:space="preserve">
         <source>Add</source>
         <target state="final">追加</target>
       </trans-unit>
-      <trans-unit id="cluster.join_precondition_package_name" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="cluster.join_precondition_package_name" xml:space="preserve">
         <source>Package {0} not found in subscribed channels</source>
         <target state="final">サブスクリプションしているチャンネル内にはパッケージ {0} がありません</target>
       </trans-unit>
