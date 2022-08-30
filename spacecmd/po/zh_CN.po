@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-02 11:53+0200\n"
+"POT-Creation-Date: 2022-08-30 12:03+0200\n"
 "PO-Revision-Date: 2022-08-26 05:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1249,8 +1249,10 @@ msgstr ""
 "用法：configchannel_export <通道>... [选项])\n"
 "选项：\n"
 "    -f outfile.json：指定输出文件名。如果导出单个通道，则默认文件名\n"
-"                      为 <CHANNEL>.json；如果导出多个通道，则默认文件名为 ccs.json；\n"
-"                      如果未指定通道（例如全部导出），则默认文件名为 cc_all.json\n"
+"                      为 <CHANNEL>.json；如果导出多个通道，则默认文件名为 "
+"ccs.json；\n"
+"                      如果未指定通道（例如全部导出），则默认文件名为 cc_all."
+"json\n"
 "\n"
 "注意：通道列表是可选的，默认为全部导出"
 
@@ -1292,7 +1294,8 @@ msgstr "正在将所有配置通道导出到 %s"
 msgid ""
 "Error, no valid config channel passed, check name is  correct with spacecmd "
 "configchannel_list"
-msgstr "错误：未传递有效配置通道，请使用 spacecmd configchannel_list 检查名称是否正确"
+msgstr ""
+"错误：未传递有效配置通道，请使用 spacecmd configchannel_list 检查名称是否正确"
 
 #: ../src/spacecmd/configchannel.py:1250
 #, python-format
@@ -1655,8 +1658,8 @@ msgstr ""
 "  -n 名称\n"
 "  -p 树的路径\n"
 "  -b 要关联的基础通道\n"
-"  -t 安装类型 [fedora18|rhel_6/7/"
-"8|sles12generic|sles15generic|suse|generic_rpm|...]"
+"  -t 安装类型 [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+"generic_rpm|...]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1773,8 +1776,8 @@ msgstr ""
 "选项：\n"
 "  -p 树的路径\n"
 "  -b 要关联的基础通道\n"
-"  -t 安装类型 [fedora18|rhel_6/7/"
-"8|sles12generic|sles15generic|suse|generic_rpm|...]"
+"  -t 安装类型 [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
+"generic_rpm|...]"
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
@@ -3023,9 +3026,10 @@ msgstr ""
 "用法：kickstart_export <KSPROFILE>... [选项])\n"
 "选项：\n"
 "    -f outfile.json：指定输出文件名。如果导出单个 kickstart，则默认文件名\n"
-"                      为 <KSPROFILE>.json；如果导出多个 kickstart，则默认文件名为 profiles."
-"json；\n"
-"                      如果未指定 KSPROFILE（例如全部导出），则默认文件名为 ks_all.json\n"
+"                      为 <KSPROFILE>.json；如果导出多个 kickstart，则默认文件"
+"名为 profiles.json；\n"
+"                      如果未指定 KSPROFILE（例如全部导出），则默认文件名为 "
+"ks_all.json\n"
 "\n"
 "注意：KSPROFILE 列表是可选的，默认为全部导出"
 
@@ -3435,8 +3439,8 @@ msgstr "无法连接到 %s"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) 太旧（必须指定 >= %s）"
 
-#: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:562
+#: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:251
+#: ../src/spacecmd/utils.py:563
 #, python-format
 msgid "Could not read %s"
 msgstr "无法读取 %s"
@@ -5167,7 +5171,8 @@ msgstr "                            关联的勘误"
 #: ../src/spacecmd/softwarechannel.py:591
 msgid ""
 "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
-msgstr "用法：softwarechannel_listerrata <通道 ...> [from=yyyymmdd [to=yyyymmdd]]"
+msgstr ""
+"用法：softwarechannel_listerrata <通道 ...> [from=yyyymmdd [to=yyyymmdd]]"
 
 #: ../src/spacecmd/softwarechannel.py:649
 msgid "softwarechannel_listarches: lists the potential software"
@@ -5505,8 +5510,8 @@ msgid ""
 msgstr ""
 "用法：softwarechannel_clonetree [选项])\n"
 "             示例    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
-"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar\""
-"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar"
+"\"\n"
 "                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
 "\n"
 "选项：\n"
@@ -5565,7 +5570,8 @@ msgstr "添加这些软件包 [y/N]："
 msgid ""
 "softwarechannel_mergepackages: Merge packages from one software channel into "
 "another"
-msgstr "softwarechannel_mergepackages：将一个软件通道中的软件包合并到另一个软件通道"
+msgstr ""
+"softwarechannel_mergepackages：将一个软件通道中的软件包合并到另一个软件通道"
 
 #: ../src/spacecmd/softwarechannel.py:1375
 msgid "usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL"
@@ -5615,7 +5621,9 @@ msgstr "没有可去除的软件包"
 msgid ""
 "softwarechannel_adderratabydate: Add errata from one channel into another "
 "channel based on a date range"
-msgstr "softwarechannel_adderratabydate：根据日期范围将一个通道中的勘误添加到另一个通道"
+msgstr ""
+"softwarechannel_adderratabydate：根据日期范围将一个通道中的勘误添加到另一个通"
+"道"
 
 #: ../src/spacecmd/softwarechannel.py:1561
 msgid ""
@@ -5773,7 +5781,8 @@ msgstr "正在为通道禁用 %s 访问：%s "
 msgid ""
 "softwarechannel_getorgaccesstree: Get the org-access for a software base "
 "channel and its children"
-msgstr "softwarechannel_getorgaccesstree：获取软件基础通道及其子项的组织访问权限"
+msgstr ""
+"softwarechannel_getorgaccesstree：获取软件基础通道及其子项的组织访问权限"
 
 #: ../src/spacecmd/softwarechannel.py:1942
 msgid "usage: softwarechannel_getorgaccesstree [CHANNEL]"
@@ -5783,7 +5792,8 @@ msgstr "用法：softwarechannel_getorgaccesstree [通道]"
 msgid ""
 "softwarechannel_setorgaccesstree: set the org-access for a software base "
 "channel and its children"
-msgstr "softwarechannel_setorgaccesstree：设置软件基础通道及其子项的组织访问权限"
+msgstr ""
+"softwarechannel_setorgaccesstree：设置软件基础通道及其子项的组织访问权限"
 
 #: ../src/spacecmd/softwarechannel.py:1976
 msgid ""
@@ -6484,7 +6494,7 @@ msgstr "无法安排 %s"
 msgid "Scheduled: %i system(s)"
 msgstr "已安排：%i 个系统"
 
-#: ../src/spacecmd/system.py:545 ../src/spacecmd/utils.py:246
+#: ../src/spacecmd/system.py:545 ../src/spacecmd/utils.py:247
 #, python-format
 msgid "Could not remove %s"
 msgstr "无法去除 %s"
@@ -7684,7 +7694,9 @@ msgstr "用法：system_setcontactmethod <系统> <联系方法>"
 msgid ""
 "system_scheduleapplyconfigchannels: Schedule applying the assigned config "
 "channels to the System (Minion only)"
-msgstr "system_scheduleapplyconfigchannels：安排将指派的配置通道应用到系统（仅限受控端）"
+msgstr ""
+"system_scheduleapplyconfigchannels：安排将指派的配置通道应用到系统（仅限受控"
+"端）"
 
 #: ../src/spacecmd/system.py:4229
 msgid ""
@@ -7767,7 +7779,8 @@ msgid ""
 "spaces))"
 msgstr ""
 "用法：system_schedulespmigration <系统> <基础通道标签> <迁移目标> [选项] \n"
-"    有关迁移目标 (MIGRATION_TARGET) 参数，请参见 system_listmigrationtargets。\n"
+"    有关迁移目标 (MIGRATION_TARGET) 参数，请参见 "
+"system_listmigrationtargets。\n"
 "    必须按以下格式传递迁移目标参数：[3143,3146,3147,3145,3144,3148,3062]。\n"
 "    选项：\n"
 "        -s 开始时间\n"
@@ -7792,7 +7805,8 @@ msgid ""
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
-"用法：system_scheduleproductmigration <系统> <基础通道标签> <迁移目标> [选项] \n"
+"用法：system_scheduleproductmigration <系统> <基础通道标签> <迁移目标> [选"
+"项] \n"
 "    有关迁移目标参数，请参见 system_listmigrationtargets。\n"
 "    必须按以下格式传递迁移目标参数：[3143,3146,3147,3145,3144,3148,3062]。\n"
 "    选项：\n"
@@ -8148,126 +8162,126 @@ msgstr "用法：user_setpassword USER PASSWORD"
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:134
+#: ../src/spacecmd/utils.py:135
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "装载缓存文件 %s 失败"
 
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:136
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr "缓存生成可能已中断，正在去除损坏的 %s"
 
-#: ../src/spacecmd/utils.py:140
+#: ../src/spacecmd/utils.py:141
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "无法从 %s 装载缓存"
 
-#: ../src/spacecmd/utils.py:161
+#: ../src/spacecmd/utils.py:162
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "无法写入 %s"
 
-#: ../src/spacecmd/utils.py:206
+#: ../src/spacecmd/utils.py:207
 msgid "Could not open the temporary file"
 msgstr "无法打开临时文件"
 
-#: ../src/spacecmd/utils.py:226
+#: ../src/spacecmd/utils.py:227
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "编辑器 \"%s\" 已退出并返回代码 %i"
 
-#: ../src/spacecmd/utils.py:228
+#: ../src/spacecmd/utils.py:229
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "运行编辑器时发生常规失败：%s"
 
-#: ../src/spacecmd/utils.py:231
+#: ../src/spacecmd/utils.py:232
 msgid "No editors found"
 msgstr "未找到编辑器"
 
-#: ../src/spacecmd/utils.py:368
+#: ../src/spacecmd/utils.py:369
 msgid "Invalid time provided"
 msgstr "提供了无效时间"
 
-#: ../src/spacecmd/utils.py:457
+#: ../src/spacecmd/utils.py:458
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s 是未知勘误类型"
 
-#: ../src/spacecmd/utils.py:465
+#: ../src/spacecmd/utils.py:466
 msgid "Security Errata"
 msgstr "安全勘误"
 
-#: ../src/spacecmd/utils.py:474
+#: ../src/spacecmd/utils.py:475
 msgid "Bug Fix Errata"
 msgstr "Bug 修复勘误"
 
-#: ../src/spacecmd/utils.py:483
+#: ../src/spacecmd/utils.py:484
 msgid "Enhancement Errata"
 msgstr "增强勘误"
 
-#: ../src/spacecmd/utils.py:493
+#: ../src/spacecmd/utils.py:494
 msgid "Current Selections"
 msgstr "当前选择内容"
 
-#: ../src/spacecmd/utils.py:503
+#: ../src/spacecmd/utils.py:504
 msgid "Available Configuration Channels"
 msgstr "可用配置通道"
 
-#: ../src/spacecmd/utils.py:509 ../src/spacecmd/utils.py:529
+#: ../src/spacecmd/utils.py:510 ../src/spacecmd/utils.py:530
 msgid "Channel:"
 msgstr "通道："
 
-#: ../src/spacecmd/utils.py:512 ../src/spacecmd/utils.py:532
+#: ../src/spacecmd/utils.py:513 ../src/spacecmd/utils.py:533
 msgid "Invalid channel"
 msgstr "无效通道"
 
-#: ../src/spacecmd/utils.py:516
+#: ../src/spacecmd/utils.py:517
 msgid "New Rank:"
 msgstr "新排名："
 
-#: ../src/spacecmd/utils.py:523 ../src/spacecmd/utils.py:526
+#: ../src/spacecmd/utils.py:524 ../src/spacecmd/utils.py:527
 msgid "Invalid rank"
 msgstr "无效排名"
 
-#: ../src/spacecmd/utils.py:537
+#: ../src/spacecmd/utils.py:538
 msgid "Clearing current selections"
 msgstr "正在清除当前选择内容"
 
-#: ../src/spacecmd/utils.py:696
+#: ../src/spacecmd/utils.py:707
 msgid "Could not generate json data object!"
 msgstr "无法生成 json 数据对象！"
 
-#: ../src/spacecmd/utils.py:703
+#: ../src/spacecmd/utils.py:714
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "无法打开要写入的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:714
+#: ../src/spacecmd/utils.py:725
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "无法打开要读取的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:716
+#: ../src/spacecmd/utils.py:727
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "无法分析 %s 中的 JSON 数据：%s"
 
-#: ../src/spacecmd/utils.py:718
+#: ../src/spacecmd/utils.py:729
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "处理文件 %s 时出错：%s"
 
-#: ../src/spacecmd/utils.py:746
+#: ../src/spacecmd/utils.py:757
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "正在跳过公用字符串的使用：两个字符串相同"
 
-#: ../src/spacecmd/utils.py:762
+#: ../src/spacecmd/utils.py:773
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
-#: ../src/spacecmd/utils.py:848
+#: ../src/spacecmd/utils.py:859
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 

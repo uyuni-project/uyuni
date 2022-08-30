@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-02 11:53+0200\n"
+"POT-Creation-Date: 2022-08-30 12:03+0200\n"
 "PO-Revision-Date: 2022-08-29 07:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
@@ -1286,9 +1286,12 @@ msgid ""
 msgstr ""
 "使用方法: configchannel_export <チャンネル>... [オプション])\n"
 "オプション:\n"
-"    -f (出力先ファイル) : 出力先のファイル名 (既定値: チャンネルを 1 つだけ指定した場合は\n"
-"                      <チャンネル>.json に、複数のチャンネルを指定した場合は ccs.json に、\n"
-"                      チャンネルを指定しない場合 (全てをエクスポートする) は cc_all.json)\n"
+"    -f (出力先ファイル) : 出力先のファイル名 (既定値: チャンネルを 1 つだけ指"
+"定した場合は\n"
+"                      <チャンネル>.json に、複数のチャンネルを指定した場合は "
+"ccs.json に、\n"
+"                      チャンネルを指定しない場合 (全てをエクスポートする) は "
+"cc_all.json)\n"
 "\n"
 "注意 : <チャンネル> を指定しない場合、全てのチャンネルをエクスポートします"
 
@@ -3112,9 +3115,12 @@ msgid ""
 msgstr ""
 "使用方法: kickstart_export <プロファイル>... [オプション])\n"
 "オプション:\n"
-"    -f (出力先ファイル名) : 出力先のファイル名 (既定値: キックスタートが 1 つだけの\n"
-"                      場合は <プロファイル>.json, 複数のキックスタートを指定した場合は profiles.json,\n"
-"                      プロファイルを指定しない (全てをエクスポートする) 場合は ks_all.json)\n"
+"    -f (出力先ファイル名) : 出力先のファイル名 (既定値: キックスタートが 1 つ"
+"だけの\n"
+"                      場合は <プロファイル>.json, 複数のキックスタートを指定"
+"した場合は profiles.json,\n"
+"                      プロファイルを指定しない (全てをエクスポートする) 場合"
+"は ks_all.json)\n"
 "\n"
 "注意 : プロファイルを指定しない場合、全てのキックスタートをエクスポートします"
 
@@ -3413,7 +3419,8 @@ msgstr ""
 "日付は下記のいずれかを指定できます:\n"
 "明示的な日付指定:\n"
 "YYYYMMDD[HHMMSS] の書式で日付を明示的に指定することができます。\n"
-"年・月・日はいずれも必須ですが、時・分・秒は任意です。時刻を指定しない場合は\n"
+"年・月・日はいずれも必須ですが、時・分・秒は任意です。時刻を指定しない場合"
+"は\n"
 "0000が指定されたものとみなされます。\n"
 "\n"
 "差分:\n"
@@ -3537,8 +3544,8 @@ msgstr "%s への接続に失敗しました"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) が古すぎます (>= %s が必要です)"
 
-#: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:562
+#: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:251
+#: ../src/spacecmd/utils.py:563
 #, python-format
 msgid "Could not read %s"
 msgstr "%s を読み込めませんでした"
@@ -6287,7 +6294,9 @@ msgstr "スケジュールは引用符無しの Quartz CronTrigger 形式で指�
 msgid ""
 "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
 "1 * * ?"
-msgstr "たとえば毎日 AM1:00 にスケジュールしたい場合、 <スケジュール> は 0 0 1 * * ? のようになります"
+msgstr ""
+"たとえば毎日 AM1:00 にスケジュールしたい場合、 <スケジュール> は 0 0 1 * * ? "
+"のようになります"
 
 #: ../src/spacecmd/softwarechannel.py:2637
 msgid "If <SCHEDULE> is left empty, it will be disabled."
@@ -6673,7 +6682,7 @@ msgstr "%s をスケジュールする処理が失敗しました"
 msgid "Scheduled: %i system(s)"
 msgstr "スケジュール済み: %i 個のシステム"
 
-#: ../src/spacecmd/system.py:545 ../src/spacecmd/utils.py:246
+#: ../src/spacecmd/system.py:545 ../src/spacecmd/utils.py:247
 #, python-format
 msgid "Could not remove %s"
 msgstr "%s を削除できませんでした"
@@ -8396,130 +8405,130 @@ msgstr "使用方法: user_setpassword ユーザ パスワード"
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:134
+#: ../src/spacecmd/utils.py:135
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "キャッシュファイル %s の読み込みに失敗しました"
 
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:136
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr ""
 "キャッシュ生成時に割り込みが発生しました。壊れている %s を削除しています"
 
-#: ../src/spacecmd/utils.py:140
+#: ../src/spacecmd/utils.py:141
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "%s からキャッシュを読み込めませんでした"
 
-#: ../src/spacecmd/utils.py:161
+#: ../src/spacecmd/utils.py:162
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "%s に書き込めませんでした"
 
-#: ../src/spacecmd/utils.py:206
+#: ../src/spacecmd/utils.py:207
 msgid "Could not open the temporary file"
 msgstr "一時ファイルを開くことができませんでした"
 
-#: ../src/spacecmd/utils.py:226
+#: ../src/spacecmd/utils.py:227
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "エディタ \"%s\" が終了コード %i で終了しました"
 
-#: ../src/spacecmd/utils.py:228
+#: ../src/spacecmd/utils.py:229
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "エディタ実行時の一般的なエラーです: %s"
 
-#: ../src/spacecmd/utils.py:231
+#: ../src/spacecmd/utils.py:232
 msgid "No editors found"
 msgstr "エディタが見つかりませんでした"
 
-#: ../src/spacecmd/utils.py:368
+#: ../src/spacecmd/utils.py:369
 msgid "Invalid time provided"
 msgstr "時刻の指定が正しくありません"
 
-#: ../src/spacecmd/utils.py:457
+#: ../src/spacecmd/utils.py:458
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s は不明なエラータタイプです"
 
-#: ../src/spacecmd/utils.py:465
+#: ../src/spacecmd/utils.py:466
 msgid "Security Errata"
 msgstr "セキュリティエラータ"
 
-#: ../src/spacecmd/utils.py:474
+#: ../src/spacecmd/utils.py:475
 msgid "Bug Fix Errata"
 msgstr "バグ修正エラータ"
 
-#: ../src/spacecmd/utils.py:483
+#: ../src/spacecmd/utils.py:484
 msgid "Enhancement Errata"
 msgstr "機能強化エラータ"
 
-#: ../src/spacecmd/utils.py:493
+#: ../src/spacecmd/utils.py:494
 msgid "Current Selections"
 msgstr "現在の選択"
 
-#: ../src/spacecmd/utils.py:503
+#: ../src/spacecmd/utils.py:504
 msgid "Available Configuration Channels"
 msgstr "利用可能な設定チャンネル"
 
-#: ../src/spacecmd/utils.py:509 ../src/spacecmd/utils.py:529
+#: ../src/spacecmd/utils.py:510 ../src/spacecmd/utils.py:530
 msgid "Channel:"
 msgstr "チャンネル:"
 
-#: ../src/spacecmd/utils.py:512 ../src/spacecmd/utils.py:532
+#: ../src/spacecmd/utils.py:513 ../src/spacecmd/utils.py:533
 msgid "Invalid channel"
 msgstr "チャンネルが正しくありません"
 
-#: ../src/spacecmd/utils.py:516
+#: ../src/spacecmd/utils.py:517
 msgid "New Rank:"
 msgstr "新しい順位:"
 
-#: ../src/spacecmd/utils.py:523 ../src/spacecmd/utils.py:526
+#: ../src/spacecmd/utils.py:524 ../src/spacecmd/utils.py:527
 msgid "Invalid rank"
 msgstr "順位が正しくありません"
 
-#: ../src/spacecmd/utils.py:537
+#: ../src/spacecmd/utils.py:538
 msgid "Clearing current selections"
 msgstr "現在の選択を消去しています"
 
-#: ../src/spacecmd/utils.py:696
+#: ../src/spacecmd/utils.py:707
 msgid "Could not generate json data object!"
 msgstr "JSON データオブジェクトを生成できませんでした！"
 
-#: ../src/spacecmd/utils.py:703
+#: ../src/spacecmd/utils.py:714
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "ファイル %s を書き込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:714
+#: ../src/spacecmd/utils.py:725
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "ファイル %s を読み込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:716
+#: ../src/spacecmd/utils.py:727
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "JSON データを %s から処理できませんでした: %s"
 
-#: ../src/spacecmd/utils.py:718
+#: ../src/spacecmd/utils.py:729
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "ファイル %s を処理する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/utils.py:746
+#: ../src/spacecmd/utils.py:757
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 両方の文字列が同じです"
 
-#: ../src/spacecmd/utils.py:762
+#: ../src/spacecmd/utils.py:773
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがありま"
 "す"
 
-#: ../src/spacecmd/utils.py:848
+#: ../src/spacecmd/utils.py:859
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 
