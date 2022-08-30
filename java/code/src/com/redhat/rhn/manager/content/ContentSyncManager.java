@@ -1827,7 +1827,7 @@ public class ContentSyncManager {
                 .filter(e -> e.isMandatory())
                 .allMatch(entry -> {
                     boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
-                    boolean isAvailable = entry.getRootProduct().parentChannel().isPresent();
+                    boolean isAvailable = ChannelFactory.lookupByLabel(entry.getChannelLabel()) != null;
                     boolean isISSSlave = IssFactory.getCurrentMaster() != null;
                     boolean isMirrorable = false;
                     if (!isISSSlave) {
