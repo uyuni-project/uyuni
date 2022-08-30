@@ -1,3 +1,4 @@
+- add missing packages on SLES 15
 - remove server-migrator.sh from SUSE Manager installations (bsc#1202728)
 - Add options for connecting to a remote postgres instance
 - create bootstrap repository data for Ubuntu 22.04 Vendor Channels
