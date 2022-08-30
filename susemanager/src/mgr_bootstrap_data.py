@@ -469,6 +469,8 @@ PKGLIST15_SALT_NO_BUNDLE = [
     "salt",
     "python3-salt",
     "salt-minion",
+    "python3-apipkg",
+    "python3-iniconfig",
 ]
 
 PKGLIST15_SALT = PKGLIST15_SALT_NO_BUNDLE + [

@@ -1,3 +1,4 @@
+- add missing packages on SLES 15
 - remove server-migrator.sh from SUSE Manager installations (bsc#1202728)
 - create bootstrap repository data for Ubuntu 22.04 Vendor Channels
 - remove obsoleted sysv init script (bsc#1191857)
