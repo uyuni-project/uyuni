@@ -1014,11 +1014,6 @@ When(/^I install "([^"]*)" product on the proxy$/) do |product|
   log "Installed #{product} product: #{out}"
 end
 
-When(/^I adapt zyppconfig$/) do
-   cmd = "sed -i 's/^rpm.install.excludedocs =.*$/rpm.install.excludedocs = no/' /etc/zypp/zypp.conf"
-   $proxy.run(cmd)
-end
-
 When(/^I install proxy pattern on the proxy$/) do
   pattern = $product == 'Uyuni' ? 'uyuni_proxy' : 'suma_proxy'
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
@@ -1535,11 +1530,18 @@ end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_version, os_family = get_os_version(node)
   repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     repositories.concat(' os_pool_repo os_update_repo')
-    repositories.concat(' tools_additional_repo') unless $product == 'Uyuni'
+    if $product != 'Uyuni'
+      repositories.concat(' tools_additional_repo')
+      # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
+      # But the tools_update_repo's priority doesn't allow to cope with the obsoletes option from firewalld.
+      if os_version.to_f >= 15.3
+        node.run('zypper addlock -r tools_additional_repo firewalld-prometheus-config')
+      end
+    end
   end
   step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
 end

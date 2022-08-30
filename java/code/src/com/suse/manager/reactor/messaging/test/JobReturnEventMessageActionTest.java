@@ -47,6 +47,8 @@ import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -70,6 +72,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -1267,6 +1270,47 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return JsonParser.GSON.fromJson(jsonString, JsonObject.class);
     }
 
+    public void testStateApplyActionTestMode() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("abcdefg.vagrant.local");
+        SUSEProductTestUtils.createVendorSUSEProducts();
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Package testpackage = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        testpackage.setPackageName(PackageNameTest.createTestPackageName("acct"));
+
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(
+                user,
+                Arrays.asList(minion.getId()),
+                new ArrayList<>(),
+                new Date());
+
+        ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
+
+        action.addServerAction(sa);
+
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("state.apply.with.test.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
+        messageAction.execute(message);
+
+        assertFalse(minion.getPackages().stream().anyMatch(p -> p.getName().equals("acct")),
+                "Package acct must not be installed");
+        List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
+        assertFalse(serversActions.stream().anyMatch(a -> a.getName().equals("Package List Refresh")),
+                "Package List Refresh must not be scheduled");
+    }
 
     @Test
     public void testUpdateServerAction() throws Exception {

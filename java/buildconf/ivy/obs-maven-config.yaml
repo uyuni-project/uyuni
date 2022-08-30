@@ -95,10 +95,11 @@ artifacts:
     jar: gson.jar
     repository: Leap_sle
   - artifact: hibernate-c3p0
-    package: hibernate5
+    package: hibernate5-c3p0
     jar: hibernate-c3p0
     repository: Uyuni_Other
-  - artifact: hibernate-types
+  - artifact: hibernate-types-52
+    package: hibernate-types
     repository: Uyuni_Other
   - artifact: jackson-annotations
     repository: Leap
@@ -109,10 +110,10 @@ artifacts:
   - artifact: hibernate-commons-annotations
     repository: Uyuni_Other
   - artifact: hibernate-core
-    package: hibernate5
+    package: hibernate5-core
     repository: Uyuni_Other
   - artifact: hibernate-ehcache
-    package: hibernate5
+    package: hibernate5-ehcache
     repository: Uyuni_Other
   - artifact: httpasyncclient
     package: httpcomponents-asyncclient
@@ -130,9 +131,6 @@ artifacts:
     repository: Leap
   - artifact: jade4j
     repository: Uyuni_Other
-  - artifact: jaf
-    package: gnu-jaf
-    repository: Leap
   - artifact: jakarta-persistence-api
     package: jpa-api
     repository: Uyuni_Other
@@ -173,26 +171,33 @@ artifacts:
     repository: Leap
   - artifact: netty-buffer
     package: netty
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-codec
     package: netty
-    repository: Uyuni_Other
+    jar: netty-codec.jar
+    repository: Leap
   - artifact: netty-common
     package: netty
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: netty-handler
     package: netty
-    repository: Uyuni_Other
+    jar: netty-handler.jar
+    repository: Leap
   - artifact: netty-resolver
     package: netty
-    repository: Uyuni_Other
+    jar: netty-resolver.jar
+    repository: Leap
   - artifact: netty-transport
     package: netty
-    jar: netty-transport-[0-9]
-    repository: Uyuni_Other
+    jar: netty-transport.jar
+    repository: Leap
   - artifact: netty-transport-native-unix-common
     package: netty
-    repository: Uyuni_Other
+    jar: netty-transport-native-unix-common.jar
+    repository: Leap
+  - artifact: netty-transport-native-unix-common-linux-x86_64
+    package: netty
+    repository: Leap
   - artifact: client
     package: ongres-scram-client
     repository: Leap
@@ -321,3 +326,22 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jetty-util
     repository: Leap
+  - artifact: glassfish-jaxb-api
+    repository: Uyuni_Other
+  - artifact: jaxb-runtime
+    package: glassfish-jaxb-runtime
+    repository: Uyuni_Other
+  - artifact: jaxb-impl
+    package: glassfish-jaxb-runtime
+    repository: Uyuni_Other
+  - artifact: txw2
+    package: glassfish-jaxb-txw2
+    repository: Uyuni_Other
+  - artifact: glassfish-activation
+    repository: Uyuni_Other
+  - artifact: glassfish-activation-api
+    repository: Uyuni_Other
+  - artifact: istack-commons-runtime
+    repository: Uyuni_Other
+  - artifact: stax-ex
+    repository: Uyuni_Other
