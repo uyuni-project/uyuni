@@ -216,6 +216,12 @@ artifacts:
   - artifact: common
     package: ongres-scram
     repository: 15_SP4_GA
+  - artifact: stringprep
+    package: ongres-stringprep
+    repository: 15_SP4_GA
+  - artifact: saslprep
+    package: ongres-stringprep-saslprep
+    repository: 15_SP4_GA
   - artifact: oro
     repository: 15_SP2_GA
   - artifact: pgjdbc-ng
