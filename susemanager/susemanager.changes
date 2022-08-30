@@ -6,6 +6,7 @@
   required for salt version >= 3000
 - add openSUSE 15.4 product (bsc#1201527)
 - add clients tool product to generate bootstrap repo on openSUSE 15.x
+  (bsc#1201189)
 
 -------------------------------------------------------------------
 Tue Jul 26 13:39:59 CEST 2022 - jmassaguerpla@suse.de
