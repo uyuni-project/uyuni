@@ -14,23 +14,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2020-12-29 08:37+0000\n"
-"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
+"POT-Creation-Date: 2022-08-30 12:02+0200\n"
+"PO-Revision-Date: 2022-08-26 05:13+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"backend/zh_CN/>\n"
+"backend-4-2/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
-#: ../server/configFilesHandler.py:129
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -41,6 +41,189 @@ msgstr ""
 "                   已在此服务器上停用 %s 帐户。\n"
 "                   请联系您的组织管理员取得更多帮助。"
 
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "在 {PRODUCT_NAME} 数据库中未找到您的系统"
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "已在此服务器上禁用 ISS。"
+
+#: ../server/handlers/sat/auth.py:50
+#, python-format
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "未为 ISS 启用服务器 \"%s\"。"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "无效的 system_id/action_id 对。"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "未为服务器配置文件启用 SUSE Manager Proxy 服务：\"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "无效会话密钥"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "此服务器 ID 不再存在"
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "无效的值 %s (%s)"
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "预期需要提供软件包名称，而不是：%s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "预期需要提供软件包，而不是：%s"
+
+#: ../server/handlers/xmlrpc/registration.py:196
+msgid "Required data missing"
+msgstr "缺少必需的数据"
+
+#: ../server/handlers/xmlrpc/registration.py:200
+msgid "Required members missing"
+msgstr "缺少必需的成员"
+
+#: ../server/handlers/xmlrpc/registration.py:209
+msgid "Attempt to register a system to an invalid username"
+msgstr "尝试将系统注册到无效的用户名"
+
+#: ../server/handlers/xmlrpc/registration.py:841
+msgid "Invalid system release version requested"
+msgstr "请求了无效的系统发行版"
+
+#: ../server/handlers/xmlrpc/registration.py:1065
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr "找不到有效的网络接口，ipaddr 和 ip6addr 均未找到。"
+
+#: ../server/handlers/xmlrpc/registration.py:1117
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "{PRODUCT_NAME} 欢迎消息"
+
+#: ../server/handlers/xmlrpc/registration.py:1127
+msgid "Privacy Statement"
+msgstr "隐私声明"
+
+#: ../server/handlers/xmlrpc/registration.py:1148
+msgid "Expected a dictionary as a product argument"
+msgstr "预期需要提供一个字典作为产品参数"
+
+#: ../server/handlers/xmlrpc/registration.py:1376
+#, python-format
+msgid "Invalid value '%s' for %s (%s)"
+msgstr "值 '%s'（为 %s (%s) 提供）无效"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "无效的操作值类型 %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "操作 %s 不属于服务器 %s"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "未授权您管理 null 组织中的软件包"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "不允许您管理 %s 组织中的软件包"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "不允许您执行管理任务"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "不允许您管理通道 %s 或不存在的通道"
+
+#: ../server/importlib/userAuth.py:204
+#, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"               已在此服务器上停用 %s 帐户。\n"
+"               请联系您的组织管理员取得更多帮助。"
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "请在此客户端中以 root 身份运行 rhn_register"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "未为系统配置文件启用服务：\"%s\""
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "为令牌 `%s' 指派了多个基础通道"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "有冲突的基础通道"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "无法将服务器添加到组 %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "已达到 %s 的最大用量计数"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr "不支持将重新注册令牌与不同的基础权利堆叠到一起"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "找不到令牌 '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "来自不匹配的组织的令牌"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Kickstart 会话不匹配"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "不支持堆叠重新注册令牌"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "不支持体系结构 `%s'"
+
 #: ../server/rhnChannel.py:1999
 #, python-format
 msgid ""
@@ -48,7 +231,7 @@ msgid ""
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
 "您的帐户无权访问与 (release='%(release)s', "
-"arch='%(arch)s')%(www_activation)s 匹配的任何频道"
+"arch='%(arch)s')%(www_activation)s 匹配的任何通道"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
@@ -75,7 +258,7 @@ msgstr ""
 "\n"
 "体系结构和操作系统发行版的组合无效 (%s, %s)。\n"
 "您的系统已注册，但不会接收更新，\n"
-"因为它无法订阅基础频道。\n"
+"因为它无法订阅基础通道。\n"
 "请联系您的组织管理员以取得帮助。\n"
 
 #: ../server/rhnChannel.py:2286
@@ -108,6 +291,58 @@ msgstr ""
 "服务权利。要为此系统赋予服务权利，请登录网站：\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "不完整的代理身份验证令牌：%s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "发送的代理签名 %s 与我们的 %s 不匹配。"
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "已拒绝代理身份验证"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "收到的请求无效 (%s)。"
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"重要消息如下：\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"运行 '%s' 时捕获到\n"
+"%s：%s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "无效的 URI %s"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "请求的 RPM 软件包 %s 无效"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "找不到软件包"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -168,241 +403,6 @@ msgstr "用户名长度应至少为 %d 个字符"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "无法注册以 %s 结尾的用户名"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "收到的请求无效 (%s)。"
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"重要消息如下：\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"运行 '%s' 时捕获到\n"
-"%s：%s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "无效的 URI %s"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "未授权您管理 null 组织中的软件包"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "不允许您管理 %s 组织中的软件包"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "不允许您执行管理任务"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "不允许您管理频道 %s 或不存在的频道"
-
-#: ../server/importlib/userAuth.py:204
-#, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"               已在此服务器上停用 %s 帐户。\n"
-"               请联系您的组织管理员取得更多帮助。"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "请求的 RPM 软件包 %s 无效"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "找不到软件包"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "不完整的代理身份验证令牌：%s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "发送的代理签名 %s 与我们的 %s 不匹配。"
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "已拒绝代理身份验证"
-
-#: ../server/handlers/xmlrpc/registration.py:196
-msgid "Required data missing"
-msgstr "缺少必需的数据"
-
-#: ../server/handlers/xmlrpc/registration.py:200
-msgid "Required members missing"
-msgstr "缺少必需的成员"
-
-#: ../server/handlers/xmlrpc/registration.py:209
-msgid "Attempt to register a system to an invalid username"
-msgstr "尝试将系统注册到无效的用户名"
-
-#: ../server/handlers/xmlrpc/registration.py:841
-msgid "Invalid system release version requested"
-msgstr "请求了无效的系统发行版"
-
-#: ../server/handlers/xmlrpc/registration.py:1065
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr "找不到有效的网络接口，ipaddr 和 ip6addr 均未找到。"
-
-#: ../server/handlers/xmlrpc/registration.py:1117
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "{PRODUCT_NAME} 欢迎消息"
-
-#: ../server/handlers/xmlrpc/registration.py:1127
-msgid "Privacy Statement"
-msgstr "隐私声明"
-
-#: ../server/handlers/xmlrpc/registration.py:1148
-msgid "Expected a dictionary as a product argument"
-msgstr "预期需要提供一个字典作为产品参数"
-
-#: ../server/handlers/xmlrpc/registration.py:1376
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "值 '%s'（为 %s (%s) 提供）无效"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "未为服务器配置文件启用 SUSE Manager Proxy 服务：\"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "无效会话密钥"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "此服务器 ID 不再存在"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "无效的 system_id/action_id 对。"
-
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "预期需要提供软件包名称，而不是：%s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "预期需要提供软件包，而不是：%s"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "无效的操作值类型 %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "操作 %s 不属于服务器 %s"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "无效的值 %s (%s)"
-
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "在 {PRODUCT_NAME} 数据库中未找到您的系统"
-
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "已在此服务器上禁用 ISS。"
-
-#: ../server/handlers/sat/auth.py:50
-#, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "未为 ISS 启用服务器 \"%s\"。"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "为令牌 `%s' 指派了多个基础频道"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "有冲突的基础频道"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "无法将服务器添加到组 %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "已达到 %s 的最大用量计数"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr "不支持将重新注册令牌与不同的基础权利堆叠到一起"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "找不到令牌 '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "来自不匹配的组织的令牌"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Kickstart 会话不匹配"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "不支持堆叠重新注册令牌"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "不支持体系结构 `%s'"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "请在此客户端中以 root 身份运行 rhn_register"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "未为系统配置文件启用服务：\"%s\""
 
 #: ../common/rhnTB.py:205
 #, python-format
@@ -545,7 +545,7 @@ msgstr ""
 
 #: ../common/rhnException.py:89
 msgid "Channel error"
-msgstr "频道错误"
+msgstr "通道错误"
 
 #: ../common/rhnException.py:90
 msgid "Client session token is invalid."
@@ -569,19 +569,19 @@ msgstr "不允许您在此系统上执行管理任务。"
 
 #: ../common/rhnException.py:96
 msgid "The system is already subscribed to the specified channel."
-msgstr "系统已订阅指定的频道。"
+msgstr "系统已订阅指定的通道。"
 
 #: ../common/rhnException.py:97
 msgid "The system is not currently subscribed to the specified channel."
-msgstr "系统目前未订阅指定的频道。"
+msgstr "系统目前未订阅指定的通道。"
 
 #: ../common/rhnException.py:98
 msgid "The specified channel does not exist."
-msgstr "指定的频道不存在。"
+msgstr "指定的通道不存在。"
 
 #: ../common/rhnException.py:99
 msgid "Invalid channel version."
-msgstr "无效频道版本。"
+msgstr "无效通道版本。"
 
 #: ../common/rhnException.py:100
 msgid ""
@@ -727,7 +727,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     未找到与您的系统匹配的基础频道。\n"
+"     未找到与您的系统匹配的基础通道。\n"
 "     "
 
 #: ../common/rhnException.py:152
@@ -739,18 +739,18 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     您对指定的频道没有订阅权限。\n"
-"     请咨询您组织的频道管理员或\n"
+"     您对指定的通道没有订阅权限。\n"
+"     请咨询您组织的通道管理员或\n"
 "     组织管理员以了解更多详细。\n"
 "     "
 
 #: ../common/rhnException.py:157
 msgid "You can not unsubscribe from base channel."
-msgstr "无法取消订阅基础频道。"
+msgstr "无法取消订阅基础通道。"
 
 #: ../common/rhnException.py:158
 msgid "SUSE Manager or Proxy channel can not be subscribed."
-msgstr "无法订阅 SUSE Manager 或代理频道。"
+msgstr "无法订阅 SUSE Manager 或代理通道。"
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:161
@@ -883,7 +883,7 @@ msgstr "传递了无效的数据类型"
 
 #: ../common/rhnException.py:215
 msgid "Unable to retrieve channel"
-msgstr "无法检索频道"
+msgstr "无法检索通道"
 
 #: ../common/rhnException.py:216
 msgid "Unable to retrieve package"
@@ -919,11 +919,11 @@ msgstr "不匹配的版本"
 
 #: ../common/rhnException.py:224
 msgid "Invalid channel version"
-msgstr "无效的频道版本"
+msgstr "无效的通道版本"
 
 #: ../common/rhnException.py:225
 msgid "No comps file for channel"
-msgstr "频道没有 comps 文件"
+msgstr "通道没有 comps 文件"
 
 #: ../common/rhnException.py:226
 msgid "Unable to retrieve comps file"
@@ -944,7 +944,7 @@ msgstr "文件包含二进制数据"
 
 #: ../common/rhnException.py:232
 msgid "Configuration channel is not empty"
-msgstr "配置频道不为空"
+msgstr "配置通道不为空"
 
 #: ../common/rhnException.py:233
 msgid "Permission error"
@@ -960,15 +960,15 @@ msgstr "未指定模板分隔符"
 
 #: ../common/rhnException.py:236
 msgid "Configuration channel does not exist"
-msgstr "配置频道不存在"
+msgstr "配置通道不存在"
 
 #: ../common/rhnException.py:237
 msgid "Configuration channel already exists"
-msgstr "配置频道已存在"
+msgstr "配置通道已存在"
 
 #: ../common/rhnException.py:238
 msgid "File missing from configuration channel"
-msgstr "配置频道中缺少文件"
+msgstr "配置通道中缺少文件"
 
 #: ../common/rhnException.py:239
 msgid "Different revision of this file is uploaded"
@@ -976,7 +976,7 @@ msgstr "上载了此文件的不同版本"
 
 #: ../common/rhnException.py:240
 msgid "File already uploaded to configuration channel"
-msgstr "文件已上载到配置频道"
+msgstr "文件已上载到配置通道"
 
 #: ../common/rhnException.py:241
 msgid "File size exceeds remaining quota space"
@@ -1051,46 +1051,11 @@ msgstr "错误类信息：%s\n"
 msgid "Explanation: %s"
 msgstr "说明：%s"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ 正在以电子邮件形式发送日志 +++"
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同步报告，来自 %s"
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
-
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s 至少应采用 YYYYMMDD 格式。\n"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"无法打开和读取（在\n"
-"命令行中指定的）\"%s\"\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"无法打开和/或\n"
-"写入 \"%s\"：\n"
-"%s"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1114,11 +1079,11 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 "\n"
-"错误：从您的临时储存库访问频道数据时出现\n"
-"       问题。您是否已将频道 ISO 中的所有数据\n"
-"       迁移到此目录？如果是，请再次检查频道\n"
+"错误：从您的临时软件源访问通道数据时出现\n"
+"       问题。您是否已将通道 ISO 中的所有数据\n"
+"       迁移到此目录？如果是，请再次检查通道\n"
 "       ISO，确保不缺少任何 ISO，然后以交互方式\n"
-"       重新装入并重新填充临时储存库 (%s)。\n"
+"       重新装入并重新填充临时软件源 (%s)。\n"
 
 #: ../satellite_tools/messages.py:39
 #, python-format
@@ -1159,10 +1124,10 @@ msgid ""
 "       %s\n"
 msgstr ""
 "\n"
-"错误：如果不同步子频道的父频道，则无法同步该\n"
-"       子频道。父频道需要：(a) 事先已经过同步，\n"
-"       或 (b) 配合所需的子频道一起同步。此事务缺少\n"
-"       父频道：\n"
+"错误：如果不同步子通道的父通道，则无法同步该\n"
+"       子通道。父通道需要：(a) 事先已经过同步，\n"
+"       或 (b) 配合所需的子通道一起同步。此事务缺少\n"
+"       父通道：\n"
 "       %s\n"
 
 #: ../satellite_tools/messages.py:59
@@ -1174,7 +1139,7 @@ msgid ""
 "%s"
 msgstr ""
 "\n"
-"错误：未赋权您同步此频道集中的频道。\n"
+"错误：未赋权您同步此通道集中的通道。\n"
 "请联系您的 SUSE Manager 联系人\n"
 "%s"
 
@@ -1259,7 +1224,7 @@ msgstr "   * 警告：此过程可能需要较长时间。"
 
 #: ../satellite_tools/messages.py:82
 msgid "Linking packages to channels"
-msgstr "将软件包链接到频道"
+msgstr "将软件包链接到通道"
 
 #: ../satellite_tools/messages.py:83
 #, python-format
@@ -1279,6 +1244,19 @@ msgstr "正在导入 kickstart 树 (%d)"
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
+
+#: ../satellite_tools/reposync.py:120 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ 正在以电子邮件形式发送日志 +++"
+
+#: ../satellite_tools/reposync.py:123
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同步报告，来自 %s"
+
+#: ../satellite_tools/reposync.py:133 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -1367,7 +1345,7 @@ msgid ""
 "content on disk via Channel Dump ISOs."
 msgstr ""
 "错误：不再支持使用 RHN Classic Hosted 进行在线内容同步。\n"
-"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过频道"
+"除非您要尝试通过服务器间同步 (ISS) 从另一个 {PRODUCT_NAME} 同步，或者通过通道"
 "转储 ISO 从磁盘上的本地内容同步，否则请改用 cdn-sync 命令。"
 
 #: ../satellite_tools/satsync.py:541
@@ -1438,11 +1416,11 @@ msgstr "%s 数据完整"
 
 #: ../satellite_tools/satsync.py:664
 msgid "Retrieving / parsing channel data"
-msgstr "正在检索/分析频道数据"
+msgstr "正在检索/分析通道数据"
 
 #: ../satellite_tools/satsync.py:717
 msgid "Channel data complete"
-msgstr "频道数据完整"
+msgstr "通道数据完整"
 
 #: ../satellite_tools/satsync.py:735
 #, python-format
@@ -1469,19 +1447,19 @@ msgstr "."
 
 #: ../satellite_tools/satsync.py:757
 msgid "   p = previously imported/synced channel"
-msgstr "   p = 以前导入/同步的频道"
+msgstr "   p = 以前导入/同步的通道"
 
 #: ../satellite_tools/satsync.py:758
 msgid "   . = channel not yet imported/synced"
-msgstr "   . = 尚未导入/同步的频道"
+msgstr "   . = 尚未导入/同步的通道"
 
 #: ../satellite_tools/satsync.py:764
 msgid "   e = channel no longer supported (end-of-service)"
-msgstr "   e = 不再支持的频道（服务终止）"
+msgstr "   e = 不再支持的通道（服务终止）"
 
 #: ../satellite_tools/satsync.py:766
 msgid "   ? = channel label invalid --- typo?"
-msgstr "   ? = 频道标签无效 --- 拼写错误？"
+msgstr "   ? = 通道标签无效 --- 拼写错误？"
 
 #: ../satellite_tools/satsync.py:770
 #, python-format
@@ -1495,7 +1473,7 @@ msgstr "      %s %-40s %4s %s"
 
 #: ../satellite_tools/satsync.py:772
 msgid "base-channels"
-msgstr "基础频道"
+msgstr "基础通道"
 
 #: ../satellite_tools/satsync.py:785 ../satellite_tools/satsync.py:1619
 msgid "NONE RELEVANT"
@@ -1520,25 +1498,25 @@ msgstr "?"
 #: ../satellite_tools/satsync.py:830
 #, python-format
 msgid "XXX: imported channels: %s"
-msgstr "XXX：已导入频道：%s"
+msgstr "XXX：已导入通道：%s"
 
 #: ../satellite_tools/satsync.py:831
 #, python-format
 msgid "XXX:   cached channels: %s"
-msgstr "XXX：已缓存频道：%s"
+msgstr "XXX：已缓存通道：%s"
 
 #: ../satellite_tools/satsync.py:836
 msgid "XXX: list channels called"
-msgstr "XXX：已调用列出频道命令"
+msgstr "XXX：已调用列出通道命令"
 
 #: ../satellite_tools/satsync.py:854
 msgid "ERROR: these channels either do not exist or are not available:"
-msgstr "错误：这些频道不存在或者不可用："
+msgstr "错误：这些通道不存在或者不可用："
 
 #: ../satellite_tools/satsync.py:858
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
-msgstr "       （要查看频道标签列表：%s --list-channels）"
+msgstr "       （要查看通道标签列表：%s --list-channels）"
 
 #: ../satellite_tools/satsync.py:903
 #, python-format
@@ -1621,7 +1599,7 @@ msgstr "正在下载 kickstart 树文件"
 #: ../satellite_tools/satsync.py:1520
 #, python-format
 msgid "Grabbing all patches for channel %s"
-msgstr "正在抓取频道 %s 的所有补丁"
+msgstr "正在抓取通道 %s 的所有补丁"
 
 #: ../satellite_tools/satsync.py:1570
 msgid "Downloading patch data"
@@ -1629,7 +1607,7 @@ msgstr "正在下载补丁数据"
 
 #: ../satellite_tools/satsync.py:1572
 msgid "Forcing download of all patch data for requested channels."
-msgstr "正在强制下载所请求频道的所有补丁数据。"
+msgstr "正在强制下载所请求通道的所有补丁数据。"
 
 #: ../satellite_tools/satsync.py:1587
 msgid "Downloading patch data complete"
@@ -1666,12 +1644,12 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1725
 msgid "Importing channel patches"
-msgstr "正在导入频道补丁"
+msgstr "正在导入通道补丁"
 
 #: ../satellite_tools/satsync.py:1730
 #, python-format
 msgid "Importing %s patches for channel %s."
-msgstr "正在导入 %s 补丁（用于频道 %s）。"
+msgstr "正在导入 %s 补丁（用于通道 %s）。"
 
 #. Incomplete configuration
 #: ../satellite_tools/satsync.py:2129
@@ -1708,7 +1686,7 @@ msgstr "备用 SSL CA 证书（证书文件的完整路径）"
 
 #: ../satellite_tools/satsync.py:2223
 msgid "process data for this channel only"
-msgstr "仅处理此频道的数据"
+msgstr "仅处理此通道的数据"
 
 #: ../satellite_tools/satsync.py:2225
 msgid ""
@@ -1719,7 +1697,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:2228
 msgid "existing custom channels will also be synced (unless -c is used)"
-msgstr "也会同步现有的自定义频道（除非使用 -c）"
+msgstr "也会同步现有的自定义通道（除非使用 -c）"
 
 #: ../satellite_tools/satsync.py:2230
 #, python-format
@@ -1762,7 +1740,7 @@ msgstr "要从中导入内容的父 SUSE Manager"
 
 #: ../satellite_tools/satsync.py:2248
 msgid "list all available channels and exit"
-msgstr "列出所有可用频道并退出"
+msgstr "列出所有可用通道并退出"
 
 #: ../satellite_tools/satsync.py:2250
 msgid "help on all error codes mgr-inter-sync returns"
@@ -1826,7 +1804,7 @@ msgid ""
 "point only. Required if you want to import org data and channel permissions."
 msgstr ""
 "主服务器的从属服务器的完全限定域名。仅当与 --mount-point 结合使用时才有效。如"
-"果您想要导入组织数据和频道权限，则必须指定此选项。"
+"果您想要导入组织数据和通道权限，则必须指定此选项。"
 
 #: ../satellite_tools/satsync.py:2288
 #, python-format
@@ -1893,7 +1871,7 @@ msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
-"错误：当前未导入任何频道；请尝试运行 mgr-inter-sync --list-channels；然后运"
+"错误：当前未导入任何通道；请尝试运行 mgr-inter-sync --list-channels；然后运"
 "行 mgr-inter-sync -c chn0 -c chn1..."
 
 #. int(None) --> TypeError
@@ -1965,7 +1943,7 @@ msgstr "  11 - 分析 XML 流时出错"
 
 #: ../satellite_tools/satsync.py:2501
 msgid "  12 - Channel do not exist"
-msgstr "  12 - 频道不存在"
+msgstr "  12 - 通道不存在"
 
 #: ../satellite_tools/satsync.py:2502
 msgid "  13 - SQL error during importing package metadata"
@@ -1973,7 +1951,7 @@ msgstr "  13 - 导入软件包元数据期间发生 SQL 错误"
 
 #: ../satellite_tools/satsync.py:2503
 msgid "  14 - SQL error during linking channel packages"
-msgstr "  14 - 链接频道软件包期间发生 SQL 错误"
+msgstr "  14 - 链接通道软件包期间发生 SQL 错误"
 
 #: ../satellite_tools/satsync.py:2504
 msgid "  15 - SQL error during xml processing"
@@ -1987,7 +1965,7 @@ msgstr "  16 - 未在配置文件中设置 server.mount_point"
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Manager database"
-msgstr "  17 - 检索已导入到 SUSE Manager 数据库的频道期间发生 SQL 错误"
+msgstr "  17 - 检索已导入到 SUSE Manager 数据库的通道期间发生 SQL 错误"
 
 #: ../satellite_tools/satsync.py:2507
 msgid "  18 - Wrong db connection string in rhn.conf"
@@ -2033,6 +2011,28 @@ msgstr "  28 - 错误：--master 只在与 --mount-point 结合使用时才有�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "错误：未知转储版本，请尝试使用某个 %s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"无法打开和读取（在\n"
+"命令行中指定的）\"%s\"\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"无法打开和/或\n"
+"写入 \"%s\"：\n"
+"%s"
 
 #~ msgid "Crash information is invalid or incomplete"
 #~ msgstr "崩溃信息无效或不完整"

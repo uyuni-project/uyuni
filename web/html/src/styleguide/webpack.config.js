@@ -27,7 +27,7 @@ module.exports = {
             loader: "less-loader",
             options: {
               lessOptions: {
-                rootpath: path.resolve(__dirname, "../../../../branding/css"),
+                rootpath: path.resolve(__dirname, "../branding/css"),
               },
             },
           },
@@ -45,6 +45,21 @@ module.exports = {
         type: "json",
         use: {
           loader: path.resolve(__dirname, "../build/loaders/po-loader.js"),
+        },
+      },
+      {
+        // Assets that are imported directly by components
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "img/[hash][ext][query]",
+        },
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "fonts/[hash][ext][query]",
         },
       },
     ],

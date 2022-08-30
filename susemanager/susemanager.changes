@@ -1,4 +1,5 @@
 - add missing packages on SLES 15
+- remove server-migrator.sh from SUSE Manager installations (bsc#1202728)
 - mgr-create-bootstrap-repo: flush directory also when called
   for a specific label (bsc#1200573)
 - add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)

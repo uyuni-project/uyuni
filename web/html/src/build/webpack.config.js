@@ -159,6 +159,10 @@ module.exports = (env, argv) => {
             pathname: DEVSERVER_WEBSOCKET_PATHNAME,
           },
         },
+        // Override CORS headers for `yarn storybook`, these are not required otherwise
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
         /**
          * The documentation isn't very good for this, but shortly we're proxying everything besides what comes out of Webpack through to the provided server
          * See https://webpack.js.org/configuration/dev-server/#devserverproxy and https://github.com/chimurai/http-proxy-middleware#options

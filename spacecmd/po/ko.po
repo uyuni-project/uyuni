@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-02 11:53+0200\n"
+"POT-Creation-Date: 2022-08-30 12:03+0200\n"
 "PO-Revision-Date: 2022-05-17 10:09+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
@@ -3452,8 +3452,8 @@ msgstr "%s에 연결하지 못함"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API(%s)가 너무 오래됨(>= %s 필수)"
 
-#: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:562
+#: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:251
+#: ../src/spacecmd/utils.py:563
 #, python-format
 msgid "Could not read %s"
 msgstr "%s을(를) 읽을 수 없음"
@@ -6530,7 +6530,7 @@ msgstr "%s을(를) 예약하지 못함"
 msgid "Scheduled: %i system(s)"
 msgstr "예약됨: %i개 시스템"
 
-#: ../src/spacecmd/system.py:545 ../src/spacecmd/utils.py:246
+#: ../src/spacecmd/system.py:545 ../src/spacecmd/utils.py:247
 #, python-format
 msgid "Could not remove %s"
 msgstr "%s을(를) 제거할 수 없음"
@@ -8221,126 +8221,126 @@ msgstr "사용법: user_setpassword USER PASSWORD"
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:134
+#: ../src/spacecmd/utils.py:135
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "캐시 파일 %s을(를) 로드하지 못함"
 
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:136
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr "캐시 생성이 중단되었을 수 있습니다. %s 충돌 제거 중"
 
-#: ../src/spacecmd/utils.py:140
+#: ../src/spacecmd/utils.py:141
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "%s에서 캐시를 로드할 수 없음"
 
-#: ../src/spacecmd/utils.py:161
+#: ../src/spacecmd/utils.py:162
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "%s에 쓸 수 없음"
 
-#: ../src/spacecmd/utils.py:206
+#: ../src/spacecmd/utils.py:207
 msgid "Could not open the temporary file"
 msgstr "임시 파일을 열 수 없음"
 
-#: ../src/spacecmd/utils.py:226
+#: ../src/spacecmd/utils.py:227
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "\"%s\" 편집기가 %i 코드로 종료됨"
 
-#: ../src/spacecmd/utils.py:228
+#: ../src/spacecmd/utils.py:229
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "편집기 실행 일반 실패: %s"
 
-#: ../src/spacecmd/utils.py:231
+#: ../src/spacecmd/utils.py:232
 msgid "No editors found"
 msgstr "편집기를 찾지 못함"
 
-#: ../src/spacecmd/utils.py:368
+#: ../src/spacecmd/utils.py:369
 msgid "Invalid time provided"
 msgstr "유효하지 않은 시간 입력됨"
 
-#: ../src/spacecmd/utils.py:457
+#: ../src/spacecmd/utils.py:458
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s은(는) 알 수 없는 오류 유형입니다."
 
-#: ../src/spacecmd/utils.py:465
+#: ../src/spacecmd/utils.py:466
 msgid "Security Errata"
 msgstr "보안 오류"
 
-#: ../src/spacecmd/utils.py:474
+#: ../src/spacecmd/utils.py:475
 msgid "Bug Fix Errata"
 msgstr "버그 수정 오류"
 
-#: ../src/spacecmd/utils.py:483
+#: ../src/spacecmd/utils.py:484
 msgid "Enhancement Errata"
 msgstr "개선 오류"
 
-#: ../src/spacecmd/utils.py:493
+#: ../src/spacecmd/utils.py:494
 msgid "Current Selections"
 msgstr "현재 선택"
 
-#: ../src/spacecmd/utils.py:503
+#: ../src/spacecmd/utils.py:504
 msgid "Available Configuration Channels"
 msgstr "사용할 수 있는 구성 채널"
 
-#: ../src/spacecmd/utils.py:509 ../src/spacecmd/utils.py:529
+#: ../src/spacecmd/utils.py:510 ../src/spacecmd/utils.py:530
 msgid "Channel:"
 msgstr "채널:"
 
-#: ../src/spacecmd/utils.py:512 ../src/spacecmd/utils.py:532
+#: ../src/spacecmd/utils.py:513 ../src/spacecmd/utils.py:533
 msgid "Invalid channel"
 msgstr "유효하지 않은 채널"
 
-#: ../src/spacecmd/utils.py:516
+#: ../src/spacecmd/utils.py:517
 msgid "New Rank:"
 msgstr "새 순위:"
 
-#: ../src/spacecmd/utils.py:523 ../src/spacecmd/utils.py:526
+#: ../src/spacecmd/utils.py:524 ../src/spacecmd/utils.py:527
 msgid "Invalid rank"
 msgstr "유효하지 않은 순위"
 
-#: ../src/spacecmd/utils.py:537
+#: ../src/spacecmd/utils.py:538
 msgid "Clearing current selections"
 msgstr "현재 선택을 지우는 중"
 
-#: ../src/spacecmd/utils.py:696
+#: ../src/spacecmd/utils.py:707
 msgid "Could not generate json data object!"
 msgstr "json 데이터 객체를 생성할 수 없습니다!"
 
-#: ../src/spacecmd/utils.py:703
+#: ../src/spacecmd/utils.py:714
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "쓰기 위해 %s 파일을 열 수 없음: %s"
 
-#: ../src/spacecmd/utils.py:714
+#: ../src/spacecmd/utils.py:725
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "읽기 위해 %s 파일을 열 수 없음: %s"
 
-#: ../src/spacecmd/utils.py:716
+#: ../src/spacecmd/utils.py:727
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "%s에서 JSON 데이터의 구문을 분석할 수 없음: %s"
 
-#: ../src/spacecmd/utils.py:718
+#: ../src/spacecmd/utils.py:729
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "%s 파일 처리 중 오류: %s"
 
-#: ../src/spacecmd/utils.py:746
+#: ../src/spacecmd/utils.py:757
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "공통 문자열 사용 건너뛰기: 두 문자열이 동일함"
 
-#: ../src/spacecmd/utils.py:762
+#: ../src/spacecmd/utils.py:773
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "공통 문자열 사용 건너뛰기: 하위 문자열의 수가 다름"
 
-#: ../src/spacecmd/utils.py:848
+#: ../src/spacecmd/utils.py:859
 msgid "Parameter {} not a string type, but {}."
 msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 

@@ -215,11 +215,9 @@ def get_uptime_from_host(host)
 end
 
 def web_driver_session_reset
-  begin
-    page.reset! if Capybara::Session.instance_created?
-  rescue NoMethodError
-    log 'The browser session could not be cleaned.'
-  ensure
-    visit Capybara.app_host
-  end
+  page.reset! if Capybara::Session.instance_created?
+rescue NoMethodError
+  log 'The browser session could not be cleaned.'
+ensure
+  visit Capybara.app_host
 end
