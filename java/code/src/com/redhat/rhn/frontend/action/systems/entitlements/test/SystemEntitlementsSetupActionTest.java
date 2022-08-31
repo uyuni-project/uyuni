@@ -69,7 +69,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock),
                         new FormulaMonitoringManager(), serverGroupManager),

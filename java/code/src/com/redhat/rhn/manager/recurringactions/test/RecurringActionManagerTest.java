@@ -4,7 +4,6 @@ import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.GROUP;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.MINION;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.ORG;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
@@ -25,6 +24,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -195,7 +196,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testListGroupRecurringActions() {
-        ServerGroupManager manager = new ServerGroupManager();
+        ServerGroupManager manager = new ServerGroupManager(new TestSaltApi());
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
 
         var action = new GroupRecurringAction();

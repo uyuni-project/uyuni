@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.system;
 
+import static java.util.Collections.emptyList;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -25,6 +27,7 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -32,7 +35,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
@@ -47,8 +52,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
-
 /**
  * ServerGroupManager
  */
@@ -56,6 +59,17 @@ public class ServerGroupManager {
 
     /** Logger */
     private static final Logger LOG = Logger.getLogger(ServerGroupManager.class);
+
+    private final SaltApi saltApi;
+
+    /**
+     * Constructor.
+     *
+     * @param saltApiIn the Salt API
+     */
+    public ServerGroupManager(SaltApi saltApiIn) {
+        saltApi = saltApiIn;
+    }
 
     /**
      * Lookup a ServerGroup by ID and organization.
@@ -350,6 +364,11 @@ public class ServerGroupManager {
         servers.stream().map(server -> server.asMinionServer()).flatMap(Opt::stream)
                 .forEach(s -> MinionPillarManager.INSTANCE.generatePillar(s, false,
                          MinionPillarManager.PillarSubset.GROUP_MEMBERSHIP));
+        // Trigger pillar refresh
+        List<String> minionIds = servers.stream()
+                .flatMap(s -> Opt.stream(s.asMinionServer()))
+                .map(MinionServer::getMinionId).collect(Collectors.toList());
+        saltApi.refreshPillar(new MinionList(minionIds));
     }
 
     /**

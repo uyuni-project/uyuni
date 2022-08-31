@@ -135,7 +135,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     private static final SystemQuery systemQuery = new TestSystemQuery();
     private static final SaltApi saltApi = new TestSaltApi();
-    private static final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private static final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private static final FormulaManager formulaManager = new FormulaManager(saltApi);
     private static final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
     private static final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);

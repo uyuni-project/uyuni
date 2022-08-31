@@ -61,7 +61,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private ServerGroupManager manager = new ServerGroupManager();
+    private ServerGroupManager manager = new ServerGroupManager(saltApi);
     private ServerGroupHandler handler = new ServerGroupHandler(xmlRpcSystemHelper, manager);
     private static final String NAME = "HAHAHA" + TestUtils.randomString();
     private static final String DESCRIPTION =  TestUtils.randomString();

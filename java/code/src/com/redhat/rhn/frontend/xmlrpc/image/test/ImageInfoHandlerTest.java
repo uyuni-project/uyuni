@@ -63,13 +63,14 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
-
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -92,7 +93,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     private static TaskomaticApi taskomaticApi;
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
@@ -174,7 +175,6 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
                 will(returnValue(Optional.of(mockResult)));
         }});
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager sem = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
                         serverGroupManager),

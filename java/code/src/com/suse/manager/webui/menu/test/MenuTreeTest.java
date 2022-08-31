@@ -90,7 +90,7 @@ public class MenuTreeTest extends TestCase {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
         MenuTree menuTree = new MenuTree(new AclFactory(new Access(new ClusterManager(
-                saltApi, systemQuery, new ServerGroupManager(), new FormulaManager(saltApi)
+                saltApi, systemQuery, new ServerGroupManager(saltApi), new FormulaManager(saltApi)
         ))));
 
         // the TESTED method

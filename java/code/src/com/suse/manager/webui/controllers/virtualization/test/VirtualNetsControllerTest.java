@@ -39,6 +39,7 @@ import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -101,10 +102,11 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             }
         };
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        SaltApi saltApi = new TestSaltApi();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(), serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(), serverGroupManager)
+                new SystemEntitler(saltApi, virtManager, new FormulaMonitoringManager(), serverGroupManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);

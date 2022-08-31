@@ -57,6 +57,7 @@ import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import junit.framework.AssertionFailedError;
+import servletunit.ServletContextSimulator;
 
 /**
  * ProvisionVirtualizationWizardActionTest
@@ -65,7 +66,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
 
     private Server s;
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(

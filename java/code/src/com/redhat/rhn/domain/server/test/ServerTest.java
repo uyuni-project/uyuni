@@ -56,7 +56,7 @@ import java.util.Optional;
 public class ServerTest extends BaseTestCaseWithUser {
 
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
     private final SystemUnentitler systemUnentitler = new SystemUnentitler(
@@ -324,7 +324,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     private class VirtEntitledServer extends Server {
         VirtEntitledServer(User user) {
             setOrg(user.getOrg());
-            ServerGroupManager manager = new ServerGroupManager();
+            ServerGroupManager manager = new ServerGroupManager(saltApi);
             EntitlementServerGroup group = manager.
                         lookupEntitled(EntitlementManager.VIRTUALIZATION, user);
             List servers = new ArrayList();
