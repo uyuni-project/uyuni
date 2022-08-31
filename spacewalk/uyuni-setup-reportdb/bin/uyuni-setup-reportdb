@@ -605,7 +605,7 @@ while true ; do
 done
 
 case $HOST in
-    "localhost"|$(hostname -s)|$(hostname -f))
+    "localhost"|$(hostname -s)|$(hostname -f)|"")
         EXTERNALDB=0 ;;
     *)
         EXTERNALDB=1 ;;
