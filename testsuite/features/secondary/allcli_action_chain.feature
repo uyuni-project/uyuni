@@ -10,9 +10,7 @@ Feature: Action chains on several systems at once
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: downgrade packages before action chain test on several systems
-    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I enable repository "test_repo_rpm_pool" on this "sle_client"
-    And I remove package "andromeda-dummy" from this "sle_client" without error control
+    When I remove package "andromeda-dummy" from this "sle_client" without error control
     And I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"
     And I install old package "andromeda-dummy-1.0" on this "sle_client"
@@ -102,8 +100,6 @@ Feature: Action chains on several systems at once
   Scenario: Cleanup: remove package and repository used in action chain for several systems
     When I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I remove package "andromeda-dummy" from this "sle_client" without error control
-    And I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
-    And I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on several systems
     When I run "rm /tmp/action_chain_done" on "sle_minion" without error control

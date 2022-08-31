@@ -25,9 +25,7 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
     Then "rhlike_minion" should not be registered
 
   Scenario: Prepare the Red Hat-like traditional client
-    When I enable repository "CentOS-Base" on this "rhlike_client"
-    And I enable client tools repositories on "rhlike_client"
-    And I refresh the packages list via package manager on "rhlike_client"
+    When I refresh the packages list via package manager on "rhlike_client"
     And I install the traditional stack utils on "rhlike_client"
     And I install OpenSCAP dependencies on "rhlike_client"
     And I register "rhlike_client" as traditional client
@@ -101,8 +99,6 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
   Scenario: Cleanup: delete the installed rpms on Red Hat-like traditional client
     When I remove the traditional stack utils from "rhlike_client"
     And I remove OpenSCAP dependencies from "rhlike_client"
-    And I disable client tools repositories on "rhlike_client"
-    And I disable repository "CentOS-Base" on this "rhlike_client"
 
   Scenario: Cleanup: bootstrap a Red Hat-like minion after traditional client tests
     When I follow the left menu "Systems > Bootstrapping"

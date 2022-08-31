@@ -94,16 +94,14 @@ Feature: Migrate a traditional client into a Salt minion
 
 @skip_if_salt_bundle
   Scenario: Cleanup: register minion again as traditional client
-    When I enable client tools repositories on "sle_client"
-    And I install the traditional stack utils on "sle_client"
+    When I install the traditional stack utils on "sle_client"
     And I remove package "salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-sle_client_key" from the proxy
     Then I should see "sle_client" via spacecmd
 
 @salt_bundle
   Scenario: Cleanup: register minion again as traditional client
-    When I enable client tools repositories on "sle_client"
-    And I install the traditional stack utils on "sle_client"
+    When I install the traditional stack utils on "sle_client"
     And I remove package "venv-salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-sle_client_key" from the proxy
     Then I should see "sle_client" via spacecmd

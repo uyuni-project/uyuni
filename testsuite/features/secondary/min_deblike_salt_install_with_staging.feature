@@ -16,8 +16,7 @@
 Feature: Install a package on the Debian-like minion with staging enabled
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package, make sure orion-dummy is not present on Debian-like minion
-    When I enable repository "test_repo_deb_pool" on this "deblike_minion"
-    And I run "apt update" on "deblike_minion"
+    When I run "apt update" on "deblike_minion"
     And I remove package "orion-dummy" from this "deblike_minion"
     And I install old package "virgo-dummy=1.0" on this "deblike_minion"
 
@@ -62,7 +61,6 @@ Feature: Install a package on the Debian-like minion with staging enabled
   # Scenario: Install patch in the future and check for staging on Debian-like minion
 
   Scenario: Cleanup: remove virgo-dummy and orion-dummy packages from Debian-like minion
-    And I remove package "orion-dummy" from this "deblike_minion"
+    When I remove package "orion-dummy" from this "deblike_minion"
     And I remove package "virgo-dummy" from this "deblike_minion"
-    And I disable repository "test_repo_deb_pool" on this "deblike_minion"
     And I run "apt update" on "deblike_minion"

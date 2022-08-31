@@ -14,10 +14,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
 
   Scenario: Install the OpenSCAP packages on the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
-    When I enable repository "CentOS-Base" on this "rhlike_minion"
-    And I enable client tools repositories on "rhlike_minion"
-    And I refresh the metadata for "rhlike_minion"
-    And I install OpenSCAP dependencies on "rhlike_minion"
+    When I install OpenSCAP dependencies on "rhlike_minion"
     And I follow "Software" in the content area
     And I click on "Update Package List"
     And I wait until event "Package List Refresh" is completed
@@ -71,5 +68,3 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
 
   Scenario: Cleanup: remove the OpenSCAP packages from the Red Hat-like minion
     When I remove OpenSCAP dependencies from "rhlike_minion"
-    And I disable repository "CentOS-Base" on this "rhlike_minion"
-    And I disable client tools repositories on "rhlike_minion"

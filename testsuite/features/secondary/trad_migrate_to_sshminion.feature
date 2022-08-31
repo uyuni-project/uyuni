@@ -115,8 +115,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Then "sle_client" should not be registered
 
   Scenario: Cleanup: register SSH minion again as traditional client
-    When I enable client tools repositories on "sle_client"
-    And I install the traditional stack utils on "sle_client"
+    When I install the traditional stack utils on "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-sle_client_key" from the proxy
     Then I should see "sle_client" via spacecmd
 

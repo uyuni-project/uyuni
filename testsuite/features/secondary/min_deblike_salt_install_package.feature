@@ -9,8 +9,7 @@ Feature: Install and upgrade package on the Debian-like minion via Salt through 
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package on Debian-like minion
-    When I enable repository "test_repo_deb_pool" on this "deblike_minion"
-    And I run "apt update" on "deblike_minion" with logging
+    When I run "apt update" on "deblike_minion" with logging
     And I remove package "andromeda-dummy" from this "deblike_minion"
     And I install old package "virgo-dummy=1.0" on this "deblike_minion"
     And I am on the Systems overview page of this "deblike_minion"
@@ -44,5 +43,4 @@ Feature: Install and upgrade package on the Debian-like minion via Salt through 
   Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Debian-like minion
     And I remove package "andromeda-dummy" from this "deblike_minion"
     And I remove package "virgo-dummy" from this "deblike_minion"
-    And I disable repository "test_repo_deb_pool" on this "deblike_minion"
     And I run "apt update" on "deblike_minion" with logging

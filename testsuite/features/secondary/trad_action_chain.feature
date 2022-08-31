@@ -10,8 +10,7 @@ Feature: Action chain on traditional clients
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: downgrade repositories to lower version on traditional client
-    When I enable repository "test_repo_rpm_pool" on this "sle_client"
-    And I remove package "andromeda-dummy" from this "sle_client" without error control
+    When I remove package "andromeda-dummy" from this "sle_client" without error control
     And I remove package "virgo-dummy" from this "sle_client" without error control
     And I install package "milkyway-dummy" on this "sle_client" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_client"
@@ -253,7 +252,6 @@ Feature: Action chain on traditional clients
     When I remove package "andromeda-dummy" from this "sle_client" without error control
     And I remove package "virgo-dummy" from this "sle_client" without error control
     And I remove package "milkyway-dummy" from this "sle_client" without error control
-    And I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on traditional client
     When I run "rm -f /tmp/action_chain.log" on "sle_client" without error control

@@ -57,16 +57,14 @@ Feature: Migrate a unregistered traditional client into a Salt minion
 
 @susemanager
   Scenario: Register minion again as traditional client in a deleted client context
-    When I enable client tools repositories on "sle_client"
-    And I install the traditional stack utils on "sle_client"
+    When I install the traditional stack utils on "sle_client"
     And I remove package "salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-sle_client_key" from the proxy
     Then I should see "sle_client" via spacecmd
 
 @uyuni
   Scenario: Register minion again as traditional client in a deleted client context
-    When I enable client tools repositories on "sle_client"
-    And I install the traditional stack utils on "sle_client"
+    When I install the traditional stack utils on "sle_client"
     And I remove package "venv-salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-sle_client_key" from the proxy
     Then I should see "sle_client" via spacecmd
@@ -94,7 +92,6 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     When I remove package "zypp-plugin-spacewalk" from this "sle_client"
 
   Scenario: Migrate a SLES client into a Salt minion in a deleted client context
-    When I enable client tools repositories on "sle_client"
     When I follow the left menu "Systems > Bootstrapping"
     And I enter the hostname of "sle_client" as "hostname"
     And I enter "22" as "port"

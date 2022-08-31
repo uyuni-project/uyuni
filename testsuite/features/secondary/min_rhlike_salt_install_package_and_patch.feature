@@ -7,8 +7,7 @@
 Feature: Install a patch on the Red Hat-like minion via Salt through the UI
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 and remove andromeda-dummy packages
-    When I enable repository "test_repo_rpm_pool" on this "rhlike_minion"
-    And I remove package "andromeda-dummy" from this "rhlike_minion"
+    When I remove package "andromeda-dummy" from this "rhlike_minion"
     And I install package "virgo-dummy-1.0" on this "rhlike_minion"
 
   Scenario: Pre-requisite: refresh package list and check newly installed packages on Red Hat-like minion
@@ -76,4 +75,3 @@ Feature: Install a patch on the Red Hat-like minion via Salt through the UI
     And I click on "Confirm"
     Then I should see a "2 package removals have been scheduled" text
     And I wait until event "Package Removal scheduled by admin" is completed
-    And I disable repository "test_repo_rpm_pool" on this "rhlike_minion"

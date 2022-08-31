@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2021 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -9,8 +9,7 @@ Feature: Display patches
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-require: enable old packages to fake a possible installation
-    When I enable repository "test_repo_rpm_pool" on this "sle_client"
-    And I run "zypper -n ref" on "sle_client"
+    When I run "zypper -n ref" on "sle_client"
     And I install old package "andromeda-dummy-1.0" on this "sle_client"
     And I install old package "virgo-dummy-1.0" on this "sle_client"
     And I run "rhn_check -vvv" on "sle_client"
@@ -55,8 +54,7 @@ Feature: Display patches
     When I clean the search index on the server
 
   Scenario: Cleanup: remove old packages
-    When I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
-    And I run "zypper -n ref" on "sle_client" without error control
+    When I run "zypper -n ref" on "sle_client" without error control
     And I remove package "andromeda-dummy" from this "sle_client" without error control
     And I remove package "virgo-dummy" from this "sle_client" without error control
     And I run "rhn_check -vvv" on "sle_client" without error control

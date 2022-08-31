@@ -17,9 +17,7 @@ Feature: Migrate a Red Hat-like traditional client into a Salt minion
     Then "rhlike_client" should not be registered
 
   Scenario: Prepare the Red Hat-like traditional client in the migration context
-    When I enable repository "CentOS-Base" on this "rhlike_client"
-    And I enable client tools repositories on "rhlike_client"
-    And I refresh the packages list via package manager on "rhlike_client"
+    When I refresh the packages list via package manager on "rhlike_client"
     And I install the traditional stack utils on "rhlike_client"
     And I install OpenSCAP dependencies on "rhlike_client"
     And I register "rhlike_client" as traditional client

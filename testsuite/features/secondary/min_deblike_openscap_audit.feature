@@ -14,7 +14,6 @@ Feature: OpenSCAP audit of Debian-like Salt minion
 
   Scenario: Enable all the necessary repositories for OpenSCAP on Debian-like minion
     When I enable Debian-like "universe" repository on "deblike_minion"
-    And I enable client tools repositories on "deblike_minion"
 
   Scenario: Install the OpenSCAP packages on the Debian-like minion
     Given I am on the Systems overview page of this "deblike_minion"
@@ -76,5 +75,4 @@ Feature: OpenSCAP audit of Debian-like Salt minion
     When I remove OpenSCAP dependencies from "deblike_minion"
 
   Scenario: Cleanup: remove all the necessary repositories for OpenSCAP on Debian-like minion
-    When I disable client tools repositories on "deblike_minion"
-    And I disable Debian-like "universe" repository on "deblike_minion"
+    When I disable Debian-like "universe" repository on "deblike_minion"
