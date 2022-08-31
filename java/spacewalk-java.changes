@@ -1,3 +1,5 @@
+- Support Pay-as-you-go new CA location for SLES15SP4
+  and higher (bsc#1202729)
 - Fixed pagination for completed/failed systems in action details
 - Add support in rhn.conf for smtp port, auth, ssl/tls config
 - Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
