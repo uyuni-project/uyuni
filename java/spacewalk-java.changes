@@ -1,3 +1,4 @@
+- Support inherited values for kernel options from Cobbler API
 - Add channel availability check for product migration (bsc#1200296)
 - Check if system has all formulas correctly assigned
   (bsc#1201607)

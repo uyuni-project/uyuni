@@ -159,8 +159,8 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
                 .lookupKickstartTreeByCobblerIdOrXenId(cobblerId);
         // after the backsync command, the kickstartable tree in the db should have
         // the kernel options updated
-        assertEquals("option1=val1", fromDb.getKernelOptions().trim());
-        assertEquals("otherOption=val2", fromDb.getKernelOptionsPost().trim());
+        assertEquals("option1='val1'", fromDb.getKernelOptions().trim());
+        assertEquals("otherOption='val2'", fromDb.getKernelOptionsPost().trim());
     }
 
     /**
