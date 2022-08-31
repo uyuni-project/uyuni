@@ -1457,4 +1457,3 @@ When(/^I cleanup after Cobbler buildiso$/) do
   result, code = $server.run("rm -Rf /var/cache/cobbler")
   raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
-
