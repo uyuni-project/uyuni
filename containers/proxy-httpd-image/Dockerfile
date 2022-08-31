@@ -24,6 +24,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sh remove_unused.sh
 
 # Additional material
+COPY conf/ /usr/bin/conf/
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
