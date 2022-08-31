@@ -12,7 +12,7 @@ Feature: Negative tests for bootstrapping normal minions
     Given I am authorized for the "Admin" section
 
   Scenario: Bootstrap should fail when minion already exists
-    And I follow the left menu "Systems > Bootstrapping"
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"
