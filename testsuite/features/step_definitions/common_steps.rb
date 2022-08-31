@@ -257,28 +257,28 @@ Given(/^cobblerd is running$/) do
   raise 'cobblerd is not running' unless ct.running?
 end
 
-Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
+When(/^I create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
   ct.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
-Then(/^create profile "([^"]*)" for distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |profile, distro, user, pwd|
+When(/^I create profile "([^"]*)" for distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |profile, distro, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'profile ' + profile + ' already exists' if ct.profile_exists(profile)
   ct.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
 end
 
-Then(/^create system "([^"]*)" for profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, profile, user, pwd|
+When(/^I create system "([^"]*)" for profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, profile, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'system ' + system + ' already exists' if ct.system_exists(system)
   ct.system_create(system, profile)
 end
 
-Then(/^remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
+When(/^I remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
   ct.system_remove(system)
