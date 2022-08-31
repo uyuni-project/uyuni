@@ -20,7 +20,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
+    And I select "1-sle_client_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
@@ -60,7 +60,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     When I enable client tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "salt-minion" from this "sle_client"
-    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-sle_client_key" from the proxy
     Then I should see "sle_client" via spacecmd
 
 @uyuni
@@ -68,7 +68,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     When I enable client tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "venv-salt-minion" from this "sle_client"
-    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-sle_client_key" from the proxy
     Then I should see "sle_client" via spacecmd
 
   Scenario: Wait until the traditional client appears in a deleted client context
@@ -100,7 +100,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
+    And I select "1-sle_client_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text

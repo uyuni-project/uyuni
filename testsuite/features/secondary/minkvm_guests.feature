@@ -16,7 +16,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "kvm_server" password
-    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
+    And I select "1-sle_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
@@ -402,7 +402,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP4-KVM\nregistration_key=1-SUSE-KEY-x86_64" as "variables" text area
+    And I enter "distrotree=SLE-15-SP4-KVM\nregistration_key=1-sle_minion_key" as "variables" text area
     And I click on "Update Variables"
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP4-KVM" text

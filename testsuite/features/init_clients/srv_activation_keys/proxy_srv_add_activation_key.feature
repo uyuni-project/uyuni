@@ -1,0 +1,29 @@
+# Copyright (c) 2010-2022 SUSE LLC
+# Licensed under the terms of the MIT license.
+
+@proxy
+Feature: Create an activation key for proxy
+  In order to register systems to the spacewalk server
+  As the testing user
+  I want to use activation keys
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
+  Scenario: Clone the child custom channel including test repositories
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
+    And I select the custom architecture channel for "proxy" as the origin channel
+    And I choose "current"
+    And I click on "Clone Channel"
+    And I enter "Test-Channel-x86_64 Child Channel for proxy" as "Channel Name"
+    And I enter "test-channel-for-proxy" as "Channel Label"
+    And I select the parent channel for the "proxy" from "Parent Channel"
+    And I click on "Clone Channel"
+    Then I should see a "Test-Channel-x86_64 Child Channel for proxy" text
+
+
+  Scenario: Create an activation key with the channel and child channels for a proxy
+    When I am logged in API as user "admin" and password "admin"
+    And I create an activation key including custom channels for "proxy" via API
+    And I logout from API

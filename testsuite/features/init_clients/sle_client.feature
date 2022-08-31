@@ -10,7 +10,7 @@ Feature: Register a traditional client
     Given I am authorized for the "Admin" section
 
   Scenario: Register a traditional client
-    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-sle_client_key" from the proxy
     And I wait until onboarding is completed for "sle_client"
     Then I should see "sle_client" via spacecmd
 

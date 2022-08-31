@@ -870,7 +870,7 @@ When(/^I register using "([^"]*)" key$/) do |key|
 end
 
 When(/^I register "([^"]*)" as traditional client$/) do |client|
-  step %(I register "#{client}" as traditional client with activation key "1-SUSE-KEY-x86_64")
+  step %(I register "#{client}" as traditional client with activation key "1-sle_client_key")
 end
 
 And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
@@ -1457,3 +1457,4 @@ When(/^I cleanup after Cobbler buildiso$/) do
   result, code = $server.run("rm -Rf /var/cache/cobbler")
   raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
+

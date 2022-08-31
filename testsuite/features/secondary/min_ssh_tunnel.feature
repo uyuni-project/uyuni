@@ -23,7 +23,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-SUSE-SSH-TUNNEL-KEY-x86_64" from "activationKeys"
+    And I select "1-ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I check "manageWithSSH"
     And I click on "Bootstrap"
@@ -82,7 +82,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     Then "ssh_minion" should not be registered
 
   Scenario: Cleanup: register a Salt minion after SSH tunnel tests
-    When I bootstrap minion client "ssh_minion" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    When I bootstrap minion client "ssh_minion" using bootstrap script with activation key "1-sle_minion_key from the proxy
     And I wait at most 10 seconds until Salt master sees "ssh_minion" as "unaccepted"
     And I accept "ssh_minion" key in the Salt master
     Then I should see "ssh_minion" via spacecmd
