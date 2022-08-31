@@ -870,7 +870,7 @@ When(/^I register using "([^"]*)" key$/) do |key|
 end
 
 When(/^I register "([^"]*)" as traditional client$/) do |client|
-  step %(I register "#{client}" as traditional client with activation key "1-SUSE-KEY-x86_64")
+  step %(I register "#{client}" as traditional client with activation key "1-sle_client_key")
 end
 
 And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
