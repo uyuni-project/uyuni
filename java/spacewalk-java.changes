@@ -1,3 +1,4 @@
+- Fix out of memory error when building a CLM project (bsc#1202217)
 - Added a warning message for traditional stack deprecation
 - Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
 
