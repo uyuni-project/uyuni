@@ -382,6 +382,25 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
 end
 # rubocop:enable Metrics/BlockLength
 
+When(/^I ensure the channel "([^"]*)" has started syncing$/) do |given_channel|
+  reposync_not_running_streak = 0
+  # wait a maximum of 120s for reposync to start
+  while reposync_not_running_streak <= 120
+    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
+    if command_output.empty?
+      reposync_not_running_streak += 1
+      sleep 1
+      next
+    end
+    process = command_output.split("\n")[0]
+    channel = process.split[5]
+    return if channel == given_channel
+    log "Channel #{channel} is syncing"
+    reposync_not_running_streak += 1
+  end
+  raise "Channel #{given_channel} didn't start syncing in 2 minutes"
+end
+
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
   raise "Errors during reposync:\n#{result}" if code.zero?
