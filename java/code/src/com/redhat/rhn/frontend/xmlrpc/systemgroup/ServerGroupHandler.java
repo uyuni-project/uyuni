@@ -17,9 +17,8 @@ package com.redhat.rhn.frontend.xmlrpc.systemgroup;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.formula.Formula;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -431,8 +430,7 @@ public class ServerGroupHandler extends BaseHandler {
 
     private List<Long> activeSystemsInGroup(User loggedInUser, String systemGroupName) {
         ServerGroup sg = lookup(systemGroupName, loggedInUser);
-        Long threshold = (long) Config.get().getInt(
-                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
+        Long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
         return serverGroupManager.listActiveServers(sg, threshold);
     }
 
@@ -475,8 +473,7 @@ public class ServerGroupHandler extends BaseHandler {
     @ReadOnly
     public List<Long> listInactiveSystemsInGroup(User loggedInUser,
             String systemGroupName) {
-        Long threshold = (long) Config.get().getInt(
-                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
+        Long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
         return listInactiveSystemsInGroup(loggedInUser, systemGroupName,
                 threshold.intValue());
     }

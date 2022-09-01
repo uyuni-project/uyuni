@@ -1,3 +1,4 @@
+- Move web.system_checkin_threshold to rhnConfiguration table
 - Remove legacy cluster_admin user group
 - Add subtypes for Amazon EC2 virtual instances (bsc#1195624)
 - Fix migration of image actions (bsc#1202272)
