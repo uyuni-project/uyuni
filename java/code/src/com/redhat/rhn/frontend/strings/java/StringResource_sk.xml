@@ -10791,49 +10791,49 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve">
         <source>Schedule with id '{0}' does not exist</source>
-        <target/>
+        <target>Plán s id '{0}' neexistuje</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.id.not.exists" xml:space="preserve">
         <source>Calendar with id '{0}' does not exist</source>
-        <target/>
+        <target>Kalendár s id '{0}' neexistuje</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
         <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-        <target/>
+        <target>Pri pokuse o zrušenie ovplyvnených akcií pre plán '{0}' došlo k chybe</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-        <target/>
+        <target>Operáciu nebolo možné vykonať. Na systémoch sú naplánované akcie</target>
       </trans-unit>
       <trans-unit id="maintenance.action.assign.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-        <target/>
+        <target>Operáciu nebolo možné vykonať. Na systémoch sú naplánované akcie</target>
       </trans-unit>
       <trans-unit id="maintenance.action.assign.error.systemnotfound" xml:space="preserve">
         <source>Some of the specified servers cannot be found</source>
-        <target/>
+        <target>Niektoré zo zadaných serverov nie je možné nájsť</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
         <source>Redfish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Redfish</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
-        <target state="new"/>
+        <target state="translated">Vykonať akcie na klientoch minion ssh</target>
       </trans-unit>
       <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
         <source>Execute action chains on minions</source>
-        <target state="new"/>
+        <target state="translated">Vykonať reťazce akcií na klientoch minion</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.selectedmodules" xml:space="preserve">
         <source>The following module streams will be enabled: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Budú povolené nasledujúce prúdy modulov: {0}</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_created" xml:space="preserve">
         <source>Project {0} created successfully</source>
