@@ -1,3 +1,4 @@
+* Stop using web.system_checkin_threshold configuration value
 * Add --param option to overwrite report parameter default value
 
 -------------------------------------------------------------------
