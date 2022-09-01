@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.formula.FormulaUtil;
@@ -373,24 +374,31 @@ public class FormulaController {
         try {
             switch (type) {
                 case SERVER:
+                    Server minion = null;
                     try {
-                        FormulaUtil.ensureUserHasPermissionsOnServer(user,
-                                ServerFactory.lookupById(id));
+                        minion = ServerFactory.lookupById(id);
+                        FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
                     }
                     catch (PermissionException e) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulas(MinionServerFactory.getMinionId(id), selectedFormulas);
+                    saltApi.refreshPillar(new MinionList(minion.getMinionId()));
                     break;
                 case GROUP:
+                    ServerGroup group = null;
                     try {
-                        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user,
-                                ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
+                        group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
+                        FormulaUtil.ensureUserHasPermissionsOnServerGroup(user, group);
                     }
                     catch (PermissionException | LookupException e) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveGroupFormulas(id, selectedFormulas, user.getOrg());
+                    List<String> minionIds = group.getServers().stream()
+                            .flatMap(s -> Opt.stream(s.asMinionServer()))
+                            .map(MinionServer::getMinionId).collect(Collectors.toList());
+                    saltApi.refreshPillar(new MinionList(minionIds));
                     break;
                 default:
                     return errorResponse(response, Arrays.asList("error_invalid_target"));
