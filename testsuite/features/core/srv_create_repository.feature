@@ -47,7 +47,7 @@ Feature: Add a repository to a channel
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-x86_64." text
-    When I ensure the channel "Test-Channel-x86_64" has started syncing
+    When I ensure the channel "test-channel-x86_64" has started syncing
     And I disable source package syncing
 
   Scenario: Add a test repository for i586
