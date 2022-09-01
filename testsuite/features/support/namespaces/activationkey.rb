@@ -39,11 +39,11 @@ class NamespaceActivationkey
   end
 
   def add_config_channels(id, config_channels)
-    @test.call('activationkey.addConfigChannels', sessionKey: @test.token, keys: id, configChannels: config_channels, addToTop: false)
+    @test.call('activationkey.addConfigChannels', sessionKey: @test.token, keys: id, configChannelLabels: config_channels, addToTop: false)
   end
 
   def add_child_channels(id, child_channels)
-    @test.call('activationkey.addChildChannels', sessionKey: @test.token, key: id, childChannels: child_channels)
+    @test.call('activationkey.addChildChannels', sessionKey: @test.token, key: id, childChannelLabels: child_channels)
   end
 
   def get_details(id)
