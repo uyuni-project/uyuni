@@ -57,6 +57,7 @@ $SNIPPET('spacewalk/sles_no_signature_checks')
     <instsource/>
     <packages config:type="list">
       <package>salt-minion</package>
+      <package>openssh-server</package>
     </packages>
     <patterns config:type="list">
       <pattern>base</pattern>
@@ -86,6 +87,14 @@ $SNIPPET('spacewalk/sles_no_signature_checks')
       <username>root</username>
     </user>
   </users>
+  <services-manager>
+    <default_target>multi-user</default_target>
+    <services>
+      <enable config:type="list">
+        <service>sshd</service>
+      </enable>
+    </services>
+  </services-manager>
   <scripts>
     <init-scripts config:type="list">
           $SNIPPET('spacewalk/minion_script')

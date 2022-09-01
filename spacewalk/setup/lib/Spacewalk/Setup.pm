@@ -259,7 +259,7 @@ sub load_answer_file {
     close FH;
   }
   if ($answers->{'db-host'}) {
-    $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
+    $answers->{'db-host'} = Net::LibIDN::idn_to_ascii($answers->{'db-host'}, "utf8");
   }
   return;
 }
@@ -723,7 +723,7 @@ sub postgresql_get_database_answers {
         -answer => \$answers->{'db-host'});
 
     if ($answers->{'db-host'} ne '') {
-        $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
+        $answers->{'db-host'} = Net::LibIDN::idn_to_ascii($answers->{'db-host'}, "utf8");
         ask(
             -noninteractive => $opts->{"non-interactive"},
             -question => "Port",
@@ -783,7 +783,7 @@ sub postgresql_get_reportdb_answers {
         -answer => \$answers->{'report-db-host'});
 
     if ($answers->{'report-db-host'} ne '') {
-        $answers->{'report-db-host'} = idn_to_ascii($answers->{'report-db-host'}, "utf8");
+        $answers->{'report-db-host'} = Net::LibIDN::idn_to_ascii($answers->{'report-db-host'}, "utf8");
         ask(
             -noninteractive => $opts->{"non-interactive"},
             -question => "Port",
@@ -887,36 +887,43 @@ sub postgresql_reportdb_setup {
 
     if ($opts->{"clear-db"}) {
         print Spacewalk::Setup::loc("** Database: --clear-db option used.  Clearing report database.\n");
-	postgresql_drop_reportdb($answers);
+	  postgresql_drop_reportdb($answers);
     }
 
     $ENV{PGSSLROOTCERT} = $answers->{'report-db-ca-cert'};
     $ENV{PGSSLMODE} = "verify-full";
 
-    if ($answers->{'report-db-host'} ne '') {
-            write_rhn_conf($answers, 'report-db-backend', 'report-db-host', 'report-db-port', 'report-db-name', 'report-db-user', 'report-db-password', 'report-db-ssl-enabled');
+    my @cmd = ('/usr/bin/uyuni-setup-reportdb', 'create', '--db', $answers->{'report-db-name'},
+        '--user', $answers->{'report-db-user'}, '--host', $answers->{'report-db-host'});
+
+    write_rhn_conf($answers, 'report-db-backend', 'report-db-host', 'report-db-port', 'report-db-name', 'report-db-user', 'report-db-password', 'report-db-ssl-enabled');
+    if ($answers->{'externaldb'}) {
+        push @cmd, "--externaldb-admin-user", $answers->{'externaldb-admin-user'},
+        "--externaldb-admin-password", $answers->{'externaldb-admin-password'},
+        "--externaldb-root-cert", $answers->{'report-db-ca-cert'};
+
+        if ($answers->{'externaldb-provider'} ne '') {
+            push @cmd, "--externaldb-provider", $answers->{'externaldb-provider'};
+        }
     }
     else {
-	    my @cmd = ("/usr/bin/uyuni-setup-reportdb",
-                       "create",
-                       "--db", $answers->{'report-db-name'},
-                       "--address", '*',
-                       "--remote", '0.0.0.0/0,::/0',
-                       "--user", $answers->{'report-db-user'});
-            if ($answers->{'report-db-password'} ne '') {
-                    push @cmd, "--password", $answers->{'report-db-password'};
-            }
-            else {
-                    push @cmd, "--autogenpw";
-            }
-
-            print_progress(-init_message => "*** Progress: #",
-                    -log_file_name => DB_INSTALL_LOG_FILE,
-                    -log_file_size => DB_INSTALL_LOG_SIZE,
-                    -err_message => "Could not install report database.\n",
-                    -err_code => 15,
-                    -system_opts => \@cmd);
+        push @cmd, "--address", '*', "--remote", '0.0.0.0/0,::/0';
     }
+
+    if ($answers->{'report-db-password'} ne '') {
+        push @cmd, "--password", $answers->{'report-db-password'};
+    }
+    else {
+        push @cmd, "--autogenpw";
+    }
+
+    print_progress(-init_message => "*** Progress: #",
+                      -log_file_name => DB_INSTALL_LOG_FILE,
+                      -log_file_size => DB_INSTALL_LOG_SIZE,
+                      -err_message => "Could not install report database.\n",
+                      -err_code => 15,
+                      -system_opts => \@cmd);
+    
     if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
         my %dbOptions = ();
         read_config(Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION, \%dbOptions);
@@ -1020,7 +1027,7 @@ sub postgresql_populate_db {
     if ($opts->{"clear-db"}) {
         print Spacewalk::Setup::loc("** Database: --clear-db option used.  Clearing database.\n");
         my $dbh = get_dbh($answers);
-        postgresql_clear_db($dbh);
+        postgresql_clear_db($dbh, $answers);
     }
 
     if (postgresql_test_db_schema($answers)) {
@@ -1035,7 +1042,7 @@ sub postgresql_populate_db {
         if ($answers->{"clear-db"} =~ /Y/i) {
             print Spacewalk::Setup::loc("** Database: Clearing database.\n");
             my $dbh = get_dbh($answers);
-            postgresql_clear_db($dbh);
+            postgresql_clear_db($dbh, $answers);
             print Spacewalk::Setup::loc("** Database: Re-populating database.\n");
         }
         else {
@@ -1088,24 +1095,24 @@ sub postgresql_test_db_schema {
 # then re-creating it. Also delete all the other known schemas that
 # Spacewalk might have created.
 
-my $POSTGRESQL_CLEAR_SCHEMA = <<EOS;
-        drop schema if exists rpm cascade ;
-        drop schema if exists rhn_exception cascade ;
-        drop schema if exists rhn_config cascade ;
-        drop schema if exists rhn_server cascade ;
-        drop schema if exists rhn_entitlements cascade ;
-        drop schema if exists rhn_bel cascade ;
-        drop schema if exists rhn_cache cascade ;
-        drop schema if exists rhn_channel cascade ;
-        drop schema if exists rhn_config_channel cascade ;
-        drop schema if exists rhn_org cascade ;
-        drop schema if exists rhn_user cascade ;
-        drop schema if exists logging cascade ;
-        drop schema if exists public cascade ;
-        create schema public authorization postgres ;
-EOS
+my @POSTGRESQL_CLEAR_SCHEMA = (
+        'drop schema if exists rpm cascade ;',
+        'drop schema if exists rhn_exception cascade ;',
+        'drop schema if exists rhn_config cascade ;',
+        'drop schema if exists rhn_server cascade ;',
+        'drop schema if exists rhn_entitlements cascade ;',
+        'drop schema if exists rhn_bel cascade ;',
+        'drop schema if exists rhn_cache cascade ;',
+        'drop schema if exists rhn_channel cascade ;',
+        'drop schema if exists rhn_config_channel cascade ;',
+        'drop schema if exists rhn_org cascade ;',
+        'drop schema if exists rhn_user cascade ;',
+        'drop schema if exists logging cascade ;',
+);
+
 sub postgresql_clear_db {
         my $dbh = shift;
+        my $answers = shift;
         my $do_shutdown = (defined($_[0]) ? shift : 1);
 
         if ($do_shutdown) {
@@ -1120,7 +1127,11 @@ sub postgresql_clear_db {
         local $dbh->{PrintError} = 1;
         local $dbh->{PrintWarn} = 0;
         local $dbh->{AutoCommit} = 1;
-        for my $c (split /\n/, $POSTGRESQL_CLEAR_SCHEMA) {
+        if (lc $answers->{'externaldb-provider'} ne 'aws') {
+                push @POSTGRESQL_CLEAR_SCHEMA, "drop schema if exists public cascade ;", 
+                "create schema public authorization postgres ;";
+        }
+        foreach my $c (@POSTGRESQL_CLEAR_SCHEMA) {
                 $dbh->do($c);
         }
         $dbh->disconnect;
@@ -1129,9 +1140,14 @@ sub postgresql_clear_db {
 
 sub postgresql_drop_reportdb {
         my $answers = shift;
+        my @cmd = ('/usr/bin/uyuni-setup-reportdb', 'remove', '--db', $answers->{'report-db-name'},
+        '--user', $answers->{'report-db-user'}, '--host', $answers->{'report-db-host'});
 
-        system_debug('/usr/bin/uyuni-setup-reportdb', 'remove',
-            '--db='.$answers->{'report-db-name'}, '--user='.$answers->{'report-db-user'});
+        if ($answers->{'externaldb'}) {
+            push @cmd, "--externaldb-admin-user", $answers->{'externaldb-admin-user'},
+            "--externaldb-admin-password", $answers->{'externaldb-admin-password'};
+        }
+        system_debug(@cmd);
         return 1;
 }
 

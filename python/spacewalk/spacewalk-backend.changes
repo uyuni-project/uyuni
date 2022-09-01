@@ -1,3 +1,8 @@
+- Upgrade Cobbler requirement to 3.3.3 or later
+- Added an optional component_type property to the LOG object 
+  and included it to a log message
+- Add an optional component property to the log messages
+- Make reposync use the configured http proxy with mirrorlist (bsc#1198168)
 - Prevent tracebacks on running spacewalk-repo-sync
   on loading update notice with no version specified in the meta data
 

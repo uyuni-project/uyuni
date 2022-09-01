@@ -1,3 +1,4 @@
+- Add Rocky Linux 9 to spacewalk-common-channels
 - spacewalk-common-channels now syncs the channels automatically
   on creation, if the new configuration property named
   'unify_custom_channel_management' is enabled

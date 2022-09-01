@@ -76,6 +76,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -1378,7 +1379,7 @@ public class ProfileHandler extends BaseHandler {
 
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
-        return ksData.getCobblerObject(loggedInUser).getKsMeta();
+        return ksData.getCobblerObject(loggedInUser).getKsMeta().get();
     }
 
     /**
@@ -1410,7 +1411,7 @@ public class ProfileHandler extends BaseHandler {
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         Profile profile = ksData.getCobblerObject(loggedInUser);
-        profile.setKsMeta(variables);
+        profile.setKsMeta(Optional.of(variables));
         profile.save();
 
         return 1;

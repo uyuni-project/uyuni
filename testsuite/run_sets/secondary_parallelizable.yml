@@ -15,6 +15,7 @@
 - features/secondary/srv_manage_activationkey.feature
 - features/secondary/srv_activationkey_api.feature
 - features/secondary/srv_distro_cobbler.feature
+- features/secondary/srv_cobbler_buildiso.feature
 - features/secondary/srv_mainpage.feature
 - features/secondary/srv_user_api.feature
 - features/secondary/srv_salt_download_endpoint.feature
@@ -50,6 +51,7 @@
 - features/secondary/min_rhlike_monitoring.feature
 - features/secondary/minssh_salt_install_package.feature
 - features/secondary/minssh_ansible_control_node.feature
+- features/secondary/min_deblike_monitoring.feature
 - features/secondary/min_deblike_salt_install_with_staging.feature
 - features/secondary/min_deblike_salt_install_package.feature
 - features/secondary/min_bootstrap_api.feature

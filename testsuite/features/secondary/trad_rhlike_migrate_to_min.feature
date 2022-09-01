@@ -33,14 +33,14 @@ Feature: Migrate a Red Hat-like traditional client into a Salt minion
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:.*Management" regex, refreshing the page
 
-  @proxy
+@proxy
   Scenario: Check connection from Red Hat-like traditional to proxy in the migration context
     Given I am on the Systems overview page of this "rhlike_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
-  @proxy
+@proxy
   Scenario: Check registration on proxy of traditional Red Hat-like in the migration context
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area

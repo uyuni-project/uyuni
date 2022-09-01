@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - uses: actions/setup-ruby@v1
       - id: files
-        uses: Ana06/get-changed-files@v2.0.0
+        uses: Ana06/get-changed-files@v2.1.0
         with:
           filter: '*.sql'
       - name: Run json generator

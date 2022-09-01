@@ -1,3 +1,16 @@
+- Detect the clients running on Amazon EC2 (bsc#1195624)
+- Adjust cobbler requirement to version 3.3.3
+- Support inherited values for kernel options from Cobbler API
+- Fix virtFileSize type after cobbler upgrade
+- Redefine available power_management.types for cobbler >= 3.3.1
+- fix state.apply result parsing in test mode (bsc#1201913)
+- require tomcat native interface to prevent misleading warning
+  in tomcat startup log (bsc#1202455)
+- Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
+- Reduce the length of image channel URL (bsc#1201220)
+- Fixed system search
+- update java dependencies
+- Enable Rocky Linux 9 for monitoring
 - Added a new configuration property to allow custom channels to
   be synced together with vendor channels.
 - add onlyRelevant argument to addErrataUpdate API
@@ -15,7 +28,7 @@ Wed Jul 27 14:18:34 CEST 2022 - jgonzalez@suse.com
   * Improved log handling in HTTP API (bsc#1199662)
   * set Channel GPG Key info from SCC data
   * set GPG Key Url as channel pillar data (bsc#1199984)
-  * new API endpoint for addErrataUpdate, that take 
+  * new API endpoint for addErrataUpdate, that take
     multiple servers as argument
   * Move ImageSync pillars to database (bsc#1199157)
   * Fix conflict when system is assigned to multiple instances of
@@ -88,7 +101,7 @@ Thu May 26 12:30:12 CEST 2022 - jgonzalez@suse.com
 Thu May 26 09:27:43 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.28-1
-  * During re-activation, recalculate grains if 
+  * During re-activation, recalculate grains if
     contact method has been changed (bsc#1199677)
   * autoinstallation: missing whitespace after install URL (bsc#1199888)
 

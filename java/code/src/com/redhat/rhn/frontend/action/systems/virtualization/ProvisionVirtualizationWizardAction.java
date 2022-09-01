@@ -197,28 +197,28 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
             cmd.setMemoryAllocation(Long.valueOf(form.getString(MEMORY_ALLOCATION)));
         }
         else {
-            cmd.setMemoryAllocation((long) this.getCobblerProfile(ctx).getVirtRam());
+            cmd.setMemoryAllocation((long) this.getCobblerProfile(ctx).getVirtRam().get());
         }
 
         if (!StringUtils.isEmpty(form.getString(VIRTUAL_CPUS))) {
             cmd.setVirtualCpus(Long.valueOf(form.getString(VIRTUAL_CPUS)));
         }
         else {
-            cmd.setVirtualCpus((long) this.getCobblerProfile(ctx).getVirtCpus());
+            cmd.setVirtualCpus((long) this.getCobblerProfile(ctx).getVirtCpus().get());
         }
 
         if (!StringUtils.isEmpty(form.getString(LOCAL_STORAGE_GB))) {
             cmd.setLocalStorageSize(Long.valueOf(form.getString(LOCAL_STORAGE_GB)));
         }
         else {
-            cmd.setLocalStorageSize((long) this.getCobblerProfile(ctx).getVirtFileSize());
+            cmd.setLocalStorageSize(this.getCobblerProfile(ctx).getVirtFileSize().get().longValue());
         }
 
         if (!StringUtils.isEmpty(form.getString(VIRTUAL_BRIDGE))) {
             cmd.setVirtBridge(form.getString(VIRTUAL_BRIDGE));
         }
         else {
-            cmd.setVirtBridge(this.getCobblerProfile(ctx).getVirtBridge());
+            cmd.setVirtBridge(this.getCobblerProfile(ctx).getVirtBridge().get());
         }
         if (!StringUtils.isEmpty(form.getString(MAC_ADDRESS))) {
             String macAddress = form.getString(MAC_ADDRESS);

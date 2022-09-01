@@ -51,6 +51,7 @@ from difflib import unified_diff
 from tempfile import mkstemp
 from textwrap import wrap
 from subprocess import Popen, PIPE
+from dateutil.parser import parse as parse_datetime, ParserError
 
 try:
     import json
@@ -682,7 +683,17 @@ def parse_api_args(args, sep=','):
     except ValueError:
         ret = [parse_str(a) for a in parse_list_str(args, sep)]
 
+    datetime_parser_lst(ret)
     return ret
+
+
+def datetime_parser_lst(lst):
+    for i, l in enumerate(lst):
+        if isinstance(l, str):
+            try:
+                lst[i] = parse_datetime(l)
+            except ParserError:
+                pass
 
 
 def json_dump(obj, fp, indent=4, **kwargs):

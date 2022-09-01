@@ -43,11 +43,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -1562,8 +1564,9 @@ public class KickstartData {
     }
 
     /**
-     * Gets the Registration Type (i.e. the code that determines if
-     * the ks script needs to generate a reactivation key or not)
+     * Gets the Registration Type (i.e. the code that determines if the ks script needs to generate a reactivation key
+     * or not)
+     *
      * @param user the user object needed to load the profile from cobbler
      * @return the registration type
      */
@@ -1573,20 +1576,30 @@ public class KickstartData {
             return RegistrationType.getDefault();
         }
 
-        return RegistrationType.find((String)prof.getKsMeta().get(
+        Optional<Map<String, Object>> ksMeta = prof.getKsMeta();
+        if (ksMeta.isEmpty()) {
+            return RegistrationType.getDefault();
+        }
+        return RegistrationType.find((String)ksMeta.get().get(
                 RegistrationType.COBBLER_VAR));
     }
 
     /**
      * Sets the registration type
-     * @param type the refgistration type
+     * @param type the registration type
      * @param user the user needed to load the profile form cobbler
      */
     public void  setRegistrationType(RegistrationType type, User user) {
         Profile prof = getCobblerObject(user);
-        Map<String, Object> meta = prof.getKsMeta();
+        Map<String, Object> meta;
+        if (prof.getKsMeta().isPresent()) {
+            meta = prof.getKsMeta().get();
+        }
+        else {
+            meta = new HashMap<>();
+        }
         meta.put(RegistrationType.COBBLER_VAR, type.getType());
-        prof.setKsMeta(meta);
+        prof.setKsMeta(Optional.of(meta));
         prof.save();
     }
 

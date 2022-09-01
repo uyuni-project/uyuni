@@ -130,8 +130,8 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
                         " empty, but corresponding fields in its cobbler distro (uid %s)" +
                         " are populated. Aligning the kickstartable tree with the cobbler" +
                         " distro now.", candidate.getId(), distro.getUid()));
-                candidate.setKernelOptions(distro.getKernelOptionsString());
-                candidate.setKernelOptionsPost(distro.getKernelOptionsPostString());
+                candidate.setKernelOptions(distro.convertOptionsMap(distro.getKernelOptions().get()));
+                candidate.setKernelOptionsPost(distro.convertOptionsMap(distro.getKernelOptionsPost().get()));
                 KickstartFactory.saveKickstartableTree(candidate);
             }
         }

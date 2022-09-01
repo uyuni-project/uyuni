@@ -197,7 +197,7 @@ export function ProxyConfig() {
         <Text
           name="proxyFQDN"
           label={t("Proxy FQDN")}
-          hint={t("The FQDN of the machine where the containers are hosted")}
+          hint={t("The unique, DNS-resolvable FQDN of this proxy. It should be different from any registered clients.")}
           required
           placeholder={t("e.g., proxy.domain.com")}
           labelClass="col-md-3"

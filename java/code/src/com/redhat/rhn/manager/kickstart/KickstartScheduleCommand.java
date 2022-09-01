@@ -594,10 +594,19 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             else {
                 // RegistrationType.DELETION && RegistrationType.NONE
                 CobblerConnection connection = CobblerXMLRPCHelper
-                        .getConnection(ConfigDefaults.get()
-                                .getCobblerAutomatedUser());
-                tokenList = org.cobbler.Profile.lookupById(connection,
-                        ksdata.getCobblerId()).getRedHatManagementKey();
+                        .getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
+                org.cobbler.Profile profile = org.cobbler.Profile.lookupById(
+                        connection,
+                        ksdata.getCobblerId()
+                );
+                if (profile.getRedHatManagementKey().isPresent()) {
+                    tokenList = profile.getRedHatManagementKey().get();
+                }
+                else {
+                    // If we need a guaranteed token then uncomment the following line and remove the active code
+                    // tokenList = profile.getResolvedRedHatManagementKey();
+                    tokenList = "";
+                }
             }
 
             cmd = getCobblerSystemCreateCommand(user, server,

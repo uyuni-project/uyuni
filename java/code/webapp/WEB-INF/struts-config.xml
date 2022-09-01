@@ -455,7 +455,7 @@
              <form-property name="virt_disk_path" type="java.lang.String"/>
              <form-property name="virt_mem_mb"  type="java.lang.Integer"/>
              <form-property name="virt_cpus"  type="java.lang.Integer"/>
-             <form-property name="virt_disk_size"  type="java.lang.Integer"/>
+             <form-property name="virt_disk_size"  type="java.lang.Double"/>
              <form-property name="virt_bridge" type="java.lang.String"/>
 
         </form-bean>
@@ -599,7 +599,7 @@
             <form-property name="virt_disk_path" type="java.lang.String"/>
             <form-property name="virt_mem_mb"  type="java.lang.Integer"/>
             <form-property name="virt_cpus"  type="java.lang.Integer"/>
-            <form-property name="virt_disk_size"  type="java.lang.Integer"/>
+            <form-property name="virt_disk_size"  type="java.lang.Double"/>
             <form-property name="virt_bridge" type="java.lang.String"/>
             <form-property name="no_scrub" type="java.lang.String" initial="contents"/>
         </form-bean>

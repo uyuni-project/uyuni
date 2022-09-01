@@ -166,7 +166,7 @@ are executed only if the Debian-like minion is available.
 ### Testing Uyuni
 
 The test suite will determine automatically whether your server
-is running Uyuni or SUSE Manager
+is running Uyuni or SUSE Manager.
 
 Inside the testsuite, the scenarios that are tagged with
 

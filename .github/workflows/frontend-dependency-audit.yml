@@ -7,6 +7,7 @@ on:
       - master
     paths:
       - 'web/html/src/package.json'
+      - '.github/workflows/frontend-dependency-audit.yml'
 
 jobs:
   frontend_dependency_audit:
@@ -17,10 +18,10 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -29,7 +30,7 @@ jobs:
       run: echo "::set-output name=dir::$(yarn cache dir)"
 
     - name: Use Yarn cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: yarn-cache
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
