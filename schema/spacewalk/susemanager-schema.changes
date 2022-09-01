@@ -1,3 +1,4 @@
+- Add subtypes for Amazon EC2 virtual instances (bsc#1195624)
 - Fix migration of image actions (bsc#1202272)
 - Add Rocky Linux 9 and EPEL 9 key
 - improve schema compatibility with Amazon RDS
