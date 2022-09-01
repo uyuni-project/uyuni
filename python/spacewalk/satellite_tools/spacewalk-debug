@@ -141,13 +141,17 @@ cp -fapRd /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
 rm -r $DIR/conf/rhn/sysconfig/rhn/schema-upgrade
 
 # there might be backups of rhn.conf so clean them up as well (bsc#1146419)
-find $DIR/conf/rhn -name 'rhn.conf*' -o -name 'uln.conf*' -exec sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -o -name 'uln.conf*' -exec sed -i 's/^server.secret_key.*/server.secret_key = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -o -name 'uln.conf*' -exec sed -i 's/^session_secret_.*/session_secret_N = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -o -name 'uln.conf*' -exec sed -i 's/^web.session_swap_secret_.*/web.session_swap_secret_N = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -o -name 'uln.conf*' -exec sed -i 's/^db_password.*/db_password = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -o -name 'uln.conf*' -exec sed -i 's/^report_db_password.*/report_db_password = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -o -name 'uln.conf*' -exec sed -i 's/^server.satellite.http_proxy_password.*/server.satellite.http_proxy_password = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.secret_key.*/server.secret_key = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^session_secret_.*/session_secret_N = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^web.session_swap_secret_.*/web.session_swap_secret_N = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^db_password.*/db_password = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^report_db_password.*/report_db_password = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.satellite.http_proxy_password.*/server.satellite.http_proxy_password = <replaced_by_debug_tool>/' {} \;
+
+# cleanup also some other files
+find $DIR/conf/rhn -name 'uln.conf*' -exec sed -i 's/^password.*/password = <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/rhn -name 'signing.conf*' -exec sed -i 's/^GPGPASS=.*/GPGPASS=<replaced_by_debug_tool>/' {} \;
 
 if [ -f /etc/tnsnames.ora ] ; then
     cp -fad /etc/tnsnames.ora $DIR/conf
