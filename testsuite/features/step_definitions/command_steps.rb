@@ -385,6 +385,7 @@ end
 When(/^I ensure the channel "([^"]*)" has started syncing$/) do |channel_label|
   reposync_not_running_streak = 0
   # wait a maximum of 120s for reposync to start
+  equal_channels = false
   while reposync_not_running_streak <= 120
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
@@ -394,11 +395,16 @@ When(/^I ensure the channel "([^"]*)" has started syncing$/) do |channel_label|
     end
     process = command_output.split("\n")[0]
     channel = process.split[5]
-    return if channel == channel_label
+    log "Command output #{command_output}, channel : #{channel_label}"
+    if channel == channel_label
+      equal_channels = true
+      break
+    end 
     log "Channel #{channel} is syncing"
     reposync_not_running_streak += 1
+    sleep 1
   end
-  raise "Channel #{channel_label} didn't start syncing in 2 minutes"
+  raise "Channel #{channel_label} didn't start syncing in 2 minutes" unless equal_channels
 end
 
 Then(/^the reposync logs should not report errors$/) do
