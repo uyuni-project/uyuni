@@ -61,10 +61,10 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         builder = new GuestBuilder(user);
         SaltApi saltApi = new TestSaltApi();
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
+        FormulaMonitoringManager formulaMonitoringManager = new FormulaMonitoringManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new TestVirtManager(), new FormulaMonitoringManager(), serverGroupManager),
-                new SystemEntitler(saltApi, new TestVirtManager(), new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(new TestVirtManager(), formulaMonitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, new TestVirtManager(), formulaMonitoringManager, serverGroupManager)
         );
     }
 

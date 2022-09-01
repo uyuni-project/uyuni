@@ -180,11 +180,12 @@ public class SystemManager extends BaseManager {
         this.serverGroupFactory = serverGroupFactoryIn;
         this.saltApi = saltApiIn;
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiIn);
+        FormulaMonitoringManager formulaMonitoringManager = new FormulaMonitoringManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltApiIn), new FormulaMonitoringManager(),
+                new SystemUnentitler(new VirtManagerSalt(saltApiIn), formulaMonitoringManager,
                         serverGroupManager),
                 new SystemEntitler(saltApiIn, new VirtManagerSalt(saltApiIn),
-                        new FormulaMonitoringManager(), serverGroupManager)
+                        formulaMonitoringManager, serverGroupManager)
         );
     }
 

@@ -299,7 +299,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {
         VirtManager virtManager = new VirtManagerSalt(saltApi);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, groupManager),

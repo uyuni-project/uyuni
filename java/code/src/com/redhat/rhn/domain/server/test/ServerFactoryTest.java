@@ -148,7 +148,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             saltKeyUtils
     );
     private static final VirtManager virtManager = new VirtManagerSalt(saltApi);
-    private static final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private static final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private static final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)

@@ -390,7 +390,8 @@ public class ImageTestUtils {
      * @return the minion server
      * @throws Exception the exception
      */
-    public static MinionServer createBuildHost(SystemEntitlementManager entitlementManager, User user) throws Exception {
+    public static MinionServer createBuildHost(SystemEntitlementManager entitlementManager, User user)
+            throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         entitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
         return server;

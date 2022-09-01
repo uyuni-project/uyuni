@@ -104,9 +104,10 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
         SaltApi saltApi = new TestSaltApi();
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
+        FormulaMonitoringManager formulaMonitoringManager = new FormulaMonitoringManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(), serverGroupManager),
-                new SystemEntitler(saltApi, virtManager, new FormulaMonitoringManager(), serverGroupManager)
+                new SystemUnentitler(virtManager, formulaMonitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, virtManager, formulaMonitoringManager, serverGroupManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);

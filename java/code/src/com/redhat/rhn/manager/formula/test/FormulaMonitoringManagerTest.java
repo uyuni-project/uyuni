@@ -52,7 +52,7 @@ import java.util.Map;
 public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
 
     static final String TEMP_PATH = "formulas/";
-    private FormulaMonitoringManager manager = new FormulaMonitoringManager();
+    private FormulaMonitoringManager manager = new FormulaMonitoringManager(new TestSaltApi());
     private Path metadataDir;
 
     public FormulaMonitoringManagerTest() { }

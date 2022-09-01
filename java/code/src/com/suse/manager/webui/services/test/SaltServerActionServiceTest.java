@@ -140,12 +140,12 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
         saltServerActionService = createSaltServerActionService(saltService, saltService);
-        ServerGroupManager serverGroupManager = new ServerGroupManager(new TestSaltApi());
+        SaltApi saltApi = new TestSaltApi();
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
+        FormulaMonitoringManager formulaMonitoringManager = new FormulaMonitoringManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltService, virtManager, new FormulaMonitoringManager(),
-                        serverGroupManager)
+                new SystemUnentitler(virtManager, formulaMonitoringManager, serverGroupManager),
+                new SystemEntitler(saltService, virtManager, formulaMonitoringManager, serverGroupManager)
         );
 
         taskomaticMock = mock(TaskomaticApi.class);

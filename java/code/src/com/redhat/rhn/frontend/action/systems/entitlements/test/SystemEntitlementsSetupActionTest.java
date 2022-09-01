@@ -71,11 +71,12 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
+        FormulaMonitoringManager formulaMonitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager(), serverGroupManager),
+                        formulaMonitoringManager, serverGroupManager),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager(), serverGroupManager)
+                        formulaMonitoringManager, serverGroupManager)
         );
         context.checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));

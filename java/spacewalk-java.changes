@@ -1,3 +1,4 @@
+- Refresh pillar data (bsc#1197724)
 - Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
 - Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
 - Support Pay-as-you-go new CA location for SLES15SP4

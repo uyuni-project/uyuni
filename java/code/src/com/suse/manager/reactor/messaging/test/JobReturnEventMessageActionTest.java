@@ -163,11 +163,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
+        FormulaMonitoringManager formulaMonitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
+                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), formulaMonitoringManager,
                         serverGroupManager),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager(), serverGroupManager)
+                        formulaMonitoringManager, serverGroupManager)
         );
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         clusterManager = new ClusterManager(
