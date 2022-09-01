@@ -1,3 +1,5 @@
+- Add mgrnet salt module with mgrnet.dns_fqnd function implementation
+  allowing to get all possible FQDNs from DNS (bsc#1199726)
 - Copy grains file with util.mgr_switch_to_venv_minion state apply
 - Remove the message 'rpm: command not found' on using Salt SSH
   with Debian based systems which has no Salt Bundle
