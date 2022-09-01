@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -222,8 +221,6 @@ public class DailySummary extends RhnJavaJob {
                 TaskConstants.TASK_QUERY_USERS_AWOL_SERVERS);
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
-        params.put("checkin_threshold",
-                Config.get().getInteger(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
 
         return m.execute(params);
     }

@@ -16,10 +16,9 @@ package com.redhat.rhn.frontend.action.systems.test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -92,7 +91,7 @@ public class SystemListSetupActionTest extends RhnMockStrutsTestCase {
         }
         assertTrue(isThere);
 
-        int secondsOld = Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD) *
+        long secondsOld = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L) *
                          86400000 + 50000000;
         //awol
         Date now = new Date();

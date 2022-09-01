@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -89,11 +87,6 @@ public class SummaryPopulation extends RhnJavaJob {
                 TaskConstants.TASK_QUERY_SUMMARYPOP_AWOL_SERVER_IN_ORGS);
 
         Map<String, Object> params = new HashMap<>();
-        int checkin = Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
-        if (log.isDebugEnabled()) {
-            log.debug("Server checkin threshold for AWOL servers: {}", checkin);
-        }
-        params.put("checkin_threshold", checkin);
         return m.execute(params);
     }
 

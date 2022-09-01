@@ -40,6 +40,7 @@ import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.dto.SystemGroupID;
@@ -946,8 +947,8 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<ShortSystemInfo> systemListShortInactive(User user,
             PageControl pc) {
-        return systemListShortInactive(user, Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD), pc);
+        return systemListShortInactive(user,
+                SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L), pc);
     }
 
     /**
@@ -959,7 +960,7 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     public static DataResult<ShortSystemInfo> systemListShortInactive(
-            User user, int inactiveThreshold, PageControl pc) {
+            User user, long inactiveThreshold, PageControl pc) {
         SelectMode m = ModeFactory.getMode(
                 "System_queries", "xmlrpc_visible_to_user_inactive",
                 ShortSystemInfo.class);
@@ -984,8 +985,6 @@ public class SystemManager extends BaseManager {
                 "System_queries", "xmlrpc_visible_to_user_active", ShortSystemInfo.class);
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
-        params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<>();
 
         return makeDataResult(params, elabParams, pc, m, ShortSystemInfo.class);
@@ -1098,8 +1097,6 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<>();
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
     }
@@ -1167,8 +1164,6 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
-                .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<>();
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
     }

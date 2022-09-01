@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.ProvisionState;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.config.ConfigChannelType;
@@ -1763,7 +1764,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public boolean isInactive() {
         Date lastCheckin = this.getLastCheckin();
         long millisInDay = (1000 * 60 * 60 * 24);
-        long threshold = Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD, 1);
+        long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
         Date yesterday = new Timestamp(System.currentTimeMillis() -
                 (millisInDay * threshold));
         return lastCheckin.before(yesterday);
