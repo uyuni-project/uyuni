@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-29 08:14+0000\n"
+"POT-Creation-Date: 2022-09-01 16:00+0200\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -315,137 +315,26 @@ msgstr ""
 msgid "Toggle section visibility"
 msgstr ""
 
-#: ../html/src/components/input/DateTime.stories.tsx:29
-msgid "Time"
-msgstr ""
+#: ../html/src/components/input/FormMultiInput.tsx:158
+msgid "Remove"
+msgstr "Rimuovi"
 
-#: ../html/src/components/input/DateTime.stories.tsx:30
-#: ../html/src/components/input/FormMultiInput.stories.tsx:72
-#: ../html/src/components/input/FormMultiInput.stories.tsx:122
-#: ../html/src/components/input/FormMultiInput.stories.tsx:164
-#: ../html/src/components/input/FormMultiInput.stories.tsx:233
-#: ../html/src/components/input/Password.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:39
-#: ../html/src/components/input/Radio.stories.tsx:66
-#: ../html/src/components/input/Radio.stories.tsx:93
-#: ../html/src/components/input/Radio.stories.tsx:121
-#: ../html/src/components/input/Range.stories.tsx:46
-#: ../html/src/components/input/Select.stories.tsx:35
-#: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
-msgid "Submit"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:28
-#: ../html/src/components/input/FormMultiInput.stories.tsx:89
-#: ../html/src/components/input/FormMultiInput.stories.tsx:139
-#: ../html/src/components/input/FormMultiInput.stories.tsx:188
-msgid "Users"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:53
-#: ../html/src/components/input/Text.stories.tsx:29
-msgid "First Name"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:55
-#: ../html/src/components/input/FormMultiInput.stories.tsx:64
-#: ../html/src/components/input/FormMultiInput.stories.tsx:114
-#: ../html/src/components/input/FormMultiInput.stories.tsx:216
-#: ../html/src/components/input/FormMultiInput.stories.tsx:224
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
-#: ../html/src/components/input/Text.stories.tsx:31
-#: ../html/src/components/input/Text.stories.tsx:40
 msgid "Minimum 2 characters"
 msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:62
-msgid "Last Name"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:112
-#: ../html/src/manager/login/uyuni/login.tsx:54
-msgid "Login"
-msgstr ""
-
-#: ../html/src/components/input/FormMultiInput.tsx:155
-msgid "Remove"
-msgstr "Rimuovi"
 
 #: ../html/src/components/input/InputBase.tsx:276
 msgid "required"
 msgstr ""
 
-#: ../html/src/components/input/Password.stories.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:68
-#: ../html/src/manager/login/uyuni/login.tsx:65
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
-msgid "Password"
-msgstr "Password"
-
-#: ../html/src/components/input/Password.stories.tsx:31
-msgid "Minimum 4 characters"
-msgstr ""
-
-#: ../html/src/components/input/Radio.stories.tsx:29
-#: ../html/src/components/input/Radio.stories.tsx:55
-#: ../html/src/components/input/Radio.stories.tsx:83
-#: ../html/src/components/input/Radio.stories.tsx:110
-#: ../html/src/components/input/Select.stories.tsx:29
-#: ../html/src/components/input/Select.stories.tsx:122
-msgid "Level"
-msgstr ""
-
-#: ../html/src/components/input/Radio.stories.tsx:34
-#: ../html/src/components/input/Radio.stories.tsx:61
-#: ../html/src/components/input/Radio.stories.tsx:88
-#: ../html/src/components/input/Radio.stories.tsx:116
-msgid "Beginner"
-msgstr ""
-
-#: ../html/src/components/input/Radio.stories.tsx:35
-#: ../html/src/components/input/Radio.stories.tsx:62
-#: ../html/src/components/input/Radio.stories.tsx:89
-#: ../html/src/components/input/Radio.stories.tsx:117
-msgid "Normal"
-msgstr ""
-
-#: ../html/src/components/input/Radio.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:63
-#: ../html/src/components/input/Radio.stories.tsx:90
-#: ../html/src/components/input/Radio.stories.tsx:118
-msgid "Expert"
-msgstr ""
-
-#: ../html/src/components/input/Range.stories.tsx:33
-#, fuzzy
-msgid "Port range"
-msgstr "Nessuna modifica"
-
-#: ../html/src/components/input/Range.stories.tsx:35
 #: ../html/src/components/input/Range.test.tsx:71
 msgid "Both values need to be positive integers"
 msgstr ""
 
-#: ../html/src/components/input/Select.stories.tsx:54
-msgid "Flavor"
-msgstr ""
-
-#: ../html/src/components/input/Select.stories.tsx:56
 #: ../html/src/components/input/Select.test.tsx:58
 msgid "Start typing..."
-msgstr ""
-
-#: ../html/src/components/input/Select.stories.tsx:57
-msgid "No flavors"
 msgstr ""
 
 #: ../html/src/components/input/Select.test.tsx:59
@@ -1027,6 +916,17 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr ""
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:68
+#: ../html/src/manager/login/uyuni/login.tsx:65
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
+msgid "Password"
+msgstr "Password"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
@@ -3385,6 +3285,10 @@ msgstr ""
 msgid "Learn more about"
 msgstr ""
 
+#: ../html/src/manager/login/uyuni/login.tsx:54
+msgid "Login"
+msgstr ""
+
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:74
 msgid "Skip to the last maintenance window"
 msgstr ""
@@ -4068,7 +3972,9 @@ msgid "Proxy FQDN"
 msgstr "Proxy"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-msgid "The FQDN of the machine where the containers are hosted"
+msgid ""
+"The unique, DNS-resolvable FQDN of this proxy. It should be different from "
+"any registered clients."
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:202
@@ -5238,6 +5144,11 @@ msgstr ""
 msgid "Graphics"
 msgstr ""
 
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
+#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
+msgid "Submit"
+msgstr ""
+
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
 msgid "Retry"
 msgstr ""
@@ -6108,6 +6019,10 @@ msgstr ""
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Port range"
+#~ msgstr "Nessuna modifica"
 
 #~ msgid "Add"
 #~ msgstr "Aggiungi"

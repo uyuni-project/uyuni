@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-29 08:14+0000\n"
+"POT-Creation-Date: 2022-09-01 16:00+0200\n"
 "PO-Revision-Date: 2022-08-29 08:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -325,137 +325,27 @@ msgstr "비밀번호 표시/숨기기"
 msgid "Toggle section visibility"
 msgstr "섹션 표시 여부 전환"
 
-#: ../html/src/components/input/DateTime.stories.tsx:29
-msgid "Time"
-msgstr "시간"
+#: ../html/src/components/input/FormMultiInput.tsx:158
+msgid "Remove"
+msgstr "제거"
 
-#: ../html/src/components/input/DateTime.stories.tsx:30
-#: ../html/src/components/input/FormMultiInput.stories.tsx:72
-#: ../html/src/components/input/FormMultiInput.stories.tsx:122
-#: ../html/src/components/input/FormMultiInput.stories.tsx:164
-#: ../html/src/components/input/FormMultiInput.stories.tsx:233
-#: ../html/src/components/input/Password.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:39
-#: ../html/src/components/input/Radio.stories.tsx:66
-#: ../html/src/components/input/Radio.stories.tsx:93
-#: ../html/src/components/input/Radio.stories.tsx:121
-#: ../html/src/components/input/Range.stories.tsx:46
-#: ../html/src/components/input/Select.stories.tsx:35
-#: ../html/src/components/input/Text.stories.tsx:44
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
-msgid "Submit"
-msgstr "제출"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:28
-#: ../html/src/components/input/FormMultiInput.stories.tsx:89
-#: ../html/src/components/input/FormMultiInput.stories.tsx:139
-#: ../html/src/components/input/FormMultiInput.stories.tsx:188
-msgid "Users"
-msgstr "사용자"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:53
-#: ../html/src/components/input/Text.stories.tsx:29
-msgid "First Name"
-msgstr "이름"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:55
-#: ../html/src/components/input/FormMultiInput.stories.tsx:64
-#: ../html/src/components/input/FormMultiInput.stories.tsx:114
-#: ../html/src/components/input/FormMultiInput.stories.tsx:216
-#: ../html/src/components/input/FormMultiInput.stories.tsx:224
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
-#: ../html/src/components/input/Text.stories.tsx:31
-#: ../html/src/components/input/Text.stories.tsx:40
 msgid "Minimum 2 characters"
 msgstr "2자 이상"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:62
-msgid "Last Name"
-msgstr "성"
-
-#: ../html/src/components/input/FormMultiInput.stories.tsx:112
-#: ../html/src/manager/login/uyuni/login.tsx:54
-msgid "Login"
-msgstr "로그인"
-
-#: ../html/src/components/input/FormMultiInput.tsx:155
-msgid "Remove"
-msgstr "제거"
 
 #: ../html/src/components/input/InputBase.tsx:276
 msgid "required"
 msgstr "필수"
 
-#: ../html/src/components/input/Password.stories.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:68
-#: ../html/src/manager/login/uyuni/login.tsx:65
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
-msgid "Password"
-msgstr "비밀번호"
-
-#: ../html/src/components/input/Password.stories.tsx:31
-msgid "Minimum 4 characters"
-msgstr "4자 이상"
-
-#: ../html/src/components/input/Radio.stories.tsx:29
-#: ../html/src/components/input/Radio.stories.tsx:55
-#: ../html/src/components/input/Radio.stories.tsx:83
-#: ../html/src/components/input/Radio.stories.tsx:110
-#: ../html/src/components/input/Select.stories.tsx:29
-#: ../html/src/components/input/Select.stories.tsx:122
-msgid "Level"
-msgstr "레벨"
-
-#: ../html/src/components/input/Radio.stories.tsx:34
-#: ../html/src/components/input/Radio.stories.tsx:61
-#: ../html/src/components/input/Radio.stories.tsx:88
-#: ../html/src/components/input/Radio.stories.tsx:116
-msgid "Beginner"
-msgstr "초급자"
-
-#: ../html/src/components/input/Radio.stories.tsx:35
-#: ../html/src/components/input/Radio.stories.tsx:62
-#: ../html/src/components/input/Radio.stories.tsx:89
-#: ../html/src/components/input/Radio.stories.tsx:117
-msgid "Normal"
-msgstr "일반"
-
-#: ../html/src/components/input/Radio.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:63
-#: ../html/src/components/input/Radio.stories.tsx:90
-#: ../html/src/components/input/Radio.stories.tsx:118
-msgid "Expert"
-msgstr "전문가"
-
-#: ../html/src/components/input/Range.stories.tsx:33
-msgid "Port range"
-msgstr "포트 범위"
-
-#: ../html/src/components/input/Range.stories.tsx:35
 #: ../html/src/components/input/Range.test.tsx:71
 msgid "Both values need to be positive integers"
 msgstr "두 값 모두 양의 정수여야 합니다."
 
-#: ../html/src/components/input/Select.stories.tsx:54
-msgid "Flavor"
-msgstr "특징"
-
-#: ../html/src/components/input/Select.stories.tsx:56
 #: ../html/src/components/input/Select.test.tsx:58
 msgid "Start typing..."
 msgstr "입력 시작..."
-
-#: ../html/src/components/input/Select.stories.tsx:57
-msgid "No flavors"
-msgstr "특징 없음"
 
 #: ../html/src/components/input/Select.test.tsx:59
 msgid "No flavor"
@@ -1054,6 +944,17 @@ msgstr "SSH 포트"
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr "사용자"
+
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:68
+#: ../html/src/manager/login/uyuni/login.tsx:65
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
+msgid "Password"
+msgstr "비밀번호"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
@@ -3463,6 +3364,10 @@ msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?
 msgid "Learn more about"
 msgstr "자세히 알아보기"
 
+#: ../html/src/manager/login/uyuni/login.tsx:54
+msgid "Login"
+msgstr "로그인"
+
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:74
 msgid "Skip to the last maintenance window"
 msgstr "마지막 유지보수 기간으로 건너뛰기"
@@ -4154,8 +4059,10 @@ msgid "Proxy FQDN"
 msgstr "프록시 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-msgid "The FQDN of the machine where the containers are hosted"
-msgstr "컨테이너가 호스팅되는 시스템의 FQDN"
+msgid ""
+"The unique, DNS-resolvable FQDN of this proxy. It should be different from "
+"any registered clients."
+msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
@@ -5347,6 +5254,11 @@ msgstr "VM 정의를 위한 클러스터 공유 폴더 경로"
 msgid "Graphics"
 msgstr "그래픽"
 
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
+#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
+msgid "Submit"
+msgstr "제출"
+
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
 msgid "Retry"
 msgstr "재시도"
@@ -6220,6 +6132,45 @@ msgstr "정의되지 않음"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "푸 {0} 티 {1}"
+
+#~ msgid "Time"
+#~ msgstr "시간"
+
+#~ msgid "Users"
+#~ msgstr "사용자"
+
+#~ msgid "First Name"
+#~ msgstr "이름"
+
+#~ msgid "Last Name"
+#~ msgstr "성"
+
+#~ msgid "Minimum 4 characters"
+#~ msgstr "4자 이상"
+
+#~ msgid "Level"
+#~ msgstr "레벨"
+
+#~ msgid "Beginner"
+#~ msgstr "초급자"
+
+#~ msgid "Normal"
+#~ msgstr "일반"
+
+#~ msgid "Expert"
+#~ msgstr "전문가"
+
+#~ msgid "Port range"
+#~ msgstr "포트 범위"
+
+#~ msgid "Flavor"
+#~ msgstr "특징"
+
+#~ msgid "No flavors"
+#~ msgstr "특징 없음"
+
+#~ msgid "The FQDN of the machine where the containers are hosted"
+#~ msgstr "컨테이너가 호스팅되는 시스템의 FQDN"
 
 #~ msgid "Server FQDN"
 #~ msgstr "서버 FQDN"
