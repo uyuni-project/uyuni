@@ -257,7 +257,7 @@ Given(/^cobblerd is running$/) do
   raise 'cobblerd is not running' unless ct.running?
 end
 
-Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
+When(/^I create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
@@ -288,7 +288,7 @@ Given(/^distro "([^"]*)" exists$/) do |distro|
   raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
 end
 
-Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2, arg3|
+When(/^I create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2, arg3|
   ct = CobblerTest.new
   ct.login(arg2, arg3)
   raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
