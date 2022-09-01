@@ -10,8 +10,8 @@ class XmlrpcClient
     @xmlrpc_client = XMLRPC::Client.new2('https://' + host + '/rpc/api', nil, DEFAULT_TIMEOUT)
   end
 
-  def call(name, *parameters)
-    params = parameters.first || {}
+  def call(name, params)
+    # TODO: What happens if params.nil?
     @xmlrpc_client.call(name, *params.values)
   end
 end
