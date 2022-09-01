@@ -394,11 +394,12 @@ When(/^I ensure the channel "([^"]*)" has started syncing$/) do |channel_label|
     end
     process = command_output.split("\n")[0]
     channel = process.split[5]
-    return if channel == channel_label
+    break if channel == channel_label
+
     log "Channel #{channel} is syncing"
     reposync_not_running_streak += 1
   end
-  raise "Channel #{channel_label} didn't start syncing in 2 minutes"
+  raise StandardError "Channel #{channel_label} didn't start syncing in 2 minutes" if reposync_not_running_streak > 120
 end
 
 Then(/^the reposync logs should not report errors$/) do
