@@ -387,7 +387,7 @@
         </context-group>
         <target>API</target>
       </trans-unit>
-      <trans-unit id="FAQs" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="FAQs" xml:space="preserve">
         <source>FAQs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -450,7 +450,7 @@
         </context-group>
         <target>Prüfen</target>
       </trans-unit>
-      <trans-unit id="OpenSCAP" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="OpenSCAP" xml:space="preserve">
         <source>OpenSCAP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>

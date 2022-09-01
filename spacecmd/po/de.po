@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 07:28+0000\n"
-"PO-Revision-Date: 2021-11-07 18:12+0000\n"
+"POT-Creation-Date: 2022-09-01 16:00+0200\n"
+"PO-Revision-Date: 2022-08-02 12:06+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd/de/"
 ">\n"
@@ -18,11 +18,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
 msgstr ""
+"activationkey_addpackages: Pakete zu einem Aktivierungsschlüssel hinzufügen"
 
 #: ../src/spacecmd/activationkey.py:51
 msgid "usage: activationkey_addpackages KEY <PACKAGE ...>"
@@ -3223,8 +3224,8 @@ msgstr ""
 msgid "API (%s) is too old (>= %s required)"
 msgstr ""
 
-#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:249
-#: ../src/spacecmd/utils.py:563
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:250
+#: ../src/spacecmd/utils.py:564
 #, python-format
 msgid "Could not read %s"
 msgstr ""
@@ -3820,7 +3821,8 @@ msgid ""
 "EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "parameters:\n"
-"  PROXY_FQDN  the fully qualified domain name of the proxy to create.\n"
+"  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy. It should be "
+"different from any registered clients.\n"
 "  SERVER_FQDN the fully qualified domain name of the server to connect to "
 "proxy to.\n"
 "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
@@ -3856,7 +3858,8 @@ msgid ""
 "EMAIL\n"
 "\n"
 "parameters:\n"
-"  PROXY_FQDN  the fully qualified domain name of the proxy to create.\n"
+"  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy. It should be "
+"different from any registered clients.\n"
 "  SERVER_FQDN the fully qualified domain name of the server to connect to "
 "proxy to.\n"
 "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
@@ -6224,7 +6227,7 @@ msgstr ""
 msgid "Scheduled: %i system(s)"
 msgstr ""
 
-#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:245
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:246
 #, python-format
 msgid "Could not remove %s"
 msgstr ""
@@ -7891,127 +7894,127 @@ msgstr ""
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:134
+#: ../src/spacecmd/utils.py:135
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:136
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:140
+#: ../src/spacecmd/utils.py:141
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:161
+#: ../src/spacecmd/utils.py:162
 #, python-format
 msgid "Couldn't write to %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:206
+#: ../src/spacecmd/utils.py:207
 msgid "Could not open the temporary file"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:225
+#: ../src/spacecmd/utils.py:226
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:227
+#: ../src/spacecmd/utils.py:228
 #, python-format
 msgid "General failure running editor: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:230
+#: ../src/spacecmd/utils.py:231
 msgid "No editors found"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:369
+#: ../src/spacecmd/utils.py:370
 msgid "Invalid time provided"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:458
+#: ../src/spacecmd/utils.py:459
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:466
+#: ../src/spacecmd/utils.py:467
 msgid "Security Errata"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:475
+#: ../src/spacecmd/utils.py:476
 msgid "Bug Fix Errata"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:484
+#: ../src/spacecmd/utils.py:485
 msgid "Enhancement Errata"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:494
+#: ../src/spacecmd/utils.py:495
 msgid "Current Selections"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:504
+#: ../src/spacecmd/utils.py:505
 msgid "Available Configuration Channels"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:510 ../src/spacecmd/utils.py:530
+#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
 msgid "Channel:"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:513 ../src/spacecmd/utils.py:533
+#: ../src/spacecmd/utils.py:514 ../src/spacecmd/utils.py:534
 msgid "Invalid channel"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:517
+#: ../src/spacecmd/utils.py:518
 msgid "New Rank:"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:524 ../src/spacecmd/utils.py:527
+#: ../src/spacecmd/utils.py:525 ../src/spacecmd/utils.py:528
 msgid "Invalid rank"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:538
+#: ../src/spacecmd/utils.py:539
 msgid "Clearing current selections"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:697
+#: ../src/spacecmd/utils.py:708
 msgid "Could not generate json data object!"
-msgstr ""
-
-#: ../src/spacecmd/utils.py:704
-#, python-format
-msgid "Could not open file %s for writing: %s"
 msgstr ""
 
 #: ../src/spacecmd/utils.py:715
 #, python-format
+msgid "Could not open file %s for writing: %s"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:726
+#, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:717
+#: ../src/spacecmd/utils.py:728
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr ""
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:719
+#: ../src/spacecmd/utils.py:730
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:747
+#: ../src/spacecmd/utils.py:758
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:763
+#: ../src/spacecmd/utils.py:774
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 
-#: ../src/spacecmd/utils.py:849
+#: ../src/spacecmd/utils.py:860
 msgid "Parameter {} not a string type, but {}."
 msgstr ""
 
