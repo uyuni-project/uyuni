@@ -2,6 +2,7 @@
 sqlnet.log
 *~
 buildy
-output.html
+output_*
 failed.txt
 Gemfile.lock
+screenshots/
