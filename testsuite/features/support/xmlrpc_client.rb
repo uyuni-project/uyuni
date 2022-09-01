@@ -11,6 +11,7 @@ class XmlrpcClient
   end
 
   def call(name, params)
+    # TODO: What happens if params.nil?
     @xmlrpc_client.call(name, *params.values)
   end
 end
