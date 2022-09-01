@@ -9,6 +9,7 @@
 # IMMUTABLE ORDER
 
 # these features sync real channels (last core features)
+- features/reposync/srv_add_rocky8_repositories.feature
 - features/reposync/srv_sync_channels.feature
 - features/reposync/srv_sync_products.feature
 - features/reposync/srv_enable_sync_products.feature
