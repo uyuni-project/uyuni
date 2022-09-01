@@ -377,7 +377,7 @@ public abstract class CobblerObject {
      * @param kernelOptionsIn the kernelOptions to set
      */
     public void setKernelOptions(String kernelOptionsIn) {
-        modify(SET_KERNEL_OPTIONS, kernelOptionsIn);
+        modify(SET_KERNEL_OPTIONS, StringUtils.defaultString(kernelOptionsIn));
     }
 
     /**
@@ -391,7 +391,7 @@ public abstract class CobblerObject {
      * @param kernelOptionsPostIn the kernelOptionsPost to set
      */
     public void setKernelOptionsPost(String kernelOptionsPostIn) {
-        modify(SET_KERNEL_OPTIONS_POST, kernelOptionsPostIn);
+        modify(SET_KERNEL_OPTIONS_POST, StringUtils.defaultString(kernelOptionsPostIn));
     }
 
     private Map<String, Object> parseKernelOpts(String kernelOpts) {
