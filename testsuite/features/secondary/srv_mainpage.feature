@@ -1,10 +1,10 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
 Feature: Main landing page options and preferences
 
-  Background:
+  Background: Clear browser cookies
     When I clear browser cookies
 
   Scenario: Access the Login page

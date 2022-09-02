@@ -1,7 +1,7 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Pay as you go
+Feature: Listing, adding and removing ssh connection data for the payg feature
   In order to use payg
   As admin user
   I want to list available ssh connections and add or remove them
@@ -107,7 +107,7 @@ Feature: Pay as you go
     And I should not see a "b_new_keyFull" text in element "Bastion-panel-wrapper"
     And I should not see a "b_new_keyPasswordFull" text in element "Bastion-panel-wrapper"
 
-  Scenario: Cleanup: delete minimal information for payg ssh connection data
+  Scenario: Delete minimal information for payg ssh connection data
     When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
     And I follow "my-host.local"
     And I click on "Delete"
@@ -115,7 +115,7 @@ Feature: Pay as you go
     Then I should not see a "my-host.local" link
     And I should not see a "my-host.local" text
 
-  Scenario: Cleanup: delete full information for payg ssh connection data
+  Scenario: Delete Full information for payg ssh connection data
     When I follow the left menu "Admin > Setup Wizard > Pay-as-you-go"
     And I follow "my-host-full.local"
     And I click on "Delete"
