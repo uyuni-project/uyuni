@@ -3,7 +3,7 @@
     <dependencies>
         <!-- Runtime dependencies -->
         <dependency org="manager-43" name="antlr" rev="2.7.7" />
-        <dependency org="manager-43" name="asm" rev="3.3.2" />
+        <dependency org="manager-43" name="asm" rev="7.2" />
         <dependency org="manager-43" name="bcel" rev="5.2" />
         <dependency org="manager-43" name="byte-buddy" rev="1.8.17" />
         <dependency org="manager-43" name="c3p0" rev="0.9.5.5" />
@@ -18,10 +18,10 @@
         <dependency org="manager-43" name="commons-cli" rev="1.4" />
         <dependency org="manager-43" name="commons-codec" rev="1.11" />
         <dependency org="manager-43" name="commons-collections" rev="3.2.2" />
-        <dependency org="manager-43" name="commons-digester" rev="1.7" />
+        <dependency org="manager-43" name="commons-digester" rev="2.1" />
         <dependency org="manager-43" name="commons-discovery" rev="0.4" />
         <dependency org="manager-43" name="commons-el" rev="1.0" />
-        <dependency org="manager-43" name="commons-fileupload" rev="1.1.1" />
+        <dependency org="manager-43" name="commons-fileupload" rev="1.4" />
         <dependency org="manager-43" name="commons-io" rev="2.6" />
         <dependency org="manager-43" name="commons-jexl" rev="2.1.1" />
         <dependency org="manager-43" name="commons-lang3" rev="3.8.1" />
@@ -61,6 +61,7 @@
         <dependency org="manager-43" name="jose4j" rev="0.5.1" />
         <dependency org="manager-43" name="log4j-api" rev="2.17.1" />
         <dependency org="manager-43" name="log4j-core" rev="2.17.1" />
+        <dependency org="manager-43" name="jctools-core" rev="2.1.2" />
         <dependency org="manager-43" name="jsch" rev="0.1.55" />
         <dependency org="manager-43" name="mchange-commons-java" rev="0.2.20" />
         <dependency org="manager-43" name="netty-buffer" rev="4.1.44.Final" />

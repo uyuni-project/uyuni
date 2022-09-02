@@ -23,13 +23,13 @@ repositories:
   4.3:
     project: SUSE:SLE-15-SP4:Update:Products:Manager43
     repository: standard
-  D_G_M_Head:
-    project: Devel:Galaxy:Manager:Head
+  D_G_M_43:
+    project: Devel:Galaxy:Manager:4.3
     repository: SLE_15_SP4
 artifacts:
   - artifact: asm
-    package: asm3
-    jar: asm3-all
+    package: objectweb-asm
+    jar: asm-all
     repository: 15_SP2_GA
   - artifact: antlr
     package: antlr-java
@@ -62,9 +62,8 @@ artifacts:
     package: apache-commons-collections
     repository: 15_SP2_GA
   - artifact: commons-digester
-    package: jakarta-commons-digester
-    jar: jakarta-commons-digester-[0-9.]+\.jar
-    repository: 15_GA
+    package: apache-commons-digester
+    repository: 15_SP2_GA
   - artifact: commons-discovery
     package: jakarta-commons-discovery
     repository: 15_GA
@@ -72,8 +71,8 @@ artifacts:
     package: apache-commons-el
     repository: 15_SP2_Update
   - artifact: commons-fileupload
-    package: jakarta-commons-fileupload
-    repository: 15_GA
+    package: apache-commons-fileupload
+    repository: 15_SP2_GA
   - artifact: commons-io
     package: apache-commons-io
     repository: 15_SP2_Update
@@ -166,6 +165,9 @@ artifacts:
     repository: 15_SP2_GA
   - artifact: jcommon
     repository: 4.3
+  - artifact: jctools-core
+    package: jctools
+    repository: 15_SP2_GA
   - artifact: jdom
     repository: 15_SP2_GA
   - artifact: joda-time
@@ -238,7 +240,7 @@ artifacts:
     package: redstone-xmlrpc
     repository: 4.3
   - artifact: salt-netapi-client
-    repository: D_G_M_Head
+    repository: D_G_M_43
   - artifact: simpleclient
     package: prometheus-client-java
     jar: simpleclient-[0-9.]+
