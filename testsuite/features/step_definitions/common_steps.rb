@@ -534,12 +534,6 @@ When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == "select")
 end
 
-When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |select, product, product_version|
-  if $product == product_version
-    step %(I #{select} "#{product}" as a product)
-  end
-end
-
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|
   repeat_until_timeout(timeout: timeout.to_i, message: "could still find a sub list for tree item #{item}") do
     xpath = "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-')]"
