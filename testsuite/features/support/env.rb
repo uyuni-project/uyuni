@@ -14,10 +14,10 @@ require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
 require 'set'
-
+require 'date'
 ## code coverage analysis
 SimpleCov.root('./')
-SimpleCov.coverage_dir('cov_results')
+SimpleCov.coverage_dir("cov_results_#{DateTime.now}")
 SimpleCov.start
 
 
