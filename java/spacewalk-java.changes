@@ -1,3 +1,4 @@
+- Fixed pagination for completed/failed systems in action details
 - Add support in rhn.conf for smtp port, auth, ssl/tls config
 - Fix sync for external repositories (bsc#1201753)
 - Detect the clients running on Amazon EC2 (bsc#1195624)
