@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.schedule;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
-import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -119,9 +118,7 @@ public class FailedSystemsAction extends RhnAction implements Listable {
     @Override
     public List getResult(RequestContext context) {
         Action action = context.lookupAndBindAction();
-        PageControl pc = new PageControl();
-        pc.setFilterColumn("earliest");
-        return ActionManager.failedSystems(context.getCurrentUser(), action, pc);
+        return ActionManager.failedSystems(context.getCurrentUser(), action, null);
     }
 
     /**
