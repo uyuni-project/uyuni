@@ -101,7 +101,7 @@ Feature: Adding channels
 Scenario: Add Debian-like AMD64 child channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    And I enter "Test-Channel-Deb-AMD64 Child Chnnel" as "Channel Name"
+    And I enter "Test-Channel-Deb-AMD64 Child Channel" as "Channel Name"
     And I enter "test-channel-deb-amd64-child-channel" as "Channel Label"
     And I select "Test-Channel-Deb-AMD64" from "Parent Channel"
     And I select "AMD64 Debian" from "Architecture:"

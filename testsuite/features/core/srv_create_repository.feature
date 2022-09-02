@@ -55,7 +55,7 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-x86_64 Child Channel"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Test-Channel-x86_64 updated" text
+    Then I should see a "Channel Test-Channel-x86_64 Child Channel updated" text
     When I follow "Repositories" in the content area
     And I select the "Test-Repository-x86_64" repo
     And I click on "Save Repositories"
