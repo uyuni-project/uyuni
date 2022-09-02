@@ -1,3 +1,4 @@
+- Fixed pagination for completed/failed systems in action details
 - Add support in rhn.conf for smtp port, auth, ssl/tls config
 - Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
 - Fix sync for external repositories (bsc#1201753)
