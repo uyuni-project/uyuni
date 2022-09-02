@@ -12,12 +12,12 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Ask cobbler to create a distribution via API
     Given cobblerd is running
-    When I create distro "testdistro" as user "testing" with password "testing"
+    Then create distro "testdistro" as user "testing" with password "testing"
 
   Scenario: Create dummy profile
     Given cobblerd is running
     And distro "testdistro" exists
-    When I create profile "testprofile" as user "testing" with password "testing"
+    Then create profile "testprofile" as user "testing" with password "testing"
 
   Scenario: Check cobbler created distro and profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"

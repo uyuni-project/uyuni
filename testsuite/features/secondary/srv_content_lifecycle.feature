@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
