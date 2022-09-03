@@ -10851,47 +10851,47 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="contentmanagement.project_created" xml:space="preserve">
         <source>Project {0} created successfully</source>
-        <target state="new"/>
+        <target state="translated">Projekt {0} úspešne vytvorený</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
         <source>Project {0} deleted successfully</source>
-        <target state="new"/>
+        <target state="translated">Projekt {0} úspešne vymazaný</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
         <source>Project already exists</source>
-        <target state="new"/>
+        <target state="translated">Projekt už existuje</target>
       </trans-unit>
       <trans-unit id="contentmanagement.label_required" xml:space="preserve">
         <source>Label is required</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa označenie</target>
       </trans-unit>
       <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
         <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
-        <target state="new"/>
+        <target state="translated">Označenie musí začínať písmenom a musí obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_') a číslice</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
         <source>Label must not exceed 24 characters</source>
-        <target state="new"/>
+        <target state="translated">Označenie nesmie presiahnuť 24 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.name_required" xml:space="preserve">
         <source>Name is required</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa názov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="new"/>
+        <target state="translated">Názov nesmie presiahnuť 128 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
         <source>Name already exists</source>
-        <target state="new"/>
+        <target state="translated">Názov už existuje</target>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
         <source>Label must not exceed 16 characters</source>
-        <target state="new"/>
+        <target state="translated">Označenie nesmie presiahnuť 16 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Názov nesmie presiahnuť 128 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
@@ -11259,10 +11259,10 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>Please fill in login.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
