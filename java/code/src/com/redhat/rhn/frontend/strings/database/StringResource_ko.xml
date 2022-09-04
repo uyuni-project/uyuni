@@ -3472,7 +3472,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 3" xml:space="preserve">
+      <trans-unit approved="yes" id="Red Hat Enterprise Linux 3" xml:space="preserve">
           <source>Red Hat Enterprise Linux 3</source>
         <target>Red Hat Enterprise Linux 3</target>
         <context-group name="ctx">

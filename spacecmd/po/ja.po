@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 07:28+0000\n"
-"PO-Revision-Date: 2022-07-20 23:12+0000\n"
+"POT-Creation-Date: 2022-09-04 15:35+0200\n"
+"PO-Revision-Date: 2022-08-29 07:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
-"ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"spacecmd-4-3/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3561,8 +3561,8 @@ msgstr "%s への接続に失敗しました"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) が古すぎます (>= %s が必要です)"
 
-#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:249
-#: ../src/spacecmd/utils.py:563
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:250
+#: ../src/spacecmd/utils.py:564
 #, python-format
 msgid "Could not read %s"
 msgstr "%s を読み込めませんでした"
@@ -6876,7 +6876,7 @@ msgstr "%s をスケジュールする処理が失敗しました"
 msgid "Scheduled: %i system(s)"
 msgstr "スケジュール済み: %i 個のシステム"
 
-#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:245
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:246
 #, python-format
 msgid "Could not remove %s"
 msgstr "%s を削除できませんでした"
@@ -8750,131 +8750,131 @@ msgstr "使用方法: user_setpassword ユーザ パスワード"
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:134
+#: ../src/spacecmd/utils.py:135
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "キャッシュファイル %s の読み込みに失敗しました"
 
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:136
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr ""
 "キャッシュ生成時に割り込みが発生しました。壊れている %s を削除しています"
 
-#: ../src/spacecmd/utils.py:140
+#: ../src/spacecmd/utils.py:141
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "%s からキャッシュを読み込めませんでした"
 
-#: ../src/spacecmd/utils.py:161
+#: ../src/spacecmd/utils.py:162
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "%s に書き込めませんでした"
 
-#: ../src/spacecmd/utils.py:206
+#: ../src/spacecmd/utils.py:207
 msgid "Could not open the temporary file"
 msgstr "一時ファイルを開くことができませんでした"
 
-#: ../src/spacecmd/utils.py:225
+#: ../src/spacecmd/utils.py:226
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "エディタ \"%s\" が終了コード %i で終了しました"
 
-#: ../src/spacecmd/utils.py:227
+#: ../src/spacecmd/utils.py:228
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "エディタ実行時の一般的なエラーです: %s"
 
-#: ../src/spacecmd/utils.py:230
+#: ../src/spacecmd/utils.py:231
 msgid "No editors found"
 msgstr "エディタが見つかりませんでした"
 
-#: ../src/spacecmd/utils.py:369
+#: ../src/spacecmd/utils.py:370
 msgid "Invalid time provided"
 msgstr "時刻の指定が正しくありません"
 
-#: ../src/spacecmd/utils.py:458
+#: ../src/spacecmd/utils.py:459
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s は不明なエラータタイプです"
 
-#: ../src/spacecmd/utils.py:466
+#: ../src/spacecmd/utils.py:467
 msgid "Security Errata"
 msgstr "セキュリティエラータ"
 
-#: ../src/spacecmd/utils.py:475
+#: ../src/spacecmd/utils.py:476
 msgid "Bug Fix Errata"
 msgstr "バグ修正エラータ"
 
-#: ../src/spacecmd/utils.py:484
+#: ../src/spacecmd/utils.py:485
 msgid "Enhancement Errata"
 msgstr "機能強化エラータ"
 
-#: ../src/spacecmd/utils.py:494
+#: ../src/spacecmd/utils.py:495
 msgid "Current Selections"
 msgstr "現在の選択"
 
-#: ../src/spacecmd/utils.py:504
+#: ../src/spacecmd/utils.py:505
 msgid "Available Configuration Channels"
 msgstr "利用可能な設定チャンネル"
 
-#: ../src/spacecmd/utils.py:510 ../src/spacecmd/utils.py:530
+#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
 msgid "Channel:"
 msgstr "チャンネル:"
 
-#: ../src/spacecmd/utils.py:513 ../src/spacecmd/utils.py:533
+#: ../src/spacecmd/utils.py:514 ../src/spacecmd/utils.py:534
 msgid "Invalid channel"
 msgstr "チャンネルが正しくありません"
 
-#: ../src/spacecmd/utils.py:517
+#: ../src/spacecmd/utils.py:518
 msgid "New Rank:"
 msgstr "新しい順位:"
 
-#: ../src/spacecmd/utils.py:524 ../src/spacecmd/utils.py:527
+#: ../src/spacecmd/utils.py:525 ../src/spacecmd/utils.py:528
 msgid "Invalid rank"
 msgstr "順位が正しくありません"
 
-#: ../src/spacecmd/utils.py:538
+#: ../src/spacecmd/utils.py:539
 msgid "Clearing current selections"
 msgstr "現在の選択を消去しています"
 
-#: ../src/spacecmd/utils.py:697
+#: ../src/spacecmd/utils.py:708
 msgid "Could not generate json data object!"
 msgstr "JSON データオブジェクトを生成できませんでした！"
 
-#: ../src/spacecmd/utils.py:704
+#: ../src/spacecmd/utils.py:715
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "ファイル %s を書き込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:715
+#: ../src/spacecmd/utils.py:726
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "ファイル %s を読み込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:717
+#: ../src/spacecmd/utils.py:728
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "JSON データを %s から処理できませんでした: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:719
+#: ../src/spacecmd/utils.py:730
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "ファイル %s を処理する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/utils.py:747
+#: ../src/spacecmd/utils.py:758
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 両方の文字列が同じです"
 
-#: ../src/spacecmd/utils.py:763
+#: ../src/spacecmd/utils.py:774
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがありま"
 "す"
 
-#: ../src/spacecmd/utils.py:849
+#: ../src/spacecmd/utils.py:860
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 

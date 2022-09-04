@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 11:57+0000\n"
-"PO-Revision-Date: 2022-08-16 06:13+0000\n"
+"POT-Creation-Date: 2022-09-04 15:35+0200\n"
+"PO-Revision-Date: 2022-08-30 07:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "backend-4-3/mk/>\n"
@@ -142,6 +142,8 @@ msgstr ""
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Неможеше да се најде валиден мрежен интерфејс, и ipaddr и ip6addr nе беа "
+"најдени."
 
 #: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
@@ -187,7 +189,7 @@ msgstr "Не сте овластени да извршувате админис�
 #, python-format
 msgid ""
 "You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
+msgstr "Не сте овластени да менаџирате каналот %s, или тој канале не постои"
 
 #: ../server/importlib/userAuth.py:204
 #, python-format
@@ -196,6 +198,9 @@ msgid ""
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"               %s корисникот е деактивиран на овој сервер.\n"
+"               Молиме контактирајте го Орг администраторот за помош."
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -203,6 +208,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
+"Вашиот акаунт нема пристап до ниеден канал со параметрите "
+"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
@@ -215,7 +222,7 @@ msgstr ""
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "Системот е регистраран али неактивен"
 
 #: ../server/rhnChannel.py:2279
 #, python-format
@@ -226,6 +233,12 @@ msgid ""
 "because it could not be subscribed to a base channel.\n"
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
+"\n"
+"Невалидна Архитектура и ОС комбинација (%s, %s).\n"
+"Вашиот систем е регистриран, али нема да добива ажурирања\n"
+"затоа што неможење да се because it could not be претплати на основен "
+"канал.\n"
+"Молиме контактирајте го орг администраторот за помош.\n"
 
 #: ../server/rhnChannel.py:2286
 #, python-format
@@ -675,7 +688,7 @@ msgstr ""
 
 #: ../common/rhnException.py:169
 msgid "Invalid username"
-msgstr ""
+msgstr "Невалидно име на корисник"
 
 #. 140-159 applet errors
 #: ../common/rhnException.py:172

@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 07:28+0000\n"
-"PO-Revision-Date: 2022-07-20 04:13+0000\n"
+"POT-Creation-Date: 2022-09-04 15:35+0200\n"
+"PO-Revision-Date: 2022-08-26 05:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"spacecmd/zh_CN/>\n"
+"spacecmd-4-3/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -182,7 +182,7 @@ msgstr "用法：activationkey_setconfigchannelorder KEY"
 
 #: ../src/spacecmd/activationkey.py:716
 msgid "New Configuration Channels:"
-msgstr "新建配置通道："
+msgstr "新配置通道："
 
 #: ../src/spacecmd/activationkey.py:730
 msgid "activationkey_create: Create an activation key"
@@ -3456,8 +3456,8 @@ msgstr "无法连接到 %s"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) 太旧（必须指定 >= %s）"
 
-#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:249
-#: ../src/spacecmd/utils.py:563
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:250
+#: ../src/spacecmd/utils.py:564
 #, python-format
 msgid "Could not read %s"
 msgstr "无法读取 %s"
@@ -6684,7 +6684,7 @@ msgstr "无法安排 %s"
 msgid "Scheduled: %i system(s)"
 msgstr "已安排：%i 个系统"
 
-#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:245
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:246
 #, python-format
 msgid "Could not remove %s"
 msgstr "无法去除 %s"
@@ -7417,7 +7417,7 @@ msgstr "计数 | 系统 ID | 配置文件名称"
 
 #: ../src/spacecmd/system.py:2829
 msgid "system_deletecrashes: Delete crashes reported by spacewalk-abrt."
-msgstr "system_deletecrashes：删除 spacewalk-abrt 报告的崩溃记录"
+msgstr "system_deletecrashes：删除 spacewalk-abrt 报告的崩溃记录。"
 
 #: ../src/spacecmd/system.py:2830
 msgid ""
@@ -8501,127 +8501,127 @@ msgstr "用法：user_setpassword USER PASSWORD"
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:134
+#: ../src/spacecmd/utils.py:135
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "装载缓存文件 %s 失败"
 
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:136
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr "缓存生成可能已中断，正在去除损坏的 %s"
 
-#: ../src/spacecmd/utils.py:140
+#: ../src/spacecmd/utils.py:141
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "无法从 %s 装载缓存"
 
-#: ../src/spacecmd/utils.py:161
+#: ../src/spacecmd/utils.py:162
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "无法写入 %s"
 
-#: ../src/spacecmd/utils.py:206
+#: ../src/spacecmd/utils.py:207
 msgid "Could not open the temporary file"
 msgstr "无法打开临时文件"
 
-#: ../src/spacecmd/utils.py:225
+#: ../src/spacecmd/utils.py:226
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "编辑器 \"%s\" 已退出并返回代码 %i"
 
-#: ../src/spacecmd/utils.py:227
+#: ../src/spacecmd/utils.py:228
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "运行编辑器时发生常规失败：%s"
 
-#: ../src/spacecmd/utils.py:230
+#: ../src/spacecmd/utils.py:231
 msgid "No editors found"
 msgstr "未找到编辑器"
 
-#: ../src/spacecmd/utils.py:369
+#: ../src/spacecmd/utils.py:370
 msgid "Invalid time provided"
 msgstr "提供了无效时间"
 
-#: ../src/spacecmd/utils.py:458
+#: ../src/spacecmd/utils.py:459
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s 是未知勘误类型"
 
-#: ../src/spacecmd/utils.py:466
+#: ../src/spacecmd/utils.py:467
 msgid "Security Errata"
 msgstr "安全勘误"
 
-#: ../src/spacecmd/utils.py:475
+#: ../src/spacecmd/utils.py:476
 msgid "Bug Fix Errata"
 msgstr "Bug 修复勘误"
 
-#: ../src/spacecmd/utils.py:484
+#: ../src/spacecmd/utils.py:485
 msgid "Enhancement Errata"
 msgstr "增强勘误"
 
-#: ../src/spacecmd/utils.py:494
+#: ../src/spacecmd/utils.py:495
 msgid "Current Selections"
 msgstr "当前选择内容"
 
-#: ../src/spacecmd/utils.py:504
+#: ../src/spacecmd/utils.py:505
 msgid "Available Configuration Channels"
 msgstr "可用配置通道"
 
-#: ../src/spacecmd/utils.py:510 ../src/spacecmd/utils.py:530
+#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
 msgid "Channel:"
 msgstr "通道："
 
-#: ../src/spacecmd/utils.py:513 ../src/spacecmd/utils.py:533
+#: ../src/spacecmd/utils.py:514 ../src/spacecmd/utils.py:534
 msgid "Invalid channel"
 msgstr "无效通道"
 
-#: ../src/spacecmd/utils.py:517
+#: ../src/spacecmd/utils.py:518
 msgid "New Rank:"
 msgstr "新排名："
 
-#: ../src/spacecmd/utils.py:524 ../src/spacecmd/utils.py:527
+#: ../src/spacecmd/utils.py:525 ../src/spacecmd/utils.py:528
 msgid "Invalid rank"
 msgstr "无效排名"
 
-#: ../src/spacecmd/utils.py:538
+#: ../src/spacecmd/utils.py:539
 msgid "Clearing current selections"
 msgstr "正在清除当前选择内容"
 
-#: ../src/spacecmd/utils.py:697
+#: ../src/spacecmd/utils.py:708
 msgid "Could not generate json data object!"
 msgstr "无法生成 json 数据对象！"
 
-#: ../src/spacecmd/utils.py:704
+#: ../src/spacecmd/utils.py:715
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "无法打开要写入的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:715
+#: ../src/spacecmd/utils.py:726
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "无法打开要读取的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:717
+#: ../src/spacecmd/utils.py:728
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "无法分析 %s 中的 JSON 数据：%s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:719
+#: ../src/spacecmd/utils.py:730
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "处理文件 %s 时出错：%s"
 
-#: ../src/spacecmd/utils.py:747
+#: ../src/spacecmd/utils.py:758
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "正在跳过公用字符串的使用：两个字符串相同"
 
-#: ../src/spacecmd/utils.py:763
+#: ../src/spacecmd/utils.py:774
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
-#: ../src/spacecmd/utils.py:849
+#: ../src/spacecmd/utils.py:860
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 

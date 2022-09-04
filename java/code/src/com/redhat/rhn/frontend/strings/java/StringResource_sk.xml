@@ -10223,7 +10223,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="help.jsp.refguide.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Reference Guide</source>
-        <target/>
+        <target>Referenčná príručka @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.detailed" xml:space="preserve">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
@@ -10569,311 +10569,311 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="task.status.minion-action-cleanup" xml:space="preserve">
         <source>Minion Action Cleanup</source>
-        <target/>
+        <target>Čistenie akcií klientov minion</target>
       </trans-unit>
       <trans-unit id="toolbar.create.systems" xml:space="preserve">
         <source>Add Systems</source>
-        <target/>
+        <target>Pridať systémy</target>
       </trans-unit>
       <trans-unit id="system.event.pending.canceled.taskscheduler.down" xml:space="preserve">
         <source>Could not cancel event(s). Please make sure that the task scheduler is running.</source>
-        <target/>
+        <target>Nepodarilo sa zrušiť udalosť(i). Prosím, uistite sa, že je spustený plánovač úloh.</target>
       </trans-unit>
       <trans-unit id="message.actionCancelServerFailure.taskscheduler.down" xml:space="preserve">
         <source>Could not cancel action. Please make sure that the task scheduler is running.</source>
-        <target/>
+        <target>Nepodarilo sa zrušiť akciu. Prosím, uistite sa, že je spustený plánovač úloh.</target>
       </trans-unit>
       <trans-unit id="message.actionsCancelledWithErrors" xml:space="preserve">
         <source>{0} action(s) could not be canceled or canceled only partially. {1} action(s) canceled completely.</source>
-        <target/>
+        <target>{0} akciu(ie) nebolo možné zrušiť alebo sa zrušili len čiastočne. {1} akcia(ie) bola(i) zrušené kompletne.</target>
       </trans-unit>
       <trans-unit id="formula.folders.unreachable" xml:space="preserve">
         <source>System folder(s) from salt-formula are unreachable. Check if folders(s) exists and have the correct permissions (755): {0}</source>
-        <target/>
+        <target>Systémový priečinok(y) zo salt-vzorca je nedostupný. Skontrolujte, či priečinok(y) existuje a má správne oprávnenia (755): {0}</target>
       </trans-unit>
       <trans-unit id="Stores" xml:space="preserve">
         <source>Stores</source>
-        <target/>
+        <target>Úložiská</target>
       </trans-unit>
       <trans-unit id="message.channel.deleted.state.scheduled" xml:space="preserve">
         <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
-        <target/>
+        <target>Automatická aplikácia stavu kanála bola &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;úspešne naplánovaná&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.channel.disable.delete.contentlifecycle.environment.in.use" xml:space="preserve">
         <source>This channel cannot be deleted. It is currently used in the Content Lifecycle Project '{0}' in the Environment '{1}'</source>
-        <target/>
+        <target>Tento kanál nie je možné vymazať. V súčasnosti sa používa v projekte životného cyklu obsahu '{0}' v prostredí '{1}'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channels.subscribe.target.systems.channel.scheduled" xml:space="preserve">
         <source>Subscribing {0} system(s) to channel {1} has been scheduled.</source>
-        <target/>
+        <target>Prihlásenie {0} systému(ov) ku kanálu {1} bolo naplánované.</target>
       </trans-unit>
       <trans-unit id="channels.not.supported.for.minions" xml:space="preserve">
         <source>Local/Sandbox channels are not supported for minions.</source>
-        <target/>
+        <target>Miestne/Sandbox kanály nie sú podporované pre klientov minion.</target>
       </trans-unit>
       <trans-unit id="state.channels.not.supported.for.traditional" xml:space="preserve">
         <source>A state channel cannot be assigned to traditional system.</source>
-        <target/>
+        <target>Stavový kanál nie je možné priradiť tradičnému systému.</target>
       </trans-unit>
       <trans-unit id="directories.symlink.not.supported.for.minions" xml:space="preserve">
         <source>Directories/Symlinks are not supported in state channel.</source>
-        <target/>
+        <target>Adresáre/symbolické odkazy nie sú podporované v stavovom kanáli.</target>
       </trans-unit>
       <trans-unit id="update.init.sls.with.updateinitsls.method" xml:space="preserve">
         <source>Please use 'updateInitSls' method for updating init.sls file.</source>
-        <target/>
+        <target>Prosím, použite metódu 'updateInitSls' na aktualizáciu súboru init.sls.</target>
       </trans-unit>
       <trans-unit id="editable.init.sls.only.for.state.channels" xml:space="preserve">
         <source>init.sls file can only be edited for state channels.</source>
-        <target/>
+        <target>Súbor init.sls sa dá len upraviť pre stavové kanály.</target>
       </trans-unit>
       <trans-unit id="state.channel.through.apply.config.channel.method" xml:space="preserve">
         <source>State channels can be applied through system.config.scheduleApplyConfigChannel method or from UI.</source>
-        <target/>
+        <target>Stavové kanály možno použiť cez metódu system.config.scheduleApplyConfigChannel alebo z UI.</target>
       </trans-unit>
       <trans-unit id="SUSE Manager Administrators" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Administrators</source>
-        <target/>
+        <target>Administrátori @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Sync Schedule" xml:space="preserve">
         <source>Sync Schedule</source>
-        <target/>
+        <target>Sync plán</target>
       </trans-unit>
       <trans-unit id="Virtualization Hierarchy" xml:space="preserve">
         <source>Virtualization Hierarchy</source>
-        <target/>
+        <target>Hierarchia virtualizácie</target>
       </trans-unit>
       <trans-unit id="Proxy Hierarchy" xml:space="preserve">
         <source>Proxy Hierarchy</source>
-        <target/>
+        <target>Hierarchia proxy</target>
       </trans-unit>
       <trans-unit id="Systems Grouping" xml:space="preserve">
         <source>Systems Grouping</source>
-        <target/>
+        <target>Zoskupovanie systémov</target>
       </trans-unit>
       <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
-        <target/>
+        <target>Salt</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Foreign Entitled Servers" xml:space="preserve">
         <source>Foreign</source>
-        <target/>
+        <target>Cudzie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Formula Catalog" xml:space="preserve">
         <source>Formula Catalog</source>
-        <target/>
+        <target>Katalóg vzorcov</target>
       </trans-unit>
       <trans-unit id="Non Compliant" xml:space="preserve">
         <source>Non Compliant</source>
-        <target/>
+        <target>Nevyhovujúce</target>
       </trans-unit>
       <trans-unit id="help.jsp.gettingstarted" xml:space="preserve">
         <source>Get started with setting up a @@PRODUCT_NAME@@ server</source>
-        <target/>
+        <target>Začať s nastavením servera @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices" xml:space="preserve">
         <source>This document describes @@VENDOR_NAME@@ recommended best practices for @@PRODUCT_NAME@@</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Tento dokument opisuje @@VENDOR_NAME@@ odporúčané osvedčené postupy pre @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics" xml:space="preserve">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>
-        <target/>
+        <target>Pokročilé témy o @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Best Practices Guide" xml:space="preserve">
         <source>Best Practices Guide</source>
-        <target/>
+        <target>Príručka osvedčených postupov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Advanced Topics Guide" xml:space="preserve">
         <source>Advanced Topics Guide</source>
-        <target/>
+        <target>Príručka pre pokročilé témy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Virtual Host Managers" xml:space="preserve">
         <source>Virtual Host Managers</source>
-        <target/>
+        <target>Správcovia virtuálnych hostiteľov</target>
       </trans-unit>
       <trans-unit id="Remote Commands" xml:space="preserve">
         <source>Remote Commands</source>
-        <target/>
+        <target>Vzdialené príkazy</target>
       </trans-unit>
       <trans-unit id="Images" xml:space="preserve">
         <source>Images</source>
-        <target/>
+        <target>Obrazy</target>
       </trans-unit>
       <trans-unit id="Build" xml:space="preserve">
         <source>Build</source>
-        <target/>
+        <target>Zostaviť</target>
       </trans-unit>
       <trans-unit id="recurring_action.no_permissions" xml:space="preserve">
         <source>User has no permissions to do the action</source>
-        <target/>
+        <target>Používateľ nemá oprávnenia na vykonanie akcie</target>
       </trans-unit>
       <trans-unit id="recurring_action.empty_name" xml:space="preserve">
         <source>Recurring Action name must be provided</source>
-        <target/>
+        <target>Musí byť uvedený názov opakujúcej sa akcie</target>
       </trans-unit>
       <trans-unit id="recurring_action.action_name_exists" xml:space="preserve">
         <source>Recurring Action with given name already exists</source>
-        <target/>
+        <target>Opakujúca sa akcia s daným názvom už existuje</target>
       </trans-unit>
       <trans-unit id="recurring_action.taskomatic_error" xml:space="preserve">
         <source>Error when scheduling the action. Check if Taskomatic is running.</source>
-        <target/>
+        <target>Chyba pri plánovaní akcie. Skontrolujte, či je spustený Taskomatic.</target>
       </trans-unit>
       <trans-unit id="recurring_action.invalid_cron" xml:space="preserve">
         <source>Invalid Quartz expression provided.</source>
-        <target/>
+        <target>Zadaný neplatný výraz Quartz.</target>
       </trans-unit>
       <trans-unit id="notification.channelsyncfailed" xml:space="preserve">
         <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
-        <target/>
+        <target>Chyba pri synchronizácii kanála: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="notification.channelsyncfinished" xml:space="preserve">
         <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
-        <target/>
+        <target>Synchronizácia kanála &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; dokončená</target>
       </trans-unit>
       <trans-unit id="notification.onboardingfailed" xml:space="preserve">
         <source>Error registering minion id: {0}</source>
-        <target/>
+        <target>Chyba pri registrácii minion id: {0}</target>
       </trans-unit>
       <trans-unit id="notification.bootstraprepofailed" xml:space="preserve">
         <source>Error generating bootstrap repo for: {0}</source>
-        <target/>
+        <target>Chyba pri generovaní repo zavádzania pre: {0}</target>
       </trans-unit>
       <trans-unit id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
-        <target/>
+        <target>Chyba pri spustení state.apply na: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.name.empty" xml:space="preserve">
         <source>Calendar name required</source>
-        <target/>
+        <target>Vyžaduje sa názov kalendára</target>
       </trans-unit>
       <trans-unit id="maintenance.schedule.name.empty" xml:space="preserve">
         <source>Schedule name required</source>
-        <target/>
+        <target>Vyžaduje sa názov plánu</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.data.empty" xml:space="preserve">
         <source>Calendar data required</source>
-        <target/>
+        <target>Vyžadujú sa údaje kalendára</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.exists" xml:space="preserve">
         <source>Calendar '{0}' already exists</source>
-        <target/>
+        <target>Kalendár '{0}' už existuje</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.fetch.error" xml:space="preserve">
         <source>Error fetching calendar data from '{0}'</source>
-        <target/>
+        <target>Chyba pri načítaní údajov kalendára z '{0}'</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.not.exists" xml:space="preserve">
         <source>Calendar '{0}' does not exist</source>
-        <target/>
+        <target>Kalendár '{0}' neexistuje</target>
       </trans-unit>
       <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve">
         <source>Schedule with id '{0}' does not exist</source>
-        <target/>
+        <target>Plán s id '{0}' neexistuje</target>
       </trans-unit>
       <trans-unit id="maintenance.calendar.id.not.exists" xml:space="preserve">
         <source>Calendar with id '{0}' does not exist</source>
-        <target/>
+        <target>Kalendár s id '{0}' neexistuje</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
         <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-        <target/>
+        <target>Pri pokuse o zrušenie ovplyvnených akcií pre plán '{0}' došlo k chybe</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-        <target/>
+        <target>Operáciu nebolo možné vykonať. Na systémoch sú naplánované akcie</target>
       </trans-unit>
       <trans-unit id="maintenance.action.assign.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-        <target/>
+        <target>Operáciu nebolo možné vykonať. Na systémoch sú naplánované akcie</target>
       </trans-unit>
       <trans-unit id="maintenance.action.assign.error.systemnotfound" xml:space="preserve">
         <source>Some of the specified servers cannot be found</source>
-        <target/>
+        <target>Niektoré zo zadaných serverov nie je možné nájsť</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
         <source>Redfish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Redfish</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
-        <target state="new"/>
+        <target state="translated">Vykonať akcie na klientoch minion ssh</target>
       </trans-unit>
       <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
         <source>Execute action chains on minions</source>
-        <target state="new"/>
+        <target state="translated">Vykonať reťazce akcií na klientoch minion</target>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.selectedmodules" xml:space="preserve">
         <source>The following module streams will be enabled: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Budú povolené nasledujúce prúdy modulov: {0}</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_created" xml:space="preserve">
         <source>Project {0} created successfully</source>
-        <target state="new"/>
+        <target state="translated">Projekt {0} úspešne vytvorený</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
         <source>Project {0} deleted successfully</source>
-        <target state="new"/>
+        <target state="translated">Projekt {0} úspešne vymazaný</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
         <source>Project already exists</source>
-        <target state="new"/>
+        <target state="translated">Projekt už existuje</target>
       </trans-unit>
       <trans-unit id="contentmanagement.label_required" xml:space="preserve">
         <source>Label is required</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa označenie</target>
       </trans-unit>
       <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
         <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
-        <target state="new"/>
+        <target state="translated">Označenie musí začínať písmenom a musí obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_') a číslice</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
         <source>Label must not exceed 24 characters</source>
-        <target state="new"/>
+        <target state="translated">Označenie nesmie presiahnuť 24 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.name_required" xml:space="preserve">
         <source>Name is required</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa názov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="new"/>
+        <target state="translated">Názov nesmie presiahnuť 128 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
         <source>Name already exists</source>
-        <target state="new"/>
+        <target state="translated">Názov už existuje</target>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
         <source>Label must not exceed 16 characters</source>
-        <target state="new"/>
+        <target state="translated">Označenie nesmie presiahnuť 16 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Názov nesmie presiahnuť 128 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>

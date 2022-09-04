@@ -223,70 +223,70 @@
       </trans-unit>
       <trans-unit id="America/Denver" xml:space="preserve">
         <source>(GMT-0700) United States (Mountain)</source>
-        <target/>
+        <target>(GMT-0700) Соединетите Американски Држави (Планинско)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Los_Angeles" xml:space="preserve">
         <source>(GMT-0800) United States (Pacific)</source>
-        <target/>
+        <target>(GMT-0800) Соединетите Американски Држави (Пацифик)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Anchorage" xml:space="preserve">
         <source>(GMT-0900) United States (Alaska)</source>
-        <target/>
+        <target>(GMT-0900) Соединетите Американски Држави (Алјаска)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Easter" xml:space="preserve">
         <source>(GMT-0500) Chile (Easter Island)</source>
-        <target/>
+        <target>(GMT-0500) Чиле (Велигденски остров)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Honolulu" xml:space="preserve">
         <source>(GMT-1000) United States (Hawaii)</source>
-        <target/>
+        <target>(GMT-1000) Соединетите Американски Држави (Хаваи)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Enderbury" xml:space="preserve">
         <source>(GMT+1300) Tonga</source>
-        <target/>
+        <target>(GMT+1300) Тонга</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Wallis" xml:space="preserve">
         <source>(GMT+1200) New Zealand (Wallis)</source>
-        <target/>
+        <target>(GMT+1200) Нов Зеланд (Волис)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Auckland" xml:space="preserve">
         <source>(GMT+1200) New Zealand (Auckland)</source>
-        <target/>
+        <target>(GMT+1200) Нов Зеланд (Окленд)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Norfolk" xml:space="preserve">
         <source>(GMT+1130) Norfolk Island</source>
-        <target/>
+        <target>(GMT + 1130) Островот Норфолк</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pacific/Guadalcanal" xml:space="preserve">
         <source>(GMT+1100) Micronesia</source>
-        <target/>
+        <target>(GMT+1100) Микронезија</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
