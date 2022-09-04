@@ -56,4 +56,14 @@ public class ServerGroupTestUtils {
                                         create(user, NAME + TestUtils.randomString(),
                                                     DESCRIPTION);
     }
+
+    /**
+     * Remove ManagedServerGroup
+     * @param user owning user
+     * @param group group to be removed
+     */
+    public static void removeManaged(User user, ManagedServerGroup group) {
+        ServerGroupTest.checkSysGroupAdminRole(user);
+        GlobalInstanceHolder.SERVER_GROUP_MANAGER.remove(user, group);
+    }
 }

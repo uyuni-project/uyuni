@@ -145,8 +145,8 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
         Profile prof = Profile.lookupById(CobblerXMLRPCHelper.getConnection(
                     ctx.getCurrentUser()), data.getCobblerId());
         if (prof != null) {
-            form.set(KERNEL_OPTIONS, prof.getKernelOptionsString());
-            form.set(POST_KERNEL_OPTIONS, prof.getKernelOptionsPostString());
+            form.set(KERNEL_OPTIONS, prof.getKernelOptions());
+            form.set(POST_KERNEL_OPTIONS, prof.getKernelOptionsPost());
         }
         KickstartVirtualizationType type = data.getKickstartDefaults().
                                                     getVirtualizationType();

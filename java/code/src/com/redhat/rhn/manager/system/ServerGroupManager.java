@@ -21,6 +21,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -36,6 +37,7 @@ import com.suse.utils.Opt;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,6 +46,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
 
 /**
  * ServerGroupManager
@@ -174,13 +178,19 @@ public class ServerGroupManager {
         }
     }
     /**
-     * Removes an ServerGroup.
+     * Removes a ServerGroup.
      * @param user user object needed for authentication
      * @param group the group to remove
      */
     public void remove(User user, ManagedServerGroup group) {
         validateAccessCredentials(user, group, group.getName());
         validateAdminCredentials(user);
+        try {
+            FormulaFactory.saveGroupFormulas(group.getId(), emptyList(), group.getOrg());
+        }
+        catch (IOException ignored) {
+        }
+
         removeServers(group, listServers(group), user);
         dissociateAdmins(group, group.getAssociatedAdminsFor(user), user);
         SaltStateGeneratorService.INSTANCE.removeServerGroup(group);

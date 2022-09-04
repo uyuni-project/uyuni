@@ -1,3 +1,10 @@
+- Support inherited values for kernel options from Cobbler API
+- Add channel availability check for product migration (bsc#1200296)
+- Check if system has all formulas correctly assigned
+  (bsc#1201607)
+- Remove group formula assignements and data on group delete
+  (bsc#1201606)
+- Fix sync for external repositories (bsc#1201753)
 - fix state.apply result parsing in test mode (bsc#1201913)
 - Reduce the length of image channel URL (bsc#1201220)
 - Calculate dependencies between cloned channels of vendor channels (bsc#1201626)

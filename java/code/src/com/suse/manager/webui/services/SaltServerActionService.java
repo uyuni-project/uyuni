@@ -29,6 +29,7 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static org.cobbler.CobblerObject.convertOptionsMap;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
@@ -1983,14 +1984,14 @@ public class SaltServerActionService {
     }
 
     private String buildKernelOptions(SystemRecord sys, Profile prof, Distro dist, String host) {
-        String breed = dist.getBreed();
+        String breed = sys.getProfile().getDistro().getBreed();
         Map<String, Object> kopts =
-                Stream.of(dist.getKernelOptions(), prof.getKernelOptions(), sys.getKernelOptions())
-                .flatMap(map -> map.entrySet().stream())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (v1, v2) -> v2));
+                Stream.of(dist.getKernelOptionsMap(), prof.getKernelOptionsMap(), sys.getKernelOptionsMap())
+                        .flatMap(map -> map.entrySet().stream())
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue,
+                                (v1, v2) -> v2));
         if (breed.equals("suse")) {
             //SUSE is not using 'text'. Instead 'textmode' is used as kernel option.
             if (kopts.containsKey("textmode")) {
@@ -2016,29 +2017,6 @@ public class SaltServerActionService {
             kernelOptions += "auto-install/enable=true priority=critical netcfg/choose_interface=auto url=" + autoinst;
         }
         return kernelOptions;
-    }
-
-    private String convertOptionsMap(Map<String, Object> map) {
-        StringBuilder string = new StringBuilder();
-        for (String key : map.keySet()) {
-            List<String> keyList;
-            try {
-                 keyList = (List)map.get(key);
-            }
-            catch (ClassCastException e) {
-                keyList = new ArrayList<String>();
-                keyList.add((String) map.get(key));
-            }
-            if (keyList.isEmpty()) {
-                string.append(key + " ");
-            }
-            else {
-                for (String value : keyList) {
-                    string.append(key + "=" + value + " ");
-                }
-            }
-        }
-        return string.toString();
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> virtPoolStateChangeAction(

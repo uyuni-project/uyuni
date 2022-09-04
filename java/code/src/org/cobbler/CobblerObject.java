@@ -312,31 +312,45 @@ public abstract class CobblerObject {
         modify(DEPTH, depthIn);
     }
 
+    /**
+     * @return the kernelOptionsMap
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> getKernelOptionsMap() {
+        return parseKernelOpts(getKernelOptions());
+    }
 
     /**
      * @return the kernelOptions
      */
-    public Map<String, Object> getKernelOptions() {
-        return (Map<String, Object>)dataMap.get(KERNEL_OPTIONS);
+    @SuppressWarnings("unchecked")
+    public String getKernelOptions() {
+        Object kernelOpts = dataMap.get(KERNEL_OPTIONS);
+        if (kernelOpts instanceof Map) {
+            return convertOptionsMap((Map<String, Object>) kernelOpts);
+        }
+        return (String) kernelOpts;
     }
 
     /**
-     * gets the kernel options in string form
-     * @return the string
+     * @return the kernelOptionsPost
      */
-    public String getKernelOptionsString() {
-        return convertOptionsMap(getKernelOptions());
+    @SuppressWarnings("unchecked")
+    public String getKernelOptionsPost() {
+        Object kernelOptsPost = dataMap.get(KERNEL_OPTIONS_POST);
+        if (kernelOptsPost instanceof Map) {
+            return convertOptionsMap((Map<String, Object>) kernelOptsPost);
+        }
+        return (String) kernelOptsPost;
     }
 
     /**
-     * gets the kernel post options in string form
-     * @return the string
+     * Convert the kernel options map to a string
+     *
+     * @param map the kernel options map
+     * @return the kernel options string
      */
-    public String getKernelOptionsPostString() {
-        return convertOptionsMap(getKernelOptionsPost());
-    }
-
-    private String convertOptionsMap(Map<String, Object> map) {
+    public static String convertOptionsMap(Map<String, Object> map) {
         StringBuilder string = new StringBuilder();
         for (String key : map.keySet()) {
             List<String> keyList;
@@ -352,62 +366,67 @@ public abstract class CobblerObject {
             }
             else {
                 for (String value : keyList) {
-                    string.append(key + "=" + value + " ");
+                    string.append(key + "='"  + value + "' ");
                 }
             }
         }
         return string.toString();
     }
 
-
     /**
      * @param kernelOptionsIn the kernelOptions to set
      */
+    public void setKernelOptions(String kernelOptionsIn) {
+        modify(SET_KERNEL_OPTIONS, StringUtils.defaultString(kernelOptionsIn));
+    }
+
+    /**
+     * @param kernelOptionsIn the kernelOptions to set in the form of a map
+     */
     public void setKernelOptions(Map<String, Object> kernelOptionsIn) {
-        modify(SET_KERNEL_OPTIONS, kernelOptionsIn);
+        setKernelOptions(convertOptionsMap(kernelOptionsIn));
     }
 
     /**
-     * @param kernelOptsIn the kernelOptions to set
+     * @param kernelOptionsPostIn the kernelOptionsPost to set
      */
-    public void setKernelOptions(String kernelOptsIn) {
-        setKernelOptions(parseKernelOpts(kernelOptsIn));
-    }
-
-
-    /**
-     * @param kernelOptsIn the kernelOptions to set
-     */
-    public void setKernelOptionsPost(String kernelOptsIn) {
-        setKernelOptionsPost(parseKernelOpts(kernelOptsIn));
+    public void setKernelOptionsPost(String kernelOptionsPostIn) {
+        modify(SET_KERNEL_OPTIONS_POST, StringUtils.defaultString(kernelOptionsPostIn));
     }
 
     private Map<String, Object> parseKernelOpts(String kernelOpts) {
-        Map<String, Object> toRet = new HashMap<String, Object>();
+        Map<String, Object> toRet = new HashMap<>();
 
         if (StringUtils.isEmpty(kernelOpts)) {
             return toRet;
         }
 
-        String[] options = StringUtils.split(kernelOpts);
+        // Split the string on any whitespace character, not enclosed by quotes
+        String[] options = kernelOpts.split("\\s(?=(?:[^']*'[^']*')*[^']*$)(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
         for (String option : options) {
-            String[] split = option.split("=", 2);
+            String[] split = option.replaceAll("[\",']", "").split("=", 2);
             if (split.length == 1) {
                 toRet.put(split[0], new ArrayList<String>());
             }
             else if (split.length == 2) {
                 if (toRet.containsKey(split[0])) {
-                    List<String> list = (List)toRet.get(split[0]);
+                    List<String> list = (List) toRet.get(split[0]);
                     list.add(split[1]);
                 }
                 else {
-                    toRet.put(split[0], new ArrayList<String>(Arrays.asList(split[1])));
+                    toRet.put(split[0], new ArrayList<>(Arrays.asList(split[1])));
                 }
             }
         }
         return toRet;
     }
 
+    /**
+     * @param kernelOptionsPostIn the kernelOptionsPost to set in the form of a map
+     */
+    public void setKernelOptionsPost(Map<String, Object> kernelOptionsPostIn) {
+        setKernelOptionsPost(convertOptionsMap(kernelOptionsPostIn));
+    }
 
     /**
      * @return the kernelMeta
@@ -441,22 +460,6 @@ public abstract class CobblerObject {
         handle = null;
         handle = getHandle();
         reload();
-    }
-
-
-    /**
-     * @return the kernelOptionsPost
-     */
-    public Map<String, Object> getKernelOptionsPost() {
-        return (Map<String, Object>)dataMap.get(KERNEL_OPTIONS_POST);
-    }
-
-
-    /**
-     * @param kernelOptionsPostIn the kernelOptionsPost to set
-     */
-    public void setKernelOptionsPost(Map<String, Object> kernelOptionsPostIn) {
-        modify(SET_KERNEL_OPTIONS_POST, kernelOptionsPostIn);
     }
 
     protected boolean isBlank(String str) {
