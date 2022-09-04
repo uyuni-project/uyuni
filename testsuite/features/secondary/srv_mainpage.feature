@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
@@ -33,7 +33,7 @@ Feature: Main landing page options and preferences
     And I follow "SUSE MANAGER LICENSE AGREEMENT"
     Then I should see a "SUSE Manager License Agreement" text
 
-  Scenario: Log into Uyuni
+  Scenario: Log into SUSE Manager
     Given I am not authorized
     When I go to the home page
     And I enter "testing" as "username"
@@ -41,7 +41,7 @@ Feature: Main landing page options and preferences
     And I click on "Sign In"
     Then I should be logged in
 
-  Scenario: Log out of Uyuni
+  Scenario: Log out of SUSE Manager
     Given I am authorized
     When I sign out
     Then I should not be authorized

@@ -26,8 +26,8 @@ Feature: Disable and re-enable monitoring of the server
     And I should see a list item with text "System" and a failing bullet
     And I should see a list item with text "PostgreSQL database" and a failing bullet
     And I should see a list item with text "Server self monitoring" and a warning bullet
-    And I should see a list item with text "Taskomatic (Java JMX)" and a failing bullet
-    And I should see a list item with text "Tomcat (Java JMX)" and a failing bullet
+    And I should see a list item with text "Taskomatic (Java JMX)" and a warning bullet
+    And I should see a list item with text "Tomcat (Java JMX)" and a warning bullet
     And I should see a "Restarting Tomcat and Taskomatic is needed for the configuration changes to take effect." text
 
   Scenario: Restart spacewalk services to apply config changes after disabling monitoring

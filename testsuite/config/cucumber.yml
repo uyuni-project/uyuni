@@ -3,13 +3,13 @@ action_chains: --tags @scope_action_chains
 ansible: --tags @scope_ansible
 api: --tags @scope_api
 building_container_images: --tags @scope_building_container_images
-centos: --tags @rhlike_minion
 changing_software_channels: --tags @scope_changing_software_channels
 cobbler: --tags @scope_cobbler
 configuration_channels: --tags @scope_configuration_channels
 content_lifecycle_management: --tags @scope_content_lifecycle_management
 content_staging: --tags @scope_content_staging
 cve_audit: --tags @scope_cve_audit
+deblike: --tags @scope_deblike
 formulas: --tags @scope_formulas
 hub: --tags @scope_hub
 kubernetes_integration: --tags @scope_kubernetes_integration
@@ -25,6 +25,7 @@ reportdb: --tags @scope_reportdb
 res: --tags @scope_res
 retail: --tags @scope_retail
 retracted_patches: --tags @scope_retracted_patches
+rhlike: --tags @rhlike_minion
 salt_ssh: --tags @scope_salt_ssh
 salt: --tags @scope_salt
 smdba: --tags @scope_smdba
@@ -35,7 +36,6 @@ subscription_matching: --tags @scope_subscription_matching
 sumatoolbox: --tags @scope_sumatoolbox
 tomcat: --tags @scope_tomcat
 traditional_client: --tags @scope_traditional_client
-ubuntu: --tags @scope_deblike
 virtual_host_manager: --tags @scope_virtual_host_manager
 virtualization: --tags @scope_virtualization
 visualization: --tags @scope_visualization

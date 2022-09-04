@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -8,15 +8,14 @@
 
 @scope_proxy
 @proxy
-Feature: Setup Uyuni proxy
-  In order to use a proxy with the Uyuni server
+Feature: Setup SUSE Manager proxy
+  In order to use a proxy with the SUSE Manager server
   As the system administrator
   I want to register the proxy to the server
 
   Scenario: Install proxy software
     When I refresh the metadata for "proxy"
-    # uncomment when product is out:
-    # When I install "SUSE-Manager-Proxy" product on the proxy
+    And I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy
     And I let squid use avahi on the proxy
 
@@ -49,16 +48,14 @@ Feature: Setup Uyuni proxy
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname
-    # TODO: uncomment when SCC product becomes available
-    # When I wait until I see "SUSE Manager Proxy" text, refreshing the page
+    When I wait until I see "SUSE Manager Proxy" text, refreshing the page
     Then I should see a "Proxy" link in the content area
 
 @uyuni
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname
-    # TODO: uncomment when SCC product becomes available
-    # When I wait until I see "Uyuni Proxy" text, refreshing the page
+    When I wait until I see "Uyuni Proxy" text, refreshing the page
     Then I should see a "Proxy" link in the content area
 
   Scenario: Install expect package on proxy for bootstrapping minion with GUI

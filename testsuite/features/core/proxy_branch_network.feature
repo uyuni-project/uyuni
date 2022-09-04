@@ -8,8 +8,8 @@
 @sle_client
 @scope_proxy
 @scope_retail
-Feature: Setup Uyuni for Retail branch network
-  In order to deploy Uyuni for Retail solution
+Feature: Setup SUSE Manager for Retail branch network
+  In order to deploy SUSE Manager for Retail solution
   As the system administrator
   I want to prepare the branch network
 

@@ -27,6 +27,7 @@ import org.cobbler.Profile;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * KickstartCobblerCommand - class to contain logic to communicate with cobbler
@@ -91,14 +92,14 @@ public class CobblerProfileCreateCommand extends CobblerProfileCommand {
         Profile prof = Profile.create(con, CobblerCommand.makeCobblerName(this.ksData),
                 distro);
 
-        Map<String, String> meta = new HashMap<>();
+        Map<String, Object> meta = new HashMap<>();
         meta.put("org", ksData.getOrg().getId().toString());
-        prof.setKsMeta(meta);
+        prof.setKsMeta(Optional.of(meta));
         KickstartFactory.saveKickstartData(this.ksData);
-        prof.setVirtBridge(this.ksData.getDefaultVirtBridge());
-        prof.setVirtCpus(ConfigDefaults.get().getDefaultVirtCpus());
-        prof.setVirtRam(ConfigDefaults.get().getDefaultVirtMemorySize(this.ksData));
-        prof.setVirtFileSize(ConfigDefaults.get().getDefaultVirtDiskSize());
+        prof.setVirtBridge(Optional.of(this.ksData.getDefaultVirtBridge()));
+        prof.setVirtCpus(Optional.of(ConfigDefaults.get().getDefaultVirtCpus()));
+        prof.setVirtRam(Optional.of(ConfigDefaults.get().getDefaultVirtMemorySize(this.ksData)));
+        prof.setVirtFileSize(Optional.of(ConfigDefaults.get().getDefaultVirtDiskSize()));
         prof.setKickstart(this.ksData.buildCobblerFileName());
         prof.save();
 

@@ -181,7 +181,7 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       classmate
 %endif
 Requires:       %{ehcache}
-Requires:       cobbler = 3.1.2
+Requires:       cobbler >= 3.3.3
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       (gnu-jaf or jakarta-activation)
@@ -257,6 +257,9 @@ Requires:       xerces-j2
 Requires:       xmlsec
 Requires(pre):  tomcat >= 7
 Requires:       tomcat-lib >= 7
+# libtcnative-1-0 is only recommended in tomcat.
+# We want it always to prevent warnings about openssl cannot be used
+Requires:       libtcnative-1-0
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires(pre):  salt
 
@@ -367,7 +370,7 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       classmate
 %endif
 Requires:       %{ehcache}
-Requires:       cobbler >= 3.0.0
+Requires:       cobbler >= 3.3.3
 Requires:       concurrent
 Requires:       hibernate-types
 Requires:       hibernate-commons-annotations

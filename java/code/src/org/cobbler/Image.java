@@ -24,6 +24,8 @@ import java.util.Map;
 
 /**
  * Encapsulates an Image object in Cobbler.
+ *
+ * @see <a href="https://cobbler.readthedocs.io/en/v3.3.3/code-autodoc/cobbler.items.html#module-cobbler.items.image">RTFD - Cobbler - 3.3.3 - Image</a>
  */
 public class Image extends CobblerObject {
 
@@ -57,6 +59,7 @@ public class Image extends CobblerObject {
 
     /**
      * Create a new image in Cobbler.
+     *
      * @param client a Cobbler connection
      * @param name the image name
      * @param type the image type
@@ -67,9 +70,9 @@ public class Image extends CobblerObject {
         String file) {
         Image image = new Image(client);
         image.handle = (String) client.invokeTokenMethod("new_image");
-        image.modify(NAME, name);
-        image.setType(type);
-        image.setFile(file);
+        image.modify(NAME, name, false);
+        image.modify(TYPE, type, false);
+        image.modify(FILE, file, false);
         image.save();
         image = lookupByName(client, name);
         return image;
@@ -108,24 +111,38 @@ public class Image extends CobblerObject {
             .invokeMethod("get_images");
 
         for (Map<String, Object> imageMap : imageMaps) {
-            Image distro = new Image(client);
-            distro.dataMap = imageMap;
-            result.add(distro);
+            Image image = new Image(client);
+            image.dataMap = imageMap;
+            image.dataMapResolved = (Map<String, Object>) client.invokeMethod(
+                    "get_image",
+                    image.getName(), // object name
+                    false, // flatten
+                    true // resolved
+            );
+            result.add(image);
         }
         return result;
     }
 
     /**
      * Handles lookups.
+     *
      * @param client a Cobbler connection
      * @param imageMap the image map
      * @return the image
      */
+    @SuppressWarnings("unchecked")
     private static Image handleLookup(CobblerConnection client,
         Map<String, Object> imageMap) {
         if (imageMap != null) {
             Image image = new Image(client);
             image.dataMap = imageMap;
+            image.dataMapResolved = (Map<String, Object>) client.invokeMethod(
+                    "get_image",
+                    image.getName(), // object name
+                    false, // flatten
+                    true // resolved
+            );
             return image;
         }
         return null;
@@ -154,7 +171,6 @@ public class Image extends CobblerObject {
      */
     public void setType(String typeIn) {
         modify(TYPE, typeIn);
-
     }
 
     /**
@@ -165,56 +181,58 @@ public class Image extends CobblerObject {
         modify(FILE, fileIn);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.cobbler.CobblerObject#invokeModify(java.lang.String,
-     * java.lang.Object)
+    /**
+     * @inheritDoc
      */
     @Override
     protected void invokeModify(String key, Object value) {
         client.invokeTokenMethod("modify_image", getHandle(), key, value);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.cobbler.CobblerObject#invokeSave()
+    /**
+     * @inheritDoc
+     */
+    @Override
+    protected void invokeModifyResolved(String key, Object value) {
+        client.invokeTokenMethod("set_item_resolved_value", getUid(), key, value);
+    }
+
+    /**
+     * @inheritDoc
      */
     @Override
     protected void invokeSave() {
         client.invokeTokenMethod("save_image", getHandle());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.cobbler.CobblerObject#invokeRemove()
+    /**
+     * @inheritDoc
      */
     @Override
     protected boolean invokeRemove() {
         return (Boolean) client.invokeTokenMethod("remove_image", getName());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.cobbler.CobblerObject#invokeGetHandle()
+    /**
+     * @inheritDoc
      */
     @Override
     protected String invokeGetHandle() {
         return (String) client.invokeTokenMethod("get_image_handle", this.getName());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.cobbler.CobblerObject#reload()
+    /**
+     * @inheritDoc
      */
     @Override
     protected void reload() {
         Image newImage = lookupById(client, getId());
         dataMap = newImage.dataMap;
+        dataMapResolved = newImage.dataMapResolved;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.cobbler.CobblerObject#invokeRename(java.lang.String)
+    /**
+     * @inheritDoc
      */
     @Override
     protected void invokeRename(String newName) {
@@ -222,6 +240,8 @@ public class Image extends CobblerObject {
     }
 
     /**
+     * Compares two objects with each another and returns true in case they are identical
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      * @param   other   the reference object with which to compare
      * @return  {@code true} if this object is the same as the obj
@@ -241,6 +261,8 @@ public class Image extends CobblerObject {
     }
 
     /**
+     * Generates the hash code for the object
+     *
      * @return  a hash code value for this object
      * @see java.lang.Object#hashCode()
      */

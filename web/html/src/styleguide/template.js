@@ -7,6 +7,7 @@ module.exports = {
   head: {
     // Some of these will currently fail due to CORS, but will be obsolete once we move branding into web
     links: [
+      "/css/susemanager-light.css",
       "/fonts/font-awesome/css/font-awesome.css",
       "/fonts/font-spacewalk/css/spacewalk-font.css",
       "/css/jquery.timepicker.css",

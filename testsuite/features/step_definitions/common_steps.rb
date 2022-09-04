@@ -257,11 +257,31 @@ Given(/^cobblerd is running$/) do
   raise 'cobblerd is not running' unless ct.running?
 end
 
-Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
+When(/^I create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
   ct.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
+end
+
+When(/^I create profile "([^"]*)" for distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |profile, distro, user, pwd|
+  ct = CobblerTest.new
+  ct.login(user, pwd)
+  raise 'profile ' + profile + ' already exists' if ct.profile_exists(profile)
+  ct.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
+end
+
+When(/^I create system "([^"]*)" for profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, profile, user, pwd|
+  ct = CobblerTest.new
+  ct.login(user, pwd)
+  raise 'system ' + system + ' already exists' if ct.system_exists(system)
+  ct.system_create(system, profile)
+end
+
+When(/^I remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
+  ct = CobblerTest.new
+  ct.login(user, pwd)
+  ct.system_remove(system)
 end
 
 When(/^I trigger cobbler system record$/) do
@@ -288,11 +308,14 @@ Given(/^distro "([^"]*)" exists$/) do |distro|
   raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
 end
 
-Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2, arg3|
+Given(/^profile "([^"]*)" exists$/) do |profile|
   ct = CobblerTest.new
-  ct.login(arg2, arg3)
-  raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
-  ct.profile_create('testprofile', 'testdistro', '/var/autoinstall/mock/empty.xml')
+  raise 'profile ' + profile + ' does not exist' unless ct.profile_exists(profile)
+end
+
+Given(/^system "([^"]*)" exists$/) do |system|
+  ct = CobblerTest.new
+  raise 'system ' + system + ' does not exist' unless ct.system_exists(system)
 end
 
 When(/^I remove kickstart profiles and distros$/) do
@@ -509,12 +532,6 @@ When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == "select")
-end
-
-When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |select, product, product_version|
-  if $product == product_version
-    step %(I #{select} "#{product}" as a product)
-  end
 end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|
@@ -1339,4 +1356,99 @@ Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
   else
     raise "Port '#{port}' not open although it should be!" unless port_opened
   end
+end
+
+When(/^I prepare Cobbler for the buildiso command$/) do
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  $server.run("mkdir -p #{tmp_dir}")
+  # we need bootloaders for the buildiso command
+  out, code = $server.run("cobbler mkloaders", verbose: true)
+  raise "error in cobbler mkloaders.\nLogs:\n#{out}" if code.nonzero?
+end
+
+When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distro|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}", verbose: true)
+  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+  profiles = ['orchid', 'flame', 'pearl']
+  isolinux_profiles = []
+  cobbler_profiles = []
+  profiles.each do |profile|
+    # get all profiles from Cobbler
+    result_cobbler, code = $server.run("cobbler profile list | grep -o #{profile}", verbose: true)
+    cobbler_profiles.push(result_cobbler) if code.zero?
+    # get all profiles from isolinux.cfg
+    result_isolinux, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{profile} | cut -c -6 | head -n 1")
+    unless result_isolinux.empty?
+      isolinux_profiles.push(result_isolinux)
+    end
+  end
+  raise "error during comparison of Cobbler profiles.\nLogs:\nCobbler profiles:\n#{cobbler_profiles}\nisolinux profiles:\n#{isolinux_profiles}" unless cobbler_profiles == isolinux_profiles
+end
+
+When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)"$/) do |distro, profile|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile}", verbose: true)
+  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+end
+
+When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)" without dns entries$/) do |distro, profile|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile} --exclude-dns", verbose: true)
+  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+  result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o nameserver", check_errors: false)
+  # we have to fail here if the command suceeds
+  raise "error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found.\nLogs:\n#{result}" if code.zero?
+end
+
+When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distro|
+  # param can either be standalone or airgapped
+  # workaround to get the contents of the buildiso folder
+  step %(I run Cobbler buildiso for distro "#{distro}" and all profiles)
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  iso_dir = "/var/cache/cobbler"
+  source_dir = "/var/cache/cobbler/source_#{param}"
+  $server.run("mv #{tmp_dir} #{source_dir}")
+  $server.run("mkdir -p #{tmp_dir}")
+  out, code = $server.run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{param}.iso --distro=#{distro} --#{param} --source=#{source_dir}", verbose: true)
+  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+end
+
+When(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
+  tmp_dir = "/var/cache/cobbler"
+  out, code = $server.run("cat >#{tmp_dir}/test_image <<-EOF
+BIOS
+UEFI
+EOF")
+  xorriso = "xorriso -indev #{tmp_dir}/#{name}.iso -report_el_torito 2>/dev/null"
+  iso_filter = "awk '/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}'"
+  iso_file = "#{tmp_dir}/xorriso_#{name}"
+  out, code = $server.run("#{xorriso} | #{iso_filter} >> #{iso_file}")
+  raise "error while executing xorriso.\nLogs:\n#{out}" if code.nonzero?
+  out, code = $server.run("diff #{tmp_dir}/test_image #{tmp_dir}/xorriso_#{name}")
+  raise "error in verifying Cobbler buildiso image with xorriso.\nLogs:\n#{out}" if code.nonzero?
+end
+
+When(/^I cleanup xorriso temp files$/) do
+  $server.run('rm /var/cache/cobbler/xorriso_*', check_errors: false)
+end
+
+Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
+  result, code = $server.run("cobbler #{item} edit --name=#{name} --#{param}=#{value}", verbose: true)
+  puts("cobbler #{item} edit --name #{name} #{param}=#{value}")
+  raise "error in adding parameter and value to Cobbler #{item}.\nLogs:\n#{result}" if code.nonzero?
+end
+
+And(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
+  tmp_dir = "/var/cache/cobbler/buildiso"
+  result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
+  raise "error during veryfying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
+end
+
+When(/^I cleanup after Cobbler buildiso$/) do
+  result, code = $server.run("rm -Rf /var/cache/cobbler")
+  raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end

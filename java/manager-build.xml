@@ -6,9 +6,9 @@
 
  Requirements & configuration:
 
- https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
+ https://github.com/uyuni-project/uyuni/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties -->
   <property file="buildconf/manager-developer-build.properties" />
 
@@ -332,6 +332,7 @@
                 <sysproperty key="log4j.threshold" value="warn" />
                 <sysproperty key="rhn.config.dir" value="${tests.configuration.path}" />
                 <jvmarg value="-ea" />
+                <!-- <jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" /> -->
                 <jvmarg value="${jacocoagent}"/>
             </fork>
             <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />

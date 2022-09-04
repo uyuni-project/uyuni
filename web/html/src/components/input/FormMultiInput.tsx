@@ -64,6 +64,9 @@ type Props = {
  * Compute the list of item keys in the model based of fields named like `${prefix}${idx}_${name}`
  */
 export function getOrderedItemsFromModel(model: any, prefix: string): Array<number> {
+  if (typeof model === "undefined" || model === null) {
+    return [];
+  }
   return Object.keys(model)
     .map((property) => {
       const result = property.match(new RegExp(`^${prefix}([0-9]+)`));

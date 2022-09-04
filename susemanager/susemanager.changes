@@ -1,3 +1,7 @@
+- add missing packages on SLES 15
+- remove server-migrator.sh from SUSE Manager installations (bsc#1202728)
+- create bootstrap repository data for Ubuntu 22.04 Vendor Channels
+- remove obsoleted sysv init script (bsc#1191857)
 - mgr-create-bootstrap-repo: flush directory also when called
   for a specific label (bsc#1200573)
 - pg-migrate-x-to-y.sh: improve output (bsc#1201260)

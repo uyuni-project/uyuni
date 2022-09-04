@@ -469,6 +469,8 @@ PKGLIST15_SALT_NO_BUNDLE = [
     "salt",
     "python3-salt",
     "salt-minion",
+    "python3-apipkg",
+    "python3-iniconfig",
 ]
 
 PKGLIST15_SALT = PKGLIST15_SALT_NO_BUNDLE + [
@@ -1563,6 +1565,11 @@ DATA = {
     'ubuntu-20.04-amd64' : {
         'PDID' : [-18, 2113], 'BETAPDID' : [2112], 'PKGLIST' : PKGLISTUBUNTU2004,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/20/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'ubuntu-22.04-amd64' : {
+        'PDID' : [-33, 2531], 'BETAPDID' : [2532], 'PKGLIST' : PKGLISTUBUNTU2204,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/ubuntu/22/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'ubuntu-16.04-amd64-uyuni' : {

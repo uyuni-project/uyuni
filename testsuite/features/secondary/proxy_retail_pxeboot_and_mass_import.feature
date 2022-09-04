@@ -184,7 +184,7 @@ Feature: PXE boot a Retail terminal
     Then I should see a "Formula saved" text
 
   Scenario: PXE boot the PXE boot minion
-    When I reboot the terminal "pxeboot_minion"
+    When I reboot the Retail terminal "pxeboot_minion"
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
     And I follow the left menu "Systems > Overview"

@@ -21,7 +21,7 @@ use Socket;
 eval {
     require Net::LibIDN2;
     Net::LibIDN2->import();
-    sub idn_to_ascii { return Net::LibIDN2::idn2_lookup_u8( shift ) }
+    sub idn_to_ascii($;$$) { return Net::LibIDN2::idn2_lookup_u8( shift ) }
     1;
 } or do {
     my $error = $@;

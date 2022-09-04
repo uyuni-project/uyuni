@@ -29,7 +29,7 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
-   Scenario: Install TFTP boot package on the server
+  Scenario: Install TFTP boot package on the server
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
 
@@ -83,7 +83,7 @@ Feature: PXE boot a terminal with Cobbler
 
   Scenario: PXE boot the PXE boot minion
     Given I set the default PXE menu entry to the target profile on the "proxy"
-    When I reboot the terminal "pxeboot_minion"
+    When I reboot the Cobbler terminal "pxeboot_minion"
     And I wait for "60" seconds
     And I set the default PXE menu entry to the local boot on the "proxy"
     And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
@@ -91,6 +91,7 @@ Feature: PXE boot a terminal with Cobbler
     And I am on the Systems page
     And I wait until I see the name of "pxeboot_minion", refreshing the page
     And I wait until onboarding is completed for "pxeboot_minion"
+    Then "pxeboot_minion" should have been reformatted
 
   Scenario: Check connection from PXE boot minion to the proxy
     When I follow "Details" in the content area

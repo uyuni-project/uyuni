@@ -93,7 +93,9 @@ if [ -n "$1" ]; then
 fi
 
 RHN_CONF="/etc/rhn/rhn.conf"
-GPG_SALT_EXPORT_FILE="/srv/susemanager/salt/gpg/mgr-keyring.gpg"
+GPG_SALT_EXPORT_DIR="/srv/susemanager/salt/gpg"
+GPG_SALT_EXPORT_FILE="$GPG_SALT_EXPORT_DIR/mgr-keyring.gpg"
+GPG_ARMOR_SALT_EXPORT_FILE="$GPG_SALT_EXPORT_DIR/mgr-gpg-pub.key"
 GPG_PUB_EXPORT_FILE="$(spacewalk-cfg-get documentroot)/pub/mgr-gpg-pub.key"
 SIGNING_CONF="/etc/rhn/signing.conf"
 
@@ -135,21 +137,26 @@ if [[  $ACTION = "enable" ]]; then
 
     # check if key was exported to the salt dir
     EXPORT_SALT_KEY=true
-    if [ -f $GPG_SALT_EXPORT_FILE ]; then
+    if [ -f $GPG_SALT_EXPORT_FILE -a -f $GPG_ARMOR_SALT_EXPORT_FILE ]; then
         if gpg --no-default-keyring --keyring $GPG_SALT_EXPORT_FILE --list-keys | grep --quiet "$ENABLE_KEYID"; then
             echo "OK. Key ${ENABLE_KEYID} was exported to ${GPG_SALT_EXPORT_FILE}."
-            EXPORT_SALT_KEY=false
+            if cat $GPG_ARMOR_SALT_EXPORT_FILE | gpg -q --with-colons --import-options show-only --import | grep --quiet $KEYID; then
+                echo "OK. Key ${ENABLE_KEYID} was exported to ${GPG_ARMOR_SALT_EXPORT_FILE}."
+                EXPORT_SALT_KEY=false
+            fi
         fi
     fi
     if [ "$EXPORT_SALT_KEY" = true ]; then
         rm -f $GPG_SALT_EXPORT_FILE
-        GPG_SALT_EXPORT_DIR=$(dirname $GPG_SALT_EXPORT_FILE)
+        rm -f $GPG_ARMOR_SALT_EXPORT_FILE
         mkdir -p $GPG_SALT_EXPORT_DIR
         chown salt:salt $GPG_SALT_EXPORT_DIR
         chmod 775 $GPG_SALT_EXPORT_DIR
         gpg --export $ENABLE_KEYID > $GPG_SALT_EXPORT_FILE
-        chmod 644 $GPG_SALT_EXPORT_FILE
         echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_SALT_EXPORT_FILE}."
+        chmod 644 $GPG_SALT_EXPORT_FILE
+        gpg --batch --export --armor --output $GPG_ARMOR_SALT_EXPORT_FILE $ENABLE_KEYID
+        echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_ARMOR_SALT_EXPORT_FILE}."
     fi
 
     # check if key was exported to the http pub dir
@@ -194,6 +201,16 @@ elif [[  $ACTION = "check-config" ]]; then
             fi
         else
             echo "ERROR. Public key file $GPG_SALT_EXPORT_FILE is missing."
+        fi
+
+        if [ -f $GPG_ARMOR_SALT_EXPORT_FILE ]; then
+            if cat $GPG_ARMOR_SALT_EXPORT_FILE | gpg -q --with-colons --import-options show-only --import | grep --quiet $KEYID; then
+                echo "OK. Key ${KEYID} was exported to ${GPG_ARMOR_SALT_EXPORT_FILE}."
+            else
+                echo "ERROR. Public key file ${GPG_ARMOR_SALT_EXPORT_FILE} exists but it doesn't contain key ${KEYID}."
+            fi
+        else
+            echo "ERROR. Public key file $GPG_ARMOR_SALT_EXPORT_FILE is missing."
         fi
 
         if [ -f $GPG_PUB_EXPORT_FILE ]; then
@@ -249,6 +266,13 @@ elif [[  $ACTION = "disable" ]]; then
         echo "DONE. Removed key export file ${GPG_SALT_EXPORT_FILE}."
     else
         echo "OK. Key file ${GPG_SALT_EXPORT_FILE} is not present."
+    fi
+
+    if [ -f $GPG_ARMOR_SALT_EXPORT_FILE ]; then
+        rm -f $GPG_ARMOR_SALT_EXPORT_FILE
+        echo "DONE. Removed key export file ${GPG_ARMOR_SALT_EXPORT_FILE}."
+    else
+        echo "OK. Key file ${GPG_ARMOR_SALT_EXPORT_FILE} is not present."
     fi
 
     if [ -f $GPG_PUB_EXPORT_FILE ]; then

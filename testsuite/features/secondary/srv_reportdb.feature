@@ -43,7 +43,7 @@ Feature: ReportDB
     And I make a list of the existing systems
     Then I should find the systems from the UI in the ReportDB
 
-  @sle_minion
+@sle_minion
   Scenario: System changes should be reflected in systems, on ReportDB
     Given I have a property "City" with value "Arrakeen" on "sle_minion"
     And I know the current synced_date for "sle_minion"

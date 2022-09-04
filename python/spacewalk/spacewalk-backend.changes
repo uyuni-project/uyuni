@@ -1,3 +1,7 @@
+- export armored GPG key to salt filesystem as well
+- Upgrade Cobbler requirement to 3.3.3 or later
+- Make reposync use the configured http proxy with mirrorlist (bsc#1198168)
+
 -------------------------------------------------------------------
 Wed Jul 27 14:16:43 CEST 2022 - jgonzalez@suse.com
 
