@@ -17,17 +17,19 @@ Feature: Be able to list available products and enable them
     And I should get "  [ ] (R) Basesystem Module 15 SP3 x86_64"
     And I should get "  [ ] Desktop Applications Module 15 SP3 x86_64"
 
-  Scenario: Enable "SUSE Linux Enterprise Desktop 15 SP4 x86_64" with recommended modules
-    When I enable product "SUSE Linux Enterprise Desktop 15 SP4 x86_64"
-    Then I should get "Adding channels required by 'SUSE Linux Enterprise Desktop 15 SP4 x86_64' product"
-    And I should get "- sle-product-sled15-sp4-updates-x86_64"
-    And I should get "- sle-product-sled15-sp4-pool-x86_64"
-    And I should get "- sle-module-basesystem15-sp4-updates-x86_64-sled"
-    And I should get "- sle-module-basesystem15-sp4-pool-x86_64-sled"
-    And I should get "- sle-module-desktop-applications15-sp4-updates-x86_64-sled"
-    And I should get "- sle-module-desktop-applications15-sp4-pool-x86_64-sled"
-    And I should get "- sle-product-we15-sp4-updates-x86_64-sled"
-    And I should get "- sle-product-we15-sp4-pool-x86_64-sled"
+  Scenario: Enable "SUSE Linux Enterprise Desktop 15 SP3 x86_64" with recommended modules
+    # do NOT use same SP as for SLES minions
+    # ask mcalmer for technical details why this is a problem
+    When I enable product "SUSE Linux Enterprise Desktop 15 SP3 x86_64"
+    Then I should get "Adding channels required by 'SUSE Linux Enterprise Desktop 15 SP3 x86_64' product"
+    And I should get "- sle-product-sled15-sp3-updates-x86_64"
+    And I should get "- sle-product-sled15-sp3-pool-x86_64"
+    And I should get "- sle-module-basesystem15-sp3-updates-x86_64-sled"
+    And I should get "- sle-module-basesystem15-sp3-pool-x86_64-sled"
+    And I should get "- sle-module-desktop-applications15-sp3-updates-x86_64-sled"
+    And I should get "- sle-module-desktop-applications15-sp3-pool-x86_64-sled"
+    And I should get "- sle-product-we15-sp3-updates-x86_64-sled"
+    And I should get "- sle-product-we15-sp3-pool-x86_64-sled"
     And I should get "Product successfully added"
 
   Scenario: Enable "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" without recommended modules
