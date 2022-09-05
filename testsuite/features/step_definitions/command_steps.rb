@@ -443,7 +443,7 @@ When(/I wait until all synchronized channels have finished$/) do
 end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
-  activation_key = arg1.include("traditional")? "sle_client_key" : "sle_minion_key"
+  activation_key = arg1.include?("traditional") ? "sle_client_key" : "sle_minion_key"
   $command_output, _code = $server.run("mgr-bootstrap --activation-keys=1-#{activation_key} #{arg1}")
 end
 

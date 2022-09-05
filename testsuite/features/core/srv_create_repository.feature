@@ -57,7 +57,7 @@ Feature: Add a repository to a channel
     And I click on "Update Channel"
     Then I should see a "Channel Test-Channel-x86_64 Child Channel updated" text
     When I follow "Repositories" in the content area
-    And I select the "Test-Repository-x86_64 Child Channel" repo
+    And I select the "Test-Repository-x86_64" repo
     And I click on "Save Repositories"
     Then I should see a "Test-Channel-x86_64 Child Channel repository information was successfully updated" text
 
