@@ -43,7 +43,7 @@ Feature: Negative tests for bootstrapping normal minions
     Then I should see a "Details" button
     When I click on "Details"
     And I wait at most 10 seconds until I see modal containing "Error Details" text
-    Then I should see a "Result" text
+    Then I should see a "Standard Error" text
     And I should see "Could not resolve hostname not-existing-name: Name or service not known" in the textarea
     When I close the modal dialog
 
@@ -59,7 +59,7 @@ Feature: Negative tests for bootstrapping normal minions
     Then I should see a "Details" button
     When I click on "Details"
     And I wait at most 10 seconds until I see modal containing "Error Details" text
-    Then I should see a "Result" text
+    Then I should see a "Standard Error" text
     And I should see "Permission denied (publickey,keyboard-interactive)." or "Password authentication failed" in the textarea
     When I close the modal dialog
 
@@ -75,7 +75,7 @@ Feature: Negative tests for bootstrapping normal minions
     Then I should see a "Details" button
     When I click on "Details"
     And I wait at most 10 seconds until I see modal containing "Error Details" text
-    Then I should see a "Result" text
+    Then I should see a "Standard Error" text
     And I should see "port 11: Connection refused" or "port 11: Invalid argument" in the textarea
     When I close the modal dialog
 
