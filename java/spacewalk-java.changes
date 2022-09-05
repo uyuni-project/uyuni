@@ -1,3 +1,4 @@
+- Fixed serialization problems (bsc#1202899)
 - Reduced the usage of deprecated Hibernate API
 - Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
 - Support Pay-as-you-go new CA location for SLES15SP4
