@@ -1,3 +1,4 @@
+- Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
 - Fix sync for external repositories (bsc#1201753)
 - Detect the clients running on Amazon EC2 (bsc#1195624)
 - Adjust cobbler requirement to version 3.3.3
