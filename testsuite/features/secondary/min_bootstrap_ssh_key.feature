@@ -33,7 +33,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     Then I should see a "Details" button
     When I click on "Details"
     And I wait at most 10 seconds until I see modal containing "Error Details" text
-    Then I should see a "Result" text
+    Then I should see a "Standard Error" text
     And I should see "Permission denied, no authentication information" in the textarea
     When I close the modal dialog
 
