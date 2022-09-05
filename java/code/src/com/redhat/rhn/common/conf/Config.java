@@ -400,10 +400,10 @@ public class Config {
     }
 
     /**
-     * get the config entry for string s
+     * get the config entry for string s or return false
      *
      * @param s string to get the value of
-     * @return the value
+     * @return the value or false
      */
     public boolean getBoolean(String s) {
         String value = getString(s);
