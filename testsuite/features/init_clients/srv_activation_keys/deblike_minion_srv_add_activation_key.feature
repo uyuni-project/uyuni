@@ -25,5 +25,5 @@ Feature: Create an activation key for deblike_minion
 
   Scenario: Create an activation key with the channel and child channels for a deblike_minion
     When I am logged in API as user "admin" and password "admin"
-    And I create an activation key including custom channels for "deblike_minion" via API
+    And I create an activation key including custom test channels for "deblike_minion" via API
     And I logout from API

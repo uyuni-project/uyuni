@@ -1,7 +1,7 @@
 # Copyright (c) 2010-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@sle_client
+#@sle_client
 Feature: Create an activation key for sle_client
   In order to register systems to the spacewalk server
   As the testing user
