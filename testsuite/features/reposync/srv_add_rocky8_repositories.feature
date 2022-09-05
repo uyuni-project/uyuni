@@ -110,3 +110,6 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I enter "Initial build" as "message"
     And I click the environment build button
     Then I should see a "Version 1: Initial build" text
+
+  Scenario: Create the bootstrap repository for the Rocky 8 minion
+    When I create the bootstrap repository for "rhlike_minion" on the server
