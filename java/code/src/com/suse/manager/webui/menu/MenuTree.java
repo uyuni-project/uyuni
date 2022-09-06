@@ -134,7 +134,7 @@ public class MenuTree {
             .withDir("/rhn/manager/systems/details")
             .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/systems/Overview.do"))
             .addChild(new MenuItem("System List").addChild(new MenuItem("All")
-                    .withPrimaryUrl("/rhn/systems/SystemList.do"))
+                    .withPrimaryUrl("rhn/manager/systems/list/all"))
                     .addChild(new MenuItem("Physical Systems").withPrimaryUrl("/rhn/systems/PhysicalList.do"))
                     .addChild(new MenuItem("Virtual Systems").withPrimaryUrl("/rhn/manager/systems/list/virtual"))
                     .addChild(new MenuItem("Bare Metal Systems").withPrimaryUrl("/rhn/systems/BootstrapSystemList.do"))
