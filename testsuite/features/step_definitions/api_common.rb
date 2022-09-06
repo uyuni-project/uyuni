@@ -279,7 +279,7 @@ Then(/^I get the description "([^"]*)" for the activation key$/) do |description
   raise unless details['description'] == description
 end
 
-When(/^I create an activation key including custom ((?: test)?) channels for "([^"]*)" via API$/) do |test_channel, client|
+When(/^I create an activation key including custom((?: test)?) channels for "([^"]*)" via API$/) do |test_channel, client|
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
   base_channel = LABEL_BY_BASE_CHANNEL[BASE_CHANNEL_BY_CLIENT[client]]

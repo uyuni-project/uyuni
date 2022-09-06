@@ -25,5 +25,5 @@ Feature: Create an activation key for sle_client
 
   Scenario: Create an activation key with the channel and child channels for a sle_client
     When I am logged in API as user "admin" and password "admin"
-    And I create an activation key including custom channels for "sle_client" via API
+    And I create an activation key including custom test channels for "sle_client" via API
     And I logout from API
