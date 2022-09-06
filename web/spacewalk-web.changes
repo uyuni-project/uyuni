@@ -1,3 +1,4 @@
+- Upgrade moment-timezone
 - Fix packaging issues to address CVE-2021-43138 (bsc#1200480)
 - Upgrade shell-quote to fix CVE-2021-42740, upgrade moment to fix 
   CVE-2022-31129
