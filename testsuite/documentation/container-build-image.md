@@ -1,4 +1,4 @@
-## About the Container Build Image
+# About the Container Build Image
 
 In `testsuite/features/profiles/Docker/` we have defined 3 Dockerfiles to build
 container images as test.
@@ -10,6 +10,7 @@ which is build in OBS `systemsmanagement:Uyuni:Master:Docker/uyuni-master-testsu
 The image is based on openSUSE Leap and install in addition some of our test packages from
 the `systemsmanagement:Uyuni:Test-Packages:Pool` repositories.
 The following packages are installed in this image (Version 1.0):
+
 * andromeda-dummy
 * milkyway-dummy
 * virgo-dummy
