@@ -1,3 +1,5 @@
+* Add --param option to overwrite report parameter default value
+
 -------------------------------------------------------------------
 Wed May 04 15:21:53 CEST 2022 - jgonzalez@suse.com
 
