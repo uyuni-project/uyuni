@@ -16,11 +16,11 @@ Feature: Create an activation key for sle_client
     And I select the custom architecture channel for "sle_client" as the origin channel
     And I choose "current"
     And I click on "Clone Channel"
-    And I enter "Test-Channel-x86_64 Child Channel for sle_client" as "Channel Name"
+    And I enter "Test-Child-Channel-x86_64 for sle_client" as "Channel Name"
     And I enter "test-channel-for-sle_client" as "Channel Label"
     And I select the parent channel for the "sle_client" from "Parent Channel"
     And I click on "Clone Channel"
-    Then I should see a "Test-Channel-x86_64 Child Channel for sle_client" text
+    Then I should see a "Test-Child-Channel-x86_64 for sle_client" text
 
 
   Scenario: Create an activation key with the channel and child channels for a sle_client

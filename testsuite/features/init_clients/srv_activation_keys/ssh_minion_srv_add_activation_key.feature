@@ -16,11 +16,11 @@ Feature: Create an activation key for sle15sp4_ssh_minion
     And I select the custom architecture channel for "sle15sp4_ssh_minion" as the origin channel
     And I choose "current"
     And I click on "Clone Channel"
-    And I enter "Test-Channel-x86_64 Child Channel for sle15sp4_ssh_minion" as "Channel Name"
+    And I enter "Test-Child-Channel-x86_64 for sle15sp4_ssh_minion" as "Channel Name"
     And I enter "test-channel-for-sle15sp4_ssh_minion" as "Channel Label"
     And I select the parent channel for the "sle15sp4_ssh_minion" from "Parent Channel"
     And I click on "Clone Channel"
-    Then I should see a "Test-Channel-x86_64 Child Channel for sle15sp4_ssh_minion" text
+    Then I should see a "Test-Child-Channel-x86_64 for sle15sp4_ssh_minion" text
 
 
   Scenario: Create an activation key with the channel and child channels for a sle15sp4_ssh_minion
