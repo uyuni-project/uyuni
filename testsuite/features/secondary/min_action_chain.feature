@@ -9,8 +9,7 @@ Feature: Action chains on Salt minions
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
-    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I remove package "andromeda-dummy" from this "sle_minion" without error control
+    When I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I install package "milkyway-dummy" on this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"
@@ -262,7 +261,6 @@ Feature: Action chains on Salt minions
     When I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I remove package "milkyway-dummy" from this "sle_minion" without error control
-    And I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on Salt minion
     When I run "rm -f /tmp/action_chain.log" on "sle_minion" without error control

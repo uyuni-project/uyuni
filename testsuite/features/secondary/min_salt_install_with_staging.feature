@@ -15,8 +15,7 @@
 Feature: Install a package on the SLES minion with staging enabled
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package, make sure orion-dummy is not present
-    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I remove package "orion-dummy" from this "sle_minion" without error control
+    When I remove package "orion-dummy" from this "sle_minion" without error control
     And I install package "virgo-dummy-1.0" on this "sle_minion"
 
   Scenario: Pre-requisite: refresh package list
@@ -78,4 +77,3 @@ Feature: Install a package on the SLES minion with staging enabled
     And I check "virgo-dummy" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
-    And I disable repository "test_repo_rpm_pool" on this "sle_minion"
