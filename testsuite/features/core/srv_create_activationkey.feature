@@ -9,13 +9,25 @@ Feature: Create activation keys
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Clone the child custom channel including test repositories
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
+    And I select the custom architecture channel for "sle_minion" as the origin channel
+    And I choose "current"
+    And I click on "Clone Channel"
+    And I enter "SLE-Custom-Channel-x86_64" as "Channel Name"
+    And I enter "test-channel-for-sle" as "Channel Label"
+    And I select the parent channel for the "sle_minion" from "Parent Channel"
+    And I click on "Clone Channel"
+    Then I should see a "SLE-Custom-Channel-x86_64" text
+
   Scenario: Create an activation key with a channel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test Key x86_64" as "description"
     And I enter "SUSE-KEY-x86_64" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
     And I should see a "Details" link
@@ -45,7 +57,7 @@ Feature: Create activation keys
     And I enter "SUSE SSH Test Key x86_64" as "description"
     And I enter "SUSE-SSH-KEY-x86_64" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I select "Push via SSH" from "contact-method"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been created" text
@@ -56,6 +68,6 @@ Feature: Create activation keys
     And I enter "SUSE SSH Tunnel Test Key x86_64" as "description"
     And I enter "SUSE-SSH-TUNNEL-KEY-x86_64" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I select "Push via SSH tunnel" from "contact-method"
     And I click on "Create Activation Key"
