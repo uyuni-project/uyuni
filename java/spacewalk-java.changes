@@ -1,5 +1,5 @@
 - Fixed date format on scheduler related messages (bsc#1195455)
-- Support inherited values for kernel options from Cobbler API
+- Support inherited values for kernel options from Cobbler API (bsc#1199913)
 - Add channel availability check for product migration (bsc#1200296)
 - Check if system has all formulas correctly assigned
   (bsc#1201607)
