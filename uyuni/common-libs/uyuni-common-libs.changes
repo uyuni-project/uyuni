@@ -1,4 +1,8 @@
-- Do not allow creating path if nonexistent user or group in fileutils.
+-------------------------------------------------------------------
+Thu Sep 08 09:30:34 CEST 2022 - mc@suse.de
+
+- version 4.2.7-1
+  * Do not allow creating path if nonexistent user or group in fileutils.
 
 -------------------------------------------------------------------
 Wed Feb 02 13:54:52 CET 2022 - jmassaguerpla@suse.de
