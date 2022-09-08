@@ -1,21 +1,25 @@
-- Fixed date format on scheduler related messages (bsc#1195455)
-- Support inherited values for kernel options from Cobbler API (bsc#1199913)
-- Add channel availability check for product migration (bsc#1200296)
-- Check if system has all formulas correctly assigned
-  (bsc#1201607)
-- Remove group formula assignements and data on group delete
-  (bsc#1201606)
-- Fix sync for external repositories (bsc#1201753)
-- fix state.apply result parsing in test mode (bsc#1201913)
-- Reduce the length of image channel URL (bsc#1201220)
-- Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
-- fix symlinks pointing to ongres-stringprep
-- Modify parameter type when communicating with the search server (bsc#1187028)
-- Fix initial profile and build host on Image Build page (bsc#1199659)
-- Fix the confirm message on the refresh action by adding a link
-  to pending actions on it (bsc#1172705)
-- require new salt-netapi-client version
-- Clean grub2 reinstall entry in autoyast snippet (bsc#1199950)
+-------------------------------------------------------------------
+Thu Sep 08 09:48:52 CEST 2022 - mc@suse.de
+
+- version 4.2.41-1
+  * Fixed date format on scheduler related messages (bsc#1195455)
+  * Support inherited values for kernel options from Cobbler API (bsc#1199913)
+  * Add channel availability check for product migration (bsc#1200296)
+  * Check if system has all formulas correctly assigned
+    (bsc#1201607)
+  * Remove group formula assignements and data on group delete
+    (bsc#1201606)
+  * Fix sync for external repositories (bsc#1201753)
+  * fix state.apply result parsing in test mode (bsc#1201913)
+  * Reduce the length of image channel URL (bsc#1201220)
+  * Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
+  * fix symlinks pointing to ongres-stringprep
+  * Modify parameter type when communicating with the search server (bsc#1187028)
+  * Fix initial profile and build host on Image Build page (bsc#1199659)
+  * Fix the confirm message on the refresh action by adding a link
+    to pending actions on it (bsc#1172705)
+  * require new salt-netapi-client version
+  * Clean grub2 reinstall entry in autoyast snippet (bsc#1199950)
 
 -------------------------------------------------------------------
 Wed Jul 13 09:20:13 CEST 2022 - jmassaguerpla@suse.de
