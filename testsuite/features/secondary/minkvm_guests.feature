@@ -417,7 +417,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "15-sp4-kvm" from "cobbler_profile"
     And I select "test-net0" from "network0_source"
     And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
+    Then I wait until I see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
     And I wait until table row for "test-vm2" contains button "Stop"
     # Test the VM boot params
