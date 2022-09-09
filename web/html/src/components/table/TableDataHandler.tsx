@@ -172,8 +172,11 @@ export class TableDataHandler extends React.Component<Props, State> {
     });
   }
 
-  updateData({ items, total }: PagedData) {
+  updateData({ items, total, selectedIds }: PagedData) {
     this.setState({ data: items, totalItems: total }, () => {
+      if (selectedIds != null) {
+        this.props.onSelect?.(selectedIds);
+      }
       const lastPage = this.getLastPage();
       if (this.state.currentPage > lastPage) {
         this.setState({ currentPage: lastPage });
