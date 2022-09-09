@@ -18,6 +18,7 @@ package com.suse.manager.webui.utils.gson;
 import com.redhat.rhn.common.db.datasource.DataResult;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * JSON wrapper class to hold paginated data
@@ -29,13 +30,16 @@ public class PagedDataResultJson<T> {
     private List<T> items;
     private long total;
 
+    private Set<Long> selectedIds;
+
     /**
      * Create an instance from a {@link DataResult}
      *
      * @param data the current page of data
+     * @param selectedIdsIn list of SSM selected items
      */
-    public PagedDataResultJson(DataResult<T> data) {
-        this(data, data.getTotalSize());
+    public PagedDataResultJson(DataResult<T> data, Set<Long> selectedIdsIn) {
+        this(data, data.getTotalSize(), selectedIdsIn);
     }
 
     /**
@@ -43,9 +47,11 @@ public class PagedDataResultJson<T> {
      *
      * @param data the current page of data
      * @param totalIn total number of items
+     * @param selectedIdsIn list of SSM selected items
      */
-    public PagedDataResultJson(List<T> data, long totalIn) {
+    public PagedDataResultJson(List<T> data, long totalIn, Set<Long> selectedIdsIn) {
         items = data;
         total = totalIn;
+        selectedIds = selectedIdsIn;
     }
 }
