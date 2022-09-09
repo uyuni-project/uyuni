@@ -1,3 +1,7 @@
+- Add bugzilla references to past security fixes
+  * shell-quote fix CVE-2021-42740 (bsc#1203287)
+  * moment fix CVE-2022-31129 (bsc#1203288)
+
 -------------------------------------------------------------------
 Thu Sep 08 09:55:53 CEST 2022 - mc@suse.de
 
