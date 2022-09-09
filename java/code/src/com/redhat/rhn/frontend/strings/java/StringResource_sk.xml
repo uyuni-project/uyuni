@@ -10987,55 +10987,55 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Chyba pri vykonávaní stavu salt: {0}</target>
       </trans-unit>
       <trans-unit id="ansible.entity_not_found" xml:space="preserve">
         <source>The requested entity not found or inaccessible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Požadovaný subjekt sa nenašiel alebo je nedostupný</target>
       </trans-unit>
       <trans-unit id="ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Vykonať scenár Ansible</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
         <source>{0} filter(s) from template created successfully</source>
-        <target state="new"/>
+        <target state="translated">{0} filter(e) vytvorené úspešne zo šablóny</target>
       </trans-unit>
       <trans-unit id="virt.guest_migrate" xml:space="preserve">
         <source>Migrate a virtual domain</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Migrovať virtuálnu doménu</target>
       </trans-unit>
       <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
         <source>Invalid filter template</source>
-        <target state="new"/>
+        <target state="translated">Neplatná šablóna filtrov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
-        <target state="new"/>
+        <target state="translated">Nie je možné získať moduly kanálov. Prosím, skontrolujte záznamy servera, aby ste získali podrobné informácie.</target>
       </trans-unit>
       <trans-unit id="ovalfiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Voliteľné súbory OVAL (oddelené čiarkou)</target>
       </trans-unit>
       <trans-unit id="taskomatic.payg.success" xml:space="preserve">
         <source>Credentials successfully updated</source>
-        <target state="new"/>
+        <target state="translated">Prihlasovacie údaje úspešne aktualizované</target>
       </trans-unit>
       <trans-unit id="taskomatic.payg.pending" xml:space="preserve">
         <source>Waiting to be processed.</source>
-        <target state="new"/>
+        <target state="translated">Čaká sa na spracovanie.</target>
       </trans-unit>
       <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
         <source>Error getting instance data: {0}</source>
