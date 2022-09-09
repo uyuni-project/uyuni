@@ -57,7 +57,7 @@ export default class SimpleDataProvider {
       data = data.slice(firstItemIndex, firstItemIndex + pageControl.pageSize);
     }
 
-    callback(Promise.resolve({ items: data, total: total }));
+    callback(Promise.resolve({ items: data, total: total, selectedIds: [] }));
   }
 
   getIds(callback: (promise: Promise<Array<any>>) => any, criteria?: string) {

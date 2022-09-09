@@ -163,7 +163,9 @@ public class SystemsController {
                     return new VirtualSystem(system);
                 })
                 .collect(Collectors.toList());
-        return json(response, new PagedDataResultJson<>(systems, virtual.getTotalSize()));
+        RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
+
+        return json(response, new PagedDataResultJson<>(systems, virtual.getTotalSize(), ssmSet.getElementValues()));
     }
 
     /**
