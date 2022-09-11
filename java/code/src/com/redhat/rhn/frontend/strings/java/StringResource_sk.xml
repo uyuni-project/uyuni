@@ -11039,43 +11039,43 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
         <source>Error getting instance data: {0}</source>
-        <target state="new"/>
+        <target state="translated">Chyba pri získavaní dát inštancie: {0}</target>
       </trans-unit>
       <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
-        <target state="new"/>
+        <target state="translated">Neznáma chyba pri extrakcii údajov overenia. Skontrolujte, prosím, záznamy vo /var/log/rhn/</target>
       </trans-unit>
       <trans-unit id="payg.description_required" xml:space="preserve">
         <source>Description is required.</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa popis.</target>
       </trans-unit>
       <trans-unit id="payg.description_to_long" xml:space="preserve">
         <source>Description must not exceed 255 characters.</source>
-        <target state="new"/>
+        <target state="translated">Popis nesmie presiahnuť 255 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.host_required" xml:space="preserve">
         <source>Host is required.</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa hostiteľ.</target>
       </trans-unit>
       <trans-unit id="payg.host_to_long" xml:space="preserve">
         <source>Host must not exceed 255 characters.</source>
-        <target state="new"/>
+        <target state="translated">Hostiteľ nesmie presiahnuť 255 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.port_invalid" xml:space="preserve">
         <source>Invalid value for the port</source>
-        <target state="new"/>
+        <target state="translated">Neplatná hodnota pre port</target>
       </trans-unit>
       <trans-unit id="payg.username_required" xml:space="preserve">
         <source>Username is required.</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa používateľské meno.</target>
       </trans-unit>
       <trans-unit id="payg.username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Používateľské meno nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Heslo nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.key_password_to_long" xml:space="preserve">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
