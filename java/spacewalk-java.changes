@@ -1,3 +1,4 @@
+- Improved taskomatic error logging
 - Optimize action chain processing on job return event (bsc#1203532)
 - Re-calculate salt event queue numbers on restart
 - Check if system has all formulas correctly assigned
