@@ -47,9 +47,9 @@ public class SystemDetailsMessageFilter implements Filter {
 
     @Override
     public void doFilter(
-            ServletRequest request,
-            ServletResponse response,
-            FilterChain chain
+        ServletRequest request,
+        ServletResponse response,
+        FilterChain chain
     ) throws ServletException, IOException {
         chain.doFilter(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
