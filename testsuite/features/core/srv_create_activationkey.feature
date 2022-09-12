@@ -38,6 +38,21 @@ Feature: Create activation keys
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
+@rhlike_minion
+  Scenario: Create an activation key for RedHat-like minion
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Create Key"
+    And I enter "RedHat like Test Key" as "description"
+    And I enter "SUSE-KEY-RH-LIKE" as "key"
+    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
+    And I click on "Create Activation Key"
+    Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
+    And I should see a "Details" link
+    And I should see a "Packages" link
+    And I should see a "Configuration" link in the content area
+    And I should see a "Groups" link
+    And I should see a "Activated Systems" link
+
 @deblike_minion
   Scenario: Create an activation key for Debian-like minion
     When I follow the left menu "Systems > Activation Keys"
