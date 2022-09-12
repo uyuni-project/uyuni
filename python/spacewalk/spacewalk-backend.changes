@@ -1,3 +1,4 @@
+- add logspec param in rhn.conf to set urlgrabber loglevel
 - export armored GPG key to salt filesystem as well
 - Upgrade Cobbler requirement to 3.3.3 or later
 - Added an optional component_type property to the LOG object 

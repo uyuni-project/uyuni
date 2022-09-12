@@ -211,6 +211,7 @@ class DownloadThread(Thread):
             http_headers=tuple(params["http_headers"].items()),
             timeout=params["timeout"],
             minrate=params["minrate"],
+            logspec=params["urlgrabber_logspec"],
             keepalive=True,
         )
 

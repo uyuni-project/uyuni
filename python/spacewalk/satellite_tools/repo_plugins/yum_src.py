@@ -434,6 +434,8 @@ class ContentSource:
         # load proxy configuration based on the url
         self._load_proxy_settings(self.url)
 
+        self._load_urlgrabber_logspec()
+
         # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
         if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
             http_headers_cfg = configparser.ConfigParser()
@@ -486,6 +488,11 @@ class ContentSource:
                 self.timeout = int(CFG.REPOSYNC_TIMEOUT)
             except ValueError:
                 self.timeout = 300
+
+    def _load_urlgrabber_logspec(self):
+        with cfg_component('server.satellite') as CFG:
+            if CFG.urlgrabber_logspec:
+                self.urlgrabber_logspec = CFG.urlgrabber_logspec
 
     def _load_proxy_settings(self, url):
         # read the proxy configuration in /etc/rhn/rhn.conf
@@ -1208,6 +1215,7 @@ type=rpm-md
         params["minrate"] = self.minrate
         # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
+        params['logspec'] = self.urlgrabber_logspec 
 
     def get_file(self, path, local_base=None):
         try:
