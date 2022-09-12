@@ -2097,6 +2097,15 @@ SELECT channel_arch_id
   </query>
 </mode>
 
+<mode name="count_systems_with_entitlement">
+  <query params="user_id, entitlement_label">
+    SELECT  count(S.id)
+    FROM  rhnServer S
+    WHERE EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
+    AND EXISTS (SELECT 1 FROM rhnServerEntitlementView E where E.label = :entitlement_label AND E.server_id = S.id)
+  </query>
+</mode>
+
 <mode name="count_systems_in_set_without_feature">
   <query params="user_id, set_label, feature_label">
     SELECT COUNT(*) as count

@@ -462,12 +462,9 @@ def do_whoamitalkingto(self, args):
 ####################
 
 def _show_traditional_stack_message(self):
-    n_systems = len(self.client.system.listSystems(self.session))
-    n_salt_systems = len(
-        self.client.system.listSystemsWithEntitlement(self.session, 'salt_entitled')
-    )
+    has_traditional_systems = self.client.system.hasTraditionalSystems(self.session)
 
-    if n_systems > n_salt_systems:
+    if has_traditional_systems:
         logging.warning((
             'The traditional stack is unsupported and scheduled for removal. '
             'Consider migrating to salt minions.'
