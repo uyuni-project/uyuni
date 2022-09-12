@@ -257,7 +257,7 @@ When(/^I select "(.*?)" as the origin channel$/) do |label|
 end
 
 When(/^I select the custom architecture channel for "(.*?)" as the origin channel$/) do |client|
-  label = deb_host?(client)? "Test-Channel-Deb-AMD64 Child Channel" : "Test-Channel-x86_64 Child Channel"
+  label = deb_host?(client) ? "Test-Channel-Deb-AMD64 Child Channel" : "Test-Channel-x86_64 Child Channel"
   step %(I select "#{label}" from "original_id")
 end
 
