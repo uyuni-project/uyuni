@@ -46,7 +46,7 @@ Feature: Create activation keys
     And I enter "SUSE-KEY-RH-LIKE" as "key"
     And I select "Test-Channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
+    Then I should see a "Activation key RedHat like Test Key has been created" text
     And I should see a "Details" link
     And I should see a "Packages" link
     And I should see a "Configuration" link in the content area
