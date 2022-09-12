@@ -1385,7 +1385,7 @@ When(/^I reboot server through SSH$/) do
   node = get_target('server')
   temp_server = twopence_init("ssh:#{$server.public_ip}")
   temp_server.extend(LavandaBasic)
-  fullname = temp_server.run("cat /etc/hostname")[0].gsub("\n", '') #hostname -f does not always work
+  fullname = temp_server.run("cat /etc/hostname")[0].gsub("\n", '') 
   # Reboot and wait
   temp_server.run("reboot")
   reboot_timeout = 1000
@@ -1395,7 +1395,7 @@ When(/^I reboot server through SSH$/) do
   temp_server = twopence_init("ssh:#{fullname}")
   temp_server.extend(LavandaBasic)
   repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
-    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)    
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
     if !out.to_s.include? "dead" and out.to_s.include? "running"
       log "machine: #{fullname} spacewalk is up"
       break
@@ -1408,23 +1408,23 @@ end
 Then(/^I change server short hostname from hosts and hostname files as "([^"]*)"$/) do |text|
   # Change instances of the old hostname into the desired new hostname
   old_hostname = $server.hostname
-  $server.run("sed -i 's/#{old_hostname}/#{text}/g' /etc/hosts && 
-  sed -i 's/#{old_hostname}/#{text}/g' /etc/hostname && 
+  $server.run("sed -i 's/#{old_hostname}/#{text}/g' /etc/hosts &&
+  sed -i 's/#{old_hostname}/#{text}/g' /etc/hostname &&
   echo '#{$server.public_ip} #{$server.full_hostname} #{old_hostname}' >> /etc/hosts ")
 end
 
-When(/^I run spacewalk-hostname-rename command on the server$/) do 
+When(/^I run spacewalk-hostname-rename command on the server$/) do
   temp_server = twopence_init("ssh:#{$server.public_ip}")
   temp_server.extend(LavandaBasic)
-  command = "spacewalk-hostname-rename #{$server.public_ip} 
+  command = "spacewalk-hostname-rename #{$server.public_ip}
             --ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg
             --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
             --ssl-ca-password=spacewalk"
-  out, code = temp_server.run(command, check_errors: false, timeout: 10) 
+  out, code = temp_server.run(command, check_errors: false, timeout: 10)
   log "#{out}"
   reboot_timeout = 1000
   repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
-    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)    
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
     if !out.to_s.include? "dead" and out.to_s.include? "running"
       log "machine: #{$server.full_hostname} spacewalk is up"
       break
