@@ -256,6 +256,7 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp4-updates-x86_64
     sle-module-basesystem15-sp4-updates-x86_64
     sle-module-server-applications15-sp4-updates-x86_64
+    sle15-sp4-installer-updates-x86_64
   ],
   '12-SP4' =>
   %w[
