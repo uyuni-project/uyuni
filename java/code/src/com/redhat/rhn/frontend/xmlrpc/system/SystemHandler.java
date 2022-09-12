@@ -6137,6 +6137,20 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Returns whether there are traditional systems registered
+     *
+     * @param loggedInUser The current user
+     * @return true if there is at least one traditional system registered or else false
+     *
+     * @apidoc.ignore this endpoint is used only internally to determine if a warning
+     * about traditional stack deprecation should be displayed
+     */
+    @ReadOnly
+    public boolean hasTraditionalSystems(User loggedInUser) {
+        return SystemManager.hasTraditionalSystems(loggedInUser);
+    }
+
+    /**
      * Gets a list of all Physical systems visible to user
      * @param loggedInUser The current user
      * @return Returns an array of maps representing all systems visible to user
