@@ -10,6 +10,8 @@ Feature: Reconfiguring
   Scenario: Change hostname and reboot server
     #Command prerequisites
     When I change server short hostname from hosts and hostname files as "uyu-serv"
-    Then I reboot server through API
-    #To check if the testsuite has the hand back
-    Then I am authorized for the "Admin" section
+    Then I reboot server through SSH
+    And I run spacewalk-hostname-rename command on the server
+    And I change back the server hostname
+    And I reboot server through SSH
+    And I run spacewalk-hostname-rename command on the server
