@@ -609,6 +609,19 @@ public class HardwareMapper {
                         LOG.info(String.format("Detected virtual instance type '%s' for minion '%s'",
                                 virtTypeLabel, server.getMinionId()));
                 }
+                if (virtSubtype.startsWith("Amazon EC2")) {
+                    switch (virtTypeLowerCase) {
+                        case "xen":
+                            virtTypeLabel = "aws_xen";
+                            break;
+                        case "qemu":
+                        case "kvm":
+                            virtTypeLabel = "aws_kvm";
+                            break;
+                        default:
+                            virtTypeLabel = "aws";
+                    }
+                }
                 type = VirtualInstanceFactory.getInstance()
                         .getVirtualInstanceType(virtTypeLabel);
 

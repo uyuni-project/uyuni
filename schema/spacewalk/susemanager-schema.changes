@@ -1,3 +1,5 @@
+- Add subtypes for Amazon EC2 virtual instances (bsc#1195624)
+
 -------------------------------------------------------------------
 Thu Sep 08 09:51:22 CEST 2022 - mc@suse.de
 

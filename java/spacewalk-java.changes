@@ -1,3 +1,5 @@
+- Detect the clients running on Amazon EC2 (bsc#1195624)
+
 -------------------------------------------------------------------
 Thu Sep 08 09:48:52 CEST 2022 - mc@suse.de
 
