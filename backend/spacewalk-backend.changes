@@ -1,3 +1,8 @@
+- Prevent mixing credentials for proxy and repository server
+  while using basic authentication and avoid hiding errors
+  i.e. timeouts while having proxy settings issues
+  with extra logging in verbose mode (bsc#1201788)
+
 -------------------------------------------------------------------
 Thu Sep 08 09:38:18 CEST 2022 - mc@suse.de
 

@@ -10,9 +10,15 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 from mock import Mock, patch
+from queue import Queue
 
-from spacewalk.satellite_tools.download import ThreadedDownloader, pycurl
-
+from spacewalk.satellite_tools.download import (
+    DownloadThread,
+    ThreadedDownloader,
+    PyCurlFileObjectThread,
+    pycurl,
+)
+from urlgrabber.grabber import URLGrabberOptions
 
 class NoKeyErrorsDict(dict):
     """Like a dict that is only accessed by .get(key)"""
@@ -48,3 +54,63 @@ def test_reposync_timeout_minrate_are_passed_to_curl():
 
         curl_spy.setopt.assert_any_call(pycurl.LOW_SPEED_LIMIT, 42)
         curl_spy.setopt.assert_any_call(pycurl.LOW_SPEED_TIME, 42)
+
+
+@patch("uyuni.common.context_managers.initCFG", Mock())
+@patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
+@patch("urlgrabber.grabber.PyCurlFileObject._do_grab", Mock())  # no downloads
+@patch("urlgrabber.grabber.PyCurlFileObject.close", Mock())  # no need to close files
+@patch("spacewalk.satellite_tools.download.os.path.isfile", Mock(return_value=False))
+def test_reposync_configured_http_proxy_passed_to_urlgrabber():
+    http_proxy = 'http://proxy.example.com:8080'
+    opts = URLGrabberOptions(proxy=None, proxies={'http': http_proxy, 'https': http_proxy, 'ftp': http_proxy})
+    url = "https://download.opensuse.org"
+
+    CFG = Mock()
+    CFG.http_proxy = http_proxy
+    CFG.REPOSYNC_TIMEOUT = 42
+    CFG.REPOSYNC_MINRATE = 42
+    CFG.REPOSYNC_DOWNLOAD_THREADS = 42 # Throws ValueError if not defined
+
+    curl_spy = Mock()
+
+    with patch(
+        "spacewalk.satellite_tools.download.pycurl.Curl", Mock(return_value=curl_spy)
+    ), patch("uyuni.common.context_managers.CFG", CFG):
+
+        pycurlobj = PyCurlFileObjectThread(url, "file.rpm", opts, curl_spy, None)
+        assert pycurlobj.opts.proxy == http_proxy
+
+
+def test_reposync_download_thread_fetch_url_proxy_pass():
+    http_proxy = "http://proxy.example.com:8080"
+    proxies = {"http": http_proxy, "https": http_proxy, "ftp": http_proxy}
+    queue = Queue()
+    queue.put(
+        {
+            "ssl_ca_cert": None,
+            "ssl_client_cert": None,
+            "ssl_client_key": None,
+            "bytes_range": None,
+            "proxy": http_proxy,
+            "proxy_username": "user",
+            "proxy_password": "password",
+            "proxies": proxies,
+            "http_headers": {},
+            "timeout": None,
+            "minrate": None,
+            "urls": [],
+            "relative_path": "",
+        }
+    )
+    parent_mock = Mock()
+    parent_mock.retries = 0
+    url_grabber_opts_mock = Mock()
+    with patch(
+        "spacewalk.satellite_tools.download.URLGrabberOptions", url_grabber_opts_mock
+    ):
+        DownloadThread(parent_mock, queue).run()
+        assert url_grabber_opts_mock.mock_calls[0].kwargs["proxies"] == proxies
+        assert "proxy" not in url_grabber_opts_mock.mock_calls[0].kwargs
+        assert "username" not in url_grabber_opts_mock.mock_calls[0].kwargs
+        assert "password" not in url_grabber_opts_mock.mock_calls[0].kwargs

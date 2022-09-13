@@ -450,13 +450,9 @@ class ContentSource:
         params['checksum_type'] = checksum_type
         params['checksum'] = checksum_value
         params['bytes_range'] = bytes_range
-        params['proxy'] = self.proxy_addr
-        params['proxy_username'] = self.proxy_user
-        params['proxy_password'] = self.proxy_pass
         params['http_headers'] = self.repo.http_headers
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
-        # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
                                         self.repo.proxy_password)
 
