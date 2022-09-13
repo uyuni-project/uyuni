@@ -1,3 +1,6 @@
+- Add mgrnet salt module with mgrnet.dns_fqnd function implementation
+  allowing to get all possible FQDNs from DNS (bsc#1199726)
+
 -------------------------------------------------------------------
 Thu Sep 08 09:33:53 CEST 2022 - mc@suse.de
 
