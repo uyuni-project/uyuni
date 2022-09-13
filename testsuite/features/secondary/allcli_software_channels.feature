@@ -82,7 +82,7 @@ Feature: Channel subscription via SSM
 @sle_minion
   Scenario: Check old channels are still enabled on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "1" channels should be enabled on "sle_minion"
+    Then "2" channels should be enabled on "sle_minion"
     And channel "Test-Channel-x86_64" should be enabled on "sle_minion"
 
 @sle_client
@@ -129,7 +129,7 @@ Feature: Channel subscription via SSM
 @sle_minion
   Scenario: Check the new channels are enabled on the SLES minion
     When I refresh the metadata for "sle_minion"
-    Then "2" channels should be enabled on "sle_minion"
+    Then "3" channels should be enabled on "sle_minion"
     And channel "Test Base Channel" should be enabled on "sle_minion"
     And channel "Test Child Channel" should be enabled on "sle_minion"
 

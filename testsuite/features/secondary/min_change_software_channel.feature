@@ -19,7 +19,7 @@ Feature: Assign child channel to a system
 
   Scenario: Check old channels are still enabled on the system before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "1" channels should be enabled on "sle_minion"
+    Then "2" channels should be enabled on "sle_minion"
     And channel "Test-Channel-x86_64" should be enabled on "sle_minion"
 
   Scenario: Assign a child channel to the system
@@ -52,7 +52,7 @@ Feature: Assign child channel to a system
 
   Scenario: Check the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
-    Then "2" channels should be enabled on "sle_minion"
+    Then "3" channels should be enabled on "sle_minion"
     And channel "Test-Channel-x86_64" should be enabled on "sle_minion"
     And channel "Test-Channel-x86_64 Child Channel" should be enabled on "sle_minion"
 
