@@ -11079,43 +11079,43 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="payg.key_password_to_long" xml:space="preserve">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Heslo súkromného kľúča SSH nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
         <source>Bastion host must not exceed 255 characters.</source>
-        <target state="new"/>
+        <target state="translated">Baštový hostiteľ nesmie presiahnuť 255 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_host_required" xml:space="preserve">
         <source>Bastion host is required if any other bastion property is set.</source>
-        <target state="new"/>
+        <target state="translated">Baštový hostiteľ sa vyžaduje, ak je nastavená akákoľvek iná baštová vlastnosť.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
         <source>Invalid value for the bastion port</source>
-        <target state="new"/>
+        <target state="translated">Neplatná hodnota pre baštový port</target>
       </trans-unit>
       <trans-unit id="payg.bastion_username_required" xml:space="preserve">
         <source>Username is required.</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa používateľské meno.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Používateľské meno nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Heslo nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Heslo súkromného kľúča SSH bašty nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.ssh_data_created" xml:space="preserve">
         <source>Pay-as-you-go {0} created successfully</source>
-        <target state="new"/>
+        <target state="translated">Úspešne vytvorená priebežná platba {0}</target>
       </trans-unit>
       <trans-unit id="payg.host_exists" xml:space="preserve">
         <source>Pay-as-you-go host already exists</source>
-        <target state="new"/>
+        <target state="translated">Priebežne platený hostiteľ už existuje</target>
       </trans-unit>
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
         <source>Pay-as-you-go {0} deleted successfully</source>
