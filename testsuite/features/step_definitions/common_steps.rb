@@ -353,14 +353,16 @@ end
 
 Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
   node = get_target(host)
-  _out, code = node.run("zypper lr -E | tail -n +5 | wc -l")
-  raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
+  node.run("zypper lr -E | tail -n +5", verbose: true)
+  out, _code = node.run("zypper lr -E | tail -n +5 | wc -l")
+  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
   node = get_target(host)
-  _out, code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
-  raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
+  node.run("zypper lr -E | tail -n +5 | grep '#{prefix}'", verbose: true)
+  out, _code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
+  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 # metadata steps
