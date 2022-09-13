@@ -1,6 +1,11 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# This feature is not idempotent, we leave the system registered in order to have available the history of events,
+# but there are no other features testing XEN.
+
+# This feature has not dependencies and it can run in parallel with other features
+
 @scope_virtualization
 @virthost_xen
 Feature: Be able to manage XEN virtual machines via the GUI
@@ -177,8 +182,9 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I select "test-net0" from "network0_source"
     And I select "VNC" from "graphicsType"
     And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
-    When I wait until I see "test-vm2" text
+    And I wait until I see "Hosted Virtual Systems" text
+    And I wait until event "Creates a virtual domain: test-vm2" is completed
+    And I follow "Virtualization" in the content area
     And I wait at most 500 seconds until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
     And "test-vm2" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm2_system" xen disk
@@ -201,8 +207,9 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
     And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
-    When I wait until I see "test-vm3" text
+    And I wait until I see "Hosted Virtual Systems" text
+    And I wait until event "Creates a virtual domain: test-vm3" is completed
+    And I follow "Virtualization" in the content area
     And I wait at most 500 seconds until table row for "test-vm3" contains button "Stop"
     And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
     And "test-vm3" virtual machine on "xen_server" should have a "/var/lib/libvirt/images/test-pool0/test-vm3_system" xen disk
@@ -226,28 +233,3 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I click on "Delete" in row "test-vm3"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm3" virtual machine on "xen_server"
-
-  Scenario: Cleanup: Unregister the Xen virtualization host
-    Given I am on the Systems overview page of this "xen_server"
-    When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
-
-  Scenario: Cleanup: Cleanup Xen virtualization host
-    When I run "zypper -n mr -e --all" on "xen_server" without error control
-    And I run "zypper -n rr SUSE-Manager-Bootstrap" on "xen_server" without error control
-    And I run "systemctl stop salt-minion" on "xen_server" without error control
-    And I run "rm /etc/salt/minion.d/susemanager*" on "xen_server" without error control
-    And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "xen_server" without error control
-    And I run "rm /etc/salt/pki/minion/minion_master.pub" on "xen_server" without error control
-    # In case the delete VM test failed we need to clean up ourselves.
-    And I run "virsh undefine --remove-all-storage test-vm" on "xen_server" without error control
-    And I run "virsh destroy test-vm2" on "xen_server" without error control
-    And I run "virsh undefine --remove-all-storage test-vm2" on "xen_server" without error control
-    And I run "virsh destroy test-vm3" on "xen_server" without error control
-    And I run "virsh undefine --remove-all-storage test-vm3" on "xen_server" without error control
-    And I delete test-net0 virtual network on "xen_server" without error control
-    And I delete test-net1 virtual network on "xen_server" without error control
-    And I delete test-pool0 virtual storage pool on "xen_server" without error control
-    And I delete all "test-vm.*" volumes from "default" pool on "xen_server" without error control
