@@ -3,14 +3,11 @@ include:
   - certs
   - channels.gpg-keys
 
-{%- if salt['pillar.get']('mgr_disable_local_repos', True) %}
-{# disable all local repos which are not from susemanager unless the pillar say it different #}
-{%- include 'channels/disablelocalrepos.sls' %}
-{%- else %}
+{%- if not salt['pillar.get']('mgr_disable_local_repos', True) %}
 {# disable at least the SUSE-Manager-Bootstrap repo #}
 {% set repos_disabled = {'match_str': 'SUSE-Manager-Bootstrap', 'matching': true} %}
-{%- include 'channels/disablelocalrepos.sls' %}
 {%- endif %}
+{%- include 'channels/disablelocalrepos.sls' %}
 
 {%- if grains['os_family'] == 'RedHat' %}
 
