@@ -1,3 +1,4 @@
+- Fix out of memory error when building a CLM project (bsc#1202217)
 - Process salt events in FIFO order (bsc#1203532)
 - Remove 'SSM' column text where not applicable (bsc#1203588)
 - Fix rendering of ssm/MigrateSystems page (bsc#1204651)

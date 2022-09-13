@@ -1100,10 +1100,10 @@ public class ContentManager {
 
         // First add the denied packages by testing all DENY filters against a package, and then filter out any package
         // that is explicitly allowed by testing all ALLOW filters against the same package and negating the result.
-        Set<T> denied = entities.stream()
-                .filter(e -> denyFilters.stream().map(f -> f.test(e)).reduce(false, Boolean::logicalOr))
-                .filter(e -> !allowFilters.stream().map(f -> f.test(e)).reduce(false, Boolean::logicalOr))
-                .collect(Collectors.toUnmodifiableSet());
+        Set<T> denied = entities.stream().filter(
+                e -> denyFilters.stream().anyMatch(f -> f.test(e)) &&
+                allowFilters.stream().noneMatch(f -> f.test(e))
+        ).collect(Collectors.toUnmodifiableSet());
 
         Set<T> allowed = new HashSet<>(entities);
         allowed.removeAll(denied);
