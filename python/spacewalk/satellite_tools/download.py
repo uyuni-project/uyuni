@@ -112,6 +112,8 @@ class PyCurlFileObjectThread(PyCurlFileObject):
     def __init__(self, url, filename, opts, curl_cache, parent):
         self.curl_cache = curl_cache
         self.parent = parent
+        # Next 3 lines will not be required on having urlgrabber with proper fix
+        # https://github.com/rpm-software-management/urlgrabber/pull/35
         (url, parts) = opts.urlparser.parse(url, opts)
         (scheme, host, path, parm, query, frag) = parts
         opts.find_proxy(url, scheme)
@@ -204,9 +206,6 @@ class DownloadThread(Thread):
             ssl_cert=params["ssl_client_cert"],
             ssl_key=params["ssl_client_key"],
             range=params["bytes_range"],
-            proxy=params["proxy"],
-            username=params["proxy_username"],
-            password=params["proxy_password"],
             proxies=params["proxies"],
             http_headers=tuple(params["http_headers"].items()),
             timeout=params["timeout"],

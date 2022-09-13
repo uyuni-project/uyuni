@@ -7,8 +7,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         table="rhnUserExtGroup">
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
-            <generator class="sequence">
-                <param name="sequence">rhn_userextgroup_seq</param>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">rhn_userextgroup_seq</param>
+                <param name="increment_size">1</param>
             </generator>
         </id>
         <discriminator column="org_id" insert="false"/>

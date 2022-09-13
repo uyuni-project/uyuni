@@ -35,6 +35,7 @@ import solv
 import subprocess
 import sys
 import tempfile
+import traceback
 import types
 import urlgrabber
 import json
@@ -54,9 +55,11 @@ from uyuni.common.context_managers import cfg_component
 from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
+from spacewalk.satellite_tools.syncLib import log
 from spacewalk.common.rhnConfig import CFG, initCFG
-from spacewalk.common.suseLib import get_proxy
+from spacewalk.common.suseLib import get_proxy, URL as suseLibURL
 from rhn.stringutils import sstr
+from urlgrabber.grabber import URLGrabError
 
 
 # namespace prefix to parse patches.xml file
@@ -533,7 +536,25 @@ class ContentSource:
             urlgrabber_opts = {}
             self.set_download_parameters(urlgrabber_opts, url, mirrorlist_path)
             urlgrabber.urlgrab(url, mirrorlist_path, **urlgrabber_opts)
-        except Exception as exc:
+        except URLGrabError as exc:
+            repl_url = suseLibURL(url).getURL(stripPw=True)
+            if not hasattr(exc, "code"):
+                msg = "ERROR: Mirror list download failed: %s - %s" % (
+                    url,
+                    exc.strerror,
+                )
+                msg = msg.replace(url, repl_url)
+                log(0, msg)
+            if rhnLog.LOG and rhnLog.LOG.level >= 1:
+                msg = "ERROR[%s/%s]: Mirror list download failed: %s - %s%s" % (
+                    exc.errno,
+                    exc.code if hasattr(exc, "code") else "-",
+                    url,
+                    exc.strerror,
+                    ": %s" % (traceback.format_exc()) if rhnLog.LOG.level >= 2 else "",
+                )
+                msg = msg.replace(url, repl_url)
+                log(0, msg)
             # no mirror list found continue without
             return returnlist
 
@@ -1049,7 +1070,25 @@ type=rpm-md
             urlgrabber_opts = {}
             self.set_download_parameters(urlgrabber_opts, url, media_products_path)
             urlgrabber.urlgrab(url, media_products_path, **urlgrabber_opts)
-        except Exception as exc:
+        except URLGrabError as exc:
+            repl_url = suseLibURL(url).getURL(stripPw=True)
+            if not hasattr(exc, "code"):
+                msg = "ERROR: Media product file download failed: %s - %s" % (
+                    url,
+                    exc.strerror,
+                )
+                msg = msg.replace(url, repl_url)
+                log(0, msg)
+            if rhnLog.LOG and rhnLog.LOG.level >= 1:
+                msg = "ERROR[%s/%s]: Media product file download failed: %s - %s%s" % (
+                    exc.errno,
+                    exc.code if hasattr(exc, "code") else "-",
+                    url,
+                    exc.strerror,
+                    ": %s" % (traceback.format_exc()) if rhnLog.LOG.level >= 2 else "",
+                )
+                msg = msg.replace(url, repl_url)
+                log(0, msg)
             # no 'media.1/products' file found
             return None
         return media_products_path
@@ -1207,13 +1246,9 @@ type=rpm-md
         params['checksum_type'] = checksum_type
         params['checksum'] = checksum_value
         params['bytes_range'] = bytes_range
-        params['proxy'] = self.proxy_url
-        params['proxy_username'] = self.proxy_user
-        params['proxy_password'] = self.proxy_pass
         params['http_headers'] = self.http_headers
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
-        # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
         params['logspec'] = self.urlgrabber_logspec 
 
