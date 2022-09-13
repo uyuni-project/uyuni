@@ -116,6 +116,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateDriver;
+import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateWorker;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -782,6 +783,15 @@ public class SystemManager extends BaseManager {
 
         // remove server itself
         ServerFactory.delete(server);
+
+        // Remove the system overview and the related update tasks
+        deleteSystemOverview(server.getId());
+        SystemsOverviewUpdateWorker.removeTask(server.getId());
+    }
+
+    private void deleteSystemOverview(Long sid) {
+        WriteMode mode = ModeFactory.getWriteMode("System_queries", "delete_system_overview");
+        mode.executeUpdate(Map.of("sid", sid));
     }
 
     private void removeSaltSSHKnownHosts(Server server) {
