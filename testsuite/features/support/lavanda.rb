@@ -44,19 +44,9 @@ module LavandaBasic
     @in_full_hostname
   end
 
-  def private_ip
-    raise 'empty private_ip, something wrong' if @in_private_ip.empty?
-    @in_private_ip
-  end
-
   def public_ip
     raise 'empty public_ip, something wrong' if @in_public_ip.empty?
     @in_public_ip
-  end
-
-  def private_interface
-    raise 'empty private_interface, something wrong' if @in_private_interface.empty?
-    @in_private_interface
   end
 
   def public_interface

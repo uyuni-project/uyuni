@@ -20,12 +20,6 @@ def read_branch_prefix_from_yaml
   tree['branches'].values[0]['branch_prefix']
 end
 
-def read_server_domain_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['server_domain']
-end
-
 # determine profile for PXE boot and terminal tests
 def compute_image(host)
   # TODO: now that the terminals derive from sumaform's pxe_boot module,
@@ -456,11 +450,6 @@ When(/^I enter "([^"]*)" in (.*) field of (.*) zone$/) do |value, field, zone|
   zone_xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]"
 
   find(:xpath, "#{zone_xpath}//input[contains(@id, '#{fieldids[field]}')]").set(value)
-end
-
-When(/^I enter the IP address of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|
-  node = get_target(host)
-  step %(I enter "#{node.public_ip}" in #{field} field of #{zone} zone)
 end
 
 When(/^I enter the local IP address of "([^"]*)" in (.*) field of (.*) zone$/) do |host, field, zone|

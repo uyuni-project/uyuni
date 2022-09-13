@@ -22,16 +22,6 @@ class NamespaceActivationkey
     @keys.nil? ? 0 : @keys.length
   end
 
-  def get_activated_systems_count(id)
-    systems = @test.call('activationkey.listActivatedSystems', sessionKey: @test.token, key: id)
-    systems.nil? ? 0 : systems.length
-  end
-
-  def get_config_channels_count(id)
-    channels = @test.call('activationkey.listConfigChannels', sessionKey: @test.token, key: id)
-    channels.nil? ? 0 : channels.length
-  end
-
   def verify(id)
     @test.call('activationkey.listActivationKeys', sessionKey: @test.token)
          .map { |key| key['key'] }

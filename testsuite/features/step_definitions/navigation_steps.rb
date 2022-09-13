@@ -183,20 +183,8 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   end
 end
 
-When(/^I select the maximum amount of items per page$/) do
-  find(:xpath, "//select[@class='display-number']").find(:xpath, 'option[6]').select_option
-end
-
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
   select(BASE_CHANNEL_BY_CLIENT[client], from: from, exact: false)
-end
-
-When(/^I select the contact method for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  if client.include? 'ssh_minion'
-    select('Push via SSH', from: from)
-  else
-    select('Default', from: from)
-  end
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
@@ -295,11 +283,6 @@ end
 #
 # Click on a link which appears inside of <div> with
 # the given "id"
-When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@id=\"#{arg2}\"]") do
-    step %(I follow "#{arg1}")
-  end
-end
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
@@ -447,11 +430,6 @@ When(/^I check the "([^"]*)" client$/) do |host|
   step %(I check "#{system_name}" in the list)
 end
 
-When(/^I uncheck the "([^"]*)" client$/) do |host|
-  system_name = get_system_name(host)
-  step %(I uncheck "#{system_name}" in the list)
-end
-
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   step %(I wait until table row for "#{arg1}" contains "#{arg2}")
 end
@@ -556,13 +534,6 @@ When(/^I check "([^"]*)" patch$/) do |arg1|
   step %(I check "#{arg1}" in the list)
 end
 
-Then(/^I should see something$/) do
-  steps %(
-    Given I should see a "Sign In" text
-    And I should see a "About" text
-  )
-end
-
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
   within(:xpath, '//span[@id="spacewalk-set-system_list-counter"]') do
     raise "There are not #{arg} systems selected" unless has_content?(arg)
@@ -583,11 +554,6 @@ end
 Then(/^I should see "([^"]*)" short hostname$/) do |host|
   system_name = get_system_name(host).partition('.').first
   raise "Hostname #{system_name} is not present" unless has_content?(system_name)
-end
-
-Then(/^I should not see "([^"]*)" short hostname$/) do |host|
-  system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
@@ -803,10 +769,6 @@ When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host
   find("input[placeholder='Filter by System Name: ']").set(system_name)
 end
 
-When(/^I enter "([^"]*)" as the filtered package states name$/) do |input|
-  find("input[placeholder='Search package']").set(input)
-end
-
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
   find("input[placeholder='Filter by Package Name: ']").set(input)
 end
@@ -878,14 +840,6 @@ When(/^I check "([^"]*)" in the list$/) do |text|
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
 
   row.set(true)
-end
-
-When(/^I uncheck "([^"]*)" in the list$/) do |text|
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
-  row = find(:xpath, top_level_xpath_query, match: :first)
-  raise "xpath: #{top_level_xpath_query} not found" if row.nil?
-
-  row.set(false)
 end
 
 #
@@ -1005,10 +959,6 @@ When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$
 
   dialog = find(:xpath, path, wait: timeout.to_i)
   raise "#{title} modal did not appear" unless dialog
-end
-
-When(/^I scroll to the top of the page$/) do
-  execute_script('window.scrollTo(0,0)')
 end
 
 # Check a Prometheus exporter

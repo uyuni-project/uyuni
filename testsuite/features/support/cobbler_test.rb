@@ -4,12 +4,6 @@
 require 'xmlrpc/client'
 require 'pp'
 
-# ct = CobblerTest.new( "taylor.suse.de" )
-# bool = ct.running?()
-# bool = ct.system_exists( "bla" )
-# any  = ct.system_get_key( "vbox-ug", "uid" )
-# list = ct.get_list( "systems" )
-
 # Class for clobber test
 class CobblerTest
   def initialize(server_address = ENV['SERVER'], server_port = 80, server_path = '/cobbler_api')
@@ -33,16 +27,6 @@ class CobblerTest
     rescue
       result = false
     end
-    result
-  end
-
-  def get_list(what)
-    result = []
-    unless %w[systems profiles distros].include?(what)
-      raise "unknown get_list parameter '#{what}'"
-    end
-    ret = @server.call('get_' + what)
-    ret.each { |a| result << a['name'] }
     result
   end
 
@@ -121,15 +105,6 @@ class CobblerTest
 
   def system_exists(name)
     exists('systems', 'name', name)
-  end
-
-  def repo_exists(name)
-    exists('repos', 'name', name)
-  end
-
-  def repo_get_key(name, key)
-    return get('repo', name, key) if repo_exists(name)
-    raise 'Repo ' + name + ' does not exists' unless repo_exists(name)
   end
 
   def exists(what, key, value)

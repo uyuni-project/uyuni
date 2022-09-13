@@ -24,12 +24,6 @@ Given(/^I want to operate on this "([^"]*)"$/) do |host|
   refute_nil($client_id, "Could not find system with hostname #{system_name}")
 end
 
-When(/^I call system\.list_systems\(\), I should get a list of them$/) do
-  # This also assumes the test is called *after* the regular test.
-  servers = $api_test.system.list_systems
-  assert(servers.!empty?, "Expect: 'number of system' > 0, but found only '#{servers.length}' servers")
-end
-
 When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
   system_name = get_system_name(host)
   salt_ssh = (salt_ssh_enabled == 'enabled')
@@ -70,13 +64,6 @@ When(/^I unsubscribe "([^"]*)" from configuration channel "([^"]*)"$/) do |host1
   system_name1 = get_system_name(host1)
   node_id1 = $api_test.system.retrieve_server_id(system_name1)
   $api_test.system.config.remove_channels([ node_id1 ], [ channel ])
-end
-
-When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, host2, channel|
-  steps %(
-      When I unsubscribe "#{host1}" from configuration channel "#{channel}"
-      And I unsubscribe "#{host2}" from configuration channel "#{channel}"
-  )
 end
 
 When(/^I create a system record$/) do
@@ -329,23 +316,12 @@ When(/^I delete an action chain, labeled "(.*?)"$/) do |label|
   $api_test.actionchain.delete_chain(label)
 end
 
-When(/^I delete all action chains$/) do
-  $api_test.actionchain.list_chains.each do |label|
-    log "Delete chain: #{label}"
-    $api_test.actionchain.delete_chain(label)
-  end
-end
-
 # Renaming chain
 Then(/^I call actionchain\.rename_chain\(\) to rename it from "(.*?)" to "(.*?)"$/) do |old_label, new_label|
   $api_test.actionchain.rename_chain(old_label, new_label)
 end
 
 Then(/^there should be a new action chain with the label "(.*?)"$/) do |label|
-  assert_includes($api_test.actionchain.list_chains, label)
-end
-
-Then(/^there should be an action chain with the label "(.*?)"$/) do |label|
   assert_includes($api_test.actionchain.list_chains, label)
 end
 
@@ -422,17 +398,6 @@ When(/^I schedule the action chain$/) do
   refute($api_test.actionchain.schedule_chain($chain_label, DateTime.now) < 0)
 end
 
-When(/^I wait until there are no more action chains$/) do
-  repeat_until_timeout(message: 'Action Chains still present') do
-    break if $api_test.actionchain.list_chains.empty?
-    $api_test.actionchain.list_chains.each do |label|
-      log "Chain still present: #{label}"
-    end
-    log
-    sleep 2
-  end
-end
-
 ## schedule API
 
 def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
@@ -465,10 +430,6 @@ Then(/^I cancel all scheduled actions$/) do
     end
     log "\t- Removed \"#{action['name']}\" action"
   end
-end
-
-Then(/^there should be no more any scheduled actions$/) do
-  assert_empty($api_test.schedule.list_in_progress_actions)
 end
 
 Then(/^I wait until there are no more scheduled actions$/) do

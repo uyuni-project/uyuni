@@ -1,6 +1,8 @@
 # Copyright (c) 2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+### This file has no covered code aside from "initialize(api_test)" and could be deleted otherwise
+
 # "api" namespace
 class NamespaceApi
   def initialize(api_test)

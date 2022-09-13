@@ -20,11 +20,6 @@ class NamespaceChannel
          .map { |c| c['label'] }
          .include?(label)
   end
-
-  def list_software_channels
-    channels = @test.call('channel.listSoftwareChannels', sessionKey: @test.token)
-    channels.map { |channel| channel['label'] }
-  end
 end
 
 # "channel.software" namespace
