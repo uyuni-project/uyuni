@@ -55,7 +55,7 @@ public class SystemsOverviewUpdateWorker implements QueueWorker {
     @Override
     public void run() {
         try {
-            removeTask();
+            removeTask(sid);
             parentQueue.workerStarting();
             doUpdate();
             HibernateFactory.commitTransaction();
@@ -77,7 +77,12 @@ public class SystemsOverviewUpdateWorker implements QueueWorker {
         mode.execute(params, new HashMap<>());
     }
 
-    private void removeTask() {
+    /**
+     * Remove system overview update tasks for a system ID
+     *
+     * @param sid the System id to remove the tasks from
+     */
+    public static void removeTask(Long sid) {
         WriteMode mode = ModeFactory.getWriteMode("Task_queries", "delete_task");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", 1);

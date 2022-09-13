@@ -142,6 +142,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
                 .map(Number::longValue).orElse(0L);
         unscheduledErrataCount = getTupleValue(tuple, "unscheduled_errata_count", Number.class)
                 .map(Number::longValue).orElse(0L);
+        statusType = getTupleValue(tuple, "status_type", String.class).orElse(null);
     }
 
     private static <T> Optional<T> getTupleValue(Tuple tuple, String name, Class<T> clazz) {
