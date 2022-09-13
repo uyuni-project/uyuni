@@ -1,3 +1,4 @@
+- Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
 - Support Pay-as-you-go new CA location for SLES15SP4
   and higher (bsc#1202729)
 - Detect the clients running on Amazon EC2 (bsc#1195624)
