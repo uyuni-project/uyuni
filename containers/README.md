@@ -31,13 +31,13 @@ MetalLB is the LoadBalancer that will expose the proxy pod services to the outsi
 To install it, run:
 
     helm repo add metallb https://metallb.github.io/metallb
-    helm install --create-namespace -n metallb metallb metallb/metallb -f metallb-values.yaml 
+    helm install --create-namespace -n metallb metallb metallb/metallb 
 
 MetalLB still requires a configuration to know the virtual IP address range to be used.
 In this example, the virtual IP addresses will be from `192.168.122.240` to `192.168.122.250`, but we could lower that range since only one address will be used in the end.
 This addresses obviously need to be a subset of the server network.
 
-Create a `metallb-config.yaml` with content like the following with adjusted IP addresses:
+Create a `metallb-config.yaml` with content like the following with an IP address range that aligns with the deployed network:
 
 ```yaml
 apiVersion: metallb.io/v1beta1
@@ -47,7 +47,7 @@ metadata:
   namespace: metallb
 spec:
   addresses:
-  - 192.168.1.240-192.168.1.250
+  - 192.168.122.240-192.168.122.250
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
