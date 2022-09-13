@@ -1387,7 +1387,7 @@ When(/^I reboot server through SSH$/) do
   temp_server.extend(LavandaBasic)
   fullname = temp_server.run("cat /etc/hostname")[0].gsub("\n", '') 
   # Reboot and wait
-  temp_server.run("reboot")
+  temp_server.run("reboot > /dev/null 2> /dev/null &")
   reboot_timeout = 1000
   check_shutdown(fullname, reboot_timeout)
   check_restart(fullname, node, reboot_timeout)
