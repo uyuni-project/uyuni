@@ -2283,8 +2283,7 @@ available for this kickstart profile to function properly.
 &lt;/li&gt;
 &lt;li&gt;
 此 kickstart 的基础通道中是否提供了上面列出的软件包？
-如果未提供，则您需要提供此软件包才能使
-此 kickstart 配置文件正常运行。
+如果未提供，则您需要提供此软件包才能使此 kickstart 配置文件正常运行。
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
