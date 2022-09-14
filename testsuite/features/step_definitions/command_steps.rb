@@ -71,9 +71,8 @@ Then(/^it should be possible to use the HTTP proxy$/) do
   $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
-Then(/^it should be possible to use the FTP server$/) do
-  # TODO: use a URL in Provo after the release
-  url = 'ftp://minima-mirror.mgr.suse.de:445/rhn/manager/download/test-channel-x86_64/repodata/repomd.xml'
+Then(/^it should be possible to use the custom download endpoint$/) do
+  url = "#{$custom_download_endpoint}/rhn/manager/download/test-channel-x86_64/repodata/repomd.xml"
   $server.run("curl --ipv4 --location #{url} --output /dev/null")
 end
 
@@ -517,17 +516,16 @@ Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
   step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
 end
 
-Then(/^I should see "([^"]*)", "([^"]*)" and "([^"]*)" in the repo file on the "([^"]*)"$/) do |protocol, hostname, port, target|
+Then(/^the repo file should contain the (custom|normal) download endpoint on the "([^"]*)"$/) do |type, target|
   node = get_target(target)
-  hostname = hostname == "proxy" ? $proxy.full_hostname : hostname
   base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
   base_url = base_url.strip.split('=')[1].delete '"'
-  uri = URI.parse(base_url)
-  log 'Protocol: ' + uri.scheme + '  Host: ' + uri.host + '  Port: ' + uri.port.to_s
-  parameters_matches = (uri.scheme == protocol && uri.host == hostname && uri.port == port.to_i)
-  if !parameters_matches
-    raise 'Some parameters are not as expected'
-  end
+  real_uri = URI.parse(base_url)
+  log 'Real protocol: ' + real_uri.scheme + '  host: ' + real_uri.host + '  port: ' + real_uri.port.to_s
+  normal_download_endpoint = "https://#{$proxy.full_hostname}:443"
+  expected_uri = URI.parse(type == 'custom' ? $custom_download_endpoint : normal_download_endpoint)
+  log 'Expected protocol: ' + expected_uri.scheme + '  host: ' + expected_uri.host + '  port: ' + expected_uri.port.to_s
+  raise 'Some parameters are not as expected' unless real_uri.scheme == expected_uri.scheme && real_uri.host == expected_uri.host && real_uri.port == expected_uri.port
 end
 
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
