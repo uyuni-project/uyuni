@@ -18,11 +18,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-04 15:35+0200\n"
+"POT-Creation-Date: 2022-09-14 10:50+0200\n"
 "PO-Revision-Date: 2022-09-14 08:31+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
-"\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
+">\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +38,9 @@ msgstr "남음"
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
-msgstr "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 사용하십시오."
+msgstr ""
+"Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 "
+"사용하십시오."
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -1494,11 +1496,13 @@ msgstr "지원되지 않는 파트 번호 감지됨"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:28
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
-msgstr "물리적 시스템이 가상 게스트로 보고되었습니다. 하드웨어 데이터를 확인하십시오."
+msgstr ""
+"물리적 시스템이 가상 게스트로 보고되었습니다. 하드웨어 데이터를 확인하십시오."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:32
 msgid "Virtual guest has unknown host, assuming it is a physical system"
-msgstr "가상 게스트에 알 수 없는 호스트가 있으며, 물리적 시스템으로 간주됩니다."
+msgstr ""
+"가상 게스트에 알 수 없는 호스트가 있으며, 물리적 시스템으로 간주됩니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:36
 msgid "System has an unknown number of sockets, assuming 16"
@@ -4547,7 +4551,9 @@ msgstr "예약 성공"
 
 #: ../html/src/manager/state/recurring-states.tsx:168
 msgid "Error when deleting the action. Check if Taskomatic is running"
-msgstr "작업을 삭제하는 동안 오류가 발생했습니다. Taskomatic이 실행 중인지 확인하십시오."
+msgstr ""
+"작업을 삭제하는 동안 오류가 발생했습니다. Taskomatic이 실행 중인지 확인하십시"
+"오."
 
 #: ../html/src/manager/state/recurring-states.tsx:212
 msgid ""
@@ -5460,7 +5466,8 @@ msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
-msgstr "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
+msgstr ""
+"이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:84
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:343
@@ -5769,7 +5776,9 @@ msgstr "태그되지 않음"
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
-msgstr "기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/DNS 서비스가 추가되지 않았습니다."
+msgstr ""
+"기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/"
+"DNS 서비스가 추가되지 않았습니다."
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
 msgid "Virtual network using the host IP routing stack and NAT"
