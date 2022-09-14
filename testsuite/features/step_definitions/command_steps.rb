@@ -71,6 +71,12 @@ Then(/^it should be possible to use the HTTP proxy$/) do
   $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
+Then(/^it should be possible to use the FTP server$/) do
+  # TODO: use a URL in Provo after the release
+  url = 'ftp://minima-mirror.mgr.suse.de:445/rhn/manager/download/test-channel-x86_64/repodata/repomd.xml'
+  $server.run("curl --ipv4 --location #{url} --output /dev/null")
+end
+
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location
@@ -394,11 +400,12 @@ When(/^I ensure the channel "([^"]*)" has started syncing$/) do |channel_label|
     end
     process = command_output.split("\n")[0]
     channel = process.split[5]
-    return if channel == channel_label
+    break if channel == channel_label
+
     log "Channel #{channel} is syncing"
     reposync_not_running_streak += 1
   end
-  raise "Channel #{channel_label} didn't start syncing in 2 minutes"
+  raise StandardError "Channel #{channel_label} didn't start syncing in 2 minutes" if reposync_not_running_streak > 120
 end
 
 Then(/^the reposync logs should not report errors$/) do

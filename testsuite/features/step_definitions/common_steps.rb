@@ -376,14 +376,16 @@ end
 
 Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
   node = get_target(host)
-  _out, code = node.run("zypper lr -E | tail -n +5 | wc -l")
-  raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
+  node.run("zypper lr -E | tail -n +5", verbose: true)
+  out, _code = node.run("zypper lr -E | tail -n +5 | wc -l")
+  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
   node = get_target(host)
-  _out, code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
-  raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
+  node.run("zypper lr -E | tail -n +5 | grep '#{prefix}'", verbose: true)
+  out, _code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
+  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 # metadata steps
@@ -532,12 +534,6 @@ When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == "select")
-end
-
-When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |select, product, product_version|
-  if $product == product_version
-    step %(I #{select} "#{product}" as a product)
-  end
 end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|

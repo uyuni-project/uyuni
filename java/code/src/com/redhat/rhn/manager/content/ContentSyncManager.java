@@ -1810,7 +1810,7 @@ public class ContentSyncManager {
     }
 
     /**
-     * Check if all mandatory repositories of product for the given root are accessible.
+     * Check if the product has any repositories and all the mandatory ones for the given root are accessible.
      * No recursive checking if bases are accessible too.
      * For ISS Slave we cannot check if the channel would be available on the master.
      * In this case we also return true
@@ -1819,24 +1819,26 @@ public class ContentSyncManager {
      * @return true in case of all mandatory repos could be mirrored, otherwise false
      */
     public static boolean isProductAvailable(SUSEProduct product, SUSEProduct root) {
-        Set<SUSEProductSCCRepository> entries =
-                Optional.ofNullable(product.getRepositories())
-                .orElseGet(Collections::emptySet);
-        return entries.stream()
+        Set<SUSEProductSCCRepository> repos = product.getRepositories();
+        if (repos == null) {
+            return false;
+        }
+        return !repos.isEmpty() && repos.stream()
                 .filter(e -> e.getRootProduct().equals(root))
                 .filter(SUSEProductSCCRepository::isMandatory)
-                .allMatch(entry -> {
-                    boolean isPublic = entry.getProduct().getChannelFamily().isPublic();
-                    boolean isISSSlave = IssFactory.getCurrentMaster() != null;
-                    boolean isMirrorable = false;
-                    if (!isISSSlave) {
-                        isMirrorable = entry.getRepository().isAccessible();
-                    }
-                    log.debug("{} - {} isPublic: {} isMirrorable: {} isISSSlave: {}", product.getFriendlyName(),
-                            entry.getChannelLabel(), isPublic, isMirrorable, isISSSlave);
-                    return  isPublic && (isMirrorable || isISSSlave);
-                }
-             );
+                .allMatch(ContentSyncManager::isRepoAccessible);
+    }
+
+    private static boolean isRepoAccessible(SUSEProductSCCRepository repo) {
+        boolean isPublic = repo.getProduct().getChannelFamily().isPublic();
+        boolean isISSSlave = IssFactory.getCurrentMaster() != null;
+        boolean isMirrorable = false;
+        if (!isISSSlave) {
+            isMirrorable = repo.getRepository().isAccessible();
+        }
+        log.debug("{} - {} isPublic: {} isMirrorable: {} isISSSlave: {}", repo.getProduct().getFriendlyName(),
+                repo.getChannelLabel(), isPublic, isMirrorable, isISSSlave);
+        return  isPublic && (isMirrorable || isISSSlave);
     }
 
     /**

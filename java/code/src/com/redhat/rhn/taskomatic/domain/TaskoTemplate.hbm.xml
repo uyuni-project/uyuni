@@ -8,8 +8,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
-            <generator class="sequence">
-                <param name="sequence">RHN_TASKO_TEMPLATE_ID_SEQ</param>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">RHN_TASKO_TEMPLATE_ID_SEQ</param>
+                <param name="increment_size">1</param>
             </generator>
         </id>
 

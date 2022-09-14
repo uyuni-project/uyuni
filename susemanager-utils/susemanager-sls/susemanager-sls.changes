@@ -1,3 +1,7 @@
+- disable always the bootstrap repository also when
+  "mgr_disable_local_repos" is set to False
+- Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
+- fix syntax error - remove trailing colon (bsc#1203049)
 - Add mgrnet salt module with mgrnet.dns_fqnd function implementation
   allowing to get all possible FQDNs from DNS (bsc#1199726)
 - Copy grains file with util.mgr_switch_to_venv_minion state apply
