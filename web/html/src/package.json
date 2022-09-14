@@ -98,7 +98,7 @@
     "license-checker-webpack-plugin": "0.2.1",
     "lodash": "4.17.21",
     "mini-css-extract-plugin": "^2.6.0",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "0.5.35",
     "moment": "2.29.4",
     "node-gettext": "^3.0.0",
     "prettier": "2.4.1",

@@ -6,8 +6,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <class name="com.redhat.rhn.domain.server.Server" table="rhnServer">
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
-            <generator class="sequence">
-                <param name="sequence">rhn_server_id_seq</param>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">rhn_server_id_seq</param>
+                <param name="increment_size">1</param>
             </generator>
         </id>
 
@@ -343,7 +344,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <query name="Server.findNonZypperTradClientsIds">
         <![CDATA[SELECT s.id
                  FROM Server s
-                 WHERE s.class != com.redhat.rhn.domain.server.MinionServer
+                 WHERE type(s) != com.redhat.rhn.domain.server.MinionServer
                      AND s.id in (:serverIds)
                      AND NOT EXISTS (SELECT 1
                                      FROM com.redhat.rhn.domain.server.InstalledPackage as p
@@ -410,7 +411,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <![CDATA[
         SELECT s.minionId, s.id
             FROM Server AS s
-            WHERE s.class = com.redhat.rhn.domain.server.MinionServer
+            WHERE type(s) = com.redhat.rhn.domain.server.MinionServer
                 AND s.minionId IN (:minionIds)
     ]]>
     </query>

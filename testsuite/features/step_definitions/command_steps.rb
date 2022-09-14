@@ -71,6 +71,11 @@ Then(/^it should be possible to use the HTTP proxy$/) do
   $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
+Then(/^it should be possible to use the FTP server$/) do
+  url = 'ftp://minima-mirror.mgr.prv.suse.net:445/rhn/manager/download/test-channel-x86_64/repodata/repomd.xml'
+  $server.run("curl --ipv4 --location #{url} --output /dev/null")
+end
+
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location

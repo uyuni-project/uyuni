@@ -1,6 +1,11 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# This feature is not idempotent, we leave the system registered in order to have available the history of events,
+# but there are no other features testing KVM.
+
+# This feature has not dependencies and it can run in parallel with other features
+
 @scope_virtualization
 @virthost_kvm
 @scope_cobbler
@@ -189,8 +194,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "test-pool0" from "disk1_source_pool"
     And I select "disk1.qcow2" from "disk1_source_file"
     And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
-    When I wait until I see "test-vm2" text
+    And I wait until I see "Hosted Virtual Systems" text
+    And I wait until event "Creates a virtual domain: test-vm2" is completed
+    And I follow "Virtualization" in the content area
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
     And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
@@ -227,8 +233,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "/usr/share/qemu/ovmf-x86_64-ms.bin" as "uefiLoader"
     And I enter "/usr/share/qemu/ovmf-x86_64-ms-vars.bin" as "nvramTemplate"
     And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
-    When I wait until I see "test-vm2" text
+    And I wait until I see "Hosted Virtual Systems" text
+    And I wait until event "Creates a virtual domain: test-vm2" is completed
+    And I follow "Virtualization" in the content area
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
     And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
@@ -346,7 +353,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "192.168.128.10" as "ipv4def_dhcpranges0_start"
     And I enter "192.168.128.20" as "ipv4def_dhcpranges0_end"
     And I click on "Create"
-    Then I should see a "Virtual Networks" text
+    And I wait until I see "Virtual Networks" text
+    And I wait until event "Creates a virtual network: test-net2" is completed
+    And I follow "Virtualization" in the content area
+    And I follow "Networks"
     And I wait until table row for "test-net2" contains button "Stop"
     And table row for "test-net2" should contain "running"
     And I should see a "test-net2" virtual network on "kvm_server"
@@ -417,8 +427,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "15-sp4-kvm" from "cobbler_profile"
     And I select "test-net0" from "network0_source"
     And I click on "Create"
-    Then I should see a "Hosted Virtual Systems" text
-    When I wait until I see "test-vm2" text
+    And I wait until I see "Hosted Virtual Systems" text
+    And I wait until event "Creates a virtual domain: test-vm2" is completed
+    And I follow "Virtualization" in the content area
     And I wait until table row for "test-vm2" contains button "Stop"
     # Test the VM boot params
     Then "test-vm2" virtual machine on "kvm_server" should boot using autoyast
@@ -451,36 +462,3 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
     Then I should not see a "SLE-15-SP4-KVM" text
-
-# End of provisioning scenarios
-
-  Scenario: Cleanup: Unregister the KVM virtualization host
-    Given I am on the Systems overview page of this "kvm_server"
-    When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
-
-  Scenario: Cleanup: Cleanup KVM virtualization host
-    When I run "zypper -n mr -e --all" on "kvm_server" without error control
-    And I run "zypper -n rr SUSE-Manager-Bootstrap" on "kvm_server" without error control
-    And I stop salt-minion on "kvm_server"
-    And I run "rm /etc/salt/minion.d/susemanager*" on "kvm_server" without error control
-    And I run "rm /etc/salt/minion.d/libvirt-events.conf" on "kvm_server" without error control
-    And I run "rm /etc/salt/pki/minion/minion_master.pub" on "kvm_server" without error control
-    # In case the delete VM test failed we need to clean up ourselves.
-    And I run "virsh undefine --remove-all-storage test-vm" on "kvm_server" without error control
-    And I run "virsh destroy test-vm2" on "kvm_server" without error control
-    And I run "virsh undefine --remove-all-storage test-vm2" on "kvm_server" without error control
-    And I delete test-net0 virtual network on "kvm_server" without error control
-    And I delete test-net1 virtual network on "kvm_server" without error control
-    And I delete test-net2 virtual network on "kvm_server" without error control
-    And I delete test-pool0 virtual storage pool on "kvm_server" without error control
-    And I delete test-pool1 virtual storage pool on "kvm_server" without error control
-    And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
-
-  @salt_bundle
-  Scenario: Cleanup: Cleanup venv-salt-minion files from KVM virtualization host
-    And I run "rm /etc/venv-salt-minion/minion.d/susemanager*" on "kvm_server" without error control
-    And I run "rm /etc/venv-salt-minion/minion.d/libvirt-events.conf" on "kvm_server" without error control
-    And I run "rm /etc/venv-salt-minion/pki/minion/minion_master.pub" on "kvm_server" without error control

@@ -134,7 +134,7 @@ class URL(object):
             path = "//" + self.path
 
         query = self.query
-        if stripPw and query.find('=') == -1:
+        if stripPw and query != "" and query.find("=") == -1:
             query = "<token>"
 
         return urlparse.urlunsplit((self.scheme, netloc, path,
