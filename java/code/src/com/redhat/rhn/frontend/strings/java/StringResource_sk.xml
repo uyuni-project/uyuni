@@ -10851,289 +10851,289 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="contentmanagement.project_created" xml:space="preserve">
         <source>Project {0} created successfully</source>
-        <target state="new"/>
+        <target state="translated">Projekt {0} úspešne vytvorený</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
         <source>Project {0} deleted successfully</source>
-        <target state="new"/>
+        <target state="translated">Projekt {0} úspešne vymazaný</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
         <source>Project already exists</source>
-        <target state="new"/>
+        <target state="translated">Projekt už existuje</target>
       </trans-unit>
       <trans-unit id="contentmanagement.label_required" xml:space="preserve">
         <source>Label is required</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa označenie</target>
       </trans-unit>
       <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
         <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
-        <target state="new"/>
+        <target state="translated">Označenie musí začínať písmenom a musí obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_') a číslice</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
         <source>Label must not exceed 24 characters</source>
-        <target state="new"/>
+        <target state="translated">Označenie nesmie presiahnuť 24 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.name_required" xml:space="preserve">
         <source>Name is required</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa názov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="new"/>
+        <target state="translated">Názov nesmie presiahnuť 128 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
         <source>Name already exists</source>
-        <target state="new"/>
+        <target state="translated">Názov už existuje</target>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
         <source>Label must not exceed 16 characters</source>
-        <target state="new"/>
+        <target state="translated">Označenie nesmie presiahnuť 16 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Názov nesmie presiahnuť 128 znakov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
-        <target state="new"/>
+        <target state="translated">Názov filtra už existuje</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
         <source>Filter {0} created successfully</source>
-        <target state="new"/>
+        <target state="translated">Filter {0} vytvorený úspešne</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
         <source>Filter {0} updated successfully</source>
-        <target state="new"/>
+        <target state="translated">Filter {0} úspešne aktualizovaný</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="new"/>
+        <target state="translated">Názov nesmie presiahnuť 128 znakov</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target state="new"/>
+        <target state="translated">Označenie repozitára '{0}' je neplatné. Označenie úložiska musí začínať písmenom a môže obsahovať iba malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_'), číslice, medzery, zátvorky a lomky ('/').</target>
       </trans-unit>
       <trans-unit id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Vytvorenie virtuálnej siete</target>
       </trans-unit>
       <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
         <source>No such FQDN: {0}.</source>
-        <target state="new"/>
+        <target state="translated">Žiadne také FQDN: {0}.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
         <source>Cannot read/write '{0}'. Please check permissions.</source>
-        <target state="new"/>
+        <target state="translated">Nemožno čítať/zapísať '{0}'. Prosím, skontrolujte oprávnenia.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
         <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
-        <target state="new"/>
+        <target state="translated">Chyba pri kontrole oprávnení na '{0}'. Prosím, skontrolujte záznamy servera pre viac informácií.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
         <source>Error during applying the bootstrap state, message: {0}</source>
-        <target state="new"/>
+        <target state="translated">Chyba počas aplikovania stavu zavádzania, správa: {0}</target>
       </trans-unit>
       <trans-unit id="api.package.retractedpackage" xml:space="preserve">
         <source>Retracted packages: {0}</source>
-        <target state="new"/>
+        <target state="translated">Balíky stiahnuté späť: {0}</target>
       </trans-unit>
       <trans-unit id="api.errata.retractederrata" xml:space="preserve">
         <source>Retracted patches: {0}</source>
-        <target state="new"/>
+        <target state="translated">Opravy stiahnuté späť: {0}</target>
       </trans-unit>
       <trans-unit id="Transfer" xml:space="preserve">
         <source>Transfer</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Prenos</target>
       </trans-unit>
       <trans-unit id="virt.network_update" xml:space="preserve">
         <source>Virtual network update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Aktualizácia virtuálnej siete</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">Bol použitý typ &lt;strong&gt;Riadiaci uzol Ansible&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">Bol použitý typ &lt;strong&gt;Riadiaci uzol Ansible&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
       </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Neplatná cesta (musí byť platná absolútna cesta)</target>
       </trans-unit>
       <trans-unit id="ansible.duplicate_path" xml:space="preserve">
         <source>Path already exists</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Cesta už existuje</target>
       </trans-unit>
       <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
         <source>Control node is not responding</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Riadiaci uzol neodpovedá</target>
       </trans-unit>
       <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
         <source>Invalid path type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Neplatný typ cesty</target>
       </trans-unit>
       <trans-unit id="ansible.salt_error" xml:space="preserve">
         <source>Error when executing salt state: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Chyba pri vykonávaní stavu salt: {0}</target>
       </trans-unit>
       <trans-unit id="ansible.entity_not_found" xml:space="preserve">
         <source>The requested entity not found or inaccessible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Požadovaný subjekt sa nenašiel alebo je nedostupný</target>
       </trans-unit>
       <trans-unit id="ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Vykonať scenár Ansible</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
         <source>{0} filter(s) from template created successfully</source>
-        <target state="new"/>
+        <target state="translated">{0} filter(e) vytvorené úspešne zo šablóny</target>
       </trans-unit>
       <trans-unit id="virt.guest_migrate" xml:space="preserve">
         <source>Migrate a virtual domain</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Migrovať virtuálnu doménu</target>
       </trans-unit>
       <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
         <source>Invalid filter template</source>
-        <target state="new"/>
+        <target state="translated">Neplatná šablóna filtrov</target>
       </trans-unit>
       <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
-        <target state="new"/>
+        <target state="translated">Nie je možné získať moduly kanálov. Prosím, skontrolujte záznamy servera, aby ste získali podrobné informácie.</target>
       </trans-unit>
       <trans-unit id="ovalfiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Voliteľné súbory OVAL (oddelené čiarkou)</target>
       </trans-unit>
       <trans-unit id="taskomatic.payg.success" xml:space="preserve">
         <source>Credentials successfully updated</source>
-        <target state="new"/>
+        <target state="translated">Prihlasovacie údaje úspešne aktualizované</target>
       </trans-unit>
       <trans-unit id="taskomatic.payg.pending" xml:space="preserve">
         <source>Waiting to be processed.</source>
-        <target state="new"/>
+        <target state="translated">Čaká sa na spracovanie.</target>
       </trans-unit>
       <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
         <source>Error getting instance data: {0}</source>
-        <target state="new"/>
+        <target state="translated">Chyba pri získavaní dát inštancie: {0}</target>
       </trans-unit>
       <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
-        <target state="new"/>
+        <target state="translated">Neznáma chyba pri extrakcii údajov overenia. Skontrolujte, prosím, záznamy vo /var/log/rhn/</target>
       </trans-unit>
       <trans-unit id="payg.description_required" xml:space="preserve">
         <source>Description is required.</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa popis.</target>
       </trans-unit>
       <trans-unit id="payg.description_to_long" xml:space="preserve">
         <source>Description must not exceed 255 characters.</source>
-        <target state="new"/>
+        <target state="translated">Popis nesmie presiahnuť 255 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.host_required" xml:space="preserve">
         <source>Host is required.</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa hostiteľ.</target>
       </trans-unit>
       <trans-unit id="payg.host_to_long" xml:space="preserve">
         <source>Host must not exceed 255 characters.</source>
-        <target state="new"/>
+        <target state="translated">Hostiteľ nesmie presiahnuť 255 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.port_invalid" xml:space="preserve">
         <source>Invalid value for the port</source>
-        <target state="new"/>
+        <target state="translated">Neplatná hodnota pre port</target>
       </trans-unit>
       <trans-unit id="payg.username_required" xml:space="preserve">
         <source>Username is required.</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa používateľské meno.</target>
       </trans-unit>
       <trans-unit id="payg.username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Používateľské meno nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Heslo nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.key_password_to_long" xml:space="preserve">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Heslo súkromného kľúča SSH nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
         <source>Bastion host must not exceed 255 characters.</source>
-        <target state="new"/>
+        <target state="translated">Baštový hostiteľ nesmie presiahnuť 255 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_host_required" xml:space="preserve">
         <source>Bastion host is required if any other bastion property is set.</source>
-        <target state="new"/>
+        <target state="translated">Baštový hostiteľ sa vyžaduje, ak je nastavená akákoľvek iná baštová vlastnosť.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
         <source>Invalid value for the bastion port</source>
-        <target state="new"/>
+        <target state="translated">Neplatná hodnota pre baštový port</target>
       </trans-unit>
       <trans-unit id="payg.bastion_username_required" xml:space="preserve">
         <source>Username is required.</source>
-        <target state="new"/>
+        <target state="translated">Vyžaduje sa používateľské meno.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Používateľské meno nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Heslo nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
-        <target state="new"/>
+        <target state="translated">Heslo súkromného kľúča SSH bašty nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.ssh_data_created" xml:space="preserve">
         <source>Pay-as-you-go {0} created successfully</source>
-        <target state="new"/>
+        <target state="translated">Úspešne vytvorená priebežná platba {0}</target>
       </trans-unit>
       <trans-unit id="payg.host_exists" xml:space="preserve">
         <source>Pay-as-you-go host already exists</source>
-        <target state="new"/>
+        <target state="translated">Priebežne platený hostiteľ už existuje</target>
       </trans-unit>
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
         <source>Pay-as-you-go {0} deleted successfully</source>
@@ -11259,10 +11259,10 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>Please fill in login.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
