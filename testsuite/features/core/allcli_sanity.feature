@@ -109,6 +109,3 @@ Feature: Sanity checks
 @no_auth_registry
   Scenario: The registry without authentication is healthy
     Then it should be possible to reach the not authenticated registry
-
-  Scenario: The FTP server is working
-    Then it should be possible to use the FTP server
