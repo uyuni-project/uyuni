@@ -12,6 +12,8 @@ Feature: Reconfiguring
     When I change server short hostname from hosts and hostname files as "uyu-serv"
     Then I reboot server through SSH
     And I run spacewalk-hostname-rename command on the server
+  
+  Scenario: Change hostname back
     And I change back the server hostname
     And I reboot server through SSH
     And I run spacewalk-hostname-rename command on the server

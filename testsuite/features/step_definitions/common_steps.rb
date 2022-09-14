@@ -1392,8 +1392,6 @@ When(/^I reboot server through SSH$/) do
   check_shutdown(fullname, reboot_timeout)
   check_restart(fullname, node, reboot_timeout)
   # Get a hand back on the server
-  temp_server = twopence_init("ssh:#{fullname}")
-  temp_server.extend(LavandaBasic)
   repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
     out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
     if !out.to_s.include? "dead" and out.to_s.include? "running"
@@ -1432,8 +1430,6 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
     sleep 1
   end
 end
-<<<<<<< HEAD
-=======
 
 When(/^I change back the server hostname$/) do
   temp_server = twopence_init("ssh:#{$server.public_ip}")
@@ -1441,4 +1437,3 @@ When(/^I change back the server hostname$/) do
   old_hostname = $server.hostname
   temp_server.run("echo '#{$server.full_hostname}' > /etc/hostname ")
 end
->>>>>>> b6642b4b01... Running the command and restoring to normal
