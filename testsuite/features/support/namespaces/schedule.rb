@@ -7,6 +7,10 @@ class NamespaceSchedule
     @test = api_test
   end
 
+  def list_all_actions
+    @test.call('schedule.listAllActions', sessionKey: @test.token)
+  end
+
   def list_in_progress_actions
     @test.call('schedule.listInProgressActions', sessionKey: @test.token)
   end

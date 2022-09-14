@@ -128,6 +128,10 @@ class NamespaceSystemProvisioningPowermanagement
     @test = api_test
   end
 
+  def list_types
+    @test.call('system.provisioning.powermanagement.listTypes', sessionKey: @test.token)
+  end
+
   def get_details(server)
     @test.call('system.provisioning.powermanagement.getDetails', sessionKey: @test.token, sid: server)
   end

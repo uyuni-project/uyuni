@@ -4,6 +4,11 @@
 require 'jwt'
 require 'securerandom'
 require 'pathname'
+# Used for debugging purposes
+When(/^I save a screenshot as "([^"]+)"$/) do |filename|
+  save_screenshot(filename)
+  attach File.open(filename, 'rb'), 'image/png'
+end
 
 When(/^I wait for "(\d+)" seconds?$/) do |arg1|
   sleep(arg1.to_i)

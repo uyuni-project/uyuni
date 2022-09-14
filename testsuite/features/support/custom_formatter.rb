@@ -1,8 +1,6 @@
 # Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-### This file is not indicated as covered however the coverage might be implicit?
-
 module CustomFormatter
   # Extend the Cucumber Pretty Formatter and prepends the feature name on each step
   module PrependsFeatureName
