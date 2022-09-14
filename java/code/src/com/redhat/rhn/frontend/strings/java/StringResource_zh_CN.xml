@@ -11261,7 +11261,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Please fill in login.</source>
         <target state="final">请填写登录信息。</target>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
