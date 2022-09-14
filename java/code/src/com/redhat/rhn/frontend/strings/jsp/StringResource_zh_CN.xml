@@ -19951,7 +19951,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.config.subscribe.jsp.step" xml:space="preserve">
           <source>Step 1: Select Channels for Subscription.</source>
-        <target state="translated">步骤 1：选择要订阅的频道。</target>
+        <target state="translated">步骤 1：选择要订阅的通道。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Subscribe.do</context>
         </context-group>
@@ -20258,7 +20258,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="unsubscribeconfirm.jsp.onechannel" xml:space="preserve">
           <source>1 channel</source>
-        <target state="translated">1 个频道</target>
+        <target state="translated">1 个通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/UnsubscribeConfirm.do</context>
         </context-group>
@@ -21973,11 +21973,11 @@ Base Channel chosen on the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEdit.do</context>
         </context-group>
-        <target state="final">您可以通过选择下面某个软件包配置文件将正在以无人值守方式安装的系统与
-一个在 @@PRODUCT_NAME@@ 中注册的系
-统的软件包配置文件同步。&lt;strong&gt;请注意&lt;/strong&gt;：此列表将只显示
-针对&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;操作系统&lt;/a&gt;
-页面中所选基础频道创建的软件包配置文件。</target>
+        <target state="final">您可以通过选择下面某个软件包配置文件将正在以无人值守方式
+安装的系统与一个在 @@PRODUCT_NAME@@ 中注册的系
+统的软件包配置文件同步。&lt;strong&gt;请注意&lt;/strong&gt;：
+此列表将只显示针对&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;操作系统&lt;/a&gt;页面中所选基础通道创建的软件包
+配置文件。</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt;
@@ -25016,7 +25016,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
           </context-group>
-        <target state="translated">您尝试访问的频道不存在，或者您无权访问该频道。请重新检查将您转到此页面的链接。</target>
+        <target state="translated">您尝试访问的通道不存在，或者您无权访问该通道。请重新检查将您转到此页面的链接。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.unlimited" xml:space="preserve">
         <source>unlimited</source>
@@ -26227,10 +26227,10 @@ given channel.</source>
                 channels are listed here, not just the latest versions of each
                 package. Older versions of a given package will not appear in the
                 channel's package list unless the newer version is removed.</source>
-        <target state="translated">请注意，此处列出了与这些频道关联的
+        <target state="translated">请注意，此处列出了与这些通道关联的
                 所有软件包，而不仅仅是每个软件包的最新
                 版本。除非去除较新的版本，否则不会在
-                频道的软件包列表中显示给定软件包的较旧版本。</target>
+                通道的软件包列表中显示给定软件包的较旧版本。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.actionadd" xml:space="preserve">
         <source>Add</source>
@@ -26778,7 +26778,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">频道名称</target>
+        <target state="translated">通道名称</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.label" xml:space="preserve">
         <source>Channel Label</source>
@@ -29466,7 +29466,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">创建配置状态频道</target>
+        <target state="translated">创建配置状态通道</target>
       </trans-unit>
       <trans-unit approved="yes" id="org-config.clm-sync-patches" xml:space="preserve">
         <source>Synchronize patches on Content Lifecycle Management build</source>

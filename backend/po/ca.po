@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-30 12:02+0200\n"
+"POT-Creation-Date: 2022-09-04 15:39+0200\n"
 "PO-Revision-Date: 2022-04-01 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
@@ -17,11 +17,53 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "testimoni incomplet del servidor intermediari: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr ""
+"La signatura de l'intermediari enviada %s no coincideix amb la nostra %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "s'ha rebutjat l'autenticació d'intermediari"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Es va rebre una petició no vàlida (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"MISSATGE IMPORTANT SEGÜENT:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Mentre s'executava '%s': es va capturar\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "L'URI %s no és vàlid"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -47,9 +89,15 @@ msgstr "ISS està desactivat en aquest servidor."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "El servidor \"%s\" no està habilitat per a l'ISS."
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Parell system_id / action_id no vàlid."
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "S'esperava un nom de paquet, no %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "S'esperava un paquet, no: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
@@ -66,20 +114,15 @@ msgstr "la clau de sessió no és vàlida"
 msgid "This server ID no longer exists"
 msgstr "Aquest ID de servidor ja no existeix"
 
-#: ../server/handlers/xmlrpc/up2date.py:233
+#: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Valor no vàlid %s (%s)"
+msgid "Invalid action value type %s (%s)"
+msgstr "Tipus de valor d'acció no vàlid: %s (%s)"
 
-#: ../server/handlers/xmlrpc/errata.py:64
+#: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
-msgid "Expected a package name, not: %s"
-msgstr "S'esperava un nom de paquet, no %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "S'esperava un paquet, no: %s"
+msgid "Action %s does not belong to server %s"
+msgstr "L'acció %s no pertany al servidor %s"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -122,15 +165,14 @@ msgstr "S'esperava un diccionari com a argument de producte."
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "El valor %s no és vàlid per a %s (%s)"
 
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Tipus de valor d'acció no vàlid: %s (%s)"
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Parell system_id / action_id no vàlid."
 
-#: ../server/handlers/xmlrpc/queue.py:462
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "L'acció %s no pertany al servidor %s"
+msgid "Invalid value %s (%s)"
+msgstr "Valor no vàlid %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -163,66 +205,6 @@ msgstr ""
 "               El compte %s s'ha desactivat en aquest servidor.\n"
 "               Poseu-vos en contacte amb l'administrador de l'organització "
 "per obtenir més ajuda."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Servei no habilitat per al perfil del sistema: \"%s\""
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "El testimoni `%s' té més d'un canal base assignat"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Canals bàsics conflictius"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "No s'ha pogut afegir el servidor al grup %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "S'ha assolit el recompte màxim d'ús de %s"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"No s'admet l'apilament de testimonis de reregistre amb diferents drets de "
-"base."
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "No es va poder tovar el testimoni '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Testimonis d'organitzacions que no coincideixen"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "La sessió de Kickstart no coincideix"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "No s'admet l'apilament de testimonis de reregistre."
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "L'arquitectura %s no és compatible."
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -295,48 +277,14 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "testimoni incomplet del servidor intermediari: %s"
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
 
-#: ../server/apacheAuth.py:84
+#: ../server/rhnHandler.py:75
 #, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
-"La signatura de l'intermediari enviada %s no coincideix amb la nostra %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "s'ha rebutjat l'autenticació d'intermediari"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Es va rebre una petició no vàlida (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"MISSATGE IMPORTANT SEGÜENT:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Mentre s'executava '%s': es va capturar\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "L'URI %s no és vàlid"
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Servei no habilitat per al perfil del sistema: \"%s\""
 
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
@@ -347,6 +295,57 @@ msgstr "S'ha sol·licitat el paquet RPM %s no vàlid."
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "Paquet no trobat"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "L'arquitectura %s no és compatible."
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "El testimoni `%s' té més d'un canal base assignat"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Canals bàsics conflictius"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "No s'ha pogut afegir el servidor al grup %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "S'ha assolit el recompte màxim d'ús de %s"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"No s'admet l'apilament de testimonis de reregistre amb diferents drets de "
+"base."
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "No es va poder tovar el testimoni '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Testimonis d'organitzacions que no coincideixen"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "La sessió de Kickstart no coincideix"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "No s'admet l'apilament de testimonis de reregistre."
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -407,16 +406,6 @@ msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "No es poden registrar els noms d'usuari que acaben en %s."
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "ERROR: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "TRAÇABILITAT: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1081,6 +1070,16 @@ msgstr "Informació de la classe d'error: %s\n"
 msgid "Explanation: %s"
 msgstr "Explicació: %s"
 
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "ERROR: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "TRAÇABILITAT: %s"
+
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
@@ -1294,6 +1293,28 @@ msgstr "Informe de sincronització de %s de %s"
 #: ../satellite_tools/reposync.py:133 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ correu electrònic sol·licitat, però no hi ha res per enviar +++"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"%s (especificat a la línia d'ordres)\n"
+"no s'ha pogut obrir ni llegir:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"%s no s'ha pogut obrir\n"
+"ni escriure-hi:\n"
+"%s"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -2081,28 +2102,6 @@ msgstr "  28 - error: --master només és vàlid amb --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERROR: versió d'abocament desconeguda, proveu-ne una de %s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"%s (especificat a la línia d'ordres)\n"
-"no s'ha pogut obrir ni llegir:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"%s no s'ha pogut obrir\n"
-"ni escriure-hi:\n"
-"%s"
 
 #, fuzzy
 #~ msgid "Invalid crash name"
