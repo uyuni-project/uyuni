@@ -1,3 +1,4 @@
+- Remove the namespace configuration value to honor helm's -n
 - Add the log level value to the config.yaml
 
 -------------------------------------------------------------------
