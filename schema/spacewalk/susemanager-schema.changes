@@ -1,4 +1,10 @@
-- Fix migration of image actions (bsc#1202272)
+- Add subtypes for Amazon EC2 virtual instances (bsc#1195624)
+
+-------------------------------------------------------------------
+Thu Sep 08 09:51:22 CEST 2022 - mc@suse.de
+
+- version 4.2.24-1
+  * Fix migration of image actions (bsc#1202272)
 
 -------------------------------------------------------------------
 Wed Jul 06 15:56:55 CEST 2022 - jmassaguerpla@suse.de

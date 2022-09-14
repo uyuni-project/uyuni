@@ -977,7 +977,12 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element is not shown, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    break if has_no_xpath?(path, wait: 1)
+    begin
+      break if has_no_xpath?(path, wait: 1)
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      # We need to consider the case that after obtaining the element it is detached from the page document
+      break
+    end
   end
 end
 

@@ -1,4 +1,4 @@
-# Copyright 2017-2021 SUSE LLC
+# Copyright 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -45,8 +45,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should see a "Legacy Module 12 x86_64" text
     When I select the addon "Legacy Module 12 x86_64"
     Then I should see the "Legacy Module 12 x86_64" selected
-    # Comment following 1 line if you wish to re-enable testing with beta client tools for SLE12
-    # And I deselect "SUSE Manager Client Tools Beta for SLE 12 x86_64 (BETA)" as a SUSE Manager product
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
     Then the SLE12 SP5 product should be added
@@ -63,10 +61,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I select "SUSE Linux Enterprise Server 15 SP3 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP3 x86_64" selected
     And I should see the "Basesystem Module 15 SP3 x86_64" selected
-    # Comment following 3 lines if you wish to re-enable testing with beta client tools for SLE15
-    # And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
-    # And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" on SUSE Manager
-    # And I deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" as a SUSE Manager product
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" product has been added
     Then the SLE15 SP3 product should be added

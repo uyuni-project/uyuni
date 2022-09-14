@@ -65,6 +65,11 @@ Then(/^it should be possible to use the HTTP proxy$/) do
   $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
+Then(/^it should be possible to use the FTP server$/) do
+  url = 'ftp://minima-mirror.mgr.prv.suse.net:445/rhn/manager/download/test-channel-x86_64/repodata/repomd.xml'
+  $server.run("curl --ipv4 --location #{url} --output /dev/null")
+end
+
 Then(/^it should be possible to reach the build sources$/) do
   if $product == 'Uyuni'
     # TODO: move that internal resource to some other external location
@@ -365,6 +370,26 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
   end
 end
 # rubocop:enable Metrics/BlockLength
+
+When(/^I ensure the channel "([^"]*)" has started syncing$/) do |channel_label|
+  reposync_not_running_streak = 0
+  # wait a maximum of 120s for reposync to start
+  while reposync_not_running_streak <= 120
+    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
+    if command_output.empty?
+      reposync_not_running_streak += 1
+      sleep 1
+      next
+    end
+    process = command_output.split("\n")[0]
+    channel = process.split[5]
+    break if channel == channel_label
+
+    log "Channel #{channel} is syncing"
+    reposync_not_running_streak += 1
+  end
+  raise StandardError "Channel #{channel_label} didn't start syncing in 2 minutes" if reposync_not_running_streak > 120
+end
 
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)

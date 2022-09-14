@@ -1,6 +1,15 @@
-- Make reposync use the configured http proxy with mirrorlist (bsc#1198168)
-- Revert proxy listChannels token caching pr#4548
-- cleanup leftovers from removing unused xmlrpc endpoint
+- Prevent mixing credentials for proxy and repository server
+  while using basic authentication and avoid hiding errors
+  i.e. timeouts while having proxy settings issues
+  with extra logging in verbose mode (bsc#1201788)
+
+-------------------------------------------------------------------
+Thu Sep 08 09:38:18 CEST 2022 - mc@suse.de
+
+- version 4.2.24-1
+  * Make reposync use the configured http proxy with mirrorlist (bsc#1198168)
+  * Revert proxy listChannels token caching pr#4548
+  * cleanup leftovers from removing unused xmlrpc endpoint
 
 -------------------------------------------------------------------
 Wed Jul 06 15:56:17 CEST 2022 - jmassaguerpla@suse.de

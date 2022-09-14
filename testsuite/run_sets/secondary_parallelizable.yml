@@ -71,6 +71,9 @@
 - features/secondary/min_ansible_control_node.feature
 - features/secondary/srv_scc_user_credentials.feature
 
+- features/secondary/minkvm_guests.feature
+- features/secondary/minxen_guests.feature
+
 - features/secondary/trad_metadata_check.feature
 - features/secondary/trad_cve_audit.feature
 - features/secondary/trad_cve_id_new_syntax.feature
