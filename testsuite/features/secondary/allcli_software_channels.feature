@@ -39,15 +39,15 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Test-Channel-x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
     And I wait until I do not see "Loading..." text
-    And I should see "Test-Channel-x86_64 Child Channel" as unchecked
+    And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
 
 @sle_minion
   Scenario: Check old channels are still enabled on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
     Then "1" channels should be enabled on "sle_minion"
-    And channel "Test-Channel-x86_64" should be enabled on "sle_minion"
+    And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
 
   Scenario: Wait 3 minutes for the scheduled action to be executed
     When I wait for "180" seconds
@@ -141,17 +141,17 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I wait until I do not see "Loading..." text
-    And I wait until I see "Test-Channel-x86_64 Child Channel" text
-    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
+    And I uncheck "SLE15-SP4-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Test-Channel-x86_64 Child Channel" should not be enabled on "sle_minion"
+    Then channel "SLE15-SP4-Installer-Updates for x86_64" should not be enabled on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
     When I follow "Clear"
