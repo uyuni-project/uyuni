@@ -11223,45 +11223,47 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
-        <target state="new"/>
+        <target state="translated">nie je možné vytvoriť pripojenie ssh</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
-        <target state="new"/>
+        <target state="translated">Nepodarilo sa vygenerovať verejný kľúč salt-ssh.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
         <source>Generating salt-ssh public key failed: {0}.</source>
-        <target state="new"/>
+        <target state="translated">Generovanie verejného kľúča salt-ssh zlyhalo: {0}.</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
-        <target state="new"/>
+        <target state="translated">@@PRODUCT_NAME@@ {0} dosiahol koniec životnosti</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-        <target state="new"/>
+        <target state="translated">&lt;p&gt;@@PRODUCT_NAME@@ {0} dosiahol koniec svojho životného cyklu. Všeobecná podpora sa skončila &lt;strong&gt;{1}&lt;/strong&gt;. Ak chcete naďalej dostávať podporu, táto inštancia servera @@PRODUCT_NAME@@ &lt;strong&gt;musí&lt;/strong&gt; zvýšiť svoju verziu.&lt;/p&gt;
+          &lt;p&gt;Ďalšie informácie o tom, ako zvýšiť verziu @@PRODUCT_NAME@@, nájdete v sekcii &lt;em&gt;Zvýšenie verzie&lt;/em&gt; v &lt;em&gt;Príručke inštalácie/zvýšenia verzie&lt;/em&gt; v oficiálnej dokumentácii.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
-        <target state="new"/>
+        <target state="translated">@@PRODUCT_NAME@@ {0} sa blíži ku koncu životnosti</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-        <target state="new"/>
+        <target state="translated">&lt;p&gt;@@PRODUCT_NAME@@ {0} sa blíži ku koncu svojho životného cyklu. Prosín, zvážte zvýšenie verzie tejto inštancie servera pred ukončením všeobecnej podpory &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
+          &lt;p&gt;Ďalšie informácie o tom, ako zvýšiť verziu @@PRODUCT_NAME@@, nájdete v sekcii &lt;em&gt;Zvýšenie verzie&lt;/em&gt; v &lt;em&gt;Príručke inštalácie/zvýšenia verzie&lt;/em&gt; v oficiálnej dokumentácii.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
-        <target state="new"/>
+        <target state="translated">Prosím, vyplňte platný e-mail.</target>
       </trans-unit>
       <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
         <source>Please fill in login.</source>
-        <target state="new"/>
+        <target state="translated">Prosím, vyplňte prihlasovacie meno.</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
-        <target state="new"/>
+        <target state="translated">IPMI lanplus</target>
       </trans-unit>
     </body>
   </file>
