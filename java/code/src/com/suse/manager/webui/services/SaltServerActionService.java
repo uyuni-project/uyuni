@@ -760,7 +760,9 @@ public class SaltServerActionService {
                 handleActionChainResult(minionId, "",
                         actionChainResult,
                         // skip reboot, needs special handling
-                        stateResult -> SYSTEM_REBOOT.equals(stateResult.getName()));
+                        stateResult ->
+                                stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
+                                        .contains(SYSTEM_REBOOT)).orElse(false));
 
                 boolean refreshPkg = false;
                 for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
@@ -773,7 +775,9 @@ public class SaltServerActionService {
                         SaltActionChainGeneratorService.ActionChainStateId stateId = actionChainStateId.get();
                         // only reboot needs special handling,
                         // for salt pkg update there's no need to split the sls in case of salt-ssh minions
-                        if (SYSTEM_REBOOT.equals(stateResult.getName()) && stateResult.isResult()) {
+
+                        if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
+                                .contains(SYSTEM_REBOOT)).orElse(false) && stateResult.isResult()) {
                             Action rebootAction = ActionFactory.lookupById(stateId.getActionId());
 
                             if (rebootAction.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
