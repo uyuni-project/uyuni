@@ -20389,6 +20389,54 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="exportcolumn.extraPkgCount">
+            <source>Extra Packages</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.configFilesWithDifferences">
+            <source>Config Diffs</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.proxy">
+            <source>Proxy</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.mgrServer">
+            <source>Manager Server</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.virtualHost">
+            <source>Virtual Host</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.virtualGuest">
+            <source>Virtual Guest</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.requiresReboot">
+            <source>Requires Reboot</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.statusType">
+            <source>Status Type</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.no.profiles" xml:space="preserve">
         <source>No profiles currently available for autoinstalling guests. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
         <context-group name="ctx">
