@@ -14,14 +14,12 @@
 
 import os
 import re
+import shutil
 import logging
 import logging.handlers
 import cgi
 import tempfile
-try:
-    from cStringIO import OutputType
-except:
-    from io import StringIO as OutputType
+from io import StringIO as OutputType
 from io import BytesIO
 from spacewalk.common.rhnConfig import CFG, initCFG
 
@@ -55,7 +53,7 @@ class TftpFieldStorage(cgi.FieldStorage):
         return tempfile.NamedTemporaryFile(mode="w+b", suffix='', prefix='tmp',
                                            dir=tmpdir, delete=False)
 
-def application(environ, start_response):
+def _application(environ, start_response):
     status = '500 Server Error'
     content = ''
     tfpointer = None
@@ -97,19 +95,17 @@ def application(environ, start_response):
             rfname = os.path.join(path, file_name)
             tfname = "%s.tmp" % (rfname)
             if file_type == 'pxe' or file_type == 'grub':
-                tf = open(tfname, 'wb')
-                file_content = form.getvalue('file')
-                file_content = file_content.replace(CFG.SERVER_IP.encode(), CFG.PROXY_IP.encode())
-                file_content = file_content.replace(CFG.SERVER_FQDN.encode(), CFG.PROXY_FQDN.encode())
-                if CFG.SERVER_IP6 and CFG.PROXY_IP6:
-                    file_content = file_content.replace(CFG.SERVER_IP6.encode(), CFG.PROXY_IP6.encode())
-                tf.write(file_content)
-                tf.close()
+                with open(tfname, 'wb') as tf:
+                    file_content = form.getvalue('file')
+                    file_content = file_content.replace(CFG.SERVER_IP.encode(), CFG.PROXY_IP.encode())
+                    file_content = file_content.replace(CFG.SERVER_FQDN.encode(), CFG.PROXY_FQDN.encode())
+                    if CFG.SERVER_IP6 and CFG.PROXY_IP6:
+                        file_content = file_content.replace(CFG.SERVER_IP6.encode(), CFG.PROXY_IP6.encode())
+                    tf.write(file_content)
                 os.rename(tfname, rfname)
             elif isinstance(tfpointer, OutputType) or isinstance(tfpointer, BytesIO):
-                tf = open(tfname, 'wb')
-                tf.write(form.getvalue('file'))
-                tf.close()
+                with open(tfname, 'wb') as tf:
+                    tf.write(form.getvalue('file'))
                 os.rename(tfname, rfname)
             else:
                 if (tfpointer and os.path.exists(tfpointer.name)):
@@ -140,3 +136,10 @@ def application(environ, start_response):
     return [content.encode()]
 
 
+def application(environ, start_response):
+    try:
+        _application(environ, start_response)
+    finally:
+        # Cleanup tmpdir to cleanup temporary files in case server times out
+        tempdir = os.path.join(CFG.TFTPBOOT, "tmp")
+        shutil.rmtree(tempdir)
