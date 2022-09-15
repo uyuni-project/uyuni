@@ -7,7 +7,7 @@ include:
 {# disable at least the SUSE-Manager-Bootstrap repo #}
 {% set repos_disabled = {'match_str': 'SUSE-Manager-Bootstrap', 'matching': true} %}
 {%- endif %}
-{%- include 'channels/disablelocalrepos.sls' %}
+{% include 'channels/disablelocalrepos.sls' %}
 
 {%- if grains['os_family'] == 'RedHat' %}
 
