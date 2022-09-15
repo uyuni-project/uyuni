@@ -304,7 +304,8 @@ def do_configchannel_filedetails(self, args):
             result.append('--------')
             result.append(details.get('contents'))
 
-    return result
+    for line in result:
+        print(line)
 
 ####################
 
@@ -1579,7 +1580,8 @@ def do_configchannel_diff(self, args):
     source_data = self.dump_configchannel(source_channel, source_replacedict)
     target_data = self.dump_configchannel(target_channel, target_replacedict)
 
-    return diff(source_data, target_data, source_channel, target_channel)
+    for line in diff(source_data, target_data, source_channel, target_channel):
+        print(line)
 
 ####################
 

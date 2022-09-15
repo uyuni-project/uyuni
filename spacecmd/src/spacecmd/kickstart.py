@@ -513,7 +513,8 @@ def do_kickstart_details(self, args):
             result.append('')
             result.append(s.get('contents'))
 
-    return result
+    for line in result:
+        print(line)
 
 ####################
 
@@ -2647,7 +2648,8 @@ def do_kickstart_diff(self, args):
     source_data = self.dump_kickstart(source_channel, source_replacedict)
     target_data = self.dump_kickstart(target_channel, target_replacedict)
 
-    return diff(source_data, target_data, source_channel, target_channel)
+    for line in diff(source_data, target_data, source_channel, target_channel):
+        print(line)
 
 ####################
 

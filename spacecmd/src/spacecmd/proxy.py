@@ -82,7 +82,7 @@ def do_proxy_container_config(self, args):
 
     with open(options.output, 'wb') as fd:
         fd.write(config.data)
-    return options.output
+    print(options.output)
 
 
 def help_proxy_container_config_generate_cert(self):
@@ -154,7 +154,7 @@ def do_proxy_container_config_generate_cert(self, args):
 
     with open(options.output, 'wb') as fd:
         fd.write(config.data)
-    return options.output
+    print(options.output)
 
 
 def read_file(path):
