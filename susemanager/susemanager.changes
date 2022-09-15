@@ -1,3 +1,5 @@
+- mark new dependencies for python-py optional in bootstrap repo
+  to fix generation for older service packs (bsc#1203449)
 - add bootstrap repository definition for OES2023 (bsc#1202602)
 - add missing packages on SLES 15
 - remove server-migrator.sh from SUSE Manager installations (bsc#1202728)
