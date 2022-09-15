@@ -31,7 +31,7 @@ Feature: Channel subscription with recommended or required dependencies
     Then I should see the child channel "SLE-Module-Server-Applications15-SP3-Pool for x86_64" "selected"
 
   Scenario: Play with recommended and required child channels selection in SSM
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I check the "sle_minion" client
     Then I should see "1" systems selected for SSM
     When I follow the left menu "Systems > System Set Manager > Overview"

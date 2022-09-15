@@ -254,8 +254,8 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-    And I follow the left menu "Systems > Overview"
-    And I wait until I see "System Overview" text
+    And I follow the left menu "Systems > System List > All"
+    And I wait until I do not see "Loading..." text
   )
 end
 
@@ -850,7 +850,7 @@ end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   steps %(
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
     And I wait at most 500 seconds until event "Hardware List Refresh" is completed

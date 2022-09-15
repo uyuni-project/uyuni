@@ -5855,8 +5855,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listOutOfDateSystems(User loggedInUser) {
-        DataResult<SystemOverview> list = SystemManager.outOfDateList(
-                loggedInUser, null);
+        DataResult<SystemOverview> list = SystemManager.outOfDateList(loggedInUser);
         list.elaborate();
         return list.toArray();
     }
@@ -5977,7 +5976,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemOverview> listUngroupedSystems(User loggedInUser) {
-        return SystemManager.ungroupedList(loggedInUser, null);
+        return SystemManager.ungroupedList(loggedInUser);
     }
 
 
@@ -6154,7 +6153,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listPhysicalSystems(User loggedInUser) throws FaultException {
-        DataResult<SystemOverview> dr = SystemManager.physicalList(loggedInUser, null);
+        DataResult<SystemOverview> dr = SystemManager.physicalList(loggedInUser);
         dr.elaborate();
         return dr.toArray();
     }
@@ -7046,7 +7045,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listSystemsWithExtraPackages(User loggedInUser) {
-        return SystemManager.getExtraPackagesSystems(loggedInUser, null).toArray();
+        return SystemManager.getExtraPackagesSystems(loggedInUser).toArray();
     }
 
     /**

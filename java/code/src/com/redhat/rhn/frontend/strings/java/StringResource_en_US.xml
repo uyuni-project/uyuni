@@ -592,12 +592,6 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Inactive" xml:space="preserve">
-        <source>Inactive</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Active" xml:space="preserve">
         <source>Active</source>
         <context-group name="ctx">
@@ -706,12 +700,6 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Out of Date" xml:space="preserve">
-        <source>Out of Date</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Overview" xml:space="preserve">
         <source>Overview</source>
         <context-group name="ctx">
@@ -762,12 +750,6 @@
       </trans-unit>
       <trans-unit id="Proxy Guide" xml:space="preserve">
         <source>Proxy Quick Start</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="Proxy" xml:space="preserve">
-        <source>Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -994,26 +976,10 @@
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Ungrouped" xml:space="preserve">
-        <source>Ungrouped</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Unix Release Notes" xml:space="preserve">
         <source>Unix Release Notes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="Unentitled" xml:space="preserve">
-        <source>Without System Type</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">rhn/systems/SystemList</context>
-          <context context-type="sourcefile">
-            Shown in the Entitlements column of system lists if the
-            system has no entitlements.
-          </context>
         </context-group>
       </trans-unit>
       <trans-unit id="User List" xml:space="preserve">
@@ -7061,42 +7027,6 @@ Follow this url to see the full list of inactive systems:
         <source>z/VM</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneday" xml:space="preserve">
-        <source>within the past day</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneweek" xml:space="preserve">
-        <source>within the past week</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="onemonth" xml:space="preserve">
-        <source>within the past 30 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="sixmonths" xml:space="preserve">
-        <source>within the past 180 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneyear" xml:space="preserve">
-        <source>within the past year</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="allregisteredsystems" xml:space="preserve">
-        <source>All Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">

@@ -58,7 +58,7 @@ public class SystemsOverviewUpdateWorker implements QueueWorker {
         try {
             removeTask(sid);
             parentQueue.workerStarting();
-            doUpdate();
+            doUpdate(sid);
             HibernateFactory.commitTransaction();
         }
         catch (Exception e) {
@@ -72,7 +72,14 @@ public class SystemsOverviewUpdateWorker implements QueueWorker {
 
     }
 
-    private void doUpdate() {
+    /**
+     * Actually trigger the update_system_overview procedure.
+     *
+     * This should only be called by the worker or unit tests.
+     *
+     * @param sid system to update
+     */
+    public static void doUpdate(long sid) {
         CallableMode mode = ModeFactory.getCallableMode("System_queries", "update_system_overview");
         Map<String, Object> params = Map.of("sid", sid);
         mode.execute(params, new HashMap<>());

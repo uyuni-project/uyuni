@@ -157,6 +157,8 @@ import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -334,7 +336,13 @@ public class SystemManager extends BaseManager {
      * @return true if the system requires a reboot i.e: because kernel updates.
      */
     public static boolean requiresReboot(User user, Long sid) {
-        return !getSystemsRequiringReboot(user, Optional.of(sid)).isEmpty();
+        PageControl pc = new PageControl();
+        pc.setPageSize(0);
+        pc.setFilter(true);
+        pc.setFilterColumn("id");
+        pc.setFilterData("=" + sid.toString());
+        DataResult<SystemOverview> systems = systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
+        return !systems.stream().filter(sys -> sys.getRequiresReboot()).findFirst().isEmpty();
     }
 
     /**
@@ -346,46 +354,29 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     public static DataResult<SystemOverview> requiringRebootList(User user) {
-        return getSystemsRequiringReboot(user, Optional.empty());
-    }
-
-    /**
-     * Returns a list of systems that match a serverId and require a reboot (i.e: because kernel updates,
-     * visible to user, sorted by name).
-     * If the serverId parameter is empty, this query will return all the systems that require a reboot.
-     *
-     * @param user Currently logged in user.
-     * @param serverId the serverId.
-     * @return list of SystemOverviews.
-     */
-    private static DataResult<SystemOverview> getSystemsRequiringReboot(User user, Optional<Long> serverId) {
-        SelectMode m = ModeFactory.getMode("System_queries", "systems_requiring_reboot");
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", user.getOrg().getId());
-        params.put("user_id", user.getId());
-        params.put("sid", serverId.orElse(null));
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, null, m, SystemOverview.class);
+        PageControl pc = new PageControl();
+        pc.setStart(1);
+        pc.setPageSize(0);
+        pc.setFilter(true);
+        pc.setFilterColumn("requires_reboot");
+        pc.setFilterData("true");
+        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsBoolean, pc);
     }
 
     /**
      * Returns a list of systems with extra packages installed.
      *
      * @param user User to check the systems for
-     * @param pc Page control
      *
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> getExtraPackagesSystems(User user,
-            PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-            "extra_packages_systems_count");
-        Map<String, Object> params = new HashMap<>();
-        params.put("userid", user.getId());
-        params.put("orgid", user.getOrg().getId());
-
-        return makeDataResult(params, new HashMap<String, Object>(), pc, m,
-                SystemOverview.class);
+    public static DataResult<SystemOverview> getExtraPackagesSystems(User user) {
+        PageControl pc = new PageControl();
+        pc.setPageSize(0);
+        pc.setFilter(true);
+        pc.setFilterColumn("extra_pkg_count");
+        pc.setFilterData(">0");
+        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
     }
 
     /**
@@ -924,16 +915,15 @@ public class SystemManager extends BaseManager {
     /**
      * Returns list of all physical systems visible to user.
      * @param user Currently logged in user.
-     * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> physicalList(User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "visible_to_user_physical_list");
-        Map<String, Object> params = new HashMap<>();
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+    public static DataResult<SystemOverview> physicalList(User user) {
+        PageControl pc = new PageControl();
+        pc.setPageSize(0);
+        pc.setFilter(true);
+        pc.setFilterColumn("virtual_guest");
+        pc.setFilterData("false");
+        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsBoolean, pc);
     }
 
     /**
@@ -1075,82 +1065,30 @@ public class SystemManager extends BaseManager {
     /**
      * Returns list of out of date systems visible to user.
      * @param user Currently logged in user.
-     * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> outOfDateList(User user,
-            PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "out_of_date");
-        Map<String, Long> params = new HashMap<>();
-        params.put("org_id", user.getOrg().getId());
-        params.put("user_id", user.getId());
-        Map<String, Long> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
-    }
-
-    /**
-     * Returns list of unentitled systems visible to user.
-     * @param user Currently logged in user.
-     * @param pc PageControl
-     * @return list of SystemOverviews.
-     */
-    public static DataResult<SystemOverview> unentitledList(User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "unentitled");
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", user.getOrg().getId());
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+    public static DataResult<SystemOverview> outOfDateList(User user) {
+        PageControl pc = new PageControl();
+        pc.setPageSize(0);
+        pc.setFilter(true);
+        pc.setFilterColumn("outdated_packages");
+        pc.setFilterData(">0");
+        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
     }
 
     /**
      * Returns list of ungrouped systems visible to user.
      * @param user Currently logged in user.
-     * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> ungroupedList(User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "ungrouped");
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", user.getOrg().getId());
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+    public static DataResult<SystemOverview> ungroupedList(User user) {
+        PageControl pc = new PageControl();
+        pc.setPageSize(0);
+        pc.setFilter(true);
+        pc.setFilterColumn("group_count");
+        pc.setFilterData("=0");
+        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
     }
-
-    /**
-     * Returns list of inactive systems visible to user, sorted by name.
-     * @param user Currently logged in user.
-     * @param pc PageControl
-     * @return list of SystemOverviews.
-     */
-    public static DataResult<SystemOverview> inactiveList(User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "inactive");
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", user.getOrg().getId());
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
-    }
-
-    /**
-     * Returns list of inactive systems visible to user, sorted by name.
-     * @param user Currently logged in user.
-     * @param pc PageControl
-     * @param inactiveDays number of days the systems should have been inactive for
-     * @return list of SystemOverviews.
-     */
-    public static DataResult<SystemOverview> inactiveList(User user, PageControl pc,
-            int inactiveDays) {
-        SelectMode m = ModeFactory.getMode("System_queries", "inactive");
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", user.getOrg().getId());
-        params.put("user_id", user.getId());
-        params.put("checkin_threshold", inactiveDays);
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
-    }
-
 
     /**
      * Returns a list of systems recently registered by the user
@@ -1160,26 +1098,21 @@ public class SystemManager extends BaseManager {
      * was registered for it to appear in the list
      * @return list of SystemOverviews
      */
-    public static DataResult<SystemOverview> registeredList(User user,
-            PageControl pc,
-            int threshold) {
-        SelectMode m;
-        Map<String, Object> params = new HashMap<>();
-
-        if (threshold == 0) {
-            m = ModeFactory.getMode("System_queries",
-                    "all_systems_by_registration");
+    public static DataResult<SystemOverview> registeredList(User user, PageControl pc, int threshold) {
+        PageControl pageControl = pc;
+        if (pageControl == null) {
+            pageControl = new PageControl();
+            pageControl.setPageSize(0);
         }
-        else {
-            m = ModeFactory.getMode("System_queries",
-                    "recently_registered");
-            params.put("threshold", threshold);
+        if (threshold > 0) {
+            pageControl.setFilter(true);
+            pageControl.setFilterColumn("created");
+            pageControl.setFilterData(">" + DateTimeFormatter.ISO_LOCAL_DATE.format(
+                    LocalDateTime.now().minusDays(threshold).toLocalDate()));
         }
-
-        params.put("org_id", user.getOrg().getId());
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        pageControl.setSortColumn("created");
+        pageControl.setSortDescending(true);
+        return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsDate, pageControl);
     }
 
     /**
@@ -1195,20 +1128,6 @@ public class SystemManager extends BaseManager {
                 "inactive_order_by_checkin_time");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
-    }
-
-    /**
-     * Returns list of proxy systems visible to user.
-     * @param user Currently logged in user.
-     * @param pc PageControl
-     * @return list of SystemOverviews.
-     */
-    public static DataResult<SystemOverview> proxyList(User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "proxy_servers");
-        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<>();
         return makeDataResult(params, elabParams, pc, m, SystemOverview.class);

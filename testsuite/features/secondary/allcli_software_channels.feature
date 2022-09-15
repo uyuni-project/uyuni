@@ -9,7 +9,7 @@ Feature: Channel subscription via SSM
 
 @sle_minion
   Scenario: Change child channels for SLES minion subscribed to a base channel
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I follow "Clear"
     And I check the "sle_minion" client
     And I should see "1" systems selected for SSM
@@ -77,7 +77,7 @@ Feature: Channel subscription via SSM
 
 @rhlike_minion
   Scenario: System default channel can't be determined on the Red Hat-like minion
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I follow "Clear"
     And I check the "rhlike_minion" client
     Then I should see "1" systems selected for SSM
@@ -107,7 +107,7 @@ Feature: Channel subscription via SSM
 
 @deblike_minion
   Scenario: System default channel can't be determined on the Debian-like minion
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I follow "Clear"
     And I check the "deblike_minion" client
     Then I should see "1" systems selected for SSM

@@ -311,7 +311,7 @@ public class DailySummary extends RhnJavaJob {
         StringBuilder url = new StringBuilder();
         url.append("https://");
         url.append(getHostname());
-        url.append("/rhn/systems/Inactive.do");
+        url.append("/rhn/manager/systems/list/all?q=awol&qc=status_type");
 
         return LocalizationService.getInstance().getMessage(
                 "taskomatic.msg.awolservers", buf.toString(), url);
