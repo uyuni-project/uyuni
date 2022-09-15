@@ -459,8 +459,8 @@ PKGLIST15_SALT = [
     "salt",
     "python3-salt",
     "salt-minion",
-    "python3-apipkg",
-    "python3-iniconfig",
+    "python3-apipkg*",
+    "python3-iniconfig*",
 ]
 
 ONLYSLE15 = [
