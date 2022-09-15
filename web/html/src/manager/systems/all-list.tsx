@@ -158,6 +158,13 @@ export function AllSystems(props: Props) {
           cell={(item) => item.entitlementLevel}
         />
       </Table>
+
+      <div className="spacewalk-csv-download">
+        <a href="/rhn/manager/systems/csv/all" className="btn btn-link" data-senna-off="true">
+          <IconTag type="item-download-csv" />
+          Download CSV
+        </a>
+      </div>
     </>
   );
 }
