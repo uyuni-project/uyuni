@@ -141,6 +141,8 @@ dns_fqdns:
 {%- else %}
       - mgrcompat: sync_states
 {%- endif %}
+    - onlyif:
+        which host || which nslookup
 {% endif%}
 {% if 'network.fqdns' in salt %}
 fqdns:
