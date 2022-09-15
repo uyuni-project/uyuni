@@ -1,3 +1,4 @@
+- Fix mgrnet availability check
 - Remove dependence on Kiwi libraries
 - Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
 - Add mgrnet salt module with mgrnet.dns_fqnd function implementation
