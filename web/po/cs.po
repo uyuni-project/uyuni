@@ -19,15 +19,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 10:50+0200\n"
-"PO-Revision-Date: 2021-10-29 21:12+0000\n"
+"PO-Revision-Date: 2022-09-15 21:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
-"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:511
 msgid "remaining"
@@ -63,21 +63,19 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:260
 msgid "Expand All Sections"
-msgstr ""
+msgstr "Rozbalit všechny sekce"
 
 #: ../html/src/components/FormulaForm.tsx:267
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "Sbalit všechny sekce"
 
 #: ../html/src/components/FormulaForm.tsx:332
-#, fuzzy
 msgid "Unnamed"
-msgstr "Uživatelské jméno"
+msgstr "Bez názvu"
 
 #: ../html/src/components/FormulaForm.tsx:341
-#, fuzzy
 msgid "Search by formula's group name"
-msgstr "Filtrovat podle názvu vzorce"
+msgstr "Vyhledat podle názvu skupiny vzorců"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -795,11 +793,11 @@ msgstr " Aby se změny konfigurace projevily, je potřeba Tomcat a Taskomatic."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
 msgid "Add new pay-as-you-go ssh connection data"
-msgstr ""
+msgstr "Přidání nových dat pro připojení ssh za poplatek"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
 msgid "Add pay-as-you-go ssh data"
-msgstr ""
+msgstr "Přidání placených dat ssh"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -821,9 +819,8 @@ msgid "Create"
 msgstr "Vytvořit"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-#, fuzzy
 msgid "Pay-as-you-go connection Description"
-msgstr "Popis výrobku"
+msgstr "Popis připojení s platbou podle potřeby"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
@@ -840,13 +837,12 @@ msgid "Description"
 msgstr "Popis"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
-#, fuzzy
 msgid "Instance SSH connection data"
-msgstr "Instance je zastaralá"
+msgstr "Údaje o připojení k instanci SSH"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:82
 msgid "Bastion SSH connection data"
-msgstr ""
+msgstr "Údaje o připojení Bastion SSH"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
 #: ../html/src/manager/admin/setup/products/products.tsx:262
@@ -862,9 +858,8 @@ msgstr "Filtrovat podle libovolné hodnoty"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
-#, fuzzy
 msgid "Host"
-msgstr "Hostitelé"
+msgstr "Hostitel"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
@@ -879,9 +874,8 @@ msgid "Status"
 msgstr "Stav"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
-#, fuzzy
 msgid "Last Update Status"
-msgstr "Stav shody dat"
+msgstr "Stav poslední aktualizace"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:141
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
@@ -890,7 +884,7 @@ msgstr "nikdy"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add Pay-as-you-go"
-msgstr ""
+msgstr "Přidat platbu podle potřeby"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -908,14 +902,12 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-#, fuzzy
 msgid "Pay-as-you-go properties updated successfully"
-msgstr "Vlastnosti projektu aktualizovány úspěšně"
+msgstr "Vlastnosti Platby dle potřeby aktualizovány úspěšně"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
-#, fuzzy
 msgid "Edit Information"
-msgstr "Další informace"
+msgstr "Upravit informace"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
@@ -923,37 +915,34 @@ msgid "Editing properties.."
 msgstr "Úprava vlastností.."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
-#, fuzzy
 msgid "Last Status Update"
-msgstr "Počáteční datum"
+msgstr "Poslední aktualizace stavu"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
-#, fuzzy
 msgid "Edit "
-msgstr "Upravit"
+msgstr "Upravit "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:70
 msgid "Editing ssh connection data.."
-msgstr ""
+msgstr "Úprava údajů o připojení ssh.."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
 msgid ""
 "When editing the SSH connection all needed credentials must be re-provided."
 msgstr ""
+"Při úpravě připojení SSH je třeba znovu zadat všechna potřebná pověření."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
-#, fuzzy
 msgid "SSH Port"
-msgstr "Port"
+msgstr "Port SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
-#, fuzzy
 msgid "User"
-msgstr "Uživatelé"
+msgstr "Uživatel"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
@@ -980,14 +969,12 @@ msgid "SSH Private Key Passphrase"
 msgstr "Heslo privátního klíče SSH"
 
 #: ../html/src/manager/admin/payg/payg.tsx:60
-#, fuzzy
 msgid "The instance you are looking for does not exist or has been deleted"
-msgstr "Hledaný projekt neexistuje nebo byl odstraněn"
+msgstr "Hledaná instance neexistuje nebo byla odstraněna"
 
 #: ../html/src/manager/admin/payg/payg.tsx:67
-#, fuzzy
 msgid "Instance Hostname: {0}"
-msgstr "Podrobnosti instance pro '{0}'"
+msgstr "Název hostitele instance: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:76
 msgid "Delete Pay-as-you-go"
