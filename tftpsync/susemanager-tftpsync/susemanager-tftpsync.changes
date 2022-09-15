@@ -1,3 +1,5 @@
+- Fix replacing data in binary GRUB modules
+
 -------------------------------------------------------------------
 Wed Apr 19 12:55:46 CEST 2023 - marina.latini@suse.com
 

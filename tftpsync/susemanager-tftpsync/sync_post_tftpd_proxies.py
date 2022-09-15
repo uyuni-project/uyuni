@@ -219,7 +219,7 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
         format = 'other'
         if "pxelinux.cfg" in fn:
             format = 'pxe'
-        elif "grub" in fn:
+        elif "grub/system" in fn:
             format = 'grub'
         if sync_to_proxies(fn, tftpbootdir, format, settings):
             db[fn] = (mtime, key)
