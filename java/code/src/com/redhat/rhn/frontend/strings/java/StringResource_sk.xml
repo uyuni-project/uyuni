@@ -9594,7 +9594,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgurl" xml:space="preserve">
         <source>Invalid GPG Url</source>
-        <target/>
+        <target>Neplatné Url GPG</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
@@ -9682,7 +9682,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
         <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
-        <target/>
+        <target>Označenie kanála musí mať aspoň 6 znakov, začínať písmenom alebo číslicou a môže obsahovať len malé písmená, pomlčky ('-'), bodky ('.'), podčiarkovníky ('_') a číslice.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
@@ -10234,7 +10234,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.satcert-check-bunch" xml:space="preserve">
         <source>Checks whether the @@PRODUCT_NAME@@ certificate has not expired</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Kontroluje, či platnosť certifikátu @@PRODUCT_NAME@@ nevypršala</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
@@ -11107,67 +11107,67 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
         <source>Pay-as-you-go {0} deleted successfully</source>
-        <target state="new"/>
+        <target state="translated">Úspešne vymazaná priebežná platba {0}</target>
       </trans-unit>
       <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
-        <target state="new"/>
+        <target state="translated">Chyba pri aktualizácii overovacích údajov z: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
         <source>Pay-as-you-go authentication update</source>
-        <target state="new"/>
+        <target state="translated">Aktualizácia overenia priebežnej platby</target>
       </trans-unit>
       <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
         <source>Pay-as-you-go update RMT hosts</source>
-        <target state="new"/>
+        <target state="translated">RMT hostitelia aktualizácií priebežných platieb</target>
       </trans-unit>
       <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
-        <target state="new"/>
+        <target state="translated">Údaje o produkte je potrebné obnoviť.</target>
       </trans-unit>
       <trans-unit id="setup.product.error.notfound" xml:space="preserve">
         <source>Product cannot be found: missing identifier {0}.</source>
-        <target state="new"/>
+        <target state="translated">Produkt nemožno nájsť: chýbajúci identifikátor {0}.</target>
       </trans-unit>
       <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
         <source>There are conflicting channel labels {0}.</source>
-        <target state="new"/>
+        <target state="translated">Existujú konfliktné označenia kanálov {0}.</target>
       </trans-unit>
       <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
         <source>A parent product conflicts with existing channels.</source>
-        <target state="new"/>
+        <target state="translated">Rodičovský produkt je v konflikte s existujúcimi kanálmi.</target>
       </trans-unit>
       <trans-unit id="setup.product.error.unknown" xml:space="preserve">
         <source>Unexpected error while adding the product.</source>
-        <target state="new"/>
+        <target state="translated">Neočakávaná chyba pri pridávaní produktu.</target>
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
-        <target state="new"/>
+        <target state="translated">Zadané číslo CVE sa v našej databáze nenašlo. Ďalšie informácie o tomto CVE môžete získať z odkazov uvedených nižšie.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error" xml:space="preserve">
         <source>An unexpected error has occurred during bootstrap.</source>
-        <target state="new"/>
+        <target state="translated">Počas zavádzania sa vyskytla neočakávaná chyba.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
-        <target state="new"/>
+        <target state="translated">Aplikovanie stavov zlyhalo počas zavádzania (retcode={0}).</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
         <source>An error has occurred during salt execution: {0}.</source>
-        <target state="new"/>
+        <target state="translated">Počas vykonávania salt sa vyskytla chyba: {0}.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
         <source>function {0} not available</source>
-        <target state="new"/>
+        <target state="translated">funkcia {0} nie je dostupná</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
         <source>module {0} is not supported</source>
-        <target state="new"/>
+        <target state="translated">modul {0} nie je podporovaný</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
         <source>unable to parse json</source>
-        <target state="new"/>
+        <target state="translated">nie je možné analyzovať json</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
