@@ -1,3 +1,5 @@
+- Remove "Undefined return code" from debug messages (bsc#1203283)
+
 -------------------------------------------------------------------
 Thu Sep 08 09:56:31 CEST 2022 - mc@suse.de
 
