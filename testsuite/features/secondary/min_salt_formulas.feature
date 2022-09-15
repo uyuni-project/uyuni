@@ -69,7 +69,7 @@ Feature: Use salt formulas
      Then I should see a "Applying the highstate has been scheduled." text
      When I wait until event "Apply highstate scheduled by admin" is completed
      Then the timezone on "sle_minion" should be "+05"
-     And the keymap on "sle_minion" should be "ca.map.gz"
+     And the keymap on "sle_minion" should be "ca"
      And the language on "sle_minion" should be "fr_FR.UTF-8"
 
   Scenario: Reset the formula on the minion
@@ -92,7 +92,7 @@ Feature: Use salt formulas
      Then I should see a "Applying the highstate has been scheduled." text
      When I wait until event "Apply highstate scheduled by admin" is completed
      Then the timezone on "sle_minion" should be "CET"
-     And the keymap on "sle_minion" should be "us.map.gz"
+     And the keymap on "sle_minion" should be "us"
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Disable the formula on the minion
@@ -159,7 +159,7 @@ Feature: Use salt formulas
      Then I should see a "Applying the highstate has been scheduled." text
      When I wait until event "Apply highstate scheduled by admin" is completed
      Then the timezone on "sle_minion" should be "CET"
-     And the keymap on "sle_minion" should be "us.map.gz"
+     And the keymap on "sle_minion" should be "us"
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Cleanup: uninstall formula package from the server
