@@ -1,3 +1,4 @@
+- Remove "Undefined return code" from debug messages (bsc#1203283)
 - Update translation strings
 
 -------------------------------------------------------------------
