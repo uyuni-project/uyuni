@@ -124,7 +124,7 @@ end
 
 When(/^I apply state "([^"]*)" to "([^"]*)"$/) do |state, host|
   system_name = get_system_name(host)
-  $server.run("salt #{system_name} state.apply #{state}")
+  $server.run("salt #{system_name} state.apply #{state}", verbose: true)
 end
 
 Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
