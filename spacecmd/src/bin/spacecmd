@@ -208,7 +208,8 @@ if __name__ == '__main__':
                 precmd = shell.precmd(command)
                 if precmd == '':
                     sys.exit(1)
-                result = shell.print_result(shell.onecmd(precmd), precmd)
+                result = shell.onecmd(precmd)
+                logging.debug("command=%s, return_value=%s", precmd, repr(result))
                 if result == 1:
                     sys.exit(result)
             except KeyboardInterrupt:

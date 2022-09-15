@@ -233,26 +233,10 @@ class SpacewalkShell(Cmd):
             logging.warning(_N('%s: event not found'), command)
             return ''
 
-    @staticmethod
-    def print_result(cmdresult, cmd):
-        logging.debug(cmd + ": " + repr(cmdresult))
-        if cmd:
-            try:
-                if type(cmdresult).__name__ == 'str':
-                    print(cmdresult)
-                else:
-                    for i in cmdresult:
-                        print(i)
-            except TypeError:
-                # catch methods returning undefined results at least in debug mode
-                logging.debug('Undefined return code from \"%s\"', cmd)
-
-        return cmdresult
-
     # update the prompt with the SSM size
     # pylint: disable=arguments-differ
     def postcmd(self, cmdresult, cmd):
-        SpacewalkShell.print_result(cmdresult, cmd)
+        logging.debug("command=%s, return_value=%s", cmd, repr(cmdresult))
         self.prompt = re.sub('##', str(len(self.ssm)), self.prompt_template)
 
     def default(self, line):
