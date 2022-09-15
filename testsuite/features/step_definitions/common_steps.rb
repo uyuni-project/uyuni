@@ -1385,7 +1385,7 @@ When(/^I reboot server through SSH$/) do
   node = get_target('server')
   temp_server = twopence_init("ssh:#{$server.public_ip}")
   temp_server.extend(LavandaBasic)
-  fullname = temp_server.run("cat /etc/hostname")[0].gsub("\n", '') 
+  fullname = temp_server.run("cat /etc/hostname")[0].gsub("\n", '')
   # Reboot and wait
   temp_server.run("reboot > /dev/null 2> /dev/null &")
   reboot_timeout = 1000
@@ -1400,7 +1400,6 @@ When(/^I reboot server through SSH$/) do
     end
     sleep 1
   end
-
 end
 
 Then(/^I change server short hostname from hosts and hostname files as "([^"]*)"$/) do |text|
