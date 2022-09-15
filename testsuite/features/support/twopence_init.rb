@@ -132,7 +132,7 @@ $nodes.each do |node|
 
   STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
   result, _code = node.run('grep PRETTY /etc/os-release')
-  puts "'#{$named_nodes[node.hash]}' is running OS #{result}"
+  STDOUT.puts "'#{$named_nodes[node.hash]}' is running OS #{result}"
 end
 
 # This function is used to get one of the nodes based on its type
