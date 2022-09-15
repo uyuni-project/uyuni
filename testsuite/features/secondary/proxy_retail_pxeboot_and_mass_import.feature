@@ -187,7 +187,7 @@ Feature: PXE boot a Retail terminal
     When I reboot the Retail terminal "pxeboot_minion"
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
     # Workaround: Increase timeout temporarily get rid of timeout issues
@@ -317,7 +317,7 @@ Feature: PXE boot a Retail terminal
     # Workaround: Increase timeout temporarily get rid of timeout issues
     And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
-    Then I follow the left menu "Systems > Overview"
+    Then I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
 
   Scenario: Check connection from bootstrapped terminal to proxy

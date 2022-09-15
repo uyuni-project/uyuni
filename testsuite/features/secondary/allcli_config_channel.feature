@@ -198,7 +198,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_minion
   Scenario: Re-add SLE Minion via SSM
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I follow "Clear"
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"

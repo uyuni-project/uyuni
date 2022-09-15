@@ -326,7 +326,7 @@ end
 
 Then(/^I should see the terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
-  terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
+  terminals.each { |terminal| step %(I wait until I see the "#{terminal}" system, refreshing the page) }
 end
 
 Then(/^I should not see any terminals imported from the configuration file$/) do

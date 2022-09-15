@@ -67,7 +67,7 @@ Feature: CVE Audit on SLE Salt Minions
     Then I should see a "Affected, at least one patch available in an assigned channel" text
     When I check the "sle_minion" client
     Then I should see a "system selected" text
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     Then I should see "sle_minion" as link
     And I follow "Clear"
 

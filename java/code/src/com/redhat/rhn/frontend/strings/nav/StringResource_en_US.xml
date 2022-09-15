@@ -925,12 +925,6 @@
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Recently Registered" xml:space="preserve">
-        <source>Recently Registered</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Target Systems" xml:space="preserve">
         <source>Target Systems</source>
         <context-group name="ctx">

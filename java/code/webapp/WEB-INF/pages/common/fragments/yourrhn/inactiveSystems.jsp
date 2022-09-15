@@ -13,7 +13,7 @@
                            type="half-table"
                            title="inactivelist.jsp.header"
                            paging="false"
-                           reflink="/rhn/systems/Inactive.do"
+                           reflink="/rhn/manager/systems/list/all?q=awol&qc=status_type"
                            reflinkkey="yourrhn.jsp.allinactivesystems"
                            reflinkkeyarg0="${pageList.size}"
                            domainClass="systems">

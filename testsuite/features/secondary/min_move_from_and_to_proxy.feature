@@ -68,7 +68,7 @@ Feature: Move a minion from a proxy to direct connection
   Scenario: Change connection back to a proxy via SSM
     # be sure that the old events are older than 1 minute
     Given I wait for "120" seconds
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I follow "Clear"
     And I check the "sle_minion" client
     And I should see "1" systems selected for SSM

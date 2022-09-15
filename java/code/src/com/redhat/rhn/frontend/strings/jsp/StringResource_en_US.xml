@@ -5841,28 +5841,24 @@ organization. You may grant or remove the organization administrator role in the
       <trans-unit id="requiringrebootlist.jsp.header" xml:space="preserve">
         <source>Systems Requiring Reboot</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/RequiringReboot</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="extrapackagessystemslist.jsp.header" xml:space="preserve">
         <source>Non Compliant Systems</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/ExtraPackagesSystems.do</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="inactivelist.jsp.header" xml:space="preserve">
         <source>Inactive Systems</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Inactive</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="registeredlist.jsp.header" xml:space="preserve">
         <source>Recently Registered Systems</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
@@ -11437,7 +11433,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
-        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>

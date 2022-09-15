@@ -17,7 +17,7 @@ export const renderer = (id: string) =>
   SpaRenderer.renderNavigationReact(
     <DeleteSystem
       serverId={window.getServerIdToDelete()}
-      onDeleteSuccess={() => Utils.urlBounce("/rhn/systems/Overview.do")}
+      onDeleteSuccess={() => Utils.urlBounce("/rhn/manager/systems/list/all")}
       buttonText={t("Delete Profile")}
       buttonClass="btn-danger"
     />,

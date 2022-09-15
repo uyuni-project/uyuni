@@ -262,7 +262,7 @@ public class ErrataMailer extends RhnJavaJob {
         printWriter.flush();
         args[0] = writer.toString();
         //URL for the system list
-        args[1] = host + "/rhn/systems/Overview.do";
+        args[1] = host + "/rhn/manager/systems/list/all";
         buffy.append(ls.getMessage("email.errata.notification.body.affected", args));
         return buffy.toString();
     }

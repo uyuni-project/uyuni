@@ -39,7 +39,7 @@ Feature: ReportDB
     And I should not be able to connect to product database with the ReportDB admin user
 
   Scenario: The systems should match between the UI and the ReportDB
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I make a list of the existing systems
     Then I should find the systems from the UI in the ReportDB
 
