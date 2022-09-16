@@ -15,15 +15,23 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 %define SERVICES uyuni-proxy-httpd uyuni-proxy-salt-broker uyuni-proxy-squid uyuni-proxy-ssh uyuni-proxy-tftpd uyuni-proxy-pod
 
 Name:           uyuni-proxy-systemd-services
 Summary:        Uyuni proxy server systemd services containers
 License:        GPL-2.0-only
 Group:          Applications/Internet
+<<<<<<< HEAD
 Version:        4.4.0
 Release:        0
+=======
+Version:        4.3.5
+Release:        1
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/containers/proxy-systemd-services/%{name}-rpmlintrc

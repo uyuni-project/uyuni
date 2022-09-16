@@ -16,7 +16,11 @@ zypper rr sles15sp4
 
 # do the real test
 zypper --non-interactive --gpg-auto-import-keys ref
+<<<<<<< HEAD
 zypper --non-interactive in aaa_base aaa_base-extras net-tools timezone vim less sudo tar gzip python3 python3-psutil
+=======
+zypper --non-interactive in aaa_base aaa_base-extras net-tools timezone vim less sudo tar python3 python3-psutil
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 # kill avahi
 /usr/sbin/avahi-daemon -k

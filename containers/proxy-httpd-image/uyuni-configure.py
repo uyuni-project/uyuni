@@ -40,6 +40,7 @@ def getIPs(fqdn: str) -> Tuple[str, str]:
     logging.debug("Detected ips '%s', '%s' for fqdn %s", ipv4, ipv6, fqdn)
     return (ipv4, ipv6)
 
+<<<<<<< HEAD
 
 def insert_under_line(file_path, line_to_match, line_to_insert):
 
@@ -61,6 +62,8 @@ def insert_under_line(file_path, line_to_match, line_to_insert):
         f.write(contents)
 
 
+=======
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 # read from files
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)

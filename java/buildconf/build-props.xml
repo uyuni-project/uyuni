@@ -149,8 +149,13 @@
   <property name="common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
+<<<<<<< HEAD
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate5deps}
              ${commons-compress} ${javamail} smtp jdom ${jmock-jars}
+=======
+             commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator}
+             ${commons-compress} ${hibernate} ${javamail} smtp jdom ${jmock-jars}
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
@@ -205,8 +210,13 @@
   <property name="install.common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
+<<<<<<< HEAD
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate5deps}
              ${commons-compress} ${tomcat-jars} ${javamail} jdom jsch dwr
+=======
+             commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator}
+             ${commons-compress} ${hibernate} ${tomcat-jars} ${javamail} jdom jsch dwr
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
@@ -218,7 +228,11 @@
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging ${commons-compress}
+<<<<<<< HEAD
              ${commons-validator} concurrent dom4j ${hibernate5deps} ${jta11-jars}
+=======
+             ${commons-validator} concurrent dom4j ${hibernate} ${jta11-jars}
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jcommon jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}

@@ -238,6 +238,7 @@ key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)
 
 print(client.user.list_users(key))
 
+<<<<<<< HEAD
 client.auth.logout(key)</programlisting>
 </example>
 
@@ -261,5 +262,7 @@ end
 
 @client.call('auth.logout', @key)</programlisting>
 </example>
+=======
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 </section>
 </preface>

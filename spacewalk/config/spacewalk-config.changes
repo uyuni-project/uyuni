@@ -1,10 +1,13 @@
 -------------------------------------------------------------------
+<<<<<<< HEAD
 Wed Jul 27 14:16:23 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.9-1
   * fix posttrans error "RHN-ORG-TRUSTED-SSL-CERT" not found
 
 -------------------------------------------------------------------
+=======
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 Fri May 20 00:08:47 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.8-1

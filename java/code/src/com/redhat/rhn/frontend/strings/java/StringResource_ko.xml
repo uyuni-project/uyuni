@@ -11188,7 +11188,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">주변기기 서버</target>
       </trans-unit>
+<<<<<<< HEAD
       <trans-unit approved="yes" id="Report Database Schema" xml:space="preserve">
+=======
+      <trans-unit id="Report Database Schema" xml:space="preserve" approved="yes">
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>

@@ -59,8 +59,13 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
+<<<<<<< HEAD
 Version:        4.4.0
 Release:        0
+=======
+Version:        4.3.34
+Release:        1
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
@@ -90,6 +95,18 @@ BuildRequires:  bcel
 BuildRequires:  byte-buddy
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
+<<<<<<< HEAD
+=======
+%if 0%{?suse_version}
+BuildRequires:  classmate
+%endif
+BuildRequires:  %{apache_commons_discovery}
+BuildRequires:  %{apache_commons_fileupload}
+BuildRequires:  %{apache_commons_validator}
+BuildRequires:  %{apache_commons_compress}
+BuildRequires:  %{ehcache}
+BuildRequires:  apache-commons-el
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
@@ -177,11 +194,31 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
+<<<<<<< HEAD
 Requires:       cobbler >= 3.3.3
+=======
+Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
+%if 0%{?suse_version}
+Requires:       classmate
+%endif
+Requires:       %{ehcache}
+Requires:       cobbler = 3.1.2
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
+<<<<<<< HEAD
+=======
+Requires:       istack-commons-runtime
+Requires:       (glassfish-jaxb-api or jaxb-api)
+%if 0%{?rhel}
+Recommends:       rng-tools
+%endif
+%endif
+Requires:       %{apache_commons_digester}
+Requires:       %{apache_commons_compress}
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 Requires:       google-gson >= 2.2.4
 Requires:       hibernate-commons-annotations
 Requires:       hibernate-types

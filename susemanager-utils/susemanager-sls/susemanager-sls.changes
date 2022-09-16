@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - Remove dependence on Kiwi libraries
 - disable always the bootstrap repository also when
   "mgr_disable_local_repos" is set to False
@@ -21,6 +22,12 @@ Wed Jul 27 14:17:08 CEST 2022 - jgonzalez@suse.com
   * Add port parameter to mgrutil.remove_ssh_known_host
   * Prevent possible tracebacks on calling module.run from mgrcompat
     by setting proper globals with using LazyLoader
+=======
+- Enable basic support for Ubuntu 22.04
+- Add port parameter to mgrutil.remove_ssh_known_host
+- Prevent possible tracebacks on calling module.run from mgrcompat
+  by setting proper globals with using LazyLoader
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 -------------------------------------------------------------------
 Tue Jun 21 18:39:32 CEST 2022 - jgonzalez@suse.com

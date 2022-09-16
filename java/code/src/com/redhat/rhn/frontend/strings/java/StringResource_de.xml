@@ -9790,7 +9790,11 @@ tree will not be usable for autoinstalling.</source>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+<<<<<<< HEAD
         <target state="needs-adaptation"/>
+=======
+      <target state="needs-adaptation"/>
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -10875,7 +10879,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="new"/>
       </trans-unit>
+<<<<<<< HEAD
       <trans-unit id="bootstrap.minion.error" xml:space="preserve">
+=======
+    <trans-unit id="bootstrap.minion.error" xml:space="preserve">
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>An unexpected error has occurred during bootstrap.</source>
         <target state="new"/>
       </trans-unit>

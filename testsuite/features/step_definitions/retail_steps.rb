@@ -47,7 +47,11 @@ end
 def compute_kiwi_profile_filename(host)
   image = compute_image(host)
   case image
+<<<<<<< HEAD
   when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
+=======
+  when 'sles15sp3', 'sles15sp3o'
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
     # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
     $product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
   when 'sles15sp2', 'sles15sp2o'
@@ -226,7 +230,11 @@ When(/^I restart the network on the PXE boot minion$/) do
   $proxy.run("expect -f /tmp/#{file} #{ipv6}")
 end
 
+<<<<<<< HEAD
 When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
+=======
+When(/^I reboot the terminal "([^"]*)"$/) do |host|
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
   # we might have no or any IPv4 address on that machine
   # convert MAC address to IPv6 link-local address
   if host == 'pxeboot_minion'
@@ -476,7 +484,11 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   elsif host == 'sle15sp4_terminal'
     mac = $sle15sp4_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
+<<<<<<< HEAD
   elsif (host.include? 'deblike') || (host.include? 'debian11') || (host.include? 'ubuntu')
+=======
+  elsif host.include? 'ubuntu'
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')
     mac = output.split("\n")[1].split[1]

@@ -8789,6 +8789,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <trans-unit id="system.entitle.invalid_addon_entitlement" xml:space="preserve">
         <source>Invalid add-on system type [{0}] provided. No such system type exists.</source>
         <target>Zadaný neplatný typ prídavného systému [{0}]. Takýto typ systému neexistuje.</target>
+<<<<<<< HEAD
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -8796,10 +8797,22 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <trans-unit id="system.entitle.guestcantvirt" xml:space="preserve">
         <source>The system cannot have a Virtualization Host system type because it is a virtual guest.</source>
         <target>Systém nemôže mať typ systému Virtualizačného hostiteľa, pretože ide o virtuálneho hosťa.</target>
+=======
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+<<<<<<< HEAD
+=======
+      <trans-unit id="system.entitle.guestcantvirt" xml:space="preserve">
+        <source>The system cannot have a Virtualization Host system type because it is a virtual guest.</source>
+        <target>Systém nemôže mať typ systému Virtualizačného hostiteľa, pretože ide o virtuálneho hosťa.</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
       <trans-unit id="system.invalidsystem" xml:space="preserve">
         <source>Invalid system</source>
         <target>Neplatný systém</target>
@@ -10050,7 +10063,11 @@ inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</t
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
+<<<<<<< HEAD
         <target state="translated">Informácie o obnovení hesla odoslané na {0}. Ak ju nedostanete, uistite sa, že máte zaregistrovaný účet s prihlasovacím menom a uvedeným emailom.</target>
+=======
+        <target state="needs-adaptation"/>
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -10066,7 +10083,11 @@ inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</t
       </trans-unit>
       <trans-unit id="help.credentials.loginssent" xml:space="preserve">
         <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
+<<<<<<< HEAD
         <target state="translated">Nájdené prihlasovacie meno(á) odoslané na {0}. Ak ju nedostanete, uistite sa, že máte zaregistrovaný účet s prihlasovacím menom a uvedeným emailom.</target>
+=======
+        <target state="needs-adaptation"/>
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
         <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
@@ -11259,10 +11280,13 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>Please fill in login.</source>
         <target state="new"/>
       </trans-unit>
+<<<<<<< HEAD
       <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
         <target state="new"/>
       </trans-unit>
+=======
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
     </body>
   </file>
 </xliff>

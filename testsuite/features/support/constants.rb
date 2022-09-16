@@ -76,9 +76,15 @@ BULLET_STYLE = { 'failing' => 'fa-times text-danger',
 PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'sle_minion' => 'bison',
                       'ssh_minion' => 'bison',
+<<<<<<< HEAD
                       'rhlike_client' => 'autoconf',
                       'rhlike_minion' => 'autoconf',
                       'deblike_minion' => 'bison',
+=======
+                      'ceos_client' => 'autoconf',
+                      'ceos_minion' => 'autoconf',
+                      'ubuntu_minion' => 'bison',
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
                       'sle12sp4_client' => 'bison',
                       'sle12sp4_minion' => 'bison',
                       'sle12sp4_ssh_minion' => 'bison',
@@ -120,11 +126,19 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'opensuse153arm_minion' => 'bison' }.freeze
 
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
+<<<<<<< HEAD
                            'sle_client' => 'SLES15-SP4-Pool',
                            'sle_minion' => 'SLES15-SP4-Pool',
                            'ssh_minion' => 'SLES15-SP4-Pool',
                            'rhlike_minion' => 'RHEL7-Pool for x86_64',
                            'deblike_minion' => 'ubuntu-2004-amd64-main',
+=======
+                           'sle_client' => 'SLES12-SP4-Pool',
+                           'sle_minion' => 'SLES12-SP4-Pool',
+                           'ssh_minion' => 'SLES12-SP4-Pool',
+                           'ceos_minion' => 'RHEL7-Pool for x86_64',
+                           'ubuntu_minion' => 'ubuntu-18.04-pool',
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
                            'sle12sp4_client' => 'SLES12-SP4-Pool',
                            'sle12sp4_minion' => 'SLES12-SP4-Pool',
                            'sle12sp4_ssh_minion' => 'SLES12-SP4-Pool',
@@ -227,8 +241,13 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_client' => 'x86_64',
                       'sle_minion' => 'x86_64',
                       'ssh_minion' => 'x86_64',
+<<<<<<< HEAD
                       'rhlike_minion' => 'x86_64',
                       'deblike_minion' => 'amd64',
+=======
+                      'ceos_minion' => 'x86_64',
+                      'ubuntu_minion' => 'amd64',
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
                       'sle12sp4_client' => 'x86_64',
                       'sle12sp4_minion' => 'x86_64',
                       'sle12sp4_ssh_minion' => 'x86_64',

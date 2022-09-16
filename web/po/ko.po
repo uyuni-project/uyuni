@@ -18,8 +18,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2022-09-13 04:14+0000\n"
 "PO-Revision-Date: 2022-09-14 08:31+0000\n"
+=======
+"POT-Creation-Date: 2022-06-22 04:14+0000\n"
+"PO-Revision-Date: 2022-06-20 08:12+0000\n"
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -339,6 +344,60 @@ msgstr "2자 이상"
 msgid "required"
 msgstr "필수"
 
+<<<<<<< HEAD
+=======
+#: ../html/src/components/input/Password.stories.tsx:29
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:68
+#: ../html/src/manager/login/uyuni/login.tsx:65
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
+#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
+msgid "Password"
+msgstr "비밀번호"
+
+#: ../html/src/components/input/Password.stories.tsx:31
+msgid "Minimum 4 characters"
+msgstr "4자 이상"
+
+#: ../html/src/components/input/Radio.stories.tsx:29
+#: ../html/src/components/input/Radio.stories.tsx:55
+#: ../html/src/components/input/Radio.stories.tsx:83
+#: ../html/src/components/input/Radio.stories.tsx:110
+#: ../html/src/components/input/Select.stories.tsx:29
+#: ../html/src/components/input/Select.stories.tsx:122
+msgid "Level"
+msgstr "레벨"
+
+#: ../html/src/components/input/Radio.stories.tsx:34
+#: ../html/src/components/input/Radio.stories.tsx:61
+#: ../html/src/components/input/Radio.stories.tsx:88
+#: ../html/src/components/input/Radio.stories.tsx:116
+msgid "Beginner"
+msgstr "초급자"
+
+#: ../html/src/components/input/Radio.stories.tsx:35
+#: ../html/src/components/input/Radio.stories.tsx:62
+#: ../html/src/components/input/Radio.stories.tsx:89
+#: ../html/src/components/input/Radio.stories.tsx:117
+msgid "Normal"
+msgstr "일반"
+
+#: ../html/src/components/input/Radio.stories.tsx:36
+#: ../html/src/components/input/Radio.stories.tsx:63
+#: ../html/src/components/input/Radio.stories.tsx:90
+#: ../html/src/components/input/Radio.stories.tsx:118
+msgid "Expert"
+msgstr "전문가"
+
+#: ../html/src/components/input/Range.stories.tsx:33
+msgid "Port range"
+msgstr "포트 범위"
+
+#: ../html/src/components/input/Range.stories.tsx:35
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/components/input/Range.test.tsx:71
 msgid "Both values need to be positive integers"
 msgstr "두 값 모두 양의 정수여야 합니다."
@@ -856,8 +915,13 @@ msgid "Filter by any value"
 msgstr "값을 기준으로 필터링"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
+<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
+=======
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr "호스트"
@@ -928,6 +992,7 @@ msgstr "편집 "
 msgid "Editing ssh connection data.."
 msgstr "SSH 연결 데이터 편집 중..."
 
+<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
 msgid ""
 "When editing the SSH connection all needed credentials must be re-provided."
@@ -935,16 +1000,26 @@ msgstr "SSH 연결을 편집할 때 필요한 모든 인증서를 다시 제공�
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
+=======
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr "SSH 포트"
 
+<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
+=======
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr "사용자"
 
+<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
@@ -958,13 +1033,22 @@ msgstr "비밀번호"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
+=======
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr "SSH 개인 키"
 
+<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
+=======
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 개인 키 비밀번호"
@@ -2742,7 +2826,11 @@ msgstr "가져오기"
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:386
+=======
+#: ../html/src/manager/proxy/container-config.tsx:378
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
@@ -4058,17 +4146,27 @@ msgstr ""
 msgid "Proxy FQDN"
 msgstr "프록시 FQDN"
 
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:200
 msgid ""
 "The unique, DNS-resolvable FQDN of this proxy. It should be different from "
 "any registered clients."
 msgstr ""
+=======
+#: ../html/src/manager/proxy/container-config.tsx:192
+msgid "The FQDN of the machine where the containers are hosted"
+msgstr "컨테이너가 호스팅되는 시스템의 FQDN"
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
 msgstr "예: proxy.domain.com"
 
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:208
+=======
+#: ../html/src/manager/proxy/container-config.tsx:200
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "Parent FQDN"
 msgstr "상위 FQDN"
 
@@ -4076,7 +4174,11 @@ msgstr "상위 FQDN"
 msgid "e.g., server.domain.com"
 msgstr "예: server.domain.com"
 
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:211
+=======
+#: ../html/src/manager/proxy/container-config.tsx:203
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr "연결할 상위(서버 또는 프록시)의 FQDN입니다."
 
@@ -4084,12 +4186,20 @@ msgstr "연결할 상위(서버 또는 프록시)의 FQDN입니다."
 msgid "Proxy SSH port"
 msgstr "프록시 SSH 포트"
 
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:218
+=======
+#: ../html/src/manager/proxy/container-config.tsx:210
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr "포트 범위: 1 - 65535"
 
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:227
+=======
+#: ../html/src/manager/proxy/container-config.tsx:219
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "Max Squid cache size"
 msgstr "최대 Squid 캐시 크기"
 
@@ -4101,11 +4211,19 @@ msgstr "메가바이트 단위의 Squid 캐시 최대값"
 msgid "e.g., 2048"
 msgstr "예: 2048"
 
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:238
 msgid "Proxy admin email"
 msgstr "프록시 관리자 전자 메일"
 
 #: ../html/src/manager/proxy/container-config.tsx:239
+=======
+#: ../html/src/manager/proxy/container-config.tsx:230
+msgid "Proxy admin email"
+msgstr "프록시 관리자 전자 메일"
+
+#: ../html/src/manager/proxy/container-config.tsx:231
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "The container-based proxy administrator email address"
 msgstr "컨테이너 기반 프록시 관리자 전자 메일 주소"
 
@@ -4127,6 +4245,7 @@ msgstr "생성"
 msgid "Use existing"
 msgstr "기존 항목 사용"
 
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:264
 msgid "CA certificate"
 msgstr "CA 인증서"
@@ -4134,6 +4253,15 @@ msgstr "CA 인증서"
 #: ../html/src/manager/proxy/container-config.tsx:265
 #: ../html/src/manager/proxy/container-config.tsx:274
 #: ../html/src/manager/proxy/container-config.tsx:331
+=======
+#: ../html/src/manager/proxy/container-config.tsx:256
+msgid "CA certificate"
+msgstr "CA 인증서"
+
+#: ../html/src/manager/proxy/container-config.tsx:257
+#: ../html/src/manager/proxy/container-config.tsx:266
+#: ../html/src/manager/proxy/container-config.tsx:323
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "To sign the SSL certificate in PEM format"
 msgstr "PEM 형식의 SSL 인증서에 서명"
 
@@ -4169,7 +4297,11 @@ msgstr "2자 국가 코드"
 msgid "City"
 msgstr "시/도"
 
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:320
+=======
+#: ../html/src/manager/proxy/container-config.tsx:312
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
@@ -4197,7 +4329,11 @@ msgstr "중간 CA"
 msgid "CA file in PEM format"
 msgstr "PEM 형식의 CA 파일"
 
+<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:361
+=======
+#: ../html/src/manager/proxy/container-config.tsx:353
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "Proxy certificate"
 msgstr "프록시 인증서"
 

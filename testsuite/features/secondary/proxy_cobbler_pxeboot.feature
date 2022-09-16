@@ -82,8 +82,13 @@ Feature: PXE boot a terminal with Cobbler
     When I restart squid service on the proxy
 
   Scenario: PXE boot the PXE boot minion
+<<<<<<< HEAD
     Given I set the default PXE menu entry to the target profile on the "proxy"
     When I reboot the Cobbler terminal "pxeboot_minion"
+=======
+    Given I set the default PXE menu entry to the "target profile" on the "proxy"
+    When I reboot the terminal "pxeboot_minion"
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
     And I wait for "60" seconds
     And I set the default PXE menu entry to the local boot on the "proxy"
     And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"

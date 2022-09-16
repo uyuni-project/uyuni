@@ -8,8 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2022-09-14 08:33+0000\n"
 "PO-Revision-Date: 2022-08-02 12:06+0000\n"
+=======
+"POT-Creation-Date: 2022-05-17 10:11+0000\n"
+"PO-Revision-Date: 2021-11-07 18:12+0000\n"
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd/de/"
 ">\n"

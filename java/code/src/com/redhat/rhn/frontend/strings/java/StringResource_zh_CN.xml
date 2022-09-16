@@ -9971,7 +9971,11 @@ tree will not be usable for autoinstalling.</source>
         <source>An email has already been sent. You may request this action only every {0} seconds.</source>
         <target state="translated">已经发送了一封电子邮件。您每 {0} 秒只能请求一次此操作。</target>
       </trans-unit>
+<<<<<<< HEAD
       <trans-unit approved="yes" id="help.credentials.passwordsent" xml:space="preserve">
+=======
+      <trans-unit id="help.credentials.passwordsent" xml:space="preserve" approved="yes">
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
         <target state="final">已将口令重设置信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的登录信息和电子邮件注册的帐户。</target>
       </trans-unit>
@@ -9987,7 +9991,11 @@ tree will not be usable for autoinstalling.</source>
         <source>There are no registered accounts with that email address.</source>
         <target state="translated">没有使用该电子邮件地址注册的帐户。</target>
       </trans-unit>
+<<<<<<< HEAD
       <trans-unit approved="yes" id="help.credentials.loginssent" xml:space="preserve">
+=======
+      <trans-unit id="help.credentials.loginssent" xml:space="preserve" approved="yes">
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
         <target state="final">已将找到的登录信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的电子邮件注册的帐户。</target>
       </trans-unit>
@@ -11190,7 +11198,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">外设服务器</target>
       </trans-unit>
+<<<<<<< HEAD
       <trans-unit approved="yes" id="Report Database Schema" xml:space="preserve">
+=======
+      <trans-unit id="Report Database Schema" xml:space="preserve" approved="yes">
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - Fixed serialization problems (bsc#1202899)
 - Filter out successors that have no repositories on SP migration (bsc#1202367)
 - Reduced the usage of deprecated Hibernate API
@@ -65,6 +66,28 @@ Wed Jul 27 14:18:34 CEST 2022 - jgonzalez@suse.com
   * Improve CLM channel cloning performance (bsc#1199523)
   * Keep the websocket connections alive with ping/pong frames (bsc#1199874)
   * add detection of Ubuntu 22.04
+=======
+- Convert formula integer values when upgrading (bsc#1200347)
+- Cleanup salt known_hosts when generating proxy containers config
+- Modify proxy containers configuration files set output
+- Change proxy containers config to tarball with yaml files
+- Fixed date format on scheduler related messages (bsc#1195455)
+- Improved dropdown layout handling
+- Fix download CSV
+- Hide authentication data in PAYG UI (bsc#1199679)
+- Clean grub2 reinstall entry in autoyast snippet (bsc#1199950)
+- Show reboot alert message on all system detail pages (bsc#1199779)
+- Show patch as installed in CVE Audit even if successor patch affects
+  additional packages (bsc#1199646)
+- Fix refresh action confirmation message when no system is selected
+- Fix Intenal Server Error when URI contains invalid sysid (bsc#1186011)
+- Fix notification message on system properties update to ensure
+  style consistency (bsc#1172179)
+- Fix containerized proxy configuration machine name
+- Improve CLM channel cloning performance (bsc#1199523)
+- Keep the websocket connections alive with ping/pong frames (bsc#1199874)
+- add detection of Ubuntu 22.04
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 -------------------------------------------------------------------
 Tue Jun 21 18:31:05 CEST 2022 - jgonzalez@suse.com

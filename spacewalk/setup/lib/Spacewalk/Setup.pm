@@ -21,7 +21,11 @@ use Socket;
 eval {
     require Net::LibIDN2;
     Net::LibIDN2->import();
+<<<<<<< HEAD
     sub idn_to_ascii($;$$) { return Net::LibIDN2::idn2_lookup_u8( shift ) }
+=======
+    sub idn_to_ascii { return Net::LibIDN2::idn2_lookup_u8( shift ) }
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
     1;
 } or do {
     my $error = $@;
@@ -259,7 +263,7 @@ sub load_answer_file {
     close FH;
   }
   if ($answers->{'db-host'}) {
-    $answers->{'db-host'} = Net::LibIDN::idn_to_ascii($answers->{'db-host'}, "utf8");
+    $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
   }
   return;
 }
@@ -723,7 +727,7 @@ sub postgresql_get_database_answers {
         -answer => \$answers->{'db-host'});
 
     if ($answers->{'db-host'} ne '') {
-        $answers->{'db-host'} = Net::LibIDN::idn_to_ascii($answers->{'db-host'}, "utf8");
+        $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
         ask(
             -noninteractive => $opts->{"non-interactive"},
             -question => "Port",
@@ -783,7 +787,7 @@ sub postgresql_get_reportdb_answers {
         -answer => \$answers->{'report-db-host'});
 
     if ($answers->{'report-db-host'} ne '') {
-        $answers->{'report-db-host'} = Net::LibIDN::idn_to_ascii($answers->{'report-db-host'}, "utf8");
+        $answers->{'report-db-host'} = idn_to_ascii($answers->{'report-db-host'}, "utf8");
         ask(
             -noninteractive => $opts->{"non-interactive"},
             -question => "Port",

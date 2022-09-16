@@ -29,6 +29,11 @@ function show(message: React.ReactNode, notify: (arg0: React.ReactNode) => void)
   }
 }
 
+<<<<<<< HEAD
+=======
+// window.dispatchEvent(new Event("resize"));
+
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 /** Parse `optionalParams.autoHide` into a valid configuration value */
 function parseAutoHide(input: boolean) {
   // react-toastify accepts either a number or false, true is not a valid value, undefined results in using the default duration

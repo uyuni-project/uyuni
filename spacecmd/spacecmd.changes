@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - Process date values in spacecmd api calls (bsc#1198903)
 - Improve Proxy FQDN hint message
 
@@ -9,6 +10,9 @@ Wed Jul 27 14:05:24 CEST 2022 - jgonzalez@suse.com
   * Show correct help on calling kickstart_importjson with no arguments
   * Fix tracebacks on spacecmd kickstart_export (bsc#1200591)
   * Change proxy container config default filename to end with tar.gz
+=======
+- Change proxy container config default filename to end with tar.gz
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 -------------------------------------------------------------------
 Fri May 20 00:02:50 CEST 2022 - jgonzalez@suse.com

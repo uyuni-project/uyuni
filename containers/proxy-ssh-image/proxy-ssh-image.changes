@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -------------------------------------------------------------------
 Wed Jul 27 12:20:55 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
@@ -5,6 +6,9 @@ Wed Jul 27 12:20:55 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
   * Drop stale import
   * Modify proxy containers configuration files set output
   * Set MIT license for Dockerfile
+=======
+- Modify proxy containers configuration files set output
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 -------------------------------------------------------------------
 Tue May 24 13:27:51 UTC 2022 - Julio González Gil <jgonzalez@suse.com>

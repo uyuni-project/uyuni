@@ -10,4 +10,8 @@
 - features/build_validation/retail/sle15sp4_buildhost_build_kiwi_image.feature
 
 ## Deployment of retail terminal
+<<<<<<< HEAD
 - features/build_validation/retail/sle15sp4_terminal_deploy.feature
+=======
+- features/build_validation/retail/sle15sp3_terminal_deploy.feature
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840

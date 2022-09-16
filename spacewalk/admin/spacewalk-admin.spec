@@ -28,8 +28,13 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
 URL:            https://github.com/uyuni-project/uyuni
+<<<<<<< HEAD
 Version:        4.4.0
 Release:        0
+=======
+Version:        4.3.9
+Release:        1
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       %{pythonX}

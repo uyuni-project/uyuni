@@ -17,7 +17,11 @@ Feature: Bootstrap a Debian-like minion and do some basic operations on it
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
+<<<<<<< HEAD:testsuite/features/init_clients/min_deblike_salt.feature
     And I select "1-DEBLIKE-KEY" from "activationKeys"
+=======
+    And I select "1-UBUNTU-KEY" from "activationKeys"
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840:testsuite/features/init_clients/min_ubuntu_salt.feature
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text

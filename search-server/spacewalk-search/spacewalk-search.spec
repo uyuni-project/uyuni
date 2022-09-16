@@ -31,8 +31,13 @@ Name:           spacewalk-search
 Summary:        Spacewalk Full Text Search Server
 License:        Apache-2.0 AND GPL-2.0-only
 Group:          Applications/Internet
+<<<<<<< HEAD
 Version:        4.4.0
 Release:        0
+=======
+Version:        4.3.5
+Release:        1
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
 # git clone https://github.com/spacewalkproject/spacewalk.git
@@ -54,6 +59,10 @@ BuildRequires:  mvn(org.apache.commons:commons-ognl)
 BuildRequires:  mvn(javassist:javassist)
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
+<<<<<<< HEAD
+=======
+BuildRequires:  %{oro}
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
 BuildRequires:  lucene == 2.4.1
@@ -81,6 +90,10 @@ Requires:       mvn(org.apache.commons:commons-ognl)
 Requires:       mvn(javassist:javassist)
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
+<<<<<<< HEAD
+=======
+Requires:       %{oro}
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 Requires:       javapackages-tools
 Requires:       lucene == 2.4.1
 Requires:       objectweb-asm

@@ -37,7 +37,11 @@ $xen_server = twopence_init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_X
 $nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
 
 if $build_validation
+<<<<<<< HEAD
   # Define twopence objects for Build Validation environment
+=======
+  # Define twopence objects for QAM or Build Validation environment
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
   $sle12sp4_client = twopence_init("ssh:#{ENV['SLE12SP4_CLIENT']}") if ENV['SLE12SP4_CLIENT']
   $sle12sp4_minion = twopence_init("ssh:#{ENV['SLE12SP4_MINION']}") if ENV['SLE12SP4_MINION']
   $sle12sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP4_SSHMINION']}") if ENV['SLE12SP4_SSHMINION']
@@ -171,7 +175,11 @@ def get_system_name(host)
     system_name = output.split.find do |word|
       word =~ /example.sle15sp4terminal-/
     end
+<<<<<<< HEAD
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
+=======
+    system_name = 'sle15sp3terminal.example.org' if system_name.nil?
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
   else
     begin
       node = get_target(host)

@@ -77,7 +77,11 @@ Group:          admin
 %else
 Group:          System Environment/Base
 %endif
+<<<<<<< HEAD
 Version:        4.4.0
+=======
+Version:        4.3.10
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/rhel/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni

@@ -1,10 +1,13 @@
 -------------------------------------------------------------------
+<<<<<<< HEAD
 Wed Jul 27 12:21:59 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 4.3.1
   * Set MIT license for Dockerfile
 
 -------------------------------------------------------------------
+=======
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 Tue May 24 13:27:51 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Change the default base image to 15.4

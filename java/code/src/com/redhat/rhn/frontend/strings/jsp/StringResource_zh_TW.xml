@@ -29229,6 +29229,7 @@ given channel.</source>
             </context-group>
         <target state="new"/>
   </trans-unit>
+<<<<<<< HEAD
       <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve">
         <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
             <context-group name="ctx">
@@ -29236,6 +29237,8 @@ given channel.</source>
         </context-group>
       <target state="new"/>
   </trans-unit>
+=======
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
       </body>
   </file>
 </xliff>

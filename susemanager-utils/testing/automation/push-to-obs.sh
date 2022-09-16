@@ -17,8 +17,12 @@ help() {
   echo "  -d  Comma separated list of destionations in the format API/PROJECT,"
   echo "      for example https://api.opensuse.org|systemsmanagement:Uyuni:Master"
   echo "  -c  Path to the OSC credentials (usually ~/.osrc)"
+<<<<<<< HEAD
   echo "  -s  Path to the private key used for MFA, a file ending with .pub must also"
   echo "      exist, containing the public key"
+=======
+  echo "  -s  Path to the private key used for MFA"
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
   echo "  -p  Comma separated list of packages. If absent, all packages are submitted"
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
@@ -89,6 +93,7 @@ if [ "${SSHKEY}" != "" ]; then
     echo "ERROR: File ${SSHKEY} does not exist!"
     exit 1
   fi
+<<<<<<< HEAD
   if [ ! -f ${SSHKEY}.pub ]; then
     echo "ERROR: File ${SSHKEY}.pub does not exist!"
     exit 1
@@ -100,6 +105,12 @@ fi
 COOKIEJAR=$(mktemp /tmp/osc_cookiejar.XXXXXX)
 MOUNTCOOKIEJAR="--mount type=bind,source=${COOKIEJAR},target=/root/.osc_cookiejar"
 
+=======
+  MOUNTSSHKEY="--mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa"
+  USESSHKEY="-s /root/.ssh/id_rsa"
+fi
+
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
@@ -118,13 +129,21 @@ for p in ${PACKAGES};do
     CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc ${USESSHKEY} -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
         echo "Building ${p} in parallel"
+<<<<<<< HEAD
         docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
+=======
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         pid=${!}
         PIDS="${PIDS} ${pid}"
         ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
     else
         echo "Building ${p}"
+<<<<<<< HEAD
         docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+=======
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
     fi
 done
 
@@ -138,7 +157,11 @@ for p in ${IMAGES};do
         ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
     else
         echo "Building ${p}"
+<<<<<<< HEAD
         docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+=======
+        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
     fi
 done
 

@@ -7,7 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2022-07-20 04:14+0000\n"
+=======
+"POT-Creation-Date: 2022-05-31 17:14+0000\n"
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 "PO-Revision-Date: 2011-03-04 15:59+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"

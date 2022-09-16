@@ -10,7 +10,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2022-07-20 04:14+0000\n"
+=======
+"POT-Creation-Date: 2022-05-31 17:14+0000\n"
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 "PO-Revision-Date: 2015-09-06 08:56+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"

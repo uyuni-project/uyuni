@@ -1,10 +1,13 @@
 -------------------------------------------------------------------
+<<<<<<< HEAD
 Wed Jul 27 14:12:30 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.11-1
   * Update translation strings
 
 -------------------------------------------------------------------
+=======
+>>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 Tue Jun 21 18:30:43 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.10-1
