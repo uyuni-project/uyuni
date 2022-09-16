@@ -18,21 +18,18 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-import os
 import logging
-from cobbler import utils
+import os
 import time
-import cobbler.MultipartPostHandler as MultipartPostHandler
 import json
 from concurrent import futures
 import threading
 
-try:
-    from urllib.parse import urlencode
-    from urllib.request import urlopen, build_opener
-except ImportError:
-    from urllib import urlencode
-    from urllib2 import urlopen, build_opener
+from urllib.parse import urlencode
+from urllib.request import urlopen, build_opener
+
+import cobbler.MultipartPostHandler as MultipartPostHandler
+from cobbler import utils
 
 _DEBUG = False
 
@@ -171,8 +168,8 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler'):
     """
 
     db = {}
+    dbfile = os.path.join(lcache, 'pxe_cache.json')
     try:
-        dbfile = os.path.join(lcache, 'pxe_cache.json')
         if os.path.exists(dbfile):
             db = json.load(open(dbfile, 'r'))
     except:
