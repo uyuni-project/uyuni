@@ -131,7 +131,6 @@ $nodes.each do |node|
   node.init_full_hostname(fqdn)
 
   STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
-  result, _code = node.run('grep PRETTY /etc/os-release')
   os_version, os_family = get_os_version(node)
   node.init_os_family(os_family)
   node.init_os_version(os_version)
