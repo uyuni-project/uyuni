@@ -63,7 +63,9 @@ Feature: Assign child channel to a system
     Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
     And I wait until I do not see "Loading..." text
     And I wait until I see "SLE15-SP4-Installer-Updates for x86_64 " text
-    And I uncheck "SLE15-SP4-Installer-Updates for x86_64 "
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Custom-Channel-x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
