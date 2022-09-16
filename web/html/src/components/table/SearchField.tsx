@@ -1,32 +1,35 @@
 import * as React from "react";
-import Select from "react-select";
+
+import { Form } from "components/input/Form";
+import { Select } from "components/input/Select";
+
+type SearchFieldOption = {
+  label: string;
+  value: string;
+};
 
 type SearchFieldProps = {
   /** The value that the user will enter to perform the filter on the criteriaField */
   criteria?: string;
 
   /** The field on which the user like to perform the filter */
-  criteriaField?: any;
-
-  /** This is the option that willbe displayed by default */
-  defaultValue?: string | null;
+  field?: string;
 
   /** This is the set of options that will be displayed */
-  options?: any;
-
-  /** This feature allows us to clear the selected option from the bar */
-  isClearable?: boolean;
-
-  /** This feature allows us to search for an option by typing in the bar */
-  isSearchable?: boolean;
+  options?: SearchFieldOption[];
 
   /** Place holder value to display when nothing has been input */
   placeholder?: string;
 
-  /** function called when a search is performed.
+  /** function called when the search value is changed. Triggers a new search.
    * This is usually passed by the search panel parent component.
    */
-  onSearch?: (criteria?: string, criteriaField?: string) => void;
+  onSearch?: (criteria: string) => void;
+
+  /** function called when the search field is changed. Triggers a new search.
+   * This is usually passed by the search panel parent component.
+   */
+  onSearchField?: (field: string) => void;
 
   /** filtering function */
   // This is manually used in TableDataHandler as an argument to SimpleDataProvider
@@ -37,45 +40,31 @@ type SearchFieldProps = {
 };
 
 /** Text input search field */
-export class SearchField extends React.Component<SearchFieldProps> {
-  render() {
-    const props = this.props;
+export function SearchField(props: SearchFieldProps) {
+  // Dummy model and onChange to reuse the Select component as it requires a Form
+  let model = {};
+  const onChange = () => {};
 
-    const [criteria, setCriteria] = React.useState([]);
-
-    const [criteriaField, setCriteriaField] = React.useState([]);
-
-    return (
-      <React.Fragment>
+  return (
+    <Form model={model} onChange={onChange} title={t("Filter")}>
+      {props.options != null && (
         <Select
-          className="basic-single"
-          classNamePrefix="select"
-          placeholder={props.placeholder}
-          isClearable={props.isClearable}
-          isSearchable={props.isSearchable}
-          closeMenuOnSelect={true}
-          autoFocus={true}
-          defaultValue={props.defaultValue}
+          name="filter"
+          className="col-md-2"
+          placeholder={t("Select a filter")}
+          defaultValue={props.field}
           options={props.options}
-          noOptionsMessage={() => "No such option...."}
-          onChange={(e) => {
-            const criteriaField = e.newValue;
-            setCriteriaField(criteriaField);
-            props.onSearch?.(criteria, criteriaField);
-          }}
+          onChange={(name: string | undefined, value: string) => props.onSearchField?.(value)}
         />
-        <input
-          className="form-control table-input-search"
-          type="text"
-          value={props.criteria || ""}
-          onChange={(e) => {
-            const criteria = e.target.value;
-            setCriteria(criteria);
-            props.onSearch?.(criteria, criteriaField);
-          }}
-        />
-        <input type="submit" value="Filter" onClick={(e) => props.onSearch?.(criteria, criteriaField)} />
-      </React.Fragment>
-    );
-  }
+      )}
+      <input
+        className="form-control table-input-search"
+        value={props.criteria || ""}
+        placeholder={props.placeholder}
+        type="text"
+        onChange={(e) => props.onSearch?.(e.target.value)}
+        name={props.name}
+      />
+    </Form>
+  );
 }

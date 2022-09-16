@@ -5,6 +5,7 @@ import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
+
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
@@ -15,33 +16,30 @@ type Props = {
 };
 
 const allListOptions = [
-  { value: "name", label: "System" },
-  { value: "statusType", label: "Updates" },
-  { value: "totalErrataCount", label: "Patches" },
-  { value: "outdatedPackages", label: "Packages" },
-  { value: "extraPkgCount", label: "Extra Packages" },
-  { value: "configFilesWithDifferences", label: "Config Diffs" },
-  { value: "channelLabels", label: "Base Channel" },
-  { value: "entitlementLevel", label: "System Type" },
+  { value: "server_name", label: t("System") },
+  { value: "system_kind", label: t("System Kind") },
+  { value: "status_type", label: t("Updates") },
+  { value: "total_errata_count", label: t("Patches") },
+  { value: "outdated_packages", label: t("Packages") },
+  { value: "extra_pkg_count", label: t("Extra Packages") },
+  { value: "config_files_with_differences", label: t("Config Diffs") },
+  { value: "channel_labels", label: t("Base Channel") },
+  { value: "entitlement_level", label: t("System Type") },
+  { value: "requires_reboot", label: t("Requires Reboot") },
+  { value: "created_days", label: t("Registered Days") },
+  { value: "group_count", label: t("Groups") },
 ];
 
 export function AllSystems(props: Props) {
-  const [selectedSystems, setSelectedSystems] = React.useState<String[]>([]);
+  const [selectedSystems, setSelectedSystems] = React.useState<string[]>([]);
 
-  const handleSelectedSystems = (items: String[]) => {
+  const handleSelectedSystems = (items: string[]) => {
     const removed = selectedSystems.filter((item) => !items.includes(item)).map((item) => [item, false]);
     const added = items.filter((item) => !selectedSystems.includes(item)).map((item) => [item, true]);
     const data = Object.assign({}, Object.fromEntries(added), Object.fromEntries(removed));
     Network.post("/rhn/manager/api/sets/system_list", data);
 
     setSelectedSystems(items);
-  };
-
-  const searchData = (datum, criteria) => {
-    if (criteria) {
-      return datum.name.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
-    }
-    return true;
   };
 
   return (
@@ -61,32 +59,23 @@ export function AllSystems(props: Props) {
       <Table
         data="/rhn/manager/api/systems/list/all"
         identifier={(item) => item.id}
-        initialSortColumnKey="name"
+        initialSortColumnKey="server_name"
         selectable={(item) => item.hasOwnProperty("id")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
-        searchField={
-          <SearchField
-            options={allListOptions}
-            isClearable={true}
-            isSearchable={true}
-            filter={searchData}
-            defaultValue={null}
-            placeholder={t("Select an option to filter...")}
-          />
-        }
-        defaultSearchField="name"
+        searchField={<SearchField options={allListOptions} name="criteria" />}
+        defaultSearchField="server_name"
         emptyText={t("No Systems.")}
       >
         <Column
-          columnKey="name"
+          columnKey="server_name"
           comparator={Utils.sortByText}
           header={t("System")}
           cell={(item) => {
             if (item.id != null) {
-              return <a href={`/rhn/systems/details/Overview.do?sid=${item.id}`}>{item.name}</a>;
+              return <a href={`/rhn/systems/details/Overview.do?sid=${item.id}`}>{item.serverName}</a>;
             }
-            return item.name;
+            return item.serverName;
           }}
         />
         <Column
@@ -106,7 +95,7 @@ export function AllSystems(props: Props) {
           header={t("Patches")}
           cell={(item) => {
             let totalErrataCount = item.securityErrata + item.bugErrata + item.enhancementErrata;
-            if (totalErrataCount != 0) {
+            if (totalErrataCount !== 0) {
               return <a href={`/rhn/systems/details/ErrataList.do?sid=${item.id}`}>{totalErrataCount}</a>;
             }
             return totalErrataCount;
@@ -118,7 +107,7 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Packages")}
           cell={(item) => {
-            if (item.outdatedPackages != 0) {
+            if (item.outdatedPackages !== 0) {
               return (
                 <a href={`/rhn/systems/details/packages/UpgradableList.do?sid=${item.id}`}>{item.outdatedPackages}</a>
               );
@@ -132,7 +121,7 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Extra Packages")}
           cell={(item) => {
-            if (item.extraPkgCount != 0) {
+            if (item.extraPkgCount !== 0) {
               return (
                 <a href={`/rhn/systems/details/packages/ExtraPackagesList.do?sid=${item.id}`}>{item.extraPkgCount}</a>
               );
@@ -146,7 +135,7 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Config Diffs")}
           cell={(item) => {
-            if (item.configFilesWithDifferences != (0 || null)) {
+            if (item.configFilesWithDifferences !== 0) {
               return (
                 <a href={`/rhn/systems/details/configuration/Overview.do?sid=${item.id}`}>
                   {item.configFilesWithDifferences}
