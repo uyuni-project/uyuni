@@ -112,7 +112,7 @@ When(/^I enable repositories before installing branch server$/) do
 end
 
 When(/^I disable repositories after installing branch server$/) do
-  os_version = $proxy.os_version 
+  os_version = $proxy.os_version
   os_family = $proxy.os_family
 
   # Distribution
