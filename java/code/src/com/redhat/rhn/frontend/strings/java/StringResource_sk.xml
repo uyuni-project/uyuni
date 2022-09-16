@@ -11137,131 +11137,133 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
         <source>Pay-as-you-go {0} deleted successfully</source>
-        <target state="new"/>
+        <target state="translated">Úspešne vymazaná priebežná platba {0}</target>
       </trans-unit>
       <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
-        <target state="new"/>
+        <target state="translated">Chyba pri aktualizácii overovacích údajov z: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
         <source>Pay-as-you-go authentication update</source>
-        <target state="new"/>
+        <target state="translated">Aktualizácia overenia priebežnej platby</target>
       </trans-unit>
       <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
         <source>Pay-as-you-go update RMT hosts</source>
-        <target state="new"/>
+        <target state="translated">RMT hostitelia aktualizácií priebežných platieb</target>
       </trans-unit>
       <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
-        <target state="new"/>
+        <target state="translated">Údaje o produkte je potrebné obnoviť.</target>
       </trans-unit>
       <trans-unit id="setup.product.error.notfound" xml:space="preserve">
         <source>Product cannot be found: missing identifier {0}.</source>
-        <target state="new"/>
+        <target state="translated">Produkt nemožno nájsť: chýbajúci identifikátor {0}.</target>
       </trans-unit>
       <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
         <source>There are conflicting channel labels {0}.</source>
-        <target state="new"/>
+        <target state="translated">Existujú konfliktné označenia kanálov {0}.</target>
       </trans-unit>
       <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
         <source>A parent product conflicts with existing channels.</source>
-        <target state="new"/>
+        <target state="translated">Rodičovský produkt je v konflikte s existujúcimi kanálmi.</target>
       </trans-unit>
       <trans-unit id="setup.product.error.unknown" xml:space="preserve">
         <source>Unexpected error while adding the product.</source>
-        <target state="new"/>
+        <target state="translated">Neočakávaná chyba pri pridávaní produktu.</target>
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
-        <target state="new"/>
+        <target state="translated">Zadané číslo CVE sa v našej databáze nenašlo. Ďalšie informácie o tomto CVE môžete získať z odkazov uvedených nižšie.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
-        <target state="new"/>
+        <target state="translated">Chyba pri použití stavu zavádzania. Skontrolujte záznamy servera.</target>
       </trans-unit>
       <trans-unit id="container.based.proxy.config" xml:space="preserve">
         <source>Proxy Configuration</source>
-        <target state="new"/>
+        <target state="translated">Konfigurácia proxy</target>
       </trans-unit>
       <trans-unit id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Periférny server</target>
       </trans-unit>
       <trans-unit id="Report Database Schema" xml:space="preserve">
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Schéma databázy správ</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error" xml:space="preserve">
         <source>An unexpected error has occurred during bootstrap.</source>
-        <target state="new"/>
+        <target state="translated">Počas zavádzania sa vyskytla neočakávaná chyba.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
-        <target state="new"/>
+        <target state="translated">Aplikovanie stavov zlyhalo počas zavádzania (retcode={0}).</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
         <source>An error has occurred during salt execution: {0}.</source>
-        <target state="new"/>
+        <target state="translated">Počas vykonávania salt sa vyskytla chyba: {0}.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
         <source>function {0} not available</source>
-        <target state="new"/>
+        <target state="translated">funkcia {0} nie je dostupná</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
         <source>module {0} is not supported</source>
-        <target state="new"/>
+        <target state="translated">modul {0} nie je podporovaný</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
         <source>unable to parse json</source>
-        <target state="new"/>
+        <target state="translated">nie je možné analyzovať json</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
-        <target state="new"/>
+        <target state="translated">nie je možné vytvoriť pripojenie ssh</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
-        <target state="new"/>
+        <target state="translated">Nepodarilo sa vygenerovať verejný kľúč salt-ssh.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
         <source>Generating salt-ssh public key failed: {0}.</source>
-        <target state="new"/>
+        <target state="translated">Generovanie verejného kľúča salt-ssh zlyhalo: {0}.</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
-        <target state="new"/>
+        <target state="translated">@@PRODUCT_NAME@@ {0} dosiahol koniec životnosti</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-        <target state="new"/>
+        <target state="translated">&lt;p&gt;@@PRODUCT_NAME@@ {0} dosiahol koniec svojho životného cyklu. Všeobecná podpora sa skončila &lt;strong&gt;{1}&lt;/strong&gt;. Ak chcete naďalej dostávať podporu, táto inštancia servera @@PRODUCT_NAME@@ &lt;strong&gt;musí&lt;/strong&gt; zvýšiť svoju verziu.&lt;/p&gt;
+          &lt;p&gt;Ďalšie informácie o tom, ako zvýšiť verziu @@PRODUCT_NAME@@, nájdete v sekcii &lt;em&gt;Zvýšenie verzie&lt;/em&gt; v &lt;em&gt;Príručke inštalácie/zvýšenia verzie&lt;/em&gt; v oficiálnej dokumentácii.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
-        <target state="new"/>
+        <target state="translated">@@PRODUCT_NAME@@ {0} sa blíži ku koncu životnosti</target>
       </trans-unit>
       <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-        <target state="new"/>
+        <target state="translated">&lt;p&gt;@@PRODUCT_NAME@@ {0} sa blíži ku koncu svojho životného cyklu. Prosín, zvážte zvýšenie verzie tejto inštancie servera pred ukončením všeobecnej podpory &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
+          &lt;p&gt;Ďalšie informácie o tom, ako zvýšiť verziu @@PRODUCT_NAME@@, nájdete v sekcii &lt;em&gt;Zvýšenie verzie&lt;/em&gt; v &lt;em&gt;Príručke inštalácie/zvýšenia verzie&lt;/em&gt; v oficiálnej dokumentácii.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
-        <target state="new"/>
+        <target state="translated">Prosím, vyplňte platný e-mail.</target>
       </trans-unit>
       <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
         <source>Please fill in login.</source>
-        <target state="new"/>
+        <target state="translated">Prosím, vyplňte prihlasovacie meno.</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
-        <target state="new"/>
+        <target state="translated">IPMI lanplus</target>
       </trans-unit>
     </body>
   </file>
