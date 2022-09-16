@@ -489,7 +489,7 @@ end
 
 Then(/^the taskomatic logs should not contain errors$/) do
   output, _code = $server.run('cat /var/log/rhn/rhn_taskomatic_daemon.log && cat /var/log/rhn/reposync/*')
-  msgs = %w[ERROR NullPointer]
+  msgs = %w[NullPointer]
   msgs.each do |msg|
     raise "-#{msg}-  msg found on taskomatic logs" if output.include? msg
   end
