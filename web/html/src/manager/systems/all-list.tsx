@@ -71,12 +71,7 @@ export function AllSystems(props: Props) {
           columnKey="server_name"
           comparator={Utils.sortByText}
           header={t("System")}
-          cell={(item) => {
-            if (item.id != null) {
-              return <a href={`/rhn/systems/details/Overview.do?sid=${item.id}`}>{item.serverName}</a>;
-            }
-            return item.serverName;
-          }}
+          cell={(item) => Systems.iconAndName(item)}
         />
         <Column
           columnKey="statusType"
