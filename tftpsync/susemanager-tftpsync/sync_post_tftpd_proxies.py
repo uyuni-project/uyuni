@@ -49,9 +49,7 @@ def run(api, args):
 
 
     # test if proxies are configured:
-    try:
-        _ = settings.proxies
-    except AttributeError:
+    if not settings.proxies:
         # not configured - so we return
         return 0
 
