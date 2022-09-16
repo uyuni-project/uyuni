@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+
 
 /**
  * ServerGroupTestUtils
@@ -51,6 +53,7 @@ public class ServerGroupTestUtils {
      * @return ManagedServerGroup created
      */
     public static ManagedServerGroup createManaged(User user) {
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         ServerGroupTest.checkSysGroupAdminRole(user);
         return GlobalInstanceHolder.SERVER_GROUP_MANAGER.
                                         create(user, NAME + TestUtils.randomString(),
