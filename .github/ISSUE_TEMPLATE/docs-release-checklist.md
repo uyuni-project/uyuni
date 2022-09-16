@@ -3,7 +3,7 @@ name: Documentation Release Checklist - SUMA
 about: Use this issue template for documentation releases.
 title: Documentation Release Checklist - SUMA X.YY
 labels: docs-squad
-assignees: Loquacity, jcayouette
+assignees: jcayouette
 
 ---
 
@@ -19,7 +19,6 @@ For Uyuni documentation releases, see https://github.com/uyuni-project/uyuni-doc
 - [ ] Check all outstanding pull requests, and ensure everything relevant is merged (and backported where required).
 Check with the docs squad coordinator for confirmation.
 
-
 ## Packaging Day
 
 - [ ] Update entities to the current versions.
@@ -28,7 +27,6 @@ Check with the docs squad coordinator for confirmation.
 - [ ] Package documentation and push SR to OBS: https://github.com/uyuni-project/uyuni-docs/wiki/publishing-to-obs
 - [ ] Notify Release Manager of SR.
 - [ ] Release Manager accepts package.
-
 
 ## Release Day
 
