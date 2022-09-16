@@ -11,3 +11,6 @@ Feature: Debug the server after the testsuite has run
 
   Scenario: Check salt event log for failures on server
     Then the salt event log on server should contain no failures
+
+  Scenario: Check the taskomatic logs on server
+    Then the taskomatic logs should not contain errors
