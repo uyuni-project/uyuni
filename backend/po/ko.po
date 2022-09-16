@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-04 15:39+0200\n"
+"POT-Creation-Date: 2022-09-16 15:14+0200\n"
 "PO-Revision-Date: 2022-08-30 04:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend-4-2/"
@@ -23,52 +23,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "미완료 프록시 인증 토큰: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "전송된 프록시 서명 %s이(가) 시스템의 %s와(과) 일치하지 않습니다."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "거부된 프록시 인증"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"중요 메시지:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"'%s' 실행 중: 다음이 catch됨:\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "유효하지 않은 URI %s"
-
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -207,6 +166,106 @@ msgstr ""
 "               %s 계정이 이 서버에서 비활성화되었습니다.\n"
 "               조직의 관리자에게 문의하여 추가 지원을 요청하십시오."
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "시스템 프로파일에 대해 서비스가 허용되지 않음: \"%s\""
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "'%s' 아키텍처는 지원되지 않습니다."
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "'%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "기본 채널 충돌"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "%s 그룹에 서버를 추가하지 못했습니다."
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "%s의 최대 사용 횟수에 도달했습니다."
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr "기본 권리 유형이 다른 토큰 재등록 토큰 스택은 지원되지 않습니다."
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "'%s' 토큰을 찾을 수 없음"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "일치하지 않는 조직에서 제공된 토큰"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "킥스타트 세션 불일치"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "재등록 토큰 스택은 지원되지 않습니다."
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "미완료 프록시 인증 토큰: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "전송된 프록시 서명 %s이(가) 시스템의 %s와(과) 일치하지 않습니다."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "거부된 프록시 인증"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"중요 메시지:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"'%s' 실행 중: 다음이 catch됨:\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "유효하지 않은 URI %s"
+
 #: ../server/rhnChannel.py:1999
 #, python-format
 msgid ""
@@ -275,15 +334,6 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "시스템 프로파일에 대해 서비스가 허용되지 않음: \"%s\""
-
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -293,55 +343,6 @@ msgstr "유효하지 않은 RPM 패키지 %s 요청됨"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "패키지를 찾을 수 없음"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "'%s' 아키텍처는 지원되지 않습니다."
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "'%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "기본 채널 충돌"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "%s 그룹에 서버를 추가하지 못했습니다."
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "%s의 최대 사용 횟수에 도달했습니다."
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr "기본 권리 유형이 다른 토큰 재등록 토큰 스택은 지원되지 않습니다."
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "'%s' 토큰을 찾을 수 없음"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "일치하지 않는 조직에서 제공된 토큰"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "킥스타트 세션 불일치"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "재등록 토큰 스택은 지원되지 않습니다."
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
