@@ -37,7 +37,8 @@ end
 
 Then(/^the OS version for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   # skip this test for Red Hat-like and Debian-like systems
   step %(I should see a "#{os_version.gsub!('-SP', ' SP')}" text) if os_family.include? 'sles'
 end
@@ -351,7 +352,7 @@ end
 
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node-os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
   elsif os_family =~ /^centos/
@@ -756,7 +757,7 @@ end
 # Enable tools repositories (both stable and development)
 When(/^I enable client tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   case os_family
   when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
@@ -778,7 +779,7 @@ end
 
 When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   case os_family
   when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
@@ -799,7 +800,8 @@ When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
 end
 
 When(/^I enable repositories before installing Docker$/) do
-  os_version, os_family = get_os_version($build_host)
+  os_version = $build_host.os_version
+  os_family = $build_host.os_family
 
   # Distribution
   repos = "os_pool_repo os_update_repo"
@@ -827,7 +829,8 @@ When(/^I enable repositories before installing Docker$/) do
 end
 
 When(/^I disable repositories after installing Docker$/) do
-  os_version, os_family = get_os_version($build_host)
+  os_version = $build_host.os_version
+  os_family = $build_host.os_family
 
   # Distribution
   repos = "os_pool_repo os_update_repo"
@@ -923,7 +926,7 @@ Then(/^I should see "([^"]*)" as link$/) do |host|
 end
 
 Then(/^I should see a text describing the OS release$/) do
-  _os_version, os_family = get_os_version($client)
+  os_family = $client.os_family
   release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
   step %(I should see a "OS: #{release}" text)
 end

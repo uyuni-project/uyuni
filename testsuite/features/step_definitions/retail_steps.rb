@@ -97,7 +97,8 @@ def compute_kiwi_profile_version(host)
 end
 
 When(/^I enable repositories before installing branch server$/) do
-  os_version, os_family = get_os_version($proxy)
+  os_version = $proxy.os_version
+  os_family = $proxy.os_family
 
   # Distribution
   repos = 'os_pool_repo os_update_repo'
@@ -111,7 +112,8 @@ When(/^I enable repositories before installing branch server$/) do
 end
 
 When(/^I disable repositories after installing branch server$/) do
-  os_version, os_family = get_os_version($proxy)
+  os_version = $proxy.os_version 
+  os_family = $proxy.os_family
 
   # Distribution
   repos = 'os_pool_repo os_update_repo'
