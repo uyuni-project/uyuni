@@ -16,11 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
 "POT-Creation-Date: 2022-07-20 04:14+0000\n"
-=======
-"POT-Creation-Date: 2022-05-31 17:14+0000\n"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 "PO-Revision-Date: 2020-09-25 13:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"

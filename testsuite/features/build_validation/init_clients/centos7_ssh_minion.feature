@@ -19,11 +19,7 @@ Feature: Bootstrap a CentOS 7 Salt SSH minion
     When I check "manageWithSSH"
     And I enter the hostname of "centos7_ssh_minion" as "hostname"
     And I enter "linux" as "password"
-<<<<<<< HEAD:testsuite/features/build_validation/init_clients/centos7_ssh_minion.feature
     And I select "1-centos7_ssh_minion_key" from "activationKeys"
-=======
-    And I select "1-ceos7_ssh_minion_key" from "activationKeys"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840:testsuite/features/build_validation/init_clients/ceos7_ssh_minion.feature
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text

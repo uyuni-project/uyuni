@@ -14,11 +14,7 @@ RUN echo "$repo" > /etc/zypp/repos.d/susemanager:dockerbuild.repo
 
 ADD nsswitch.conf /etc/nsswitch.conf
 ADD avahi-daemon.conf /root/avahi-daemon.conf
-<<<<<<< HEAD
 ADD sles15sp4.repo /etc/zypp/repos.d/sles15sp4.repo
-=======
-ADD sles15sp2.repo /etc/zypp/repos.d/sles15sp2.repo
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 ADD add_packages.sh /root/add_packages.sh
 RUN /root/add_packages.sh

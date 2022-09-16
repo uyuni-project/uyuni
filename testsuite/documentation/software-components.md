@@ -41,19 +41,11 @@ We use `chromedriver` as driver, which offers access to the `Google Chrome` web 
 
 ### Standard Ruby Library
 
-<<<<<<< HEAD
 * `date`, `time`: date and time manipulation functions
 * `base64`, `json`, `nokogiri`: support for various encodings and data formats: base64, json, XML
 * `net`, `openssl`, `uri`: support for network access
 * `securerandom`: UUIDs and other random generation
 * `socket`, `stringio`, `tempfile`, `tmpdir`: file manipulation
-=======
-* ```date```, ```time```: date and time manipulation functions
-* ```base64```, ```json```, ```nokogiri```: support for various encodings and data formats: base64, json, XML
-* ```net```, ```openssl```, ```uri```: support for network access
-* ```securerandom```: UUIDs and other random generation
-* ```socket```, ```stringio```, ```tempfile```, ```tmpdir```: file manipulation
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 ### Various
 

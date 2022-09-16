@@ -12,19 +12,11 @@ cp /root/avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 
 # re-enable normal repo and remove helper repo
 zypper mr --enable Test-Channel-x86_64 || :
-<<<<<<< HEAD
 zypper rr sles15sp4
 
 # do the real test
 zypper --non-interactive --gpg-auto-import-keys ref
 zypper --non-interactive in aaa_base aaa_base-extras net-tools timezone vim less sudo tar gzip python3 python3-psutil
-=======
-zypper rr sles15sp2
-
-# do the real test
-zypper --non-interactive --gpg-auto-import-keys ref
-zypper --non-interactive in aaa_base aaa_base-extras net-tools timezone vim less sudo tar python3 python3-psutil
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 # kill avahi
 /usr/sbin/avahi-daemon -k

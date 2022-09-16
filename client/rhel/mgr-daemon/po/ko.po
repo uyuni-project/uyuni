@@ -13,11 +13,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-26 05:14+0000\n"
-<<<<<<< HEAD
 "PO-Revision-Date: 2022-08-30 05:13+0000\n"
-=======
-"PO-Revision-Date: 2021-03-18 09:56+0000\n"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/mgr-daemon/"
 "ko/>\n"
