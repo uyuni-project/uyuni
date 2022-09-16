@@ -290,12 +290,8 @@ while read PKG_NAME; do
           tar cf $CHART_TAR -C ${SRPM_PKG_DIR}/tar .
           rm -rf ${SRPM_PKG_DIR}/tar
       fi
-<<<<<<< HEAD
       sed "s/version: 0.0.0/version: ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
       sed "s/%PKG_VERSION%/${SEMANTIC_VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
-=======
-      sed "s/%PKG_VERSION%/${PRODUCT_VERSION}/g" -i $SRPM_PKG_DIR/Chart.yaml
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
   fi
 
   # update from obs (create missing package on the fly)

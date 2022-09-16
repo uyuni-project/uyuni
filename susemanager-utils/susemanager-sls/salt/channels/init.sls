@@ -144,7 +144,6 @@ install_gnupg_debian:
       - gnupg
 {%- endif %}
 
-<<<<<<< HEAD
 mgrchannels_refresh_repositories:
   mgrcompat.module_run:
     - name: pkg.refresh_db
@@ -162,8 +161,6 @@ mgrchannels_refresh_repositories:
     - require:
       - file: mgrchannels_repo
 
-=======
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 {%- if not salt['pillar.get']('susemanager:distupgrade:dryrun', False) %}
 {%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and not grains['oscodename'] == 'openSUSE Leap 15.3' %}
 mgrchannels_install_products:
@@ -177,8 +174,4 @@ mgrchannels_install_products:
 {%- endif %}
 {%- endif %}
 
-<<<<<<< HEAD
-=======
-{% include 'channels/gpg-keys.sls' %}
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 {%- endif %}

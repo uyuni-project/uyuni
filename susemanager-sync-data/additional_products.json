@@ -555,7 +555,6 @@
         "version" : "22.04",
         "release_type" : null,
         "arch" : "amd64",
-<<<<<<< HEAD
         "friendly_name" : "Ubuntu 22.04",
         "product_class" : "SLE-M-T-BETA",
         "cpe" : null,
@@ -743,8 +742,6 @@
         "version" : "11",
         "release_type" : null,
         "arch" : "amd64",
-=======
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         "friendly_name" : "Debian 11",
         "product_class" : "SLE-M-T",
         "cpe" : null,

@@ -38,13 +38,8 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-<<<<<<< HEAD
 Version:        4.4.0
 Release:        0
-=======
-Version:        4.3.21
-Release:        1
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 Source1:        node-modules.tar.gz
@@ -220,10 +215,6 @@ popd
 sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_web.conf
 %endif
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 %find_lang spacewalk-web
 
 %files -n spacewalk-base

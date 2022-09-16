@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 - Prefix log messages with the component name to ease analysis
 - renew the cached token when requested channel is not listed in
   the old token (bsc#1202724)
@@ -8,9 +7,6 @@ Wed Jul 27 14:09:14 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.11-1
   * Move certificates dependencies from broker to proxy package
-=======
-- Move certificates dependencies from broker to proxy package
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 -------------------------------------------------------------------
 Fri May 20 00:09:53 CEST 2022 - jgonzalez@suse.com

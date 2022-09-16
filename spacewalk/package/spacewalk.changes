@@ -1,12 +1,8 @@
-<<<<<<< HEAD
 -------------------------------------------------------------------
 Wed Jul 27 14:14:38 CEST 2022 - jgonzalez@suse.com
 
 - version 4.3.5-1
   * Simplified PostgreSQL14 requirement.
-=======
-- Simplified PostgreSQL14 requirement.
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 -------------------------------------------------------------------
 Tue Jun 21 18:29:52 CEST 2022 - jgonzalez@suse.com

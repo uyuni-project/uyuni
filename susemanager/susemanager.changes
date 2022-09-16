@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 - mark new dependencies for python-py optional in bootstrap repo
   to fix generation for older service packs (bsc#1203449)
 - add bootstrap repository definition for OES2023 (bsc#1202602)
@@ -28,14 +27,6 @@ Wed Jul 27 14:18:17 CEST 2022 - jgonzalez@suse.com
   * Make the Salt Bundle optional for bootstrap repositories
     for Debian 9 and SUSE Manager Proxy 4.2
   * Enable bootstrapping for Ubuntu 22.04 LTS
-=======
-- Add Oracle Linux 9 bootstrap repositories for Uyuni
-- Add AlmaLinux 9 bootstrap repositories for Uyuni
-- Add Red Hat Enterprise Linux 9 repositories for Uyuni
-- Make the Salt Bundle optional for bootstrap repositories
-  for Debian 9 and SUSE Manager Proxy 4.2
-- Enable bootstrapping for Ubuntu 22.04 LTS
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 -------------------------------------------------------------------
 Wed Jun 22 11:16:33 CEST 2022 - jgonzalez@suse.com

@@ -16,12 +16,8 @@ help() {
   echo "      for example https://api.opensuse.org|systemsmanagement:Uyuni:Master"
   echo "  -p  Comma separated list of packages. If absent, all packages are submitted"
   echo "  -c  Path to the OSC credentials (usually ~/.osrc)"
-<<<<<<< HEAD
   echo "  -s  Path to the private key used for MFA, a file ending with .pub must also"
   echo "      exist, containing the public key"
-=======
-  echo "  -s  Path to the private key used for MFA"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
   echo "  -n  If used, update PROJECT instead of the projects specified with -d"

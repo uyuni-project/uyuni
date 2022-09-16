@@ -8,11 +8,8 @@ repositories:
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.4
-<<<<<<< HEAD
   Leap_sle:
     url: https://download.opensuse.org/update/leap/15.4/sle
-=======
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 artifacts:
   - artifact: asm
     package: objectweb-asm
@@ -332,7 +329,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jetty-util
     repository: Leap
-<<<<<<< HEAD
   - artifact: glassfish-jaxb-api
     repository: Uyuni_Other
   - artifact: jaxb-runtime
@@ -352,5 +348,3 @@ artifacts:
     repository: Uyuni_Other
   - artifact: stax-ex
     repository: Uyuni_Other
-=======
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840

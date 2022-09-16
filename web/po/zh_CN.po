@@ -18,13 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
 "POT-Creation-Date: 2022-09-13 04:14+0000\n"
 "PO-Revision-Date: 2022-09-13 04:13+0000\n"
-=======
-"POT-Creation-Date: 2022-06-22 04:14+0000\n"
-"PO-Revision-Date: 2022-06-20 06:12+0000\n"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -339,60 +334,6 @@ msgstr "最少 2 个字符"
 msgid "required"
 msgstr "必填"
 
-<<<<<<< HEAD
-=======
-#: ../html/src/components/input/Password.stories.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:68
-#: ../html/src/manager/login/uyuni/login.tsx:65
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
-msgid "Password"
-msgstr "口令"
-
-#: ../html/src/components/input/Password.stories.tsx:31
-msgid "Minimum 4 characters"
-msgstr "最少 4 个字符"
-
-#: ../html/src/components/input/Radio.stories.tsx:29
-#: ../html/src/components/input/Radio.stories.tsx:55
-#: ../html/src/components/input/Radio.stories.tsx:83
-#: ../html/src/components/input/Radio.stories.tsx:110
-#: ../html/src/components/input/Select.stories.tsx:29
-#: ../html/src/components/input/Select.stories.tsx:122
-msgid "Level"
-msgstr "级别"
-
-#: ../html/src/components/input/Radio.stories.tsx:34
-#: ../html/src/components/input/Radio.stories.tsx:61
-#: ../html/src/components/input/Radio.stories.tsx:88
-#: ../html/src/components/input/Radio.stories.tsx:116
-msgid "Beginner"
-msgstr "新手"
-
-#: ../html/src/components/input/Radio.stories.tsx:35
-#: ../html/src/components/input/Radio.stories.tsx:62
-#: ../html/src/components/input/Radio.stories.tsx:89
-#: ../html/src/components/input/Radio.stories.tsx:117
-msgid "Normal"
-msgstr "普通"
-
-#: ../html/src/components/input/Radio.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:63
-#: ../html/src/components/input/Radio.stories.tsx:90
-#: ../html/src/components/input/Radio.stories.tsx:118
-msgid "Expert"
-msgstr "专家"
-
-#: ../html/src/components/input/Range.stories.tsx:33
-msgid "Port range"
-msgstr "端口范围"
-
-#: ../html/src/components/input/Range.stories.tsx:35
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/components/input/Range.test.tsx:71
 msgid "Both values need to be positive integers"
 msgstr "两个值都必须为正整数"
@@ -894,13 +835,8 @@ msgid "Filter by any value"
 msgstr "按任意值过滤"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr "主机"
@@ -969,7 +905,6 @@ msgstr "编辑 "
 msgid "Editing ssh connection data.."
 msgstr "正在编辑 SSH 连接数据..."
 
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
 msgid ""
 "When editing the SSH connection all needed credentials must be re-provided."
@@ -977,26 +912,16 @@ msgstr "编辑 SSH 连接时，必须重新提供所有需要的身份凭证。"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr "SSH 端口"
 
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "User"
 msgstr "用户"
 
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
@@ -1010,22 +935,13 @@ msgstr "口令"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr "SSH 私用密钥"
 
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 私用密钥通行口令"
@@ -2772,11 +2688,7 @@ msgstr "导入"
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:386
-=======
-#: ../html/src/manager/proxy/container-config.tsx:378
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
@@ -3356,11 +3268,7 @@ msgstr "发掘通过一个界面管理服务器、软件包、补丁等资源的
 
 #: ../html/src/manager/login/susemanager/login.tsx:42
 msgid "_blank"
-<<<<<<< HEAD
 msgstr "空白(_B)"
-=======
-msgstr "_blank"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 #: ../html/src/manager/login/susemanager/login.tsx:57
 #: ../html/src/manager/login/susemanager/login.tsx:82
@@ -4075,27 +3983,17 @@ msgstr ""
 msgid "Proxy FQDN"
 msgstr "代理 FQDN"
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:200
 msgid ""
 "The unique, DNS-resolvable FQDN of this proxy. It should be different from "
 "any registered clients."
 msgstr ""
-=======
-#: ../html/src/manager/proxy/container-config.tsx:192
-msgid "The FQDN of the machine where the containers are hosted"
-msgstr "托管容器的计算机的 FQDN"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
 msgstr "例如 proxy.domain.com"
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:208
-=======
-#: ../html/src/manager/proxy/container-config.tsx:200
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "Parent FQDN"
 msgstr "父 FQDN"
 
@@ -4103,11 +4001,7 @@ msgstr "父 FQDN"
 msgid "e.g., server.domain.com"
 msgstr "例如 server.domain.com"
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:211
-=======
-#: ../html/src/manager/proxy/container-config.tsx:203
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr "要连接到的父项（服务器或代理）的 FQDN。"
 
@@ -4115,20 +4009,12 @@ msgstr "要连接到的父项（服务器或代理）的 FQDN。"
 msgid "Proxy SSH port"
 msgstr "代理 SSH 端口"
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:218
-=======
-#: ../html/src/manager/proxy/container-config.tsx:210
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr "端口范围：1 - 65535"
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:227
-=======
-#: ../html/src/manager/proxy/container-config.tsx:219
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "Max Squid cache size"
 msgstr "最大 Squid 缓存大小"
 
@@ -4140,19 +4026,11 @@ msgstr "Squid 缓存的最大值 (MB)"
 msgid "e.g., 2048"
 msgstr "例如 2048"
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:238
 msgid "Proxy admin email"
 msgstr "代理管理员电子邮件"
 
 #: ../html/src/manager/proxy/container-config.tsx:239
-=======
-#: ../html/src/manager/proxy/container-config.tsx:230
-msgid "Proxy admin email"
-msgstr "代理管理员电子邮件"
-
-#: ../html/src/manager/proxy/container-config.tsx:231
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "The container-based proxy administrator email address"
 msgstr "基于容器的代理管理员电子邮件地址"
 
@@ -4174,7 +4052,6 @@ msgstr "生成"
 msgid "Use existing"
 msgstr "使用现有的"
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:264
 msgid "CA certificate"
 msgstr "CA 证书"
@@ -4182,15 +4059,6 @@ msgstr "CA 证书"
 #: ../html/src/manager/proxy/container-config.tsx:265
 #: ../html/src/manager/proxy/container-config.tsx:274
 #: ../html/src/manager/proxy/container-config.tsx:331
-=======
-#: ../html/src/manager/proxy/container-config.tsx:256
-msgid "CA certificate"
-msgstr "CA 证书"
-
-#: ../html/src/manager/proxy/container-config.tsx:257
-#: ../html/src/manager/proxy/container-config.tsx:266
-#: ../html/src/manager/proxy/container-config.tsx:323
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "To sign the SSL certificate in PEM format"
 msgstr "为 PEM 格式的 SSL 证书签名"
 
@@ -4226,11 +4094,7 @@ msgstr "2 位字母国家/地区代码"
 msgid "City"
 msgstr "城市"
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:320
-=======
-#: ../html/src/manager/proxy/container-config.tsx:312
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
@@ -4258,11 +4122,7 @@ msgstr "中间 CA"
 msgid "CA file in PEM format"
 msgstr "PEM 格式的 CA 文件"
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:361
-=======
-#: ../html/src/manager/proxy/container-config.tsx:353
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 msgid "Proxy certificate"
 msgstr "代理证书"
 
@@ -4737,15 +4597,9 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
 "key is deployed during the bootstrap procedure."
 msgstr ""
-<<<<<<< HEAD
 "该用户仅在引导期间有效。以后的连接将由 rhn.conf 中指定的用户建"
 "立。\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间部署 {0} "
 "的 SSH 密钥后设置。"
-=======
-"该用户仅在引导期间有效。以后的连接将由 rhn.conf 中指定的用户建立。\n"
-"\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间部署 {0} 的 "
-"SSH 密钥后设置。"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Authentication Method"
@@ -4777,11 +4631,7 @@ msgstr "代理"
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
-<<<<<<< HEAD
 msgstr "代理的主机名不是完全限定的。这可能导致在访问通道时出现问题。"
-=======
-msgstr "代理的主机名不是完全限定的。这可能导致在访问频道时出现问题。"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:622
 msgid "Disable SSH strict host key checking during bootstrap process"

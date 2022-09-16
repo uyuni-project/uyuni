@@ -5762,15 +5762,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage" xml:space="preserve">
           <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <target state="final">1つのハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
-=======
-      <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve" approved="yes">
-          <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="final">1つのハードウェアプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5804,15 +5798,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage" xml:space="preserve">
           <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <target state="final">1つのパッケージプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています&lt;/a&gt;。</target>
-=======
-      <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve" approved="yes">
-          <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="final">1つのパッケージプロファイル&lt;a href="/rhn/schedule/PendingActions.do"&gt;が更新されるようにスケジュールされています。</target>
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
@@ -8350,11 +8338,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="pkg.lock.menu" xml:space="preserve">
-=======
-      <trans-unit id="pkg.lock.menu" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Lock / Unlock</source>
         <target state="final">ロック/ロック解除</target>
         <context-group name="ctx">
@@ -28959,11 +28943,7 @@ given channel.</source>
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
         <target state="translated">インストールされている &lt;strong&gt;Salt&lt;/strong&gt; パッケージのバージョンが古くなっています。製品移行を行なう前に、パッケージを最新バージョンに更新してください。</target>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
-=======
-      <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
         <target state="final">インストール済み拡張の一部では、後継が見つかりませんでした。移行中に、選択したターゲットに応じて、これらの製品の一部またはすべてが削除されるため、注意して続行してください。</target>
       </trans-unit>
@@ -29751,11 +29731,7 @@ given channel.</source>
         <source>Update Hub Reporting Database</source>
         <target state="final">ハブレポーティングデータベースの更新</target>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
-=======
-      <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Following installed products will be removed from the system during migration:</source>
         <target state="final">次のインストール済み製品は、移行中にシステムから削除されます。</target>
       </trans-unit>

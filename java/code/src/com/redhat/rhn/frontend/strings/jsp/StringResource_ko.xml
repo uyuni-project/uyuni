@@ -5762,11 +5762,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="ssm.hw.systems.confirmmessage" xml:space="preserve">
-=======
-      <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
           <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <target state="final">하드웨어 프로파일 1개가 새로 고침될 &lt;a href="/rhn/schedule/PendingActions.do"&gt;예정&lt;/a&gt;입니다.</target>
         <context-group name="ctx">
@@ -5802,11 +5798,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="ssm.sw.systems.confirmmessage" xml:space="preserve">
-=======
-      <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
           <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
         <target state="final">패키지 프로파일 1개가 새로 고침될 &lt;a href="/rhn/schedule/PendingActions.do"&gt;예정&lt;/a&gt;입니다.</target>
         <context-group name="ctx">
@@ -8345,11 +8337,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="pkg.lock.menu" xml:space="preserve">
-=======
-      <trans-unit id="pkg.lock.menu" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Lock / Unlock</source>
         <target state="final">잠금/잠금 해제</target>
         <context-group name="ctx">
@@ -28943,11 +28931,7 @@ given channel.</source>
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
         <target state="translated">이 시스템에 설치된 &lt;strong&gt;Salt&lt;/strong&gt; 패키지 버전이 오래되었습니다. 패키지를 최신 버전으로 업데이트한 후 제품 마이그레이션을 시작하십시오.</target>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
-=======
-      <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
         <target state="final">설치된 일부 확장에 대한 후속 작업을 찾을 수 없습니다. 마이그레이션하는 동안 선택한 대상에 따라 이러한 제품 중 일부 또는 전체가 제거되므로 주의하여 진행하십시오.</target>
       </trans-unit>
@@ -29087,11 +29071,7 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
         <target>이름이 동일한 인증서 이미 있음</target>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
-=======
-      <trans-unit id="copyright.jsp.title" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
         <target state="final">Copyright (c) 2011 - 2022 SUSE LLC.</target>
       </trans-unit>
@@ -29737,11 +29717,7 @@ given channel.</source>
         <source>Update Hub Reporting Database</source>
         <target state="final">허브 보고 데이터베이스 업데이트</target>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
-=======
-      <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Following installed products will be removed from the system during migration:</source>
         <target state="final">다음 설치된 제품은 마이그레이션 중에 시스템에서 제거됩니다.</target>
       </trans-unit>

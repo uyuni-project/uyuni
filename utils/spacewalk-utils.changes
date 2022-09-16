@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 - Add Rocky Linux 9 to spacewalk-common-channels
 - spacewalk-common-channels now syncs the channels automatically
   on creation, if the new configuration property named
@@ -17,12 +16,6 @@ Wed Jul 27 14:09:58 CEST 2022 - jgonzalez@suse.com
   * Add AlmaLinux 9 and Oracle Linux 9 to spacewalk-common-channels
   * Add missing SLES 15 SP4 client tools repositories to
     spacewalk-common-channels.ini
-=======
-- Add repositories for Ubuntu 22.04 LTS
-- Add AlmaLinux 9 and Oracle Linux 9 to spacewalk-common-channels
-- Add missing SLES 15 SP4 client tools repositories to
-  spacewalk-common-channels.ini
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 -------------------------------------------------------------------
 Tue Jun 21 18:31:46 CEST 2022 - jgonzalez@suse.com

@@ -18,11 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
 "POT-Creation-Date: 2022-09-13 04:14+0000\n"
-=======
-"POT-Creation-Date: 2022-06-22 04:14+0000\n"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -349,60 +345,6 @@ msgstr "2 caracteres mínimo"
 msgid "required"
 msgstr ""
 
-<<<<<<< HEAD
-=======
-#: ../html/src/components/input/Password.stories.tsx:29
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:72
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:26
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:68
-#: ../html/src/manager/login/uyuni/login.tsx:65
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:514
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
-msgid "Password"
-msgstr "Senha"
-
-#: ../html/src/components/input/Password.stories.tsx:31
-msgid "Minimum 4 characters"
-msgstr "Mínimo de 4 caracteres"
-
-#: ../html/src/components/input/Radio.stories.tsx:29
-#: ../html/src/components/input/Radio.stories.tsx:55
-#: ../html/src/components/input/Radio.stories.tsx:83
-#: ../html/src/components/input/Radio.stories.tsx:110
-#: ../html/src/components/input/Select.stories.tsx:29
-#: ../html/src/components/input/Select.stories.tsx:122
-msgid "Level"
-msgstr "Nível"
-
-#: ../html/src/components/input/Radio.stories.tsx:34
-#: ../html/src/components/input/Radio.stories.tsx:61
-#: ../html/src/components/input/Radio.stories.tsx:88
-#: ../html/src/components/input/Radio.stories.tsx:116
-msgid "Beginner"
-msgstr "Iniciante"
-
-#: ../html/src/components/input/Radio.stories.tsx:35
-#: ../html/src/components/input/Radio.stories.tsx:62
-#: ../html/src/components/input/Radio.stories.tsx:89
-#: ../html/src/components/input/Radio.stories.tsx:117
-msgid "Normal"
-msgstr "Normal"
-
-#: ../html/src/components/input/Radio.stories.tsx:36
-#: ../html/src/components/input/Radio.stories.tsx:63
-#: ../html/src/components/input/Radio.stories.tsx:90
-#: ../html/src/components/input/Radio.stories.tsx:118
-msgid "Expert"
-msgstr "Experto"
-
-#: ../html/src/components/input/Range.stories.tsx:33
-msgid "Port range"
-msgstr "Alcance da porta"
-
-#: ../html/src/components/input/Range.stories.tsx:35
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/components/input/Range.test.tsx:71
 msgid "Both values need to be positive integers"
 msgstr "Ambos os valores precisam ser inteiros positivos"
@@ -908,13 +850,8 @@ msgid "Filter by any value"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:116
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:47
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:14
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "Host"
 msgstr ""
@@ -985,7 +922,6 @@ msgstr "Editar"
 msgid "Editing ssh connection data.."
 msgstr ""
 
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
 msgid ""
 "When editing the SSH connection all needed credentials must be re-provided."
@@ -993,27 +929,17 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:55
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:18
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "SSH Port"
 msgstr ""
 
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:66
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:22
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 #, fuzzy
 msgid "User"
 msgstr "Usuários"
 
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
@@ -1027,22 +953,13 @@ msgstr "Senha"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:33
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:75
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:30
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:526
 msgid "SSH Private Key"
 msgstr ""
 
-<<<<<<< HEAD
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:39
-=======
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:97
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:36
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:420
 msgid "SSH Private Key Passphrase"
 msgstr ""
@@ -2784,11 +2701,7 @@ msgstr ""
 #: ../html/src/manager/images/image-import.tsx:312
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:386
-=======
-#: ../html/src/manager/proxy/container-config.tsx:378
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:380
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
@@ -4115,11 +4028,7 @@ msgstr ""
 msgid "Proxy SSH port"
 msgstr ""
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:218
-=======
-#: ../html/src/manager/proxy/container-config.tsx:210
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid "Port range: 1 - 65535"
 msgstr ""
@@ -4207,11 +4116,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
-<<<<<<< HEAD
 #: ../html/src/manager/proxy/container-config.tsx:320
-=======
-#: ../html/src/manager/proxy/container-config.tsx:312
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/state/recurring-states-utils.tsx:8
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181

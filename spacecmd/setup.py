@@ -11,11 +11,7 @@ def get_version_changelog():
     Get a version from the current changelog.
     """
     changelog = None
-<<<<<<< HEAD
     version = "4.3.14"
-=======
-    version = "4.3.13"
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
     for fname in os.listdir(os.path.dirname(os.path.abspath(__file__))):
         if fname.endswith(".changes"):
             changelog = fname

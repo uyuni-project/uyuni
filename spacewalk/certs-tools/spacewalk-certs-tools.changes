@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 - fix mgr-ssl-cert-setup for root CAs which do not set
   authorityKeyIdentifier
 
@@ -10,11 +9,6 @@ Wed Jul 27 14:13:56 CEST 2022 - jgonzalez@suse.com
   * display messages to restart services after certificate change
   * improve CA Chain checking by comparing authorityKeyIdentifier
     with subjectKeyIdentifier
-=======
-- display messages to restart services after certificate change
-- improve CA Chain checking by comparing authorityKeyIdentifier
-  with subjectKeyIdentifier
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 -------------------------------------------------------------------
 Thu Jun 09 13:43:22 CEST 2022 - jgonzalez@suse.com

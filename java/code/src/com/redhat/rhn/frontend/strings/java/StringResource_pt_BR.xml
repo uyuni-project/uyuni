@@ -11259,13 +11259,10 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <source>Please fill in login.</source>
       <target state="new"/>
   </trans-unit>
-<<<<<<< HEAD
       <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
       <target state="new"/>
   </trans-unit>
-=======
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
       </body>
   </file>
 </xliff>

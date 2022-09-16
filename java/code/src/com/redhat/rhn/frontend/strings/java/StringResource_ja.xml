@@ -9966,11 +9966,7 @@ tree will not be usable for autoinstalling.</source>
         <source>An email has already been sent. You may request this action only every {0} seconds.</source>
         <target>電子メールがすでに送信されています。この動作の要求は {0} 秒ごとにのみ実行できます。</target>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="help.credentials.passwordsent" xml:space="preserve">
-=======
-      <trans-unit id="help.credentials.passwordsent" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
         <target state="final">パスワードリセットの情報を {0} に送信しました。受信されない場合は、指定されたログイン情報と電子メールアドレスで登録されたアカウントを持っていることを確認してください。</target>
       </trans-unit>
@@ -9986,11 +9982,7 @@ tree will not be usable for autoinstalling.</source>
         <source>There are no registered accounts with that email address.</source>
         <target>該当する電子メールアドレスを持つ登録されたアカウントはありません。</target>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="help.credentials.loginssent" xml:space="preserve">
-=======
-      <trans-unit id="help.credentials.loginssent" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Found login(s) sent to {0}. If you don't receive it, please make sure you have a registered account with the email provided.</source>
         <target state="final">検出されたログイン情報が {0} に送信されました。受信されない場合は、指定された電子メールアドレスで登録されたアカウントを持っていることを確認してください。</target>
       </trans-unit>
@@ -11193,11 +11185,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">周辺機器サーバ</target>
       </trans-unit>
-<<<<<<< HEAD
       <trans-unit approved="yes" id="Report Database Schema" xml:space="preserve">
-=======
-      <trans-unit id="Report Database Schema" xml:space="preserve" approved="yes">
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>

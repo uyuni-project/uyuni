@@ -469,11 +469,8 @@ PKGLIST15_SALT_NO_BUNDLE = [
     "salt",
     "python3-salt",
     "salt-minion",
-<<<<<<< HEAD
     "python3-apipkg*",
     "python3-iniconfig*",
-=======
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 ]
 
 PKGLIST15_SALT = PKGLIST15_SALT_NO_BUNDLE + [
@@ -484,13 +481,6 @@ PKGLIST15_SALT_OPT_BUNDLE = PKGLIST15_SALT_NO_BUNDLE + [
     "venv-salt-minion*",
 ]
 
-<<<<<<< HEAD
-=======
-PKGLIST15SP0SP1_SALT = [
-    "python3-tornado",
-]
-
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 ONLYSLE15 = [
     "gio-branding-SLE",
 ]

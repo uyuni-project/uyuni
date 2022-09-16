@@ -31,13 +31,8 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-<<<<<<< HEAD
 Version:        4.4.0
 Release:        0
-=======
-Version:        4.3.8
-Release:        1
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -66,13 +61,8 @@ Requires(pre):  uyuni-base-common
 BuildRequires:  openssl
 BuildRequires:  sudo
 %endif
-<<<<<<< HEAD
 Requires:       diffutils
 Requires:       (apache2-mod_xsendfile or mod_xsendfile)
-=======
-Requires:       (apache2-mod_xsendfile or mod_xsendfile)
-Requires:       diffutils
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
 
 %description
 Common Spacewalk configuration files and templates.
@@ -215,12 +205,8 @@ if [ -e /etc/pki/tls/private/uyuni.key ]; then
   fi
 fi
 
-<<<<<<< HEAD
 if [ -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT ] ; then
   if [ ! -f /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ] ; then
-=======
-if [ ! -f /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT ] ; then
->>>>>>> 2ad6b420a6d9d7f5ddd431d26346efbe2f72b840
     if diff -qs /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT ; then
       mv /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
     else
