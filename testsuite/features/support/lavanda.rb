@@ -81,7 +81,7 @@ module LavandaBasic
     raise 'empty os_version, something wrong' if @in_os_version.empty?
     @in_os_version
   end
-  
+
   # run functions
   def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
     if separated_results
