@@ -471,22 +471,19 @@ When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on t
   `rm #{path}`
 end
 
-When(/^I install a salt pillar file with name "([^"]*)" on the server$/) do |file|
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  inject_salt_pillar_file(source, file)
+When(/^I install the package download endpoint pillar file on the server$/) do
+  filepath = '/srv/pillar/pkg_endpoint.sls'
+  uri = URI.parse($custom_download_endpoint)
+  content = "pkg_download_point_protocol: #{uri.scheme}\n"\
+            "pkg_download_point_host: #{uri.host}\n"\
+            "pkg_download_point_port: #{uri.port}"
+  $server.run("echo -e \"#{content}\" > #{filepath}")
 end
 
-When(/^I delete a salt "([^"]*)" file with name "([^"]*)" on the server$/) do |type, file|
-  case type
-  when 'state'
-    path = "/srv/salt/" + file
-  when 'pillar'
-    path = "/srv/pillar/" + file
-  else
-    raise 'Invalid type.'
-  end
-  return_code = file_delete($server, path)
-  raise 'File Deletion failed' unless return_code.zero?
+When(/^I delete the package download endpoint pillar file from the server$/) do
+  filepath = '/srv/pillar/pkg_endpoint.sls'
+  return_code = file_delete($server, filepath)
+  raise 'File deletion failed' unless return_code.zero?
 end
 
 When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|

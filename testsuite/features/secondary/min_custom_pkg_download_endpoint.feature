@@ -5,6 +5,7 @@
 # setting pillar data values as mentioned in upload_files/rpm_enpoint.sls. These scenarios test this feature
 
 @scope_onboarding
+@custom_download_endpoint
 Feature: Repos file generation based on custom pillar data
 
   Scenario: Log in as admin user
@@ -28,13 +29,13 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Check the default RPM download point values
     Given I am on the Systems overview page of this "sle_minion"
     Then the susemanager repo file should exist on the "sle_minion"
-    And I should see "https", "proxy" and "443" in the repo file on the "sle_minion"
+    And the repo file should contain the normal download endpoint on the "sle_minion"
 
   Scenario: Set the custom RPM download point
     Given I am on the Systems overview page of this "sle_minion"
     When I install a salt pillar top file for "pkg_endpoint" with target "*" on the server
     And I wait for "1" seconds
-    And I install a salt pillar file with name "pkg_endpoint.sls" on the server
+    And I install the package download endpoint pillar file on the server
     And I refresh the pillar data
 
   Scenario: Subscribe the SLES minion to a channel again so new RPM end-point will be taken into account
@@ -54,11 +55,11 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Check the channel.repo file to see the custom RPM download point
     Given I am on the Systems overview page of this "sle_minion"
     Then the susemanager repo file should exist on the "sle_minion"
-    And I should see "ftp", "minima-mirror.mgr.prv.suse.net" and "445" in the repo file on the "sle_minion"
+    And the repo file should contain the custom download endpoint on the "sle_minion"
 
   Scenario: Cleanup: remove the custom RPM download point
-    When I delete a salt "pillar" file with name "pkg_endpoint.sls" on the server
-    When I delete a salt "pillar" file with name "top.sls" on the server
+    When I delete the package download endpoint pillar file from the server
+    And I remove "/srv/pillar/top.sls" from "server"
     And I refresh the pillar data
 
   Scenario: Cleanup: subscribe the SLES minion to a channel
@@ -77,5 +78,5 @@ Feature: Repos file generation based on custom pillar data
 
   Scenario: Cleanup: recheck the default RPM download point values
     Then the susemanager repo file should exist on the "sle_minion"
-    And I should see "https", "proxy" and "443" in the repo file on the "sle_minion"
+    And the repo file should contain the normal download endpoint on the "sle_minion"
 

@@ -402,6 +402,11 @@ Before('@server_http_proxy') do
   skip_this_scenario unless $server_http_proxy
 end
 
+# do test only if custom downlad endpoint for packages is defined
+Before('@custom_download_endpoint') do
+  skip_this_scenario unless $custom_download_endpoint
+end
+
 # do test only if the registry is available
 Before('@no_auth_registry') do
   skip_this_scenario unless $no_auth_registry
