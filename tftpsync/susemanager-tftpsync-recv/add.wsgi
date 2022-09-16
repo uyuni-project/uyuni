@@ -104,11 +104,17 @@ def _application(environ, start_response):
                     if CFG.SERVER_IP6 and CFG.PROXY_IP6:
                         file_content = file_content.replace(CFG.SERVER_IP6.encode(), CFG.PROXY_IP6.encode())
                     tf.write(file_content)
-                os.rename(tfname, rfname)
+                try:
+                    os.rename(tfname, rfname)
+                except FileNotFoundError:
+                    logger.warning('Can\'t rename file "%s" concurrently.', tfname)
             elif isinstance(tfpointer, OutputType) or isinstance(tfpointer, BytesIO):
                 with open(tfname, 'wb') as tf:
                     tf.write(form.getvalue('file'))
-                os.rename(tfname, rfname)
+                try:
+                    os.rename(tfname, rfname)
+                except FileNotFoundError:
+                    logger.warning('Can\'t rename file "%s" concurrently.', tfname)
             else:
                 if tfpointer and os.path.exists(tfpointer.name):
                     os.chmod(tfpointer.name, 0o644)
