@@ -1712,7 +1712,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-moment-timezone v0.5.33 - Tim Wood <washwithcare@gmail.com> (http://timwoodcreates.com/)
+moment-timezone v0.5.35 - Tim Wood <washwithcare@gmail.com> (http://timwoodcreates.com/)
 https://github.com/moment/moment-timezone.git
 --------------------------------------------------------------------------------
 

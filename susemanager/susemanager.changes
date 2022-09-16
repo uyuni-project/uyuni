@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Sep 15 16:30:36 CEST 2022 - jmassaguerpla@suse.de
+
+- version 4.2.37-1
+  * mark new dependencies for python-py optional in bootstrap repo
+    to fix generation for older service packs (bsc#1203449)
+
+-------------------------------------------------------------------
 Thu Sep 08 09:54:14 CEST 2022 - mc@suse.de
 
 - version 4.2.36-1

@@ -7,14 +7,6 @@ class NamespaceApi
     @test = api_test
   end
 
-  def get_version
-    @test.call('api.getVersion')
-  end
-
-  def system_version
-    @test.call('api.systemVersion')
-  end
-
   def get_count_of_api_namespaces
     namespaces = @test.call('api.getApiNamespaces', sessionKey: @test.token)
     namespaces.nil? ? 0 : namespaces.length
