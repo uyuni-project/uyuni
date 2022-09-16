@@ -43,15 +43,17 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
+
 class TftpFieldStorage(cgi.FieldStorage):
 
     def make_file(self, binary=None):
         tmpdir = os.path.join(CFG.TFTPBOOT, "tmp")
         if not os.path.exists(tmpdir):
-                os.makedirs(tmpdir)
+            os.makedirs(tmpdir)
 
         return tempfile.NamedTemporaryFile(mode="w+b", suffix='', prefix='tmp',
                                            dir=tmpdir, delete=False)
+
 
 def _application(environ, start_response):
     status = '500 Server Error'
@@ -93,7 +95,7 @@ def _application(environ, start_response):
                 os.makedirs(path, exist_ok=True)
 
             rfname = os.path.join(path, file_name)
-            tfname = "%s.tmp" % (rfname)
+            tfname = f"{rfname}.tmp"
             if file_type == 'pxe' or file_type == 'grub':
                 with open(tfname, 'wb') as tf:
                     file_content = form.getvalue('file')
@@ -108,14 +110,14 @@ def _application(environ, start_response):
                     tf.write(form.getvalue('file'))
                 os.rename(tfname, rfname)
             else:
-                if (tfpointer and os.path.exists(tfpointer.name)):
+                if tfpointer and os.path.exists(tfpointer.name):
                     os.chmod(tfpointer.name, 0o644)
                     os.rename(tfpointer.name, rfname)
                 else:
-                    raise IOError("Source file not found");
+                    raise IOError("Source file not found")
 
             status = "200 OK"
-            content = "setting file '%s' (%s), status: %s" % (rfname, file_type, status)
+            content = f"setting file '{rfname}' ({file_type}), status: {status}"
             logger.info(content)
         except Exception as e:
             # remove tmp file if exists
@@ -126,7 +128,7 @@ def _application(environ, start_response):
 
     # remove tmp file if exists
     if (tfpointer and not isinstance(tfpointer, OutputType) and
-        hasattr(tfpointer, "name") and os.path.exists(tfpointer.name)):
+            hasattr(tfpointer, "name") and os.path.exists(tfpointer.name)):
         os.unlink(tfpointer.name)
 
     response_headers = [('Content-type', 'text/plain;charset=utf-8'),
