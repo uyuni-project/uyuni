@@ -470,16 +470,24 @@ Then(/^the tomcat logs should not contain errors$/) do
   end
 end
 
+Then(/^the taskomatic logs should not contain errors$/) do
+  output, _code = $server.run('cat /var/log/rhn/rhn_taskomatic_daemon.log')
+  msgs = %w[NullPointer]
+  msgs.each do |msg|
+    raise "-#{msg}-  msg found on taskomatic logs" if output.include? msg
+  end
+end
+
+When(/^I restart cobbler on the server$/) do
+  $server.run('systemctl restart cobblerd.service')
+end
+
 When(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
 end
 
 When(/^I shutdown the spacewalk service$/) do
   $server.run('spacewalk-service stop')
-end
-
-When(/^I restart cobbler on the server$/) do
-  $server.run('systemctl restart cobblerd.service')
 end
 
 When(/^I execute spacewalk-debug on the server$/) do
