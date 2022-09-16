@@ -494,6 +494,11 @@ Then(/^the taskomatic logs should not contain errors$/) do
   end
 end
 
+Then(/^the messages log should not contain out of memory errors$/) do
+  output, code = $server.run('grep -i "Out of memory: Killed process" /var/log/messages', check_errors: false)
+  raise "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
+end
+
 When(/^I restart cobbler on the server$/) do
   $server.run('systemctl restart cobblerd.service')
 end
