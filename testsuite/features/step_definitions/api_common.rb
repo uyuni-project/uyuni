@@ -316,6 +316,13 @@ When(/^I delete an action chain, labeled "(.*?)"$/) do |label|
   $api_test.actionchain.delete_chain(label)
 end
 
+When(/^I delete all action chains$/) do
+  $api_test.actionchain.list_chains.each do |label|
+    log "Delete chain: #{label}"
+    $api_test.actionchain.delete_chain(label)
+  end
+end
+
 # Renaming chain
 Then(/^I call actionchain\.rename_chain\(\) to rename it from "(.*?)" to "(.*?)"$/) do |old_label, new_label|
   $api_test.actionchain.rename_chain(old_label, new_label)
@@ -396,6 +403,17 @@ end
 # Scheduling the action chain
 When(/^I schedule the action chain$/) do
   refute($api_test.actionchain.schedule_chain($chain_label, DateTime.now) < 0)
+end
+
+When(/^I wait until there are no more action chains$/) do
+  repeat_until_timeout(message: 'Action Chains still present') do
+    break if $api_test.actionchain.list_chains.empty?
+    $api_test.actionchain.list_chains.each do |label|
+      log "Chain still present: #{label}"
+    end
+    log
+    sleep 2
+  end
 end
 
 ## schedule API
