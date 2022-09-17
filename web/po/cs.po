@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-13 04:14+0000\n"
+"POT-Creation-Date: 2022-09-17 16:14+0000\n"
 "PO-Revision-Date: 2022-09-17 16:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -1037,7 +1037,8 @@ msgstr "Probíhá aktualizace katalogu produktů..."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:214
 msgid "The following product installations failed. Please check log files."
-msgstr "Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
+msgstr ""
+"Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
