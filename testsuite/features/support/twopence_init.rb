@@ -336,19 +336,14 @@ def client_public_ip(host)
     return 'NOT_IMPLEMENTED' if node == it
   end
 
-  interface = case host
-              when /^deblike/, /^debian11/, /^ubuntu/
-                $is_cloud_provider ? 'eth0' : 'ens3'
-              when 'kvm_server', 'xen_server'
-                'br0'
-              else
-                'eth0'
-              end
-  node.init_public_interface(interface)
-  output, code = node.run("ip address show dev #{interface} | grep 'inet '")
-  raise 'Cannot resolve public ip' unless code.zero?
-
-  output.split[1].split('/')[0]
+  %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
+    output, code = node.run("ip address show dev #{dev} | grep 'inet '", check_errors: false)
+    if code.zero?
+      node.init_public_interface(dev)
+      return output.split[1].split('/')[0]
+    end
+  end
+  raise 'Cannot resolve public ip'
 end
 
 # Initialize IP address or domain name
