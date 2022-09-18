@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 11:25+0200\n"
-"PO-Revision-Date: 2022-09-17 17:13+0000\n"
+"PO-Revision-Date: 2022-09-18 11:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-2/cs/>\n"
 "Language: cs\n"
@@ -1338,24 +1338,23 @@ msgstr "Chyba serveru, zkontrolujte soubory protokolu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
 msgid "Affected, patches available in channels which are not assigned"
-msgstr ""
+msgstr "Ovlivněno: v kanálech, které nejsou přiřazeny, jsou dostupné záplaty"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
 msgid "Affected, patches available in a Product Migration target"
-msgstr ""
+msgstr "Ovlivněno, záplaty dostupné v cíli Migrace produktu"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
 msgid "Affected, at least one patch available in an assigned channel"
-msgstr ""
+msgstr "Ovlivněno: v přiřazeném kanálu je dostupná aspoň 1 záplata"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
 msgid "Not affected"
-msgstr ""
+msgstr "Neovlivněno"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:50
-#, fuzzy
 msgid "Patched"
-msgstr "Záplaty"
+msgstr "Opraveno"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:185
 msgid "CVE Audit"
@@ -1375,11 +1374,11 @@ msgstr "Auditovat obrazy"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:272
 msgid "MITRE CVE link"
-msgstr ""
+msgstr "Odkaz na MITRE CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:284
 msgid "SUSE Security CVE link"
-msgstr ""
+msgstr "Odkaz na SUSE Security CVE"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
@@ -1422,27 +1421,27 @@ msgstr "Akce"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:384
-#, fuzzy
 msgid "No action required"
-msgstr "Nutný restart systému"
+msgstr "Nevyžaduje se žádná akce"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:343
 msgid "Install a new patch on this system."
-msgstr ""
+msgstr "Instalovat novou opravu na tento systém."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:360
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr ""
+"Záplata je k dispozici, ale systém je třeba migrovat na novější produkt."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
 msgid "Patch available, but needs to be cloned into Channel."
-msgstr ""
+msgstr "Záplata je k dispozici, ale je třeba ji naklonovat do kanálu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:380
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:407
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:410
 msgid "If you see this report a bug."
-msgstr ""
+msgstr "Vidíte-li toto, ohlaste chybu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:391
 #: ../html/src/manager/images/image-view-overview.tsx:595
@@ -1451,7 +1450,7 @@ msgstr "Přebudovat"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:399
 msgid "Patch available but needs to be cloned into Channel."
-msgstr ""
+msgstr "Záplata je k dispozici, ale je třeba ji naklonovat do kanálu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:402
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
