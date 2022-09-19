@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 11:25+0200\n"
-"PO-Revision-Date: 2022-09-18 11:13+0000\n"
+"PO-Revision-Date: 2022-09-19 13:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-2/cs/>\n"
 "Language: cs\n"
@@ -1000,9 +1000,8 @@ msgid "Instance Hostname: {0}"
 msgstr "Název hostitele instance: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:76
-#, fuzzy
 msgid "Delete Pay-as-you-go"
-msgstr "Odstranění funkce Pay-as-you-go"
+msgstr "Zrušit průběžnou platbu (Pay-as-you-go)"
 
 #: ../html/src/manager/admin/payg/payg.tsx:79
 #: ../html/src/manager/content-management/project/project.tsx:119
@@ -1461,7 +1460,7 @@ msgstr "Kanál"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
 msgid "Errata"
-msgstr ""
+msgstr "Opravník chyb"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:429
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
@@ -2462,48 +2461,40 @@ msgid "contains package which provides name equal"
 msgstr "obsahuje balíček poskytující shodný název"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
-#, fuzzy
 msgid "lower"
-msgstr "verze nižší než"
+msgstr "menší"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
-#, fuzzy
 msgid "lower than"
-msgstr "verze nižší než"
+msgstr "menší než"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
-#, fuzzy
 msgid "lower or equal"
-msgstr "pozdější nebo shodný"
+msgstr "menší nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
-#, fuzzy
 msgid "lower or equal than"
-msgstr "pozdější než nebo shodný"
+msgstr "menší než nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "equal"
 msgstr "roven / stejný"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "greater or equal"
-msgstr "pozdější nebo shodný"
+msgstr "větší nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "greater or equal than"
-msgstr "pozdější než nebo shodný"
+msgstr "větší než nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
-#, fuzzy
 msgid "greater"
-msgstr "Vytvořit"
+msgstr "větší"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
-#, fuzzy
 msgid "greater than"
-msgstr "Vytvořeno v"
+msgstr "větší než"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
 msgid "matches regular expression"
@@ -2763,7 +2754,6 @@ msgid "Versions history"
 msgstr "Historie verzí"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
-#, fuzzy
 msgid "New base channel"
 msgstr "Nový základní kanál"
 
@@ -2786,14 +2776,12 @@ msgid "Clear Search"
 msgstr "Výmaz hledání"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
-#, fuzzy
 msgid "This channel requires:"
-msgstr "Tento kanál je doporučen"
+msgstr "Tento kanál vyžaduje:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
-#, fuzzy
 msgid "This channel is required by:"
-msgstr "Tento kanál je doporučen"
+msgstr "Tento kanál je vyžádán:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
@@ -2932,14 +2920,12 @@ msgid "Patches"
 msgstr "Záplaty"
 
 #: ../html/src/manager/header/search/search.tsx:22
-#, fuzzy
 msgid "Documentation"
-msgstr "dokumentace"
+msgstr "Dokumentace"
 
 #: ../html/src/manager/header/search/search.tsx:56
-#, fuzzy
 msgid "Open search"
-msgstr "Výmaz hledání"
+msgstr "Otevřít hledání"
 
 #: ../html/src/manager/images/image-build.tsx:38
 msgid "An unknown error has occurred."
@@ -3861,10 +3847,12 @@ msgstr "Kalendáře"
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "Below is a list of Maintenance Schedules available to the current user."
 msgstr ""
+"Níže je uveden seznam plánů údržby, které má aktuální uživatel k dispozici."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr ""
+"Níže je uveden seznam plánů údržby, které má aktuální uživatel k dispozici."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
@@ -4175,11 +4163,11 @@ msgstr "Aplikace stavu selhala"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:50
 msgid "Pay-as-you-go refresh authentication data failed"
-msgstr ""
+msgstr "Ověření dat obnovení průběžné platby se nezdařilo"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:54
 msgid "End of Life Period"
-msgstr ""
+msgstr "Konec životního cyklu"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
