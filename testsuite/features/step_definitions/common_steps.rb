@@ -1372,7 +1372,7 @@ end
 And(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
   tmp_dir = "/var/cache/cobbler/buildiso"
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
-  raise "error during veryfying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
+  raise "error during verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
 end
 
 When(/^I cleanup after Cobbler buildiso$/) do
@@ -1385,17 +1385,16 @@ When(/^I reboot server through SSH$/) do
   node = get_target('server')
   temp_server = twopence_init("ssh:#{$server.public_ip}")
   temp_server.extend(LavandaBasic)
-  fullname = temp_server.run("cat /etc/hostname")[0].gsub("\n", '')
   # Reboot and wait
   temp_server.run("reboot > /dev/null 2> /dev/null &")
   reboot_timeout = 1000
-  check_shutdown(fullname, reboot_timeout)
+  check_shutdown($server.public_ip, reboot_timeout)
   check_restart($server.public_ip, temp_server, reboot_timeout)
   # Get a hand back on the server
   repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
     out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
     if !out.to_s.include? "dead" and out.to_s.include? "running"
-      log "machine: #{fullname} spacewalk is up"
+      log "Server spacewalk service is up"
       break
     end
     sleep 1
@@ -1417,17 +1416,18 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
             --ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg
             --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
             --ssl-ca-password=spacewalk"
-  out, code = temp_server.run(command, check_errors: false, timeout: 10)
+  out, result_code = temp_server.run(command, check_errors: false, timeout: 10)
   log "#{out}"
   reboot_timeout = 1000
   repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
     out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
     if !out.to_s.include? "dead" and out.to_s.include? "running"
-      log "machine: #{$server.full_hostname} spacewalk is up"
+      log "Server: spacewalk service is up"
       break
     end
     sleep 1
   end
+  raise "Error while running spacewalk-hostname-rename command - see logs above" unless result_code.zero?
 end
 
 When(/^I change back the server hostname$/) do
