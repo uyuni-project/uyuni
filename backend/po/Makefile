@@ -20,9 +20,9 @@ MSGFMT		= msgfmt --statistics --verbose
 # What do we need to do
 POFILES		= $(wildcard *.po)
 MOFILES		= $(patsubst %.po,%.mo,$(POFILES))
-SRCFILES	= $(shell find ../server -name \*.py) \
-		  $(shell find ../common -name \*.py) \
-		  $(shell find ../satellite_tools -name \*.py)
+SRCFILES	= $(shell find ../server -name \*.py | sort) \
+		  $(shell find ../common -name \*.py | sort) \
+		  $(shell find ../satellite_tools -name \*.py | sort)
 
 all:: $(MOFILES)
 
