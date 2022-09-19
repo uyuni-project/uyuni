@@ -109,7 +109,6 @@ Feature: Lock packages on SLES salt minion
     And I click on the filter button
     And I check row with "milkyway-dummy-2.0-1.1" and arch of "sle_minion"
     And I click on "Unlock"
-    And I click on "Unlock"
     Then I should see a "Packages has been requested for being unlocked." text
     When I wait until event "Lock packages scheduled by admin" is completed
     Then "hoag-dummy-1.1-1.1" is locked on "sle_minion"

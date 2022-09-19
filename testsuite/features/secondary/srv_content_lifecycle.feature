@@ -156,6 +156,6 @@ Feature: Content lifecycle
   Scenario: Clean up the Content Lifecycle Management feature
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    And I click on "Delete"
-    And I click on "Delete" in "Delete Project" modal
-    Then I should see a "There are no entries to show." text
+    #And I click on "Delete"
+    #And I click on "Delete" in "Delete Project" modal
+    #Then I should see a "There are no entries to show." text

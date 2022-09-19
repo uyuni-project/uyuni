@@ -143,7 +143,7 @@ Feature: Salt SSH action chain
   Scenario: Verify the action chain list on SSH minion
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
-    Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
+    Then I should see a "1. Apply patch(es) CL-andromeda-dummy-6789 on 1 system" text
     And I should see a "2. Remove milkyway-dummy from 1 system" text
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
