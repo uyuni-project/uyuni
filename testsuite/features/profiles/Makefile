@@ -4,6 +4,12 @@
 TEMPLATE_DOCKER_DIR = Docker
 TEMPLATE_KIWI_DIR   = Kiwi
 
+DEFAULT_REPO = download.suse.de/ibs
+REPO_NUE = download.suse.de/ibs
+REPO_PRV = minima-mirror.mgr.prv.suse.net
+REPO_AWS = ip-172-16-1-30.eu-central-1.compute.internal
+
+
 REGISTRY_PLACEHOLDER_NOAUTH = registry.mgr.suse.de
 REGISTRY_PLACEHOLDER_AUTH   = registry.mgr.suse.de:5000
 ENVIRONMENTS                = internal_nue internal_prv cloud_aws
@@ -24,6 +30,7 @@ internal_nue: clean-internal_nue
 	  cp -r $(TEMPLATE_KIWI_DIR) $@/ ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_AUTH)/$(REG_REPLACEMENT_NUE_AUTH)/g' ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_NOAUTH)/$(REG_REPLACEMENT_NUE_NOAUTH)/g' ; \
+	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)|$(REPO_NUE)|g' ; \
 	fi
 
 internal_prv: clean-internal_prv
@@ -33,6 +40,7 @@ internal_prv: clean-internal_prv
 	  cp -r $(TEMPLATE_KIWI_DIR) $@/ ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_AUTH)/$(REG_REPLACEMENT_PRV_AUTH)/g' ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_NOAUTH)/$(REG_REPLACEMENT_PRV_NOAUTH)/g' ; \
+	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)|$(REPO_PRV)|g' ; \
 	fi
 
 cloud_aws: clean-cloud_aws
@@ -42,6 +50,7 @@ cloud_aws: clean-cloud_aws
 	  cp -r $(TEMPLATE_KIWI_DIR) $@/ ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_AUTH)/$(REG_REPLACEMENT_AWS_AUTH)/g' ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_NOAUTH)/$(REG_REPLACEMENT_AWS_NOAUTH)/g' ; \
+	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)|$(REPO_AWS)|g' ; \
 	fi
 
 clean-internal_nue:
