@@ -71,9 +71,8 @@ Then(/^it should be possible to use the HTTP proxy$/) do
   $server.run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
-Then(/^it should be possible to use the FTP server$/) do
-  # TODO: use a URL in Provo after the release
-  url = 'ftp://minima-mirror.mgr.suse.de:445/rhn/manager/download/test-channel-x86_64/repodata/repomd.xml'
+Then(/^it should be possible to use the custom download endpoint$/) do
+  url = "#{$custom_download_endpoint}/rhn/manager/download/test-channel-x86_64/repodata/repomd.xml"
   $server.run("curl --ipv4 --location #{url} --output /dev/null")
 end
 
@@ -120,10 +119,6 @@ end
 When(/^I list channels with spacewalk\-remove\-channel$/) do
   $command_output, return_code = $server.run("spacewalk-remove-channel -l")
   raise "Unable to run spacewalk-remove-channel -l command on server" unless return_code.zero?
-end
-
-When(/^I add "([^"]*)" channel$/) do |channel|
-  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size: 1_000_000)
 end
 
 When(/^I use spacewalk\-channel to add "([^"]*)"$/) do |child_channel|
@@ -388,26 +383,6 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
 end
 # rubocop:enable Metrics/BlockLength
 
-When(/^I ensure the channel "([^"]*)" has started syncing$/) do |channel_label|
-  reposync_not_running_streak = 0
-  # wait a maximum of 120s for reposync to start
-  while reposync_not_running_streak <= 120
-    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
-    if command_output.empty?
-      reposync_not_running_streak += 1
-      sleep 1
-      next
-    end
-    process = command_output.split("\n")[0]
-    channel = process.split[5]
-    break if channel == channel_label
-
-    log "Channel #{channel} is syncing"
-    reposync_not_running_streak += 1
-  end
-  raise StandardError "Channel #{channel_label} didn't start syncing in 2 minutes" if reposync_not_running_streak > 120
-end
-
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
   raise "Errors during reposync:\n#{result}" if code.zero?
@@ -473,18 +448,25 @@ Then(/^file "([^"]*)" should contain "([^"]*)" on server$/) do |file, content|
   "\n-----\n#{output}\n-----\n"
 end
 
-Then(/^file "([^"]*)" should not contain "([^"]*)" on server$/) do |file, content|
-  output, _code = $server.run("grep -F '#{content}' #{file} || echo 'notfound'", check_errors: false)
-  raise "'#{content}' found in file #{file}" if output != "notfound\n"
-  "\n-----\n#{output}\n-----\n"
-end
-
 Then(/^the tomcat logs should not contain errors$/) do
   output, _code = $server.run('cat /var/log/tomcat/*')
   msgs = %w[ERROR NullPointer]
   msgs.each do |msg|
     raise "-#{msg}-  msg found on tomcat logs" if output.include? msg
   end
+end
+
+Then(/^the taskomatic logs should not contain errors$/) do
+  output, _code = $server.run('cat /var/log/rhn/rhn_taskomatic_daemon.log')
+  msgs = %w[NullPointer]
+  msgs.each do |msg|
+    raise "-#{msg}-  msg found on taskomatic logs" if output.include? msg
+  end
+end
+
+Then(/^the messages log should not contain out of memory errors$/) do
+  output, code = $server.run('grep -i "Out of memory: Killed process" /var/log/messages', check_errors: false)
+  raise "Out of memory errors in /var/log/messages:\n#{output}" unless code.zero?
 end
 
 When(/^I restart cobbler on the server$/) do
@@ -517,17 +499,16 @@ Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
   step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
 end
 
-Then(/^I should see "([^"]*)", "([^"]*)" and "([^"]*)" in the repo file on the "([^"]*)"$/) do |protocol, hostname, port, target|
+Then(/^the repo file should contain the (custom|normal) download endpoint on the "([^"]*)"$/) do |type, target|
   node = get_target(target)
-  hostname = hostname == "proxy" ? $proxy.full_hostname : hostname
   base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
   base_url = base_url.strip.split('=')[1].delete '"'
-  uri = URI.parse(base_url)
-  log 'Protocol: ' + uri.scheme + '  Host: ' + uri.host + '  Port: ' + uri.port.to_s
-  parameters_matches = (uri.scheme == protocol && uri.host == hostname && uri.port == port.to_i)
-  if !parameters_matches
-    raise 'Some parameters are not as expected'
-  end
+  real_uri = URI.parse(base_url)
+  log 'Real protocol: ' + real_uri.scheme + '  host: ' + real_uri.host + '  port: ' + real_uri.port.to_s
+  normal_download_endpoint = "https://#{$proxy.full_hostname}:443"
+  expected_uri = URI.parse(type == 'custom' ? $custom_download_endpoint : normal_download_endpoint)
+  log 'Expected protocol: ' + expected_uri.scheme + '  host: ' + expected_uri.host + '  port: ' + expected_uri.port.to_s
+  raise 'Some parameters are not as expected' unless real_uri.scheme == expected_uri.scheme && real_uri.host == expected_uri.host && real_uri.port == expected_uri.port
 end
 
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
@@ -705,24 +686,6 @@ Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   output, _code = node.run("systemctl is-active '#{service}'", check_errors: false)
   output = output.split(/\n+/)[-1]
   raise "Service #{service} not active" if output != 'active'
-end
-
-Then(/^service or socket "([^"]*)" is enabled on "([^"]*)"$/) do |name, host|
-  node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-enabled '#{name}'", check_errors: false)
-  output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-enabled '#{name}.socket'", check_errors: false)
-  output_socket = output_socket.split(/\n+/)[-1]
-  raise if output_service != 'enabled' and output_socket != 'enabled'
-end
-
-Then(/^service or socket "([^"]*)" is active on "([^"]*)"$/) do |name, host|
-  node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-active '#{name}'", check_errors: false)
-  output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-active '#{name}.socket'", check_errors: false)
-  output_socket = output_socket.split(/\n+/)[-1]
-  raise if output_service != 'active' and output_socket != 'active'
 end
 
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
@@ -909,16 +872,6 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
   node.run('zypper ref')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
   node.run(cmd, successcodes: [0, 100, 101, 102, 103, 106])
-end
-
-When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
-  if pattern.include?("suma") && $product == "Uyuni"
-    pattern.gsub! "suma", "uyuni"
-  end
-  node = get_target(host)
-  node.run('zypper ref')
-  cmd = "zypper --non-interactive remove -t pattern #{pattern}"
-  node.run(cmd, successcodes: [0, 100, 101, 102, 103, 104, 106])
 end
 
 When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
@@ -1546,12 +1499,6 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
     sleep 1
     break unless result.include? pkg
   end
-end
-
-Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
-  node = get_target(client)
-  _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", check_errors: false)
-  raise if code.zero?
 end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|

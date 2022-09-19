@@ -97,15 +97,6 @@ When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
   $server.run("salt-key -y --accept=#{system_name}*")
 end
 
-When(/^I reject "([^"]*)" key in the Salt master$/) do |host|
-  system_name = get_system_name(host)
-  $server.run("salt-key -y --reject=#{system_name}")
-end
-
-When(/^I delete all keys in the Salt master$/) do
-  $server.run('salt-key -y -D')
-end
-
 When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
   system_name = get_system_name(host)
   $output, _code = $server.run("salt #{system_name} grains.get osfullname")
@@ -124,7 +115,7 @@ end
 
 When(/^I apply state "([^"]*)" to "([^"]*)"$/) do |state, host|
   system_name = get_system_name(host)
-  $server.run("salt #{system_name} state.apply #{state}")
+  $server.run("salt #{system_name} state.apply #{state}", verbose: true)
 end
 
 Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
@@ -162,14 +153,6 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
 end
 
 # user salt steps
-Given(/^I am authorized as an example user with no roles$/) do
-  $api_test.auth.login('admin', 'admin')
-  @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
-  $api_test.user.create_user(@username, 'linux')
-  step %(I am authorized as "#{@username}" with password "linux")
-  $api_test.auth.logout
-end
-
 When(/^I click on preview$/) do
   find('button#preview').click
 end
@@ -203,10 +186,6 @@ end
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive refresh")
   $server.run("zypper --non-interactive install --force #{package}-formula")
-end
-
-Then(/^I wait for "([^"]*)" formula to be installed on the server$/) do |package|
-  $server.run_until_ok("rpm -q #{package}-formula")
 end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
@@ -418,10 +397,6 @@ When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, st
   end
 end
 
-When(/^I click undo for "(.*?)"$/) do |pkg|
-  find("button##{pkg}-undo").click
-end
-
 When(/^I click apply$/) do
   find('button#apply').click
 end
@@ -431,19 +406,6 @@ When(/^I click save$/) do
 end
 
 # salt-ssh steps
-When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
-  target = get_target(host)
-  pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
-  if suse_host?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{pkgs}", check_errors: false)
-  elsif rh_host?(host)
-    target.run("test -e /usr/bin/yum && yum -y remove #{pkgs}", check_errors: false)
-  elsif deb_host?(host)
-    pkgname = "salt-common salt-minion" if $product != 'Uyuni'
-    target.run("test -e /usr/bin/apt && apt -y remove #{pkgs}", check_errors: false)
-  end
-end
-
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   pkgs = $use_salt_bundle ? "venv-salt-minion" : "salt salt-minion"
@@ -509,22 +471,19 @@ When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on t
   `rm #{path}`
 end
 
-When(/^I install a salt pillar file with name "([^"]*)" on the server$/) do |file|
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  inject_salt_pillar_file(source, file)
+When(/^I install the package download endpoint pillar file on the server$/) do
+  filepath = '/srv/pillar/pkg_endpoint.sls'
+  uri = URI.parse($custom_download_endpoint)
+  content = "pkg_download_point_protocol: #{uri.scheme}\n"\
+            "pkg_download_point_host: #{uri.host}\n"\
+            "pkg_download_point_port: #{uri.port}"
+  $server.run("echo -e \"#{content}\" > #{filepath}")
 end
 
-When(/^I delete a salt "([^"]*)" file with name "([^"]*)" on the server$/) do |type, file|
-  case type
-  when 'state'
-    path = "/srv/salt/" + file
-  when 'pillar'
-    path = "/srv/pillar/" + file
-  else
-    raise 'Invalid type.'
-  end
-  return_code = file_delete($server, path)
-  raise 'File Deletion failed' unless return_code.zero?
+When(/^I delete the package download endpoint pillar file from the server$/) do
+  filepath = '/srv/pillar/pkg_endpoint.sls'
+  return_code = file_delete($server, filepath)
+  raise 'File deletion failed' unless return_code.zero?
 end
 
 When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|
@@ -535,12 +494,4 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 " + dest)
-end
-
-When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
-  system_name = get_system_name(minion)
-  output, _code = $server.run("salt #{system_name} saltutil.kill_all_jobs")
-  if output.include?(system_name) && output.include?('Signal 9 sent to job')
-    log output
-  end
 end

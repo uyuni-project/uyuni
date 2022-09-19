@@ -131,6 +131,8 @@ $nodes.each do |node|
   node.init_full_hostname(fqdn)
 
   STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
+  result, _code = node.run('grep PRETTY /etc/os-release')
+  STDOUT.puts "'#{$named_nodes[node.hash]}' is running OS #{result}"
 end
 
 # This function is used to get one of the nodes based on its type
@@ -247,6 +249,7 @@ $sle15sp4_terminal_mac = ENV['SLE15SP4_TERMINAL_MAC']
 $private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
 $mirror = ENV['MIRROR']
 $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
+$custom_download_endpoint = ENV['CUSTOM_DOWNLOAD_ENDPOINT'] if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
 $no_auth_registry = ENV['NO_AUTH_REGISTRY'] if ENV['NO_AUTH_REGISTRY']
 $auth_registry = ENV['AUTH_REGISTRY'] if ENV['AUTH_REGISTRY']
 if ENV['SCC_CREDENTIALS']

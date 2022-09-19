@@ -4,7 +4,7 @@
 require 'jwt'
 require 'securerandom'
 require 'pathname'
-
+# Used for debugging purposes
 When(/^I save a screenshot as "([^"]+)"$/) do |filename|
   save_screenshot(filename)
   attach File.open(filename, 'rb'), 'image/png'
@@ -129,19 +129,23 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
   step %(I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed)
 end
 
-When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
+When(/^I wait (\d+) seconds until the event is picked up and (\d+) seconds until the event "([^"]*)" is completed$/) do |pickup_timeout, complete_timeout, event|
   # The code below is not perfect because there might be other events with the
   # same name in the events history - however, that's the best we have so far.
   steps %(
     When I follow "Events"
     And I follow "Pending"
-    And I wait at most 90 seconds until I do not see "#{event}" text, refreshing the page
+    And I wait at most #{pickup_timeout} seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
-    And I wait at most #{final_timeout} seconds until the event is completed, refreshing the page
+    And I wait at most #{complete_timeout} seconds until the event is completed, refreshing the page
   )
+end
+
+When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
+  step %(I wait 90 seconds until the event is picked up and #{final_timeout} seconds until the event "#{event}" is completed)
 end
 
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
@@ -311,11 +315,6 @@ end
 Given(/^profile "([^"]*)" exists$/) do |profile|
   ct = CobblerTest.new
   raise 'profile ' + profile + ' does not exist' unless ct.profile_exists(profile)
-end
-
-Given(/^system "([^"]*)" exists$/) do |system|
-  ct = CobblerTest.new
-  raise 'system ' + system + ' does not exist' unless ct.system_exists(system)
 end
 
 When(/^I remove kickstart profiles and distros$/) do
@@ -526,10 +525,6 @@ And(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |ar
   raise "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
-When(/^I enter the "(.*)" package in the css "(.*)"$/) do |client, css|
-  find(css).set(PACKAGE_BY_CLIENT[client])
-end
-
 When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
@@ -558,12 +553,6 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
   xpath_query = "//span[contains(text(), '#{item}')]/"\
       "ancestor::div[contains(@class, 'product-details-wrapper')]/descendant::*[@title='#{button}']"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
-end
-
-When(/^I open the sub-list of the product "(.*?)" on (SUSE Manager|Uyuni)$/) do |product, product_version|
-  if $product == product_version
-    step %(I open the sub-list of the product "#{product}")
-  end
 end
 
 When(/^I open the sub-list of the product "(.*?)"$/) do |product|
@@ -862,10 +851,6 @@ Given(/^I update the profile of "([^"]*)"$/) do |client|
   node.run('rhn-profile-sync', timeout: 500)
 end
 
-When(/^I register using "([^"]*)" key$/) do |key|
-  step %(I register "sle_client" as traditional client with activation key "#{key}")
-end
-
 When(/^I register "([^"]*)" as traditional client$/) do |client|
   step %(I register "#{client}" as traditional client with activation key "1-SUSE-KEY-x86_64")
 end
@@ -1142,21 +1127,6 @@ And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
   end
 end
 
-When(/^I remove package "([^"]*)" from highstate$/) do |package|
-  event_table_xpath = "//div[@class='table-responsive']/table/tbody"
-  rows = find(:xpath, event_table_xpath)
-  rows.all('tr').each do |tr|
-    next unless tr.text.include?(package)
-    log tr.text
-    tr.find("##{package}-pkg-state").select('Removed')
-    next if has_css?('#save[disabled]')
-    steps %(
-      Then I click on "Save"
-      And I click on "Apply"
-    )
-  end
-end
-
 When(/^I check for failed events on history event page$/) do
   steps %(
     When I follow "Events" in the content area
@@ -1320,13 +1290,6 @@ When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/playbook_ping.yml'
   return_code = file_inject(target, source, dest + "playbook_ping.yml")
   raise 'File injection failed' unless return_code.zero?
-end
-
-When(/^I remove testing playbooks and inventory files from "([^"]*)"$/) do |host|
-  playbooks_dir = 'ansible/'
-  target = get_target(host)
-  dest = "/srv/playbooks/"
-  target.run("rm -rf #{dest}")
 end
 
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|

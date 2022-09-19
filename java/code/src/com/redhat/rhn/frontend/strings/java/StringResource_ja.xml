@@ -1961,7 +1961,8 @@
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
-        <target state="final">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; / &lt;span&gt;{2}&lt;/span&gt; {3} を表示しています</target>
+        <target state="final">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; / &lt;span&gt;{2}&lt;/span&gt; {3}
+ を表示しています</target>
       </trans-unit>
       <trans-unit id="message.numselected" xml:space="preserve">
         <source>({0} selected)</source>
@@ -11255,10 +11256,10 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Please fill in login.</source>
         <target state="final">ログイン情報を入力してください。</target>
       </trans-unit>
-    <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">IPMI lanplus</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

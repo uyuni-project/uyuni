@@ -21973,11 +21973,11 @@ Base Channel chosen on the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEdit.do</context>
         </context-group>
-        <target state="final">您可以通过选择下面某个软件包配置文件将正在以无人值守方式安装的系统与
-一个在 @@PRODUCT_NAME@@ 中注册的系
-统的软件包配置文件同步。&lt;strong&gt;请注意&lt;/strong&gt;：此列表将只显示
-针对&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;操作系统&lt;/a&gt;
-页面中所选基础频道创建的软件包配置文件。</target>
+        <target state="final">您可以通过选择下面某个软件包配置文件将正在以无人值守方式
+安装的系统与一个在 @@PRODUCT_NAME@@ 中注册的系
+统的软件包配置文件同步。&lt;strong&gt;请注意&lt;/strong&gt;：
+此列表将只显示针对&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;操作系统&lt;/a&gt;页面中所选基础通道创建的软件包
+配置文件。</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt;

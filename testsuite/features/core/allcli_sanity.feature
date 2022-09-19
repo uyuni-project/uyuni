@@ -110,5 +110,6 @@ Feature: Sanity checks
   Scenario: The registry without authentication is healthy
     Then it should be possible to reach the not authenticated registry
 
-  Scenario: The FTP server is working
-    Then it should be possible to use the FTP server
+@custom_download_endpoint
+  Scenario: The custom download endpoint is working
+    Then it should be possible to use the custom download endpoint

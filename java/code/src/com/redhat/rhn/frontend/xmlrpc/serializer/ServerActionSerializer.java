@@ -70,19 +70,7 @@ public class ServerActionSerializer extends ApiResponseSerializer<ServerAction> 
     public SerializedApiResponse serialize(ServerAction src) {
         Action act = src.getParentAction();
 
-        SerializationBuilder builder = new SerializationBuilder()
-                .add("failed_count", act.getFailedCount())
-                .add("modified", act.getModified().toString())
-                .add("created", act.getCreated().toString())
-                .add("action_type", act.getActionType().getName())
-                .add("successful_count", act.getSuccessfulCount())
-                .add("earliest_action", act.getEarliestAction().toString())
-                .add("archived", act.getArchived())
-                .add("scheduler_user", act.getSchedulerUser().getLogin())
-                .add("prerequisite", act.getPrerequisite())
-                .add("name", act.getName())
-                .add("id", act.getId())
-                .add("version", act.getVersion().toString());
+        SerializationBuilder builder = ActionSerializer.getSerializationBuilder(act);
 
         if (src.getCompletionTime() != null) {
             builder.add("completion_time", src.getCompletionTime().toString());
@@ -91,9 +79,7 @@ public class ServerActionSerializer extends ApiResponseSerializer<ServerAction> 
             builder.add("pickup_time", src.getPickupTime().toString());
         }
 
-        builder.add("modified_date", act.getModified())
-                .add("created_date", act.getCreated())
-                .add("completed_date", src.getCompletionTime())
+        builder.add("completed_date", src.getCompletionTime())
                 .add("pickup_date", src.getPickupTime())
                 .add("result_msg", src.getResultMsg());
 

@@ -1,3 +1,5 @@
+- Fixed serialization problems (bsc#1202899)
+- Filter out successors that have no repositories on SP migration (bsc#1202367)
 - Reduced the usage of deprecated Hibernate API
 - Fixed formula deselection in systemgroup (bsc#1202271)
 - Fix out of memory error when building a CLM project (bsc#1202217)
