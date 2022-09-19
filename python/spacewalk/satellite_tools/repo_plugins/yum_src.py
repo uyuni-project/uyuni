@@ -428,6 +428,7 @@ class ContentSource:
         self.sslclientcert = client_cert_file
         self.sslclientkey = client_key_file
         self.http_headers = http_headers
+        self.urlgrabber_logspec = None
 
         # keep authtokens for mirroring
         (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
