@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 11:25+0200\n"
-"PO-Revision-Date: 2022-09-19 13:13+0000\n"
+"PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-2/cs/>\n"
 "Language: cs\n"
@@ -4592,13 +4592,15 @@ msgstr "Opakující se stavy"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:65
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "Byly vytvořeny následující opakující se akce."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
 msgstr ""
+"Chcete-li vytvořit nové opakující se akce, přejděte do systému, skupiny nebo "
+"organizace, pro kterou chcete akci vytvořit."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4669,14 +4671,13 @@ msgstr ""
 "podřízeným kanálům."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
-#, fuzzy
 msgid "Error Details"
-msgstr "Podrobnosti"
+msgstr "Podrobnosti chyb"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
 msgid "Close"
-msgstr ""
+msgstr "Zavřít"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:297
 msgid ""
@@ -4700,11 +4701,11 @@ msgstr "krátce"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "Show additional details about this error"
-msgstr ""
+msgstr "Zobrazit další podrobnosti o této chybě"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 msgid "Unable to bootstrap host. The following errors have happened:"
-msgstr ""
+msgstr "Nelze zavést OS hostitele. Došlo k následujícím chybám:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:352
 msgid "Your system is bootstrapping: waiting for a response.."
@@ -4768,7 +4769,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:487
 msgid "Authentication Method"
-msgstr ""
+msgstr "Metoda ověřování"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:557
@@ -4777,13 +4778,12 @@ msgid "None"
 msgstr "Žádný"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#, fuzzy
 msgid "Reactivation Key"
-msgstr "Aktivační klíč"
+msgstr "Re-aktivační klíč"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:546
 msgid "Leave empty when no reactivation is wanted"
-msgstr ""
+msgstr "Nechte prázdné, není-li požadována re-aktivace"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:553
 msgid "Proxy"
@@ -4799,17 +4799,16 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:592
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
+msgstr "Zakázat striktní kontrolu klíče hostitele SSH během zaváděcího procesu"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:608
 msgid "Manage system completely via SSH (will not install an agent)"
-msgstr ""
+msgstr "Správa systému kompletně přes SSH (neinstaluje agenta)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:624
-#, fuzzy
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
-msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
+msgstr "Skutečně chcete tuto stránku zavřít během zavádění systému?"
 
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4834,26 +4833,24 @@ msgstr "Potvrdit odstranění"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr ""
+msgstr "Vyberte seznam pomahačů (ani proxy serverů ani tradičních klientů)."
 
 #: ../html/src/manager/systems/proxy.tsx:67
 msgid "Change of proxy server has been "
-msgstr ""
+msgstr "Změna proxy serveru byla "
 
 #: ../html/src/manager/systems/proxy.tsx:101
 #: ../html/src/manager/systems/proxy.tsx:117
-#, fuzzy
 msgid "Change Proxy"
-msgstr "Změny"
+msgstr "Změna proxy"
 
 #: ../html/src/manager/systems/proxy.tsx:117
 msgid "Connect minion(s) to another proxy server."
-msgstr ""
+msgstr "Připojení jednoho či více pomahačů k jinému proxy serveru."
 
 #: ../html/src/manager/systems/proxy.tsx:120
-#, fuzzy
 msgid "New Proxy"
-msgstr "Proxy"
+msgstr "Nový proxy server"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
