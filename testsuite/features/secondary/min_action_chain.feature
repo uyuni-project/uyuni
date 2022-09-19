@@ -66,6 +66,8 @@ Feature: Action chains on Salt minions
   Scenario: Add a package installation to an action chain on Salt minion
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I check radio button "schedule-by-action-chain"
@@ -150,7 +152,7 @@ Feature: Action chains on Salt minions
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
-    Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
+    Then I should see a "1. Apply patch(es) CL-andromeda-dummy-6789 on 1 system" text
     And I should see a "2. Remove milkyway-dummy from 1 system" text
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
