@@ -129,19 +129,23 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
   step %(I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed)
 end
 
-When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
+When(/^I wait (\d+) seconds until the event is picked up and (\d+) seconds until the event "([^"]*)" is completed$/) do |pickup_timeout, complete_timeout, event|
   # The code below is not perfect because there might be other events with the
   # same name in the events history - however, that's the best we have so far.
   steps %(
     When I follow "Events"
     And I follow "Pending"
-    And I wait at most 90 seconds until I do not see "#{event}" text, refreshing the page
+    And I wait at most #{pickup_timeout} seconds until I do not see "#{event}" text, refreshing the page
     And I follow "History"
     And I wait until I see "System History" text
     And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
-    And I wait at most #{final_timeout} seconds until the event is completed, refreshing the page
+    And I wait at most #{complete_timeout} seconds until the event is completed, refreshing the page
   )
+end
+
+When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
+  step %(I wait 90 seconds until the event is picked up and #{final_timeout} seconds until the event "#{event}" is completed)
 end
 
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
