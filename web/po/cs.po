@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-17 16:14+0000\n"
-"PO-Revision-Date: 2022-09-19 14:13+0000\n"
+"PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -4116,9 +4116,8 @@ msgid "The maximum value of the Squid cache in Megabytes"
 msgstr "Maximální hodnota mezipaměti Squid v MB"
 
 #: ../html/src/manager/proxy/container-config.tsx:231
-#, fuzzy
 msgid "e.g., 2048"
-msgstr "např. SLE12"
+msgstr "např. 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:238
 msgid "Proxy admin email"
@@ -4535,13 +4534,15 @@ msgstr "Opakující se stavy"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:65
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "Byly vytvořeny následující opakující se akce."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
 msgstr ""
+"Chcete-li vytvořit nové opakující se akce, přejděte do systému, skupiny nebo "
+"organizace, pro kterou chcete akci vytvořit."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4612,14 +4613,13 @@ msgstr ""
 "podřízeným kanálům."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
-#, fuzzy
 msgid "Error Details"
-msgstr "Podrobnosti"
+msgstr "Podrobnosti chyb"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
 msgid "Close"
-msgstr ""
+msgstr "Zavřít"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
@@ -4643,11 +4643,11 @@ msgstr "krátce"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
-msgstr ""
+msgstr "Zobrazit další podrobnosti o této chybě"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
 msgid "Unable to bootstrap host. The following errors have happened:"
-msgstr ""
+msgstr "Nelze zavést OS hostitele. Došlo k následujícím chybám:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
@@ -4707,11 +4707,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Authentication Method"
-msgstr ""
+msgstr "Metoda ověřování"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
 msgid "Ansible control node"
-msgstr ""
+msgstr "Řídicí uzel Ansible"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:557
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:587
@@ -4720,13 +4720,12 @@ msgid "None"
 msgstr "Žádný"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:570
-#, fuzzy
 msgid "Reactivation Key"
-msgstr "Aktivační klíč"
+msgstr "Re-aktivační klíč"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:576
 msgid "Leave empty when no reactivation is wanted"
-msgstr ""
+msgstr "Nechte prázdné, není-li požadována re-aktivace"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
 msgid "Proxy"
@@ -4742,17 +4741,16 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:622
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
+msgstr "Zakázat striktní kontrolu klíče hostitele SSH během zaváděcího procesu"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:638
 msgid "Manage system completely via SSH (will not install an agent)"
-msgstr ""
+msgstr "Správa systému kompletně přes SSH (neinstaluje agenta)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:654
-#, fuzzy
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
-msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
+msgstr "Skutečně chcete tuto stránku zavřít během zavádění systému?"
 
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4772,48 +4770,45 @@ msgid "An error occurred during cleanup"
 msgstr "Během mazání došlo k chybě"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:30
-#, fuzzy
 msgid "Not a system id"
-msgstr "Nenalezeny žádné cílové systémy"
+msgstr "Toto není ID systému"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:31
-#, fuzzy
 msgid "Unknown System"
-msgstr "Neznámý host"
+msgstr "Neznámý systém"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:32
 msgid "System is not a peripheral server"
-msgstr ""
+msgstr "Systém není periferním serverem"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:50
 msgid "New password generated and action for peripheral server scheduled"
-msgstr ""
+msgstr "Vygenerováno nové heslo a naplánována akce pro periferní server"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
 msgid "Peripheral Server"
-msgstr ""
+msgstr "Periferní server"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
-msgstr ""
+msgstr "Název databáze hlášení"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:95
 msgid "Report Database Host"
-msgstr ""
+msgstr "Hostitel databáze hlášení"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:101
 msgid "Report Database User"
-msgstr ""
+msgstr "Uživatel databáze hlášení"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:105
 msgid "Report Database Last Synced"
-msgstr ""
+msgstr "Naposledy synchronizovaná databáze hlášení"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
-#, fuzzy
 msgid "Regenerate Reporting Database Password"
-msgstr "Vygenerovat nové heslo"
+msgstr "Vygenerovat nové heslo databáze hlášení"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
@@ -4821,36 +4816,32 @@ msgstr "Potvrdit odstranění"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr ""
+msgstr "Vyberte seznam pomahačů (ani proxy serverů ani tradičních klientů)."
 
 #: ../html/src/manager/systems/proxy.tsx:67
 msgid "Change of proxy server has been "
-msgstr ""
+msgstr "Změna proxy serveru byla "
 
 #: ../html/src/manager/systems/proxy.tsx:101
 #: ../html/src/manager/systems/proxy.tsx:117
-#, fuzzy
 msgid "Change Proxy"
-msgstr "Změny"
+msgstr "Změna proxy"
 
 #: ../html/src/manager/systems/proxy.tsx:117
 msgid "Connect minion(s) to another proxy server."
-msgstr ""
+msgstr "Připojení jednoho či více pomahačů k jinému proxy serveru."
 
 #: ../html/src/manager/systems/proxy.tsx:120
-#, fuzzy
 msgid "New Proxy"
-msgstr "Proxy"
+msgstr "Nový proxy server"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
-#, fuzzy
 msgid "system selected"
-msgstr "Odstranit vybrané"
+msgstr "vybraný systém"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
-#, fuzzy
 msgid "systems selected"
-msgstr "Odstranit vybrané"
+msgstr "vybrané systémy"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
@@ -5072,24 +5063,20 @@ msgid "Confirm Software Channel Change"
 msgstr "Potvrďte změnu softwarového kanálu"
 
 #: ../html/src/manager/systems/virtual-list.tsx:42
-#, fuzzy
 msgid "Virtual Systems"
-msgstr "Hostované virtuální systémy"
+msgstr "Virtuální systémy"
 
 #: ../html/src/manager/systems/virtual-list.tsx:60
-#, fuzzy
 msgid "No Virtual Systems."
-msgstr "Hostované virtuální systémy"
+msgstr "Žádné virtuální systémy."
 
 #: ../html/src/manager/systems/virtual-list.tsx:65
-#, fuzzy
 msgid "Virtual Host"
-msgstr "Správce virtuálních hostiteľů"
+msgstr "Virtuální hostitel"
 
 #: ../html/src/manager/systems/virtual-list.tsx:73
-#, fuzzy
 msgid "Virtual System"
-msgstr "Hostované virtuální systémy"
+msgstr "Virtuální systém"
 
 #: ../html/src/manager/systems/virtual-list.tsx:101
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
