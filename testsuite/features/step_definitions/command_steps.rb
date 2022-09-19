@@ -496,7 +496,7 @@ end
 
 Then(/^the messages log should not contain out of memory errors$/) do
   output, code = $server.run('grep -i "Out of memory: Killed process" /var/log/messages', check_errors: false)
-  raise "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
+  raise "Out of memory errors in /var/log/messages:\n#{output}" unless code.zero?
 end
 
 When(/^I restart cobbler on the server$/) do
