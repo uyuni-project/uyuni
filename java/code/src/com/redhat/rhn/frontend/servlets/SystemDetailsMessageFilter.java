@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.servlets;
 
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -58,8 +59,16 @@ public class SystemDetailsMessageFilter implements Filter {
         User user = rctx.getCurrentUser();
         Server s  = SystemManager.lookupByIdAndUser(sid, user);
         s.asMinionServer().ifPresentOrElse(
-                minion -> addMessageIfNecessary(req, minion.doesOsSupportsTransactionalUpdate(), REBOOT_MESSAGE_KEY),
+                minion -> processMinionMessages(req, minion),
                 () -> addMessageIfNecessary(req, true, TRADITIONAL_STACK_MESSAGE_KEY)
+        );
+    }
+
+    private void processMinionMessages(HttpServletRequest req, MinionServer minion) {
+        addMessageIfNecessary(
+            req,
+            minion.doesOsSupportsTransactionalUpdate() && Boolean.TRUE.equals(minion.isRebootNeeded()),
+            REBOOT_MESSAGE_KEY
         );
     }
 

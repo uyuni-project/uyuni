@@ -1,3 +1,4 @@
+- Add beacon to check if a reboot is required in transactional systems
 - Use the actual sudo user home directory for salt ssh
   clients on bootstrap and clean up (bsc#1202093)
 - dnf repo definition does not support multiline gpgkeys

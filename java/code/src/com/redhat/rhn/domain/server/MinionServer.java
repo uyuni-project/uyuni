@@ -40,6 +40,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     private Integer sshPushPort;
     private Set<AccessToken> accessTokens = new HashSet<>();
     private Set<Pillar> pillars = new HashSet<>();
+    private Boolean rebootNeeded;
 
     /**
      * Constructs a MinionServer instance.
@@ -401,5 +402,13 @@ public class MinionServer extends Server implements SaltConfigurable {
                 }
         }
         return changed;
+    }
+
+    public Boolean isRebootNeeded() {
+        return rebootNeeded;
+    }
+
+    public void setRebootNeeded(Boolean rebootNeededIn) {
+        this.rebootNeeded = rebootNeededIn;
     }
 }

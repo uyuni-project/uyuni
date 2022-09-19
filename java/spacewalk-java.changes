@@ -1,3 +1,4 @@
+- Improved reboot needed handling for SLE Micro
 - Check if system has all formulas correctly assigned
   (bsc#1201607)
 - Remove group formula assignements and data on group delete
