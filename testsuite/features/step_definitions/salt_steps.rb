@@ -87,15 +87,6 @@ When(/^I accept "([^"]*)" key in the Salt master$/) do |host|
   $server.run("salt-key -y --accept=#{system_name}*")
 end
 
-When(/^I reject "([^"]*)" key in the Salt master$/) do |host|
-  system_name = get_system_name(host)
-  $server.run("salt-key -y --reject=#{system_name}")
-end
-
-When(/^I delete all keys in the Salt master$/) do
-  $server.run('salt-key -y -D')
-end
-
 When(/^I get OS information of "([^"]*)" from the Master$/) do |host|
   system_name = get_system_name(host)
   $output, _code = $server.run("salt #{system_name} grains.get osfullname")
@@ -152,14 +143,6 @@ Then(/^"(.*?)" should have been reformatted$/) do |host|
 end
 
 # user salt steps
-Given(/^I am authorized as an example user with no roles$/) do
-  $api_test.auth.login('admin', 'admin')
-  @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
-  $api_test.user.create_user(@username, 'linux')
-  step %(I am authorized as "#{@username}" with password "linux")
-  $api_test.auth.logout
-end
-
 When(/^I click on preview$/) do
   find('button#preview').click
 end
@@ -192,10 +175,6 @@ end
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive refresh")
   $server.run("zypper --non-interactive install --force #{package}-formula")
-end
-
-Then(/^I wait for "([^"]*)" formula to be installed on the server$/) do |package|
-  $server.run_until_ok("rpm -q #{package}-formula")
 end
 
 When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
@@ -392,10 +371,6 @@ When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, st
   end
 end
 
-When(/^I click undo for "(.*?)"$/) do |pkg|
-  find("button##{pkg}-undo").click
-end
-
 When(/^I click apply$/) do
   find('button#apply').click
 end
@@ -405,17 +380,6 @@ When(/^I click save$/) do
 end
 
 # salt-ssh steps
-When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
-  target = get_target(host)
-  if suse_host?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", check_errors: false)
-  elsif rh_host?(host)
-    target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", check_errors: false)
-  elsif deb_host?(host)
-    target.run("test -e /usr/bin/apt && apt -y remove salt-common salt-minion", check_errors: false)
-  end
-end
-
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   if suse_host?(host)
@@ -494,12 +458,4 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 " + dest)
-end
-
-When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
-  system_name = get_system_name(minion)
-  output, _code = $server.run("salt #{system_name} saltutil.kill_all_jobs")
-  if output.include?(system_name) && output.include?('Signal 9 sent to job')
-    log output
-  end
 end

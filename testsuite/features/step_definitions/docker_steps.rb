@@ -64,10 +64,6 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
   end
 end
 
-When(/^I check the first image$/) do
-  step %(I check the first row in the list)
-end
-
 When(/^I schedule the build of image "([^"]*)" via API calls$/) do |image|
   # empty by default
   version_build = ''

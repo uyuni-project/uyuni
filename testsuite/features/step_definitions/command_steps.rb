@@ -115,10 +115,6 @@ When(/^I list channels with spacewalk\-remove\-channel$/) do
   raise "Unable to run spacewalk-remove-channel -l command on server" unless return_code.zero?
 end
 
-When(/^I add "([^"]*)" channel$/) do |channel|
-  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size: 1_000_000)
-end
-
 When(/^I use spacewalk\-channel to add "([^"]*)"$/) do |child_channel|
   command = "spacewalk-channel --add -c #{child_channel} -u admin -p admin"
   $command_output, _code = $client.run(command)
@@ -456,12 +452,6 @@ Then(/^file "([^"]*)" should contain "([^"]*)" on server$/) do |file, content|
   "\n-----\n#{output}\n-----\n"
 end
 
-Then(/^file "([^"]*)" should not contain "([^"]*)" on server$/) do |file, content|
-  output, _code = $server.run("grep -F '#{content}' #{file} || echo 'notfound'", check_errors: false)
-  raise "'#{content}' found in file #{file}" if output != "notfound\n"
-  "\n-----\n#{output}\n-----\n"
-end
-
 Then(/^the tomcat logs should not contain errors$/) do
   output, _code = $server.run('cat /var/log/tomcat/*')
   msgs = %w[ERROR NullPointer]
@@ -697,24 +687,6 @@ Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   raise "Service #{service} not active" if output != 'active'
 end
 
-Then(/^service or socket "([^"]*)" is enabled on "([^"]*)"$/) do |name, host|
-  node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-enabled '#{name}'", check_errors: false)
-  output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-enabled '#{name}.socket'", check_errors: false)
-  output_socket = output_socket.split(/\n+/)[-1]
-  raise if output_service != 'enabled' and output_socket != 'enabled'
-end
-
-Then(/^service or socket "([^"]*)" is active on "([^"]*)"$/) do |name, host|
-  node = get_target(host)
-  output_service, _code_service = node.run("systemctl is-active '#{name}'", check_errors: false)
-  output_service = output_service.split(/\n+/)[-1]
-  output_socket, _code_socket = node.run(" systemctl is-active '#{name}.socket'", check_errors: false)
-  output_socket = output_socket.split(/\n+/)[-1]
-  raise if output_service != 'active' and output_socket != 'active'
-end
-
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}.socket'", check_errors: false)
@@ -907,16 +879,6 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
   node.run('zypper ref')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
   node.run(cmd, successcodes: [0, 100, 101, 102, 103, 106])
-end
-
-When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
-  if pattern.include?("suma") && $product == "Uyuni"
-    pattern.gsub! "suma", "uyuni"
-  end
-  node = get_target(host)
-  node.run('zypper ref')
-  cmd = "zypper --non-interactive remove -t pattern #{pattern}"
-  node.run(cmd, successcodes: [0, 100, 101, 102, 103, 104, 106])
 end
 
 When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
@@ -1548,12 +1510,6 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
     sleep 1
     break unless result.include? pkg
   end
-end
-
-Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
-  node = get_target(client)
-  _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", check_errors: false)
-  raise if code.zero?
 end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
