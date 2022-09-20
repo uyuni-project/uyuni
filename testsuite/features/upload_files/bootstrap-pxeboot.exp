@@ -14,5 +14,6 @@ expect "#"
 send -- "chmod 750 /root/bootstrap.sh\r"
 expect "#"
 send -- "bash -x /root/bootstrap.sh\r"
+set timeout 180
 expect "?bootstrap complete?"
 puts "\r"
