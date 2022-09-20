@@ -38,7 +38,10 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Custom-Channel-x86_64"
     And I click on "Create Activation Key"
     And I follow "Configuration" in the content area
     And I follow first "Subscribe to Channels" in the content area

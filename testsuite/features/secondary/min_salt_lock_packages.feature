@@ -117,8 +117,10 @@ Feature: Lock packages on SLES salt minion
     When I follow "Software" in the content area
     And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
-    And package "milkyway-dummy-2.0-1.1" is reported as unlocked
     And package "orion-dummy-1.1-1.1" is reported as locked
+    And I enter "milkyway-dummy-2.0-1.1" as the filtered package name
+    And I click on the filter button
+    And package "milkyway-dummy-2.0-1.1" is reported as unlocked
 
   Scenario: Mix package locks and unlock events part 2
     Given I am on the Systems overview page of this "sle_minion"
@@ -133,7 +135,11 @@ Feature: Lock packages on SLES salt minion
     And "orion-dummy-1.1-1.1" is unlocked on "sle_minion"
     When I follow "Software" in the content area
     And I follow "Lock / Unlock"
+    And I enter "hoag-dummy-1.1-1.1" as the filtered package name
+    And I click on the filter button
     Then package "hoag-dummy-1.1-1.1" is reported as unlocked
+    And I enter "orion-dummy-1.1-1.1" as the filtered package name
+    And I click on the filter button
     And package "orion-dummy-1.1-1.1" is reported as unlocked
 
   Scenario: Cleanup: remove packages after testing locks
