@@ -915,9 +915,12 @@ public class CachedStatement implements Serializable {
 
     /**
      * Restart the latest query
+     * @param newSession the new hibernate session to use
      * @return what the previous query returned or null.
      */
-    public DataResult<?> restartQuery() {
+    public DataResult<?> restartQuery(Session newSession) {
+        session = newSession;
+
         return restartData == null ? null :
                 (DataResult<?>) internalExecute(restartData.getParameters(),
                         restartData.getInClause(), restartData.getMode());

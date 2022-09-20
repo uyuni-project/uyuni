@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action;
 
 import com.redhat.rhn.common.db.datasource.CachedStatement;
 import com.redhat.rhn.common.db.datasource.Elaborator;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.common.util.download.ByteArrayStreamInfo;
 import com.redhat.rhn.domain.user.User;
@@ -24,6 +25,8 @@ import com.redhat.rhn.frontend.dto.SystemSearchResult;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,6 +53,9 @@ import javax.servlet.http.HttpSession;
  * @author jmatthews
  */
 public class CSVDownloadAction extends DownloadAction {
+
+    private static final Logger LOG = LogManager.getLogger(CSVDownloadAction.class);
+
     public static final String EXPORT_COLUMNS = "__CSV__exportColumnsParam";
     public static final String PAGE_LIST_DATA = "___CSV_pageListData";
     public static final String QUERY_DATA = "__CSV_queryMode";
@@ -70,7 +76,7 @@ public class CSVDownloadAction extends DownloadAction {
              * Overridden to redirect for case of errors while processing CSV Export,
              * example: Session timeout.
              */
-            e.printStackTrace();
+            LOG.error("Failed to generate CSV", e);
             return mapping.findForward("error");
         }
         return null;
@@ -122,7 +128,7 @@ public class CSVDownloadAction extends DownloadAction {
             /*if (session.getAttribute("ssr_" + paramQuery) != null) {
                 return (DataResult) session.getAttribute("ssr_" + paramQuery);
             }*/
-            return query.restartQuery();
+            return query.restartQuery(HibernateFactory.getSession());
         }
 
         String paramPageData = request.getParameter(PAGE_LIST_DATA);
@@ -204,7 +210,7 @@ public class CSVDownloadAction extends DownloadAction {
         Elaborator elab = TagHelper.lookupElaboratorFor(
                 getUniqueName(request), request);
         if (elab != null) {
-            elab.elaborate(pageData);
+            elab.elaborate(pageData, HibernateFactory.getSession());
             if (!pageData.isEmpty() && pageData.get(0) instanceof SystemSearchResult) {
                 pageData = mergeWithPartialResult(pageData,
                         (Map)session.getAttribute("ssr_" + request
