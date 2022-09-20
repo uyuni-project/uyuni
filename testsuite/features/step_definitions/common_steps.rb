@@ -1387,7 +1387,7 @@ When(/^I reboot server through SSH$/) do
   temp_server.extend(LavandaBasic)
   # Reboot and wait
   temp_server.run("reboot > /dev/null 2> /dev/null &")
-  reboot_timeout = 1000
+  reboot_timeout = 500
   check_shutdown($server.public_ip, reboot_timeout)
   check_restart($server.public_ip, temp_server, reboot_timeout)
   # Get a hand back on the server
@@ -1404,9 +1404,10 @@ end
 Then(/^I change server short hostname from hosts and hostname files as "([^"]*)"$/) do |text|
   # Change instances of the old hostname into the desired new hostname
   old_hostname = $server.hostname
-  $server.run("sed -i 's/#{old_hostname}/#{text}/g' /etc/hosts &&
-  sed -i 's/#{old_hostname}/#{text}/g' /etc/hostname &&
-  echo '#{$server.public_ip} #{$server.full_hostname} #{old_hostname}' >> /etc/hosts ")
+  $server.run("sed -i 's/#{old_hostname}/#{text}/g' /etc/hostname &&
+#  sed -i 's/#{old_hostname}/#{text}/g' /etc/hosts &&
+  echo '#{$server.public_ip} #{$server.full_hostname} #{old_hostname}' >> /etc/hosts &&
+  echo '#{$server.public_ip} #{text}#{$server.full_hostname.delete_prefix($server.hostname)} #{text}' >> /etc/hosts")
 end
 
 When(/^I run spacewalk-hostname-rename command on the server$/) do
@@ -1418,7 +1419,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
             --ssl-ca-password=spacewalk"
   out, result_code = temp_server.run(command, check_errors: false, timeout: 10)
   log "#{out}"
-  reboot_timeout = 1000
+  reboot_timeout = 500
   repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
     out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
     if !out.to_s.include? "dead" and out.to_s.include? "running"
