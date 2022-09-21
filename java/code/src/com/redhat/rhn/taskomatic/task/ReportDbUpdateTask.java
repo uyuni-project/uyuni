@@ -38,6 +38,11 @@ import java.util.Map;
 
 public class ReportDbUpdateTask extends RhnJavaJob {
 
+    private static final String GENERAL_REPORT_QUERIES = "GeneralReport_queries";
+    private static final String SYSTEM_REPORT_QUERIES = "SystemReport_queries";
+    private static final String CHANNEL_REPORT_QUERIES = "ChannelReport_queries";
+    private static final String SCAP_REPORT_QUERIES = "ScapReport_queries";
+
     private static final int BATCH_SIZE = Config.get()
             .getInt(ConfigDefaults.REPORT_DB_BATCH_SIZE, 2000);
 
@@ -82,38 +87,38 @@ public class ReportDbUpdateTask extends RhnJavaJob {
         long mgmId = 1;
 
         try {
-            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "SystemGroup", mgmId);
-            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "SystemGroupPermission", mgmId);
-            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "Account", mgmId);
-            fillReportDbTable(rh.getSession(), "GeneralReport_queries", "AccountGroup", mgmId);
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "SystemGroup", mgmId);
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "SystemGroupPermission", mgmId);
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "Account", mgmId);
+            fillReportDbTable(rh.getSession(), GENERAL_REPORT_QUERIES, "AccountGroup", mgmId);
 
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "System", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemHistory", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemAction", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemChannel", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemConfigChannel", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemVirtualData", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetInterface", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV4", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemNetAddressV6", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemOutdated", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemGroupMember", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemEntitlement", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemErrata", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemPackageInstalled", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemPackageUpdate", mgmId);
-            fillReportDbTable(rh.getSession(), "SystemReport_queries", "SystemCustomInfo", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "System", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemHistory", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemAction", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemChannel", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemConfigChannel", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemVirtualData", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetInterface", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetAddressV4", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemNetAddressV6", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemOutdated", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemGroupMember", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemEntitlement", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemErrata", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageInstalled", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageUpdate", mgmId);
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemCustomInfo", mgmId);
 
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Channel", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelErrata", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelPackage", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "ChannelRepository", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Errata", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Package", mgmId);
-            fillReportDbTable(rh.getSession(), "ChannelReport_queries", "Repository", mgmId);
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Channel", mgmId);
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelErrata", mgmId);
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelPackage", mgmId);
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "ChannelRepository", mgmId);
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Errata", mgmId);
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Package", mgmId);
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Repository", mgmId);
 
-            fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScan", mgmId);
-            fillReportDbTable(rh.getSession(), "ScapReport_queries", "XccdScanResult", mgmId);
+            fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScan", mgmId);
+            fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScanResult", mgmId);
 
             ReportDBHelper.analyzeReportDb(rh.getSession());
 
