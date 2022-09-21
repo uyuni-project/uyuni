@@ -1,3 +1,5 @@
+- Prevent possible race conditions causing traceback
+  while processing cobbler sync (bsc#1192817)
 - Add missing IPv6 default configuration (bsc#1201589)
 - fix problems with parallel running processes
 
