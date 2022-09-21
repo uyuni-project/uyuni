@@ -1251,7 +1251,7 @@ type=rpm-md
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
-        params['logspec'] = self.urlgrabber_logspec 
+        params['urlgrabber_logspec'] = self.urlgrabber_logspec 
 
     def get_file(self, path, local_base=None):
         try:

@@ -341,6 +341,7 @@ class ContentSource:
             self.num_packages = 0
             self.num_excluded = 0
 
+            self.urlgrabber_logspec = None
             # keep authtokens for mirroring
             (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
             if query:
@@ -511,6 +512,7 @@ class ContentSource:
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
                                         self.repo.proxy_password)
+        params['urlgrabber_logspec'] = self.urlgrabber_logspec
 
     @staticmethod
     def get_file(path, local_base=None):
