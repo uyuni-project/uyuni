@@ -228,9 +228,7 @@ RewriteRule "^/saltboot/(image|boot)(.+)$" "/os-images/%1$2"  [R,L,QSD]
 ''')
 
     # Adjust logs format in apache httpd:
-    # 1. Replace mod_log_config.conf so that the logger takes a special var HANDLER_TYPE
-    shutil.copyfile('/usr/bin/conf/mod_log_config.conf', '/etc/apache2/mod_log_config.conf')
-    # 2. Modify the other configurations so that the var HANDLER_TYPE gets set based on a directory of a script executed
+    # Modify the other configurations so that the var HANDLER_TYPE gets set based on a directory of a script executed
     insert_under_line(
         "/etc/apache2/conf.d/spacewalk-proxy-wsgi.conf",
         "<Directory /usr/share/rhn>",
