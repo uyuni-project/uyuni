@@ -1,3 +1,5 @@
+- import gpg keys on SUSE systems directly to prevent using
+  gpg-auto-import-keys on all package operations (bsc#1203580)
 - Prevent possible tracebacks on reading postgres opts
   with suma_minion salt pillar extension module
 - Fix mgrnet availability check
