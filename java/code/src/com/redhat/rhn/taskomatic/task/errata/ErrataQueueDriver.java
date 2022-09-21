@@ -24,14 +24,13 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Driver for the threaded errata queue
  */
-public class ErrataQueueDriver implements QueueDriver {
+public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
 
     private Logger logger = null;
 
@@ -45,11 +44,14 @@ public class ErrataQueueDriver implements QueueDriver {
     /**
      * {@inheritDoc}
      */
-    public List getCandidates() {
+    public List<Map<String, Long>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_QUEUE_FIND_CANDIDATES);
         try {
-            return select.execute(new HashMap());
+            @SuppressWarnings("unchecked")
+            List<Map<String, Long>> result = select.execute();
+
+            return result;
         }
         finally {
             HibernateFactory.closeSession();
@@ -80,8 +82,8 @@ public class ErrataQueueDriver implements QueueDriver {
     /**
      * {@inheritDoc}
      */
-    public QueueWorker makeWorker(Object workItem) {
-        return new ErrataQueueWorker((Map) workItem, logger);
+    public QueueWorker makeWorker(Map<String, Long> workItem) {
+        return new ErrataQueueWorker(workItem, logger);
     }
 
     /**
