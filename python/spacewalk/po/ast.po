@@ -261,7 +261,7 @@ msgstr ""
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
-msgid "Architecture `%s' is not supported"
+msgid "Architecture `%s' is not supported. Test"
 msgstr ""
 
 #: ../server/rhnServer/server_token.py:78

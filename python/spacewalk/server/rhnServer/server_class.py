@@ -94,7 +94,7 @@ class Server(ServerWrapper):
             log_error("Attempt to create server with invalid arch `%s'" %
                       arch)
             raise rhnFault(24,
-                           _("Architecture `%s' is not supported") % arch)
+                           _("Architecture `%s' is not supported. Test") % arch)
         self.server["server_arch_id"] = data["id"]
         self.is_rpm_managed = data['is_rpm_managed']
 
