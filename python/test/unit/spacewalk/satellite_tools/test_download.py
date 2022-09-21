@@ -101,6 +101,7 @@ def test_reposync_download_thread_fetch_url_proxy_pass():
             "minrate": None,
             "urls": [],
             "relative_path": "",
+            "urlgrabber_logspec": None,
         }
     )
     parent_mock = Mock()
