@@ -13,7 +13,8 @@ Feature: OpenSCAP audit of Salt minion
     And I am logged in API as user "admin" and password "admin"
 
   Scenario: Install the OpenSCAP packages on the SLE minion
-    When I refresh the metadata for "sle_minion"
+    When I enable client tools repositories on "sle_minion"
+    And I refresh the metadata for "sle_minion"
     And I install OpenSCAP dependencies on "sle_minion"
     And I follow "Software" in the content area
     And I click on "Update Package List"

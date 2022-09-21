@@ -80,7 +80,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Verify that minion bootstrapped with base channel
     Given I am on the Systems page
-    Then I should see a "Test-Channel-x86_64" text
+    Then I should see a "SLE-Product-SLES15-SP4-Pool for x86_64" text
 
   # bsc#1080807 - Assigning configuration channel in activation key doesn't work
   Scenario: Verify that minion bootstrapped with configuration channel
