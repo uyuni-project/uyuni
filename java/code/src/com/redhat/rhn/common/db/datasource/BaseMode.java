@@ -22,6 +22,7 @@ import org.hibernate.Session;
  */
 public abstract class BaseMode implements Mode {
 
+    private ParsedMode parsed;
     private String name;
     private CachedStatement query;
 
@@ -36,6 +37,7 @@ public abstract class BaseMode implements Mode {
      * @param parsedMode the mode
      */
     /*package*/ BaseMode(Session session, ParsedMode parsedMode) {
+        this.parsed = parsedMode;
         this.name = parsedMode.getName();
         this.query = new CachedStatement(session, parsedMode.getParsedQuery());
     }
@@ -71,6 +73,14 @@ public abstract class BaseMode implements Mode {
      */
     public int getArity() {
         return query.getArity();
+    }
+
+
+    /**
+     * @return the parsed mode to be used to replicate the mode
+     */
+    public ParsedMode getParsedMode() {
+        return parsed;
     }
 }
 
