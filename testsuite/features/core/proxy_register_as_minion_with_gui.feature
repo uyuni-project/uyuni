@@ -15,8 +15,8 @@ Feature: Setup Uyuni proxy
 
   Scenario: Install proxy software
     When I refresh the metadata for "proxy"
-    # TODO: uncomment when SCC product becomes available
-    # And I install "SUSE-Manager-Proxy" product on the proxy
+    # TODO: comment when SCC product becomes unavailable
+    And I install "SUSE-Manager-Proxy" product on the proxy
     And I install proxy pattern on the proxy
     And I let squid use avahi on the proxy
 
@@ -49,8 +49,8 @@ Feature: Setup Uyuni proxy
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname
-    # TODO: uncomment when SCC product becomes available
-    # When I wait until I see "SUSE Manager Proxy" text, refreshing the page
+    # TODO: comment when SCC product becomes unavailable
+    When I wait until I see "SUSE Manager Proxy" text, refreshing the page
     Then I should see a "Proxy" link in the content area
 
 @uyuni
