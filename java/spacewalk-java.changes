@@ -1,7 +1,6 @@
 - Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
 - Fix UI crash when filtering on systems list (bsc#1203169)
 - Filter out successors that have no repositories on SP migration (bsc#1202367)
-- Fixed serialization problems (bsc#1202899)
 - Reduced the usage of deprecated Hibernate API
 - Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
 - Support Pay-as-you-go new CA location for SLES15SP4
