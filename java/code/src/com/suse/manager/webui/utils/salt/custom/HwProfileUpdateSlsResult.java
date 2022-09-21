@@ -57,7 +57,7 @@ public class HwProfileUpdateSlsResult {
     private StateApplyResult<Ret<Map<String, Optional<String>>>> networkModules;
 
     @SerializedName("mgrcompat_|-dns_fqdns_|-mgrnet.dns_fqdns_|-module_run")
-    private Optional<StateApplyResult<Ret<Map<String, List<String>>>>> fqdnsFromMgrNetModule =
+    private Optional<StateApplyResult<Optional<Ret<Map<String, List<String>>>>>> fqdnsFromMgrNetModule =
             Optional.empty();
 
     @SerializedName("mgrcompat_|-fqdns_|-network.fqdns_|-module_run")
@@ -202,8 +202,11 @@ public class HwProfileUpdateSlsResult {
      * @return fqdns from dns query
      */
     public List<String> getDnsFqdns() {
-        return fqdnsFromMgrNetModule.map(s->Optional.ofNullable(s.getChanges().getRet())
-                        .orElse(Map.of()).get("dns_fqdns")).orElseGet(Collections::emptyList);
+        return fqdnsFromMgrNetModule
+                .flatMap(s -> s.getChanges())
+                .map(c -> c.getRet())
+                .map(s -> s.get("dns_fqdns"))
+                .orElseGet(Collections::emptyList);
     }
 
     private Optional<Map<String, Object>> getSmbiosRecords(
