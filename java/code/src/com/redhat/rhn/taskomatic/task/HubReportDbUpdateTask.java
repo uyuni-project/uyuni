@@ -18,9 +18,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-public class HubReportDbUpdateTask extends RhnQueueJob {
+public class HubReportDbUpdateTask extends RhnQueueJob<HubReportDbUpdateDriver> {
 
-    private Logger log = LogManager.getLogger(getClass());
+    private final Logger log = LogManager.getLogger(getClass());
 
     /**
      * {@inheritDoc}
@@ -34,7 +34,7 @@ public class HubReportDbUpdateTask extends RhnQueueJob {
      * {@inheritDoc}
      */
     @Override
-    protected Class getDriverClass() {
+    protected Class<HubReportDbUpdateDriver> getDriverClass() {
         return HubReportDbUpdateDriver.class;
     }
 

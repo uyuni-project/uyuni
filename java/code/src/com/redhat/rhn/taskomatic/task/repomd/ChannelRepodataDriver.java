@@ -25,8 +25,8 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ import java.util.Map;
  *
  *
  */
-public class ChannelRepodataDriver implements QueueDriver {
+public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
 
     private Logger logger = null;
 
@@ -45,7 +45,7 @@ public class ChannelRepodataDriver implements QueueDriver {
         WriteMode resetChannelRepodata = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMOD_CLEAR_IN_PROGRESS);
         try {
-            int eqReset = resetChannelRepodata.executeUpdate(new HashMap());
+            int eqReset = resetChannelRepodata.executeUpdate(Map.of());
             if (eqReset > 0) {
                 logger.info("Resetting {} unfinished channel repodata tasks", eqReset);
             }
@@ -70,19 +70,17 @@ public class ChannelRepodataDriver implements QueueDriver {
     /**
      * @return Returns candidates
      */
-    public List getCandidates() {
+    public List<Map<String, Object>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DRIVER_QUERY);
 
         Map<String, Object> params = new HashMap<>();
-        List<Object> retval = new LinkedList<>();
-        List results = select.execute(params);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> results = select.execute(params);
         if (results != null) {
-            for (Object resultIn : results) {
-                retval.add(resultIn);
-            }
+            return results;
         }
-        return retval;
+        return Collections.emptyList();
     }
 
     /**
@@ -111,8 +109,8 @@ public class ChannelRepodataDriver implements QueueDriver {
      * @param workItem work item
      * @return Returns channel repodata worker object
      */
-    public QueueWorker makeWorker(Object workItem) {
-        return new ChannelRepodataWorker((Map) workItem, getLogger());
+    public QueueWorker makeWorker(Map<String, Object> workItem) {
+        return new ChannelRepodataWorker(workItem, getLogger());
     }
 
     /**
