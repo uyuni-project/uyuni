@@ -1,4 +1,3 @@
-- add logspec param in rhn.conf to set urlgrabber loglevel
 - Enhance passwords cleanup and add extra files in spacewalk-debug (bsc#1201059)
 - Prevent mixing credentials for proxy and repository server
   while using basic authentication and avoid hiding errors
