@@ -1,3 +1,4 @@
+- Fix prerequisite action serialization (bsc#1202899)(bsc#1203484)
 - Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
 - Fix UI crash when filtering on systems list (bsc#1203169)
 - Filter out successors that have no repositories on SP migration (bsc#1202367)

@@ -2464,7 +2464,7 @@ public class SystemHandler extends BaseHandler {
                 result.put("scheduler_user", action.getSchedulerUser().getLogin());
             }
             if (action.getPrerequisite() != null) {
-                result.put("prerequisite", action.getPrerequisite());
+                result.put("prerequisite", action.getPrerequisite().getId());
             }
             if (action.getName() != null) {
                 result.put("name", action.getName());

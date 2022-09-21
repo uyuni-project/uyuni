@@ -283,7 +283,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
      * @apidoc.param #param_desc("string", "predecessorLabel", "Predecessor Environment label")
-     * @apidoc.param #param_desc("string", "envlabel", "new Content Environment label")
+     * @apidoc.param #param_desc("string", "envLabel", "new Content Environment label")
      * @apidoc.param #param_desc("string", "name", "new Content Environment name")
      * @apidoc.param #param_desc("string", "description", "new Content Environment description")
      * @apidoc.returntype $ContentEnvironmentSerializer
