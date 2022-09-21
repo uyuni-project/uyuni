@@ -320,6 +320,9 @@ class ContentSource:
         else:
             self.org = "NULL"
 
+        self.urlgrabber_logspec = None
+        self._load_urlgrabber_logspec()
+
         # read the proxy configuration in /etc/rhn/rhn.conf
         with cfg_component('server.satellite') as CFG:
             self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
@@ -341,7 +344,6 @@ class ContentSource:
             self.num_packages = 0
             self.num_excluded = 0
 
-            self.urlgrabber_logspec = None
             # keep authtokens for mirroring
             (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
             if query:
@@ -409,6 +411,11 @@ class ContentSource:
             new_pack.checksum = pack.checksum
             to_return.append(new_pack)
         return to_return
+
+    def _load_urlgrabber_logspec(self):
+        with cfg_component('server.satellite') as CFG:
+            if CFG.urlgrabber_logspec:
+                self.urlgrabber_logspec = CFG.urlgrabber_logspec
 
     @staticmethod
     def _sort_packages(pkg1, pkg2):
