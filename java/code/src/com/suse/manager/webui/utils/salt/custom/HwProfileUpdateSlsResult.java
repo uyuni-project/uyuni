@@ -202,8 +202,8 @@ public class HwProfileUpdateSlsResult {
      * @return fqdns from dns query
      */
     public List<String> getDnsFqdns() {
-        return fqdnsFromMgrNetModule.map(s->s.getChanges().getRet().get("dns_fqdns"))
-                .orElseGet(Collections::emptyList);
+        return fqdnsFromMgrNetModule.map(s->Optional.ofNullable(s.getChanges().getRet())
+                        .orElse(Map.of()).get("dns_fqdns")).orElseGet(Collections::emptyList);
     }
 
     private Optional<Map<String, Object>> getSmbiosRecords(
