@@ -10,7 +10,7 @@ Feature: Action chains on Salt minions
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    When I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I install package "milkyway-dummy" on this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"
