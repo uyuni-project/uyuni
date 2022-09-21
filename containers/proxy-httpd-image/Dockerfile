@@ -23,8 +23,10 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     python3-PyYAML && \
     sh remove_unused.sh
 
+# Replace mod_log_config.conf so that the logger takes a special var HANDLER_TYPE
+COPY mod_log_config.conf /etc/apache2/mod_log_config.conf
+
 # Additional material
-COPY conf/ /usr/bin/conf/
 COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
