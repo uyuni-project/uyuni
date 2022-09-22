@@ -15,7 +15,7 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
     And I wait until I do not see "Loading..." text
-    And I should see "SLE15-SP4-Installer-Updates for x86_64 " as unchecked
+    And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
 
   Scenario: Check old channels are still enabled on the system before channel change completes
     When I refresh the metadata for "sle_minion"
@@ -48,7 +48,7 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
     And I wait until I do not see "Loading..." text
-    And I should see "SLE15-SP4-Installer-Updates for x86_64 " as checked
+    And I should see "SLE15-SP4-Installer-Updates for x86_64" as checked
 
   Scenario: Check the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
