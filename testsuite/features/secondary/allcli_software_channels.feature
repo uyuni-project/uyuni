@@ -17,7 +17,7 @@ Feature: Channel subscription via SSM
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    When I select "Test Base Channel" from drop-down in table line with "Test-Channel-x86_64"
+    When I select "Test Base Channel" from drop-down in table line with "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Test Base Channel" text
@@ -46,7 +46,7 @@ Feature: Channel subscription via SSM
 @sle_minion
   Scenario: Check old channels are still enabled on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "1" channels should be enabled on "sle_minion"
+    Then "11" channels should be enabled on "sle_minion"
     And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
 
   Scenario: Wait 3 minutes for the scheduled action to be executed
@@ -71,7 +71,7 @@ Feature: Channel subscription via SSM
 @sle_minion
   Scenario: Check the new channels are enabled on the SLES minion
     When I refresh the metadata for "sle_minion"
-    Then "2" channels should be enabled on "sle_minion"
+    Then "12" channels should be enabled on "sle_minion"
     And channel "Test Base Channel" should be enabled on "sle_minion"
     And channel "Test Child Channel" should be enabled on "sle_minion"
 

@@ -24,6 +24,7 @@ Feature: Retracted patches
     When I am on the "Software" page of this "sle_minion"
     And I follow "Packages"
     And I follow "Install"
+    And I enter "rute-dummy" as the filtered package name
     Then I should see a "rute-dummy-2.0-1.2" text
     And I should not see a "rute-dummy-2.1-1.1" text
 
@@ -43,9 +44,10 @@ Feature: Retracted patches
     And I refresh packages list via spacecmd on "sle_minion"
     And I wait until refresh package list on "sle_minion" is finished
     And I follow the left menu "Software > Channel List > All"
-    And I follow "Test-Channel-x86_64"
+    And I click on "Show All Child Channels"
+    And I follow "SLE-Custom-Channel-x86_64"
     And I follow "Patches" in the content area
-    And I follow "rute-dummy-0817"
+    And I follow "CL-rute-dummy-0817"
     And I follow "Affected Systems"
     Then I should see a "No systems." text
     When I remove package "rute-dummy" from this "sle_minion"
@@ -53,7 +55,8 @@ Feature: Retracted patches
    
   Scenario: Target systems for stable packages should not be empty
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Test-Channel-x86_64"
+    And I click on "Show All Child Channels"
+    And I follow "SLE-Custom-Channel-x86_64"
     And I follow "Packages" in the content area
     And I follow "rute-dummy-2.0-1.2.x86_64"
     And I follow "Target Systems"
@@ -61,7 +64,8 @@ Feature: Retracted patches
    
   Scenario: Target systems for retracted packages should be empty
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Test-Channel-x86_64"
+    And I click on "Show All Child Channels"
+    And I follow "SLE-Custom-Channel-x86_64"
     And I follow "Packages" in the content area
     And I follow "rute-dummy-2.1-1.1.x86_64"
     And I follow "Target Systems"
@@ -69,32 +73,34 @@ Feature: Retracted patches
 
   Scenario: Retracted packages in the patch detail
     When I follow the left menu "Patches > Patch List > All"
-    And I follow "rute-dummy-0815"
+    And I follow "CL-rute-dummy-0815"
     Then I should see a "Status: Retracted" text
     When I go back
-    And I follow "rute-dummy-0816"
+    And I follow "CL-rute-dummy-0816"
     Then I should see a "Status: Stable" text
     When I go back
-    And I follow "rute-dummy-0817"
+    And I follow "CL-rute-dummy-0817"
     Then I should see a "Status: Retracted" text
 
   Scenario: Retracted packages in the patches list
     When I follow the left menu "Patches > Patch List > All"
-    Then the table row for "rute-dummy-0815" should contain "retracted" icon
-    And the table row for "rute-dummy-0816" should not contain "retracted" icon
-    And the table row for "rute-dummy-0817" should contain "retracted" icon
+    Then the table row for "CL-rute-dummy-0815" should contain "retracted" icon
+    And the table row for "CL-rute-dummy-0816" should not contain "retracted" icon
+    And the table row for "CL-rute-dummy-0817" should contain "retracted" icon
 
   Scenario: Retracted patches in the channel patches list
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Test-Channel-x86_64"
+    And I click on "Show All Child Channels"
+    And I follow "SLE-Custom-Channel-x86_64"
     And I follow "Patches" in the content area
-    Then the table row for "rute-dummy-0815" should contain "retracted" icon
-    And the table row for "rute-dummy-0816" should not contain "retracted" icon
-    And the table row for "rute-dummy-0817" should contain "retracted" icon
+    Then the table row for "CL-rute-dummy-0815" should contain "retracted" icon
+    And the table row for "CL-rute-dummy-0816" should not contain "retracted" icon
+    And the table row for "CL-rute-dummy-0817" should contain "retracted" icon
  
   Scenario: Retracted packages in the channel packages list
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Test-Channel-x86_64"
+    And I click on "Show All Child Channels"
+    And I follow "SLE-Custom-Channel-x86_64"
     And I follow "Packages" in the content area
     Then the table row for "rute-dummy-2.0-1.1.x86_64" should contain "retracted" icon
     Then the table row for "rute-dummy-2.0-1.2.x86_64" should not contain "retracted" icon
@@ -107,7 +113,7 @@ Feature: Retracted patches
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages" in the content area
     And I follow "Install"
-    And I follow "Test-Channel-x86_64"
+    And I follow "SLE-Custom-Channel-x86_64"
     Then I should see a "rute-dummy-2.0-1.2" text
     And I should not see a "rute-dummy-2.1-1.1" text
     And I follow "Clear"

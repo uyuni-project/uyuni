@@ -1032,7 +1032,7 @@ end
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
   # for testing buildtime of generated metadata - See bsc#1078056
   node = get_target(host)
-  cmd = "dumpsolv /var/cache/zypp/solv/spacewalk\:test-channel-x86_64/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
+  cmd = "dumpsolv /var/cache/zypp/solv/susemanager\:test-channel-for-sle/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
   metadata_buildtime, return_code = node.run(cmd)
   raise "Command failed: #{cmd}" unless return_code.zero?
   cmd = "rpm -q --qf '%{BUILDTIME}' #{pkg}"
