@@ -1,3 +1,5 @@
+- Trigger migration of Cobbler settings and collections if necessary
+  during package installation (bsc#1203478)
 - fix prototype missmatch in idn_to_ascii (bsc#1203385)
 - Execute "cobbler mkloaders" when setting up cobbler
 - Adjust next_server cobbler settings for cobbler >= 3.3.1
