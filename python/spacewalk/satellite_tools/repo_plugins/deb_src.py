@@ -511,11 +511,10 @@ class ContentSource:
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
                                         self.repo.proxy_password)
+        params['urlgrabber_logspec'] = None
         with cfg_component('server.satellite') as CFG:
-            if CFG.urlgrabber_logspec:
-                params['urlgrabber_logspec'] = CFG.urlgrabber_logspec
-            else:
-                params['urlgrabber_logspec'] = None
+            if hasattr(CFG, "urlgrabber_logspec"):
+                params["urlgrabber_logspec"] = CFG.urlgrabber_logspec
 
     @staticmethod
     def get_file(path, local_base=None):
