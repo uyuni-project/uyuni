@@ -93,8 +93,7 @@ def manipulate_cobbler_collections(collections_dir: str):
     Manipulate the main Cobbler stored collections and migrate deprecated settings
     to work with newer Cobbler versions.
 
-    :param config_dir: The directory of Cobbler where the config files are.
-    :param settings_yaml: The name of the main YAML file of Cobbler.
+    :param collections_dir: The directory of Cobbler where the collections files are.
     """
     backup_dir(collections_dir)
     for f in glob.glob(os.path.join(collections_dir, "**/*.json"), recursive=True):
