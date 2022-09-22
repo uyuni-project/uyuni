@@ -56,7 +56,7 @@ jobs:
       if: ${{ env.translations_needed }} == 'true'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      uses: andymckay/labeler@master
+      uses: andymckay/labeler@1.0.4
       with:
         add-labels: "needs-translation"
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
