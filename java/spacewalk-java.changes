@@ -1,5 +1,5 @@
+- Fix prerequisite action serialization (bsc#1202899)(bsc#1203484)
 - Fix UI crash when filtering on systems list (bsc#1203169)
-- Fixed serialization problems (bsc#1202899)
 - Filter out successors that have no repositories on SP migration (bsc#1202367)
 - Reduced the usage of deprecated Hibernate API
 - Fixed formula deselection in systemgroup (bsc#1202271)
