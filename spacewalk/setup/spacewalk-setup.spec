@@ -248,12 +248,13 @@ fi
 if [ -e /etc/cobbler/settings ]; then
     echo "* Creating a backup of /etc/cobbler/settings file to /etc/cobbler/settings.before-migration-backup before migrating settings"
     cp /etc/cobbler/settings /etc/cobbler/settings.before-migration-backup
-    echo "* Migrating old Cobbler settings to new /etc/cobbler/settings.yaml file."
+    echo "* Migrating old Cobbler settings to new /etc/cobbler/settings.yaml file and executing migration of stored Cobbler collections"
+    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
     cobbler-settings -c /etc/cobbler/settings migrate -t /etc/cobbler/settings.yaml
     echo "* Disabling Cobbler settings automigration"
     cobbler-settings automigrate -d
-    echo "* Executing migration of stored Cobbler collections (a backup of the collections will be created at /var/lib/cobbler/)."
-    spacewalk-setup-cobbler --migrate-collections
+    echo "* Readjust settings needed for spacewalk"
+    spacewalk-setup-cobbler
     echo "* Done"
 fi
 
