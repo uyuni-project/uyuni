@@ -13,58 +13,39 @@
 
 import os
 import socket
-import glob
-import json
-import ipaddress
-import datetime
 
 import yaml
 import argparse
 from configparser import ConfigParser
-from shutil import copyfile, copytree
+from shutil import copyfile
 
 parser = argparse.ArgumentParser(description='Setup Cobbler for Uyuni.')
 parser.add_argument('--cobbler-config-directory', '-c', dest='cobbler_config_directory', default="/etc/cobbler/",
                     help='The directory where "settings" and "modules.conf" are in.')
 parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_directory', default="/etc/apache2/conf.d",
                     help='The directory where the Apache config file "cobbler.conf" is in.')
-parser.add_argument('--cobbler-collections-directory', '-C', dest='cobbler_collections_directory', default="/var/lib/cobbler/collections",
-                    help='The directory where the Cobbler collections are stored in.')
-parser.add_argument("--migrate-collections", help="execute the migration of stored Cobbler collections", action="store_true")
-
 
 COBBLER_CONFIG_DIRECTORY = "/etc/cobbler/"
 COBBLER_CONFIG_FILES = ["modules.conf", "settings.yaml"]
 HTTPD_CONFIG_DIRECTORY = "/etc/apache2/conf.d/"
 COBBLER_HTTP_CONFIG = "cobbler.conf"
-COBBLER_COLLECTIONS_DIRECTORY = "/var/lib/cobbler/collections/"
 
 
 def backup_file(file_path: str):
     """
     Copies the file and adds a suffix ".backup" to it.
-
+    
     :param file_path: The full path to the file which should be backed up.
     :raises FileNotFoundError: In case the path specified was not existing.
     """
     copyfile(file_path, "%s.backup" % file_path)
 
 
-def backup_dir(dir_path: str):
-    """
-    Copies the directory tree and adds a suffix ".backup.XXXXXXXXX" to it.
-
-    :param dir_path: The full path to the directory which should be backed up.
-    :raises FileNotFoundError: In case the path specified was not existing.
-    """
-    copytree(dir_path, "%s.backup.%s" % (os.path.normpath(dir_path), datetime.datetime.now().isoformat()))
-
-
 def manipulate_cobbler_settings(config_dir: str, settings_yaml: str):
     """
     Manipulate the main Cobbler configuration file which is in YAML format. This function backs the original
     configuration up and writes a new one with the required changes to the disk.
-
+    
     :param config_dir: The directory of Cobbler where the config files are.
     :param settings_yaml: The name of the main YAML file of Cobbler.
     """
@@ -88,76 +69,10 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str):
         settings_file.write(yaml_dump)
 
 
-def manipulate_cobbler_collections(collections_dir: str):
-    """
-    Manipulate the main Cobbler stored collections and migrate deprecated settings
-    to work with newer Cobbler versions.
-
-    :param collections_dir: The directory of Cobbler where the collections files are.
-    """
-    backup_dir(collections_dir)
-    for f in glob.glob(os.path.join(collections_dir, "**/*.json"), recursive=True):
-        data = None
-        with open(f) as _f:
-            data = json.loads(_f.read())
-
-        # null values to empty strings
-        for key in data:
-            if data[key] is None:
-                data[key] = ""
-
-        # boot_loader -> boot_loaders
-        if "boot_loader" in data:
-            data["boot_loaders"] = data.pop("boot_loader")
-
-        # next_server -> next_server_v4, next_server_v6
-        if "next_server" in data:
-            addr = data["next_server"]
-            if addr == "<<inherit>>":
-                data["next_server_v4"] = addr
-                data["next_server_v6"] = addr
-                data.pop("next_server")
-            else:
-                _ip = ipaddress.ip_address(addr)
-                if isinstance(_ip, ipaddress.IPv4Address):
-                    data["next_server_v4"] = data.pop("next_server")
-                elif isinstance(_ip, ipaddress.IPv6Address):
-                    data["next_server_v6"] = data.pop("next_server")
-
-        # enable_gpxe -> enable_ipxe
-        if "enable_gpxe" in data:
-            data["enable_ipxe"] = data.pop("enable_gpxe")
-
-        # ipmitool power_type -> ipmilan power_type
-        if "power_type" in data and data["power_type"] == "ipmitool":
-            data["power_type"] = "ipmilan"
-
-        # serial_device (str) -> serial_device (int)
-        if "serial_device" in data and data["serial_device"] == "":
-            data["serial_device"] = -1
-        elif "serial_device" in data and isinstance(data["serial_device"], str):
-            try:
-                data["serial_device"] = int(data["serial_device"])
-            except Exception as e:
-                print(f"ERROR casting 'serial_device' attribute to int: {e}")
-
-        # serial_baud_rate (str) -> serial_baud_rate (int)
-        if "serial_baud_rate" in data and data["serial_baud_rate"] == "":
-            data["serial_baud_rate"] = -1
-        elif "serial_baud_rate" in data and isinstance(data["serial_baud_rate"], str):
-            try:
-                data["serial_baud_rate"] = int(data["serial_baud_rate"])
-            except Exception as e:
-                print(f"ERROR casting 'serial_baud_rate' attribute to int: {e}")
-
-        with open(f, "w") as _f:
-            _f.write(json.dumps(data))
-
-
 def manipulate_cobbler_modules(config_dir: str, modules_ini: str):
     """
     Manipulates the authentication of Cobbler to use the SUMA/Uyuni Server directly.
-
+    
     :param config_dir: The directory of Cobbler where the config files are.
     :param modules_ini: The name of the configuration in INI style for the modules Cobbler uses at runtime.
     """
@@ -176,7 +91,7 @@ def manipulate_cobbler_modules(config_dir: str, modules_ini: str):
 def remove_virtual_host(conf_directory: str, conf_file: str):
     """
     Replaces all occurrences of lines with "VirtualHost" with an empty one.
-
+    
     :param conf_directory: The directory where the Apache2 configuration files are.
     :param conf_file: The file to edit.
     """
@@ -194,8 +109,6 @@ def remove_virtual_host(conf_directory: str, conf_file: str):
 def sanitize_args(args):
     global COBBLER_CONFIG_DIRECTORY
     COBBLER_CONFIG_DIRECTORY = os.path.join(args.cobbler_config_directory, '')
-    global COBBLER_COLLECTIONS_DIRECTORY
-    COBBLER_COLLECTIONS_DIRECTORY = os.path.join(args.cobbler_collections_directory, '')
     global HTTPD_CONFIG_DIRECTORY
     HTTPD_CONFIG_DIRECTORY = os.path.join(args.httpd_config_directory, '')
 
@@ -208,8 +121,6 @@ def main():
     sanitize_args(args)
     manipulate_cobbler_settings(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[1])
     manipulate_cobbler_modules(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[0])
-    if args.migrate_collections:
-        manipulate_cobbler_collections(COBBLER_COLLECTIONS_DIRECTORY)
     remove_virtual_host(HTTPD_CONFIG_DIRECTORY, COBBLER_HTTP_CONFIG)
 
 
