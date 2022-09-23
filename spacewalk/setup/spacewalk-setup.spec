@@ -244,6 +244,20 @@ if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
     sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
 fi
 
+# if old /etc/cobbler/settings exists, we need to perform migration
+if [ -e /etc/cobbler/settings ]; then
+    echo "* Creating a backup of /etc/cobbler/settings file to /etc/cobbler/settings.before-migration-backup before migrating settings"
+    cp /etc/cobbler/settings /etc/cobbler/settings.before-migration-backup
+    echo "* Migrating old Cobbler settings to new /etc/cobbler/settings.yaml file and executing migration of stored Cobbler collections"
+    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
+    cobbler-settings -c /etc/cobbler/settings migrate -t /etc/cobbler/settings.yaml
+    echo "* Disabling Cobbler settings automigration"
+    cobbler-settings automigrate -d
+    echo "* Readjust settings needed for spacewalk"
+    spacewalk-setup-cobbler
+    echo "* Done"
+fi
+
 exit 0
 
 %check
