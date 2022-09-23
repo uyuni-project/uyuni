@@ -39,7 +39,7 @@ export function AllSystems(props: Props) {
     const removed = selectedSystems.filter((item) => !items.includes(item)).map((item) => [item, false]);
     const added = items.filter((item) => !selectedSystems.includes(item)).map((item) => [item, true]);
     const data = Object.assign({}, Object.fromEntries(added), Object.fromEntries(removed));
-    Network.post("/rhn/manager/api/sets/system_list", data);
+    Network.post("/rhn/manager/api/sets/system_list", data).catch(Network.showResponseErrorToastr);
 
     setSelectedSystems(items);
   };

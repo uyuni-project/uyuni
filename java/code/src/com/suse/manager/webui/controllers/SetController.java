@@ -23,12 +23,12 @@ import com.redhat.rhn.frontend.taglibs.DWRItemSelector;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.errors.NotFoundException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -78,20 +78,20 @@ public class SetController {
         Map<String, Boolean> data = GSON.fromJson(request.body(), new TypeToken<Map<String, Boolean>>() { }.getType());
         List<Integer> results = Stream.of(true, false).map(add -> {
             List<String> changes = data.keySet().stream()
-                    .filter(item -> data.get(item) == add)
+                    .filter(item -> data.get(item).equals(add))
                     .collect(Collectors.toList());
             try {
                 return DWRItemSelector.updateSetFromRequest(request.raw(), setLabel,
                         changes.toArray(new String[0]), add, user);
             }
             catch (Exception e) {
-                LOG.error("Failed to change set {}", setLabel);
                 return null;
             }
         }).collect(Collectors.toList());
         Integer newCount = results.get(results.size() - 1);
         if (newCount == null) {
-            throw new NotFoundException("Failed to change set: " + setLabel);
+            return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    Map.of("messages", List.of("Failed to change set")));
         }
         return json(GSON, response, newCount);
     }
