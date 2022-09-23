@@ -11,7 +11,9 @@ script(type='text/javascript').
             module.renderer(
                 'systems-all-list', '#{docsLocale}',
                 {
-                    isAdmin: #{is_admin}
+                    isAdmin: #{is_admin},
+                    queryColumn: #{queryColumn},
+                    query: !{query}
                 }
             )
         });

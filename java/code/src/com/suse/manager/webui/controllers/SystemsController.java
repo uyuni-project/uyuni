@@ -285,7 +285,13 @@ public class SystemsController {
      */
     private ModelAndView allListPage(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
+
+        String filterColumn = requestIn.queryParams("qc");
+        String filterQuery = requestIn.queryParams("q");
+
         data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
+        data.put("query", filterQuery != null ? String.format("'%s'", filterQuery) : "null");
+        data.put("queryColumn", filterColumn != null ? String.format("'%s'", filterColumn) : "null");
         return new ModelAndView(data, "templates/systems/all-list.jade");
     }
 

@@ -73,6 +73,9 @@ type TableProps = {
 
   /** Default search field */
   defaultSearchField?: string;
+
+  /** Initial search query */
+  initialSearch?: string;
 };
 
 function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {
