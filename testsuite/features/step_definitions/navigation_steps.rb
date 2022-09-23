@@ -198,9 +198,10 @@ When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio,
 end
 
 When(/^I include the recommended child channels$/) do
-  toggle = "//span[@class='pointer']"
+  toggle = "//span[@class='pointer']" 
+  xpath = "//i[contains(@class, 'fa-toggle-on')]"
   if page.has_xpath?(toggle, wait: 5)
-    find(:xpath, toggle).click
+    find(:xpath, toggle).click if find(:xpath, xpath)
   end
 end
 

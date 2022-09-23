@@ -61,6 +61,8 @@ Feature: Lock packages on SLES salt minion
     Then "hoag-dummy-1.1-1.1" is unlocked on "sle_minion"
     When I follow "Software" in the content area
     And I follow "Lock / Unlock"
+    And I enter "hoag-dummy-1.1-1.1" as the filtered package name
+    And I click on the filter button
     Then package "hoag-dummy-1.1-1.1" is reported as unlocked
 
   Scenario: Schedule a package lock
