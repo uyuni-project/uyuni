@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-16 15:14+0200\n"
+"POT-Creation-Date: 2022-09-23 16:46+0200\n"
 "PO-Revision-Date: 2021-03-23 15:57+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/backend/fi/"
@@ -22,11 +22,52 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "epätäydellinen välityspalvelintodennusmerkki: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Lähetetty välityspalvelinallekirjoitus %s ei vastaa omaamme (%s)."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "hylätty välityspalvelintodennus"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Vastaanotettiin virheellinen pyyntö (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"TÄRKEÄ VIESTI:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Suoritettaessa ”%s” saatiin\n"
+"%s: %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Virheellinen URI %s"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -167,107 +208,6 @@ msgstr ""
 "               Tili %s on passivoitu tässä palvelimessa.\n"
 "               Tarvitessasi lisätietoa ota yhteyttä verkkoalueen ylläpitoon."
 
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "Aja tälle asiakkaalle pääkäyttäjänä rhn_register"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Palvelua ei ole otettu järjestelmäprofiilissa käyttöön: ”%s”"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Arkkitehtuuria ”%s” ei tueta"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Merkkiin ”%s” on kytketty useampi peruskanava"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Ristiriitaisia peruskanavia"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Palvelinta ei voitu lisätä ryhmään %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Kohteen %s enimmäiskäyttömäärä saavutettu"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Eri pohjaoikeuksisten uudelleenrekisteröintimerkkien pinoamista ei tueta"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Merkkiä ”%s” ei löydy"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Merkkien verkkoalueet eivät sovi yhteen"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Epäjohdonmukaisuus Kickstart-istunnossa"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Uudelleenrekisteröintimerkkien pinoamista ei tueta"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "epätäydellinen välityspalvelintodennusmerkki: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Lähetetty välityspalvelinallekirjoitus %s ei vastaa omaamme (%s)."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "hylätty välityspalvelintodennus"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Vastaanotettiin virheellinen pyyntö (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"TÄRKEÄ VIESTI:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Suoritettaessa ”%s” saatiin\n"
-"%s: %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Virheellinen URI %s"
-
 #: ../server/rhnChannel.py:1999
 #, python-format
 msgid ""
@@ -336,6 +276,15 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Aja tälle asiakkaalle pääkäyttäjänä rhn_register"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Palvelua ei ole otettu järjestelmäprofiilissa käyttöön: ”%s”"
+
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
@@ -345,6 +294,56 @@ msgstr "Pyydettiin virheellistä RPM-pakettia %s"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "Pakettia ei löytynyt"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Arkkitehtuuria ”%s” ei tueta"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Merkkiin ”%s” on kytketty useampi peruskanava"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Ristiriitaisia peruskanavia"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Palvelinta ei voitu lisätä ryhmään %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Kohteen %s enimmäiskäyttömäärä saavutettu"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Eri pohjaoikeuksisten uudelleenrekisteröintimerkkien pinoamista ei tueta"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Merkkiä ”%s” ei löydy"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Merkkien verkkoalueet eivät sovi yhteen"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Epäjohdonmukaisuus Kickstart-istunnossa"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Uudelleenrekisteröintimerkkien pinoamista ei tueta"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"

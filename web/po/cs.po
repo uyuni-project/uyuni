@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-14 11:25+0200\n"
-"PO-Revision-Date: 2022-09-18 11:13+0000\n"
+"POT-Creation-Date: 2022-09-23 16:46+0200\n"
+"PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-2/cs/>\n"
 "Language: cs\n"
@@ -1000,9 +1000,8 @@ msgid "Instance Hostname: {0}"
 msgstr "Název hostitele instance: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:76
-#, fuzzy
 msgid "Delete Pay-as-you-go"
-msgstr "Odstranění funkce Pay-as-you-go"
+msgstr "Zrušit průběžnou platbu (Pay-as-you-go)"
 
 #: ../html/src/manager/admin/payg/payg.tsx:79
 #: ../html/src/manager/content-management/project/project.tsx:119
@@ -1061,7 +1060,8 @@ msgstr "Probíhá aktualizace katalogu produktů..."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:214
 msgid "The following product installations failed. Please check log files."
-msgstr "Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
+msgstr ""
+"Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
@@ -1461,7 +1461,7 @@ msgstr "Kanál"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
 msgid "Errata"
-msgstr ""
+msgstr "Opravník chyb"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:429
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
@@ -2462,48 +2462,40 @@ msgid "contains package which provides name equal"
 msgstr "obsahuje balíček poskytující shodný název"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
-#, fuzzy
 msgid "lower"
-msgstr "verze nižší než"
+msgstr "menší"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
-#, fuzzy
 msgid "lower than"
-msgstr "verze nižší než"
+msgstr "menší než"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
-#, fuzzy
 msgid "lower or equal"
-msgstr "pozdější nebo shodný"
+msgstr "menší nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
-#, fuzzy
 msgid "lower or equal than"
-msgstr "pozdější než nebo shodný"
+msgstr "menší než nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "equal"
 msgstr "roven / stejný"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "greater or equal"
-msgstr "pozdější nebo shodný"
+msgstr "větší nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "greater or equal than"
-msgstr "pozdější než nebo shodný"
+msgstr "větší než nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
-#, fuzzy
 msgid "greater"
-msgstr "Vytvořit"
+msgstr "větší"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
-#, fuzzy
 msgid "greater than"
-msgstr "Vytvořeno v"
+msgstr "větší než"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
 msgid "matches regular expression"
@@ -2763,7 +2755,6 @@ msgid "Versions history"
 msgstr "Historie verzí"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
-#, fuzzy
 msgid "New base channel"
 msgstr "Nový základní kanál"
 
@@ -2786,14 +2777,12 @@ msgid "Clear Search"
 msgstr "Výmaz hledání"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
-#, fuzzy
 msgid "This channel requires:"
-msgstr "Tento kanál je doporučen"
+msgstr "Tento kanál vyžaduje:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
-#, fuzzy
 msgid "This channel is required by:"
-msgstr "Tento kanál je doporučen"
+msgstr "Tento kanál je vyžádán:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
@@ -2932,14 +2921,12 @@ msgid "Patches"
 msgstr "Záplaty"
 
 #: ../html/src/manager/header/search/search.tsx:22
-#, fuzzy
 msgid "Documentation"
-msgstr "dokumentace"
+msgstr "Dokumentace"
 
 #: ../html/src/manager/header/search/search.tsx:56
-#, fuzzy
 msgid "Open search"
-msgstr "Výmaz hledání"
+msgstr "Otevřít hledání"
 
 #: ../html/src/manager/images/image-build.tsx:38
 msgid "An unknown error has occurred."
@@ -3861,10 +3848,12 @@ msgstr "Kalendáře"
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "Below is a list of Maintenance Schedules available to the current user."
 msgstr ""
+"Níže je uveden seznam plánů údržby, které má aktuální uživatel k dispozici."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr ""
+"Níže je uveden seznam plánů údržby, které má aktuální uživatel k dispozici."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
@@ -4175,11 +4164,11 @@ msgstr "Aplikace stavu selhala"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:50
 msgid "Pay-as-you-go refresh authentication data failed"
-msgstr ""
+msgstr "Ověření dat obnovení průběžné platby se nezdařilo"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:54
 msgid "End of Life Period"
-msgstr ""
+msgstr "Konec životního cyklu"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
@@ -4604,13 +4593,15 @@ msgstr "Opakující se stavy"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:65
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "Byly vytvořeny následující opakující se akce."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
 msgstr ""
+"Chcete-li vytvořit nové opakující se akce, přejděte do systému, skupiny nebo "
+"organizace, pro kterou chcete akci vytvořit."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4681,14 +4672,13 @@ msgstr ""
 "podřízeným kanálům."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
-#, fuzzy
 msgid "Error Details"
-msgstr "Podrobnosti"
+msgstr "Podrobnosti chyb"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
 msgid "Close"
-msgstr ""
+msgstr "Zavřít"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:297
 msgid ""
@@ -4712,11 +4702,11 @@ msgstr "krátce"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "Show additional details about this error"
-msgstr ""
+msgstr "Zobrazit další podrobnosti o této chybě"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:349
 msgid "Unable to bootstrap host. The following errors have happened:"
-msgstr ""
+msgstr "Nelze zavést OS hostitele. Došlo k následujícím chybám:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:352
 msgid "Your system is bootstrapping: waiting for a response.."
@@ -4780,7 +4770,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:487
 msgid "Authentication Method"
-msgstr ""
+msgstr "Metoda ověřování"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:557
@@ -4789,13 +4779,12 @@ msgid "None"
 msgstr "Žádný"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#, fuzzy
 msgid "Reactivation Key"
-msgstr "Aktivační klíč"
+msgstr "Re-aktivační klíč"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:546
 msgid "Leave empty when no reactivation is wanted"
-msgstr ""
+msgstr "Nechte prázdné, není-li požadována re-aktivace"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:553
 msgid "Proxy"
@@ -4811,17 +4800,16 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:592
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
+msgstr "Zakázat striktní kontrolu klíče hostitele SSH během zaváděcího procesu"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:608
 msgid "Manage system completely via SSH (will not install an agent)"
-msgstr ""
+msgstr "Správa systému kompletně přes SSH (neinstaluje agenta)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:624
-#, fuzzy
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
-msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
+msgstr "Skutečně chcete tuto stránku zavřít během zavádění systému?"
 
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4846,26 +4834,24 @@ msgstr "Potvrdit odstranění"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr ""
+msgstr "Vyberte seznam pomahačů (ani proxy serverů ani tradičních klientů)."
 
 #: ../html/src/manager/systems/proxy.tsx:67
 msgid "Change of proxy server has been "
-msgstr ""
+msgstr "Změna proxy serveru byla "
 
 #: ../html/src/manager/systems/proxy.tsx:101
 #: ../html/src/manager/systems/proxy.tsx:117
-#, fuzzy
 msgid "Change Proxy"
-msgstr "Změny"
+msgstr "Změna proxy"
 
 #: ../html/src/manager/systems/proxy.tsx:117
 msgid "Connect minion(s) to another proxy server."
-msgstr ""
+msgstr "Připojení jednoho či více pomahačů k jinému proxy serveru."
 
 #: ../html/src/manager/systems/proxy.tsx:120
-#, fuzzy
 msgid "New Proxy"
-msgstr "Proxy"
+msgstr "Nový proxy server"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
