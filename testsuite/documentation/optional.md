@@ -357,6 +357,29 @@ Inside the testsuite, the scenarios that are tagged with
 are executed only if the HTTP proxy is available.
 
 
+## Custom download endpoint for packages
+
+Using an custom download endpoint for the packages when testing is not mandatory.
+
+If you do not want a custom download endpoint, do not define `CUSTOM_DOWNLOAD_ENDPOINT`
+environment variable before you run the test suite. That's all.
+
+If you want to specify a custom download endpoint for downloading the packages,
+make this variable contain the URL of the custom download endpoint:
+
+```bash
+export CUSTOM_DOWNLOAD_ENDPOINT = "protocol://hostname:port"
+```
+
+Inside the test suite, the scenarios that are tagged with
+
+```
+@custom_download_endpoint
+```
+
+are executed only if the custom download endpoint is available.
+
+
 ## Docker Registry server
 
 Using a Docker Authenticated Registry server when testing is not mandatory.
