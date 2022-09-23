@@ -65,8 +65,9 @@ def insert_under_line(file_path, line_to_match, line_to_insert):
 with open(config_path + "config.yaml") as source:
     config = yaml.safe_load(source)
 
-    if config.get('log_level') is not None:
-        logging.getLogger().setLevel(logging.getLevelName(config.get('log_level')))
+    # log_level is the value for rhn.conf and should be a positive integer
+    log_level = logging.WARNING if config.get("log_level") is None else logging.DEBUG
+    logging.getLogger().setLevel(log_level)
 
 with open(config_path + "httpd.yaml") as httpdSource:
     httpdConfig = yaml.safe_load(httpdSource).get("httpd")
@@ -228,9 +229,7 @@ RewriteRule "^/saltboot/(image|boot)(.+)$" "/os-images/%1$2"  [R,L,QSD]
 ''')
 
     # Adjust logs format in apache httpd:
-    # 1. Replace mod_log_config.conf so that the logger takes a special var HANDLER_TYPE
-    shutil.copyfile('/usr/bin/conf/mod_log_config.conf', '/etc/apache2/mod_log_config.conf')
-    # 2. Modify the other configurations so that the var HANDLER_TYPE gets set based on a directory of a script executed
+    # Modify the other configurations so that the var HANDLER_TYPE gets set based on a directory of a script executed
     insert_under_line(
         "/etc/apache2/conf.d/spacewalk-proxy-wsgi.conf",
         "<Directory /usr/share/rhn>",

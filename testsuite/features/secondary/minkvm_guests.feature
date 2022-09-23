@@ -195,7 +195,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "disk1.qcow2" from "disk1_source_file"
     And I click on "Create"
     And I wait until I see "Hosted Virtual Systems" text
-    And I wait until event "Creates a virtual domain: test-vm2" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
     And I follow "Virtualization" in the content area
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
@@ -234,7 +234,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "/usr/share/qemu/ovmf-x86_64-ms-vars.bin" as "nvramTemplate"
     And I click on "Create"
     And I wait until I see "Hosted Virtual Systems" text
-    And I wait until event "Creates a virtual domain: test-vm2" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
     And I follow "Virtualization" in the content area
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
@@ -354,7 +354,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "192.168.128.20" as "ipv4def_dhcpranges0_end"
     And I click on "Create"
     And I wait until I see "Virtual Networks" text
-    And I wait until event "Creates a virtual network: test-net2" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual network: test-net2" is completed
     And I follow "Virtualization" in the content area
     And I follow "Networks"
     And I wait until table row for "test-net2" contains button "Stop"
@@ -428,7 +428,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "test-net0" from "network0_source"
     And I click on "Create"
     And I wait until I see "Hosted Virtual Systems" text
-    And I wait until event "Creates a virtual domain: test-vm2" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
     And I follow "Virtualization" in the content area
     And I wait until table row for "test-vm2" contains button "Stop"
     # Test the VM boot params

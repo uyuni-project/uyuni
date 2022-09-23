@@ -79,17 +79,14 @@ def __virtual__():
 
 @contextmanager
 def _get_cursor():
-    defaults = {
-        'host': 'localhost',
-        'user': 'spacewalk',
-        'pass': 'spacewalk',
-        'db': 'susemanager',
-        'port': 5432,
+    options = {
+        "host": "localhost",
+        "user": "",
+        "pass": "",
+        "db": "susemanager",
+        "port": 5432,
     }
-    opts = __opts__.get("postgres", {})
-    options = {}
-    for attr, default in defaults.items():
-        options[attr] = opts.get(attr, default)
+    options.update(__opts__.get("__master_opts__", __opts__).get("postgres", {}))
 
     cnx = psycopg2.connect(
             host=options['host'],

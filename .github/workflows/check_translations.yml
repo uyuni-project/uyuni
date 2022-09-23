@@ -1,0 +1,62 @@
+name: Check if translation is required
+
+on: 
+  pull_request_target:
+    paths:
+      - 'java/code/src/com/redhat/rhn/frontend/strings/**'
+      - 'backend/**'
+      - 'client/rhel/yum-rhn-plugin/**'
+      - 'client/rhel/mgr-daemon/**'
+      - 'client/rhel/spacewalk-client-tools/**'
+      - 'web/**'
+      - 'susemanager/**'
+      - 'spacecmd/**'
+
+jobs:
+  run:
+    name: Check by trying to locally update translation files 
+    if: github.repository == 'uyuni-project/uyuni'
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.8.0
+      with:
+        access_token: ${{ github.token }}
+
+    - name: Checkout repo
+      uses: actions/checkout@v2
+
+    - name: Setup tooling
+      run: sudo apt-get install -y make git gettext intltool python3
+
+    - name: Setup git
+      run: |
+        git config --global user.name "Galaxy CI"
+        git config --global user.email "galaxy-ci@suse.de" 
+        git switch -c check_translations
+        git branch origin_check_translations
+
+    - name: Update all translations files
+      run: ADDITIONAL_SAFE_BRANCHNAME=check_translations scripts/translation/update-all-translation-strings.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Check if there has been changes on translation files
+      run: |
+        if [ $(git diff origin_check_translations check_translations | wc -l) -ne 0 ];then
+          echo "Translations are needed"
+          git diff origin_check_translations check_translations
+          echo "{translations_needed}={true}" >> $GITHUB_ENV
+        else
+          echo "{translations_needed}={false}" >> $GITHUB_ENV
+        fi
+
+    - name: Add label
+      if: ${{ env.translations_needed }} == 'true'
+      uses: andymckay/labeler@1.0.4
+      with:
+        add-labels: "needs-translation"
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+
+

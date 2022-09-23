@@ -12,6 +12,7 @@ After=uyuni-proxy-pod.service
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=/etc/sysconfig/uyuni-proxy-systemd-services
+EnvironmentFile=/etc/sysconfig/proxy
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-ssh.pid %t/uyuni-proxy-ssh.ctr-id
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/uyuni-proxy-ssh.pid --cidfile %t/uyuni-proxy-ssh.ctr-id --cgroups=no-conmon --pod-id-file %t/uyuni-proxy-pod.pod-id -d --replace -dt -v /etc/uyuni/proxy:/etc/uyuni:ro --name uyuni-proxy-ssh ${NAMESPACE}/proxy-ssh:${TAG}

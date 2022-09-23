@@ -256,6 +256,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
                     LOG.debug("YYY Opening Hibernate Session");
                 }
                 info = new SessionInfo(sessionFactory.openSession());
+                LOG.debug("YYY Opened Hibernate session {}", info.getSession());
             }
             catch (HibernateException e) {
                 throw new HibernateRuntimeException("couldn't open session", e);
@@ -310,7 +311,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         try {
             if (session != null && session.isOpen()) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("YYY Closing Hibernate Session");
+                    LOG.debug("YYY Closing Hibernate Session: {}", session);
                 }
                 session.close();
             }

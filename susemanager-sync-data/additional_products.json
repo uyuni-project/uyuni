@@ -544,6 +544,56 @@
                 "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
+            },
+            {
+                "id" : -453,
+                "url" : "http://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -454,
+                "url" : "http://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -455,
+                "url" : "http://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -456,
+                "url" : "http://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -457,
+                "url" : "http://nu.novell.com/repo/$RCE/OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "OES2023-SLE-Module-Legacy15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
             }
         ]
     },

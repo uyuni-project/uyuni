@@ -110,8 +110,6 @@ Feature: Sanity checks
   Scenario: The registry without authentication is healthy
     Then it should be possible to reach the not authenticated registry
 
-# Disable the FTP server check because we can't run this at the PR
-# given the test run in PRV but the ftp server is in NUE and firewall
-# rules prevent this connection.
-#  Scenario: The FTP server is working
-#    Then it should be possible to use the FTP server
+@custom_download_endpoint
+  Scenario: The custom download endpoint is working
+    Then it should be possible to use the custom download endpoint
