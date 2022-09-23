@@ -13,6 +13,8 @@ type Props = {
   /** Locale of the help links */
   docsLocale: string;
   isAdmin: boolean;
+  queryColumn?: string;
+  query?: string;
 };
 
 const allListOptions = [
@@ -64,7 +66,8 @@ export function AllSystems(props: Props) {
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         searchField={<SearchField options={allListOptions} name="criteria" />}
-        defaultSearchField="server_name"
+        defaultSearchField={props.queryColumn || "server_name"}
+        initialSearch={props.query}
         emptyText={t("No Systems.")}
       >
         <Column

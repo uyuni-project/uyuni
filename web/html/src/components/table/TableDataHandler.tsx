@@ -53,7 +53,11 @@ type Props = {
   /** the React Object that contains the filter search field */
   searchField?: React.ReactComponentElement<typeof SearchField>;
 
+  /** Default column to search on */
   defaultSearchField?: string;
+
+  /** Initial search query */
+  initialSearch?: string;
 
   /** the initial number of how many row-per-page to show. If it's 0 table header and footer are hidden */
   initialItemsPerPage?: number;
@@ -120,7 +124,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       currentPage: 1,
       itemsPerPage: this.props.initialItemsPerPage || pageSize,
       totalItems: 0,
-      criteria: undefined,
+      criteria: this.props.initialSearch,
       field: this.props.defaultSearchField,
       sortColumnKey: this.props.initialSortColumnKey || null,
       sortDirection: this.props.initialSortDirection || 1,
