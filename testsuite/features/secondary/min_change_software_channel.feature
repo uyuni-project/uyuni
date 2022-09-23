@@ -19,7 +19,7 @@ Feature: Assign child channel to a system
 
   Scenario: Check old channels are still enabled on the system before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "1" channels should be enabled on "sle_minion"
+    Then "9" channels should be enabled on "sle_minion"
     And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
 
   Scenario: Assign a child channel to the system
@@ -28,14 +28,14 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
     And I wait until I do not see "Loading..." text
-    And I check "SLE15-SP4-Installer-Updates for x86_64 "
+    And I check "SLE15-SP4-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     And I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "SLE15-SP4-Installer-Updates for x86_64 " should be enabled on "sle_minion"
+    Then channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
 
   Scenario: Check channel change has completed for the system
     Given I am on the Systems overview page of this "sle_minion"
@@ -54,7 +54,7 @@ Feature: Assign child channel to a system
     When I refresh the metadata for "sle_minion"
     Then "2" channels should be enabled on "sle_minion"
     And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
-    And channel "SLE15-SP4-Installer-Updates for x86_64 " should be enabled on "sle_minion"
+    And channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
 
   Scenario: Cleanup: subscribe the system back to previous channels
     When I follow "Software" in the content area
@@ -62,7 +62,7 @@ Feature: Assign child channel to a system
     And I wait until I do not see "Loading..." text
     Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
     And I wait until I do not see "Loading..." text
-    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64 " text
+    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "SLE-Custom-Channel-x86_64"
@@ -72,4 +72,4 @@ Feature: Assign child channel to a system
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "SLE15-SP4-Installer-Updates for x86_64 " should not be enabled on "sle_minion"
+    Then channel "SLE15-SP4-Installer-Updates for x86_64" should not be enabled on "sle_minion"
