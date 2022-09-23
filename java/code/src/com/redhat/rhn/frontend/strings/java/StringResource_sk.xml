@@ -10000,7 +10000,7 @@ automatickej inštalácie:
 
 Prosím, skontrolujte:
 
-/var/log/rhn/rhn_taskomatic_daemon.log and
+/var/log/rhn/rhn_taskomatic_daemon.log a
 /var/log/rhn/rhn_web_ui.log
 /var/log/cobbler/cobbler.log
 
@@ -11250,7 +11250,7 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-        <target state="translated">&lt;p&gt;@@PRODUCT_NAME@@ {0} sa blíži ku koncu svojho životného cyklu. Prosín, zvážte zvýšenie verzie tejto inštancie servera pred ukončením všeobecnej podpory &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
+        <target state="translated">&lt;p&gt;@@PRODUCT_NAME@@ {0} sa blíži ku koncu svojho životného cyklu. Prosím, zvážte zvýšenie verzie tejto inštancie servera pred ukončením všeobecnej podpory &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;Ďalšie informácie o tom, ako zvýšiť verziu @@PRODUCT_NAME@@, nájdete v sekcii &lt;em&gt;Zvýšenie verzie&lt;/em&gt; v &lt;em&gt;Príručke inštalácie/zvýšenia verzie&lt;/em&gt; v oficiálnej dokumentácii.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
