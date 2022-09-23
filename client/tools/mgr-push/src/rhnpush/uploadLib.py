@@ -29,7 +29,6 @@ import inspect
 from uyuni.common import rhn_mpm, rhn_deb, rhn_rpm
 from uyuni.common.rhn_pkg import package_from_filename, get_package_header
 from uyuni.common.usix import raise_with_tb
-from up2date_client import rhnserver
 from rhn.stringutils import sstr
 from rhnpush import rhnpush_cache
 
@@ -200,29 +199,20 @@ class UploadClass:
             return listChannelSourceBySession(self.server,
                                               self.session.getSessionString(),
                                               self.channels)
-
-        return listChannelSource(self.server,
-                                 self.username, self.password,
-                                 self.channels)
+        else:
+            return listChannelSource(self.server,
+                                     self.username, self.password,
+                                     self.channels)
 
     def _listChannel(self):
         if self.use_session:
-            if self.use_checksum_paths:
-                return listChannelChecksumBySession(self.server,
-                                                    self.session.getSessionString(), self.channels)
+            return listChannelChecksumBySession(self.server,
+                                                self.session.getSessionString(), self.channels)
 
-            return listChannelBySession(self.server,
-                                        self.session.getSessionString(),
-                                        self.channels)
-
-        if self.use_checksum_paths:
+        else:
             return listChannelChecksum(self.server,
                                        self.username, self.password,
                                        self.channels)
-
-        return listChannel(self.server,
-                           self.username, self.password,
-                           self.channels)
 
     def list(self):
         # set the URL
@@ -507,10 +497,6 @@ class UploadClass:
         sessstr = call(self.server.packages.login, self.username, self.password)
         self.writeSession(sessstr)
 
-        # set whether we should use checksum paths or not (if upstream supports
-        # it we should).
-        self.use_checksum_paths = hasChannelChecksumCapability(self.server)
-
     @staticmethod
     def _processFile(filename, relativeDir=None, source=None, nosig=None):
         """ Processes a file
@@ -755,35 +741,6 @@ def getServer(uri, proxy=None, username=None, password=None, ca_chain=None):
     if ca_chain:
         s.add_trusted_cert(ca_chain)
     return s
-
-# pylint: disable=E1123
-def hasChannelChecksumCapability(rpc_server):
-    """ check whether server supports getPackageChecksumBySession function"""
-    # pylint: disable=W1505
-    if 'rpcServerOverride' in inspect.getargspec(rhnserver.RhnServer.__init__)[0]:
-        server = rhnserver.RhnServer(rpcServerOverride=rpc_server)
-    else:
-        server = rhnserver.RhnServer()
-        # pylint: disable=W0212
-        server._server = rpc_server
-    return server.capabilities.hasCapability('xmlrpc.packages.checksums')
-
-
-def exists_getPackageChecksumBySession(rpc_server):
-    """ check whether server supports getPackageChecksumBySession function"""
-    # unfortunatelly we do not have capability for getPackageChecksumBySession function,
-    # but extended_profile in version 2 has been created just 2 months before
-    # getPackageChecksumBySession lets use it instead
-    # pylint: disable=W1505
-    if 'rpcServerOverride' in inspect.getargspec(rhnserver.RhnServer.__init__)[0]:
-        server = rhnserver.RhnServer(rpcServerOverride=rpc_server)
-    else:
-        server = rhnserver.RhnServer()
-        # pylint: disable=W0212
-        server._server = rpc_server
-    return server.capabilities.hasCapability('xmlrpc.packages.extended_profile', 2)
-
-# compare two package [n,v,r,e] tuples
 
 
 def packageCompare(pkg1, pkg2, pkgtype):
