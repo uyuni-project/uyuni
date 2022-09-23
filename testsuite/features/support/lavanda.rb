@@ -33,6 +33,14 @@ module LavandaBasic
     @in_public_interface = public_interface
   end
 
+  def init_os_family(os_family)
+    @in_os_family = os_family
+  end
+
+  def init_os_version(os_version)
+    @in_os_version = os_version
+  end
+
   # getter functions, executed on testsuite
   def hostname
     raise 'empty hostname, something wrong' if @in_hostname.empty?
@@ -62,6 +70,16 @@ module LavandaBasic
   def public_interface
     raise 'empty public_interface, something wrong' if @in_public_interface.empty?
     @in_public_interface
+  end
+
+  def os_family
+    raise 'empty os_family, something wrong' if @in_os_family.empty?
+    @in_os_family
+  end
+
+  def os_version
+    raise 'empty os_version, something wrong' if @in_os_version.empty?
+    @in_os_version
   end
 
   # run functions

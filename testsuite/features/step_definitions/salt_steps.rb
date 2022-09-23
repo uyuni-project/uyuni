@@ -28,7 +28,8 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('rcsalt-minion stop', check_errors: false)
   else
@@ -38,7 +39,13 @@ end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
+<<<<<<< HEAD
   os_version, os_family = get_os_version(node)
+=======
+  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  os_version = node.os_version
+  os_family = node.os_family
+>>>>>>> 92438ff71b7 (QE: Replacing get_os_version occurences (#5942))
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('rcsalt-minion start', check_errors: false)
   else
@@ -48,7 +55,13 @@ end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
+<<<<<<< HEAD
   os_version, os_family = get_os_version(node)
+=======
+  pkgname = $use_salt_bundle ? "venv-salt-minion" : "salt-minion"
+  os_version = node.os_version
+  os_family = node.os_family
+>>>>>>> 92438ff71b7 (QE: Replacing get_os_version occurences (#5942))
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('rcsalt-minion restart', check_errors: false)
   else
@@ -98,7 +111,7 @@ end
 
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
   assert_match(/#{family}/, $output)
 end
