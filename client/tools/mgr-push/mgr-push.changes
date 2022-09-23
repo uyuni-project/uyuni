@@ -1,3 +1,4 @@
+- Decouple mgr-push from spacewalk-client-tools
 - Allow rhnpush to handle Debian packages
 
 -------------------------------------------------------------------
