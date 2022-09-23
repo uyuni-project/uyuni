@@ -19,7 +19,7 @@ Feature: Assign child channel to a system
 
   Scenario: Check old channels are still enabled on the system before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "9" channels should be enabled on "sle_minion"
+    Then "11" channels should be enabled on "sle_minion"
     And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
 
   Scenario: Assign a child channel to the system
@@ -52,7 +52,7 @@ Feature: Assign child channel to a system
 
   Scenario: Check the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
-    Then "2" channels should be enabled on "sle_minion"
+    Then "10" channels should be enabled on "sle_minion"
     And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
     And channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
 
@@ -66,6 +66,7 @@ Feature: Assign child channel to a system
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "SLE-Custom-Channel-x86_64"
+    And I uncheck "SLE15-SP4-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
