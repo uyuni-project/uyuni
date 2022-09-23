@@ -31,7 +31,8 @@ def compute_channels_to_leave_running
   do_not_kill = CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
   [$minion, $build_host, $sshminion].each do |node|
     next unless node
-    os_version, os_family = get_os_version(node)
+    os_version = node.os_version
+    os_family = node.os_family
     next unless os_family == 'sles'
     raise "Can't build list of reposyncs to leave running" unless ['12-SP4', '12-SP5', '15-SP3', '15-SP4'].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
@@ -206,7 +207,7 @@ def generate_repository_name(repo_url)
 end
 
 def extract_logs_from_node(node)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   if os_family =~ /^opensuse/
     node.run('zypper mr --enable os_pool_repo os_update_repo') unless $build_validation
     node.run('zypper --non-interactive install tar')

@@ -67,7 +67,8 @@ def get_os_version(node)
 end
 
 def get_gpg_keys(node, target = $server)
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   if os_family =~ /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
     os_version = 12 if os_version =~ /^15/

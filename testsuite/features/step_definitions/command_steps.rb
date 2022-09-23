@@ -818,7 +818,7 @@ end
 # rubocop:disable Metrics/BlockLength
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   cmd = ''
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     mand_repos = ''
@@ -881,7 +881,7 @@ end
 
 When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     pkgs = 'openscap-utils openscap-content scap-security-guide'
   elsif os_family =~ /^centos/
@@ -1503,7 +1503,8 @@ end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     repositories.concat(' os_pool_repo os_update_repo')
