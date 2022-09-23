@@ -47,7 +47,7 @@ Feature: Salt SSH action chain
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    And I check "andromeda-dummy-6789" in the list
+    And I check "CL-andromeda-dummy-6789" in the list
     And I click on "Apply Patches"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"

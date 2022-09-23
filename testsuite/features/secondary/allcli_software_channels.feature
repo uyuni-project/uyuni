@@ -71,7 +71,7 @@ Feature: Channel subscription via SSM
 @sle_minion
   Scenario: Check the new channels are enabled on the SLES minion
     When I refresh the metadata for "sle_minion"
-    Then "12" channels should be enabled on "sle_minion"
+    Then "2" channels should be enabled on "sle_minion"
     And channel "Test Base Channel" should be enabled on "sle_minion"
     And channel "Test Child Channel" should be enabled on "sle_minion"
 

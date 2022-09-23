@@ -43,7 +43,7 @@ Feature: CVE Audit on SLE Salt Minions
     Then I should see "sle_minion" as link
     And I should see a "Affected, at least one patch available in an assigned channel" text
     And I should see a "Install a new patch on this system" link
-    And I should see a "milkyway-dummy-2345" text
+    And I should see a "CL-milkyway-dummy-2345" text
     And I should see a "Download CSV" link
     And I should see a "Status" button
     And I should see a "Name" button
@@ -84,14 +84,14 @@ Feature: CVE Audit on SLE Salt Minions
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for "sle_minion"
     And I should get the test channel
-    And I should get the "milkyway-dummy-2345" patch
+    And I should get the "CL-milkyway-dummy-2345" patch
     Then I logout from API
 
   Scenario: Apply patches
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    And I check "milkyway-dummy-2345" in the list
+    And I check "CL-milkyway-dummy-2345" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "patch update has been scheduled" text

@@ -17,7 +17,7 @@ Feature: Repos file generation based on custom pillar data
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
-    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64 " text
+    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "SLE-Custom-Channel-x86_64"
@@ -45,7 +45,7 @@ Feature: Repos file generation based on custom pillar data
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
-    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64 " text
+    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "SLE-Custom-Channel-x86_64"
@@ -71,7 +71,7 @@ Feature: Repos file generation based on custom pillar data
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
-    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64 " text
+    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "SLE-Custom-Channel-x86_64"
