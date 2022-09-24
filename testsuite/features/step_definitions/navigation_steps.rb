@@ -199,9 +199,10 @@ end
 
 When(/^I include the recommended child channels$/) do
   toggle = "//span[@class='pointer']" 
-  xpath = "//i[contains(@class, 'fa-toggle-on')]"
+  xpath = "//i[contains(@class, 'fa-toggle-off')]"
+
   if page.has_xpath?(toggle, wait: 5)
-    find(:xpath, toggle).click if find(:xpath, xpath)
+    find(:xpath, toggle).click if page.has_xpath?(xpath, wait: DEFAULT_TIMEOUT)
   end
 end
 
