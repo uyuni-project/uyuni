@@ -202,7 +202,7 @@ When(/^I include the recommended child channels$/) do
   xpath = "//i[contains(@class, 'fa-toggle-off')]"
 
   if page.has_xpath?(toggle, wait: 5)
-    find(:xpath, toggle).click if page.has_xpath?(xpath, wait: DEFAULT_TIMEOUT)
+    find(:xpath, toggle).click if page.has_xpath?(xpath, wait: 5)
   end
 end
 
