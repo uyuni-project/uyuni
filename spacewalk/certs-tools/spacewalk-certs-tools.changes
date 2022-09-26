@@ -1,5 +1,9 @@
-- fix mgr-ssl-cert-setup for root CAs which do not set
-  authorityKeyIdentifier (bsc#1203585)
+-------------------------------------------------------------------
+Mon Sep 26 12:15:45 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.15-1
+  * fix mgr-ssl-cert-setup for root CAs which do not set
+    authorityKeyIdentifier (bsc#1203585)
 
 -------------------------------------------------------------------
 Wed Jul 27 14:13:56 CEST 2022 - jgonzalez@suse.com
