@@ -9,7 +9,7 @@ Feature: Reconfiguring
 
   Scenario: Change hostname and reboot server
     #Command prerequisites
-    When I change server short hostname from hosts and hostname files as "server-hostname-2"
+    When I change server short hostname from hosts and hostname files
     Then I reboot server through SSH
     And I run spacewalk-hostname-rename command on the server
   
