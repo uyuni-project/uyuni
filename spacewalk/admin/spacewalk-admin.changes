@@ -1,7 +1,11 @@
-- Ensure "cobbler mkloaders" is executed after restarting services
-- Add --help option to mgr-monitoring-ctl
-- reportdb access: force new report_db_sslrootcert if
-  previous default is set
+-------------------------------------------------------------------
+Mon Sep 26 12:30:19 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.10-1
+  * Ensure "cobbler mkloaders" is executed after restarting services
+  * Add --help option to mgr-monitoring-ctl
+  * reportdb access: force new report_db_sslrootcert if
+    previous default is set
 
 -------------------------------------------------------------------
 Fri May 20 00:16:12 CEST 2022 - jgonzalez@suse.com
