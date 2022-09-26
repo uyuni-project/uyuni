@@ -1,4 +1,8 @@
-- update dependencies after package rename
+-------------------------------------------------------------------
+Mon Sep 26 12:06:22 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.7-1
+  * update dependencies after package rename
 
 -------------------------------------------------------------------
 Wed Jul 27 14:19:43 CEST 2022 - jgonzalez@suse.com
