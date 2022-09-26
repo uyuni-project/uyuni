@@ -1,4 +1,8 @@
-- improve schema compatibility with Amazon RDS
+-------------------------------------------------------------------
+Mon Sep 26 12:14:43 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.6-1
+  * improve schema compatibility with Amazon RDS
 
 -------------------------------------------------------------------
 Fri May 20 00:15:22 CEST 2022 - jgonzalez@suse.com
