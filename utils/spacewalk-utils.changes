@@ -1,8 +1,12 @@
-- Make spacewalk-hostname-rename working with settings.yaml
-  cobbler config file (bsc#1203564)
-- spacewalk-common-channels now syncs the channels automatically
-  on creation, if the new configuration property named
-  'unify_custom_channel_management' is enabled
+-------------------------------------------------------------------
+Mon Sep 26 12:10:41 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.14-1
+  * Make spacewalk-hostname-rename working with settings.yaml
+    cobbler config file (bsc#1203564)
+  * spacewalk-common-channels now syncs the channels automatically
+    on creation, if the new configuration property named
+    'unify_custom_channel_management' is enabled
 
 -------------------------------------------------------------------
 Wed Jul 27 14:09:58 CEST 2022 - jgonzalez@suse.com
