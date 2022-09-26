@@ -1,8 +1,12 @@
-- Upgrade moment-timezone
-- Fix packaging issues to address CVE-2021-43138 (bsc#1200480)
-- Upgrade shell-quote to fix CVE-2021-42740 (bsc#1203287)
-- Upgrade moment to fix CVE-2022-31129 (bsc#1203288)
-- Fix table header layout for unselectable tables
+-------------------------------------------------------------------
+Mon Sep 26 12:20:43 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.24-1
+  * Upgrade moment-timezone
+  * Fix packaging issues to address CVE-2021-43138 (bsc#1200480)
+  * Upgrade shell-quote to fix CVE-2021-42740 (bsc#1203287)
+  * Upgrade moment to fix CVE-2022-31129 (bsc#1203288)
+  * Fix table header layout for unselectable tables
 
 -------------------------------------------------------------------
 Fri Jul 29 11:08:37 CEST 2022 - jgonzalez@suse.com
