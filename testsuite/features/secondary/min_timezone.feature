@@ -64,6 +64,8 @@ Feature: Correct timezone display
       """
     And I click on "Schedule"
     And I follow "Events" in the content area
+    And I follow "Pending" in the content area
+    And I wait at most 180 seconds until I do not see "Remote Command on" text, refreshing the page
     And I follow "History" in the content area
     And I follow first "scheduled by MalaysianUser"
     Then I should see a "MYT" text
