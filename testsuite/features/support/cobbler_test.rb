@@ -4,19 +4,17 @@
 require 'xmlrpc/client'
 require 'pp'
 
-# ct = CobblerTest.new( "taylor.suse.de" )
-# bool = ct.running?()
-# bool = ct.system_exists( "bla" )
-# any  = ct.system_get_key( "vbox-ug", "uid" )
-# list = ct.get_list( "systems" )
+# ct = CobblerTest.new
+# bool = ct.running?
+# bool = ct.system_exists('bla')
+# any  = ct.system_get_key('vbox-ug', 'uid')
+# list = ct.get_list('systems')
 
 # Class for clobber test
 class CobblerTest
-  def initialize(server_address = ENV['SERVER'], server_port = 80, server_path = '/cobbler_api')
-    @server_address = server_address
-    @server_port = server_port
-    @server_path = server_path
-    @server = XMLRPC::Client.new(server_address, server_path, server_port)
+  def initialize
+    server_address = ENV['SERVER']
+    @server = XMLRPC::Client.new2('http://' + server_address + '/cobbler_api', nil, DEFAULT_TIMEOUT)
     raise 'No running server at found at ' + server_address unless running?
   end
 
