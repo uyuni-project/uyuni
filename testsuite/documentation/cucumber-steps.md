@@ -30,7 +30,7 @@ The corresponding notion in Cucumber steps is "step host names".
 
 Possible values are currently:
 
-| Test host | Ruby target |  Bash environment variable | Step host name | Sumaform module |
+| Test host | Ruby target |  Bash environment variable | Step host name | sumaform module |
 | --------- | ----------- | -------------------------- | -------------- | --------------- |
 | Uyuni server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
 | Uyuni proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
@@ -698,7 +698,7 @@ When "test-net2" on "kvm_server" should have "192.168.128.1" IPv4 address with 2
 
 ## Writing new steps
 
-Here we describe only the specifics of this testsuite. For a description
+Here we describe only the specifics of this test suite. For a description
 of the underlying libraries, have a look at
 [Capybara documentation](http://www.rubydoc.info/github/jnicklas/capybara).
 
@@ -742,7 +742,7 @@ When implementing a step, to convert a step host name into a target, use:
 
 ### Using cookies to store login information
 
-It is possible to work with cookies in testsuite and use them to store login information. There are no special
+It is possible to work with cookies in test suite and use them to store login information. There are no special
 dependencies except `Marshal` module for Ruby.
 
 Following code is expected to be a part of function used as step definition for user authorization:
