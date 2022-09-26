@@ -38,22 +38,6 @@ Feature: Correct timezone display
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
     Then I should see a "MalaysianUser" link
 
-  Scenario: Schedule a remote script in the future and see the correct timezone as a pop up
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Remote Command" in the content area
-    And I enter as remote command this script in
-      """
-      #!/bin/bash
-      ls
-      """
-    And I enter "00:00" as "date_timepicker_widget_input"
-    And I click on "Schedule"
-    Then I should see a "00:00:00 MYT" text
-    
-  Scenario: Login as the new Malaysian user if the previous scenario failed
-    Given I am authorized as "MalaysianUser" with password "MalaysianUser"
-    Then I should see a "MalaysianUser" link
-
   Scenario: Schedule a remote script to run now  and see the correct timezone details in history
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Remote Command" in the content area
@@ -69,8 +53,24 @@ Feature: Correct timezone display
     And I follow "History" in the content area
     And I follow first "scheduled by MalaysianUser"
     Then I should see a "MYT" text
-    # WORKAROUND for bsc #1195191, the below line is commented out but if the bug is fixed we should enable it. 
+    # WORKAROUND for bsc #1195191, the below line is commented out but if the bug is fixed we should enable it.
     # And I should not see a "PM" text
+    
+  Scenario: Login as the new Malaysian user if the previous scenario failed
+    Given I am authorized as "MalaysianUser" with password "MalaysianUser"
+    Then I should see a "MalaysianUser" link
+
+  Scenario: Schedule a remote script in the future and see the correct timezone as a pop up
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Remote Command" in the content area
+    And I enter as remote command this script in
+      """
+      #!/bin/bash
+      ls
+      """
+    And I enter "00:00" as "date_timepicker_widget_input"
+    And I click on "Schedule"
+    Then I should see a "00:00:00 MYT" text
     
   Scenario: Login as the new Malaysian user if the previous scenario failed
     Given I am authorized as "MalaysianUser" with password "MalaysianUser"
