@@ -76,6 +76,9 @@ Feature: Create activation keys
     And I enter "SUSE-SSH-KEY-x86_64" as "key"
     And I enter "20" as "usageLimit"
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Custom-Channel-x86_64"
     And I select "Push via SSH" from "contact-method"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been created" text

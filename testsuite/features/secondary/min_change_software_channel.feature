@@ -52,7 +52,7 @@ Feature: Assign child channel to a system
 
   Scenario: Check the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
-    Then "10" channels should be enabled on "sle_minion"
+    Then "12" channels should be enabled on "sle_minion"
     And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
     And channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
 
