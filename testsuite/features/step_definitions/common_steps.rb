@@ -1381,16 +1381,15 @@ When(/^I cleanup after Cobbler buildiso$/) do
 end
 
 When(/^I reboot server through SSH$/) do
-  # Get current used hostname
   node = get_target('server')
   temp_server = twopence_init("ssh:#{$server.public_ip}")
   temp_server.extend(LavandaBasic)
-  # Reboot and wait
   temp_server.run("reboot > /dev/null 2> /dev/null &")
   reboot_timeout = 300
+
   check_shutdown($server.public_ip, reboot_timeout)
   check_restart($server.public_ip, temp_server, reboot_timeout)
-  # Get a hand back on the server
+
   repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
     out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
     if !out.to_s.include? "dead" and out.to_s.include? "running"
@@ -1405,6 +1404,7 @@ Then(/^I change server short hostname from hosts and hostname files$/) do
   old_hostname = $server.hostname
   new_hostname = old_hostname + '2'
   log "New short hostname: #{new_hostname}"
+
   $server.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
   echo '#{$server.public_ip} #{$server.full_hostname} #{old_hostname}' >> /etc/hosts &&
   echo '#{$server.public_ip} #{new_hostname}#{$server.full_hostname.delete_prefix($server.hostname)} #{new_hostname}' >> /etc/hosts")
@@ -1418,7 +1418,8 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
             --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
             --ssl-ca-password=spacewalk -u admin -p admin"
   out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
-  log "#{out_spacewalk}" 
+  log "#{out_spacewalk}"
+
   reboot_timeout = 300
   repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
     out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
@@ -1430,7 +1431,6 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   end
   raise "Error while running spacewalk-hostname-rename command - see logs above" unless result_code.zero?
   raise "Error in the output logs" if out_spacewalk.include? "Error"
-
 end
 
 When(/^I change back the server hostname$/) do
