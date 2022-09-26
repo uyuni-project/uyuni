@@ -1,6 +1,10 @@
-- Add subtypes for Amazon EC2 virtual instances (bsc#1195624)
-- Fix migration of image actions (bsc#1202272)
-- improve schema compatibility with Amazon RDS
+-------------------------------------------------------------------
+Mon Sep 26 12:23:06 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.14-1
+  * Add subtypes for Amazon EC2 virtual instances (bsc#1195624)
+  * Fix migration of image actions (bsc#1202272)
+  * improve schema compatibility with Amazon RDS
 
 -------------------------------------------------------------------
 Wed Jul 27 14:11:40 CEST 2022 - jgonzalez@suse.com
