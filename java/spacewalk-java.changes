@@ -1,3 +1,4 @@
+- Do not explicitely remove old pillars on minion rename (bsc#1203451)
 -------------------------------------------------------------------
 Wed Sep 28 11:15:58 CEST 2022 - jgonzalez@suse.com
 
