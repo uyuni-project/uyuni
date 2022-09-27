@@ -1,8 +1,7 @@
 # Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT License.
 
-#@scope_configuration_channels
-Feature: Reconfiguring 
+Feature: Reconfiguring server hostname
   Using the tool spacewalk-hostname-rename, reconfigure the Spacewalk server when its hostname or IP address has changed.
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
