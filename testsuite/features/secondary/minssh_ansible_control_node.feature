@@ -15,7 +15,8 @@ Feature: Operate an Ansible control node in SSH minion
 
   Scenario: Enable "Ansible control node" system type
     Given I am on the Systems overview page of this "ssh_minion"
-    When I follow "Properties" in the content area
+    When I enable client tools repositories on "ssh_minion"
+    And I follow "Properties" in the content area
     And I check "ansible_control_node"
     And I click on "Update Properties"
     Then I should see a "Ansible Control Node type has been applied." text
