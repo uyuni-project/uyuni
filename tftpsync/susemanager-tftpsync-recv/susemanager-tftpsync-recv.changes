@@ -2,8 +2,6 @@
 Mon Sep 26 12:13:35 UTC 2022 - marina.latini@suse.com
 
 - version 4.3.7-1
-  * Prevent possible race conditions causing traceback
-    while processing cobbler sync (bsc#1192817)
   * Add missing IPv6 default configuration (bsc#1201589)
   * fix problems with parallel running processes
 
