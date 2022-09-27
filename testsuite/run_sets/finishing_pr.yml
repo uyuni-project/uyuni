@@ -14,5 +14,4 @@
 - features/finishing/allcli_debug.feature
 - features/secondary/srv_rename_hostname.feature
 
-
 ## Post run features END ##
