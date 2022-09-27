@@ -1441,6 +1441,6 @@ When(/^I change back the server's hostname$/) do
 end
 
 When(/^I clean up the server's hosts file$/) do
-  command = "sed '$d' /etc/hosts && sed '$d' /etc/hosts"
+  command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
   $server.run(command)
 end
