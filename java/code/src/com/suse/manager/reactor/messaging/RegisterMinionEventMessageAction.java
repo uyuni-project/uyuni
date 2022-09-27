@@ -72,7 +72,6 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
-import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Opt;
 
@@ -442,7 +441,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         try {
             String master = saltApi
                     .getMasterHostname(minionId)
-                    .orElseThrow(() -> new SaltException(
+                    .orElseThrow(() -> new NoWheelResultsException(
                             "Master not found in minion configuration"));
 
             Org org = activationKey.map(ActivationKey::getOrg)

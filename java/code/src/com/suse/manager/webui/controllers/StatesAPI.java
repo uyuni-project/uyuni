@@ -79,7 +79,6 @@ import com.suse.manager.webui.utils.gson.ServerConfigChannelsJson;
 import com.suse.manager.webui.utils.gson.ServerPackageStatesJson;
 import com.suse.manager.webui.utils.gson.StateTargetType;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 
 import com.google.gson.Gson;
@@ -720,7 +719,7 @@ public class StatesAPI {
                         // sync to minion before showing highstate
                         saltApi.syncAll(minions);
 
-                        Map<String, Result<Object>> result = saltApi.showHighstate(minionId);
+                        Map<String, Result<Object>> result = saltApi.getShowHighstate(minionId);
 
                         return Optional.ofNullable(result.get(minionId))
                                 .map(r -> r.fold(
@@ -735,7 +734,7 @@ public class StatesAPI {
                                 ))
                                 .orElse("No reply from minion: " + minionId);
                     }
-                    catch (SaltException e) {
+                    catch (NoWheelResultsException e) {
                         response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
                         LOG.debug("showHighstate failed with: {}", e.getMessage());
                         return e.getMessage();

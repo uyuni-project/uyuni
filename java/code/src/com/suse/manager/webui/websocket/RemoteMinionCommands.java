@@ -154,11 +154,11 @@ public class RemoteMinionCommands {
                 String target = StringUtils.trim(msg.getTarget());
 
                 Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
-                        saltApi.matchAsyncSSH(target, failAfter);
+                        saltApi.getMatchAsyncSSH(target, failAfter);
 
                 Map<String, CompletionStage<Result<Boolean>>> res = new HashMap<>();
 
-                res = saltApi.matchAsync(target, failAfter);
+                res = saltApi.getMatchAsync(target, failAfter);
                 if (res.isEmpty() && !resSSH.isPresent()) {
                     // just return, no need to wait for salt-ssh results
                     sendMessage(session, new ActionErrorEventDto(null,

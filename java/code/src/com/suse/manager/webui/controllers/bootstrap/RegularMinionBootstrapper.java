@@ -97,7 +97,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
 
         // If a key is pending for this minion, temporarily reject it
         boolean weRejectedIt = false;
-        if (saltApi.keyExists(minionId, KeyStatus.UNACCEPTED)) {
+        if (saltApi.isKeyExists(minionId, KeyStatus.UNACCEPTED)) {
             LOG.info("Pending key exists for {}, rejecting...", minionId);
             saltApi.rejectKey(minionId);
             weRejectedIt = true;

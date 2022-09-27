@@ -76,9 +76,9 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         Key.Pair keyPair = mockKeyPair();
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).keyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
-            allowing(saltServiceMock).keyExists("myhost", KeyStatus.UNACCEPTED);
+            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.UNACCEPTED);
             will(returnValue(false));
 
             allowing(saltServiceMock).generateKeysAndAccept("myhost", false);

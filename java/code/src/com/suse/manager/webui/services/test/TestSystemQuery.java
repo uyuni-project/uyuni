@@ -55,7 +55,7 @@ public class TestSystemQuery implements SystemQuery {
     }
 
     @Override
-    public Optional<RedhatProductInfo> redhatProductInfo(String minionId) {
+    public Optional<RedhatProductInfo> getRedhatProductInfo(String minionId) {
         throw new UnsupportedOperationException();
     }
 }
