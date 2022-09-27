@@ -1,3 +1,5 @@
+- Stop always showing help for valid proxy_container_config calls
+
 -------------------------------------------------------------------
 Mon Sep 26 12:29:44 UTC 2022 - marina.latini@suse.com
 

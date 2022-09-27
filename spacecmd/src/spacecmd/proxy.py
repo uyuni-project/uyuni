@@ -63,11 +63,12 @@ def do_proxy_container_config(self, args):
 
     args, options = parse_command_arguments(args, arg_parser)
 
-    if len(args) != 4:
+    try:
+        (proxy_fqdn, server_fqdn, max_cache, email, root_ca, certificate, key) = args
+    except ValueError:
         self.help_proxy_container_config()
         return
 
-    (proxy_fqdn, server_fqdn, max_cache, email, root_ca, certificate, key) = args
 
     root_ca = read_file(root_ca)
     intermediate_cas = [read_file(path) for path in options.intermediate_ca]
@@ -132,11 +133,12 @@ def do_proxy_container_config_generate_cert(self, args):
 
     args, options = parse_command_arguments(args, arg_parser)
 
-    if len(args) != 4:
+    try:
+        (proxy_fqdn, server_fqdn, max_cache, email) = args
+    except ValueError:
         self.help_proxy_container_config_generate_cert()
         return
 
-    (proxy_fqdn, server_fqdn, max_cache, email) = args
 
     ca_cert = read_file(options.ca_cert)
     ca_key = read_file(options.ca_key)
