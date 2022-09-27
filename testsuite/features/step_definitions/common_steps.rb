@@ -1381,7 +1381,8 @@ When(/^I cleanup after Cobbler buildiso$/) do
 end
 
 When(/^I reboot the server through SSH$/) do
-  temp_server = twopence_init('ssh:#{$server.public_ip}')
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
   temp_server.extend(LavandaBasic)
   temp_server.run('reboot > /dev/null 2> /dev/null &')
   default_timeout = 300
@@ -1433,11 +1434,13 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
 end
 
 When(/^I change back the server's hostname$/) do
-  temp_server = twopence_init("ssh:#{$server.public_ip}")
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
   temp_server.extend(LavandaBasic)
   temp_server.run("echo '#{$server.full_hostname}' > /etc/hostname ")
 end
 
 When(/^I clean up the server's hosts file$/) do
-  $server.run('sed "$d" /etc/hosts && sed "$d" /etc/hosts')
+  command = "sed '$d' /etc/hosts && sed '$d' /etc/hosts"
+  $server.run(command)
 end
