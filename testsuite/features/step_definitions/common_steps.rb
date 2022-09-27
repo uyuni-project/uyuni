@@ -1372,7 +1372,7 @@ end
 And(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
   tmp_dir = "/var/cache/cobbler/buildiso"
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
-  raise "error during verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
+  raise "error while verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
 end
 
 When(/^I cleanup after Cobbler buildiso$/) do
@@ -1380,17 +1380,16 @@ When(/^I cleanup after Cobbler buildiso$/) do
   raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
 
-When(/^I reboot server through SSH$/) do
-  node = get_target('server')
-  temp_server = twopence_init("ssh:#{$server.public_ip}")
+When(/^I reboot the server through SSH$/) do
+  temp_server = twopence_init('ssh:#{$server.public_ip}')
   temp_server.extend(LavandaBasic)
-  temp_server.run("reboot > /dev/null 2> /dev/null &")
-  reboot_timeout = 300
+  temp_server.run('reboot > /dev/null 2> /dev/null &')
+  default_timeout = 300
 
-  check_shutdown($server.public_ip, reboot_timeout)
-  check_restart($server.public_ip, temp_server, reboot_timeout)
+  check_shutdown($server.public_ip, default_timeout)
+  check_restart($server.public_ip, temp_server, default_timeout)
 
-  repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
     out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
     if !out.to_s.include? "dead" and out.to_s.include? "running"
       log "Server spacewalk service is up"
@@ -1400,7 +1399,7 @@ When(/^I reboot server through SSH$/) do
   end
 end
 
-Then(/^I change server short hostname from hosts and hostname files$/) do
+When(/^I change the server's short hostname from hosts and hostname files$/) do
   old_hostname = $server.hostname
   new_hostname = old_hostname + '2'
   log "New short hostname: #{new_hostname}"
@@ -1420,8 +1419,8 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
   log "#{out_spacewalk}"
 
-  reboot_timeout = 300
-  repeat_until_timeout(timeout: reboot_timeout, message: "Spacewalk didn't come up") do
+  default_timeout = 300
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
     out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
     if !out.to_s.include? "dead" and out.to_s.include? "running"
       log "Server: spacewalk service is up"
@@ -1433,8 +1432,12 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   raise "Error in the output logs - see logs above" if out_spacewalk.include? "No such file or directory"
 end
 
-When(/^I change back the server hostname$/) do
+When(/^I change back the server's hostname$/) do
   temp_server = twopence_init("ssh:#{$server.public_ip}")
   temp_server.extend(LavandaBasic)
   temp_server.run("echo '#{$server.full_hostname}' > /etc/hostname ")
+end
+
+When(/^I clean up the server's hosts file$/) do
+  $server.run('sed "$d" /etc/hosts && sed "$d" /etc/hosts')
 end

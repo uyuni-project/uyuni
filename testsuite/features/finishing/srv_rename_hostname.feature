@@ -1,18 +1,22 @@
 # Copyright (c) 2022 SUSE LLC
 # Licensed under the terms of the MIT License.
 
-Feature: Reconfiguring server hostname
-  Using the tool spacewalk-hostname-rename, reconfigure the Spacewalk server when its hostname or IP address has changed.
+Feature: Reconfigure the server's hostname
+  As a sysadmin 
+  In order to change the server's hostname
+  I want to use the tool spacewalk-hostname-rename.
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Change hostname and reboot server
     #Command prerequisites
-    When I change server short hostname from hosts and hostname files
-    Then I reboot server through SSH
+    When I change the server's short hostname from hosts and hostname files
+    And I reboot the server through SSH
     And I run spacewalk-hostname-rename command on the server
   
   Scenario: Change hostname back
-    And I change back the server hostname
-    And I reboot server through SSH
+    When I change back the server's hostname
+    And I reboot the server through SSH
     And I run spacewalk-hostname-rename command on the server
+    And I clean up the server's hosts file
