@@ -1430,7 +1430,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
     sleep 1
   end
   raise "Error while running spacewalk-hostname-rename command - see logs above" unless result_code.zero?
-  raise "Error in the output logs" if out_spacewalk.include? "Error"
+  raise "Error in the output logs - see logs above" if out_spacewalk.include? "No such file or directory"
 end
 
 When(/^I change back the server hostname$/) do
