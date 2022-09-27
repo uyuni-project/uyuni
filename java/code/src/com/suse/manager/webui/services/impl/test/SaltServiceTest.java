@@ -24,8 +24,9 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SaltSSHApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.salt.netapi.calls.Client;
 import com.suse.salt.netapi.client.SaltClient;
@@ -71,7 +72,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         minionIds.add("m2");
         assertEquals(
                 Collections.emptyList(),
-                SaltService.partitionMinionsByContactMethod(minionIds).get(true));
+                SaltSSHApi.partitionMinionsByContactMethod(minionIds).get(true));
     }
 
     @Test
@@ -84,7 +85,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         minionIds.add("m3");
         assertEquals(
                 Collections.singletonList("m1"),
-                SaltService.partitionMinionsByContactMethod(minionIds).get(true));
+                SaltSSHApi.partitionMinionsByContactMethod(minionIds).get(true));
         MinionPendingRegistrationService.removeMinion("m1");
         MinionPendingRegistrationService.removeMinion("m2");
     }
@@ -99,7 +100,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         minionIds.add("m2");
         assertEquals(
                 Collections.singletonList(sshMinion.getMinionId()),
-                SaltService.partitionMinionsByContactMethod(minionIds).get(true));
+                SaltSSHApi.partitionMinionsByContactMethod(minionIds).get(true));
     }
 
     @Test
@@ -114,7 +115,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         minionIds.add(minion.getMinionId());
         assertEquals(
                 Collections.singletonList(sshMinion.getMinionId()),
-                SaltService.partitionMinionsByContactMethod(minionIds).get(true));
+                SaltSSHApi.partitionMinionsByContactMethod(minionIds).get(true));
     }
 
     @Test
@@ -131,12 +132,11 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
                     new TypeToken<MgrUtilRunner.SshKeygenResult>() { }.getType())));
         }});
 
-        SaltService systemQuery = new SaltService(saltClient);
-        Optional<MgrUtilRunner.SshKeygenResult> res = systemQuery
+        SaltApi saltApi = new SaltApi();
+        Optional<MgrUtilRunner.SshKeygenResult> res = saltApi
                 .generateSSHKey(keyPath.substring(0, keyPath.length() - 4));
         assertTrue(res.isPresent());
         assertEquals(0, res.orElseThrow().getReturnCode());
-        systemQuery.close();
     }
 
     @Override

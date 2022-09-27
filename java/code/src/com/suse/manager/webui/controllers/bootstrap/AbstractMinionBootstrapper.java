@@ -362,7 +362,7 @@ public abstract class AbstractMinionBootstrapper {
             return Collections.singletonList(reactivationKeyError.get());
         }
 
-        if (saltApi.keyExists(params.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
+        if (saltApi.isKeyExists(params.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
             return Collections.singletonList("A salt key for this" +
                     " host (" + params.getHost() +
                     ") seems to already exist, please check!");

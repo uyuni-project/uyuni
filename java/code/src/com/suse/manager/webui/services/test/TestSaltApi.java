@@ -97,7 +97,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Map<String, Result<Object>> showHighstate(String minionId) throws SaltException {
+    public Map<String, Result<Object>> getShowHighstate(String minionId) throws SaltException {
         throw new UnsupportedOperationException();
     }
 
@@ -199,7 +199,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public boolean keyExists(String id, SaltService.KeyStatus... statusIn) {
+    public boolean isKeyExists(String id, SaltService.KeyStatus... statusIn) {
         throw new UnsupportedOperationException();
     }
 
@@ -243,7 +243,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Map<String, CompletionStage<Result<Boolean>>> matchAsync(String target,
+    public Map<String, CompletionStage<Result<Boolean>>> getMatchAsync(String target,
                                                                     CompletableFuture<GenericError> cancel) {
         throw new UnsupportedOperationException();
     }
@@ -260,7 +260,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
+    public Optional<CompletionStage<Map<String, Result<Boolean>>>> getMatchAsyncSSH(
             String target, CompletableFuture<GenericError> cancel) {
         throw new UnsupportedOperationException();
     }

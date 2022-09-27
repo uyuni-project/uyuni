@@ -363,7 +363,7 @@ public class RegistrationUtils {
                  "amazon".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                  "rocky".equalsIgnoreCase(grains.getValueAsString(OS))) {
 
-            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
+            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.getRedhatProductInfo(server.getMinionId());
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(

@@ -720,7 +720,7 @@ public class StatesAPI {
                         // sync to minion before showing highstate
                         saltApi.syncAll(minions);
 
-                        Map<String, Result<Object>> result = saltApi.showHighstate(minionId);
+                        Map<String, Result<Object>> result = saltApi.getShowHighstate(minionId);
 
                         return Optional.ofNullable(result.get(minionId))
                                 .map(r -> r.fold(

@@ -1,3 +1,5 @@
+- Refactoring of SaltApi, SystemQuery and SaltService
+
 -------------------------------------------------------------------
 Wed Sep 28 11:15:58 CEST 2022 - jgonzalez@suse.com
 

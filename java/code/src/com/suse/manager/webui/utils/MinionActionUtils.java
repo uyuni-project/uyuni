@@ -163,7 +163,7 @@ public class MinionActionUtils {
         ).collect(Collectors.toList());
 
         Map<String, Result<List<SaltUtil.RunningInfo>>> running =
-                saltApi.running(new MinionList(minionIds));
+                saltApi.getRunning(new MinionList(minionIds));
 
         serverActions.forEach(serverAction ->
             serverAction.getServer().asMinionServer().map(minion -> running.get(minion.getMinionId()))

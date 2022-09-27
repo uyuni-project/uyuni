@@ -1049,7 +1049,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             "redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
 
-                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                    allowing(saltServiceMock).getRedhatProductInfo(MINION_ID);
                     will(returnValue(Optional.of(new RedhatProductInfo(
                             Optional.empty(),
                             Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
@@ -1109,7 +1109,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             "redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
 
-                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                    allowing(saltServiceMock).getRedhatProductInfo(MINION_ID);
                     will(returnValue(Optional.of(new RedhatProductInfo(
                             Optional.empty(),
                             Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
@@ -1184,7 +1184,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7," +
                                 "7.2-9.el7,7Server,\n")))));
 
-                        allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                        allowing(saltServiceMock).getRedhatProductInfo(MINION_ID);
                         will(returnValue(Optional.of(new RedhatProductInfo(
                                 Optional.empty(),
                                 Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
@@ -1264,7 +1264,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             "PROVIDEVERSION=,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1," +
                             "7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n")))));
 
-                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                    allowing(saltServiceMock).getRedhatProductInfo(MINION_ID);
                     will(returnValue(Optional.of(new RedhatProductInfo(
                             Optional.empty(),
                             Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)\n" +
@@ -1352,7 +1352,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             "PROVIDEVERSION=,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7," +
                             "7Server,\n")))));
 
-                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                    allowing(saltServiceMock).getRedhatProductInfo(MINION_ID);
                     will(returnValue(Optional.of(new RedhatProductInfo(
                             Optional.empty(),
                             Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),

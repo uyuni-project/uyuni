@@ -113,10 +113,10 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         SaltService saltServiceMock = mock(SaltService.class);
 
         context().checking(new Expectations() { {
-            allowing(saltServiceMock).running(with(any(MinionList.class)));
+            allowing(saltServiceMock).getRunning(with(any(MinionList.class)));
             will(returnValue(running));
-            never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
-            never(saltServiceMock).listJob(with(any(String.class)));
+            never(saltServiceMock).getJobsByMetadata(with(any(Object.class)));
+            never(saltServiceMock).getListJob(with(any(String.class)));
         } });
 
         SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
@@ -227,7 +227,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
                 allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
 
-                allowing(saltServiceMock).jobsByMetadata(
+                allowing(saltServiceMock).getJobsByMetadata(
                         with(any(Object.class)), with(any(LocalDateTime.class)), with(any(LocalDateTime.class)));
                 will(returnValue(Optional.of(jobsByMetadata("jobs.list_jobs.actionchains.json", 0))));
 
@@ -238,8 +238,8 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             }
 
             private void mockListJob(String jid) {
-                never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
-                never(saltServiceMock).listJob(with(any(String.class)));
+                never(saltServiceMock).getJobsByMetadata(with(any(Object.class)));
+                never(saltServiceMock).getListJob(with(any(String.class)));
             }
         });
 
