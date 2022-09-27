@@ -1,3 +1,5 @@
+- Stop always showing help for valid proxy_container_config calls
+
 -------------------------------------------------------------------
 Wed Sep 28 10:25:47 CEST 2022 - jgonzalez@suse.com
 
