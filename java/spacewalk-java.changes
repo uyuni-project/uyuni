@@ -1,4 +1,8 @@
-- Fix get_item_resolved_value call
+-------------------------------------------------------------------
+Tue Sep 27 10:17:15 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.37-1
+  * Fix get_item_resolved_value call
 
 -------------------------------------------------------------------
 Mon Sep 26 12:30:49 UTC 2022 - marina.latini@suse.com
