@@ -1,34 +1,38 @@
-- Fix get_item_resolved_value call
-- Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
-- Fix prerequisite action serialization (bsc#1202899)(bsc#1203484)
-- Fix UI crash when filtering on systems list (bsc#1203169)
-- Filter out successors that have no repositories on SP migration (bsc#1202367)
-- Reduced the usage of deprecated Hibernate API
-- Fixed formula deselection in systemgroup (bsc#1202271)
-- Fix out of memory error when building a CLM project (bsc#1202217)
-- Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
-- Support Pay-as-you-go new CA location for SLES15SP4
-  and higher (bsc#1202729)
-- Fixed pagination for completed/failed systems in action details
-- Add support in rhn.conf for smtp port, auth, ssl/tls config
-- Fix sync for external repositories (bsc#1201753)
-- Detect the clients running on Amazon EC2 (bsc#1195624)
-- Adjust cobbler requirement to version 3.3.3
-- Support inherited values for kernel options from Cobbler API
-- Fix virtFileSize type after cobbler upgrade
-- Redefine available power_management.types for cobbler >= 3.3.1
-- fix state.apply result parsing in test mode (bsc#1201913)
-- require tomcat native interface to prevent misleading warning
-  in tomcat startup log (bsc#1202455)
-- Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
-- Reduce the length of image channel URL (bsc#1201220)
-- Fixed system search
-- update java dependencies
-- Enable Rocky Linux 9 for monitoring
-- Added a new configuration property to allow custom channels to
-  be synced together with vendor channels.
-- add onlyRelevant argument to addErrataUpdate API
-- fix taskomatic task remain in progress
+-------------------------------------------------------------------
+Wed Sep 28 11:15:58 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Fix get_item_resolved_value call
+  * Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
+  * Fix prerequisite action serialization (bsc#1202899)(bsc#1203484)
+  * Fix UI crash when filtering on systems list (bsc#1203169)
+  * Filter out successors that have no repositories on SP migration (bsc#1202367)
+  * Reduced the usage of deprecated Hibernate API
+  * Fixed formula deselection in systemgroup (bsc#1202271)
+  * Fix out of memory error when building a CLM project (bsc#1202217)
+  * Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
+  * Support Pay-as-you-go new CA location for SLES15SP4
+    and higher (bsc#1202729)
+  * Fixed pagination for completed/failed systems in action details
+  * Add support in rhn.conf for smtp port, auth, ssl/tls config
+  * Fix sync for external repositories (bsc#1201753)
+  * Detect the clients running on Amazon EC2 (bsc#1195624)
+  * Adjust cobbler requirement to version 3.3.3
+  * Support inherited values for kernel options from Cobbler API
+  * Fix virtFileSize type after cobbler upgrade
+  * Redefine available power_management.types for cobbler >= 3.3.1
+  * fix state.apply result parsing in test mode (bsc#1201913)
+  * require tomcat native interface to prevent misleading warning
+    in tomcat startup log (bsc#1202455)
+  * Calculate dependencies between cloned channels of vendor channels (bsc#1201626)
+  * Reduce the length of image channel URL (bsc#1201220)
+  * Fixed system search
+  * update java dependencies
+  * Enable Rocky Linux 9 for monitoring
+  * Added a new configuration property to allow custom channels to
+    be synced together with vendor channels.
+  * add onlyRelevant argument to addErrataUpdate API
+  * fix taskomatic task remain in progress
 
 -------------------------------------------------------------------
 Wed Jul 27 14:18:34 CEST 2022 - jgonzalez@suse.com
