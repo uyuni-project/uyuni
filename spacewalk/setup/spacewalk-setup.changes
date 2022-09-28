@@ -1,9 +1,13 @@
-- Trigger migration of Cobbler settings and collections if necessary
-  during package installation (bsc#1203478)
-- fix prototype missmatch in idn_to_ascii (bsc#1203385)
-- Execute "cobbler mkloaders" when setting up cobbler
-- Adjust next_server cobbler settings for cobbler >= 3.3.1
-- Add options for connecting to a remote postgres instance
+-------------------------------------------------------------------
+Wed Sep 28 10:25:24 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Trigger migration of Cobbler settings and collections if necessary
+    during package installation (bsc#1203478)
+  * fix prototype missmatch in idn_to_ascii (bsc#1203385)
+  * Execute "cobbler mkloaders" when setting up cobbler
+  * Adjust next_server cobbler settings for cobbler >= 3.3.1
+  * Add options for connecting to a remote postgres instance
 
 -------------------------------------------------------------------
 Wed Jul 27 14:02:50 CEST 2022 - jgonzalez@suse.com
