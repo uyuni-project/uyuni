@@ -139,4 +139,4 @@ Feature: Action chains on several systems at once
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
   Scenario: Cleanup: remove remaining systems from SSM after action chain tests on several systems
-    When I follow "Clear"
+    When I click on "Clear"
