@@ -333,7 +333,7 @@ public class LocalizationService {
                     }
                 }
             }
-            catch (Throwable t) {
+            catch (Exception err) {
                 // dont break - return nothing rather than stop
                 return null;
             }
