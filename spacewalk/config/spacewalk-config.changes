@@ -1,4 +1,8 @@
-- Add an option to use a remote PostgreSQL DB
+-------------------------------------------------------------------
+Wed Sep 28 11:13:24 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Add an option to use a remote PostgreSQL DB
 
 -------------------------------------------------------------------
 Wed Jul 27 14:16:23 CEST 2022 - jgonzalez@suse.com
