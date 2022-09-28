@@ -35,8 +35,8 @@ Summary:        Support package for spacewalk koan interaction
 License:        GPL-2.0-only
 Group:          System Environment/Kernel
 Name:           spacewalk-koan
-Version:        4.4.0
-Release:        0
+Version:        4.4.1
+Release:        1
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/tools/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
