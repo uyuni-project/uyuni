@@ -72,7 +72,6 @@
 - features/secondary/srv_scc_user_credentials.feature
 
 - features/secondary/minkvm_guests.feature
-- features/secondary/minxen_guests.feature
 
 - features/secondary/trad_metadata_check.feature
 - features/secondary/trad_cve_audit.feature
