@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Wed Sep 28 07:43:59 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
-- Update the image version to 2022.09:
+- Update the chart version to 2022.09:
   * Remove the namespace configuration value to honor helm's -n
   * Add the log level value to the config.yaml
 
