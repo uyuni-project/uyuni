@@ -877,6 +877,11 @@ public class SaltSSHService {
                 ));
     }
 
+    /**
+     * Check if highstate is applied
+     * @param state
+     * @return true if highstate is applied
+     */
     private static boolean isApplyHighstate(SaltState state) {
         if (state instanceof SaltModuleRun) {
             SaltModuleRun moduleRun = (SaltModuleRun)state;
