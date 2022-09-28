@@ -28,7 +28,6 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
 
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -44,7 +43,6 @@ import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltTop;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;

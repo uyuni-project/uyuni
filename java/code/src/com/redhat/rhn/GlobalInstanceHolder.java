@@ -41,7 +41,6 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.UserPreferenceUtils;
 import com.suse.manager.webui.utils.ViewHelper;
