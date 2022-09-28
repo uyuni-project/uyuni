@@ -1,4 +1,8 @@
-- Add options for connecting to a remote postgres instance
+-------------------------------------------------------------------
+Wed Sep 28 11:01:10 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Add options for connecting to a remote postgres instance
 
 -------------------------------------------------------------------
 Wed May 04 15:27:59 CEST 2022 - jgonzalez@suse.com
