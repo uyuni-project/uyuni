@@ -483,11 +483,6 @@ public class SaltSSHService {
         return Path.of(SSH_TEMP_BOOTSTRAP_KEY_DIR).resolve(fileName).toAbsolutePath();
     }
 
-    private void cleanUpTempKeyFile(Path path) {
-        GlobalInstanceHolder.SALT_API
-                .removeFile(path)
-                .orElseThrow(() -> new IllegalStateException("Can't remove file " + path));
-    }
 
     /**
      * Return Minion option

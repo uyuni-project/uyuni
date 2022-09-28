@@ -108,7 +108,6 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.logging.LogManager;
 import java.util.stream.Collectors;
 
 
@@ -117,6 +116,8 @@ import java.util.stream.Collectors;
  * Interface for interacting with salt.
  */
 public class SaltApi {
+
+    private static final Logger LOG = LogManager.getLogger(SaltApi.class);
 
     enum Messages {
 
@@ -139,7 +140,6 @@ public class SaltApi {
 
     }
 
-    private static final Logger LOG = LogManager.getLogger(SaltApi.class);
 
     // Reconnecting time (in seconds) to Salt event bus
     private static final int DELAY_TIME_SECONDS = 5;
@@ -595,7 +595,7 @@ public class SaltApi {
 
         try {
             tmpKeyFileAbsolutePath.ifPresent(p -> parameters.getPrivateKey().ifPresent(k ->
-                    GlobalInstanceHolder.SALT_API.storeSshKeyFile(p, k)));
+                    this.storeSshKeyFile(p, k)));
             SaltRoster roster = new SaltRoster();
             roster.addHost(parameters.getHost(),
                     parameters.getUser(),
@@ -633,6 +633,11 @@ public class SaltApi {
         finally {
             tmpKeyFileAbsolutePath.ifPresent(this::cleanUpTempKeyFile);
         }
+    }
+
+    private void cleanUpTempKeyFile(Path path) {
+        this.removeFile(path)
+                .orElseThrow(() -> new IllegalStateException("Can't remove file " + path));
     }
 
     /**
@@ -1228,7 +1233,7 @@ public class SaltApi {
         return eventStream;
     }
 
-    private <R> Optional<Map<String, CompletionStage<Result<R>>>> completableAsyncCall(
+    <R> Optional<Map<String, CompletionStage<Result<R>>>> completableAsyncCall(
             LocalCall<R> callIn, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel)
         throws SaltException {
