@@ -1,8 +1,12 @@
-- Remove legacy cluster_admin user group
-- Add subtypes for Amazon EC2 virtual instances (bsc#1195624)
-- Fix migration of image actions (bsc#1202272)
-- Add Rocky Linux 9 and EPEL 9 key
-- improve schema compatibility with Amazon RDS
+-------------------------------------------------------------------
+Wed Sep 28 10:46:55 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Remove legacy cluster_admin user group
+  * Add subtypes for Amazon EC2 virtual instances (bsc#1195624)
+  * Fix migration of image actions (bsc#1202272)
+  * Add Rocky Linux 9 and EPEL 9 key
+  * improve schema compatibility with Amazon RDS
 
 -------------------------------------------------------------------
 Wed Jul 27 14:11:40 CEST 2022 - jgonzalez@suse.com
