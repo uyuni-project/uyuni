@@ -19,10 +19,13 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.post;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.taglibs.DWRItemSelector;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.websocket.Notification;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -63,6 +66,7 @@ public class SetController {
     public static void initRoutes() {
         post("/manager/api/sets/:label",
                 withUser(SetController::updateSet));
+        post("/manager/api/sets/:label/clear", withUser(SetController::clearSet));
     }
 
     /**
@@ -94,5 +98,27 @@ public class SetController {
                     Map.of("messages", List.of("Failed to change set")));
         }
         return json(GSON, response, newCount);
+    }
+
+    /**
+     * Add selected systems to SSM
+     *
+     * @param request the http request
+     * @param response the http response
+     * @param user the user
+     * @return the json response
+     */
+    public static String clearSet(Request request, Response response, User user) {
+        String setLabel = request.params("label");
+        RhnSetDecl setDecl = RhnSetDecl.find(setLabel);
+        if (setDecl == null) {
+            return json(response, HttpStatus.SC_NOT_FOUND, Map.of("error", "No such set: " + setLabel));
+        }
+        setDecl.clear(user);
+        if (setLabel.equals(SetLabels.SYSTEM_LIST)) {
+            LOG.debug("Updating SSM count via websocket");
+            Notification.spreadUpdate(Notification.SSM_COUNT);
+        }
+        return json(response, 0);
     }
 }

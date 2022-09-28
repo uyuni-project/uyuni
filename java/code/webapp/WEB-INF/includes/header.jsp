@@ -84,32 +84,14 @@
         </script>
       </li>
       <li id="ssm-box" class="ssm-box">
-        <a href="/rhn/ssm/index.do" id="manage-ssm" title="<bean:message key="manage"/>">
-          <div id="ssm-counter"></div>
-          <script type="text/javascript">
-            window.csrfToken = '<c:out value="${csrf_token}" />';
-            spaImportReactPage('systems/ssm/ssm-counter')
-              .then(function(module) {
-                module.renderer("ssm-counter", {})
-              });
-          </script>
-        </a>
-        <%--
-          -- Make sure we set the return_url variable correctly here. This will make is to
-          -- the user is returned here after clearing the ssm.
-          --%>
-        <c:choose>
-          <c:when test="${not empty pageContext.request.queryString}">
-            <c:set var="rurl" value="${pageContext.request.requestURI}?${pageContext.request.queryString}"/>
-          </c:when>
-          <c:otherwise>
-            <c:set var="rurl" value="${pageContext.request.requestURI}" />
-          </c:otherwise>
-        </c:choose>
-        <a class="js-spa" id="clear-ssm" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}"
-            title="<bean:message key="clear"/>">
-          <i class="fa fa-eraser"></i>
-        </a>
+        <div id="ssm-counter"></div>
+        <script type="text/javascript">
+          window.csrfToken = '<c:out value="${csrf_token}" />';
+          spaImportReactPage('systems/ssm/ssm-counter')
+            .then(function(module) {
+              module.renderer("ssm-counter", {})
+            });
+        </script>
       </li>
     </ul>
   </rhn:require>
