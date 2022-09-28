@@ -193,20 +193,6 @@ public class SaltApi {
                 new SaltClient(SALT_MASTER_URI, new HttpAsyncClientImpl(asyncHttpClient));
     }
 
-    /**
-     * Constructor to use for unit testing
-     *
-     * @param client Salt client
-     */
-    public SaltApi(SaltClient client) {
-        defaultBatch = Batch.custom()
-                .withBatchAsAmount(ConfigDefaults.get().getSaltBatchSize())
-                .withDelay(ConfigDefaults.get().getSaltBatchDelay())
-                .withPresencePingTimeout(ConfigDefaults.get().getSaltPresencePingTimeout())
-                .withPresencePingGatherJobTimeout(
-                        ConfigDefaults.get().getSaltPresencePingGatherJobTimeout())
-                .build();
-    }
 
     /**
      * Sync the channels of a list of minions
@@ -545,10 +531,9 @@ public class SaltApi {
      * @return the generated key pair
      */
     public Key.Pair generateKeysAndAccept(String id, boolean force) {
-        if (callSync(Key.genAccept(id, Optional.of(force))).isEmpty()) {
-            throw new NoWheelResultsException("no wheel results");
+        return callSync(Key.genAccept(id, Optional.of(force))).
+                orElseThrow( () -> new NoWheelResultsException("no wheel results"));
         }
-    }
 
     /**
      * Bootstrap a system using salt-ssh.
