@@ -61,18 +61,16 @@ public class GlobalInstanceHolder {
     public static final SystemQuery SYSTEM_QUERY = new SystemQuery(SALT_API);
     public static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager(SALT_API);
     public static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
-    public static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API);
+    public static final SaltUtils SALT_UTILS = new SaltUtils(SALT_API);
     public static final SaltKeyUtils SALT_KEY_UTILS = new SaltKeyUtils(SALT_API);
-    public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
-            SALT_API, SALT_UTILS, SALT_KEY_UTILS);
+    public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(SALT_API);
     public static final Access ACCESS = new Access();
     public static final AclFactory ACL_FACTORY = new AclFactory(ACCESS);
     // Referenced from JSP
     public static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);
     public static final UserPreferenceUtils USER_PREFERENCE_UTILS = new UserPreferenceUtils(ACL_FACTORY);
     public static final RenderUtils RENDER_UTILS = new RenderUtils(ACL_FACTORY);
-    public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(
-            SALT_SERVER_ACTION_SERVICE, SALT_API, SALT_UTILS);
+    public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(SALT_SERVER_ACTION_SERVICE);
     public static final KubernetesManager KUBERNETES_MANAGER = new KubernetesManager(SALT_API);
     public static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
     public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER =

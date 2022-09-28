@@ -227,9 +227,9 @@ public class SaltUtils {
      * @param systemQueryIn
      * @param saltApiIn
      */
-    public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+    public SaltUtils(SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
-        this.systemQuery = systemQueryIn;
+        this.systemQuery = new SystemQuery(saltApiIn);
     }
 
     /**

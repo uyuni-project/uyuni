@@ -86,9 +86,9 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Openscap;
@@ -144,7 +144,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             });
 
     private TaskomaticApi taskomaticApi;
-    private SaltService saltServiceMock;
+    private SaltApi saltApiMock;
     private SystemEntitlementManager systemEntitlementManager;
     protected Path metadataDirOfficial;
     private SaltUtils saltUtils;
@@ -159,17 +159,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
-        saltServiceMock = context().mock(SaltService.class);
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
-        VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
+        saltApiMock = context().mock(SaltUtils.class);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiMock);
+        VirtManager virtManager = new VirtManagerSalt(saltApiMock);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApiMock);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
+                new SystemEntitler(saltApiMock, virtManager, monitoringManager, serverGroupManager)
         );
-        saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
-        saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
-                new SaltKeyUtils(saltServiceMock));
+        saltUtils = new SaltUtils(saltApiMock);
+        saltServerActionService = new SaltServerActionService(saltApiMock, saltUtils,
+                new SaltKeyUtils(saltApiMock));
         metadataDirOfficial = Files.createTempDirectory("meta");
         formulaDataDir = Files.createTempDirectory("data");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
@@ -180,7 +180,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Files.createFile(systemLockFile);
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+            allowing(saltApiMock).refreshPillar(with(any(MinionList.class)));
         }});
     }
 
@@ -1401,7 +1401,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .orElseThrow(() -> new RuntimeException("missiong scap result"));
 
         context().checking(new Expectations() {{
-            oneOf(saltServiceMock).storeMinionScapFiles(
+            oneOf(saltApiMock).storeMinionScapFiles(
                     with(any(MinionServer.class)),
                     with(openscapResult.getUploadDir()),
                     with(action.getId()));
@@ -1615,7 +1615,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                                                 ImageProfile profile, Consumer<ImageInfo> assertions) throws Exception {
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            allowing(saltApiMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
         // schedule the build
@@ -1686,40 +1686,40 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+            allowing(saltApiMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltApiMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+            allowing(saltApiMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.initrd")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+            allowing(saltApiMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54" +
                             "-default.kernel")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).removeFile(
+            allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
+            allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0.initrd",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
+            allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
                                     "-5.3.18-150300.59.54-default.kernel",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            allowing(saltApiMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
@@ -1750,7 +1750,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("7057ea9a15784f469e03f2de045d3c73", file.getChecksum().getChecksum());
             assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0", file.getFile());
         });
-        ImageInfoFactory.delete(image, saltServiceMock);
+        ImageInfoFactory.delete(image, saltApiMock);
         HibernateFactory.getSession().flush();
     }
 
@@ -1764,19 +1764,19 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+            allowing(saltApiMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltApiMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build137/images/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).removeFile(
+            allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
                                     "-build129.tar.xz",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            allowing(saltApiMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
@@ -1797,7 +1797,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz",
                     info.getImageFiles().stream().findFirst().get().getFile());
         });
-        ImageInfoFactory.delete(image, saltServiceMock);
+        ImageInfoFactory.delete(image, saltApiMock);
         HibernateFactory.getSession().flush();
     }
 
@@ -1811,17 +1811,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
-            allowing(saltServiceMock).removeFile(
+            allowing(saltApiMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/image", user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
+            allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/kernel", user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).removeFile(
+            allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/initrd", user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
-            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            allowing(saltApiMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
@@ -1867,7 +1867,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        ImageInfoFactory.delete(image, saltServiceMock);
+        ImageInfoFactory.delete(image, saltApiMock);
 
         HibernateFactory.getSession().flush();
 
@@ -1886,13 +1886,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
-            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+            allowing(saltApiMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltApiMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
-            allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
+            allowing(saltApiMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);

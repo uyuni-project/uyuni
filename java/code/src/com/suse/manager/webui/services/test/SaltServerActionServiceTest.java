@@ -83,7 +83,6 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
@@ -140,7 +139,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             public void updateLibvirtEngine(MinionServer minionIn) {
             }
         };
-        SaltService saltService = new SaltService() {
+        SaltApi saltApi = new SaltApi() {
             @Override
             public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
                 return Optional.of(Result.success(new JsonObject()));
@@ -151,21 +150,19 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             }
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
-        saltServerActionService = createSaltServerActionService(saltService, saltService);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltService);
-        serverGroupManager = new ServerGroupManager(saltService);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        serverGroupManager = new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltService, virtManager, monitoringManager, serverGroupManager)
+                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
         );
 
         taskomaticMock = mock(TaskomaticApi.class);
         saltServerActionService.setTaskomaticApi(taskomaticMock);
     }
 
-    private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery, SaltApi saltApi) {
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
-        SaltServerActionService service = new SaltServerActionService(saltApi, saltUtils, new SaltKeyUtils(saltApi));
+    private SaltServerActionService createSaltServerActionService(SaltApi saltApi) {
+        SaltServerActionService service = new SaltServerActionService(saltApi);
         service.setSkipCommandScriptPerms(true);
         return service;
     }
@@ -1059,12 +1056,12 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         createChildServerAction(action, STATUS_QUEUED, testMinionServer, 5L);
         HibernateFactory.getSession().flush();
 
-        SaltService saltServiceMock = mock(SaltService.class);
-        SaltServerActionService testService = createSaltServerActionService(saltServiceMock, saltServiceMock);
+        SaltApi saltApiMock = mock(SaltApi.class);
+        SaltServerActionService testService = createSaltServerActionService(saltApiMock, saltApiMock);
         testService.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
             oneOf(taskomaticMock).scheduleSSHActionExecution(action, sshMinion, false);
-            oneOf(saltServiceMock).callAsync(
+            oneOf(saltApiMock).callAsync(
                     with(any(LocalCall.class)), with(any(Target.class)), with(any(Optional.class)));
             LocalAsyncResult<?> result = new LocalAsyncResult() {
                 public List<String> getMinions() {

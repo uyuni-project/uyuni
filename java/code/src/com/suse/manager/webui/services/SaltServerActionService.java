@@ -249,8 +249,18 @@ public class SaltServerActionService {
             SaltActionChainGeneratorService.INSTANCE;
 
     private SaltApi saltApi;
+
+    public SaltApi getSaltApi() {
+        return saltApi;
+    }
+
     private SaltSSHService saltSSHService = GlobalInstanceHolder.SALT_API.getSaltSSHService();
     private SaltUtils saltUtils;
+
+    public SaltUtils getSaltUtils() {
+        return saltUtils;
+    }
+
     private SaltKeyUtils saltKeyUtils;
     private boolean skipCommandScriptPerms;
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
@@ -260,10 +270,10 @@ public class SaltServerActionService {
      * @param saltUtilsIn
      * @param saltKeyUtilsIn
      */
-    public SaltServerActionService(SaltApi saltApiIn, SaltUtils saltUtilsIn, SaltKeyUtils saltKeyUtilsIn) {
+    public SaltServerActionService(SaltApi saltApiIn) {
         this.saltApi = saltApiIn;
-        this.saltUtils = saltUtilsIn;
-        this.saltKeyUtils = saltKeyUtilsIn;
+        this.saltUtils = new SaltUtils(saltApi);
+        this.saltKeyUtils = new SaltKeyUtils(saltApi);
     }
 
     /**

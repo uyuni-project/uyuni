@@ -20,7 +20,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.cobbler.test.MockConnection;
@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
 
     private static final String MINION_ID = "suma3pg.vagrant.local";
-    private SaltService saltServiceMock;
+    private SaltApi saltApiMock;
 
     @Override
     @BeforeEach
@@ -43,7 +43,7 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         MockConnection.clear();
-        saltServiceMock = mock(SaltService.class);
+        saltApiMock = mock(SaltApi.class);
     }
 
 
@@ -53,10 +53,10 @@ public class MinionStartupActionTest extends JMockBaseTestCaseWithUser {
         minion.setMinionId(MINION_ID);
         // Verify the resulting system entry
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).updateSystemInfo(with(any(MinionList.class)));
+            allowing(saltApiMock).updateSystemInfo(with(any(MinionList.class)));
         }});
         // On minion start up apply state via mocked SaltService
-        MinionStartEventMessageAction action = new MinionStartEventMessageAction(saltServiceMock);
+        MinionStartEventMessageAction action = new MinionStartEventMessageAction(saltApiMock);
         action.execute(new MinionStartEventMessage(MINION_ID));
     }
 }

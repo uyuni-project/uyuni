@@ -69,9 +69,9 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
@@ -103,7 +103,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }};
 
     private static TaskomaticApi taskomaticApi;
-    private SaltService saltServiceMock;
+    private SaltApi saltApiMock;
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
@@ -112,18 +112,18 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
-        saltServiceMock = context.mock(SaltService.class);
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
-        VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
+        saltApiMock = context.mock(SaltApi.class);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiMock);
+        VirtManager virtManager = new VirtManagerSalt(saltApiMock);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApiMock);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
+                new SystemEntitler(saltApiMock, virtManager, monitoringManager, serverGroupManager)
         );
-        handler = new ImageInfoHandler(saltServiceMock);
+        handler = new ImageInfoHandler(saltApiMock);
         context.checking(new Expectations() {{
-            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
-            allowing(saltServiceMock).removeFile(
+            allowing(saltApiMock).refreshPillar(with(any(MinionList.class)));
+            allowing(saltApiMock).removeFile(
                 with(equal(Paths.get(String.format("/srv/www/os-images/%d/testimg.tgz", admin.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
@@ -161,7 +161,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
             assertEquals("Image already exists.", e.getMessage());
         }
 
-        ImageInfoFactory.delete(info.get(), saltServiceMock);
+        ImageInfoFactory.delete(info.get(), saltApiMock);
         ret = handler.importContainerImage(admin, "my-external-image", "1.0",
                 server.getId().intValue(), store.getLabel(), "", getNow());
         assertTrue(ret > 0);
@@ -194,7 +194,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context.checking(new Expectations() {{
-                allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+                allowing(saltApiMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
                 will(returnValue(Optional.of(mockResult)));
         }});
 

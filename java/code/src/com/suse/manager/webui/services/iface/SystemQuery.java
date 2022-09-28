@@ -57,11 +57,16 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Interface containing methods for directly interacting and getting information from a system.
  * Note: This interface should be split up further at some point.
  */
 public class SystemQuery {
+
+    private static final Logger LOG = LogManager.getLogger(SystemQuery.class);
 
     /**
      * Enum of all the available status for Salt keys.

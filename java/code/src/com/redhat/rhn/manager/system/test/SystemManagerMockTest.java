@@ -34,7 +34,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -88,16 +88,16 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
 
         MinionServer server = TestUtils.saveAndReload(testMinionServer);
 
-        SaltService saltServiceMock = mock(SaltService.class);
+        SaltApi saltApiMock = mock(SaltApi.class);
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).deleteKey(testMinionServer.getMinionId());
-            allowing(saltServiceMock).removeSaltSSHKnownHost(testMinionServer.getHostname());
+            allowing(saltApiMock).deleteKey(testMinionServer.getMinionId());
+            allowing(saltApiMock).removeSaltSSHKnownHost(testMinionServer.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
 
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
-                saltServiceMock);
+                saltApiMock);
         systemManager.deleteServer(server.getOrg().getActiveOrgAdmins().get(0), server.getId());
 
         assertFalse(tokenBase.getValid());

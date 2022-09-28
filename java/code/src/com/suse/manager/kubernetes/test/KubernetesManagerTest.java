@@ -30,7 +30,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.model.kubernetes.ContainerInfo;
 import com.suse.manager.model.kubernetes.ImageUsage;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.salt.netapi.parser.JsonParser;
 
@@ -51,7 +51,7 @@ import java.util.stream.Stream;
  */
 public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
-    private SaltService saltServiceMock;
+    private SaltApi saltApiMock;
     private KubernetesManager manager;
 
     @Override
@@ -60,8 +60,8 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
-        saltServiceMock = mock(SaltService.class);
-        manager = new KubernetesManager(saltServiceMock);
+        saltApiMock = mock(SaltApi.class);
+        manager = new KubernetesManager(saltApiMock);
 
         for (VirtualHostManager virtHostMgr : VirtualHostManagerFactory.getInstance().listVirtualHostManagers()) {
             VirtualHostManagerFactory.getInstance().delete(virtHostMgr);
@@ -237,7 +237,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
     private void expectGetAllContainers(String kubeconfig, String context, String file)
         throws IOException, ClassNotFoundException {
         context().checking(new Expectations() { {
-            allowing(saltServiceMock).getAllContainers(with(kubeconfig), with(context));
+            allowing(saltApiMock).getAllContainers(with(kubeconfig), with(context));
             will(returnValue(Optional.of(new JsonParser<>(MgrK8sRunner.getAllContainers("", "").getReturnType()).parse(
                     TestUtils.readRelativeFile(this, file)).getContainers())));
         } });

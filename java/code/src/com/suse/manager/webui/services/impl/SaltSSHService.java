@@ -42,7 +42,6 @@ import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltTop;
-import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
@@ -475,7 +474,10 @@ public class SaltSSHService {
         return !minions.isEmpty();
     }
 
-    // create temp key absolute path
+    /**
+     * create a temporary temp key
+     * @return Temp Key file path
+     */
     public static Path createTempKeyFilePath() {
         String fileName = "boostrapKeyTmp-" + UUID.randomUUID();
         return Path.of(SSH_TEMP_BOOTSTRAP_KEY_DIR).resolve(fileName).toAbsolutePath();
@@ -487,6 +489,12 @@ public class SaltSSHService {
                 .orElseThrow(() -> new IllegalStateException("Can't remove file " + path));
     }
 
+    /**
+     * Return Minion option
+     * @param minionId Minion ID
+     * @param sshContactMethod the ssh contact method
+     * @return Minion option
+     */
     public static Optional<Map<String, Object>> getMinionOpts(String minionId,
                                                     String sshContactMethod) {
         if (ContactMethodUtil.SSH_PUSH_TUNNEL.equals(sshContactMethod)) {
@@ -497,6 +505,12 @@ public class SaltSSHService {
         return Optional.empty();
     }
 
+    /**
+     * Return port forwarding address if exists
+     * @param proxyPath a list of proxy hostnames
+     * @param sshContactMethod the ssh contact method
+     * @return port forwarding address
+     */
     public static Optional<String> remotePortForwarding(List<String> proxyPath,
                                                   String sshContactMethod) {
         if (ContactMethodUtil.SSH_PUSH_TUNNEL.equals(sshContactMethod)) {
@@ -506,10 +520,19 @@ public class SaltSSHService {
         return Optional.empty();
     }
 
+    /**
+     * return ssh push remote port
+     * @return ssh push remote port
+     */
     public static Integer getSshPushRemotePort() {
         return Config.get().getInt("ssh_push_port_https");
     }
 
+    /**
+     * Check if user is a superuser
+     * @param user
+     * @return true if superuser
+     */
     public static boolean isSudoUser(String user) {
         return !CommonConstants.ROOT.equals(user);
     }

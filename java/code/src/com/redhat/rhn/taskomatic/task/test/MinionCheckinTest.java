@@ -27,7 +27,7 @@ import com.redhat.rhn.taskomatic.task.MinionCheckin;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -75,14 +75,14 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
         minion1.setServerInfo(serverInfo);
         TestUtils.saveAndFlush(minion1);
 
-        SaltService saltServiceMock = mock(SaltService.class);
+        SaltApi saltApiMock = mock(SaltApi.class);
 
         context().checking(new Expectations() { {
-            never(saltServiceMock).checkIn(with(any(MinionList.class)));
+            never(saltApiMock).checkIn(with(any(MinionList.class)));
         } });
 
         MinionCheckin minionCheckinJob = new MinionCheckin();
-        minionCheckinJob.setSaltApi(saltServiceMock);
+        minionCheckinJob.setSaltApi(saltApiMock);
 
         minionCheckinJob.execute(null);
     }

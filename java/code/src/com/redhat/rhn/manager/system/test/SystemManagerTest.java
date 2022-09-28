@@ -135,7 +135,6 @@ import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
@@ -186,7 +185,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public static final int HOST_RAM_MB = 2048;
     public static final int HOST_SWAP_MB = 1024;
 
-    private SaltService saltServiceMock;
+    private SaltApi saltApiMock;
     protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
     protected Path metadataDirOfficial;
@@ -203,7 +202,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
-        saltServiceMock = mock(SaltService.class);
+        saltApiMock = mock(SaltApi.class);
         tmpSaltRoot = Files.createTempDirectory("salt");
         metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
@@ -212,7 +211,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             {
                 allowing(taskomaticMock)
                     .scheduleActionExecution(with(any(Action.class)));
-                allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+                allowing(saltApiMock).refreshPillar(with(any(MinionList.class)));
             }
         });
         SaltApi saltApi = new TestSaltApi();
@@ -223,7 +222,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
         );
-        this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
+        this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApiMock);
         createMetadataFiles();
     }
 
@@ -332,8 +331,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 minion.getPillarByCategory(FormulaFactory.PREFIX + formulaName).orElseThrow().getPillar());
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).deleteKey(minionId);
-            allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
+            allowing(saltApiMock).deleteKey(minionId);
+            allowing(saltApiMock).removeSaltSSHKnownHost(minion.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         systemManager.deleteServer(user, minion.getId());
@@ -354,8 +353,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         FormulaFactory.saveServerFormulas(minion, singletonList(formulaName));
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).deleteKey(minionId);
-            allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
+            allowing(saltApiMock).deleteKey(minionId);
+            allowing(saltApiMock).removeSaltSSHKnownHost(minion.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         systemManager.deleteServer(user, minion.getId());
@@ -1960,11 +1959,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String sshPushPubKey = "DummySshPushPubKey";
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltApiMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
             will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshKey, sshPubKey))));
-            allowing(saltServiceMock).generateSSHKey(with(aNull(String.class)));
+            allowing(saltApiMock).generateSSHKey(with(aNull(String.class)));
             will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshPushKey, sshPushPubKey))));
-            allowing(saltServiceMock)
+            allowing(saltApiMock)
                     .checkSSLCert(with(equal(rootCA)), with(equal(new SSLCertPair(cert, key))), with(equal(otherCAs)));
             will(returnValue(apacheCert));
         }});
@@ -2001,7 +2000,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String proxyName = "pxy.mgr.lab";
         createTestProxy(proxyName);
         context().checking(new Expectations() {{
-            oneOf(saltServiceMock).removeSaltSSHKnownHost(with(proxyName), with(8022));
+            oneOf(saltApiMock).removeSaltSSHKnownHost(with(proxyName), with(8022));
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         testCreateProxyContainerConfig();

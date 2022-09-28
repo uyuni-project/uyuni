@@ -78,6 +78,8 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -108,6 +110,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.LogManager;
 import java.util.stream.Collectors;
+
+
 
 /**
  * Interface for interacting with salt.
@@ -586,7 +590,8 @@ public class SaltApi {
         Optional<String> portForwarding = SaltSSHService.remotePortForwarding(bootstrapProxyPath, contactMethod);
 
         // private key handling just for bootstrap
-        Optional<Path> tmpKeyFileAbsolutePath = parameters.getPrivateKey().map(key -> SaltSSHService.createTempKeyFilePath());
+        Optional<Path> tmpKeyFileAbsolutePath = parameters.getPrivateKey().map(key ->
+        SaltSSHService.createTempKeyFilePath());
 
         try {
             tmpKeyFileAbsolutePath.ifPresent(p -> parameters.getPrivateKey().ifPresent(k ->

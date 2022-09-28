@@ -74,11 +74,10 @@ public class MinionActionUtils {
      * @param saltApiIn
      * @param saltUtilsIn
      */
-    public MinionActionUtils(SaltServerActionService saltServerActionServiceIn, SaltApi saltApiIn,
-                             SaltUtils saltUtilsIn) {
+    public MinionActionUtils(SaltServerActionService saltServerActionServiceIn) {
         this.saltServerActionService = saltServerActionServiceIn;
-        this.saltApi = saltApiIn;
-        this.saltUtils = saltUtilsIn;
+        this.saltApi = saltServerActionServiceIn.getSaltApi();
+        this.saltUtils = saltServerActionServiceIn.getSaltUtils();
     }
 
     /**

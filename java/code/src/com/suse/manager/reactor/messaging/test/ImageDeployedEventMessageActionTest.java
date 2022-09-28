@@ -46,7 +46,6 @@ import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -78,7 +77,6 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     private Map<String, Object> grains;
 
     // Mocks
-    private SaltService saltMock;
     private SystemQuery systemQuery;
     private TaskomaticApi taskomaticMock;
 
@@ -88,7 +86,6 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
-        saltMock = mock(SaltService.class);
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
 

@@ -28,9 +28,9 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.webui.controllers.bootstrap.AbstractMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapResult;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery.KeyStatus;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -56,7 +56,7 @@ import java.util.Optional;
  */
 public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCaseWithUser {
 
-    protected SaltService saltServiceMock;
+    protected SaltApi saltApiMock;
 
     // tested object, initialized in subclasses
     protected AbstractMinionBootstrapper bootstrapper;
@@ -66,7 +66,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        saltServiceMock = mock(SaltService.class);
+        saltApiMock = mock(SaltApi.class);
     }
 
     /**
@@ -79,7 +79,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         setEmptyActivationKeys(input);
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            allowing(saltApiMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(true));
         }});
 
@@ -142,7 +142,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         setEmptyActivationKeys(input);
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            allowing(saltApiMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
         }});
 
@@ -162,28 +162,28 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         Key.Pair keyPair = mockKeyPair();
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            allowing(saltApiMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
-            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.UNACCEPTED);
+            allowing(saltApiMock).isKeyExists("myhost", KeyStatus.UNACCEPTED);
             will(returnValue(false));
 
-            allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
+            allowing(saltApiMock).generateKeysAndAccept("myhost", false);
             will(returnValue(keyPair));
 
             MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.SshKeygenResult("key", "pubkey");
-            allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+            allowing(saltApiMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH);
             will(returnValue(of(mockResult)));
 
             List<String> bootstrapMods = bootstrapMods();
             Map<String, Object> pillarData = createPillarData(Optional.empty(), Optional.empty());
             // return success when calling low-level bootstrap
-            allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
+            allowing(saltApiMock).bootstrapMinion(with(any(BootstrapParameters.class)),
                     with(bootstrapMods), with(pillarData));
             SSHResult<Map<String, State.ApplyResult>> sshResult = createSuccessResult();
             will(returnValue(new Result<>(Xor.right(sshResult))));
 
             // we expect the key NOT to be deleted
-            atMost(0).of(saltServiceMock).deleteKey("myhost");
+            atMost(0).of(saltApiMock).deleteKey("myhost");
         }});
 
         BootstrapHostsJson input = mockStandardInput();
@@ -230,22 +230,22 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             allowing(input).maybeGetReactivationKey();
             will(returnValue(empty()));
 
-            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            allowing(saltApiMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
-            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.UNACCEPTED);
+            allowing(saltApiMock).isKeyExists("myhost", KeyStatus.UNACCEPTED);
             will(returnValue(false));
 
             Key.Pair keyPair = mockKeyPair();
-            allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
+            allowing(saltApiMock).generateKeysAndAccept("myhost", false);
             will(returnValue(keyPair));
 
             MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.SshKeygenResult("key", "pubkey");
-            allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+            allowing(saltApiMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH);
             will(returnValue(of(mockResult)));
 
             List<String> bootstrapMods = bootstrapMods();
             Map<String, Object> pillarData = createPillarData(Optional.of(key), Optional.empty());
-            allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
+            allowing(saltApiMock).bootstrapMinion(with(any(BootstrapParameters.class)),
                     with(bootstrapMods), with(pillarData));
             Object sshResult = createSuccessResult();
             will(returnValue(new Result<>(Xor.right(sshResult))));
@@ -272,18 +272,18 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             allowing(input).maybeGetReactivationKey();
             will(returnValue(Optional.of(reactKey.getKey())));
 
-            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
+            allowing(saltApiMock).isKeyExists("myhost", KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED);
             will(returnValue(false));
-            allowing(saltServiceMock).isKeyExists("myhost", KeyStatus.UNACCEPTED);
+            allowing(saltApiMock).isKeyExists("myhost", KeyStatus.UNACCEPTED);
             will(returnValue(false));
 
             Key.Pair keyPair = mockKeyPair();
-            allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
+            allowing(saltApiMock).generateKeysAndAccept("myhost", false);
             will(returnValue(keyPair));
 
             List<String> bootstrapMods = bootstrapMods();
             Map<String, Object> pillarData = createPillarData(Optional.of(key), Optional.of(reactKey));
-            allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
+            allowing(saltApiMock).bootstrapMinion(with(any(BootstrapParameters.class)),
                     with(bootstrapMods), with(pillarData));
             Object sshResult = createSuccessResult();
             will(returnValue(new Result<>(Xor.right(sshResult))));

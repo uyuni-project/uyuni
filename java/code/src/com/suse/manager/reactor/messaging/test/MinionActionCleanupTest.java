@@ -39,7 +39,7 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;
@@ -110,19 +110,19 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         running.put(minion2.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
 
         Jobs.Info listJobResult = listJob("jobs.list_job.state.apply.json", action.getId());
-        SaltService saltServiceMock = mock(SaltService.class);
+        SaltApi saltApiMock = mock(SaltApi.class);
 
         context().checking(new Expectations() { {
-            allowing(saltServiceMock).getRunning(with(any(MinionList.class)));
+            allowing(saltApiMock).getRunning(with(any(MinionList.class)));
             will(returnValue(running));
-            never(saltServiceMock).getJobsByMetadata(with(any(Object.class)));
-            never(saltServiceMock).getListJob(with(any(String.class)));
+            never(saltApiMock).getJobsByMetadata(with(any(Object.class)));
+            never(saltApiMock).getListJob(with(any(String.class)));
         } });
 
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
-        SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
-                new SaltKeyUtils(saltServiceMock));
-        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
+        SaltUtils saltUtils = new SaltUtils(saltApiMock);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApiMock, saltUtils,
+                new SaltKeyUtils(saltApiMock));
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApiMock,
                 saltUtils);
         minionActionUtils.cleanupMinionActions();
     }
@@ -174,7 +174,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         SystemManager.giveCapability(minion2.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        SaltService saltServiceMock = mock(SaltService.class);
+        SaltService saltApiMock = mock(SaltService.class);
 
         ActionManager.setTaskomaticApi(taskomaticMock);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
@@ -227,7 +227,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
                 allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
 
-                allowing(saltServiceMock).getJobsByMetadata(
+                allowing(saltApiMock).getJobsByMetadata(
                         with(any(Object.class)), with(any(LocalDateTime.class)), with(any(LocalDateTime.class)));
                 will(returnValue(Optional.of(jobsByMetadata("jobs.list_jobs.actionchains.json", 0))));
 
@@ -238,8 +238,8 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             }
 
             private void mockListJob(String jid) {
-                never(saltServiceMock).getJobsByMetadata(with(any(Object.class)));
-                never(saltServiceMock).getListJob(with(any(String.class)));
+                never(saltApiMock).getJobsByMetadata(with(any(Object.class)));
+                never(saltApiMock).getListJob(with(any(String.class)));
             }
         });
 
@@ -247,10 +247,8 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
         ActionChainFactory.delete(actionChain);
 
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
-        SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
-                new SaltKeyUtils(saltServiceMock));
-        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
-                saltUtils);
+        SaltUtils saltUtils = new SaltUtils(saltApiMock);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApiMock);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService);
     }
 }

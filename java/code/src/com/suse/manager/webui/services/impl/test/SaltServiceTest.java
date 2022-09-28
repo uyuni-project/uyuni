@@ -25,7 +25,6 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SaltSSHApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.salt.netapi.calls.Client;

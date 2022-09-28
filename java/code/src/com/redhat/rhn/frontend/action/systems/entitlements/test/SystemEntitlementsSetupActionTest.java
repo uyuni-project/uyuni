@@ -48,9 +48,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.jmock.Expectations;
@@ -70,7 +70,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      */
 
     private Mockery context = new Mockery();
-    private SaltService saltServiceMock;
+    private SaltApi saltApiMock;
     private SystemEntitlementManager systemEntitlementManager;
 
     @Override
@@ -79,16 +79,16 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         super.setUp();
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        saltServiceMock = context.mock(SaltService.class);
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
-        VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
+        saltApiMock = context.mock(SaltApi.class);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiMock);
+        VirtManager virtManager = new VirtManagerSalt(saltApiMock);
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApiMock);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
+                new SystemEntitler(saltApiMock, virtManager, monitoringManager, serverGroupManager)
         );
         context.checking(new Expectations() {{
-            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+            allowing(saltApiMock).refreshPillar(with(any(MinionList.class)));
         }});
         setRequestPathInfo("/systems/SystemEntitlements");
         UserTestUtils.addManagement(user.getOrg());
@@ -165,7 +165,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testOSImageBuildHostType() throws Exception {
         context.checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltApiMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
         }});
 
         Server server = MinionServerFactoryTest.createTestMinionServer(user);
