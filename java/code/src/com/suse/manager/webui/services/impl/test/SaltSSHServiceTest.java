@@ -56,14 +56,14 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testProxyCommandNoProxy() {
-        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
+        Optional<List<String>> res = SaltSSHService.getSSHProxyCommandOption(
                 Collections.emptyList(), "ssh-push", "minion", 22);
         assertFalse(res.isPresent());
     }
 
     @Test
     public void testProxyCommandSSHPush1Proxy() {
-        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
+        Optional<List<String>> res = SaltSSHService.getSSHProxyCommandOption(
                 List.of("proxy1"), "ssh-push", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(List.of(
@@ -76,7 +76,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testProxyCommandSSHPushTunnel1Proxy() {
-        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
+        Optional<List<String>> res = SaltSSHService.getSSHProxyCommandOption(
                 List.of("proxy1:24"), "ssh-push-tunnel", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(List.of(
@@ -89,7 +89,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testProxyCommandSSHPush2Proxies() {
-        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
+        Optional<List<String>> res = SaltSSHService.getSSHProxyCommandOption(
                 Arrays.asList("proxy1:23", "proxy2"), "ssh-push", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(List.of(
@@ -104,7 +104,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testProxyCommandSSHPushTunnel2Proxies() {
-        Optional<List<String>> res = SaltSSHService.sshProxyCommandOption(
+        Optional<List<String>> res = SaltSSHService.getSSHProxyCommandOption(
                 Arrays.asList("proxy1", "proxy2"), "ssh-push-tunnel", "minion", 22);
         assertTrue(res.isPresent());
         assertEquals(List.of(

@@ -14,12 +14,15 @@
  */
 package com.suse.manager.webui.services.iface;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.NoWheelResultsException;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
 import com.suse.manager.reactor.PGEventStream;
@@ -27,11 +30,15 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
+import com.suse.manager.webui.utils.SaltRoster;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.AbstractCall;
@@ -59,6 +66,7 @@ import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Opt;
 
@@ -83,6 +91,7 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -537,6 +546,122 @@ public class SaltApi {
         }
     }
 
+    /**
+     * Bootstrap a system using salt-ssh.
+     *
+     * The call internally uses ssh identity key/cert on a hardcoded path.
+     * If the key/cert doesn't exist, it's created by salt and copied to the target host.
+     * Copying is implemented via a salt state (mgr_ssh_identity), as ssh_key_deploy
+     * is ignored by the api.)
+     *
+     * @param parameters - bootstrap parameters
+     * @param bootstrapMods - state modules to be applied during the bootstrap
+     * @param pillarData - pillar data used in the salt-ssh call
+     * @throws SaltException if something goes wrong during command execution or
+     * during manipulation the salt-ssh roster
+     * @return the result of the underlying ssh call for given host
+     */
+    public Result<SSHResult<Map<String, ApplyResult>>> bootstrapMinion(
+            BootstrapParameters parameters, List<String> bootstrapMods,
+            Map<String, Object> pillarData) throws SaltException {
+        LOG.info("Bootstrapping host: {}", parameters.getHost());
+        LocalCall<Map<String, ApplyResult>> call = State.apply(bootstrapMods, Optional.of(pillarData));
+
+        List<String> bootstrapProxyPath;
+        if (parameters.getProxyId().isPresent()) {
+            bootstrapProxyPath = parameters.getProxyId()
+                                           .map(ServerFactory::lookupById)
+                                           .map(SaltSSHService::proxyPathToHostnames)
+                                           .orElseThrow(() -> new SaltException(
+                                                   "Proxy not found for id: " + parameters.getProxyId().get()));
+        }
+        else {
+            bootstrapProxyPath = Collections.emptyList();
+        }
+
+        String contactMethod = parameters.getFirstActivationKey()
+                .map(ActivationKeyFactory::lookupByKey)
+                .map(key -> key.getContactMethod().getLabel()).orElse("");
+
+        Optional<String> portForwarding = SaltSSHService.remotePortForwarding(bootstrapProxyPath, contactMethod);
+
+        // private key handling just for bootstrap
+        Optional<Path> tmpKeyFileAbsolutePath = parameters.getPrivateKey().map(key -> SaltSSHService.createTempKeyFilePath());
+
+        try {
+            tmpKeyFileAbsolutePath.ifPresent(p -> parameters.getPrivateKey().ifPresent(k ->
+                    GlobalInstanceHolder.SALT_API.storeSshKeyFile(p, k)));
+            SaltRoster roster = new SaltRoster();
+            roster.addHost(parameters.getHost(),
+                    parameters.getUser(),
+                    parameters.getPassword(),
+                    tmpKeyFileAbsolutePath.map(Path::toString),
+                    parameters.getPrivateKeyPassphrase(),
+                    parameters.getPort(),
+                    portForwarding,
+                    SaltSSHService.getSSHProxyCommandOption(bootstrapProxyPath,
+                        contactMethod,
+                        parameters.getHost(),
+                        parameters.getPort().orElse(SaltSSHService.SSH_PUSH_PORT)),
+                    SaltSSHService.getSshPushTimeout(),
+                    SaltSSHService.getMinionOpts(parameters.getHost(), contactMethod),
+                    Optional.ofNullable(SaltSSHService.getSaltSSHPreflightScriptPath()),
+                    Optional.of(Arrays.asList(
+                            bootstrapProxyPath.isEmpty() ?
+                                    ConfigDefaults.get().getCobblerHost() :
+                                    bootstrapProxyPath.get(bootstrapProxyPath.size() - 1).split(":")[0],
+                            ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethod) ?
+                                    SaltSSHService.getSshPushRemotePort() : SaltSSHService.SSL_PORT,
+                                    SaltSSHService.getSSHUseSaltThin() ? 1 : 0,
+                            1
+                            ))
+                    );
+
+            Map<String, Result<SSHResult<Map<String, ApplyResult>>>> result =
+                    callSyncSSHInternal(call,
+                            new MinionList(parameters.getHost()),
+                            Optional.of(roster),
+                            parameters.isIgnoreHostKeys(),
+                            SaltSSHService.isSudoUser(parameters.getUser()));
+            return result.get(parameters.getHost());
+        }
+        finally {
+            tmpKeyFileAbsolutePath.ifPresent(this::cleanUpTempKeyFile);
+        }
+    }
+
+    public Optional<MgrUtilRunner.ExecResult> chainSSHCommand(List<String> hosts, String clientKey,
+            String proxyKey, String user, Map<String, String> options, String command, String outputfile) {
+
+        RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.chainSSHCommand(hosts, clientKey,
+                proxyKey, user, options, command, outputfile);
+        return callSync(call);
+    }
+
+    /**
+     * This is a helper for keeping the old exception behaviour until
+     * all code makes proper use of the async api.
+     * @param fn function to execute and adapt.
+     * @param <T> result of fn
+     * @return the result of fn
+     * @throws SaltException if an exception gets thrown
+     */
+    public static <T> T adaptException(CompletionStage<T> fn) throws SaltException {
+        try {
+            return fn.toCompletableFuture().join();
+        }
+        catch (CompletionException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof SaltException) {
+                throw (SaltException) cause;
+            }
+            else {
+                throw new SaltException(cause);
+            }
+        }
+    }
+
+
     private synchronized void eventStreamClosed() {
         eventStream = null;
     }
@@ -913,28 +1038,6 @@ public class SaltApi {
         }
     }
 
-    /**
-     * This is a helper for keeping the old exception behaviour until all code
-     * makes proper use of the async api.
-     * @param fn function to execute and adapt.
-     * @param <T> result of fn
-     * @return the result of fn
-     * @throws SaltException if an exception gets thrown
-     */
-    public static <T> T adaptException(CompletionStage<T> fn) throws SaltException {
-        try {
-            return fn.toCompletableFuture().join();
-        }
-        catch (CompletionException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof SaltException) {
-                throw (SaltException) cause;
-            }
-            else {
-                throw new SaltException(cause);
-            }
-        }
-    }
 
     /**
      * Execute a LocalCall asynchronously on the default Salt client, without

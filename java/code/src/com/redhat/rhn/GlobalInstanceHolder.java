@@ -58,9 +58,8 @@ public class GlobalInstanceHolder {
     private GlobalInstanceHolder() {
     }
 
-    private static final SaltService SALT_SERVICE = new SaltService();
-    public static final SystemQuery SYSTEM_QUERY = SALT_SERVICE;
-    public static final SaltApi SALT_API = SALT_SERVICE;
+    public static final SaltApi SALT_API = new SaltApi();
+    public static final SystemQuery SYSTEM_QUERY = new SystemQuery(SALT_API);
     public static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager(SALT_API);
     public static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
     public static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API);
