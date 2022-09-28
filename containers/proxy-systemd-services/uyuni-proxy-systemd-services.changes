@@ -1,4 +1,8 @@
-- Expose /etc/sysconfig/proxy variables to container services (bsc#1202945)
+-------------------------------------------------------------------
+Wed Sep 28 10:48:48 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Expose /etc/sysconfig/proxy variables to container services (bsc#1202945)
 
 -------------------------------------------------------------------
 Wed Jul 27 14:13:35 CEST 2022 - jgonzalez@suse.com
