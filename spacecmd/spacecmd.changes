@@ -1,4 +1,8 @@
-- Stop always showing help for valid proxy_container_config calls
+-------------------------------------------------------------------
+Thu Sep 29 15:42:34 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Stop always showing help for valid proxy_container_config calls
 
 -------------------------------------------------------------------
 Wed Sep 28 10:25:47 CEST 2022 - jgonzalez@suse.com
