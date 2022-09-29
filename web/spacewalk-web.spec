@@ -264,6 +264,8 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 %{www_path}/javascript/*.js
 %dir %{www_path}/javascript/manager
 %{www_path}/javascript/manager/*.{js,js.LICENSE.txt,css}
+%dir %{www_path}/javascript/legacy
+%{www_path}/javascript/legacy/*.{js,js.LICENSE.txt,css}
 %license LICENSE
 
 %files -n spacewalk-html-debug
