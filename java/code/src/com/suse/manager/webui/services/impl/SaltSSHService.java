@@ -948,4 +948,82 @@ public class SaltSSHService {
                     }
                 }));
     }
+        /**
+     * Boilerplate for executing a synchronous salt-ssh code. This involves:
+     * - generating the salt config,
+     * - generating the roster, storing it on the disk,
+     * - calling the salt-ssh via salt-api,
+     * - cleaning up the roster file after the job is done.
+     *
+     * Note on the SSH identity (key/cert pair):
+     * This call uses the SSH key stored on SSH_KEY_PATH. If such file doesn't
+     * exist, salt automatically generates a key/cert pair on this path.
+     *
+     * @param <T> the return type of the call
+     * @param call the call to execute
+     * @param target minions targeted by the call, only Glob and MinionList is supported
+     * @param roster salt-ssh roster
+     * @param ignoreHostKeys use this option to disable 'StrictHostKeyChecking'
+     * @param sudo run command via sudo (default: false)
+     *
+     * @throws SaltException if something goes wrong during command execution or
+     * during manipulation the salt-ssh roster
+     *
+     * @return result of the call
+     */
+    private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
+            SSHTarget target, Optional<SaltRoster> roster, boolean ignoreHostKeys, boolean sudo)
+            throws SaltException {
+        return callSyncSSHInternal(call, target, roster, ignoreHostKeys, sudo, Optional.empty());
+    }
+
+    private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
+            SSHTarget target, Optional<SaltRoster> roster, boolean ignoreHostKeys, boolean sudo,
+            Optional<String> extraFilerefs) throws SaltException {
+        if (!(target instanceof MinionList || target instanceof Glob)) {
+            throw new UnsupportedOperationException("Only MinionList and Glob supported.");
+        }
+
+        try {
+            final Path rosterPath;
+            if (roster.isPresent()) {
+                rosterPath = roster.get().persistInTempFile();
+            }
+            else {
+                rosterPath = null;
+            }
+
+            SaltSSHConfig.Builder sshConfigBuilder = new SaltSSHConfig.Builder()
+                    .ignoreHostKeys(ignoreHostKeys)
+                    .priv(SSH_KEY_PATH)
+                    .sudo(sudo)
+                    .refreshCache(true);
+            roster.ifPresentOrElse(
+                    r -> sshConfigBuilder.rosterFile(rosterPath.getFileName().toString()),
+                    () -> {
+                        sshConfigBuilder.roster("uyuni");
+                        LOG.info("No roster file used, using Uyuni roster module!");
+                    });
+            extraFilerefs.ifPresent(sshConfigBuilder::extraFilerefs);
+            SaltSSHConfig sshConfig = sshConfigBuilder.build();
+
+            LOG.debug("Local callSyncSSH: {}", SaltService.localCallToString(call));
+            return SaltService.adaptException(call.callSyncSSH(saltClient, target, sshConfig, PW_AUTH)
+                    .whenComplete((r, e) -> {
+                        if (roster.isPresent()) {
+                            try {
+                                Files.deleteIfExists(rosterPath);
+                            }
+                            catch (IOException ex) {
+                                LOG.error("Can't delete roster file: {}", ex.getMessage());
+                            }
+                        }
+                    }));
+        }
+        catch (IOException e) {
+            LOG.error("Error operating on roster file: {}", e.getMessage());
+            throw new SaltException(e);
+        }
+    }
+
 }
