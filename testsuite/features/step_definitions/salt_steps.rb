@@ -387,6 +387,10 @@ end
 
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
+  repeat_until_timeout(timeout: 60, retries: 30, message: "Search button not enabled", report_result: true) do
+    break unless find('button#search').disabled?
+    sleep 1
+  end
   find('button#search').click
 end
 
