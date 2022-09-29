@@ -18,45 +18,70 @@ jobs:
     if: github.repository == 'uyuni-project/uyuni'
     runs-on: ubuntu-latest
     steps:
+    - name: Setup tooling
+      run: sudo apt-get install -y make git gettext intltool python3
 
     - name: Cancel Previous Runs
       uses: styfle/cancel-workflow-action@0.8.0
       with:
         access_token: ${{ github.token }}
 
-    - name: Checkout repo
-      uses: actions/checkout@v2
-
-    - name: Setup tooling
-      run: sudo apt-get install -y make git gettext intltool python3
-
     - name: Setup git
       run: |
         git config --global user.name "Galaxy CI"
         git config --global user.email "galaxy-ci@suse.de" 
-        git switch -c check_translations
-        git branch origin_check_translations
+
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      with:
+        path: 'master_repo'
 
     - name: Update all translations files
-      run: ADDITIONAL_SAFE_BRANCHNAME=check_translations scripts/translation/update-all-translation-strings.sh
+      run: |
+        cd master_repo
+        git switch -c check_translations
+        git branch origin_check_translations
+        ADDITIONAL_SAFE_BRANCHNAME=check_translations scripts/translation/update-all-translation-strings.sh
+        cd ..
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Check if there has been changes on translation files for master
+      run: |
+        cd master_repo
+        trs=$(git diff origin_check_translations check_translations | wc -l)
+        echo "Translations needed for master: ${trs}"
+        echo "translations_needed_for_master=${trs}" >> $GITHUB_ENV
+        cd ..
+
+    - name: Checkout PR repo
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        path: 'pr_repo'
+
+    - name: Update all translations files for PR
+      run: |
+        cd pr_repo
+        git switch -c check_translations
+        git branch origin_check_translations
+        ADDITIONAL_SAFE_BRANCHNAME=check_translations scripts/translation/update-all-translation-strings.sh
+        cd ..
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Check if there has been changes on translation files
       run: |
-        if [ $(git diff origin_check_translations check_translations | wc -l) -ne 0 ];then
-          echo "Translations are needed"
-          git diff origin_check_translations check_translations
-          echo "{translations_needed}={true}" >> $GITHUB_ENV
-        else
-          echo "{translations_needed}={false}" >> $GITHUB_ENV
-        fi
+        cd pr_repo
+        trs=$(git diff origin_check_translations check_translations | wc -l)
+        echo "Translations needed for PR: ${trs}"
+        echo "translations_needed_for_PR=${trs}" >> $GITHUB_ENV
+        cd ..
 
     - name: Add label
-      if: ${{ env.translations_needed }} == 'true'
+      if: env.translations_needed_for_master != env.translations_needed_for_PR
       uses: andymckay/labeler@1.0.4
       with:
         add-labels: "needs-translation"
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-
 
