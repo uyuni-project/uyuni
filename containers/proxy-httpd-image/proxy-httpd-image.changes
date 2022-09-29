@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Wed Sep 28 07:44:12 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
-- Update the image version to 2022.09:
+- Update the image version to 2022.10:
   * Prefix log messages with a package name to ease analysis
 
 -------------------------------------------------------------------
