@@ -45,8 +45,9 @@ Feature: Salt package states
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" should be installed on "sle_minion"
+    And I wait for "60" seconds
+    And I wait until I see "milkyway-dummy" text
+    Then "milkyway-dummy" should be installed on "sle_minion"
     And I change the state of "milkyway-dummy" to "Removed" and ""
     Then I should see a "1 Change" text
     And I click save
@@ -60,8 +61,9 @@ Feature: Salt package states
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" should not be installed on "sle_minion"
+    And I wait for "60" seconds
+    And I wait until I see "milkyway-dummy" text
+    Then "milkyway-dummy" should not be installed on "sle_minion"
     And I change the state of "milkyway-dummy" to "Installed" and ""
     Then I should see a "1 Change" text
     And I click save
@@ -75,8 +77,9 @@ Feature: Salt package states
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "virgo-dummy" text
-    And "virgo-dummy-1.0" should be installed on "sle_minion"
+    And I wait for "60" seconds
+    And I wait until I see a "virgo-dummy" text
+    Then "virgo-dummy-1.0" should be installed on "sle_minion"
     And I change the state of "virgo-dummy" to "Installed" and "Any"
     Then I should see a "1 Change" text
     And I click save
@@ -90,8 +93,9 @@ Feature: Salt package states
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "andromeda-dummy" text
-    And "andromeda-dummy-1.0" should be installed on "sle_minion"
+    And I wait for "60" seconds
+    And I wait until I see "andromeda-dummy" text
+    Then "andromeda-dummy-1.0" should be installed on "sle_minion"
     And I change the state of "andromeda-dummy" to "Installed" and "Latest"
     Then I should see a "1 Change" text
     And I click save
