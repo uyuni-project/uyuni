@@ -915,10 +915,12 @@ public class CachedStatement implements Serializable {
 
     /**
      * Restart the latest query
+     * @param newSession the new hibernate session to use
      * @return what the previous query returned or null.
      */
-    public DataResult<?> restartQuery() {
-        restoreSessionIfClosed();
+    public DataResult<?> restartQuery(Session newSession) {
+        session = newSession;
+
         return restartData == null ? null :
                 (DataResult<?>) internalExecute(restartData.getParameters(),
                         restartData.getInClause(), restartData.getMode());
@@ -969,17 +971,5 @@ public class CachedStatement implements Serializable {
         finally {
             HibernateHelper.cleanupDB(ps);
         }
-    }
-
-    /**
-     * Restore the linked hibernate session if it is closed
-     */
-    public void restoreSessionIfClosed() {
-        if (session.isOpen()) {
-            return;
-        }
-
-        session = session.getSessionFactory().openSession();
-        session.beginTransaction();
     }
 }

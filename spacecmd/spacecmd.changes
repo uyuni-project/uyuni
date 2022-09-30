@@ -1,4 +1,8 @@
-- Process date values in spacecmd api calls (bsc#1198903)
+-------------------------------------------------------------------
+Mon Sep 26 12:29:44 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.15-1
+  * Process date values in spacecmd api calls (bsc#1198903)
 
 -------------------------------------------------------------------
 Wed Jul 27 14:05:24 CEST 2022 - jgonzalez@suse.com

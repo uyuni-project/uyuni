@@ -12,6 +12,10 @@ import os
 
 import suma_minion
 
+
+suma_minion.__opts__ = {}
+suma_minion.psycopg2 = MagicMock()
+
 TEST_FORMULA_ORDER = [
     "branch-network",
     "cpu-mitigations",
@@ -68,3 +72,47 @@ def test_formula_pillars_db():
     pillar = suma_minion.formula_pillars(system_formulas, group_formulas, pillar)
     assert "formulas" in pillar
     assert pillar["formulas"] == ['branch-network', 'locale', 'tftpd']
+
+
+def test_reading_postgres_opts_in__get_cursor():
+    """
+    Test reading proper postgres opts in _get_cursor:
+    """
+    pg_connect_mock = MagicMock(return_value=MagicMock())
+    test_opts = {
+        "postgres": {
+            "host": "test_host",
+            "user": "test_user",
+            "pass": "test_pass",
+            "db": "test_db",
+            "port": 1234,
+        }
+    }
+    with patch.object(suma_minion, "__opts__", test_opts), patch(
+        "suma_minion.psycopg2.connect", pg_connect_mock
+    ):
+        with suma_minion._get_cursor() as cursor:
+            assert cursor is not None
+        assert pg_connect_mock.call_args_list[0][1] == {
+            "host": "test_host",
+            "user": "test_user",
+            "password": "test_pass",
+            "dbname": "test_db",
+            "port": 1234,
+        }
+
+    pg_connect_mock.reset_mock()
+
+    with patch.object(suma_minion, "__opts__", {"__master_opts__": test_opts}), patch(
+        "suma_minion.psycopg2.connect", pg_connect_mock
+    ):
+        assert cursor is not None
+        with suma_minion._get_cursor() as cursor:
+            assert cursor is not None
+        assert pg_connect_mock.call_args_list[0][1] == {
+            "host": "test_host",
+            "user": "test_user",
+            "password": "test_pass",
+            "dbname": "test_db",
+            "port": 1234,
+        }

@@ -1,11 +1,19 @@
-- Prevent mixing credentials for proxy and repository server
-  while using basic authentication and avoid hiding errors
-  i.e. timeouts while having proxy settings issues
-  with extra logging in verbose mode (bsc#1201788)
-- Fix the condition of hiding the token from URL on logging
-- export armored GPG key to salt filesystem as well
-- Upgrade Cobbler requirement to 3.3.3 or later
-- Make reposync use the configured http proxy with mirrorlist (bsc#1198168)
+- Added an optional component_type property to the LOG object 
+  and included it to a log message
+- Add an optional component property to the log messages
+
+-------------------------------------------------------------------
+Mon Sep 26 12:19:00 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.16-1
+  * Prevent mixing credentials for proxy and repository server
+    while using basic authentication and avoid hiding errors
+    i.e. timeouts while having proxy settings issues
+    with extra logging in verbose mode (bsc#1201788)
+  * Fix the condition of hiding the token from URL on logging
+  * export armored GPG key to salt filesystem as well
+  * Upgrade Cobbler requirement to 3.3.3 or later
+  * Make reposync use the configured http proxy with mirrorlist (bsc#1198168)
 
 -------------------------------------------------------------------
 Wed Jul 27 14:16:43 CEST 2022 - jgonzalez@suse.com

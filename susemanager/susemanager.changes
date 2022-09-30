@@ -1,17 +1,21 @@
-- mark new dependencies for python-py optional in bootstrap repo
-  to fix generation for older service packs (bsc#1203449)
-- add bootstrap repository definition for OES2023 (bsc#1202602)
-- add missing packages on SLES 15
-- remove server-migrator.sh from SUSE Manager installations (bsc#1202728)
-- create bootstrap repository data for Ubuntu 22.04 Vendor Channels
-- remove obsoleted sysv init script (bsc#1191857)
-- mgr-create-bootstrap-repo: flush directory also when called
-  for a specific label (bsc#1200573)
-- pg-migrate-x-to-y.sh: improve output (bsc#1201260)
-- remove python-tornado from bootstrap repo, since no longer
-  required for salt version >= 3000
-- add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)
-- revert "bootstrap repo: set optional packages"
+-------------------------------------------------------------------
+Mon Sep 26 12:21:21 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.19-1
+  * mark new dependencies for python-py optional in bootstrap repo
+    to fix generation for older service packs (bsc#1203449)
+  * add bootstrap repository definition for OES2023 (bsc#1202602)
+  * add missing packages on SLES 15
+  * remove server-migrator.sh from SUSE Manager installations (bsc#1202728)
+  * create bootstrap repository data for Ubuntu 22.04 Vendor Channels
+  * remove obsoleted sysv init script (bsc#1191857)
+  * mgr-create-bootstrap-repo: flush directory also when called
+    for a specific label (bsc#1200573)
+  * pg-migrate-x-to-y.sh: improve output (bsc#1201260)
+  * remove python-tornado from bootstrap repo, since no longer
+    required for salt version >= 3000
+  * add missing packages on SLES 12 SP5 bootstrap repo (bsc#1201918)
+  * revert "bootstrap repo: set optional packages"
 
 -------------------------------------------------------------------
 Wed Jul 27 14:18:17 CEST 2022 - jgonzalez@suse.com

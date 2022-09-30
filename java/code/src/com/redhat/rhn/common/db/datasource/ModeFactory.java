@@ -172,6 +172,16 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     /**
+     * Create a select mode out of an existing one, but using another hibernate session
+     * @param session hibernate session
+     * @param selectMode existing mode to duplicate
+     * @return the new mode with updated session
+     */
+    public static SelectMode getMode(Session session, SelectMode selectMode) {
+        return new SelectMode(session, selectMode.getParsedMode());
+    }
+
+    /**
      * Retrieve a specific mode from the map of modes already parsed
      * @param name The name of the file to search, this is the name as it is
      *             passed to parseURL.

@@ -3,10 +3,10 @@
 We want features that that do not change their environment, so we get:
 
 * idempotency: the faculty to run same the feature any number of times
-* commutativity: the ability to change the order in which features are run
+* commutativity: the ability to change the order in which features are run.
 
-**Always** create an idempotent feature, and **always** as a secondary feature (a feature that is run after all core
-features). If the feature is not idempotent, it will be not merged.
+Always try to create an idempotent feature, and to run it as a secondary feature 
+(a feature that is run after all core features).
 
 We want idempotency at feature level. The individual scenarios are usually not idempotent.
 
@@ -48,7 +48,7 @@ are created by core features.
 Typical workflow for testing patches:
 
 1) enable the BuildRepo
-2) downgrade a package and install/remove a package
+2) downgrade a package by reinstalling it, or remove a package
 3) schedule a taskomatic run and wait for it to finish (to retrieve available patches)
 4) make test with patch (install it etc)
 5) cleanup: remove packages and patches and disable the BuildRepo

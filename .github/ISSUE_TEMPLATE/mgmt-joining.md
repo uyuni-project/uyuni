@@ -32,9 +32,7 @@ General template for new joiners of the SUSE Manager team.
   - [ ] Priorities, Help and Planning (PHP)
   - [ ] SUSE Manager Team Retrospective
   - [ ] Daily Standup
-  - [ ] distribution list of the department
 - [ ] Outlook groups of the [SUSE Manager Engineering Team](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/suma-all) and squad (if available)
-- [ ] Outlook group of the [DCM department](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/dcm)
 - [ ] Add SSH public key to [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/ssh/init.sls)
 - [ ] Provide default passwords if applicable (testsuite VMs, SCC credentials, maybe https://gitlab.suse.de/galaxy/credentials)
 - [ ] Add to groups in IBS if applicable (e.g. `qam-manager` for QE)

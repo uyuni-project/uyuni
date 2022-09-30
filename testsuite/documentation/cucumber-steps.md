@@ -1,25 +1,6 @@
 # Writing your own Cucumber steps, and reusing Cucumber steps
 
-### Table of Contents
-1. [Basic notions](#a)
-1. [Reusing old steps](#b)
-    1. [Logging in and out](#b1)
-    1. [Navigating through pages](#b2)
-    1. [Texts](#b3)
-    1. [Links](#b4)
-    1. [Buttons](#b5)
-    1. [Text input](#b6)
-    1. [Operating system](#b7)
-    1. [SUSE Manager utilities](#b8)
-    1. [Registration and channels](#b9)
-    1. [Events](#b10)
-    1. [Salt](#b11)
-    1. [XML-RPC or HTTP API](#b12)
-    1. [Virtualization](b#13)
-1. [Writing new tests](#c)
-    1. [Running remote commands](#c1)
-    1. [Getting the FQDN of a host](#c2)
-    1. [Converting between host name and target](#c3)
+## Table of Contents
 
 - [Basic notions](#basic-notions)
 - [Reusing old steps](#reusing-old-steps)
@@ -30,7 +11,7 @@
   - [Buttons](#buttons)
   - [Text input](#text-input)
   - [Operating system](#operating-system)
-  - [Uyuni utilities](#uyuni-utilities)
+  - [SUSE Manager utilities](#suse-manager-utilities)
   - [Registration and channels](#registration-and-channels)
   - [Events](#events)
   - [Salt](#salt)
@@ -49,7 +30,7 @@ The corresponding notion in Cucumber steps is "step host names".
 
 Possible values are currently:
 
-| Test host | Ruby target |  Bash environment variable | Step host name | Sumaform module |
+| Test host | Ruby target |  Bash environment variable | Step host name | sumaform module |
 | --------- | ----------- | -------------------------- | -------------- | --------------- |
 | SUSE Manager server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
 | SUSE Manager proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
@@ -479,10 +460,7 @@ Note that the text area variant handles the new lines characters while the other
   When I wait and check that "sle_client" has rebooted
 ```
 
-
-<a name="b8" />
-
-#### SUSE Manager utilities
+### SUSE Manager utilities
 
 * Execute mgr-sync
 
@@ -720,7 +698,7 @@ When "test-net2" on "kvm_server" should have "192.168.128.1" IPv4 address with 2
 
 ## Writing new steps
 
-Here we describe only the specifics of this testsuite. For a description
+Here we describe only the specifics of this test suite. For a description
 of the underlying libraries, have a look at
 [Capybara documentation](http://www.rubydoc.info/github/jnicklas/capybara).
 
@@ -764,7 +742,7 @@ When implementing a step, to convert a step host name into a target, use:
 
 ### Using cookies to store login information
 
-It is possible to work with cookies in testsuite and use them to store login information. There are no special
+It is possible to work with cookies in test suite and use them to store login information. There are no special
 dependencies except `Marshal` module for Ruby.
 
 Following code is expected to be a part of function used as step definition for user authorization:

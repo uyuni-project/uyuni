@@ -21,7 +21,7 @@ Add more tasks if needed.
 
 - [ ] Ask the Doc Squad to submit an update of the doc package to [systemsmanagement:Uyuni:Master](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master), a PR for the [documentation repository, gh-pages branch](https://github.com/uyuni-project/uyuni-docs/tree/gh-pages) and a PR for the [documentation API repository, gh-pages branch](https://github.com/uyuni-project/uyuni-docs-api/tree/gh-pages)
 - [ ] Confirm that the documentation is ready
-- [ ] Ask @mcalmer (backup: @parlt91) to prepare the PR for the code translations from `master-weblate` to `master`. They will ask a brief period of branch freeze to prepare it. Ideally this should happen close to the branch freeze date.
+- [ ] Ask @mcalmer (backups: @parlt91, @mbussolotto, @mackdk) to prepare the PR for the code translations from `master-weblate` to `master`. They will ask a brief period of branch freeze to prepare it. Ideally this should happen close to the branch freeze date.
 - [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
 - [ ] Check all the tests: everything should be green, or otherwise submission must be approved by QA
 - [ ] Prepare the release notes PR, send it to be reviewed
@@ -36,6 +36,7 @@ Add more tasks if needed.
 Add more tasks if needed.
 
 - [ ] Check all the tests: everything should be green, or otherwise submission must be approved by QA
+- [ ] Check if the migration paths exist for both the main database and report database, if they are needed.
 - [ ] Tag everything with `tito`
 - [ ] Make sure everything is still building
 - [ ] Promote

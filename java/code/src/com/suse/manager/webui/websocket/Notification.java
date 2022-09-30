@@ -213,17 +213,12 @@ public class Notification {
                 USER_NOTIFICATIONS, Notification::prepareUserNotifications,
                 SSM_COUNT, Notification::prepareSsmCount
         );
-        try {
-            Map<String, Object> data = properties.stream()
-                    .filter(preparers::containsKey)
-                    .collect(Collectors.toMap(Function.identity(),
-                            property -> preparers.get(property).apply(session, user)));
-            if (!data.isEmpty()) {
-                sendMessage(session, GSON.toJson(data));
-            }
-        }
-        finally {
-            HibernateFactory.closeSession();
+        Map<String, Object> data = properties.stream()
+                .filter(preparers::containsKey)
+                .collect(Collectors.toMap(Function.identity(),
+                        property -> preparers.get(property).apply(session, user)));
+        if (!data.isEmpty()) {
+            sendMessage(session, GSON.toJson(data));
         }
     }
 

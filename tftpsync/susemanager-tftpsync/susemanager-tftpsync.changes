@@ -1,4 +1,8 @@
-- Adjust sync_post_tftpd_proxies module to cobbler >= 3.3.1
+-------------------------------------------------------------------
+Mon Sep 26 12:28:13 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.2-1
+  * Adjust sync_post_tftpd_proxies module to cobbler >= 3.3.1
 
 -------------------------------------------------------------------
 Mon Aug 09 11:11:44 CEST 2021 - jgonzalez@suse.com

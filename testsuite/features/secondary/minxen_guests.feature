@@ -183,7 +183,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I select "VNC" from "graphicsType"
     And I click on "Create"
     And I wait until I see "Hosted Virtual Systems" text
-    And I wait until event "Creates a virtual domain: test-vm2" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm2" is completed
     And I follow "Virtualization" in the content area
     And I wait at most 500 seconds until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
@@ -208,7 +208,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I select "Spice" from "graphicsType"
     And I click on "Create"
     And I wait until I see "Hosted Virtual Systems" text
-    And I wait until event "Creates a virtual domain: test-vm3" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-vm3" is completed
     And I follow "Virtualization" in the content area
     And I wait at most 500 seconds until table row for "test-vm3" contains button "Stop"
     And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
