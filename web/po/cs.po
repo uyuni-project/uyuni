@@ -18,16 +18,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-14 10:50+0200\n"
-"PO-Revision-Date: 2021-10-29 21:12+0000\n"
+"POT-Creation-Date: 2022-09-30 14:53+0200\n"
+"PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
-"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:511
 msgid "remaining"
@@ -63,21 +63,19 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:260
 msgid "Expand All Sections"
-msgstr ""
+msgstr "Rozbalit všechny sekce"
 
 #: ../html/src/components/FormulaForm.tsx:267
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "Sbalit všechny sekce"
 
 #: ../html/src/components/FormulaForm.tsx:332
-#, fuzzy
 msgid "Unnamed"
-msgstr "Uživatelské jméno"
+msgstr "Bez názvu"
 
 #: ../html/src/components/FormulaForm.tsx:341
-#, fuzzy
 msgid "Search by formula's group name"
-msgstr "Filtrovat podle názvu vzorce"
+msgstr "Vyhledat podle názvu skupiny vzorců"
 
 #: ../html/src/components/action-schedule.tsx:49
 msgid "new action chain"
@@ -795,11 +793,11 @@ msgstr " Aby se změny konfigurace projevily, je potřeba Tomcat a Taskomatic."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
 msgid "Add new pay-as-you-go ssh connection data"
-msgstr ""
+msgstr "Přidání nových dat pro připojení ssh za poplatek"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
 msgid "Add pay-as-you-go ssh data"
-msgstr ""
+msgstr "Přidání placených dat ssh"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -821,9 +819,8 @@ msgid "Create"
 msgstr "Vytvořit"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-#, fuzzy
 msgid "Pay-as-you-go connection Description"
-msgstr "Popis výrobku"
+msgstr "Popis připojení s platbou podle potřeby"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
@@ -840,13 +837,12 @@ msgid "Description"
 msgstr "Popis"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
-#, fuzzy
 msgid "Instance SSH connection data"
-msgstr "Instance je zastaralá"
+msgstr "Údaje o připojení k instanci SSH"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:82
 msgid "Bastion SSH connection data"
-msgstr ""
+msgstr "Údaje o připojení Bastion SSH"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
 #: ../html/src/manager/admin/setup/products/products.tsx:262
@@ -862,9 +858,8 @@ msgstr "Filtrovat podle libovolné hodnoty"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
-#, fuzzy
 msgid "Host"
-msgstr "Hostitelé"
+msgstr "Hostitel"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:132
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
@@ -879,9 +874,8 @@ msgid "Status"
 msgstr "Stav"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:140
-#, fuzzy
 msgid "Last Update Status"
-msgstr "Stav shody dat"
+msgstr "Stav poslední aktualizace"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:141
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
@@ -890,7 +884,7 @@ msgstr "nikdy"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add Pay-as-you-go"
-msgstr ""
+msgstr "Přidat platbu podle potřeby"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -908,14 +902,12 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-#, fuzzy
 msgid "Pay-as-you-go properties updated successfully"
-msgstr "Vlastnosti projektu aktualizovány úspěšně"
+msgstr "Vlastnosti Platby dle potřeby aktualizovány úspěšně"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
-#, fuzzy
 msgid "Edit Information"
-msgstr "Další informace"
+msgstr "Upravit informace"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:56
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
@@ -923,37 +915,34 @@ msgid "Editing properties.."
 msgstr "Úprava vlastností.."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
-#, fuzzy
 msgid "Last Status Update"
-msgstr "Počáteční datum"
+msgstr "Poslední aktualizace stavu"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
-#, fuzzy
 msgid "Edit "
-msgstr "Upravit"
+msgstr "Upravit "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:70
 msgid "Editing ssh connection data.."
-msgstr ""
+msgstr "Úprava údajů o připojení ssh.."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
 msgid ""
 "When editing the SSH connection all needed credentials must be re-provided."
 msgstr ""
+"Při úpravě připojení SSH je třeba znovu zadat všechna potřebná pověření."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:19
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
-#, fuzzy
 msgid "SSH Port"
-msgstr "Port"
+msgstr "Port SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:23
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
-#, fuzzy
 msgid "User"
-msgstr "Uživatelé"
+msgstr "Uživatel"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
@@ -980,18 +969,16 @@ msgid "SSH Private Key Passphrase"
 msgstr "Heslo privátního klíče SSH"
 
 #: ../html/src/manager/admin/payg/payg.tsx:60
-#, fuzzy
 msgid "The instance you are looking for does not exist or has been deleted"
-msgstr "Hledaný projekt neexistuje nebo byl odstraněn"
+msgstr "Hledaná instance neexistuje nebo byla odstraněna"
 
 #: ../html/src/manager/admin/payg/payg.tsx:67
-#, fuzzy
 msgid "Instance Hostname: {0}"
-msgstr "Podrobnosti instance pro '{0}'"
+msgstr "Název hostitele instance: {0}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:76
 msgid "Delete Pay-as-you-go"
-msgstr ""
+msgstr "Zrušit průběžnou platbu (Pay-as-you-go)"
 
 #: ../html/src/manager/admin/payg/payg.tsx:79
 #: ../html/src/manager/content-management/project/project.tsx:119
@@ -1050,6 +1037,7 @@ msgstr "Probíhá aktualizace katalogu produktů..."
 #: ../html/src/manager/admin/setup/products/products.tsx:214
 msgid "The following product installations failed. Please check log files."
 msgstr ""
+"Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:287
 msgid ""
@@ -1327,24 +1315,23 @@ msgstr "Chyba serveru, zkontrolujte soubory protokolu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:34
 msgid "Affected, patches available in channels which are not assigned"
-msgstr ""
+msgstr "Ovlivněno: v kanálech, které nejsou přiřazeny, jsou dostupné záplaty"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:38
 msgid "Affected, patches available in a Product Migration target"
-msgstr ""
+msgstr "Ovlivněno, záplaty dostupné v cíli Migrace produktu"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:42
 msgid "Affected, at least one patch available in an assigned channel"
-msgstr ""
+msgstr "Ovlivněno: v přiřazeném kanálu je dostupná aspoň 1 záplata"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:46
 msgid "Not affected"
-msgstr ""
+msgstr "Neovlivněno"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:50
-#, fuzzy
 msgid "Patched"
-msgstr "Záplaty"
+msgstr "Opraveno"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:185
 msgid "CVE Audit"
@@ -1364,11 +1351,11 @@ msgstr "Auditovat obrazy"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:272
 msgid "MITRE CVE link"
-msgstr ""
+msgstr "Odkaz na MITRE CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:284
 msgid "SUSE Security CVE link"
-msgstr ""
+msgstr "Odkaz na SUSE Security CVE"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:316
@@ -1408,27 +1395,27 @@ msgstr "Akce"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:384
-#, fuzzy
 msgid "No action required"
-msgstr "Nutný restart systému"
+msgstr "Nevyžaduje se žádná akce"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:343
 msgid "Install a new patch on this system."
-msgstr ""
+msgstr "Instalovat novou opravu na tento systém."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:360
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr ""
+"Záplata je k dispozici, ale systém je třeba migrovat na novější produkt."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
 msgid "Patch available, but needs to be cloned into Channel."
-msgstr ""
+msgstr "Záplata je k dispozici, ale je třeba ji naklonovat do kanálu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:380
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:407
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:410
 msgid "If you see this report a bug."
-msgstr ""
+msgstr "Vidíte-li toto, ohlaste chybu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:391
 #: ../html/src/manager/images/image-view-overview.tsx:641
@@ -1437,7 +1424,7 @@ msgstr "Přebudovat"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:399
 msgid "Patch available but needs to be cloned into Channel."
-msgstr ""
+msgstr "Záplata je k dispozici, ale je třeba ji naklonovat do kanálu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:402
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
@@ -1448,7 +1435,7 @@ msgstr "Kanál"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:403
 msgid "Errata"
-msgstr ""
+msgstr "Opravník chyb"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:429
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
@@ -2151,46 +2138,39 @@ msgstr "obsahuje balíček poskytující shodný název"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
 msgid "lower"
-msgstr ""
+msgstr "menší"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
-#, fuzzy
 msgid "lower than"
-msgstr "verze nižší než"
+msgstr "menší než"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
-#, fuzzy
 msgid "lower or equal"
-msgstr "pozdější nebo shodný"
+msgstr "menší nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
-#, fuzzy
 msgid "lower or equal than"
-msgstr "pozdější než nebo shodný"
+msgstr "menší než nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "equal"
 msgstr "roven / stejný"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
-#, fuzzy
 msgid "greater or equal"
-msgstr "pozdější nebo shodný"
+msgstr "větší nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
-#, fuzzy
 msgid "greater or equal than"
-msgstr "pozdější než nebo shodný"
+msgstr "větší než nebo rovno"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
-#, fuzzy
 msgid "greater"
-msgstr "Vytvořit"
+msgstr "větší"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
-#, fuzzy
 msgid "greater than"
-msgstr "Vytvořeno v"
+msgstr "větší než"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
 msgid "matches regular expression"
@@ -2337,9 +2317,8 @@ msgid "Cloning channels"
 msgstr "Klonování kanálů"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
-#, fuzzy
 msgid "Waiting for repositories data to be generated"
-msgstr "Generování dat úložiště"
+msgstr "Čekání na vygenerování dat z úložišť"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:30
 #: ../html/src/manager/images/image-view.tsx:505
@@ -2469,7 +2448,6 @@ msgid "Versions history"
 msgstr "Historie verzí"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
-#, fuzzy
 msgid "New base channel"
 msgstr "Nový základní kanál"
 
@@ -2492,14 +2470,12 @@ msgid "Clear Search"
 msgstr "Výmaz hledání"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
-#, fuzzy
 msgid "This channel requires:"
-msgstr "Tento kanál je doporučen"
+msgstr "Tento kanál vyžaduje:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
-#, fuzzy
 msgid "This channel is required by:"
-msgstr "Tento kanál je doporučen"
+msgstr "Tento kanál je vyžádán:"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
 msgid "This channel is recommended"
@@ -2649,14 +2625,12 @@ msgid "Patches"
 msgstr "Záplaty"
 
 #: ../html/src/manager/header/search/search.tsx:22
-#, fuzzy
 msgid "Documentation"
-msgstr "dokumentace"
+msgstr "Dokumentace"
 
 #: ../html/src/manager/header/search/search.tsx:56
-#, fuzzy
 msgid "Open search"
-msgstr "Výmaz hledání"
+msgstr "Otevřít hledání"
 
 #: ../html/src/manager/images/image-build.tsx:38
 msgid "An unknown error has occurred."
@@ -2965,14 +2939,12 @@ msgstr "Opravdu chcete smazat zvolená úložiště? (Vybráno {0} úložišť)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:791
-#, fuzzy
 msgid "Build Log"
-msgstr "Sestavení hostitele"
+msgstr "Protokol sestavení"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:10
-#, fuzzy
 msgid "Build log is not available."
-msgstr "Nejsou dostupné žádné podřízené kanály."
+msgstr "Protokol sestavení není k dispozici."
 
 #: ../html/src/manager/images/image-view-overview.tsx:38
 #: ../html/src/manager/images/image-view-overview.tsx:39
@@ -3285,7 +3257,7 @@ msgstr "Runtime"
 
 #: ../html/src/manager/images/image-view.tsx:623
 msgid "Show obsolete"
-msgstr ""
+msgstr "Zobrazit zastaralé"
 
 #: ../html/src/manager/images/image-view.tsx:645
 msgid "Revision"
@@ -3293,7 +3265,7 @@ msgstr "Revize"
 
 #: ../html/src/manager/images/image-view.tsx:647
 msgid "(obsolete)"
-msgstr ""
+msgstr "(zastaralé)"
 
 #: ../html/src/manager/images/image-view.tsx:649
 #: ../html/src/manager/systems/virtual-list.tsx:90
@@ -3376,7 +3348,7 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:42
 msgid "_blank"
-msgstr ""
+msgstr "_prázdný"
 
 #: ../html/src/manager/login/susemanager/login.tsx:57
 #: ../html/src/manager/login/susemanager/login.tsx:82
@@ -3628,10 +3600,12 @@ msgstr "Kalendáře"
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "Below is a list of Maintenance Schedules available to the current user."
 msgstr ""
+"Níže je uveden seznam plánů údržby, které má aktuální uživatel k dispozici."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr ""
+"Níže je uveden seznam plánů údržby, které má aktuální uživatel k dispozici."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:51
 msgid "schedule"
@@ -3743,9 +3717,8 @@ msgid "Unknown Hostnames"
 msgstr "Neznámé názvy hostitelů"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:190
-#, fuzzy
 msgid "bootstrap"
-msgstr "Zavést systém"
+msgstr "zavést systém"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:225
 msgid "Loading content.."
@@ -3948,11 +3921,11 @@ msgstr "Aplikace stavu selhala"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:50
 msgid "Pay-as-you-go refresh authentication data failed"
-msgstr ""
+msgstr "Ověření dat obnovení průběžné platby se nezdařilo"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:54
 msgid "End of Life Period"
-msgstr ""
+msgstr "Konec životního cyklu"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:145
 msgid "Filter by type"
@@ -4073,22 +4046,21 @@ msgstr ""
 #: ../html/src/manager/proxy/container-config-messages.tsx:14
 msgid "The container based proxy configuration has been generated correctly."
 msgstr ""
+"Konfigurace proxy serveru na základě kontejneru byla vygenerována správně."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
 msgid ""
 "Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
+msgstr "Probíhá generování konfigurace proxy serveru: čeká se na odpověď..."
 
 #: ../html/src/manager/proxy/container-config.tsx:142
-#, fuzzy
 msgid "Request interrupted or invalid response received from the server."
-msgstr ""
-"Žádost přerušena nebo ze serveru přijata neplatná odpověď. Prosím opakujte."
+msgstr "Žádost přerušena nebo ze serveru přijata neplatná odpověď."
 
 #: ../html/src/manager/proxy/container-config.tsx:179
 #: ../html/src/manager/proxy/container-config.tsx:195
 msgid "Container Based Proxy Configuration"
-msgstr ""
+msgstr "Konfigurace proxy serveru na základě kontejneru"
 
 #: ../html/src/manager/proxy/container-config.tsx:185
 msgid ""
@@ -4096,39 +4068,37 @@ msgid ""
 "register and run a container-based proxy. Once the following form is filled "
 "out and submitted you will get a .tar.gz archive to download."
 msgstr ""
+"Pro registraci a spuštění proxy serveru založeného na kontejneru můžete "
+"vygenerovat sadu konfiguračních souborů a certifikátů. Po vyplnění a "
+"odeslání následujícího formuláře získáte archiv .tar.gz ke stažení."
 
 #: ../html/src/manager/proxy/container-config.tsx:199
-#, fuzzy
 msgid "Proxy FQDN"
-msgstr "Proxy"
+msgstr "Proxy FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
 msgid "The FQDN of the machine where the containers are hosted"
-msgstr ""
+msgstr "FQDN počítače, kde jsou kontejnery umístěny"
 
 #: ../html/src/manager/proxy/container-config.tsx:202
-#, fuzzy
 msgid "e.g., proxy.domain.com"
-msgstr "např. host.doman.com"
+msgstr "např. proxy.domain.cz"
 
 #: ../html/src/manager/proxy/container-config.tsx:208
-#, fuzzy
 msgid "Parent FQDN"
-msgstr "Proxy"
+msgstr "FQDN rodiče"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
-#, fuzzy
 msgid "e.g., server.domain.com"
-msgstr "např. host.doman.com"
+msgstr "např. server.domain.cz"
 
 #: ../html/src/manager/proxy/container-config.tsx:211
 msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr ""
+msgstr "FQDN nadřazeného serveru nebo proxy serveru, k němuž se připojujete."
 
 #: ../html/src/manager/proxy/container-config.tsx:217
-#, fuzzy
 msgid "Proxy SSH port"
-msgstr "Port"
+msgstr "Port proxy SSH"
 
 #: ../html/src/manager/proxy/container-config.tsx:218
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
@@ -4137,89 +4107,83 @@ msgstr "Rozsah portů: 1 - 65535"
 
 #: ../html/src/manager/proxy/container-config.tsx:227
 msgid "Max Squid cache size"
-msgstr ""
+msgstr "Max. velikost vyrovnávací paměti Squid"
 
 #: ../html/src/manager/proxy/container-config.tsx:228
 msgid "The maximum value of the Squid cache in Megabytes"
-msgstr ""
+msgstr "Maximální hodnota mezipaměti Squid v MB"
 
 #: ../html/src/manager/proxy/container-config.tsx:231
-#, fuzzy
 msgid "e.g., 2048"
-msgstr "např. SLE12"
+msgstr "např. 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:238
 msgid "Proxy admin email"
-msgstr ""
+msgstr "E-mail správce proxy serveru"
 
 #: ../html/src/manager/proxy/container-config.tsx:239
 msgid "The container-based proxy administrator email address"
-msgstr ""
+msgstr "E-mailová adresa správce proxy serveru založeného na kontejneru"
 
 #: ../html/src/manager/proxy/container-config.tsx:240
-#, fuzzy
 msgid "e.g., proxy.admin@mycompany.com"
-msgstr "např. host.doman.com"
+msgstr "např. admin@domain.cz"
 
 #: ../html/src/manager/proxy/container-config.tsx:247
 #: ../html/src/manager/proxy/container-config.tsx:248
 msgid "SSL certificate"
-msgstr ""
+msgstr "SSL certifikát"
 
 #: ../html/src/manager/proxy/container-config.tsx:256
 #: ../html/src/manager/proxy/container-config.tsx:381
-#, fuzzy
 msgid "Generate"
-msgstr "Všeobecné"
+msgstr "Generovat"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
 msgid "Use existing"
-msgstr ""
+msgstr "Použít existující"
 
 #: ../html/src/manager/proxy/container-config.tsx:264
 msgid "CA certificate"
-msgstr ""
+msgstr "CA certifikát"
 
 #: ../html/src/manager/proxy/container-config.tsx:265
 #: ../html/src/manager/proxy/container-config.tsx:274
 #: ../html/src/manager/proxy/container-config.tsx:331
 msgid "To sign the SSL certificate in PEM format"
-msgstr ""
+msgstr "Podepsat certifikát SSL ve formátu PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:273
-#, fuzzy
 msgid "CA private key"
-msgstr "Privátní klíč SSH"
+msgstr "Privátní klíč CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:282
-#, fuzzy
 msgid "CA password"
-msgstr "Heslo"
+msgstr "Heslo CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:283
-#, fuzzy
 msgid "The CA private key password"
-msgstr "Vygenerovat nové heslo"
+msgstr "Heslo privátního klíče CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:291
 msgid "SSL Certificate data"
-msgstr ""
+msgstr "Data certifikátu SSL"
 
 #: ../html/src/manager/proxy/container-config.tsx:298
 msgid "Alternate CNAMEs"
-msgstr ""
+msgstr "Alternativní názvy CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:306
 msgid "CNAME"
-msgstr ""
+msgstr "CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:312
 msgid "2-letter country code"
-msgstr ""
+msgstr "Dvoupísmenný kód země"
 
 #: ../html/src/manager/proxy/container-config.tsx:319
 msgid "City"
-msgstr ""
+msgstr "Město"
 
 #: ../html/src/manager/proxy/container-config.tsx:320
 #: ../html/src/manager/state/highstate-summary.tsx:169
@@ -4230,40 +4194,37 @@ msgid "Organization"
 msgstr "Organizace"
 
 #: ../html/src/manager/proxy/container-config.tsx:321
-#, fuzzy
 msgid "Organization Unit"
-msgstr "Organizace"
+msgstr "Organizační jednotka"
 
 #: ../html/src/manager/proxy/container-config.tsx:322
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #: ../html/src/manager/proxy/container-config.tsx:330
 msgid "The root CA"
-msgstr ""
+msgstr "Kořenová CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:340
-#, fuzzy
 msgid "Intermediate CAs"
-msgstr "Rozhraní"
+msgstr "Zprostředkující CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:350
 msgid "CA file in PEM format"
-msgstr ""
+msgstr "Soubor CA ve formátu PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:361
 msgid "Proxy certificate"
-msgstr ""
+msgstr "Certifikát proxy"
 
 #: ../html/src/manager/proxy/container-config.tsx:362
 #: ../html/src/manager/proxy/container-config.tsx:371
 msgid "In PEM format"
-msgstr ""
+msgstr "Ve tvaru PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:370
-#, fuzzy
 msgid "Proxy SSL private key"
-msgstr "Port"
+msgstr "Privátní klíč SSL proxy"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -4394,9 +4355,8 @@ msgid "Keys"
 msgstr "Klíče"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:154
-#, fuzzy
 msgid "Search by name or fingerprint"
-msgstr "Filtrovat podle názvu projektu"
+msgstr "Hledat podle názvu nebo otisku"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
@@ -4572,13 +4532,15 @@ msgstr "Opakující se stavy"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:65
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "Byly vytvořeny následující opakující se akce."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid ""
 "To create new recurring actions head to the system, group or organization "
 "you want to create the action for."
 msgstr ""
+"Chcete-li vytvořit nové opakující se akce, přejděte do systému, skupiny nebo "
+"organizace, pro kterou chcete akci vytvořit."
 
 #: ../html/src/manager/state/recurring-states-list.tsx:92
 msgid "No schedules created."
@@ -4649,14 +4611,13 @@ msgstr ""
 "podřízeným kanálům."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
-#, fuzzy
 msgid "Error Details"
-msgstr "Podrobnosti"
+msgstr "Podrobnosti chyb"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:72
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:73
 msgid "Close"
-msgstr ""
+msgstr "Zavřít"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
 msgid ""
@@ -4680,11 +4641,11 @@ msgstr "krátce"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:350
 msgid "Show additional details about this error"
-msgstr ""
+msgstr "Zobrazit další podrobnosti o této chybě"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
 msgid "Unable to bootstrap host. The following errors have happened:"
-msgstr ""
+msgstr "Nelze zavést OS hostitele. Došlo k následujícím chybám:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:362
 msgid "Your system is bootstrapping: waiting for a response.."
@@ -4744,11 +4705,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:502
 msgid "Authentication Method"
-msgstr ""
+msgstr "Metoda ověřování"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:539
 msgid "Ansible control node"
-msgstr ""
+msgstr "Řídicí uzel Ansible"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:557
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:587
@@ -4757,13 +4718,12 @@ msgid "None"
 msgstr "Žádný"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:570
-#, fuzzy
 msgid "Reactivation Key"
-msgstr "Aktivační klíč"
+msgstr "Re-aktivační klíč"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:576
 msgid "Leave empty when no reactivation is wanted"
-msgstr ""
+msgstr "Nechte prázdné, není-li požadována re-aktivace"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
 msgid "Proxy"
@@ -4779,17 +4739,16 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:622
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
+msgstr "Zakázat striktní kontrolu klíče hostitele SSH během zaváděcího procesu"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:638
 msgid "Manage system completely via SSH (will not install an agent)"
-msgstr ""
+msgstr "Správa systému kompletně přes SSH (neinstaluje agenta)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:654
-#, fuzzy
 msgid ""
 "Are you sure you want to close this page while bootstrapping is in progress ?"
-msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
+msgstr "Skutečně chcete tuto stránku zavřít během zavádění systému?"
 
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
@@ -4809,48 +4768,45 @@ msgid "An error occurred during cleanup"
 msgstr "Během mazání došlo k chybě"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:30
-#, fuzzy
 msgid "Not a system id"
-msgstr "Nenalezeny žádné cílové systémy"
+msgstr "Toto není ID systému"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:31
-#, fuzzy
 msgid "Unknown System"
-msgstr "Neznámý host"
+msgstr "Neznámý systém"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:32
 msgid "System is not a peripheral server"
-msgstr ""
+msgstr "Systém není periferním serverem"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:50
 msgid "New password generated and action for peripheral server scheduled"
-msgstr ""
+msgstr "Vygenerováno nové heslo a naplánována akce pro periferní server"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
 msgid "Peripheral Server"
-msgstr ""
+msgstr "Periferní server"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
-msgstr ""
+msgstr "Název databáze hlášení"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:95
 msgid "Report Database Host"
-msgstr ""
+msgstr "Hostitel databáze hlášení"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:101
 msgid "Report Database User"
-msgstr ""
+msgstr "Uživatel databáze hlášení"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:105
 msgid "Report Database Last Synced"
-msgstr ""
+msgstr "Naposledy synchronizovaná databáze hlášení"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
-#, fuzzy
 msgid "Regenerate Reporting Database Password"
-msgstr "Vygenerovat nové heslo"
+msgstr "Vygenerovat nové heslo databáze hlášení"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
 msgid "Confirm Deletion"
@@ -4858,36 +4814,32 @@ msgstr "Potvrdit odstranění"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr ""
+msgstr "Vyberte seznam pomahačů (ani proxy serverů ani tradičních klientů)."
 
 #: ../html/src/manager/systems/proxy.tsx:67
 msgid "Change of proxy server has been "
-msgstr ""
+msgstr "Změna proxy serveru byla "
 
 #: ../html/src/manager/systems/proxy.tsx:101
 #: ../html/src/manager/systems/proxy.tsx:117
-#, fuzzy
 msgid "Change Proxy"
-msgstr "Změny"
+msgstr "Změna proxy"
 
 #: ../html/src/manager/systems/proxy.tsx:117
 msgid "Connect minion(s) to another proxy server."
-msgstr ""
+msgstr "Připojení jednoho či více pomahačů k jinému proxy serveru."
 
 #: ../html/src/manager/systems/proxy.tsx:120
-#, fuzzy
 msgid "New Proxy"
-msgstr "Proxy"
+msgstr "Nový proxy server"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
-#, fuzzy
 msgid "system selected"
-msgstr "Odstranit vybrané"
+msgstr "vybraný systém"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
-#, fuzzy
 msgid "systems selected"
-msgstr "Odstranit vybrané"
+msgstr "vybrané systémy"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
@@ -5109,24 +5061,20 @@ msgid "Confirm Software Channel Change"
 msgstr "Potvrďte změnu softwarového kanálu"
 
 #: ../html/src/manager/systems/virtual-list.tsx:42
-#, fuzzy
 msgid "Virtual Systems"
-msgstr "Hostované virtuální systémy"
+msgstr "Virtuální systémy"
 
 #: ../html/src/manager/systems/virtual-list.tsx:60
-#, fuzzy
 msgid "No Virtual Systems."
-msgstr "Hostované virtuální systémy"
+msgstr "Žádné virtuální systémy."
 
 #: ../html/src/manager/systems/virtual-list.tsx:65
-#, fuzzy
 msgid "Virtual Host"
-msgstr "Správce virtuálních hostiteľů"
+msgstr "Virtuální hostitel"
 
 #: ../html/src/manager/systems/virtual-list.tsx:73
-#, fuzzy
 msgid "Virtual System"
-msgstr "Hostované virtuální systémy"
+msgstr "Virtuální systém"
 
 #: ../html/src/manager/systems/virtual-list.tsx:101
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
