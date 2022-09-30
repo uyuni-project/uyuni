@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import _isEqual from "lodash/isEqual";
+
 import { pageSize } from "core/user-preferences";
 
 import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
@@ -199,7 +201,7 @@ export class TableDataHandler extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.data !== prevProps.data) {
+    if (!_isEqual(this.props.data, prevProps.data)) {
       this.setState({ provider: this.getProvider() }, () => this.getData());
     }
   }
