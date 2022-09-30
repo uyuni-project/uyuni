@@ -73,7 +73,7 @@ public class MenuTree {
 
         if (checkAcl(user, "user_authenticated()")) {
             nodes.add(getHomeNode(adminRoles));
-            nodes.add(getSystemsNode(adminRoles));
+            nodes.add(getSystemsNode(user, adminRoles));
             nodes.add(getSaltNode(adminRoles));
             nodes.add(getImagesNode(adminRoles));
             nodes.add(getPatchesNode(user));
@@ -129,13 +129,32 @@ public class MenuTree {
                     .withVisibility(adminRoles.get("org")));
     }
 
-    private MenuItem getSystemsNode(Map<String, Boolean> adminRoles) {
+    private MenuItem getSystemsNode(User user, Map<String, Boolean> adminRoles) {
         return new MenuItem("Systems").withIcon("fa-desktop").withDir("/rhn/systems/details")
             .withDir("/rhn/manager/systems/details")
-            .addChild(new MenuItem("System List")
-                    .addChild(new MenuItem("All").withPrimaryUrl("/rhn/manager/systems/list/all"))
+            .addChild(new MenuItem("System List").addChild(new MenuItem("All")
+                    .withPrimaryUrl("/rhn/manager/systems/list/all"))
+                    .addChild(new MenuItem("Physical Systems")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=physical"))
                     .addChild(new MenuItem("Virtual Systems").withPrimaryUrl("/rhn/manager/systems/list/virtual"))
                     .addChild(new MenuItem("Bare Metal Systems").withPrimaryUrl("/rhn/systems/BootstrapSystemList.do"))
+                    .addChild(new MenuItem("Out of Date")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=critical"))
+                    .addChild(new MenuItem("Requiring Reboot")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=requires_reboot&q=true"))
+                    .addChild(new MenuItem("Extra Packages")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=extra_pkg_count&q=>0"))
+                    .addChild(new MenuItem("Ungrouped")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=group_count&q=0")
+                            .withVisibility(adminRoles.get("org")))
+                    .addChild(new MenuItem("Inactive")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=awol"))
+                    .addChild(new MenuItem("Recently Registered")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=created_days&q=>6"))
+                    .addChild(new MenuItem("Proxy")
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=proxy")
+                            .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_suma()") &&
+                                    adminRoles.get("org")))
                     .addChild(new MenuItem("Duplicate Systems").withPrimaryUrl("/rhn/systems/DuplicateIPList.do")
                             .withAltUrl("/rhn/systems/DuplicateIPv6List.do")
                             .withAltUrl("/rhn/systems/DuplicateHostName.do")
