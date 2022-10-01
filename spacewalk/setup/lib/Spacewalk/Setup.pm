@@ -259,7 +259,7 @@ sub load_answer_file {
     close FH;
   }
   if ($answers->{'db-host'}) {
-    $answers->{'db-host'} = Net::LibIDN::idn_to_ascii($answers->{'db-host'}, "utf8");
+    $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
   }
   return;
 }
@@ -723,7 +723,7 @@ sub postgresql_get_database_answers {
         -answer => \$answers->{'db-host'});
 
     if ($answers->{'db-host'} ne '') {
-        $answers->{'db-host'} = Net::LibIDN::idn_to_ascii($answers->{'db-host'}, "utf8");
+        $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
         ask(
             -noninteractive => $opts->{"non-interactive"},
             -question => "Port",
@@ -783,7 +783,7 @@ sub postgresql_get_reportdb_answers {
         -answer => \$answers->{'report-db-host'});
 
     if ($answers->{'report-db-host'} ne '') {
-        $answers->{'report-db-host'} = Net::LibIDN::idn_to_ascii($answers->{'report-db-host'}, "utf8");
+        $answers->{'report-db-host'} = idn_to_ascii($answers->{'report-db-host'}, "utf8");
         ask(
             -noninteractive => $opts->{"non-interactive"},
             -question => "Port",
