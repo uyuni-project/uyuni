@@ -522,6 +522,13 @@ When(/^I check "([^"]*)" patch$/) do |arg1|
   step %(I check "#{arg1}" in the list)
 end
 
+Then(/^I should see something$/) do
+  steps %(
+    Given I should see a "Sign In" text
+    And I should see a "About" text
+  )
+end
+
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
   within(:xpath, '//span[@id="spacewalk-set-system_list-counter"]') do
     raise "There are not #{arg} systems selected" unless has_content?(arg)
