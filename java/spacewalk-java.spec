@@ -207,6 +207,8 @@ Requires:       log4j-slf4j
 Requires:       mgr-libmod
 Requires:       netty
 Requires:       objectweb-asm >= 9.2
+Requires:       ongres-scram
+Requires:       ongres-stringprep
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
