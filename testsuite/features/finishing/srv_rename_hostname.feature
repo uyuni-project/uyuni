@@ -19,4 +19,6 @@ Feature: Reconfigure the server's hostname
     When I change back the server's hostname
     And I reboot the server through SSH
     And I run spacewalk-hostname-rename command on the server
-    And I clean up the server's hosts file
+
+  Scenario: Cleanup after hostname rename test
+    When I clean up the server's hosts file
