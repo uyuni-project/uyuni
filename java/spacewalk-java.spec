@@ -217,6 +217,8 @@ Requires:       jpa-api
 Requires:       mgr-libmod
 Requires:       netty
 Requires:       objectweb-asm
+Requires:       ongres-scram
+Requires:       ongres-stringprep
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       salt-netapi-client >= 0.20
