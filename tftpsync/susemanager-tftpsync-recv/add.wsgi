@@ -49,7 +49,7 @@ class TftpFieldStorage(cgi.FieldStorage):
     def make_file(self, binary=None):
         tmpdir = os.path.join(CFG.TFTPBOOT, "tmp")
         if not os.path.exists(tmpdir):
-            os.makedirs(tmpdir)
+            os.makedirs(tmpdir, exist_ok=True)
 
         return tempfile.NamedTemporaryFile(mode="w+b", suffix='', prefix='tmp',
                                            dir=tmpdir, delete=False)
