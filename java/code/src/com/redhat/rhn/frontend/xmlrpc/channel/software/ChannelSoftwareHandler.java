@@ -20,9 +20,6 @@ import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.O
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
@@ -46,6 +43,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.task.Task;
+import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.PackageDto;
@@ -82,7 +81,6 @@ import com.redhat.rhn.manager.kickstart.crypto.NoSuchCryptoKeyException;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
 import com.suse.manager.api.ApiIgnore;
@@ -1577,36 +1575,15 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     private void scheduleErrataCacheUpdate(Org org, Channel channel, long delay) {
-        SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
-                                           "find_channel_in_task_queue");
-        Map<String, Object> inParams = new HashMap<>();
-
-        inParams.put("cid", channel.getId());
-        DataResult dr = m.execute(inParams);
-
         delay /= (24 * 60 * 60);
 
-        if (dr.isEmpty()) {
-            WriteMode w = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
-                                                         "insert_into_task_queue");
-
-            inParams = new HashMap<>();
-            inParams.put("org_id", org.getId());
-            inParams.put("task_name", ErrataCacheWorker.BY_CHANNEL);
-            inParams.put("task_data", channel.getId());
-            inParams.put("earliest", new Timestamp(System.currentTimeMillis() + delay));
-
-            w.executeUpdate(inParams);
+        Task task = TaskFactory.lookup(org, ErrataCacheWorker.BY_CHANNEL, channel.getId());
+        if (task == null) {
+            task = TaskFactory.createTask(org, ErrataCacheWorker.BY_CHANNEL, channel.getId());
         }
-        else {
-            WriteMode w = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
-                                                         "update_task_queue");
-            inParams = new HashMap<>();
-            inParams.put("earliest", new Timestamp(System.currentTimeMillis() + delay));
-            inParams.put("cid", channel.getId());
 
-            w.executeUpdate(inParams);
-        }
+        task.setEarliest(new Timestamp(System.currentTimeMillis() + delay));
+        TaskFactory.save(task);
     }
 
     private Channel lookupChannelByLabel(User user, String label)

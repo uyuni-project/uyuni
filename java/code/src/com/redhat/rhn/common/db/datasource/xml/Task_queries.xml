@@ -674,38 +674,6 @@ where snc.errata_id = :errata_id
     </query>
 </mode>
 
-<mode name="find_channel_in_task_queue">
-        <query params="cid">
-                SELECT task_data
-                FROM rhnTaskQueue
-                WHERE task_data = :cid
-                AND task_name = 'update_errata_cache_by_channel'
-        </query>
-</mode>
-
-<write-mode name="update_task_queue">
-        <query params="earliest, cid">
-                UPDATE rhnTaskQueue
-                SET earliest = :earliest
-                WHERE task_data = :cid
-        </query>
-</write-mode>
-
-<write-mode name="insert_into_task_queue">
-        <query params="org_id, task_name, task_data, earliest">
-        INSERT INTO rhnTaskQueue
-       (org_id, task_name, task_data, priority, earliest)
-                VALUES (:org_id, :task_name, :task_data, 0, :earliest)
-        </query>
-</write-mode>
-
-<write-mode name="delete_task">
-  <query params="org_id, name, task_data, priority">
-  DELETE FROM rhnTaskQueue where org_id = :org_id and task_name = :name
-  and task_data = :task_data and priority = :priority
-  </query>
-</write-mode>
-
 <mode name="ssh_push_find_traditional_candidates" class="com.redhat.rhn.taskomatic.task.checkin.SystemSummary">
   <query>
 SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, max(a.earliest_action) as earliest_action

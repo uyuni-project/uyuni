@@ -57,6 +57,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 import com.redhat.rhn.frontend.dto.CVE;
@@ -81,7 +82,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.redhat.rhn.taskomatic.task.TaskConstants;
+import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
 import com.suse.manager.utils.MinionServerUtils;
 
@@ -90,7 +91,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -2120,14 +2120,8 @@ public class ErrataManager extends BaseManager {
      * @param channel the channel
      */
     public static void insertErrataCacheTask(Channel channel) {
-        WriteMode mode = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
-                "insert_into_task_queue");
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", ofNullable(channel.getOrg()).orElse(OrgFactory.getSatelliteOrg()).getId());
-        params.put("task_name", "update_errata_cache_by_channel");
-        params.put("task_data", channel.getId());
-        params.put("earliest", new Timestamp(System.currentTimeMillis()));
-        mode.executeUpdate(params);
+        TaskFactory.createTask(ofNullable(channel.getOrg()).orElse(OrgFactory.getSatelliteOrg()),
+                ErrataCacheWorker.BY_CHANNEL, channel.getId());
     }
 
     /**
@@ -2137,14 +2131,7 @@ public class ErrataManager extends BaseManager {
      * @param server the server
      */
     public static void insertErrataCacheTask(Server server) {
-        WriteMode mode = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
-                "insert_into_task_queue");
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", server.getOrg().getId());
-        params.put("task_name", "update_server_errata_cache");
-        params.put("task_data", server.getId());
-        params.put("earliest", new Timestamp(System.currentTimeMillis()));
-        mode.executeUpdate(params);
+        TaskFactory.createTask(server.getOrg(), ErrataCacheWorker.FOR_SERVER, server.getId());
     }
 
     /**
@@ -2154,14 +2141,7 @@ public class ErrataManager extends BaseManager {
      * @param image the image
      */
     public static void insertErrataCacheTask(ImageInfo image) {
-        WriteMode mode = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
-                "insert_into_task_queue");
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", image.getOrg().getId());
-        params.put("task_name", "update_image_errata_cache");
-        params.put("task_data", image.getId());
-        params.put("earliest", new Timestamp(System.currentTimeMillis()));
-        mode.executeUpdate(params);
+        TaskFactory.createTask(image.getOrg(), ErrataCacheWorker.FOR_IMAGE, image.getId());
     }
 
     /**
