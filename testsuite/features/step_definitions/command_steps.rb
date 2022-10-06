@@ -812,7 +812,8 @@ When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |a
   node = get_target(host)
   raise "#{node.hostname} is not a Debian-like host." unless deb_host?(host)
 
-  node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
+  source_repo = "deb http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc) #{repo}"
+  node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} \"#{source_repo}\"")
 end
 
 # rubocop:disable Metrics/BlockLength
