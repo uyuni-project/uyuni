@@ -510,7 +510,7 @@ public class ServerConfigHandler extends BaseHandler {
                 // Add the existing subscriptions to the end so they will be resubscribed
                 // and their ranks will be overridden
                 channelsToAdd = Stream
-                        .concat(channels.stream(), server.getConfigChannelStream())
+                        .concat(channels.stream(), server.getConfigChannelStream().filter(c -> !channels.contains(c)))
                         .collect(Collectors.toList());
             }
             else {
