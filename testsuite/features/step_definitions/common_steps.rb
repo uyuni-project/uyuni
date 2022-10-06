@@ -299,7 +299,7 @@ When(/^I trigger cobbler system record$/) do
     # normal traditional client
     steps %(
       Given I am authorized as "testing" with password "testing"
-      And I follow this "sle_client" link
+      And I am on the Systems overview page of this "sle_client"
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
