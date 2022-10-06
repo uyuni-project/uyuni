@@ -1,3 +1,4 @@
+- Don't add the same channel twice in the System config addChannel API (bsc#1204029)
 - Optimize action chain processing on job return event (bsc#1203532)
 - Re-calculate salt event queue numbers on restart
 - Improved reboot needed handling for SLE Micro
