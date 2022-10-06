@@ -52,6 +52,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -65,7 +66,7 @@ import java.util.Set;
  * Class Org that reflects the DB representation of web_customer DB table:
  * web_customer
  */
-public class Org extends BaseDomainHelper implements SaltConfigurable {
+public class Org extends BaseDomainHelper implements SaltConfigurable, Serializable {
 
     private static final String USER_ID_KEY = "user_id";
     private static final String ORG_ID_KEY = "org_id";
