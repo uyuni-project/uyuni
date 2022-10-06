@@ -51,7 +51,7 @@ body:
   - type: textarea
     attributes:
       label: Additional information
-      description: Is these anything else that could help us?
+      description: Is there any additional information that could help us understanding or fixing the issue?
     validations:
       required: false
   - type: markdown
