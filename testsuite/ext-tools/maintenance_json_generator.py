@@ -121,11 +121,12 @@ def find_valid_repos(rrids, version):
                 repo = create_url(rrid, suffix)
                 if repo is not None:
                     if node in finaldict:
-                        # This is needed for rrids that have multiple repos for each node, e.g. basesystem and server apps for server
+                        # This is needed for rrids that have multiple repos for each node, e.g. basesystem and server
+                        # apps for server
                         if rrid in finaldict[node]:
                             for i in range(1, 100):
-                                if str(rrid) + '_' + str(i) not in finaldict[node]:
-                                    finaldict[node][str(rrid) + '_' + str(i)] = repo
+                                if str(rrid) + '-' + str(i) not in finaldict[node]:
+                                    finaldict[node][str(rrid) + '-' + str(i)] = repo
                                     break
                         else:
                             finaldict[node][rrid] = repo
@@ -137,11 +138,12 @@ def find_valid_repos(rrids, version):
                     repo = create_url(rrid, suffix)
                     if repo is not None:
                         if node in finaldict:
-                            # This is needed for rrids that have multiple repos for each node, e.g. basesystem and server apps for server
+                            # This is needed for rrids that have multiple repos for each node, e.g. basesystem and
+                            # server apps for server
                             if rrid in finaldict[node]:
                                 for i in range(1, 100):
-                                    if str(rrid) + '_' + str(i) not in finaldict[node]:
-                                        finaldict[node][str(rrid) + '_' + str(i)] = repo
+                                    if str(rrid) + '-' + str(i) not in finaldict[node]:
+                                        finaldict[node][str(rrid) + '-' + str(i)] = repo
                                         break
                             else:
                                 # for each rrid we have multiple repos sometimes for each node
