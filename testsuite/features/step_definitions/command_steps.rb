@@ -5,6 +5,7 @@ require 'timeout'
 require 'nokogiri'
 require 'pg'
 require 'set'
+require 'date'
 
 # Sanity checks
 
@@ -236,10 +237,16 @@ end
 When(/^vendor change should be enabled for (?:[^"]*) on "([^"]*)"$/) do |host|
   node = get_target(host)
   pattern = '--allow-vendor-change'
-  log = '/var/log/zypper.log'
-  rotated_log = "#{log}-#{Time.now.strftime('%Y%m%d')}.xz"
-  _, return_code = node.run("grep -- #{pattern} #{log} || xzdec #{rotated_log} | grep -- #{pattern}")
-
+  current_log = '/var/log/zypper.log'
+  current_time = Time.now.localtime
+  rotated_log = "#{current_log}-#{current_time.strftime('%Y%m%d')}.xz"
+  day_after = (current_time.to_date + 1).strftime('%Y%m%d')
+  next_day_rotated_log = "#{current_log}-#{day_after}.xz"
+  begin
+    _, return_code = node.run("xzdec #{next_day_rotated_log} | grep -- #{pattern}")
+  rescue RuntimeError
+    _, return_code = node.run("grep -- #{pattern} #{current_log} || xzdec #{rotated_log} | grep -- #{pattern}")
+  end
   raise 'Vendor change option not found in logs' unless return_code.zero?
 end
 
