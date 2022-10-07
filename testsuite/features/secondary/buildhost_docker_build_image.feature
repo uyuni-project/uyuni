@@ -62,10 +62,10 @@ Feature: Build container images
     # We should see the same result via API.
     # Also, check that all inspect actions are finished:
     And I wait at most 600 seconds until image "suse_key" with version "latest" is built successfully via API
-    And I wait at most 300 seconds until image "suse_key" with version "latest" is inspected successfully via API
     And I wait at most 600 seconds until image "suse_simple" with version "latest" is built successfully via API
-    And I wait at most 300 seconds until image "suse_simple" with version "latest" is inspected successfully via API
     And I wait at most 600 seconds until image "suse_real_key" with version "latest" is built successfully via API
+    And I wait at most 300 seconds until image "suse_key" with version "latest" is inspected successfully via API
+    And I wait at most 300 seconds until image "suse_simple" with version "latest" is inspected successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "latest" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "latest" is not empty
     And the list of packages of image "suse_simple" with version "latest" is not empty
@@ -75,8 +75,8 @@ Feature: Build container images
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
-    And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
+    And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
     And the list of packages of image "suse_simple" with version "Latest_simple" is not empty
@@ -91,8 +91,8 @@ Feature: Build container images
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
-    And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
+    And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
     And the list of packages of image "suse_simple" with version "Latest_simple" is not empty
