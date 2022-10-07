@@ -208,10 +208,9 @@
   </target>
 
   <target name="is-yarn-installed">
-    <property environment="env" />
-    <available file="yarn"
-               filepath="${env.PATH}"
-               property="yarn.installed"/>
+    <exec failifexecutionfails="false" resultproperty="yarn.installed" executable="yarn">
+      <arg line="--version" />
+    </exec>
   </target>
 
   <target name="warn-if-yarn-not-installed" depends="is-yarn-installed" unless="yarn.installed">
