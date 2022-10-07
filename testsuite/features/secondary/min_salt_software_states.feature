@@ -78,7 +78,7 @@ Feature: Salt package states
     And I should see a "Package States" text
     And I list packages with "dummy"
     And I wait for "60" seconds
-    And I wait until I see a "virgo-dummy" text
+    And I wait until I see "virgo-dummy" text
     Then "virgo-dummy-1.0" should be installed on "sle_minion"
     And I change the state of "virgo-dummy" to "Installed" and "Any"
     Then I should see a "1 Change" text
