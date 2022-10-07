@@ -37,6 +37,7 @@ defaultdict = {
     "ceos8_minion": "/SUSE_Updates_RES_8-CLIENT-TOOLS_x86_64/",
     "ubuntu1804_minion": "/SUSE_Updates_Ubuntu_18.04-CLIENT-TOOLS_x86_64/",
     "ubuntu2004_minion": "/SUSE_Updates_Ubuntu_20.04-CLIENT-TOOLS_x86_64/",
+    "ubuntu2204_minion": "/SUSE_Updates_Ubuntu_22.04-CLIENT-TOOLS_x86_64/",
     "debian9_minion": "/SUSE_Updates_Debian_9.0-CLIENT-TOOLS_x86_64/",
     "debian10_minion": "/SUSE_Updates_Debian_10-CLIENT-TOOLS_x86_64/",
     "debian11_minion": "/SUSE_Updates_Debian_11-CLIENT-TOOLS_x86_64/",
@@ -61,7 +62,7 @@ nodesdict43 = {
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"],
     "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.3_x86_64/",
-              "SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.2_x86_64",
+              "SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"]
 }
@@ -119,19 +120,34 @@ def find_valid_repos(rrids, version):
                 suffix = suffixraw
                 repo = create_url(rrid, suffix)
                 if repo is not None:
-                    # For multiple rrids that affect same node, eg server has multiple requests:
                     if node in finaldict:
-                        finaldict[node][rrid] = repo
+                        # This is needed for rrids that have multiple repos for each node, e.g. basesystem and server apps for server
+                        if rrid in finaldict[node]:
+                            for i in range(1, 100):
+                                if str(rrid) + '_' + str(i) not in finaldict[node]:
+                                    finaldict[node][str(rrid) + '_' + str(i)] = repo
+                                    break
+                        else:
+                            finaldict[node][rrid] = repo
                     else:
+                        # for each rrid we have multiple repos sometimes for each node
                         finaldict[node] = {rrid: repo}
             elif isinstance(suffixraw, list):
                 for suffix in suffixraw:
                     repo = create_url(rrid, suffix)
                     if repo is not None:
-                        # For multiple rrids that affect same node, eg server has multiple requests:
                         if node in finaldict:
-                            finaldict[node][rrid] = repo
+                            # This is needed for rrids that have multiple repos for each node, e.g. basesystem and server apps for server
+                            if rrid in finaldict[node]:
+                                for i in range(1, 100):
+                                    if str(rrid) + '_' + str(i) not in finaldict[node]:
+                                        finaldict[node][str(rrid) + '_' + str(i)] = repo
+                                        break
+                            else:
+                                # for each rrid we have multiple repos sometimes for each node
+                                finaldict[node][rrid] = repo
                         else:
+                            # for each rrid we have multiple repos sometimes for each node
                             finaldict[node] = {rrid: repo}
 
     # Format into json and print
