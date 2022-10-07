@@ -304,11 +304,7 @@ When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
   unless out.include? 'ssh-push-tunnel'
     steps %(
       Given I am authorized as "testing" with password "testing"
-<<<<<<< HEAD
-      And I follow this "#{host}" link
-=======
       And I am on the Systems overview page of this "sle_client"
->>>>>>> 3945a99ae1... Various fixes for traditional client, KVM and salt tests
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
