@@ -80,11 +80,6 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "revision-deploys are being scheduled," text
     And I should see a "0 revision-deploys overridden." text
 
-@sle_client
-  Scenario: Check that file has been created on traditional client
-    When I run "rhn_check -vvv" on "sle_client"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_client"
-
 @sle_minion
   Scenario: Check that file has been created on SLE minion
     When I wait until file "/etc/s-mgr/config" exists on "sle_minion"
