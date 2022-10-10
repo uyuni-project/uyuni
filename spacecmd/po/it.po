@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-14 10:50+0200\n"
+"POT-Creation-Date: 2022-10-10 08:26+0200\n"
 "PO-Revision-Date: 2021-03-25 12:57+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacecmd/it/"
@@ -3843,13 +3843,13 @@ msgid ""
 "org root_ca.crt proxy.crt proxy.key\n"
 msgstr ""
 
-#: ../src/spacecmd/proxy.py:88
+#: ../src/spacecmd/proxy.py:89
 msgid ""
 "proxy_container_config_generate_cert: create a proxy system and return its "
 "configuration file"
 msgstr ""
 
-#: ../src/spacecmd/proxy.py:89
+#: ../src/spacecmd/proxy.py:90
 #, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
