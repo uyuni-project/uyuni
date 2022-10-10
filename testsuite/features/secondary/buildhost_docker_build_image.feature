@@ -50,36 +50,45 @@ Feature: Build container images
     And I enter "Docker/serverhost" relative to profiles as "path"
     And I click on "create-btn"
 
-  Scenario: Build the images with and without activation key
+  Scenario: Build the suse_key image with and without activation key
     Given I am on the Systems overview page of this "build_host"
     When I schedule the build of image "suse_key" via API calls
     And I wait at most 660 seconds until event "Image Build suse_key scheduled by admin" is completed
-    And I schedule the build of image "suse_simple" via API calls
-    And I wait at most 660 seconds until event "Image Build suse_simple scheduled by admin" is completed
-    And I schedule the build of image "suse_real_key" via API calls
-    And I wait at most 660 seconds until event "Image Build suse_real_key scheduled by admin" is completed
-    And I wait at most 60 seconds until all "3" container images are built correctly on the Image List page
     # We should see the same result via API.
     # Also, check that all inspect actions are finished:
     And I wait at most 600 seconds until image "suse_key" with version "latest" is built successfully via API
-    And I wait at most 600 seconds until image "suse_simple" with version "latest" is built successfully via API
-    And I wait at most 600 seconds until image "suse_real_key" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "latest" is inspected successfully via API
-    And I wait at most 300 seconds until image "suse_simple" with version "latest" is inspected successfully via API
-    And I wait at most 300 seconds until image "suse_real_key" with version "latest" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "latest" is not empty
-    And the list of packages of image "suse_simple" with version "latest" is not empty
-    And the list of packages of image "suse_real_key" with version "latest" is not empty
 
-  Scenario: Build same images with different versions
+
+  Scenario: Build the suse_simple image with and without activation key
+    Given I am on the Systems overview page of this "build_host"
+    When I schedule the build of image "suse_simple" via API calls
+    And I wait at most 660 seconds until event "Image Build suse_simple scheduled by admin" is completed
+    And I wait at most 600 seconds until image "suse_simple" with version "latest" is built successfully via API
+    And I wait at most 300 seconds until image "suse_simple" with version "latest" is inspected successfully via API
+    Then the list of packages of image "suse_simple" with version "latest" is not empty
+
+  Scenario: Build the suse_real_key image with and without activation key
+    Given I am on the Systems overview page of this "build_host"  
+    When I schedule the build of image "suse_real_key" via API calls
+    And I wait at most 660 seconds until event "Image Build suse_real_key scheduled by admin" is completed
+    And I wait at most 60 seconds until all "3" container images are built correctly on the Image List page
+    And I wait at most 600 seconds until image "suse_real_key" with version "latest" is built successfully via API
+    And I wait at most 300 seconds until image "suse_real_key" with version "latest" is inspected successfully via API
+    Then the list of packages of image "suse_real_key" with version "latest" is not empty
+
+  Scenario: Build suse_key images with different versions
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
-    And I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
-    And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
     And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
-    And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
-    And the list of packages of image "suse_simple" with version "Latest_simple" is not empty
+  
+  Scenario: Build suse_simple image with different versions
+    When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
+    And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
+    And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
+    Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
 
   Scenario: Delete image via API calls
     When I delete the image "suse_key" with version "Latest_key-activation1" via API calls
@@ -87,15 +96,17 @@ Feature: Build container images
     Then the image "suse_simple" with version "Latest_key-activation1" doesn't exist via API calls
     And the image "suse_simple" with version "Latest_simple" doesn't exist via API calls
 
-  Scenario: Rebuild the images
+  Scenario: Rebuild suse_simple image
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
-    And I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
-    And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
     And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
-    And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
+    Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
+
+  Scenario: Rebuild suse_key image
+    When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
+    And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
+    And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
-    And the list of packages of image "suse_simple" with version "Latest_simple" is not empty
 
   Scenario: Build an image via the GUI
     When I follow the left menu "Images > Build"
