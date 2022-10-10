@@ -1,3 +1,4 @@
+- Fixed empty selection warning in the lock/unlock page
 - Set GPG Key Url for PTF repositories
 - Fix deleting custom info pillar (bsc#1209253)
 - Update report outdated system query to de-duplicate errata id's
