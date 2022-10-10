@@ -59,7 +59,7 @@
         <source path="http://minima-mirror.mgr.prv.suse.net/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- head development client toools -->
-        <source path="http://minima-mirror.mgr.prv.suse.net/Devel:/Galaxy:/Manager:/Head:/SLE15-SUSE-Manager-Tools/SLE_15/"/>
+        <source path="http://minima-mirror.mgr.prv.suse.net/ibs/Devel:/Galaxy:/Manager:/Head:/SLE15-SUSE-Manager-Tools/SLE_15/"/>
     </repository>
 
     <packages type="image">
