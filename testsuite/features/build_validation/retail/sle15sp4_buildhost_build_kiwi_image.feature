@@ -19,7 +19,7 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
     And I logout from API
 
   Scenario: Bootstrap the SLES 15 SP4 build host
-    When I bootstrap minion client "sle15sp4_buildhost" using bootstrap script with activation key "1-sle15sp4_buildhost_key" from the proxy
+    When I bootstrap "sle15sp4_buildhost" using bootstrap script with activation key "1-sle15sp4_buildhost_key" from the proxy
     And I wait at most 10 seconds until Salt master sees "sle15sp4_buildhost" as "unaccepted"
     And I accept "sle15sp4_buildhost" key in the Salt master
     And I wait until onboarding is completed for "sle15sp4_buildhost"

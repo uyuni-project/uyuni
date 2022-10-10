@@ -50,12 +50,12 @@ class MaintenanceCrawler
         loop do
           # Synchronize on critical code which adds to the pages and queue
           @crawl_queue.synchronize do
-            unless resources.nil?
-              update_pages_and_queue(url, resources)
-              print_status(url) if @verbose
-            else
+            if resources.nil?
               # URL Error, skip. Could add future functionality for n-retries?
               @pages.delete url
+            else
+              update_pages_and_queue(url, resources)
+              print_status(url) if @verbose
             end
 
             # 1. If empty queue + no other threads running implies that we've
@@ -113,7 +113,7 @@ class MaintenanceCrawler
 
     links = html.css('a').map { |link| process_url link['href'] }.compact
 
-    return {links: links.uniq}
+    {links: links.uniq}
   end
 
   def process_url(url)

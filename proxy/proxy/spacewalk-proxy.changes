@@ -1,6 +1,10 @@
-- Prefix log messages with the component name to ease analysis
-- renew the cached token when requested channel is not listed in
-  the old token (bsc#1202724)
+-------------------------------------------------------------------
+Wed Sep 28 10:44:28 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Prefix log messages with the component name to ease analysis
+  * renew the cached token when requested channel is not listed in
+    the old token (bsc#1202724)
 
 -------------------------------------------------------------------
 Wed Jul 27 14:09:14 CEST 2022 - jgonzalez@suse.com

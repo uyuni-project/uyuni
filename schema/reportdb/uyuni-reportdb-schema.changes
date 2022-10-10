@@ -1,4 +1,8 @@
-- improve schema compatibility with Amazon RDS
+-------------------------------------------------------------------
+Wed Sep 28 10:45:28 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * improve schema compatibility with Amazon RDS
 
 -------------------------------------------------------------------
 Fri May 20 00:15:22 CEST 2022 - jgonzalez@suse.com

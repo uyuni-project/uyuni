@@ -141,10 +141,6 @@ Before('@proxy') do
   skip_this_scenario unless $proxy
 end
 
-Before('@sle_client') do
-  skip_this_scenario unless $client
-end
-
 Before('@sle_minion') do
   skip_this_scenario unless $minion
 end
@@ -183,10 +179,6 @@ end
 
 Before('@centos7_ssh_minion') do
   skip_this_scenario unless $centos7_ssh_minion
-end
-
-Before('@centos7_client') do
-  skip_this_scenario unless $centos7_client
 end
 
 Before('@rocky8_minion') do
@@ -253,20 +245,12 @@ Before('@sle12sp4_minion') do
   skip_this_scenario unless $sle12sp4_minion
 end
 
-Before('@sle12sp4_client') do
-  skip_this_scenario unless $sle12sp4_client
-end
-
 Before('@sle12sp5_ssh_minion') do
   skip_this_scenario unless $sle12sp5_ssh_minion
 end
 
 Before('@sle12sp5_minion') do
   skip_this_scenario unless $sle12sp5_minion
-end
-
-Before('@sle12sp5_client') do
-  skip_this_scenario unless $sle12sp5_client
 end
 
 Before('@sle15_ssh_minion') do
@@ -277,20 +261,12 @@ Before('@sle15_minion') do
   skip_this_scenario unless $sle15_minion
 end
 
-Before('@sle15_client') do
-  skip_this_scenario unless $sle15_client
-end
-
 Before('@sle15sp1_ssh_minion') do
   skip_this_scenario unless $sle15sp1_ssh_minion
 end
 
 Before('@sle15sp1_minion') do
   skip_this_scenario unless $sle15sp1_minion
-end
-
-Before('@sle15sp1_client') do
-  skip_this_scenario unless $sle15sp1_client
 end
 
 Before('@sle15sp2_ssh_minion') do
@@ -301,10 +277,6 @@ Before('@sle15sp2_minion') do
   skip_this_scenario unless $sle15sp2_minion
 end
 
-Before('@sle15sp2_client') do
-  skip_this_scenario unless $sle15sp2_client
-end
-
 Before('@sle15sp3_ssh_minion') do
   skip_this_scenario unless $sle15sp3_ssh_minion
 end
@@ -313,20 +285,12 @@ Before('@sle15sp3_minion') do
   skip_this_scenario unless $sle15sp3_minion
 end
 
-Before('@sle15sp3_client') do
-  skip_this_scenario unless $sle15sp3_client
-end
-
 Before('@sle15sp4_ssh_minion') do
   skip_this_scenario unless $sle15sp4_ssh_minion
 end
 
 Before('@sle15sp4_minion') do
   skip_this_scenario unless $sle15sp4_minion
-end
-
-Before('@sle15sp4_client') do
-  skip_this_scenario unless $sle15sp4_client
 end
 
 Before('@sle12sp5_buildhost') do
@@ -362,10 +326,6 @@ end
 
 Before('@skip_for_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'minion'
-end
-
-Before('@skip_for_traditional') do |scenario|
-  skip_this_scenario if scenario.location.file.include? 'client'
 end
 
 # do some tests only if we have SCC credentials

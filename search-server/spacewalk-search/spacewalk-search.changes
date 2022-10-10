@@ -1,4 +1,8 @@
-- change mybatis require string
+-------------------------------------------------------------------
+Wed Sep 28 11:19:48 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * change mybatis require string
 
 -------------------------------------------------------------------
 Wed Jul 27 14:19:43 CEST 2022 - jgonzalez@suse.com

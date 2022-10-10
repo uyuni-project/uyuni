@@ -1,8 +1,18 @@
-- Upgrade moment-timezone
-- Fix packaging issues to address CVE-2021-43138 (bsc#1200480)
-- Upgrade shell-quote to fix CVE-2021-42740 (bsc#1203287)
-- Upgrade moment to fix CVE-2022-31129 (bsc#1203288)
-- Fix table header layout for unselectable tables
+-------------------------------------------------------------------
+Thu Sep 29 15:49:30 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Update the version for the WebUI
+
+-------------------------------------------------------------------
+Wed Sep 28 11:16:44 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Upgrade moment-timezone
+  * Fix packaging issues to address CVE-2021-43138 (bsc#1200480)
+  * Upgrade shell-quote to fix CVE-2021-42740 (bsc#1203287)
+  * Upgrade moment to fix CVE-2022-31129 (bsc#1203288)
+  * Fix table header layout for unselectable tables
 
 -------------------------------------------------------------------
 Fri Jul 29 11:08:37 CEST 2022 - jgonzalez@suse.com

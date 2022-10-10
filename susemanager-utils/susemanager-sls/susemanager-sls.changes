@@ -1,16 +1,20 @@
-- Prevent possible tracebacks on reading postgres opts
-  with suma_minion salt pillar extension module
-- Fix mgrnet availability check
-- Remove dependence on Kiwi libraries
-- disable always the bootstrap repository also when
-  "mgr_disable_local_repos" is set to False
-- Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
-- fix syntax error - remove trailing colon (bsc#1203049)
-- Add mgrnet salt module with mgrnet.dns_fqnd function implementation
-  allowing to get all possible FQDNs from DNS (bsc#1199726)
-- Copy grains file with util.mgr_switch_to_venv_minion state apply
-- Remove the message 'rpm: command not found' on using Salt SSH
-  with Debian based systems which has no Salt Bundle
+-------------------------------------------------------------------
+Wed Sep 28 11:14:52 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Prevent possible tracebacks on reading postgres opts
+    with suma_minion salt pillar extension module
+  * Fix mgrnet availability check
+  * Remove dependence on Kiwi libraries
+  * disable always the bootstrap repository also when
+    "mgr_disable_local_repos" is set to False
+  * Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
+  * fix syntax error - remove trailing colon (bsc#1203049)
+  * Add mgrnet salt module with mgrnet.dns_fqnd function implementation
+    allowing to get all possible FQDNs from DNS (bsc#1199726)
+  * Copy grains file with util.mgr_switch_to_venv_minion state apply
+  * Remove the message 'rpm: command not found' on using Salt SSH
+    with Debian based systems which has no Salt Bundle
 
 -------------------------------------------------------------------
 Wed Jul 27 14:17:08 CEST 2022 - jgonzalez@suse.com

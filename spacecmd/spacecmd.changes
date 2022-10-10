@@ -1,5 +1,15 @@
-- Process date values in spacecmd api calls (bsc#1198903)
-- Improve Proxy FQDN hint message
+-------------------------------------------------------------------
+Thu Sep 29 15:42:34 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Stop always showing help for valid proxy_container_config calls
+
+-------------------------------------------------------------------
+Wed Sep 28 10:25:47 CEST 2022 - jgonzalez@suse.com
+
+- version 4.4.1-1
+  * Process date values in spacecmd api calls (bsc#1198903)
+  * Improve Proxy FQDN hint message
 
 -------------------------------------------------------------------
 Wed Jul 27 14:05:24 CEST 2022 - jgonzalez@suse.com

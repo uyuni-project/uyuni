@@ -17,7 +17,6 @@
 - features/core/srv_docker.feature
 
 # initialize clients
-- features/init_clients/sle_client.feature
 - features/init_clients/sle_minion.feature
 - features/init_clients/min_deblike_salt.feature
 - features/init_clients/buildhost_bootstrap.feature
@@ -34,14 +33,12 @@
 # IDEMPOTENT
 - features/secondary/min_docker_api.feature
 - features/secondary/min_docker_build_image.feature
-- features/secondary/trad_metadata_check.feature
-- features/secondary/trad_cve_audit.feature
+- features/secondary/min_cve_audit.feature
 - features/secondary/srv_distro_cobbler.feature
 - features/secondary/srv_mainpage.feature
 - features/secondary/srv_user_api.feature
 - features/secondary/srv_salt_download_endpoint.feature
 - features/secondary/srv_virtual_host_manager.feature
-- features/secondary/trad_config_channel.feature
 - features/secondary/allcli_config_channel.feature
 - features/secondary/min_config_state_channel.feature
 - features/secondary/srv_sync_products.feature
@@ -52,7 +49,6 @@
 - features/secondary/min_salt_install_package.feature
 - features/secondary/srv_power_management.feature
 - features/secondary/srv_datepicker.feature
-- features/secondary/trad_openscap_audit.feature
 - features/secondary/min_salt_openscap_audit.feature
 - features/secondary/srv_custom_system_info.feature
 - features/secondary/srv_security.feature

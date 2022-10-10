@@ -37,7 +37,6 @@
 - features/secondary/srv_payg_ssh_connection.feature
 - features/secondary/srv_push_package.feature
 - features/secondary/srv_reportdb.feature
-- features/secondary/trad_spacewalk_channel.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
@@ -73,17 +72,10 @@
 - features/secondary/min_monitoring.feature
 - features/secondary/min_ansible_control_node.feature
 - features/secondary/srv_scc_user_credentials.feature
+- features/secondary/min_cve_audit.feature
+- features/secondary/min_cve_id_new_syntax.feature
+- features/secondary/min_check_patches_install.feature
 
 - features/secondary/minkvm_guests.feature
-- features/secondary/minxen_guests.feature
-
-- features/secondary/trad_metadata_check.feature
-- features/secondary/trad_cve_audit.feature
-- features/secondary/trad_cve_id_new_syntax.feature
-- features/secondary/trad_weak_deps.feature
-- features/secondary/trad_openscap_audit.feature
-- features/secondary/trad_inst_package_and_patch.feature
-- features/secondary/trad_check_patches_install.feature
-- features/secondary/trad_check_registration.feature
 
 ## Parallelizable Secondary features END ##

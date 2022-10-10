@@ -14,7 +14,6 @@ Set up the following environment variables:
 
 * `SERVER` the Uyuni server you are testing against
 * `PROXY` the Uyuni proxy (don't declare this variable if there is no proxy)
-* `CLIENT` the traditional client
 * `MINION` the Salt minion
 * `BUILD_HOST` the Docker and Kiwi build host
 * `SSH_MINION` the SSH-managed Salt minion
@@ -53,7 +52,7 @@ export MINION="${PREFIX}min-sles15.tf.local"
 ...
 ```
 
-Before you are able to run your tests in locally, you must assure that your SSH connection to any of the VMs can be
+Before you are able to run your tests locally, you must assure that your SSH connection to any of the nodes can be
 established without a username/password.
 It is recommended to configure your `.ssh/config` to use a SSH private key.
 In case you deployed the environment with sumaform, just use the SSH key `.ssh/id_rsa` stored in the controller.
@@ -65,17 +64,17 @@ Host *.tf.local
     User root
     IdentityFile ~/.ssh/id_rsa_test_env
 
-# SSH to the controller
+# ssh to the controller
 ssh root@head-ctl.tf.local
 
-# List all different test scenarios
+# list all different Rake tasks
 rake -T
 
-# execute one of the tests
+# execute one of the tasks
 rake cucumber:sanity_check
 ```
 
-* To debug your tests, you might want to see the browser on your Desktop from where the Cucumber actions will happen.
+* To debug your tests, you might want to see the browser on your desktop from where the Cucumber actions will happen.
 To enable it:
 
 ```bash

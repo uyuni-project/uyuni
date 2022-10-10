@@ -4,7 +4,7 @@ The test suite can be parametrized to accommodate various test situations.
 
 The parameters are stored in `/root/.bashrc`.
 
-Sumaform can prepare those parameters in `.bashrc` for you. For information
+sumaform can prepare those parameters in `.bashrc` for you. For information
 about the syntax in your sumaform's `main.tf` file that allows to do this,
 please refer to the sumaform documentation:
 
@@ -108,33 +108,7 @@ Inside of the test suite, the scenarios that are tagged with
 @ssh_minion
 ```
 
-are executed only if the SSH minion is available.
-
-## Testing with a traditional client
-
-Using a traditional client with the test suite is not mandatory.
-
-If you do not want a traditional client, do not define `CLIENT` environment
-variable before you run the test suite. That's all.
-
-If you want a traditional client, make this variable point to the machine that
-will be the traditional client:
-
-```bash
-export CLIENT=mytraditionalclient.example.com
-```
-
-and then run the test suite.
-
-Inside of the test suite, the scenarios that are tagged with
-
-```
-@sle_client
-```
-
-are executed only if the traditional client is available.
-
-## Testing with a Red Hat-like minion
+### Testing with a Red Hat-like minion
 
 Using a Red Hat-like minion (CentOS, Alma, Rocky, ...) with the test suite
 is not mandatory.
@@ -191,7 +165,7 @@ is running Uyuni or SUSE Manager.
 
 Inside the test suite, the scenarios that are tagged with
 
-```bash
+```
 @susemanager
 ```
 
@@ -200,7 +174,7 @@ not run if Uyuni is detected.
 
 Inside the test suite, the scenarios that are tagged with
 
-```bash
+```
 @uyuni
 ```
 
@@ -299,7 +273,7 @@ the controller SSH public key needs to be added to the `authorized_keys` file.
 
 Inside of the test suite, the scenarios that are tagged with one of:
 
-```bash
+```
 @virtualization_kvm
 @virtualization_xen
 ```
@@ -311,7 +285,7 @@ are executed only if the corresponding virtualization host minion is available.
 Testing Uyuni for Retail is optional. To test it, you need:
 
 * a private network
-* a PXE boot minion
+* a PXE boot minion.
 
 The PXE boot minion will reside in the private network only.
 The proxy will route between the private network and the outer world.
@@ -332,7 +306,7 @@ and then run the test suite.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```bash
+```
 @private_net
 ```
 
@@ -365,7 +339,7 @@ Currently supported images are `sles12sp3` and `sles15sp1`.
 
 Inside of the test suite, the scenarios that are tagged with
 
-```bash
+```
 @pxeboot_minion
 ```
 
@@ -415,10 +389,9 @@ Inside the test suite, the scenarios that are tagged with
 
 are executed only if the custom download endpoint is available.
 
+## Docker registry server
 
-## Docker Registry server
-
-Using a Docker Authenticated Registry server when testing is not mandatory.
+Using a Docker authenticated registry server when testing is not mandatory.
 
 If you do not want an authenticated registry server, do not define `AUTH_REGISTRY` nor `AUTH_REGISTRY_CREDENTIALS`
 environment variables before you run the test suite. That's all.

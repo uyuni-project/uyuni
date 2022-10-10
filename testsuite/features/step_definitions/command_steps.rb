@@ -5,6 +5,7 @@ require 'timeout'
 require 'nokogiri'
 require 'pg'
 require 'set'
+require 'date'
 
 # Sanity checks
 
@@ -95,14 +96,14 @@ Then(/^it should be possible to reach the Docker profiles$/) do
 end
 
 Then(/^it should be possible to reach the authenticated registry$/) do
-  if not ($auth_registry.nil? || $auth_registry.empty?)
+  unless $auth_registry.nil? || $auth_registry.empty?
     url = "https://#{$auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
 end
 
 Then(/^it should be possible to reach the not authenticated registry$/) do
-  if not ($no_auth_registry.nil? || $no_auth_registry.empty?)
+  unless $no_auth_registry.nil? || $no_auth_registry.empty?
     url = "https://#{$no_auth_registry}"
     $server.run("curl --insecure --location #{url} --output /dev/null")
   end
@@ -121,30 +122,8 @@ When(/^I list channels with spacewalk\-remove\-channel$/) do
   raise "Unable to run spacewalk-remove-channel -l command on server" unless return_code.zero?
 end
 
-When(/^I use spacewalk\-channel to add "([^"]*)"$/) do |child_channel|
-  command = "spacewalk-channel --add -c #{child_channel} -u admin -p admin"
-  $command_output, _code = $client.run(command)
-end
-
-Then(/^spacewalk\-channel should fail adding "([^"]*)"$/) do |invalid_channel|
-  command = "spacewalk-channel --add -c #{invalid_channel} -u admin -p admin"
-  $command_output, code = $client.run(command, check_errors: false)
-  raise "#{command} should fail, but hasn't" if code.zero?
-end
-
-When(/^I use spacewalk\-channel to remove "([^"]*)"$/) do |child_channel|
-  command = "spacewalk-channel --remove -c #{child_channel} -u admin -p admin"
-  $command_output, _code = $client.run(command)
-end
-
-When(/^I use spacewalk\-channel to list channels$/) do
-  command = "spacewalk-channel --list"
-  $command_output, _code = $client.run(command)
-end
-
-When(/^I use spacewalk\-channel to list available channels$/) do
-  command = "spacewalk-channel --available-channels -u admin -p admin"
-  $command_output, _code = $client.run(command)
+When(/^I add "([^"]*)" channel$/) do |channel|
+  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size: 1_000_000)
 end
 
 When(/^I use spacewalk\-common\-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
@@ -233,13 +212,19 @@ When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   end
 end
 
-When(/^vendor change should be enabled for (?:[^"]*) on "([^"]*)"$/) do |host|
+When(/^vendor change should be enabled for [^"]* on "([^"]*)"$/) do |host|
   node = get_target(host)
   pattern = '--allow-vendor-change'
-  log = '/var/log/zypper.log'
-  rotated_log = "#{log}-#{Time.now.strftime('%Y%m%d')}.xz"
-  _, return_code = node.run("grep -- #{pattern} #{log} || xzdec #{rotated_log} | grep -- #{pattern}")
-
+  current_log = '/var/log/zypper.log'
+  current_time = Time.now.localtime
+  rotated_log = "#{current_log}-#{current_time.strftime('%Y%m%d')}.xz"
+  day_after = (current_time.to_date + 1).strftime('%Y%m%d')
+  next_day_rotated_log = "#{current_log}-#{day_after}.xz"
+  begin
+    _, return_code = node.run("xzdec #{next_day_rotated_log} | grep -- #{pattern}")
+  rescue RuntimeError
+    _, return_code = node.run("grep -- #{pattern} #{current_log} || xzdec #{rotated_log} | grep -- #{pattern}")
+  end
   raise 'Vendor change option not found in logs' unless return_code.zero?
 end
 
@@ -464,9 +449,9 @@ Then(/^the taskomatic logs should not contain errors$/) do
   end
 end
 
-Then(/^the messages log should not contain out of memory errors$/) do
+Then(/^the log messages should not contain out of memory errors$/) do
   output, code = $server.run('grep -i "Out of memory: Killed process" /var/log/messages', check_errors: false)
-  raise "Out of memory errors in /var/log/messages:\n#{output}" unless code.zero?
+  raise "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
 end
 
 When(/^I restart cobbler on the server$/) do
@@ -526,7 +511,7 @@ Then(/^the PXE default profile should be disabled$/) do
 end
 
 When(/^the server starts mocking an IPMI host$/) do
-  ['ipmisim1.emu', 'lan.conf', 'fake_ipmi_host.sh'].each do |file|
+  %w[ipmisim1.emu lan.conf fake_ipmi_host.sh].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
     dest = '/etc/ipmi/' + file
     return_code = file_inject($server, source, dest)
@@ -543,7 +528,7 @@ end
 
 When(/^the server starts mocking a Redfish host$/) do
   $server.run('mkdir -p /root/Redfish-Mockup-Server/')
-  ['redfishMockupServer.py', 'rfSsdpServer.py'].each do |file|
+  %w[redfishMockupServer.py rfSsdpServer.py].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
     dest = '/root/Redfish-Mockup-Server/' + file
     return_code = file_inject($server, source, dest)
@@ -604,7 +589,7 @@ Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"
 end
 
 When(/^I configure tftp on the "([^"]*)"$/) do |host|
-  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+  raise "This step doesn't support #{host}" unless %w[server proxy].include? host
 
   case host
   when 'server'
@@ -614,6 +599,8 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
 --server-fqdn=#{ENV['SERVER']} \
 --proxy-fqdn='proxy.example.org'"
     $proxy.run(cmd)
+  else
+    log "Host #{host} not supported"
   end
 end
 
@@ -623,7 +610,7 @@ When(/^I synchronize the tftp configuration on the proxy with the server$/) do
 end
 
 When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
-  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+  raise "This step doesn't support #{host}" unless %w[server proxy].include? host
 
   node = get_target(host)
   target = '/srv/tftpboot/pxelinux.cfg/default'
@@ -632,6 +619,8 @@ When(/^I set the default PXE menu entry to the (target profile|local boot) on th
     script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT local/'"
   when 'target profile'
     script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/'"
+  else
+    log "Entry #{entry} not supported"
   end
   node.run("sed -i #{script} #{target}")
 end
@@ -707,13 +696,6 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node.run(cmd)
 end
 
-When(/^I force picking pending events on "([^"]*)" if necessary$/) do |host|
-  if get_client_type(host) == 'traditional'
-    node = get_target(host)
-    node.run('rhn_check -vvv')
-  end
-end
-
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
   node = get_target(host)
   output, _code = node.run(cmd)
@@ -771,32 +753,6 @@ When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
 end
 
-When(/^I register this client for SSH push via tunnel$/) do
-  # create backups of /etc/hosts and up2date config
-  $server.run('cp /etc/hosts /etc/hosts.BACKUP')
-  $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
-  # generate expect file
-  bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  script = "spawn spacewalk-ssh-push-init --client #{$client.full_hostname} --register #{bootstrap} --tunnel\n" \
-           "while {1} {\n" \
-           "  expect {\n" \
-           "    eof                                                        {break}\n" \
-	   "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
-           "    \"Password:\"                                              {send \"linux\r\"}\n" \
-           "  }\n" \
-           "}\n"
-  path = generate_temp_file('push-registration.exp', script)
-  step 'I copy "' + path + '" to "server"'
-  `rm #{path}`
-  # perform the registration
-  filename = File.basename(path)
-  bootstrap_timeout = 600
-  $server.run("expect #{filename}", timeout: bootstrap_timeout, verbose: true)
-  # restore files from backups
-  $server.run('mv /etc/hosts.BACKUP /etc/hosts')
-  $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
-end
-
 # Repositories and packages management
 When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
@@ -812,13 +768,14 @@ When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |a
   node = get_target(host)
   raise "#{node.hostname} is not a Debian-like host." unless deb_host?(host)
 
-  node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
+  source_repo = "deb http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc) #{repo}"
+  node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} \"#{source_repo}\"")
 end
 
 # rubocop:disable Metrics/BlockLength
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   cmd = ''
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     mand_repos = ''
@@ -830,7 +787,8 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
         mand_repos = "#{mand_repos} #{repo}"
       end
     end
-    cmd = "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos}"
+    cmd = "zypper mr --#{action} #{opt_repos} ||:;" unless opt_repos.empty?
+    cmd += "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
   elsif os_family =~ /^centos/
     repos.split(' ').each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
@@ -850,7 +808,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
             end
     end
   end
-  node.run(cmd, check_errors: error_control.empty?)
+  node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
 # rubocop:enable Metrics/BlockLength
 
@@ -874,14 +832,19 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
   node.run(cmd, successcodes: [0, 100, 101, 102, 103, 106])
 end
 
-When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
-  pkgs = 'spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions'
-  step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
+When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
+  if pattern.include?("suma") && $product == "Uyuni"
+    pattern.gsub! "suma", "uyuni"
+  end
+  node = get_target(host)
+  node.run('zypper ref')
+  cmd = "zypper --non-interactive remove -t pattern #{pattern}"
+  node.run(cmd, successcodes: [0, 100, 101, 102, 103, 104, 106])
 end
 
 When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
   node = get_target(host)
-  _os_version, os_family = get_os_version(node)
+  os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     pkgs = 'openscap-utils openscap-content scap-security-guide'
   elsif os_family =~ /^centos/
@@ -895,7 +858,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
 end
 
-When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install packages? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if rh_host?(host)
     cmd = "yum -y install #{package}"
@@ -914,7 +877,7 @@ When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error con
   raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
-When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I install old packages? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if rh_host?(host)
     cmd = "yum -y downgrade #{package}"
@@ -933,7 +896,7 @@ When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error
   raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
-When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
+When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if rh_host?(host)
     cmd = "yum -y remove #{package}"
@@ -1014,7 +977,7 @@ When(/^I open avahi port on the proxy$/) do
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
-  ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
+  %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
     return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
     raise 'File extraction failed' unless return_code.zero?
     $proxy.run('mkdir -p /root/ssl-build')
@@ -1278,7 +1241,7 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) di
     disks = tree.xpath("//disk").select do |x|
       (x.xpath('source/@file')[0].to_s.include? path) && (x.xpath('target/@bus')[0].to_s == bus)
     end
-    break if !disks.empty?
+    break unless disks.empty?
     sleep 3
   end
 end
@@ -1292,7 +1255,7 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) di
       (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) &&
         (x.xpath('target/@bus')[0].to_s == bus.downcase)
     end
-    break if !disks.empty?
+    break unless disks.empty?
     sleep 3
   end
 end
@@ -1503,7 +1466,8 @@ end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     repositories.concat(' os_pool_repo os_update_repo')

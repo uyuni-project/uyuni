@@ -37,19 +37,6 @@ Feature: Manage a group of systems
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group." text
 
-  Scenario: Add the SLE client system to the group
-    When I follow the left menu "Systems > System Groups"
-    When I follow "new-systems-group"
-    And I follow "Target Systems"
-    And I check the "sle_client" client
-    And I click on "Add Systems"
-    Then I should see a "1 systems were added to new-systems-group server group." text
-
-  Scenario: Check that the SLE client is part of the new group
-    Given I am on the Systems overview page of this "sle_client"
-    When I follow "Groups" in the content area
-    Then I should see a "new-systems-group" text
-
   Scenario: Check that the SLE minion is part of the new group
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Groups" in the content area
@@ -70,7 +57,7 @@ Feature: Manage a group of systems
     When I follow the left menu "Systems > System Groups"
     When I click on "Use in SSM" in row "new-systems-group"
     Then I should see a "Selected Systems List" text
-    And I should see "sle_client" as link
+    And I should see "rhlike_minion" as link
     And I should see "sle_minion" as link
 
   Scenario: Install some formula on the server
@@ -99,7 +86,7 @@ Feature: Manage a group of systems
     And I wait until I see "2 systems successfully completed this action." text, refreshing the page
 
   Scenario: Remove SLE client from new group
-    Given I am on the Systems overview page of this "sle_client"
+    Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Groups"
     And I check "new-systems-group" in the list
     And I click on "Leave Selected Groups"

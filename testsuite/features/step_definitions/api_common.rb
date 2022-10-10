@@ -82,44 +82,6 @@ When(/^I wait for the OpenSCAP audit to finish$/) do
   end
 end
 
-When(/^I refresh the packages on traditional "([^"]*)" through API$/) do |host|
-  node = get_target(host)
-  node_id = $api_test.system.retrieve_server_id(node.full_hostname)
-  date_schedule_now = $api_test.date_now
-
-  id_refresh = $api_test.system.schedule_package_refresh(node_id, date_schedule_now)
-  node.run('rhn_check -vvv')
-  wait_action_complete(id_refresh, timeout: 600)
-end
-
-When(/^I run a script on traditional "([^"]*)" through API$/) do |host|
-  node = get_target(host)
-  node_id = $api_test.system.retrieve_server_id(node.full_hostname)
-  date_schedule_now = $api_test.date_now
-  script = "#! /usr/bin/bash \n uptime && ls"
-
-  id_script = $api_test.system.schedule_script_run(node_id, 'root', 'root', 500, script, date_schedule_now)
-  node.run('rhn_check -vvv')
-  wait_action_complete(id_script)
-end
-
-When(/^I reboot traditional "([^"]*)" through API$/) do |host|
-  node = get_target(host)
-  node_id = $api_test.system.retrieve_server_id(node.full_hostname)
-  date_schedule_now = $api_test.date_now
-
-  $api_test.system.schedule_reboot(node_id, date_schedule_now)
-  node.run('rhn_check -vvv')
-  reboot_timeout = 400
-  check_shutdown(node.full_hostname, reboot_timeout)
-  check_restart(node.full_hostname, node, reboot_timeout)
-
-  $api_test.schedule.list_failed_actions.each do |action|
-    systems = $api_test.schedule.list_failed_systems(action['id'])
-    raise if systems.all? { |system| system['server_id'] == node_id }
-  end
-end
-
 ## user namespace
 
 When(/^I call user\.list_users\(\)$/) do
@@ -506,8 +468,9 @@ Then(/^I should get status "([^\"]+)" for system "([0-9]+)"$/) do |status, syste
   assert_equal(status, @result['patch_status'])
 end
 
-Then(/^I should get status "([^\"]+)" for this client$/) do |status|
-  step "I should get status \"#{status}\" for system \"#{client_system_id_to_i}\""
+Then(/^I should get status "([^\"]+)" for "([^\"]+)"$/) do |status, host|
+  node = get_target(host)
+  step %(I should get status "#{status}" for system "#{get_system_id(node)}")
 end
 
 Then(/^I should get the test channel$/) do

@@ -260,7 +260,7 @@ public abstract class CobblerObject {
      * @return The resolved value or in case an attribute doesn't resolve its raw value
      */
     protected final Object getResolvedValue(String key) {
-        return client.invokeTokenMethod("get_item_resolved_value", getUid(), key);
+        return client.invokeMethod("get_item_resolved_value", getUid(), key);
     }
 
     /**

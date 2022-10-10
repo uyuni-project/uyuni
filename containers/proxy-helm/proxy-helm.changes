@@ -1,5 +1,9 @@
-- Remove the namespace configuration value to honor helm's -n
-- Add the log level value to the config.yaml
+-------------------------------------------------------------------
+Wed Sep 28 07:43:59 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the chart version to 2022.10:
+  * Remove the namespace configuration value to honor helm's -n
+  * Add the log level value to the config.yaml
 
 -------------------------------------------------------------------
 Tue Apr 26 15:09:11 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>

@@ -354,7 +354,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "192.168.128.20" as "ipv4def_dhcpranges0_end"
     And I click on "Create"
     And I wait until I see "Virtual Networks" text
-    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual domain: test-net2" is completed
+    And I wait 180 seconds until the event is picked up and 300 seconds until the event "Creates a virtual network: test-net2" is completed
     And I follow "Virtualization" in the content area
     And I follow "Networks"
     And I wait until table row for "test-net2" contains button "Stop"

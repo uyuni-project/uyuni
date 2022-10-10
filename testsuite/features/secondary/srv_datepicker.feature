@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
@@ -9,7 +9,7 @@ Feature: Pick dates
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am on the Systems overview page of this "sle_client"
+    And I am on the Systems overview page of this "sle_minion"
 
   Scenario: Date picker is by default set to today
     When I follow "Remote Command" in the content area
