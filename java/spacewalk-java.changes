@@ -1,3 +1,4 @@
+- Fixed empty selection warning in the lock/unlock page
 - set GPG Key Url for PTF repositories
 - Remove invalid errata selection after patch installation (bsc#1204235)
 - Ignore insert conflicts during reporting database update (bsc#1202150)
