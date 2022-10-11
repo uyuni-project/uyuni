@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 '''
     saltbroker: A ZeroMQ Proxy (broker) for Salt Minions
 
@@ -28,16 +28,15 @@
 '''
 
 # Import python libs
-import multiprocessing
 import logging
 import logging.handlers
-
-import yaml
+import multiprocessing
 import os
 import signal
 import socket
 import sys
 import time
+import yaml
 
 # Import RHN libs
 from spacewalk.common.rhnConfig import RHNOptions
@@ -124,31 +123,37 @@ class PubChannelProxy(AbstractChannelProxy):
             context = zmq.Context()
 
             # Set up a XSUB sock
-            master_pub = 'tcp://{0}:{1}'.format(self.opts['master_ip'],
-                                                self.opts['publish_port'])
+            master_pub = "tcp://{}:{}".format(
+                self.opts["master_ip"],
+                self.opts["publish_port"],
+            )
 
-            self.debug_log('setting up a XSUB sock on {0}'.format(master_pub))
+            self.debug_log("setting up a XSUB sock on {}".format(master_pub))
             backend = context.socket(zmq.XSUB)
             self.configure_keepalive(backend)
             backend.connect(master_pub)
 
             # Set up a XPUB sock
-            pub_uri = 'tcp://{0}:{1}'.format(self.opts['interface'],
-                                             self.opts['publish_port'])
+            pub_uri = "tcp://{}:{}".format(
+                self.opts["interface"],
+                self.opts["publish_port"],
+            )
 
-            self.debug_log('setting up a XPUB sock on {0}'.format(pub_uri))
+            self.debug_log("setting up a XPUB sock on {}".format(pub_uri))
 
             frontend = context.socket(zmq.XPUB)
+
             # Prevent stopping publishing messages on XPUB socket. (bsc#1182954)
             frontend.setsockopt(zmq.XPUB_VERBOSE, 1)
             frontend.setsockopt(zmq.XPUB_VERBOSER, 1)
+
             frontend.bind(pub_uri)
 
             # Forward all messages
             zmq.proxy(frontend, backend)
 
         except zmq.ZMQError as zmq_error:
-            msg = "ZMQ Error: {0}".format(zmq_error)
+            msg = "ZMQ Error: {}".format(zmq_error)
             self.error_log(msg)
             raise self.ChannelException(msg)
 
@@ -165,34 +170,33 @@ class RetChannelProxy(AbstractChannelProxy):
         try:
             context = zmq.Context()
 
-            # Set up a ROUTER sock to receive responses from minions
-            router_uri = 'tcp://{0}:{1}'.format(self.opts['interface'],
-                                                self.opts['ret_port'])
+            # Set up a DEALER sock to send results to master ret interface
+            master_ret = "tcp://{}:{}".format(
+                self.opts["master_ip"],
+                self.opts["ret_port"],
+            )
 
-            self.debug_log(
-                'setting up a ROUTER sock on {0}'.format(router_uri))
+            self.debug_log("setting up a DEALER sock on {}".format(master_ret))
+            backend = context.socket(zmq.DEALER)
+            self.configure_keepalive(backend)
+            backend.connect(master_ret)
+
+            # Set up a ROUTER sock to receive responses from minions
+            router_uri = "tcp://{}:{}".format(
+                self.opts["interface"],
+                self.opts["ret_port"],
+            )
+
+            self.debug_log("setting up a ROUTER sock on {}".format(router_uri))
 
             frontend = context.socket(zmq.ROUTER)
             frontend.bind(router_uri)
-
-            # Set up a dealer sock to send results to master ret interface
-            self.opts['master_uri'] = 'tcp://{0}:{1}'.format(
-                self.opts['master_ip'],
-                self.opts['ret_port']
-            )
-
-            self.debug_log('setting up a DEALER sock on {0}'.format(
-                self.opts['master_uri']))
-
-            backend = context.socket(zmq.DEALER)
-            self.configure_keepalive(backend)
-            backend.connect(self.opts['master_uri'])
 
             # Forward all responses
             zmq.proxy(frontend, backend)
 
         except zmq.ZMQError as zmq_error:
-            msg = "ZMQ Error: {0}".format(zmq_error)
+            msg = "ZMQ Error: {}".format(zmq_error)
             self.error_log(msg)
             raise self.ChannelException(msg)
 
