@@ -317,9 +317,9 @@ Feature: Sanity checks
     And "sle15sp4_buildhost" should communicate with the server using public interface
     And the clock from "sle15sp4_buildhost" should be exact
 
-@opensuse153arm_minion
-  Scenario: The openSUSE 15.3 ARM minion is healthy
-    Then "opensuse153arm_minion" should have a FQDN
-    And reverse resolution should work for "opensuse153arm_minion"
-    And "opensuse153arm_minion" should communicate with the server using public interface
-    And the clock from "opensuse153arm_minion" should be exact
+@opensuse154arm_minion
+  Scenario: The openSUSE 15.4 ARM minion is healthy
+    Then "opensuse154arm_minion" should have a FQDN
+    And reverse resolution should work for "opensuse154arm_minion"
+    And "opensuse154arm_minion" should communicate with the server using public interface
+    And the clock from "opensuse154arm_minion" should be exact
