@@ -95,7 +95,7 @@ Feature: CVE Audit on SLE Salt Minions
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "patch update has been scheduled" text
-    And I wait until event "Patch Update: milkyway-dummy-2345" is completed
+    And I wait until event "Patch Update: CL-milkyway-dummy-2345" is completed
 
   Scenario: List systems by patch status via API after patch
     When I am logged in API as user "admin" and password "admin"
