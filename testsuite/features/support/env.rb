@@ -345,8 +345,8 @@ Before('@sle15sp3_terminal') do
   skip_this_scenario unless $sle15sp3_terminal_mac
 end
 
-Before('@opensuse153arm_minion') do
-  skip_this_scenario unless $opensuse153arm_minion
+Before('@opensuse154arm_minion') do
+  skip_this_scenario unless $opensuse154arm_minion
 end
 
 Before('@skip_for_debianlike') do |scenario|

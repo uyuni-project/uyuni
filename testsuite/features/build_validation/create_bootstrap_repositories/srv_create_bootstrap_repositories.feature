@@ -154,6 +154,6 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a Debian 11 Salt SSH minion
     When I create the bootstrap repository for "debian11_ssh_minion" on the server
 
-@opensuse153arm_minion
-  Scenario: Create the bootstrap repository for a OpenSUSE 15.3 ARM minion
-    When I create the bootstrap repository for "opensuse153arm_minion" on the server
+@opensuse154arm_minion
+  Scenario: Create the bootstrap repository for a OpenSUSE 15.4 ARM minion
+    When I create the bootstrap repository for "opensuse154arm_minion" on the server
