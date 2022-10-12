@@ -353,13 +353,15 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
   while reposync_not_running_streak <= 60
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     if command_output.empty?
+      log "In empty command with #{reposync_not_running_streak} try"
       reposync_not_running_streak += 1
       reposync_left_running_streak = 0
-      sleep 1
+      sleep 2
+      log "Stop waiting not running streak"
       next
     end
     reposync_not_running_streak = 0
-
+    log "New sync started, #{reposync_not_running_streak} reset ?"
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
     if do_not_kill.include? channel
