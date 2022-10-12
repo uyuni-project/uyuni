@@ -815,7 +815,7 @@ SELECT rp.id AS package_id,
                 pa.id AS arch_id
            FROM
                 rhnPackageEVR PE
-           JOIN rhnPackage p ON p.evr_id = pe.id
+           JOIN susePackageExcludingPartOfPtf p ON p.evr_id = pe.id
            JOIN rhnChannelNewestPackage cp ON cp.package_id = p.id
            JOIN rhnServerChannel sc ON sc.channel_id = cp.channel_id
            JOIN rhnPackageArch pa ON pa.id = p.package_arch_id
