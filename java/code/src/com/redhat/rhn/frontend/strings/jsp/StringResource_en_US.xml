@@ -23119,6 +23119,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
       </trans-unit>
+        <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="targetsystems.jsp.installpackage" xml:space="preserve">
         <source>Install</source>
         <context-group name="ctx">

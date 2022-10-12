@@ -389,10 +389,9 @@ public class SystemManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries",
                                            "extra_packages_for_system");
         Map<String, Object> params = new HashMap<>();
-        params.put("serverid", serverId);
-        Map<String, Object> elabParams = new HashMap<>();
+        params.put("sid", serverId);
 
-        return makeDataResult(params, elabParams, null, m, PackageListItem.class);
+        return makeDataResult(params, params, null, m, PackageListItem.class);
     }
 
     /**
