@@ -109,6 +109,15 @@ public class Package extends BaseDomainHelper {
     }
 
     /**
+     * Check if the package is part of a PTF.
+     *
+     * @return true if the package is part of PTF
+     */
+    public boolean isPartOfPtf() {
+        return provides.stream().anyMatch(p -> SpecialCapabilityNames.PTF_PACKAGE.equals(p.getCapability().getName()));
+    }
+
+    /**
      * @return Returns the provides.
      */
     public Set<PackageProvides> getProvides() {
