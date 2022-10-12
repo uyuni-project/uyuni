@@ -1,3 +1,5 @@
+- Added view to handle ptf packages and updated the procedures
+  to refresh the updatable/installable packages
 - migration to fix invalid Oracle Linux 9 URLs
 
 -------------------------------------------------------------------
