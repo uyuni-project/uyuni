@@ -56,10 +56,24 @@ public class PackageListItem extends IdComboDto {
     private String summary;
     private String nvrea;
     private Date installTime;
-    private String locked = null; // Assuming package is free to operate by default.
+    private String locked;
     private String pending; // Either PackageManager.PKG_PENDING_LOCK for "to be locked"
                             // or PackageManager.PKG_PENDING_UNLOCK for "to be unlocked"
     private boolean retracted;
+
+    private boolean partOfPtf;
+
+    private boolean selectable;
+
+    /**
+     * Default constructor
+     */
+    public PackageListItem() {
+        // Assuming package is free to operate by default.
+        this.locked = null;
+        // Assuming the package can be always selectable
+        this.selectable = true;
+    }
 
     /**
      * Set locked status.
@@ -128,6 +142,22 @@ public class PackageListItem extends IdComboDto {
      */
     public void setRetracted(boolean retractedIn) {
         retracted = retractedIn;
+    }
+
+    /**
+     * Check if the package is part of a ptf
+     * @return true if the package is part of a ptf
+     */
+    public boolean isPartOfPtf() {
+        return partOfPtf;
+    }
+
+    /**
+     * Sets if the package is part of a ptf
+     * @param partOfPtfIn true if the package is part of a ptf
+     */
+    public void setPartOfPtf(boolean partOfPtfIn) {
+        this.partOfPtf = partOfPtfIn;
     }
 
     /**
@@ -474,6 +504,23 @@ public class PackageListItem extends IdComboDto {
     */
     public void setInstalltime(Date installTimeIn) {
         installTime = installTimeIn;
+    }
+
+    /**
+     * Specifies if this package is selectable
+     * @return true if it can be selected
+     */
+    @Override
+    public boolean isSelectable() {
+        return selectable;
+    }
+
+    /**
+     * Sets the selectable status for this package
+     * @param selectableIn true to allow the package to be selected
+     */
+    public void setSelectable(boolean selectableIn) {
+        this.selectable = selectableIn;
     }
 
     /**

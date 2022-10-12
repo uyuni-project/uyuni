@@ -570,6 +570,7 @@ SELECT PN.name as NAME,
    ORDER BY nvre
   </query>
   <elaborator name="package_is_retracted" />
+  <elaborator name="package_is_part_of_ptf" />
 </mode>
 
 <mode name="system_canonical_package_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
@@ -624,8 +625,8 @@ SELECT PN.id || '|' || SPE.id AS ID_COMBO,
 </mode>
 
 <mode name="extra_packages_for_system" class="com.redhat.rhn.frontend.dto.PackageListItem">
-  <query params="serverid">
-  select scp.package_id,
+  <query params="sid">
+  select pk.id AS package_id,
          pn.id || '|' || pe.id || '|' || pa.id as id_combo,
          pn.name || '-' || pe.version || '-' || pe.release as nvre,
          pn.name || '-' || evr_t_as_vre_simple(pe.evr) || '.' || pa.label as nvrea,
@@ -655,10 +656,12 @@ SELECT PN.id || '|' || SPE.id AS ID_COMBO,
          left outer join rhnPackageName pn on (pn.id = sp.name_id)
          left outer join rhnPackageArch pa on (pa.id = sp.package_arch_id)
          left outer join rhnPackageEvr pe on (pe.id = sp.evr_id)
-   where sp.server_id = :serverid and
+         left outer join rhnPackage pk ON pk.name_id = pn.id AND pk.package_arch_id = pa.id AND pk.evr_id = pe.id
+   where sp.server_id = :sid and
          (scp.package_id is null)
    order by nvre
   </query>
+  <elaborator name="package_is_part_of_ptf" />
 </mode>
 
 <mode name="packages_from_server_set" class="com.redhat.rhn.frontend.dto.SsmRemovePackageListItem">
@@ -800,6 +803,14 @@ SELECT P.id, P.summary, PP.name as provider
       1 as retracted
     FROM suseServerChannelsRetractedPackagesView
     WHERE sid = :sid AND pid IN(%s)
+</query>
+
+<query name="package_is_part_of_ptf" column="package_id" parmas="">
+    SELECT pp.package_id AS package_id,
+            1 as part_Of_ptf
+      FROM rhnpackagecapability pc
+                INNER JOIN rhnpackageprovides pp ON pc.id = pp.capability_id
+     WHERE pc.name = 'ptf-package()' AND pp.package_id IN (%s)
 </query>
 
 <mode name="system_available_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
