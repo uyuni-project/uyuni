@@ -61,4 +61,5 @@ rhn_server.pkb          :: rhnServerChannel rhnConfigFileName \
                            set_ks_session_history_message \
                            rhnPackage rhnChannelNewestPackage \
                            rhnPackageEVR rhnChannelPackage rhnErrataPackage \
-                           rhnChannelErrata rhnPackageUpgradeArchCompat
+                           rhnChannelErrata rhnPackageUpgradeArchCompat \
+                           susePackageExcludingPartOfPtf

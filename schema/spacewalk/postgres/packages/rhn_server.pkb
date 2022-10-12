@@ -676,7 +676,7 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
                    FROM rhnServerPackage sp_sp
                    join rhnPackageEvr sp_pe ON sp_pe.id = sp_sp.evr_id
                   GROUP BY sp_sp.server_id, sp_sp.name_id, sp_sp.package_arch_id) sp
-           join rhnPackage p ON p.name_id = sp.name_id
+           join susePackageExcludingPartOfPtf p ON p.name_id = sp.name_id
            join rhnPackageEvr pe ON pe.id = p.evr_id AND (sp.max_evr).type = (pe.evr).type AND sp.max_evr < pe.evr
            join rhnPackageUpgradeArchCompat puac
 	            ON puac.package_arch_id = sp.package_arch_id
