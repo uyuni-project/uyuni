@@ -555,8 +555,13 @@ class ContentSource:
             goodurls = []
             skipped = None
             for url in url_list:
-                # obvious bogons get ignored b/c, we could get more interesting checks but <shrug>
+                # obvious bogons get ignored
                 if url in ['', None]:
+                    continue
+                # Discard any urls containing some invalid characters
+                forbidden_characters = "<>^`{|}"
+                url_is_invalid = [x for x in forbidden_characters if(x in url)]
+                if url_is_invalid:
                     continue
                 try:
                     # This started throwing ValueErrors, BZ 666826
