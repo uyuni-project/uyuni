@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2012--2022 SUSE LLC
  * Copyright (c) 2012--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -11,10 +12,6 @@
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
- */
-
-/**
- * Copyright (c) 2012 SUSE LLC
  */
 
 package com.redhat.rhn.frontend.action.rhnpackage;
@@ -32,6 +29,12 @@ public class ExtraPackagesListAction extends BaseSystemPackagesAction {
 
     @Override
     protected DataResult<PackageListItem> getDataResult(Server server) {
-        return SystemManager.listExtraPackages(server.getId());
+        DataResult<PackageListItem> result = SystemManager.listExtraPackages(server.getId());
+        result.elaborate();
+
+        // Force the selection to be restricted to only non ptf packages
+        result.stream().filter(PackageListItem::isPartOfPtf).forEach(p -> p.setSelectable(false));
+
+        return result;
     }
 }
