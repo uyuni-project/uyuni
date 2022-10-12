@@ -11,6 +11,7 @@
     "proxy": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\"; proxy () { webpack-dev-server --mode development --config build/webpack.config.js --env server=$*; }; proxy",
     "build": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" node build",
     "build:novalidate": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" BUILD_VALIDATION=false node build",
+    "build:measure": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --unhandled-rejections=strict\" MEASURE_PERFORMANCE=true node build",
     "lint": "eslint . -f codeframe --fix",
     "lint:production": "NODE_ENV=production eslint . -f codeframe",
     "test": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation\" BABEL_ENV=test jest",
@@ -55,6 +56,7 @@
     "path-browserify": "^1.0.1",
     "react-select-event": "^5.3.0",
     "react-styleguidist": "11.2.0",
+    "speed-measure-webpack-plugin": "^1.5.0",
     "ts-jest": "27.1.2",
     "webpack-dev-server": "4.7.3"
   },
