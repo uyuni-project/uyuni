@@ -33,3 +33,22 @@
 # default: 1 to send logs to file
 # 0 to send logs to standard output/error
 log_to_file: 1
+
+######   ZeroMQ connection options    ######
+############################################
+# Documentation notes: TBD
+
+# The following options are not the default ones,
+#  but for testing purpose to make salt-broker more reactive
+
+connect_timeout: 10000
+
+reconnect_ivl: 20000
+
+heartbeat_ivl: 60000
+
+heartbeat_timeout: 60000
+
+drop_after_retries: 10
+
+wait_for_backend: True
