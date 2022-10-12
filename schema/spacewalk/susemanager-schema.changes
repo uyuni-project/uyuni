@@ -1,4 +1,6 @@
-- Remove data related to RHEL below 6 
+- Added view to handle ptf packages and updated the procedures
+  to refresh the updatable/installable packages
+- Remove data related to RHEL below 6
 - Increase cron_expr varchar length to 120 in suseRecurringAction
   table (bsc#1205040)
 
