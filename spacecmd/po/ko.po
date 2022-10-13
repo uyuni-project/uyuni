@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-14 11:25+0200\n"
-"PO-Revision-Date: 2022-09-14 08:31+0000\n"
+"PO-Revision-Date: 2022-10-13 04:35+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-2/"
 "ko/>\n"
@@ -879,7 +879,7 @@ msgstr "출력 디렉토리를 생성할 수 없음: %s"
 #: ../src/spacecmd/configchannel.py:362
 #, python-format
 msgid "Could not create \"%s\" file: %s"
-msgstr "\"%s\" 파일을 생성할 수 없음:"
+msgstr "\"%s\" 파일을 생성할 수 없음: %s"
 
 #: ../src/spacecmd/configchannel.py:368
 #, python-format
@@ -3654,7 +3654,7 @@ msgstr "성은 필수입니다."
 
 #: ../src/spacecmd/org.py:117 ../src/spacecmd/user.py:108
 msgid "An email address is required"
-msgstr "이메일 주소는 필수입니다."
+msgstr "전자 메일 주소는 필수입니다."
 
 #: ../src/spacecmd/org.py:121 ../src/spacecmd/user.py:112
 msgid "A password is required"
