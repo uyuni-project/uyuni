@@ -141,7 +141,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Trigger the creation of a cobbler system record
     When I wait for "300" seconds
-    And I trigger cobbler system record
+    And I trigger cobbler system record on the "sle_minion"
 
   Scenario: Create a cobbler system record via API
     When I am logged in API as user "admin" and password "admin"
