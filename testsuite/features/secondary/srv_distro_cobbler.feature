@@ -140,7 +140,7 @@ Feature: Cobbler and distribution autoinstallation
     And I wait until file "/srv/tftpboot/pxelinux.0" exists on server
 
   Scenario: Trigger the creation of a cobbler system record
-    When I trigger cobbler system record
+    When I trigger cobbler system record on the "sle_minion"
 
   Scenario: Create a cobbler system record via API
     When I am logged in API as user "admin" and password "admin"
