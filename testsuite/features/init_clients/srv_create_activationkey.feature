@@ -15,11 +15,11 @@ Feature: Create activation keys
     And I select the custom architecture channel for "sle_minion" as the origin channel
     And I choose "current"
     And I click on "Clone Channel"
-    And I enter "SLE-Custom-Channel-x86_64" as "Channel Name"
-    And I enter "test-channel-for-sle" as "Channel Label"
+    And I enter "SLE-Test-Custom-Channel-x86_64" as "Channel Name"
+    And I enter "sle-test-custom-channel-x86_64" as "Channel Label"
     And I select the parent channel for the "sle_minion" from "Parent Channel"
     And I click on "Clone Channel"
-    Then I should see a "SLE-Custom-Channel-x86_64" text
+    Then I should see a "SLE-Test-Custom-Channel-x86_64" text
 
   Scenario: Create an activation key with a channel
     When I follow the left menu "Systems > Activation Keys"
@@ -30,7 +30,7 @@ Feature: Create activation keys
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Custom-Channel-x86_64"
+    And I check "SLE-Test-Custom-Channel-x86_64"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
     And I should see a "Details" link
@@ -48,11 +48,6 @@ Feature: Create activation keys
     And I select "Test-Channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key RedHat like Test Key has been created" text
-    And I should see a "Details" link
-    And I should see a "Packages" link
-    And I should see a "Configuration" link in the content area
-    And I should see a "Groups" link
-    And I should see a "Activated Systems" link
 
 @deblike_minion
   Scenario: Create an activation key for Debian-like minion
@@ -63,11 +58,6 @@ Feature: Create activation keys
     And I select "Test-Channel-Deb-AMD64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key Debian-like Test Key has been created" text
-    And I should see a "Details" link
-    And I should see a "Packages" link
-    And I should see a "Configuration" link in the content area
-    And I should see a "Groups" link
-    And I should see a "Activated Systems" link
 
   Scenario: Create an activation key with a channel for salt-ssh
     When I follow the left menu "Systems > Activation Keys"
@@ -78,7 +68,7 @@ Feature: Create activation keys
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Custom-Channel-x86_64"
+    And I check "SLE-Test-Custom-Channel-x86_64"
     And I select "Push via SSH" from "contact-method"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been created" text
@@ -92,6 +82,6 @@ Feature: Create activation keys
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Custom-Channel-x86_64"
+    And I check "SLE-Test-Custom-Channel-x86_64"
     And I select "Push via SSH tunnel" from "contact-method"
     And I click on "Create Activation Key"
