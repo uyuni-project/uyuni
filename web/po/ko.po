@@ -20,10 +20,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 16:46+0200\n"
-"PO-Revision-Date: 2022-09-14 08:32+0000\n"
+"PO-Revision-Date: 2022-10-13 04:28+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-2/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-2/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1977,8 +1977,7 @@ msgstr "클러스터를 삭제하시겠습니까?"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:109
 msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
-"이 작업을 수행해도 클러스터가 폐기되지 않습니다. Uyuni에서만 제거됩니다."
+msgstr "이 작업을 수행해도 클러스터가 폐기되지 않습니다. Uyuni에서만 제거됩니다."
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:124
 #: ../html/src/manager/images/image-view.tsx:764
@@ -2005,9 +2004,7 @@ msgstr ""
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:60
 msgid ""
 "The management node can access the node as root via ssh without password"
-msgstr ""
-"관리 노드는 비밀번호를 사용하지 않고 ssh를 통해 루트로 노드에 액세스할 수 있"
-"습니다."
+msgstr "관리 노드는 비밀번호를 사용하지 않고 ssh를 통해 루트로 노드에 액세스할 수 있습니다."
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:68
 msgid "Select system to join"
@@ -4719,7 +4716,7 @@ msgstr "파일이 서버의 임시 파일에 저장되고 부트스트랩 절차
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:415
 msgid "Leave empty for no passphrase"
-msgstr "비밀번호가 없는 경우 비워두십시오."
+msgstr "비밀번호가 없는 경우 비워둡니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:425
 msgid "Bootstrap Minions"
