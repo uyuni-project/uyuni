@@ -11,7 +11,7 @@ Feature: Operate an Ansible control node in a normal minion
     Given I am on the Systems overview page of this "sle_minion"
     When I deploy testing playbooks and inventory files to "sle_minion"
 
-   Scenario: Enable "Ansible control node" system type
+  Scenario: Enable "Ansible control node" system type
     Given I am on the Systems overview page of this "sle_minion"
     When I enable client tools repositories on "sle_minion"
     And I follow "Properties" in the content area
