@@ -19,10 +19,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-30 14:53+0200\n"
-"PO-Revision-Date: 2022-09-14 08:31+0000\n"
+"PO-Revision-Date: 2022-10-13 05:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4654,7 +4654,7 @@ msgstr "파일이 서버의 임시 파일에 저장되고 부트스트랩 절차
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
 msgid "Leave empty for no passphrase"
-msgstr "비밀번호가 없는 경우 비워두십시오."
+msgstr "비밀번호가 없는 경우 비워둡니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 msgid "Bootstrap Minions"
