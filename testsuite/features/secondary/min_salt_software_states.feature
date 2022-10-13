@@ -45,7 +45,6 @@ Feature: Salt package states
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    And I wait for "60" seconds
     And I wait until I see "milkyway-dummy" text
     Then "milkyway-dummy" should be installed on "sle_minion"
     And I change the state of "milkyway-dummy" to "Removed" and ""
@@ -61,7 +60,6 @@ Feature: Salt package states
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    And I wait for "60" seconds
     And I wait until I see "milkyway-dummy" text
     Then "milkyway-dummy" should not be installed on "sle_minion"
     And I change the state of "milkyway-dummy" to "Installed" and ""
@@ -77,7 +75,6 @@ Feature: Salt package states
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    And I wait for "60" seconds
     And I wait until I see "virgo-dummy" text
     Then "virgo-dummy-1.0" should be installed on "sle_minion"
     And I change the state of "virgo-dummy" to "Installed" and "Any"
@@ -93,7 +90,6 @@ Feature: Salt package states
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    And I wait for "60" seconds
     And I wait until I see "andromeda-dummy" text
     Then "andromeda-dummy-1.0" should be installed on "sle_minion"
     And I change the state of "andromeda-dummy" to "Installed" and "Latest"
