@@ -1,15 +1,10 @@
+- Exclude invalid mirror urls for reposync (bsc#1203826)
 - require python3-debian version which support new compression
   methods to sync ubuntu22-04 repositories (bsc#1205212)
 - Update system overview table in reposync
 - Keep older module metadata files in database (bsc#1201893)
 - Used the legacy reporting system in spacewalk-debug to obtain
   up-to-date information
-
--------------------------------------------------------------------
-Thu Oct 13 09:28:27 UTC 2022 - Zara Zaimeche <zara.zaimeche@suse.com>
-
-- Exclude invalid mirror urls for reposync (bsc#1203826)
-  * Ignore any mirror urls that contain forbidden characters
 
 -------------------------------------------------------------------
 Wed Sep 28 11:14:14 CEST 2022 - jgonzalez@suse.com
