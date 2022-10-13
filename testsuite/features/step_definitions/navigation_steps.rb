@@ -215,11 +215,9 @@ end
 
 When(/^I include the recommended child channels$/) do
   toggle = "//span[@class='pointer']"
-  xpath = "//i[contains(@class, 'fa-toggle-off')]"
-
-  if page.has_xpath?(toggle, wait: 5)
-    find(:xpath, toggle).click if page.has_xpath?(xpath, wait: 5)
-  end
+  toggle_off = "//i[contains(@class, 'fa-toggle-off')]"
+  raise 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
+  find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
 end
 
 When(/^I choose "([^"]*)"$/) do |arg1|
