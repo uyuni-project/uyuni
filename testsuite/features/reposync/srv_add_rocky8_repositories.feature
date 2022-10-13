@@ -55,6 +55,8 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I follow "Custom Channel for Rocky 8 DVD"
     And I follow "Repositories" in the content area
     And I follow "Sync"
+    # button is not available because a sync is already running from the scenario before this
+    # maybe we need a timeout
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
 
@@ -110,3 +112,6 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I enter "Initial build" as "message"
     And I click the environment build button
     Then I should see a "Version 1: Initial build" text
+
+  Scenario: Create the bootstrap repository for the Rocky 8 minion
+    When I create the bootstrap repository for "rhlike_minion" on the server
