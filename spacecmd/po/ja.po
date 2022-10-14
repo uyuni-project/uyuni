@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 08:26+0200\n"
+"POT-Creation-Date: 2022-10-14 11:24+0200\n"
 "PO-Revision-Date: 2022-08-29 07:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
@@ -343,8 +343,8 @@ msgstr "連絡方法:         %s"
 msgid "Software Channels"
 msgstr "ソフトウェアチャンネル"
 
-#: ../src/spacecmd/activationkey.py:978 ../src/spacecmd/configchannel.py:806
-#: ../src/spacecmd/configchannel.py:920 ../src/spacecmd/system.py:3120
+#: ../src/spacecmd/activationkey.py:978 ../src/spacecmd/configchannel.py:807
+#: ../src/spacecmd/configchannel.py:921 ../src/spacecmd/system.py:3120
 msgid "Configuration Channels"
 msgstr "設定チャンネル"
 
@@ -564,7 +564,7 @@ msgstr "元のキー:"
 msgid "Cloned Key:"
 msgstr "複製されたキー:"
 
-#: ../src/spacecmd/activationkey.py:1494 ../src/spacecmd/configchannel.py:1440
+#: ../src/spacecmd/activationkey.py:1494 ../src/spacecmd/configchannel.py:1441
 msgid "Error - must specify either -c or -x options!"
 msgstr "エラー - オプション -c と -x は同時に指定できません！"
 
@@ -605,7 +605,7 @@ msgstr "が存在しません。読み飛ばしています！"
 msgid "Cloning key %s as %s"
 msgstr "キー %s を %s として複製しています"
 
-#: ../src/spacecmd/activationkey.py:1606 ../src/spacecmd/configchannel.py:1492
+#: ../src/spacecmd/activationkey.py:1606 ../src/spacecmd/configchannel.py:1493
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr "%s を %s に複製する処理が失敗しました"
@@ -626,31 +626,31 @@ msgstr "activationkey_diff: アクティベーションキーの差分を表示"
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
 msgstr "使用方法: activationkey_diff キー_1 キー_2"
 
-#: ../src/spacecmd/activationkey.py:1695
+#: ../src/spacecmd/activationkey.py:1696
 msgid "activationkey_disable: Disable an activation key"
 msgstr "activationkey_disable: アクティベーションキーを無効化"
 
-#: ../src/spacecmd/activationkey.py:1697
+#: ../src/spacecmd/activationkey.py:1698
 msgid "usage: activationkey_disable KEY [KEY ...]"
 msgstr "使用方法: activationkey_disable キー [キー ...]"
 
-#: ../src/spacecmd/activationkey.py:1731
+#: ../src/spacecmd/activationkey.py:1732
 msgid "activationkey_enable: Enable an activation key"
 msgstr "activationkey_enable: アクティベーションキーの有効化"
 
-#: ../src/spacecmd/activationkey.py:1733
+#: ../src/spacecmd/activationkey.py:1734
 msgid "usage: activationkey_enable KEY [KEY ...]"
 msgstr "使用方法: activationkey_enable キー [キー ...]"
 
-#: ../src/spacecmd/activationkey.py:1767
+#: ../src/spacecmd/activationkey.py:1768
 msgid "activationkey_setdescription: Set the activation key description"
 msgstr "activationkey_setdescription: アクティベーションキーの説明を設定"
 
-#: ../src/spacecmd/activationkey.py:1769
+#: ../src/spacecmd/activationkey.py:1770
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
 msgstr "使用方法: activationkey_setdescription キー 説明"
 
-#: ../src/spacecmd/activationkey.py:1803
+#: ../src/spacecmd/activationkey.py:1804
 msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
@@ -658,11 +658,11 @@ msgstr ""
 "activationkey_setcontactmethod: このキーで登録されたシステムに対して適用する"
 "連絡方法を設定。"
 
-#: ../src/spacecmd/activationkey.py:1805 ../src/spacecmd/system.py:4410
+#: ../src/spacecmd/activationkey.py:1806 ../src/spacecmd/system.py:4410
 msgid "Available contact methods: "
 msgstr "利用可能な連絡方法: "
 
-#: ../src/spacecmd/activationkey.py:1806
+#: ../src/spacecmd/activationkey.py:1807
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
 msgstr "使用方法: activationkey_setcontactmethod キー 連絡方法"
 
@@ -848,28 +848,28 @@ msgstr "作成日:  %s"
 msgid "Modified: %s"
 msgstr "修正日: %s"
 
-#: ../src/spacecmd/configchannel.py:288 ../src/spacecmd/configchannel.py:691
+#: ../src/spacecmd/configchannel.py:288 ../src/spacecmd/configchannel.py:692
 #, python-format
 msgid "Target Path:     %s"
 msgstr "ターゲットパス:     %s"
 
-#: ../src/spacecmd/configchannel.py:291 ../src/spacecmd/configchannel.py:721
+#: ../src/spacecmd/configchannel.py:291 ../src/spacecmd/configchannel.py:722
 #, python-format
 msgid "Owner:           %s"
 msgstr "所有者:           %s"
 
-#: ../src/spacecmd/configchannel.py:292 ../src/spacecmd/configchannel.py:722
+#: ../src/spacecmd/configchannel.py:292 ../src/spacecmd/configchannel.py:723
 #, python-format
 msgid "Group:           %s"
 msgstr "グループ:           %s"
 
-#: ../src/spacecmd/configchannel.py:293 ../src/spacecmd/configchannel.py:723
+#: ../src/spacecmd/configchannel.py:293 ../src/spacecmd/configchannel.py:724
 #, python-format
 msgid "Mode:            %s"
 msgstr "モード:            %s"
 
-#: ../src/spacecmd/configchannel.py:295 ../src/spacecmd/configchannel.py:692
-#: ../src/spacecmd/configchannel.py:725
+#: ../src/spacecmd/configchannel.py:295 ../src/spacecmd/configchannel.py:693
+#: ../src/spacecmd/configchannel.py:726
 #, python-format
 msgid "SELinux Context: %s"
 msgstr "SELinux コンテキスト: %s"
@@ -879,22 +879,22 @@ msgstr "SELinux コンテキスト: %s"
 msgid "SHA256:          %s"
 msgstr "SHA256:          %s"
 
-#: ../src/spacecmd/configchannel.py:299 ../src/spacecmd/configchannel.py:724
+#: ../src/spacecmd/configchannel.py:299 ../src/spacecmd/configchannel.py:725
 #, python-format
 msgid "Binary:          %s"
 msgstr "バイナリ:          %s"
 
-#: ../src/spacecmd/configchannel.py:303 ../src/spacecmd/configchannel.py:737
-#: ../src/spacecmd/configchannel.py:993 ../src/spacecmd/kickstart.py:1979
+#: ../src/spacecmd/configchannel.py:303 ../src/spacecmd/configchannel.py:738
+#: ../src/spacecmd/configchannel.py:994 ../src/spacecmd/kickstart.py:1980
 #: ../src/spacecmd/snippet.py:163
 msgid "Contents"
 msgstr "内容"
 
-#: ../src/spacecmd/configchannel.py:313
+#: ../src/spacecmd/configchannel.py:314
 msgid "configchannel_backup: backup a config channel"
 msgstr "configchannel_backup: 設定チャンネルをバックアップする"
 
-#: ../src/spacecmd/configchannel.py:314
+#: ../src/spacecmd/configchannel.py:315
 msgid ""
 "usage: configchannel_backup CHANNEL [OUTDIR])\n"
 "\n"
@@ -905,63 +905,63 @@ msgstr ""
 "出力先ディレクトリは既定で $HOME/spacecmd-backup/configchannel/YYYY-MM-DD/"
 "(チャンネル名) になります\n"
 
-#: ../src/spacecmd/configchannel.py:354 ../src/spacecmd/group.py:274
+#: ../src/spacecmd/configchannel.py:355 ../src/spacecmd/group.py:274
 #, python-format
 msgid "Could not create output directory: %s"
 msgstr "出力先ディレクトリを作成できません: %s"
 
-#: ../src/spacecmd/configchannel.py:367
+#: ../src/spacecmd/configchannel.py:368
 #, python-format
 msgid "Could not create \"%s\" file: %s"
 msgstr "\"%s\" ファイルを作成できません: %s"
 
-#: ../src/spacecmd/configchannel.py:373
+#: ../src/spacecmd/configchannel.py:374
 #, python-format
 msgid "Output Path:   %s"
 msgstr "出力先パス:   %s"
 
-#: ../src/spacecmd/configchannel.py:412
+#: ../src/spacecmd/configchannel.py:413
 msgid "configchannel_details: Show the details of a config channel"
 msgstr "configchannel_details: 設定チャンネルの詳細を表示"
 
-#: ../src/spacecmd/configchannel.py:413
+#: ../src/spacecmd/configchannel.py:414
 msgid "usage: configchannel_details CHANNEL ..."
 msgstr "使用方法: configchannel_details チャンネル ..."
 
-#: ../src/spacecmd/configchannel.py:443 ../src/spacecmd/group.py:571
+#: ../src/spacecmd/configchannel.py:444 ../src/spacecmd/group.py:571
 #: ../src/spacecmd/kickstart.py:421
 #, python-format
 msgid "Label:       %s"
 msgstr "ラベル:       %s"
 
-#: ../src/spacecmd/configchannel.py:444 ../src/spacecmd/group.py:572
+#: ../src/spacecmd/configchannel.py:445 ../src/spacecmd/group.py:572
 #: ../src/spacecmd/kickstart.py:420
 #, python-format
 msgid "Name:        %s"
 msgstr "名前:        %s"
 
-#: ../src/spacecmd/configchannel.py:445 ../src/spacecmd/cryptokey.py:217
+#: ../src/spacecmd/configchannel.py:446 ../src/spacecmd/cryptokey.py:217
 #: ../src/spacecmd/group.py:573 ../src/spacecmd/system.py:683
 #, python-format
 msgid "Description: %s"
 msgstr "説明: %s"
 
-#: ../src/spacecmd/configchannel.py:446 ../src/spacecmd/cryptokey.py:218
+#: ../src/spacecmd/configchannel.py:447 ../src/spacecmd/cryptokey.py:218
 #: ../src/spacecmd/group.py:574 ../src/spacecmd/kickstart.py:507
-#: ../src/spacecmd/kickstart.py:1975
+#: ../src/spacecmd/kickstart.py:1976
 #, python-format
 msgid "Type:        %s"
 msgstr "タイプ:        %s"
 
-#: ../src/spacecmd/configchannel.py:449
+#: ../src/spacecmd/configchannel.py:450
 msgid "Files"
 msgstr "ファイル"
 
-#: ../src/spacecmd/configchannel.py:459
+#: ../src/spacecmd/configchannel.py:460
 msgid "configchannel_create: Create a configuration channel of specific type"
 msgstr "configchannel_create: 指定したタイプの設定チャンネルを作成"
 
-#: ../src/spacecmd/configchannel.py:460
+#: ../src/spacecmd/configchannel.py:461
 msgid ""
 "usage: configchannel_create [options])\n"
 "\n"
@@ -979,7 +979,7 @@ msgstr ""
 "  -d (説明)\n"
 "  -t タイプ('normal,'state')"
 
-#: ../src/spacecmd/configchannel.py:479 ../src/spacecmd/custominfo.py:55
+#: ../src/spacecmd/configchannel.py:480 ../src/spacecmd/custominfo.py:55
 #: ../src/spacecmd/custominfo.py:200 ../src/spacecmd/distribution.py:72
 #: ../src/spacecmd/filepreservation.py:71 ../src/spacecmd/group.py:185
 #: ../src/spacecmd/repo.py:353 ../src/spacecmd/repo.py:469
@@ -987,144 +987,144 @@ msgstr ""
 msgid "Name:"
 msgstr "名前:"
 
-#: ../src/spacecmd/configchannel.py:480
+#: ../src/spacecmd/configchannel.py:481
 msgid "Label:"
 msgstr "ラベル:"
 
-#: ../src/spacecmd/configchannel.py:481 ../src/spacecmd/cryptokey.py:67
+#: ../src/spacecmd/configchannel.py:482 ../src/spacecmd/cryptokey.py:67
 #: ../src/spacecmd/custominfo.py:60 ../src/spacecmd/custominfo.py:205
 #: ../src/spacecmd/group.py:190 ../src/spacecmd/softwarechannel.py:788
 #: ../src/spacecmd/system.py:3797
 msgid "Description:"
 msgstr "説明:"
 
-#: ../src/spacecmd/configchannel.py:482
+#: ../src/spacecmd/configchannel.py:483
 msgid "Type [normal, state]:"
 msgstr "タイプ [normal, state]:"
 
-#: ../src/spacecmd/configchannel.py:489
+#: ../src/spacecmd/configchannel.py:490
 msgid "Only [normal/state] values are acceptable for type"
 msgstr "タイプに設定可能な値は [normal/state] のいずれかです"
 
-#: ../src/spacecmd/configchannel.py:493 ../src/spacecmd/distribution.py:110
+#: ../src/spacecmd/configchannel.py:494 ../src/spacecmd/distribution.py:110
 #: ../src/spacecmd/repo.py:361 ../src/spacecmd/repo.py:475
 msgid "A name is required"
 msgstr "名前を指定する必要があります"
 
-#: ../src/spacecmd/configchannel.py:502
+#: ../src/spacecmd/configchannel.py:503
 msgid "Only [normal/state] values are acceptable for --type parameter"
 msgstr ""
 "--type パラメータに対しては [normal/state] のいずれかを指定することができます"
 
-#: ../src/spacecmd/configchannel.py:517
+#: ../src/spacecmd/configchannel.py:518
 msgid "configchannel_delete: Delete a configuration channel"
 msgstr "configchannel_delete: 設定チャンネルを削除"
 
-#: ../src/spacecmd/configchannel.py:518
+#: ../src/spacecmd/configchannel.py:519
 msgid "usage: configchannel_delete CHANNEL ..."
 msgstr "使用方法: configchannel_delete チャンネル ..."
 
-#: ../src/spacecmd/configchannel.py:539
+#: ../src/spacecmd/configchannel.py:540
 #, python-format
 msgid "No channels matched argument(s): %s"
 msgstr "パラメータに合致するチャンネルはありません: %s"
 
-#: ../src/spacecmd/configchannel.py:545 ../src/spacecmd/softwarechannel.py:712
+#: ../src/spacecmd/configchannel.py:546 ../src/spacecmd/softwarechannel.py:712
 msgid "Delete these channels [y/N]:"
 msgstr "これらのチャンネルを削除しますか [y/N]:"
 
-#: ../src/spacecmd/configchannel.py:589
+#: ../src/spacecmd/configchannel.py:590
 msgid "Symlink [y/N]:"
 msgstr "シンボリックリンク [y/N]:"
 
-#: ../src/spacecmd/configchannel.py:593
+#: ../src/spacecmd/configchannel.py:594
 msgid "Target Path:"
 msgstr "ターゲットパス:"
 
-#: ../src/spacecmd/configchannel.py:594
+#: ../src/spacecmd/configchannel.py:595
 msgid "SELinux Context [none]:"
 msgstr "SELinux コンテキスト [なし]:"
 
-#: ../src/spacecmd/configchannel.py:602
+#: ../src/spacecmd/configchannel.py:603
 msgid "Directory [y/N]:"
 msgstr "ディレクトリ [y/N]:"
 
-#: ../src/spacecmd/configchannel.py:611
+#: ../src/spacecmd/configchannel.py:612
 #, python-format
 msgid "Owner [%s]:"
 msgstr "所有者 [%s]:"
 
-#: ../src/spacecmd/configchannel.py:612
+#: ../src/spacecmd/configchannel.py:613
 #, python-format
 msgid "Group [%s]:"
 msgstr "グループ [%s]:"
 
-#: ../src/spacecmd/configchannel.py:613
+#: ../src/spacecmd/configchannel.py:614
 #, python-format
 msgid "Mode [%s]:"
 msgstr "モード [%s]:"
 
-#: ../src/spacecmd/configchannel.py:615
+#: ../src/spacecmd/configchannel.py:616
 #, python-format
 msgid "SELinux Context [%s]:"
 msgstr "SELinux コンテキスト [%s]:"
 
-#: ../src/spacecmd/configchannel.py:616 ../src/spacecmd/configchannel.py:958
+#: ../src/spacecmd/configchannel.py:617 ../src/spacecmd/configchannel.py:959
 msgid "Revision [next]:"
 msgstr "リビジョン [次の値]:"
 
-#: ../src/spacecmd/configchannel.py:634 ../src/spacecmd/configchannel.py:963
+#: ../src/spacecmd/configchannel.py:635 ../src/spacecmd/configchannel.py:964
 msgid "The revision must be an integer"
 msgstr "リビジョンは整数でなければなりません"
 
 #. get the contents of the script
-#: ../src/spacecmd/configchannel.py:637 ../src/spacecmd/configchannel.py:945
-#: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:2032
+#: ../src/spacecmd/configchannel.py:638 ../src/spacecmd/configchannel.py:946
+#: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:2033
 #: ../src/spacecmd/snippet.py:143
 msgid "Read an existing file [y/N]:"
 msgstr "既存のファイルの読み込み [y/N]:"
 
-#: ../src/spacecmd/configchannel.py:639 ../src/spacecmd/kickstart.py:2034
+#: ../src/spacecmd/configchannel.py:640 ../src/spacecmd/kickstart.py:2035
 msgid "File:"
 msgstr "ファイル:"
 
-#: ../src/spacecmd/configchannel.py:657
+#: ../src/spacecmd/configchannel.py:658
 msgid "The path is required"
 msgstr "パスを指定する必要があります"
 
-#: ../src/spacecmd/configchannel.py:671 ../src/spacecmd/configchannel.py:969
+#: ../src/spacecmd/configchannel.py:672 ../src/spacecmd/configchannel.py:970
 msgid "You must provide the file contents"
 msgstr "ファイルの内容を指定しなければなりません"
 
-#: ../src/spacecmd/configchannel.py:675
+#: ../src/spacecmd/configchannel.py:676
 msgid "You must provide the target path for a symlink"
 msgstr "シンボリックリンクのターゲットパスを指定しなければなりません"
 
-#: ../src/spacecmd/configchannel.py:690 ../src/spacecmd/configchannel.py:719
+#: ../src/spacecmd/configchannel.py:691 ../src/spacecmd/configchannel.py:720
 #, python-format
 msgid "Path:            %s"
 msgstr "パス:            %s"
 
-#: ../src/spacecmd/configchannel.py:720
+#: ../src/spacecmd/configchannel.py:721
 #, python-format
 msgid "Directory:       %s"
 msgstr "ディレクトリ:       %s"
 
-#: ../src/spacecmd/configchannel.py:730
+#: ../src/spacecmd/configchannel.py:731
 #, python-format
 msgid "Revision:        %i"
 msgstr "リビジョン:        %i"
 
-#: ../src/spacecmd/configchannel.py:735
+#: ../src/spacecmd/configchannel.py:736
 msgid "Contents not displayed (base64 encoded)"
 msgstr "内容は表示されません (base64 でエンコードされています)"
 
-#: ../src/spacecmd/configchannel.py:748
+#: ../src/spacecmd/configchannel.py:749
 msgid ""
 "configchannel_addfile/configchannel_updatefile: Create a configuration file"
 msgstr "configchannel_addfile/configchannel_updatefile: 設定ファイルを作成"
 
-#: ../src/spacecmd/configchannel.py:749
+#: ../src/spacecmd/configchannel.py:750
 msgid ""
 "usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f "
 "LOCAL_FILE_PATH [OPTIONS])\n"
@@ -1178,39 +1178,39 @@ msgstr ""
 "す。場合によっては\n"
 "  自動検出されることもありますが、指定しておいたほうが適切です。\n"
 
-#: ../src/spacecmd/configchannel.py:811 ../src/spacecmd/softwarechannel.py:795
+#: ../src/spacecmd/configchannel.py:812 ../src/spacecmd/softwarechannel.py:795
 #: ../src/spacecmd/softwarechannel.py:916
 #: ../src/spacecmd/softwarechannel.py:923
 msgid "Select:"
 msgstr "選択:"
 
-#: ../src/spacecmd/configchannel.py:818 ../src/spacecmd/configchannel.py:931
+#: ../src/spacecmd/configchannel.py:819 ../src/spacecmd/configchannel.py:932
 #: ../src/spacecmd/softwarechannel.py:1352
 #, python-format
 msgid "%s is not a valid channel"
 msgstr "%s は正しいチャンネルではありません"
 
-#: ../src/spacecmd/configchannel.py:823
+#: ../src/spacecmd/configchannel.py:824
 msgid "Unable to obtain a valid channel. Aborting."
 msgstr "正しいチャンネルを取得できませんでした。中止しています。"
 
-#: ../src/spacecmd/configchannel.py:829 ../src/spacecmd/scap.py:162
+#: ../src/spacecmd/configchannel.py:830 ../src/spacecmd/scap.py:162
 msgid "Path:"
 msgstr "パス:"
 
-#: ../src/spacecmd/configchannel.py:845 ../src/spacecmd/configchannel.py:982
+#: ../src/spacecmd/configchannel.py:846 ../src/spacecmd/configchannel.py:983
 msgid "No config channel specified!"
 msgstr "設定チャンネルを指定していません！"
 
-#: ../src/spacecmd/configchannel.py:850 ../src/spacecmd/configchannel.py:987
+#: ../src/spacecmd/configchannel.py:851 ../src/spacecmd/configchannel.py:988
 msgid "Error obtaining file info"
 msgstr "ファイル情報の取得時にエラー"
 
-#: ../src/spacecmd/configchannel.py:893
+#: ../src/spacecmd/configchannel.py:894
 msgid "configchannel_updateinitsls: Update init.sls file"
 msgstr "configchannel_updateinitsls: init.sls ファイルを更新"
 
-#: ../src/spacecmd/configchannel.py:894
+#: ../src/spacecmd/configchannel.py:895
 msgid ""
 "usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
@@ -1229,53 +1229,53 @@ msgstr ""
 "  -f (ファイルの内容を含むローカルパス)\n"
 "  -y: ファイルの内容を自動処理する\n"
 
-#: ../src/spacecmd/configchannel.py:941
+#: ../src/spacecmd/configchannel.py:942
 #, python-format
 msgid "No existing file information found for %s"
 msgstr "%s に対する既存のファイル情報がありません"
 
-#: ../src/spacecmd/configchannel.py:991
+#: ../src/spacecmd/configchannel.py:992
 #, python-format
 msgid "revision:                 %s"
 msgstr "リビジョン:                 %s"
 
-#: ../src/spacecmd/configchannel.py:992
+#: ../src/spacecmd/configchannel.py:993
 #, python-format
 msgid "contents_enc64:           %s"
 msgstr "contents_enc64:           %s"
 
-#: ../src/spacecmd/configchannel.py:1019
+#: ../src/spacecmd/configchannel.py:1020
 msgid "configchannel_removefiles: Remove configuration files"
 msgstr "configchannel_removefiles: 設定ファイルを削除"
 
-#: ../src/spacecmd/configchannel.py:1020
+#: ../src/spacecmd/configchannel.py:1021
 msgid "usage: configchannel_removefiles CHANNEL <FILE ...>"
 msgstr "使用方法: configchannel_removefiles チャンネル <ファイル ...>"
 
-#: ../src/spacecmd/configchannel.py:1059
+#: ../src/spacecmd/configchannel.py:1060
 msgid "configchannel_verifyfile: Verify a configuration file"
 msgstr "configchannel_verifyfile: 設定ファイルを検証"
 
-#: ../src/spacecmd/configchannel.py:1060
+#: ../src/spacecmd/configchannel.py:1061
 msgid "usage: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
 msgstr "使用方法: configchannel_verifyfile チャンネル ファイル <システム>"
 
-#: ../src/spacecmd/configchannel.py:1100
+#: ../src/spacecmd/configchannel.py:1101
 msgid "No valid system selected"
 msgstr "正しいシステムを選択していません"
 
-#: ../src/spacecmd/configchannel.py:1108 ../src/spacecmd/system.py:514
+#: ../src/spacecmd/configchannel.py:1109 ../src/spacecmd/system.py:514
 #: ../src/spacecmd/system.py:534 ../src/spacecmd/system.py:966
 #, python-format
 msgid "Action ID: %i"
 msgstr "アクション ID: %i"
 
-#: ../src/spacecmd/configchannel.py:1116
+#: ../src/spacecmd/configchannel.py:1117
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr ""
 "configchannel_export: 設定チャンネルを JSON 形式のファイルにエクスポートする"
 
-#: ../src/spacecmd/configchannel.py:1117
+#: ../src/spacecmd/configchannel.py:1118
 msgid ""
 "usage: configchannel_export <CHANNEL>... [options])\n"
 "options:\n"
@@ -1299,40 +1299,40 @@ msgstr ""
 "注意 : <チャンネル> を指定しない場合、全てのチャンネルをエクスポートします"
 
 #. Get the cc details
-#: ../src/spacecmd/configchannel.py:1133
+#: ../src/spacecmd/configchannel.py:1134
 #, python-format
 msgid "Getting config channel details for %s"
 msgstr "%s に対する設定チャンネルの詳細を取得しています"
 
-#: ../src/spacecmd/configchannel.py:1153
+#: ../src/spacecmd/configchannel.py:1154
 #, python-format
 msgid "Failed to get details for file %s from %s"
 msgstr "ファイル %s に対する詳細情報を %s から取得する処理に失敗しました"
 
-#: ../src/spacecmd/configchannel.py:1199
+#: ../src/spacecmd/configchannel.py:1200
 #, python-format
 msgid "File %s could not be exported "
 msgstr "ファイル %s をエクスポートできませんでした "
 
-#: ../src/spacecmd/configchannel.py:1200
+#: ../src/spacecmd/configchannel.py:1201
 msgid "with this API version(needs base64 encoding)"
 msgstr "(この API バージョンを利用した場合、 base64 エンコーディングが必要)"
 
-#: ../src/spacecmd/configchannel.py:1202
+#: ../src/spacecmd/configchannel.py:1203
 #, python-format
 msgid "File %s could not be exported as"
 msgstr "ファイル %s をエクスポートできませんでした"
 
-#: ../src/spacecmd/configchannel.py:1203
+#: ../src/spacecmd/configchannel.py:1204
 msgid " text...getting base64 encoded version"
 msgstr " (テキスト形式で取得できませんでした。 base64 で取得し直しています)"
 
-#: ../src/spacecmd/configchannel.py:1234
+#: ../src/spacecmd/configchannel.py:1235
 #, python-format
 msgid "Exporting ALL config channels to %s"
 msgstr "全ての設定チャンネルを %s にエクスポートしています"
 
-#: ../src/spacecmd/configchannel.py:1241
+#: ../src/spacecmd/configchannel.py:1242
 msgid ""
 "Error, no valid config channel passed, check name is  correct with spacecmd "
 "configchannel_list"
@@ -1340,77 +1340,77 @@ msgstr ""
 "エラーです。正しい設定チャンネルを指定していないものと思われます。 spacecmd "
 "configchannel_list で名前の一覧をご確認ください"
 
-#: ../src/spacecmd/configchannel.py:1256
+#: ../src/spacecmd/configchannel.py:1257
 #, python-format
 msgid "Exporting cc %s to %s"
 msgstr "cc %s を %s にエクスポートしています"
 
-#: ../src/spacecmd/configchannel.py:1263
+#: ../src/spacecmd/configchannel.py:1264
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "ファイル '{}' は既に存在しています。ファイルを上書きしますか？ (y/n)"
 
-#: ../src/spacecmd/configchannel.py:1267
+#: ../src/spacecmd/configchannel.py:1268
 #, python-format
 msgid "Error saving exported config channels to file: %s"
 msgstr "設定チャンネルをファイルに保存する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/configchannel.py:1276
+#: ../src/spacecmd/configchannel.py:1277
 msgid "configchannel_import: import config channel(s) from json file"
 msgstr "configchannel_import: JSON ファイルから設定チャンネルをインポートする"
 
-#: ../src/spacecmd/configchannel.py:1277
+#: ../src/spacecmd/configchannel.py:1278
 msgid "usage: configchannel_import <JSONFILES...>"
 msgstr "使用方法: configchannel_import <JSONファイル...>"
 
-#: ../src/spacecmd/configchannel.py:1286 ../src/spacecmd/kickstart.py:2416
+#: ../src/spacecmd/configchannel.py:1287 ../src/spacecmd/kickstart.py:2417
 msgid "Error, no filename passed"
 msgstr "エラーです、ファイル名を指定していません"
 
-#: ../src/spacecmd/configchannel.py:1294 ../src/spacecmd/kickstart.py:2424
+#: ../src/spacecmd/configchannel.py:1295 ../src/spacecmd/kickstart.py:2425
 #, python-format
 msgid "Error, could not read json data from %s"
 msgstr "エラーです、 JSON データを %s から読み込めませんでした"
 
-#: ../src/spacecmd/configchannel.py:1298
+#: ../src/spacecmd/configchannel.py:1299
 #, python-format
 msgid "Error importing configchannel %s"
 msgstr "設定チャンネル %s をインポートする際にエラーが発生しました"
 
-#: ../src/spacecmd/configchannel.py:1310
+#: ../src/spacecmd/configchannel.py:1311
 #, python-format
 msgid "Config channel %s already exists! Skipping!"
 msgstr "設定チャンネル %s は既に存在しています。読み飛ばします！"
 
 #. create the cc, we need to drop the org prefix from the cc name
-#: ../src/spacecmd/configchannel.py:1315
+#: ../src/spacecmd/configchannel.py:1316
 #, python-format
 msgid "Importing config channel  %s"
 msgstr "設定チャンネル %s をインポートしています"
 
-#: ../src/spacecmd/configchannel.py:1330
+#: ../src/spacecmd/configchannel.py:1331
 #, python-format
 msgid "Found %s %s for cc %s"
 msgstr "%s %s (cc %s 向け) が見つかりました"
 
-#: ../src/spacecmd/configchannel.py:1358
+#: ../src/spacecmd/configchannel.py:1359
 #, python-format
 msgid "Failed trying to import file %s (empty content)"
 msgstr "ファイル %s をインポートする処理に失敗しました (内容がありません)"
 
-#: ../src/spacecmd/configchannel.py:1360
+#: ../src/spacecmd/configchannel.py:1361
 msgid "Older APIs can't export encoded files"
 msgstr "古い API ではエンコードされたファイルをエクスポートできません"
 
-#: ../src/spacecmd/configchannel.py:1383
+#: ../src/spacecmd/configchannel.py:1384
 #, python-format
 msgid "Error adding file %s to %s"
 msgstr "ファイル %s を %s に追加する際にエラー"
 
-#: ../src/spacecmd/configchannel.py:1393
+#: ../src/spacecmd/configchannel.py:1394
 msgid "configchannel_clone: Clone config channel(s)"
 msgstr "configchannel_clone: 設定チャンネルを複製"
 
-#: ../src/spacecmd/configchannel.py:1394
+#: ../src/spacecmd/configchannel.py:1395
 msgid ""
 "usage examples:\n"
 "                 configchannel_clone foo_label -c bar_label\n"
@@ -1441,105 +1441,105 @@ msgstr ""
 "                   (\"foo\" を \"bar\" に置き換える)\n"
 "  注意 : -c や -x オプションを指定しない場合、対話的に操作を行ないます"
 
-#: ../src/spacecmd/configchannel.py:1423
+#: ../src/spacecmd/configchannel.py:1424
 msgid "No config channels found"
 msgstr "設定チャンネルが見つかりませんでした"
 
-#: ../src/spacecmd/configchannel.py:1426
+#: ../src/spacecmd/configchannel.py:1427
 msgid "Config Channels"
 msgstr "設定チャンネル"
 
-#: ../src/spacecmd/configchannel.py:1432
+#: ../src/spacecmd/configchannel.py:1433
 #, python-format
 msgid "Channel to clone: %s"
 msgstr "複製するチャンネル: %s"
 
-#: ../src/spacecmd/configchannel.py:1436
+#: ../src/spacecmd/configchannel.py:1437
 msgid "Channel to clone:"
 msgstr "複製するチャンネル:"
 
-#: ../src/spacecmd/configchannel.py:1437
+#: ../src/spacecmd/configchannel.py:1438
 msgid "Clone label:"
 msgstr "複製するラベル:"
 
-#: ../src/spacecmd/configchannel.py:1446
+#: ../src/spacecmd/configchannel.py:1447
 msgid "Error no channel label passed!"
 msgstr "チャンネルラベルを指定していません！"
 
-#: ../src/spacecmd/configchannel.py:1455
+#: ../src/spacecmd/configchannel.py:1456
 msgid "No suitable channels to clone has been found."
 msgstr "複製すべきチャンネルが見つかりませんでした。"
 
-#: ../src/spacecmd/configchannel.py:1508
+#: ../src/spacecmd/configchannel.py:1509
 msgid "no configchannel given"
 msgstr "設定チャンネルを指定していません"
 
-#: ../src/spacecmd/configchannel.py:1511
+#: ../src/spacecmd/configchannel.py:1512
 msgid "invalid configchannel label "
 msgstr "設定チャンネルのラベルが正しくありません "
 
-#: ../src/spacecmd/configchannel.py:1537
+#: ../src/spacecmd/configchannel.py:1538
 msgid "configchannel_diff: diff between config channels"
 msgstr "configchannel_diff: 設定チャンネル間の差分表示"
 
-#: ../src/spacecmd/configchannel.py:1539
+#: ../src/spacecmd/configchannel.py:1540
 msgid "usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "使用方法: configchannel_diff チャンネル_1 チャンネル_2"
 
-#: ../src/spacecmd/configchannel.py:1588
+#: ../src/spacecmd/configchannel.py:1590
 msgid "configchannel_sync:"
 msgstr "configchannel_sync:"
 
-#: ../src/spacecmd/configchannel.py:1589
+#: ../src/spacecmd/configchannel.py:1591
 msgid "sync config files between two config channels"
 msgstr "2 つの設定チャンネル間で設定ファイルを同期"
 
-#: ../src/spacecmd/configchannel.py:1591
+#: ../src/spacecmd/configchannel.py:1593
 msgid "usage: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "使用方法: configchannel_sync 同期元チャンネル 同期先チャンネル"
 
-#: ../src/spacecmd/configchannel.py:1629
+#: ../src/spacecmd/configchannel.py:1631
 msgid "syncing files from configchannel "
 msgstr "設定チャンネルからファイルを同期しています "
 
-#: ../src/spacecmd/configchannel.py:1636
+#: ../src/spacecmd/configchannel.py:1638
 msgid "files common in both channels:"
 msgstr "両方のチャンネルでの共通ファイル:"
 
-#: ../src/spacecmd/configchannel.py:1642
+#: ../src/spacecmd/configchannel.py:1644
 msgid "files only in source "
 msgstr "同期元にしかないファイル "
 
-#: ../src/spacecmd/configchannel.py:1648
+#: ../src/spacecmd/configchannel.py:1650
 msgid "files only in target "
 msgstr "同期先にしかないファイル "
 
-#: ../src/spacecmd/configchannel.py:1653
+#: ../src/spacecmd/configchannel.py:1655
 msgid ""
 "files that are in both channels will be overwritten in the target channel"
 msgstr ""
 "両方のチャンネルに存在するファイルについては、同期先のファイルが上書きされま"
 "す"
 
-#: ../src/spacecmd/configchannel.py:1655
+#: ../src/spacecmd/configchannel.py:1657
 msgid "files only in the source channel will be added to the target channel"
 msgstr ""
 "同期元のチャンネルにしかないファイルについては、同期先のチャンネルに追加され"
 "ます"
 
-#: ../src/spacecmd/configchannel.py:1657
+#: ../src/spacecmd/configchannel.py:1659
 msgid "files only in the target channel will be deleted"
 msgstr "同期先のチャンネルにしかないファイルは削除されます"
 
-#: ../src/spacecmd/configchannel.py:1660
+#: ../src/spacecmd/configchannel.py:1662
 msgid "nothing to do"
 msgstr "何も行なう必要がありません"
 
-#: ../src/spacecmd/configchannel.py:1664
+#: ../src/spacecmd/configchannel.py:1666
 msgid "perform synchronisation [y/N]:"
 msgstr "同期を実行しますか [y/N]:"
 
-#: ../src/spacecmd/configchannel.py:1716
+#: ../src/spacecmd/configchannel.py:1718
 msgid "unknown file type "
 msgstr "不明なファイルタイプです "
 
@@ -2371,7 +2371,7 @@ msgstr "kickstart_list: 利用可能なキックスタートプロファイル�
 msgid "usage: kickstart_list"
 msgstr "使用方法: kickstart_list"
 
-#: ../src/spacecmd/kickstart.py:86 ../src/spacecmd/kickstart.py:2188
+#: ../src/spacecmd/kickstart.py:86 ../src/spacecmd/kickstart.py:2189
 msgid "No kickstart profiles available"
 msgstr "利用可能なキックスタートプロファイルはありません"
 
@@ -2429,7 +2429,7 @@ msgid "Passwords don't match"
 msgstr "パスワードが合致しません"
 
 #: ../src/spacecmd/kickstart.py:150 ../src/spacecmd/kickstart.py:275
-#: ../src/spacecmd/kickstart.py:2058 ../src/spacecmd/kickstart.py:2202
+#: ../src/spacecmd/kickstart.py:2059 ../src/spacecmd/kickstart.py:2203
 msgid "The Kickstart name is required"
 msgstr "キックスタート名を指定する必要があります"
 
@@ -2457,8 +2457,8 @@ msgstr "使用方法: kickstart_delete プロファイル_1 プロファイル_2
 msgid "usage: kickstart_delete \"PROF*\""
 msgstr "使用方法: kickstart_delete \"PROF*\""
 
-#: ../src/spacecmd/kickstart.py:208 ../src/spacecmd/kickstart.py:2684
-#: ../src/spacecmd/kickstart.py:2740 ../src/spacecmd/kickstart.py:2784
+#: ../src/spacecmd/kickstart.py:208 ../src/spacecmd/kickstart.py:2686
+#: ../src/spacecmd/kickstart.py:2742 ../src/spacecmd/kickstart.py:2786
 msgid "No valid kickstart labels passed as arguments!"
 msgstr "パラメータで正しいキックスタートラベルを指定していません！"
 
@@ -2494,7 +2494,7 @@ msgstr ""
 "  -d (ディストリビューション)\n"
 "  -v (仮想化タイプ) ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 
-#: ../src/spacecmd/kickstart.py:283 ../src/spacecmd/kickstart.py:2062
+#: ../src/spacecmd/kickstart.py:283 ../src/spacecmd/kickstart.py:2063
 msgid "A filename is required"
 msgstr "ファイル名を指定する必要があります"
 
@@ -2597,41 +2597,41 @@ msgstr "変数"
 msgid "Scripts"
 msgstr "スクリプト"
 
-#: ../src/spacecmd/kickstart.py:508 ../src/spacecmd/kickstart.py:1976
+#: ../src/spacecmd/kickstart.py:508 ../src/spacecmd/kickstart.py:1977
 #, python-format
 msgid "Chroot:      %s"
 msgstr "chroot:      %s"
 
-#: ../src/spacecmd/kickstart.py:511 ../src/spacecmd/kickstart.py:1977
+#: ../src/spacecmd/kickstart.py:511 ../src/spacecmd/kickstart.py:1978
 #, python-format
 msgid "Interpreter: %s"
 msgstr "インタプリタ: %s"
 
-#: ../src/spacecmd/kickstart.py:537
+#: ../src/spacecmd/kickstart.py:538
 msgid "Could not retrieve the Kickstart file"
 msgstr "キックスタートファイルを取得できませんでした"
 
-#: ../src/spacecmd/kickstart.py:543
+#: ../src/spacecmd/kickstart.py:544
 msgid "kickstart_getcontents: Show the contents of a Kickstart profile"
 msgstr "kickstart_getcontents: キックスタートプロファイルの内容を"
 
-#: ../src/spacecmd/kickstart.py:544
+#: ../src/spacecmd/kickstart.py:545
 msgid "                   as they would be presented to a client"
 msgstr "                   クライアントに提示される形式で表示"
 
-#: ../src/spacecmd/kickstart.py:545
+#: ../src/spacecmd/kickstart.py:546
 msgid "usage: kickstart_getcontents LABEL"
 msgstr "使用方法: kickstart_getcontents ラベル"
 
-#: ../src/spacecmd/kickstart.py:579
+#: ../src/spacecmd/kickstart.py:580
 msgid "kickstart_rename: Rename a Kickstart profile"
 msgstr "kickstart_rename: キックスタートプロファイルの名前を変更"
 
-#: ../src/spacecmd/kickstart.py:580
+#: ../src/spacecmd/kickstart.py:581
 msgid "usage: kickstart_rename OLDNAME NEWNAME"
 msgstr "使用方法: kickstart_rename 変更前の名前 変更後の名前"
 
-#: ../src/spacecmd/kickstart.py:610
+#: ../src/spacecmd/kickstart.py:611
 msgid ""
 "kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
 "profile"
@@ -2639,31 +2639,31 @@ msgstr ""
 "kickstart_listcryptokeys: キックスタートプロファイルに関連づけられている暗号"
 "鍵を表示"
 
-#: ../src/spacecmd/kickstart.py:612
+#: ../src/spacecmd/kickstart.py:613
 msgid "usage: kickstart_listcryptokeys PROFILE"
 msgstr "使用方法: kickstart_listcryptokeys プロファイル"
 
-#: ../src/spacecmd/kickstart.py:642
+#: ../src/spacecmd/kickstart.py:643
 msgid "No crypto keys has been found"
 msgstr "暗号鍵が見つかりません"
 
-#: ../src/spacecmd/kickstart.py:650
+#: ../src/spacecmd/kickstart.py:651
 msgid "kickstart_addcryptokeys: Add crypto keys to a Kickstart profile"
 msgstr "kickstart_addcryptokeys: キックスタートプロファイルに暗号鍵を追加"
 
-#: ../src/spacecmd/kickstart.py:651
+#: ../src/spacecmd/kickstart.py:652
 msgid "usage: kickstart_addcryptokeys PROFILE <KEY ...>"
 msgstr "使用方法: kickstart_addcryptokeys プロファイル <鍵 ...>"
 
-#: ../src/spacecmd/kickstart.py:679
+#: ../src/spacecmd/kickstart.py:680
 msgid "kickstart_removecryptokeys: Remove crypto keys from a Kickstart profile"
 msgstr "kickstart_removecryptokeys: キックスタートプロファイルから暗号鍵を削除"
 
-#: ../src/spacecmd/kickstart.py:681
+#: ../src/spacecmd/kickstart.py:682
 msgid "usage: kickstart_removecryptokeys PROFILE <KEY ...>"
 msgstr "使用方法: kickstart_removecryptokeys プロファイル <鍵 ...>"
 
-#: ../src/spacecmd/kickstart.py:723
+#: ../src/spacecmd/kickstart.py:724
 msgid ""
 "kickstart_listactivationkeys: List the activation keys associated with a "
 "Kickstart profile"
@@ -2671,21 +2671,21 @@ msgstr ""
 "kickstart_listactivationkeys: キックスタートプロファイルに関連づけられている"
 "アクティベーションキーを表示"
 
-#: ../src/spacecmd/kickstart.py:725
+#: ../src/spacecmd/kickstart.py:726
 msgid "usage: kickstart_listactivationkeys PROFILE"
 msgstr "使用方法: kickstart_listactivationkeys プロファイル"
 
-#: ../src/spacecmd/kickstart.py:759
+#: ../src/spacecmd/kickstart.py:760
 msgid "kickstart_addactivationkeys: Add activation keys to a Kickstart profile"
 msgstr ""
 "kickstart_addactivationkeys: キックスタートプロファイルにアクティベーション"
 "キーを追加"
 
-#: ../src/spacecmd/kickstart.py:761
+#: ../src/spacecmd/kickstart.py:762
 msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
 msgstr "使用方法: kickstart_addactivationkeys プロファイル <キー ...>"
 
-#: ../src/spacecmd/kickstart.py:792
+#: ../src/spacecmd/kickstart.py:793
 msgid ""
 "kickstart_removeactivationkeys: Remove activation keys from a Kickstart "
 "profile"
@@ -2693,15 +2693,15 @@ msgstr ""
 "kickstart_removeactivationkeys: キックスタートプロファイルからアクティベー"
 "ションキーを削除"
 
-#: ../src/spacecmd/kickstart.py:794
+#: ../src/spacecmd/kickstart.py:795
 msgid "usage: kickstart_removeactivationkeys PROFILE <KEY ...>"
 msgstr "使用方法: kickstart_removeactivationkeys プロファイル <キー ...>"
 
-#: ../src/spacecmd/kickstart.py:820
+#: ../src/spacecmd/kickstart.py:821
 msgid "Remove these keys [y/N]:"
 msgstr "これらのキーを削除します [y/N]:"
 
-#: ../src/spacecmd/kickstart.py:835
+#: ../src/spacecmd/kickstart.py:836
 msgid ""
 "kickstart_enableconfigmanagement: Enable configuration management on a "
 "Kickstart profile"
@@ -2709,11 +2709,11 @@ msgstr ""
 "kickstart_enableconfigmanagement: キックスタートプロファイルでの設定管理を有"
 "効化"
 
-#: ../src/spacecmd/kickstart.py:837
+#: ../src/spacecmd/kickstart.py:838
 msgid "usage: kickstart_enableconfigmanagement PROFILE"
 msgstr "使用方法: kickstart_enableconfigmanagement プロファイル"
 
-#: ../src/spacecmd/kickstart.py:870
+#: ../src/spacecmd/kickstart.py:871
 msgid ""
 "kickstart_disableconfigmanagement: Disable configuration management on a "
 "Kickstart profile"
@@ -2721,22 +2721,22 @@ msgstr ""
 "kickstart_disableconfigmanagement: キックスタートプロファイルでの設定管理を無"
 "効化"
 
-#: ../src/spacecmd/kickstart.py:872
+#: ../src/spacecmd/kickstart.py:873
 msgid "usage: kickstart_disableconfigmanagement PROFILE"
 msgstr "使用方法: kickstart_disableconfigmanagement プロファイル"
 
-#: ../src/spacecmd/kickstart.py:905
+#: ../src/spacecmd/kickstart.py:906
 msgid ""
 "kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
 msgstr ""
 "kickstart_enableremotecommands: キックスタートプロファイルでのリモートコマン"
 "ドの有効化"
 
-#: ../src/spacecmd/kickstart.py:907
+#: ../src/spacecmd/kickstart.py:908
 msgid "usage: kickstart_enableremotecommands PROFILE"
 msgstr "使用方法: kickstart_enableremotecommands プロファイル"
 
-#: ../src/spacecmd/kickstart.py:940
+#: ../src/spacecmd/kickstart.py:941
 msgid ""
 "kickstart_disableremotecommands: Disable remote commands on a Kickstart "
 "profile"
@@ -2744,185 +2744,185 @@ msgstr ""
 "kickstart_disableremotecommands: キックスタートプロファイルでのリモートコマン"
 "ドの無効化"
 
-#: ../src/spacecmd/kickstart.py:942
+#: ../src/spacecmd/kickstart.py:943
 msgid "usage: kickstart_disableremotecommands PROFILE"
 msgstr "使用方法: kickstart_disableremotecommands プロファイル"
 
-#: ../src/spacecmd/kickstart.py:974
+#: ../src/spacecmd/kickstart.py:975
 msgid "kickstart_setlocale: Set the locale for a Kickstart profile"
 msgstr "kickstart_setlocale: キックスタートプロファイルのロケールを設定"
 
-#: ../src/spacecmd/kickstart.py:975
+#: ../src/spacecmd/kickstart.py:976
 msgid "usage: kickstart_setlocale PROFILE LOCALE"
 msgstr "使用方法: kickstart_setlocale プロファイル ロケール"
 
-#: ../src/spacecmd/kickstart.py:1015
+#: ../src/spacecmd/kickstart.py:1016
 msgid "kickstart_setselinux: Set the SELinux mode for a Kickstart profile"
 msgstr ""
 "kickstart_setselinux: キックスタートプロファイルに対して SELinux モードを設定"
 
-#: ../src/spacecmd/kickstart.py:1017
+#: ../src/spacecmd/kickstart.py:1018
 msgid "usage: kickstart_setselinux PROFILE MODE"
 msgstr "使用方法: kickstart_setselinux プロファイル モード"
 
-#: ../src/spacecmd/kickstart.py:1054
+#: ../src/spacecmd/kickstart.py:1055
 msgid ""
 "kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
 msgstr ""
 "kickstart_setpartitions: キックスタートプロファイルに対してパーティション方式"
 "を設定"
 
-#: ../src/spacecmd/kickstart.py:1056
+#: ../src/spacecmd/kickstart.py:1057
 msgid "usage: kickstart_setpartitions PROFILE"
 msgstr "使用方法: kickstart_setpartitions プロファイル"
 
-#: ../src/spacecmd/kickstart.py:1107
+#: ../src/spacecmd/kickstart.py:1108
 msgid "kickstart_setdistribution: Set the distribution for a Kickstart profile"
 msgstr ""
 "kickstart_setdistribution: キックスタートプロファイルに対してディストリビュー"
 "ションを設定"
 
-#: ../src/spacecmd/kickstart.py:1109
+#: ../src/spacecmd/kickstart.py:1110
 msgid "usage: kickstart_setdistribution PROFILE DISTRIBUTION"
 msgstr ""
 "使用方法: kickstart_setdistribution プロファイル ディストリビューション"
 
-#: ../src/spacecmd/kickstart.py:1145
+#: ../src/spacecmd/kickstart.py:1146
 msgid "kickstart_enablelogging: Enable logging for a Kickstart profile"
 msgstr ""
 "kickstart_enablelogging: キックスタートプロファイルに対してログを有効化"
 
-#: ../src/spacecmd/kickstart.py:1146
+#: ../src/spacecmd/kickstart.py:1147
 msgid "usage: kickstart_enablelogging PROFILE"
 msgstr "使用方法: kickstart_enablelogging プロファイル"
 
-#: ../src/spacecmd/kickstart.py:1180
+#: ../src/spacecmd/kickstart.py:1181
 msgid "kickstart_addvariable: Add a variable to a Kickstart profile"
 msgstr "kickstart_addvariable: キックスタートプロファイルに変数を追加"
 
-#: ../src/spacecmd/kickstart.py:1181
+#: ../src/spacecmd/kickstart.py:1182
 msgid "usage: kickstart_addvariable PROFILE KEY VALUE"
 msgstr "使用方法: kickstart_addvariable プロファイル キー 値"
 
-#: ../src/spacecmd/kickstart.py:1221
+#: ../src/spacecmd/kickstart.py:1222
 msgid "kickstart_updatevariable: Update a variable in a Kickstart profile"
 msgstr "kickstart_updatevariable: キックスタートプロファイルの変数を更新"
 
-#: ../src/spacecmd/kickstart.py:1223
+#: ../src/spacecmd/kickstart.py:1224
 msgid "usage: kickstart_updatevariable PROFILE KEY VALUE"
 msgstr "使用方法: kickstart_updatevariable プロファイル キー 値"
 
-#: ../src/spacecmd/kickstart.py:1260
+#: ../src/spacecmd/kickstart.py:1261
 msgid "kickstart_removevariables: Remove variables from a Kickstart profile"
 msgstr "kickstart_removevariables: キックスタートプロファイルから変数を削除"
 
-#: ../src/spacecmd/kickstart.py:1262
+#: ../src/spacecmd/kickstart.py:1263
 msgid "usage: kickstart_removevariables PROFILE <KEY ...>"
 msgstr "使用方法: kickstart_removevariables プロファイル <キー ...>"
 
-#: ../src/spacecmd/kickstart.py:1313
+#: ../src/spacecmd/kickstart.py:1314
 msgid "kickstart_listvariables: List the variables of a Kickstart profile"
 msgstr "kickstart_listvariables: キックスタートプロファイルの変数を表示"
 
-#: ../src/spacecmd/kickstart.py:1315
+#: ../src/spacecmd/kickstart.py:1316
 msgid "usage: kickstart_listvariables PROFILE"
 msgstr "使用方法: kickstart_listvariables プロファイル"
 
-#: ../src/spacecmd/kickstart.py:1350
+#: ../src/spacecmd/kickstart.py:1351
 msgid "kickstart_addoption: Set an option for a Kickstart profile"
 msgstr ""
 "kickstart_addoption: キックスタートプロファイルに対してオプションを設定"
 
-#: ../src/spacecmd/kickstart.py:1351
+#: ../src/spacecmd/kickstart.py:1352
 msgid "usage: kickstart_addoption PROFILE KEY [VALUE]"
 msgstr "使用方法: kickstart_addoption プロファイル キー [値]"
 
-#: ../src/spacecmd/kickstart.py:1400
+#: ../src/spacecmd/kickstart.py:1401
 #, python-format
 msgid "%s needs to be set as a custom option"
 msgstr "%s はカスタムオプションとして設定する必要があります"
 
-#: ../src/spacecmd/kickstart.py:1408
+#: ../src/spacecmd/kickstart.py:1409
 msgid "kickstart_removeoptions: Remove options from a Kickstart profile"
 msgstr ""
 "kickstart_removeoptions: キックスタートプロファイルからオプションを削除"
 
-#: ../src/spacecmd/kickstart.py:1409
+#: ../src/spacecmd/kickstart.py:1410
 msgid "usage: kickstart_removeoptions PROFILE <OPTION ...>"
 msgstr "使用方法: kickstart_removeoptions プロファイル <オプション ...>"
 
-#: ../src/spacecmd/kickstart.py:1463
+#: ../src/spacecmd/kickstart.py:1464
 msgid "kickstart_listoptions: List the options of a Kickstart profile"
 msgstr "kickstart_listoptions: キックスタートプロファイルのオプションを表示"
 
-#: ../src/spacecmd/kickstart.py:1465
+#: ../src/spacecmd/kickstart.py:1466
 msgid "usage: kickstart_listoptions PROFILE"
 msgstr "使用方法: kickstart_listoptions プロファイル"
 
-#: ../src/spacecmd/kickstart.py:1501
+#: ../src/spacecmd/kickstart.py:1502
 msgid ""
 "kickstart_listcustomoptions: List the custom options of a Kickstart profile"
 msgstr ""
 "kickstart_listcustomoptions: キックスタートプロファイルのカスタムオプションを"
 "表示"
 
-#: ../src/spacecmd/kickstart.py:1503
+#: ../src/spacecmd/kickstart.py:1504
 msgid "usage: kickstart_listcustomoptions PROFILE"
 msgstr "使用方法: kickstart_listcustomoptions プロファイル"
 
-#: ../src/spacecmd/kickstart.py:1539
+#: ../src/spacecmd/kickstart.py:1540
 msgid "kickstart_setcustomoptions: Set custom options for a Kickstart profile"
 msgstr ""
 "kickstart_setcustomoptions: キックスタートプロファイルに対してカスタムオプ"
 "ションを設定"
 
-#: ../src/spacecmd/kickstart.py:1541
+#: ../src/spacecmd/kickstart.py:1542
 msgid "usage: kickstart_setcustomoptions PROFILE"
 msgstr "使用方法: kickstart_setcustomoptions プロファイル"
 
-#: ../src/spacecmd/kickstart.py:1591
+#: ../src/spacecmd/kickstart.py:1592
 msgid "kickstart_addchildchannels: Add a child channels to a Kickstart profile"
 msgstr ""
 "kickstart_addchildchannels: キックスタートプロファイルに子チャンネルを追加"
 
-#: ../src/spacecmd/kickstart.py:1593
+#: ../src/spacecmd/kickstart.py:1594
 msgid "usage: kickstart_addchildchannels PROFILE <CHANNEL ...>"
 msgstr "使用方法: kickstart_addchildchannels プロファイル <チャンネル ...>"
 
-#: ../src/spacecmd/kickstart.py:1653
+#: ../src/spacecmd/kickstart.py:1654
 msgid ""
 "kickstart_removechildchannels: Remove child channels from a Kickstart profile"
 msgstr ""
 "kickstart_removechildchannels: キックスタートプロファイルから子チャンネルを削"
 "除"
 
-#: ../src/spacecmd/kickstart.py:1655
+#: ../src/spacecmd/kickstart.py:1656
 msgid "usage: kickstart_removechildchannels PROFILE <CHANNEL ...>"
 msgstr "使用方法: kickstart_removechildchannels プロファイル <チャンネル ...>"
 
-#: ../src/spacecmd/kickstart.py:1700
+#: ../src/spacecmd/kickstart.py:1701
 msgid ""
 "kickstart_listchildchannels: List the child channels of a Kickstart profile"
 msgstr ""
 "kickstart_listchildchannels: キックスタートプロファイルの子チャンネルを表示"
 
-#: ../src/spacecmd/kickstart.py:1702
+#: ../src/spacecmd/kickstart.py:1703
 msgid "usage: kickstart_listchildchannels PROFILE"
 msgstr "使用方法: kickstart_listchildchannels プロファイル"
 
-#: ../src/spacecmd/kickstart.py:1739
+#: ../src/spacecmd/kickstart.py:1740
 msgid ""
 "kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
 msgstr ""
 "kickstart_addfilepreservations: キックスタートプロファイルにファイル保持を追"
 "加"
 
-#: ../src/spacecmd/kickstart.py:1741
+#: ../src/spacecmd/kickstart.py:1742
 msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
 msgstr ""
 "使用方法: kickstart_addfilepreservations プロファイル <ファイルリスト ...>"
 
-#: ../src/spacecmd/kickstart.py:1778
+#: ../src/spacecmd/kickstart.py:1779
 msgid ""
 "kickstart_removefilepreservations: Remove file preservations from a "
 "Kickstart profile"
@@ -2930,59 +2930,59 @@ msgstr ""
 "kickstart_removefilepreservations: キックスタートプロファイルからファイル保持"
 "を削除"
 
-#: ../src/spacecmd/kickstart.py:1780
+#: ../src/spacecmd/kickstart.py:1781
 msgid "usage: kickstart_removefilepreservations PROFILE <FILE ...>"
 msgstr ""
 "使用方法: kickstart_removefilepreservations プロファイル <ファイル ...>"
 
-#: ../src/spacecmd/kickstart.py:1827
+#: ../src/spacecmd/kickstart.py:1828
 msgid "kickstart_listpackages: List the packages for a Kickstart profile"
 msgstr "kickstart_listpackages: キックスタートプロファイルのパッケージを表示"
 
-#: ../src/spacecmd/kickstart.py:1829
+#: ../src/spacecmd/kickstart.py:1830
 msgid "usage: kickstart_listpackages PROFILE"
 msgstr "使用方法: kickstart_listpackages プロファイル"
 
-#: ../src/spacecmd/kickstart.py:1862
+#: ../src/spacecmd/kickstart.py:1863
 msgid "kickstart_addpackages: Add packages to a Kickstart profile"
 msgstr "kickstart_addpackages: キックスタートプロファイルにパッケージを追加"
 
-#: ../src/spacecmd/kickstart.py:1863
+#: ../src/spacecmd/kickstart.py:1864
 msgid "usage: kickstart_addpackages PROFILE <PACKAGE ...>"
 msgstr "使用方法: kickstart_addpackages プロファイル <パッケージ ...>"
 
-#: ../src/spacecmd/kickstart.py:1898
+#: ../src/spacecmd/kickstart.py:1899
 msgid "kickstart_removepackages: Remove packages from a Kickstart profile"
 msgstr ""
 "kickstart_removepackages: キックスタートプロファイルからパッケージを削除"
 
-#: ../src/spacecmd/kickstart.py:1900
+#: ../src/spacecmd/kickstart.py:1901
 msgid "usage: kickstart_removepackages PROFILE <PACKAGE ...>"
 msgstr "使用方法: kickstart_removepackages プロファイル <パッケージ ...>"
 
-#: ../src/spacecmd/kickstart.py:1945
+#: ../src/spacecmd/kickstart.py:1946
 msgid "kickstart_listscripts: List the scripts for a Kickstart profile"
 msgstr "kickstart_listscripts: キックスタートプロファイルのスクリプトを表示"
 
-#: ../src/spacecmd/kickstart.py:1947
+#: ../src/spacecmd/kickstart.py:1948
 msgid "usage: kickstart_listscripts PROFILE"
 msgstr "使用方法: kickstart_listscripts プロファイル"
 
-#: ../src/spacecmd/kickstart.py:1966
+#: ../src/spacecmd/kickstart.py:1967
 #, python-format
 msgid "No scripts has been found for profile '%s'"
 msgstr "プロファイル '%s' にはスクリプトが見つかりませんでした"
 
-#: ../src/spacecmd/kickstart.py:1974
+#: ../src/spacecmd/kickstart.py:1975
 #, python-format
 msgid "ID:          %i"
 msgstr "ID:          %i"
 
-#: ../src/spacecmd/kickstart.py:1989
+#: ../src/spacecmd/kickstart.py:1990
 msgid "kickstart_addscript: Add a script to a Kickstart profile"
 msgstr "kickstart_addscript: キックスタートプロファイルにスクリプトを追加"
 
-#: ../src/spacecmd/kickstart.py:1990
+#: ../src/spacecmd/kickstart.py:1991
 msgid ""
 "usage: kickstart_addscript PROFILE [options])\n"
 "\n"
@@ -3004,80 +3004,80 @@ msgstr ""
 "  -c chroot 下で実行する\n"
 "  -t (テンプレート化の有効化)"
 
-#: ../src/spacecmd/kickstart.py:2025
+#: ../src/spacecmd/kickstart.py:2026
 msgid "Profile Name:"
 msgstr "プロファイル名:"
 
-#: ../src/spacecmd/kickstart.py:2027
+#: ../src/spacecmd/kickstart.py:2028
 msgid "Pre/Post Script [post]:"
 msgstr "事前 (pre)／事後 (post) [post]:"
 
-#: ../src/spacecmd/kickstart.py:2028
+#: ../src/spacecmd/kickstart.py:2029
 msgid "Chrooted [Y/n]:"
 msgstr "chroot を設定するかどうか [Y/n]:"
 
-#: ../src/spacecmd/kickstart.py:2029
+#: ../src/spacecmd/kickstart.py:2030
 msgid "Interpreter [/bin/bash]:"
 msgstr "インタプリタ [/bin/bash]:"
 
-#: ../src/spacecmd/kickstart.py:2066
+#: ../src/spacecmd/kickstart.py:2067
 msgid "The execution time is required"
 msgstr "実行タイミングを指定する必要があります"
 
-#: ../src/spacecmd/kickstart.py:2082
+#: ../src/spacecmd/kickstart.py:2083
 #, python-format
 msgid "Profile Name:   %s"
 msgstr "プロファイル名:   %s"
 
-#: ../src/spacecmd/kickstart.py:2083
+#: ../src/spacecmd/kickstart.py:2084
 #, python-format
 msgid "Execution Time: %s"
 msgstr "実行タイミング: %s"
 
-#: ../src/spacecmd/kickstart.py:2084
+#: ../src/spacecmd/kickstart.py:2085
 #, python-format
 msgid "Chroot:         %s"
 msgstr "chroot:         %s"
 
-#: ../src/spacecmd/kickstart.py:2085
+#: ../src/spacecmd/kickstart.py:2086
 #, python-format
 msgid "Template:       %s"
 msgstr "テンプレート:       %s"
 
-#: ../src/spacecmd/kickstart.py:2086
+#: ../src/spacecmd/kickstart.py:2087
 #, python-format
 msgid "Interpreter:    %s"
 msgstr "インタプリタ:    %s"
 
-#: ../src/spacecmd/kickstart.py:2087
+#: ../src/spacecmd/kickstart.py:2088
 msgid "Contents:"
 msgstr "内容:"
 
-#: ../src/spacecmd/kickstart.py:2107
+#: ../src/spacecmd/kickstart.py:2108
 msgid "kickstart_removescript: Remove a script from a Kickstart profile"
 msgstr "kickstart_removescript: キックスタートプロファイルからスクリプトを削除"
 
-#: ../src/spacecmd/kickstart.py:2108
+#: ../src/spacecmd/kickstart.py:2109
 msgid "usage: kickstart_removescript PROFILE [ID]"
 msgstr "使用方法: kickstart_removescript プロファイル [ID]"
 
-#: ../src/spacecmd/kickstart.py:2138 ../src/spacecmd/kickstart.py:2151
+#: ../src/spacecmd/kickstart.py:2139 ../src/spacecmd/kickstart.py:2152
 msgid "Invalid script ID"
 msgstr "スクリプト ID が正しくありません"
 
-#: ../src/spacecmd/kickstart.py:2146
+#: ../src/spacecmd/kickstart.py:2147
 msgid "Script ID:"
 msgstr "スクリプト ID:"
 
-#: ../src/spacecmd/kickstart.py:2153
+#: ../src/spacecmd/kickstart.py:2154
 msgid "Remove this script [y/N]:"
 msgstr "このスクリプトを削除します [y/N]:"
 
-#: ../src/spacecmd/kickstart.py:2166
+#: ../src/spacecmd/kickstart.py:2167
 msgid "kickstart_clone: Clone a Kickstart profile"
 msgstr "kickstart_clone: キックスタートプロファイルを複製"
 
-#: ../src/spacecmd/kickstart.py:2167
+#: ../src/spacecmd/kickstart.py:2168
 msgid ""
 "usage: kickstart_clone [options])\n"
 "\n"
@@ -3091,33 +3091,33 @@ msgstr ""
 "  -n (名前)\n"
 "  -c (複製先の名前)"
 
-#: ../src/spacecmd/kickstart.py:2192
+#: ../src/spacecmd/kickstart.py:2193
 msgid "Kickstart Profiles"
 msgstr "キックスタートプロファイル"
 
-#: ../src/spacecmd/kickstart.py:2197
+#: ../src/spacecmd/kickstart.py:2198
 msgid "Original Profile:"
 msgstr "元のプロファイル:"
 
-#: ../src/spacecmd/kickstart.py:2198
+#: ../src/spacecmd/kickstart.py:2199
 msgid "Cloned Profile:"
 msgstr "複製先のプロファイル:"
 
-#: ../src/spacecmd/kickstart.py:2206
+#: ../src/spacecmd/kickstart.py:2207
 msgid "The Kickstart clone name is required"
 msgstr "キックスタートの複製先の名前を指定する必要があります"
 
-#: ../src/spacecmd/kickstart.py:2211
+#: ../src/spacecmd/kickstart.py:2212
 msgid "Kickstart profile you've entered was not found"
 msgstr "指定したキックスタートプロファイルが見つかりませんでした"
 
-#: ../src/spacecmd/kickstart.py:2224
+#: ../src/spacecmd/kickstart.py:2225
 msgid "kickstart_export: export kickstart profile(s) to json format file"
 msgstr ""
 "kickstart_export: キックスタートプロファイルを JSON 形式のファイルにエクス"
 "ポートする"
 
-#: ../src/spacecmd/kickstart.py:2225
+#: ../src/spacecmd/kickstart.py:2226
 msgid ""
 "usage: kickstart_export <KSPROFILE>... [options])\n"
 "options:\n"
@@ -3141,12 +3141,12 @@ msgstr ""
 "\n"
 "注意 : プロファイルを指定しない場合、全てのキックスタートをエクスポートします"
 
-#: ../src/spacecmd/kickstart.py:2357
+#: ../src/spacecmd/kickstart.py:2358
 #, python-format
 msgid "Exporting ALL kickstart profiles to %s"
 msgstr "全てのキックスタートプロファイルを %s にエクスポートしています"
 
-#: ../src/spacecmd/kickstart.py:2365
+#: ../src/spacecmd/kickstart.py:2366
 msgid ""
 "Error, no valid kickstart profile passed, check name is  correct with "
 "spacecmd kickstart_list"
@@ -3154,41 +3154,41 @@ msgstr ""
 "エラーが発生しました。正しいキックスタートプロファイルを指定していません。 "
 "spacecmd kickstart_list コマンドで名前をご確認ください"
 
-#: ../src/spacecmd/kickstart.py:2385
+#: ../src/spacecmd/kickstart.py:2386
 #, python-format
 msgid "Exporting ks %s to %s"
 msgstr "ks %s を %s にエクスポートしています"
 
-#: ../src/spacecmd/kickstart.py:2392
+#: ../src/spacecmd/kickstart.py:2393
 #, python-format
 msgid "File %s exists, "
 msgstr "ファイル %s は存在しています。 "
 
-#: ../src/spacecmd/kickstart.py:2393
+#: ../src/spacecmd/kickstart.py:2394
 msgid "confirm overwrite file? (y/n)"
 msgstr "上書きしてよろしいですか？ (y/n)"
 
-#: ../src/spacecmd/kickstart.py:2396
+#: ../src/spacecmd/kickstart.py:2397
 msgid "Error saving exported kickstart profiles to file"
 msgstr ""
 "エクスポートしたキックスタートプロファイルをファイルに保存する際にエラーが発"
 "生しました"
 
-#: ../src/spacecmd/kickstart.py:2406
+#: ../src/spacecmd/kickstart.py:2407
 msgid "kickstart_import: import kickstart profile(s) from json file"
 msgstr ""
 "kickstart_import: JSON ファイルからキックスタートプロファイルをインポートする"
 
-#: ../src/spacecmd/kickstart.py:2407
+#: ../src/spacecmd/kickstart.py:2408
 msgid "usage: kickstart_import <JSONFILES...>"
 msgstr "使用方法: kickstart_import <JSON_ファイル...>"
 
-#: ../src/spacecmd/kickstart.py:2428
+#: ../src/spacecmd/kickstart.py:2429
 #, python-format
 msgid "Error importing kickstart %s"
 msgstr "キックスタート %s をインポートする際にエラーが発生しました"
 
-#: ../src/spacecmd/kickstart.py:2441
+#: ../src/spacecmd/kickstart.py:2442
 #, python-format
 msgid "ERROR : kickstart profile %s already exists! Skipping!"
 msgstr ""
@@ -3196,37 +3196,37 @@ msgstr ""
 "す！"
 
 #. create the ks, we need to drop the org prefix from the ks name
-#: ../src/spacecmd/kickstart.py:2445
+#: ../src/spacecmd/kickstart.py:2446
 #, python-format
 msgid "Found ks %s"
 msgstr "ks %s が見つかりました"
 
-#: ../src/spacecmd/kickstart.py:2501
+#: ../src/spacecmd/kickstart.py:2502
 #, python-format
 msgid "Error adding %s script"
 msgstr "%s スクリプトの追加時にエラーが発生しました"
 
-#: ../src/spacecmd/kickstart.py:2509
+#: ../src/spacecmd/kickstart.py:2510
 #, python-format
 msgid "failed to add ip range %s-%s, continuing"
 msgstr "IP 範囲 %s-%s を追加する処理が失敗しました。続行しています"
 
-#: ../src/spacecmd/kickstart.py:2523
+#: ../src/spacecmd/kickstart.py:2524
 #, python-format
 msgid "failed to add file preservation %s, skipping"
 msgstr "ファイル保持 %s の追加に失敗しました。読み飛ばしています"
 
-#: ../src/spacecmd/kickstart.py:2525
+#: ../src/spacecmd/kickstart.py:2526
 #, python-format
 msgid "file preservation list %s doesn't exist, skipping"
 msgstr "ファイル保持リスト %s は存在していません。読み飛ばしています"
 
-#: ../src/spacecmd/kickstart.py:2536
+#: ../src/spacecmd/kickstart.py:2537
 #, python-format
 msgid "Actvationkey %s does not exist on the "
 msgstr "アクティベーションキー %s が "
 
-#: ../src/spacecmd/kickstart.py:2547
+#: ../src/spacecmd/kickstart.py:2548
 #, python-format
 msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
 msgstr "GPG/SSL 鍵 %s が Spacewalk サーバ内に存在しません。読み飛ばしています"
@@ -3234,7 +3234,7 @@ msgstr "GPG/SSL 鍵 %s が Spacewalk サーバ内に存在しません。読み�
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
 #. fixup may be required
-#: ../src/spacecmd/kickstart.py:2556
+#: ../src/spacecmd/kickstart.py:2557
 msgid ""
 "Due to API ommissions, there are some settings which cannot be imported, "
 "please check and fixup manually if necessary"
@@ -3242,71 +3242,71 @@ msgstr ""
 "API ではいくつかの設定が省略されているため、インポートできない設定がありま"
 "す。インポートされた内容をご確認のうえ、必要であれば調整してください"
 
-#: ../src/spacecmd/kickstart.py:2558
+#: ../src/spacecmd/kickstart.py:2559
 msgid " * Details->Preserve ks.cfg"
 msgstr " * 詳細->ks.cfg を保持"
 
-#: ../src/spacecmd/kickstart.py:2559
+#: ../src/spacecmd/kickstart.py:2560
 msgid " * Details->Comment"
 msgstr " * 詳細->コメント"
 
-#: ../src/spacecmd/kickstart.py:2563
+#: ../src/spacecmd/kickstart.py:2564
 msgid " * Details->Organization Default Profile"
 msgstr " * 詳細->企業／組織のデフォルトプロファイル"
 
 #. No way to set the kernel options
-#: ../src/spacecmd/kickstart.py:2565
+#: ../src/spacecmd/kickstart.py:2566
 msgid " * Details->Kernel Options"
 msgstr " * 詳細->カーネルオプション"
 
-#: ../src/spacecmd/kickstart.py:2569
+#: ../src/spacecmd/kickstart.py:2570
 #, python-format
 msgid " * Details->Post Kernel Options : %s"
 msgstr " * 詳細->カーネルの後のオプション : %s"
 
-#: ../src/spacecmd/kickstart.py:2585
+#: ../src/spacecmd/kickstart.py:2586
 msgid "no kickstart label given"
 msgstr "キックスタートラベルが指定されていません"
 
-#: ../src/spacecmd/kickstart.py:2588
+#: ../src/spacecmd/kickstart.py:2589
 msgid "invalid kickstart label "
 msgstr "キックスタートラベルが正しくありません "
 
-#: ../src/spacecmd/kickstart.py:2605
+#: ../src/spacecmd/kickstart.py:2606
 msgid "kickstart_diff: diff kickstart files"
 msgstr "kickstart_diff: キックスタートファイルの差分を抽出"
 
-#: ../src/spacecmd/kickstart.py:2607
+#: ../src/spacecmd/kickstart.py:2608
 msgid "usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "使用方法: kickstart_diff 比較元チャンネル 比較先チャンネル"
 
-#: ../src/spacecmd/kickstart.py:2656
+#: ../src/spacecmd/kickstart.py:2658
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
 msgstr "kickstart_getupdatetype: キックスタートプロファイルの更新タイプを取得"
 
-#: ../src/spacecmd/kickstart.py:2657
+#: ../src/spacecmd/kickstart.py:2659
 msgid "usage: kickstart_getupdatetype PROFILE"
 msgstr "使用方法: kickstart_getupdatetype プロファイル"
 
-#: ../src/spacecmd/kickstart.py:2658
+#: ../src/spacecmd/kickstart.py:2660
 msgid "usage: kickstart_getupdatetype PROFILE1 PROFILE2"
 msgstr "使用方法: kickstart_getupdatetype プロファイル_1 プロファイル_2"
 
-#: ../src/spacecmd/kickstart.py:2659
+#: ../src/spacecmd/kickstart.py:2661
 msgid "usage: kickstart_getupdatetype \"PROF*\""
 msgstr "使用方法: kickstart_getupdatetype \"PROF*\""
 
-#: ../src/spacecmd/kickstart.py:2690 ../src/spacecmd/kickstart.py:2746
-#: ../src/spacecmd/kickstart.py:2790
+#: ../src/spacecmd/kickstart.py:2692 ../src/spacecmd/kickstart.py:2748
+#: ../src/spacecmd/kickstart.py:2792
 #, python-format
 msgid "kickstart label %s doesn't exist!"
 msgstr "キックスタートラベル %s が存在しません！"
 
-#: ../src/spacecmd/kickstart.py:2706
+#: ../src/spacecmd/kickstart.py:2708
 msgid "kickstart_setupdatetype: Set the update type for a kickstart profile(s)"
 msgstr "kickstart_setupdatetype: キックスタートプロファイルの更新タイプを設定"
 
-#: ../src/spacecmd/kickstart.py:2707
+#: ../src/spacecmd/kickstart.py:2709
 msgid ""
 "usage: kickstart_setupdatetype [options] KS_LABEL)\n"
 "\n"
@@ -3318,69 +3318,69 @@ msgstr ""
 "オプション:\n"
 "    -u (更新タイプ) ['red_hat', 'all', 'none']"
 
-#: ../src/spacecmd/kickstart.py:2721
+#: ../src/spacecmd/kickstart.py:2723
 msgid "Update Types"
 msgstr "更新タイプ"
 
-#: ../src/spacecmd/kickstart.py:2726
+#: ../src/spacecmd/kickstart.py:2728
 msgid "Update Type [none]:"
 msgstr "更新タイプ [none]:"
 
-#: ../src/spacecmd/kickstart.py:2757
+#: ../src/spacecmd/kickstart.py:2759
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
 msgstr ""
 "kickstart_getsoftwaredetails: キックスタートプロファイルのソフトウェア詳細を"
 "取得"
 
-#: ../src/spacecmd/kickstart.py:2758
+#: ../src/spacecmd/kickstart.py:2760
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
 msgstr "使用方法: kickstart_getsoftwaredetails キックスタートラベル"
 
-#: ../src/spacecmd/kickstart.py:2759
+#: ../src/spacecmd/kickstart.py:2761
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 msgstr ""
 "使用方法: kickstart_getsoftwaredetails キックスタートラベル_1 キックスタート"
 "ラベル_2 ..."
 
-#: ../src/spacecmd/kickstart.py:2796
+#: ../src/spacecmd/kickstart.py:2798
 #, python-format
 msgid "noBase:        %s"
 msgstr "ベース無し:        %s"
 
-#: ../src/spacecmd/kickstart.py:2797
+#: ../src/spacecmd/kickstart.py:2799
 #, python-format
 msgid "ignoreMissing: %s"
 msgstr "存在しないものを無視: %s"
 
-#: ../src/spacecmd/kickstart.py:2799
+#: ../src/spacecmd/kickstart.py:2801
 #, python-format
 msgid "Kickstart Label: %s"
 msgstr "キックスタートラベル: %s"
 
-#: ../src/spacecmd/kickstart.py:2800
+#: ../src/spacecmd/kickstart.py:2802
 #, python-format
 msgid "noBase:          %s"
 msgstr "ベース無し:          %s"
 
-#: ../src/spacecmd/kickstart.py:2801
+#: ../src/spacecmd/kickstart.py:2803
 #, python-format
 msgid "ignoreMissing:   %s"
 msgstr "存在しないものを無視:   %s"
 
-#: ../src/spacecmd/kickstart.py:2810
+#: ../src/spacecmd/kickstart.py:2812
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
 msgstr ""
 "kickstart_setsoftwaredetails: キックスタートプロファイルのソフトウェア詳細を"
 "設定。"
 
-#: ../src/spacecmd/kickstart.py:2811
+#: ../src/spacecmd/kickstart.py:2813
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
 "使用方法: kickstart_setsoftwaredetails プロファイル キックスタートパッケージ"
 "情報 値"
 
-#: ../src/spacecmd/kickstart.py:2812
+#: ../src/spacecmd/kickstart.py:2814
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
 "KICKSTART_PACKAGES_INFO VALUE"
@@ -3388,11 +3388,11 @@ msgstr ""
 "使用方法: kickstart_setsoftwaredetails プロファイル キックスタートパッケージ"
 "情報 値 キックスタートパッケージ情報 値"
 
-#: ../src/spacecmd/kickstart.py:2848
+#: ../src/spacecmd/kickstart.py:2850
 msgid "Selected profile does not exist"
 msgstr "選択したプロファイルは存在しません"
 
-#: ../src/spacecmd/kickstart.py:2851 ../src/spacecmd/kickstart.py:2856
+#: ../src/spacecmd/kickstart.py:2853 ../src/spacecmd/kickstart.py:2858
 msgid "Enter valid input"
 msgstr "正しい入力を行なってください"
 
@@ -3598,86 +3598,86 @@ msgstr "セッションファイルの書き込みができませんでした: %
 msgid "Connected to %s as %s"
 msgstr "%s に %s として接続しました"
 
-#: ../src/spacecmd/misc.py:415
+#: ../src/spacecmd/misc.py:416
 msgid "logout: Disconnect from the server"
 msgstr "logout: サーバから切断"
 
-#: ../src/spacecmd/misc.py:416
+#: ../src/spacecmd/misc.py:417
 msgid "usage: logout"
 msgstr "使用方法: logout"
 
-#: ../src/spacecmd/misc.py:433
+#: ../src/spacecmd/misc.py:434
 msgid "whoami: Print the name of the currently logged in user"
 msgstr "whoami: 現在ログインしているユーザのユーザ名を表示"
 
-#: ../src/spacecmd/misc.py:434
+#: ../src/spacecmd/misc.py:435
 msgid "usage: whoami"
 msgstr "使用方法: whoami"
 
-#: ../src/spacecmd/misc.py:442
+#: ../src/spacecmd/misc.py:443
 msgid "You are not logged in"
 msgstr "ログインしていません"
 
-#: ../src/spacecmd/misc.py:449
+#: ../src/spacecmd/misc.py:450
 msgid "whoamitalkingto: Print the name of the server"
 msgstr "whoamitalkingto: サーバの名前を表示"
 
-#: ../src/spacecmd/misc.py:450
+#: ../src/spacecmd/misc.py:451
 msgid "usage: whoamitalkingto"
 msgstr "使用方法: whoamitalkingto"
 
-#: ../src/spacecmd/misc.py:458
+#: ../src/spacecmd/misc.py:459
 msgid "Yourself"
 msgstr "あなた自身です"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:534
+#: ../src/spacecmd/misc.py:544
 msgid "** Generating errata cache **"
 msgstr "** エラータキャッシュを生成しています **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:584
+#: ../src/spacecmd/misc.py:594
 msgid "** Generating package cache **"
 msgstr "** パッケージキャッシュを生成しています **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:693
+#: ../src/spacecmd/misc.py:703
 msgid "** Generating system cache **"
 msgstr "** システムキャッシュを生成しています **"
 
-#: ../src/spacecmd/misc.py:728
+#: ../src/spacecmd/misc.py:738
 #, python-format
 msgid "Could not create directory %s"
 msgstr "ディレクトリ %s を作成できませんでした"
 
-#: ../src/spacecmd/misc.py:800
+#: ../src/spacecmd/misc.py:810
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "%s に対するシステム ID が見つかりません"
 
-#: ../src/spacecmd/misc.py:805
+#: ../src/spacecmd/misc.py:815
 msgid "Duplicate system profile names found!"
 msgstr "重複したシステムプロファイル名が見つかりました！"
 
-#: ../src/spacecmd/misc.py:806
+#: ../src/spacecmd/misc.py:816
 msgid "Please reference systems by ID or resolve the"
 msgstr "ID でシステムを参照するか、もしくは"
 
-#: ../src/spacecmd/misc.py:807
+#: ../src/spacecmd/misc.py:817
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' や 'system_rename' で問題点をご確認ください"
 
-#: ../src/spacecmd/misc.py:875
+#: ../src/spacecmd/misc.py:885
 #, python-format
 msgid "No systems in group %s"
 msgstr "グループ %s 内にはシステムがありません"
 
-#: ../src/spacecmd/misc.py:889
+#: ../src/spacecmd/misc.py:899
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "%s をサブスクライブしているシステムはありません"
 
-#: ../src/spacecmd/misc.py:949
+#: ../src/spacecmd/misc.py:959
 msgid "Is this ok [y/N]:"
 msgstr "よろしいですか [y/N]:"
 
