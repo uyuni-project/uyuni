@@ -27873,6 +27873,10 @@ given channel.</source>
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+        <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
