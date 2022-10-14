@@ -3,6 +3,12 @@
 - Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
 
 -------------------------------------------------------------------
+Fri Oct 14 14:05:38 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.38-1
+  * delay hardware refresh action to avoid missing channels (bsc#1204208)
+
+-------------------------------------------------------------------
 Tue Sep 27 10:17:15 UTC 2022 - marina.latini@suse.com
 
 - version 4.3.37-1
