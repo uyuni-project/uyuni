@@ -112,16 +112,16 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
 
-@opensuse153arm_minion
-  Scenario: Add openSUSE 15.3 for ARM
+@opensuse154arm_minion
+  Scenario: Add openSUSE 15.4 for ARM
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
-    And I enter "openSUSE Leap 15.3 aarch64" as the filtered product description
-    And I select "openSUSE Leap 15.3 aarch64" as a product
-    Then I should see the "openSUSE Leap 15.3 aarch64" selected
+    And I enter "openSUSE Leap 15.4 aarch64" as the filtered product description
+    And I select "openSUSE Leap 15.4 aarch64" as a product
+    Then I should see the "openSUSE Leap 15.4 aarch64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "openSUSE Leap 15.3 aarch64" product has been added
+    And I wait until I see "openSUSE Leap 15.4 aarch64" product has been added
 
 @centos7_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 7

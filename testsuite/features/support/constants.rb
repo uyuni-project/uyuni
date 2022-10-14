@@ -115,7 +115,7 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'debian10_ssh_minion' => 'bison',
                       'debian11_minion' => 'bison',
                       'debian11_ssh_minion' => 'bison',
-                      'opensuse153arm_minion' => 'bison' }.freeze
+                      'opensuse154arm_minion' => 'bison' }.freeze
 
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
                            'sle_client' => 'SLES15-SP3-Pool',
@@ -163,7 +163,7 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
                            'debian10_ssh_minion' => 'debian-10-pool',
                            'debian11_minion' => 'debian-11-pool',
                            'debian11_ssh_minion' => 'debian-11-pool',
-                           'opensuse153arm_minion' => 'openSUSE-Leap-15.3-Pool for aarch64' }.freeze
+                           'opensuse154arm_minion' => 'openSUSE-Leap-15.4-Pool for aarch64' }.freeze
 
 LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-product-suse-manager-proxy-4.2-pool-x86_64',
                           'SLES12-SP4-Pool' => 'sles12-sp4-pool-x86_64',
@@ -258,7 +258,7 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'debian10_ssh_minion' => 'amd64',
                       'debian11_minion' => 'amd64',
                       'debian11_ssh_minion' => 'amd64',
-                      'opensuse153arm_minion' => 'aarch64' }.freeze
+                      'opensuse154arm_minion' => 'aarch64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   # 'default' is required for auto-installation tests.

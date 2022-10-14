@@ -179,7 +179,8 @@ PKGLIST12 = [
 ONLYSLE12 = [
     "libzmq3",
     "gio-branding-SLE",
-    "wallpaper-branding-SLE"
+    "wallpaper-branding-SLE",
+    "venv-salt-minion",
 ]
 
 PKGLIST12_X86_ARM = [
@@ -356,7 +357,8 @@ RES7 = [
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
-    "python2-hwdata"
+    "python2-hwdata",
+    "venv-salt-minion",
 ]
 
 RES7_X86 = [
@@ -389,6 +391,7 @@ RES8 = [
     "python3-distro",
     "python3-immutables",
     "python3-contextvars",
+    "venv-salt-minion",
 ]
 
 RES8_X86 = [
@@ -461,6 +464,7 @@ PKGLIST15_SALT = [
     "salt-minion",
     "python3-apipkg*",
     "python3-iniconfig*",
+    "venv-salt-minion",
 ]
 
 ONLYSLE15 = [
@@ -613,6 +617,7 @@ PKGLISTUBUNTU1804 = [
     "gnupg",
     "python3-immutables",
     "python3-contextvars",
+    "venv-salt-minion",
 ]
 
 PKGLISTUBUNTU2004 = [
@@ -633,6 +638,7 @@ PKGLISTUBUNTU2004 = [
     "salt-common",
     "salt-minion",
     "gnupg",
+    "venv-salt-minion",
 ]
 
 PKGLISTDEBIAN9 = [
@@ -750,6 +756,7 @@ PKGLISTDEBIAN10 = [
     "salt-common",
     "salt-minion",
     "gnupg",
+    "venv-salt-minion",
     "python3-gnupg",
 ]
 
