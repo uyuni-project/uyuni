@@ -37,13 +37,13 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * This class implements a WebFilter that applies to all system details pages and adds the transactional update reboot
- * alert if necessary, considering whether the system supports Transactional Update.
+ * This class implements a WebFilter that applies to all system details pages and adds alerts if necessary.
  */
 @WebFilter("/systems/details/*")
-public class TransactionalUpdateRebootMessageFilter implements Filter {
+public class SystemDetailsMessageFilter implements Filter {
 
-    private static final String MESSAGE_KEY = "overview.jsp.transactionalupdate.reboot";
+    private static final String REBOOT_MESSAGE_KEY = "overview.jsp.transactionalupdate.reboot";
+    private static final String TRADITIONAL_STACK_MESSAGE_KEY = "overview.jsp.traditionalstack.deprecated";
 
     @Override
     public void doFilter(
@@ -53,33 +53,37 @@ public class TransactionalUpdateRebootMessageFilter implements Filter {
     ) throws ServletException, IOException {
         chain.doFilter(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
-        if (!isMessageAlreadyPresent(req)) {
-            RequestContext rctx = new RequestContext(req);
-            Long sid = rctx.getRequiredParam("sid");
-            User user = rctx.getCurrentUser();
-            Server s  = SystemManager.lookupByIdAndUser(sid, user);
-            s.asMinionServer().ifPresent(minion -> {
-                if (minion.doesOsSupportsTransactionalUpdate()) {
-                    ActionErrors errs = new ActionErrors();
-                    errs.add(
-                        ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage(MESSAGE_KEY)
-                    );
-                    StrutsDelegate.getInstance().saveMessages(req, errs);
-                }
-            });
+        RequestContext rctx = new RequestContext(req);
+        Long sid = rctx.getRequiredParam("sid");
+        User user = rctx.getCurrentUser();
+        Server s  = SystemManager.lookupByIdAndUser(sid, user);
+        s.asMinionServer().ifPresentOrElse(
+                minion -> addMessageIfNecessary(req, minion.doesOsSupportsTransactionalUpdate(), REBOOT_MESSAGE_KEY),
+                () -> addMessageIfNecessary(req, true, TRADITIONAL_STACK_MESSAGE_KEY)
+        );
+    }
+
+    private void addMessageIfNecessary(HttpServletRequest req, boolean condition, String messageKey) {
+        if (!condition || isMessageAlreadyPresent(req, messageKey)) {
+            return;
         }
+        ActionErrors errs = new ActionErrors();
+        errs.add(
+                ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage(messageKey)
+        );
+        StrutsDelegate.getInstance().saveMessages(req, errs);
     }
 
     /**
      * Checks if the message is already present in the session, to avoid duplicate alerts
      */
-    private boolean isMessageAlreadyPresent(HttpServletRequest request) {
+    private boolean isMessageAlreadyPresent(HttpServletRequest request, String messageKey) {
         Object sessionErrs = request.getSession().getAttribute(Globals.ERROR_KEY);
         if (sessionErrs != null) {
             Iterator<ActionMessage> i = ((ActionMessages) sessionErrs).get(ActionMessages.GLOBAL_MESSAGE);
             while (i.hasNext()) {
-                if (i.next().getKey().equals(MESSAGE_KEY)) {
+                if (i.next().getKey().equals(messageKey)) {
                     return true;
                 }
             }

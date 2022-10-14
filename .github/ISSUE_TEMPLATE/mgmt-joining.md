@@ -37,3 +37,4 @@ General template for new joiners of the SUSE Manager team.
 - [ ] Provide default passwords if applicable (testsuite VMs, SCC credentials, maybe https://gitlab.suse.de/galaxy/credentials)
 - [ ] Add to groups in IBS if applicable (e.g. `qam-manager` for QE)
 - [ ] Add the new employee to our [GitLab group](https://gitlab.suse.de/galaxy)
+- [ ] Schedule new joiner meetups with at least one [member from each squad](https://confluence.suse.com/x/OIGAOQ)

@@ -2790,6 +2790,21 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Returns whether there are traditional systems registered
+     *
+     * @param user The current user
+     * @return true if there is at least one system registered with Enterprise entitlement
+     */
+    public static boolean hasTraditionalSystems(User user) {
+        SelectMode m = ModeFactory.getMode("System_queries", "count_systems_with_entitlement");
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", user.getId());
+        params.put("entitlement_label", EntitlementManager.ENTERPRISE_ENTITLED);
+        DataResult<Map<String, Object>> dr = makeDataResult(params, null, null, m);
+        return ((Long) dr.get(0).get("count")).intValue() > 0;
+    }
+
+    /**
      * Returns the number of systems subscribed to the channel that are
      * <strong>not</strong> in the given org.
      *
