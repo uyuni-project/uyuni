@@ -12,36 +12,36 @@ Feature: Create activation keys
   Scenario: Add a child channel to the base product channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    And I enter "SLE-Test-Custom-Channel-x86_64" as "Channel Name"
-    And I enter "sle-test-custom-channel-x86_64" as "Channel Label"
+    And I enter "Fake-RPM-SLES15SP4-Channel" as "Channel Name"
+    And I enter "fake-rpm-sles15sp4-channel" as "Channel Label"
     And I select the parent channel for the "sle_minion" from "Parent Channel"
     And I select "x86_64" from "Architecture:"
-    And I enter "SLE-Test-Custom-Channel-x86_64 for testing" as "Channel Summary"
-    And I enter "Description for SLE-Test-Custom-Channel-x86_64 Child Channel." as "Channel Description"
+    And I enter "Fake-RPM-SLES15SP4-Channel for testing" as "Channel Summary"
+    And I enter "Description for Fake-RPM-SLES15SP4-Channel Child Channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel SLE-Test-Custom-Channel-x86_64 Child Channel created." text
+    Then I should see a "Channel Fake-RPM-SLES15SP4-Channel Child Channel created." text
 
   Scenario: Add the repository to the x86_64 child channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "SLE-Test-Custom-Channel-x86_64"
+    And I follow "Fake-RPM-SLES15SP4-Channel"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel SLE-Test-Custom-Channel-x86_64 updated" text
+    Then I should see a "Channel Fake-RPM-SLES15SP4-Channel updated" text
     When I follow "Repositories" in the content area
-    And I select the "Test-Repository-x86_64" repo
+    And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "SLE-Test-Custom-Channel-x86_64 repository information was successfully updated" text
+    Then I should see a "Fake-RPM-SLES15SP4-Channel repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the x86_64 channel
     When I enable source package syncing
     And I follow the left menu "Software > Manage > Channels"
-    And I follow "SLE-Test-Custom-Channel-x86_64"
+    And I follow "Fake-RPM-SLES15SP4-Channel"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for SLE-Test-Custom-Channel-x86_64." text
-    And I wait until the channel "sle-test-custom-channel-x86_64" has been synced
+    Then I should see a "Repository sync scheduled for Fake-RPM-SLES15SP4-Channel." text
+    And I wait until the channel "fake-rpm-sles15sp4-channel" has been synced
     And I disable source package syncing
 
   Scenario: Create an activation key with a channel
@@ -53,7 +53,7 @@ Feature: Create activation keys
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Test-Custom-Channel-x86_64"
+    And I check "Fake-RPM-SLES15SP4-Channel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
     And I should see a "Details" link
@@ -91,7 +91,7 @@ Feature: Create activation keys
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Test-Custom-Channel-x86_64"
+    And I check "Fake-RPM-SLES15SP4-Channel"
     And I select "Push via SSH" from "contact-method"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been created" text
@@ -105,6 +105,6 @@ Feature: Create activation keys
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Test-Custom-Channel-x86_64"
+    And I check "Fake-RPM-SLES15SP4-Channel"
     And I select "Push via SSH tunnel" from "contact-method"
     And I click on "Create Activation Key"
