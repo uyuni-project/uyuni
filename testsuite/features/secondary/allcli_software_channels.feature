@@ -49,6 +49,9 @@ Feature: Channel subscription via SSM
     Then "1" channels should be enabled on "sle_minion"
     And channel "Test-Channel-x86_64" should be enabled on "sle_minion"
 
+  Scenario: Wait 3 minutes for the scheduled action to be executed
+    When I wait for "180" seconds
+
 @sle_minion
   Scenario: Check channel change has completed for the SLES minion
     Given I am on the Systems overview page of this "sle_minion"

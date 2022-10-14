@@ -9,13 +9,28 @@ Feature: Action chains on several systems at once
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Pre-requisite: Use the Test-Channel-x86_64 in Red Hat-like minion
+    Given I am on the Systems overview page of this "rhlike_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Test-Channel-x86_64"
+    And I wait until I see "Test-Channel-x86_64 Child Channel" text
+    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    When I follow "scheduled" in the content area
+    And I wait until I see "1 system successfully completed this action." text, refreshing the page
+
   Scenario: Pre-requisite: downgrade packages before action chain test on several systems
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I enable repository "test_repo_rpm_pool" on this "rhlike_minion"
     And I remove package "andromeda-dummy" from this "rhlike_minion" without error control
     And I remove package "andromeda-dummy" from this "sle_minion" without error control
-    And I install old package "andromeda-dummy-1.0" on this "sle_minion"
-    And I install old package "andromeda-dummy-1.0" on this "rhlike_minion"
+    And I install package "andromeda-dummy-1.0" on this "sle_minion"
+    And I install package "andromeda-dummy-1.0" on this "rhlike_minion"
     And I refresh the metadata for "sle_minion"
     And I refresh the metadata for "rhlike_minion"
 
@@ -108,6 +123,20 @@ Feature: Action chains on several systems at once
   Scenario: Cleanup: remove temporary files for testing action chains on several systems
     When I run "rm /tmp/action_chain_done" on "sle_minion" without error control
     And I run "rm /tmp/action_chain_done" on "rhlike_minion" without error control
+
+  Scenario: Cleanup: Use the Test Base Channel in Red Hat-like minion
+    Given I am on the Systems overview page of this "rhlike_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Test Base Channel"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    When I follow "scheduled" in the content area
+    And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
   Scenario: Cleanup: remove remaining systems from SSM after action chain tests on several systems
     When I follow "Clear"
