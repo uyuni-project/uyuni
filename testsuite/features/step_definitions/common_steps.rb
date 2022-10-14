@@ -57,8 +57,8 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
 
   lines = interface.lines
   # selects only lines with IPv6 addresses and proceeds to form an array with only those addresses
-  ipv6_addresses_list = lines.grep(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/)
-  ipv6_addresses_list.map! { |ip_line| ip_line.slice(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/) }
+  ipv6_addresses_list = lines.grep(/2[:0-9a-f]*|fe80:[:0-9a-f]*/)
+  ipv6_addresses_list.map! { |ip_line| ip_line.slice(/2[:0-9a-f]*|fe80:[:0-9a-f]*/) }
 
   # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
   ipv6_address = find(:xpath, "//td[text()='IPv6 Address:']/following-sibling::td[1]").text
