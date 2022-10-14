@@ -9,17 +9,40 @@ Feature: Create activation keys
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Clone the child custom channel including test repositories
+  Scenario: Add a child channel to the base product channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone Channel"
-    And I select the custom architecture channel for "sle_minion" as the origin channel
-    And I choose "current"
-    And I click on "Clone Channel"
+    And I follow "Create Channel"
     And I enter "SLE-Test-Custom-Channel-x86_64" as "Channel Name"
     And I enter "sle-test-custom-channel-x86_64" as "Channel Label"
     And I select the parent channel for the "sle_minion" from "Parent Channel"
-    And I click on "Clone Channel"
-    Then I should see a "SLE-Test-Custom-Channel-x86_64" text
+    And I select "x86_64" from "Architecture:"
+    And I enter "SLE-Test-Custom-Channel-x86_64 for testing" as "Channel Summary"
+    And I enter "Description for SLE-Test-Custom-Channel-x86_64 Child Channel." as "Channel Description"
+    And I click on "Create Channel"
+    Then I should see a "Channel SLE-Test-Custom-Channel-x86_64 Child Channel created." text
+
+  Scenario: Add the repository to the x86_64 child channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "SLE-Test-Custom-Channel-x86_64"
+    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
+    And I click on "Update Channel"
+    Then I should see a "Channel SLE-Test-Custom-Channel-x86_64 updated" text
+    When I follow "Repositories" in the content area
+    And I select the "Test-Repository-x86_64" repo
+    And I click on "Save Repositories"
+    Then I should see a "SLE-Test-Custom-Channel-x86_64 repository information was successfully updated" text
+
+  Scenario: Synchronize the repository in the x86_64 channel
+    When I enable source package syncing
+    And I follow the left menu "Software > Manage > Channels"
+    And I follow "SLE-Test-Custom-Channel-x86_64"
+    And I follow "Repositories" in the content area
+    And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for SLE-Test-Custom-Channel-x86_64." text
+    And I wait until the channel "sle-test-custom-channel-x86_64" has been synced
+    And I disable source package syncing
 
   Scenario: Create an activation key with a channel
     When I follow the left menu "Systems > Activation Keys"
