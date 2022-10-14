@@ -399,7 +399,7 @@ Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   arch, _code = target.run('uname -m')
   arch.chomp!
   # TODO: adapt for architectures
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:sle-test-custom-channel-x86_64/repodata/*primary.xml.gz"
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-sles15sp4-channel/repodata/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -408,7 +408,7 @@ Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, ho
   arch, _code = target.run('uname -m')
   arch.chomp!
   # TODO: adapt for architectures
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:sle-test-custom-channel-x86_64/repodata/*primary.xml.gz"
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-sles15sp4-channel/repodata/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -417,7 +417,7 @@ Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   arch, _code = node.run('uname -m')
   arch.chomp!
   # TODO: adapt for architectures
-  dir_file = "/var/cache/zypp/raw/susemanager:sle-test-custom-channel-x86_64/repodata/"
+  dir_file = "/var/cache/zypp/raw/susemanager:fake-rpm-sles15sp4-channel/repodata/"
   _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
   raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
 end
@@ -427,7 +427,7 @@ Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, 
   arch, _code = node.run('uname -m')
   arch.chomp!
   # TODO: adapt for architectures
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:sle-test-custom-channel-x86_64/repodata/*updateinfo.xml.gz"
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-sles15sp4-channel/repodata/*updateinfo.xml.gz"
   node.run(cmd, timeout: 500)
 end
 

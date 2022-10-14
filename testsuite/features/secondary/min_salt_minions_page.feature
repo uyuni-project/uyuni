@@ -89,7 +89,7 @@ Feature: Management of minion keys
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Test-Custom-Channel-x86_64"
+    And I check "Fake-RPM-SLES15SP4-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"

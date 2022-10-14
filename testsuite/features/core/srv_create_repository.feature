@@ -13,7 +13,7 @@ Feature: Add a repository to a channel
   Scenario: Add a test repository for x86_64
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
-    And I enter "Test-Repository-x86_64" as "label"
+    And I enter "fake-rpm-repo" as "label"
     And I enter "http://localhost/pub/TestRepoRpmUpdates/" as "url"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
@@ -21,7 +21,7 @@ Feature: Add a repository to a channel
 
   Scenario: Disable metadata check for the x86_64 test repository
     When I follow the left menu "Software > Manage > Repositories"
-    And I follow "Test-Repository-x86_64"
+    And I follow "fake-rpm-repo"
     And I uncheck "metadataSigned"
     And I click on "Update Repository"
     Then I should see a "Repository updated successfully" text
@@ -34,7 +34,7 @@ Feature: Add a repository to a channel
     And I click on "Update Channel"
     Then I should see a "Channel Test-Channel-x86_64 updated" text
     When I follow "Repositories" in the content area
-    And I select the "Test-Repository-x86_64" repo
+    And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
     Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
 
@@ -57,7 +57,7 @@ Feature: Add a repository to a channel
     And I click on "Update Channel"
     Then I should see a "Channel Test-Channel-x86_64 Child Channel updated" text
     When I follow "Repositories" in the content area
-    And I select the "Test-Repository-x86_64" repo
+    And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
     Then I should see a "Test-Channel-x86_64 Child Channel repository information was successfully updated" text
 
@@ -74,7 +74,7 @@ Feature: Add a repository to a channel
   Scenario: Add a test repository for i586
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
-    And I enter "Test-Repository-i586" as "label"
+    And I enter "fake-i586-repo" as "label"
     And I enter "file:///srv/www/htdocs/pub/TestRepoRpmUpdates/" as "url"
     And I uncheck "metadataSigned"
     And I click on "Create Repository"
@@ -87,7 +87,7 @@ Feature: Add a repository to a channel
     And I click on "Update Channel"
     Then I should see a "Channel Test-Channel-i586 updated" text
     When I follow "Repositories" in the content area
-    And I select the "Test-Repository-i586" repo
+    And I select the "fake-i586-repo" repo
     And I click on "Save Repositories"
     Then I should see a "Test-Channel-i586 repository information was successfully updated" text
 
@@ -104,7 +104,7 @@ Feature: Add a repository to a channel
   Scenario: Add a test repository for Debian-like
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
-    And I enter "Test-Repository-Deb" as "label"
+    And I enter "fake-debian-repo" as "label"
     And I select "deb" from "contenttype"
     And I enter "http://localhost/pub/TestRepoDebUpdates/" as "url"
     And I click on "Create Repository"
@@ -115,7 +115,7 @@ Feature: Add a repository to a channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Repositories" in the content area
-    And I select the "Test-Repository-Deb" repo
+    And I select the "fake-debian-repo" repo
     And I click on "Save Repositories"
     Then I should see a "Test-Channel-Deb-AMD64 repository information was successfully updated" text
 
