@@ -48,7 +48,7 @@ Feature: Retracted patches
     And I follow "Show All Child Channels"
     And I follow "SLE-Test-Custom-Channel-x86_64"
     And I follow "Patches" in the content area
-    And I follow "CL-rute-dummy-0817"
+    And I follow "rute-dummy-0817"
     And I follow "Affected Systems"
     Then I should see a "No systems." text
     When I remove package "rute-dummy" from this "sle_minion"
@@ -74,29 +74,29 @@ Feature: Retracted patches
 
   Scenario: Retracted packages in the patch detail
     When I follow the left menu "Patches > Patch List > All"
-    And I follow "CL-rute-dummy-0815"
+    And I follow "rute-dummy-0815"
     Then I should see a "Status: Retracted" text
     When I go back
-    And I follow "CL-rute-dummy-0816"
+    And I follow "rute-dummy-0816"
     Then I should see a "Status: Stable" text
     When I go back
-    And I follow "CL-rute-dummy-0817"
+    And I follow "rute-dummy-0817"
     Then I should see a "Status: Retracted" text
 
   Scenario: Retracted packages in the patches list
     When I follow the left menu "Patches > Patch List > All"
-    Then the table row for "CL-rute-dummy-0815" should contain "retracted" icon
-    And the table row for "CL-rute-dummy-0816" should not contain "retracted" icon
-    And the table row for "CL-rute-dummy-0817" should contain "retracted" icon
+    Then the table row for "rute-dummy-0815" should contain "retracted" icon
+    And the table row for "rute-dummy-0816" should not contain "retracted" icon
+    And the table row for "rute-dummy-0817" should contain "retracted" icon
 
   Scenario: Retracted patches in the channel patches list
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
     And I follow "SLE-Test-Custom-Channel-x86_64"
     And I follow "Patches" in the content area
-    Then the table row for "CL-rute-dummy-0815" should contain "retracted" icon
-    And the table row for "CL-rute-dummy-0816" should not contain "retracted" icon
-    And the table row for "CL-rute-dummy-0817" should contain "retracted" icon
+    Then the table row for "rute-dummy-0815" should contain "retracted" icon
+    And the table row for "rute-dummy-0816" should not contain "retracted" icon
+    And the table row for "rute-dummy-0817" should contain "retracted" icon
  
   Scenario: Retracted packages in the channel packages list
     When I follow the left menu "Software > Channel List > All"

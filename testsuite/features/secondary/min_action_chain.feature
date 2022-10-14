@@ -45,7 +45,7 @@ Feature: Action chains on Salt minions
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    And I check "CL-andromeda-dummy-6789" in the list
+    And I check "andromeda-dummy-6789" in the list
     And I click on "Apply Patches"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
@@ -152,7 +152,7 @@ Feature: Action chains on Salt minions
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
-    Then I should see a "1. Apply patch(es) CL-andromeda-dummy-6789 on 1 system" text
+    Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "2. Remove milkyway-dummy from 1 system" text
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"

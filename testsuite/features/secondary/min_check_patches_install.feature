@@ -26,7 +26,7 @@ Feature: Display patches
 
   Scenario: Check SLES release 6789 patches
     When I follow the left menu "Patches > Patch List > Relevant"
-    And I follow "CL-andromeda-dummy-6789"
+    And I follow "andromeda-dummy-6789"
     Then I should see a "andromeda-dummy-6789 - Bug Fix Advisory" text
     And I should see a "Test update for andromeda-dummy" text
     And I should see a "SLE-Test-Custom-Channel-x86_64" link
@@ -34,7 +34,7 @@ Feature: Display patches
 
   Scenario: Check packages of SLES release 6789 patches
     When I follow the left menu "Patches > Patch List > Relevant"
-    And I follow "CL-andromeda-dummy-6789"
+    And I follow "andromeda-dummy-6789"
     And I follow "Packages"
     Then I should see a "SLE-Test-Custom-Channel-x86_64" link
     And I should see a "sha256:ba3f6d939fce43b60f4d20a09887e211f11024b61defb246dd62705bf4f4ced0" text
