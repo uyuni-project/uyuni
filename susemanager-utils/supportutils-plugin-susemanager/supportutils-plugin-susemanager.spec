@@ -28,6 +28,7 @@ BuildArch:      noarch
 Requires:       supportconfig-plugin-resource
 Requires:       supportconfig-plugin-tag
 Requires:       susemanager
+Requires:       perl(XML::Simple)
 Supplements:    packageand(spacewalk-common:supportutils)
 
 %description
