@@ -79,29 +79,55 @@ def __virtual__():
 
 @contextmanager
 def _get_cursor():
-    options = {
-        "host": "localhost",
-        "user": "",
-        "pass": "",
-        "db": "susemanager",
-        "port": 5432,
-    }
-    options.update(__opts__.get("__master_opts__", __opts__).get("postgres", {}))
-
-    cnx = psycopg2.connect(
+    def _connect_db():
+        options = {
+            "host": "localhost",
+            "user": "",
+            "pass": "",
+            "db": "susemanager",
+            "port": 5432,
+        }
+        options.update(__opts__.get("__master_opts__", __opts__).get("postgres", {}))
+        return psycopg2.connect(
             host=options['host'],
             user=options['user'],
             password=options['pass'],
             dbname=options['db'],
-            port=options['port'])
-    cursor = cnx.cursor()
+            port=options['port'],
+        )
+
+    if "suma_minion_cnx" in __context__:
+        cnx = __context__["suma_minion_cnx"]
+        log.debug("Reusing DB connection from the context")
+    else:
+        try:
+            cnx = _connect_db()
+            log.debug("Connected to the DB")
+            if "__master_opts__" not in __opts__:
+                __context__["suma_minion_cnx"] = cnx
+        except psycopg2.OperationalError as err:
+            log.error("Error on getting database pillar: %s", err.args)
+            return
     try:
-        log.debug("Connected to DB")
+        cursor = cnx.cursor()
+    except psycopg2.InterfaceError as err:
+        log.debug("Reconnecting to the DB")
+        try:
+            cnx = _connect_db()
+            log.debug("Reconnected to the DB")
+            if "__master_opts__" not in __opts__:
+                __context__["suma_minion_cnx"] = cnx
+            cursor = cnx.cursor()
+        except psycopg2.OperationalError as err:
+            log.error("Error on getting database pillar: %s", err.args)
+            return
+    try:
         yield cursor
     except psycopg2.DatabaseError as err:
-        log.error("Error in database pillar: %s", err.args)
+        log.error("Error on getting database pillar: %s", err.args)
     finally:
-        cnx.close()
+        if "__master_opts__" in __opts__:
+            cnx.close()
 
 
 def ext_pillar(minion_id, pillar, *args):
