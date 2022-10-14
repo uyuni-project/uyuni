@@ -30,7 +30,6 @@ Feature: Smoke tests for <client>
     And the IPv6 address for "<client>" should be correct
     And the system ID for "<client>" should be correct
     And the system name for "<client>" should be correct
-    And the uptime for "<client>" should be correct
     And I should see several text fields for "<client>"
 
 @skip_for_debianlike
