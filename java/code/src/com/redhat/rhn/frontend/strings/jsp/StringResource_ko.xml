@@ -29742,6 +29742,10 @@ given channel.</source>
         </context-group>
         <target state="final">사용자 지정 채널의 자동 동기화가 활성화되었습니다. 이 채널은 벤더 채널과 함께 자동으로 동기화됩니다.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+        <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
