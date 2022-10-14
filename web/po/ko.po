@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 16:46+0200\n"
-"PO-Revision-Date: 2022-09-14 08:32+0000\n"
+"POT-Creation-Date: 2022-10-14 10:59+0200\n"
+"PO-Revision-Date: 2022-10-14 04:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-2/ko/"
 ">\n"
@@ -1872,7 +1872,7 @@ msgstr "클러스터 세부 사항 편집"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:203
 msgid "Join node"
-msgstr "노드 조인"
+msgstr "노드 가입"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:213
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:51
@@ -1988,11 +1988,11 @@ msgstr "개요"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:48
 msgid "Join "
-msgstr "조인 "
+msgstr "가입 "
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:53
 msgid "NOTE: before joining a new node, make sure that the node has:"
-msgstr "참고: 새 노드를 조인하기 전 노드에 다음이 있는지 확인:"
+msgstr "참고: 새 노드를 가입하기 전 노드에 다음이 있는지 확인:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:57
 msgid ""
@@ -2011,7 +2011,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:68
 msgid "Select system to join"
-msgstr "조인할 시스템 선택"
+msgstr "가입할 시스템 선택"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:83
 msgid "New node configuration"
@@ -2019,7 +2019,7 @@ msgstr "새 노드 구성"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:103
 msgid "Schedule join node"
-msgstr "노드 조인 예약"
+msgstr "노드 가입 예약"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:107
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:74
@@ -2029,7 +2029,7 @@ msgstr "클러스터:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:111
 msgid "Node to join:"
-msgstr "조인할 노드:"
+msgstr "가입할 노드:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:121
 msgid "Join"
@@ -4719,7 +4719,7 @@ msgstr "파일이 서버의 임시 파일에 저장되고 부트스트랩 절차
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:415
 msgid "Leave empty for no passphrase"
-msgstr "비밀번호가 없는 경우 비워두십시오."
+msgstr "비밀번호가 없는 경우 비워둡니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:425
 msgid "Bootstrap Minions"
