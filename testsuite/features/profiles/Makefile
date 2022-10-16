@@ -60,5 +60,5 @@ clean-internal_prv:
 	rm -rf internal_prv
 
 clean-cloud_aws:
-	rm -rf clean-cloud_aws
+	rm -rf cloud_aws
 
