@@ -17,7 +17,7 @@ mgr_trust_customer_gpg_key:
   mgrcompat.module_run:
     - name: pkg.add_repo_key
     - path: /etc/pki/rpm-gpg/mgr-gpg-pub.key
-    - require:
+    - onchanges:
       - file: mgr_deploy_customer_gpg_key
 
 {%- endif %}
