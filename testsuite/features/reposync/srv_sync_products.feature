@@ -1,4 +1,4 @@
-# Copyright 2017-2022 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -16,10 +16,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Use the products and architecture filters
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
-    And I enter "RHEL7" as the filtered product description
-    Then I should see a "RHEL7 Base" text
+    And I enter "RHEL" as the filtered product description
+    Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
     When I select "x86_64" in the dropdown list of the architecture filter
-    Then I should see a "RHEL7 Base x86_64" text
+    Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
 
 @scc_credentials
   Scenario: View the channels list in the products page
