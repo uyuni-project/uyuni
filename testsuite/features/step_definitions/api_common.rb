@@ -477,7 +477,7 @@ Then(/^I should get the test channel$/) do
   arch = `uname -m`
   arch.chomp!
   channel = if arch != 'x86_64'
-              'test-channel-i586'
+              'fake-i586-channel'
             else
               'fake-rpm-sles15sp4-channel'
             end
