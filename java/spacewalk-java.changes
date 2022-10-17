@@ -1,3 +1,4 @@
+- Properly pass allow vendor change to salt state (bsc#1204203)
 - add ongres requirements to spec file (bsc#1203898)
 - Refresh pillar data (bsc#1197724)
 - Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
