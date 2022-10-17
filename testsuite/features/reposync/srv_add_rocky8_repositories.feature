@@ -68,7 +68,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I click on "Create Filter"
     And I wait at most 10 seconds until I see modal containing "Create a new filter" text
     Then I should see a "Create a new filter" text
-    And I enter "ruby-2.7" as "filter_name"
+    When I enter "ruby-2.7" as "filter_name"
     And I select "Module (Stream)" from "type"
     And I enter "ruby" as "moduleName"
     And I enter "2.7" as "moduleStream"

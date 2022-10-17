@@ -54,7 +54,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-8" text
     And I should see a "XCCDF Rule Results" text
-    # Workaround for the missing Rocky 8 openSCAP profile
+    # WORKAROUND for the missing Rocky 8 openSCAP profile
     # See https://github.com/SUSE/spacewalk/issues/19259
     # When I enter "pass" as the filtered XCCDF result type
     # And I click on the filter button
