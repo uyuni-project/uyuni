@@ -465,10 +465,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
-     * @deprecated Do not use this method
+     * Do not use this function to get the count of packages as this is not efficient.
+     *
      * @return Returns the set of packages for this channel.
      */
-    @Deprecated
     public Set<Package> getPackages() {
         return packages;
     }
