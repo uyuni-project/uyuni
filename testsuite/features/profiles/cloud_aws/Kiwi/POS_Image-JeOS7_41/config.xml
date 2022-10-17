@@ -62,8 +62,8 @@
     <repository type="rpm-md">
         <source path="http://ip-172-16-1-30.eu-central-1.compute.internal/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/"/>
     </repository>
-    <repository type="rpm-md">
-        <source path="http://ip-172-16-1-30.eu-central-1.compute.internal/ibs/Devel:/Galaxy:/Manager:/4.2:/SLE15-SUSE-Manager-Tools/images/repo/SLE-15-Manager-Tools-POOL-x86_64-Media1/"/>
+    <repository type="rpm-md"> <!-- 4.3 client tools - SP independent -->
+        <source path="http://ip-172-16-1-30.eu-central-1.compute.internal/ibs/Devel:/Galaxy:/Manager:/4.3:/SLE15-SUSE-Manager-Tools/images/repo/SLE-15-Manager-Tools-POOL-x86_64-Media1/"/>
     </repository>
 
     <packages type="image">
