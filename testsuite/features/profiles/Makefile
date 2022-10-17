@@ -40,7 +40,8 @@ internal_prv: clean-internal_prv
 	  cp -r $(TEMPLATE_KIWI_DIR) $@/ ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_AUTH)/$(REG_REPLACEMENT_PRV_AUTH)/g' ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_NOAUTH)/$(REG_REPLACEMENT_PRV_NOAUTH)/g' ; \
-	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)|$(REPO_PRV)|g' ; \
+	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)/SUSE/|$(REPO_PRV)/SUSE/|g' ; \
+	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)|$(REPO_PRV)/ibs|g' ; \
 	fi
 
 cloud_aws: clean-cloud_aws
@@ -50,7 +51,8 @@ cloud_aws: clean-cloud_aws
 	  cp -r $(TEMPLATE_KIWI_DIR) $@/ ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_AUTH)/$(REG_REPLACEMENT_AWS_AUTH)/g' ; \
 	  find $@ -type f | xargs sed -i 's/$(REGISTRY_PLACEHOLDER_NOAUTH)/$(REG_REPLACEMENT_AWS_NOAUTH)/g' ; \
-	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)|$(REPO_AWS)|g' ; \
+	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)/SUSE/|$(REPO_AWS)/SUSE/|g' ; \
+	  find $@ -type f | xargs sed -i 's|$(DEFAULT_REPO)|$(REPO_AWS)/ibs|g' ; \
 	fi
 
 clean-internal_nue:
@@ -60,5 +62,5 @@ clean-internal_prv:
 	rm -rf internal_prv
 
 clean-cloud_aws:
-	rm -rf clean-cloud_aws
+	rm -rf cloud_aws
 
