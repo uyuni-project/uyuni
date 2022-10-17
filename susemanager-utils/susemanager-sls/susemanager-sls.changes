@@ -1,3 +1,4 @@
+- Perform refresh with packages.pkgupdate state (bsc#1203884)
 - Prevent possible tracebacks on reading postgres opts
   with suma_minion salt pillar extension module
 
