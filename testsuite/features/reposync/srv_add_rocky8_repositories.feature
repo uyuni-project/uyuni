@@ -55,8 +55,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I follow "Custom Channel for Rocky 8 DVD"
     And I follow "Repositories" in the content area
     And I follow "Sync"
-    # button is not available because a sync is already running from the scenario before this
-    # maybe we need a timeout
+    Then I wait until the channel "rocky-8-iso" has been synced
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
 
