@@ -1,3 +1,5 @@
+- remove forced refresh in channel state as gpg key trust is now
+  handled in a different way (bsc#1204061)
 - import gpg keys directly to prevent using gpg-auto-import-keys
   on package operations (bsc#1203580)
 - Perform refresh with packages.pkgupdate state (bsc#1203884)
