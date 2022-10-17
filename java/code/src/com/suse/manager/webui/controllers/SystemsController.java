@@ -26,6 +26,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -340,7 +341,7 @@ public class SystemsController {
              sid = Long.parseLong(sidStr);
          }
          catch (NumberFormatException e) {
-             LOG.error(String.format("SystemID (%s) not a long", sidStr));
+             LOG.error(String.format("SystemID (%s) not a long", StringUtil.sanitizeLogInput(sidStr)));
              return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("invalid_systemid"));
          }
          Server server = null;
@@ -354,7 +355,9 @@ public class SystemsController {
          if (server.isMgrServer()) {
              Optional<MinionServer> minion = server.asMinionServer();
              if (minion.isEmpty()) {
-                 LOG.error("System ({}) not a minion", sidStr);
+                 if (LOG.isDebugEnabled()) {
+                     LOG.error("System ({}) not a minion", StringUtil.sanitizeLogInput(sidStr));
+                 }
                  return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
              }
              SystemManager.setReportDbUser(minion.get(), true);
@@ -375,7 +378,7 @@ public class SystemsController {
      */
     public String delete(Request request, Response response, User user) {
         String sidStr = request.params("sid");
-        Boolean noclean = Boolean.parseBoolean(GSON.fromJson(request.body(), Map.class).get("nocleanup").toString());
+        boolean noclean = Boolean.parseBoolean(GSON.fromJson(request.body(), Map.class).get("nocleanup").toString());
         long sid;
         try {
             sid = Long.parseLong(sidStr);
@@ -386,13 +389,11 @@ public class SystemsController {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         boolean isEmptyProfile = server.hasEntitlement(EntitlementManager.BOOTSTRAP);
 
-        if (server.asMinionServer().isPresent()) {
-            if (!noclean && !isEmptyProfile) {
-                Optional<List<String>> cleanupErr =
-                        saltApi.cleanupMinion(server.asMinionServer().get(), 300);
-                if (cleanupErr.isPresent()) {
-                    return json(response, ResultJson.error(cleanupErr.get()));
-                }
+        if (server.asMinionServer().isPresent() && !noclean && !isEmptyProfile) {
+            Optional<List<String>> cleanupErr =
+                    saltApi.cleanupMinion(server.asMinionServer().get(), 300);
+            if (cleanupErr.isPresent()) {
+                return json(response, ResultJson.error(cleanupErr.get()));
             }
         }
 
@@ -439,7 +440,7 @@ public class SystemsController {
      * @return the json response
      */
     public String getChannels(Request request, Response response, User user) {
-        return withServer(request, response, user, (server) -> {
+        return withServer(request, response, user, server -> {
             Channel base = server.getBaseChannel();
             ChannelsJson jsonChannels = new ChannelsJson();
             if (base != null) {
@@ -460,7 +461,7 @@ public class SystemsController {
      * @return the json response
      */
     public String getAvailableBaseChannels(Request request, Response response, User user) {
-        return withServer(request, response, user, (server) -> {
+        return withServer(request, response, user, server -> {
             List<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(
                     user, server);
             List<ChannelsJson.ChannelJson> baseChannels =
@@ -521,7 +522,7 @@ public class SystemsController {
             // we have a base selected and its id is not -1
             base = Optional.ofNullable(ChannelFactory
                     .lookupByIdAndUser(json.getBase().get().getId(), user));
-            if (!base.isPresent()) {
+            if (base.isEmpty()) {
                 return json(response,
                         HttpStatus.SC_FORBIDDEN,
                         ResultJson.error("base_not_found_or_not_authorized"));
@@ -640,10 +641,9 @@ public class SystemsController {
 
                 // invert preservations
                 Map<Channel, Channel> preservationsByNewChild = new HashMap<>();
-                for (Channel previousChannel : preservationsByOldChild.keySet()) {
-                    Channel newChannel = preservationsByOldChild.get(previousChannel);
-                    if (!preservationsByNewChild.containsKey(newChannel)) {
-                        preservationsByNewChild.put(newChannel, previousChannel);
+                for (Map.Entry<Channel, Channel> entry : preservationsByOldChild.entrySet()) {
+                    if (!preservationsByNewChild.containsKey(entry.getValue())) {
+                        preservationsByNewChild.put(entry.getValue(), entry.getKey());
                     }
                 }
 
