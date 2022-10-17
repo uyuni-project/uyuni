@@ -144,23 +144,6 @@ install_gnupg_debian:
       - gnupg
 {%- endif %}
 
-mgrchannels_refresh_repositories:
-  mgrcompat.module_run:
-    - name: pkg.refresh_db
-{%- if grains['os_family'] == 'Suse' %}
-    {#- same behavior as RedHat where --assumeyes is default #}
-    - gpg_auto_import_keys: True
-    - onlyif: /usr/bin/zypper -x lr | grep 'enabled="1"'
-{%- elif grains['os_family'] == 'RedHat' %}
-{%- if is_dnf %}
-    -  unless: "/usr/bin/dnf repolist | grep \"repolist: 0$\""
-{%- else %}
-    -  unless: "/usr/bin/yum repolist | grep \"repolist: 0$\""
-{%- endif %}
-{%- endif %}
-    - require:
-      - file: mgrchannels_repo
-
 {%- if not salt['pillar.get']('susemanager:distupgrade:dryrun', False) %}
 {%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and not grains['oscodename'] == 'openSUSE Leap 15.3' %}
 mgrchannels_install_products:
