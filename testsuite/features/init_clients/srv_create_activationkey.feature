@@ -19,7 +19,7 @@ Feature: Create activation keys
     And I enter "Fake-RPM-SLES15SP4-Channel for testing" as "Channel Summary"
     And I enter "Description for Fake-RPM-SLES15SP4-Channel Child Channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-RPM-SLES15SP4-Channel Child Channel created." text
+    Then I should see a "Channel Fake-RPM-SLES15SP4-Channel created." text
 
   Scenario: Add the repository to the x86_64 child channel
     When I follow the left menu "Software > Manage > Channels"
