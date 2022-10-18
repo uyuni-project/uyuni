@@ -887,6 +887,16 @@ ORDER BY E.update_date, E.id
   <elaborator name="errata_flags" />
 </mode>
 
+<write-mode name="delete_invalid_erratas_from_set">
+  <query params="label">
+    DELETE FROM rhnSet
+      WHERE label = :label
+        AND element not in (
+          select errata_id from rhnServerNeededErrataCache where errata_id is not null
+        )
+    </query>
+</write-mode>
+
 <mode name="in_set_details" class="com.redhat.rhn.frontend.dto.ErrataOverview">
         <query params="user_id, set_label">
         SELECT DISTINCT E.id,

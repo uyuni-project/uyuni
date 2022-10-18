@@ -1,3 +1,4 @@
+- Remove invalid errata selection after patch installation (bsc#1204235)
 - Ignore insert conflicts during reporting database update (bsc#1202150)
 - Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
 - Run only minion actions that are in the pending status (bsc#1205012)
