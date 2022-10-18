@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2022 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,23 +12,20 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.frontend.action.rhnpackage.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
-import com.redhat.rhn.frontend.action.rhnpackage.PackageListSetupAction;
+import com.redhat.rhn.frontend.action.rhnpackage.ExtraPackagesListAction;
 import com.redhat.rhn.frontend.dto.PackageListItem;
-import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -37,31 +34,26 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-/**
- * PackageListSetupTest
- */
-public class PackageListSetupTest extends RhnMockStrutsTestCase {
+public class ExtraPackageListActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);
-        PackageManagerTest.addPackageToSystemAndChannel(
-                "test-package-name" + TestUtils.randomString(), server,
-                ChannelFactoryTest.createTestChannel(user));
+        Package standard = PackageTest.createTestPackage(user.getOrg());
+        PackageTestUtils.installPackageOnServer(standard, server);
         server = TestUtils.reload(server);
         //.do?sid=1000010000
-        setRequestPathInfo("/systems/details/packages/PackageList");
+        setRequestPathInfo("/systems/details/packages/ExtraPackagesList");
         addRequestParameter("sid", server.getId().toString());
         actionPerform();
-        verifyList(PackageListSetupAction.DATA_SET, PackageListItem.class);
+        verifyList(ExtraPackagesListAction.DATA_SET, PackageListItem.class);
     }
 
     @Test
     public void testExecuteWithPtf() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
 
         Package standard = PackageTest.createTestPackage(user.getOrg());
         standard.setDescription("Standard package");
@@ -69,10 +61,6 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
         Package ptfMaster = PackageTestUtils.createPtfMaster("123456", "1", user.getOrg());
         Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", user.getOrg());
 
-        channel.getPackages().addAll(List.of(standard, ptfMaster, ptfPackage));
-        channel = TestUtils.saveAndReload(channel);
-
-        SystemManager.subscribeServerToChannel(user, server, channel);
         PackageTestUtils.installPackagesOnServer(List.of(standard, ptfMaster, ptfPackage), server);
         server = TestUtils.reload(server);
 
@@ -83,12 +71,12 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
         assertFalse(ptfMaster.isPartOfPtf());
 
         //.do?sid=1000010000
-        setRequestPathInfo("/systems/details/packages/PackageList");
+        setRequestPathInfo("/systems/details/packages/ExtraPackagesList");
         addRequestParameter("sid", server.getId().toString());
         actionPerform();
 
         @SuppressWarnings("unchecked")
-        List<PackageListItem> result = (List<PackageListItem>) request.getAttribute(PackageListSetupAction.DATA_SET);
+        List<PackageListItem> result = (List<PackageListItem>) request.getAttribute(ExtraPackagesListAction.DATA_SET);
         assertNotNull(result, "The result list is null");
         assertTrue(result.size() > 0, "Your result list is empty");
 
@@ -113,11 +101,12 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
         // Check the status for the ptf package
         String ptfMasterName = ptfMaster.getPackageName().getName();
         PackageListItem ptfMasterItem = result.stream()
-                                        .filter(pli -> ptfMasterName.equals(pli.getName()))
-                                        .findFirst().orElse(null);
+                                              .filter(pli -> ptfMasterName.equals(pli.getName()))
+                                              .findFirst().orElse(null);
         assertNotNull(ptfMasterItem, "No entry in the list for the ptf master package");
         assertTrue(ptfMasterItem.isMasterPtfPackage());
         assertFalse(ptfMasterItem.isPartOfPtf());
         assertFalse(ptfMasterItem.isSelectable());
     }
+
 }
