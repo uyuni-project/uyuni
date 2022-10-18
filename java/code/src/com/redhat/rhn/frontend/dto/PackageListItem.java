@@ -61,6 +61,8 @@ public class PackageListItem extends IdComboDto {
                             // or PackageManager.PKG_PENDING_UNLOCK for "to be unlocked"
     private boolean retracted;
 
+    private boolean ptf;
+
     private boolean partOfPtf;
 
     private boolean selectable;
@@ -142,6 +144,22 @@ public class PackageListItem extends IdComboDto {
      */
     public void setRetracted(boolean retractedIn) {
         retracted = retractedIn;
+    }
+
+    /**
+     * Check if the package is the main one of a ptf
+     * @return true if the package is a ptf
+     */
+    public boolean isMasterPtfPackage() {
+        return ptf;
+    }
+
+    /**
+     * Sets if the package is the main one of a ptf
+     * @param ptfIn true if the package is  a ptf
+     */
+    public void setMasterPtfPackage(boolean ptfIn) {
+        this.ptf = ptfIn;
     }
 
     /**
