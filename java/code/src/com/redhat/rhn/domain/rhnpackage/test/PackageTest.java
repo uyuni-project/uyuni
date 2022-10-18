@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.rhnpackage.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,6 +43,7 @@ import com.redhat.rhn.domain.rpm.test.SourceRpmTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -80,6 +82,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(pkg);
 
         Package lookup = PackageFactory.lookupByIdAndOrg(pkg.getId(), pkg.getOrg());
+        assertNotNull(lookup);
         assertNotNull(lookup.getBuildTime());
     }
 
@@ -119,19 +122,12 @@ public class PackageTest extends BaseTestCaseWithUser {
     }
 
     public static Package createTestPackage(Org org) throws Exception {
-        Package p = new Package();
-        populateTestPackage(p, org);
-
+        Package p = populateTestPackage(new Package(), org);
         TestUtils.saveAndFlush(p);
-
         return p;
     }
 
-    public static Package populateTestPackage(Package p, Org org,
-            PackageName pname,
-            PackageEvr pevr,
-            PackageArch parch
-    ) throws Exception {
+    public static Package populateTestPackage(Package p, Org org, PackageName name, PackageEvr evr, PackageArch arch) {
         PackageGroup pgroup = PackageGroupTest.createTestPackageGroup();
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
 
@@ -155,11 +151,11 @@ public class PackageTest extends BaseTestCaseWithUser {
         p.setLastModified(new Date());
 
         p.setOrg(org);
-        p.setPackageName(pname);
-        p.setPackageEvr(pevr);
+        p.setPackageName(name);
+        p.setPackageEvr(evr);
         p.setPackageGroup(pgroup);
         p.setSourceRpm(srpm);
-        p.setPackageArch(parch);
+        p.setPackageArch(arch);
 
         p.getPackageFiles().add(createTestPackageFile(p));
         p.getPackageFiles().add(createTestPackageFile(p));
@@ -175,8 +171,7 @@ public class PackageTest extends BaseTestCaseWithUser {
     }
 
     public static Package populateTestPackage(Package p, Org org) throws Exception {
-        PackageArch parch =
-            (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+        PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
         return populateTestPackage(p, org, parch);
     }
 
@@ -218,7 +213,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         cap.setName(TestUtils.randomString());
         cap.setVersion(TestUtils.randomString());
         cap.setCreated(new Date());
-        cap = (PackageCapability) TestUtils.saveAndReload(cap);
+        cap = TestUtils.saveAndReload(cap);
 
         file.setCapability(cap);
         file.setPack(pack);
@@ -288,7 +283,7 @@ public class PackageTest extends BaseTestCaseWithUser {
 
         expectedNevra = pkg.getPackageName().getName() + "-0:2-3." + pkg.getPackageArch().getLabel();
         assertEquals(expectedNevra, pkg.getNevraWithEpoch());
-        assertFalse(pkg.getNameEvra().equals(pkg.getNevraWithEpoch()));
+        assertNotEquals(pkg.getNameEvra(), pkg.getNevraWithEpoch());
     }
 
     @Test
@@ -304,4 +299,18 @@ public class PackageTest extends BaseTestCaseWithUser {
         assertEquals("myvalue", pkg.getExtraTag("mytag"));
         assertNull(pkg.getExtraTag("doesnotexist"));
     }
+
+    @Test
+    public void testRetrievePtfInformation() throws Exception {
+        Package masterPtfPackage = PackageTestUtils.createPtfMaster("123456", "1", user.getOrg());
+
+        assertTrue(masterPtfPackage.isMasterPtfPackage());
+        assertFalse(masterPtfPackage.isPartOfPtf());
+
+        Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", user.getOrg());
+
+        assertFalse(ptfPackage.isMasterPtfPackage());
+        assertTrue(ptfPackage.isPartOfPtf());
+    }
+
 }
