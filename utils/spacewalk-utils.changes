@@ -1,5 +1,9 @@
-- Make spacewalk-hostname-rename working with settings.yaml
-  cobbler config file (bsc#1203564)
+-------------------------------------------------------------------
+Tue Oct 18 09:56:55 CEST 2022 - jgonzalez@suse.com
+
+- version 4.2.18-1
+  * Make spacewalk-hostname-rename working with settings.yaml
+    cobbler config file (bsc#1203564)
 
 -------------------------------------------------------------------
 Wed Jul 06 15:56:47 CEST 2022 - jmassaguerpla@suse.de
