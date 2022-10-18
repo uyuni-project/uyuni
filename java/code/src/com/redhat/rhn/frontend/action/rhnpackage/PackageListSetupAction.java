@@ -35,7 +35,7 @@ public class PackageListSetupAction extends BaseSystemPackagesAction {
         result.elaborate();
 
         // Force the selection to be restricted to only non ptf packages
-        result.stream().filter(PackageListItem::isPartOfPtf).forEach(p -> p.setSelectable(false));
+        result.stream().filter(p -> p.isPartOfPtf() || p.isMasterPtfPackage()).forEach(p -> p.setSelectable(false));
 
         return result;
     }

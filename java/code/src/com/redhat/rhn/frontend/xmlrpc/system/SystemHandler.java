@@ -136,6 +136,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooLongException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooShortException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNoBaseChannelException;
+import com.redhat.rhn.frontend.xmlrpc.PtfMasterFault;
 import com.redhat.rhn.frontend.xmlrpc.PtfPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.RetractedPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
@@ -4010,6 +4011,16 @@ public class SystemHandler extends BaseHandler {
             throw new PtfPackageFault(ptfPackages);
         }
 
+        // PTF master packages cannot be removed
+        if (ActionFactory.TYPE_PACKAGES_REMOVE.equals(acT)) {
+            List<Long> ptfMasterPackages = packages.stream()
+                                                   .filter(Package::isMasterPtfPackage)
+                                                   .map(Package::getId)
+                                                   .collect(toList());
+            if (!ptfMasterPackages.isEmpty()) {
+                throw new PtfMasterFault(ptfMasterPackages);
+            }
+        }
 
         for (Integer sid : sids) {
             Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
