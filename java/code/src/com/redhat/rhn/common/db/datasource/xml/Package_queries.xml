@@ -569,8 +569,7 @@ SELECT PN.name as NAME,
    WHERE sp.server_id = :sid
    ORDER BY nvre
   </query>
-  <elaborator name="package_is_retracted" />
-  <elaborator name="package_is_part_of_ptf" />
+  <elaborator name="package_retracted_and_ptf_details" />
 </mode>
 
 <mode name="system_canonical_package_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
@@ -661,7 +660,7 @@ SELECT PN.id || '|' || SPE.id AS ID_COMBO,
          (scp.package_id is null)
    order by nvre
   </query>
-  <elaborator name="package_is_part_of_ptf" />
+  <elaborator name="package_retracted_and_ptf_details" />
 </mode>
 
 <mode name="packages_from_server_set" class="com.redhat.rhn.frontend.dto.SsmRemovePackageListItem">
@@ -797,20 +796,32 @@ SELECT P.id, P.summary, PP.name as provider
  WHERE P.id IN(%s)
 </query>
 
-<query name="package_is_retracted" column="package_id" params="sid">
-    SELECT
-      pid as package_id,
-      1 as retracted
-    FROM suseServerChannelsRetractedPackagesView
-    WHERE sid = :sid AND pid IN(%s)
-</query>
-
-<query name="package_is_part_of_ptf" column="package_id" parmas="">
-    SELECT pp.package_id AS package_id,
-            1 as part_Of_ptf
-      FROM rhnpackagecapability pc
-                INNER JOIN rhnpackageprovides pp ON pc.id = pp.capability_id
-     WHERE pc.name = 'ptf-package()' AND pp.package_id IN (%s)
+<query name="package_retracted_and_ptf_details" column="package_id" params="sid">
+    WITH retractedPackages AS (
+        SELECT pid as package_id
+          FROM suseServerChannelsRetractedPackagesView
+         WHERE sid = :sid
+    ), ptfPackages AS (
+        SELECT pp.package_id
+          FROM rhnpackagecapability pc
+                  INNER JOIN rhnpackageprovides pp ON pc.id = pp.capability_id
+         WHERE pc.name = 'ptf()'
+    ), partOfPtfPackages AS (
+        SELECT pp.package_id
+          FROM rhnpackagecapability pc
+                  INNER JOIN rhnpackageprovides pp ON pc.id = pp.capability_id
+         WHERE pc.name = 'ptf-package()'
+    )
+    SELECT pk.id AS package_id
+              -- Convert the ids to 0/1 flags
+              , SIGN(COALESCE(rp.package_id, 0)) AS retracted
+              , SIGN(COALESCE(mp.package_id, 0)) AS master_ptf_package
+              , SIGN(COALESCE(pp.package_id, 0)) AS part_of_ptf
+      FROM rhnpackage pk
+              LEFT JOIN retractedPackages rp ON rp.package_id = pk.id
+              LEFT JOIN ptfPackages mp ON mp.package_id = pk.id
+              LEFT JOIN partOfPtfPackages pp ON pp.package_id = pk.id
+     WHERE pk.id IN (%s) AND ( rp.package_id IS NOT NULL OR mp.package_id IS NOT NULL OR pp.package_id IS NOT NULL )
 </query>
 
 <mode name="system_available_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
