@@ -148,7 +148,8 @@ public class SaltActionChainGeneratorService {
             if (isSaltUpgrade(state)) {
                 fileStates.add(
                         endChunk(actionChain, chunk, nextActionId,
-                                prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.empty()));
+                                prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.empty(),
+                                Optional.empty()));
                 fileStates.add(state);
                 fileStates.add(stopIfPreviousFailed(prevRequisiteRef(fileStates)));
                 fileStates.add(forceRestartServiceIfNeeded("force_restart_if_needed",
@@ -163,10 +164,11 @@ public class SaltActionChainGeneratorService {
                     if (i < states.size() - 1) {
                         fileStates.add(
                                 endChunk(actionChain, chunk, nextActionId,
-                                        prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.of(true)));
+                                        prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.of(true),
+                                        currentActionId(states, i)));
                     }
                     else {
-                        fileStates.add(endLastChunk(Optional.of(true)));
+                        fileStates.add(endLastChunk(actionChain, currentActionId(states, i), Optional.of(true)));
                     }
                 }
                 else { // it's not transactional update
@@ -174,7 +176,8 @@ public class SaltActionChainGeneratorService {
                     if (i < states.size() - 1) {
                         fileStates.add(
                                 endChunk(actionChain, chunk, nextActionId,
-                                        prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.empty()));
+                                        prevRequisiteRef(fileStates), sshExtraFileRefs, Optional.empty(),
+                                        Optional.empty()));
                     }
                 }
 
@@ -209,14 +212,26 @@ public class SaltActionChainGeneratorService {
         return Optional.empty();
     }
 
+    private Optional<Long> currentActionId(List<SaltState> states, int currentPos) {
+        SaltState state = states.get(currentPos);
+        if (state instanceof ActionSaltState) {
+            ActionSaltState actionState = (ActionSaltState)state;
+            return Optional.of(actionState.getActionId());
+        }
+        return Optional.empty();
+    }
+
+
     private SaltState endChunk(ActionChain actionChain, int chunk, Optional<Long> nextActionId,
                                Optional<Pair<String, String>> lastRef, Optional<String> sshExtraFileRefs,
-                               Optional<Boolean> rebootRequired) {
+                               Optional<Boolean> rebootRequired, Optional<Long> currentActionId) {
         Map<String, Object> args = new LinkedHashMap<>(2);
         args.put("actionchain_id", actionChain.getId());
         args.put("chunk", chunk + 1);
         nextActionId.ifPresent(actionId ->
                 args.put("next_action_id", actionId));
+        currentActionId.ifPresent(actionId ->
+                args.put("current_action_id", actionId));
         sshExtraFileRefs.ifPresent(refs ->
                 args.put("ssh_extra_filerefs", refs));
         rebootRequired.ifPresent(refs ->
@@ -226,8 +241,12 @@ public class SaltActionChainGeneratorService {
         return modRun;
     }
 
-    private SaltState endLastChunk(Optional<Boolean> rebootRequired) {
+    private SaltState endLastChunk(ActionChain actionChain, Optional<Long> currentActionId,
+            Optional<Boolean> rebootRequired) {
         Map<String, Object> args = new LinkedHashMap<>(2);
+        args.put("actionchain_id", actionChain.getId());
+        currentActionId.ifPresent(actionId ->
+                args.put("current_action_id", actionId));
         rebootRequired.ifPresent(refs ->
                 args.put("reboot_required", refs));
         SaltModuleRun modRun = new SaltModuleRun("schedule_next_chunk", "mgractionchains.clean", args);

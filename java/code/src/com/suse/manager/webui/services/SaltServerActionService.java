@@ -161,6 +161,7 @@ import com.suse.utils.Opt;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -757,8 +758,7 @@ public class SaltServerActionService {
                                 rebootServerAction.ifPresentOrElse(
                                         ract -> {
                                             if (ract.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
-                                                rebootServerAction.get().setStatus(ActionFactory.STATUS_PICKED_UP);
-                                                rebootServerAction.get().setPickupTime(new Date());
+                                                setActionAsPickedUp(ract);
                                             }
                                         },
                                         () -> LOG.error("Action of type {} found in action chain result but not " +
@@ -2537,9 +2537,9 @@ public class SaltServerActionService {
                             saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
                                     Optional.of(Xor.right(function)));
                         }
+
                         else if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
-                            sa.setStatus(ActionFactory.STATUS_PICKED_UP);
-                            sa.setPickupTime(new Date());
+                            setActionAsPickedUp(sa);
                         }
 
                         // Perform a "check-in" after every executed action
@@ -2635,6 +2635,18 @@ public class SaltServerActionService {
     }
 
     /**
+     * In action chains at this point the action is still queued so we have
+     * to set it to picked up.
+     * This could still lead to the race condition on when event processing is slow.
+     *
+     */
+    private void setActionAsPickedUp(ServerAction sa) {
+        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+        sa.setPickupTime(new Date());
+        return;
+    }
+
+    /**
      * Update the action properly based on the Job results from Salt.
      *
      * @param actionId the ID of the Action to handle
@@ -2669,16 +2681,12 @@ public class SaltServerActionService {
                         LOG.debug("Updating action for server: {}", minionServer.getId());
                     }
                     try {
-                        // Reboot has been scheduled so set reboot action to PICKED_UP.
-                        // Wait until next "minion/start/event" to set it to COMPLETED.
-                        if (action.get().getActionType().equals(ActionFactory.TYPE_REBOOT) &&
-                                success && retcode == 0) {
-                            // In action chains at this point the action is still queued so we have
-                            // to set it to picked up.
-                            // This could still lead to the race condition on when event processing is slow.
+                        if (action.get().getActionType().equals(
+                                ActionFactory.TYPE_REBOOT) && success && retcode == 0) {
+                            // Reboot has been scheduled so set reboot action to PICKED_UP.
+                            // Wait until next "minion/start/event" to set it to COMPLETED.
                             if (sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
-                                sa.setStatus(ActionFactory.STATUS_PICKED_UP);
-                                sa.setPickupTime(new Date());
+                                setActionAsPickedUp(sa);
                             }
                             return;
                         }
@@ -2724,6 +2732,34 @@ public class SaltServerActionService {
         }
     }
 
+    private boolean checkIfRebootRequired(StateApplyResult<Ret<JsonElement>> actionStateApply) {
+        JsonElement ret = actionStateApply.getChanges().getRet();
+        if (!ret.isJsonObject()) {
+            return false;
+        }
+
+        JsonPrimitive prim = ret.getAsJsonObject().getAsJsonPrimitive("reboot_required");
+        if (!prim.isBoolean()) {
+            return false;
+
+        }
+        return prim.getAsBoolean();
+    }
+
+    private long checkActionID(StateApplyResult<Ret<JsonElement>> actionStateApply) {
+        JsonElement ret = actionStateApply.getChanges().getRet();
+        if (!ret.isJsonObject()) {
+            return 0;
+        }
+
+        JsonPrimitive prim = ret.getAsJsonObject().getAsJsonPrimitive("current_action_id");
+        if (!prim.isNumber()) {
+            return 0;
+
+        }
+        return prim.getAsLong();
+    }
+
     /**
      * Handle action chain Salt result.
      *
@@ -2737,7 +2773,7 @@ public class SaltServerActionService {
             Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
             Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
         int chunk = 1;
-        Long retActionChainId = null;
+        Long retActionChainId = Long.valueOf(0);
         boolean actionChainFailed = false;
         List<Long> failedActionIds = new ArrayList<>();
         for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
@@ -2767,6 +2803,36 @@ public class SaltServerActionService {
                         jobId,
                         actionStateApply.getChanges().getRet(),
                         actionStateApply.getName());
+            }
+            else if (key.contains("schedule_next_chunk") && checkIfRebootRequired(actionStateApply) &&
+                    checkActionID(actionStateApply) != 0) {
+                /*
+                 * Transactional update does not contains reboot in sls files, but apply a reboot using
+                 * activate_transaction=True in transactional_update.sls . So it's required to parse the return
+                 * to check if schedule_next_chunk contains reboot_required param, then we can suppose that
+                 * the next action is a reboot. Then we need to pick up the action.
+                 */
+
+                long actionId = checkActionID(actionStateApply);
+                Optional<MinionServer> minionServerOpt = MinionServerFactory.findByMinionId(minionId);
+
+                minionServerOpt.ifPresent(minionServer -> {
+
+                        final Optional<Action> action  = Optional.ofNullable(ActionFactory.lookupById(actionId));
+                        if (action.isPresent()) {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("Matched salt job with action (id={})", actionId);
+                            }
+                        Optional<ServerAction> serverAction = action.get()
+                                .getServerActions()
+                                .stream()
+                                .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+
+                        serverAction.ifPresent(sa -> {
+                            setActionAsPickedUp(sa);
+                        });
+                    }
+                });
             }
             else if (!key.contains("schedule_next_chunk")) {
                 LOG.warn("Could not find action id in action chain state key: {}", key);

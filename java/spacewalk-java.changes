@@ -1,3 +1,4 @@
+- Manage reboot in transactional update action chain (bsc#1201476)
 - In an action chain, use transactional.apply instead of state.apply
   in transactional update minions (bsc#1201476)
 - Enable monitoring for RHEL 9 Salt clients

@@ -162,7 +162,7 @@ def start(actionchain_id):
         raise CommandExecutionError(ret)
     return ret
 
-def next(actionchain_id, chunk, next_action_id=None, ssh_extra_filerefs=None, reboot_required=False):
+def next(actionchain_id, chunk, next_action_id=None, current_action_id=None,  ssh_extra_filerefs=None, reboot_required=False):
     '''
     Persist the next Action Chain chunk to be executed by the 'resume' method.
 
@@ -178,13 +178,17 @@ def next(actionchain_id, chunk, next_action_id=None, ssh_extra_filerefs=None, re
     yaml_dict = {
         'next_chunk': _calculate_sls(actionchain_id, __grains__['machine_id'], chunk)
     }
+    yaml_dict['actionchain_id'] = actionchain_id
     if next_action_id:
         yaml_dict['next_action_id'] = next_action_id
+    if current_action_id:
+        yaml_dict['current_action_id'] = current_action_id
     if ssh_extra_filerefs:
         yaml_dict['ssh_extra_filerefs'] = ssh_extra_filerefs
     if reboot_required:
         yaml_dict['reboot_required'] = reboot_required
     _persist_next_ac_chunk(yaml_dict)
+    return yaml_dict
 
 def get_pending_resume():
     '''
@@ -233,9 +237,17 @@ def resume():
         raise CommandExecutionError(ret)
     return ret
 
-def clean():
+def clean(actionchain_id=None, current_action_id=None, reboot_required=None):
     '''
     Clean execution of an Action Chain by removing '_mgractionchains.conf'.
     '''
     _read_next_ac_chunk()
-    return {"success": True}
+    yaml_dict = {}
+    yaml_dict['success'] = True
+    if actionchain_id:
+        yaml_dict['actionchain_id'] = actionchain_id
+    if current_action_id:
+        yaml_dict['current_action_id'] = current_action_id
+    if reboot_required:
+        yaml_dict['reboot_required'] = reboot_required
+    return yaml_dict

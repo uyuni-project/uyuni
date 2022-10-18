@@ -264,6 +264,8 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "schedule_next_chunk:\n" +
                         "    mgrcompat.module_run:\n" +
                         "    -   name: mgractionchains.clean\n" +
+                        "    -   actionchain_id: 131\n" +
+                        "    -   current_action_id: 2\n" +
                         "    -   reboot_required: true\n")
                         .replaceAll("131", actionChain.getId() + ""),
                 fileContent);
@@ -335,6 +337,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    -   actionchain_id: 131\n" +
                         "    -   chunk: 2\n" +
                         "    -   next_action_id: 3\n" +
+                        "    -   current_action_id: 2\n" +
                         "    -   reboot_required: true\n" +
                         "    -   require:\n" +
                         "        -   mgrcompat: mgr_actionchain_131_action_1_chunk_1\n")
