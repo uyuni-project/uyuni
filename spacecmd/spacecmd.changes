@@ -1,4 +1,8 @@
-- Remove "Undefined return code" from debug messages (bsc#1203283)
+-------------------------------------------------------------------
+Tue Oct 18 09:56:40 CEST 2022 - jgonzalez@suse.com
+
+- version 4.2.20-1
+  * Remove "Undefined return code" from debug messages (bsc#1203283)
 
 -------------------------------------------------------------------
 Thu Sep 08 09:56:31 CEST 2022 - mc@suse.de
