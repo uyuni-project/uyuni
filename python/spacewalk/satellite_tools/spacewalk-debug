@@ -433,9 +433,8 @@ if [ $IS_SUSE -eq 1 ]; then
     if [ -x /usr/bin/spacewalk-report ] && [ $NO_REPORTS -eq 0 ]; then
         # get some inventory info
         echo "    * running spacewalk-report to create reports."
-        /usr/bin/spacewalk-report inventory > $DIR/inventory-report.csv
-        /usr/bin/spacewalk-report channels > $DIR/channels-report.csv
-        /usr/bin/spacewalk-report activation-keys > $DIR/activation-keys-report.csv
+        /usr/bin/spacewalk-report --legacy-report inventory > $DIR/inventory-report.csv
+        /usr/bin/spacewalk-report --legacy-report channels > $DIR/channels-report.csv
     fi
 
     ls -laR $(spacewalk-cfg-get documentroot)/pub > $DIR/ls-laR-htdocs
