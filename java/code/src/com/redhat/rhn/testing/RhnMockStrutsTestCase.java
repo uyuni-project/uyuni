@@ -99,6 +99,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
         Path tmpPillarRoot = Files.createTempDirectory("pillar");
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
     }
