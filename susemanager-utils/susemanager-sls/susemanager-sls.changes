@@ -1,8 +1,12 @@
-- Fix mgrnet availability check
-- Remove dependence on Kiwi libraries
-- Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
-- Add mgrnet salt module with mgrnet.dns_fqnd function implementation
-  allowing to get all possible FQDNs from DNS (bsc#1199726)
+-------------------------------------------------------------------
+Tue Oct 18 10:05:44 CEST 2022 - jgonzalez@suse.com
+
+- version 4.2.28-1
+  * Fix mgrnet availability check
+  * Remove dependence on Kiwi libraries
+  * Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
+  * Add mgrnet salt module with mgrnet.dns_fqnd function implementation
+    allowing to get all possible FQDNs from DNS (bsc#1199726)
 
 -------------------------------------------------------------------
 Thu Sep 08 09:33:53 CEST 2022 - mc@suse.de
