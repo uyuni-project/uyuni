@@ -1,11 +1,15 @@
-- Properly pass allow vendor change to salt state (bsc#1204203)
-- add ongres requirements to spec file (bsc#1203898)
-- Refresh pillar data (bsc#1197724)
-- Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
-- Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
-- Support Pay-as-you-go new CA location for SLES15SP4
-  and higher (bsc#1202729)
-- Detect the clients running on Amazon EC2 (bsc#1195624)
+-------------------------------------------------------------------
+Tue Oct 18 10:07:00 CEST 2022 - jgonzalez@suse.com
+
+- version 4.2.42-1
+  * Properly pass allow vendor change to salt state (bsc#1204203)
+  * add ongres requirements to spec file (bsc#1203898)
+  * Refresh pillar data (bsc#1197724)
+  * Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
+  * Use mgrnet.dns_fqdns module to improve FQDN detection (bsc#1199726)
+  * Support Pay-as-you-go new CA location for SLES15SP4
+    and higher (bsc#1202729)
+  * Detect the clients running on Amazon EC2 (bsc#1195624)
 
 -------------------------------------------------------------------
 Thu Sep 08 09:48:52 CEST 2022 - mc@suse.de
