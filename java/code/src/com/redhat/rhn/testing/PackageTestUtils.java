@@ -15,14 +15,24 @@
 
 package com.redhat.rhn.testing;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageProvides;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.domain.rhnpackage.SpecialCapabilityNames;
+import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 
+import org.hibernate.Session;
+
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,6 +68,15 @@ public class PackageTestUtils {
     }
 
     /**
+     * Install given packages to the server
+     *
+     * @param pkgs the collection of packages
+     * @param server the server
+     */
+    public static void installPackagesOnServer(Collection<Package> pkgs, Server server) {
+        pkgs.forEach(p -> installPackageOnServer(p, server));
+    }
+    /**
      * Install given package to the server
      *
      * @param pkg the package
@@ -80,5 +99,145 @@ public class PackageTestUtils {
         installedNewerPkg.setArch(pkg.getPackageArch());
         installedNewerPkg.setName(pkg.getPackageName());
         return installedNewerPkg;
+    }
+
+    /**
+     * Create a new version of the same package.
+     * @param original the original package
+     * @param epoch the new epoch. If null, the epoch will remain the same
+     * @param version the new version. If null, the version will remain the same
+     * @param release the new release. If null, the release will remain the same
+     * @param org the organization owning the package
+     * @return a new version of the given package
+     * @throws Exception when the package cannot be created
+     */
+    public static Package newVersionOfPackage(Package original, String epoch, String version, String release, Org org)
+        throws Exception {
+        PackageEvr evr = original.getPackageEvr();
+
+        if (epoch == null && version == null && release == null) {
+            throw new IllegalArgumentException("epoch, version and release cannot be all null");
+        }
+
+        Package newerPackage = PackageTest.createTestPackage(org);
+        newerPackage.setPackageName(original.getPackageName());
+        newerPackage.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
+            epoch != null ? epoch : evr.getEpoch(),
+            version != null ? version : evr.getVersion(),
+            release != null ? release : evr.getRelease(),
+            original.getPackageType()
+        ));
+
+        return TestUtils.saveAndReload(newerPackage);
+    }
+
+    /**
+     * Create a ptf master package
+     * @param ptfNumber the ptf number
+     * @param ptfVersion the version
+     * @param org the organization owning the package
+     * @return a ptf master package
+     * @throws Exception when the package cannot be created
+     */
+    public static Package createPtfMaster(String ptfNumber, String ptfVersion, Org org) throws Exception {
+        Package master = PackageTest.createTestPackage(org);
+
+        master.setPackageName(PackageNameTest.createTestPackageName("ptf-" + ptfNumber));
+        master.setDescription("Master PTF package of ptf-" + ptfNumber + " for RHN-JAVA unit tests. Please disregard.");
+        master.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(null, ptfVersion, "0", PackageType.RPM));
+
+        addProvidesHeader(master, findOrCreateCapability(SpecialCapabilityNames.PTF, ptfNumber + "-" + ptfVersion), 8L);
+
+        return TestUtils.saveAndReload(master);
+    }
+
+    /**
+     * Create a package part of a ptf
+     * @param ptfNumber the ptf package
+     * @param ptfVersion the ptf version
+     * @param org the organization owning the package
+     * @return a package part of a ptf
+     * @throws Exception when the package cannot be created
+     */
+    public static Package createPtfPackage(String ptfNumber, String ptfVersion, Org org) throws Exception {
+        Package ptfPackage = PackageTest.createTestPackage(org);
+
+        ptfPackage.setDescription("Package part of ptf-" + ptfNumber + " for RHN-JAVA unit tests. Please disregard.");
+        ptfPackage.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(null, "1",
+            "0" + "." + ptfNumber + "." + ptfVersion + ".PTF", PackageType.RPM));
+
+        addProvidesHeader(ptfPackage, findOrCreateCapability(SpecialCapabilityNames.PTF_PACKAGE), 0L);
+
+        return TestUtils.saveAndReload(ptfPackage);
+    }
+
+    /**
+     * Create a package part of a ptf fixing an existing package
+     * @param original the original this ptf package fixes
+     * @param ptfNumber the ptf package
+     * @param ptfVersion the ptf version
+     * @param org the organization owning the package
+     * @return a package part of a ptf
+     * @throws Exception when the package cannot be created
+     */
+    public static Package createPtfPackage(Package original, String ptfNumber, String ptfVersion, Org org)
+        throws Exception {
+        Package ptfPackage = PackageTest.createTestPackage(org);
+
+        ptfPackage.setPackageName(original.getPackageName());
+        ptfPackage.setDescription("Package part of ptf-" + ptfNumber + " for RHN-JAVA unit tests. Please disregard.");
+        PackageEvr evr = original.getPackageEvr();
+        ptfPackage.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), evr.getVersion(),
+            evr.getRelease() + "." + ptfNumber + "." + ptfVersion + ".PTF", original.getPackageType()));
+
+        addProvidesHeader(ptfPackage, findOrCreateCapability(SpecialCapabilityNames.PTF_PACKAGE), 0L);
+
+        return TestUtils.saveAndReload(ptfPackage);
+    }
+
+    /**
+     * Adds the specified capability to the list provided by a package
+     * @param pack the package
+     * @param capability the capability
+     * @param sense the sens
+     */
+    public static void addProvidesHeader(Package pack, PackageCapability capability, Long sense) {
+        PackageProvides packageProvides = new PackageProvides();
+        packageProvides.setCapability(capability);
+        packageProvides.setPack(pack);
+        packageProvides.setSense(sense);
+        TestUtils.saveAndFlush(packageProvides);
+    }
+
+    /**
+     * Extracts or create a capability with the given name.
+     * @param capabilityName the name
+     * @return the PackageCapability object
+     */
+    public static PackageCapability findOrCreateCapability(String capabilityName) {
+        return findOrCreateCapability(capabilityName, null);
+    }
+
+    /**
+     * Extracts or create a capability with the given name and version.
+     * @param capabilityName the name
+     * @param version the version
+     * @return the PackageCapability object
+     */
+    public static PackageCapability findOrCreateCapability(String capabilityName, String version) {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("SELECT pc FROM PackageCapability pc WHERE pc.name = :name", PackageCapability.class)
+                      .setParameter("name", capabilityName)
+                      .uniqueResultOptional()
+                      .orElseGet(() -> {
+                          PackageCapability pc = new PackageCapability();
+                          pc.setName(capabilityName);
+                          pc.setVersion(version);
+                          pc.setCreated(new Date());
+                          pc.setModified(new Date());
+
+                          TestUtils.saveAndFlush(pc);
+                          return pc;
+                      });
     }
 }

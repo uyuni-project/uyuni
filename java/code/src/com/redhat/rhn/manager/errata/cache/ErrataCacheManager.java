@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.frontend.dto.ErrataCacheDto;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
@@ -110,11 +111,8 @@ public class ErrataCacheManager extends HibernateFactory {
      * @param sid Server Id.
      * @return packages needing updates for the given server id.
      */
-    public static DataResult packagesNeedingUpdates(Long sid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server_id", sid);
-        return executeSelectMode("ErrataCache_queries",
-                "packages_needing_updates", params);
+    public static DataResult<ErrataCacheDto> packagesNeedingUpdates(Long sid) {
+        return executeSelectMode("ErrataCache_queries", "packages_needing_updates", Map.of("server_id", sid));
     }
 
     /**

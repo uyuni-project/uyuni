@@ -25,7 +25,6 @@ import com.redhat.rhn.manager.system.SystemManager;
  * ExtraPackagesListAction
  */
 public class ExtraPackagesListAction extends BaseSystemPackagesAction {
-    public static final String DATA_SET = "extras";
 
     @Override
     protected DataResult<PackageListItem> getDataResult(Server server) {
