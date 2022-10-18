@@ -2195,4 +2195,18 @@ public class ErrataManager extends BaseManager {
         // update search index via XMLRPC
         updateSearchIndex();
     }
+
+    /**
+     * Remove from RhnSet erratas that are not needed for the server.
+     * This is useful to remove elements that were included when the errata was needed and remained.
+     *
+     * @param serverId the server id
+     */
+    public static void updateErrataSet(Long serverId) {
+        String errataLabel = RhnSetDecl.generateCustomSetName(RhnSetDecl.ERRATA, serverId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("label", errataLabel);
+        WriteMode m = ModeFactory.getWriteMode("Errata_queries", "delete_invalid_erratas_from_set");
+        m.executeUpdate(params);
+    }
 }

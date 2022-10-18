@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
+import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.logging.log4j.LogManager;
@@ -192,6 +193,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
 
     private void processServer(Long serverId) {
         ServerFactory.updateServerNeededCache(serverId);
+        ErrataManager.updateErrataSet(serverId);
     }
 
     private void processImage(Long imageId) {
