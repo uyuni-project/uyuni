@@ -1,4 +1,8 @@
-- add venv-salt-minion to bootstrap repo (bsc#1204146)
+-------------------------------------------------------------------
+Tue Oct 18 10:06:46 CEST 2022 - jgonzalez@suse.com
+
+- version 4.2.38-1
+  * add venv-salt-minion to bootstrap repo (bsc#1204146)
 
 -------------------------------------------------------------------
 Thu Sep 15 16:30:36 CEST 2022 - jmassaguerpla@suse.de
