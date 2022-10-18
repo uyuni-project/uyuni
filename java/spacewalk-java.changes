@@ -1,3 +1,4 @@
+- Upgrade Bootstrap to 3.4.1
 - delay hardware refresh action to avoid missing channels (bsc#1204208)
 - fix xmlrpc call randomly failing with translation error (bsc#1203633)
 - Do not explicitely remove old pillars on minion rename (bsc#1203451)
