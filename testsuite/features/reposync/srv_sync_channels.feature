@@ -57,9 +57,9 @@ Feature: Be able to list available channels and enable them
 
   Scenario: Enable RHEL 8 channels for Rocky 8
     When I execute mgr-sync "add channel rhel8-pool-x86_64"
-    And I execute mgr-sync "add channel RES-8-Updates for x86_64"
-    And I execute mgr-sync "add channel RES-AS-8-Updates for x86_64"
-    And I execute mgr-sync "add channel RES-CB-8-Updates for x86_64"
+    And I execute mgr-sync "add channel res-8-updates-x86_64"
+    And I execute mgr-sync "add channel res-as-8-updates-x86_64"
+    And I execute mgr-sync "add channel res-cb-8-updates-x86_64"
     And I execute mgr-sync "list channels"
     Then I should get "[I] RHEL8-Pool for x86_64 RHEL or SLES ES or CentOS 8 Base [rhel8-pool-x86_64]"
     And I should get "[I] RES-8-Updates for x86_64 SUSE Linux Enterprise Server with Expanded Support 8 x86_64 [res-8-updates-x86_64]"
