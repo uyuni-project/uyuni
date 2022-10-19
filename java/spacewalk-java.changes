@@ -1,5 +1,4 @@
 - Deny packages from older module metadata when building CLM projects (bsc#1201893)
-- Upgrade Bootstrap to 3.4.1
 - fix xmlrpc call randomly failing with translation error (bsc#1203633)
 - Do not explicitely remove old pillars on minion rename (bsc#1203451)
 - Fix out of memory error when building a CLM project (bsc#1202217)
