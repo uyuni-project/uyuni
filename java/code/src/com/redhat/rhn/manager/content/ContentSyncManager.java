@@ -1831,14 +1831,16 @@ public class ContentSyncManager {
 
     private static boolean isRepoAccessible(SUSEProductSCCRepository repo) {
         boolean isPublic = repo.getProduct().getChannelFamily().isPublic();
+        boolean isAvailable = ChannelFactory.lookupByLabel(repo.getChannelLabel()) != null;
         boolean isISSSlave = IssFactory.getCurrentMaster() != null;
         boolean isMirrorable = false;
         if (!isISSSlave) {
             isMirrorable = repo.getRepository().isAccessible();
         }
-        log.debug("{} - {} isPublic: {} isMirrorable: {} isISSSlave: {}", repo.getProduct().getFriendlyName(),
-                repo.getChannelLabel(), isPublic, isMirrorable, isISSSlave);
-        return  isPublic && (isMirrorable || isISSSlave);
+        log.debug("{} - {} isPublic: {} isMirrorable: {} isISSSlave: {} isAvailable: {}",
+                repo.getProduct().getFriendlyName(),
+                repo.getChannelLabel(), isPublic, isMirrorable, isISSSlave, isAvailable);
+        return  isPublic && (isMirrorable || isISSSlave || isAvailable);
     }
 
     /**
