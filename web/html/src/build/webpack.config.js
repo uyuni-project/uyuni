@@ -26,17 +26,6 @@ module.exports = (env, argv) => {
         context: path.resolve(__dirname, "../branding/css"),
         to: path.resolve(__dirname, "../dist/css"),
       },
-      /**
-       * Scripts and dependencies we're migrating from susemanager-frontend-libs to spacewalk-web
-       */
-      {
-        from: path.resolve(__dirname, "../node_modules/bootstrap/dist/js/bootstrap.min.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy"),
-      },
-      {
-        from: path.resolve(__dirname, "../node_modules/jquery/dist/jquery.min.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy"),
-      },
     ]),
     new MiniCssExtractPlugin({
       chunkFilename: "css/[name].css",

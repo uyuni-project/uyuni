@@ -13,16 +13,14 @@ const ChannelsFilters = (props: Props) => {
     <React.Fragment>
       {channelsFiltersAvailableValues.map((filter: FilterType) => (
         <div key={filter.id} className="checkbox">
-          <label htmlFor={`filter_${filter.id}`}>
-            <input
-              type="checkbox"
-              value={filter.id}
-              checked={props.activeFilters.includes(filter.id)}
-              id={`filter_${filter.id}`}
-              onChange={(event) => props.onChange(event.target.value)}
-            />
-            {filter.text}
-          </label>
+          <input
+            type="checkbox"
+            value={filter.id}
+            checked={props.activeFilters.includes(filter.id)}
+            id={`filter_${filter.id}`}
+            onChange={(event) => props.onChange(event.target.value)}
+          />
+          <label htmlFor={`filter_${filter.id}`}>{filter.text}</label>
         </div>
       ))}
     </React.Fragment>
