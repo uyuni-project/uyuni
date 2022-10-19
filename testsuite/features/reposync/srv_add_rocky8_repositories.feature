@@ -50,6 +50,9 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
+  Scenario: The custom channel for Rocky 8 has been synced
+    When I wait until the channel "rocky-8-iso" has been synced
+
   Scenario: Synchronize the repositories in the custom channel for Rocky 8 DVD
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for Rocky 8 DVD"
@@ -57,9 +60,6 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I follow "Sync"
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
-
-  Scenario: The custom channel for Rocky 8 has been synced
-    When I wait until the channel "rocky-8-iso" has been synced
 
   Scenario: Create CLM filters to remove AppStream metadata
     Given I am authorized for the "Admin" section
