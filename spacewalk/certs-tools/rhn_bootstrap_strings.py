@@ -221,7 +221,7 @@ def getHeader(productName, options, orgCACert, pubname, apachePubDirectory):
     org_gpg_key = ",".join([os.path.basename(gpg_key) for gpg_key in options.gpg_key.split(",")])
     with cfg_component('web') as CFG:
         version = CFG.version
-        if isUyuni:
+        if isUyuni():
             version = CFG.uyuni
 
     venv_section = """
