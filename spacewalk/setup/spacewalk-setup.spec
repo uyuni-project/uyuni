@@ -259,6 +259,8 @@ if [ ! -f /etc/cobbler/settings -a -f /etc/cobbler/settings.rpmsave ]; then
     cobbler-settings automigrate -d
     echo "* Readjust settings needed for spacewalk"
     spacewalk-setup-cobbler
+    echo "* Change group to Apache for /etc/cobbler/settings.yaml file"
+    chgrp %{apache_group} /etc/cobbler/settings.yaml
     echo "* Done"
 fi
 
