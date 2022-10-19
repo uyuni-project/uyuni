@@ -249,19 +249,22 @@ fi
 # at /etc/cobbler/settings.rpmsave. If this file exists, it means we need to perform the migration of these
 # settings and also trigger the migration of stored Cobbler collections.
 if [ ! -f /etc/cobbler/settings -a -f /etc/cobbler/settings.rpmsave ]; then
-    mv /etc/cobbler/settings.rpmsave /etc/cobbler/settings
+    cp /etc/cobbler/settings.rpmsave /etc/cobbler/settings
     echo "* Creating a backup from old Cobbler settings to /etc/cobbler/settings.before-migration-backup before migrating settings"
     cp /etc/cobbler/settings /etc/cobbler/settings.before-migration-backup
     echo "* Migrating old Cobbler settings to new /etc/cobbler/settings.yaml file and executing migration of stored Cobbler collections"
     echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
-    cobbler-settings -c /etc/cobbler/settings migrate -t /etc/cobbler/settings.yaml
+    cobbler-settings -c /etc/cobbler/settings migrate -t /etc/cobbler/settings.yaml || exit 1
     echo "* Disabling Cobbler settings automigration"
-    cobbler-settings automigrate -d
-    echo "* Readjust settings needed for spacewalk"
-    spacewalk-setup-cobbler
+    cobbler-settings automigrate -d || exit 1
     echo "* Change group to Apache for /etc/cobbler/settings.yaml file"
     chgrp %{apache_group} /etc/cobbler/settings.yaml
+    echo "* Readjust settings needed for spacewalk"
+    spacewalk-setup-cobbler || exit 1
     echo "* Done"
+    # At this point, the migration finished successfully, so we can remove
+    # the old /etc/cobbler/settings.rpmsave to prevent migration to run again.
+    rm /etc/cobbler/settings.rpmsave
 fi
 
 exit 0
