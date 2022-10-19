@@ -67,6 +67,10 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str):
     except OSError:
         filecontent["next_server_v6"] = ""
 
+    if not filecontent["next_server_v4"] and not filecontent["next_server_v6"]:
+        print("ERROR: Neither IPv4 or IPv6 addresses can be resolved for configured FQDN: {}. Please check your DNS and hostname configuration.".format(filecontent["server"]))
+        exit(1)
+
     filecontent["pxe_just_once"] = True
     filecontent["redhat_management_server"] = socket.getfqdn()
     yaml_dump = yaml.safe_dump(filecontent)
