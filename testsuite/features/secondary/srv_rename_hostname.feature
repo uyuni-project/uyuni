@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT License.
 
 Feature: Reconfigure the server's hostname
-  As a sysadmin 
+  As admin 
   In order to change the server's hostname
   I want to use the tool spacewalk-hostname-rename.
 

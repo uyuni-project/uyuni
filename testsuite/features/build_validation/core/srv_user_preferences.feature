@@ -3,7 +3,7 @@
 
 Feature: Change personal preferences
   In order to set up my personal preferences
-  As a sysadmin
+  As admin
   I want to navigate through "Home" submenus changing some settings
 
   Scenario: Change page size to 100 per page in admin user

@@ -14,6 +14,5 @@
 # these features are needed for gathering log/debug info
 - features/finishing/srv_debug.feature
 - features/finishing/allcli_debug.feature
-- features/finishing/srv_rename_hostname.feature
 
 ## Post run features END ##
