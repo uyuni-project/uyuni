@@ -89,7 +89,7 @@ BuildRequires:  perl-libwww-perl
 %else
 Requires:       %{sbinpath}/restorecon
 %endif
-Requires:       cobbler >= 3.3.3
+Requires(post): cobbler >= 3.3.3
 Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
@@ -244,9 +244,13 @@ if grep 'authn_spacewalk' /etc/cobbler/modules.conf > /dev/null 2>&1; then
     sed -i 's/module = authn_spacewalk/module = authentication.spacewalk/' /etc/cobbler/modules.conf
 fi
 
-# if old /etc/cobbler/settings exists, we need to perform migration
-if [ -e /etc/cobbler/settings ]; then
-    echo "* Creating a backup of /etc/cobbler/settings file to /etc/cobbler/settings.before-migration-backup before migrating settings"
+# When upgrading to Cobbler 3.3.3, the old /etc/cobbler/settings config file from previous Cobbler version
+# is removed as it not existing anymore in the new version, but a copy is kept with the local changes done
+# at /etc/cobbler/settings.rpmsave. If this file exists, it means we need to perform the migration of these
+# settings and also trigger the migration of stored Cobbler collections.
+if [ ! -f /etc/cobbler/settings -a -f /etc/cobbler/settings.rpmsave ]; then
+    mv /etc/cobbler/settings.rpmsave /etc/cobbler/settings
+    echo "* Creating a backup from old Cobbler settings to /etc/cobbler/settings.before-migration-backup before migrating settings"
     cp /etc/cobbler/settings /etc/cobbler/settings.before-migration-backup
     echo "* Migrating old Cobbler settings to new /etc/cobbler/settings.yaml file and executing migration of stored Cobbler collections"
     echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
