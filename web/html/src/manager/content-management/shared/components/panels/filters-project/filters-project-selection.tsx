@@ -42,21 +42,19 @@ const FiltersProjectSelection = (props: FiltersProps) => {
         allFilters.length > 0 &&
         allFilters.map((filter) => (
           <div key={filter.id} className="checkbox">
-            <label htmlFor={"child_" + filter.id}>
-              <input
-                type="checkbox"
-                value={filter.id}
-                id={"child_" + filter.id}
-                name="filterSelection"
-                checked={onGoingSelectedFilters.includes(filter.id)}
-                onChange={(event) => {
-                  const newFilters = _xor(onGoingSelectedFilters, [parseInt(event.target.value, 10)]);
-                  setOnGoingSelectedFilters(newFilters);
-                  props.onChange(newFilters);
-                }}
-              />
-              {getClmFilterDescription(filter)}
-            </label>
+            <input
+              type="checkbox"
+              value={filter.id}
+              id={"child_" + filter.id}
+              name="filterSelection"
+              checked={onGoingSelectedFilters.includes(filter.id)}
+              onChange={(event) => {
+                const newFilters = _xor(onGoingSelectedFilters, [parseInt(event.target.value, 10)]);
+                setOnGoingSelectedFilters(newFilters);
+                props.onChange(newFilters);
+              }}
+            />
+            <label htmlFor={"child_" + filter.id}>{getClmFilterDescription(filter)}</label>
           </div>
         ))}
       <LinkButton
