@@ -24,7 +24,7 @@ Feature: Build image with authenticated registry
     And I follow "Create"
     And I enter "auth_registry_profile" as "label"
     And I select "auth_registry" from "imageStore"
-    And I select "1-DOCKER-TEST" from "activationKey"
+    And I select "1-SUSE-KEY-x86_64" from "activationKey"
     And I enter "Docker/authprofile" relative to profiles as "path"
     And I click on "create-btn"
     Then I wait until I see "auth_registry_profile" text

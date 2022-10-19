@@ -159,7 +159,7 @@ end
 When(/^I create and delete profiles via API$/) do
   $api_test.image.profile.create('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
   $api_test.image.profile.delete('fakeone')
-  $api_test.image.profile.create('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-DOCKER-TEST')
+  $api_test.image.profile.create('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-SUSE-KEY-x86_64')
   $api_test.image.profile.delete('fakeone')
 end
 
