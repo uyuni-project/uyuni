@@ -1,3 +1,4 @@
+- Changed schedule product migration to use the correct API method
 - Fix dict_keys not supporting indexing in systems_setconfigchannelorger
 - Added a warning message for traditional stack deprecation
 - Remove "Undefined return code" from debug messages (bsc#1203283)

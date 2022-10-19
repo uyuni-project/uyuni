@@ -4655,8 +4655,9 @@ def do_system_scheduleproductmigration(self, args):
             continue
 
         print(_('Scheduling Product migration for system ') + str(system))
+        print(_('Migration target ') + str(migration_target))
         try:
-            result = self.client.system.scheduleSPMigration(self.session,
+            result = self.client.system.scheduleProductMigration(self.session,
                                                             system_id, migration_target, base_channel_label,
                                                             child_channels, options.dry_run, options.start_time)
             print(_('Scheduled action ID: ') + str(result))
