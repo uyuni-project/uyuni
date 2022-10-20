@@ -739,6 +739,10 @@ When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)
   @command_output, _code = $server.run("spacewalk-repo-sync -c #{arg1} -u #{arg2}", check_errors: false)
 end
 
+When(/^I call spacewalk\-repo\-sync for channel "(.*?)"$/) do |channel|
+  @command_output, _code = $server.run("spacewalk-repo-sync -c #{channel}", check_errors: false)
+end
+
 When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, arg2|
   @command_output, _code = $server.run("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'", check_errors: false)
 end

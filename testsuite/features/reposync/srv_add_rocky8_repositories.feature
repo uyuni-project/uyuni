@@ -50,6 +50,11 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
+  Scenario: Synchronize the repositories in the custom channel for Rocky 8 DVD
+    When I call spacewalk-repo-sync for channel "rocky-8-iso"
+    And I wait until all spacewalk-repo-sync finished
+    Then the reposync logs should not report errors
+
   Scenario: The custom channel for Rocky 8 has been synced
     When I wait until the channel "rocky-8-iso" has been synced
 
