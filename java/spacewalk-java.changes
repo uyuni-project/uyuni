@@ -1,3 +1,5 @@
+- delay hardware refresh action to avoid missing channels (bsc#1204208)
+
 -------------------------------------------------------------------
 Tue Oct 18 10:07:00 CEST 2022 - jgonzalez@suse.com
 
