@@ -49,6 +49,16 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     /**
+     * Minimal constructor used to avoid loading all properties in SSM config channel subscription
+     *
+     * @param idIn the server id
+     * @param machineIdIn the machine id
+     */
+    public MinionServer(long idIn, String machineIdIn) {
+        super(idIn, machineIdIn);
+    }
+
+    /**
      * @return the minion id
      */
     public String getMinionId() {
