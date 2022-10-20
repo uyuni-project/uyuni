@@ -1,5 +1,9 @@
-- Fix detected issues to perform migration of Cobbler settings
-  and collections.
+-------------------------------------------------------------------
+Thu Oct 20 10:43:49 CEST 2022 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * Fix detected issues to perform migration of Cobbler settings
+    and collections.
 
 -------------------------------------------------------------------
 Mon Sep 26 12:08:14 UTC 2022 - marina.latini@suse.com
