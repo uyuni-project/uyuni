@@ -29,7 +29,6 @@ import java.util.SortedSet;
  * ConfigChannel - Class representation of the table rhnConfigChannel.
  */
 public class ConfigChannel extends BaseDomainHelper implements Identifiable {
-
     private Long id;
     private Org org;
     private String name;

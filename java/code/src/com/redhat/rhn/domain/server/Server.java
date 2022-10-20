@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
@@ -67,6 +69,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -133,6 +136,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private String hostname;
     private boolean payg;
     private MaintenanceSchedule maintenanceSchedule;
+    private Boolean hasConfigFeature;
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -390,9 +394,24 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return getConfigChannels().size();
     }
 
+    public void setHasConfigFeature(Boolean hasConfig) {
+        hasConfigFeature = hasConfig;
+    }
+
     private void ensureConfigManageable() {
         if (!getIgnoreEntitlementsForMigration()) {
-            ConfigurationManager.getInstance().ensureConfigManageable(this);
+            if (hasConfigFeature != null) {
+                if (Boolean.FALSE.equals(hasConfigFeature)) {
+                    String msg = "Config feature needs to be enabled on the server" +
+                            " for handling Config Management. The provided server [%s]" +
+                            " does not have have this enabled. Add provisioning" +
+                            " capabilities to the system to enable this..";
+                    throw new PermissionException(String.format(msg, getId()));
+                }
+            }
+            else {
+                ConfigurationManager.getInstance().ensureConfigManageable(this);
+            }
         }
     }
 
@@ -413,7 +432,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @param user The user doing the action
      */
     public void subscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
-        configChannelList.forEach(cc -> configListProc.add(getConfigChannels(), cc));
+        ensureConfigManageable();
+        configChannelList.forEach(cc -> configListProc.add(getConfigChannelsHibernate(), cc));
     }
 
     /**
@@ -444,6 +464,26 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Save configuration channels to the database. Only needed if the server has been created using the constructor
+     */
+    public void storeConfigChannels() {
+        HibernateFactory.getSession().createNativeQuery("DELETE FROM rhnServerConfigChannel WHERE server_id = :sid ;")
+                .setParameter("sid", getId())
+                .executeUpdate();
+
+        String values = IntStream.range(0, configChannels.size())
+                .boxed()
+                .map(i -> String.format("(%s, %s, %s)", getId(), configChannels.get(i).getId(), i + 1))
+                .collect(Collectors.joining(","));
+
+
+        HibernateFactory.getSession().createNativeQuery(
+                "INSERT INTO rhnServerConfigChannel (server_id, config_channel_id, position) " +
+                    "VALUES " + values + ";")
+                .executeUpdate();
+    }
+
+    /**
      * Protected constructor
      */
     protected Server() {
@@ -453,6 +493,19 @@ public class Server extends BaseDomainHelper implements Identifiable {
         customDataValues = new HashSet<>();
         fqdns = new HashSet<>();
 
+        ignoreEntitlementsForMigration = Boolean.FALSE;
+    }
+
+    /**
+     * Minimal constructor used to avoid loading all properties in SSM config channel subscription
+     *
+     * @param idIn the server id
+     * @param machineIdIn the machine id
+     */
+    public Server(long idIn, String machineIdIn) {
+        id = idIn;
+        machineId = machineIdIn;
+        hasConfigFeature = Boolean.TRUE;
         ignoreEntitlementsForMigration = Boolean.FALSE;
     }
 
