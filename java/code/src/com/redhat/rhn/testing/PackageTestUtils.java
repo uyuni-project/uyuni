@@ -47,9 +47,8 @@ public class PackageTestUtils {
      *
      * @param org the org
      * @return lists of the packages, sorted by version
-     * @throws Exception if anything goes wrong
      */
-    public static List<Package> createSubsequentPackages(Org org) throws Exception {
+    public static List<Package> createSubsequentPackages(Org org) {
         Package pkg1 = PackageTest.createTestPackage(org);
         PackageEvr evr = pkg1.getPackageEvr();
         evr.setVersion("1.0.0");
@@ -109,10 +108,8 @@ public class PackageTestUtils {
      * @param release the new release. If null, the release will remain the same
      * @param org the organization owning the package
      * @return a new version of the given package
-     * @throws Exception when the package cannot be created
      */
-    public static Package newVersionOfPackage(Package original, String epoch, String version, String release, Org org)
-        throws Exception {
+    public static Package newVersionOfPackage(Package original, String epoch, String version, String release, Org org) {
         PackageEvr evr = original.getPackageEvr();
 
         if (epoch == null && version == null && release == null) {
@@ -137,9 +134,8 @@ public class PackageTestUtils {
      * @param ptfVersion the version
      * @param org the organization owning the package
      * @return a ptf master package
-     * @throws Exception when the package cannot be created
      */
-    public static Package createPtfMaster(String ptfNumber, String ptfVersion, Org org) throws Exception {
+    public static Package createPtfMaster(String ptfNumber, String ptfVersion, Org org) {
         Package master = PackageTest.createTestPackage(org);
 
         master.setPackageName(PackageNameTest.createTestPackageName("ptf-" + ptfNumber));
@@ -157,9 +153,8 @@ public class PackageTestUtils {
      * @param ptfVersion the ptf version
      * @param org the organization owning the package
      * @return a package part of a ptf
-     * @throws Exception when the package cannot be created
      */
-    public static Package createPtfPackage(String ptfNumber, String ptfVersion, Org org) throws Exception {
+    public static Package createPtfPackage(String ptfNumber, String ptfVersion, Org org) {
         Package ptfPackage = PackageTest.createTestPackage(org);
 
         ptfPackage.setDescription("Package part of ptf-" + ptfNumber + " for RHN-JAVA unit tests. Please disregard.");
@@ -178,10 +173,8 @@ public class PackageTestUtils {
      * @param ptfVersion the ptf version
      * @param org the organization owning the package
      * @return a package part of a ptf
-     * @throws Exception when the package cannot be created
      */
-    public static Package createPtfPackage(Package original, String ptfNumber, String ptfVersion, Org org)
-        throws Exception {
+    public static Package createPtfPackage(Package original, String ptfNumber, String ptfVersion, Org org) {
         Package ptfPackage = PackageTest.createTestPackage(org);
 
         ptfPackage.setPackageName(original.getPackageName());
