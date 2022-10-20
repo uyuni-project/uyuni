@@ -55,7 +55,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I follow "Custom Channel for Rocky 8 DVD"
     And I follow "Repositories" in the content area
     And I follow "Sync"
-    And I wait until I do not see "Repository sync is running." text
+    And I wait at most 180 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
 
