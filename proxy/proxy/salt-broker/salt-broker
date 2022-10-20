@@ -56,20 +56,31 @@ SUPERVISOR_TIMEOUT = 5
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
+
 class AbstractChannelProxy(multiprocessing.Process):
-    '''
+    """
     Abstract class for ChannelProxy objects
-    '''
+    """
+
     class ChannelException(Exception):
-        '''
+        """
         Custom Exception definition
-        '''
+        """
+
         pass
+
+    _BACKEND_SOCKOPTS = (
+        (zmq.TCP_KEEPALIVE, "tcp_keepalive"),
+        (zmq.TCP_KEEPALIVE_IDLE, "tcp_keepalive_idle"),
+        (zmq.TCP_KEEPALIVE_CNT, "tcp_keepalive_cnt"),
+        (zmq.TCP_KEEPALIVE_INTVL, "tcp_keepalive_intvl"),
+    )
+    _FRONTEND_SOCKOPTS = ()
 
     def __init__(self, opts):
         self.opts = opts
         self.backend_connected = False
-        self.ever_connected = False
+        self.backend_ever_connected = False
         if "master" not in self.opts:
             raise self.ChannelException(
                 '[{}] No "master" opts is provided'.format(
@@ -77,28 +88,71 @@ class AbstractChannelProxy(multiprocessing.Process):
                 )
             )
         try:
-            self.opts['master_ip'] = socket.gethostbyname(self.opts['master'])
+            self.opts["master_ip"] = socket.gethostbyname(self.opts["master"])
         except socket.gaierror as exc:
             raise self.ChannelException(
                 "[{}] Error trying to resolve '{}': {}".format(
-                    self.__class__.__name__, self.opts['master'], exc
+                    self.__class__.__name__, self.opts["master"], exc
                 )
             )
-        super(AbstractChannelProxy, self).__init__()
+        super().__init__()
 
-    def configure_keepalive(self, socket):
-        socket.setsockopt(zmq.TCP_KEEPALIVE, self.opts['tcp_keepalive'])
-        socket.setsockopt(zmq.TCP_KEEPALIVE_IDLE, self.opts['tcp_keepalive_idle'])
-        socket.setsockopt(zmq.TCP_KEEPALIVE_CNT, self.opts['tcp_keepalive_cnt'])
-        socket.setsockopt(zmq.TCP_KEEPALIVE_INTVL, self.opts['tcp_keepalive_intvl'])
+    def run(self):
+        try:
+            context = zmq.Context()
 
-    def configure_zmq_opts(self, socket):
-        socket.setsockopt(zmq.CONNECT_TIMEOUT, self.opts["connect_timeout"])
-        socket.setsockopt(zmq.RECONNECT_IVL, self.opts["reconnect_ivl"])
-        socket.setsockopt(zmq.HEARTBEAT_IVL, self.opts["heartbeat_ivl"])
-        socket.setsockopt(zmq.HEARTBEAT_TIMEOUT, self.opts["heartbeat_timeout"])
+            self.debug_log(
+                "Setting up a {} sock on {}".format(
+                    self.backend_type, self._backend_uri
+                )
+            )
+            self.backend = context.socket(self._backend_sock_type)
+            self.set_sockopts(self.backend, self._BACKEND_SOCKOPTS)
 
-    def monitor(self, monitor_socket):
+            self.reconnect_retries = self.opts["drop_after_retries"]
+            if self.reconnect_retries != -1:
+                self.monitor_socket = self.backend.get_monitor_socket()
+                self.monitor_thread = threading.Thread(
+                    target=self.backend_socket_monitor, args=(self.monitor_socket,)
+                )
+                self.monitor_thread.start()
+
+            self.backend.connect(self._backend_uri)
+
+            if self.opts["wait_for_backend"]:
+                while not self.backend_connected:
+                    time.sleep(0.5)
+
+            self.debug_log(
+                "Setting up a {} sock on {}".format(
+                    self.frontend_type, self._frontend_uri
+                )
+            )
+
+            self.frontend = context.socket(self._frontend_sock_type)
+            self.set_sockopts(self.frontend, self._FRONTEND_SOCKOPTS)
+
+            self.frontend.bind(self._frontend_uri)
+
+            # Forward all messages
+            zmq.proxy(self.frontend, self.backend)
+
+        except zmq.ZMQError as zmq_error:
+            if self.reconnect_retries == 0:
+                # Do not raise error if drop_after_retries was used
+                return
+            msg = "ZMQ Error: {}".format(zmq_error)
+            self.error_log(msg)
+            raise self.ChannelException(msg)
+
+    def set_sockopts(self, socket, sockopts):
+        for opt, opt_src in sockopts:
+            socket.setsockopt(
+                opt,
+                opt_src[0] if isinstance(opt_src, tuple) else self.opts[opt_src],
+            )
+
+    def backend_socket_monitor(self, monitor_socket):
         while monitor_socket.poll():
             mon_evt = recv_monitor_message(monitor_socket)
             if self.reconnect_retries != -1:
@@ -108,10 +162,13 @@ class AbstractChannelProxy(multiprocessing.Process):
                 elif mon_evt["event"] == zmq.EVENT_CONNECTED:
                     self.info_log("{} socket connected".format(self.backend_type))
                     self.backend_connected = True
-                    self.ever_connected = True
+                    self.backend_ever_connected = True
                     self.reconnect_retries = self.opts["drop_after_retries"]
                 elif mon_evt["event"] == zmq.EVENT_CONNECT_RETRIED:
-                    if not self.ever_connected and self.opts["wait_for_backend"]:
+                    if (
+                        not self.backend_ever_connected
+                        and self.opts["wait_for_backend"]
+                    ):
                         continue
                     if self.reconnect_retries == 0:
                         self.warn_log(
@@ -156,134 +213,68 @@ class AbstractChannelProxy(multiprocessing.Process):
         custom terminate function for the child process
         '''
         self.info_log("Terminate called. Exiting")
-        super(AbstractChannelProxy, self).terminate()
+        super().terminate()
 
 
 class PubChannelProxy(AbstractChannelProxy):
-    '''
-    Creates a Salt PUB Channel Proxy.
+    """
+    Salt PUB Channel Proxy.
 
     Subscribes to the zmq PUB channel in the Salt master and binds a zmq SUB
     socket that allows minion to subscribe it and receive the forwarded
     messages from the Salt master.
-    '''
-    def run(self):
-        try:
-            context = zmq.Context()
+    """
 
-            # Set up a XSUB sock
-            master_pub = "tcp://{}:{}".format(
-                self.opts["master_ip"],
-                self.opts["publish_port"],
-            )
+    # Prevent stopping publishing messages on XPUB socket. (bsc#1182954)
+    _FRONTEND_SOCKOPTS = (
+        (zmq.XPUB_VERBOSE, (1,)),
+        (zmq.XPUB_VERBOSER, (1,)),
+    )
 
-            self.debug_log("setting up a XSUB sock on {}".format(master_pub))
-            self.backend = context.socket(zmq.XSUB)
-            self.backend_type = "XSUB"
-            self.configure_keepalive(self.backend)
-            self.configure_zmq_opts(self.backend)
+    def __init__(self, opts):
+        super().__init__(opts)
 
-            self.reconnect_retries = self.opts["drop_after_retries"]
-            if self.reconnect_retries != -1:
-                self.monitor_socket = self.backend.get_monitor_socket()
-                self.monitor_thread = threading.Thread(
-                    target=self.monitor, args=(self.monitor_socket,)
-                )
-                self.monitor_thread.start()
+        self._backend_sock_type = zmq.XSUB
+        self._frontend_sock_type = zmq.XPUB
 
-            self.backend.connect(master_pub)
+        self.backend_type = "XSUB"
+        self.frontend_type = "XPUB"
 
-            if self.opts["wait_for_backend"]:
-                while not self.backend_connected:
-                    time.sleep(0.5)
-
-            # Set up a XPUB sock
-            pub_uri = "tcp://{}:{}".format(
-                self.opts["interface"],
-                self.opts["publish_port"],
-            )
-
-            self.debug_log("setting up a XPUB sock on {}".format(pub_uri))
-
-            self.frontend = context.socket(zmq.XPUB)
-
-            # Prevent stopping publishing messages on XPUB socket. (bsc#1182954)
-            self.frontend.setsockopt(zmq.XPUB_VERBOSE, 1)
-            self.frontend.setsockopt(zmq.XPUB_VERBOSER, 1)
-
-            self.frontend.bind(pub_uri)
-
-            # Forward all messages
-            zmq.proxy(self.frontend, self.backend)
-
-        except zmq.ZMQError as zmq_error:
-            if self.reconnect_retries == 0:
-                # Do not raise error if drop_after_retries was used
-                return
-            msg = "ZMQ Error: {}".format(zmq_error)
-            self.error_log(msg)
-            raise self.ChannelException(msg)
+        self._backend_uri = "tcp://{}:{}".format(
+            self.opts["master_ip"],
+            self.opts["publish_port"],
+        )
+        self._frontend_uri = "tcp://{}:{}".format(
+            self.opts["interface"],
+            self.opts["publish_port"],
+        )
 
 
 class RetChannelProxy(AbstractChannelProxy):
-    '''
-    Creates a Salt RET Channel Proxy.
+    """
+    Salt RET Channel Proxy.
 
     Connects to the zmq RET channel in the Salt master and binds a zmq ROUTER
     socket to receive messages from minions which are then forwarded to
     the Salt master.
-    '''
-    def run(self):
-        try:
-            context = zmq.Context()
+    """
+    def __init__(self, opts):
+        super().__init__(opts)
 
-            # Set up a DEALER sock to send results to master ret interface
-            master_ret = "tcp://{}:{}".format(
-                self.opts["master_ip"],
-                self.opts["ret_port"],
-            )
+        self._backend_sock_type = zmq.DEALER
+        self._frontend_sock_type = zmq.ROUTER
 
-            self.debug_log("setting up a DEALER sock on {}".format(master_ret))
-            self.backend = context.socket(zmq.DEALER)
-            self.backend_type = "DEALER"
-            self.configure_keepalive(self.backend)
-            self.configure_zmq_opts(self.backend)
+        self.backend_type = "DEALER"
+        self.frontend_type = "ROUTER"
 
-            self.reconnect_retries = self.opts["drop_after_retries"]
-            if self.reconnect_retries != -1:
-                self.monitor_socket = self.backend.get_monitor_socket()
-                self.monitor_thread = threading.Thread(
-                    target=self.monitor, args=(self.monitor_socket,)
-                )
-                self.monitor_thread.start()
-
-            self.backend.connect(master_ret)
-
-            if self.opts["wait_for_backend"]:
-                while not self.backend_connected:
-                    time.sleep(0.5)
-
-            # Set up a ROUTER sock to receive responses from minions
-            router_uri = "tcp://{}:{}".format(
-                self.opts["interface"],
-                self.opts["ret_port"],
-            )
-
-            self.debug_log("setting up a ROUTER sock on {}".format(router_uri))
-
-            self.frontend = context.socket(zmq.ROUTER)
-            self.frontend.bind(router_uri)
-
-            # Forward all responses
-            zmq.proxy(self.frontend, self.backend)
-
-        except zmq.ZMQError as zmq_error:
-            if self.reconnect_retries == 0:
-                # Do not raise error if drop_after_retries was used
-                return
-            msg = "ZMQ Error: {}".format(zmq_error)
-            self.error_log(msg)
-            raise self.ChannelException(msg)
+        self._backend_uri = "tcp://{}:{}".format(
+            self.opts["master_ip"],
+            self.opts["ret_port"],
+        )
+        self._frontend_uri = "tcp://{}:{}".format(
+            self.opts["interface"],
+            self.opts["ret_port"],
+        )
 
 
 class SaltBroker(object):
@@ -300,7 +291,7 @@ class SaltBroker(object):
         self.default_sigterm = signal.getsignal(signal.SIGTERM)
         self.pub_proxy_proc = None
         self.ret_proxy_proc = None
-        super(SaltBroker, self).__init__()
+        super().__init__()
 
     def _start_pub_proxy(self):
         '''
@@ -316,7 +307,7 @@ class SaltBroker(object):
         # setting up again the custom SIGTERM handler
         signal.signal(signal.SIGTERM, self.sigterm_clean)
 
-        log.info('[%s] spawning PUB channel proxy process [PID: %s]',
+        log.info('[%s] Spawning PUB channel proxy process [PID: %s]',
                  self.__class__.__name__,
                  pub_proxy.pid)
 
@@ -336,7 +327,7 @@ class SaltBroker(object):
         # setting up again the custom SIGTERM handler
         signal.signal(signal.SIGTERM, self.sigterm_clean)
 
-        log.info('[%s] spawning RET channel proxy process [PID: %s]',
+        log.info('[%s] Spawning RET channel proxy process [PID: %s]',
                  self.__class__.__name__,
                  ret_proxy.pid)
 
