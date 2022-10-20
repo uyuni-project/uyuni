@@ -1,3 +1,5 @@
+- Perform refresh with packages.pkgupdate state (bsc#1203884)
+
 -------------------------------------------------------------------
 Tue Oct 18 10:05:44 CEST 2022 - jgonzalez@suse.com
 
