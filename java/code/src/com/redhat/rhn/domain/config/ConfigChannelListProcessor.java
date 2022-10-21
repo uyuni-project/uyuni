@@ -56,7 +56,7 @@ public class ConfigChannelListProcessor {
      *                          the new channel will be appended
      * @param cc The config channel to subscribe to
      */
-    public void add(List cfgChannels, ConfigChannel cc) {
+    public void add(List<ConfigChannel> cfgChannels, ConfigChannel cc) {
         add(cfgChannels, cc, cfgChannels.size());
     }
 
@@ -68,8 +68,7 @@ public class ConfigChannelListProcessor {
      * @param rank the positon/ranking of the channel in the system list,
      *                  must be {@literal > 0}
      */
-
-    public void add(List cfgChannels, ConfigChannel cc, int rank) {
+    public void add(List<ConfigChannel> cfgChannels, ConfigChannel cc, int rank) {
         check(cc);
         checkRank(rank);
         cfgChannels.remove(cc);
@@ -92,7 +91,7 @@ public class ConfigChannelListProcessor {
      * @param cc the ConfigChannel to remove
      * @return returns true if the remove operation succeded
      */
-    public boolean remove(List cfgChannels, ConfigChannel cc) {
+    public boolean remove(List<ConfigChannel> cfgChannels, ConfigChannel cc) {
         return cfgChannels.remove(cc);
     }
 
@@ -123,7 +122,7 @@ public class ConfigChannelListProcessor {
      *  these channels before embarking on it..
      * @param cfgChannels the config channels list that'll be cleared.
      */
-    public void clear(List cfgChannels) {
+    public void clear(List<ConfigChannel> cfgChannels) {
             cfgChannels.clear();
     }
 
