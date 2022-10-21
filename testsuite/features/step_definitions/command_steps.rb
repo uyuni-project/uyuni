@@ -1031,18 +1031,6 @@ When(/^I restart squid service on the proxy$/) do
   $proxy.run("systemctl restart squid.service")
 end
 
-Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
-  # for testing buildtime of generated metadata - See bsc#1078056
-  node = get_target(host)
-  cmd = "dumpsolv /var/cache/zypp/solv/spacewalk\:fake-rpm-sles15sp4-channel/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
-  metadata_buildtime, return_code = node.run(cmd)
-  raise "Command failed: #{cmd}" unless return_code.zero?
-  cmd = "rpm -q --qf '%{BUILDTIME}' #{pkg}"
-  rpm_buildtime, return_code = node.run(cmd)
-  raise "Command failed: #{cmd}" unless return_code.zero?
-  raise "Wrong buildtime in metadata: #{metadata_buildtime} != #{rpm_buildtime}" unless metadata_buildtime == rpm_buildtime
-end
-
 When(/^I create channel "([^"]*)" from spacecmd of type "([^"]*)"$/) do |name, type|
   command = "spacecmd -u admin -p admin -- configchannel_create -n #{name} -t  #{type}"
   $server.run(command)

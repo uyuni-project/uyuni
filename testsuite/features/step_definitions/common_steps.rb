@@ -256,11 +256,6 @@ When(/^I select "(.*?)" as the origin channel$/) do |label|
   step %(I select "#{label}" from "original_id")
 end
 
-When(/^I select the custom architecture channel for "(.*?)" as the origin channel$/) do |client|
-  label = deb_host?(client) ? "Test-Channel-Deb-AMD64 Child Channel" : "Test-Channel-x86_64 Child Channel"
-  step %(I select "#{label}" from "original_id")
-end
-
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
@@ -399,34 +394,6 @@ Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) 
 end
 
 # metadata steps
-Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  target = get_target(host)
-  arch, _code = target.run('uname -m')
-  arch.chomp!
-  # TODO: adapt for architectures
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-sles15sp4-channel/repodata/*primary.xml.gz"
-  target.run(cmd, timeout: 500)
-end
-
-Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  target = get_target(host)
-  arch, _code = target.run('uname -m')
-  arch.chomp!
-  # TODO: adapt for architectures
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-sles15sp4-channel/repodata/*primary.xml.gz"
-  target.run(cmd, timeout: 500)
-end
-
-Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
-  node = get_target(host)
-  arch, _code = node.run('uname -m')
-  arch.chomp!
-  # TODO: adapt for architectures
-  dir_file = "/var/cache/zypp/raw/susemanager:fake-rpm-sles15sp4-channel/repodata/"
-  _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
-  raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
-end
-
 Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, host|
   node = get_target(host)
   arch, _code = node.run('uname -m')
