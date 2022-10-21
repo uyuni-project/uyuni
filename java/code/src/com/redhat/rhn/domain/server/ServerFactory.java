@@ -674,6 +674,38 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Get Systems for fast channel subscriptions
+     *
+     * @param sids the system ids to look for
+     * @param user the user to get systems for
+     * @return the servers with only limited number of loaded fields
+     */
+    public static List<Server> getSystemsForSubscribe(List<Long> sids, User user) {
+        List<Tuple> res = getSession().createNativeQuery(
+                        "SELECT S.id, S.machine_id, SMI.minion_id, {CC.*} " +
+                                "FROM rhnServer S " +
+                                "   LEFT OUTER JOIN suseMinionInfo SMI ON S.id = SMI.server_id " +
+                                "   LEFT OUTER JOIN rhnServerConfigChannel SCC ON S.id = SCC.server_id " +
+                                "   LEFT OUTER JOIN rhnConfigChannel CC on CC.id = SCC.config_channel_id " +
+                                "   JOIN rhnUserServerPerms USP ON (S.id = USP.server_id) " +
+                                "WHERE " +
+                                "   S.id IN (:sids) " +
+                                "   AND USP.user_id = :user_id " +
+                                "   AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id " +
+                                "   AND SFV.label = 'ftr_config') " +
+                                "ORDER BY S.name, SCC.position", Tuple.class)
+                .addScalar("id", StandardBasicTypes.BIG_INTEGER)
+                .addScalar("machine_id", StandardBasicTypes.STRING)
+                .addScalar("minion_id", StandardBasicTypes.STRING)
+                .addEntity("CC", ConfigChannel.class)
+                .setParameter("user_id", user.getId())
+                .setParameterList("sids", sids)
+                .list();
+
+        return getServersFromTuplesForSubscribe(res);
+    }
+
+    /**
      * Lookup a Server by their id
      * @param id the id to search for
      * @return the Server found
