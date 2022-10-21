@@ -15,7 +15,12 @@ When(/^I wait for "(\d+)" seconds?$/) do |arg1|
 end
 
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
-  iso_path = "/tmp/#{name}.iso"
+  # When using a mirror it is automatically mounted at /mirror
+  iso_path = if $mirror
+               url.sub(/^http:.*\/pub/, '/mirror/pub')
+             else
+               "/tmp/#{name}.iso"
+             end
   mount_point = "/srv/www/htdocs/#{name}"
   $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 500)
   $server.run("mkdir -p #{mount_point}")
