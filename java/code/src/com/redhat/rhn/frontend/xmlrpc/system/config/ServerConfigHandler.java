@@ -500,7 +500,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int addChannels(User loggedInUser, List<Number> sids, List<String> configChannelLabels,
                            Boolean addToTop) {
-        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
+        List<Server> servers = xmlRpcSystemHelper.lookupServersForSubscribe(loggedInUser, sids);
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser, configChannelLabels);
 
@@ -513,6 +513,10 @@ public class ServerConfigHandler extends BaseHandler {
 
         List<ConfigChannel> channelsToAdd;
         for (Server server : servers) {
+            // No need to do anything if we have to add exactly what is already set on the server
+            if (channels.equals(server.getConfigChannelList())) {
+                continue;
+            }
             if (addToTop) {
                 // Add the existing subscriptions to the end so they will be resubscribed
                 // and their ranks will be overridden
@@ -526,6 +530,7 @@ public class ServerConfigHandler extends BaseHandler {
             }
 
             server.subscribeConfigChannels(channelsToAdd, loggedInUser);
+            server.storeConfigChannels();
         }
 
         return 1;
