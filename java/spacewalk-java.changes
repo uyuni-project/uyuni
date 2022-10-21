@@ -1,3 +1,4 @@
+- Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
 - Deny packages from older module metadata when building CLM projects (bsc#1201893)
 - Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
 - Upgrade Bootstrap to 3.4.1
