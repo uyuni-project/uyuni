@@ -65,4 +65,6 @@
 - features/secondary/min_timezone.feature
 - features/secondary/min_move_from_and_to_proxy.feature
 - features/secondary/minssh_move_from_and_to_proxy.feature
+- features/secondary/srv_rename_hostname.feature
+
 ## Secondary features END ##
