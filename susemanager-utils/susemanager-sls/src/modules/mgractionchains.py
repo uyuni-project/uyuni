@@ -145,15 +145,16 @@ def start(actionchain_id):
     except Exception as exc:
         log.error("There was an error while syncing custom states and execution modules")
 
+    transactional_update = __grains__.get("transactional")
     reboot_required = False
     inside_transaction = False
-    if __grains__.get("transactional"):
+    if transactional_update:
         reboot_required = check_reboot_required(target_sls)
         inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
 
-    if __grains__.get("transactional") and reboot_required:
+    if transactional_update and reboot_required:
         ret = __salt__['transactional_update.sls'](target_sls, queue=True, activate_transaction=True)
-    elif __grains__.get("transactional") and not inside_transaction:
+    elif transactional_update and not inside_transaction:
         ret = __salt__['transactional_update.sls'](target_sls, queue=True)
     else:
         ret = __salt__['state.sls'](target_sls, queue=True)
@@ -220,15 +221,16 @@ def resume():
     log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
               "{0}".format(next_chunk))
     
+    transactional_update = __grains__.get("transactional")
     reboot_required = False
     inside_transaction = False
-    if __grains__.get("transactional"):
+    if transactional_update:
         reboot_required = yaml_file.get('reboot_required')
         inside_transaction = os.environ.get("TRANSACTIONAL_UPDATE")
 
-    if __grains__.get("transactional") and reboot_required:
+    if transactional_update and reboot_required:
         ret =  __salt__['transactional_update.sls'](next_chunk, queue=True, activate_transaction=True)
-    elif __grains__.get("transactional") and not inside_transaction:
+    elif transactional_update and not inside_transaction:
         ret =  __salt__['transactional_update.sls'](next_chunk, queue=True)
     else:
         ret = __salt__['state.sls'](next_chunk, queue=True)
