@@ -817,6 +817,7 @@ public class SaltSSHService {
                         .ifPresent(key ->
                                 pillarData.put("proxy_pub_key", key));
             }
+            pillarData.put("mgr_sudo_user", getSSHUser());
             Map<String, CompletionStage<Result<Map<String, ApplyResult>>>> res =
                     callAsyncSSH(
                             State.apply(
