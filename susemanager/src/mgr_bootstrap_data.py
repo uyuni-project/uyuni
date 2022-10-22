@@ -11,35 +11,6 @@ DOCUMENT_ROOT = CFG.documentroot
 #                One must be available.
 # * optional. Example: "a*" if "a" is available add it, otherwise ignore it
 
-PKGLIST10 = [
-    "libaugeas0",
-    "libnewt0_52",
-    "libzypp",
-    "newt",
-    "openssl",
-    "perl-WWW-Curl",
-    "python-dmidecode",
-    "python-ethtool",
-    "python-newt",
-    "python-openssl",
-    "python-xml",
-    "python2-rhnlib",
-    "rpm-python",
-    "satsolver-tools",
-    "spacewalk-check",
-    "spacewalk-client-setup",
-    "spacewalk-client-tools",
-    "mgr-daemon|spacewalksd",
-    "suseRegister",
-    "suseRegisterInfo",
-    "yast2-ncurses",
-    "yast2-perl-bindings",
-    "yast2-pkg-bindings",
-    "yast2-qt",
-    "zypp-plugin-python",
-    "zypp-plugin-spacewalk",
-    "zypper"
-]
 
 PKGLIST11 = [
     "dbus-1-python",
@@ -939,46 +910,6 @@ DATA = {
     'SLE-11-SP4-x86_64' : {
         'PDID' : [1300], 'BETAPDID' : [2074], 'PKGLIST' : PKGLIST11 + ENHANCE11 + PKGLIST11_X86_I586,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/11/4/bootstrap/'
-    },
-    'SLE-10-SP3-i586' : {
-        'PDID' : 785, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
-    },
-    'SLE-10-SP3-ia64' : {
-        'PDID' : 740, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
-    },
-    'SLE-10-SP3-ppc' : {
-        'PDID' : 787, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
-    },
-    'SLE-10-SP3-s390x' : {
-        'PDID' : 682, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
-    },
-    'SLE-10-SP3-x86_64' : {
-        'PDID' : 721, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/3/bootstrap/'
-    },
-    'SLE-10-SP4-i586' : {
-        'PDID' : 752, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
-    },
-    'SLE-10-SP4-ia64' : {
-        'PDID' : 770, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
-    },
-    'SLE-10-SP4-ppc' : {
-        'PDID' : 711, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
-    },
-    'SLE-10-SP4-s390x' : {
-        'PDID' : 771, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
-    },
-    'SLE-10-SP4-x86_64' : {
-        'PDID' : 832, 'PKGLIST' : PKGLIST10,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/10/4/bootstrap/'
     },
     'SLES4SAP-11-SP1-x86_64' : {
         'PDID' : 1129, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
