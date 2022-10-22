@@ -267,37 +267,59 @@ AMAZONLINUX2 = [
 ]
 
 PKGLIST15_SALT_NO_BUNDLE = [
+    "hostname",
+    "iproute2",
+    "libmnl0",
+    "libxtables12",
     "libpgm-5_2-0",
+    "libpython3_6m1_0",
     "libsodium23",
     "libzmq5",
+    "logrotate",
+    "net-tools",
     "openssl",
+    "python3",
+    "python3-base",
+    "python3-appdirs",
+    "python3-asn1crypto",
     "python3-Babel",
     "python3-certifi",
+    "python3-cffi",
     "python3-chardet",
+    "python3-cryptography",
     "python3-distro",
     "python3-idna",
     "python3-Jinja2",
     "python3-MarkupSafe",
     "python3-M2Crypto",
     "python3-msgpack",
+    "python3-ordered-set",
+    "python3-packaging",
     "python3-psutil",
     "python3-py",
+    "python3-pyasn1",
+    "python3-pycparser",
+    "python3-pyparsing",
     "python3-pytz",
+    "python3-pyOpenSSL",
     "python3-PyYAML",
     "python3-pyzmq",
     "python3-requests",
     "python3-rpm",
+    "python3-setuptools",
     "python3-simplejson",
     "python3-six",
     "python3-urllib3",
     "python3-immutables*",
     "python3-contextvars*",
+    "python3-zypp-plugin",
     "timezone",
     "salt",
     "python3-salt",
     "salt-minion",
     "python3-apipkg*",
     "python3-iniconfig*",
+    "xz"
 ]
 
 PKGLIST15_SALT = PKGLIST15_SALT_NO_BUNDLE + [
@@ -310,54 +332,6 @@ PKGLIST15_SALT_OPT_BUNDLE = PKGLIST15_SALT_NO_BUNDLE + [
 
 ONLYSLE15 = [
     "gio-branding-SLE",
-]
-
-PKGLIST15_TRAD = [
-    "dbus-1-glib",
-    "glib2-tools",
-    "girepository-1_0",
-    "libgudev-1_0-0",
-    "libgirepository-1_0-1",
-    "libgio-2_0-0",
-    "libgobject-2_0-0",
-    "libnewt0_52",
-    "libslang2",
-    "newt",
-    "python3-asn1crypto",
-    "python3-cffi",
-    "python3-cryptography",
-    "python3-dmidecode",
-    "python3-dbus-python",
-    "python3-dmidecode",
-    "python3-gobject",
-    "python3-libxml2|python3-libxml2-python", # was renamed - old name was python3-libxml2-python
-    "python3-netifaces",
-    "python3-newt",
-    "python3-pyasn1",
-    "python3-pycparser",
-    "python3-pyOpenSSL",
-    "python3-pyudev",
-    "python3-packaging",
-    "python3-setuptools",
-    "python3-appdirs",
-    "python3-pyparsing",
-    "hwdata",
-    "python3-hwdata",
-    "python3-rhnlib",
-    "spacewalk-check*",
-    "spacewalk-client-setup*",
-    "spacewalk-client-tools",
-    "python3-spacewalk-check*",
-    "python3-spacewalk-client-setup*",
-    "python3-spacewalk-client-tools",
-    "python3-uyuni-common-libs*",
-    "mgr-daemon|spacewalksd*",
-    "shared-mime-info",
-    "suseRegisterInfo",
-    "python3-suseRegisterInfo",
-    "zypp-plugin-spacewalk*",
-    "python3-zypp-plugin",
-    "python3-zypp-plugin-spacewalk*",
 ]
 
 PKGLIST15_X86_ARM = [
@@ -976,119 +950,119 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
     'SLE-15-aarch64' : {
-        'PDID' : [1589, 2053, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1589, 2053, 1709], 'BETAPDID' : [1925], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-ppc64le' : {
-        'PDID' : [1588, 2054, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        'PDID' : [1588, 2054, 1710], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-s390x' : {
-        'PDID' : [1587, 2055, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
+        'PDID' : [1587, 2055, 1711], 'BETAPDID' : [1927], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-x86_64' : {
-        'PDID' : [1576, 2056, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1576, 2056, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLES4SAP-15-ppc64le' : {
-        'PDID' : [1588, 1613, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        'PDID' : [1588, 1613, 1710], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLES4SAP-15-x86_64' : {
-        'PDID' : [1576, 1612, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1576, 1612, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-SP1-aarch64' : {
-        'PDID' : [1769, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1769, 1709], 'BETAPDID' : [1925], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-ppc64le' : {
-        'PDID' : [1770, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        'PDID' : [1770, 1710], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-s390x' : {
-        'PDID' : [1771, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
+        'PDID' : [1771, 1711], 'BETAPDID' : [1927], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-x86_64' : {
-        'PDID' : [1772, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1772, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SUMA-40-PROXY-x86_64' : {
-        'PDID' : [1772, 1908], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1772, 1908], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP2-aarch64' : {
-        'PDID' : [1943, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1943, 1709], 'BETAPDID' : [1925], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP2-ppc64le' : {
-        'PDID' : [1944, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        'PDID' : [1944, 1710], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP2-s390x' : {
-        'PDID' : [1945, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
+        'PDID' : [1945, 1711], 'BETAPDID' : [1927], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP2-x86_64' : {
-        'PDID' : [1946, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1946, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SUMA-41-PROXY-x86_64' : {
-        'PDID' : [1946, 2015], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1946, 2015], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP3-aarch64' : {
-        'PDID' : [2142, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2142, 1709], 'BETAPDID' : [1925], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP3-ppc64le' : {
-        'PDID' : [2143, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        'PDID' : [2143, 1710], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP3-s390x' : {
-        'PDID' : [2144, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
+        'PDID' : [2144, 1711], 'BETAPDID' : [1927], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP3-x86_64' : {
-        'PDID' : [2145, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2145, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SUMA-42-PROXY-x86_64' : {
-        'PDID' : [2145, 2225], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT_OPT_BUNDLE + PKGLIST15_X86_ARM,
+        'PDID' : [2145, 2225], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT_OPT_BUNDLE + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP4-aarch64' : {
-        'PDID' : [2296, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2296, 1709], 'BETAPDID' : [1925], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
     'SLE-15-SP4-ppc64le' : {
-        'PDID' : [2297, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        'PDID' : [2297, 1710], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
     'SLE-15-SP4-s390x' : {
-        'PDID' : [2298, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
+        'PDID' : [2298, 1711], 'BETAPDID' : [1927], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
     'SLE-15-SP4-x86_64' : {
-        'PDID' : [2299, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2299, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
     'SUMA-43-PROXY-x86_64' : {
-        'PDID' : [2299, 2384], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2299, 2384], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
     'openSUSE-Leap-15-x86_64' : {
-        'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/0/bootstrap/'
     },
     'openSUSE-Leap-15.1-x86_64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_leap15_1-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_1-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/1/bootstrap/'
     },
     'openSUSE-Leap-15.1-aarch64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_leap15_1-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_1-aarch64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/1/bootstrap/'
     },
     'openSUSE-Leap-15.1-x86_64' : {
@@ -1100,11 +1074,11 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/2/bootstrap/'
     },
     'openSUSE-Leap-15.2-x86_64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_leap15_2-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_2-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/2/bootstrap/'
     },
     'openSUSE-Leap-15.2-aarch64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_leap15_2-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_2-aarch64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/2/bootstrap/'
     },
     'openSUSE-Leap-15.3-x86_64' : {
@@ -1116,11 +1090,11 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
     },
     'openSUSE-Leap-15.3-x86_64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_leap15_3-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_3-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
     },
     'openSUSE-Leap-15.3-aarch64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_leap15_3-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_3-aarch64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
     },
     'openSUSE-Leap-15.4-x86_64' : {
@@ -1132,11 +1106,11 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
     },
     'openSUSE-Leap-15.4-x86_64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_leap15_4-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_4-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
     },
     'openSUSE-Leap-15.4-aarch64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_leap15_4-aarch64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'BASECHANNEL' : 'opensuse_leap15_4-aarch64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/4/bootstrap/'
     },    
     'centos-6-x86_64' : {
@@ -1181,7 +1155,7 @@ DATA = {
     },
     'centos-8-ppc64le-uyuni' : {
         'BASECHANNEL' : 'centos8-ppc64le', 'PKGLIST' : RES8,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/8/bootstrap/'
+        'PDID' : [-14, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
     },
     'centos-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'centos8-aarch64', 'PKGLIST' : RES8,
