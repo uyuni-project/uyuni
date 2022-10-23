@@ -1,3 +1,4 @@
+- enforce installation of the PTF GPG key package
 - drop legacy way to prevent disabling local repos
 
 -------------------------------------------------------------------
