@@ -977,6 +977,8 @@ public class ContentSyncManager {
 
                     prodRepoLink.setUpdateTag(null);
                     prodRepoLink.setMandatory(false);
+                    // Current PTF key for SLE 12/15 and SLE-Micro
+                    prodRepoLink.setGpgKeyUrl("file:///usr/lib/rpm/gnupg/keys/suse_ptf_key.asc");
                     product.getRepositories().stream()
                         .filter(r -> r.getRootProduct().equals(root))
                         .filter(r -> r.getParentChannelLabel() != null)
