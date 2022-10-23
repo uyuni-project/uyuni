@@ -255,7 +255,7 @@ artifacts:
     jar: api
     repository: Leap
   - artifact: snakeyaml
-    repository: Leap
+    repository: Leap_sle
   - artifact: spark-core
     repository: Uyuni_Other
   - artifact: spark-template-jade
