@@ -1,3 +1,4 @@
+- enforce installation of the PTF GPG key package
 - Use the actual sudo user home directory for salt ssh
   clients on bootstrap and clean up (bsc#1202093)
 - dnf repo definition does not support multiline gpgkeys
