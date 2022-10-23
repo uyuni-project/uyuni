@@ -1,3 +1,4 @@
+- enforce installation of the PTF GPG key package
 - dnf repo definition does not support multiline gpgkeys
   (bsc#1204444)
 - remove forced refresh in channel state as gpg key trust is now
