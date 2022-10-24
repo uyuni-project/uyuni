@@ -2738,8 +2738,12 @@ public class SaltServerActionService {
             return false;
         }
 
+        if (ret.getAsJsonObject() == null) {
+            return false;
+        }
+
         JsonPrimitive prim = ret.getAsJsonObject().getAsJsonPrimitive("reboot_required");
-        if (!prim.isBoolean()) {
+        if (prim == null || !prim.isBoolean()) {
             return false;
 
         }
@@ -2747,12 +2751,22 @@ public class SaltServerActionService {
     }
 
     private long checkActionID(StateApplyResult<Ret<JsonElement>> actionStateApply) {
-        JsonElement ret = actionStateApply.getChanges().getRet();
-        if (!ret.isJsonObject()) {
+        Ret<JsonElement> changes = actionStateApply.getChanges();
+        if (changes == null) {
             return 0;
         }
 
-        JsonPrimitive prim = ret.getAsJsonObject().getAsJsonPrimitive("current_action_id");
+        JsonElement ret = changes.getRet();
+        if (ret == null || !ret.isJsonObject()) {
+            return 0;
+        }
+
+        JsonObject obj = ret.getAsJsonObject();
+        if (obj == null) {
+            return 0;
+        }
+
+        JsonPrimitive prim = obj.getAsJsonPrimitive("current_action_id");
         if (!prim.isNumber()) {
             return 0;
 
@@ -2804,33 +2818,37 @@ public class SaltServerActionService {
                         actionStateApply.getChanges().getRet(),
                         actionStateApply.getName());
             }
-            else if (key.contains("schedule_next_chunk") && checkIfRebootRequired(actionStateApply) &&
-                    checkActionID(actionStateApply) != 0) {
-                /*
-                 * Transactional update does not contains reboot in sls files, but apply a reboot using
-                 * activate_transaction=True in transactional_update.sls . So it's required to parse the return
-                 * to check if schedule_next_chunk contains reboot_required param, then we can suppose that
-                 * the next action is a reboot. Then we need to pick up the action.
-                 */
+            else if (key.contains("schedule_next_chunk")) {
 
-                long actionId = checkActionID(actionStateApply);
                 Optional<MinionServer> minionServerOpt = MinionServerFactory.findByMinionId(minionId);
 
+                long actionId = checkActionID(actionStateApply);
                 minionServerOpt.ifPresent(minionServer -> {
 
-                        final Optional<Action> action  = Optional.ofNullable(ActionFactory.lookupById(actionId));
-                        if (action.isPresent()) {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Matched salt job with action (id={})", actionId);
-                            }
-                        Optional<ServerAction> serverAction = action.get()
-                                .getServerActions()
-                                .stream()
-                                .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+                        if (minionServer.doesOsSupportsTransactionalUpdate() &&
+                                actionId != 0 && checkIfRebootRequired(actionStateApply)) {
+                            /*
+                             * Transactional update does not contains reboot in sls files, but apply a reboot using
+                             * activate_transaction=True in transactional_update.sls . So it's required to parse
+                             * the return to check if schedule_next_chunk contains reboot_required param,
+                             * then we can suppose that the next action is a reboot.
+                             * Then we need to pick up the action.
+                             */
 
-                        serverAction.ifPresent(sa -> {
-                            setActionAsPickedUp(sa);
-                        });
+                            final Optional<Action> action  = Optional.ofNullable(ActionFactory.lookupById(actionId));
+                            if (action.isPresent()) {
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug("Matched salt job with action (id={})", actionId);
+                                }
+                            Optional<ServerAction> serverAction = action.get()
+                                    .getServerActions()
+                                    .stream()
+                                    .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+
+                            serverAction.ifPresent(sa -> {
+                                setActionAsPickedUp(sa);
+                            });
+                        }
                     }
                 });
             }
