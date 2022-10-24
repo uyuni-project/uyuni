@@ -216,7 +216,7 @@ end
 When(/^I include the recommended child channels$/) do
   toggle = "//span[@class='pointer']"
   toggle_off = "//i[contains(@class, 'fa-toggle-off')]"
-  step %(I wait until I do not see "Loading" text)
+  step %(I wait until I see "include recommended" text)
   raise 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
   find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
 end
