@@ -1,3 +1,4 @@
+- Added CLM filters to match product temporary fixes packages
 - fix frontend logging in react pages
 - Fix virtual systems list for unentitled systems
 

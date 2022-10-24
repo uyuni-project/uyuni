@@ -1,3 +1,4 @@
+- Added CLM filters to match product temporary fixes packages
 - Restrict product temporary fixes visibility in the UI and in the
   APIs responses
 - Fixed empty selection warning in the lock/unlock page
