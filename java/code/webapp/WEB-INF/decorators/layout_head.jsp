@@ -58,8 +58,8 @@
         window.userTimeFormat='${userTimeFormat}'
     </script>
 
-    <script src="/javascript/jquery.js?cb=${cb_version}"></script>
-    <script src="/javascript/bootstrap.js?cb=${cb_version}"></script>
+    <script src="/javascript/legacy/jquery.min.js?cb=${cb_version}"></script>
+    <script src="/javascript/legacy/bootstrap.min.js?cb=${cb_version}"></script>
     <script src="/javascript/select2/select2.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
