@@ -1,3 +1,5 @@
+- Restrict product temporary fixes visibility in the UI and in the
+  APIs responses
 - Fixed empty selection warning in the lock/unlock page
 - Set GPG Key Url for PTF repositories
 - Fix deleting custom info pillar (bsc#1209253)
