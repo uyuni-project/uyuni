@@ -1,3 +1,5 @@
+- Restrict product temporary fixes visibility in the UI and in the
+  APIs responses
 - Fixed empty selection warning in the lock/unlock page
 - set GPG Key Url for PTF repositories
 - Optimize the number of salt calls on minion startup (bsc#1203532)
