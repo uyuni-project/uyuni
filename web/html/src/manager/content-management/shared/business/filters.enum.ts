@@ -33,6 +33,10 @@ export const filterEntity: FilterEntityEnumType = {
     key: "module",
     text: t("Module"),
   },
+  PTF: {
+    key: "ptf",
+    text: t("Product Temporary Fix"),
+  },
 };
 
 const filterMatchers: FilterMatcherEnumType = {
@@ -121,6 +125,11 @@ const filterMatchers: FilterMatcherEnumType = {
     text: t("none (disable modularity)"),
     longDescription: t("none (disable modularity)"),
   },
+  PTF_ALL: {
+    key: "ptf_all",
+    text: t("all"),
+    longDescription: t("all product temporary fixes"),
+  },
 };
 
 export const clmFilterOptions: ClmFilterOptionsEnumType = {
@@ -207,6 +216,30 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     text: t("Stream"),
     entityType: filterEntity.MODULE,
     matchers: [filterMatchers.EQUALS, filterMatchers.MODULE_NONE],
+  },
+  PTF_ALL: {
+    key: "ptf_all",
+    text: t("All"),
+    entityType: filterEntity.PTF,
+    matchers: [filterMatchers.PTF_ALL],
+  },
+  PTF_NUMBER: {
+    key: "ptf_number",
+    text: t("Number"),
+    entityType: filterEntity.PTF,
+    matchers: [
+      filterMatchers.LOWER,
+      filterMatchers.LOWEREQ,
+      filterMatchers.EQUALS,
+      filterMatchers.GREATER,
+      filterMatchers.GREATEREQ,
+    ],
+  },
+  PTF_PACKAGE_NAME: {
+    key: "ptf_package_name",
+    text: t("Fixes Package Name"),
+    entityType: filterEntity.PTF,
+    matchers: [filterMatchers.EQUALS, filterMatchers.MATCHES, filterMatchers.CONTAINS],
   },
 };
 

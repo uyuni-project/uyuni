@@ -127,6 +127,12 @@ public class PackageTest extends BaseTestCaseWithUser {
         return p;
     }
 
+    public static Package createTestPackage(Org org, String packageName) {
+        Package p = populateTestPackage(new Package(), packageName, org);
+        TestUtils.saveAndFlush(p);
+        return p;
+    }
+
     public static Package populateTestPackage(Package p, Org org, PackageName name, PackageEvr evr, PackageArch arch) {
         PackageGroup pgroup = PackageGroupTest.createTestPackageGroup();
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
@@ -166,6 +172,10 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     public static Package populateTestPackage(Package p, Org org, PackageArch parch) {
         PackageName pname = PackageNameTest.createTestPackageName();
+        return populateTestPackage(p, org, parch, pname);
+    }
+
+    private static Package populateTestPackage(Package p, Org org, PackageArch parch, PackageName pname) {
         PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(parch.getArchType().getPackageType());
         return populateTestPackage(p, org, pname, pevr, parch);
     }
@@ -175,8 +185,10 @@ public class PackageTest extends BaseTestCaseWithUser {
         return populateTestPackage(p, org, parch);
     }
 
-
-
+    public static Package populateTestPackage(Package p, String packageName, Org org) {
+        PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+        return populateTestPackage(p, org, parch, PackageNameTest.createTestPackageName(packageName));
+    }
     public static PackageSource createTestPackageSource(SourceRpm rpm, Org org) {
 
         PackageSource source = new PackageSource();

@@ -1,3 +1,4 @@
+- Added CLM filters to match product temporary fixes packages
 - Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
 
 -------------------------------------------------------------------

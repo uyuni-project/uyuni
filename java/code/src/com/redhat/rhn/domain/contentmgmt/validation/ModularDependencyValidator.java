@@ -21,6 +21,7 @@ import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMess
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModularityDisabledException;
@@ -41,8 +42,8 @@ import java.util.stream.Collectors;
  */
 public class ModularDependencyValidator implements ContentValidator {
 
-    private ModulemdApi modulemdApi;
-    private LocalizationService loc = LocalizationService.getInstance();
+    private final ModulemdApi modulemdApi;
+    private final LocalizationService loc = LocalizationService.getInstance();
 
     /**
      * Initialize a modular dependency validator with {@link ModulemdApi} as the default modulemd API
@@ -67,8 +68,7 @@ public class ModularDependencyValidator implements ContentValidator {
                 .map(SoftwareProjectSource::getChannel)
                 .anyMatch(Channel::isModular);
 
-        boolean hasModuleFilters = project.getActiveFilters().stream()
-                .anyMatch(f -> f.asModuleFilter().isPresent());
+        boolean hasModuleFilters = project.getActiveFilters().stream().anyMatch(f -> f instanceof ModuleFilter);
 
         if (!(hasModularSources && hasModuleFilters)) {
             return Collections.emptyList();

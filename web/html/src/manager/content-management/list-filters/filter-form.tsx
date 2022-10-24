@@ -262,6 +262,26 @@ const FilterForm = (props: Props) => {
               </>
             )}
 
+            {clmFilterOptions.PTF_NUMBER.key === filterType && (
+              <Text
+                name={clmFilterOptions.PTF_NUMBER.key}
+                label={t("Number")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
+            {clmFilterOptions.PTF_PACKAGE_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.PTF_PACKAGE_NAME.key}
+                label={t("Package Name")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
             {clmFilterOptions.STREAM.key !== filterType && (
               <Radio
                 inline
