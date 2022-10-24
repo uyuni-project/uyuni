@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
+import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.rhnpackage.SpecialCapabilityNames;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
@@ -143,6 +144,7 @@ public class PackageTestUtils {
         master.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(null, ptfVersion, "0", PackageType.RPM));
 
         addProvidesHeader(master, findOrCreateCapability(SpecialCapabilityNames.PTF, ptfNumber + "-" + ptfVersion), 8L);
+        addProvidesHeader(master, findOrCreateCapability("ptf-" + ptfNumber, ptfVersion + "-0"), 8L);
 
         return TestUtils.saveAndReload(master);
     }
@@ -162,6 +164,8 @@ public class PackageTestUtils {
             "0" + "." + ptfNumber + "." + ptfVersion + ".PTF", PackageType.RPM));
 
         addProvidesHeader(ptfPackage, findOrCreateCapability(SpecialCapabilityNames.PTF_PACKAGE), 0L);
+        addProvidesHeader(ptfPackage, findOrCreateCapability(ptfPackage.getPackageName().getName(),
+            ptfPackage.getPackageEvr().toUniversalEvrString()), 8L);
 
         return TestUtils.saveAndReload(ptfPackage);
     }
@@ -184,15 +188,47 @@ public class PackageTestUtils {
             evr.getRelease() + "." + ptfNumber + "." + ptfVersion + ".PTF", original.getPackageType()));
 
         addProvidesHeader(ptfPackage, findOrCreateCapability(SpecialCapabilityNames.PTF_PACKAGE), 0L);
+        addProvidesHeader(ptfPackage, findOrCreateCapability(ptfPackage.getPackageName().getName(),
+            ptfPackage.getPackageEvr().toUniversalEvrString()), 8L);
 
         return TestUtils.saveAndReload(ptfPackage);
+    }
+
+    /**
+     * Adds a link between a ptf package and its master ptf
+     *
+     * @param masterPtfPackage the master ptf
+     * @param ptfPackage the package part of the ptf
+     */
+    public static void associatePackageToPtf(Package masterPtfPackage, Package ptfPackage) {
+        addRequiresHeader(masterPtfPackage, findOrCreateCapability(ptfPackage.getPackageName().getName(),
+            ptfPackage.getPackageEvr().toUniversalEvrString()), 8L);
+        addRequiresHeader(ptfPackage, findOrCreateCapability(masterPtfPackage.getPackageName().getName(),
+            masterPtfPackage.getPackageEvr().getVersion() + "-0"), 8L);
+
+        TestUtils.saveAndFlush(masterPtfPackage);
+        TestUtils.saveAndFlush(ptfPackage);
+    }
+
+    /**
+     * Adds the specified capability to the list of requirements of the package
+     * @param pack the package
+     * @param capability the capability
+     * @param sense the sense
+     */
+    public static void addRequiresHeader(Package pack, PackageCapability capability, Long sense) {
+        PackageRequires packageProvides = new PackageRequires();
+        packageProvides.setCapability(capability);
+        packageProvides.setPack(pack);
+        packageProvides.setSense(sense);
+        TestUtils.saveAndFlush(packageProvides);
     }
 
     /**
      * Adds the specified capability to the list provided by a package
      * @param pack the package
      * @param capability the capability
-     * @param sense the sens
+     * @param sense the sense
      */
     public static void addProvidesHeader(Package pack, PackageCapability capability, Long sense) {
         PackageProvides packageProvides = new PackageProvides();
