@@ -1,3 +1,5 @@
+- Fix directory path traversal vulnerability CVE-2022-31255 (bsc#1204543)
+
 -------------------------------------------------------------------
 Fri Oct 14 14:05:38 UTC 2022 - marina.latini@suse.com
 
