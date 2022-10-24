@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.manager.contentmgmt;
 
-import static com.suse.utils.Opt.stream;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.domain.channel.Channel;
@@ -74,8 +73,8 @@ import java.util.stream.Stream;
  */
 public class DependencyResolver {
 
-    private ContentProject project;
-    private ModulemdApi modulemdApi;
+    private final ContentProject project;
+    private final ModulemdApi modulemdApi;
 
     /**
      * Initialize a new instance with a content project and a {@link ModulemdApi} instance
@@ -99,8 +98,9 @@ public class DependencyResolver {
     public DependencyResolutionResult resolveFilters(List<ContentFilter> filters) throws DependencyResolutionException {
 
         List<ModuleFilter> moduleFilters = filters.stream()
-                .flatMap(f -> stream((Optional<ModuleFilter>) f.asModuleFilter()))
-                .collect(toList());
+                                                  .filter(f -> f instanceof ModuleFilter)
+                                                  .map(ModuleFilter.class::cast)
+                                                  .collect(toList());
 
         List<ContentFilter> updatedFilters = new ArrayList<>(filters);
 
