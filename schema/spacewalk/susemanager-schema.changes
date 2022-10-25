@@ -1,3 +1,5 @@
+- Keep older module metadata files in database (bsc#1201893)
+- Fix setting of last modified date in channel clone procedure
 - Change 'Amazon EC2/KVM' to 'Amazon EC2/Nitro' (bsc#1203685)
 
 -------------------------------------------------------------------
