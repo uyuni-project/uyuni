@@ -1,3 +1,5 @@
+- Change 'Amazon EC2/KVM' to 'Amazon EC2/Nitro' (bsc#1203685)
+
 -------------------------------------------------------------------
 Wed Sep 28 10:46:55 CEST 2022 - jgonzalez@suse.com
 

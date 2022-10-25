@@ -604,6 +604,9 @@ public class HardwareMapper {
                     case "kvm":
                         virtTypeLabel = "qemu";
                         break;
+                    case "nitro":
+                        virtTypeLabel = "aws_nitro";
+                        break;
                     default:
                         LOG.info("Detected virtual instance type '{}' for minion '{}'",
                                 virtTypeLabel, server.getMinionId());
@@ -615,7 +618,8 @@ public class HardwareMapper {
                             break;
                         case "qemu":
                         case "kvm":
-                            virtTypeLabel = "aws_kvm";
+                        case "nitro":
+                            virtTypeLabel = "aws_nitro";
                             break;
                         default:
                             virtTypeLabel = "aws";
