@@ -559,13 +559,18 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int setChannels(User loggedInUser, List<Number> sids,
             List<String> configChannelLabels) {
-        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
+        List<Server> servers = xmlRpcSystemHelper.lookupServersForSubscribe(loggedInUser, sids);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
                 lookupGlobals(loggedInUser, configChannelLabels);
 
-        servers.forEach(s -> s.setConfigChannels(channels, loggedInUser));
+        servers.forEach(s -> {
+            if (!channels.equals(s.getConfigChannelList())) {
+                s.setConfigChannels(channels, loggedInUser);
+                s.storeConfigChannels();
+            }
+        });
         return 1;
     }
 
@@ -587,7 +592,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int removeChannels(User loggedInUser, List<Number> sids,
             List<String> configChannelLabels) {
-        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
+        List<Server> servers = xmlRpcSystemHelper.lookupServersForSubscribe(loggedInUser, sids);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
@@ -597,7 +602,12 @@ public class ServerConfigHandler extends BaseHandler {
         int channelCount = configChannelLabels.size();
         int[] countsExpected = servers.stream().mapToInt(s -> s.getConfigChannelCount() - channelCount).toArray();
 
-        servers.forEach(s -> s.unsubscribeConfigChannels(channels, loggedInUser));
+        servers.forEach(s -> {
+            if (channels.stream().anyMatch(ch -> s.getConfigChannelList().contains(ch))) {
+                s.unsubscribeConfigChannels(channels, loggedInUser);
+                s.storeConfigChannels();
+            }
+        });
 
         int[] countsActual = servers.stream().mapToInt(Server::getConfigChannelCount).toArray();
         return Arrays.equals(countsExpected, countsActual) ? 1 : 0;
