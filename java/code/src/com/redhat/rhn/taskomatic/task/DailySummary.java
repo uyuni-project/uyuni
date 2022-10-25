@@ -23,6 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
+import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.dto.ActionMessage;
@@ -83,6 +84,7 @@ public class DailySummary extends RhnJavaJob {
         throws JobExecutionException {
 
         processEndOfLifeNotification();
+        processSubscriptionWarningNotification();
 
         processEmails();
     }
@@ -118,6 +120,16 @@ public class DailySummary extends RhnJavaJob {
                 new EndOfLifePeriod(endOfLifeDate));
             UserNotificationFactory.storeNotificationMessageFor(notification,
                 Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
+        }
+    }
+
+    private void  processSubscriptionWarningNotification() {
+        SubscriptionWarning sw = new SubscriptionWarning();
+        if (sw.expiresSoon()) {
+            NotificationMessage notificationMessage =
+                    UserNotificationFactory.createNotificationMessage(new SubscriptionWarning());
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                    Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
         }
     }
 

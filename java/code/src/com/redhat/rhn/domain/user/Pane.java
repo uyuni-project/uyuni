@@ -33,9 +33,10 @@ public class Pane {
     public static final String INACTIVE_SYSTEMS = "inactive-systems";
     public static final String PENDING_ACTIONS = "pending-actions";
     public static final String RECENTLY_REGISTERED_SYSTEMS = "recently-registered-systems";
+    public static final String SUBSCRIPTION_WARNING = "subscription-warning";
 
     public static final String[] ALL_PANES = { TASKS, CRITICAL_SYSTEMS, SYSTEM_GROUPS,
-            LATEST_ERRATA, INACTIVE_SYSTEMS, PENDING_ACTIONS, RECENTLY_REGISTERED_SYSTEMS };
+            LATEST_ERRATA, INACTIVE_SYSTEMS, PENDING_ACTIONS, RECENTLY_REGISTERED_SYSTEMS, SUBSCRIPTION_WARNING };
     /**
      * Maps to RHNINFOPANE.LABEL
      * This is more of a label prefix

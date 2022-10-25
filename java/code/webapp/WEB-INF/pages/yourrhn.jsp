@@ -7,7 +7,9 @@
 <body>
 
 <c:set var="cb_version" value="${rhn:getConfig('web.buildtimestamp')}" />
-
+<c:if test="${requestScope.subscriptionWarning == 'y'}">
+  <script type="text/javascript" src="/rhn/dwr/interface/SubscriptionWarningRenderer.js?cb=${cb_version}"></script>
+</c:if>
 <c:if test="${requestScope.inactiveSystems == 'y'}">
   <script type="text/javascript" src="/rhn/dwr/interface/InactiveSystemsRenderer.js?cb=${cb_version}"></script>
 </c:if>
@@ -46,6 +48,13 @@
       <div class="col-md-6" id="tasks-pane" >
         <script type="text/javascript">
           TasksRenderer.renderAsync(makeRendererHandler('tasks-pane', false));
+        </script>
+      </div>
+      </c:if>
+      <c:if test="${requestScope.subscriptionWarning == 'y'}">
+      <div id="subscription-warning" class="col-md-12">
+        <script type="text/javascript">
+          SubscriptionWarningRenderer.renderAsync(makeRendererHandler("subscription-warning", false));
         </script>
       </div>
       </c:if>
