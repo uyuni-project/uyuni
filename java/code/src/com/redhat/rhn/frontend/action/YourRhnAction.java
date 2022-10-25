@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action;
 
+import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
 import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.domain.user.User;
@@ -23,6 +24,7 @@ import com.redhat.rhn.frontend.action.renderers.InactiveSystemsRenderer;
 import com.redhat.rhn.frontend.action.renderers.LatestErrataRenderer;
 import com.redhat.rhn.frontend.action.renderers.PendingActionsRenderer;
 import com.redhat.rhn.frontend.action.renderers.RecentSystemsRenderer;
+import com.redhat.rhn.frontend.action.renderers.SubscriptionWarningRenderer;
 import com.redhat.rhn.frontend.action.renderers.SystemGroupsRenderer;
 import com.redhat.rhn.frontend.action.renderers.TasksRenderer;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -50,12 +52,14 @@ public class YourRhnAction extends RhnAction {
 
     public static final String ANY_LISTS_SELECTED = "anyListsSelected";
 
+
     /**
      * No-arg constructor
      */
     public YourRhnAction() {
         Map renderers = new HashMap();
 
+        SubscriptionWarning sw = new SubscriptionWarning();
         List tasks = Arrays.asList(Pane.ALL_PANES);
         for (Object taskIn : tasks) {
             String key = (String) taskIn;
@@ -83,6 +87,9 @@ public class YourRhnAction extends RhnAction {
             }
             else if (key.equals(Pane.TASKS)) {
                 renderer = new TasksRenderer();
+            }
+            else if (key.equals(Pane.SUBSCRIPTION_WARNING) && sw.expiresSoon()) {
+                renderer = new SubscriptionWarningRenderer();
             }
             if (renderer != null) {
                 renderers.put(key, renderer);
