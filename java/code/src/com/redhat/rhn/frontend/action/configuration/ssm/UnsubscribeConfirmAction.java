@@ -26,7 +26,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
  */
 public class UnsubscribeConfirmAction extends BaseListAction {
 
-    /**
+    /*
      * {@inheritDoc}
      */
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
