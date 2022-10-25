@@ -595,6 +595,12 @@ elif [ "$INSTALLER" == apt ]; then
         local NEEDED="salt-common salt-minion"
         if [ $VENV_ENABLED -eq 1 ]; then
             NEEDED="venv-salt-minion"
+        elif [[ $A_CLIENT_CODE_BASE == "ubuntu" && $A_CLIENT_CODE_MAJOR_VERSION == 18 ]]; then
+            # Ubuntu 18.04 needs these extra dependencies. They are not specified in
+            # python3-salt because we don't maintain multiple .deb build instructions
+            # and we can't add logic that adds the deps depending on which OS the .deb
+            # is built for.
+            NEEDED="$NEEDED python3-contextvars python3-immutables"
         fi
         A_MISSING=""
         for P in $NEEDED; do
