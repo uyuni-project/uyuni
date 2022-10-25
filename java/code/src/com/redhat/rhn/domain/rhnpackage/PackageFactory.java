@@ -358,6 +358,25 @@ public class PackageFactory extends HibernateFactory {
     }
 
     /**
+     * Find a package based off of the NEVRA ids
+     * @param org the org that owns the package
+     * @param nameId the id of the name to search for
+     * @param evrId the id of  the evr to search for
+     * @param archId the id of the arch to search for
+     * @return the requested Package
+     */
+    public static List<Package> lookupByNevraIds(Org org, long nameId, long evrId, long archId) {
+
+        return HibernateFactory.getSession().createNamedQuery("Package.lookupByNevraIds", Package.class)
+                                            .setParameter("org", org)
+                                            .setParameter("nameId", nameId)
+                                            .setParameter("evrId", evrId)
+                                            .setParameter("archId", archId)
+                                            .list();
+
+    }
+
+    /**
      * Find a package based off of the channel, NEVRA and checksum
      * @param channel the channel label
      * @param name the name to search for
