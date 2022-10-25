@@ -212,6 +212,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </query>
 
+    <query name="Package.lookupByNevraIds">
+        <![CDATA[ select p
+                from com.redhat.rhn.domain.rhnpackage.Package as p
+                where p.packageArch.id = :archId and
+                        p.packageName.id = :nameId and
+                        p.packageEvr.id = :evrId and
+                        (p.org is null or p.org = :org)
+        ]]>
+    </query>
+
     <sql-query name="Package.lookupByChannelLabelNevraCs">
         <![CDATA[ select {p.*}
                 from
