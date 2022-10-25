@@ -1,3 +1,4 @@
+- Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
 - delay hardware refresh action to avoid missing channels (bsc#1204208)
 
 -------------------------------------------------------------------

@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
@@ -70,6 +71,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
@@ -806,6 +809,10 @@ public class ContentManager {
                 Stream.of(Pair.of(leader, leaderTarget)),
                 nonLeaderTargets)
                 .collect(toList());
+
+        // Refresh pillar data for the assigned clients
+        ServerFactory.listMinionsByChannel(leaderTarget.getChannel().getId()).forEach(ms ->
+                MinionPillarManager.INSTANCE.generatePillar(ms, false, MinionPillarManager.PillarSubset.GENERAL));
 
         return srcTgtPairs;
     }
