@@ -347,7 +347,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     reposync_not_running_streak = 0
 
     process = command_output.split("\n")[0]
-    channel = process.split(' ')[5
+    channel = process.split(' ')[5]
     if do_not_kill.include? channel
       $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
