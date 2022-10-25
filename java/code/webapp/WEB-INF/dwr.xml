@@ -52,6 +52,10 @@
         </create>
 
         <!-- SUSE specific -->
+         <create creator="new" javascript="SubscriptionWarningRenderer">
+            <param name="class" value="com.redhat.rhn.frontend.action.renderers.SubscriptionWarningRenderer" />
+            <include method="renderAsync" />
+        </create>
         <create creator="new" javascript="MirrorCredentialsRenderer">
             <param name="class"
                 value="com.redhat.rhn.frontend.action.renderers.setupwizard.MirrorCredentialsRenderer" />
