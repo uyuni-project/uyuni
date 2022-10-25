@@ -28,7 +28,7 @@ Feature: Update activation keys
     And I click on "Update Channel"
     Then I should see a "Channel Fake-RPM-SLES15SP4-Channel updated" text
     When I follow "Repositories" in the content area
-    And I select the "Test-Repository-x86_64" repo
+    And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
     Then I should see a "Fake-RPM-SLES15SP4-Channel repository information was successfully updated" text
 
