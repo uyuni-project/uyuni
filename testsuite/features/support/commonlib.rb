@@ -33,7 +33,7 @@ def compute_channels_to_leave_running
     next unless node
     os_version = node.os_version
     os_family = node.os_family
-    next unless os_family == 'sles' || os_family == 'rocky'
+    next unless ['sles', 'rocky'].include?(os_family)
     raise "Can't build list of reposyncs to leave running" unless %w[12-SP4 12-SP5 15-SP3 15-SP4 8.6].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
