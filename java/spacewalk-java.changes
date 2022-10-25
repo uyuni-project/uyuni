@@ -1,3 +1,4 @@
+- Improve Amazon EC2/Nitro detection (bsc#1203685)
 - Add channel availability check for product migration (bsc#1200296)
 - Deny packages from older module metadata when building CLM projects (bsc#1201893)
 - fix xmlrpc call randomly failing with translation error (bsc#1203633)
