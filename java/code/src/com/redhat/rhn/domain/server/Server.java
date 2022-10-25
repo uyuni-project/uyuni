@@ -471,16 +471,18 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 .setParameter("sid", getId())
                 .executeUpdate();
 
-        String values = IntStream.range(0, configChannels.size())
-                .boxed()
-                .map(i -> String.format("(%s, %s, %s)", getId(), configChannels.get(i).getId(), i + 1))
-                .collect(Collectors.joining(","));
+        if (!configChannels.isEmpty()) {
+            String values = IntStream.range(0, configChannels.size())
+                    .boxed()
+                    .map(i -> String.format("(%s, %s, %s)", getId(), configChannels.get(i).getId(), i + 1))
+                    .collect(Collectors.joining(","));
 
 
-        HibernateFactory.getSession().createNativeQuery(
-                "INSERT INTO rhnServerConfigChannel (server_id, config_channel_id, position) " +
-                    "VALUES " + values + ";")
-                .executeUpdate();
+            HibernateFactory.getSession().createNativeQuery(
+                            "INSERT INTO rhnServerConfigChannel (server_id, config_channel_id, position) " +
+                                    "VALUES " + values + ";")
+                    .executeUpdate();
+        }
     }
 
     /**
