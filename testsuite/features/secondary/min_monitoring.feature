@@ -11,10 +11,6 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
   As an authorized user
   I want to enable Prometheus exporters
 
-  Scenario: Pre-requisite: enable Prometheus exporters repository on the minion
-    When I enable the necessary repositories before installing Prometheus exporters on this "sle_minion"
-    And I refresh the metadata for "sle_minion"
-
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
