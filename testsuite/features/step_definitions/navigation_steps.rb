@@ -1085,3 +1085,7 @@ end
 Then(/^I should see left menu empty$/) do
   raise StandardError, 'The left menu is not empty.' unless page.has_no_xpath?("//*[contains(@class, 'level1')]/*/*[contains(@class, 'nodeLink')]")
 end
+
+When('I am on the "Distribution Channel Mapping" page') do
+  step %(I should see a "Distribution Channel Mapping" text)
+end

@@ -1448,3 +1448,35 @@ When(/^I clean up the server's hosts file$/) do
   command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
   $server.run(command)
 end
+
+# select an archiecture type for distribution channel mapping
+And(/^I select "(.*?)" from architecture dropdown/) do |selection|
+  # let the the select2js box filter open the hidden options
+  xpath_query = "//select[@name='architecture']"
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  # select the desired option
+  raise "Architecture #{selection} not found" unless find(:xpath, "//select[@name='architecture']/option[contains(text(), '#{selection}')]").click
+end
+
+# select a channel for a distribution map
+And(/^I select "(.*?)" from channel list dropdown/) do |selection|
+  # let the the select2js box filter open the hidden options
+  xpath_query = "//select[@name='channel_label']"
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  # select the desired option
+  raise "Channel #{selection} not found" unless find(:xpath, "//select[@name='channel_label']/option[contains(text(), '#{selection}')]").click
+end
+
+# check if a certain link is present in the channel mappings table
+Given(/^I see a "(.*?)" link in the table/) do |link_name|
+  page.has_field?("#{link_name}", with: 'Operating System')
+end
+
+Then(/^I should see a "(.*?)" link in the table/) do |link_name|
+  page.has_field?("#{link_name}", with: 'Operating System')
+end
+
+# check if a certain architecture text is present in the mappings table
+Given(/^I see a "(.*?)" architecture description in the table/) do |text|
+  page.has_field?("#{text}", with: 'Architecture')
+end
