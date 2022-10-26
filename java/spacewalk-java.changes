@@ -1,3 +1,5 @@
+- Fix arbitrary file disclosure vulnerability CVE-2022-43753 (bsc#1204716)
+
 -------------------------------------------------------------------
 Tue Oct 18 10:07:00 CEST 2022 - jgonzalez@suse.com
 
