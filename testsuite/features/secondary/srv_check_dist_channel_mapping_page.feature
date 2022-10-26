@@ -64,7 +64,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         When I enter "SUSE Linux Enterprise Server 15 SP 4 modified" as "os"
         And I select "Test-Channel-x86_64" from channel list dropdown
         And I click on "Update Mapping"
-        # Then I should see a "Distribution Channel Mapping 'SUSE Linux Enterprise Server 15 SP 4' updated successfully." alert message
         Then I should see a "SUSE Linux Enterprise Server 15 SP 4 modified" link in the table
         And I should see a "test-channel-x86_64" link in the table
 
@@ -77,7 +76,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         And I enter "Ubuntu 22.04.01 LTS modified" as "os"
         And I select "Test Base Channel" from channel list dropdown
         And I click on "Update Mapping"
-        # Then I should see a "Distribution Channel Mapping 'Ubuntu 22.04.01 LTS' updated successfully." alert message
         Then I should see a "Ubuntu 22.04.01 LTS modified" link in the table
         And I should see a "test_base_channel" link in the table
 
@@ -90,7 +88,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         And I enter "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" as "os"
         And I select "Test-Channel-Deb-AMD64" from channel list dropdown
         And I click on "Update Mapping"
-        # Then I should see a "Distribution Channel Mapping 'SUSE Linux Enterprise Server 15 SP 4 iSeries modified' updated successfully." alert message
         Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" link in the table
         And I should see a "test-channel-deb-amd64" link in the table
 
@@ -105,9 +102,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         When I follow "Delete Distribution Channel Mapping"
         Then I should see a "Delete Distribution Channel Map" text
         When I click on "Delete Mapping"
-        #throws runtime exception: Capybara::NoSuchAlertError
-        # Then I should see a "Distribution Channel Mapping \'SUSE Linux Enterprise Server 15 SP 4\' deleted successfully." alert message
-        #temporary workaround. this will fail when more than one map exist.
         Then I should not see a "SUSE Linux Enterprise Server 15 SP 4 modified" link
     
     Scenario: Cleanup: delete the map created for x68_64 ubuntu clients
@@ -120,9 +114,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         When I follow "Delete Distribution Channel Mapping"
         Then I should see a "Delete Distribution Channel Map" text
         When I click on "Delete Mapping"
-        # throws runtime exception: Capybara::NoSuchAlertError
-        # Then I should see a "Distribution Channel Mapping \'Ubuntu 22.04.01 LTS modified\' deleted successfully." alert message
-        # temporary workaround. this will fail when more than one map exist.
         Then I should not see a "Ubuntu 22.04.01 LTS modified" link
     
     Scenario: Cleanup: delete the map created for i586 clients
@@ -135,9 +126,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         When I follow "Delete Distribution Channel Mapping"
         Then I should see a "Delete Distribution Channel Map" text
         When I click on "Delete Mapping"
-        # throws runtime exception: Capybara::NoSuchAlertError
-        #Then I should see a "Distribution Channel Mapping \'SUSE Linux Enterprise Server 15 SP 4 iSeries modified\' deleted successfully." alert message
-        # temporary workaround. this will fail when more than one map exist.
         Then I should not see a "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" link
 
     # A quick sanity check to asess whether the DCM page is back to its default state
