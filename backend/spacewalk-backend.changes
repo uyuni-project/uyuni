@@ -1,3 +1,4 @@
+- Keep older module metadata files in database (bsc#1201893)
 - Removed the activation keys report from the debug information
 
 -------------------------------------------------------------------

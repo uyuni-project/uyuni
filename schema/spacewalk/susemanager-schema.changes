@@ -1,3 +1,6 @@
+- Keep older module metadata files in database (bsc#1201893)
+- Fix setting of last modified date in channel clone procedure
+
 -------------------------------------------------------------------
 Tue Oct 18 09:57:18 CEST 2022 - jgonzalez@suse.com
 

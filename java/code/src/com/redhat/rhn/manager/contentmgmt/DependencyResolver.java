@@ -19,6 +19,7 @@ import static com.suse.utils.Opt.stream;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
@@ -32,36 +33,39 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApiException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * Resolves dependencies in a content management project
- *
+ * <p>
  * At the moment, dependency resolution only works with module filters and modular dependencies. This class can be
  * enhanced to resolve package dependencies as well.
- *
+ * <p>
  * The resolution process takes the complete list of filters as input and queries the libmodulemd API with all the
  * module streams in filters. A module filter represents a selected module in one of the modular sources (filter rules
  * have no effect for module filters). The API returns all the related packages that must be allowed/denied as per
  * current module selection. In return, all module filters are translated into a collection of package filters by the
  * following rules:
- *
- * 1. All modular packages are denied (deny by nevra)
- * 2. For each package publicly provided by a module, all the packages from other sources with the same package name
- *    are denied. As a result, a specific package is only provided exclusively by the module to prevent any conflicts
- *    (deny by name).
- * 3. Modular packages from selected modules are overridden to be allowed (allow by nevra)
- *
- * This algorithm only runs if there are any module filters in the input list. Otherwise the process is bypassed and no
+ * <p>
+ * <ol>
+ * <li>All modular packages are denied (deny by nevra)
+ * <li>For each package publicly provided by a module, all the packages from other sources with the same package name
+ *    are denied. As a result, a specific package is provided exclusively by the module to prevent any conflicts (deny
+ *    by name).
+ * <li>Modular packages from selected modules are overridden to be allowed (allow by nevra)
+ * </ol>
+ * <p>
+ * This algorithm only runs if there are any module filters in the input list. Otherwise, the process is bypassed and no
  * filter transformation is done.
  *
- * The resolve deny-allow override problem:
- *
- * One problem with this approach is that the allow filters will override any further deny filters defined by the user
+ * <h3>The resolve deny-allow override problem</h3>
+ * One problem with this approach is that the ALLOW filters will override any further deny filters defined by the user
  * on those packages. We need to figure out if this is an important case and if so, come up with a different solution.
  *
  * @see com.redhat.rhn.manager.contentmgmt.test.DependencyResolverTest#testModuleFiltersForeignPackagesSelected
@@ -136,14 +140,24 @@ public class DependencyResolver {
         List<Module> resolvedModules = modPkgList.getSelected().stream().map(Module::new).collect(Collectors.toList());
 
         // 1. Modular packages to be denied
+        // Collect every synced module metadata file in every source, including outdated ones
+        Set<Modules> allMetadata = sources.stream()
+                .flatMap(s -> s.getModules().stream())
+                .collect(Collectors.toSet());
+
+        // Set to collect all the modular package NEVRAs
+        Set<String> pkgNevras = new HashSet<>();
         Stream<PackageFilter> pkgDenyFilters;
         try {
-            pkgDenyFilters = modulemdApi.getAllPackages(sources).stream()
-                    .map(nevra -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.DENY));
+            for (Modules metadata : allMetadata) {
+                pkgNevras.addAll(modulemdApi.getAllPackages(metadata));
+            }
         }
         catch (ModulemdApiException e) {
             throw new DependencyResolutionException("Failed to resolve modular dependencies.", e);
         }
+        // Generate a DENY filter for each modular package
+        pkgDenyFilters = pkgNevras.stream().map(nevra -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.DENY));
 
         // 2. Non-modular packages to be denied by name
         Stream<PackageFilter> providedRpmApiFilters = modPkgList.getRpmApis().stream()

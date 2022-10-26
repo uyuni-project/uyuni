@@ -14,19 +14,6 @@
  */
 package com.redhat.rhn.domain.channel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.errata.Errata;
@@ -39,6 +26,20 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.IncompatibleArchException;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -54,7 +55,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     public static final String PROTECTED = "protected";
     public static final String PRIVATE = "private";
 
-    private static List<String> archesToSkipRepodata = new ArrayList<String>(Arrays
+    private static List<String> archesToSkipRepodata = new ArrayList<>(Arrays
             .asList("channel-sparc-sun-solaris", "channel-i386-sun-solaris",
                     "channel-sparc"));
     private String baseDir;
@@ -78,22 +79,22 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private ChannelProduct product;
     private ProductName productName;
     private Comps comps;
-    private Modules modules;
+    private Set<Modules> modules;
     private MediaProducts mediaProducts;
     private String summary;
-    private Set<Errata> erratas = new HashSet<Errata>();
-    private Set<Package> packages = new HashSet<Package>();
-    private Set<ContentSource> sources =  new HashSet<ContentSource>();
-    private Set<ChannelFamily> channelFamilies = new HashSet<ChannelFamily>();
-    private Set<DistChannelMap> distChannelMaps = new HashSet<DistChannelMap>();
-    private Set<Org> trustedOrgs = new HashSet<Org>();
+    private Set<Errata> erratas = new HashSet<>();
+    private Set<Package> packages = new HashSet<>();
+    private Set<ContentSource> sources = new HashSet<>();
+    private Set<ChannelFamily> channelFamilies = new HashSet<>();
+    private Set<DistChannelMap> distChannelMaps = new HashSet<>();
+    private Set<Org> trustedOrgs = new HashSet<>();
     private String maintainerName;
     private String maintainerEmail;
     private String maintainerPhone;
     private String supportPolicy;
     private String updateTag;
     private boolean installerUpdates = false;
-    private Set<ClonedChannel> clonedChannels = new HashSet<ClonedChannel>();
+    private Set<ClonedChannel> clonedChannels = new HashSet<>();
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
     /**
@@ -221,8 +222,29 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * @param modulesIn The Modules to set.
      */
-    public void setModules(Modules modulesIn) {
+    public void setModules(Set<Modules> modulesIn) {
         this.modules = modulesIn;
+    }
+
+    /**
+     * Add a module metadata file to the channel
+     * @param modulesIn the module metadata entity to add
+     */
+    public void addModules(Modules modulesIn) {
+        if (this.modules == null) {
+            this.modules = new HashSet<>();
+        }
+        modulesIn.setChannel(this);
+        this.modules.add(modulesIn);
+    }
+
+    /**
+     * Remove an existing module metadata file from the channel
+     * @param modulesIn the module metadata entity to remove
+     */
+    public void removeModules(Modules modulesIn) {
+        this.modules.remove(modulesIn);
+        modulesIn.setChannel(null);
     }
 
     /**
@@ -235,14 +257,27 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
+     * Gets the synced module metadata files belonging to the channel
+     * <p>
+     * See {@link Channel#getLatestModules()} to get the latest metadata file currently in use.
+     *
      * @return Returns the Modules.
      */
-    public Modules getModules() {
+    public Set<Modules> getModules() {
         return modules;
     }
 
+    /**
+     * Gets the latest module metadata file in use
+     *
+     * @return the module metadata (modules.yaml) file
+     */
+    public Modules getLatestModules() {
+        return modules.stream().max(Comparator.comparing(Modules::getLastModified)).orElse(null);
+    }
+
     public boolean isModular() {
-        return modules != null;
+        return CollectionUtils.isNotEmpty(modules);
     }
 
     /**
@@ -537,7 +572,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param packageIn The package to remove
      */
     public void removePackage(Package packageIn, User user) {
-            List<Long> list = new ArrayList<Long>();
+            List<Long> list = new ArrayList<>();
             list.add(packageIn.getId());
             ChannelManager.removePackages(this, list, user);
     }
@@ -645,6 +680,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other instanceof SelectableChannel) {
             return this.equals(((SelectableChannel)other).getChannel());
@@ -660,6 +696,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getId()).toHashCode();
     }
@@ -716,6 +753,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("label", label).toString();
     }
@@ -774,12 +812,13 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         if (isBaseChannel()) {
             return ChannelFactory.getAccessibleChildChannels(this, user);
         }
-        return new ArrayList<Channel>();
+        return new ArrayList<>();
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(Channel o) {
         return this.getName().compareTo(o.getName());
     }

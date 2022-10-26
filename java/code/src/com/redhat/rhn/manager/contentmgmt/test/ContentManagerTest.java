@@ -67,6 +67,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -922,7 +923,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // Assert that the target channel is also modular
         Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
         assertTrue(targetChannel.isModular());
-        assertEquals(channel.getModules().getRelativeFilename(), targetChannel.getModules().getRelativeFilename());
+        assertEquals(channel.getLatestModules().getRelativeFilename(),
+                targetChannel.getLatestModules().getRelativeFilename());
         assertEquals(channel.getPackageCount(), targetChannel.getPackageCount());
     }
 
@@ -1612,10 +1614,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // we already have a modular target cloned from the past
         var alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
-        Modules modules = new Modules();
-        modules.setRelativeFilename("srcfilename");
-        modules.setChannel(alreadyExistingTgt);
-        alreadyExistingTgt.setModules(modules);
+        Modules modules = new Modules("srcfilename", new Date());
+        alreadyExistingTgt.addModules(modules);
         env.addTarget(new SoftwareEnvironmentTarget(env, alreadyExistingTgt));
 
         contentManager.buildProject("cplabel", empty(), false, user);
@@ -1642,10 +1642,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
         var alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
-        Modules modules = new Modules();
-        modules.setRelativeFilename("srcfilename");
-        modules.setChannel(alreadyExistingTgt);
-        alreadyExistingTgt.setModules(modules);
+        Modules modules = new Modules("srcfilename", new Date());
+        alreadyExistingTgt.addModules(modules);
         env.addTarget(new SoftwareEnvironmentTarget(env, alreadyExistingTgt));
 
         // both source and current target have modular metadata...
@@ -1671,18 +1669,15 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
 
         // verify that a modular source results in a modular target
-        Modules modules = new Modules();
-        modules.setRelativeFilename("srcfilename");
-        modules.setChannel(channel);
-        channel.setModules(modules);
+        Modules modules = new Modules("srcfilename", new Date());
+        channel.addModules(modules);
         contentManager.buildProject("cplabel", empty(), false, user);
         var tgtChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
         assertTrue(tgtChannel.isModular());
-        assertEquals("srcfilename",  tgtChannel.getModules().getRelativeFilename());
+        assertEquals("srcfilename",  tgtChannel.getLatestModules().getRelativeFilename());
 
         // verify that a non-modular source strips the modular data
-        HibernateFactory.getSession().delete(channel.getModules());
-        channel.setModules(null);
+        channel.getModules().clear();
         contentManager.buildProject("cplabel", empty(), false, user);
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
     }
@@ -1704,11 +1699,11 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.buildProject("cplabel", empty(), false, user);
         contentManager.promoteProject("cplabel", "fst", false, user);
 
-        String relativeFilename = channel.getModules().getRelativeFilename();
+        String relativeFilename = channel.getLatestModules().getRelativeFilename();
         Channel fstTgt = fst.getTargets().get(0).asSoftwareTarget().get().getChannel();
         Channel sndTgt = snd.getTargets().get(0).asSoftwareTarget().get().getChannel();
-        assertEquals(relativeFilename, fstTgt.getModules().getRelativeFilename());
-        assertEquals(relativeFilename, sndTgt.getModules().getRelativeFilename());
+        assertEquals(relativeFilename, fstTgt.getLatestModules().getRelativeFilename());
+        assertEquals(relativeFilename, sndTgt.getLatestModules().getRelativeFilename());
     }
 
     private void assertBuildFails(String projectLabel) {
