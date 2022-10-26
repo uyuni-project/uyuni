@@ -345,7 +345,7 @@
     </junitlauncher>
   </target>
 
-  <target name="test-pr" depends="test-report" description="Run unit tests for Pull Requests">
+  <target name="test-pr" depends="test-report, test-coverage-report" description="Run unit tests for Pull Requests">
     <fail if="junit_failed"/>
   </target>
 
