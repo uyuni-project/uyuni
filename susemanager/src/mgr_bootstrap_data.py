@@ -1155,7 +1155,7 @@ DATA = {
     },
     'centos-8-ppc64le-uyuni' : {
         'BASECHANNEL' : 'centos8-ppc64le', 'PKGLIST' : RES8,
-        'PDID' : [-14, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/8/bootstrap/'
     },
     'centos-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'centos8-aarch64', 'PKGLIST' : RES8,
