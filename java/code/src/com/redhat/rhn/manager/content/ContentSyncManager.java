@@ -928,87 +928,114 @@ public class ContentSyncManager {
     private void generatePtfChannels(List<SCCRepositoryJson> repositories) {
         List<SCCRepository> reposToSave = new ArrayList<>();
         List<SUSEProductSCCRepository> productReposToSave = new ArrayList<>();
-        for (SCCRepositoryJson jrepo : repositories) {
-            try {
-                URI uri = new URI(jrepo.getUrl());
-                // Format: /PTF/Release/<ACCOUNT>/<Product Identifier>/<Version>/<Architecture>/[ptf|test]
-                String[] parts = uri.getPath().split("/");
-                if (!(parts[1].equals("PTF") && parts[2].equals("Release"))) {
-                    continue;
-                }
-                String prdArch = parts[6];
-                String archStr = prdArch.equals("amd64") ? prdArch + "-deb" : prdArch;
-
-                SCCRepository repo = new SCCRepository();
-                repo.setSigned(true);
-                repo.update(jrepo);
-                reposToSave.add(repo);
-
-                SUSEProduct product = SUSEProductFactory.findSUSEProduct(parts[4], parts[5], null, archStr, false);
-                if (product == null) {
-                    log.warn("Skipping PTF repo for unknown product: " + uri);
-                    continue;
-                }
-                List<String> channelParts = new ArrayList<>(
-                        Arrays.asList(parts[3], product.getName(), product.getVersion()));
-                switch (parts[7]) {
-                case "ptf":
-                    channelParts.add("PTFs");
-                    break;
-                case "test":
-                    channelParts.add("TEST");
-                    break;
-                default:
-                    log.warn("Unknown repo type: " + parts[7] + ". Skipping");
-                    continue;
-                }
-                channelParts.add(prdArch);
-
-                List<SUSEProduct> rootProducts = SUSEProductFactory.findAllRootProductsOf(product);
-                if (rootProducts.isEmpty()) {
-                    // when no root product was found, we are the root product
-                    rootProducts.add(product);
-                }
-                rootProducts.forEach(root -> {
-                    SUSEProductSCCRepository prodRepoLink = new SUSEProductSCCRepository();
-                    prodRepoLink.setProduct(product);
-                    prodRepoLink.setRepository(repo);
-                    prodRepoLink.setRootProduct(root);
-
-                    prodRepoLink.setUpdateTag(null);
-                    prodRepoLink.setMandatory(false);
-                    // Current PTF key for SLE 12/15 and SLE-Micro
-                    prodRepoLink.setGpgKeyUrl("file:///usr/lib/rpm/gnupg/keys/suse_ptf_key.asc");
-                    product.getRepositories().stream()
-                        .filter(r -> r.getRootProduct().equals(root))
-                        .filter(r -> r.getParentChannelLabel() != null)
-                        .findFirst()
-                        .ifPresent(r -> {
-                            List<String> suffix = new ArrayList<>();
-                            prodRepoLink.setParentChannelLabel(r.getParentChannelLabel());
-                            int archIdx = r.getChannelName().lastIndexOf(prdArch);
-                            if (archIdx > -1) {
-                                suffix = Arrays.asList(
-                                        r.getChannelName().substring(archIdx + prdArch.length())
-                                        .strip().split("[\\s-]"));
-                            }
-                            List<String> cList = Stream.concat(channelParts.stream(), suffix.stream())
-                                .filter(e -> !e.isBlank())
-                                .collect(Collectors.toList());
-                            prodRepoLink.setChannelLabel(String.join("-", cList)
-                                    .toLowerCase().replace(" for ", " ").replace(" ", "-"));
-                            prodRepoLink.setChannelName(String.join(" ", cList));
-
-                        });
-                    productReposToSave.add(prodRepoLink);
-                });
+        for (SCCRepositoryJson jRepo : repositories) {
+            PtfProductRepositoryInfo ptfInfo = parsePtfInfoFromUrl(jRepo);
+            if (ptfInfo == null) {
+                continue;
             }
-            catch (URISyntaxException e) {
-                log.warn("Unable to parse URL '" + jrepo.getUrl() + "'. Skipping", e);
+
+            List<SUSEProduct> rootProducts = SUSEProductFactory.findAllRootProductsOf(ptfInfo.getProduct());
+            if (rootProducts.isEmpty()) {
+                // when no root product was found, we are the root product
+                rootProducts.add(ptfInfo.getProduct());
             }
+
+            rootProducts.stream()
+                        .map(root -> convertToProductSCCRepository(root, ptfInfo))
+                        .forEach(productReposToSave::add);
+
+            reposToSave.add(ptfInfo.getRepository());
         }
-        reposToSave.stream().forEach(SUSEProductFactory::save);
-        productReposToSave.stream().forEach(SUSEProductFactory::save);
+
+        reposToSave.forEach(SUSEProductFactory::save);
+        productReposToSave.forEach(SUSEProductFactory::save);
+    }
+
+    private static PtfProductRepositoryInfo parsePtfInfoFromUrl(SCCRepositoryJson jrepo) {
+        URI uri;
+
+        try {
+            uri = new URI(jrepo.getUrl());
+        }
+        catch (URISyntaxException e) {
+            log.warn("Unable to parse URL '{}'. Skipping", jrepo.getUrl(), e);
+            return null;
+        }
+
+        // Format: /PTF/Release/<ACCOUNT>/<Product Identifier>/<Version>/<Architecture>/[ptf|test]
+        String[] parts = uri.getPath().split("/");
+        if (!(parts[1].equals("PTF") && parts[2].equals("Release"))) {
+            return null;
+        }
+        String prdArch = parts[6];
+        String archStr = prdArch.equals("amd64") ? prdArch + "-deb" : prdArch;
+
+        SCCRepository repo = new SCCRepository();
+        repo.setSigned(true);
+        repo.update(jrepo);
+
+        SUSEProduct product = SUSEProductFactory.findSUSEProduct(parts[4], parts[5], null, archStr, false);
+        if (product == null) {
+            log.warn("Skipping PTF repo for unknown product: {}", uri);
+            return null;
+        }
+
+        List<String> channelParts = new ArrayList<>(Arrays.asList(parts[3], product.getName(), product.getVersion()));
+        switch (parts[7]) {
+            case "ptf":
+                channelParts.add("PTFs");
+                break;
+            case "test":
+                channelParts.add("TEST");
+                break;
+            default:
+                log.warn("Unknown repo type: {}. Skipping", parts[7]);
+                return null;
+        }
+        channelParts.add(prdArch);
+
+        return new PtfProductRepositoryInfo(product, repo, channelParts, prdArch);
+    }
+
+    private static SUSEProductSCCRepository convertToProductSCCRepository(SUSEProduct root,
+                                                                          PtfProductRepositoryInfo ptfInfo) {
+        SUSEProductSCCRepository prodRepoLink = new SUSEProductSCCRepository();
+
+        prodRepoLink.setProduct(ptfInfo.getProduct());
+        prodRepoLink.setRepository(ptfInfo.getRepository());
+        prodRepoLink.setRootProduct(root);
+
+        prodRepoLink.setUpdateTag(null);
+        prodRepoLink.setMandatory(false);
+
+        // Current PTF key for SLE 12/15 and SLE-Micro
+        prodRepoLink.setGpgKeyUrl("file:///usr/lib/rpm/gnupg/keys/suse_ptf_key.asc");
+
+        ptfInfo.getProduct()
+               .getRepositories()
+               .stream()
+               .filter(r -> r.getRootProduct().equals(root) && r.getParentChannelLabel() != null)
+               .findFirst()
+               .ifPresent(r -> {
+                   List<String> suffix = new ArrayList<>();
+
+                   prodRepoLink.setParentChannelLabel(r.getParentChannelLabel());
+                   int archIdx = r.getChannelName().lastIndexOf(ptfInfo.getArchitecture());
+                   if (archIdx > -1) {
+                       suffix = Arrays.asList(
+                           r.getChannelName().substring(archIdx + ptfInfo.getArchitecture().length())
+                            .strip().split("[\\s-]"));
+                   }
+
+                   List<String> cList = Stream.concat(ptfInfo.getChannelParts().stream(), suffix.stream())
+                                              .filter(e -> !e.isBlank())
+                                              .collect(Collectors.toList());
+
+                   prodRepoLink.setChannelLabel(String.join("-", cList).toLowerCase().replaceAll("( for | )", "-"));
+                   prodRepoLink.setChannelName(String.join(" ", cList));
+               });
+
+        return prodRepoLink;
     }
 
     /**
