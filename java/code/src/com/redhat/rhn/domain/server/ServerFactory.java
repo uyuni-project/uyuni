@@ -27,8 +27,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.credentials.Credentials;
-import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
