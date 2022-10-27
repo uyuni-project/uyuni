@@ -209,6 +209,8 @@ Feature: PXE boot a Retail terminal
     When I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
