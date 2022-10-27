@@ -66,7 +66,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
     And I select "Development Tools Module 15 SP4 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
-    And I should see the "Development Tools Module 15 SP4 x86_64" selected  
+    And I should see the "Development Tools Module 15 SP4 x86_64" selected
+    When I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
