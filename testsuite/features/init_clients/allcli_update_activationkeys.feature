@@ -51,6 +51,7 @@ Feature: Update activation keys
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Module-Containers15-SP4-Updates for x86_64"
     And I check "Fake-RPM-SLES15SP4-Channel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
