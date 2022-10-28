@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-17 16:14+0000\n"
+"POT-Creation-Date: 2022-10-28 16:14+0200\n"
 "PO-Revision-Date: 2022-09-08 09:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -2365,7 +2365,7 @@ msgstr "Načítavajú sa globálne filtre..."
 msgid "Updating project filters..."
 msgstr "Aktualizácia filtrov projektu..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:64
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
 msgid "Create New Filter"
 msgstr "Vytvoriť nový filter"
 
