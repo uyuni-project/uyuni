@@ -5,4 +5,4 @@ Feature: Reposync works as expected
 
   Scenario: Check reposync of custom channel
     Then "orion-dummy-1.1-1.1.x86_64.rpm" package should have been stored
-    And solver file for "test-channel-x86_64" should reference "orion-dummy-1.1-1.1.x86_64.rpm"
+    And solver file for "fake-rpm-sles15sp4-channel" should reference "orion-dummy-1.1-1.1.x86_64.rpm"

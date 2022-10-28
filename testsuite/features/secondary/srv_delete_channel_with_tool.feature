@@ -12,40 +12,40 @@ Feature: Deleting channels with children or clones is not allowed
   Scenario: Clone the first channel before deletion from tool test
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Test-Channel-x86_64" as the origin channel
+    And I select "Fake-RPM-SLES15SP4-Channel" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
     And I should see a "Current state of the channel" text
     When I click on "Clone Channel"
-    Then I should see a "Clone of Test-Channel-x86_64" text
+    Then I should see a "Clone of Fake-RPM-SLES15SP4-Channel" text
 
   Scenario: Clone a second channel using first channel as base
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Clone of Test-Channel-x86_64" as the origin channel
+    And I select "Clone of Fake-RPM-SLES15SP4-Channel" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
     And I should see a "Current state of the channel" text
     When I click on "Clone Channel"
-    Then I should see a "Clone of Clone of Test-Channel-x86_64" text
+    Then I should see a "Clone of Clone of Fake-RPM-SLES15SP4-Channel" text
 
   Scenario: Verify if both clone channels exists
     When I list channels with spacewalk-remove-channel
-    Then I should get "clone-test-channel-x86_64"
-    And I should get "clone-clone-test-channel-x86_64"
+    Then I should get "clone-Fake-RPM-SLES15SP4-Channel"
+    And I should get "clone-clone-Fake-RPM-SLES15SP4-Channel"
 
   Scenario: Delete channel with one clone
     When I delete these channels with spacewalk-remove-channel:
-      |clone-test-channel-x86_64|
+      |clone-Fake-RPM-SLES15SP4-Channel|
     Then I should get "Error: cannot remove channel"
     And  I should get "clone channel(s) exist"
-    And  I should get "clone-test-channel-x86_64"
-    And  I should get "clone-clone-test-channel-x86_64"
+    And  I should get "clone-Fake-RPM-SLES15SP4-Channel"
+    And  I should get "clone-clone-Fake-RPM-SLES15SP4-Channel"
 
   Scenario: Delete base channel and clone
     When I delete these channels with spacewalk-remove-channel:
-      |clone-test-channel-x86_64|
-      |clone-clone-test-channel-x86_64|
+      |clone-Fake-RPM-SLES15SP4-Channel|
+      |clone-clone-Fake-RPM-SLES15SP4-Channel|
     And I list channels with spacewalk-remove-channel
-    Then I shouldn't get "clone-test-channel-x86_64"
-    And I shouldn't get "clone-clone-test-channel-x86_64"
+    Then I shouldn't get "clone-Fake-RPM-SLES15SP4-Channel"
+    And I shouldn't get "clone-clone-Fake-RPM-SLES15SP4-Channel"
