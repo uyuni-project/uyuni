@@ -28,7 +28,7 @@ Feature: Create activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "RedHat like Test Key" as "description"
-    And I enter "SUSE-KEY-RH-LIKE" as "key"
+    And I enter "RH-LIKE-KEY" as "key"
     And I select "Test-Channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key RedHat like Test Key has been created" text
