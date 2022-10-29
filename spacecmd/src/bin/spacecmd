@@ -35,10 +35,7 @@ except ImportError:
 import codecs
 import locale
 import argparse
-try: # python 3
-    from configparser import SafeConfigParser
-except ImportError: # python 2
-    from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 import socket
 
 translation = gettext.translation('spacecmd', fallback=True)
@@ -89,10 +86,7 @@ if __name__ == '__main__':
 
     try:
         if not sys.stdout.isatty():
-            try: # Python 3
-                sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout.buffer)
-            except AttributeError: # Python 2
-                sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
+            sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout.buffer)
 
         usage = '%(prog)s [options] [command] [-- [command options]]'
         parser = argparse.ArgumentParser(usage=usage)
