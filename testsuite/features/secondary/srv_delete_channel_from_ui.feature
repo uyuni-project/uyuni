@@ -22,7 +22,7 @@ Feature: Delete channels with child or clone is not allowed
   Scenario: Clone the second channel using first channel as base
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Clone of FSLE-Product-SLES15-SP4-Pool for x86_64" as the origin channel
+    And I select "Clone of SLE-Product-SLES15-SP4-Pool for x86_64" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
     And I should see a "Current state of the channel" text
