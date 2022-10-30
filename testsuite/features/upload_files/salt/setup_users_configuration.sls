@@ -57,9 +57,9 @@ user_2_channels:
     - org_admin_user: admin
     - org_admin_password: admin
     - manageable_channels:
-      - test-channel-x86_64
+      - sle-product-sles15-sp4-pool-x86_64
     - subscribable_channels:
-      - test_base_channel
+      - fake-rpm-sles15sp4-channel
 
 
 define_custom_activation_key:

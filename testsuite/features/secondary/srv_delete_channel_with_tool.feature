@@ -31,12 +31,12 @@ Feature: Deleting channels with children or clones is not allowed
 
   Scenario: Verify if both clone channels exists
     When I list channels with spacewalk-remove-channel
-    Then I should get "clone-Fake-RPM-SLES15SP4-Channel"
-    And I should get "clone-clone-Fake-RPM-SLES15SP4-Channel"
+    Then I should get "clone-fake-rpm-sles15sp4-channel"
+    And I should get "clone-clone-fake-rpm-sles15sp4-channel"
 
   Scenario: Delete channel with one clone
     When I delete these channels with spacewalk-remove-channel:
-      |clone-Fake-RPM-SLES15SP4-Channel|
+      |clone-fake-rpm-sles15sp4-channel|
     Then I should get "Error: cannot remove channel"
     And  I should get "clone channel(s) exist"
     And  I should get "clone-Fake-RPM-SLES15SP4-Channel"

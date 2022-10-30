@@ -40,8 +40,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
   Scenario: User channels permissions were assigned
     Given I am authorized as "user2" with password "user2"
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Show All Child Channels"
-    And I follow "Fake-RPM-SLES15SP4-Channel"
+    And I follow "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I follow "Managers"
 
   Scenario: User Roles were assigned
