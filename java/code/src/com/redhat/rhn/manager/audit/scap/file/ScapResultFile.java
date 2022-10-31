@@ -17,19 +17,22 @@ package com.redhat.rhn.manager.audit.scap.file;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.struts.actions.DownloadAction.StreamInfo;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
+import com.redhat.rhn.common.RhnRuntimeException;
 
 /**
  * ScapResultFile
  */
 public class ScapResultFile implements StreamInfo {
-    private XccdfTestResult testResult;
-    private String filename;
+    private final XccdfTestResult testResult;
+    private final String filename;
 
     /**
      * Constructeur
@@ -37,8 +40,21 @@ public class ScapResultFile implements StreamInfo {
      * @param filenameIn The file name
      */
     public ScapResultFile(XccdfTestResult testResultIn, String filenameIn) {
-        testResult = testResultIn;
-        filename = filenameIn;
+        if (isFileName(filenameIn)) {
+            testResult = testResultIn;
+            filename = filenameIn;
+        }
+        else {
+            throw new RhnRuntimeException("Invalid filename: " + filenameIn);
+        }
+    }
+
+    private boolean isFileName(String filenameIn) {
+        return isFileName(Paths.get(filenameIn));
+    }
+
+    private boolean isFileName(Path path) {
+        return path.equals(path.getFileName()) && path.getParent() == null;
     }
 
     /**
