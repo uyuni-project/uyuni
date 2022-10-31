@@ -19,7 +19,7 @@ Feature: Very first settings
     And I enter "Admin" as "lastName"
     And I enter "galaxy-noise@suse.de" as "email"
     And I click on "Create Organization"
-    # Then I am logged in
+    Then I am logged in
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
