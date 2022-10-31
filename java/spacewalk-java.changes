@@ -1,6 +1,10 @@
-- Fix directory path traversal vulnerability CVE-2022-31255 (bsc#1204543)
-- Fix reflected cross site scripting vulnerability CVE-2022-43754 (bsc#1204741)
-- Fix arbitrary file disclosure vulnerability CVE-2022-43753 (bsc#1204716)
+-------------------------------------------------------------------
+Mon Oct 31 14:52:39 CET 2022 - jgonzalez@suse.com
+
+- version 4.2.43-1
+  * Fix directory path traversal vulnerability CVE-2022-31255 (bsc#1204543)
+  * Fix reflected cross site scripting vulnerability CVE-2022-43754 (bsc#1204741)
+  * Fix arbitrary file disclosure vulnerability CVE-2022-43753 (bsc#1204716)
 
 -------------------------------------------------------------------
 Tue Oct 18 10:07:00 CEST 2022 - jgonzalez@suse.com
