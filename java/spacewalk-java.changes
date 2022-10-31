@@ -1,4 +1,5 @@
 - Fix directory path traversal vulnerability CVE-2022-31255 (bsc#1204543)
+- Fix reflected cross site scripting vulnerability CVE-2022-43754 (bsc#1204741)
 
 -------------------------------------------------------------------
 Wed Sep 28 11:15:58 CEST 2022 - jgonzalez@suse.com
