@@ -3,11 +3,9 @@
 
 Feature: Check if Distribution Channel Mapping works correctly
 
-    # User needs to be authorized to create maps. Logging in as admin achieves that.
     Scenario: Log in as admin user
         Given I am authorized for the "Admin" section
 
-    # sanity check if the page exists and is displayed correctly
     Scenario: Check if Distribution Channel Mapping page exists
         When I follow the left menu "Software > Distribution Channel Mapping"
         Then I should see a "Distribution Channel Mapping" text
@@ -18,8 +16,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         And I should see a "Create Distribution Channel Mapping" link
         And I should see a "No distribution channel mappings currently exist." text in the content area
 
-    # check if creating new mappings for various client-channel combinations is possible
-    # These might throw errors if there are more than one channel containing the name of the selected channel
     Scenario: Create new map for x86_64 suse clients
         When I am on the "Distribution Channel Mapping" page
         And I follow "Create Distribution Channel Mapping"
@@ -53,7 +49,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         And I click on "Create Mapping"
         Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries" link in the content area
 
-    # test if updating maps with different channels works
     Scenario: Update map for x86_64 suse clients using test-x86_64 channel
         When I am on the "Distribution Channel Mapping" page
         Given I see a "SUSE Linux Enterprise Server 15 SP 4" link in the table
@@ -91,7 +86,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" link in the table
         And I should see a "test-channel-deb-amd64" link in the table
 
-    # delete all maps to reset the machine to the default state
     Scenario: Cleanup: delete the map created for x68_64 suse clients
         When I am on the "Distribution Channel Mapping" page
         Given I see a "SUSE Linux Enterprise Server 15 SP 4 modified" link in the table
@@ -128,7 +122,6 @@ Feature: Check if Distribution Channel Mapping works correctly
         When I click on "Delete Mapping"
         Then I should not see a "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" link
 
-    # A quick sanity check to asess whether the DCM page is back to its default state
     Scenario: Cleanup: Sanity check that the page is its in default state
         When I am on the "Distribution Channel Mapping" page
         Then I should see a "Distribution Channel Mapping" text
