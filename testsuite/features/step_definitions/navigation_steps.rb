@@ -1086,6 +1086,6 @@ Then(/^I should see left menu empty$/) do
   raise StandardError, 'The left menu is not empty.' unless page.has_no_xpath?("//*[contains(@class, 'level1')]/*/*[contains(@class, 'nodeLink')]")
 end
 
-When('I am on the {string} page') do |page_name|
+When(/^I am on the "([^"]*)" page/) do |page_name|
   step %(I should see a "#{page_name}" text)
 end
