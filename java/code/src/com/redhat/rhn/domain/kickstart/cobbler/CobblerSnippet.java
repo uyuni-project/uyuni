@@ -327,16 +327,15 @@ public class CobblerSnippet implements Comparable {
     }
 
     private static boolean isCommonPath(File path) {
-        boolean isFileInsideSpacewalkTopLevelDir = path.isFile() &&
-                    path.getParentFile().equals(getSpacewalkSnippetsDir());
+        File normalizedPath = path.toPath().toAbsolutePath().normalize().toFile();
+        boolean isFileInsideSpacewalkTopLevelDir = normalizedPath.isFile() &&
+                    normalizedPath.getParentFile().equals(getSpacewalkSnippetsDir());
         if (isFileInsideSpacewalkTopLevelDir) {
             return true;
         }
 
-        return !path.getAbsolutePath().startsWith(
-                        getSpacewalkSnippetsDir().getAbsolutePath()) &&
-                    path.getAbsolutePath().
-                            startsWith(getCobblerSnippetsDir().getAbsolutePath());
+        return !normalizedPath.getAbsolutePath().startsWith(getSpacewalkSnippetsDir().getAbsolutePath()) &&
+                normalizedPath.getAbsolutePath().startsWith(getCobblerSnippetsDir().getAbsolutePath());
     }
 
     private void verifyEditable() {
