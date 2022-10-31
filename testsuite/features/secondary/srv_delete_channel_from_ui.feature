@@ -70,11 +70,11 @@ Feature: Delete channels with child or clone is not allowed
 
   Scenario: Cleanup: remove cloned child channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Fake-RPM-SLES15SP4-Channel Child Channel"
+    And I follow "Clone of Fake-RPM-SLES15SP4-Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Clone of Fake-RPM-SLES15SP4-Channel Child Channel" text
+    Then I should see a "Clone of Fake-RPM-SLES15SP4-Channel" text
     And I should see a "has been deleted." text
 
   Scenario: Cleanup: remove cloned parent channel
