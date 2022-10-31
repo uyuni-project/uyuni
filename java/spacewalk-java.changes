@@ -1,3 +1,4 @@
+- Fix reflected cross site scripting vulnerability CVE-2022-43754 (bsc#1204741)
 - Fix arbitrary file disclosure vulnerability CVE-2022-43753 (bsc#1204716)
 
 -------------------------------------------------------------------
