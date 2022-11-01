@@ -7,7 +7,7 @@ TEMPLATE_KIWI_DIR   = Kiwi
 DEFAULT_REPO = download.suse.de/ibs
 REPO_NUE = download.suse.de/ibs
 REPO_PRV = minima-mirror.mgr.prv.suse.net
-REPO_AWS = ip-172-16-1-30.eu-central-1.compute.internal
+REPO_AWS = ip-172-16-1-175.eu-central-1.compute.internal
 
 
 REGISTRY_PLACEHOLDER_NOAUTH = registry.mgr.suse.de
@@ -17,8 +17,8 @@ REG_REPLACEMENT_NUE_NOAUTH  = registry.mgr.suse.de
 REG_REPLACEMENT_NUE_AUTH    = registry.mgr.suse.de:5000
 REG_REPLACEMENT_PRV_NOAUTH  = registry.mgr.prv.suse.net
 REG_REPLACEMENT_PRV_AUTH    = registry.mgr.prv.suse.net:5000
-REG_REPLACEMENT_AWS_NOAUTH  = ip-172-16-1-30.eu-central-1.compute.internal
-REG_REPLACEMENT_AWS_AUTH    = ip-172-16-1-30.eu-central-1.compute.internal:5000
+REG_REPLACEMENT_AWS_NOAUTH  = ip-172-16-1-175.eu-central-1.compute.internal
+REG_REPLACEMENT_AWS_AUTH    = ip-172-16-1-175.eu-central-1.compute.internal:5000
 
 
 update: $(ENVIRONMENTS)
