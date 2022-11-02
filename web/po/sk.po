@@ -18,10 +18,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-14 11:24+0200\n"
-"PO-Revision-Date: 2022-07-16 15:12+0000\n"
+"POT-Creation-Date: 2022-10-28 16:23+0200\n"
+"PO-Revision-Date: 2022-10-29 17:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2365,7 +2366,7 @@ msgstr "Načítavajú sa globálne filtre..."
 msgid "Updating project filters..."
 msgstr "Aktualizácia filtrov projektu..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:64
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
 msgid "Create New Filter"
 msgstr "Vytvoriť nový filter"
 
@@ -4106,8 +4107,12 @@ msgid "Proxy FQDN"
 msgstr "Proxy FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-msgid "The FQDN of the machine where the containers are hosted"
-msgstr "FQDN stroja, v ktorom sú umiestnené kontajnery"
+msgid ""
+"The unique, DNS-resolvable FQDN of this proxy. It should be different from "
+"any registered clients."
+msgstr ""
+"Jedinečný názov FQDN tohto proxy, ktorý je možné rozlíšiť pomocou DNS. Mal "
+"by sa líšiť od všetkých registrovaných klientov."
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
@@ -6199,6 +6204,9 @@ msgstr "nedefinované"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "The FQDN of the machine where the containers are hosted"
+#~ msgstr "FQDN stroja, v ktorom sú umiestnené kontajnery"
 
 #~ msgid "Time"
 #~ msgstr "Čas"

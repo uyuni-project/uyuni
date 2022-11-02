@@ -18,11 +18,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-14 11:24+0200\n"
-"PO-Revision-Date: 2022-10-14 04:13+0000\n"
+"POT-Creation-Date: 2022-10-28 16:23+0200\n"
+"PO-Revision-Date: 2022-11-01 12:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2336,7 +2336,7 @@ msgstr "전역 필터를 로드하는 중..."
 msgid "Updating project filters..."
 msgstr "프로젝트 필터를 업데이트하는 중..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:64
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
 msgid "Create New Filter"
 msgstr "새 필터 만들기"
 
@@ -4060,8 +4060,10 @@ msgid "Proxy FQDN"
 msgstr "프록시 FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-msgid "The FQDN of the machine where the containers are hosted"
-msgstr "컨테이너가 호스팅되는 시스템의 FQDN"
+msgid ""
+"The unique, DNS-resolvable FQDN of this proxy. It should be different from "
+"any registered clients."
+msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
@@ -6131,6 +6133,9 @@ msgstr "정의되지 않음"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "푸 {0} 티 {1}"
+
+#~ msgid "The FQDN of the machine where the containers are hosted"
+#~ msgstr "컨테이너가 호스팅되는 시스템의 FQDN"
 
 #~ msgid "Time"
 #~ msgstr "시간"

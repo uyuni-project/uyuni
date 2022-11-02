@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-14 11:24+0200\n"
+"POT-Creation-Date: 2022-10-28 16:23+0200\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
@@ -2348,7 +2348,7 @@ msgstr "Načítání globálních filtrů..."
 msgid "Updating project filters..."
 msgstr "Aktualizace filtrů projektu..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:64
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
 msgid "Create New Filter"
 msgstr "Vytvořit nový filtr"
 
@@ -4077,8 +4077,10 @@ msgid "Proxy FQDN"
 msgstr "Proxy FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:200
-msgid "The FQDN of the machine where the containers are hosted"
-msgstr "FQDN počítače, kde jsou kontejnery umístěny"
+msgid ""
+"The unique, DNS-resolvable FQDN of this proxy. It should be different from "
+"any registered clients."
+msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
@@ -6166,6 +6168,9 @@ msgstr "nedefinováno"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} čaj {1}"
+
+#~ msgid "The FQDN of the machine where the containers are hosted"
+#~ msgstr "FQDN počítače, kde jsou kontejnery umístěny"
 
 #~ msgid "Time"
 #~ msgstr "Čas"
