@@ -26,6 +26,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
@@ -513,7 +514,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
             return null;
         }
         if (guests.size() > 1) {
-            LOG.error("More than one virtual machine found for this UUID: {}", uuid);
+            if (LOG.isDebugEnabled()) {
+                LOG.error("More than one virtual machine found for this UUID: {}",
+                        StringUtil.sanitizeLogInput(uuid));
+            }
             Spark.halt(HttpStatus.SC_NOT_FOUND, "More than one virtual machine found for this UUID");
         }
         return guests.get(0);

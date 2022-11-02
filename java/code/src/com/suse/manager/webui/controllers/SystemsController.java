@@ -363,7 +363,9 @@ public class SystemsController {
              SystemManager.setReportDbUser(minion.get(), true);
          }
          else {
-             LOG.error("System ({}) not a Mgr Server", sidStr);
+             if (LOG.isErrorEnabled()) {
+                 LOG.error("System ({}) not a Mgr Server", StringUtil.sanitizeLogInput(sidStr));
+             }
              return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
          }
          return json(response, ResultJson.success());
@@ -598,7 +600,7 @@ public class SystemsController {
      * @return the json response
      */
     public Object getAccessibleChannelChildren(Request request, Response response, User user) {
-        return withServer(request, response, user, (server) -> {
+        return withServer(request, response, user, server -> {
             long channelId;
             try {
                 channelId = Long.parseLong(request.params("channelId"));

@@ -21,6 +21,7 @@ import static spark.Spark.head;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -399,7 +400,9 @@ public class DownloadController {
                 pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch(),
                 pkgInfo.getChecksum());
         if (pkg == null) {
-            LOG.error("{}: Package not found in channel: {}", path, channel);
+            if (LOG.isDebugEnabled()) {
+                LOG.error("{}: Package not found in channel: {}", path, StringUtil.sanitizeLogInput(channel));
+            }
             halt(HttpStatus.SC_NOT_FOUND,
                  String.format("%s not found in %s", basename, channel));
         }

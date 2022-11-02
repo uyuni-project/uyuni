@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.common.conf;
 
+import com.redhat.rhn.common.util.StringUtil;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -204,7 +206,7 @@ public class Config {
      */
     public String getString(String value) {
         if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() called with: {}", value);
+            logger.debug("getString() -     getString() called with: {}", StringUtil.sanitizeLogInput(value));
         }
         if (value == null) {
             return null;

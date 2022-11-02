@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.audit;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -71,7 +72,9 @@ public class AuditMachineAction extends RhnAction implements Listable {
             end = Long.parseLong(request.getParameter("endMilli"));
             username = requestContext.getCurrentUser().getLogin();
 
-            log.debug("reviewed: {}, {}, {}, {}", machine, start, end, username);
+            if (log.isDebugEnabled()) {
+                log.debug("reviewed: {}, {}, {}, {}", StringUtil.sanitizeLogInput(machine), start, end, username);
+            }
 
             try {
                 AuditManager.markReviewed(machine, start, end, username);

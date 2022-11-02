@@ -23,6 +23,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.RpmVersionComparator;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -174,7 +175,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private void registerMinion(String minionId, boolean isSaltSSH, Optional<Integer> sshPort, Optional<Long> proxyId,
                                 Optional<String> activationKeyOverride, Optional<MinionStartupGrains> startupGrains) {
         Opt.consume(startupGrains,
-            ()-> LOG.error("Aborting: needed grains are not found for minion: {}", minionId),
+            ()-> LOG.error("Aborting: needed grains are not found for minion: {}",
+                    StringUtil.sanitizeLogInput(minionId)),
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
                 Optional<String> mkey = grains.getSuseManagerGrain()
