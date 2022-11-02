@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.product;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
@@ -279,15 +280,20 @@ public class SUSEProductFactory extends HibernateFactory {
         Channel channel = ChannelFactory.lookupByLabel(channelLabel);
         Channel baseChannel = Optional.ofNullable(channel.getParentChannel()).orElse(channel);
         if (channel.isCloned()) {
-            return channel.originChain().filter(c -> !c.isCloned()).findFirst().map(original -> {
-                return findSyncedMandatoryChannels(original.getLabel())
-                        .flatMap(c -> c.allClonedChannels())
-                        .filter(c ->
-                                (c.getParentChannel() != null && c.getParentChannel()
-                                        .equals(channel.getParentChannel())) || c.equals(channel.getParentChannel())
-                        )
-                        .map(c -> (Channel) c);
-            }).orElse(Stream.empty());
+            if (ConfigDefaults.get().getClonedChannelAutoSelection()) {
+                return channel.originChain().filter(c -> !c.isCloned()).findFirst().map(original -> {
+                    return findSyncedMandatoryChannels(original.getLabel())
+                            .flatMap(c -> c.allClonedChannels())
+                            .filter(c ->
+                                    (c.getParentChannel() != null && c.getParentChannel()
+                                            .equals(channel.getParentChannel())) || c.equals(channel.getParentChannel())
+                            )
+                            .map(c -> (Channel) c);
+                }).orElse(Stream.empty());
+            }
+            else {
+                return Stream.empty();
+            }
         }
         else {
             return findSyncProductChannelByLabel(channelLabel).map(suseProductChannel -> {

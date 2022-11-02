@@ -1,3 +1,4 @@
+- disable cloned vendor channel auto selection by default (bsc#1204186) 
 - Add SUSE Liberty Linux support for RHEL9 based clients
 - Removed contents of certificates from the web UI logs (bsc#1204715)
 - Fix kickstart for RHEL 9 to not add install command
