@@ -27,7 +27,7 @@
         <rl:decorator name="SelectableDecorator"/>
         <rl:selectablecolumn value="${current.id}"
                 width="75"
-                checkboxText="<span class='span-ssm-marg'>SSM</spank>"
+                checkboxText="<span class='span-ssm-marg'>${empty param.action_key ? 'SSM' : ''}</span>"
                 selected="${current.selected}"
                 disabled="${not current.selectable}"
                 />
