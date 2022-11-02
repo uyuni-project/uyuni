@@ -254,6 +254,7 @@ if [ ! -f /etc/cobbler/settings -a -f /etc/cobbler/settings.rpmsave ]; then
     cp /etc/cobbler/settings /etc/cobbler/settings.before-migration-backup
     echo "* Migrating old Cobbler settings to new /etc/cobbler/settings.yaml file and executing migration of stored Cobbler collections"
     echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
+    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --noconfigs --noapi || exit 1
     cobbler-settings -c /etc/cobbler/settings migrate -t /etc/cobbler/settings.yaml || exit 1
     echo "* Disabling Cobbler settings automigration"
     cobbler-settings automigrate -d || exit 1
