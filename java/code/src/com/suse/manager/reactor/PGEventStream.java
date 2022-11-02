@@ -92,6 +92,11 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
         dataSource.setProtocolIoMode("nio");
 
         try {
+            int pending = SaltEventFactory.fixQueueNumbers(THREAD_POOL_SIZE);
+            if (pending > 0) {
+                LOG.info("Found {} queued salt events", pending);
+            }
+
             connection = (PGConnection) dataSource.getConnection();
             connection.addNotificationListener(this);
 
