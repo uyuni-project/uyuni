@@ -202,8 +202,6 @@ RewriteRule "^/saltboot/(image|boot)(.+)$" "/os-images/%1$2"  [R,L,QSD]
     os.system('chmod 640 /etc/rhn/rhn.conf')
 
 # Make sure permissions are set as desired
-os.system('chown -R root:root /srv/www/htdocs/pub')
-os.system('chmod -R 755 /srv/www/htdocs/pub')
 os.system('chown -R wwwrun:www /var/spool/rhn-proxy')
 os.system('chmod -R 750 /var/spool/rhn-proxy')
 if not os.path.exists('/var/cache/rhn/proxy-auth'):

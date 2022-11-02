@@ -1,3 +1,5 @@
+- Remove chmod and chown of /srv/www/htdocs/pub as this folder does not exist
+
 -------------------------------------------------------------------
 Mon Sep 26 12:40:41 UTC 2022 - Marina Latini <marina.latini@suse.com>
 
