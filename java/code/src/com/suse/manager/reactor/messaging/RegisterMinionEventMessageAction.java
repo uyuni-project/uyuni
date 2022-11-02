@@ -497,8 +497,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }
             minion.setServerArch(arch);
 
-            RegistrationUtils.subscribeMinionToChannels(systemQuery, minion, grains, activationKey,
+            if (!grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
+                RegistrationUtils.subscribeMinionToChannels(systemQuery, minion, grains, activationKey,
                     activationKeyLabel);
+            }
 
             minion.updateServerInfo();
 
