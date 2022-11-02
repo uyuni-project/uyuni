@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.kickstart;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.SessionSwap;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -100,7 +101,9 @@ public class KickstartHelper {
         Map<String, Object> retval = new HashMap<>();
         KickstartData ksdata = null;
         Map<String, String> options = new HashMap<>();
-        log.debug("url: {}", url);
+        if (log.isDebugEnabled()) {
+            log.debug("url: {}", StringUtil.sanitizeLogInput(url));
+        }
         List<String> rawopts = Arrays.asList(
                 StringUtils.split(url, '/'));
 
@@ -112,7 +115,12 @@ public class KickstartHelper {
             }
         }
 
-        log.debug("Options: {}", options);
+        if (log.isDebugEnabled()) {
+            log.debug("Options: {}",
+                    options.entrySet().stream().collect(Collectors.toMap(
+                            entry -> StringUtil.sanitizeLogInput(entry.getKey()),
+                            entry -> StringUtil.sanitizeLogInput(entry.getValue()))));
+        }
 
         String remoteAddr = getClientIp();
 
@@ -143,7 +151,9 @@ public class KickstartHelper {
             mode = SESSION;
         }
 
-        log.debug("org_id: {}", retval.get(ORG_ID));
+        if (log.isDebugEnabled()) {
+            log.debug("org_id: {}", StringUtil.sanitizeLogInput((String) retval.get(ORG_ID)));
+        }
 
         //TODO: reconsider/cleanup this logic flow
         if (retval.get(ORG_ID) != null) {
@@ -183,7 +193,8 @@ public class KickstartHelper {
 
 
             if (log.isDebugEnabled()) {
-                log.debug("session                        : {}", retval.get(SESSION));
+                log.debug("session                        : {}",
+                        StringUtil.sanitizeLogInput(retval.get(SESSION).toString()));
                 log.debug("options.containsKey(VIEW_LABEL): {}", options.containsKey(VIEW_LABEL));
                 log.debug("ksdata                         : {}", ksdata);
             }
@@ -467,7 +478,7 @@ public class KickstartHelper {
                             current.getId(),
                             ksdata.getKickstartPackageNames());
             //found it, this channel is good.
-            if (kspackages.size() > 0) {
+            if (!kspackages.isEmpty()) {
                 return true;
             }
             log.debug("package not found");
