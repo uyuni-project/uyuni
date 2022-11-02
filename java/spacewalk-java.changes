@@ -1,3 +1,4 @@
+- Fix rendering of ssm/MigrateSystems page (bsc#1204651)
 - Remove 'SSM' column text where not applicable (bsc#1203588)
 - Improve systems lists queries performance by using an overview table
 - Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
