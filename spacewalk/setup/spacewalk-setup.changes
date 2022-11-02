@@ -1,3 +1,5 @@
+- Execute migration of Cobbler version 2 collections (bsc#1203478)
+
 -------------------------------------------------------------------
 Thu Oct 20 10:43:49 CEST 2022 - jgonzalez@suse.com
 
