@@ -1,3 +1,6 @@
+- Make sure the networking is started, so any network management
+  network management can be used
+
 -------------------------------------------------------------------
 Wed Sep 28 11:01:29 CEST 2022 - jgonzalez@suse.com
 
