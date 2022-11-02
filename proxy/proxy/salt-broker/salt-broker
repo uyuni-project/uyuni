@@ -101,7 +101,7 @@ class AbstractChannelProxy(multiprocessing.Process):
         try:
             context = zmq.Context()
 
-            self.debug_log(
+            log.debug(
                 "Setting up a {} sock on {}".format(
                     self.backend_type, self._backend_uri
                 )
@@ -123,7 +123,7 @@ class AbstractChannelProxy(multiprocessing.Process):
                 while not self.backend_connected:
                     time.sleep(0.5)
 
-            self.debug_log(
+            log.debug(
                 "Setting up a {} sock on {}".format(
                     self.frontend_type, self._frontend_uri
                 )
@@ -142,7 +142,7 @@ class AbstractChannelProxy(multiprocessing.Process):
                 # Do not raise error if drop_after_retries was used
                 return
             msg = "ZMQ Error: {}".format(zmq_error)
-            self.error_log(msg)
+            log.error(msg)
             raise self.ChannelException(msg)
 
     def set_sockopts(self, socket, sockopts):
@@ -157,10 +157,10 @@ class AbstractChannelProxy(multiprocessing.Process):
             mon_evt = recv_monitor_message(monitor_socket)
             if self.reconnect_retries != -1:
                 if mon_evt["event"] == zmq.EVENT_DISCONNECTED:
-                    self.warn_log("{} socket disconnected".format(self.backend_type))
+                    log.warning("{} socket disconnected".format(self.backend_type))
                     self.backend_connected = False
                 elif mon_evt["event"] == zmq.EVENT_CONNECTED:
-                    self.info_log("{} socket connected".format(self.backend_type))
+                    log.info("{} socket connected".format(self.backend_type))
                     self.backend_connected = True
                     self.backend_ever_connected = True
                     self.reconnect_retries = self.opts["drop_after_retries"]
@@ -171,7 +171,7 @@ class AbstractChannelProxy(multiprocessing.Process):
                     ):
                         continue
                     if self.reconnect_retries == 0:
-                        self.warn_log(
+                        log.warning(
                             "Closing {} socket due to retry attempts reached!".format(
                                 self.backend_type
                             )
@@ -184,35 +184,11 @@ class AbstractChannelProxy(multiprocessing.Process):
                 break
         monitor_socket.close()
 
-    def debug_log(self, msg):
-        '''
-        debug logging tagged with classname
-        '''
-        log.debug("[%s] %s", self.__class__.__name__, msg)
-
-    def info_log(self, msg):
-        '''
-        info logging tagged with classname
-        '''
-        log.info("[%s] %s", self.__class__.__name__, msg)
-
-    def warn_log(self, msg):
-        '''
-        warning logging tagged with classname
-        '''
-        log.warning("[%s] %s", self.__class__.__name__, msg)
-
-    def error_log(self, msg):
-        '''
-        error logging tagged with classname
-        '''
-        log.error("[%s] %s", self.__class__.__name__, msg)
-
     def terminate(self):
-        '''
+        """
         custom terminate function for the child process
-        '''
-        self.info_log("Terminate called. Exiting")
+        """
+        log.info("Terminate called. Exiting")
         super().terminate()
 
 
@@ -233,6 +209,7 @@ class PubChannelProxy(AbstractChannelProxy):
 
     def __init__(self, opts):
         super().__init__(opts)
+        self.name = "PubChannelProxy"
 
         self._backend_sock_type = zmq.XSUB
         self._frontend_sock_type = zmq.XPUB
@@ -260,6 +237,7 @@ class RetChannelProxy(AbstractChannelProxy):
     """
     def __init__(self, opts):
         super().__init__(opts)
+        self.name = "RetChannelProxy"
 
         self._backend_sock_type = zmq.DEALER
         self._frontend_sock_type = zmq.ROUTER
@@ -284,8 +262,7 @@ class SaltBroker(object):
     the PUB/RET channels of the Salt ZMQ transport.
     '''
     def __init__(self, opts):
-        log.debug('[%s] Readed config: %s',
-                  self.__class__.__name__, opts)
+        log.debug("Readed config: %s", opts)
         self.opts = opts
         self.exit = False
         self.default_sigterm = signal.getsignal(signal.SIGTERM)
@@ -294,9 +271,9 @@ class SaltBroker(object):
         super().__init__()
 
     def _start_pub_proxy(self):
-        '''
+        """
         Spawn a new PubChannelProxy process
-        '''
+        """
         # setting up the default SIGTERM handler for the new process
         signal.signal(signal.SIGTERM, self.default_sigterm)
 
@@ -307,16 +284,14 @@ class SaltBroker(object):
         # setting up again the custom SIGTERM handler
         signal.signal(signal.SIGTERM, self.sigterm_clean)
 
-        log.info('[%s] Spawning PUB channel proxy process [PID: %s]',
-                 self.__class__.__name__,
-                 pub_proxy.pid)
+        log.info("Spawning PUB channel proxy process [PID: %s]", pub_proxy.pid)
 
         return pub_proxy
 
     def _start_ret_proxy(self):
-        '''
+        """
         Spawn a new RetChannelProxy process
-        '''
+        """
         # setting up the default SIGTERM handler for the new process
         signal.signal(signal.SIGTERM, self.default_sigterm)
 
@@ -327,9 +302,7 @@ class SaltBroker(object):
         # setting up again the custom SIGTERM handler
         signal.signal(signal.SIGTERM, self.sigterm_clean)
 
-        log.info('[%s] Spawning RET channel proxy process [PID: %s]',
-                 self.__class__.__name__,
-                 ret_proxy.pid)
+        log.info("Spawning RET channel proxy process [PID: %s]", ret_proxy.pid)
 
         return ret_proxy
 
@@ -337,9 +310,7 @@ class SaltBroker(object):
         '''
         Custom SIGTERM handler
         '''
-        log.info('[%s] Caught signal %s, stopping all channels',
-                 self.__class__.__name__,
-                 signum)
+        log.info("Caught signal %s, stopping all channels", signum)
 
         if self.pub_proxy_proc:
             self.pub_proxy_proc.terminate()
@@ -347,7 +318,7 @@ class SaltBroker(object):
             self.ret_proxy_proc.terminate()
 
         self.exit = True
-        log.info('[%s] Terminating main process', self.__class__.__name__)
+        log.info("Terminating main process")
 
     def start(self):
         '''
@@ -355,9 +326,7 @@ class SaltBroker(object):
         RetChannelProxy processes and also acts like a supervisor
         of these child process respawning them if they died.
         '''
-        log.info('[%s] Starting Salt ZeroMQ Proxy [PID: %s]',
-                 self.__class__.__name__,
-                 os.getpid())
+        log.info("Starting Salt ZeroMQ Proxy [PID: %s]", os.getpid())
 
         # Attach a handler for SIGTERM signal
         signal.signal(signal.SIGTERM, self.sigterm_clean)
@@ -366,19 +335,17 @@ class SaltBroker(object):
             self.pub_proxy_proc = self._start_pub_proxy()
             self.ret_proxy_proc = self._start_ret_proxy()
         except AbstractChannelProxy.ChannelException as exc:
-            log.error('[%s] %s', self.__class__.__name__, exc)
-            log.error('[%s] Exiting.', self.__class__.__name__)
+            log.error("Exception: %s", exc)
+            log.error("Exiting")
             sys.exit(exc)
 
         # Supervisor. Restart a channel if died
         while not self.exit:
             if not self.pub_proxy_proc.is_alive():
-                log.error('[%s] PUB channel proxy has died. Respawning',
-                          self.__class__.__name__)
+                log.error("PUB channel proxy has died. Respawning")
                 self.pub_proxy_proc = self._start_pub_proxy()
             if not self.ret_proxy_proc.is_alive():
-                log.error('[%s] RET channel proxy has died. Respawning',
-                          self.__class__.__name__)
+                log.error("RET channel proxy has died. Respawning")
                 self.ret_proxy_proc = self._start_ret_proxy()
             time.sleep(SUPERVISOR_TIMEOUT)
 
@@ -427,7 +394,9 @@ if __name__ == "__main__":
 
         saltbroker_opts.update(config)
 
-        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        formatter = logging.Formatter(
+            "%(asctime)s [%(levelname)-8s][%(processName)-16s][%(process)s] %(message)s",
+        )
         # log to file or to standard output and error depending on the configuration
         if saltbroker_opts.get('log_to_file'):
             fileloghandler = logging.handlers.RotatingFileHandler(
