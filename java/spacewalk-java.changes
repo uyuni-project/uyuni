@@ -1,3 +1,4 @@
+- Optimize action chain processing on job return event (bsc#1203532)
 - Re-calculate salt event queue numbers on restart
 - Improved reboot needed handling for SLE Micro
 - Check if system has all formulas correctly assigned
