@@ -1,3 +1,4 @@
+- add bootstrap repo data for SUSE Liberty Linux 9
 - remove traditional stack packages and dependencies from
   bootstrap repo definition
 

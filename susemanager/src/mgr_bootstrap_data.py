@@ -1253,6 +1253,10 @@ DATA = {
         'BASECHANNEL' : 'rhel8-pool-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
+    'SUSE-LibertyLinux9-x86_64' : {
+        'PDID' : [-35, 2543], 'BETAPDID' : [2548], RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
+    },
     'RHEL9-x86_64-uyuni' : {
         'BASECHANNEL' : 'rhel9-pool-x86_64', 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
