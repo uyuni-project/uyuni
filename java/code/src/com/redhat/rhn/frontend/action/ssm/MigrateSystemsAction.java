@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.ssm;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -49,12 +50,10 @@ public class MigrateSystemsAction extends RhnAction implements Listable {
     private final MigrationManager migrationManager;
 
     /**
-     * Constructor
-     *
-     * @param migrationManagerIn the migration manager
+     * Default constructor
      */
-    public MigrateSystemsAction(MigrationManager migrationManagerIn) {
-        migrationManager = migrationManagerIn;
+    public MigrateSystemsAction() {
+        migrationManager = GlobalInstanceHolder.MIGRATION_MANAGER;
     }
 
     /**
