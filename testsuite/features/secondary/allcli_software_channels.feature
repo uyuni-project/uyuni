@@ -46,7 +46,7 @@ Feature: Channel subscription via SSM
 @sle_minion
   Scenario: Check old channels are still enabled on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "11" channels should be enabled on "sle_minion"
+    Then "13" channels should be enabled on "sle_minion"
     And channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
 
   Scenario: Wait 3 minutes for the scheduled action to be executed
