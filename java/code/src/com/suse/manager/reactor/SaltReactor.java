@@ -19,8 +19,10 @@ import static java.util.stream.Stream.of;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
@@ -306,8 +308,9 @@ public class SaltReactor {
      *
      * @param beaconEvent beacon event
      * @return event handler runnable
+     * Public only for unit tests.
      */
-    private Stream<EventMessage> eventToMessages(BeaconEvent beaconEvent) {
+    public Stream<EventMessage> eventToMessages(BeaconEvent beaconEvent) {
         if (beaconEvent.getBeacon().equals("pkgset") && beaconEvent.getAdditional().equals("changed")) {
             return of(
                     new RunnableEventMessage("ZypperEvent.PackageSetChanged",
@@ -321,6 +324,15 @@ public class SaltReactor {
                             LOG.error(e);
                         }
                     }))
+            );
+        }
+        else if (beaconEvent.getBeacon().equals("reboot_info")) {
+            Optional<MinionServer> minion = MinionServerFactory.findByMinionId(beaconEvent.getMinionId());
+            minion.ifPresent(
+                m -> {
+                    m.setRebootNeeded((Boolean) beaconEvent.getData().get("reboot_needed"));
+                    SystemManager.updateSystemOverview(m);
+                }
             );
         }
         return empty();
