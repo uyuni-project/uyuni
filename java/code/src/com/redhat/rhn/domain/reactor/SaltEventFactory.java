@@ -91,4 +91,17 @@ public class SaltEventFactory extends HibernateFactory {
                 new HashMap<String, Object>() { { put("ids", ids); } }
         );
     }
+
+    /**
+     * Update event queue numbers after config change.
+     * @param queues number of queues
+     * @return the number of updated events
+     */
+    public static int fixQueueNumbers(int queues) {
+        return getSession()
+                .getNamedQuery("SaltEvent.fixQueueNumbers")
+                .setParameter("queues", queues)
+                .executeUpdate();
+    }
+
 }
