@@ -1,3 +1,5 @@
+- Remove chmod and chown of /srv/www/htdocs/pub as this folder does not exist
+
 -------------------------------------------------------------------
 Wed Sep 28 07:44:12 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
