@@ -28,7 +28,7 @@
 
     <!-- import plugins styles -->
     <link rel="stylesheet" href="/css/jquery.timepicker.css?cb=${cb_version}" />
-    <link rel="stylesheet" href="/css/bootstrap-datepicker.css?cb=${cb_version}" />
+    <link rel="stylesheet" href="/css/legacy/bootstrap-datepicker.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
@@ -68,7 +68,7 @@
     <script src="/rhn/dwr/util.js?cb=${cb_version}"></script>
     <script src="/rhn/dwr/interface/DWRItemSelector.js?cb=${cb_version}"></script>
     <script src="/javascript/jquery.timepicker.js?cb=${cb_version}"></script>
-    <script src="/javascript/bootstrap-datepicker.js?cb=${cb_version}"></script>
+    <script src="/javascript/legacy/bootstrap-datepicker.min.js?cb=${cb_version}"></script>
 
     <script src='/javascript/manager/main.bundle.js?cb=${cb_version}'></script>
     <script src='/javascript/momentjs/moment-with-langs.min.js?cb=${cb_version}' type='text/javascript'></script>

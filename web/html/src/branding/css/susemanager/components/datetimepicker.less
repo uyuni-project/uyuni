@@ -1,0 +1,59 @@
+.datepicker {
+  padding: 0;
+  margin: 0;
+
+  thead tr {
+    background: transparent;
+
+    &:nth-child(2) {
+        border-bottom: 1px solid @eos-bc-gray-100;
+    }
+  }
+
+  table tr {
+    .day,
+    .month,
+    .year,
+    .decade,
+    .century {
+      &:hover {
+        border-radius: @border-radius-base;
+        background: @eos-bc-gray-100 !important;
+        }
+    }
+
+    .today {
+      font-weight: bold;
+      background: transparent !important;
+      text-shadow: none !important;
+      border-radius: @border-radius-base;
+    }
+
+    .active {
+      &, &:hover {
+        font-weight: bold;
+        background: @eos-bc-pine-500 !important;
+        text-shadow: none !important;
+        border-radius: @border-radius-base;
+      }
+    }
+  }
+}
+
+.ui-timepicker-wrapper {
+  border-radius: @border-radius-base;
+  margin: -1px 0px 0px !important;
+  border: 1px solid @eos-bc-gray-100 !important;
+  padding: 4px;
+}
+
+.datepicker th {
+  text-transform: capitalize;
+}
+
+.datepicker-dropdown:before {
+  display: none !important;
+}
+.datepicker-dropdown:after {
+  display: none !important;
+}

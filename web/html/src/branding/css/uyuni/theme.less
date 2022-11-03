@@ -642,20 +642,53 @@ ul.nav.nav-tabs:last-child {
   width: 200px !important;
 }
 
+.datepicker {
+  padding: 0;
+  margin: 0;
+
+  thead tr {
+    background: transparent;
+
+    &:nth-child(2) {
+        border-bottom: 1px solid #ccc;
+    }
+  }
+
+  table tr {
+    .today {
+      font-weight: bold;
+      background: transparent !important;
+      text-shadow: none !important;
+
+      &:hover {
+        background: #ccc !important;  
+      }
+    }
+
+    .active {
+      &, &:hover {
+        font-weight: bold;
+        background: @green !important;
+        text-shadow: none !important;
+      }
+    }
+  }
+}
+
+.ui-timepicker-wrapper {
+  margin: -1px 0px 0px !important;
+  border: 1px solid #ccc !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  border-radius: 5px;
+  padding: 4px;
+}
+
 .datepicker th {
   text-transform: capitalize;
 }
 
 .col-inline + .col-inline {
         padding-left: 0px;
-}
-
-.ui-timepicker-wrapper {
-        margin: 2px 0px 0px !important;
-        border: 1px solid #ccc !important;
-        border: 1px solid rgba(0, 0, 0, 0.2) !important;
-        border-radius: 5px;
-        padding: 4px;
 }
 
 .datepicker-dropdown:before {

@@ -37,6 +37,19 @@ module.exports = (env, argv) => {
         from: path.resolve(__dirname, "../node_modules/jquery/dist/jquery.min.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
+      {
+        from: path.resolve(__dirname, "../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy"),
+      },
+      {
+        // NB! Note the `3` in the name, the one without it is the legacy stylesheet, see https://bootstrap-datepicker.readthedocs.io/en/stable/#stylesheets
+        from: path.resolve(__dirname, "../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"),
+        to: path.resolve(__dirname, "../dist/css/legacy/bootstrap-datepicker.css"),
+      },
+      {
+        from: path.resolve(__dirname, "../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css.map"),
+        to: path.resolve(__dirname, "../dist/css/legacy/bootstrap-datepicker.css.map"),
+      },
     ]),
     new MiniCssExtractPlugin({
       chunkFilename: "css/[name].css",

@@ -14,7 +14,7 @@ module.exports = {
       `/fonts/font-awesome/css/font-awesome.css?cb=${noCache}`,
       `/fonts/font-spacewalk/css/spacewalk-font.css?cb=${noCache}`,
       `/css/jquery.timepicker.css?cb=${noCache}`,
-      `/css/bootstrap-datepicker.css?cb=${noCache}`,
+      `/css/legacy/bootstrap-datepicker.css?cb=${noCache}`,
       `/javascript/select2/select2.css?cb=${noCache}`,
       `/javascript/select2/select2-bootstrap.css?cb=${noCache}`,
     ]
@@ -36,7 +36,7 @@ module.exports = {
       `/rhn/dwr/util.js?cb=${noCache}`,
       `/rhn/dwr/interface/DWRItemSelector.js?cb=${noCache}`,
       `/javascript/jquery.timepicker.js?cb=${noCache}`,
-      `/javascript/bootstrap-datepicker.js?cb=${noCache}`,
+      `/javascript/legacy/bootstrap-datepicker.min.js?cb=${noCache}`,
       `/javascript/momentjs/moment-with-langs.min.js?cb=${noCache}`,
     ]
       .map(relativeToProxyUrl)
