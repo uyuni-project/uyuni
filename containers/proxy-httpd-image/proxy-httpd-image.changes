@@ -1,4 +1,3 @@
-- Remove chmod and chown of /srv/www/htdocs/pub as this folder does not exist
 - Prefix log messages with a package name to ease analysis
 
 -------------------------------------------------------------------
