@@ -255,6 +255,7 @@ if [ ! -f /etc/cobbler/settings -a -f /etc/cobbler/settings.rpmsave ]; then
     echo "* Migrating old Cobbler settings to new /etc/cobbler/settings.yaml file and executing migration of stored Cobbler collections"
     echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
     /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --noconfigs --noapi || exit 1
+    touch /var/lib/cobbler/v2_migration_done
     cobbler-settings -c /etc/cobbler/settings migrate -t /etc/cobbler/settings.yaml || exit 1
     echo "* Disabling Cobbler settings automigration"
     cobbler-settings automigrate -d || exit 1
@@ -266,6 +267,15 @@ if [ ! -f /etc/cobbler/settings -a -f /etc/cobbler/settings.rpmsave ]; then
     # At this point, the migration finished successfully, so we can remove
     # the old /etc/cobbler/settings.rpmsave to prevent migration to run again.
     rm /etc/cobbler/settings.rpmsave
+fi
+
+# Migration to Cobbler 3.3.3 already performed but not the migration of Cobbler v2 collections to v3
+if [ ! -f /etc/cobbler/settings.rpmsave -a -f /etc/cobbler/settings.before-migration-backup -a ! -f /var/lib/cobbler/v2_migration_done ]; then
+    echo "* Migrating old stored Cobbler version 2 collections"
+    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
+    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --noconfigs --noapi || exit 1
+    cobbler-settings -c /etc/cobbler/settings.before-migration-backup migrate || exit 1
+    touch /var/lib/cobbler/v2_migration_done
 fi
 
 exit 0
