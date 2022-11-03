@@ -11,10 +11,6 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
   As an authorized user
   I want to enable Prometheus exporters
 
-  Scenario: Pre-requisite: enable Prometheus exporters repository on the minion
-    When I enable the necessary repositories before installing Prometheus exporters on this "sle_minion"
-    And I refresh the metadata for "sle_minion"
-
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
@@ -76,6 +72,3 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by admin" is completed
-
-  Scenario: Cleanup: disable Prometheus exporters repository
-    When I disable the necessary repositories before installing Prometheus exporters on this "sle_minion" without error control
