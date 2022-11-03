@@ -1,5 +1,3 @@
-- Update the squid.pid path to /run/squid.squid.pid (bsc#1204948)
-
 -------------------------------------------------------------------
 Mon Sep 26 12:41:30 UTC 2022 - Marina Latini <marina.latini@suse.com>
 
