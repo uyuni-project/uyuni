@@ -104,12 +104,12 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
                       'debian10_ssh_minion' => 'bison',
                       'debian11_minion' => 'bison',
                       'debian11_ssh_minion' => 'bison',
-                      'opensuse153arm_minion' => 'bison' }.freeze
+                      'opensuse154arm_minion' => 'bison' }.freeze
 
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'sle_minion' => 'SLES15-SP4-Pool',
                            'ssh_minion' => 'SLES15-SP4-Pool',
-                           'rhlike_minion' => 'RHEL7-Pool for x86_64',
+                           'rhlike_minion' => 'no-appstream-result-RHEL8-Pool for x86_64',
                            'deblike_minion' => 'ubuntu-2004-amd64-main',
                            'sle12sp4_minion' => 'SLES12-SP4-Pool',
                            'sle12sp4_ssh_minion' => 'SLES12-SP4-Pool',
@@ -145,7 +145,7 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'debian10_ssh_minion' => 'debian-10-pool',
                            'debian11_minion' => 'debian-11-pool',
                            'debian11_ssh_minion' => 'debian-11-pool',
-                           'opensuse153arm_minion' => 'openSUSE-Leap-15.3-Pool for aarch64' }.freeze
+                           'opensuse154arm_minion' => 'openSUSE-Leap-15.4-Pool for aarch64' }.freeze
 
 LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-product-suse-manager-proxy-4.3-pool-x86_64',
                           'SLES12-SP4-Pool' => 'sles12-sp4-pool-x86_64',
@@ -236,7 +236,7 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'debian10_ssh_minion' => 'amd64',
                       'debian11_minion' => 'amd64',
                       'debian11_ssh_minion' => 'amd64',
-                      'opensuse153arm_minion' => 'aarch64' }.freeze
+                      'opensuse154arm_minion' => 'aarch64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   # 'default' is required for auto-installation tests.
@@ -344,8 +344,70 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp4-updates-x86_64
     sle-module-basesystem15-sp4-updates-x86_64
     sle-module-server-applications15-sp4-updates-x86_64
+  ],
+  '8.6' =>
+  %w[
+    res8-manager-tools-pool-x86_64
+    res8-manager-tools-updates-x86_64
+    el8-uyuni-client-x86_64
   ]
 }.freeze
 
 MIGRATE_SSH_MINION_FROM = '15-SP3'.freeze
 MIGRATE_SSH_MINION_TO = '15-SP4'.freeze
+
+OS_REPOS_BY_OS_VERSION = {
+  '11-SP4' =>
+  %w[
+    SLE-Module-Basesystem11-SP4-Pool
+    SLE-Module-Basesystem11-SP4-Updates
+    SLE-Module-Containers11-SP4-Pool
+    SLE-Module-Containers11-SP4-Updates
+  ],
+  '12-SP3' =>
+  %w[
+    SLE-Module-Basesystem12-SP3-Pool
+    SLE-Module-Basesystem12-SP3-Updates
+  ],
+  '12-SP4' =>
+  %w[
+    SLE-Module-Basesystem12-SP4-Pool
+    SLE-Module-Basesystem12-SP4-Updates
+  ],
+  '15-SP1' =>
+  %w[
+    SLE-Module-Basesystem15-SP1-Pool
+    SLE-Module-Basesystem15-SP1-Updates
+    SLE-Module-DevTools15-SP1-Pool
+    SLE-Module-DevTools15-SP1-Updates
+    SLE-Module-Desktop-Applications15-SP1-Pool
+    SLE-Module-Desktop-Applications15-SP1-Updates
+  ],
+  '15-SP2' =>
+  %w[
+    SLE-Module-Basesystem15-SP2-Pool
+    SLE-Module-Basesystem15-SP2-Updates
+    SLE-Module-DevTools15-SP2-Pool
+    SLE-Module-DevTools15-SP2-Updates
+    SLE-Module-Desktop-Applications15-SP2-Pool
+    SLE-Module-Desktop-Applications15-SP2-Updates
+  ],
+  '15-SP3' =>
+  %w[
+    SLE-Module-Basesystem15-SP3-Pool
+    SLE-Module-Basesystem15-SP3-Updates
+    SLE-Module-DevTools15-SP3-Pool
+    SLE-Module-DevTools15-SP3-Updates
+    SLE-Module-Desktop-Applications15-SP3-Pool
+    SLE-Module-Desktop-Applications15-SP3-Updates
+  ],
+  '15-SP4' =>
+  %w[
+    SLE-Module-Basesystem15-SP4-Pool
+    SLE-Module-Basesystem15-SP4-Updates
+    SLE-Module-DevTools15-SP4-Pool
+    SLE-Module-DevTools15-SP4-Updates
+    SLE-Module-Desktop-Applications15-SP4-Pool
+    SLE-Module-Desktop-Applications15-SP4-Updates
+  ]
+}.freeze

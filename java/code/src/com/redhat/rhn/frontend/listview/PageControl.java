@@ -25,6 +25,8 @@ public class PageControl extends ListControl {
     private int start;
     // The current user's page size.
     private int pageSize = DEFAULT_PER_PAGE;
+    private String sortColumn;
+    private boolean sortDescending;
 
     /** static value for default results per page. */
     public static final int DEFAULT_PER_PAGE = 25;
@@ -83,6 +85,13 @@ public class PageControl extends ListControl {
     }
 
     /**
+     * @return the page size
+     */
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    /**
      * Get the first element in the list
      * @return Returns the start.
      */
@@ -99,5 +108,33 @@ public class PageControl extends ListControl {
             throw new IllegalArgumentException("Start must be > 0");
         }
         this.start = s;
+    }
+
+    /**
+     * @return value of sortColumn
+     */
+    public String getSortColumn() {
+        return sortColumn;
+    }
+
+    /**
+     * @param sortColumnIn value of sortColumn
+     */
+    public void setSortColumn(String sortColumnIn) {
+        sortColumn = sortColumnIn;
+    }
+
+    /**
+     * @return value of sortDescending
+     */
+    public boolean isSortDescending() {
+        return sortDescending;
+    }
+
+    /**
+     * @param sortDescendingIn value of sortDescending
+     */
+    public void setSortDescending(boolean sortDescendingIn) {
+        sortDescending = sortDescendingIn;
     }
 }

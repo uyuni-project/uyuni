@@ -336,7 +336,9 @@ public class SaltService implements SystemQuery, SaltApi {
     public <R> Optional<R> callSync(RunnerCall<R> call,
                                     Function<SaltError, Optional<R>> errorHandler) {
         try {
-            LOG.debug("Runner callSync: {}", runnerCallToString(call));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Runner callSync: {}", runnerCallToString(call));
+            }
             Result<R> result = adaptException(call.callSync(saltClient, PW_AUTH));
             return result.fold(errorHandler, Optional::of);
         }
@@ -405,7 +407,9 @@ public class SaltService implements SystemQuery, SaltApi {
     public <R> Optional<R> callSync(WheelCall<R> call,
                                      Function<SaltError, Optional<R>> errorHandler) {
         try {
-            LOG.debug("Wheel callSync: {}", wheelCallToString(call));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Wheel callSync: {}", wheelCallToString(call));
+            }
             WheelResult<Result<R>> result = adaptException(call.callSync(saltClient, PW_AUTH));
             return result.getData().getResult().fold(errorHandler, Optional::of);
         }
@@ -568,7 +572,7 @@ public class SaltService implements SystemQuery, SaltApi {
                     LOG.error("Error sending email: {}", javaMailException.getMessage());
                 }
                 catch (InterruptedException e1) {
-                    LOG.error("Interrupted during sleep: {}", e1);
+                    LOG.error("Interrupted during sleep", e1);
                 }
             }
         }
@@ -867,7 +871,9 @@ public class SaltService implements SystemQuery, SaltApi {
 
         if (!regularMinionIds.isEmpty()) {
             ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
-            LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
+            }
             List<Map<String, Result<T>>> callResult =
                     adaptException(callIn.withMetadata(metadata).callSync(saltClient,
                             new MinionList(regularMinionIds), PW_AUTH, defaultBatch));
@@ -885,7 +891,9 @@ public class SaltService implements SystemQuery, SaltApi {
             throws SaltException {
 
         ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
-        LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Local callSync: {}", SaltService.localCallToString(callIn));
+        }
         List<Map<String, Result<T>>> callResult =
                 adaptException(callIn.withMetadata(metadata).callSync(saltClient,
                         target, PW_AUTH, defaultBatch));
@@ -957,7 +965,9 @@ public class SaltService implements SystemQuery, SaltApi {
             Optional<ScheduleMetadata> metadataIn) throws SaltException {
         ScheduleMetadata metadata =
                 Opt.fold(metadataIn, ScheduleMetadata::getDefaultMetadata, Function.identity()).withBatchMode();
-        LOG.debug("Local callAsync: {}", SaltService.localCallToString(callIn));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Local callAsync: {}", SaltService.localCallToString(callIn));
+        }
         return adaptException(callIn.withMetadata(metadata).callAsync(saltClient, target, PW_AUTH, defaultBatch));
     }
 

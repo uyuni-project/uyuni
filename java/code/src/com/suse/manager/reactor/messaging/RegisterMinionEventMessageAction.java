@@ -351,7 +351,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         if (!minionId.equals(oldMinionId)) {
             LOG.warn("Minion '{}' already registered, updating profile to '{}' [{}]", oldMinionId, minionId,
                     registeredMinion.getMachineId());
-            MinionPillarManager.INSTANCE.removePillar(registeredMinion);
             registeredMinion.setName(minionId);
             registeredMinion.setMinionId(minionId);
             ServerFactory.save(registeredMinion);
@@ -492,8 +491,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     osfamily.equals("Debian") ? "debian-linux" : "redhat-linux");
             ServerArch arch = ServerFactory.lookupServerArchByLabel(serverArch);
             if (arch == null) {
-                LOG.error(String.format("Unable to find the server architecture for " +
-                        "osfamily: '%s' and osarch: '%s'", osfamily, osarch));
+                LOG.error("Unable to find the server architecture for " +
+                        "osfamily: '{}' and osarch: '{}'", osfamily, osarch);
                 throw new IllegalArgumentException("Unable to get the server architecture");
             }
             minion.setServerArch(arch);
@@ -736,8 +735,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         "System type was changed from Management to Salt");
                 minion.getHistory().add(historyEvent);
 
+                SystemManager.updateSystemOverview(minion.getId());
                 return minion;
-
             }
         }
 

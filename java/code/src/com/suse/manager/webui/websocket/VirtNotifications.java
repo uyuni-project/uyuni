@@ -184,7 +184,7 @@ public class VirtNotifications {
             }
         }
         else {
-            LOG.debug(String.format("Session not registered or broken: [id:%s]", session.getId()));
+            LOG.debug("Session not registered or broken: [id:{}]", session.getId());
         }
     }
 
@@ -202,8 +202,7 @@ public class VirtNotifications {
                     session.getBasicRemote().sendText(message);
                 }
                 else {
-                    LOG.debug(String.format("Could not send websocket message. Session [id:%s] is closed.",
-                            session.getId()));
+                    LOG.debug("Could not send websocket message. Session [id:{}] is closed.", session.getId());
                     handbreakSession(session);
                 }
             }

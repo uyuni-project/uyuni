@@ -11,6 +11,8 @@ import { DateTimePicker } from "./DateTimePicker";
 
 const [value, setValue] = useState(localizedMoment());
 
+const legacyId = "legacy";
+
 <div>
   <p>
     user time zone: {localizedMoment.userTimeZone.displayValue} (
@@ -31,6 +33,7 @@ const [value, setValue] = useState(localizedMoment());
   <p>iso time: {value.toISOString()}</p>
   {/* eslint-disable-next-line local-rules/no-raw-date */}
   <p>browser time: {moment().toISOString(true)}</p>
-  <DateTimePicker value={value} onChange={(newValue) => setValue(newValue)} />
+  <p>legacy id: "{legacyId}"</p>
+  <DateTimePicker value={value} onChange={(newValue) => setValue(newValue)} legacyId={legacyId} />
 </div>
 ```

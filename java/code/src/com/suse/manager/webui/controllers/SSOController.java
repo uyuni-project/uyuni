@@ -130,7 +130,8 @@ public final class SSOController {
                     }
                 }
                 else {
-                    LOG.error(StringUtils.join(errors, ", "));
+                    String allErrors = StringUtils.join(errors, ", ");
+                    LOG.error(allErrors);
                     final String errorReason = auth.getLastErrorReason();
                     if (errorReason != null && !errorReason.isEmpty()) {
                         LOG.error(auth.getLastErrorReason());

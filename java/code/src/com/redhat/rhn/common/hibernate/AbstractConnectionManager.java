@@ -179,7 +179,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
             packageNames.stream()
                         .map(FinderFactory::getFinder)
                         .flatMap(finder -> finder.find("hbm.xml").stream())
-                        .peek(hbmFile -> LOG.debug("Adding resource {0}", hbmFile))
+                        .peek(hbmFile -> LOG.debug("Adding resource {}", hbmFile))
                         .forEach(config::addResource);
 
             // Invoke each configurator to add additional entries to Hibernate config

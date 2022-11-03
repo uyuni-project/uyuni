@@ -949,7 +949,7 @@ public class CachedStatement implements Serializable {
 
             }
             catch (RhnRuntimeException e) {
-                log.error("Error while processing cached statement sql: " + getQuery(), e);
+                log.error("Error while processing cached statement sql: {}", getQuery(), e);
                 throw e;
             }
         });
@@ -959,8 +959,8 @@ public class CachedStatement implements Serializable {
             Map<String, List<Integer>> parameterMap, DataResult<Map<String, Object>> batch, Mode mode,
             List<Object> dr) throws SQLException {
         if (log.isDebugEnabled()) {
-            log.debug("execute() - Executing: " + sql);
-            log.debug("execute() - With: " + batch);
+            log.debug("execute() - Executing: {}", sql);
+            log.debug("execute() - With: {}", batch);
         }
 
         PreparedStatement ps = null;

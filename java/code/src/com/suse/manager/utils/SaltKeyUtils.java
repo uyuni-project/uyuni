@@ -184,7 +184,7 @@ public class SaltKeyUtils {
             });
         }
         else {
-            LOG.info(String.format("No key found for minionID [%s]", minionId));
+            LOG.info("No key found for minionID [{}]", minionId);
             return false;
         }
     }

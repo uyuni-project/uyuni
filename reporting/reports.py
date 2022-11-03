@@ -12,7 +12,7 @@ def available_reports(type):
         return os.listdir(os.path.join(BASE_REPORT_DEFINITIONS, type))
 
 class report:
-        def __init__(self, name, type):
+        def __init__(self, name, type, params):
                 full_path = os.path.join(BASE_REPORT_DEFINITIONS, type, name)
                 self.sql = None
                 self.description = None
@@ -25,6 +25,7 @@ class report:
                 self.multival_columns_reverted = {}
                 self.multival_columns_stop = []
                 self.params = {}
+                self.params_values = params
                 self._load(full_path)
 
         def _load(self, full_path):
@@ -104,10 +105,19 @@ class report:
                         lines = filter(None, re.split('\s*\n\s*', value))
                         for l in lines:
                                 ( p, v ) = re.split('\s+', l, 1)
-                                ( component, option ) = re.split('\.', v, 1)
-                                cfg = RHNOptions(component)
-                                cfg.parse()
-                                self.params[p] = str(cfg.get(option))
+                                value = v
+                                if p in self.params_values:
+                                    value = self.params_values[p]
+                                else:
+                                    try:
+                                        ( component, option ) = re.split('\.', v, 1)
+                                        cfg = RHNOptions(component)
+                                        cfg.parse()
+                                        value = str(cfg.get(option))
+                                    except ValueError:
+                                        # This wasn't a configuration option, assume the value is the default
+                                        pass
+                                self.params[p] = value
                 elif tag == 'multival_columns':
                         # the multival_columns specifies either
                         # a "stop" column, usually the first one,

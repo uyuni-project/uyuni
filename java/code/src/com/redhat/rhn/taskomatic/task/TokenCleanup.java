@@ -77,8 +77,10 @@ public class TokenCleanup extends RhnJavaJob {
                 saltApi.deployChannels(changedMinionIds);
             }
             else {
-                log.warn("The following minions got channel tokens changed and need them deployed before the " +
-                        "old one expires: {}", changedMinionIds.stream().collect(Collectors.joining(", ")));
+                if (log.isWarnEnabled()) {
+                    log.warn("The following minions got channel tokens changed and need them deployed before the " +
+                            "old one expires: {}", changedMinionIds.stream().collect(Collectors.joining(", ")));
+                }
             }
             AccessTokenFactory.cleanupUnusedExpired();
         }

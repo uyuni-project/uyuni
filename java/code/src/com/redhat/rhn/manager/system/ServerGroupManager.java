@@ -55,7 +55,6 @@ import java.util.stream.Collectors;
  */
 public class ServerGroupManager {
 
-    /** Logger */
     private static final Logger LOG = LogManager.getLogger(ServerGroupManager.class);
 
     private final SaltApi saltApi;
@@ -127,6 +126,7 @@ public class ServerGroupManager {
             return false;
         }
         if (!user.getOrg().equals(group.getOrg())) {
+            LOG.debug("User and org mismatch");
             return false;
         }
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "is_visible");

@@ -91,7 +91,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
         //try to delete self
         request.setupAddParameter("uid", uid.toString());
         forward = action.execute(mapping, form, request, response);
-        failure.setPath("path?uid=" + uid.toString());
+        failure.setPath("path?uid=" + uid);
         assertEquals(failure.getName(), forward.getName());
         assertEquals(failure.getPath(), forward.getPath());
 

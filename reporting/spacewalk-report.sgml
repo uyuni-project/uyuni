@@ -165,6 +165,12 @@ Generate reports from Spacewalk server in csv format
         </listitem>
     </varlistentry>
     <varlistentry>
+        <term>--param=<replaceable>PARAM</replaceable>=<replaceable>VALUE</replaceable></term>
+        <listitem>
+            <para>Overwrite the default report parameter value</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
         <term>--timezone=<replaceable>VALUE</replaceable></term>
         <listitem>
             <para>As all dates are reported as in UTC timezone, this

@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -222,8 +221,6 @@ public class DailySummary extends RhnJavaJob {
                 TaskConstants.TASK_QUERY_USERS_AWOL_SERVERS);
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", uid);
-        params.put("checkin_threshold",
-                Config.get().getInteger(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
 
         return m.execute(params);
     }
@@ -314,7 +311,7 @@ public class DailySummary extends RhnJavaJob {
         StringBuilder url = new StringBuilder();
         url.append("https://");
         url.append(getHostname());
-        url.append("/rhn/systems/Inactive.do");
+        url.append("/rhn/manager/systems/list/all?q=awol&qc=status_type");
 
         return LocalizationService.getInstance().getMessage(
                 "taskomatic.msg.awolservers", buf.toString(), url);
@@ -410,12 +407,12 @@ public class DailySummary extends RhnJavaJob {
         body.append(formattedNonErrataActions);
 
         // finally put all this together
-        msg.append(hdr.toString());
+        msg.append(hdr);
         msg.append("\n");
-        msg.append(body.toString());
+        msg.append(body);
         msg.append("\n\n");
         if (!errataSynopsis.isEmpty()) {
-            msg.append(legend.toString());
+            msg.append(legend);
         }
         return msg.toString();
     }

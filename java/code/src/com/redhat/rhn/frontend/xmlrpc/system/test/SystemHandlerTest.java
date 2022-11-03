@@ -154,6 +154,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateWorker;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -2395,6 +2396,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         ErrataCacheManager.insertNeededErrataCache(sid, null,
                 pack.getId());
+        SystemsOverviewUpdateWorker.doUpdate(sid);
 
         Object [] array =  handler.listOutOfDateSystems(regular);
 
@@ -2415,7 +2417,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testListUngroupedSystems() throws Exception {
 
         Server testServer = ServerFactoryTest.createTestServer(admin, false);
-        ServerFactoryTest.createTestServer(admin, true);
+        SystemsOverviewUpdateWorker.doUpdate(testServer.getId());
+
+        Server server2 = ServerFactoryTest.createTestServer(admin, true);
+        SystemsOverviewUpdateWorker.doUpdate(server2.getId());
 
         List<SystemOverview> servers = handler.listUngroupedSystems(admin);
         assertTrue(servers.size() > 0);

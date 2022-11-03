@@ -548,7 +548,7 @@ public class SPMigrationAction extends RhnAction {
             return TARGET;
         }
         else if (targetProductSet.size() > 1) {
-            logger.warn("Multiple migration targets found: {}", targetProductSet.toString());
+            logger.warn("Multiple migration targets found: {}", targetProductSet);
         }
         else {
             request.setAttribute(ADDON_PRODUCTS, targetProductSet.get(0).getAddonProducts());

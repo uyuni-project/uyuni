@@ -1,3 +1,6 @@
+- remove traditional stack packages and dependencies from
+  bootstrap repo definition
+
 -------------------------------------------------------------------
 Wed Sep 28 11:15:26 CEST 2022 - jgonzalez@suse.com
 

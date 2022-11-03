@@ -59,6 +59,8 @@ import com.suse.utils.Opt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -98,8 +100,6 @@ public class RegistrationUtils {
     public static void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey,
             Optional<User> creator, boolean enableMinionService) {
         String minionId = minion.getMinionId();
-        // get hardware and network async
-        triggerHardwareRefresh(minion);
 
         // Asynchronously get the uptime of this minion
         MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
@@ -149,11 +149,18 @@ public class RegistrationUtils {
             MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
         }
         SystemManager.setReportDbUser(minion, false);
+
+        // get hardware and network async
+        // Hardware refresh depends on channels being assigned so as a temporary
+        // solution we schedule it 1 minute in the future. This should be fixed when
+        // refactoring this method to provide clear dependencies for example via action chains.
+        triggerHardwareRefresh(minion);
     }
 
     private static void triggerHardwareRefresh(MinionServer server) {
         try {
-            ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
+            ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server,
+                    Date.from(Instant.now().plus(1, ChronoUnit.MINUTES)));
         }
         catch (TaskomaticApiException e) {
             LOG.error("Could not schedule hardware refresh for system: {}", server.getId());
@@ -284,6 +291,7 @@ public class RegistrationUtils {
 
         server.setChannels(
                 filterCompatibleChannelsForServerArch(server.getServerArch(), unfilteredChannels, activationKey));
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     /**

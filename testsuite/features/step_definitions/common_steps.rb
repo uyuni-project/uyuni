@@ -15,9 +15,14 @@ When(/^I wait for "(\d+)" seconds?$/) do |arg1|
 end
 
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
-  iso_path = "/tmp/#{name}.iso"
+  # When using a mirror it is automatically mounted at /mirror
+  if $mirror
+    iso_path = url.sub(/^http:.*\/pub/, '/mirror/pub')
+  else
+    iso_path = "/tmp/#{name}.iso"
+    $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 500)
+  end
   mount_point = "/srv/www/htdocs/#{name}"
-  $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 500)
   $server.run("mkdir -p #{mount_point}")
   $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro  0 0' >> /etc/fstab")
   $server.run("umount #{iso_path}; mount #{iso_path}")
@@ -57,8 +62,8 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
 
   lines = interface.lines
   # selects only lines with IPv6 addresses and proceeds to form an array with only those addresses
-  ipv6_addresses_list = lines.grep(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/)
-  ipv6_addresses_list.map! { |ip_line| ip_line.slice(/2620:[:0-9a-f]*|fe80:[:0-9a-f]*/) }
+  ipv6_addresses_list = lines.grep(/2[:0-9a-f]*|fe80:[:0-9a-f]*/)
+  ipv6_addresses_list.map! { |ip_line| ip_line.slice(/2[:0-9a-f]*|fe80:[:0-9a-f]*/) }
 
   # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
   ipv6_address = find(:xpath, "//td[text()='IPv6 Address:']/following-sibling::td[1]").text
@@ -254,8 +259,8 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-    And I follow the left menu "Systems > Overview"
-    And I wait until I see "System Overview" text
+    And I follow the left menu "Systems > System List > All"
+    And I wait until I do not see "Loading..." text
   )
 end
 
@@ -299,7 +304,7 @@ When(/^I trigger cobbler system record on the "([^"]*)"$/) do |host|
   unless out.include? 'ssh-push-tunnel'
     steps %(
       Given I am authorized as "testing" with password "testing"
-      And I follow this "#{host}" link
+      And I am on the Systems overview page of this "#{host}"
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
@@ -354,7 +359,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     node.run('yum clean all && yum makecache', timeout: 600)
   elsif os_family =~ /^ubuntu/
     node.run('apt-get update')
@@ -744,8 +749,8 @@ When(/^I enable client tools repositories on "([^"]*)"$/) do |host|
   when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-  when /^centos/
-    repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools" | cut -d" " -f1')
+  when /^(centos|rocky)/
+    repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools_" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
     end
@@ -766,8 +771,8 @@ When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
   when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-  when /^centos/
-    repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
+  when /^(centos|rocky)/
+    repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools_" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
     end
@@ -786,23 +791,25 @@ When(/^I enable repositories before installing Docker$/) do
   os_family = $build_host.os_family
 
   # Distribution
-  repos = "os_pool_repo os_update_repo"
+  repos = $is_cloud_provider ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
   log $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  unless $is_cloud_provider
+    repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  end
 
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if os_family =~ /^sles/ && os_version =~ /^15/
+  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_cloud_provider
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
 
   # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_cloud_provider
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
@@ -815,23 +822,25 @@ When(/^I disable repositories after installing Docker$/) do
   os_family = $build_host.os_family
 
   # Distribution
-  repos = "os_pool_repo os_update_repo"
+  repos = $is_cloud_provider ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
   log $build_host.run("zypper mr --disable #{repos}")
 
   # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  unless $is_cloud_provider
+    repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  end
 
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if os_family =~ /^sles/ && os_version =~ /^15/
+  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_cloud_provider
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
 
   # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_cloud_provider
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
@@ -846,7 +855,7 @@ end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   steps %(
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
     And I wait at most 500 seconds until event "Hardware List Refresh" is completed
@@ -1372,10 +1381,75 @@ end
 And(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
   tmp_dir = "/var/cache/cobbler/buildiso"
   result, code = $server.run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
-  raise "error during veryfying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
+  raise "error while verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
 end
 
 When(/^I cleanup after Cobbler buildiso$/) do
   result, code = $server.run("rm -Rf /var/cache/cobbler")
   raise "error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
+end
+
+When(/^I reboot the server through SSH$/) do
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
+  temp_server.extend(LavandaBasic)
+  temp_server.run('reboot > /dev/null 2> /dev/null &')
+  default_timeout = 300
+
+  check_shutdown($server.public_ip, default_timeout)
+  check_restart($server.public_ip, temp_server, default_timeout)
+
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? "dead" and out.to_s.include? "running"
+      log "Server spacewalk service is up"
+      break
+    end
+    sleep 1
+  end
+end
+
+When(/^I change the server's short hostname from hosts and hostname files$/) do
+  old_hostname = $server.hostname
+  new_hostname = old_hostname + '2'
+  log "New short hostname: #{new_hostname}"
+
+  $server.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
+  echo '#{$server.public_ip} #{$server.full_hostname} #{old_hostname}' >> /etc/hosts &&
+  echo '#{$server.public_ip} #{new_hostname}#{$server.full_hostname.delete_prefix($server.hostname)} #{new_hostname}' >> /etc/hosts")
+end
+
+When(/^I run spacewalk-hostname-rename command on the server$/) do
+  temp_server = twopence_init("ssh:#{$server.public_ip}")
+  temp_server.extend(LavandaBasic)
+  command = "spacewalk-hostname-rename #{$server.public_ip}
+            --ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg
+            --ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de
+            --ssl-ca-password=spacewalk -u admin -p admin"
+  out_spacewalk, result_code = temp_server.run(command, check_errors: false, timeout: 10)
+  log "#{out_spacewalk}"
+
+  default_timeout = 300
+  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
+    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? "dead" and out.to_s.include? "running"
+      log "Server: spacewalk service is up"
+      break
+    end
+    sleep 1
+  end
+  raise "Error while running spacewalk-hostname-rename command - see logs above" unless result_code.zero?
+  raise "Error in the output logs - see logs above" if out_spacewalk.include? "No such file or directory"
+end
+
+When(/^I change back the server's hostname$/) do
+  init_string = "ssh:#{$server.public_ip}"
+  temp_server = twopence_init(init_string)
+  temp_server.extend(LavandaBasic)
+  temp_server.run("echo '#{$server.full_hostname}' > /etc/hostname ")
+end
+
+When(/^I clean up the server's hosts file$/) do
+  command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
+  $server.run(command)
 end

@@ -80,6 +80,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -109,7 +110,7 @@ import java.util.stream.Stream;
 public class ActionFactory extends HibernateFactory {
 
     private static ActionFactory singleton = new ActionFactory();
-    private static Logger log = LogManager.getLogger(ActionFactory.class);
+    private static final Logger LOG = LogManager.getLogger(ActionFactory.class);
     private static Set actionArchTypes;
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
@@ -137,7 +138,7 @@ public class ActionFactory extends HibernateFactory {
                 }
             }
             catch (HibernateException he) {
-                log.error("Error loading ActionArchTypes from DB", he);
+                LOG.error("Error loading ActionArchTypes from DB", he);
                 throw new
                 HibernateRuntimeException("Error loading ActionArchTypes from db");
             }
@@ -162,6 +163,7 @@ public class ActionFactory extends HibernateFactory {
         for (long id : ids) {
             try {
                 removeActionForSystem(actionId, id);
+                SystemManager.updateSystemOverview(id);
             }
             catch (Exception e) {
                 failed++;
@@ -195,6 +197,7 @@ public class ActionFactory extends HibernateFactory {
         return involvedSystems.stream().map(Server::getId).mapToInt(sid -> {
             try {
                 removeActionForSystem(actionId, sid);
+                SystemManager.updateSystemOverview(sid);
                 return 0;
             }
             catch (Exception e) {
@@ -218,6 +221,7 @@ public class ActionFactory extends HibernateFactory {
         for (Map action : dr) {
             removeActionForSystem((Long) action.get("id"), serverId);
         }
+        SystemManager.updateSystemOverview(serverId);
     }
 
     /**
@@ -241,7 +245,7 @@ public class ActionFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**
@@ -697,6 +701,11 @@ public class ActionFactory extends HibernateFactory {
         }
 
         singleton.saveObject(actionIn);
+        if (actionIn.getServerActions() != null) {
+            actionIn.getServerActions().stream()
+                    .map(sa -> sa.getServerId())
+                    .forEach(sid -> SystemManager.updateSystemOverview(sid));
+        }
         return actionIn;
     }
 
@@ -706,6 +715,9 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void remove(Action actionIn) {
         singleton.removeObject(actionIn);
+        actionIn.getServerActions().stream()
+                .map(sa -> sa.getServerId())
+                .forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -753,18 +765,6 @@ public class ActionFactory extends HibernateFactory {
         return returnSet.stream();
     }
 
-    /**
-     * Delete the server actions associated with the given set of parent actions.
-     * @param parentActions Set of parent actions.
-     */
-    public static void deleteServerActionsByParent(Set parentActions) {
-        Session session = HibernateFactory.getSession();
-
-        Query serverActionsToDelete =
-                session.getNamedQuery("ServerAction.deleteByParentActions");
-        serverActionsToDelete.setParameterList("actions", parentActions);
-        serverActionsToDelete.executeUpdate();
-    }
     /**
      * Lookup a List of Action objects for a given Server.
      * @param user the user doing the search
@@ -867,6 +867,10 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("failed", ActionFactory.STATUS_FAILED)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
         removeInvalidResults(action);
+        action.getServerActions().stream()
+                .filter(sa -> sa.isFailed())
+                .map(sa -> sa.getServerId())
+                .forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -880,6 +884,9 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
         removeInvalidResults(action);
+        action.getServerActions().stream()
+                .map(sa -> sa.getServerId())
+                .forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -906,6 +913,7 @@ public class ActionFactory extends HibernateFactory {
         .setParameter("queued", ActionFactory.STATUS_QUEUED)
         .setParameter("server", server).executeUpdate();
         removeInvalidResults(action);
+        SystemManager.updateSystemOverview(server);
     }
 
     /**
@@ -940,15 +948,14 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIds server Ids for which action is scheduled
      */
     public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
-        if (log.isDebugEnabled()) {
-            log.debug("Action status {} is going to b set for these servers: {}",
-                    ActionFactory.STATUS_PICKED_UP.getName(), serverIds);
-        }
+        LOG.debug("Action status {} is going to b set for these servers: {}",
+                ActionFactory.STATUS_PICKED_UP.getName(), serverIds);
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
 
         udpateByIds(serverIds, "Action.updateServerActionsPickedUp", "server_ids", parameters);
+        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -958,14 +965,13 @@ public class ActionFactory extends HibernateFactory {
      * @param status {@link ActionStatus} object that needs to be set
      */
     public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
-        if (log.isDebugEnabled()) {
-            log.debug("Action status {} is going to b set for these servers: {}", status.getName(), serverIds);
-        }
+        LOG.debug("Action status {} is going to b set for these servers: {}", status.getName(), serverIds);
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", status.getId());
 
         udpateByIds(serverIds, "Action.updateServerActions", "server_ids", parameters);
+        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
     }
 
     /**
@@ -974,6 +980,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void save(ServerAction serverActionIn) {
         singleton.saveObject(serverActionIn);
+        SystemManager.updateSystemOverview(serverActionIn.getServerId());
     }
 
     /**

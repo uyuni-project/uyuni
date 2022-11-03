@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2022 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,22 +12,28 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.systems;
+package com.redhat.rhn.frontend.dto;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.manager.system.SystemManager;
-
-import org.apache.struts.action.ActionForm;
+import javax.persistence.Tuple;
 
 /**
- * OutOfDateSetupAction
+ * Base class for DTO objects that can be constructed from a Tuple
  */
-public class OutOfDateSetupAction extends BaseSystemsAction {
+public abstract class BaseTupleDto extends BaseDto {
 
-    protected DataResult getDataResult(User user, PageControl pc, ActionForm formIn) {
-        return SystemManager.outOfDateList(user, null);
+    /**
+     * Needed for the legacy way
+     */
+    protected BaseTupleDto() {
+        super();
     }
 
+    /**
+     * Build the DTO from a tuple
+     *
+     * @param tuple the query returned tuple to init the object from
+     */
+    protected BaseTupleDto(Tuple tuple) {
+        super();
+    }
 }

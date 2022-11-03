@@ -118,7 +118,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(
                 "SELECT * FROM rhnServerNeededCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertTrue(rs.next());
             assertEquals(sid.longValue(), rs.getLong("server_id"));
@@ -191,7 +191,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(
                 "SELECT * FROM rhnServerNeededCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertTrue(rs.next());
             assertEquals(sid.longValue(), rs.getLong("server_id"));
@@ -205,7 +205,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             rows = ErrataCacheManager.deleteNeededCache(sid, eid, pid);
             assertEquals(1, rows);
 
-            rs = stmt.executeQuery("SELECT * FROM rhnServerNeededCache WHERE server_id = " + sid.toString());
+            rs = stmt.executeQuery("SELECT * FROM rhnServerNeededCache WHERE server_id = " + sid);
             assertFalse(rs.next());
         });
     }
@@ -251,7 +251,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(
                 "SELECT * FROM rhnServerNeededErrataCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertTrue(rs.next());
             assertEquals(sid.longValue(), rs.getLong("server_id"));
@@ -283,7 +283,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(
                 "SELECT * FROM rhnServerNeededErrataCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertTrue(rs.next());
             assertEquals(sid.longValue(), rs.getLong("server_id"));
@@ -298,7 +298,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
 
             rs = statement.executeQuery(
                 "SELECT * FROM rhnServerNeededErrataCache WHERE server_id = " +
-                sid.toString()
+                        sid
             );
             assertFalse(rs.next());
         });

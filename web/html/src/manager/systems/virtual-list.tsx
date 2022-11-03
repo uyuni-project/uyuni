@@ -23,7 +23,7 @@ export function VirtualSystems(props: Props) {
     const removed = selectedSystems.filter((item) => !items.includes(item)).map((item) => [item, false]);
     const added = items.filter((item) => !selectedSystems.includes(item)).map((item) => [item, true]);
     const data = Object.assign({}, Object.fromEntries(added), Object.fromEntries(removed));
-    Network.post("/rhn/manager/api/sets/system_list", data);
+    Network.post("/rhn/manager/api/sets/system_list", data).catch(Network.showResponseErrorToastr);
 
     setSelectedSystems(items);
   };
@@ -57,6 +57,7 @@ export function VirtualSystems(props: Props) {
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
+        defaultSearchField="name"
         emptyText={t("No Virtual Systems.")}
       >
         <Column

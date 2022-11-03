@@ -134,4 +134,10 @@ INSERT INTO rhnTaskoTask (id, name, class)
 INSERT INTO rhnTaskoTask (id, name, class)
 VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'mgr-update-reporting-hub', 'com.redhat.rhn.taskomatic.task.HubReportDbUpdateTask');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'update-system-overview', 'com.redhat.rhn.taskomatic.task.SystemOverviewUpdateTask');
+
+INSERT INTO rhnTaskoTask (id, name, class)
+VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'system-overview-update-queue', 'com.redhat.rhn.taskomatic.task.SystemOverviewUpdateQueue');
+
 commit;

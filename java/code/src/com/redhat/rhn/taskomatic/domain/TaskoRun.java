@@ -32,7 +32,7 @@ import java.util.Date;
  */
 public class TaskoRun {
 
-    private static Logger log = LogManager.getLogger(TaskoTask.class);
+    private static final Logger LOG = LogManager.getLogger(TaskoRun.class);
 
     public static final String STATUS_READY_TO_RUN = "READY";
     public static final String STATUS_RUNNING = "RUNNING";
@@ -203,7 +203,7 @@ public class TaskoRun {
                 return tail;
             }
             catch (IOException e) {
-                log.error("Can't tail {}: {}", fileName, e.toString());
+                LOG.error("Can't tail {}: {}", fileName, e.toString());
                 // return "";
             }
         }
@@ -263,7 +263,7 @@ public class TaskoRun {
             out.close();
         }
         catch (IOException e) {
-            log.error("Unable to store log file to {}", fileName);
+            LOG.error("Unable to store log file to {}", fileName);
         }
     }
 

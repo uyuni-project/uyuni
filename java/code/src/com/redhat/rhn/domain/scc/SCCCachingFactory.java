@@ -345,7 +345,7 @@ public class SCCCachingFactory extends HibernateFactory {
                     return true;
                 },
                 modifiedCache -> {
-                    log.debug("COMPARE: {} and {} : {}", modifiedCache.toString(), modifiedCreds.toString(),
+                    log.debug("COMPARE: {} and {} : {}", modifiedCache, modifiedCreds,
                             modifiedCache.compareTo(modifiedCreds));
                     return modifiedCache.compareTo(modifiedCreds) < 0;
                 }

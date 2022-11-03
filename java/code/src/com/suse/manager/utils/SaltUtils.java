@@ -283,7 +283,7 @@ public class SaltUtils {
         List<String> functions = function.map(x -> x.fold(Arrays::asList, List::of)).orElseGet(List::of);
 
         if (functions.isEmpty()) {
-            LOG.error("NULL function for: " + server.getName() + callResult.toString());
+            LOG.error("NULL function for: {}{}", server.getName(), callResult);
             throw new BadParameterException("function must not be NULL");
         }
 
@@ -404,6 +404,7 @@ public class SaltUtils {
             packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
             server.getPackages().addAll(packagesToAdd);
         });
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     /**
@@ -915,6 +916,7 @@ public class SaltUtils {
                     cresult.setCreated(new Date());
                     cresult.setModified(new Date());
                     cra.setConfigRevisionActionResult(cresult);
+                    SystemManager.updateSystemOverview(cra.getServer());
                 }
             }
         });
@@ -960,11 +962,11 @@ public class SaltUtils {
                                         serverAction.setResultMsg("Success");
                                     }
                                     catch (Exception e) {
-                                        LOG.error("Error processing SCAP results file {}", resultsFile.toString(), e);
+                                        LOG.error("Error processing SCAP results file {}", resultsFile, e);
                                         serverAction.setStatus(ActionFactory.STATUS_FAILED);
                                         serverAction.setResultMsg(
                                                 "Error processing SCAP results file " +
-                                                        resultsFile.toString() + ": " +
+                                                        resultsFile + ": " +
                                                         e.getMessage());
                                     }
                                 }
@@ -1499,6 +1501,7 @@ public class SaltUtils {
         ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
 
         packages.addAll(createPackagesFromSalt(packagesToAdd, server));
+        SystemManager.updateSystemOverview(server.getId());
     }
 
     private static Map.Entry<String, Info> resolveDuplicatePackage(Map.Entry<String, Info> firstEntry,
@@ -1507,8 +1510,8 @@ public class SaltUtils {
         Info second = secondEntry.getValue();
 
         if (first.getInstallDateUnixTime().isEmpty() && second.getInstallDateUnixTime().isEmpty()) {
-            LOG.warn(String.format("Got duplicate packages NEVRA and the install timestamp is missing." +
-                    " Taking the first one. First:  %s, second: %s", first, second));
+            LOG.warn("Got duplicate packages NEVRA and the install timestamp is missing." +
+                    " Taking the first one. First:  {}, second: {}", first, second);
             return firstEntry;
         }
 
@@ -1790,11 +1793,10 @@ public class SaltUtils {
             return Collections.emptySet();
         }
 
-        LOG.debug(String.format(
-                "Detected minion %s as a RedHat compatible system: %s %s %s %s",
+        LOG.debug("Detected minion {} as a RedHat compatible system: {} {} {} {}",
                 server.getMinionId(),
                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                rhelProductInfo.get().getRelease(), server.getServerArch().getName()));
+                rhelProductInfo.get().getRelease(), server.getServerArch().getName());
 
         return rhelProductInfo.get().getSuseProduct().map(product -> {
             String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
@@ -1832,11 +1834,10 @@ public class SaltUtils {
              return Collections.emptySet();
          }
 
-         LOG.debug(String.format(
-                 "Detected image %s:%s as a RedHat compatible system: %s %s %s %s",
+         LOG.debug("Detected image {}:{} as a RedHat compatible system: {} {} {} {}",
                  image.getName(), image.getVersion(),
                  rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                 rhelProductInfo.get().getRelease(), image.getImageArch().getName()));
+                 rhelProductInfo.get().getRelease(), image.getImageArch().getName());
 
          return rhelProductInfo.get().getSuseProduct().map(product -> {
              String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");

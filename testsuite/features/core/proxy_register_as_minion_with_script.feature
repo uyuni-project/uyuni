@@ -22,7 +22,7 @@ Feature: Setup Uyuni proxy
 
 @skip_if_salt_bundle
   Scenario: Create the bootstrap script for the proxy and use it
-    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date"
+    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh"
     Then I should get "* bootstrap script (written):"
     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
@@ -30,7 +30,7 @@ Feature: Setup Uyuni proxy
 
 @salt_bundle
   Scenario: Create the bundle-aware bootstrap script for the proxy and use it
-    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --no-up2date --force-bundle"
+    When I execute mgr-bootstrap "--script=bootstrap-proxy.sh --force-bundle"
     Then I should get "* bootstrap script (written):"
     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh'"
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
@@ -70,6 +70,7 @@ Feature: Setup Uyuni proxy
     Then I should see "proxy" hostname
     Then I should see a "Proxy" link in the content area
 
+@skip_if_cloud
   Scenario: Install expect package on proxy for bootstrapping minion via script
     When I enable repositories before installing branch server
     And I install package "expect" on this "proxy"

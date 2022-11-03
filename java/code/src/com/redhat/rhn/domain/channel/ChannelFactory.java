@@ -1450,19 +1450,13 @@ public class ChannelFactory extends HibernateFactory {
      * @param to  the target Channel
      */
     public static void cloneModulesMetadata(Channel from, Channel to) {
-        if (!from.isModular()) {
-            if (to.isModular()) {
-                HibernateFactory.getSession().delete(to.getModules());
-                to.setModules(null);
-            }
+        if (to.isModular()) {
+            to.getModules().clear();
+            getSession().flush();
         }
-        else {
-            if (!to.isModular()) {
-                Modules modules = new Modules();
-                modules.setChannel(to);
-                to.setModules(modules);
-            }
-            to.getModules().setRelativeFilename(from.getModules().getRelativeFilename());
+        if (from.isModular()) {
+            from.getModules().forEach(fromModule ->
+                    to.addModules(new Modules(fromModule.getRelativeFilename(), fromModule.getLastModified())));
         }
     }
 }

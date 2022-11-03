@@ -63,7 +63,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
     private String renderChannel(ConfigChannel channel) {
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", "/rhn/configuration/ChannelOverview.do?ccid=" +
-                channel.getId().toString());
+                channel.getId());
         a.addBody(StringEscapeUtils.escapeHtml4(channel.getDisplayName()));
         return a.render();
     }

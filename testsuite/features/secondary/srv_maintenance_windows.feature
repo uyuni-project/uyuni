@@ -64,8 +64,8 @@ Feature: Maintenance windows
     Then I should see a "System properties changed" text
 
   Scenario: Assign systems to a multi schedule using SSM
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    When I follow the left menu "Systems > System List > All"
+    And I click on "Clear"
     And I check the "rhlike_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area
@@ -108,8 +108,8 @@ Feature: Maintenance windows
     Then I should see a "1 package install has been scheduled for" text
 
   Scenario: Detach systems from schedules
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    When I follow the left menu "Systems > System List > All"
+    And I click on "Clear"
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area

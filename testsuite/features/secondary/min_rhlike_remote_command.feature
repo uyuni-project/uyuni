@@ -19,5 +19,5 @@ Feature: Remote command on the Red Hat-like Salt minion
     Then I should see "rhlike_minion" hostname
     When I wait for "15" seconds
     And I expand the results for "rhlike_minion"
-    Then I should see a "rhel fedora" text
-    And I should see a "REDHAT_SUPPORT_PRODUCT" text
+    Then I should see a "rhel centos fedora" text
+    And I should see a "ROCKY_SUPPORT_PRODUCT" text

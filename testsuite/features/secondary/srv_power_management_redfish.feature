@@ -47,8 +47,8 @@ Feature: Redfish Power management
     Then I should see the power is "On"
 
   Scenario: Check power management SSM configuration for Redfish
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    When I follow the left menu "Systems > System List > All"
+    And I click on "Clear"
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Configure power management" in the content area
@@ -94,4 +94,4 @@ Feature: Redfish Power management
     When the server stops mocking a Redfish host
 
   Scenario: Cleanup: remove remaining systems from SSM after Redfish power management tests
-    When I follow "Clear"
+    When I click on "Clear"

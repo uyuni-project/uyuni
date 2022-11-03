@@ -1890,7 +1890,7 @@ public class ChannelManager extends BaseManager {
 
         log.debug("listBaseEusChannelsByVersionReleaseAndServerArch()");
         log.debug("   version = {}", version);
-        log.debug("   release = {}", pevr.toString());
+        log.debug("   release = {}", pevr);
         log.debug("   serverArch = {}", serverArch);
         SelectMode m = ModeFactory.getMode("Channel_queries",
                     "base_eus_channels_by_version_release_server_arch");
@@ -2337,7 +2337,7 @@ public class ChannelManager extends BaseManager {
         if (!UserManager.verifyChannelAdmin(user, chan)) {
             List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
             if (chan.isVendorChannel() && allowedList.contains(chan.getLabel()) &&
-                    user.hasRole(RoleFactory.SAT_ADMIN)) {
+                    user.hasRole(RoleFactory.SAT_ADMIN) && log.isWarnEnabled()) {
                 log.warn("User {} added packages {} to vendor channel {}", user.getId(), packageIds.stream()
                         .map(Object::toString)
                         .collect(Collectors.joining(",")), chan.getLabel());

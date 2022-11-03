@@ -1152,7 +1152,7 @@ public class ErrataHandler extends BaseHandler {
 
         ErrataFactory.save(newErrata);
         List<Channel> vendorChannels = channels.stream().filter(Channel::isVendorChannel).collect(toList());
-        if (!vendorChannels.isEmpty()) {
+        if (!vendorChannels.isEmpty() && log.isWarnEnabled()) {
             log.warn("Errata {} added to vendor channels {}", newErrata.getAdvisory(),
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
         }
@@ -1199,7 +1199,7 @@ public class ErrataHandler extends BaseHandler {
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, allowedList);
         List<Channel> vendorChannels = channels.stream().filter(Channel::isVendorChannel).collect(toList());
         Errata toPublish = lookupAccessibleErratum(advisoryName, empty(), loggedInUser.getOrg());
-        if (!vendorChannels.isEmpty()) {
+        if (!vendorChannels.isEmpty() && log.isWarnEnabled()) {
             log.warn("Errata {} added to vendor channels {}", toPublish.getAdvisory(),
                     vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
         }

@@ -34,7 +34,7 @@
           <li class="list-group-item">
             <rhn:icon type="nav-bullet" /> <a
                   class="js-spa"
-                  href="/rhn/systems/RequiringReboot.do">
+                  href="/rhn/manager/systems/list/all?q=true&qc=requires_reboot">
                   <bean:message key="yourrhn.jsp.tasks.reboot" arg0="${requestScope.requiringReboot}"/>
             </a>
           </li>

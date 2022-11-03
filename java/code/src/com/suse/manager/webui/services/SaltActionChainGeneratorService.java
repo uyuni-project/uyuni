@@ -426,7 +426,7 @@ public class SaltActionChainGeneratorService {
                 Files.deleteIfExists(path);
             }
             catch (IOException e) {
-                LOG.warn("Error deleting action chain file {}", path.toString(), e);
+                LOG.warn("Error deleting action chain file {}", path, e);
             }
         }
     }

@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-17 16:14+0000\n"
-"PO-Revision-Date: 2022-09-14 08:31+0000\n"
+"POT-Creation-Date: 2022-10-28 16:14+0200\n"
+"PO-Revision-Date: 2022-10-13 07:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -2335,7 +2335,7 @@ msgstr "전역 필터를 로드하는 중..."
 msgid "Updating project filters..."
 msgstr "프로젝트 필터를 업데이트하는 중..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:64
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:66
 msgid "Create New Filter"
 msgstr "새 필터 만들기"
 
@@ -4655,7 +4655,7 @@ msgstr "파일이 서버의 임시 파일에 저장되고 부트스트랩 절차
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
 msgid "Leave empty for no passphrase"
-msgstr "비밀번호가 없는 경우 비워두십시오."
+msgstr "비밀번호가 없는 경우 비워둡니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 msgid "Bootstrap Minions"

@@ -5855,8 +5855,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listOutOfDateSystems(User loggedInUser) {
-        DataResult<SystemOverview> list = SystemManager.outOfDateList(
-                loggedInUser, null);
+        DataResult<SystemOverview> list = SystemManager.outOfDateList(loggedInUser);
         list.elaborate();
         return list.toArray();
     }
@@ -5977,7 +5976,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemOverview> listUngroupedSystems(User loggedInUser) {
-        return SystemManager.ungroupedList(loggedInUser, null);
+        return SystemManager.ungroupedList(loggedInUser);
     }
 
 
@@ -6138,6 +6137,20 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Returns whether there are traditional systems registered
+     *
+     * @param loggedInUser The current user
+     * @return true if there is at least one traditional system registered or else false
+     *
+     * @apidoc.ignore this endpoint is used only internally to determine if a warning
+     * about traditional stack deprecation should be displayed
+     */
+    @ReadOnly
+    public boolean hasTraditionalSystems(User loggedInUser) {
+        return SystemManager.hasTraditionalSystems(loggedInUser);
+    }
+
+    /**
      * Gets a list of all Physical systems visible to user
      * @param loggedInUser The current user
      * @return Returns an array of maps representing all systems visible to user
@@ -6154,7 +6167,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listPhysicalSystems(User loggedInUser) throws FaultException {
-        DataResult<SystemOverview> dr = SystemManager.physicalList(loggedInUser, null);
+        DataResult<SystemOverview> dr = SystemManager.physicalList(loggedInUser);
         dr.elaborate();
         return dr.toArray();
     }
@@ -7046,7 +7059,7 @@ public class SystemHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listSystemsWithExtraPackages(User loggedInUser) {
-        return SystemManager.getExtraPackagesSystems(loggedInUser, null).toArray();
+        return SystemManager.getExtraPackagesSystems(loggedInUser).toArray();
     }
 
     /**
@@ -7769,10 +7782,10 @@ public class SystemHandler extends BaseHandler {
                         .filter(ps -> {
                             if (log.isDebugEnabled()) {
                                 if (ps.getIsEveryChannelSynced()) {
-                                    log.debug("{} is completely synced.", ps.toString());
+                                    log.debug("{} is completely synced.", ps);
                                 }
                                 else {
-                                    log.debug("Discarding {}. Is not completely synced.", ps.toString());
+                                    log.debug("Discarding {}. Is not completely synced.", ps);
                                 }
                             }
                             return ps.getIsEveryChannelSynced();

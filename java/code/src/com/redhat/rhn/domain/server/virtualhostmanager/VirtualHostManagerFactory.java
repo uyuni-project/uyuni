@@ -60,7 +60,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     public static final String KUBERNETES = "Kubernetes";
 
     private static VirtualHostManagerFactory instance;
-    private static Logger log;
+    private static final Logger LOG = LogManager.getLogger(VirtualHostManagerFactory.class);
 
     /**
      * Name of parameter specifying username in Virtual Host Manager Config
@@ -96,10 +96,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(VirtualHostManagerFactory.class);
-        }
-        return log;
+        return LOG;
     }
 
     /**
@@ -218,7 +215,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Files.delete(Paths.get(kubeconfig));
         }
         catch (IOException e) {
-            log.error("Could not remove Kubernetes config file: {}", kubeconfig);
+            LOG.error("Could not remove Kubernetes config file: {}", kubeconfig);
         }
     }
 

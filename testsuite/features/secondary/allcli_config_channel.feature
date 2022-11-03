@@ -198,8 +198,8 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_minion
   Scenario: Re-add SLE Minion via SSM
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    When I follow the left menu "Systems > System List > All"
+    And I click on "Clear"
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "config channel subscriptions" in the content area
@@ -230,4 +230,4 @@ Feature: Management of configuration of all types of clients in a single channel
     When I destroy "/etc/s-mgr" directory on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients
-    When I follow "Clear"
+    When I click on "Clear"

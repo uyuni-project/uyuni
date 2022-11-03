@@ -324,7 +324,7 @@ public class UbuntuErrataManager {
                 );
         changedErrata.stream().flatMap(e -> e.getChannels().stream()).distinct()
             .forEach(channel -> {
-                LOG.debug("Update NeededCache for Channel: " + channel.getLabel());
+                LOG.debug("Update NeededCache for Channel: {}", channel.getLabel());
                 ErrataManager.insertErrataCacheTask(channel);
         });
         ErrataManager.bulkErrataNotification(errataToChannels, new Date());

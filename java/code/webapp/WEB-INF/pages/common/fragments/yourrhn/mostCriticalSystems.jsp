@@ -49,7 +49,7 @@
                         ${paginationMessage}
                 </div>
                 <div class="col-md-6 text-right">
-                        <a class="js-spa" href="/rhn/systems/OutOfDate.do">
+                        <a class="js-spa" href="/rhn/manager/systems/list/all?q=>0&qc=outdated_packages">
                                 <bean:message key="yourrhn.jsp.allcriticalsystems" />
                         </a>
                 </div>

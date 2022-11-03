@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,11 +82,8 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
         for (Object oIn : dr) {
             Map item = (Map) oIn;
             Long sid = (Long) item.get("id");
-            if (log.isDebugEnabled() && sid != null) {
-                log.debug("Working on server [{}]", sid.toString());
-            }
-            Long serverId = sid;
-            processServer(serverId);
+            log.debug("Working on server [{}]", sid);
+            processServer(sid);
             handleTransaction();
         }
 
@@ -104,6 +102,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
         log.info("Updating errata cache for server [{}]", serverId);
         try {
             processServer(serverId);
+            SystemManager.updateSystemOverview(serverId);
         }
         catch (Exception e) {
             log.error("Problem updating cache for server", e);

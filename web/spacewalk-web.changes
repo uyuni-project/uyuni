@@ -1,3 +1,7 @@
+- move web.system_checkin_threshold configuration to database
+- Upgrade Bootstrap to 3.4.1
+- Update translation strings
+
 -------------------------------------------------------------------
 Thu Sep 29 15:49:30 CEST 2022 - jgonzalez@suse.com
 

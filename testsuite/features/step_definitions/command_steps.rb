@@ -197,9 +197,7 @@ end
 When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
   salt =
-    if $is_cloud_provider
-      "salt-common"
-    elsif $use_salt_bundle
+    if $use_salt_bundle
       "venv-salt-minion"
     else
       "salt"
@@ -741,6 +739,10 @@ When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)
   @command_output, _code = $server.run("spacewalk-repo-sync -c #{arg1} -u #{arg2}", check_errors: false)
 end
 
+When(/^I call spacewalk\-repo\-sync to sync the channel "(.*?)"$/) do |channel|
+  @command_output, _code = $server.run("spacewalk-repo-sync -c #{channel}", check_errors: false)
+end
+
 When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, arg2|
   @command_output, _code = $server.run("spacecmd -u admin -p admin -q -- configchannel_filedetails #{arg2} '#{arg1}'", check_errors: false)
 end
@@ -789,7 +791,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
     end
     cmd = "zypper mr --#{action} #{opt_repos} ||:;" unless opt_repos.empty?
     cmd += "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     repos.split(' ').each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
       cmd = if action == 'enable'
@@ -847,7 +849,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   os_family = node.os_family
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     pkgs = 'openscap-utils openscap-content scap-security-guide'
-  elsif os_family =~ /^centos/
+  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     pkgs = 'openscap-utils scap-security-guide-redhat'
   elsif os_family =~ /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'

@@ -19,11 +19,11 @@ Feature: Bootstrap a Salt minion via the GUI
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
 
-  Scenario: Check the new bootstrapped minion in System Overview page
+  Scenario: Check the new bootstrapped minion in System List page
     When I follow the left menu "Salt > Keys"
     And I wait until I do not see "Loading..." text
     Then I should see a "accepted" text
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
     Then the Salt master can reach "sle_minion"

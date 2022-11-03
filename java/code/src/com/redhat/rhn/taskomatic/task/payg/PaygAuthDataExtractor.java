@@ -124,7 +124,7 @@ public class PaygAuthDataExtractor {
 
                 if (exitStatus != 0 || error.length() > 0) {
                     LOG.error("Exit status: {}", exitStatus);
-                    LOG.error("stderr:\n{}", error.toString());
+                    LOG.error("stderr:\n{}", error);
                     throw new PaygDataExtractException(error.toString());
                 }
                 if (output.length() == 0) {

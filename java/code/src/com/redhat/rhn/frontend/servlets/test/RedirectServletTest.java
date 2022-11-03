@@ -57,8 +57,8 @@ public class RedirectServletTest extends MockObjectTestCase {
         mockRequest = mock(HttpServletRequest.class);
         mockResponse = mock(HttpServletResponse.class);
 
-        requestURI = "/rhn/Redirect/rhn/systems/Overview.do";
-        redirectURI = "/rhn/systems/Overview.do";
+        requestURI = "/rhn/Redirect/foo/bar";
+        redirectURI = "/foo/bar";
         serverName = "somehost.redhat.com";
 
         context().checking(new Expectations() { {

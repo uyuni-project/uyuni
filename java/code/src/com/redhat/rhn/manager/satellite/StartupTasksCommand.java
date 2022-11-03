@@ -43,7 +43,7 @@ public class StartupTasksCommand extends BaseTransactionCommand {
         try {
             int numOfUpgradedTgts = ContentProjectFactory.failStaleTargets();
             if (numOfUpgradedTgts > 0) {
-                LOG.warn(String.format("Set %d stale Content Environment Targets to FAILED state", numOfUpgradedTgts));
+                LOG.warn("Set {} stale Content Environment Targets to FAILED state", numOfUpgradedTgts);
             }
         }
         catch (Exception e) {

@@ -99,7 +99,7 @@ When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   raise unless find(:xpath, "//*[@id='date_timepicker_widget_input']", wait: 2)
 
   execute_script("$('#date_timepicker_widget_input')
-    .timepicker('setTime', '#{action_time}').trigger('changeTime');")
+    .timepicker('setTime', '#{action_time}').trigger('change');")
 end
 
 When(/^I schedule action to (\d+) minutes from now$/) do |minutes|

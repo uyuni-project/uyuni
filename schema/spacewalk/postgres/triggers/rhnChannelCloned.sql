@@ -7,10 +7,10 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
--- 
+--
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation. 
+-- in this software or its documentation.
 --
 
 create or replace function rhn_channel_cloned_comps_trig_fun() returns trigger
@@ -26,7 +26,7 @@ begin
 			( id, channel_id, comps_type_id, relative_filename,
 				last_modified, created, modified )
 		select nextval('rhn_channelcomps_id_seq'), new.id, comps_type_id, relative_filename,
-				current_timestamp, current_timestamp, current_timestamp
+				last_modified, current_timestamp, current_timestamp
 		from rhnChannelComps
 		where channel_id = new.original_id
 			and not exists (

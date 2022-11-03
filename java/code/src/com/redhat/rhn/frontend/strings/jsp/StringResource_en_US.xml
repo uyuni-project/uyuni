@@ -5841,28 +5841,24 @@ organization. You may grant or remove the organization administrator role in the
       <trans-unit id="requiringrebootlist.jsp.header" xml:space="preserve">
         <source>Systems Requiring Reboot</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/RequiringReboot</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="extrapackagessystemslist.jsp.header" xml:space="preserve">
         <source>Non Compliant Systems</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/ExtraPackagesSystems.do</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="inactivelist.jsp.header" xml:space="preserve">
         <source>Inactive Systems</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Inactive</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="registeredlist.jsp.header" xml:space="preserve">
         <source>Recently Registered Systems</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
@@ -11437,7 +11433,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
-        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -20389,6 +20385,54 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="exportcolumn.extraPkgCount">
+            <source>Extra Packages</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.configFilesWithDifferences">
+            <source>Config Diffs</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.proxy">
+            <source>Proxy</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.mgrServer">
+            <source>Manager Server</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.virtualHost">
+            <source>Virtual Host</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.virtualGuest">
+            <source>Virtual Guest</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.requiresReboot">
+            <source>Requires Reboot</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.statusType">
+            <source>Status Type</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.no.profiles" xml:space="preserve">
         <source>No profiles currently available for autoinstalling guests. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
         <context-group name="ctx">
@@ -24802,6 +24846,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
+      </trans-unit>
+      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+        <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state" xml:space="preserve">
         <source>Create configuration file</source>

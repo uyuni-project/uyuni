@@ -147,7 +147,7 @@ public final class XmlMessages {
         }
         catch (IOException ioe) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Resource bundle not found: {}, url: {}", ioe.toString(), urlName);
+                LOG.debug("Resource bundle not found: {}, url: {}", ioe, urlName);
             }
             throw new java.util.MissingResourceException(
                     "Resource bundle not found", bundleName, "");
