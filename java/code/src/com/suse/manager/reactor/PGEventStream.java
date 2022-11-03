@@ -123,17 +123,13 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                     try (Statement s = connection.createStatement()) {
                         s.execute("SELECT 'salt-event-connection-watchdog';");
 
-                        // if we have any rows in suseSaltEvent that do not yet have a process task queued or executing
+                        // if we have any rows in suseSaltEvent that do not yet have a process task active
                         // then schedule tasks for them
                         // this can only happen in case we lost notifications somehow
                         List<Long> allJobs = SaltEventFactory.countSaltEvents(THREAD_POOL_SIZE + 1);
 
-                        List<Long> queuedJobs = executorServices.stream()
-                                .map(executor -> executor.getTaskCount() - executor.getCompletedTaskCount())
-                                .collect(Collectors.toList());
-
                         List<Long> missingJobs = IntStream.range(0, allJobs.size())
-                            .mapToObj(i -> allJobs.get(i) - queuedJobs.get(i))
+                            .mapToObj(i -> executorServices.get(i).getActiveCount() > 0 ? 0 : allJobs.get(i))
                             .collect(Collectors.toList());
 
                         if (missingJobs.stream().mapToLong(l -> l).sum() > 0) {
@@ -145,6 +141,9 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                 catch (SQLException e) {
                     cancel();
                     clearListeners(0, "Postgres notification connection was lost");
+                }
+                catch (Exception e) {
+                    LOG.error("Unexpected exception:", e);
                 }
             }
         }, 0, 5_000);

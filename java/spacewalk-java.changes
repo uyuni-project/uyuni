@@ -1,3 +1,4 @@
+- Process salt events in FIFO order (bsc#1203532)
 - Added a warning message for traditional stack deprecation
 - Fix rendering of ssm/MigrateSystems page (bsc#1204651)
 - Remove 'SSM' column text where not applicable (bsc#1203588)
