@@ -122,7 +122,7 @@ Feature: Check if Distribution Channel Mapping works correctly
         When I click on "Delete Mapping"
         Then I should not see a "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" link
 
-    Scenario: Cleanup: Sanity check that the page is its in default state
+    Scenario: Sanity check whether the page is in its default state
         When I am on the "Distribution Channel Mapping" page
         Then I should see a "Distribution Channel Mapping" text
         And I should see a "Channel List" link in the left menu
