@@ -1449,22 +1449,13 @@ When(/^I clean up the server's hosts file$/) do
   $server.run(command)
 end
 
-# select an archiecture type for distribution channel mapping
-And(/^I select "(.*?)" from architecture dropdown/) do |selection|
+# select an item from any dropdown
+And(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
   # let the the select2js box filter open the hidden options
-  xpath_query = "//select[@name='architecture']"
+  xpath_query = "//select[@name='#{label}']"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
   # select the desired option
-  raise "Architecture #{selection} not found" unless find(:xpath, "//select[@name='architecture']/option[contains(text(), '#{selection}')]").click
-end
-
-# select a channel for a distribution map
-And(/^I select "(.*?)" from channel list dropdown/) do |selection|
-  # let the the select2js box filter open the hidden options
-  xpath_query = "//select[@name='channel_label']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
-  # select the desired option
-  raise "Channel #{selection} not found" unless find(:xpath, "//select[@name='channel_label']/option[contains(text(), '#{selection}')]").click
+  raise "#{label} #{selection} not found" unless find(:xpath, "//select[@name='#{label}']/option[contains(text(), '#{selection}')]").click
 end
 
 # check if a certain link is present in the channel mappings table

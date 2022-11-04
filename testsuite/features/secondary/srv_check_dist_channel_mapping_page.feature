@@ -22,8 +22,8 @@ Feature: Check if Distribution Channel Mapping works correctly
         Then I should see a "Create Distribution Channel Map" text
         When I enter "SUSE Linux Enterprise Server 15 SP 4" as "os"
         And I enter "15.4" as "release"
-        And I select "x86_64" from architecture dropdown
-        And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from channel list dropdown
+        And I select "x86_64" from "architecture" dropdown
+        And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channel_label" dropdown
         And I click on "Create Mapping"
         Then I should see a "SUSE Linux Enterprise Server 15 SP 4" link in the content area
 
@@ -33,8 +33,8 @@ Feature: Check if Distribution Channel Mapping works correctly
         Then I should see a "Create Distribution Channel Map" text
         When I enter "Ubuntu 22.04.01 LTS" as "os"
         And I enter "22.04" as "release"
-        And I select "x86_64" from architecture dropdown
-        And I select "Test Base Channel" from channel list dropdown
+        And I select "x86_64" from "architecture" dropdown
+        And I select "Test Base Channel" from "channel_label" dropdown
         And I click on "Create Mapping"
         Then I should see a "Ubuntu 22.04.01 LTS" link in the content area
 
@@ -44,8 +44,8 @@ Feature: Check if Distribution Channel Mapping works correctly
         Then I should see a "Create Distribution Channel Map" text
         When I enter "SUSE Linux Enterprise Server 15 SP 4 iSeries" as "os"
         And I enter "15.4" as "release"
-        And I select "iSeries" from architecture dropdown
-        And I select "Test-Channel-i586" from channel list dropdown
+        And I select "iSeries" from "architecture" dropdown
+        And I select "Test-Channel-i586" from "channel_label" dropdown
         And I click on "Create Mapping"
         Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries" link in the content area
 
@@ -57,7 +57,7 @@ Feature: Check if Distribution Channel Mapping works correctly
         When I follow "SUSE Linux Enterprise Server 15 SP 4"
         Then I should see a "Update Distribution Channel Map" text
         When I enter "SUSE Linux Enterprise Server 15 SP 4 modified" as "os"
-        And I select "Test-Channel-x86_64" from channel list dropdown
+        And I select "Test-Channel-x86_64" from "channel_label" dropdown
         And I click on "Update Mapping"
         Then I should see a "SUSE Linux Enterprise Server 15 SP 4 modified" link in the table
         And I should see a "test-channel-x86_64" link in the table
@@ -69,7 +69,7 @@ Feature: Check if Distribution Channel Mapping works correctly
         And I see a "sle-product-sles15-sp4-pool-x86_64" link in the table
         When I follow "Ubuntu 22.04.01 LTS"
         And I enter "Ubuntu 22.04.01 LTS modified" as "os"
-        And I select "Test Base Channel" from channel list dropdown
+        And I select "Test Base Channel" from "channel_label" dropdown
         And I click on "Update Mapping"
         Then I should see a "Ubuntu 22.04.01 LTS modified" link in the table
         And I should see a "test_base_channel" link in the table
@@ -81,7 +81,7 @@ Feature: Check if Distribution Channel Mapping works correctly
         And I see a "test-channel-i586" link in the table
         When I follow "SUSE Linux Enterprise Server 15 SP 4 iSeries"
         And I enter "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" as "os"
-        And I select "Test-Channel-Deb-AMD64" from channel list dropdown
+        And I select "Test-Channel-Deb-AMD64" from "channel_label" dropdown
         And I click on "Update Mapping"
         Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" link in the table
         And I should see a "test-channel-deb-amd64" link in the table
