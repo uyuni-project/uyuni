@@ -4,7 +4,7 @@ include $(CURRENT_DIR)../../rel-eng/Makefile.python
 
 # Docker tests variables
 DOCKER_CONTAINER_BASE = uyuni-master
-DOCKER_REGISTRY       = registry.mgr.suse.de
+DOCKER_REGISTRY       = $(shell [[ `hostname -f` == *.mgr.prv.suse.net ]] && echo "registry.mgr.prv.suse.net" || echo "registry.mgr.suse.de")
 DOCKER_RUN_EXPORT     = "PYTHONPATH=$PYTHONPATH"
 DOCKER_VOLUMES        = -v "$(CURDIR)/../../:/manager"
 

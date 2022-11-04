@@ -1,3 +1,4 @@
+- Use Docker registry in Provo when testing in Provo
 - Don't persist the YAML parser in FormulaFactory (bsc#1205754)
 - check for NULL in DEB package install size value
 - Add vendor_advisory to errata.getDetails (bsc#1205207)
