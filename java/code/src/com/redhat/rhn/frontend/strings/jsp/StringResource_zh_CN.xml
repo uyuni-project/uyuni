@@ -20223,7 +20223,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="unsubscribeconfirm.jsp.summary.one" xml:space="preserve">
           <source>The systems shown below will be unsubscribed from the &lt;strong&gt;configuration channel&lt;/strong&gt; you have selected. The systems shown below are those in your system set currently subscribed to the configuration channel you have selected.</source>
-        <target state="translated">下列系统将取消订阅您选择的&lt;strong&gt;配置频道&lt;/strong&gt;。下列系统是您的系统集中那些目前订阅了选定配置频道的系统。</target>
+        <target state="translated">下列系统将取消订阅您选择的&lt;strong&gt;配置通道&lt;/strong&gt;。下列系统是您的系统集中那些目前订阅了选定配置通道的系统。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/UnsubscribeConfirm.do</context>
         </context-group>
@@ -20446,7 +20446,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       <!-- configuration/sdc/viewmodifypaths.jsp  -->
       <trans-unit id="sdc.config.file_list.central_description" xml:space="preserve">
           <source>Below is a list of centrally-managed configuration files associated with {0}. Centrally-managed configuration files are provided by global configuration channels - you can determine which channel provides which file by examining the "Provided By" column below. Some of these centrally-managed files may be overridden by locally-managed files - you can determine whether or not a file is overridden by examining the "Overridden By" column below.</source>
-        <target state="translated">下面是与 {0} 关联的集中管理的配置文件列表。集中管理的配置文件由全局配置频道提供 - 您可以查看下面的 "提供者" 列来确定哪个频道提供哪些文件。其中一些集中管理的文件可能会被本地管理的文件覆盖 - 您可以查看下面的 "覆盖者" 列来确定某个文件是否被覆盖。</target>
+        <target state="translated">下面是与 {0} 关联的集中管理的配置文件列表。集中管理的配置文件由全局配置通道提供 - 您可以查看下面的 "提供者" 列来确定哪个通道提供哪些文件。其中一些集中管理的文件可能会被本地管理的文件覆盖 - 您可以查看下面的 "覆盖者" 列来确定某个文件是否被覆盖。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyCentralPaths.do</context>
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyLocalPaths.do</context>
@@ -20635,7 +20635,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdc.config.file_list.local.success" xml:space="preserve">
           <source>{0} file(s) successfully copied to System Channel</source>
-        <target state="translated">已成功将 {0} 个文件复制到系统频道</target>
+        <target state="translated">已成功将 {0} 个文件复制到系统通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyCentralPaths.do</context>
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyLocalPaths.do</context>
@@ -21016,7 +21016,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
             <context context-type="paramnotes">You may compare configuration files on postmaster.devel to @@PRODUCT_NAME@@ managed configuration files. The files listed below are the deployable revisions of files from configuration channels to which this system is subscribed.</context>
           </context-group>
-        <target state="translated">您可以将 {0} 中的配置文件与 @@PRODUCT_NAME@@ 管理的配置文件进行比较。下列文件是系统所订阅配置频道中的文件的可部署修订版。</target>
+        <target state="translated">您可以将 {0} 中的配置文件与 @@PRODUCT_NAME@@ 管理的配置文件进行比较。下列文件是系统所订阅配置通道中的文件的可部署修订版。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/DiffFile.do</context>
         </context-group>
@@ -22321,7 +22321,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target state="translated">基础软件频道</target>
+        <target state="translated">基础软件通道</target>
       </trans-unit>
       <trans-unit id="kickstart.channel.virtCpu.jsp" xml:space="preserve">
         <source>Cpus</source>
@@ -25558,7 +25558,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">自定义频道</target>
+        <target state="translated">自定义通道</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.rhn-channels" xml:space="preserve">
           <source>@@VENDOR_NAME@@ Channels</source>
@@ -25723,7 +25723,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">未找到频道。</target>
+        <target state="translated">未找到通道。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.confirm.header.oldChannel" xml:space="preserve">
           <source>Old Channel</source>
@@ -26133,7 +26133,7 @@ given channel.</source>
       <trans-unit id="channel.jsp.package.addsuccess" xml:space="preserve">
         <source>{0} package(s) added to channel {1}
         </source>
-        <target state="translated">已将 {0} 个软件包添加到频道 {1} 中
+        <target state="translated">已将 {0} 个软件包添加到通道 {1} 中
         </target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addbutton" xml:space="preserve">
@@ -26998,7 +26998,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.clone.select.summary" xml:space="preserve">
         <source>The original state of the target channel will be cloned into the new channel. You will then have the option to select the patches you wish to import into the new channel. Importing a patch will bring the packages from the target channel referred to by the patch into the new channel. Selecting all of the patches from the list of potential patches is the same as cloning the current state of the channel. Selecting none of the patches is the same as cloning the original state of the channel.</source>
-        <target>目标频道的原始状态将克隆到新频道中。然后，您可以使用相应的选项来选择要导入到新频道的补丁。导入某个补丁会将目标频道中由该补丁引用的软件包引入到新频道中。选择潜在补丁列表中的所有补丁等同于克隆频道的当前状态。不选择任何补丁等同于克隆频道的原始状态。</target>
+        <target>目标通道的原始状态将克隆到新通道中。然后，您可以使用相应的选项来选择要导入到新通道的补丁。导入某个补丁会将目标通道中由该补丁引用的软件包引入到新通道中。选择潜在补丁列表中的所有补丁等同于克隆通道的当前状态。不选择任何补丁等同于克隆通道的原始状态。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
@@ -27026,7 +27026,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.clone.button" xml:space="preserve">
         <source>Clone Channel</source>
-        <target>克隆频道</target>
+        <target>克隆通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
@@ -27811,7 +27811,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target state="translated">已成功从此频道中去除 {0} 个补丁。</target>
+        <target state="translated">已成功从此通道中去除 {0} 个补丁。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.managers.message" xml:space="preserve">
         <source>Selected users may manage this channel. Users with Admin Access (org admins or channel admins) may manage any channel.</source>
@@ -28880,7 +28880,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.notSyncedChannels" xml:space="preserve">
         <source>Target not available, the following channels are not synced: </source>
-        <target>目标不可用，未同步以下频道： </target>
+        <target>目标不可用，未同步以下通道： </target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.setup.title" xml:space="preserve">
         <source>Product Migration - Channels</source>
@@ -28932,7 +28932,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-channels" xml:space="preserve">
         <source>Some software channels are missing for this migration, please make sure to sync all mandatory channels by adding the below target product(s) using the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt;.</source>
-        <target>此项迁移缺少一些软件频道，请使用&lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;安装向导&lt;/strong&gt;&lt;/a&gt;添加以下目标产品，以确保同步所有必需频道。</target>
+        <target>此项迁移缺少一些软件通道，请使用&lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;安装向导&lt;/strong&gt;&lt;/a&gt;添加以下目标产品，以确保同步所有必需通道。</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
         <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Product migration.</source>
