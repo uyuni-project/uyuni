@@ -21,7 +21,9 @@ import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueueFactory;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 import org.quartz.JobExecutionContext;
@@ -49,21 +51,29 @@ public abstract class RhnQueueJob implements RhnJob {
 
     private void logToNewFile() {
 
+        var loggerName = this.getClass().getName();
+        final var config = ((LoggerContext) LogManager.getContext(false)).getConfiguration();
+        for (var appender : config.getLoggerConfig(loggerName).getAppenders().values()) {
+            appender.stop();
+            config.getLoggerConfig(loggerName).removeAppender(appender.getName());
+        }
+        Configurator.reconfigure(config);
+
         var builder = ConfigurationBuilderFactory.newConfigurationBuilder();
 
         var layoutBuilder = builder
                 .newLayout("PatternLayout")
                 .addAttribute("pattern", DEFAULT_LOGGING_LAYOUT);
-        var appenderName = this.getClass().getName() + "fileAppender";
+        var appenderName = loggerName + "fileAppender";
         var appenderBuilder = builder
                 .newAppender(appenderName, "File")
                 .addAttribute("fileName", jobRun.buildStdOutputLogPath())
                 .add(layoutBuilder);
         builder.add(appenderBuilder);
 
-        var logger = builder.newLogger(this.getClass().getName(), Level.INFO);
+        var logger = builder.newLogger(loggerName, Level.INFO);
         builder.add(logger.add(builder.newAppenderRef(appenderName)));
-        Configurator.initialize(builder.build());
+        Configurator.reconfigure(builder.build());
     }
 
     /**
