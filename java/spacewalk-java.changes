@@ -1,4 +1,9 @@
-- Fix number of handlers for deleted files managed by taskomatic growing continuously (bsc#1204050)
+-------------------------------------------------------------------
+Fri Nov 04 16:03:03 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.40-1
+  * Fix number of handlers for deleted files managed by taskomatic
+    growing continuously (bsc#1204050)
 
 -------------------------------------------------------------------
 Mon Oct 31 14:49:33 CET 2022 - jgonzalez@suse.com
