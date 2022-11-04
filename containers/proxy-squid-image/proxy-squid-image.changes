@@ -1,3 +1,6 @@
+-------------------------------------------------------------------
+Fri Nov  4 15:06:32 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
 - Update the squid.pid path to /run/squid.squid.pid (bsc#1204948)
 
 -------------------------------------------------------------------
