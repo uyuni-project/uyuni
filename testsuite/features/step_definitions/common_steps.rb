@@ -1252,7 +1252,7 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 #{dest}")
-  url = "http://#{$server.full_hostname}/pub/" + file
+  url = "https://#{$server.full_hostname}/pub/" + file
   log "URL: #{url}"
   step %(I enter "#{url}" as "calendar-data-text")
 end

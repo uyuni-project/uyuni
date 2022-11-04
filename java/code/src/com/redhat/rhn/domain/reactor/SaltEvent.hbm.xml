@@ -20,7 +20,7 @@
               SELECT id
               FROM suseSaltEvent
               WHERE queue = :queue
-              ORDER BY minion_id NULLS FIRST, id
+              ORDER BY id
               FOR UPDATE SKIP LOCKED
               LIMIT :limit
             )
