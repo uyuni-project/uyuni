@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-29 17:15+0000\n"
+"POT-Creation-Date: 2022-11-04 15:41+0100\n"
 "PO-Revision-Date: 2022-10-29 17:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
@@ -3579,86 +3579,86 @@ msgstr "Nepodarilo sa zapísať súbor sedenia: %s"
 msgid "Connected to %s as %s"
 msgstr "Pripojené k %s ako %s"
 
-#: ../src/spacecmd/misc.py:415
+#: ../src/spacecmd/misc.py:416
 msgid "logout: Disconnect from the server"
 msgstr "logout: Odpojiť sa od servera"
 
-#: ../src/spacecmd/misc.py:416
+#: ../src/spacecmd/misc.py:417
 msgid "usage: logout"
 msgstr "použitie: logout"
 
-#: ../src/spacecmd/misc.py:433
+#: ../src/spacecmd/misc.py:434
 msgid "whoami: Print the name of the currently logged in user"
 msgstr "whoami: Vypísať meno aktuálne prihláseného používateľa"
 
-#: ../src/spacecmd/misc.py:434
+#: ../src/spacecmd/misc.py:435
 msgid "usage: whoami"
 msgstr "použitie: whoami"
 
-#: ../src/spacecmd/misc.py:442
+#: ../src/spacecmd/misc.py:443
 msgid "You are not logged in"
 msgstr "Nie ste prihlásený"
 
-#: ../src/spacecmd/misc.py:449
+#: ../src/spacecmd/misc.py:450
 msgid "whoamitalkingto: Print the name of the server"
 msgstr "whoamitalkingto: Vypísať názov servera"
 
-#: ../src/spacecmd/misc.py:450
+#: ../src/spacecmd/misc.py:451
 msgid "usage: whoamitalkingto"
 msgstr "použitie: whoamitalkingto"
 
-#: ../src/spacecmd/misc.py:458
+#: ../src/spacecmd/misc.py:459
 msgid "Yourself"
 msgstr "Vy sami"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:534
+#: ../src/spacecmd/misc.py:543
 msgid "** Generating errata cache **"
 msgstr "** Generovanie vyrovnávacej pamäte opráv chýb **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:584
+#: ../src/spacecmd/misc.py:593
 msgid "** Generating package cache **"
 msgstr "** Generovanie vyrovnávacej pamäte balíkov **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:693
+#: ../src/spacecmd/misc.py:702
 msgid "** Generating system cache **"
 msgstr "** Generovanie systémovej vyrovnávacej pamäte **"
 
-#: ../src/spacecmd/misc.py:728
+#: ../src/spacecmd/misc.py:737
 #, python-format
 msgid "Could not create directory %s"
 msgstr "Nepodarilo sa vytvoriť adresár %s"
 
-#: ../src/spacecmd/misc.py:800
+#: ../src/spacecmd/misc.py:809
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "Nie je možné nájsť ID systému pre %s"
 
-#: ../src/spacecmd/misc.py:805
+#: ../src/spacecmd/misc.py:814
 msgid "Duplicate system profile names found!"
 msgstr "Boli nájdené duplicitné názvy systémových profilov!"
 
-#: ../src/spacecmd/misc.py:806
+#: ../src/spacecmd/misc.py:815
 msgid "Please reference systems by ID or resolve the"
 msgstr "Prosím, odkážte sa na systémy podľa ID alebo vyriešte"
 
-#: ../src/spacecmd/misc.py:807
+#: ../src/spacecmd/misc.py:816
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "základný problém pomocou 'system_delete' alebo 'system_rename'"
 
-#: ../src/spacecmd/misc.py:875
+#: ../src/spacecmd/misc.py:884
 #, python-format
 msgid "No systems in group %s"
 msgstr "Žiadne systémy v skupine %s"
 
-#: ../src/spacecmd/misc.py:889
+#: ../src/spacecmd/misc.py:898
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "Nie sú prihlásené žiadne systémy k %s"
 
-#: ../src/spacecmd/misc.py:949
+#: ../src/spacecmd/misc.py:958
 msgid "Is this ok [y/N]:"
 msgstr "Je to v poriadku [a/N]:"
 

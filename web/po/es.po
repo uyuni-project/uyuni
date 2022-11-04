@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-28 16:14+0200\n"
+"POT-Creation-Date: 2022-11-04 15:41+0100\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -245,7 +245,7 @@ msgstr "Cancelar"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:117
+#: ../html/src/components/table/Table.tsx:123
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -462,7 +462,7 @@ msgid "Custom Quartz format:"
 msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:345
+#: ../html/src/components/table/TableDataHandler.tsx:368
 msgid "There are no entries to show."
 msgstr "No hay ninguna entrada que mostrar."
 
@@ -494,33 +494,75 @@ msgstr "Editar"
 msgid "Edit Configuration Channel"
 msgstr "Editar canal de configuración"
 
+#: ../html/src/components/systems.tsx:21
+#, fuzzy
+msgid "Unprovisioned System"
+msgstr "Sistema no registrado"
+
+#: ../html/src/components/systems.tsx:26
+#, fuzzy
+msgid "Virtual Guest"
+msgstr "Redes"
+
+#: ../html/src/components/systems.tsx:31
+#: ../html/src/manager/systems/virtual-list.tsx:66
+#, fuzzy
+msgid "Virtual Host"
+msgstr "Redes"
+
+#: ../html/src/components/systems.tsx:36
+#, fuzzy
+msgid "Non-Virtual System"
+msgstr "Sistemas virtuales alojados"
+
+#: ../html/src/components/systems.tsx:44
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
+msgid "Proxy"
+msgstr ""
+
 #: ../html/src/components/systems.tsx:45
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+msgid "Peripheral Server"
+msgstr ""
+
+#: ../html/src/components/systems.tsx:97
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Security Advisory"
 msgstr "Recomendación de seguridad"
 
-#: ../html/src/components/systems.tsx:58
+#: ../html/src/components/systems.tsx:110
 msgid "System Locked"
 msgstr "Sistema bloqueado"
 
-#: ../html/src/components/table/SearchPanel.tsx:45
+#: ../html/src/components/table/SearchField.tsx:49
+#, fuzzy
+msgid "Filter"
+msgstr "Filtros"
+
+#: ../html/src/components/table/SearchField.tsx:54
+#, fuzzy
+msgid "Select a filter"
+msgstr "Crear un filtro nuevo"
+
+#: ../html/src/components/table/SearchPanel.tsx:56
 msgid "Items {0} - {1} of {2}"
 msgstr "Elementos {0} - {1} de {2}"
 
-#: ../html/src/components/table/SearchPanel.tsx:48
+#: ../html/src/components/table/SearchPanel.tsx:59
 msgid "({0} selected)"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:50
+#: ../html/src/components/table/SearchPanel.tsx:61
 #: ../html/src/manager/admin/setup/products/products.tsx:331
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:33
 msgid "Clear"
 msgstr "Vaciar"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:68
 msgid "Select All"
 msgstr "Seleccionar todo"
 
-#: ../html/src/components/table/TableDataHandler.tsx:346
+#: ../html/src/components/table/TableDataHandler.tsx:369
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
@@ -530,7 +572,7 @@ msgstr "Seleccionar todo"
 msgid "Loading..."
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:377
+#: ../html/src/components/table/TableDataHandler.tsx:402
 msgid "items per page"
 msgstr "elementos por página"
 
@@ -661,6 +703,8 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/systems/all-list.tsx:21
+#: ../html/src/manager/systems/all-list.tsx:76
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:127
@@ -871,7 +915,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:85
 msgid "Status"
 msgstr "Estado"
 
@@ -2597,12 +2641,16 @@ msgstr "Sistemas"
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:665
 #: ../html/src/manager/images/image-view.tsx:790
+#: ../html/src/manager/systems/all-list.tsx:25
+#: ../html/src/manager/systems/all-list.tsx:106
 msgid "Packages"
 msgstr "Paquetes"
 
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/images/image-view.tsx:789
+#: ../html/src/manager/systems/all-list.tsx:24
+#: ../html/src/manager/systems/all-list.tsx:93
 msgid "Patches"
 msgstr "Parches"
 
@@ -3256,7 +3304,9 @@ msgid "(obsolete)"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:649
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/all-list.tsx:23
+#: ../html/src/manager/systems/all-list.tsx:82
+#: ../html/src/manager/systems/virtual-list.tsx:91
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr "Actualizaciones"
@@ -4627,6 +4677,58 @@ msgid ""
 "selected child channels."
 msgstr ""
 
+#: ../html/src/manager/systems/all-list.tsx:22
+#, fuzzy
+msgid "System Kind"
+msgstr "Nombre de sistema"
+
+#: ../html/src/manager/systems/all-list.tsx:26
+#: ../html/src/manager/systems/all-list.tsx:120
+#, fuzzy
+msgid "Extra Packages"
+msgstr "Paquetes"
+
+#: ../html/src/manager/systems/all-list.tsx:27
+#: ../html/src/manager/systems/all-list.tsx:134
+msgid "Config Diffs"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:28
+#: ../html/src/manager/systems/all-list.tsx:149
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
+msgid "Base Channel"
+msgstr "Canal de base"
+
+#: ../html/src/manager/systems/all-list.tsx:29
+#: ../html/src/manager/systems/all-list.tsx:160
+#, fuzzy
+msgid "System Type"
+msgstr "Nombre de sistema"
+
+#: ../html/src/manager/systems/all-list.tsx:30
+msgid "Requires Reboot"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:31
+#, fuzzy
+msgid "Registered Days"
+msgstr "Sistema no registrado"
+
+#: ../html/src/manager/systems/all-list.tsx:32
+msgid "Groups"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:51
+#, fuzzy
+msgid " Systems "
+msgstr "Sistemas"
+
+#: ../html/src/manager/systems/all-list.tsx:71
+#, fuzzy
+msgid "No Systems."
+msgstr "Sistemas"
+
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 #, fuzzy
 msgid "Error Details"
@@ -4734,10 +4836,6 @@ msgstr "Clave de activación"
 msgid "Leave empty when no reactivation is wanted"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
-msgid "Proxy"
-msgstr ""
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:605
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
@@ -4794,10 +4892,6 @@ msgstr ""
 msgid "New password generated and action for peripheral server scheduled"
 msgstr ""
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
-msgid "Peripheral Server"
-msgstr ""
-
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
 msgstr ""
@@ -4846,12 +4940,16 @@ msgstr ""
 msgid "New Proxy"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:24
+msgid "Manage"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:30
 #, fuzzy
 msgid "system selected"
 msgstr "Sistema bloqueado"
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:30
 #, fuzzy
 msgid "systems selected"
 msgstr "Sistema bloqueado"
@@ -4894,11 +4992,6 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:142
 msgid "System Default Base Channel"
 msgstr ""
-
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
-msgid "Base Channel"
-msgstr "Canal de base"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
 msgid ""
@@ -5062,22 +5155,17 @@ msgstr ""
 msgid "Virtual Systems"
 msgstr "Sistemas virtuales alojados"
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:61
 #, fuzzy
 msgid "No Virtual Systems."
 msgstr "Sistemas virtuales alojados"
 
-#: ../html/src/manager/systems/virtual-list.tsx:65
-#, fuzzy
-msgid "Virtual Host"
-msgstr "Redes"
-
-#: ../html/src/manager/systems/virtual-list.tsx:73
+#: ../html/src/manager/systems/virtual-list.tsx:74
 #, fuzzy
 msgid "Virtual System"
 msgstr "Sistemas virtuales alojados"
 
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:102
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
 msgid "Base Software Channel"
 msgstr "Canal de sóftwer de base"

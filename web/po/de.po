@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-28 16:14+0200\n"
+"POT-Creation-Date: 2022-11-04 15:41+0100\n"
 "PO-Revision-Date: 2022-01-11 14:51+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -239,7 +239,7 @@ msgstr "Abbrechen"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:117
+#: ../html/src/components/table/Table.tsx:123
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -454,7 +454,7 @@ msgid "Custom Quartz format:"
 msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:345
+#: ../html/src/components/table/TableDataHandler.tsx:368
 msgid "There are no entries to show."
 msgstr ""
 
@@ -486,33 +486,73 @@ msgstr "Bearbeiten"
 msgid "Edit Configuration Channel"
 msgstr ""
 
+#: ../html/src/components/systems.tsx:21
+#, fuzzy
+msgid "Unprovisioned System"
+msgstr "System"
+
+#: ../html/src/components/systems.tsx:26
+#, fuzzy
+msgid "Virtual Guest"
+msgstr "System"
+
+#: ../html/src/components/systems.tsx:31
+#: ../html/src/manager/systems/virtual-list.tsx:66
+msgid "Virtual Host"
+msgstr ""
+
+#: ../html/src/components/systems.tsx:36
+#, fuzzy
+msgid "Non-Virtual System"
+msgstr "System"
+
+#: ../html/src/components/systems.tsx:44
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
+msgid "Proxy"
+msgstr ""
+
 #: ../html/src/components/systems.tsx:45
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+msgid "Peripheral Server"
+msgstr ""
+
+#: ../html/src/components/systems.tsx:97
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Security Advisory"
 msgstr "Sicherheitshinweis"
 
-#: ../html/src/components/systems.tsx:58
+#: ../html/src/components/systems.tsx:110
 msgid "System Locked"
 msgstr "System gesperrt"
 
-#: ../html/src/components/table/SearchPanel.tsx:45
+#: ../html/src/components/table/SearchField.tsx:49
+msgid "Filter"
+msgstr ""
+
+#: ../html/src/components/table/SearchField.tsx:54
+#, fuzzy
+msgid "Select a filter"
+msgstr "Alles auswählen"
+
+#: ../html/src/components/table/SearchPanel.tsx:56
 msgid "Items {0} - {1} of {2}"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:48
+#: ../html/src/components/table/SearchPanel.tsx:59
 msgid "({0} selected)"
 msgstr "({0} ausgewählt)"
 
-#: ../html/src/components/table/SearchPanel.tsx:50
+#: ../html/src/components/table/SearchPanel.tsx:61
 #: ../html/src/manager/admin/setup/products/products.tsx:331
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:33
 msgid "Clear"
 msgstr "Leeren"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:68
 msgid "Select All"
 msgstr "Alles auswählen"
 
-#: ../html/src/components/table/TableDataHandler.tsx:346
+#: ../html/src/components/table/TableDataHandler.tsx:369
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
@@ -522,7 +562,7 @@ msgstr "Alles auswählen"
 msgid "Loading..."
 msgstr "Laden..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:377
+#: ../html/src/components/table/TableDataHandler.tsx:402
 msgid "items per page"
 msgstr "Einträge pro Seite"
 
@@ -641,6 +681,8 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/systems/all-list.tsx:21
+#: ../html/src/manager/systems/all-list.tsx:76
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:127
@@ -846,7 +888,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:85
 msgid "Status"
 msgstr ""
 
@@ -2539,12 +2581,16 @@ msgstr ""
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:665
 #: ../html/src/manager/images/image-view.tsx:790
+#: ../html/src/manager/systems/all-list.tsx:25
+#: ../html/src/manager/systems/all-list.tsx:106
 msgid "Packages"
 msgstr ""
 
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/images/image-view.tsx:789
+#: ../html/src/manager/systems/all-list.tsx:24
+#: ../html/src/manager/systems/all-list.tsx:93
 msgid "Patches"
 msgstr ""
 
@@ -3190,7 +3236,9 @@ msgid "(obsolete)"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:649
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/all-list.tsx:23
+#: ../html/src/manager/systems/all-list.tsx:82
+#: ../html/src/manager/systems/virtual-list.tsx:91
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr ""
@@ -4507,6 +4555,56 @@ msgid ""
 "selected child channels."
 msgstr ""
 
+#: ../html/src/manager/systems/all-list.tsx:22
+#, fuzzy
+msgid "System Kind"
+msgstr "System"
+
+#: ../html/src/manager/systems/all-list.tsx:26
+#: ../html/src/manager/systems/all-list.tsx:120
+msgid "Extra Packages"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:27
+#: ../html/src/manager/systems/all-list.tsx:134
+msgid "Config Diffs"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:28
+#: ../html/src/manager/systems/all-list.tsx:149
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
+msgid "Base Channel"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:29
+#: ../html/src/manager/systems/all-list.tsx:160
+#, fuzzy
+msgid "System Type"
+msgstr "System"
+
+#: ../html/src/manager/systems/all-list.tsx:30
+msgid "Requires Reboot"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:31
+msgid "Registered Days"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:32
+msgid "Groups"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:51
+#, fuzzy
+msgid " Systems "
+msgstr "System"
+
+#: ../html/src/manager/systems/all-list.tsx:71
+#, fuzzy
+msgid "No Systems."
+msgstr "System"
+
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
 msgstr ""
@@ -4612,10 +4710,6 @@ msgstr ""
 msgid "Leave empty when no reactivation is wanted"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
-msgid "Proxy"
-msgstr ""
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:605
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
@@ -4669,10 +4763,6 @@ msgstr ""
 msgid "New password generated and action for peripheral server scheduled"
 msgstr ""
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
-msgid "Peripheral Server"
-msgstr ""
-
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
 msgstr ""
@@ -4720,12 +4810,16 @@ msgstr ""
 msgid "New Proxy"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:24
+msgid "Manage"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:30
 #, fuzzy
 msgid "system selected"
 msgstr "System gesperrt"
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:30
 #, fuzzy
 msgid "systems selected"
 msgstr "System gesperrt"
@@ -4767,11 +4861,6 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:142
 msgid "System Default Base Channel"
-msgstr ""
-
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
-msgid "Base Channel"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
@@ -4935,20 +5024,16 @@ msgstr ""
 msgid "Virtual Systems"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:61
 msgid "No Virtual Systems."
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:65
-msgid "Virtual Host"
-msgstr ""
-
-#: ../html/src/manager/systems/virtual-list.tsx:73
+#: ../html/src/manager/systems/virtual-list.tsx:74
 #, fuzzy
 msgid "Virtual System"
 msgstr "System"
 
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:102
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
 msgid "Base Software Channel"
 msgstr ""

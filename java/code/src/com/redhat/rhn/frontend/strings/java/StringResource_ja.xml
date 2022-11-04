@@ -8212,48 +8212,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>z/VM</target>
       </trans-unit>
-      <trans-unit id="oneday" xml:space="preserve">
-        <source>within the past day</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>過去 1 日以内</target>
-      </trans-unit>
-      <trans-unit id="oneweek" xml:space="preserve">
-        <source>within the past week</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>過去 1 週間以内</target>
-      </trans-unit>
-      <trans-unit id="onemonth" xml:space="preserve">
-        <source>within the past 30 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>過去 30 日以内</target>
-      </trans-unit>
-      <trans-unit id="sixmonths" xml:space="preserve">
-        <source>within the past 180 days</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>過去 180 日以内</target>
-      </trans-unit>
-      <trans-unit id="oneyear" xml:space="preserve">
-        <source>within the past year</source>
-        <target>昨年内</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="allregisteredsystems" xml:space="preserve">
-        <source>All Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-        <target>すべてのシステム</target>
-      </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
         <context-group name="ctx">
@@ -11260,6 +11218,20 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-    </body>
+    <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+        <source>Regularly ensure the systems overview data are up to date</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+        <source>Update the systems overview data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

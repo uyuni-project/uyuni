@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-29 17:15+0000\n"
+"POT-Creation-Date: 2022-11-04 15:41+0100\n"
 "PO-Revision-Date: 2022-07-20 23:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
@@ -3598,86 +3598,86 @@ msgstr "セッションファイルの書き込みができませんでした: %
 msgid "Connected to %s as %s"
 msgstr "%s に %s として接続しました"
 
-#: ../src/spacecmd/misc.py:415
+#: ../src/spacecmd/misc.py:416
 msgid "logout: Disconnect from the server"
 msgstr "logout: サーバから切断"
 
-#: ../src/spacecmd/misc.py:416
+#: ../src/spacecmd/misc.py:417
 msgid "usage: logout"
 msgstr "使用方法: logout"
 
-#: ../src/spacecmd/misc.py:433
+#: ../src/spacecmd/misc.py:434
 msgid "whoami: Print the name of the currently logged in user"
 msgstr "whoami: 現在ログインしているユーザのユーザ名を表示"
 
-#: ../src/spacecmd/misc.py:434
+#: ../src/spacecmd/misc.py:435
 msgid "usage: whoami"
 msgstr "使用方法: whoami"
 
-#: ../src/spacecmd/misc.py:442
+#: ../src/spacecmd/misc.py:443
 msgid "You are not logged in"
 msgstr "ログインしていません"
 
-#: ../src/spacecmd/misc.py:449
+#: ../src/spacecmd/misc.py:450
 msgid "whoamitalkingto: Print the name of the server"
 msgstr "whoamitalkingto: サーバの名前を表示"
 
-#: ../src/spacecmd/misc.py:450
+#: ../src/spacecmd/misc.py:451
 msgid "usage: whoamitalkingto"
 msgstr "使用方法: whoamitalkingto"
 
-#: ../src/spacecmd/misc.py:458
+#: ../src/spacecmd/misc.py:459
 msgid "Yourself"
 msgstr "あなた自身です"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:534
+#: ../src/spacecmd/misc.py:543
 msgid "** Generating errata cache **"
 msgstr "** エラータキャッシュを生成しています **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:584
+#: ../src/spacecmd/misc.py:593
 msgid "** Generating package cache **"
 msgstr "** パッケージキャッシュを生成しています **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:693
+#: ../src/spacecmd/misc.py:702
 msgid "** Generating system cache **"
 msgstr "** システムキャッシュを生成しています **"
 
-#: ../src/spacecmd/misc.py:728
+#: ../src/spacecmd/misc.py:737
 #, python-format
 msgid "Could not create directory %s"
 msgstr "ディレクトリ %s を作成できませんでした"
 
-#: ../src/spacecmd/misc.py:800
+#: ../src/spacecmd/misc.py:809
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "%s に対するシステム ID が見つかりません"
 
-#: ../src/spacecmd/misc.py:805
+#: ../src/spacecmd/misc.py:814
 msgid "Duplicate system profile names found!"
 msgstr "重複したシステムプロファイル名が見つかりました！"
 
-#: ../src/spacecmd/misc.py:806
+#: ../src/spacecmd/misc.py:815
 msgid "Please reference systems by ID or resolve the"
 msgstr "ID でシステムを参照するか、もしくは"
 
-#: ../src/spacecmd/misc.py:807
+#: ../src/spacecmd/misc.py:816
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' や 'system_rename' で問題点をご確認ください"
 
-#: ../src/spacecmd/misc.py:875
+#: ../src/spacecmd/misc.py:884
 #, python-format
 msgid "No systems in group %s"
 msgstr "グループ %s 内にはシステムがありません"
 
-#: ../src/spacecmd/misc.py:889
+#: ../src/spacecmd/misc.py:898
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "%s をサブスクライブしているシステムはありません"
 
-#: ../src/spacecmd/misc.py:949
+#: ../src/spacecmd/misc.py:958
 msgid "Is this ok [y/N]:"
 msgstr "よろしいですか [y/N]:"
 

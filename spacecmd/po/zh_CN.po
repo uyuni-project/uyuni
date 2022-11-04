@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-29 17:15+0000\n"
-"PO-Revision-Date: 2022-09-13 04:13+0000\n"
+"POT-Creation-Date: 2022-11-04 15:41+0100\n"
+"PO-Revision-Date: 2022-11-04 04:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -3492,86 +3492,86 @@ msgstr "无法写入会话文件：%s"
 msgid "Connected to %s as %s"
 msgstr "已连接到 %s（作为 %s）"
 
-#: ../src/spacecmd/misc.py:415
+#: ../src/spacecmd/misc.py:416
 msgid "logout: Disconnect from the server"
 msgstr "logout：从服务器断开连接"
 
-#: ../src/spacecmd/misc.py:416
+#: ../src/spacecmd/misc.py:417
 msgid "usage: logout"
 msgstr "用法：logout"
 
-#: ../src/spacecmd/misc.py:433
+#: ../src/spacecmd/misc.py:434
 msgid "whoami: Print the name of the currently logged in user"
 msgstr "whoami：列显当前登录的用户名"
 
-#: ../src/spacecmd/misc.py:434
+#: ../src/spacecmd/misc.py:435
 msgid "usage: whoami"
 msgstr "用法：whoami"
 
-#: ../src/spacecmd/misc.py:442
+#: ../src/spacecmd/misc.py:443
 msgid "You are not logged in"
 msgstr "您未登录"
 
-#: ../src/spacecmd/misc.py:449
+#: ../src/spacecmd/misc.py:450
 msgid "whoamitalkingto: Print the name of the server"
 msgstr "whoamitalkingto：列显服务器名称"
 
-#: ../src/spacecmd/misc.py:450
+#: ../src/spacecmd/misc.py:451
 msgid "usage: whoamitalkingto"
 msgstr "用法：whoamitalkingto"
 
-#: ../src/spacecmd/misc.py:458
+#: ../src/spacecmd/misc.py:459
 msgid "Yourself"
 msgstr "您自己"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:534
+#: ../src/spacecmd/misc.py:543
 msgid "** Generating errata cache **"
 msgstr "** 正在生成勘误缓存 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:584
+#: ../src/spacecmd/misc.py:593
 msgid "** Generating package cache **"
 msgstr "** 正在生成软件包缓存 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:693
+#: ../src/spacecmd/misc.py:702
 msgid "** Generating system cache **"
 msgstr "** 正在生成系统缓存 **"
 
-#: ../src/spacecmd/misc.py:728
+#: ../src/spacecmd/misc.py:737
 #, python-format
 msgid "Could not create directory %s"
 msgstr "无法创建目录 %s"
 
-#: ../src/spacecmd/misc.py:800
+#: ../src/spacecmd/misc.py:809
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "找不到 %s 的系统 ID"
 
-#: ../src/spacecmd/misc.py:805
+#: ../src/spacecmd/misc.py:814
 msgid "Duplicate system profile names found!"
 msgstr "找到了重复的系统配置文件名称！"
 
-#: ../src/spacecmd/misc.py:806
+#: ../src/spacecmd/misc.py:815
 msgid "Please reference systems by ID or resolve the"
 msgstr "请按 ID 引用系统，或者解决"
 
-#: ../src/spacecmd/misc.py:807
+#: ../src/spacecmd/misc.py:816
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' 或 'system_rename' 的根本性问题"
 
-#: ../src/spacecmd/misc.py:875
+#: ../src/spacecmd/misc.py:884
 #, python-format
 msgid "No systems in group %s"
 msgstr "组 %s 中没有系统"
 
-#: ../src/spacecmd/misc.py:889
+#: ../src/spacecmd/misc.py:898
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "没有系统订阅 %s"
 
-#: ../src/spacecmd/misc.py:949
+#: ../src/spacecmd/misc.py:958
 msgid "Is this ok [y/N]:"
 msgstr "是否正常 [y/N]："
 
@@ -4066,7 +4066,7 @@ msgid ""
 msgstr "proxy_container_config：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:33
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL ROOT_CA CRT KEY\n"
@@ -4099,7 +4099,8 @@ msgstr ""
 "ROOT_CA CRT KEY\n"
 "\n"
 "参数：\n"
-"  PROXY_FQDN  要创建的代理的完全限定域名。\n"
+"  PROXY_FQDN  此代理的唯一且可由 DNS 解析的完全限定域名。必须与任何已注册的客"
+"户端均不同。\n"
 "  SERVER_FQDN 代理要连接到的服务器的完全限定域名。\n"
 "  MAX_CACHE   最大缓存大小（以 MB 为单位）。理想值为储存空间的 60%。\n"
 "  EMAIL       代理管理员的电子邮件\n"
@@ -4124,7 +4125,7 @@ msgid ""
 msgstr "proxy_container_config_generate_cert：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:90
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL\n"
@@ -4173,7 +4174,8 @@ msgstr ""
 "EMAIL\n"
 "\n"
 "参数：\n"
-"  PROXY_FQDN  要创建的代理的完全限定域名。\n"
+"  PROXY_FQDN  此代理的唯一且可由 DNS 解析的完全限定域名。必须与任何已注册的客"
+"户端均不同。\n"
 "  SERVER_FQDN 代理要连接到的服务器的完全限定域名。\n"
 "  MAX_CACHE   最大缓存大小（以 MB 为单位）。理想值为储存空间的 60%。\n"
 "  EMAIL      代理管理员的电子邮件\n"

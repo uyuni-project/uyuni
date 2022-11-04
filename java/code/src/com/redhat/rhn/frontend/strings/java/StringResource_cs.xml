@@ -8168,48 +8168,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="oneday" xml:space="preserve">
-        <source>within the past day</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneweek" xml:space="preserve">
-        <source>within the past week</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="onemonth" xml:space="preserve">
-        <source>within the past 30 days</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="sixmonths" xml:space="preserve">
-        <source>within the past 180 days</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="oneyear" xml:space="preserve">
-        <source>within the past year</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="allregisteredsystems" xml:space="preserve">
-        <source>All Systems</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/Registered.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="systems.details.virt.guest.virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
         <target/>
@@ -11167,6 +11125,20 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
   </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+        <source>Regularly ensure the systems overview data are up to date</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
+        <source>Update the systems overview data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>
