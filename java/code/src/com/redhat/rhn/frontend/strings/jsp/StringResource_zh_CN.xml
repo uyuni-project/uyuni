@@ -29757,10 +29757,10 @@ given channel.</source>
         </context-group>
         <target state="final">自动同步自定义通道功能已启用。此通道将自动与供应商通道一起同步。</target>
       </trans-unit>
-    <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+      <trans-unit approved="yes" id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">自 SUSE Manager 4.3 版本开始，已弃用传统堆栈。下个主要版本（4.4 或更高版本）将不再支持该堆栈。请考虑在此版本之前迁移到 Salt 受控端。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
