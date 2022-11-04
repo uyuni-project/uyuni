@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-04 09:14+0000\n"
+"POT-Creation-Date: 2022-11-04 15:41+0100\n"
 "PO-Revision-Date: 2022-09-13 12:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -249,7 +249,7 @@ msgstr "取り消し"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:117
+#: ../html/src/components/table/Table.tsx:123
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
 #: ../html/src/manager/content-management/project/project.tsx:109
@@ -468,7 +468,7 @@ msgid "Custom Quartz format:"
 msgstr "独自のクォーツ書式:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:345
+#: ../html/src/components/table/TableDataHandler.tsx:368
 msgid "There are no entries to show."
 msgstr "表示すべき項目がありません。"
 
@@ -500,33 +500,74 @@ msgstr "編集"
 msgid "Edit Configuration Channel"
 msgstr "設定チャンネルの編集"
 
+#: ../html/src/components/systems.tsx:21
+#, fuzzy
+msgid "Unprovisioned System"
+msgstr "未登録のシステム"
+
+#: ../html/src/components/systems.tsx:26
+#, fuzzy
+msgid "Virtual Guest"
+msgstr "仮想ホスト"
+
+#: ../html/src/components/systems.tsx:31
+#: ../html/src/manager/systems/virtual-list.tsx:66
+msgid "Virtual Host"
+msgstr "仮想ホスト"
+
+#: ../html/src/components/systems.tsx:36
+#, fuzzy
+msgid "Non-Virtual System"
+msgstr "仮想システム"
+
+#: ../html/src/components/systems.tsx:44
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
+msgid "Proxy"
+msgstr "プロキシ"
+
 #: ../html/src/components/systems.tsx:45
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+msgid "Peripheral Server"
+msgstr "周辺機器サーバ"
+
+#: ../html/src/components/systems.tsx:97
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Security Advisory"
 msgstr "セキュリティアドバイザリ"
 
-#: ../html/src/components/systems.tsx:58
+#: ../html/src/components/systems.tsx:110
 msgid "System Locked"
 msgstr "システムはロック済み"
 
-#: ../html/src/components/table/SearchPanel.tsx:45
+#: ../html/src/components/table/SearchField.tsx:49
+#, fuzzy
+msgid "Filter"
+msgstr "フィルタ"
+
+#: ../html/src/components/table/SearchField.tsx:54
+#, fuzzy
+msgid "Select a filter"
+msgstr "スケジュールの選択:"
+
+#: ../html/src/components/table/SearchPanel.tsx:56
 msgid "Items {0} - {1} of {2}"
 msgstr "項目 {0} - {1} ／ {2}"
 
-#: ../html/src/components/table/SearchPanel.tsx:48
+#: ../html/src/components/table/SearchPanel.tsx:59
 msgid "({0} selected)"
 msgstr "({0} 個を選択しています)"
 
-#: ../html/src/components/table/SearchPanel.tsx:50
+#: ../html/src/components/table/SearchPanel.tsx:61
 #: ../html/src/manager/admin/setup/products/products.tsx:331
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:33
 msgid "Clear"
 msgstr "消去"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:68
 msgid "Select All"
 msgstr "すべてを選択"
 
-#: ../html/src/components/table/TableDataHandler.tsx:346
+#: ../html/src/components/table/TableDataHandler.tsx:369
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
@@ -536,7 +577,7 @@ msgstr "すべてを選択"
 msgid "Loading..."
 msgstr "読み込んでいます..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:377
+#: ../html/src/components/table/TableDataHandler.tsx:402
 msgid "items per page"
 msgstr "1 ページ当たりの項目数"
 
@@ -670,6 +711,8 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/systems/all-list.tsx:21
+#: ../html/src/manager/systems/all-list.tsx:76
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:127
@@ -875,7 +918,7 @@ msgstr "ホスト"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:85
 msgid "Status"
 msgstr "状態"
 
@@ -2630,12 +2673,16 @@ msgstr "システム"
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:665
 #: ../html/src/manager/images/image-view.tsx:790
+#: ../html/src/manager/systems/all-list.tsx:25
+#: ../html/src/manager/systems/all-list.tsx:106
 msgid "Packages"
 msgstr "パッケージ"
 
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/images/image-view.tsx:789
+#: ../html/src/manager/systems/all-list.tsx:24
+#: ../html/src/manager/systems/all-list.tsx:93
 msgid "Patches"
 msgstr "パッチ"
 
@@ -3291,7 +3338,9 @@ msgid "(obsolete)"
 msgstr "(非推奨)"
 
 #: ../html/src/manager/images/image-view.tsx:649
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/all-list.tsx:23
+#: ../html/src/manager/systems/all-list.tsx:82
+#: ../html/src/manager/systems/virtual-list.tsx:91
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr "更新"
@@ -4649,6 +4698,60 @@ msgstr ""
 "このアクティベーションキーを利用して登録したシステムは、選択した子チャンネル"
 "をサブスクライブします。"
 
+#: ../html/src/manager/systems/all-list.tsx:22
+#, fuzzy
+msgid "System Kind"
+msgstr "システム名"
+
+#: ../html/src/manager/systems/all-list.tsx:26
+#: ../html/src/manager/systems/all-list.tsx:120
+#, fuzzy
+msgid "Extra Packages"
+msgstr "パッケージ"
+
+#: ../html/src/manager/systems/all-list.tsx:27
+#: ../html/src/manager/systems/all-list.tsx:134
+#, fuzzy
+msgid "Config Diffs"
+msgstr "設定 URL"
+
+#: ../html/src/manager/systems/all-list.tsx:28
+#: ../html/src/manager/systems/all-list.tsx:149
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
+msgid "Base Channel"
+msgstr "ベースチャンネル"
+
+#: ../html/src/manager/systems/all-list.tsx:29
+#: ../html/src/manager/systems/all-list.tsx:160
+#, fuzzy
+msgid "System Type"
+msgstr "ストアの種類"
+
+#: ../html/src/manager/systems/all-list.tsx:30
+msgid "Requires Reboot"
+msgstr ""
+
+#: ../html/src/manager/systems/all-list.tsx:31
+#, fuzzy
+msgid "Registered Days"
+msgstr "登録済みシステム"
+
+#: ../html/src/manager/systems/all-list.tsx:32
+#, fuzzy
+msgid "Groups"
+msgstr "グループ"
+
+#: ../html/src/manager/systems/all-list.tsx:51
+#, fuzzy
+msgid " Systems "
+msgstr "システム"
+
+#: ../html/src/manager/systems/all-list.tsx:71
+#, fuzzy
+msgid "No Systems."
+msgstr "システム"
+
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
 msgstr "エラーの詳細"
@@ -4764,10 +4867,6 @@ msgstr "再アクティベーションキー"
 msgid "Leave empty when no reactivation is wanted"
 msgstr "再アクティベーションが不要な場合は空のままにする"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
-msgid "Proxy"
-msgstr "プロキシ"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:605
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
@@ -4826,10 +4925,6 @@ msgstr ""
 "新しいパスワードが生成され、周辺機器サーバのアクションがスケジュールされまし"
 "た"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
-msgid "Peripheral Server"
-msgstr "周辺機器サーバ"
-
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
 msgstr "レポートデータベース名"
@@ -4878,11 +4973,16 @@ msgstr "ミニオンを別のプロキシサーバに接続します。"
 msgid "New Proxy"
 msgstr "新しいプロキシ"
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:24
+#, fuzzy
+msgid "Manage"
+msgstr "Manager"
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:30
 msgid "system selected"
 msgstr "システムを選択しました"
 
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:20
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:30
 msgid "systems selected"
 msgstr "システムを選択しました"
 
@@ -4926,11 +5026,6 @@ msgstr "サブスクライブ解除"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:142
 msgid "System Default Base Channel"
 msgstr "システムのデフォルトベースチャンネル"
-
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
-msgid "Base Channel"
-msgstr "ベースチャンネル"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
 msgid ""
@@ -5114,19 +5209,15 @@ msgstr "ソフトウェアチャンネルの変更確認"
 msgid "Virtual Systems"
 msgstr "仮想システム"
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:61
 msgid "No Virtual Systems."
 msgstr "仮想システムがありません。"
 
-#: ../html/src/manager/systems/virtual-list.tsx:65
-msgid "Virtual Host"
-msgstr "仮想ホスト"
-
-#: ../html/src/manager/systems/virtual-list.tsx:73
+#: ../html/src/manager/systems/virtual-list.tsx:74
 msgid "Virtual System"
 msgstr "仮想システム"
 
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:102
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
 msgid "Base Software Channel"
 msgstr "ベースソフトウェアチャンネル"
