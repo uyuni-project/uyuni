@@ -13082,11 +13082,11 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
         <target>Visualizza tutti i Sistemi inattivi ({0})</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
-        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/manager/systems/list/all"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;Nessun sistema inattivo.&lt;/strong&gt; &lt;p&gt;In questo momento tutti i vostri sistemi stanno eseguendo un controllo attivo all'interno di @@PRODUCT_NAME@@. Potete visualizzare un elenco dei vostri sistemi su &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Sistemi &gt; Tutti&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</target>
+        <target state="needs-adaptation">&lt;strong&gt;Nessun sistema inattivo.&lt;/strong&gt; &lt;p&gt;In questo momento tutti i vostri sistemi stanno eseguendo un controllo attivo all'interno di @@PRODUCT_NAME@@. Potete visualizzare un elenco dei vostri sistemi su &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Sistemi &gt; Tutti&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.securityerrata" xml:space="preserve">
         <source>Relevant Security Patches</source>
@@ -29320,6 +29320,66 @@ caratteri.</target>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
+            <source>Extra Packages</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
+            <source>Config Diffs</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.proxy" xml:space="preserve">
+            <source>Proxy</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
+            <source>Manager Server</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
+            <source>Virtual Host</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
+            <source>Virtual Guest</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
+            <source>Requires Reboot</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="exportcolumn.statusType" xml:space="preserve">
+            <source>Status Type</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
+            </context-group>
+        <target state="new"/>
+  </trans-unit>
+      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+        <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
       <target state="new"/>
   </trans-unit>
       </body>
