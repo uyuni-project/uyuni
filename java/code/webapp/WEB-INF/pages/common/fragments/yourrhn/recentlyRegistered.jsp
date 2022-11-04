@@ -73,7 +73,7 @@
   </span>
 
   <span class="full-width-note-right">
-        <a class="js-spa" href="/rhn/systems/Registered.do">
+        <a class="js-spa" href="/rhn/manager/systems/list/all?qc=created_days">
                 <bean:message key="yourrhn.jsp.recentlyregistered.all" />
         </a>
   </span>

@@ -168,4 +168,4 @@ Feature: Use salt formulas
      And I refresh the metadata for "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
-     When I follow "Clear"
+     When I click on "Clear"

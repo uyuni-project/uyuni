@@ -86,14 +86,16 @@ SELECT WC.id, WUPI.email as address, WC.login
 
 <mode name="users_awol_servers"
       class="com.redhat.rhn.frontend.dto.AwolServer">
-  <query params="user_id, checkin_threshold">
+  <query params="user_id">
 SELECT DISTINCT S.id, S.name, SI.checkin
   FROM rhnServer S,
        rhnServerInfo SI,
-       rhnUserServerPerms USP
+       rhnUserServerPerms USP,
+       (SELECT coalesce(value, default_value)::int AS threshold
+          FROM rhnConfiguration WHERE key = 'system_checkin_threshold') C
  WHERE USP.user_id = :user_id
    AND USP.server_id = SI.server_id
-   AND date_diff_in_days(SI.checkin, current_timestamp) BETWEEN 1 AND (1 + :checkin_threshold)
+   AND date_diff_in_days(SI.checkin, current_timestamp) BETWEEN 1 AND (1 + C.threshold)
    AND SI.server_id = S.id
    AND NOT EXISTS (
   SELECT *
@@ -339,16 +341,18 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
 
 <mode name="summarypop_awol_server_in_orgs2"
       class="com.redhat.rhn.frontend.dto.OrgIdWrapper">
-   <query params="checkin_threshold">
+   <query>
 select distinct sg.org_id as id
-  from rhnServerGroup sg, rhnServerGroupType sgt
+  from rhnServerGroup sg, rhnServerGroupType sgt,
+       (SELECT coalesce(value, default_value)::int AS threshold
+       FROM rhnConfiguration WHERE key = 'system_checkin_threshold') C
  where SGT.label = 'enterprise_entitled'
    AND SGT.id = SG.group_type
    and sg.org_id in (
        select s.org_id
          from rhnServer s, rhnServerINfo si
         where s.id = si.SERVER_ID
-          AND date_diff_in_days(SI.checkin, current_timestamp) BETWEEN 1 AND (1 + :checkin_threshold))
+          AND date_diff_in_days(SI.checkin, current_timestamp) BETWEEN 1 AND (1 + C.threshold))
    </query>
 </mode>
 
@@ -669,38 +673,6 @@ where snc.errata_id = :errata_id
   SELECT original_id FROM rhnChannelCloned WHERE id = :channel_id
     </query>
 </mode>
-
-<mode name="find_channel_in_task_queue">
-        <query params="cid">
-                SELECT task_data
-                FROM rhnTaskQueue
-                WHERE task_data = :cid
-                AND task_name = 'update_errata_cache_by_channel'
-        </query>
-</mode>
-
-<write-mode name="update_task_queue">
-        <query params="earliest, cid">
-                UPDATE rhnTaskQueue
-                SET earliest = :earliest
-                WHERE task_data = :cid
-        </query>
-</write-mode>
-
-<write-mode name="insert_into_task_queue">
-        <query params="org_id, task_name, task_data, earliest">
-        INSERT INTO rhnTaskQueue
-       (org_id, task_name, task_data, priority, earliest)
-                VALUES (:org_id, :task_name, :task_data, 0, :earliest)
-        </query>
-</write-mode>
-
-<write-mode name="delete_task">
-  <query params="org_id, name, task_data, priority">
-  DELETE FROM rhnTaskQueue where org_id = :org_id and task_name = :name
-  and task_data = :task_data and priority = :priority
-  </query>
-</write-mode>
 
 <mode name="ssh_push_find_traditional_candidates" class="com.redhat.rhn.taskomatic.task.checkin.SystemSummary">
   <query>

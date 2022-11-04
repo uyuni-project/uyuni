@@ -1,3 +1,12 @@
+- Check if system has all formulas correctly assigned
+  (bsc#1201607)
+- Remove group formula assignements and data on group delete
+  (bsc#1201606)
+- Process salt events in FIFO order (bsc#1203532)
+- Added a warning message for traditional stack deprecation
+- Fix rendering of ssm/MigrateSystems page (bsc#1204651)
+- Remove 'SSM' column text where not applicable (bsc#1203588)
+- Improve systems lists queries performance by using an overview table
 - Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
 - Deny packages from older module metadata when building CLM projects (bsc#1201893)
 - Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)

@@ -24,6 +24,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.FileUtils;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -127,7 +128,10 @@ public class LoginHelper {
                     }
                     updateCmd.setTemporaryRoles(roles);
                     updateCmd.updateUser();
-                    log.warn("Externally authenticated login {} ({} {})", remoteUserString, firstname, lastname);
+                    if (log.isWarnEnabled()) {
+                        log.warn("Externally authenticated login {} ({} {})",
+                                StringUtil.sanitizeLogInput(remoteUserString), firstname, lastname);
+                    }
                 }
             }
             catch (LookupException le) {
@@ -144,7 +148,7 @@ public class LoginHelper {
                 }
                 if (newUserOrg == null) {
                     Long defaultOrgId = SatConfigFactory.getSatConfigLongValue(
-                            SatConfigFactory.EXT_AUTH_DEFAULT_ORGID);
+                            SatConfigFactory.EXT_AUTH_DEFAULT_ORGID, 1L);
                     if (defaultOrgId != null) {
                         newUserOrg = OrgFactory.lookupById(defaultOrgId);
                         if (newUserOrg == null) {

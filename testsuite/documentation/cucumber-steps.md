@@ -122,12 +122,6 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I follow the left menu "Salt > Keys"
 ```
 
-* Go to Systems => Overview
-
-```gherkin
-  When I am on the System Overview page
-```
-
 * Go to Systems => Autoinstallation => Overview
 
 ```gherkin

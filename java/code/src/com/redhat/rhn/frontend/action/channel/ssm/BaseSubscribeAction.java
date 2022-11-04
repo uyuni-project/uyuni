@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.channel.ssm;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.DistChannelMap;
@@ -400,8 +401,10 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         String barSeparatedChannelIds = request.getParameter(BASE_CHANNEL_IDS);
         String barSeparatedNewChannelIds = request.getParameter(NEW_BASE_CHANNEL_IDS);
-        log.debug("base channel ids = {}", barSeparatedChannelIds);
-        log.debug("new base channel ids = {}", barSeparatedNewChannelIds);
+        if (log.isDebugEnabled()) {
+            log.debug("base channel ids = {}", StringUtil.sanitizeLogInput(barSeparatedChannelIds));
+            log.debug("new base channel ids = {}", StringUtil.sanitizeLogInput(barSeparatedNewChannelIds));
+        }
         String [] oldChannelIds = barSeparatedChannelIds.split("\\|");
         String [] newChannelIds = barSeparatedNewChannelIds.split("\\|");
         log.debug("ids size = {}", oldChannelIds.length);

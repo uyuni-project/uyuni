@@ -27,7 +27,7 @@ Feature: Register a salt-ssh system via API
     And I logout from API
 
   Scenario: Check new API bootstrapped salt-ssh system in System Overview page
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"
 

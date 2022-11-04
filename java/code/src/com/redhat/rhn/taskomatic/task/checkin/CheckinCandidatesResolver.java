@@ -14,11 +14,10 @@
  */
 package com.redhat.rhn.taskomatic.task.checkin;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +37,7 @@ public class CheckinCandidatesResolver {
     private static final Logger LOG = LogManager.getLogger(CheckinCandidatesResolver.class);
 
     // Properties used for generating random checkin thresholds
-    private int thresholdMax;
+    private long thresholdMax;
     protected int thresholdMin;
     private double mean;
     private double stddev;
@@ -52,7 +51,8 @@ public class CheckinCandidatesResolver {
      */
     public CheckinCandidatesResolver(String findCheckinCandidatesQueryIn) {
         this.findCheckinCandidatesQuery = findCheckinCandidatesQueryIn;
-        this.thresholdMax = Config.get().getInt(ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD) * 86400;
+        this.thresholdMax = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L) *
+                86400;
         this.thresholdMin = Math.round(this.thresholdMax / 2);
         this.mean = this.thresholdMax;
         this.stddev = this.thresholdMax / 6;

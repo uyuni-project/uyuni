@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartManager;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -850,6 +851,8 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static void saveKickstartSession(KickstartSession ksession) {
         singleton.saveObject(ksession);
+        SystemManager.updateSystemOverview(ksession.getOldServer());
+        SystemManager.updateSystemOverview(ksession.getNewServer());
     }
 
     /**

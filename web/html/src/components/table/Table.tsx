@@ -70,6 +70,12 @@ type TableProps = {
 
   /** Other filter fields */
   additionalFilters?: Array<React.ReactNode>;
+
+  /** Default search field */
+  defaultSearchField?: string;
+
+  /** Initial search query */
+  initialSearch?: string;
 };
 
 function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {

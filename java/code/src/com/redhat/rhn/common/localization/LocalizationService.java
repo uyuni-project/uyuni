@@ -184,17 +184,7 @@ public class LocalizationService {
      */
     public String getMessage(String messageId) {
         Context ctx = Context.getCurrentContext();
-        return getMessage(messageId, ctx.getLocale(), new Object[0]);
-    }
-
-    /**
-     * Get a localized version of a string with the specified locale.
-     * @param messageId The key of the message we are fetching
-     * @param locale The locale to use when fetching the string
-     * @return Translated String
-     */
-    public String getMessage(String messageId, Locale locale) {
-        return getMessage(messageId, locale, new Object[0]);
+        return getMessage(messageId, ctx.getLocale());
     }
 
     /**
@@ -250,7 +240,10 @@ public class LocalizationService {
      * @return Translated String
      */
     public String getMessage(String messageId, Locale locale, Object... args) {
-        log.debug("getMessage() called with messageId: {} and locale: {}", messageId, locale);
+        String logSafeMessageId = StringUtil.sanitizeLogInput(messageId);
+        if (log.isDebugEnabled()) {
+            log.debug("getMessage() called with messageId: {} and locale: {}", logSafeMessageId, locale);
+        }
         // Short-circuit the rest of the method if the messageId is null
         // See bz 199892
         if (messageId == null) {
@@ -258,7 +251,7 @@ public class LocalizationService {
         }
         String userLocale = locale == null ? "null" : locale.toString();
         if (msgLogger.isDebugEnabled()) {
-            msgLogger.debug("Resolving message \"{}\" for locale {}", messageId, userLocale);
+            msgLogger.debug("Resolving message \"{}\" for locale {}", logSafeMessageId, userLocale);
         }
         String mess = null;
         Class z = null;
@@ -280,7 +273,7 @@ public class LocalizationService {
             // Try again with DEFAULT_LOCALE
             if (msgLogger.isDebugEnabled()) {
                 msgLogger.debug("Resolving message \"{}\" for locale {} failed -  trying again with default locale {}",
-                        messageId, userLocale, DEFAULT_LOCALE);
+                        logSafeMessageId, userLocale, DEFAULT_LOCALE);
             }
             try {
                 mess = XmlMessages.getInstance().format(z, DEFAULT_LOCALE,
@@ -350,7 +343,7 @@ public class LocalizationService {
         if (messageId == null) {
             messageId = "null";
         }
-        String message = "*** ERROR: Message with id: [" + messageId +
+        String message = "*** ERROR: Message with id: [" + StringUtil.sanitizeLogInput(messageId) +
                 "] not found.***" + caller;
         log.error(message);
         boolean exceptionMode = Config.get().getBoolean(

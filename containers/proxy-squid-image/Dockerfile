@@ -28,7 +28,7 @@ COPY squid.conf /etc/squid/squid.conf
 #    FATAL: Cannot open '/proc/self/fd/1' for writing.
 # For this we need to give the squid user access to squid.conf and squid.pid
 RUN chown squid:squid /etc/squid/squid.conf
-RUN touch /run/squid.pid && chown squid:squid /run/squid.pid
+RUN mkdir -p /run/squid && chown squid:squid /run/squid
 
 # Ensure the cache is owned by squid user
 RUN chown squid:squid /var/cache/squid

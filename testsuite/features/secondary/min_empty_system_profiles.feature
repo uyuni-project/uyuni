@@ -35,6 +35,7 @@ Feature: Empty minion profile operations
 
   Scenario: Cleanup: Delete first empty minion profile
     When I follow the left menu "Systems > System List"
+    And I wait until I see the "empty-profile" system, refreshing the page
     And I follow "empty-profile"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -43,6 +44,7 @@ Feature: Empty minion profile operations
 
   Scenario: Cleanup: Delete second empty minion profiles
     When I follow the left menu "Systems > System List"
+    And I wait until I see the "empty-profile-hostname" system, refreshing the page
     And I follow "empty-profile-hostname"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text

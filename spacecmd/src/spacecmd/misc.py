@@ -405,6 +405,7 @@ def do_login(self, args):
     self.server = server
 
     logging.info(_N('Connected to %s as %s'), server_url, username)
+    _show_traditional_stack_message(self)
 
     return True
 
@@ -460,6 +461,14 @@ def do_whoamitalkingto(self, args):
 
 ####################
 
+def _show_traditional_stack_message(self):
+    has_traditional_systems = self.client.system.hasTraditionalSystems(self.session)
+
+    if has_traditional_systems:
+        logging.warning((
+            'The traditional stack is unsupported and scheduled for removal. '
+            'Consider migrating to salt minions.'
+        ))
 
 def tab_complete_errata(self, text):
     options = self.do_errata_list('', True)

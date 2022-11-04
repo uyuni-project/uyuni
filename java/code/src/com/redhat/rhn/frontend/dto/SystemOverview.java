@@ -14,9 +14,8 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -27,16 +26,20 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+
+import javax.persistence.Tuple;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
  */
-public class SystemOverview extends BaseDto implements Serializable  {
+public class SystemOverview extends BaseTupleDto implements Serializable {
 
     private Long id;
     private Long channelId;
@@ -67,6 +70,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private boolean mgrServer;
     private boolean proxy;
     private List entitlement;
+    private String entitlementLevel;
     private List serverGroupTypeId;
     private List entitlementPermanent;
     private List entitlementIsBase;
@@ -79,6 +83,11 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private static final  String NONE_VALUE = "(none)";
     private Long lastBoot;
     private String statusType;
+    private Boolean requiresReboot = null;
+    private Boolean kickstarting = null;
+    private Long actionsCount = null;
+    private Long packageActionsCount = null;
+    private Long unscheduledErrataCount = null;
 
     public static final String STATUS_TYPE_UNENTITLED = "unentitled";
     public static final String STATUS_TYPE_AWOL = "awol";
@@ -89,6 +98,66 @@ public class SystemOverview extends BaseDto implements Serializable  {
     public static final String STATUS_TYPE_CRITICAL = "critical";
     public static final String STATUS_TYPE_UPDATES = "updates";
 
+
+    /**
+     * Default constructor
+     */
+    public SystemOverview() {
+    }
+
+    /**
+     * Constructor used to populate using JQPL DTO projection from the data of suseSystemOverview
+     *
+     * @param tuple JPA tuple
+     */
+    public SystemOverview(Tuple tuple) {
+        id = ((Number)tuple.get("id")).longValue();
+        selectable = getTupleValue(tuple, "selectable", Boolean.class).orElse(Boolean.FALSE);
+
+        // To speed up selection, when querying the selection we only get 2 fields, ignore the others
+        if (tuple.getElements().size() > 2) {
+            serverName = getTupleValue(tuple, "server_name", String.class).orElse(null);
+            name = serverName;
+            channelId = getTupleValue(tuple, "channel_id", Number.class).map(Number::longValue).orElse(0L);
+            created = getTupleValue(tuple, "created", Date.class).orElse(null);
+            creatorName = getTupleValue(tuple, "creator_name", String.class).orElse(null);
+            modified = getTupleValue(tuple, "modified", Date.class).orElse(null);
+            groupCount = getTupleValue(tuple, "group_count", Number.class).map(Number::longValue).orElse(0L);
+            securityErrata = getTupleValue(tuple, "security_errata", Number.class).map(Number::longValue).orElse(0L);
+            bugErrata = getTupleValue(tuple, "bug_errata", Number.class).map(Number::longValue).orElse(0L);
+            enhancementErrata = getTupleValue(tuple, "enhancement_errata", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            outdatedPackages = getTupleValue(tuple, "outdated_packages", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            configFilesWithDifferences = getTupleValue(tuple, "config_files_with_differences", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            channelLabels = getTupleValue(tuple, "channel_labels", String.class).orElse(null);
+            lastCheckin = getTupleValue(tuple, "last_checkin", Date.class).orElse(null);
+            mgrServer = getTupleValue(tuple, "mgr_server", Boolean.class).orElse(false);
+            proxy = getTupleValue(tuple, "proxy", Boolean.class).orElse(Boolean.FALSE);
+            setEntitlementLevel(getTupleValue(tuple, "entitlement_level", String.class).orElse(null));
+            isVirtualHost = getTupleValue(tuple, "virtual_host", Boolean.class).orElse(Boolean.FALSE);
+            isVirtualGuest = getTupleValue(tuple, "virtual_guest", Boolean.class).orElse(Boolean.FALSE);
+            extraPkgCount = getTupleValue(tuple, "extra_pkg_count", Number.class).map(Number::longValue).orElse(0L);
+            requiresReboot = getTupleValue(tuple, "requires_reboot", Boolean.class).orElse(Boolean.FALSE);
+            kickstarting = getTupleValue(tuple, "kickstarting", Boolean.class).orElse(Boolean.FALSE);
+            actionsCount = getTupleValue(tuple, "actions_count", Number.class).map(Number::longValue).orElse(0L);
+            packageActionsCount = getTupleValue(tuple, "package_actions_count", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            unscheduledErrataCount = getTupleValue(tuple, "unscheduled_errata_count", Number.class)
+                    .map(Number::longValue).orElse(0L);
+            statusType = getTupleValue(tuple, "status_type", String.class).orElse(null);
+        }
+    }
+
+    private static <T> Optional<T> getTupleValue(Tuple tuple, String name, Class<T> clazz) {
+        try {
+            return Optional.ofNullable(tuple.get(name, clazz));
+        }
+        catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
 
     /**
      * Compute the system status and update the corresponding field.
@@ -109,15 +178,16 @@ public class SystemOverview extends BaseDto implements Serializable  {
         else if (checkinOverdue()) {
             type = STATUS_TYPE_AWOL;
         }
-        else if (SystemManager.isKickstarting(user, sid)) {
+        else if (Optional.ofNullable(kickstarting).orElse(SystemManager.isKickstarting(user, sid))) {
             type = STATUS_TYPE_KICKSTARTING;
         }
         else if (getEnhancementErrata() + getBugErrata() +
                      getSecurityErrata() > 0 &&
-                     !SystemManager.hasUnscheduledErrata(user, sid)) {
+                     Optional.ofNullable(unscheduledErrataCount).map(count -> count == 0)
+                             .orElse(SystemManager.hasUnscheduledErrata(user, sid))) {
             type = STATUS_TYPE_UPDATES_SCHEDULED;
         }
-        else if (SystemManager.countActions(sid) > 0) {
+        else if (Optional.ofNullable(actionsCount).orElse(Long.valueOf(SystemManager.countActions(sid))) > 0) {
             type = STATUS_TYPE_ACTIONS_SCHEDULED;
         }
         else if ((getEnhancementErrata() == null ||
@@ -125,7 +195,8 @@ public class SystemOverview extends BaseDto implements Serializable  {
                  getBugErrata() == 0 &&
                  getSecurityErrata() == 0 &&
                  getOutdatedPackages() == 0 &&
-                 SystemManager.countPackageActions(sid) == 0) {
+                 Optional.ofNullable(packageActionsCount)
+                         .orElse(Long.valueOf(SystemManager.countPackageActions(sid))) == 0) {
 
             type = STATUS_TYPE_UP2DATE;
         }
@@ -151,6 +222,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     public void setStatusDisplay(String statusDisplayIn) {
         this.statusDisplay = statusDisplayIn;
     }
+
     /**
      * @return Returns the isRhnProxy.
      */
@@ -158,10 +230,10 @@ public class SystemOverview extends BaseDto implements Serializable  {
         return proxy;
     }
     /**
-     * @param serverId The server id, null if not a proxy
+     * @param isProxy flag indicating if the system is a proxy
      */
-    public void setIsProxy(Long serverId) {
-        this.proxy = (serverId != null);
+    public void setProxy(Boolean isProxy) {
+        this.proxy = Optional.ofNullable(isProxy).orElse(false);
     }
     /**
      * @return Returns the isMgrServer.
@@ -170,10 +242,10 @@ public class SystemOverview extends BaseDto implements Serializable  {
         return mgrServer;
     }
     /**
-     * @param serverId The server id, null if not a uyuni server
+     * @param isMgrServer flag indicating if the server is an Uyuni server
      */
-    public void setIsMgrServer(Long serverId) {
-        this.mgrServer = (serverId != null);
+    public void setMgrServer(Boolean isMgrServer) {
+        this.mgrServer = Optional.ofNullable(isMgrServer).orElse(false);
     }
     /**
      * @return Returns the bugErrata.
@@ -488,7 +560,11 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns the name.
      */
     public String getName() {
-        return name;
+        if (name != null) {
+            return name;
+        }
+        // Fallback to serverName as both are set in the legacy queries
+        return serverName;
     }
     /**
      * @param nameIn The name to set.
@@ -556,6 +632,22 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns the entitlementLevel.
      */
     public String getEntitlementLevel() {
+        return entitlementLevel;
+    }
+
+    /**
+     * Used to load the entitlement levels from the suseSystemOverview table
+     *
+     * @param entitlementLevelIn the comma-separated entitlements levels
+     */
+    public void setEntitlementLevel(String entitlementLevelIn) {
+        if (entitlementLevelIn != null) {
+            entitlement = Arrays.asList(entitlementLevelIn.split(","));
+            entitlementLevel = computeEntitlementLevel();
+        }
+    }
+
+    private String computeEntitlementLevel() {
         // Get the entitlements for this row. If not null, loop through and get
         // localized versions of the labels and make into a comma-delimited list
         LocalizationService ls = LocalizationService.getInstance();
@@ -621,10 +713,13 @@ public class SystemOverview extends BaseDto implements Serializable  {
         return entitlement;
     }
     /**
+     * Used by the legacy rhnServerOverview view mapping
+     *
      * @param entitlementIn The entitlement to set.
      */
     public void setEntitlement(List entitlementIn) {
         this.entitlement = entitlementIn;
+        this.entitlementLevel = computeEntitlementLevel();
     }
 
     /**
@@ -677,11 +772,12 @@ public class SystemOverview extends BaseDto implements Serializable  {
     }
 
     /**
-     * @param selectableIn Whether a server is selectable one if selectable,
-     * null if not selectable
+     * Used by the suseSystemOverview table mapping.
+     *
+     * @param selectableIn whether the server is selectable
      */
-    public void setSelectable(Long selectableIn) {
-        selectable = (selectableIn != null);
+    public void setSelectable(Boolean selectableIn) {
+        selectable = selectableIn != null && selectableIn;
     }
 
     /**
@@ -805,6 +901,24 @@ public class SystemOverview extends BaseDto implements Serializable  {
     }
 
     /**
+     * Used by the suseSystemOverview table mapping
+     *
+     * @param isGuest whether the system is a virtual machine
+     */
+    public void setVirtualGuest(Boolean isGuest) {
+        isVirtualGuest = isGuest;
+    }
+
+    /**
+     * Used by the suseSystemOverview table mapping
+     *
+     * @param isHost whether the system is a virtualzation host
+     */
+    public void setVirtualHost(Boolean isHost) {
+        isVirtualHost = isHost;
+    }
+
+    /**
      * @return Returns the totalErrataCount.
      */
     public Long getTotalErrataCount() {
@@ -836,11 +950,17 @@ public class SystemOverview extends BaseDto implements Serializable  {
     }
 
     /**
+     * @return if the system needs to be rebooted
+     */
+    public Boolean getRequiresReboot() {
+        return requiresReboot;
+    }
+
+    /**
      * @return Returns <code>true</code> if the last checkin dates too much.
      */
     public boolean checkinOverdue() {
-        Long threshold = (long) Config.get().getInt(
-                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
+        Long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
 
         return getLastCheckinDaysAgo() != null &&
                 getLastCheckinDaysAgo().compareTo(threshold) > 0;

@@ -71,7 +71,7 @@ Feature: Action chains on several systems at once
     And I logout from API
 
   Scenario: Add an action chain using system set manager for Red Hat-like minion and SLE minion
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I check the "sle_minion" client
     And I check the "rhlike_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
@@ -139,4 +139,4 @@ Feature: Action chains on several systems at once
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
   Scenario: Cleanup: remove remaining systems from SSM after action chain tests on several systems
-    When I follow "Clear"
+    When I click on "Clear"

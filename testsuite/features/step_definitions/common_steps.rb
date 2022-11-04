@@ -15,9 +15,14 @@ When(/^I wait for "(\d+)" seconds?$/) do |arg1|
 end
 
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
-  iso_path = "/tmp/#{name}.iso"
+  # When using a mirror it is automatically mounted at /mirror
+  if $mirror
+    iso_path = url.sub(/^http:.*\/pub/, '/mirror/pub')
+  else
+    iso_path = "/tmp/#{name}.iso"
+    $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 500)
+  end
   mount_point = "/srv/www/htdocs/#{name}"
-  $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 500)
   $server.run("mkdir -p #{mount_point}")
   $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro  0 0' >> /etc/fstab")
   $server.run("umount #{iso_path}; mount #{iso_path}")
@@ -254,8 +259,8 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-    And I follow the left menu "Systems > Overview"
-    And I wait until I see "System Overview" text
+    And I follow the left menu "Systems > System List > All"
+    And I wait until I do not see "Loading..." text
   )
 end
 
@@ -786,11 +791,11 @@ When(/^I enable repositories before installing Docker$/) do
   os_family = $build_host.os_family
 
   # Distribution
-  repos = $is_cloud_provider ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
+  repos = $is_using_scc_repositories ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
   log $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
-  unless $is_cloud_provider
+  unless $is_using_scc_repositories
     repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
     log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   end
@@ -798,13 +803,13 @@ When(/^I enable repositories before installing Docker$/) do
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_cloud_provider
+  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_using_scc_repositories
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
 
   # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_cloud_provider
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_using_scc_repositories
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --enable #{repos}")
   end
@@ -817,11 +822,11 @@ When(/^I disable repositories after installing Docker$/) do
   os_family = $build_host.os_family
 
   # Distribution
-  repos = $is_cloud_provider ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
+  repos = $is_using_scc_repositories ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
   log $build_host.run("zypper mr --disable #{repos}")
 
   # Tools
-  unless $is_cloud_provider
+  unless $is_using_scc_repositories
     repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
     log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   end
@@ -829,13 +834,13 @@ When(/^I disable repositories after installing Docker$/) do
   # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
-  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_cloud_provider
+  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_using_scc_repositories
     repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
 
   # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_cloud_provider
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_using_scc_repositories
     repos = "containers_pool_repo containers_updates_repo"
     log $build_host.run("zypper mr --disable #{repos}")
   end
@@ -850,7 +855,7 @@ end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   steps %(
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
     And I wait at most 500 seconds until event "Hardware List Refresh" is completed
@@ -1234,7 +1239,7 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   return_code = file_inject($server, source, dest)
   raise 'File injection failed' unless return_code.zero?
   $server.run("chmod 644 #{dest}")
-  url = "http://#{$server.full_hostname}/pub/" + file
+  url = "https://#{$server.full_hostname}/pub/" + file
   log "URL: #{url}"
   step %(I enter "#{url}" as "calendar-data-text")
 end

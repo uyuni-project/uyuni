@@ -1,3 +1,5 @@
+- Add system overview table and a procedure to update it
+- Move web.system_checkin_threshold to rhnConfiguration table
 - Fix previous 'Amazon EC2' schema upgrade script
   to prevent possible issues on schema upgrade.
 - Keep older module metadata files in database (bsc#1201893)

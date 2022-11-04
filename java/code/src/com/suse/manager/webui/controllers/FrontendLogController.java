@@ -20,6 +20,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.throttling;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
@@ -42,7 +43,7 @@ public class FrontendLogController {
 
     private static final Gson GSON = new GsonBuilder().create();
 
-    private static Logger log = LogManager.getLogger(FrontendLogController.class);
+    private static final Logger LOG = LogManager.getLogger(FrontendLogController.class);
 
     /**
      * Initialize the {@link spark.Route}s served by this controller
@@ -65,15 +66,14 @@ public class FrontendLogController {
 
         // Normalize the unicode message to canonical form to ensure no invalid characters are present
         String message = Normalizer.normalize(map.get("message").toString(), Normalizer.Form.NFC);
-        message = "[" + user.getId() + " - " + request.userAgent() + "] - " + message;
-
+        message = StringUtil.sanitizeLogInput("[" + user.getId() + " - " + request.userAgent() + "] - " + message);
 
         switch (type) {
-            case "info": log.info(message); break;
-            case "debug": log.debug(message); break;
-            case "warning": log.warn(message); break;
-            case "error": log.error(message); break;
-            default: log.info(message); break;
+            case "info": LOG.info(message); break;
+            case "debug": LOG.debug(message); break;
+            case "warning": LOG.warn(message); break;
+            case "error": LOG.error(message); break;
+            default: LOG.info(message); break;
         }
 
         Map<String, Boolean> data = new HashMap<>();

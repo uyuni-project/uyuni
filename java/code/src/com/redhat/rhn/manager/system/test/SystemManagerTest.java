@@ -120,6 +120,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateWorker;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
@@ -769,6 +770,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 .createTestServerGroup(user.getOrg(), null);
         systemManager.addServerToServerGroup(server, group);
         ServerFactory.save(server);
+        SystemsOverviewUpdateWorker.doUpdate(server.getId());
 
         DataResult<SystemOverview> dr = SystemManager.registeredList(user, null, 0);
         assertNotEmpty(dr);
