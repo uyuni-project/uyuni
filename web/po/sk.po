@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-04 15:41+0100\n"
-"PO-Revision-Date: 2022-09-08 09:13+0000\n"
+"PO-Revision-Date: 2022-11-05 14:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -4724,7 +4724,7 @@ msgstr "Typ úložiska"
 
 #: ../html/src/manager/systems/all-list.tsx:30
 msgid "Requires Reboot"
-msgstr ""
+msgstr "Vyžaduje reštart"
 
 #: ../html/src/manager/systems/all-list.tsx:31
 #, fuzzy
@@ -4737,14 +4737,12 @@ msgid "Groups"
 msgstr "Skupina"
 
 #: ../html/src/manager/systems/all-list.tsx:51
-#, fuzzy
 msgid " Systems "
-msgstr "Systémy"
+msgstr " Systémy "
 
 #: ../html/src/manager/systems/all-list.tsx:71
-#, fuzzy
 msgid "No Systems."
-msgstr "Systémy"
+msgstr "Žiadne systémy."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
