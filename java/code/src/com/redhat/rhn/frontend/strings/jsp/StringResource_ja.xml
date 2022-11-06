@@ -29756,10 +29756,10 @@ given channel.</source>
         </context-group>
         <target state="final">カスタムチャンネルの自動同期が有効になっています。このチャンネルは、ベンダチャンネルと自動的に同期されます。</target>
       </trans-unit>
-    <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
+      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve" approved="yes">
         <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">従来のスタックは、SUSE manager 4.3のリリース時点で非推奨です。次のメジャーリリースであるバージョン4.4以降ではサポートされなくなります。このリリースの前に、salt minionへの移行を検討してください。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
