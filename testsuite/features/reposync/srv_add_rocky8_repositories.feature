@@ -82,7 +82,9 @@ Feature: Add the Rocky 8 distribution custom repositories
 
   Scenario: Create a CLM project to remove AppStream metadata
     When I follow the left menu "Content Lifecycle > Projects"
-    And I follow "Create Project"
+    Then I should see a "Content Lifecycle Projects" text
+    And I should see a "There are no entries to show." text
+    When I follow "Create Project"
     And I enter "Remove AppStream metadata" as "name"
     And I enter "no-appstream" as "label"
     And I click on "Create"
