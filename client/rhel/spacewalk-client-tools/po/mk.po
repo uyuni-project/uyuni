@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-14 11:23+0200\n"
-"PO-Revision-Date: 2022-10-30 19:13+0000\n"
+"PO-Revision-Date: 2022-11-07 05:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools-4-3/mk/>\n"
@@ -510,9 +510,9 @@ msgid "SSL certificate:"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Мора да го внесете Вашето презиме."
+msgstr "Мора да внесете валиден {PRODUCT_NAME} УРЛ."
 
 #: ../src/up2date_client/rhnreg_constants.py:32
 msgid ""
@@ -652,11 +652,13 @@ msgid "{PRODUCT_NAME} Account"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:88
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid ""
 "Please enter your login information for the %s {PRODUCT_NAME}:\n"
 "\n"
-msgstr "Информации за сметката"
+msgstr ""
+"Молиме внесете ги вашите најавни информации за %s {PRODUCT_NAME}:\n"
+"\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:89
 #, python-brace-format
@@ -699,7 +701,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:100
 msgid " Minor Release: "
-msgstr "Дата на објавување"
+msgstr " Мало издание: "
 
 #: ../src/up2date_client/rhnreg_constants.py:101
 msgid "Limited Updates Only"
@@ -726,15 +728,15 @@ msgid "Create Profile - Hardware"
 msgstr "Врзете го Вашиот систем"
 
 #: ../src/up2date_client/rhnreg_constants.py:110
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "A Profile Name is a descriptive name that you choose to identify this System "
 "Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
 "serial or identification number."
 msgstr ""
 "Името на профилот е описно име кое што го избирате за идентификација на "
-"системскиот профил на веб страниците на мрежата на Red Hat. Можете да "
-"вклучите и сериски и број за идентификација."
+"системскиот профил на веб страниците во {PRODUCT_NAME}. Факултативно, можете "
+"да вклучите сериски број или број за идентификација."
 
 #: ../src/up2date_client/rhnreg_constants.py:114
 msgid ""
@@ -810,9 +812,9 @@ msgstr ""
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Send Profile Information to {PRODUCT_NAME}"
-msgstr "Испрати ги информациите за профилот на мрежата на Red Hat"
+msgstr "Испрати ги информациите за профилот на {PRODUCT_NAME}"
 
 #: ../src/up2date_client/rhnreg_constants.py:146
 #, python-brace-format
@@ -1220,9 +1222,9 @@ msgstr ""
 "следен екран"
 
 #: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "Мора да ја извршите RHN програмата како root."
+msgstr "Мора да ја извршите {PRODUCT_NAME} регистрациска програма како root."
 
 #: ../src/up2date_client/up2dateErrors.py:49
 #: ../src/up2date_client/up2dateErrors.py:82
