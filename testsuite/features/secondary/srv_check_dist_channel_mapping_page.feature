@@ -16,7 +16,7 @@ Feature: Distribution Channel Mapping
     And I should see a "Create Distribution Channel Mapping" link
     And I should see a "No distribution channel mappings currently exist." text in the content area
 
-  Scenario: Create new map for x86_64 suse clients
+  Scenario: Create new map for x86_64 SUSE clients
     When I follow the left menu "Software > Distribution Channel Mapping"
     And I follow "Create Distribution Channel Mapping"
     Then I should see a "Create Distribution Channel Map" text
@@ -27,7 +27,7 @@ Feature: Distribution Channel Mapping
     And I click on "Create Mapping"
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4" link in the content area
 
-  Scenario: Create new map for x86_64 ubuntu clients with test base channel
+  Scenario: Create new map for x86_64 Ubuntu clients with test base channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     And I follow "Create Distribution Channel Mapping"
     Then I should see a "Create Distribution Channel Map" text
@@ -38,7 +38,7 @@ Feature: Distribution Channel Mapping
     And I click on "Create Mapping"
     Then I should see a "Ubuntu 22.04.01 LTS" link in the content area
 
-  Scenario: Create new map for iSeries suse clients using test channel
+  Scenario: Create new map for iSeries SUSE clients using test channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     And I follow "Create Distribution Channel Mapping"
     Then I should see a "Create Distribution Channel Map" text
@@ -49,7 +49,7 @@ Feature: Distribution Channel Mapping
     And I click on "Create Mapping"
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries" link in the content area
 
-  Scenario: Update map for x86_64 suse clients using test-x86_64 channel
+  Scenario: Update map for x86_64 SUSE clients using test-x86_64 channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     Given I see a "SUSE Linux Enterprise Server 15 SP 4" link in the table
     And I see a "x86_64" architecture description in the table
@@ -62,7 +62,7 @@ Feature: Distribution Channel Mapping
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4 modified" link in the table
     And I should see a "test-channel-x86_64" link in the table
 
-  Scenario: Update map for x86_64 ubuntu clients using test base channel
+  Scenario: Update map for x86_64 Ubuntu clients using test base channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     Given I see a "Ubuntu 22.04.01 LTS" link in the table
     And I see a "x86_64" architecture description in the table
@@ -74,7 +74,7 @@ Feature: Distribution Channel Mapping
     Then I should see a "Ubuntu 22.04.01 LTS modified" link in the table
     And I should see a "test_base_channel" link in the table
 
-  Scenario: Update map for IA-32 suse clients using amd deb test channel
+  Scenario: Update map for IA-32 SUSE clients using amd deb test channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     Given I see a "SUSE Linux Enterprise Server 15 SP 4 iSeries" link in the table
     And I see a "iSeries" architecture description in the table
@@ -86,7 +86,7 @@ Feature: Distribution Channel Mapping
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" link in the table
     And I should see a "test-channel-deb-amd64" link in the table
 
-  Scenario: Cleanup: delete the map created for x68_64 suse clients
+  Scenario: Cleanup: delete the map created for x68_64 SUSE clients
     When I follow the left menu "Software > Distribution Channel Mapping"
     Given I see a "SUSE Linux Enterprise Server 15 SP 4 modified" link in the table
     And I see a "x86_64" architecture description in the table
@@ -98,7 +98,7 @@ Feature: Distribution Channel Mapping
     When I click on "Delete Mapping"
     Then I should not see a "SUSE Linux Enterprise Server 15 SP 4 modified" link
     
-  Scenario: Cleanup: delete the map created for x68_64 ubuntu clients
+  Scenario: Cleanup: delete the map created for x68_64 Ubuntu clients
     When I follow the left menu "Software > Distribution Channel Mapping"
     Given I see a "Ubuntu 22.04.01 LTS modified" link in the table
     And I see a "x86_64" architecture description in the table
@@ -125,9 +125,4 @@ Feature: Distribution Channel Mapping
   Scenario: Sanity check whether the page is in its default state
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see a "Distribution Channel Mapping" text
-    And I should see a "Channel List" link in the left menu
-    And I should see a "Package Search" link in the left menu
-    And I should see a "Manage" link in the left menu
-    And I should see a "Distribution Channel Mapping" link in the left menu
-    And I should see a "Create Distribution Channel Mapping" link
     And I should see a "No distribution channel mappings currently exist." text in the content area
