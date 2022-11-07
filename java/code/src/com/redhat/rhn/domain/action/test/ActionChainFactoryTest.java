@@ -106,6 +106,55 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         assertEquals(previousSize + 3, ActionChainFactory.getActionChains(user).size());
     }
 
+
+    /**
+     * Tests getActionChainsByServer().
+     * @throws Exception if something bad happens
+     */
+    @Test
+    public void testGetActionChainsByServer() throws Exception {
+        ActionChain actionChain1 = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChain actionChain2 = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChain actionChain3 = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+
+        Action action1 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+        action1.setOrg(user.getOrg());
+        Server server1 = ServerFactoryTest.createTestServer(user);
+
+        ActionChainEntry entry1 = ActionChainFactory.queueActionChainEntry(action1,
+            actionChain1, server1);
+
+        Action action2 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+        action2.setOrg(user.getOrg());
+
+        ActionChainEntry entry2 = ActionChainFactory.queueActionChainEntry(action2,
+            actionChain2, server1);
+
+        Action action3 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+        action3.setOrg(user.getOrg());
+        Server server2 = ServerFactoryTest.createTestServer(user);
+
+        ActionChainEntry entry3 = ActionChainFactory.queueActionChainEntry(action3,
+            actionChain3, server2);
+
+        ActionChainFactory.schedule(actionChain1, new Date());
+        ActionChainFactory.schedule(actionChain2, new Date());
+        ActionChainFactory.schedule(actionChain3, new Date());
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        List<ActionChain> list1 = ActionChainFactory.getActionChainsByServer(server1);
+        assertEquals(2, list1.size());
+        assertContains(list1, actionChain1);
+        assertContains(list1, actionChain2);
+
+
+        List<ActionChain> list2 = ActionChainFactory.getActionChainsByServer(server2);
+        assertEquals(1, list2.size());
+        assertContains(list2, actionChain3);
+    }
+
     /**
      * Tests getOrCreateActionChain().
      * @throws Exception if something bad happens
