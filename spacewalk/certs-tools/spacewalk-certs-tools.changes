@@ -1,3 +1,4 @@
+- add transactional system support to the bootstrap generator
 - change bootstrap script generator to detect SLE Micro
 
 -------------------------------------------------------------------
