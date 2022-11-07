@@ -21,6 +21,7 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -154,6 +155,7 @@ public class TaskomaticDaemon {
                 }
                 catch (Throwable e) {
                     LOG.fatal(e.getMessage());
+                    LOG.fatal(ExceptionUtils.getStackTrace(e));
                     System.exit(-1);
                 }
             };
