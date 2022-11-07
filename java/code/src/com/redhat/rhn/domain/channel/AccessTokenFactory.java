@@ -191,7 +191,6 @@ public class AccessTokenFactory extends HibernateFactory {
             }
             catch (JoseException e) {
                 LOG.error("Could not regenerate token with id: {}", token.getId(), e);
-                e.printStackTrace();
                 return token;
             }
         }).collect(Collectors.toList());
@@ -260,7 +259,6 @@ public class AccessTokenFactory extends HibernateFactory {
         }
         catch (JoseException e) {
             LOG.error("Could not generate token for minion: {}", minion.getId(), e);
-            e.printStackTrace();
             return Optional.empty();
         }
     }

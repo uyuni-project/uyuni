@@ -100,9 +100,9 @@ public class ScapResultFile implements StreamInfo {
             return new FileInputStream(getAbsolutePath());
         }
         catch (IOException e) {
-            e.printStackTrace();
             LocalizationService ls = LocalizationService.getInstance();
-            throw new LookupException("Could not server file '" + filename + "' for XCCDF Scan " + testResult.getId(),
+            throw new LookupException("Could not read server file '" + filename +
+                    "' for XCCDF Scan " + testResult.getId(),
                     ls.getMessage("lookup.scapfile.title"), null, null);
         }
     }
@@ -112,8 +112,6 @@ public class ScapResultFile implements StreamInfo {
      * @return string
      */
     public String toString() {
-        return this.getClass().getName() +
-            "[path=" + getAbsolutePath() +
-            "]";
+        return this.getClass().getName() + "[path=" + getAbsolutePath() + "]";
     }
 }

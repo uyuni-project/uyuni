@@ -203,7 +203,7 @@ public class MethodUtil {
             throw new MethodInvocationException("Could not access " + methodCalled, e);
         }
         catch (InvocationTargetException e) {
-            e.printStackTrace();
+            log.debug("Error calling {}", methodCalled, e);
             throw new MethodInvocationException("Something bad happened when " +
                                                 "calling " + methodCalled, e);
         }
