@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import static java.util.Collections.singleton;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -37,11 +39,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.Map;
-import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static java.util.Collections.singleton;
 
 /**
  * SystemPendingEventsCancelAction
@@ -74,7 +74,7 @@ public class SystemPendingEventsCancelAction extends RhnAction {
             try {
                 for (SystemPendingEventDto dto : result) {
                     Action action = ActionFactory.lookupById(dto.getId());
-                    ActionManager.cancelActions(user, singleton(action), Optional.of(singleton(sid)));
+                    ActionManager.cancelActions(user, singleton(action), singleton(sid));
                 }
                 createSuccessMessage(request, "system.event.pending.canceled",
                         Integer.toString(result.size()));
