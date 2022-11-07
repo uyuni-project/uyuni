@@ -16,7 +16,6 @@ warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLI
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
 warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
 warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
-warn 'XEN server minion IP address or domain name variable empty' if ENV['VIRTHOST_XEN_URL'].nil?
 
 # Preserve FQDN before initialization
 $named_nodes = {}
@@ -32,9 +31,8 @@ $localhost = twopence_init("ssh:#{ENV['HOSTNAME']}") unless $debug_mode
 $proxy = twopence_init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
 $server = twopence_init("ssh:#{ENV['SERVER']}")
 $kvm_server = twopence_init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
-$xen_server = twopence_init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_XEN_URL'] && ENV['VIRTHOST_XEN_PASSWORD']
 
-$nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
+$nodes = [$localhost, $server, $proxy, $kvm_server]
 
 if $build_validation
   # Define twopence objects for Build Validation environment
@@ -266,8 +264,6 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'deblike_minion'            => $deblike_minion,
                   'build_host'                => $build_host,
                   'kvm_server'                => $kvm_server,
-                  'xen_server'                => $xen_server,
-                  'sle12sp4_client'           => $sle12sp4_client,
                   'sle12sp4_minion'           => $sle12sp4_minion,
                   'sle12sp4_ssh_minion'       => $sle12sp4_ssh_minion,
                   'sle12sp5_client'           => $sle12sp5_client,

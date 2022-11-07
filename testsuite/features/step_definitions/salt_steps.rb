@@ -409,10 +409,8 @@ Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   $server.run("spacecmd -u admin -p admin system_listevents #{system_name}")
 end
 
-When(/^I enter "([^"]*)" password$/) do |host|
-  raise "#{host} minion password is unknown" unless %w[kvm_server xen_server].include?(host)
-  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password") if host == "kvm_server"
-  step %(I enter "#{ENV['VIRTHOST_XEN_PASSWORD']}" as "password") if host == "xen_server"
+When(/^I enter KVM Server password$/) do
+  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password")
 end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|

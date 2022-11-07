@@ -42,7 +42,6 @@ Possible values are currently:
 | Debian-like Salt minion | ```$deblike_minion``` | ```$DEBLIKE_MINION``` | ```"deblike_minion"``` | ```"minion"``` |
 | PXE-boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
 | KVM virtual host minion | ```$kvm_server``` | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"``` | ```"virthost"``` |
-| Xen virtual host minion | ```$xen_server``` | ```$VIRTHOST_XEN_URL``` and ```$VIRTHOST_XEN_PASSWORD``` | ```"xen_server"``` | ```"virthost"``` |
 
 These names are such for historical reasons and might be made better in the future.
 

@@ -33,7 +33,6 @@
 # IDEMPOTENT
 
 - features/secondary/minkvm_guests.feature
-- features/secondary/minxen_guests.feature
 
 ## Secondary features END ##
 
