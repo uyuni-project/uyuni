@@ -850,7 +850,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         serverAction.setStatus(status);
         serverAction.setRemainingTries(remainingTries);
         if (action.getServerActions() == null) {
-            Set set = new HashSet();
+            Set<ServerAction> set = new HashSet<>();
             set.add(serverAction);
             action.setServerActions(set);
         }
