@@ -60,6 +60,8 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -512,10 +514,10 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         return newA;
     }
 
-    public static Action createNewAction(User user, ActionType type) throws Exception {
+    public static Action createNewAction(User user, ActionType type) {
         Action newA = ActionFactory.createAction(type);
         newA.setSchedulerUser(user);
-        newA.setName("RHN-JAVA Test Action");
+        newA.setName("RHN-JAVA Test Action #" + RandomStringUtils.randomAlphanumeric(16));
         newA.setActionType(type);
         newA.setOrg(user.getOrg());
         newA.setEarliestAction(new Date());
@@ -523,7 +525,6 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         newA.setArchived(0L);
         newA.setCreated(new Date());
         newA.setModified(new Date());
-
         return newA;
     }
 

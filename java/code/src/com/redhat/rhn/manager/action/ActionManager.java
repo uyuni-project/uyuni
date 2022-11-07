@@ -112,6 +112,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -352,8 +353,14 @@ public class ActionManager extends BaseManager {
             log.debug("Cancelling actions: " + actionIds + " for user: " + user.getLogin());
         }
 
-        // Can only cancel top level actions:
-        if (actions.stream().anyMatch(a -> a.getPrerequisite() != null)) {
+        // Can only cancel top level actions or actions that have failed prerequisite:
+        boolean hasValidPrerequisite = actions.stream()
+                                              .map(Action::getPrerequisite)
+                                              .filter(Objects::nonNull)
+                                              .flatMap(p -> p.getServerActions().stream())
+                                              .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
+                                              .anyMatch(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()));
+        if (hasValidPrerequisite) {
             throw new ActionIsChildException();
         }
 

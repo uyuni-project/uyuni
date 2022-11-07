@@ -1,4 +1,5 @@
-- disable cloned vendor channel auto selection by default (bsc#1204186) 
+- Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
+- disable cloned vendor channel auto selection by default (bsc#1204186)
 - adapt permissions of temporary ssh key directory
 - format results for package, errata and image build actions in
   system history similar to state apply results
