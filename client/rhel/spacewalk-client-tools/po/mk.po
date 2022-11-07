@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-13 07:14+0000\n"
+"POT-Creation-Date: 2022-11-07 05:15+0000\n"
 "PO-Revision-Date: 2022-11-07 05:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
@@ -652,7 +652,7 @@ msgid "{PRODUCT_NAME} Account"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:88
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "Please enter your login information for the %s {PRODUCT_NAME}:\n"
 "\n"
