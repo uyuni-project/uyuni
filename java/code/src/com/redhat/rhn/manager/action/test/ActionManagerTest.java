@@ -584,7 +584,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         assertServerActionCount(parent, 2);
         assertActionsForUser(user, 1);
-        ActionManager.cancelActions(user, actionList, Optional.of(activeServers));
+        ActionManager.cancelActions(user, actionList, activeServers);
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 1); // shouldn't have been deleted
         // check that action was indeed not canceled on taskomatic side
