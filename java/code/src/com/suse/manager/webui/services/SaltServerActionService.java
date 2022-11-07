@@ -970,29 +970,36 @@ public class SaltServerActionService {
             switch(fun) {
                 case "state.apply":
                     List<String> mods = (List<String>)kwargs.get("mods");
+                    if (CollectionUtils.isEmpty(mods)) {
+                        if (minion.isSshPush()) {
+                            // Apply highstate using a custom top.
+                            // The custom top is needed because salt-ssh invokes
+                            // "salt-call --local" and this needs a top file in order to apply the highstate
+                            // and salt-ssh doesn't pack one automatically in the state tarball
+                            return new SaltModuleRun(stateId,
+                                    "state.top",
+                                    serverAction.getParentAction().getId(),
+                                    singletonMap("topfn",
+                                            saltActionChainGeneratorService
+                                                    .getActionChainTopPath(actionChainId,
+                                                            serverAction.getParentAction().getId())),
+                                    emptyMap());
+                        }
+                        else {
+                            return new SaltModuleRun(stateId,
+                                    "state.apply",
+                                    serverAction.getParentAction().getId(),
+                                    emptyMap(),
+                                    createStateApplyKwargs(kwargs));
+                        }
 
-                    if (minion.isSshPush() && CollectionUtils.isEmpty(mods)) {
-                        // Apply highstate using a custom top.
-                        // The custom top is needed because salt-ssh invokes
-                        // "salt-call --local" and this needs a top file in order to apply the highstate
-                        // and salt-ssh doesn't pack one automatically in the state tarball
-                        return new SaltModuleRun(stateId,
-                                "state.top",
-                                serverAction.getParentAction().getId(),
-                                singletonMap("topfn",
-                                        saltActionChainGeneratorService
-                                        .getActionChainTopPath(actionChainId,
-                                                serverAction.getParentAction().getId())),
-                                emptyMap());
                     }
-                    else {
-                        return new SaltModuleRun(stateId,
-                                "state.apply",
-                                        serverAction.getParentAction().getId(),
-                                        !mods.isEmpty() ?
-                                                singletonMap("mods", mods) : emptyMap(),
-                                                createStateApplyKwargs(kwargs));
-                    }
+                    return new SaltModuleRun(stateId,
+                            "state.apply",
+                            serverAction.getParentAction().getId(),
+                            !mods.isEmpty() ?
+                                    singletonMap("mods", mods) : emptyMap(),
+                            createStateApplyKwargs(kwargs));
                 case "system.reboot":
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,
