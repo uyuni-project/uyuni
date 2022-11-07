@@ -1,3 +1,4 @@
+- Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
 - Fixed traditional stack warning message to be displayed only when the system
   has enterprise entitlement (bsc#1205350)
 - Update jackson-databind version
