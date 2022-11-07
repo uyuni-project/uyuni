@@ -2767,7 +2767,7 @@ public class SaltServerActionService {
         }
 
         JsonPrimitive prim = obj.getAsJsonPrimitive("current_action_id");
-        if (!prim.isNumber()) {
+        if (prim == null || !prim.isNumber()) {
             return 0;
 
         }
