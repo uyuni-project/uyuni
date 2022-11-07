@@ -70,7 +70,6 @@ class ActionExecutor implements Runnable {
             }
             catch (Throwable t) {
                 LOG.error(t);
-                t.printStackTrace();
             }
         }
     }
