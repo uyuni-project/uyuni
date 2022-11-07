@@ -316,6 +316,21 @@ public class ActionChainFactory extends HibernateFactory {
     }
 
     /**
+     * Gets all action chains scheduled for given server
+     * @param server the server
+     * @return action chains
+     */
+    public static List<ActionChain> getActionChainsByServer(Server server) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", server.getId());
+        return singleton.listObjectsByNamedQuery(
+                "ActionChain.getActionChainsByServer",
+                params
+        );
+    }
+
+
+    /**
      * Gets the next sort order value.
      * @param actionChain the action chain
      * @return the next sort order value

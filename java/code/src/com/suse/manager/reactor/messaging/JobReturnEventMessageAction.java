@@ -248,17 +248,10 @@ public class JobReturnEventMessageAction implements MessageAction {
              * If so, just remove it. (bsc#1188163)
              */
 
-            MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).ifPresent(minion -> {
-                ActionChainFactory.getAllActionChains().stream()
-                        .filter(ac -> ac.isDone())
-                        .filter(ac ->
-                                ac.getEntries().stream()
-                                        .flatMap(ace -> ace.getAction().getServerActions().stream())
-                                        .anyMatch(sa -> sa.getServer().getId().equals(minion.getId()))
-                        )
-                        .forEach(ActionChainFactory::delete);
-            });
-
+            MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
+                    .ifPresent(minion -> ActionChainFactory.getActionChainsByServer(minion).stream()
+                    .filter(ActionChain::isDone)
+                    .forEach(ActionChainFactory::delete));
         }
       // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
