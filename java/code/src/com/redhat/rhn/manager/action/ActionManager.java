@@ -99,7 +99,6 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.utils.Opt;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -325,7 +324,7 @@ public class ActionManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static void cancelActions(User user, Collection<Action> actions) throws TaskomaticApiException {
-        cancelActions(user, actions, Optional.empty());
+        cancelActions(user, actions, Collections.emptySet());
     }
 
     /**
@@ -342,13 +341,10 @@ public class ActionManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static void cancelActions(User user, Collection<Action> actions, Optional<Collection<Long>> serverIds)
+    public static void cancelActions(User user, Collection<Action> actions, Collection<Long> serverIds)
         throws TaskomaticApiException {
         if (log.isDebugEnabled()) {
-            String actionIds = actions.stream()
-                    .map(Action::getId)
-                    .collect(toList())
-                    .toString();
+            String actionIds = actions.stream().map(Action::getId).collect(toList()).toString();
             log.debug("Cancelling actions: {} for user: {}", actionIds, user.getLogin());
         }
 
@@ -362,21 +358,20 @@ public class ActionManager extends BaseManager {
             actions.stream().flatMap(ActionFactory::lookupDependentActions)
         ).collect(toSet());
 
-        Set<ServerAction> serverActions = actionsToDelete.stream()
-                .flatMap(a -> a.getServerActions().stream())
-                .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()) ||
-                        ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus()))
-                .filter(Opt.fold(serverIds,
-                        // if serverIds is not specified, do not filter at all
-                        () -> (a -> true),
-                        // if it is, only ServerActions that have server ids in the specified set can pass
-                        s -> (a -> s.contains(a.getServerId()))
-                ))
-                .collect(toSet());
+        Set<Server> servers = new HashSet<>();
+        Set<ServerAction> serverActions = new HashSet<>();
 
-        Set<Server> servers = serverActions.stream()
-                .map(ServerAction::getServer)
-                .collect(toSet());
+        actionsToDelete.stream()
+                       .flatMap(a -> a.getServerActions().stream())
+                       .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()) ||
+                           ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus()))
+                       // if serverIds is not specified, do not filter at all
+                       // if it is, only ServerActions that have server ids in the specified set can pass
+                       .filter(sa -> serverIds.isEmpty() || serverIds.contains(sa.getServerId()))
+                       .forEach(sa -> {
+                           serverActions.add(sa);
+                           servers.add(sa.getServer());
+                       });
 
         // fail any Kickstart sessions for these actions and servers
         KickstartFactory.failKickstartSessions(actionsToDelete, servers);
@@ -385,13 +380,13 @@ public class ActionManager extends BaseManager {
         Map<Action, Set<Server>> actionMap = actionsToDelete.stream()
                 .map(a -> new ImmutablePair<>(
                         a,
-                        a.getServerActions().stream()
-                            .filter(sa -> isMinionServer(sa.getServer()))
-                            .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
-                            .filter(sa -> servers.contains(sa.getServer()))
-                            .map(ServerAction::getServer)
-                            .collect(toSet())
-                        )
+                        a.getServerActions()
+                         .stream()
+                         .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()))
+                         .map(ServerAction::getServer)
+                         .filter(server -> isMinionServer(server) && servers.contains(server))
+                         .collect(toSet())
+                    )
                 )
                 .filter(p -> !p.getRight().isEmpty())
                 .collect(toMap(
@@ -403,24 +398,22 @@ public class ActionManager extends BaseManager {
             taskomaticApi.deleteScheduledActions(actionMap);
         }
 
-        serverActions.stream()
-                .forEach(sa -> {
-                    // Delete ServerActions from the database only if QUEUED
-                    if (ActionFactory.STATUS_QUEUED.equals(sa.getStatus())) {
-                        sa.getParentAction().getServerActions().remove(sa);
-                        ActionFactory.delete(sa);
-                    }
-                    // Set to FAILED if the state is PICKED_UP
-                    else if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
-                        failSystemAction(user, sa.getServerId(), sa.getParentAction().getId(),
-                                "Canceled by " + user.getLogin());
-                    }
-                    SystemManager.updateSystemOverview(sa.getServerId());
-                });
+        String cancellationMessage = "Canceled by " + user.getLogin();
+        serverActions.forEach(sa -> {
+            // Delete ServerActions from the database only if QUEUED
+            if (ActionFactory.STATUS_QUEUED.equals(sa.getStatus())) {
+                sa.getParentAction().getServerActions().remove(sa);
+                ActionFactory.delete(sa);
+            }
+            // Set to FAILED if the state is PICKED_UP
+            else if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
+                failSystemAction(user, sa.getServerId(), sa.getParentAction().getId(), cancellationMessage);
+            }
+            SystemManager.updateSystemOverview(sa.getServerId());
+        });
 
         // run post-actions
-        actionsToDelete.stream()
-                .forEach(Action::onCancelAction);
+        actionsToDelete.forEach(Action::onCancelAction);
     }
 
     /**
