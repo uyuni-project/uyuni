@@ -134,8 +134,9 @@ PROFILENAME=""   # Empty by default to let it be set automatically.
 CLIENT_REPOS_ROOT=
 {venv_section}
 
-# Automatically schedule reboot of the machine in case of transactional system
-SCHEDULE_REBOOT=1
+# Automatically schedule reboot of the machine in case of running transactional
+# system (for example SLE Micro)
+SCHEDULE_REBOOT_AFTER_TRANSACTION=1
 
 #
 # -----------------------------------------------------------------------------
@@ -958,7 +959,7 @@ echo "* starting salt daemon and enabling it during boot"
 if [ -n "$SNAPSHOT_ID" ]; then
     call_tukit "systemctl enable '$MINION_SERVICE'"
     tukit close $SNAPSHOT_ID
-    if [ "$SCHEDULE_REBOOT" -eq 1 ]; then
+    if [ "$SCHEDULE_REBOOT_AFTER_TRANSACTION" -eq 1 ]; then
         transactional-update reboot
     else
        echo "** Reboot system to apply changes"

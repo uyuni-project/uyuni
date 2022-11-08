@@ -330,6 +330,10 @@ PKGLIST15_SALT_OPT_BUNDLE = PKGLIST15_SALT_NO_BUNDLE + [
     "venv-salt-minion*",
 ]
 
+PKGLISTMICRO_BUNDLE_ONLY = [
+    "venv-salt-minion",
+]
+
 ONLYSLE15 = [
     "gio-branding-SLE",
 ]
@@ -1054,27 +1058,27 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
     'SLE-MICRO-5.2-aarch64' : {
-        'PDID' : [2399], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2399], 'BETAPDID' : [1925], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
     },
     'SLE-MICRO-5.2-s390x' : {
-        'PDID' : [2400], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2400], 'BETAPDID' : [1927], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
     },
     'SLE-MICRO-5.2-x86_64' : {
-        'PDID' : [2401], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2401], 'BETAPDID' : [1928], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
     },
     'SLE-MICRO-5.3-aarch64' : {
-        'PDID' : [2426], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2426], 'BETAPDID' : [1925], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
     },
     'SLE-MICRO-5.3-s390x' : {
-        'PDID' : [2427], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2427], 'BETAPDID' : [1927], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
     },
     'SLE-MICRO-5.3-x86_64' : {
-        'PDID' : [2428], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2428], 'BETAPDID' : [1928], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
     },
     'openSUSE-Leap-15-x86_64' : {
