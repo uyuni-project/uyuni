@@ -1,3 +1,4 @@
+- fix xmlrpc call randomly failing with translation error (bsc#1203633)
 - Optimize action chain processing on job return event (bsc#1203532)
 - Re-calculate salt event queue numbers on restart
 - Fix out of memory error when building a CLM project (bsc#1202217)
