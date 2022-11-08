@@ -292,6 +292,19 @@ public class ServerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test for {@link Server#doesOsSupportsMonitoring()} for RedHat 9.
+     */
+    @Test
+    public void testOsSupportsMonitoringRedHat9() throws Exception {
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOsFamily("RedHat");
+        s.setRelease("9");
+        assertTrue(s.doesOsSupportsMonitoring());
+    }
+
+    /**
      * Test for {@link Server#doesOsSupportsOSImageBuilding()}.
      */
     @Test
