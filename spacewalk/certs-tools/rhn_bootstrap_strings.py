@@ -860,19 +860,15 @@ echo
     rm -f ${ORG_CA_CERT}
     $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
 
-    if [ -z "$SNAPSHOT_ID" ]; then
-        test -d "$CERT_DIR" || mkdir -p "$CERT_DIR"
-    else
-        call_tukit "test -d '$CERT_DIR' || mkdir -p '$CERT_DIR'"
-    fi
-
     if [ -n "$SNAPSHOT_ID" ]; then
         # we need to copy certificate to the trustroot outside of transaction for zypper
         cp "$ORG_CA_CERT" /etc/pki/trust/anchors/
+        call_tukit "test -d '$CERT_DIR' || mkdir -p '$CERT_DIR'"
         call_tukit "mv '/root/$ORG_CA_CERT' '$CERT_DIR'"
+    else
+        test -d "$CERT_DIR" || mkdir -p "$CERT_DIR"
+        mv "$ORG_CA_CERT" "$CERT_DIR"
     fi
-    # symlink & update certificates is already done in rpm post-install script
-    # no need to be done again if we have installed rpm
     echo "* update certificates"
     updateCertificates
 """
