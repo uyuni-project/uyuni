@@ -1042,6 +1042,8 @@ echo
             # we need to copy certificate to the trustroot outside of transaction for zypper
             cp "$ORG_CA_CERT" /etc/pki/trust/anchors/
             call_tukit "mv '/root/$ORG_CA_CERT' '$CERT_DIR'"
+        else
+            mv "$ORG_CA_CERT" "$CERT_DIR"
         fi
         # symlink & update certificates is already done in rpm post-install script
         # no need to be done again if we have installed rpm
