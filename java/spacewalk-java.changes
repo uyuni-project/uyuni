@@ -1,3 +1,4 @@
+- Migrate formulas with default values to database (bsc#1204932)
 - Improved reboot needed handling for transactional swystems
 - Manage reboot in transactional update action chain (bsc#1201476)
 - Enable monitoring for RHEL 9 Salt clients
