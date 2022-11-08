@@ -39,6 +39,7 @@ import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
@@ -316,19 +317,18 @@ public class FormulaFactory {
                 if (data.isEmpty()) {
                     File dataFile = new File(getPillarDir() + server.getMinionId() + "_" + formula + "." +
                             PILLAR_FILE_EXTENSION);
-                    if (dataFile.exists()) {
-                        try {
-                            data = Optional.ofNullable((Map<String, Object>) GSON.fromJson(
-                                    new BufferedReader(new FileReader(dataFile)), Map.class))
-                                .map(FormulaFactory::convertIntegers);
-                            data.ifPresent(d -> {
-                                Pillar pillar = new Pillar(PREFIX + formula, d, server);
-                                server.getPillars().add(pillar);
-                            });
-                        }
-                        catch (FileNotFoundException e) {
-                        }
+                    try {
+                        data = Optional.ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)),
+                                                new TypeToken<Map<String, Object>>() { }.getType()));
                     }
+                    catch (FileNotFoundException e) {
+                        // This happens if the formula has default value
+                        data = Optional.of(new HashMap<>());
+                    }
+                    data.map(FormulaFactory::convertIntegers).ifPresent(d -> {
+                        Pillar pillar = new Pillar(PREFIX + formula, d, server);
+                        server.getPillars().add(pillar);
+                    });
                 }
                 else {
                     LOG.warn("Minion \"{}\" pillar \"{}\" already in database, not migrating pillar file",
@@ -537,18 +537,18 @@ public class FormulaFactory {
         Optional<Map<String, Object>> data = group.getPillarByCategory(PREFIX + name).map(Pillar::getPillar);
 
         // Load data from the legacy file if not converted yet
-        File dataFile = new File(getGroupPillarDir() +
-                group.getId() + "_" + name + "." + PILLAR_FILE_EXTENSION);
-        if (data.isEmpty() && dataFile.exists()) {
+        if (data.isEmpty()) {
+            File dataFile = new File(getGroupPillarDir() +
+                    group.getId() + "_" + name + "." + PILLAR_FILE_EXTENSION);
             try {
-                data = Optional.ofNullable(
-                        (Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .map(FormulaFactory::convertIntegers);
+                data = Optional.ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)),
+                                new TypeToken<Map<String, Object>>() { }.getType()));
             }
             catch (FileNotFoundException e) {
+                data = Optional.of(new HashMap<>());
             }
         }
-        return data;
+        return data.map(FormulaFactory::convertIntegers);
     }
 
     /**
