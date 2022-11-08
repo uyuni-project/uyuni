@@ -22,6 +22,15 @@ cp /root/sample.ks /var/lib/cobbler/kickstarts/sample.ks
 # start cobbler daemon
 cobblerd
 
+# Configure DHCP
+sed -i 's/DHCPD_INTERFACE=""/DHCPD_INTERFACE="ANY"/' /etc/sysconfig/dhcpd
+echo "subnet 172.17.0.0 netmask 255.255.255.0 {}"  >> /etc/dhcpd.conf
+
+# Configure PAM
+useradd -p $(perl -e 'print crypt("test", "password")') test
+
+sh /root/cobbler/setup-supervisor.sh
+
 # execute the tests
 
 cd /usr/share/cobbler/tests
