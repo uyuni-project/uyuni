@@ -29601,8 +29601,8 @@ given channel.</source>
         <target state="final">登録の転送</target>
       </trans-unit>
       <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
-        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-        <target state="final">トランザクション型更新のあるOS: パッケージおよび/またはチャンネルが変更されたら再起動してください。</target>
+        <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
+        <target state="needs-adaptation">トランザクション型更新のあるOS: パッケージおよび/またはチャンネルが変更されたら再起動してください。</target>
       </trans-unit>
       <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
@@ -29756,7 +29756,7 @@ given channel.</source>
         </context-group>
         <target state="final">カスタムチャンネルの自動同期が有効になっています。このチャンネルは、ベンダチャンネルと自動的に同期されます。</target>
       </trans-unit>
-      <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
         <target state="final">従来のスタックは、SUSE manager 4.3のリリース時点で非推奨です。次のメジャーリリースであるバージョン4.4以降ではサポートされなくなります。このリリースの前に、salt minionへの移行を検討してください。</target>
       </trans-unit>
