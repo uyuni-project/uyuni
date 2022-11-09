@@ -1449,25 +1449,7 @@ When(/^I clean up the server's hosts file$/) do
   $server.run(command)
 end
 
-# select an item from any dropdown
-When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
-  # let the the select2js box filter open the hidden options
-  xpath_query = "//select[@name='#{label}']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
-  # select the desired option
-  raise "#{label} #{selection} not found" unless find(:xpath, "//select[@name='#{label}']/option[contains(text(), '#{selection}')]").click
-end
-
-# check if a certain link is present in the channel mappings table
-Given(/^I see a "(.*?)" link in the table/) do |link_name|
-  page.has_field?("#{link_name}", with: 'Operating System')
-end
-
-Then(/^I should see a "(.*?)" link in the table/) do |link_name|
-  page.has_field?("#{link_name}", with: 'Operating System')
-end
-
-# check if a certain architecture text is present in the mappings table
-Given(/^I see a "(.*?)" architecture description in the table/) do |text|
-  page.has_field?("#{text}", with: 'Architecture')
+Then(/^I should see the current time as starting time/) do
+  now = Time.now
+  raise "The starting time cannot be found" unless page.has_field?("#{now.strftime("%k:%M")}", with: 'Start Time')
 end
