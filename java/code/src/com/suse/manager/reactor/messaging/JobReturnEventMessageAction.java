@@ -112,7 +112,7 @@ public class JobReturnEventMessageAction implements MessageAction {
             }
         }
         boolean isFunctionTestMode = functionArgs.stream()
-                .anyMatch(e -> e.containsKey("test") && Boolean.parseBoolean(e.get("test").toString()));
+                .anyMatch(e -> e instanceof Map && e.containsKey("test") && Boolean.parseBoolean(e.get("test").toString()));
 
         if (Objects.isNull(function) && LOG.isDebugEnabled()) {
             LOG.debug("Function is null in JobReturnEvent -> \n{}", Json.GSON.toJson(jobReturnEvent));
