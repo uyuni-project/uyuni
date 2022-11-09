@@ -108,7 +108,8 @@ public class JobReturnEventMessageAction implements MessageAction {
         if (jobReturnEvent.getData().getFunArgs() instanceof List) {
             List<Object> funArgs = (List<Object>) jobReturnEvent.getData().getFunArgs();
             if (!funArgs.isEmpty() && funArgs.get(0) instanceof Map) {
-                functionArgs = funArgs.stream().filter(x -> x instanceof Map).map(x -> (Map<String, Object>) x).toList();
+                functionArgs = funArgs.stream().filter(x -> x instanceof Map)
+                        .map(x -> (Map<String, Object>) x).toList();
             }
         }
         boolean isFunctionTestMode = functionArgs.stream()
