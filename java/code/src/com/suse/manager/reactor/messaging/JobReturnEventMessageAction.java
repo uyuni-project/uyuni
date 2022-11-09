@@ -107,12 +107,13 @@ public class JobReturnEventMessageAction implements MessageAction {
         List<Map<String, Object>> functionArgs = new LinkedList<>();
         if (jobReturnEvent.getData().getFunArgs() instanceof List) {
             List<Object> funArgs = (List<Object>) jobReturnEvent.getData().getFunArgs();
+            funArgs.stream().filter(x -> x instanceof Map).toList();
             if (!funArgs.isEmpty() && funArgs.get(0) instanceof Map) {
-                functionArgs = (List<Map<String, Object>>) jobReturnEvent.getData().getFunArgs();
+                functionArgs = funArgs.stream().filter(x -> x instanceof Map).map(x -> (Map<String, Object>) x).toList();
             }
         }
         boolean isFunctionTestMode = functionArgs.stream()
-                .anyMatch(e -> e instanceof Map && e.containsKey("test") && Boolean.parseBoolean(e.get("test").toString()));
+                .anyMatch(e -> e.containsKey("test") && Boolean.parseBoolean(e.get("test").toString()));
 
         if (Objects.isNull(function) && LOG.isDebugEnabled()) {
             LOG.debug("Function is null in JobReturnEvent -> \n{}", Json.GSON.toJson(jobReturnEvent));
