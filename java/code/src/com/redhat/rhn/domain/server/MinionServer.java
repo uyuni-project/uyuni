@@ -35,7 +35,6 @@ import java.util.Set;
 public class MinionServer extends Server implements SaltConfigurable {
 
     private String minionId;
-    private String osFamily;
     private String kernelLiveVersion;
     private Integer sshPushPort;
     private Set<AccessToken> accessTokens = new HashSet<>();
@@ -71,24 +70,6 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     public void setMinionId(String minionIdIn) {
         this.minionId = minionIdIn;
-    }
-
-    /**
-     * Getter for os family
-     *
-     * @return String to get
-     */
-    public String getOsFamily() {
-        return this.osFamily;
-    }
-
-    /**
-     * Setter for os family
-     *
-     * @param osFamilyIn to set
-     */
-    public void setOsFamily(String osFamilyIn) {
-        this.osFamily = osFamilyIn;
     }
 
     /**

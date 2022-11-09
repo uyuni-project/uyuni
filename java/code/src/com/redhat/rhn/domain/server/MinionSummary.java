@@ -33,6 +33,7 @@ public class MinionSummary {
     private String machineId;
     private String os;
     private Optional<String> contactMethodLabel;
+    private Boolean transactionalUpdate;
 
     /**
      * Convenience constructor from a MinionServer instance.
@@ -41,7 +42,8 @@ public class MinionSummary {
      */
     public MinionSummary(MinionServer minion) {
         this(minion.getId(), minion.getMinionId(), minion.getDigitalServerId(),
-                minion.getMachineId(), minion.getContactMethodLabel(), minion.getOs());
+                minion.getMachineId(), minion.getContactMethodLabel(), minion.getOs(),
+                minion.doesOsSupportsTransactionalUpdate());
     }
 
     /**
@@ -56,13 +58,40 @@ public class MinionSummary {
      */
     public MinionSummary(Long serverIdIn, String minionIdIn, String digitalServerIdIn, String machineIdIn,
             Optional<String> contactMethodLabelIn, String osIn) {
+        this(serverIdIn, minionIdIn, digitalServerIdIn, machineIdIn, contactMethodLabelIn, osIn,
+                ServerConstants.SLEMICRO.equals(osIn) ? true : false);
+    }
+
+    /**
+     * Standard constructor.
+     *
+     * @param serverIdIn the server id
+     * @param minionIdIn the minion id
+     * @param digitalServerIdIn the digital server id
+     * @param machineIdIn the machine id
+     * @param contactMethodLabelIn the contact method label
+     * @param osIn the minion os
+     * @param transactionalUpdateIn if minion supports transactional update
+
+     */
+    public MinionSummary(Long serverIdIn, String minionIdIn, String digitalServerIdIn, String machineIdIn,
+            Optional<String> contactMethodLabelIn, String osIn, Boolean transactionalUpdateIn) {
         this.serverId = serverIdIn;
         this.minionId = minionIdIn;
         this.digitalServerId = digitalServerIdIn;
         this.machineId = machineIdIn;
         this.contactMethodLabel = contactMethodLabelIn;
         this.os = osIn;
+        this.transactionalUpdate = transactionalUpdateIn;
     }
+
+    /**
+     * @return true is minion is transactiona update
+     */
+    public Boolean isTransactionalUpdate() {
+        return transactionalUpdate;
+    }
+
 
     /**
      * @return the minion os

@@ -87,6 +87,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Org org;
     private String digitalServerId;
     private String os;
+    private String osFamily;
     private String release;
     private String name;
     private String description;
@@ -623,22 +624,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public String getOs() {
         return this.os;
-    }
-
-    /**
-     * Disabled for non-minions servers. @see com.redhat.rhn.domain.server.MinionServer
-     * @return <code>false</code>.
-     */
-    public boolean doesOsSupportsContainerization() {
-        return false;
-    }
-
-    /**
-     * Disabled for non-minions servers. @see com.redhat.rhn.domain.server.MinionServer
-     * @return <code>false</code>.
-     */
-    public boolean doesOsSupportsOSImageBuilding() {
-        return false;
     }
 
     /**
@@ -2190,14 +2175,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Whether server supports monitoring or not.
-     * @return false per default
-     */
-    public boolean doesOsSupportsMonitoring() {
-        return false;
-    }
-
-    /**
      *
      * @return payg
      */
@@ -2289,4 +2266,159 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public PackageType getPackageType() {
         return getServerArch().getArchType().getPackageType();
     }
+
+    /**
+     * Return <code>true</code> if OS on this system supports OS Image building,
+     * <code>false</code> otherwise.
+     *
+     * @return <code>true</code> if OS supports OS Image building
+     */
+    public boolean doesOsSupportsOSImageBuilding() {
+        return isSLES11() || isSLES12() || isSLES15() || isLeap15();
+    }
+
+    /**
+     * Return <code>true</code> if OS on this system supports Containerization,
+     * <code>false</code> otherwise.
+     * <p>
+     * Note: For SLES, we are only checking if it's not 10 nor 11.
+     * Older than SLES 10 are not being checked.
+     * </p>
+     *
+     * @return <code>true</code> if OS supports Containerization
+     */
+    public boolean doesOsSupportsContainerization() {
+        return !isSLES10() && !isSLES11();
+    }
+
+    /**
+     * Return <code>true</code> if OS on this system supports Transactional Update,
+     * <code>false</code> otherwise.
+     *
+     * @return <code>true</code> if OS supports Transactional Update
+     */
+    public boolean doesOsSupportsTransactionalUpdate() {
+        return isSLEMicro();
+    }
+
+    /**
+     * Return <code>true</code> if OS on supports monitoring
+     * <code>false</code> otherwise.
+     *
+     * @return <code>true</code> if OS supports monitoring
+     */
+    public boolean doesOsSupportsMonitoring() {
+        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
+                isRedHat6() || isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isRocky8() ||
+                isRocky9() || isDebian11() || isDebian10();
+    }
+
+    /**
+     * @return true if the installer type is of SLES 10
+     */
+    private boolean isSLES10() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("10");
+    }
+
+    /**
+     * @return true if the installer type is of SLES 11
+     */
+    private boolean isSLES12() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("12");
+    }
+
+    /**
+     * @return true if the installer type is of SLES 11
+     */
+    private boolean isSLES11() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("11");
+    }
+
+    /**
+     * @return true if the installer type is of SLE Micro
+     */
+    private boolean isSLEMicro() {
+        return ServerConstants.SLEMICRO.equals(getOs());
+    }
+
+    /**
+     * @return true if the installer type is of SLES 15
+     */
+    private boolean isSLES15() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
+    }
+
+    private boolean isLeap15() {
+        return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
+    }
+
+    private boolean isUbuntu1804() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
+    }
+
+    private boolean isUbuntu2004() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("20.04");
+    }
+
+    private boolean isUbuntu2204() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
+    }
+
+    private boolean isDebian11() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("11");
+    }
+
+    private boolean isDebian10() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
+    }
+
+    /**
+     * This is supposed to cover all RedHat flavors (incl. RHEL, RES and CentOS Linux)
+     */
+    private boolean isRedHat6() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("6");
+    }
+
+    private boolean isRedHat7() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("7");
+    }
+
+    private boolean isRedHat8() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("8");
+    }
+
+    private boolean isAlibaba2() {
+        return ServerConstants.ALIBABA.equals(getOs());
+    }
+
+    private boolean isAmazon2() {
+        return ServerConstants.AMAZON.equals(getOsFamily()) && getRelease().equals("2");
+    }
+
+    private boolean isRocky8() {
+        return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("8.");
+    }
+
+    private boolean isRocky9() {
+        return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("9.");
+    }
+
+    /**
+     * Getter for os family
+     *
+     * @return String to get
+     */
+    public String getOsFamily() {
+        return this.osFamily;
+    }
+
+    /**
+     * Setter for os family
+     *
+     * @param osFamilyIn to set
+     */
+    public void setOsFamily(String osFamilyIn) {
+        this.osFamily = osFamilyIn;
+    }
+
 }
