@@ -35,7 +35,6 @@ import java.util.Set;
 public class MinionServer extends Server implements SaltConfigurable {
 
     private String minionId;
-    private String osFamily;
     private String kernelLiveVersion;
     private Integer sshPushPort;
     private Set<AccessToken> accessTokens = new HashSet<>();
@@ -46,6 +45,16 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     public MinionServer() {
         super();
+    }
+
+    /**
+     * Minimal constructor used to avoid loading all properties in SSM config channel subscription
+     *
+     * @param idIn the server id
+     * @param machineIdIn the machine id
+     */
+    public MinionServer(long idIn, String machineIdIn) {
+        super(idIn, machineIdIn);
     }
 
     /**
@@ -60,24 +69,6 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     public void setMinionId(String minionIdIn) {
         this.minionId = minionIdIn;
-    }
-
-    /**
-     * Getter for os family
-     *
-     * @return String to get
-     */
-    public String getOsFamily() {
-        return this.osFamily;
-    }
-
-    /**
-     * Setter for os family
-     *
-     * @param osFamilyIn to set
-     */
-    public void setOsFamily(String osFamilyIn) {
-        this.osFamily = osFamilyIn;
     }
 
     /**
@@ -172,7 +163,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isRocky8() ||
+                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || isAlibaba2() || isAmazon2() || isRocky8() ||
                 isRocky9() || isDebian11() || isDebian10();
     }
 
@@ -248,6 +239,10 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     private boolean isRedHat8() {
         return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("8");
+    }
+
+    private boolean isRedHat9() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("9");
     }
 
     private boolean isAlibaba2() {

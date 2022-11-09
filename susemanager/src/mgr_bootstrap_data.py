@@ -1201,6 +1201,14 @@ DATA = {
         'BASECHANNEL' : 'oraclelinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/8/bootstrap/'
     },
+    'oracle-9-x86_64' : {
+        'PDID' : [-41, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
+    },
+    'oracle-9-aarch64' : {
+        'PDID' : [-40, 2542], 'BETAPDID' : [2547], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
+    },
     'oracle-9-x86_64-uyuni' : {
         'BASECHANNEL' : 'oraclelinux9-x86_64', 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/oracle/9/bootstrap/'
@@ -1253,6 +1261,10 @@ DATA = {
         'BASECHANNEL' : 'rhel8-pool-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
+    'SUSE-LibertyLinux9-x86_64' : {
+        'PDID' : [-35, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
+    },
     'RHEL9-x86_64-uyuni' : {
         'BASECHANNEL' : 'rhel9-pool-x86_64', 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
@@ -1280,6 +1292,14 @@ DATA = {
     'almalinux-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'almalinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/8/bootstrap/'
+    },
+    'almalinux-9-x86_64' : {
+        'PDID' : [-38, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
+    },
+    'almalinux-9-aarch64' : {
+        'PDID' : [-39, 2542], 'BETAPDID' : [2547], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/almalinux/9/bootstrap/'
     },
     'almalinux-9-x86_64-uyuni' : {
         'BASECHANNEL' : 'almalinux9-x86_64', 'PKGLIST' : RES9,
@@ -1312,6 +1332,14 @@ DATA = {
     'rockylinux-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'rockylinux8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/8/bootstrap/'
+    },
+    'rockylinux-9-x86_64' : {
+        'PDID' : [-36, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/9/bootstrap/'
+    },
+    'rockylinux-9-aarch64' : {
+        'PDID' : [-37, 2542], 'BETAPDID' : [2547], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/rockylinux/9/bootstrap/'
     },
     'rockylinux-9-x86_64-uyuni' : {
         'BASECHANNEL' : 'rockylinux9-x86_64', 'PKGLIST' : RES9,

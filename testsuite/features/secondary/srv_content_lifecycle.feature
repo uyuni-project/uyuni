@@ -10,9 +10,7 @@ Feature: Content lifecycle
 
   Scenario: Create a content lifecycle project
     When I follow the left menu "Content Lifecycle > Projects"
-    Then I should see a "Content Lifecycle Projects" text
-    And I should see a "There are no entries to show." text
-    When I follow "Create Project"
+    And I follow "Create Project"
     Then I should see a "Create a new Content Lifecycle Project" text
     And I should see a "Project Properties" text
     When I enter "clp_label" as "label"

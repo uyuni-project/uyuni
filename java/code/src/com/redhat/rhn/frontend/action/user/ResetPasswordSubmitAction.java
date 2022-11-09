@@ -160,7 +160,7 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error redirecting to login page", e);
         }
     }
 

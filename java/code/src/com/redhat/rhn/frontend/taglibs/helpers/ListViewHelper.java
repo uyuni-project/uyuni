@@ -218,8 +218,7 @@ public class ListViewHelper {
                 }
             }
             catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-                e.printStackTrace();
-                continue;
+                // ignore
             }
         }
     }

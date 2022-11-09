@@ -496,7 +496,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int addChannels(User loggedInUser, List<Number> sids, List<String> configChannelLabels,
                            Boolean addToTop) {
-        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
+        List<Server> servers = xmlRpcSystemHelper.lookupServersForSubscribe(loggedInUser, sids);
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser, configChannelLabels);
 
@@ -509,11 +509,15 @@ public class ServerConfigHandler extends BaseHandler {
 
         List<ConfigChannel> channelsToAdd;
         for (Server server : servers) {
+            // No need to do anything if we have to add exactly what is already set on the server
+            if (channels.equals(server.getConfigChannelList())) {
+                continue;
+            }
             if (addToTop) {
                 // Add the existing subscriptions to the end so they will be resubscribed
                 // and their ranks will be overridden
                 channelsToAdd = Stream
-                        .concat(channels.stream(), server.getConfigChannelStream())
+                        .concat(channels.stream(), server.getConfigChannelStream().filter(c -> !channels.contains(c)))
                         .collect(Collectors.toList());
             }
             else {
@@ -522,6 +526,7 @@ public class ServerConfigHandler extends BaseHandler {
             }
 
             server.subscribeConfigChannels(channelsToAdd, loggedInUser);
+            server.storeConfigChannels();
         }
 
         return 1;
@@ -550,13 +555,18 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int setChannels(User loggedInUser, List<Number> sids,
             List<String> configChannelLabels) {
-        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
+        List<Server> servers = xmlRpcSystemHelper.lookupServersForSubscribe(loggedInUser, sids);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
                 lookupGlobals(loggedInUser, configChannelLabels);
 
-        servers.forEach(s -> s.setConfigChannels(channels, loggedInUser));
+        servers.forEach(s -> {
+            if (!channels.equals(s.getConfigChannelList())) {
+                s.setConfigChannels(channels, loggedInUser);
+                s.storeConfigChannels();
+            }
+        });
         return 1;
     }
 
@@ -578,7 +588,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int removeChannels(User loggedInUser, List<Number> sids,
             List<String> configChannelLabels) {
-        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, sids);
+        List<Server> servers = xmlRpcSystemHelper.lookupServersForSubscribe(loggedInUser, sids);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
@@ -588,7 +598,12 @@ public class ServerConfigHandler extends BaseHandler {
         int channelCount = configChannelLabels.size();
         int[] countsExpected = servers.stream().mapToInt(s -> s.getConfigChannelCount() - channelCount).toArray();
 
-        servers.forEach(s -> s.unsubscribeConfigChannels(channels, loggedInUser));
+        servers.forEach(s -> {
+            if (channels.stream().anyMatch(ch -> s.getConfigChannelList().contains(ch))) {
+                s.unsubscribeConfigChannels(channels, loggedInUser);
+                s.storeConfigChannels();
+            }
+        });
 
         int[] countsActual = servers.stream().mapToInt(Server::getConfigChannelCount).toArray();
         return Arrays.equals(countsExpected, countsActual) ? 1 : 0;

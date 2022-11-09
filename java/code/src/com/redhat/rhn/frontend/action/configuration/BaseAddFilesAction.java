@@ -26,6 +26,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -40,6 +42,8 @@ import javax.servlet.http.HttpServletResponse;
  * BaseAddFilesAction
  */
 public abstract class BaseAddFilesAction extends RhnAction {
+
+    private static final Logger LOG = LogManager.getLogger(BaseAddFilesAction.class);
 
     public static final String MAX_SIZE = "maxbytes";
     public static final String CSRF_TOKEN = "csrfToken";
@@ -132,7 +136,7 @@ public abstract class BaseAddFilesAction extends RhnAction {
             getStrutsDelegate().saveMessages(req, ve.getResult());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
         // If we got here, something went wrong - try again
         return getStrutsDelegate().forwardParams(
