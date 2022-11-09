@@ -107,7 +107,6 @@ public class JobReturnEventMessageAction implements MessageAction {
         List<Map<String, Object>> functionArgs = new LinkedList<>();
         if (jobReturnEvent.getData().getFunArgs() instanceof List) {
             List<Object> funArgs = (List<Object>) jobReturnEvent.getData().getFunArgs();
-            funArgs.stream().filter(x -> x instanceof Map).toList();
             if (!funArgs.isEmpty() && funArgs.get(0) instanceof Map) {
                 functionArgs = funArgs.stream().filter(x -> x instanceof Map).map(x -> (Map<String, Object>) x).toList();
             }
