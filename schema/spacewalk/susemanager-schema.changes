@@ -1,3 +1,6 @@
+- Increase cron_expr varchar length to 120 in suseRecurringAction
+  table (bsc#1205040)
+
 -------------------------------------------------------------------
 Tue Nov 15 16:54:35 UTC 2022 - marina.latini@suse.com
 
