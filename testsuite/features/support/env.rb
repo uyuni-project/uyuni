@@ -173,10 +173,6 @@ Before('@virthost_kvm') do
   skip_this_scenario unless $kvm_server
 end
 
-Before('@virthost_xen') do
-  skip_this_scenario unless $xen_server
-end
-
 Before('@centos7_minion') do
   skip_this_scenario unless $centos7_minion
 end

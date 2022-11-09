@@ -1,3 +1,4 @@
+- added kickstart distribution data for RHEL 9
 - Fix previous 'Amazon EC2' schema upgrade script
   to prevent possible issues on schema upgrade.
 - Change 'Amazon EC2/KVM' to 'Amazon EC2/Nitro' (bsc#1203685)

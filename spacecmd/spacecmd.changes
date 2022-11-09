@@ -1,3 +1,4 @@
+- Fix dict_keys not supporting indexing in systems_setconfigchannelorger
 - Improve Proxy FQDN hint message
 - Added a warning message for traditional stack deprecation
 - Stop always showing help for valid proxy_container_config calls

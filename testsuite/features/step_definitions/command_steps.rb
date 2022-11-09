@@ -1125,7 +1125,7 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   # Use 'ide' bus for Xen and 'virtio' bus for KVM
-  bus_type = host == 'xen_server' ? 'ide' : 'virtio'
+  bus_type = 'virtio'
   node.run(
     "virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path},bus=#{bus_type} "\
     "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\

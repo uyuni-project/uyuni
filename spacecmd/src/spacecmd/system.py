@@ -1725,7 +1725,8 @@ def do_system_setconfigchannelorder(self, args):
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
-        systems = self.ssm.keys()
+        systems = list(self.ssm.keys())
+        args.pop(0)
     else:
         systems = self.expand_systems(args.pop(0))
 

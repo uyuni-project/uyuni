@@ -1,3 +1,10 @@
+- Manage reboot in transactional update action chain (bsc#1201476)
+- Enable monitoring for RHEL 9 Salt clients
+- Optimize performance of config channels operations for UI and API (bsc#1204029)
+- Don't add the same channel twice in the System config addChannel API (bsc#1204029)
+- Optimize action chain processing on job return event (bsc#1203532)
+- Re-calculate salt event queue numbers on restart
+- Improved reboot needed handling for SLE Micro
 - Check if system has all formulas correctly assigned
   (bsc#1201607)
 - Remove group formula assignements and data on group delete
@@ -16,6 +23,13 @@
 - Fix out of memory error when building a CLM project (bsc#1202217)
 - Added a warning message for traditional stack deprecation
 - Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
+
+-------------------------------------------------------------------
+Fri Nov 04 16:03:03 CET 2022 - jgonzalez@suse.com
+
+- version 4.3.40-1
+  * Fix number of handlers for deleted files managed by taskomatic
+    growing continuously (bsc#1204050)
 
 -------------------------------------------------------------------
 Mon Oct 31 14:49:33 CET 2022 - jgonzalez@suse.com

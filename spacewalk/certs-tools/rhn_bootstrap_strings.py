@@ -162,6 +162,11 @@ DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE=1
 # are used.
 CLIENT_REPOS_ROOT=
 {venv_section}
+
+# Automatically schedule reboot of the machine in case of running transactional
+# system (for example SLE Micro)
+SCHEDULE_REBOOT_AFTER_TRANSACTION=1
+
 #
 # -----------------------------------------------------------------------------
 # DO NOT EDIT BEYOND THIS POINT -----------------------------------------------
@@ -227,6 +232,33 @@ elif [ -x /usr/bin/yum ]; then
     INSTALLER=yum
 elif [ -x /usr/bin/apt ]; then
     INSTALLER=apt
+fi
+
+
+SNAPSHOT_ID=""
+
+function call_tukit() {{
+    tukit -q call $SNAPSHOT_ID /bin/bash <<< $@
+}}
+
+function new_transaction() {{
+    if [ -n "$SNAPSHOT_ID" ]; then
+        tukit -q close $SNAPSHOT_ID
+    fi
+    SNAPSHOT_ID=$(/usr/sbin/tukit -q open | sed 's/ID: \([0-9]*\)/\\1/')
+    if [ -z "$SNAPSHOT_ID" ]; then
+        echo "Transactional system detected, but could not open new transaction. Aborting!"
+        exit 1
+    fi
+}}
+
+if [ -x /usr/sbin/tukit ]; then
+    new_transaction
+    echo "Transactional system detected. Reboot will be required to finish bootstrapping"
+    cat > /etc/tukit.conf <<EOL
+# Access /root in the snapshot
+BINDDIRS[0]="/root"
+EOL
 fi
 
 if [ ! -w . ]; then
@@ -548,6 +580,7 @@ elif [ "$INSTALLER" == zypper ]; then
             if [ "$BASE" != "sle" ]; then
                 grep -q 'openSUSE' /etc/os-release && BASE='opensuse'
             fi
+            grep -q 'Micro' /etc/os-release && BASE="${{BASE}}micro"
             VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
             PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
         fi
@@ -649,16 +682,24 @@ elif [ "$INSTALLER" == zypper ]; then
 
             setup_bootstrap_repo
 
-            zypper --non-interactive --gpg-auto-import-keys refresh "$CLIENT_REPO_NAME"
-            # install missing packages
-            zypper --non-interactive in $Z_MISSING
-            for P in $Z_MISSING; do
-                rpm -q --whatprovides "$P" || {{
-                    echo "ERROR: Failed to install all missing packages."
-                    exit 1
-                }}
-            done
-
+            if [ -z "$SNAPSHOT_ID" ]; then
+                zypper --non-interactive --gpg-auto-import-keys refresh "$CLIENT_REPO_NAME"
+                # install missing packages
+                zypper --non-interactive in $Z_MISSING
+                for P in $Z_MISSING; do
+                    rpm -q --whatprovides "$P" || {{
+                        echo "ERROR: Failed to install all missing packages."
+                        exit 1
+                    }}
+                done
+            else
+                call_tukit "zypper --non-interactive --gpg-auto-import-keys refresh '$CLIENT_REPO_NAME'"
+                if ! call_tukit "zypper --non-interactive install $Z_MISSING"; then
+                     echo "ERROR: Failed to install all required packages."
+                     tukit abort "$SNAPSHOT_ID"
+                     exit 1
+                fi
+            fi
         fi
     fi
 
@@ -678,9 +719,17 @@ elif [ "$INSTALLER" == zypper ]; then
     get_rhnlib_pkgs
     # try update main packages for registration from any repo which is available
     if [ $VENV_ENABLED -eq 1 ]; then
-        zypper --non-interactive up {PKG_NAME_VENV_UPDATE} ||:
+        if [ -z "$SNAPSHOT_ID" ]; then
+            zypper --non-interactive up {PKG_NAME_VENV_UPDATE} ||:
+        else
+            call_tukit "zypper --non-interactive update {PKG_NAME_VENV_UPDATE} ||:"
+        fi
     else
-        zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
+        if [ -z "$SNAPSHOT_ID"]; then
+            zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
+        else
+            call_tukit "zypper --non-interactive update {PKG_NAME_UPDATE} $RHNLIB_PKG ||:"
+        fi
     fi
 
 elif [ "$INSTALLER" == apt ]; then
@@ -712,6 +761,12 @@ elif [ "$INSTALLER" == apt ]; then
         local NEEDED="salt-common salt-minion"
         if [ $VENV_ENABLED -eq 1 ]; then
             NEEDED="venv-salt-minion"
+        elif [[ $A_CLIENT_CODE_BASE == "ubuntu" && $A_CLIENT_CODE_MAJOR_VERSION == 18 ]]; then
+            # Ubuntu 18.04 needs these extra dependencies. They are not specified in
+            # python3-salt because we don't maintain multiple .deb build instructions
+            # and we can't add logic that adds the deps depending on which OS the .deb
+            # is built for.
+            NEEDED="$NEEDED python3-contextvars python3-immutables"
         fi
         A_MISSING=""
         for P in $NEEDED; do
@@ -944,10 +999,18 @@ echo
             return
         fi
         if [ "$CERT_DIR" != "$TRUST_DIR" ]; then
-            if [ -f $CERT_DIR/$CERT_FILE ]; then
-                ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
-            else
-                rm -f $TRUST_DIR/$CERT_FILE
+           if [ -z "$SNAPSHOT_ID" ]; then
+                if [ -f $CERT_DIR/$CERT_FILE ]; then
+                    ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
+                else
+                    rm -f $TRUST_DIR/$CERT_FILE
+                fi
+           else
+               if call_tukit "test -f '$CERT_DIR/$CERT_FILE'"; then
+                   call_tukit "ln -sf '$CERT_DIR/$CERT_FILE' '$TRUST_DIR'"
+               else
+                   call_tukit "rm -f '$TRUST_DIR/$CERT_FILE'"
+               fi
             fi
         fi
         $UPDATE_TRUST_CMD
@@ -964,18 +1027,30 @@ echo
         fi
     fi
 
-    test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
     rm -f ${ORG_CA_CERT}
     $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
 
-    if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ]; then
-        rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
-        rm -f ${ORG_CA_CERT}
+    if [ -z "$SNAPSHOT_ID" ]; then
+        test -d "$CERT_DIR" || mkdir -p "$CERT_DIR"
     else
-        mv ${ORG_CA_CERT} ${CERT_DIR}/${CERT_FILE}
+        call_tukit "test -d '$CERT_DIR' || mkdir -p '$CERT_DIR'"
     fi
 
-    if [  $ORG_CA_CERT_IS_RPM_YN -eq 0 ]; then
+    if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ]; then
+        if [ -n "$SNAPSHOT_ID" ]; then
+            call_tukit "rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}; rm -f $ORG_CA_CERT"
+        else
+            rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
+           rm -f ${ORG_CA_CERT}
+        fi
+    else
+        if [ -n "$SNAPSHOT_ID" ]; then
+            # we need to copy certificate to the trustroot outside of transaction for zypper
+            cp "$ORG_CA_CERT" /etc/pki/trust/anchors/
+            call_tukit "mv '/root/$ORG_CA_CERT' '$CERT_DIR'"
+        else
+            mv "$ORG_CA_CERT" "$CERT_DIR"
+        fi
         # symlink & update certificates is already done in rpm post-install script
         # no need to be done again if we have installed rpm
         echo "* update certificates"
@@ -1202,7 +1277,15 @@ removeTLSCertificate
 
 echo "* starting salt daemon and enabling it during boot"
 
-if [ -f /usr/lib/systemd/system/$MINION_SERVICE.service ] || [ -f /lib/systemd/system/$MINION_SERVICE.service ]; then
+if [ -n "$SNAPSHOT_ID" ]; then
+    call_tukit "systemctl enable '$MINION_SERVICE'"
+    tukit close $SNAPSHOT_ID
+    if [ "$SCHEDULE_REBOOT_AFTER_TRANSACTION" -eq 1 ]; then
+        transactional-update reboot
+    else
+       echo "** Reboot system to apply changes"
+    fi
+elif [ -f /usr/lib/systemd/system/$MINION_SERVICE.service ] || [ -f /lib/systemd/system/$MINION_SERVICE.service ]; then
     systemctl enable $MINION_SERVICE
     systemctl restart $MINION_SERVICE
 else

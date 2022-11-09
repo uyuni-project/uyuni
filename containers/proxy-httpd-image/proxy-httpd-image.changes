@@ -1,6 +1,11 @@
 - Prefix log messages with a package name to ease analysis
 
 -------------------------------------------------------------------
+Fri Nov  4 15:06:21 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Remove chmod and chown of /srv/www/htdocs/pub as this folder does not exist
+
+-------------------------------------------------------------------
 Mon Sep 26 12:40:41 UTC 2022 - Marina Latini <marina.latini@suse.com>
 
 - Update the image version to 4.3.2

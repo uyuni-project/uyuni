@@ -323,6 +323,11 @@ public class SaltReactor {
                     }))
             );
         }
+        else if (beaconEvent.getBeacon().equals("reboot_info")) {
+            MinionServerFactory.findByMinionId(beaconEvent.getMinionId()).ifPresent(
+                m -> m.setRebootNeeded((Boolean) beaconEvent.getData().get("reboot_needed"))
+            );
+        }
         return empty();
     }
 

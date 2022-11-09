@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -110,6 +111,10 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channelRanking.addElement(channel1.getId(), 3L);
         RhnSetFactory.save(channelRanking);
 
+        TestUtils.flushAndEvict(server1);
+        TestUtils.flushAndEvict(server2);
+        TestUtils.flushAndEvict(server3);
+
         // Send confirm request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
@@ -127,10 +132,9 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         List<ConfigChannel> srv2Expected = Arrays.asList(channel3, channel2, channel4);
         List<ConfigChannel> srv3Expected = Arrays.asList(channel2, channel4, channel3);
 
-        // Assert channel counts
-        assertEquals(srv1Expected.size(), server1.getConfigChannelCount());
-        assertEquals(srv2Expected.size(), server2.getConfigChannelCount());
-        assertEquals(srv3Expected.size(), server3.getConfigChannelCount());
+        server1 = ServerFactory.lookupById(server1.getId());
+        server2 = ServerFactory.lookupById(server2.getId());
+        server3 = ServerFactory.lookupById(server3.getId());
 
         // Assert channel order
         assertEquals(srv1Expected, server1.getConfigChannelList());
@@ -198,6 +202,10 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channelRanking.addElement(channel1.getId(), 3L);
         RhnSetFactory.save(channelRanking);
 
+        TestUtils.flushAndEvict(server1);
+        TestUtils.flushAndEvict(server2);
+        TestUtils.flushAndEvict(server3);
+
         // Send confirm request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
@@ -215,10 +223,9 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         List<ConfigChannel> srv2Expected = Arrays.asList(channel4, channel3, channel2);
         List<ConfigChannel> srv3Expected = Arrays.asList(channel2, channel4, channel3);
 
-        // Assert channel counts
-        assertEquals(srv1Expected.size(), server1.getConfigChannelCount());
-        assertEquals(srv2Expected.size(), server2.getConfigChannelCount());
-        assertEquals(srv3Expected.size(), server3.getConfigChannelCount());
+        server1 = ServerFactory.lookupById(server1.getId());
+        server2 = ServerFactory.lookupById(server2.getId());
+        server3 = ServerFactory.lookupById(server3.getId());
 
         // Assert channel order
         assertEquals(srv1Expected, server1.getConfigChannelList());
@@ -285,6 +292,10 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channelRanking.addElement(channel3.getId(), 2L);
         RhnSetFactory.save(channelRanking);
 
+        TestUtils.flushAndEvict(server1);
+        TestUtils.flushAndEvict(server2);
+        TestUtils.flushAndEvict(server3);
+
         // Send confirm request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
@@ -302,10 +313,9 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         List<ConfigChannel> srv2Expected = Arrays.asList(channel2, channel4, channel3);
         List<ConfigChannel> srv3Expected = Arrays.asList(channel2, channel4, channel3);
 
-        // Assert channel counts
-        assertEquals(srv1Expected.size(), server1.getConfigChannelCount());
-        assertEquals(srv2Expected.size(), server2.getConfigChannelCount());
-        assertEquals(srv3Expected.size(), server3.getConfigChannelCount());
+        server1 = ServerFactory.lookupById(server1.getId());
+        server2 = ServerFactory.lookupById(server2.getId());
+        server3 = ServerFactory.lookupById(server3.getId());
 
         // Assert channel order
         assertEquals(srv1Expected, server1.getConfigChannelList());
