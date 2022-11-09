@@ -1450,7 +1450,7 @@ When(/^I clean up the server's hosts file$/) do
 end
 
 # select an item from any dropdown
-And(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
+When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
   # let the the select2js box filter open the hidden options
   xpath_query = "//select[@name='#{label}']"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
