@@ -15,7 +15,7 @@ Feature: Task Engine Status
     And I should see a "Last Execution Times" link in the left menu
     And I should see a "Runtime Status" link in the left menu
 
-  Scenario: Resync the product channels to trigger a new task
+  Scenario: Sync a new product to trigger a new task
     When I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     And I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
@@ -25,6 +25,5 @@ Feature: Task Engine Status
     Then I should see the "SUSE Linux Enterprise Desktop 15 SP4 x86_64" selected
     When I click on "Add products"
     And I follow the left menu "Admin > Task Engine Status > Runtime Status"
-    Then I should see a "repo-sync" text
-    And I should see a "running" text
-    
+    Then I wait until I see "repo-sync" text
+    And I wait until I see "running" text
