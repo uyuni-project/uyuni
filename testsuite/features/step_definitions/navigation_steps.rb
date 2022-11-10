@@ -1105,3 +1105,7 @@ end
 Then(/^I should see left menu empty$/) do
   raise StandardError, 'The left menu is not empty.' unless page.has_no_xpath?("//*[contains(@class, 'level1')]/*/*[contains(@class, 'nodeLink')]")
 end
+
+Then(/^I should see the text "(.*?)" in the (Operating System|Architecture|Channel Label) field/) do |text, field|
+  page.has_field?("#{text}", with: field)
+end

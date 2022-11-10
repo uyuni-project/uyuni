@@ -1453,7 +1453,3 @@ When(/^I clean up the server's hosts file$/) do
   command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
   $server.run(command)
 end
-
-Then(/^I should see the text "(.*?)" in the (Operating System|Architecture|Channel Label) field/) do |text, field|
-  page.has_field?("#{text}", with: field)
-end
