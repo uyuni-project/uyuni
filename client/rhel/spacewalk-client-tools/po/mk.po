@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-09 10:11+0100\n"
-"PO-Revision-Date: 2022-11-07 05:13+0000\n"
+"PO-Revision-Date: 2022-11-11 01:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools-4-3/mk/>\n"
@@ -205,9 +205,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhncli.py:226
 msgid "An error has occurred:"
-msgstr ""
-"Се појави неочекувана грешка во ОС:\n"
-"%s"
+msgstr "Се случи грешка:"
 
 #: ../src/up2date_client/rhncli.py:234
 msgid "See /var/log/up2date for more information"
@@ -235,7 +233,7 @@ msgstr "Предупредување"
 
 #: ../src/up2date_client/rhnregGui.py:272
 msgid "There was an error while applying your choice."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка додека се применуваше вашиот избор."
 
 #: ../src/up2date_client/rhnregGui.py:291
 msgid "You specified an invalid protocol. Only https and http are allowed."
