@@ -528,15 +528,6 @@ And(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |ar
   raise "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
-# select an item from any dropdown
-When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
-  # let the the select2js box filter open the hidden options
-  xpath_query = "//select[@name='#{label}']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
-  # select the desired option
-  raise "#{label} #{selection} not found" unless find(:xpath, "//select[@name='#{label}']/option[contains(text(), '#{selection}')]").click
-end
-
 When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
