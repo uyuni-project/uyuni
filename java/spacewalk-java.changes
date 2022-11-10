@@ -1,3 +1,4 @@
+- Change Rocky Linux Advisory page URL
 - Fix not being able to delete CLM environment if there are custom child
   channels that where not built by the environment (bsc#1206932)
 - Makes systems column sortable on relevant patch page, to list by most affected systems

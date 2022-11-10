@@ -19,7 +19,7 @@ package com.suse.manager.errata;
  */
 public class RockyLinuxErrataParser extends AbstractSimpleErrataParser {
 
-    private static final String URL_FORMAT = "https://errata.rockylinux.org/{0}";
+    private static final String URL_FORMAT = "https://errata.build.resf.org/{0}";
 
     /**
      * Default constructor.
