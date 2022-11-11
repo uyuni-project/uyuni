@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-14 10:59+0200\n"
+"POT-Creation-Date: 2022-11-11 15:43+0100\n"
 "PO-Revision-Date: 2022-09-13 04:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -317,20 +317,20 @@ msgid "Contact Method:         %s"
 msgstr "联系方法：%s"
 
 #: ../src/spacecmd/activationkey.py:953 ../src/spacecmd/kickstart.py:427
-#: ../src/spacecmd/system.py:3094
+#: ../src/spacecmd/system.py:3095
 msgid "Software Channels"
 msgstr "软件通道"
 
 #: ../src/spacecmd/activationkey.py:961 ../src/spacecmd/configchannel.py:802
-#: ../src/spacecmd/configchannel.py:917 ../src/spacecmd/system.py:3103
+#: ../src/spacecmd/configchannel.py:917 ../src/spacecmd/system.py:3104
 msgid "Configuration Channels"
 msgstr "配置通道"
 
-#: ../src/spacecmd/activationkey.py:967 ../src/spacecmd/system.py:3108
+#: ../src/spacecmd/activationkey.py:967 ../src/spacecmd/system.py:3109
 msgid "Entitlements"
 msgstr "权利"
 
-#: ../src/spacecmd/activationkey.py:972 ../src/spacecmd/system.py:3114
+#: ../src/spacecmd/activationkey.py:972 ../src/spacecmd/system.py:3115
 msgid "System Groups"
 msgstr "系统组"
 
@@ -520,7 +520,7 @@ msgstr ""
 "                   foo 替换为 bar "
 
 #: ../src/spacecmd/activationkey.py:1458 ../src/spacecmd/kickstart.py:462
-#: ../src/spacecmd/system.py:3089
+#: ../src/spacecmd/system.py:3090
 msgid "Activation Keys"
 msgstr "激活密钥"
 
@@ -630,7 +630,7 @@ msgid ""
 msgstr ""
 "activationkey_setcontactmethod：设置要对通过此密钥注册的系统使用的联系方法。"
 
-#: ../src/spacecmd/activationkey.py:1779 ../src/spacecmd/system.py:4178
+#: ../src/spacecmd/activationkey.py:1779 ../src/spacecmd/system.py:4179
 msgid "Available contact methods: "
 msgstr "可用联系方法： "
 
@@ -960,7 +960,7 @@ msgstr "标签："
 #: ../src/spacecmd/configchannel.py:477 ../src/spacecmd/cryptokey.py:67
 #: ../src/spacecmd/custominfo.py:60 ../src/spacecmd/custominfo.py:204
 #: ../src/spacecmd/group.py:184 ../src/spacecmd/softwarechannel.py:780
-#: ../src/spacecmd/system.py:3565
+#: ../src/spacecmd/system.py:3566
 msgid "Description:"
 msgstr "说明："
 
@@ -1692,7 +1692,7 @@ msgstr "无效安装类型"
 msgid "A path is required"
 msgstr "必须指定路径"
 
-#: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2585
+#: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2586
 msgid "A base channel is required"
 msgstr "必须指定基础通道"
 
@@ -1812,9 +1812,9 @@ msgstr ""
 
 #: ../src/spacecmd/errata.py:117 ../src/spacecmd/system.py:419
 #: ../src/spacecmd/system.py:727 ../src/spacecmd/system.py:882
-#: ../src/spacecmd/system.py:1017 ../src/spacecmd/system.py:1791
-#: ../src/spacecmd/system.py:3719 ../src/spacecmd/system.py:4029
-#: ../src/spacecmd/system.py:4091 ../src/spacecmd/system.py:4255
+#: ../src/spacecmd/system.py:1017 ../src/spacecmd/system.py:1792
+#: ../src/spacecmd/system.py:3720 ../src/spacecmd/system.py:4030
+#: ../src/spacecmd/system.py:4092 ../src/spacecmd/system.py:4256
 msgid "Start Time [now]:"
 msgstr "开始时间 [now]："
 
@@ -1830,8 +1830,8 @@ msgstr "勘误             系统"
 #: ../src/spacecmd/errata.py:172 ../src/spacecmd/system.py:232
 #: ../src/spacecmd/system.py:469 ../src/spacecmd/system.py:822
 #: ../src/spacecmd/system.py:944 ../src/spacecmd/system.py:1097
-#: ../src/spacecmd/system.py:1810 ../src/spacecmd/system.py:3731
-#: ../src/spacecmd/system.py:4274
+#: ../src/spacecmd/system.py:1811 ../src/spacecmd/system.py:3732
+#: ../src/spacecmd/system.py:4275
 #, python-format
 msgid "Start Time: %s"
 msgstr "开始时间：%s"
@@ -2082,8 +2082,8 @@ msgstr "用法：group_removesystems GROUP <系统>"
 
 #: ../src/spacecmd/group.py:147 ../src/spacecmd/system.py:120
 #: ../src/spacecmd/system.py:234 ../src/spacecmd/system.py:477
-#: ../src/spacecmd/system.py:1504 ../src/spacecmd/system.py:1812
-#: ../src/spacecmd/system.py:4276
+#: ../src/spacecmd/system.py:1504 ../src/spacecmd/system.py:1813
+#: ../src/spacecmd/system.py:4277
 msgid "Systems"
 msgstr "系统"
 
@@ -2093,8 +2093,8 @@ msgstr "去除这些系统 [y/N]："
 
 #: ../src/spacecmd/group.py:160 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:137
-#: ../src/spacecmd/ssm.py:187 ../src/spacecmd/system.py:4319
-#: ../src/spacecmd/system.py:4398
+#: ../src/spacecmd/ssm.py:187 ../src/spacecmd/system.py:4320
+#: ../src/spacecmd/system.py:4399
 msgid "No systems found"
 msgstr "未找到系统"
 
@@ -4302,21 +4302,21 @@ msgstr "用法：report_ipaddresses [<系统>]"
 #: ../src/spacecmd/system.py:1163 ../src/spacecmd/system.py:1233
 #: ../src/spacecmd/system.py:1288 ../src/spacecmd/system.py:1387
 #: ../src/spacecmd/system.py:1620 ../src/spacecmd/system.py:1683
-#: ../src/spacecmd/system.py:1726 ../src/spacecmd/system.py:1806
-#: ../src/spacecmd/system.py:1948 ../src/spacecmd/system.py:1990
-#: ../src/spacecmd/system.py:2078 ../src/spacecmd/system.py:2145
-#: ../src/spacecmd/system.py:2227 ../src/spacecmd/system.py:2282
-#: ../src/spacecmd/system.py:2342 ../src/spacecmd/system.py:2401
-#: ../src/spacecmd/system.py:2459 ../src/spacecmd/system.py:2518
-#: ../src/spacecmd/system.py:2595 ../src/spacecmd/system.py:2676
-#: ../src/spacecmd/system.py:2731 ../src/spacecmd/system.py:3001
-#: ../src/spacecmd/system.py:3154 ../src/spacecmd/system.py:3223
-#: ../src/spacecmd/system.py:3269 ../src/spacecmd/system.py:3328
-#: ../src/spacecmd/system.py:3392 ../src/spacecmd/system.py:3448
-#: ../src/spacecmd/system.py:3623 ../src/spacecmd/system.py:3901
-#: ../src/spacecmd/system.py:4044 ../src/spacecmd/system.py:4106
-#: ../src/spacecmd/system.py:4154 ../src/spacecmd/system.py:4212
-#: ../src/spacecmd/system.py:4270
+#: ../src/spacecmd/system.py:1727 ../src/spacecmd/system.py:1807
+#: ../src/spacecmd/system.py:1949 ../src/spacecmd/system.py:1991
+#: ../src/spacecmd/system.py:2079 ../src/spacecmd/system.py:2146
+#: ../src/spacecmd/system.py:2228 ../src/spacecmd/system.py:2283
+#: ../src/spacecmd/system.py:2343 ../src/spacecmd/system.py:2402
+#: ../src/spacecmd/system.py:2460 ../src/spacecmd/system.py:2519
+#: ../src/spacecmd/system.py:2596 ../src/spacecmd/system.py:2677
+#: ../src/spacecmd/system.py:2732 ../src/spacecmd/system.py:3002
+#: ../src/spacecmd/system.py:3155 ../src/spacecmd/system.py:3224
+#: ../src/spacecmd/system.py:3270 ../src/spacecmd/system.py:3329
+#: ../src/spacecmd/system.py:3393 ../src/spacecmd/system.py:3449
+#: ../src/spacecmd/system.py:3624 ../src/spacecmd/system.py:3902
+#: ../src/spacecmd/system.py:4045 ../src/spacecmd/system.py:4107
+#: ../src/spacecmd/system.py:4155 ../src/spacecmd/system.py:4213
+#: ../src/spacecmd/system.py:4271
 msgid "No systems selected"
 msgstr "未选择系统"
 
@@ -4362,11 +4362,11 @@ msgstr "用法：scap_listxccdfscans <系统>"
 
 #: ../src/spacecmd/scap.py:79 ../src/spacecmd/system.py:610
 #: ../src/spacecmd/system.py:1249 ../src/spacecmd/system.py:1301
-#: ../src/spacecmd/system.py:1400 ../src/spacecmd/system.py:2089
-#: ../src/spacecmd/system.py:2412 ../src/spacecmd/system.py:2470
-#: ../src/spacecmd/system.py:2689 ../src/spacecmd/system.py:2744
-#: ../src/spacecmd/system.py:3167 ../src/spacecmd/system.py:3284
-#: ../src/spacecmd/system.py:3341
+#: ../src/spacecmd/system.py:1400 ../src/spacecmd/system.py:2090
+#: ../src/spacecmd/system.py:2413 ../src/spacecmd/system.py:2471
+#: ../src/spacecmd/system.py:2690 ../src/spacecmd/system.py:2745
+#: ../src/spacecmd/system.py:3168 ../src/spacecmd/system.py:3285
+#: ../src/spacecmd/system.py:3342
 #, python-format
 msgid "System: %s"
 msgstr "系统：%s"
@@ -4574,7 +4574,7 @@ msgid "Date:      %s"
 msgstr "日期：%s"
 
 #: ../src/spacecmd/schedule.py:283 ../src/spacecmd/schedule.py:380
-#: ../src/spacecmd/system.py:3291
+#: ../src/spacecmd/system.py:3292
 #, python-format
 msgid "Completed: %s"
 msgstr "已完成：%s"
@@ -5185,7 +5185,7 @@ msgstr "                            软件通道体系结构"
 msgid "usage: softwarechannel_listarches"
 msgstr "用法：softwarechannel_listarches"
 
-#: ../src/spacecmd/softwarechannel.py:652 ../src/spacecmd/system.py:3872
+#: ../src/spacecmd/softwarechannel.py:652 ../src/spacecmd/system.py:3873
 msgid "options:"
 msgstr "选项："
 
@@ -6311,7 +6311,7 @@ msgstr "只有那里"
 msgid "Newer there"
 msgstr "那里较新"
 
-#: ../src/spacecmd/system.py:75 ../src/spacecmd/system.py:3817
+#: ../src/spacecmd/system.py:75 ../src/spacecmd/system.py:3818
 msgid "Package"
 msgstr "软件包"
 
@@ -6323,7 +6323,7 @@ msgstr "此系统"
 msgid "Other System"
 msgstr "另一个系统"
 
-#: ../src/spacecmd/system.py:78 ../src/spacecmd/system.py:3820
+#: ../src/spacecmd/system.py:78 ../src/spacecmd/system.py:3821
 msgid "Difference"
 msgstr "差异"
 
@@ -6483,7 +6483,7 @@ msgstr "脚本内容"
 
 #: ../src/spacecmd/system.py:535 ../src/spacecmd/system.py:837
 #: ../src/spacecmd/system.py:964 ../src/spacecmd/system.py:1114
-#: ../src/spacecmd/system.py:1124 ../src/spacecmd/system.py:4427
+#: ../src/spacecmd/system.py:1124 ../src/spacecmd/system.py:4428
 #, python-format
 msgid "Failed to schedule %s"
 msgstr "无法安排 %s"
@@ -6913,15 +6913,15 @@ msgstr "system_setconfigchannelorder：设置配置通道的排名顺序"
 msgid "usage: system_setconfigchannelorder <SYSTEMS>"
 msgstr "用法：system_setconfigchannelorder <系统>"
 
-#: ../src/spacecmd/system.py:1741
+#: ../src/spacecmd/system.py:1742
 msgid "New Configuration Channels"
 msgstr "新建配置通道"
 
-#: ../src/spacecmd/system.py:1761
+#: ../src/spacecmd/system.py:1762
 msgid "system_deployconfigfiles: Deploy all configuration files for a system"
 msgstr "system_deployconfigfiles：部署系统的所有配置文件"
 
-#: ../src/spacecmd/system.py:1762
+#: ../src/spacecmd/system.py:1763
 msgid ""
 "usage: system_deployconfigfiles <SYSTEMS> [options]\n"
 "\n"
@@ -6933,20 +6933,20 @@ msgstr ""
 "选项：\n"
 "    -s 开始时间"
 
-#: ../src/spacecmd/system.py:1816
+#: ../src/spacecmd/system.py:1817
 msgid "Deploy ALL configuration files to these systems [y/N]:"
 msgstr "将所有配置文件部署到这些系统 [y/N]："
 
-#: ../src/spacecmd/system.py:1826
+#: ../src/spacecmd/system.py:1827
 #, python-format
 msgid "Scheduled deployment for %i system(s)"
 msgstr "已为 %i 个系统安排部署"
 
-#: ../src/spacecmd/system.py:1834
+#: ../src/spacecmd/system.py:1835
 msgid "system_delete: Delete a system profile"
 msgstr "system_delete：删除系统配置文件"
 
-#: ../src/spacecmd/system.py:1835
+#: ../src/spacecmd/system.py:1836
 msgid ""
 "usage: system_delete [options] <SYSTEMS>\n"
 "\n"
@@ -6967,93 +6967,93 @@ msgstr ""
 "             *  'FORCE_DELETE' - 先尝试清理，但出错时仍会删除服务器\n"
 "    "
 
-#: ../src/spacecmd/system.py:1879
+#: ../src/spacecmd/system.py:1880
 msgid "No systems to delete"
 msgstr "没有可删除的系统"
 
-#: ../src/spacecmd/system.py:1887
+#: ../src/spacecmd/system.py:1888
 #, python-format
 msgid "%s  System ID"
 msgstr "%s  系统 ID"
 
-#: ../src/spacecmd/system.py:1887
+#: ../src/spacecmd/system.py:1888
 msgid "Profile"
 msgstr "配置文件"
 
-#: ../src/spacecmd/system.py:1895
+#: ../src/spacecmd/system.py:1896
 msgid "Delete these systems [y/N]:"
 msgstr "删除这些系统 [y/N]："
 
-#: ../src/spacecmd/system.py:1902
+#: ../src/spacecmd/system.py:1903
 #, python-format
 msgid "%i system(s) scheduled for removal"
 msgstr "已安排删除 %i 个系统"
 
-#: ../src/spacecmd/system.py:1922
+#: ../src/spacecmd/system.py:1923
 msgid "system_lock: Lock a system"
 msgstr "system_lock：锁定系统"
 
-#: ../src/spacecmd/system.py:1923
+#: ../src/spacecmd/system.py:1924
 msgid "usage: system_lock <SYSTEMS>"
 msgstr "用法：system_lock <系统>"
 
-#: ../src/spacecmd/system.py:1964
+#: ../src/spacecmd/system.py:1965
 msgid "system_unlock: Unlock a system"
 msgstr "system_unlock：解锁系统"
 
-#: ../src/spacecmd/system.py:1965
+#: ../src/spacecmd/system.py:1966
 msgid "usage: system_unlock <SYSTEMS>"
 msgstr "用法：system_unlock <系统>"
 
-#: ../src/spacecmd/system.py:2006
+#: ../src/spacecmd/system.py:2007
 msgid "system_rename: Rename a system profile"
 msgstr "system_rename：重命名系统配置文件"
 
-#: ../src/spacecmd/system.py:2007
+#: ../src/spacecmd/system.py:2008
 msgid "usage: system_rename OLDNAME NEWNAME"
 msgstr "用法：system_rename OLDNAME NEWNAME"
 
-#: ../src/spacecmd/system.py:2052
+#: ../src/spacecmd/system.py:2053
 msgid "system_listcustomvalues: List the custom values for a system"
 msgstr "system_listcustomvalues：列出系统的自定义值"
 
-#: ../src/spacecmd/system.py:2053
+#: ../src/spacecmd/system.py:2054
 msgid "usage: system_listcustomvalues <SYSTEMS>"
 msgstr "用法：system_listcustomvalues <系统>"
 
-#: ../src/spacecmd/system.py:2108
+#: ../src/spacecmd/system.py:2109
 msgid "system_addcustomvalue: Set a custom value for a system"
 msgstr "system_addcustomvalue：设置系统的自定义值"
 
-#: ../src/spacecmd/system.py:2109
+#: ../src/spacecmd/system.py:2110
 msgid "usage: system_addcustomvalue KEY VALUE <SYSTEMS>"
 msgstr "用法：system_addcustomvalue KEY VALUE <系统>"
 
-#: ../src/spacecmd/system.py:2163
+#: ../src/spacecmd/system.py:2164
 msgid "system_updatecustomvalue: Update a custom value for a system"
 msgstr "system_updatecustomvalue：更新系统的自定义值"
 
-#: ../src/spacecmd/system.py:2164
+#: ../src/spacecmd/system.py:2165
 msgid "usage: system_updatecustomvalue KEY VALUE <SYSTEMS>"
 msgstr "用法：system_updatecustomvalue KEY VALUE <系统>"
 
-#: ../src/spacecmd/system.py:2195
+#: ../src/spacecmd/system.py:2196
 msgid "system_removecustomvalues: Remove a custom value for a system"
 msgstr "system_removecustomvalues：去除系统的自定义值"
 
-#: ../src/spacecmd/system.py:2196
+#: ../src/spacecmd/system.py:2197
 msgid "usage: system_removecustomvalues <SYSTEMS> <KEY ...>"
 msgstr "用法：system_removecustomvalues <系统> <密钥 ...>"
 
-#: ../src/spacecmd/system.py:2232
+#: ../src/spacecmd/system.py:2233
 msgid "Delete these values [y/N]:"
 msgstr "删除这些值 [y/N]："
 
-#: ../src/spacecmd/system.py:2250
+#: ../src/spacecmd/system.py:2251
 msgid "system_addnote: Set a note for a system"
 msgstr "system_addnote：设置系统的笔记"
 
-#: ../src/spacecmd/system.py:2251
+#: ../src/spacecmd/system.py:2252
 msgid ""
 "usage: system_addnote <SYSTEM> [options]\n"
 "\n"
@@ -7067,84 +7067,84 @@ msgstr ""
 "  -s 主题\n"
 "  -b 正文"
 
-#: ../src/spacecmd/system.py:2286
+#: ../src/spacecmd/system.py:2287
 msgid "Subject of the Note:"
 msgstr "笔记的主题："
 
-#: ../src/spacecmd/system.py:2288
+#: ../src/spacecmd/system.py:2289
 msgid "Note Body (ctrl-D to finish):"
 msgstr "笔记正文（按 Ctrl-D 可结束提示）："
 
-#: ../src/spacecmd/system.py:2292
+#: ../src/spacecmd/system.py:2293
 msgid "A subject is required"
 msgstr "必须填写主题"
 
-#: ../src/spacecmd/system.py:2296
+#: ../src/spacecmd/system.py:2297
 msgid "A body is required"
 msgstr "必须填写正文"
 
-#: ../src/spacecmd/system.py:2315
+#: ../src/spacecmd/system.py:2316
 msgid "system_deletenotes: Delete notes from a system"
 msgstr "system_deletenotes：删除系统中的笔记"
 
-#: ../src/spacecmd/system.py:2316
+#: ../src/spacecmd/system.py:2317
 msgid "usage: system_deletenotes <SYSTEM> <ID|*>"
 msgstr "用法：system_deletenotes <系统> <ID|*>"
 
-#: ../src/spacecmd/system.py:2348
+#: ../src/spacecmd/system.py:2349
 msgid "No notes to delete"
 msgstr "没有可删除的笔记"
 
-#: ../src/spacecmd/system.py:2363
+#: ../src/spacecmd/system.py:2364
 #, python-format
 msgid "%s is not a valid note ID"
 msgstr "%s 不是有效的备注 ID"
 
-#: ../src/spacecmd/system.py:2375
+#: ../src/spacecmd/system.py:2376
 msgid "system_listnotes: List the available notes for a system"
 msgstr "system_listnotes：列出系统的可用笔记"
 
-#: ../src/spacecmd/system.py:2376
+#: ../src/spacecmd/system.py:2377
 msgid "usage: system_listnotes <SYSTEM>"
 msgstr "用法：system_listnotes <系统>"
 
-#: ../src/spacecmd/system.py:2434
+#: ../src/spacecmd/system.py:2435
 msgid "system_listfqdns: List the associated FQDNs for a system"
 msgstr "system_listfqdns：列出系统的关联 FQDN"
 
-#: ../src/spacecmd/system.py:2435
+#: ../src/spacecmd/system.py:2436
 msgid "usage: system_listfqdns <SYSTEM>"
 msgstr "用法：system_listfqdns <系统>"
 
-#: ../src/spacecmd/system.py:2487
+#: ../src/spacecmd/system.py:2488
 msgid "system_setbasechannel: Set a system's base software channel"
 msgstr "system_setbasechannel：设置系统的基础软件通道"
 
-#: ../src/spacecmd/system.py:2488
+#: ../src/spacecmd/system.py:2489
 msgid "usage: system_setbasechannel <SYSTEMS> CHANNEL"
 msgstr "用法：system_setbasechannel <系统> CHANNEL"
 
-#: ../src/spacecmd/system.py:2535 ../src/spacecmd/system.py:2622
+#: ../src/spacecmd/system.py:2536 ../src/spacecmd/system.py:2623
 #, python-format
 msgid "System:           %s"
 msgstr "系统：%s"
 
-#: ../src/spacecmd/system.py:2536 ../src/spacecmd/system.py:2623
+#: ../src/spacecmd/system.py:2537 ../src/spacecmd/system.py:2624
 #, python-format
 msgid "Old Base Channel: %s"
 msgstr "旧基础通道：%s"
 
-#: ../src/spacecmd/system.py:2537 ../src/spacecmd/system.py:2625
+#: ../src/spacecmd/system.py:2538 ../src/spacecmd/system.py:2626
 #, python-format
 msgid "New Base Channel: %s"
 msgstr "新基础通道：%s"
 
-#: ../src/spacecmd/system.py:2556
+#: ../src/spacecmd/system.py:2557
 msgid ""
 "system_schedulechangechannels: Schedule changing a system's software channels"
 msgstr "system_schedulechangechannels：安排更改系统的软件通道"
 
-#: ../src/spacecmd/system.py:2557
+#: ../src/spacecmd/system.py:2558
 msgid ""
 "usage: system_setbasechannel <SYSTEMS> [options]\n"
 "\n"
@@ -7160,138 +7160,138 @@ msgstr ""
 "  -c CHILD_CHANNEL 子通道标签（允许多次指定）\n"
 "  -s START_TIME 时间默认为现在"
 
-#: ../src/spacecmd/system.py:2624
+#: ../src/spacecmd/system.py:2625
 #, python-format
 msgid "Old Child Channels: %s"
 msgstr "旧子通道：%s"
 
-#: ../src/spacecmd/system.py:2626
+#: ../src/spacecmd/system.py:2627
 #, python-format
 msgid "New Child channels %s"
 msgstr "新子通道%s"
 
-#: ../src/spacecmd/system.py:2641 ../src/spacecmd/system.py:4289
+#: ../src/spacecmd/system.py:2642 ../src/spacecmd/system.py:4290
 #, python-format
 msgid "Scheduled action id: %s"
 msgstr "已安排操作 ID：%s"
 
-#: ../src/spacecmd/system.py:2648
+#: ../src/spacecmd/system.py:2649
 msgid "system_listbasechannel: List the base channel for a system"
 msgstr "system_listbasechannel：列出系统的基础通道"
 
-#: ../src/spacecmd/system.py:2649
+#: ../src/spacecmd/system.py:2650
 msgid "usage: system_listbasechannel <SYSTEMS>"
 msgstr "用法：system_listbasechannel <系统>"
 
-#: ../src/spacecmd/system.py:2703
+#: ../src/spacecmd/system.py:2704
 msgid "system_listchildchannels: List the child channels for a system"
 msgstr "system_listchildchannels：列出系统的子通道"
 
-#: ../src/spacecmd/system.py:2704
+#: ../src/spacecmd/system.py:2705
 msgid "usage: system_listchildchannels <SYSTEMS>"
 msgstr "用法：system_listchildchannels <系统>"
 
-#: ../src/spacecmd/system.py:2758
+#: ../src/spacecmd/system.py:2759
 msgid "system_addchildchannels: Add child channels to a system"
 msgstr "system_addchildchannels：将子通道添加到系统"
 
-#: ../src/spacecmd/system.py:2759
+#: ../src/spacecmd/system.py:2760
 msgid "usage: system_addchildchannels <SYSTEMS> <CHANNEL ...>"
 msgstr "用法：system_addchildchannels <系统> <通道 ...>"
 
-#: ../src/spacecmd/system.py:2783
+#: ../src/spacecmd/system.py:2784
 #, python-format
 msgid "This method was removed since API version %s"
 msgstr "从 API 版本 %s 开始，已去除此方法"
 
-#: ../src/spacecmd/system.py:2786
+#: ../src/spacecmd/system.py:2787
 #, python-format
 msgid "This method is deprecated and will be removed in API version %s"
 msgstr "API 版本 %s 中已弃用并将去除此方法"
 
-#: ../src/spacecmd/system.py:2790
+#: ../src/spacecmd/system.py:2791
 msgid ""
 "system_listcrashedsystems: List all systems that have experienced a crash "
 "and reported by spacewalk-abrt"
 msgstr ""
 "system_listcrashedsystems：列出发生了崩溃并已由 spacewalk-abrt 报告的所有系统"
 
-#: ../src/spacecmd/system.py:2791
+#: ../src/spacecmd/system.py:2792
 msgid "usage: system_listcrashedsystems"
 msgstr "用法：system_listcrashedsystems"
 
-#: ../src/spacecmd/system.py:2799
+#: ../src/spacecmd/system.py:2800
 msgid "Count | System ID | Profile Name"
 msgstr "计数 | 系统 ID | 配置文件名称"
 
-#: ../src/spacecmd/system.py:2813
+#: ../src/spacecmd/system.py:2814
 msgid "system_deletecrashes: Delete crashes reported by spacewalk-abrt."
 msgstr "system_deletecrashes：删除 spacewalk-abrt 报告的崩溃记录。"
 
-#: ../src/spacecmd/system.py:2814
+#: ../src/spacecmd/system.py:2815
 msgid ""
 "usage: Delete all crashes for all systems    : system_deletecrashes [--"
 "verbose]"
 msgstr "用法：删除所有系统的所有崩溃记录：system_deletecrashes [--verbose]"
 
-#: ../src/spacecmd/system.py:2815
+#: ../src/spacecmd/system.py:2816
 msgid ""
 "usage: Delete all crashes for a single system: system_deletecrashes -i "
 "sys_id [--verbose]"
 msgstr ""
 "用法：删除单个系统的所有崩溃记录：system_deletecrashes -i sys_id [--verbose]"
 
-#: ../src/spacecmd/system.py:2816
+#: ../src/spacecmd/system.py:2817
 msgid ""
 "usage: Delete a single crash record          : system_deletecrashes -c "
 "crash_id [--verbose]"
 msgstr "用法：删除一条崩溃记录：system_deletecrashes -c crash_id [--verbose]"
 
-#: ../src/spacecmd/system.py:2836
+#: ../src/spacecmd/system.py:2837
 #, python-format
 msgid "Deleting crash with id %s."
 msgstr "正在删除 ID 为 %s 的崩溃记录。"
 
-#: ../src/spacecmd/system.py:2843
+#: ../src/spacecmd/system.py:2844
 #, python-format
 msgid "Deleting all crashes from system with systemid %s [y/N]:"
 msgstr "正在删除系统 ID 为 %s 的系统中的所有崩溃记录 [y/N]："
 
 #. all systems
-#: ../src/spacecmd/system.py:2845
+#: ../src/spacecmd/system.py:2846
 msgid "Deleting all crashes from all systems [y/N]:"
 msgstr "正在删除所有系统中的所有崩溃记录 [y/N]："
 
-#: ../src/spacecmd/system.py:2857
+#: ../src/spacecmd/system.py:2858
 #, python-format
 msgid "Deleting crash with id %s from system %s."
 msgstr "正在删除 ID 为 %s 的崩溃记录（在系统 %s 中）。"
 
-#: ../src/spacecmd/system.py:2866
+#: ../src/spacecmd/system.py:2867
 msgid "system_listcrashesbysystem: List all reported crashes for a system."
 msgstr "system_listcrashesbysystem：列出针对某个系统报告的所有崩溃记录。"
 
-#: ../src/spacecmd/system.py:2867 ../src/spacecmd/system.py:2881
+#: ../src/spacecmd/system.py:2868 ../src/spacecmd/system.py:2882
 msgid "usage: system_listcrashesbysystem -i sys_id"
 msgstr "用法：system_listcrashesbysystem -i sys_id"
 
-#: ../src/spacecmd/system.py:2880
+#: ../src/spacecmd/system.py:2881
 msgid "# System id must be provided."
 msgstr "# 必须提供系统 ID。"
 
-#: ../src/spacecmd/system.py:2886
+#: ../src/spacecmd/system.py:2887
 msgid "Crash ID | Crash Name"
 msgstr "崩溃记录 ID | 崩溃记录名称"
 
-#: ../src/spacecmd/system.py:2897
+#: ../src/spacecmd/system.py:2898
 msgid "system_getcrashfiles: Download all files for a crash record."
 msgstr "system_getcrashfiles：下载所有崩溃记录文件。"
 
-#: ../src/spacecmd/system.py:2898
+#: ../src/spacecmd/system.py:2899
 msgid "usage: system_getcrashfiles -c crash_id [--verbose]"
 msgstr "用法：system_getcrashfiles -c crash_id [--verbose]"
 
-#: ../src/spacecmd/system.py:2899 ../src/spacecmd/system.py:2915
+#: ../src/spacecmd/system.py:2900 ../src/spacecmd/system.py:2916
 msgid ""
 "usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--"
 "verbose]"
@@ -7299,104 +7299,104 @@ msgstr ""
 "用法：system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--"
 "verbose]"
 
-#: ../src/spacecmd/system.py:2914
+#: ../src/spacecmd/system.py:2915
 msgid "# Crash id must be provided."
 msgstr "# 必须提供崩溃记录 ID。"
 
-#: ../src/spacecmd/system.py:2941
+#: ../src/spacecmd/system.py:2942
 #, python-format
 msgid "# All files we downloaded to %s."
 msgstr "# 所有文件已下载到 %s。"
 
-#: ../src/spacecmd/system.py:2950
+#: ../src/spacecmd/system.py:2951
 msgid "system_removechildchannels: Remove child channels from a system"
 msgstr "system_removechildchannels：从系统中去除子通道"
 
-#: ../src/spacecmd/system.py:2951
+#: ../src/spacecmd/system.py:2952
 msgid "usage: system_removechildchannels <SYSTEMS> <CHANNEL ...>"
 msgstr "用法：system_removechildchannels <系统> <通道 ...>"
 
-#: ../src/spacecmd/system.py:2973
+#: ../src/spacecmd/system.py:2974
 msgid "system_details: Show the details of a system profile"
 msgstr "system_details：显示系统配置文件的细节"
 
-#: ../src/spacecmd/system.py:2974
+#: ../src/spacecmd/system.py:2975
 msgid "usage: system_details <SYSTEMS>"
 msgstr "用法：system_details <系统>"
 
-#: ../src/spacecmd/system.py:3027
+#: ../src/spacecmd/system.py:3028
 #, python-format
 msgid "Name:          %s"
 msgstr "名称：%s"
 
-#: ../src/spacecmd/system.py:3028
+#: ../src/spacecmd/system.py:3029
 #, python-format
 msgid "System ID:     %i"
 msgstr "系统 ID：%i"
 
-#: ../src/spacecmd/system.py:3031
+#: ../src/spacecmd/system.py:3032
 #, python-format
 msgid "UUID:          %s"
 msgstr "UUID：%s"
 
-#: ../src/spacecmd/system.py:3033
+#: ../src/spacecmd/system.py:3034
 #, python-format
 msgid "Locked:        %s"
 msgstr "已锁定：%s"
 
-#: ../src/spacecmd/system.py:3034
+#: ../src/spacecmd/system.py:3035
 #, python-format
 msgid "Registered:    %s"
 msgstr "已注册：%s"
 
-#: ../src/spacecmd/system.py:3035
+#: ../src/spacecmd/system.py:3036
 #, python-format
 msgid "Last Checkin:  %s"
 msgstr "上次签入时间：%s"
 
-#: ../src/spacecmd/system.py:3036
+#: ../src/spacecmd/system.py:3037
 #, python-format
 msgid "OSA Status:    %s"
 msgstr "OSA 状态：%s"
 
-#: ../src/spacecmd/system.py:3037
+#: ../src/spacecmd/system.py:3038
 #, python-format
 msgid "Last Boot:     %s"
 msgstr "上次引导时间：%s"
 
-#: ../src/spacecmd/system.py:3039
+#: ../src/spacecmd/system.py:3040
 #, python-format
 msgid "Contact Method:%s"
 msgstr "联系方法：%s"
 
-#: ../src/spacecmd/system.py:3083
+#: ../src/spacecmd/system.py:3084
 #, python-format
 msgid "Hostname:      %s"
 msgstr "主机名：%s"
 
-#: ../src/spacecmd/system.py:3084
+#: ../src/spacecmd/system.py:3085
 #, python-format
 msgid "IP Address:    %s"
 msgstr "IP 地址：%s"
 
-#: ../src/spacecmd/system.py:3085
+#: ../src/spacecmd/system.py:3086
 #, python-format
 msgid "Kernel:        %s"
 msgstr "内核：%s"
 
-#: ../src/spacecmd/system.py:3126
+#: ../src/spacecmd/system.py:3127
 msgid "system_listerrata: List available errata for a system"
 msgstr "system_listerrata：列出系统的可用勘误"
 
-#: ../src/spacecmd/system.py:3127
+#: ../src/spacecmd/system.py:3128
 msgid "usage: system_listerrata <SYSTEMS>"
 msgstr "用法：system_listerrata <系统>"
 
-#: ../src/spacecmd/system.py:3181
+#: ../src/spacecmd/system.py:3182
 msgid "system_applyerrata: Apply errata to a system"
 msgstr "system_applyerrata：将勘误应用到系统"
 
-#: ../src/spacecmd/system.py:3182
+#: ../src/spacecmd/system.py:3183
 msgid ""
 "usage: system_applyerrata [options] <SYSTEMS>\n"
 "[ERRATA|search:XXX ...]\n"
@@ -7410,78 +7410,78 @@ msgstr ""
 "选项：\n"
 "  -s 开始时间"
 
-#: ../src/spacecmd/system.py:3243
+#: ../src/spacecmd/system.py:3244
 msgid "system_listevents: List the event history for a system"
 msgstr "system_listevents：列出系统的事件历史记录"
 
-#: ../src/spacecmd/system.py:3244
+#: ../src/spacecmd/system.py:3245
 msgid "usage: system_listevents <SYSTEMS>"
 msgstr "用法：system_listevents <系统>"
 
-#: ../src/spacecmd/system.py:3290
+#: ../src/spacecmd/system.py:3291
 #, python-format
 msgid "Summary:   %s"
 msgstr "摘要：%s"
 
-#: ../src/spacecmd/system.py:3292
+#: ../src/spacecmd/system.py:3293
 #, python-format
 msgid "Details:   %s"
 msgstr "细节：%s"
 
-#: ../src/spacecmd/system.py:3300
+#: ../src/spacecmd/system.py:3301
 msgid "system_listentitlements: List the entitlements for a system"
 msgstr "system_listentitlements：列出系统的权利"
 
-#: ../src/spacecmd/system.py:3301
+#: ../src/spacecmd/system.py:3302
 msgid "usage: system_listentitlements <SYSTEMS>"
 msgstr "用法：system_listentitlements <系统>"
 
-#: ../src/spacecmd/system.py:3354
+#: ../src/spacecmd/system.py:3355
 msgid "system_addentitlements: Add entitlements to a system"
 msgstr "system_addentitlements：将权利添加到系统"
 
-#: ../src/spacecmd/system.py:3355
+#: ../src/spacecmd/system.py:3356
 msgid "usage: system_addentitlements <SYSTEMS> ENTITLEMENT"
 msgstr "用法：system_addentitlements <系统> ENTITLEMENT"
 
-#: ../src/spacecmd/system.py:3410
+#: ../src/spacecmd/system.py:3411
 msgid "system_removeentitlement: Remove an entitlement from a system"
 msgstr "system_removeentitlement：从系统中去除权利"
 
-#: ../src/spacecmd/system.py:3411
+#: ../src/spacecmd/system.py:3412
 msgid "usage: system_removeentitlement <SYSTEMS> ENTITLEMENT"
 msgstr "用法：system_removeentitlement <系统> ENTITLEMENT"
 
-#: ../src/spacecmd/system.py:3466
+#: ../src/spacecmd/system.py:3467
 msgid "system_listpackageprofiles: List all package profiles"
 msgstr "system_listpackageprofiles：列出所有软件包配置文件"
 
-#: ../src/spacecmd/system.py:3467
+#: ../src/spacecmd/system.py:3468
 msgid "usage: system_listpackageprofiles"
 msgstr "用法：system_listpackageprofiles"
 
-#: ../src/spacecmd/system.py:3486
+#: ../src/spacecmd/system.py:3487
 msgid "system_deletepackageprofile: Delete a package profile"
 msgstr "system_deletepackageprofile：删除软件包配置文件"
 
-#: ../src/spacecmd/system.py:3487
+#: ../src/spacecmd/system.py:3488
 msgid "usage: system_deletepackageprofile PROFILE"
 msgstr "用法：system_deletepackageprofile PROFILE"
 
-#: ../src/spacecmd/system.py:3511
+#: ../src/spacecmd/system.py:3512
 msgid "Delete this profile [y/N]:"
 msgstr "删除此配置文件 [y/N]："
 
-#: ../src/spacecmd/system.py:3522
+#: ../src/spacecmd/system.py:3523
 #, python-format
 msgid "%s is not a valid profile"
 msgstr "%s 不是有效的配置文件"
 
-#: ../src/spacecmd/system.py:3533
+#: ../src/spacecmd/system.py:3534
 msgid "system_createpackageprofile: Create a package profile"
 msgstr "system_createpackageprofile：创建软件包配置文件"
 
-#: ../src/spacecmd/system.py:3534
+#: ../src/spacecmd/system.py:3535
 msgid ""
 "usage: system_createpackageprofile SYSTEM [options]\n"
 "\n"
@@ -7495,45 +7495,45 @@ msgstr ""
 "  -n 名称\n"
 "  -d 说明"
 
-#: ../src/spacecmd/system.py:3564
+#: ../src/spacecmd/system.py:3565
 msgid "Profile Label:"
 msgstr "配置文件标签："
 
-#: ../src/spacecmd/system.py:3568
+#: ../src/spacecmd/system.py:3569
 msgid "A profile name is required"
 msgstr "必须指定配置文件名称"
 
-#: ../src/spacecmd/system.py:3572
+#: ../src/spacecmd/system.py:3573
 msgid "A profile description is required"
 msgstr "必须指定配置文件说明"
 
-#: ../src/spacecmd/system.py:3580
+#: ../src/spacecmd/system.py:3581
 #, python-format
 msgid "Created package profile '%s'"
 msgstr "已创建软件包配置文件 '%s'"
 
-#: ../src/spacecmd/system.py:3588
+#: ../src/spacecmd/system.py:3589
 msgid ""
 "system_comparepackageprofile: Compare a system against a package profile"
 msgstr "system_comparepackageprofile：将系统与软件包配置文件进行比较"
 
-#: ../src/spacecmd/system.py:3589
+#: ../src/spacecmd/system.py:3590
 msgid "usage: system_comparepackageprofile <SYSTEMS> PROFILE"
 msgstr "用法：system_comparepackageprofile <系统> PROFILE"
 
-#: ../src/spacecmd/system.py:3652
+#: ../src/spacecmd/system.py:3653
 msgid "system_comparepackages: Compare the packages between two systems"
 msgstr "system_comparepackages：比较两个系统的软件包"
 
-#: ../src/spacecmd/system.py:3653
+#: ../src/spacecmd/system.py:3654
 msgid "usage: system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM"
 msgstr "用法：system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM"
 
-#: ../src/spacecmd/system.py:3684
+#: ../src/spacecmd/system.py:3685
 msgid "system_syncpackages: Sync packages between two systems"
 msgstr "system_syncpackages：同步两个系统的软件包"
 
-#: ../src/spacecmd/system.py:3685
+#: ../src/spacecmd/system.py:3686
 msgid ""
 "usage: system_syncpackages SOURCE TARGET [options]\n"
 "\n"
@@ -7545,85 +7545,85 @@ msgstr ""
 "选项：\n"
 "    -s 开始时间"
 
-#: ../src/spacecmd/system.py:3733
+#: ../src/spacecmd/system.py:3734
 msgid "Sync packages [y/N]:"
 msgstr "同步软件包 [y/N]："
 
-#: ../src/spacecmd/system.py:3775
+#: ../src/spacecmd/system.py:3776
 #, python-format
 msgid "Failed to filter package list, package %s"
 msgstr "无法过滤软件包列表，找到的软件包 %s"
 
-#: ../src/spacecmd/system.py:3776
+#: ../src/spacecmd/system.py:3777
 msgid "found with no arch or arch_label"
 msgstr "没有体系结构或体系结构标签"
 
-#: ../src/spacecmd/system.py:3818
+#: ../src/spacecmd/system.py:3819
 msgid "System Version"
 msgstr "系统版本"
 
-#: ../src/spacecmd/system.py:3819
+#: ../src/spacecmd/system.py:3820
 msgid "Channel Version"
 msgstr "通道版本"
 
-#: ../src/spacecmd/system.py:3841
+#: ../src/spacecmd/system.py:3842
 msgid "Channel_newer_than_system"
 msgstr "Channel_newer_than_system"
 
-#: ../src/spacecmd/system.py:3854
+#: ../src/spacecmd/system.py:3855
 msgid "System_newer_than_channel"
 msgstr "System_newer_than_channel"
 
-#: ../src/spacecmd/system.py:3863
+#: ../src/spacecmd/system.py:3864
 msgid "Missing_in_channel"
 msgstr "Missing_in_channel"
 
-#: ../src/spacecmd/system.py:3867
+#: ../src/spacecmd/system.py:3868
 msgid "system_comparewithchannel: Compare the installed packages on a"
 msgstr "system_comparewithchannel：将某个系统上安装的软件包"
 
-#: ../src/spacecmd/system.py:3868
+#: ../src/spacecmd/system.py:3869
 msgid "                           system with those in the channels it is"
 msgstr "                           与它注册到的通道或者（可选）"
 
-#: ../src/spacecmd/system.py:3869
+#: ../src/spacecmd/system.py:3870
 msgid "                           registerd to, or optionally some other"
 msgstr "                           其他某个通道中的软件包进行"
 
-#: ../src/spacecmd/system.py:3870
+#: ../src/spacecmd/system.py:3871
 msgid "                           channel"
 msgstr "                           比较"
 
-#: ../src/spacecmd/system.py:3871
+#: ../src/spacecmd/system.py:3872
 msgid "usage: system_comparewithchannel <SYSTEMS> [options]"
 msgstr "用法：system_comparewithchannel <系统> [选项]"
 
-#: ../src/spacecmd/system.py:3873
+#: ../src/spacecmd/system.py:3874
 msgid "         -c/--channel : Specific channel to compare against,"
 msgstr "         -c/--channel：要比较的特定通道，"
 
-#: ../src/spacecmd/system.py:3874
+#: ../src/spacecmd/system.py:3875
 msgid "                        default is those subscribed to, including"
 msgstr "                        默认为已订阅的通道，包括"
 
-#: ../src/spacecmd/system.py:3875
+#: ../src/spacecmd/system.py:3876
 msgid "                        child channels"
 msgstr "                        子通道"
 
-#: ../src/spacecmd/system.py:3926
+#: ../src/spacecmd/system.py:3927
 msgid "Specified channel does not exist"
 msgstr "指定的通道不存在"
 
-#: ../src/spacecmd/system.py:3937
+#: ../src/spacecmd/system.py:3938
 #, python-format
 msgid "system %s is not subscribed to any channel!"
 msgstr "系统 %s 未订阅任何通道！"
 
-#: ../src/spacecmd/system.py:3939
+#: ../src/spacecmd/system.py:3940
 msgid "Please subscribe to a channel, or specify achannel to compare with"
 msgstr "请订阅一个通道，或指定要比较的通道"
 
-#: ../src/spacecmd/system.py:3973
+#: ../src/spacecmd/system.py:3974
 #, python-format
 msgid ""
 "\n"
@@ -7632,12 +7632,12 @@ msgstr ""
 "\n"
 "系统：%s"
 
-#: ../src/spacecmd/system.py:3999
+#: ../src/spacecmd/system.py:4000
 msgid ""
 "system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
 msgstr "system_schedulehardwarerefresh：为系统安排硬件刷新"
 
-#: ../src/spacecmd/system.py:4000
+#: ../src/spacecmd/system.py:4001
 msgid ""
 "usage: system_schedulehardwarerefresh <SYSTEMS> [options]\n"
 "\n"
@@ -7649,13 +7649,13 @@ msgstr ""
 "选项：\n"
 "  -s 开始时间"
 
-#: ../src/spacecmd/system.py:4062
+#: ../src/spacecmd/system.py:4063
 msgid ""
 "system_schedulepackagerefresh: Schedule a software package refresh for a "
 "system"
 msgstr "system_schedulepackagerefresh：为系统安排软件包刷新"
 
-#: ../src/spacecmd/system.py:4063
+#: ../src/spacecmd/system.py:4064
 msgid ""
 "usage: system_schedulepackagerefresh <SYSTEMS> [options])\n"
 "\n"
@@ -7667,29 +7667,29 @@ msgstr ""
 "选项：\n"
 "  -s 开始时间"
 
-#: ../src/spacecmd/system.py:4124
+#: ../src/spacecmd/system.py:4125
 msgid ""
 "system_show_packageversion: Shows version of installed package on given "
 "system(s)"
 msgstr "system_show_packageversion：显示给定系统上安装的软件包版本"
 
-#: ../src/spacecmd/system.py:4125
+#: ../src/spacecmd/system.py:4126
 msgid "usage: system_show_packageversion <SYSTEM> <PACKAGE>"
 msgstr "用法：system_show_packageversion <系统> <软件包>"
 
-#: ../src/spacecmd/system.py:4157
+#: ../src/spacecmd/system.py:4158
 msgid "Package\tVersion\tRelease\tEpoch\tArch\tSystem"
 msgstr "软件包\t版本\t发行版\t纪元\t体系结构\t系统"
 
-#: ../src/spacecmd/system.py:4177
+#: ../src/spacecmd/system.py:4178
 msgid "system_setcontactmethod: Set the contact method for given system(s)."
 msgstr "system_setcontactmethod：为给定的系统设置联系方法。"
 
-#: ../src/spacecmd/system.py:4179
+#: ../src/spacecmd/system.py:4180
 msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
 msgstr "用法：system_setcontactmethod <系统> <联系方法>"
 
-#: ../src/spacecmd/system.py:4228
+#: ../src/spacecmd/system.py:4229
 msgid ""
 "system_scheduleapplyconfigchannels: Schedule applying the assigned config "
 "channels to the System (Minion only)"
@@ -7697,7 +7697,7 @@ msgstr ""
 "system_scheduleapplyconfigchannels：安排将指派的配置通道应用到系统（仅限受控"
 "端）"
 
-#: ../src/spacecmd/system.py:4229
+#: ../src/spacecmd/system.py:4230
 msgid ""
 "usage: scheduleapplyconfigchannels <SYSTEMS> [options]\n"
 "\n"
@@ -7709,45 +7709,45 @@ msgstr ""
 "    选项：\n"
 "        -s 开始时间"
 
-#: ../src/spacecmd/system.py:4280
+#: ../src/spacecmd/system.py:4281
 msgid "Schedule applying config channels to these systems [y/N]:"
 msgstr "安排将配置通道应用到这些系统 [y/N]："
 
-#: ../src/spacecmd/system.py:4297
+#: ../src/spacecmd/system.py:4298
 msgid ""
 "system_listmigrationtargets: List possible migration targets for given "
 "systems."
 msgstr "system_listmigrationtargets：列出给定系统的可能迁移目标。"
 
-#: ../src/spacecmd/system.py:4298
+#: ../src/spacecmd/system.py:4299
 msgid "usage: system_listmigrationtargets <SYSTEMS>"
 msgstr "用法：system_listmigrationtargets <系统>"
 
-#: ../src/spacecmd/system.py:4325
+#: ../src/spacecmd/system.py:4326
 msgid "WARN: Cannot find system "
 msgstr "警告：找不到系统 "
 
-#: ../src/spacecmd/system.py:4328
+#: ../src/spacecmd/system.py:4329
 msgid "System "
 msgstr "系统 "
 
-#: ../src/spacecmd/system.py:4332
+#: ../src/spacecmd/system.py:4333
 msgid "  No migration targets"
 msgstr "  无迁移目标"
 
-#: ../src/spacecmd/system.py:4335
+#: ../src/spacecmd/system.py:4336
 msgid "  Target #"
 msgstr "  目标编号"
 
-#: ../src/spacecmd/system.py:4336
+#: ../src/spacecmd/system.py:4337
 msgid "    IDs: "
 msgstr "    ID： "
 
-#: ../src/spacecmd/system.py:4337
+#: ../src/spacecmd/system.py:4338
 msgid "    Friendly names: "
 msgstr "    友好名称： "
 
-#: ../src/spacecmd/system.py:4343 ../src/spacecmd/system.py:4358
+#: ../src/spacecmd/system.py:4344 ../src/spacecmd/system.py:4359
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_scheduleproductmigration instead."
@@ -7755,16 +7755,16 @@ msgstr ""
 "此方法已弃用并会从将来的 API 版本中去除。请改为使用 "
 "system_scheduleproductmigration。"
 
-#: ../src/spacecmd/system.py:4344 ../src/spacecmd/system.py:4359
+#: ../src/spacecmd/system.py:4345 ../src/spacecmd/system.py:4360
 msgid "This method is deprecated and will be removed in a future API version"
 msgstr "此方法已弃用并会从将来的 API 版本中去除"
 
-#: ../src/spacecmd/system.py:4345
+#: ../src/spacecmd/system.py:4346
 msgid ""
 "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr "system_schedulespmigration：为系统安排服务包迁移。"
 
-#: ../src/spacecmd/system.py:4346
+#: ../src/spacecmd/system.py:4347
 msgid ""
 "usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7786,12 +7786,12 @@ msgstr ""
 "        -d 如果您要执行试运行，请传递此标志\n"
 "        -c 子通道（逗号分隔的子通道标签（不带空格））"
 
-#: ../src/spacecmd/system.py:4366
+#: ../src/spacecmd/system.py:4367
 msgid ""
 "system_scheduleproductmigration: Schedule a Product migration for systems."
 msgstr "system_scheduleproductmigration：为系统安排服务产品迁移。"
 
-#: ../src/spacecmd/system.py:4367
+#: ../src/spacecmd/system.py:4368
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7813,29 +7813,29 @@ msgstr ""
 "        -d 如果您要执行试运行，请传递此标志\n"
 "        -c 子通道（逗号分隔的子通道标签（不含空格））"
 
-#: ../src/spacecmd/system.py:4417
+#: ../src/spacecmd/system.py:4418
 msgid "Cannot find system "
 msgstr "找不到系统 "
 
-#: ../src/spacecmd/system.py:4417
+#: ../src/spacecmd/system.py:4418
 msgid ". Skipping it."
 msgstr "。正在跳过。"
 
-#: ../src/spacecmd/system.py:4420
+#: ../src/spacecmd/system.py:4421
 msgid "Scheduling Product migration for system "
 msgstr "正在为以下系统安排产品迁移 "
 
-#: ../src/spacecmd/system.py:4425
+#: ../src/spacecmd/system.py:4426
 msgid "Scheduled action ID: "
 msgstr "已安排操作 ID： "
 
-#: ../src/spacecmd/system.py:4433
+#: ../src/spacecmd/system.py:4434
 msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
 msgstr "system_bootstrap：引导系统以通过 Salt 或 Salt SSH 进行管理。"
 
-#: ../src/spacecmd/system.py:4434
+#: ../src/spacecmd/system.py:4435
 msgid ""
 "usage: bootstrap [options]\n"
 "\n"
@@ -7867,63 +7867,63 @@ msgstr ""
 "        --saltssh\n"
 "        "
 
-#: ../src/spacecmd/system.py:4468
+#: ../src/spacecmd/system.py:4469
 msgid "Hostname:"
 msgstr "主机名："
 
-#: ../src/spacecmd/system.py:4469
+#: ../src/spacecmd/system.py:4470
 msgid "Port [22]:"
 msgstr "端口 [22]："
 
-#: ../src/spacecmd/system.py:4472
+#: ../src/spacecmd/system.py:4473
 msgid "SSH User [root]:"
 msgstr "SSH 用户 [root]："
 
-#: ../src/spacecmd/system.py:4475
+#: ../src/spacecmd/system.py:4476
 msgid "SSH Password:"
 msgstr "SSH 口令："
 
-#: ../src/spacecmd/system.py:4477
+#: ../src/spacecmd/system.py:4478
 msgid "SSH Private Key File:"
 msgstr "SSH 私用密钥文件："
 
-#: ../src/spacecmd/system.py:4478
+#: ../src/spacecmd/system.py:4479
 msgid "SSH Private Key Password:"
 msgstr "SSH 私用密钥口令："
 
-#: ../src/spacecmd/system.py:4481
+#: ../src/spacecmd/system.py:4482
 msgid "Activation Key:"
 msgstr "激活密钥："
 
-#: ../src/spacecmd/system.py:4484
+#: ../src/spacecmd/system.py:4485
 msgid "Reactivation Key:"
 msgstr "重新激活密钥："
 
-#: ../src/spacecmd/system.py:4485
+#: ../src/spacecmd/system.py:4486
 msgid "Proxy System ID:"
 msgstr "代理系统 ID："
 
-#: ../src/spacecmd/system.py:4487
+#: ../src/spacecmd/system.py:4488
 msgid "Manage with Salt SSH"
 msgstr "使用 Salt SSH 管理"
 
-#: ../src/spacecmd/system.py:4492
+#: ../src/spacecmd/system.py:4493
 msgid "Hostname must be provided"
 msgstr "必须提供主机名"
 
-#: ../src/spacecmd/system.py:4495
+#: ../src/spacecmd/system.py:4496
 msgid "Either a SSH Password or a private key must be provided"
 msgstr "必须提供 SSH 口令或私用密钥"
 
-#: ../src/spacecmd/system.py:4503
+#: ../src/spacecmd/system.py:4504
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr "服务器在引导时不支持重新激活密钥"
 
-#: ../src/spacecmd/system.py:4510
+#: ../src/spacecmd/system.py:4511
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "正在引导 \"{}\"。这可能需要一段时间。"
 
-#: ../src/spacecmd/system.py:4524
+#: ../src/spacecmd/system.py:4525
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"

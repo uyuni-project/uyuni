@@ -3362,7 +3362,7 @@
       </trans-unit>
       <trans-unit approved="yes" id="Servlet" xml:space="preserve">
           <source>Servlet</source>
-        <target>Servlet</target>
+        <target>サーブレット</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
