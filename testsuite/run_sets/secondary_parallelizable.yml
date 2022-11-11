@@ -35,6 +35,7 @@
 - features/secondary/srv_notifications.feature
 - features/secondary/srv_payg_ssh_connection.feature
 - features/secondary/srv_push_package.feature
+- features/secondary/srv_dist_channel_mapping.feature
 - features/secondary/trad_spacewalk_channel.feature
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
