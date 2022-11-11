@@ -29587,8 +29587,8 @@ given channel.</source>
         <target state="final">등록 전달</target>
       </trans-unit>
       <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
-        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-        <target state="final">트랜잭션 업데이트가 있는 OS: 패키지 및/또는 채널이 변경된 후 재부팅하십시오.</target>
+        <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
+        <target state="needs-adaptation">트랜잭션 업데이트가 있는 OS: 패키지 및/또는 채널이 변경된 후 재부팅하십시오.</target>
       </trans-unit>
       <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
