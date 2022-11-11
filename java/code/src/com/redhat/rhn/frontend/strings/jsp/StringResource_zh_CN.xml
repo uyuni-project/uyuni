@@ -29602,8 +29602,8 @@ given channel.</source>
         <target state="final">转发注册</target>
       </trans-unit>
       <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
-        <source>OS with transactional updates: please reboot after any packages and/or channels changes.</source>
-        <target state="final">OS 有事务更新：请在任何软件包和/或通道更改后重引导系统。</target>
+        <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
+        <target state="needs-adaptation">OS 有事务更新：请在任何软件包和/或通道更改后重引导系统。</target>
       </trans-unit>
       <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
