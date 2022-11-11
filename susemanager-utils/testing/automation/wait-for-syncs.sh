@@ -59,9 +59,14 @@ i=0
 rm -f sync-started
 echo "Waiting for the sync to end"
 while [ ${i} -lt ${tries} ]; do
-  wget -S http://${host}/sync-obs/sync-finished 2>/dev/null
+  wget -S http://${host}/sync-obs/sync-finished.successful 2>/dev/null
   if [ ${?} -eq 0 ];then
-    echo "Sync finished"
+    echo "Sync finished successfully"
+    break
+  fi
+  wget -S http://${host}/sync-obs/sync-finished.fail 2>/dev/null
+  if [ ${?} -eq 0 ];then
+    echo "Sync finished unsuccesfully"
     break
   fi
   i=$((${i}+1))
@@ -71,6 +76,13 @@ if [ ${i} -eq ${tries} ]; then
   echo "Reached max number of tries"
   exit -5
 fi
+if [ -f sync-finished.fail ];then
+    rm -f sync-finished.fail
+    exit -6
+else
+    rm -f sync-finished.successful
+    exit 0
+fi
 
-rm -f sync-finished
+
 
