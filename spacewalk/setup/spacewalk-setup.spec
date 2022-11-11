@@ -278,6 +278,14 @@ if [ ! -f /etc/cobbler/settings.rpmsave -a -f /etc/cobbler/settings.before-migra
     touch /var/lib/cobbler/v2_migration_done
 fi
 
+# Wrong execution of v2 script happened, so we fix autoinstall attribute of collections.
+if test -f /var/lib/cobbler/v2_migration_done && ! grep -q autoinstall_fixed /var/lib/cobbler/v2_migration_done; then
+    echo "* Check and fix autoinstall attributes from Cobbler collections"
+    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
+    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --only-fix-autoinstall || exit 1
+    echo "autoinstall_fixed" >> /var/lib/cobbler/v2_migration_done
+fi
+
 exit 0
 
 %check
