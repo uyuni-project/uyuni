@@ -12,7 +12,7 @@ lock="yes"
 osc_timeout="2h"
 extres=""
 
-while getopts ":a:c:p:u:r:x" o;do
+while getopts ":a:c:p:ur:x:" o;do
     case "${o}" in
         a)
             api=${OPTARG}
