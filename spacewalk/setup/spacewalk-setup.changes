@@ -1,3 +1,5 @@
+- Fix possible wrong autoinstall value from Cobbler collections (bsc#1203478)
+
 -------------------------------------------------------------------
 Fri Nov 04 16:05:28 CET 2022 - jgonzalez@suse.com
 
