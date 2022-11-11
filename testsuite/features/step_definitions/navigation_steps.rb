@@ -1107,5 +1107,5 @@ Then(/^I should see left menu empty$/) do
 end
 
 Then(/^I should see the text "(.*?)" in the (Operating System|Architecture|Channel Label) field/) do |text, field|
-  page.has_field?("#{text}", with: field)
+  page.has_field?(text, with: field)
 end
