@@ -1,3 +1,5 @@
+- Fix dict_keys not supporting indexing in systems_setconfigchannelorger
+
 -------------------------------------------------------------------
 Tue Oct 18 09:56:40 CEST 2022 - jgonzalez@suse.com
 

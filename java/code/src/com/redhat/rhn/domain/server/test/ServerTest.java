@@ -15,6 +15,9 @@
 package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
@@ -28,6 +31,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -35,6 +39,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -66,6 +71,30 @@ public class ServerTest extends BaseTestCaseWithUser {
             systemUnentitler,
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
+
+    public void testSsmForSubscribe() throws Exception {
+        Server s = ServerTestUtils.createTestSystem(user);
+        s.setMachineId("themachineid");
+
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Channel 1", "cfg-channel-1");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Channel 2", "cfg-channel-2");
+        s.subscribeConfigChannels(List.of(channel1, channel2), user);
+        long sid = s.getId();
+        TestUtils.saveAndFlush(s);
+        RhnSetDecl.SYSTEMS.get(user).addElement(sid);
+        RhnSet ssm = RhnSetDecl.SYSTEMS.get(user);
+        ssm.addElement(sid);
+        RhnSetFactory.save(ssm);
+        List<Server> inSSM = ServerFactory.listSystemsInSsm(user);
+        assertEquals(1, inSSM.size());
+
+        List<Server> servers = ServerFactory.getSsmSystemsForSubscribe(user);
+        assertEquals(1, servers.size());
+        assertNull(servers.get(0).getName());
+        assertEquals(2, servers.get(0).getConfigChannelCount());
+    }
 
     public void testIsInactive() throws Exception {
         Server s = ServerFactory.createServer();

@@ -1,3 +1,10 @@
+- Manager reboot in transactional update action chain (bsc#1201476
+- Optimize performance of config channels operations for UI and API (bsc#1204029)
+- Don't add the same channel twice in the System config addChannel API (bsc#1204029)
+- fix xmlrpc call randomly failing with translation error (bsc#1203633)
+- Optimize action chain processing on job return event (bsc#1203532)
+- Re-calculate salt event queue numbers on restart
+- Fix out of memory error when building a CLM project (bsc#1202217)
 - Process salt events in FIFO order (bsc#1203532)
 - Remove 'SSM' column text where not applicable (bsc#1203588)
 - Fix rendering of ssm/MigrateSystems page (bsc#1204651)

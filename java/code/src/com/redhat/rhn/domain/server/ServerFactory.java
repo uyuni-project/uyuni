@@ -26,6 +26,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
@@ -53,6 +54,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,6 +71,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
@@ -600,6 +603,104 @@ public class ServerFactory extends HibernateFactory {
 
         return dr.stream().map(m -> new SystemIDInfo((Long) m.get("id"), (String) m.get("name")))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Get Systems from SSM for fast channel subscriptions
+     *
+     * @param user the user to get systems for
+     * @return the servers with only limited number of loaded fields
+     */
+    public static List<Server> getSsmSystemsForSubscribe(User user) {
+        List<Tuple> res = getSession().createNativeQuery(
+                "SELECT S.id, S.machine_id, SMI.minion_id, {CC.*} " +
+                    "FROM rhnServer S " +
+                    "   LEFT OUTER JOIN suseMinionInfo SMI ON S.id = SMI.server_id " +
+                    "   INNER JOIN rhnSet ST ON S.id = ST.element " +
+                    "   LEFT OUTER JOIN rhnServerConfigChannel SCC ON S.id = SCC.server_id " +
+                    "   LEFT OUTER JOIN rhnConfigChannel CC on CC.id = SCC.config_channel_id " +
+                    "WHERE " +
+                    "   S.id = ST.element " +
+                    "   AND ST.user_id = :user_id " +
+                    "   AND ST.label = :system_set_label " +
+                    "   AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = ST.element " +
+                    "   AND SFV.label = 'ftr_config') " +
+                    "ORDER BY S.name, SCC.position", Tuple.class)
+                .addScalar("id", StandardBasicTypes.BIG_INTEGER)
+                .addScalar("machine_id", StandardBasicTypes.STRING)
+                .addScalar("minion_id", StandardBasicTypes.STRING)
+                .addEntity("CC", ConfigChannel.class)
+                .setParameter("user_id", user.getId())
+                .setParameter("system_set_label", RhnSetDecl.SYSTEMS.getLabel())
+                .list();
+        return getServersFromTuplesForSubscribe(res);
+    }
+
+    private static List<Server> getServersFromTuplesForSubscribe(List<Tuple> tuples) {
+        // I know this is not conforming to the new functional programming style,
+        // but at least I am sure we won't loop unnecessarily on thousands of rows
+        List<Server> data = new ArrayList<>();
+        Server current = null;
+        List<ConfigChannel> channels = new ArrayList<>();
+
+        for (Tuple tuple : tuples) {
+            long sid = tuple.get(0, Number.class).longValue();
+            if (current == null || current.getId() != sid) {
+                if (current != null) {
+                    current.setConfigChannelsHibernate(channels);
+                    data.add(current);
+                    channels = new ArrayList<>();
+                }
+                String machineId = tuple.get(1, String.class);
+                String minionId = tuple.get(2, String.class);
+                if (minionId != null) {
+                    current = new MinionServer(sid, machineId);
+                }
+                else {
+                    current = new Server(sid, machineId);
+                }
+            }
+            channels.add(tuple.get(3, ConfigChannel.class));
+        }
+
+        if (current != null) {
+            current.setConfigChannelsHibernate(channels);
+            data.add(current);
+        }
+
+        return data;
+    }
+
+    /**
+     * Get Systems for fast channel subscriptions
+     *
+     * @param sids the system ids to look for
+     * @param user the user to get systems for
+     * @return the servers with only limited number of loaded fields
+     */
+    public static List<Server> getSystemsForSubscribe(List<Long> sids, User user) {
+        List<Tuple> res = getSession().createNativeQuery(
+                        "SELECT S.id, S.machine_id, SMI.minion_id, {CC.*} " +
+                                "FROM rhnServer S " +
+                                "   LEFT OUTER JOIN suseMinionInfo SMI ON S.id = SMI.server_id " +
+                                "   LEFT OUTER JOIN rhnServerConfigChannel SCC ON S.id = SCC.server_id " +
+                                "   LEFT OUTER JOIN rhnConfigChannel CC on CC.id = SCC.config_channel_id " +
+                                "   JOIN rhnUserServerPerms USP ON (S.id = USP.server_id) " +
+                                "WHERE " +
+                                "   S.id IN (:sids) " +
+                                "   AND USP.user_id = :user_id " +
+                                "   AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id " +
+                                "   AND SFV.label = 'ftr_config') " +
+                                "ORDER BY S.name, SCC.position", Tuple.class)
+                .addScalar("id", StandardBasicTypes.BIG_INTEGER)
+                .addScalar("machine_id", StandardBasicTypes.STRING)
+                .addScalar("minion_id", StandardBasicTypes.STRING)
+                .addEntity("CC", ConfigChannel.class)
+                .setParameter("user_id", user.getId())
+                .setParameterList("sids", sids)
+                .list();
+
+        return getServersFromTuplesForSubscribe(res);
     }
 
     /**
