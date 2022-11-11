@@ -109,7 +109,6 @@ public class SchedulerKernel {
             PrometheusExporter.INSTANCE.registerScheduler(SchedulerKernel.scheduler, "taskomatic");
         }
         catch (SchedulerException e) {
-            e.printStackTrace();
             throw new InstantiationException("this.scheduler failed");
         }
     }
@@ -170,8 +169,7 @@ public class SchedulerKernel {
             SchedulerKernel.scheduler.shutdown();
         }
         catch (SchedulerException e) {
-            // TODO Figure out what to do with this guy
-            e.printStackTrace();
+            log.warn("Failed to cleanly stop the scheduler", e);
         }
         finally {
             MessageQueue.stopMessaging();
@@ -234,10 +232,10 @@ public class SchedulerKernel {
             if (interrupted > 0) {
                 log.warn("Number of interrupted runs: {}", interrupted);
             }
-            TaskoFactory.closeSession();
+            HibernateFactory.closeSession();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unexpected error while initializing schedules", e);
         }
     }
 }

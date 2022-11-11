@@ -20,7 +20,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I enter the hostname of "kvm_server" as "hostname"
     And I enter "22" as "port"
     And I enter "root" as "user"
-    And I enter "kvm_server" password
+    And I enter KVM Server password
     And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"

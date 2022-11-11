@@ -1725,7 +1725,8 @@ def do_system_setconfigchannelorder(self, args):
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
-        systems = self.ssm.keys()
+        systems = list(self.ssm.keys())
+        args.pop(0)
     else:
         systems = self.expand_systems(args.pop(0))
 
@@ -4606,6 +4607,8 @@ def help_system_scheduleproductmigration(self):
 \n    Options: \
 \n        -s START_TIME \
 \n        -d pass this flag, if you want to do a dry run \
+\n        --allow-vendor-change pass this flag if you want to allow vendor change \
+\n        -r pass this flag if you want to remove remove products which have no successors \
 \n        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))'))
     print('')
     print(self.HELP_SYSTEM_OPTS)
@@ -4616,6 +4619,8 @@ def do_system_scheduleproductmigration(self, args):
     arg_parser.add_argument('-s', '--start-time')
     arg_parser.add_argument('-d', '--dry-run', action='store_true', default=False)
     arg_parser.add_argument('-c', '--child-channels')
+    arg_parser.add_argument('--allow-vendor-change', action='store_true', default=False)
+    arg_parser.add_argument('-r', '--remove-products-without-successor', action='store_true', default=False)
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
@@ -4654,10 +4659,12 @@ def do_system_scheduleproductmigration(self, args):
             continue
 
         print(_('Scheduling Product migration for system ') + str(system))
+        print(_('Migration target ') + str(migration_target))
         try:
-            result = self.client.system.scheduleSPMigration(self.session,
+            result = self.client.system.scheduleProductMigration(self.session,
                                                             system_id, migration_target, base_channel_label,
-                                                            child_channels, options.dry_run, options.start_time)
+                                                            child_channels, options.dry_run, options.allow_vendor_change,
+                                                            options.remove_products_without_successor, options.start_time)
             print(_('Scheduled action ID: ') + str(result))
         except xmlrpclib.Fault as detail:
             logging.error(_N('Failed to schedule %s') % detail)

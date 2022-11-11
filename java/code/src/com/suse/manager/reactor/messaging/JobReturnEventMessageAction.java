@@ -247,13 +247,8 @@ public class JobReturnEventMessageAction implements MessageAction {
              */
 
             MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
-                    .ifPresent(minion -> ActionChainFactory.getAllActionChains().stream()
+                    .ifPresent(minion -> ActionChainFactory.getActionChainsByServer(minion).stream()
                     .filter(ActionChain::isDone)
-                    .filter(ac ->
-                            ac.getEntries().stream()
-                                    .flatMap(ace -> ace.getAction().getServerActions().stream())
-                                    .anyMatch(sa -> sa.getServer().getId().equals(minion.getId()))
-                    )
                     .forEach(ActionChainFactory::delete));
 
         }

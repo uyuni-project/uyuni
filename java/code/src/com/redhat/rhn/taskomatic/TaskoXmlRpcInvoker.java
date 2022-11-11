@@ -81,14 +81,14 @@ public class TaskoXmlRpcInvoker implements ProtocolHandler {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error handling request", e);
         }
         finally {
             try {
                 response.commit();
             }
             catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error sending response", e);
             }
         }
 

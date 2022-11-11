@@ -178,7 +178,6 @@ public class XmlRpcServlet extends HttpServlet {
             // By the time we get here, it can't be a FaultException, so just
             // wrap it in a ServletException and toss.
             ServletException e = new ServletException("Throwable from XmlRpc", t);
-            t.printStackTrace();
             if (e.getCause() != t) {
                 e.initCause(t);
             }

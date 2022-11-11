@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.audit.scap.file;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
@@ -23,13 +24,15 @@ import org.apache.struts.actions.DownloadAction.StreamInfo;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * ScapResultFile
  */
 public class ScapResultFile implements StreamInfo {
-    private XccdfTestResult testResult;
-    private String filename;
+    private final XccdfTestResult testResult;
+    private final String filename;
 
     /**
      * Constructeur
@@ -37,8 +40,21 @@ public class ScapResultFile implements StreamInfo {
      * @param filenameIn The file name
      */
     public ScapResultFile(XccdfTestResult testResultIn, String filenameIn) {
-        testResult = testResultIn;
-        filename = filenameIn;
+        if (isFileName(filenameIn)) {
+            testResult = testResultIn;
+            filename = filenameIn;
+        }
+        else {
+            throw new RhnRuntimeException("Invalid filename: " + filenameIn);
+        }
+    }
+
+    private boolean isFileName(String filenameIn) {
+        return isFileName(Paths.get(filenameIn));
+    }
+
+    private boolean isFileName(Path path) {
+        return path.equals(path.getFileName()) && path.getParent() == null;
     }
 
     /**
@@ -84,9 +100,9 @@ public class ScapResultFile implements StreamInfo {
             return new FileInputStream(getAbsolutePath());
         }
         catch (IOException e) {
-            e.printStackTrace();
             LocalizationService ls = LocalizationService.getInstance();
-            throw new LookupException("Could not server file '" + filename + "' for XCCDF Scan " + testResult.getId(),
+            throw new LookupException("Could not read server file '" + filename +
+                    "' for XCCDF Scan " + testResult.getId(),
                     ls.getMessage("lookup.scapfile.title"), null, null);
         }
     }
@@ -96,8 +112,6 @@ public class ScapResultFile implements StreamInfo {
      * @return string
      */
     public String toString() {
-        return this.getClass().getName() +
-            "[path=" + getAbsolutePath() +
-            "]";
+        return this.getClass().getName() + "[path=" + getAbsolutePath() + "]";
     }
 }

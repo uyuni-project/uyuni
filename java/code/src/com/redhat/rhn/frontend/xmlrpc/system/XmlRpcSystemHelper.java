@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.system;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BootstrapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
@@ -94,6 +95,27 @@ public class XmlRpcSystemHelper {
         try {
             return SystemManager.lookupByServerIdsAndUser(
                     serverIds.stream().map(Number::longValue).collect(Collectors.toList()), user.getId());
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException("No such systems found for user: " + user.getId());
+        }
+    }
+
+    /**
+     * Fast helper method to lookup a bunch of servers from a list of server ids optimized for channels subscriptions,
+     * and throws a FaultException if the server cannot be found.
+     *
+     * @param user The user looking up the server
+     * @param serverIds The ids of the servers we're looking for
+     * @return Returns a list of server corresponding to provided server id
+     * @throws NoSuchSystemException A NoSuchSystemException is thrown if the server
+     * corresponding to sid cannot be found.
+     */
+    public List<Server> lookupServersForSubscribe(User user, List<? extends Number> serverIds)
+            throws NoSuchSystemException {
+        try {
+            return ServerFactory.getSystemsForSubscribe(
+                    serverIds.stream().map(Number::longValue).collect(Collectors.toList()), user);
         }
         catch (LookupException e) {
             throw new NoSuchSystemException("No such systems found for user: " + user.getId());
