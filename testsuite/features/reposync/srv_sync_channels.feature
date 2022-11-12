@@ -32,7 +32,7 @@ Feature: Be able to list available channels and enable them
     When I execute mgr-sync "list products --expand"
     Then I should get "[ ] SUSE Linux Enterprise Server 12 SP4 x86_64"
     And I should get "[ ] SUSE Manager Proxy 4.1 x86_64"
-    And I should get "  [ ] (R) SUSE Manager Client Tools for RHEL, Liberty and Clones 7 x86_64
+    And I should get "  [ ] (R) SUSE Manager Client Tools for RHEL, Liberty and Clones 7 x86_64"
     And I should get "  [ ] (R) SUSE Manager Client Tools for SLE 15 x86_64"
 
   Scenario: List products with filter
