@@ -113,12 +113,12 @@ class CVEAudit extends React.Component<Props, State> {
     const list = isAdd ? items : removed;
 
     this.setState({ selectedItems: items }, () => {
-      const data = JSON.stringify({
+      const data = {
         label: "system_list",
         values: list,
         checked: isAdd,
-      });
-      Network.post("/rhn/ajax/item-selector", data, false, false);
+      };
+      Network.post("/rhn/ajax/item-selector", data);
     });
   };
 

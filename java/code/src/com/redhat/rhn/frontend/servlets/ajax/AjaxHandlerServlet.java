@@ -58,6 +58,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AjaxHandlerServlet extends HttpServlet {
 
     private static final Map<String, ProcessAjaxRequest> HANDLERS = new HashMap<>();
+    public static final String AJAX_PREFIX = "ajax/";
     private static Gson gson = new Gson();
     private static MirrorCredentialsRenderer mirrorCredentialsRenderer = new MirrorCredentialsRenderer();
     private static SystemGroupsRenderer systemGroupsRenderer = new SystemGroupsRenderer();
@@ -148,7 +149,7 @@ public class AjaxHandlerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String url = req.getRequestURL().toString().split("ajax/")[1];
+        String url = req.getRequestURL().toString().split(AJAX_PREFIX)[1];
         String response = HANDLERS.get(url).doProcess(req, resp);
         resp.getOutputStream().print(response);
         resp.getOutputStream().close();
