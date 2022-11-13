@@ -9,6 +9,7 @@ Feature: Add a repository to a channel
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I enable source package syncing
 
   Scenario: Add a test repository for x86_64
     When I follow the left menu "Software > Manage > Repositories"
@@ -39,8 +40,7 @@ Feature: Add a repository to a channel
     Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the x86_64 channel
-    When I enable source package syncing
-    And I follow the left menu "Software > Manage > Channels"
+    When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
     And I follow "Sync"
@@ -48,7 +48,6 @@ Feature: Add a repository to a channel
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-x86_64." text
     And I wait until the channel "test-channel-x86_64" has been synced
-    And I disable source package syncing
 
   Scenario: Add a test repository for i586
     When I follow the left menu "Software > Manage > Repositories"
@@ -136,3 +135,6 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Packages" in the content area
     And I wait until I see "blackhole-dummy" text, refreshing the page
+
+  Scenario: Cleanup disable source package syncing
+    Then I disable source package syncing
