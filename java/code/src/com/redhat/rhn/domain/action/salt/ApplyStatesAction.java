@@ -20,9 +20,6 @@ import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,25 +84,6 @@ public class ApplyStatesAction extends Action {
             retval.append("</span></strong>");
             return retval.toString();
         }
-        resultList.get().stream()
-        .sorted(
-                new Comparator<StateResult>() {
-                    public int compare(StateResult r1, StateResult r2) {
-                        return (r2.getRunNum() < r1.getRunNum()) ? 1 : -1;
-                    }
-                })
-        .forEach(entry -> {
-            if (!entry.isResult()) {
-                retval.append("<strong><span class='text-danger'>");
-            }
-            else if (!entry.getChanges().equals("{}")) {
-                retval.append("<strong><span class='text-info'>");
-            }
-            retval.append(StringEscapeUtils.escapeHtml4(entry.toString()));
-            if (!entry.isResult() || !entry.getChanges().equals("{}")) {
-                retval.append("</span></strong>");
-            }
-        });
-        return retval.toString();
+        return ActionFormatter.formatSaltResultMessage(resultList.get());
     }
 }

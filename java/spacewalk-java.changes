@@ -1,3 +1,5 @@
+- format results for package, errata and image build actions in
+  system history similar to state apply results
 - Fix ClassCastException
 - Run only minion actions that are in the pending status (bsc#1205012)
 - Manager reboot in transactional update action chain (bsc#1201476
