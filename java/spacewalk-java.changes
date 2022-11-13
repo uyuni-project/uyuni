@@ -1,3 +1,5 @@
+- format results for package, errata and image build actions in
+  system history similar to state apply results
 - check for NULL in DEB package install size value
 - adapt permissions of temporary ssh key directory
 - Fixed traditional stack warning message to be displayed only when the system
