@@ -261,7 +261,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) throws Exception {
-        String name = Opt.fold(advisory, () -> "JAVA Test " + TestUtils.randomString(), Function.identity());
+        String name = Opt.fold(advisory, () -> "JAVA-Test-" + TestUtils.randomNumeric(4), Function.identity());
         Org org = null;
         if (orgId != null) {
             org = OrgFactory.lookupById(orgId);
@@ -281,6 +281,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setIssueDate(new Date());
         e.setAdvisoryName(name);
         e.setAdvisoryRel(2L);
+        e.setErrataFrom("maint-coord@suse.de");
         e.setLocallyModified(Boolean.FALSE);
         e.addKeyword("keyword");
         Package testPackage = PackageTest.createTestPackage(org);
