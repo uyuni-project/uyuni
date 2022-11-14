@@ -1,6 +1,6 @@
 - Fix ClassCastException
 - Migrate formulas with default values to database (bsc#1204932)
-- Improved reboot needed handling for transactional swystems
+- Improved reboot needed handling for transactional systems
 - Manage reboot in transactional update action chain (bsc#1201476)
 - Enable monitoring for RHEL 9 Salt clients
 - Optimize performance of config channels operations for UI and API (bsc#1204029)
