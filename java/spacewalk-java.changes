@@ -1,3 +1,5 @@
+- Fixed traditional stack warning message to be displayed only when the system
+  has enterprise entitlement (bsc#1205350)
 - Remove invalid errata selection after patch installation (bsc#1204235)
 - Ignore insert conflicts during reporting database update (bsc#1202150)
 - Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
