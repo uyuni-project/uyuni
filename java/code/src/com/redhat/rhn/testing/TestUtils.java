@@ -496,6 +496,15 @@ public class TestUtils {
     }
 
     /**
+     * Return a random numeric string
+     * @param length of the string
+     * @return A random numeric string of the specified length
+     */
+    public static String randomNumeric(int length) {
+        return RandomStringUtils.randomNumeric(length);
+    }
+
+    /**
      * Run a test query
      * @param mode to run
      * @param params map
