@@ -1,4 +1,8 @@
-- Fix possible wrong autoinstall value from Cobbler collections (bsc#1203478)
+-------------------------------------------------------------------
+Mon Nov 14 15:07:32 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Fix possible wrong autoinstall value from Cobbler collections (bsc#1203478)
 
 -------------------------------------------------------------------
 Fri Nov 04 17:14:50 CET 2022 - jgonzalez@suse.com
