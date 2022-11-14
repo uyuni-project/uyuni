@@ -60,7 +60,6 @@ function retrieveProxySettings() {
   ProxySettingsRenderer.retrieveProxySettings(
     makeAjaxHandler(function(settings) {
       setProxySettings(settings);
-      console.log(JSON.stringify(settings));
 
       if (settings.hostname) {
         verifyProxySettings(false);
