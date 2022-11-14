@@ -68,6 +68,9 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.errata.ErrataParserFactory;
+import com.suse.manager.errata.ErrataParsingException;
+import com.suse.manager.errata.VendorSpecificErrataParser;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -113,6 +116,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("string", "synopsis")
      *          #prop("int", "release")
      *          #prop("string", "advisory_status")
+     *          #prop("string", "vendor_advisory")
      *          #prop("string", "type")
      *          #prop("string", "product")
      *          #prop("string", "errataFrom")
@@ -152,6 +156,15 @@ public class ErrataHandler extends BaseHandler {
         if (errata.getAdvisoryStatus() != null) {
             errataMap.put("advisory_status", errata.getAdvisoryStatus().getMetadataValue());
         }
+
+        try {
+            final VendorSpecificErrataParser parser = ErrataParserFactory.getParser(errata);
+            errataMap.put("vendor_advisory", parser.getAdvisoryUri(errata).toString());
+        }
+        catch (ErrataParsingException ex) {
+            errataMap.put("vendor_advisory", "");
+        }
+
         errataMap.put("product",
                 StringUtils.defaultString(errata.getProduct()));
         errataMap.put("errataFrom",
