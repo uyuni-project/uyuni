@@ -1,3 +1,4 @@
+- Add subscription warning notification to overview page
 - Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
 - Add vendor_advisory to errata.getDetails (bsc#1205207)
 - Fix ClassCastException
