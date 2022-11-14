@@ -1,3 +1,5 @@
+- Fixed traditional stack warning message to be displayed only when the system
+  has enterprise entitlement (bsc#1205350)
 - Update jackson-databind version
 - adapt permissions of temporary ssh key directory
 - format results for package, errata and image build actions in
