@@ -22,6 +22,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.test.TimeUtilsTest;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
@@ -581,12 +582,21 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      * @param newS new system
      * @param newA new action
      * @return ServerAction created
-     * @throws Exception something bad happened
      */
-    public static ServerAction createServerAction(Server newS, Action newA)
-        throws Exception {
+    public static ServerAction createServerAction(Server newS, Action newA) {
+        return createServerAction(newS, newA, ActionFactory.STATUS_QUEUED);
+    }
+
+    /**
+     * Create a new ServerAction
+     * @param newS new system
+     * @param newA new action
+     * @param status the status
+     * @return ServerAction created
+     */
+    public static ServerAction createServerAction(Server newS, Action newA, ActionStatus status) {
         ServerAction sa = new ServerAction();
-        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setStatus(status);
         sa.setRemainingTries(10L);
         sa.setCreated(new Date());
         sa.setModified(new Date());

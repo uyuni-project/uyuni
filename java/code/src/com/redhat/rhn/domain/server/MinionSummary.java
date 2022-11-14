@@ -15,25 +15,22 @@
 package com.redhat.rhn.domain.server;
 
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import java.util.Optional;
 
 /**
  * This class represents a summary of a minion.
  */
 public class MinionSummary {
 
-    private Long serverId;
-    private String minionId;
-    private String digitalServerId;
-    private String machineId;
-    private String os;
-    private Optional<String> contactMethodLabel;
-    private Boolean transactionalUpdate;
+    private final Long serverId;
+    private final String minionId;
+    private final String digitalServerId;
+    private final String machineId;
+    private final String os;
+    private final String contactMethodLabel;
+    private final boolean transactionalUpdate;
 
     /**
      * Convenience constructor from a MinionServer instance.
@@ -42,7 +39,7 @@ public class MinionSummary {
      */
     public MinionSummary(MinionServer minion) {
         this(minion.getId(), minion.getMinionId(), minion.getDigitalServerId(),
-                minion.getMachineId(), minion.getContactMethodLabel(), minion.getOs(),
+                minion.getMachineId(), minion.getContactMethodLabel().orElse(null), minion.getOs(),
                 minion.doesOsSupportsTransactionalUpdate());
     }
 
@@ -57,9 +54,9 @@ public class MinionSummary {
      * @param osIn the minion os
      */
     public MinionSummary(Long serverIdIn, String minionIdIn, String digitalServerIdIn, String machineIdIn,
-            Optional<String> contactMethodLabelIn, String osIn) {
+            String contactMethodLabelIn, String osIn) {
         this(serverIdIn, minionIdIn, digitalServerIdIn, machineIdIn, contactMethodLabelIn, osIn,
-                ServerConstants.SLEMICRO.equals(osIn) ? true : false);
+            ServerConstants.SLEMICRO.equals(osIn));
     }
 
     /**
@@ -75,7 +72,7 @@ public class MinionSummary {
 
      */
     public MinionSummary(Long serverIdIn, String minionIdIn, String digitalServerIdIn, String machineIdIn,
-            Optional<String> contactMethodLabelIn, String osIn, Boolean transactionalUpdateIn) {
+            String contactMethodLabelIn, String osIn, boolean transactionalUpdateIn) {
         this.serverId = serverIdIn;
         this.minionId = minionIdIn;
         this.digitalServerId = digitalServerIdIn;
@@ -86,9 +83,9 @@ public class MinionSummary {
     }
 
     /**
-     * @return true is minion is transactiona update
+     * @return true is minion is transactional update
      */
-    public Boolean isTransactionalUpdate() {
+    public boolean isTransactionalUpdate() {
         return transactionalUpdate;
     }
 
@@ -132,7 +129,11 @@ public class MinionSummary {
      * @return true if the minion contact method is ssh-push
      */
     public boolean isSshPush() {
-        return Opt.fold(contactMethodLabel, () -> false, ContactMethodUtil::isSSHPushContactMethod);
+        if (contactMethodLabel == null) {
+            return false;
+        }
+
+        return ContactMethodUtil.isSSHPushContactMethod(contactMethodLabel);
     }
 
     @Override
