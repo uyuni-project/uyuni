@@ -1,4 +1,5 @@
-- Fix ClassCastException (bsc#1200096)
+- Fix ClassCastException
+- Improved reboot needed handling for transactional swystems
 - Manage reboot in transactional update action chain (bsc#1201476)
 - Enable monitoring for RHEL 9 Salt clients
 - Optimize performance of config channels operations for UI and API (bsc#1204029)

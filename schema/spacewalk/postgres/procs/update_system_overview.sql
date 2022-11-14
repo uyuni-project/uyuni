@@ -212,6 +212,12 @@ begin
                   AND (to_date('1970-01-01', 'YYYY-MM-DD')
                        + numtodsinterval(S.last_boot, 'second')) < SP.installtime at time zone 'UTC'
                 )
+         OR EXISTS
+               (SELECT 1
+                FROM suseMinionInfo smi
+                WHERE smi.server_id = S.id
+                AND smi.reboot_needed = 'Y'
+               )
         );
 
     SELECT TRUE into new_kickstarting
