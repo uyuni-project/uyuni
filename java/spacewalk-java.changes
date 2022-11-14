@@ -1,3 +1,4 @@
+- adapt permissions of temporary ssh key directory
 - format results for package, errata and image build actions in
   system history similar to state apply results
 - Run only minion actions that are in the pending status (bsc#1205012)
