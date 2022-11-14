@@ -1,3 +1,5 @@
+- Changed proxy settings retrieval to not include password (bsc#1205339)
+
 -------------------------------------------------------------------
 Mon Oct 31 14:52:39 CET 2022 - jgonzalez@suse.com
 
