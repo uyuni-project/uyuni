@@ -1,3 +1,4 @@
+- Run only minion actions that are in the pending status (bsc#1205012)
 - Fix ClassCastException
 - Migrate formulas with default values to database (bsc#1204932)
 - Improved reboot needed handling for transactional systems
