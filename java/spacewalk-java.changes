@@ -1,3 +1,5 @@
+- Changed proxy settings retrieval to not include password (bsc#1205339)
+
 -------------------------------------------------------------------
 Wed Nov 16 12:02:46 UTC 2022 - marina.latini@suse.com
 
