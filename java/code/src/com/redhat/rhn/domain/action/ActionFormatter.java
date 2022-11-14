@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -251,8 +252,7 @@ public class ActionFormatter {
     public static String formatSaltResultMessage(List<StateResult> result) {
         StringBuilder retval = new StringBuilder();
         result.stream()
-                .sorted(
-                        (r1, r2) -> (r2.getRunNum() < r1.getRunNum()) ? 1 : -1)
+                .sorted(Comparator.comparingDouble(StateResult::getRunNum))
                 .forEach(entry -> {
                     if (!entry.isResult()) {
                         retval.append("<strong><span class='text-danger'>");
