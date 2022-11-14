@@ -1,3 +1,4 @@
+- Add vendor_advisory to errata.getDetails (bsc#1205207)
 - Fix ClassCastException
 - disable cloned vendor channel auto selection by default (bsc#1204186) 
 - Add SUSE Liberty Linux support for RHEL9 based clients

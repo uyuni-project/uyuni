@@ -1,3 +1,4 @@
+- Add vendor_advisory information to errata_details call (bsc#1205207)
 - Added two missing options to schedule product migration: allow-vendor-change
   and remove-products-without-successor (bsc#1204126)
 - Changed schedule product migration to use the correct API method
