@@ -1,3 +1,4 @@
+- Run only minion actions that are in the pending status (bsc#1205012)
 - Manager reboot in transactional update action chain (bsc#1201476
 - Optimize performance of config channels operations for UI and API (bsc#1204029)
 - Don't add the same channel twice in the System config addChannel API (bsc#1204029)
@@ -78,7 +79,7 @@ Wed Jul 06 15:56:37 CEST 2022 - jmassaguerpla@suse.de
     to missing url decode
   * Prefer the Salt Bundle with Cobbler snippets configuration
     (minion_script and redhat_register_using_salt) (bsc#1198646)
-  * During re-activation, recalculate grains if 
+  * During re-activation, recalculate grains if
     contact method has been changed (bsc#1199677)
   * Hide authentication data in PAYG UI (bsc#1199679)
   * autoinstallation: missing whitespace after install URL (bsc#1199888)
@@ -109,7 +110,7 @@ Wed Jul 06 15:56:37 CEST 2022 - jmassaguerpla@suse.de
 Fri Jun 17 11:25:33 CEST 2022 - jmassaguerpla@suse.de
 
 - version 4.2.38-1
-  * Remove unused gson-extras.jar during build 
+  * Remove unused gson-extras.jar during build
 
 -------------------------------------------------------------------
 Mon May 23 15:51:43 CEST 2022 - jmassaguerpla@suse.de

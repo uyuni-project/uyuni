@@ -287,7 +287,7 @@ public class SaltServerActionService {
      * @return map of Salt local call to list of targeted minion summaries
      */
     public Map<LocalCall<?>, List<MinionSummary>> callsForAction(Action actionIn) {
-        List<MinionSummary> minionSummaries = MinionServerFactory.findMinionSummaries(actionIn.getId());
+        List<MinionSummary> minionSummaries = MinionServerFactory.findAllMinionSummaries(actionIn.getId());
         return callsForAction(actionIn, minionSummaries);
     }
 
@@ -513,7 +513,7 @@ public class SaltServerActionService {
     public void execute(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
-        List<MinionSummary> allMinions = MinionServerFactory.findMinionSummaries(actionIn.getId());
+        List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId());
 
         // split minions into regular and salt-ssh
         Map<Boolean, List<MinionSummary>> partitionBySSHPush = allMinions.stream()
@@ -879,7 +879,7 @@ public class SaltServerActionService {
                 .sorted(Comparator.comparingInt(ActionChainEntry::getSortOrder))
                 .map(ActionChainEntry::getAction)
                 .forEach(actionIn -> {
-                    List<MinionSummary> minions = MinionServerFactory.findMinionSummaries(actionIn.getId());
+                    List<MinionSummary> minions = MinionServerFactory.findAllMinionSummaries(actionIn.getId());
 
                     if (minions.isEmpty()) {
                         // When an Action Chain contains an Action which does not target
