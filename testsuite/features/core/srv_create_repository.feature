@@ -91,21 +91,21 @@ Feature: Add a repository to a channel
 @deblike_minion
   Scenario: Add the Debian-like repository to the AMD64 channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Channel-Deb-AMD64"
+    And I follow "Fake-Deb-AMD64-Channel"
     And I follow "Repositories" in the content area
     And I select the "fake-debian-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Test-Channel-Deb-AMD64 repository information was successfully updated" text
+    Then I should see a "Fake-Deb-AMD64-Channel repository information was successfully updated" text
 
 @deblike_minion
   Scenario: Synchronize the Debian-like repository in the AMD64 channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Channel-Deb-AMD64"
+    And I follow "Fake-Deb-AMD64-Channel"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for Test-Channel-Deb-AMD64." text
+    Then I should see a "Repository sync scheduled for Fake-Deb-AMD64-Channel." text
 
   Scenario: Refresh the errata cache
     When I follow the left menu "Admin > Task Schedules"
@@ -132,7 +132,7 @@ Feature: Add a repository to a channel
 @deblike_minion
   Scenario: Reposync handles wrong encoding on DEB attributes
     When I follow the left menu "Software > Channel List"
-    And I follow "Test-Channel-Deb-AMD64"
+    And I follow "Fake-Deb-AMD64-Channel"
     And I follow "Packages" in the content area
     And I wait until I see "blackhole-dummy" text, refreshing the page
 

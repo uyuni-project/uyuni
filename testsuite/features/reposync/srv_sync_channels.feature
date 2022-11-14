@@ -42,8 +42,8 @@ Feature: Be able to list available channels and enable them
     And I shouldn't get "s390x"
 
   Scenario: Run spacewalk-repo-sync with custom URLs
-    When I call spacewalk-repo-sync for channel "test_base_channel" with a custom url "http://localhost/pub/TestRepoRpmUpdates/"
-    Then I should see "Channel: test_base_channel" in the output
+    When I call spacewalk-repo-sync for channel "fake_base_channel" with a custom url "http://localhost/pub/TestRepoRpmUpdates/"
+    Then I should see "Channel: fake_base_channel" in the output
     And I should see "Sync completed." in the output
     And I should see "Total time:" in the output
     And I should see "Repo URL:" in the output

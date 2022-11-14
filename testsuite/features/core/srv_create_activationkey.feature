@@ -39,7 +39,7 @@ Feature: Create activation keys
     And I follow "Create Key"
     And I enter "Debian-like Test Key" as "description"
     And I enter "DEBLIKE-KEY" as "key"
-    And I select "Test-Channel-Deb-AMD64" from "selectedBaseChannel"
+    And I select "Fake-Deb-AMD64-Channel" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key Debian-like Test Key has been created" text
 

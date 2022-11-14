@@ -552,7 +552,7 @@ Then(/^I should see an update in the list$/) do
 end
 
 When(/^I check test channel$/) do
-  step %(I check "Test Base Channel" in the list)
+  step %(I check "Fake Base Channel" in the list)
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|

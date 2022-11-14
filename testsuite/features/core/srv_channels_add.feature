@@ -12,26 +12,26 @@ Feature: Adding channels
   Scenario: Add a base channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    And I enter "Test Base Channel" as "Channel Name"
-    And I enter "test_base_channel" as "Channel Label"
+    And I enter "Fake Base Channel" as "Channel Name"
+    And I enter "fake_base_channel" as "Channel Label"
     And I select "None" from "Parent Channel"
     And I select "x86_64" from "Architecture:"
     And I enter "Base channel for testing" as "Channel Summary"
     And I enter "No more description for base channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Test Base Channel created." text
+    Then I should see a "Channel Fake Base Channel created." text
 
   Scenario: Add a child channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    And I enter "Test Child Channel" as "Channel Name"
-    And I enter "test_child_channel" as "Channel Label"
-    And I select "Test Base Channel" from "Parent Channel"
+    And I enter "Fake Child Channel" as "Channel Name"
+    And I enter "fake_child_channel" as "Channel Label"
+    And I select "Fake Base Channel" from "Parent Channel"
     And I select "x86_64" from "Architecture:"
     And I enter "Child channel for testing" as "Channel Summary"
-    And I enter "Description for Test Child Channel." as "Channel Description"
+    And I enter "Description for Fake Child Channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Test Child Channel created." text
+    Then I should see a "Channel Fake Child Channel created." text
 
   Scenario: Add a base test channel for i586
     When I follow the left menu "Software > Manage > Channels"
@@ -84,11 +84,11 @@ Feature: Adding channels
   Scenario: Add Debian-like AMD64 base channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    And I enter "Test-Channel-Deb-AMD64" as "Channel Name"
-    And I enter "test-channel-deb-amd64" as "Channel Label"
+    And I enter "Fake-Deb-AMD64-Channel" as "Channel Name"
+    And I enter "fake-deb-amd64-channel" as "Channel Label"
     And I select "None" from "Parent Channel"
     And I select "AMD64 Debian" from "Architecture:"
-    And I enter "Test-Channel-Deb-AMD64 for testing" as "Channel Summary"
+    And I enter "Fake-Deb-AMD64-Channel for testing" as "Channel Summary"
     And I enter "No more description for base channel." as "Channel Description"
     # WORKAROUND
     # GPG verification of Debian-like repos is possible with an own GPG key.
@@ -96,7 +96,7 @@ Feature: Adding channels
     And I uncheck "gpg_check"
     # End of WORKAROUND
     And I click on "Create Channel"
-    Then I should see a "Channel Test-Channel-Deb-AMD64 created." text
+    Then I should see a "Channel Fake-Deb-AMD64-Channel created." text
 
   Scenario: Wait for Channels generated initial metadata
     When I wait until the channel "test-channel-x86_64" has been synced
