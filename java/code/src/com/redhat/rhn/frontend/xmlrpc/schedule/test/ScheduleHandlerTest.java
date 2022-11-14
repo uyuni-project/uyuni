@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -343,4 +344,54 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         assertTrue(apiSystems.length > 0);
         assertEquals(numSystems, apiSystems.length);
     }
+
+    public void testCannotCancelPendingActionsWithPrerequisite() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+
+        Action parent = ActionFactoryTest.createNewAction(admin, ActionFactory.TYPE_PACKAGES_UPDATE);
+        ServerActionTest.createServerAction(server, parent);
+
+        Action child = ActionFactoryTest.createNewAction(admin, ActionFactory.TYPE_SCRIPT_RUN);
+        child.setPrerequisite(parent);
+        ActionFactory.save(child);
+        ServerActionTest.createServerAction(server, child);
+
+        try {
+            handler.cancelActions(admin, List.of(child.getId().intValue()));
+            fail("An UnsupportedOperationException should have been thrown");
+        }
+        catch (Exception ex) {
+            if (!(ex instanceof UnsupportedOperationException)) {
+                fail("An UnsupportedOperationException should have been thrown. " +
+                    ex.getClass() + " was thrown instead");
+            }
+
+            assertEquals("Cannot cancel an action with a pending prerequisite.", ex.getMessage());
+        }
+    }
+
+    public void testCannotCancelPickedUpAction() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+
+        Action action = ActionFactoryTest.createNewAction(admin, ActionFactory.TYPE_PACKAGES_UPDATE);
+        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+
+        ActionFactory.save(action);
+        ActionFactory.save(serverAction);
+
+        try {
+            handler.cancelActions(admin, List.of(action.getId().intValue()));
+            fail("An UnsupportedOperationException should have been thrown");
+        }
+        catch (Exception ex) {
+            if (!(ex instanceof UnsupportedOperationException)) {
+                fail("An UnsupportedOperationException should have been thrown. " +
+                    ex.getClass() + " was thrown instead");
+            }
+
+            assertEquals("Cannot cancel an action in PICKED UP state.", ex.getMessage());
+        }
+    }
+
 }
