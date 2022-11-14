@@ -35,7 +35,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        4.3.13
+Version:        4.3.14
 Release:        1
 Summary:        Initial setup tools for Spacewalk
 License:        GPL-2.0-only
@@ -276,6 +276,14 @@ if [ ! -f /etc/cobbler/settings.rpmsave -a -f /etc/cobbler/settings.before-migra
     /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --noconfigs --noapi || exit 1
     cobbler-settings -c /etc/cobbler/settings.before-migration-backup migrate || exit 1
     touch /var/lib/cobbler/v2_migration_done
+fi
+
+# Wrong execution of v2 script happened, so we fix autoinstall attribute of collections.
+if test -f /var/lib/cobbler/v2_migration_done && ! grep -q autoinstall_fixed /var/lib/cobbler/v2_migration_done; then
+    echo "* Check and fix autoinstall attributes from Cobbler collections"
+    echo "  (a backup of the collections will be created at /var/lib/cobbler/)"
+    /usr/share/cobbler/bin/migrate-data-v2-to-v3.py -c /var/lib/cobbler/collections --only-fix-autoinstall || exit 1
+    echo "autoinstall_fixed" >> /var/lib/cobbler/v2_migration_done
 fi
 
 exit 0
