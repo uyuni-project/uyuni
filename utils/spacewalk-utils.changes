@@ -1,4 +1,8 @@
-- Add EL9 Client Tools for SUSE Liberty Linux
+-------------------------------------------------------------------
+Tue Nov 15 16:49:59 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.15-1
+  * Add EL9 Client Tools for SUSE Liberty Linux
 
 -------------------------------------------------------------------
 Mon Sep 26 12:10:41 UTC 2022 - marina.latini@suse.com
