@@ -713,7 +713,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
 %attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh
-%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+%attr(700, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
 %attr(775, root, tomcat) %dir %{serverdir}/tomcat/webapps
 %dir %{serverdir}/susemanager
 %dir %{serverdir}/susemanager/salt
