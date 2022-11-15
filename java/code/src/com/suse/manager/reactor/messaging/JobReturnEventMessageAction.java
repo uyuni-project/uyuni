@@ -107,11 +107,12 @@ public class JobReturnEventMessageAction implements MessageAction {
         if (jobReturnEvent.getData().getFunArgs() instanceof List) {
             List<Object> funArgs = (List<Object>) jobReturnEvent.getData().getFunArgs();
             if (!funArgs.isEmpty() && funArgs.get(0) instanceof Map) {
-                functionArgs = (List<Map<String, Object>>) jobReturnEvent.getData().getFunArgs();
+                functionArgs = funArgs.stream().filter(x -> x instanceof Map)
+                        .map(x -> (Map<String, Object>) x).collect(Collectors.toList());
             }
         }
         boolean isFunctionTestMode = functionArgs.stream()
-                .anyMatch(e -> e.containsKey("test") && ((Boolean) e.get("test")).booleanValue());
+                .anyMatch(e -> e.containsKey("test") && Boolean.parseBoolean(e.get("test").toString()));
 
         if (Objects.isNull(function) && LOG.isDebugEnabled()) {
             LOG.debug("Function is null in JobReturnEvent -> \n" + Json.GSON.toJson(jobReturnEvent));

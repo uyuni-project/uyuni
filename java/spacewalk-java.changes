@@ -1,3 +1,4 @@
+- Fix ClassCastException
 - Run only minion actions that are in the pending status (bsc#1205012)
 - Manager reboot in transactional update action chain (bsc#1201476
 - Optimize performance of config channels operations for UI and API (bsc#1204029)
