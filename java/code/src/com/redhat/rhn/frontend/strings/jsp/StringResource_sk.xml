@@ -802,49 +802,49 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.userlist" xml:space="preserve">
           <source>Cannot display user list.</source>
-        <target/>
+        <target>Nie je možné zobraziť zoznam používateľov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.lookupuser" xml:space="preserve">
           <source>Cannot view user information.</source>
-        <target/>
+        <target>Nie je možné zobraziť informácie o používateľovi.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.acl" xml:space="preserve">
           <source>Permission Error.</source>
-        <target/>
+        <target>Chyba oprávnení.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.channel" xml:space="preserve">
           <source>You must be a channel administrator in order to edit a channel.</source>
-        <target/>
+        <target>Musíte byť administrátorom kanála, aby ste ho mohli upravovať.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.package" xml:space="preserve">
           <source>You cannot view package information for this package.</source>
-        <target/>
+        <target>Informácie o balíku pre tento balík nie je možné zobraziť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.subscribechannel" xml:space="preserve">
           <source>You cannot subscribe or unsubscribe systems to this channel.</source>
-        <target/>
+        <target>K tomuto kanálu nie je možné prihlásiť ani odhlásiť systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.removerole" xml:space="preserve">
           <source>You cannot remove the {0} role from the last {0}.</source>
-        <target/>
+        <target>Rolu {0} nie je možné odstrániť z posledného {0}.</target>
         <context-group name="ctx">
             <context context-type="paramnotes">You cannot remove the Organization Administrator role from the last Organization Administrator.</context>
           </context-group>
@@ -854,14 +854,14 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.deleteuser" xml:space="preserve">
           <source>You must be an organization administrator for a @@PRODUCT_NAME@@ to delete a user.</source>
-        <target/>
+        <target>Ak chcete odstrániť používateľa, musíte byť administrátorom organizácie pre @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.disableuser" xml:space="preserve">
           <source>You must be an organization administrator to deactivate a user.</source>
-        <target/>
+        <target>Ak chcete deaktivovať používateľa, musíte byť administrátorom organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
