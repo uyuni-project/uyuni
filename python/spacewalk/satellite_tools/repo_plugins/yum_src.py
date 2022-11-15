@@ -523,9 +523,12 @@ class ContentSource:
                         self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
 
     def _get_mirror_list(self, repo, url):
-        mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
         returnlist = []
         content = []
+        if url.startswith('file:/'):
+            return returnlist
+
+        mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
         # If page not plaintext or xml, is not a valid mirrorlist or metalink,
         # so continue without it.
         proxies = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
