@@ -1,11 +1,15 @@
-- require python3-debian version which support new compression
-  methods to sync ubuntu22-04 repositories (bsc#1205212)
-- Used the legacy reporting system in spacewalk-debug to obtain
-  up-to-date information
-- Keep older module metadata files in database (bsc#1201893)
-- Added an optional component_type property to the LOG object 
-  and included it to a log message
-- Add an optional component property to the log messages
+-------------------------------------------------------------------
+Tue Nov 15 16:47:41 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.17-1
+  * require python3-debian version which support new compression
+    methods to sync ubuntu22-04 repositories (bsc#1205212)
+  * Used the legacy reporting system in spacewalk-debug to obtain
+    up-to-date information
+  * Keep older module metadata files in database (bsc#1201893)
+  * Added an optional component_type property to the LOG object 
+    and included it to a log message
+  * Add an optional component property to the log messages
 
 -------------------------------------------------------------------
 Mon Sep 26 12:19:00 UTC 2022 - marina.latini@suse.com
