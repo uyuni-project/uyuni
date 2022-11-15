@@ -1,3 +1,4 @@
+- Avoid installing recommended packages from assigned products (bsc#1204330)
 - Manager reboot in transactional update action chain (bsc#1201476)
 - Use the actual sudo user home directory for salt ssh
   clients on bootstrap and clean up (bsc#1202093)
