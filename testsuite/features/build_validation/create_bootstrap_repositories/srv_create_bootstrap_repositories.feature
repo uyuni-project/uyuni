@@ -82,6 +82,14 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a Rocky 8 Salt SSH minion
     When I create the bootstrap repository for "rocky8_ssh_minion" on the server
 
+@rocky9_minion
+  Scenario: Create the bootstrap repository for a Rocky 9 Salt minion
+    When I create the bootstrap repository for "rocky9_minion" on the server
+
+@rocky8_ssh_minion
+  Scenario: Create the bootstrap repository for a Rocky 9 Salt SSH minion
+    When I create the bootstrap repository for "rocky9_ssh_minion" on the server
+
 @ubuntu1804_minion
   Scenario: Create the bootstrap repository for a Ubuntu 18.04 Salt minion
     When I create the bootstrap repository for "ubuntu1804_minion" on the server
