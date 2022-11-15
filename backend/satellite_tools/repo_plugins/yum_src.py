@@ -531,9 +531,12 @@ class ContentSource:
         initCFG(comp)
 
     def _get_mirror_list(self, repo, url):
-        mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
         returnlist = []
         content = []
+        if url.startswith('file:/'):
+            return returnlist
+
+        mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
         try:
             urlgrabber_opts = {}
             self.set_download_parameters(urlgrabber_opts, url, mirrorlist_path)
