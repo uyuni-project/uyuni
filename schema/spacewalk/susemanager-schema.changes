@@ -1,9 +1,13 @@
-- added kickstart distribution data for RHEL 9
-- Fix previous 'Amazon EC2' schema upgrade script
-  to prevent possible issues on schema upgrade.
-- Change 'Amazon EC2/KVM' to 'Amazon EC2/Nitro' (bsc#1203685)
-- Keep older module metadata files in database (bsc#1201893)
-- Fix setting of last modified date in channel clone procedure
+-------------------------------------------------------------------
+Tue Nov 15 16:54:35 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.15-1
+  * added kickstart distribution data for RHEL 9
+  * Fix previous 'Amazon EC2' schema upgrade script
+    to prevent possible issues on schema upgrade.
+  * Change 'Amazon EC2/KVM' to 'Amazon EC2/Nitro' (bsc#1203685)
+  * Keep older module metadata files in database (bsc#1201893)
+  * Fix setting of last modified date in channel clone procedure
 
 -------------------------------------------------------------------
 Mon Sep 26 12:23:06 UTC 2022 - marina.latini@suse.com
