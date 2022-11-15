@@ -38,7 +38,6 @@ cd /usr/share/cobbler/tests
 pytest --junitxml=/reports/cobbler.xml \
     --deselect=tftpgen_test.py::test_copy_single_distro_file \
     --deselect=utils_test.py::test_is_safe_to_hardlink[/etc/os-release-/tmp-False] \
-    --deselect=utils_test.py::test_blender \
     --deselect=utils_test.py::test_get_file_device_path \
     --deselect=utils_test.py::test_local_get_cobbler_api_url \
     --deselect=xmlrpcapi/image_test.py::TestImage::test_copy_image \
