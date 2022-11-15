@@ -292,6 +292,14 @@ Before('@sle15sp4_minion') do
   skip_this_scenario unless $sle15sp4_minion
 end
 
+Before('@opensuse154arm_minion') do
+  skip_this_scenario unless $opensuse154arm_minion
+end
+
+Before('@opensuse154arm_ssh_minion') do
+  skip_this_scenario unless $opensuse154arm_ssh_minion
+end
+
 Before('@sle12sp5_buildhost') do
   skip_this_scenario unless $sle12sp5_buildhost
 end
@@ -306,10 +314,6 @@ end
 
 Before('@sle15sp4_terminal') do
   skip_this_scenario unless $sle15sp4_terminal_mac
-end
-
-Before('@opensuse154arm_minion') do
-  skip_this_scenario unless $opensuse154arm_minion
 end
 
 Before('@suse_minion') do |scenario|
