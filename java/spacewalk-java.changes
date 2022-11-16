@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 16 12:02:46 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.42-1
+  * Update jackson-databind version
+
+-------------------------------------------------------------------
 Tue Nov 15 16:53:52 UTC 2022 - marina.latini@suse.com
 
 - version 4.3.41-1
