@@ -133,6 +133,6 @@ public class ItemSelector {
         responseText.append("\"pagination\":\"")
                     .append(paginationMessage)
                     .append("\"");
-        return  "({" + responseText + "})";
+        return  "{" + responseText + "}";
     }
 }
