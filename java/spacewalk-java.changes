@@ -1,3 +1,4 @@
+- Changed proxy settings retrieval to not include password (bsc#1205339)
 - Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
 - Fixed traditional stack warning message to be displayed only when the system
   has enterprise entitlement (bsc#1205350)
