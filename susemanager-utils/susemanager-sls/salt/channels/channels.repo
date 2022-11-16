@@ -5,7 +5,7 @@
 {%- set protocol = salt['pillar.get']('pkg_download_point_protocol', 'https')%}
 {%- set hostname = salt['pillar.get']('pkg_download_point_host', args['host'])%}
 
-{%- if salt['pillar.get']('contact_method') in ['ssh-push', 'ssh-push-tunnel'] %}
+{%- if salt['pillar.get']('contact_method') in ['ssh-push-tunnel'] %}
 {%- set port = salt['pillar.get']('ssh_push_port_https', args.get('port', 1233))%}
 {%- else %}
 {%- set port = salt['pillar.get']('pkg_download_point_port', args.get('port', 443))%}
