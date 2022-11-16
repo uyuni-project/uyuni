@@ -33,6 +33,8 @@ sh /root/cobbler/setup-supervisor.sh
 
 # execute the tests
 
+ln -s /usr/share/cobbler/ /code
+
 cd /usr/share/cobbler/tests
 
 pytest --junitxml=/reports/cobbler.xml
