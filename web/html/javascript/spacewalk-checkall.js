@@ -196,7 +196,17 @@ function update_server_set(variable, set_label, checked, values) {
 }
 
 function pageResponse(data) {
-  console.log("Item selector OK.");
+  var resp = JSON.parse(data)
+  resp = JSON.parse(resp)
+  if (typeof(resp['header']) != 'undefined') {
+    jQuery("#header_selcount").html(resp.header);
+  }
+  if (document.getElementById('pagination_selcount_top')) {
+    jQuery("#pagination_selcount_top").html(resp.pagination);
+    if (jQuery('#pagination_selcount_bottom').lenght > 0) {
+      jQuery('#pagination_selcount_bottom').html(resp.pagination);
+    }
+  }
 }
 
 // the function we call to read the number of systems selected and hide/show the toolbar
