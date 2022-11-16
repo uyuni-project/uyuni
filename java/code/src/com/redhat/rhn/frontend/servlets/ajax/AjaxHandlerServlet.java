@@ -40,6 +40,9 @@ import com.redhat.rhn.manager.setup.ProxySettingsDto;
 
 import com.google.gson.Gson;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -57,6 +60,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/ajax/*")
 public class AjaxHandlerServlet extends HttpServlet {
 
+    private static Logger logger = LogManager.getLogger(AjaxHandlerServlet.class);
     private static final Map<String, ProcessAjaxRequest> HANDLERS = new HashMap<>();
     public static final String AJAX_PREFIX = "ajax/";
     private static Gson gson = new Gson();
@@ -148,12 +152,16 @@ public class AjaxHandlerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String url = req.getRequestURL().toString().split(AJAX_PREFIX)[1];
-        String response = HANDLERS.get(url).doProcess(req, resp);
-        resp.getOutputStream().print(response);
-        resp.getOutputStream().close();
-
+        try {
+            String response = HANDLERS.get(url).doProcess(req, resp);
+            resp.getOutputStream().print(response);
+            resp.getOutputStream().close();
+        }
+        catch (ServletException | IOException e) {
+            logger.error("Error processing ajax request.", e);
+        }
     }
 
     private static <T> T parseBody(HttpServletRequest req, Class<T> type) throws IOException {
