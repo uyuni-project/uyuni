@@ -35,14 +35,4 @@ sh /root/cobbler/setup-supervisor.sh
 
 cd /usr/share/cobbler/tests
 
-pytest --junitxml=/reports/cobbler.xml \
-    --deselect=tftpgen_test.py::test_copy_single_distro_file \
-    --deselect=utils_test.py::test_is_safe_to_hardlink[/etc/os-release-/tmp-False] \
-    --deselect=utils_test.py::test_get_file_device_path \
-    --deselect=utils_test.py::test_local_get_cobbler_api_url \
-    --deselect=xmlrpcapi/image_test.py::TestImage::test_copy_image \
-    --deselect=xmlrpcapi/image_test.py::TestImage::test_find_image \
-    --deselect=xmlrpcapi/image_test.py::TestImage::test_get_image \
-    --deselect=xmlrpcapi/image_test.py::TestImage::test_remove_image \
-    --deselect=xmlrpcapi/image_test.py::TestImage::test_rename_image \
-    --deselect=xmlrpcapi/non_object_calls_test.py::test_get_item_resolved_value[interfaces-system-expected_result4-expected_exception4]
+pytest --junitxml=/reports/cobbler.xml
