@@ -1,4 +1,7 @@
-* Change default port of "Containerized Proxy configuration" 8022 (#19543)
+- Added two missing options to schedule product migration: allow-vendor-change
+  and remove-products-without-successor (bsc#1204126)
+- Changed schedule product migration to use the correct API method
+- Change default port of "Containerized Proxy configuration" 8022 (#19543)
 
 -------------------------------------------------------------------
 Tue Nov 15 16:46:47 UTC 2022 - marina.latini@suse.com
