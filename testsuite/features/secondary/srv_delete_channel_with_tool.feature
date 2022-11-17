@@ -47,5 +47,5 @@ Feature: Deleting channels with children or clones is not allowed
       |clone-fake-rpm-sles-channel|
       |clone-clone-fake-rpm-sles-channel|
     And I list channels with spacewalk-remove-channel
-    Then I shouldn't get "clone-fake-rpm-sles-cghannel"
+    Then I shouldn't get "clone-fake-rpm-sles-channel"
     And I shouldn't get "clone-clone-fake-rpm-sles-channel"
