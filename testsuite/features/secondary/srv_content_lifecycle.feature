@@ -156,4 +156,4 @@ Feature: Content lifecycle
     And I follow "clp_name"
     And I click on "Delete"
     And I click on "Delete" in "Delete Project" modal
-    Then I should see a "There are no entries to show." text
+    Then I should not see a "clp_name" text
