@@ -2167,12 +2167,20 @@ public class SystemManager extends BaseManager {
         Optional<Server> existing = ServerFactory.findByFqdn(fqdn);
         if (existing.isPresent()) {
             Server server = existing.get();
-            if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
-                // The SSH key is going to change remove it from the known hosts
-                removeSaltSSHKnownHosts(server);
-                return server;
+            if (!(server.hasEntitlement(EntitlementManager.FOREIGN) ||
+                    server.hasEntitlement(EntitlementManager.SALT))) {
+                throw new SystemsExistException(List.of(server.getId()));
             }
-            throw new SystemsExistException(List.of(server.getId()));
+            // The SSH key is going to change remove it from the known hosts
+            removeSaltSSHKnownHosts(server);
+            ProxyInfo info = server.getProxyInfo();
+            if (info == null) {
+                info = new ProxyInfo();
+                info.setServer(server);
+                server.setProxyInfo(info);
+            }
+            info.setSshPort(port);
+            return server;
         }
         Server server = ServerFactory.createServer();
         server.setName(fqdn);
