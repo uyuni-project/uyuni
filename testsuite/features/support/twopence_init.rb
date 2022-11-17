@@ -72,9 +72,10 @@ if $build_validation
   $debian10_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN10_SSHMINION']}") if ENV['DEBIAN10_SSHMINION']
   $debian11_minion = twopence_init("ssh:#{ENV['DEBIAN11_MINION']}") if ENV['DEBIAN11_MINION']
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
+  $opensuse154arm_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_MINION']}") if ENV['OPENSUSE154ARM_MINION']
+  $opensuse154arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_SSH_MINION']}") if ENV['OPENSUSE154ARM_SSH_MINION']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
-  $opensuse154arm_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_MINION']}") if ENV['OPENSUSE154ARM_MINION']
   $nodes += [$sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
              $sle15_client, $sle15_minion, $sle15_ssh_minion,
@@ -89,9 +90,9 @@ if $build_validation
              $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
+             $opensuse154arm_minion, $opensuse154arm_ssh_minion,
              $sle12sp5_buildhost,
-             $sle15sp3_buildhost,
-             $opensuse154arm_minion]
+             $sle15sp3_buildhost]
 else
   # Define twopence objects for QA environment
   $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
@@ -299,9 +300,10 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'debian10_ssh_minion'       => $debian10_ssh_minion,
                   'debian11_minion'           => $debian11_minion,
                   'debian11_ssh_minion'       => $debian11_ssh_minion,
+                  'opensuse154arm_minion'     => $opensuse154arm_minion,
+                  'opensuse154arm_ssh_minion' => $opensuse154arm_ssh_minion,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
-                  'sle15sp3_buildhost'        => $sle15sp3_buildhost,
-                  'opensuse154arm_minion'     => $opensuse154arm_minion }
+                  'sle15sp3_buildhost'        => $sle15sp3_buildhost }
 
 # This is the inverse of `node_by_host`.
 $host_by_node = {}
