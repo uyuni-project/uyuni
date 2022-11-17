@@ -50,13 +50,13 @@ Feature: Delete channels with child or clone is not allowed
   Scenario: Clone a child channel to the clone of x86_64 test channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Fake-RPM-SLES15SP4-Channel" as the origin channel
+    And I select "Fake-RPM-SLES-Channel" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
     And I should see a "Current state of the channel" text
     When I select "Clone of SLE-Product-SLES15-SP4-Pool for x86_64" from "Parent Channel"
     And I click on "Clone Channel"
-    Then I should see a "Clone of Fake-RPM-SLES15SP4-Channel" text
+    Then I should see a "Clone of Fake-RPM-SLES-Channel" text
 
   Scenario: Try delete channel with child
     When I follow the left menu "Software > Manage > Channels"
@@ -70,11 +70,11 @@ Feature: Delete channels with child or clone is not allowed
 
   Scenario: Cleanup: remove cloned child channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Fake-RPM-SLES15SP4-Channel"
+    And I follow "Clone of Fake-RPM-SLES-Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Clone of Fake-RPM-SLES15SP4-Channel" text
+    Then I should see a "Clone of Fake-RPM-SLES-Channel" text
     And I should see a "has been deleted." text
 
   Scenario: Cleanup: remove cloned parent channel

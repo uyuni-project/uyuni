@@ -41,7 +41,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES15SP4-Channel"
+    And I check "Fake-RPM-SLES-Channel"
     And I click on "Create Activation Key"
     And I follow "Configuration" in the content area
     And I follow first "Subscribe to Channels" in the content area

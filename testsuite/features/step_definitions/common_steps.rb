@@ -399,7 +399,7 @@ Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, 
   arch, _code = node.run('uname -m')
   arch.chomp!
   # TODO: adapt for architectures
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-sles15sp4-channel/repodata/*updateinfo.xml.gz"
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-sles-channel/repodata/*updateinfo.xml.gz"
   node.run(cmd, timeout: 500)
 end
 

@@ -57,9 +57,9 @@ user_2_channels:
     - org_admin_user: admin
     - org_admin_password: admin
     - manageable_channels:
-      - fake-rpm-sles15sp4-channel
+      - fake-rpm-sles-channel
     - subscribable_channels:
-      - fake-rpm-sles15sp4-channel
+      - fake-rpm-sles-channel
 
 
 define_custom_activation_key:

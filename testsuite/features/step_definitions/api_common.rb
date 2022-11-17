@@ -479,7 +479,7 @@ Then(/^I should get the test channel$/) do
   channel = if arch != 'x86_64'
               'fake-i586-channel'
             else
-              'fake-rpm-sles15sp4-channel'
+              'fake-rpm-sles-channel'
             end
   log "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))
