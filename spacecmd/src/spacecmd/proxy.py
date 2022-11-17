@@ -43,7 +43,7 @@ parameters:
 
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
-  -p, --ssh-port SSH port the proxy listens one. Default: 22
+  -p, --ssh-port SSH port the proxy listens one. Default: 8022
   -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy
             certicate in PEM format. May be provided multiple times.
 
@@ -59,7 +59,7 @@ def do_proxy_container_config(self, args):
     arg_parser.add_argument('-c', '--certificate', default='')
     arg_parser.add_argument('-k', '--key', default='')
     arg_parser.add_argument('-o', '--output', default='config.tar.gz')
-    arg_parser.add_argument('-p', '--ssh-port', type=int, default=22)
+    arg_parser.add_argument('-p', '--ssh-port', type=int, default=8022)
 
     args, options = parse_command_arguments(args, arg_parser)
 
@@ -97,7 +97,7 @@ parameters:
 
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
-  -p, --ssh-port SSH port the proxy listens one. Default: 22
+  -p, --ssh-port SSH port the proxy listens one. Default: 8022
   --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.
            Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.
   --ca-key path to the private key of the CA to use to generate a new proxy certificate.
@@ -119,7 +119,7 @@ examples:
 def do_proxy_container_config_generate_cert(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-o', '--output', default='config.tar.gz')
-    arg_parser.add_argument('-p', '--ssh-port', type=int, default=22)
+    arg_parser.add_argument('-p', '--ssh-port', type=int, default=8022)
     arg_parser.add_argument('--ca-cert', default='/root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT')
     arg_parser.add_argument('--ca-key', default='/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY')
     arg_parser.add_argument('--ca-pass')
