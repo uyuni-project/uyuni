@@ -90,6 +90,9 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
 
         Package pkg3 = PackageManagerTest.addPackageToChannel("pkg_3", channel);
 
+        Package pkg4 = PackageManagerTest.addPackageToChannel("pkg_4", channel);
+        pkg4.setPayloadSize(null);
+
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
@@ -143,6 +146,16 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
                         "Maintainer: Rhn-Java\n" +
                         "Installed-Size: 42\n" +
                         "Filename: channel/getPackage/pkg_3_1:1.0.0-1.noarch.deb\n" +
+                        "Size: 42\n" +
+                        "MD5sum: some-md5sum\n" +
+                        "Section: some-section\n" +
+                        "Description: RHN-JAVA Package Test\n" +
+                        "\n" +
+                        "Package: pkg_4\n" +
+                        "Version: 1:1.0.0-1\n" +
+                        "Architecture: noarch\n" +
+                        "Maintainer: Rhn-Java\n" +
+                        "Filename: channel/getPackage/pkg_4_1:1.0.0-1.noarch.deb\n" +
                         "Size: 42\n" +
                         "MD5sum: some-md5sum\n" +
                         "Section: some-section\n" +
