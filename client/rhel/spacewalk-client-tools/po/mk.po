@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-07 05:15+0000\n"
-"PO-Revision-Date: 2022-11-11 01:13+0000\n"
+"PO-Revision-Date: 2022-11-17 06:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/mk/>\n"
@@ -1161,27 +1161,27 @@ msgstr "Име на профил:"
 
 #: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
 msgid "Version: "
-msgstr "Верзија:"
+msgstr "Верзија: "
 
 #: ../src/up2date_client/tui.py:763
 msgid "CPU model: "
-msgstr "Модел на CPU:"
+msgstr "Модел на CPU: "
 
 #: ../src/up2date_client/tui.py:769
 msgid "Hostname: "
-msgstr "Име на домаќин:"
+msgstr "Име на хост: "
 
 #: ../src/up2date_client/tui.py:781
 msgid "CPU speed: "
-msgstr "Брзина на CPU:"
+msgstr "Брзина на CPU: "
 
 #: ../src/up2date_client/tui.py:787
 msgid "IP Address: "
-msgstr "IP адреса:"
+msgstr "IP адреса: "
 
 #: ../src/up2date_client/tui.py:796
 msgid "Memory: "
-msgstr "Меморија:"
+msgstr "Меморија: "
 
 #: ../src/up2date_client/tui.py:800
 #, python-format
