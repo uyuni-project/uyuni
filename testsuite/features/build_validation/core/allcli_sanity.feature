@@ -219,6 +219,20 @@ Feature: Sanity checks
     And "rocky8_ssh_minion" should communicate with the server using public interface
     And the clock from "rocky8_ssh_minion" should be exact
 
+@rocky9_minion
+  Scenario: The Rocky 9 Salt minion is healthy
+    Then "rocky9_minion" should have a FQDN
+    And reverse resolution should work for "rocky9_minion"
+    And "rocky9_minion" should communicate with the server using public interface
+    And the clock from "rocky9_minion" should be exact
+
+@rocky9_ssh_minion
+  Scenario: The Rocky 9 Salt SSH minion is healthy
+    Then "rocky9_ssh_minion" should have a FQDN
+    And reverse resolution should work for "rocky9_ssh_minion"
+    And "rocky9_ssh_minion" should communicate with the server using public interface
+    And the clock from "rocky9_ssh_minion" should be exact
+
 @ubuntu1804_minion
   Scenario: The Ubuntu 18.04 Salt minion is healthy
     Then "ubuntu1804_minion" should have a FQDN

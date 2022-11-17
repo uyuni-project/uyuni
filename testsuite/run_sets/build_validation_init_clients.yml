@@ -7,6 +7,8 @@
 - features/build_validation/init_clients/centos7_ssh_minion.feature
 - features/build_validation/init_clients/rocky8_minion.feature
 - features/build_validation/init_clients/rocky8_ssh_minion.feature
+- features/build_validation/init_clients/rocky9_minion.feature
+- features/build_validation/init_clients/rocky9_ssh_minion.feature
 
 - features/build_validation/init_clients/sle12sp4_client.feature
 - features/build_validation/init_clients/sle12sp4_minion.feature
