@@ -11276,6 +11276,14 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>Package {0} not found in subscribed channels</source>
         <target state="translated">Balík {0} nebol nájdený v prihlásených kanáloch</target>
       </trans-unit>
-    </body>
+    <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
