@@ -11273,6 +11273,14 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <source>Package {0} not found in subscribed channels</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>

@@ -11274,6 +11274,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Package {0} not found in subscribed channels</source>
         <target state="final">구독한 채널에서 패키지 {0}을(를) 찾을 수 없습니다.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
