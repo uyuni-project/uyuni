@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov 18 10:43:27 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.43-1
+  * Changed proxy settings retrieval to not include password (bsc#1205339)
+
+-------------------------------------------------------------------
 Wed Nov 16 12:02:46 UTC 2022 - marina.latini@suse.com
 
 - version 4.3.42-1
