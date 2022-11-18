@@ -1,11 +1,15 @@
-- added kickstart distribution data for RHEL 9
-- Add system overview table and a procedure to update it
-- Move web.system_checkin_threshold to rhnConfiguration table
-- Fix previous 'Amazon EC2' schema upgrade script
-  to prevent possible issues on schema upgrade.
-- Keep older module metadata files in database (bsc#1201893)
-- Fix setting of last modified date in channel clone procedure
-- Change 'Amazon EC2/KVM' to 'Amazon EC2/Nitro' (bsc#1203685)
+-------------------------------------------------------------------
+Fri Nov 18 15:03:27 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * added kickstart distribution data for RHEL 9
+  * Add system overview table and a procedure to update it
+  * Move web.system_checkin_threshold to rhnConfiguration table
+  * Fix previous 'Amazon EC2' schema upgrade script
+    to prevent possible issues on schema upgrade.
+  * Keep older module metadata files in database (bsc#1201893)
+  * Fix setting of last modified date in channel clone procedure
+  * Change 'Amazon EC2/KVM' to 'Amazon EC2/Nitro' (bsc#1203685)
 
 -------------------------------------------------------------------
 Wed Sep 28 10:46:55 CEST 2022 - jgonzalez@suse.com
