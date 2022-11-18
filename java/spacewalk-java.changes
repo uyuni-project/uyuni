@@ -1,3 +1,4 @@
+- Ignore insert conflicts during reporting database update (bsc#1202150)
 - Honor page size preference in new system lists
 - Fix kickstart for RHEL 9 to not add install command
 - Remove RHEL kickstart types below 6
