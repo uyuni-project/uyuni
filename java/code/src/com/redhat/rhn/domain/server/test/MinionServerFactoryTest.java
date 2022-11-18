@@ -17,8 +17,13 @@ package com.redhat.rhn.domain.server.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -26,8 +31,12 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * MinionServerFactoryTest
@@ -40,10 +49,8 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testFindByMachineId() throws Exception {
         MinionServer minionServer = createTestMinionServer(user);
-        Optional<MinionServer> minion = MinionServerFactory
-                .findByMachineId(minionServer.getMachineId());
-        assertTrue(minion.isPresent());
-        assertEquals(minionServer, minion.get());
+        Optional<MinionServer> minion = MinionServerFactory.findByMachineId(minionServer.getMachineId());
+        assertEquals(minionServer, minion.orElse(null));
     }
 
     /**
@@ -52,10 +59,8 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testFindByMinionId() throws Exception {
         MinionServer minionServer = createTestMinionServer(user);
-        Optional<MinionServer> minion = MinionServerFactory
-                .findByMinionId(minionServer.getMinionId());
-        assertTrue(minion.isPresent());
-        assertEquals(minionServer, minion.get());
+        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(minionServer.getMinionId());
+        assertEquals(minionServer, minion.orElse(null));
     }
 
     /**
@@ -74,10 +79,8 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupById() throws Exception {
         MinionServer minionServer = createTestMinionServer(user);
-        Optional<MinionServer> minion = MinionServerFactory
-                .lookupById(minionServer.getId());
-        assertTrue(minion.isPresent());
-        assertEquals(minionServer, minion.get());
+        Optional<MinionServer> minion = MinionServerFactory.lookupById(minionServer.getId());
+        assertEquals(minionServer, minion.orElse(null));
     }
 
     @Test
@@ -91,11 +94,41 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals("ssh-push", minions.stream()
                 .filter(m -> m.getId().equals(minionServer1.getId()))
                 .map(m -> minionServer1.getContactMethod().getLabel())
-                .findFirst().get());
+                .findFirst().orElse(null));
         assertEquals("ssh-push-tunnel", minions.stream()
                 .filter(m -> m.getId().equals(minionServer2.getId()))
                 .map(m -> minionServer2.getContactMethod().getLabel())
-                .findFirst().get());
+                .findFirst().orElse(null));
+    }
+    @Test
+    public void testListMinionsByActions() throws Exception {
+        MinionServer minion1 = createTestMinionServer(user);
+        MinionServer minion2 = createTestMinionServer(user);
+        MinionServer minion3 = createTestMinionServer(user);
+
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+
+        ServerAction failed = ActionFactoryTest.createServerAction(minion1, action, ActionFactory.STATUS_FAILED);
+        ServerAction completed = ActionFactoryTest.createServerAction(minion2, action, ActionFactory.STATUS_COMPLETED);
+        ServerAction queued = ActionFactoryTest.createServerAction(minion3, action, ActionFactory.STATUS_QUEUED);
+
+        action.setServerActions(new HashSet<>(Set.of(failed, completed, queued)));
+
+        List<MinionSummary> allSummariesExpected = Stream.of(minion1, minion2, minion3)
+                                                         .map(MinionSummary::new)
+                                                         .collect(Collectors.toList());
+        List<MinionSummary> allSummariesActual = MinionServerFactory.findAllMinionSummaries(action.getId());
+
+        assertEquals(allSummariesExpected.size(), allSummariesActual.size());
+        assertTrue(allSummariesExpected.containsAll(allSummariesActual));
+        assertTrue(allSummariesActual.containsAll(allSummariesExpected));
+
+        List<MinionSummary> queuedSummariesExpected = List.of(new MinionSummary(minion3));
+        List<MinionSummary> queuedSummariesActual = MinionServerFactory.findQueuedMinionSummaries(action.getId());
+
+        assertEquals(queuedSummariesExpected.size(), queuedSummariesActual.size());
+        assertTrue(queuedSummariesExpected.containsAll(queuedSummariesActual));
+        assertTrue(queuedSummariesActual.containsAll(queuedSummariesExpected));
     }
 
     /**

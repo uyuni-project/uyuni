@@ -122,6 +122,7 @@ import org.hibernate.query.Query;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -584,11 +585,55 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         assertServerActionCount(parent, 2);
         assertActionsForUser(user, 1);
-        ActionManager.cancelActions(user, actionList, Optional.of(activeServers));
+        ActionManager.cancelActions(user, actionList, activeServers);
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 1); // shouldn't have been deleted
         // check that action was indeed not canceled on taskomatic side
         context().assertIsSatisfied();
+    }
+
+    @Test
+    public void testCancelActionWithFailedPrerequisite() {
+        Server first = ServerFactoryTest.createTestServer(user, true);
+        Server second = ServerFactoryTest.createTestServer(user, true);
+        List<Server> servers = List.of(first, second);
+
+        Action parent = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ActionFactory.save(parent);
+
+        servers.forEach(server -> {
+            ServerAction serverAction = ActionFactoryTest.createServerAction(server, parent);
+            serverAction.setStatus(first.equals(server) ? ActionFactory.STATUS_FAILED : ActionFactory.STATUS_QUEUED);
+            parent.addServerAction(serverAction);
+            ActionFactory.save(serverAction);
+        });
+
+        Action child = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_ERRATA);
+        child.setPrerequisite(parent);
+        ActionFactory.save(child);
+
+        servers.forEach(server -> {
+            ServerAction serverAction = ActionFactoryTest.createServerAction(server, child);
+            serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+            child.addServerAction(serverAction);
+            ActionFactory.save(serverAction);
+        });
+
+        // Should not cancel, there are pending prerequisites
+        List<Action> actionsToCancel = List.of(TestUtils.reload(child));
+        Assertions.assertThrows(ActionIsChildException.class,
+            () -> ActionManager.cancelActions(user, actionsToCancel)
+        );
+
+        // Should cancel, first server has a failed prerequisite
+        Assertions.assertDoesNotThrow(
+            () -> ActionManager.cancelActions(user, actionsToCancel, List.of(first.getId()))
+        );
+
+        // Should not cancel, second server as a valid pending prerequisite
+        Assertions.assertThrows(ActionIsChildException.class,
+            () -> ActionManager.cancelActions(user, actionsToCancel, List.of(second.getId()))
+        );
     }
 
     @Test

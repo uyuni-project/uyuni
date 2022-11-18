@@ -1,3 +1,4 @@
+- Avoid installing recommended packages from assigned products (bsc#1204330)
 - Add beacon to check if a reboot is required in transactional systems
 - Manager reboot in transactional update action chain (bsc#1201476)
 - Fix kiwi inspect regexp to allow image names with "-" (bsc#1204541)

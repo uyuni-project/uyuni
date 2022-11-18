@@ -539,10 +539,10 @@ end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
+  # text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
   # Workaround: Ignore the fact that the message is not shown
   # TODO: restore this as soon as the related issue is fixed: https://github.com/SUSE/spacewalk/issues/19369
-  #raise 'The welcome message is not shown' unless has_content?(text)
+  # raise 'The welcome message is not shown' unless has_content?(text)
 end
 
 Then(/^I should see an update in the list$/) do
@@ -1107,5 +1107,5 @@ Then(/^I should see left menu empty$/) do
 end
 
 Then(/^I should see the text "(.*?)" in the (Operating System|Architecture|Channel Label) field/) do |text, field|
-  page.has_field?("#{text}", with: field)
+  page.has_field?(text, with: field)
 end

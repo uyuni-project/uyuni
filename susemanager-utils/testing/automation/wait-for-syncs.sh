@@ -38,6 +38,35 @@ if [ "${host}" == "" ]; then
     exit -3
 fi
 
+echo "Wait for last sync to finish"
+i=0
+echo "Waiting for the sync to end"
+while [ ${i} -lt ${tries} ]; do
+  wget -S http://${host}/sync-obs/sync-finished.successful 2>/dev/null
+  if [ ${?} -eq 0 ];then
+    echo "Previous sync finished successfully"
+    rm -f sync-finished.successful
+    break
+  fi
+  wget -S http://${host}/sync-obs/sync-finished.fail 2>/dev/null
+  if [ ${?} -eq 0 ];then
+    echo "Previous sync finished unsuccesfully"
+    rm -f sync-finished.fail
+    break
+  fi
+  i=$((${i}+1))
+  sleep ${wait}
+done
+if [ ${i} -eq ${tries} ]; then
+  echo "Reached max number of tries"
+  exit -7
+fi
+
+
+echo "Triggering a sync...this can take several minutes"
+curl http://${host}/cgi-bin/sync-obs.cgi
+
+
 echo "Wait for sync to start and finish"
 i=0
 echo "Waiting for the sync to start"

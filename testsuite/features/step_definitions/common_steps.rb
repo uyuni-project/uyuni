@@ -24,7 +24,7 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, ur
   end
   mount_point = "/srv/www/htdocs/#{name}"
   $server.run("mkdir -p #{mount_point}")
-  $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro  0 0' >> /etc/fstab")
+  $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
   $server.run("umount #{iso_path}; mount #{iso_path}")
 end
 

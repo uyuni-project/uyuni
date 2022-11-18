@@ -1,3 +1,5 @@
+- Remove unneeded toString() calls
+
 -------------------------------------------------------------------
 Wed Sep 28 11:19:48 CEST 2022 - jgonzalez@suse.com
 

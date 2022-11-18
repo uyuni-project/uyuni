@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.schedule;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -24,8 +25,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.manager.action.ActionIsChildException;
-import com.redhat.rhn.manager.action.ActionIsPickedUpException;
 import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.api.ReadOnly;
@@ -42,39 +43,42 @@ public class ScheduleHandler extends BaseHandler {
 
     /**
      * Cancel all actions in given list. If an invalid action is provided, none of the
-     * actions given will canceled.
+     * actions given will be canceled.
      * @param loggedInUser The current user
      * @param actionIds The list of ids for actions to cancel.
      * @return Returns a list of actions with details
-     * @throws ActionIsChildException Thrown when attempting to cancel action with
-     * prerequisites
      * @throws LookupException Invalid Action ID provided
      *
      * @apidoc.doc Cancel all actions in given list. If an invalid action is provided,
-     * none of the actions given will canceled.
+     * none of the actions given will be canceled.
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "actionIds")
      * @apidoc.returntype #return_int_success()
      */
-    public int cancelActions(User loggedInUser, List<Integer> actionIds) throws
-            ActionIsChildException, LookupException {
-        List actions = new ArrayList<Action>();
+    public int cancelActions(User loggedInUser, List<Integer> actionIds) throws LookupException {
+        List<Action> actions = new ArrayList<>();
+        LocalizationService locService = LocalizationService.getInstance();
         for (Integer actionId : actionIds) {
             Action action = ActionManager.lookupAction(loggedInUser, Long.valueOf(actionId));
+            if (action == null) {
+                continue;
+            }
+
             for (ServerAction sa : action.getServerActions()) {
                 if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
-                    throw new ActionIsPickedUpException("Cannot cancel actions in " +
-                            "PICKED UP state, aborting...");
+                    throw new UnsupportedOperationException(locService.getMessage("api.schedule.cannotcancelpickedup"));
                 }
             }
-            if (action != null) {
-                actions.add(action);
-            }
+
+            actions.add(action);
         }
 
         try {
             ActionManager.cancelActions(loggedInUser, actions);
             return BaseHandler.VALID;
+        }
+        catch (ActionIsChildException e) {
+            throw new UnsupportedOperationException(locService.getMessage("api.schedule.cannotcancelchild"));
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
