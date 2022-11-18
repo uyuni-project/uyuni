@@ -1,39 +1,43 @@
-- Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
-- Fixed traditional stack warning message to be displayed only when the system
-  has enterprise entitlement (bsc#1205350)
-- Update jackson-databind version
-- adapt permissions of temporary ssh key directory
-- format results for package, errata and image build actions in
-  system history similar to state apply results
-- Run only minion actions that are in the pending status (bsc#1205012)
-- Fix ClassCastException
-- Migrate formulas with default values to database (bsc#1204932)
-- Improved reboot needed handling for transactional systems
-- Manage reboot in transactional update action chain (bsc#1201476)
-- Enable monitoring for RHEL 9 Salt clients
-- Optimize performance of config channels operations for UI and API (bsc#1204029)
-- Don't add the same channel twice in the System config addChannel API (bsc#1204029)
-- Improved taskomatic error logging
-- Optimize action chain processing on job return event (bsc#1203532)
-- Re-calculate salt event queue numbers on restart
-- Check if system has all formulas correctly assigned
-  (bsc#1201607)
-- Remove group formula assignements and data on group delete
-  (bsc#1201606)
-- Process salt events in FIFO order (bsc#1203532)
-- Added a warning message for traditional stack deprecation
-- Fix rendering of ssm/MigrateSystems page (bsc#1204651)
-- Remove 'SSM' column text where not applicable (bsc#1203588)
-- Improve systems lists queries performance by using an overview table
-- Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
-- Deny packages from older module metadata when building CLM projects (bsc#1201893)
-- Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
-- Upgrade Bootstrap to 3.4.1
-- Improve Amazon EC2/Nitro detection (bsc#1203685)
-- Add channel availability check for product migration (bsc#1200296)
-- delay hardware refresh action to avoid missing channels (bsc#1204208)
-- fix xmlrpc call randomly failing with translation error (bsc#1203633)
-- Do not explicitely remove old pillars on minion rename (bsc#1203451)
+-------------------------------------------------------------------
+Fri Nov 18 15:14:35 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
+  * Fixed traditional stack warning message to be displayed only when the system
+    has enterprise entitlement (bsc#1205350)
+  * Update jackson-databind version
+  * adapt permissions of temporary ssh key directory
+  * format results for package, errata and image build actions in
+    system history similar to state apply results
+  * Run only minion actions that are in the pending status (bsc#1205012)
+  * Fix ClassCastException
+  * Migrate formulas with default values to database (bsc#1204932)
+  * Improved reboot needed handling for transactional systems
+  * Manage reboot in transactional update action chain (bsc#1201476)
+  * Enable monitoring for RHEL 9 Salt clients
+  * Optimize performance of config channels operations for UI and API (bsc#1204029)
+  * Don't add the same channel twice in the System config addChannel API (bsc#1204029)
+  * Improved taskomatic error logging
+  * Optimize action chain processing on job return event (bsc#1203532)
+  * Re-calculate salt event queue numbers on restart
+  * Check if system has all formulas correctly assigned
+    (bsc#1201607)
+  * Remove group formula assignements and data on group delete
+    (bsc#1201606)
+  * Process salt events in FIFO order (bsc#1203532)
+  * Added a warning message for traditional stack deprecation
+  * Fix rendering of ssm/MigrateSystems page (bsc#1204651)
+  * Remove 'SSM' column text where not applicable (bsc#1203588)
+  * Improve systems lists queries performance by using an overview table
+  * Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
+  * Deny packages from older module metadata when building CLM projects (bsc#1201893)
+  * Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
+  * Upgrade Bootstrap to 3.4.1
+  * Improve Amazon EC2/Nitro detection (bsc#1203685)
+  * Add channel availability check for product migration (bsc#1200296)
+  * delay hardware refresh action to avoid missing channels (bsc#1204208)
+  * fix xmlrpc call randomly failing with translation error (bsc#1203633)
+  * Do not explicitely remove old pillars on minion rename (bsc#1203451)
 
 -------------------------------------------------------------------
 Fri Nov 04 17:14:18 CET 2022 - jgonzalez@suse.com
