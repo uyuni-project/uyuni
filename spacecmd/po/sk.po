@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-11 15:40+0100\n"
-"PO-Revision-Date: 2022-10-29 17:13+0000\n"
+"POT-Creation-Date: 2022-11-11 22:15+0000\n"
+"PO-Revision-Date: 2022-11-11 22:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
 ">\n"
@@ -8352,7 +8352,6 @@ msgstr ""
 "system_scheduleproductmigration: Naplánovať migráciu produktu pre systémy."
 
 #: ../src/spacecmd/system.py:4604
-#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8377,6 +8376,10 @@ msgstr ""
 "    Voľby: \n"
 "        -s ČAS_SPUSTENIA \n"
 "        -d zadajte tento príznak, ak chcete vykonať skúšobné spustenie \n"
+"        --allow-vendor-change zadajte tento príznak, ak chcete povoliť zmenu "
+"dodávateľa \n"
+"        -r zadajte tento príznak, ak chcete odstrániť produkty, ktoré nemajú "
+"nasledovníkov \n"
 "        -c KANÁLY_POTOMKOV (označenia kanálov potomkov oddelené čiarkami "
 "(bez medzier))"
 
@@ -8393,9 +8396,8 @@ msgid "Scheduling Product migration for system "
 msgstr "Plánovanie migrácie produktu pre systém "
 
 #: ../src/spacecmd/system.py:4662
-#, fuzzy
 msgid "Migration target "
-msgstr "  Žiadne ciele migrácie"
+msgstr "Cieľ migrácie "
 
 #: ../src/spacecmd/system.py:4668
 msgid "Scheduled action ID: "

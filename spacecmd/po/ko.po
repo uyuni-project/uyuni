@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-11 15:40+0100\n"
-"PO-Revision-Date: 2022-11-04 09:13+0000\n"
+"POT-Creation-Date: 2022-11-11 22:15+0000\n"
+"PO-Revision-Date: 2022-11-11 22:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
 ">\n"
@@ -400,7 +400,7 @@ msgstr "사용법: activationkey_setuniversaldefault KEY"
 
 #: ../src/spacecmd/activationkey.py:1218
 msgid "activationkey_export: Export activation key(s) to JSON format file"
-msgstr "activationkey_export: 활성화 키를 JSON 형식 파일로 내보내기"
+msgstr "activationkey_export: 활성화 키를 JSON 형식 파일로 엑스포트"
 
 #: ../src/spacecmd/activationkey.py:1219
 msgid ""
@@ -420,10 +420,10 @@ msgstr ""
 "    -f outfile.json : 출력 파일의 이름을 지정합니다. 기본 값은 단일 키를 내보"
 "내는 경우\n"
 "                      <KEY>.json이고, 여러 키의 경우 akeys.json이며,\n"
-"                      키가 지정되지 않은 경우 akey_all.json(모두 내보내기)입"
+"                      키가 지정되지 않은 경우 akey_all.json(모두 엑스포트)입"
 "니다.\n"
 "\n"
-"참고: 키 목록은 선택 사항이며, 기본값을 모든 키 내보내기입니다. "
+"참고: 키 목록은 선택 사항이며, 기본값은 모든 키 엑스포트입니다. "
 
 #. Get the key details
 #: ../src/spacecmd/activationkey.py:1235
@@ -434,7 +434,7 @@ msgstr "%s에 대한 키 기본값 가져오기"
 #: ../src/spacecmd/activationkey.py:1289
 #, python-format
 msgid "Exporting ALL activation keys to %s"
-msgstr "모든 활성화 키를 %s(으)로 내보내기"
+msgstr "모든 활성화 키를 %s(으)로 엑스포트"
 
 #: ../src/spacecmd/activationkey.py:1298
 msgid "Invalid activation key passed"
@@ -443,7 +443,7 @@ msgstr "유효하지 않은 활성화 키 전달됨"
 #: ../src/spacecmd/activationkey.py:1313
 #, python-format
 msgid "Exporting key %s to %s"
-msgstr "%s 키를 %s(으)로 내보내기"
+msgstr "%s 키를 %s(으)로 엑스포트"
 
 #: ../src/spacecmd/activationkey.py:1322
 #, python-format
@@ -452,7 +452,7 @@ msgstr "%s 파일이 있습니다. 파일을 덮어쓰시겠습니까? (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1327
 msgid "Failed to save exported keys to file: {}"
-msgstr "내보낸 키를 파일에 저장하지 못함: {}"
+msgstr "엑스포트한 키를 파일에 저장하지 못함: {}"
 
 #: ../src/spacecmd/activationkey.py:1336
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
@@ -1235,7 +1235,7 @@ msgstr "작업 ID: %i"
 
 #: ../src/spacecmd/configchannel.py:1117
 msgid "configchannel_export: export config channel(s) to json format file"
-msgstr "configchannel_export: json 파일 형식으로 구성 파일 내보내기"
+msgstr "configchannel_export: json 파일 형식으로 구성 파일 엑스포트"
 
 #: ../src/spacecmd/configchannel.py:1118
 msgid ""
@@ -1251,14 +1251,14 @@ msgid ""
 msgstr ""
 "사용법: configchannel_export <CHANNEL>... [옵션])\n"
 "옵션:\n"
-"    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값을 단일 채널을 내보"
-"내는 경우\n"
-"                      <CHANNEL>.json이고 여러 채널을 내보내는 경우 ccs.json이"
-"며\n"
+"    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값은 단일 채널을 엑스"
+"포트하는 경우\n"
+"                      <CHANNEL>.json이고 여러 채널을 엑스포트하는 경우 ccs."
+"json이며\n"
 "                      채널을 지정하지 않은 경우 cc_all.json입니다.\n"
-"                      예: (모두 내보내기)\n"
+"                      예: (모두 엑스포트)\n"
 "\n"
-"참고: 채널 목록은 선택 사항이며, 기본값은 모두 내보내기입니다."
+"참고: 채널 목록은 선택사항이며, 기본값은 모두 엑스포트입니다."
 
 #. Get the cc details
 #: ../src/spacecmd/configchannel.py:1134
@@ -1272,9 +1272,9 @@ msgid "Failed to get details for file %s from %s"
 msgstr "%s에서 %s 파일에 대한 세부 사항을 가져오지 못함"
 
 #: ../src/spacecmd/configchannel.py:1200
-#, python-format
+#, fuzzy, python-format
 msgid "File %s could not be exported "
-msgstr "%s 파일을 내보낼 수 없음 "
+msgstr "%s 파일을 엑스포트할 수 없음 "
 
 #: ../src/spacecmd/configchannel.py:1201
 msgid "with this API version(needs base64 encoding)"
@@ -1283,7 +1283,7 @@ msgstr "이 API 버전을 사용하여(base64 인코딩 필요)"
 #: ../src/spacecmd/configchannel.py:1203
 #, python-format
 msgid "File %s could not be exported as"
-msgstr "%s 파일을 다음으로 내보낼 수 없음"
+msgstr "%s 파일을 다음으로 엑스포트할 수 없음"
 
 #: ../src/spacecmd/configchannel.py:1204
 msgid " text...getting base64 encoded version"
@@ -1292,7 +1292,7 @@ msgstr " 텍스트...base64 인코딩 버전 가져오기"
 #: ../src/spacecmd/configchannel.py:1235
 #, python-format
 msgid "Exporting ALL config channels to %s"
-msgstr "모든 구성 채널을 %s(으)로 내보내는 중"
+msgstr "모든 구성 채널을 %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/configchannel.py:1242
 msgid ""
@@ -1305,7 +1305,7 @@ msgstr ""
 #: ../src/spacecmd/configchannel.py:1257
 #, python-format
 msgid "Exporting cc %s to %s"
-msgstr "cc %s을(를) %s(으)로 내보내는 중"
+msgstr "cc %s을(를) %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/configchannel.py:1264
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
@@ -1314,7 +1314,7 @@ msgstr "'{}' 파일이 있습니다. 덮어쓰시겠습니까? (y/n)"
 #: ../src/spacecmd/configchannel.py:1268
 #, python-format
 msgid "Error saving exported config channels to file: %s"
-msgstr "내보낸 구성 채널을 파일로 저장하는 중 오류: %s"
+msgstr "엑스포트한 구성 채널을 파일로 저장하는 중 오류: %s"
 
 #: ../src/spacecmd/configchannel.py:1277
 msgid "configchannel_import: import config channel(s) from json file"
@@ -1360,8 +1360,9 @@ msgid "Failed trying to import file %s (empty content)"
 msgstr "%s 파일을 가져오지 못함(비어 있는 컨텐트)"
 
 #: ../src/spacecmd/configchannel.py:1361
+#, fuzzy
 msgid "Older APIs can't export encoded files"
-msgstr "기존 API는 인코딩된 파일을 내보낼 수 없음"
+msgstr "기존 API는 인코딩된 파일을 엑스포트할 수 없음"
 
 #: ../src/spacecmd/configchannel.py:1384
 #, python-format
@@ -3031,8 +3032,9 @@ msgid "Kickstart profile you've entered was not found"
 msgstr "입력한 킥스타트 프로파일을 찾을 수 없음"
 
 #: ../src/spacecmd/kickstart.py:2225
+#, fuzzy
 msgid "kickstart_export: export kickstart profile(s) to json format file"
-msgstr "kickstart_export: 킥스타트 프로파일을 json 형식 파일로 내보내기"
+msgstr "kickstart_export: 킥스타트 프로파일을 json 형식 파일로 엑스포트"
 
 #: ../src/spacecmd/kickstart.py:2226
 msgid ""
@@ -3050,18 +3052,18 @@ msgstr ""
 "사용법: kickstart_export <KSPROFILE>... [옵션])\n"
 "옵션:\n"
 "    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값은 단일 킥스타트를 "
-"내보내는 경우\n"
+"엑스포트하는 경우\n"
 "                      <KSPROFILE>.json, 여러 킥스타트의 경우 profiles.json\n"
 "                      또는 KSPROFILE이 지정되지 않은 경우 ks_all.json입니"
 "다.\n"
-"                      예: (모두 내보내기)\n"
+"                      예: (모두 엑스포트)\n"
 "\n"
-"참고 : KSPROFILE 목록은 선택 사항이며, 기본값은 모두 내보내기입니다."
+"참고 : KSPROFILE 목록은 선택사항이며, 기본값은 모두 엑스포트입니다."
 
 #: ../src/spacecmd/kickstart.py:2358
 #, python-format
 msgid "Exporting ALL kickstart profiles to %s"
-msgstr "모든 킥스타트 프로파일을 %s(으)로 내보내는 중"
+msgstr "모든 킥스타트 프로파일을 %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/kickstart.py:2366
 msgid ""
@@ -3074,7 +3076,7 @@ msgstr ""
 #: ../src/spacecmd/kickstart.py:2386
 #, python-format
 msgid "Exporting ks %s to %s"
-msgstr "ks %s을(를) %s(으)로 내보내는 중"
+msgstr "ks %s을(를) %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/kickstart.py:2393
 #, python-format
@@ -3087,7 +3089,7 @@ msgstr "파일을 덮어쓰시겠습니까? (y/n)"
 
 #: ../src/spacecmd/kickstart.py:2397
 msgid "Error saving exported kickstart profiles to file"
-msgstr "파일로 내보낸 킥스타트 프로파일 저장 중 오류"
+msgstr "파일로 엑스포트한 킥스타트 프로파일 저장 중 오류"
 
 #: ../src/spacecmd/kickstart.py:2407
 msgid "kickstart_import: import kickstart profile(s) from json file"

@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-06 09:14+0000\n"
-"PO-Revision-Date: 2022-11-05 14:13+0000\n"
+"PO-Revision-Date: 2022-11-11 22:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -501,14 +501,12 @@ msgid "Edit Configuration Channel"
 msgstr "Upraviť konfiguračný kanál"
 
 #: ../html/src/components/systems.tsx:21
-#, fuzzy
 msgid "Unprovisioned System"
-msgstr "Neregistrovaný systém"
+msgstr "Neposkytnutý systém"
 
 #: ../html/src/components/systems.tsx:26
-#, fuzzy
 msgid "Virtual Guest"
-msgstr "Virtuálny hostiteľ"
+msgstr "Virtuálny hosť"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/virtual-list.tsx:66
@@ -516,9 +514,8 @@ msgid "Virtual Host"
 msgstr "Virtuálny hostiteľ"
 
 #: ../html/src/components/systems.tsx:36
-#, fuzzy
 msgid "Non-Virtual System"
-msgstr "Virtuálny systém"
+msgstr "Nevirtuálny systém"
 
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:583
@@ -540,14 +537,12 @@ msgid "System Locked"
 msgstr "Systém uzamknutý"
 
 #: ../html/src/components/table/SearchField.tsx:49
-#, fuzzy
 msgid "Filter"
-msgstr "Filtre"
+msgstr "Filter"
 
 #: ../html/src/components/table/SearchField.tsx:54
-#, fuzzy
 msgid "Select a filter"
-msgstr "Vybrať plán"
+msgstr "Vybrať filter"
 
 #: ../html/src/components/table/SearchPanel.tsx:56
 msgid "Items {0} - {1} of {2}"
@@ -4693,21 +4688,18 @@ msgstr ""
 "prihlásený k vybraným kanálom potomkov."
 
 #: ../html/src/manager/systems/all-list.tsx:22
-#, fuzzy
 msgid "System Kind"
-msgstr "Názov systému"
+msgstr "Druh systému"
 
 #: ../html/src/manager/systems/all-list.tsx:26
 #: ../html/src/manager/systems/all-list.tsx:120
-#, fuzzy
 msgid "Extra Packages"
-msgstr "Balíky"
+msgstr "Extra balíky"
 
 #: ../html/src/manager/systems/all-list.tsx:27
 #: ../html/src/manager/systems/all-list.tsx:134
-#, fuzzy
 msgid "Config Diffs"
-msgstr "URL konfigurácie"
+msgstr "Konfiguračné rozdiely"
 
 #: ../html/src/manager/systems/all-list.tsx:28
 #: ../html/src/manager/systems/all-list.tsx:149
@@ -4718,23 +4710,20 @@ msgstr "Základný kanál"
 
 #: ../html/src/manager/systems/all-list.tsx:29
 #: ../html/src/manager/systems/all-list.tsx:160
-#, fuzzy
 msgid "System Type"
-msgstr "Typ úložiska"
+msgstr "Typ systému"
 
 #: ../html/src/manager/systems/all-list.tsx:30
 msgid "Requires Reboot"
 msgstr "Vyžaduje reštart"
 
 #: ../html/src/manager/systems/all-list.tsx:31
-#, fuzzy
 msgid "Registered Days"
-msgstr "Registrované systémy"
+msgstr "Registrované dni"
 
 #: ../html/src/manager/systems/all-list.tsx:32
-#, fuzzy
 msgid "Groups"
-msgstr "Skupina"
+msgstr "Skupiny"
 
 #: ../html/src/manager/systems/all-list.tsx:51
 msgid " Systems "
@@ -4963,9 +4952,8 @@ msgid "New Proxy"
 msgstr "Nový proxy"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:24
-#, fuzzy
 msgid "Manage"
-msgstr "Manager"
+msgstr "Spravovať"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:30
 msgid "system selected"
