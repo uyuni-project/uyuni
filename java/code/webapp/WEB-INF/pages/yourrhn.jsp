@@ -23,7 +23,7 @@
       <c:if test="${requestScope.tasks == 'y'}">
       <div class="col-md-6" id="tasks-pane" >
         <script type="text/javascript">
-          ajax("tasks", '', makeRendererHandler("tasks-pane", false).callback)
+          ajax("tasks", makeRendererHandler("tasks-pane", false).callback)
         </script>
       </div>
       </c:if>
@@ -37,7 +37,7 @@
       <c:if test="${requestScope.inactiveSystems == 'y'}">
       <div class="col-md-6" id="inactive-systems-pane" >
         <script type="text/javascript">
-          ajax("inactive-systems", "", makeRendererHandler("inactive-systems-pane", false).callback)
+          ajax("inactive-systems", makeRendererHandler("inactive-systems-pane", false).callback)
         </script>
       </div>
       </c:if>
@@ -46,35 +46,35 @@
       <c:if test="${requestScope.criticalSystems == 'y'}">
       <div id="critical-systems-pane" class="col-md-12">
         <script type="text/javascript">
-          ajax("critical-systems", "", makeRendererHandler("critical-systems-pane", false).callback)
+          ajax("critical-systems", makeRendererHandler("critical-systems-pane", false).callback)
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.pendingActions =='y'}">
       <div id="pending-actions-pane" class="col-md-12">
         <script type="text/javascript">
-          ajax("pending-actions", "", makeRendererHandler("pending-actions-pane", false).callback)
+          ajax("pending-actions", makeRendererHandler("pending-actions-pane", false).callback)
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.latestErrata == 'y'}">
       <div id="latest-errata-pane" class="col-md-12">
         <script type="text/javascript">
-          ajax("latest-errata", "", makeRendererHandler("latest-errata-pane", false).callback)
+          ajax("latest-errata", makeRendererHandler("latest-errata-pane", false).callback)
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.systemGroupsWidget == 'y'}">
       <div id="systems-groups-pane" class="col-md-12">
         <script type="text/javascript">
-          ajax("systems-groups", "", makeRendererHandler("systems-groups-pane", false).callback)
+          ajax("systems-groups", makeRendererHandler("systems-groups-pane", false).callback)
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.recentlyRegisteredSystems == 'y'}">
       <div id="recently-registered-pane" class="col-md-12">
         <script type="text/javascript">
-          ajax("recent-systems", "", makeRendererHandler("recently-registered-pane", false).callback)
+          ajax("recent-systems", makeRendererHandler("recently-registered-pane", false).callback)
         </script>
       </div>
       </c:if>

@@ -68,7 +68,7 @@ function retrieveProxySettings() {
     }
   }
 
-  ajax('retrieve-proxy-settings', '', onSuccess)
+  ajax('retrieve-proxy-settings', '', onSuccess, 'application/json')
 }
 
 // Switches the proxy settings into an (non)editable form

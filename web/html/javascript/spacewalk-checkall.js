@@ -192,7 +192,7 @@ function update_server_set(variable, set_label, checked, values) {
     values,
     checked
   }
-  ajax('item-selector', data, pageResponse)
+  ajax('item-selector', data, pageResponse, "application/json")
 }
 
 function pageResponse(data) {
