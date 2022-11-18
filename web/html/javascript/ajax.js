@@ -22,11 +22,6 @@ var ajax_post = function(url, data, onSuccess, onError, contentType = false) {
   })
 }
 
-function ajax(url, onSuccess) {
-  console.log(1)
-  ajax_post(url, '', onSuccess)
-}
-
 function ajax(url, data, onSuccess, contentType) {
   ajax_post(url, JSON.stringify(data), onSuccess, onAjaxRequestError, contentType)
 }

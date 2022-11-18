@@ -82,12 +82,14 @@ public class AjaxHandlerServlet extends HttpServlet {
     Set<String> jsonResultRoutes = Set.of(
         "retrieve-proxy-settings",
         "verify-proxy-settings",
-        "save-proxy-settings"
+        "save-proxy-settings",
+        "item-selector"
     );
     
     @FunctionalInterface
     interface ProcessAjaxRequest {
-        Object doProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+        Object doProcess(HttpServletRequest req, HttpServletResponse resp)
+                throws ServletException, IOException;
     }
 
     static {
