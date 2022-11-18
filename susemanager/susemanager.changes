@@ -1,7 +1,11 @@
-- add bootstrap repo definitions for oracle, alma and rocky linux 9
-- add bootstrap repo data for SUSE Liberty Linux 9
-- remove traditional stack packages and dependencies from
-  bootstrap repo definition
+-------------------------------------------------------------------
+Fri Nov 18 15:14:21 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * add bootstrap repo definitions for oracle, alma and rocky linux 9
+  * add bootstrap repo data for SUSE Liberty Linux 9
+  * remove traditional stack packages and dependencies from
+    bootstrap repo definition
 
 -------------------------------------------------------------------
 Wed Sep 28 11:15:26 CEST 2022 - jgonzalez@suse.com
