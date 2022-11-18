@@ -1,10 +1,14 @@
-- Added two missing options to schedule product migration: allow-vendor-change
-  and remove-products-without-successor (bsc#1204126)
-- Changed schedule product migration to use the correct API method
-- Fix dict_keys not supporting indexing in systems_setconfigchannelorger
-- Added a warning message for traditional stack deprecation
-- Remove "Undefined return code" from debug messages (bsc#1203283)
-- Update translation strings
+-------------------------------------------------------------------
+Fri Nov 18 15:02:05 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Added two missing options to schedule product migration: allow-vendor-change
+    and remove-products-without-successor (bsc#1204126)
+  * Changed schedule product migration to use the correct API method
+  * Fix dict_keys not supporting indexing in systems_setconfigchannelorger
+  * Added a warning message for traditional stack deprecation
+  * Remove "Undefined return code" from debug messages (bsc#1203283)
+  * Update translation strings
 
 -------------------------------------------------------------------
 Thu Sep 29 15:42:34 CEST 2022 - jgonzalez@suse.com
