@@ -47,6 +47,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -76,10 +77,17 @@ public class AjaxHandlerServlet extends HttpServlet {
     private static ActionChainEntryRenderer actionChainEntryRenderer = new ActionChainEntryRenderer();
     private static ActionChainSaveAction actionChainSaveAction = new ActionChainSaveAction();
     private static SubscriptionWarningRenderer subscriptionWarningRenderer = new SubscriptionWarningRenderer();
+    private static ItemSelector itemSelector = new ItemSelector();
 
+    Set<String> jsonResultRoutes = Set.of(
+        "retrieve-proxy-settings",
+        "verify-proxy-settings",
+        "save-proxy-settings"
+    );
+    
     @FunctionalInterface
     interface ProcessAjaxRequest {
-        String doProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+        Object doProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
     }
 
     static {
@@ -92,19 +100,12 @@ public class AjaxHandlerServlet extends HttpServlet {
         HANDLERS.put("recent-systems", recentSystemsRenderer::renderAsync);
         HANDLERS.put("subscription-warning", subscriptionWarningRenderer::renderAsync);
 
-        HANDLERS.put("retrieve-proxy-settings",
-            (req, resp) -> gson.toJson(proxySettingsRenderer.retrieveProxySettings()));
-        HANDLERS.put("verify-proxy-settings",
-            (req, resp) -> gson.toJson(
-                proxySettingsRenderer.verifyProxySettings(
-                    req, parseBody(req, VerifyProxySettingsDto.class).isForceRefresh()
-                )
-            )
-        );
+        HANDLERS.put("retrieve-proxy-settings", (req, resp) -> proxySettingsRenderer.retrieveProxySettings());
+        HANDLERS.put("verify-proxy-settings", (req, resp) -> proxySettingsRenderer.verifyProxySettings(
+            req, parseBody(req, VerifyProxySettingsDto.class).isForceRefresh()
+        ));
         HANDLERS.put("save-proxy-settings",
-            (req, resp) -> gson.toJson(
-                proxySettingsRenderer.saveProxySettings(req, parseBody(req, ProxySettingsDto.class))
-            )
+            (req, resp) -> proxySettingsRenderer.saveProxySettings(req, parseBody(req, ProxySettingsDto.class))
         );
 
         HANDLERS.put("verify-mirror-credentials", (req, resp) -> {
@@ -147,7 +148,7 @@ public class AjaxHandlerServlet extends HttpServlet {
 
         HANDLERS.put("item-selector", (req, resp) -> {
             ItemSelectorDto item = parseBody(req, ItemSelectorDto.class);
-            return gson.toJson(new ItemSelector().select(req, item.getLabel(), item.getValues(), item.isChecked()));
+            return itemSelector.select(req, item.getLabel(), item.getValues(), item.isChecked());
         });
     }
 
@@ -155,7 +156,8 @@ public class AjaxHandlerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String url = req.getRequestURL().toString().split(AJAX_PREFIX)[1];
         try {
-            String response = HANDLERS.get(url).doProcess(req, resp);
+            Object result = HANDLERS.get(url).doProcess(req, resp);
+            String response = jsonResultRoutes.contains(url) ? gson.toJson(result) : result.toString();
             resp.getOutputStream().print(response);
             resp.getOutputStream().close();
         }
