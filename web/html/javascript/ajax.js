@@ -23,11 +23,8 @@ var ajax_post = function(url, data, onSuccess, onError, contentType = false) {
 }
 
 function ajax(url, onSuccess) {
-  ajax_post(url, '', onSuccess, onAjaxRequestError)
-}
-
-function ajax(url, data, onSuccess) {
-  ajax_post(url, JSON.stringify(data), onSuccess, onAjaxRequestError)
+  console.log(1)
+  ajax_post(url, '', onSuccess)
 }
 
 function ajax(url, data, onSuccess, contentType) {

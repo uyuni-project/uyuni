@@ -24,7 +24,8 @@ function saveProxySettings() {
 }
 
 // sets in the UI if the proxy settings were verified
-function setProxySettingsVerified(valid) {
+function setProxySettingsVerified(result) {
+  valid = JSON.parse(result)
   if (valid) {
     jQuery('#http-proxy-verify').html('<i class="fa fa-check-square text-success"></i>');
   } else {
@@ -35,7 +36,7 @@ function setProxySettingsVerified(valid) {
 // verify the proxy settings on the server side, pass true to refresh the cache
 function verifyProxySettings(forceRefresh) {
   showSpinner('http-proxy-verify');
-  ajax('verify-proxy-settings', { forceRefresh }, setProxySettingsVerified)
+  ajax('verify-proxy-settings', { forceRefresh }, setProxySettingsVerified, 'application/json')
 }
 
 // just sets the given settings in the form

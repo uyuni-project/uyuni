@@ -113,7 +113,7 @@ function verifyCredentials(id, refresh) {
 
   showSpinner(elemId);
   setDeleteAllowed(id, false);
-  ajax('verify-mirror-credentials', { id, refresh }, responseHandler)
+  ajax('verify-mirror-credentials', { id, refresh }, responseHandler, "application/json")
 }
 
 // relevant for the mirror credentials page
