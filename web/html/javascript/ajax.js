@@ -3,7 +3,7 @@ var onAjaxRequestError = function (request, status, error) {
   console.log(request.responseText, status, error)
 }
 
-var ajax_post = function(url, data, onSuccess, onError) {
+var ajax_post = function(url, data, onSuccess, onError, contentType = false) {
   console.log("Starting ajax request...")
   
   var onAjaxRequestSuccess = function(response) {
@@ -16,13 +16,20 @@ var ajax_post = function(url, data, onSuccess, onError) {
     url: `/rhn/ajax/${url}`,
     processData: false,
     data,
-    contentType: false,
+    contentType: contentType,
     success: onAjaxRequestSuccess,
     error: onError
   })
 }
 
+function ajax(url, onSuccess) {
+  ajax_post(url, '', onSuccess, onAjaxRequestError)
+}
 
 function ajax(url, data, onSuccess) {
   ajax_post(url, JSON.stringify(data), onSuccess, onAjaxRequestError)
+}
+
+function ajax(url, data, onSuccess, contentType) {
+  ajax_post(url, JSON.stringify(data), onSuccess, onAjaxRequestError, contentType)
 }
