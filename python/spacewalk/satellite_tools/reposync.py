@@ -1716,7 +1716,7 @@ class RepoSync(object):
             family = treeinfo_parser.get_family()
             if family == 'Fedora':
                 self.ks_install_type = 'fedora18'
-            elif family == 'CentOS':
+            elif family in ['CentOS', 'Rocky Linux', 'AlmaLinux']:
                 self.ks_install_type = 'rhel_' + treeinfo_parser.get_major_version()
             else:
                 self.ks_install_type = 'generic_rpm'
