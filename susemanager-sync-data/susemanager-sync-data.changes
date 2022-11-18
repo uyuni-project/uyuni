@@ -1,6 +1,10 @@
-- add SLES15 SP3 LTSS
-- release oes2023 products
-- add sll 9, oraclelinux 9, almalinux 9 and rockylinux 9
+-------------------------------------------------------------------
+Fri Nov 18 15:01:19 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * add SLES15 SP3 LTSS
+  * release oes2023 products
+  * add sll 9, oraclelinux 9, almalinux 9 and rockylinux 9
 
 -------------------------------------------------------------------
 Wed Sep 28 10:25:03 CEST 2022 - jgonzalez@suse.com
