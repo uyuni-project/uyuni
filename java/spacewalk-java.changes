@@ -21,6 +21,12 @@
 - delay hardware refresh action to avoid missing channels (bsc#1204208)
 
 -------------------------------------------------------------------
+Fri Nov 18 12:41:18 CET 2022 - jgonzalez@suse.com
+
+- version 4.2.44-1
+  * Changed proxy settings retrieval to not include password (bsc#1205339)
+
+-------------------------------------------------------------------
 Mon Oct 31 14:52:39 CET 2022 - jgonzalez@suse.com
 
 - version 4.2.43-1
