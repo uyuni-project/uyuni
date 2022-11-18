@@ -139,7 +139,9 @@ public class ReportDBHelper {
      */
     public WriteMode generateInsert(Session session, String table, long mgmId, Set<String> params) {
         final String sqlStatement = String.format(
-                "INSERT INTO %s (mgm_id, %s) VALUES (%s, %s)",
+                "INSERT INTO %s (mgm_id, %s) " +
+                "     VALUES (%s, %s) " +
+                "ON CONFLICT DO NOTHING",
                 table,
                 String.join(",", params),
                 mgmId,
@@ -159,7 +161,9 @@ public class ReportDBHelper {
      */
     public WriteMode generateInsertWithDate(Session session, String table, long mgmId, Set<String> params) {
         final String sqlStatement = String.format(
-                "INSERT INTO %s (mgm_id, synced_date, %s) VALUES (%s, current_timestamp, %s)",
+                "INSERT INTO %s (mgm_id, synced_date, %s) " +
+                "     VALUES (%s, current_timestamp, %s) " +
+                "ON CONFLICT DO NOTHING",
                 table,
                 String.join(",", params),
                 mgmId,
