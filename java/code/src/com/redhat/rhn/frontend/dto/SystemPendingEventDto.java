@@ -14,8 +14,14 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.domain.action.ActionFactory;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * DTO for a com.redhat.rhn.frontend.action..systems.sdc.SystemPendingEventsAction
@@ -26,6 +32,7 @@ public class SystemPendingEventDto extends SystemEventDto implements Serializabl
 
     private Date scheduledFor;
     private Long prereqAid;
+    private Long prereqStatusId;
     private String actionName;
 
     /**
@@ -57,6 +64,20 @@ public class SystemPendingEventDto extends SystemEventDto implements Serializabl
     }
 
     /**
+     * @return status id of the prerequisite
+     */
+    public Long getPrereqStatusId() {
+        return prereqStatusId;
+    }
+
+    /**
+     * @param prereqStatusIdIn status id to set for the prerequisite
+     */
+    public void setPrereqStatusId(Long prereqStatusIdIn) {
+        this.prereqStatusId = prereqStatusIdIn;
+    }
+
+    /**
      * @return Action name
      */
     public String getActionName() {
@@ -71,19 +92,48 @@ public class SystemPendingEventDto extends SystemEventDto implements Serializabl
     }
 
     /**
-    *
-    * {@inheritDoc}
-    */
-   public String getSelectionKey() {
-       return String.valueOf(getId());
-   }
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSelectionKey() {
+        return String.valueOf(getId());
+    }
 
     /**
      * @return True if this entry should be selectable in the UI.
      */
-   @Override
-   public boolean isSelectable() {
-       return prereqAid == null;
-   }
+    @Override
+    public boolean isSelectable() {
+        return prereqAid == null || Objects.equals(ActionFactory.STATUS_FAILED.getId(), prereqStatusId);
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SystemPendingEventDto that = (SystemPendingEventDto) o;
+
+        return new EqualsBuilder().appendSuper(super.equals(o))
+                                  .append(scheduledFor, that.scheduledFor)
+                                  .append(prereqAid, that.prereqAid)
+                                  .append(prereqStatusId, that.prereqStatusId)
+                                  .append(actionName, that.actionName)
+                                  .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).appendSuper(super.hashCode())
+                                          .append(scheduledFor)
+                                          .append(prereqAid)
+                                          .append(prereqStatusId)
+                                          .append(actionName)
+                                          .toHashCode();
+    }
 }

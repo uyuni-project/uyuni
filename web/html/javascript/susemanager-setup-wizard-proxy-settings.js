@@ -48,8 +48,11 @@ function setProxySettings(settings) {
   jQuery('#http-proxy-input-username').val(settings.username);
   jQuery('p.http-proxy-username').html(settings.username);
 
-  jQuery('#http-proxy-input-password').val(settings.password);
-  jQuery('p.http-proxy-password').html(Array(settings.password.length).join('&#9679'));
+  if (settings.hostname) {
+    jQuery('p.http-proxy-password').html(Array(8).join('&#9679'));
+  } else {
+    jQuery('p.http-proxy-password').html("");
+  }
 }
 
 // Sets the spinner, retrieves the settings from the server
@@ -60,7 +63,6 @@ function retrieveProxySettings() {
   ProxySettingsRenderer.retrieveProxySettings(
     makeAjaxHandler(function(settings) {
       setProxySettings(settings);
-      console.log(JSON.stringify(settings));
 
       if (settings.hostname) {
         verifyProxySettings(false);

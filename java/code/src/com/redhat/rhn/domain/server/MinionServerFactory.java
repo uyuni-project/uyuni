@@ -18,6 +18,8 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -27,6 +29,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -196,29 +199,44 @@ public class MinionServerFactory extends HibernateFactory {
    }
 
     /**
-     * Retrieve a summary of the minions involved in one Action.
+     * Retrieve a summary of all the minions involved in one Action.
      *
      * @param actionId the Action id
      * @return a list minion summaries of the minions involved in the given Action
      */
-    @SuppressWarnings("unchecked")
-    public static List<MinionSummary> findMinionSummaries(Long actionId) {
-        return ((List<Object[]>) HibernateFactory.getSession()
-                .getNamedQuery("Action.findMinionSummaries")
-                .setParameter("id", actionId)
-                .getResultList()).stream()
-                .map(row -> new MinionSummary(
-                        (Long)row[0],
-                        row[1].toString(),
-                        row[2].toString(),
-                        row[3].toString(),
-                        Optional.ofNullable(row[4].toString()),
-                        row[5].toString()))
-                .collect(toList());
+    public static List<MinionSummary> findAllMinionSummaries(Long actionId) {
+        return findMinionSummariesInStatus(actionId, ActionFactory.ALL_STATUSES);
     }
 
     /**
-     * Find all minions by a their server ids.
+     * Retrieve a summary of the minions involved in one Action that are in the queued status.
+     *
+     * @param actionId the Action id
+     * @return a list minion summaries of the minions involved in the given Action with the queued status
+     */
+    public static List<MinionSummary> findQueuedMinionSummaries(Long actionId) {
+        return findMinionSummariesInStatus(actionId, List.of(ActionFactory.STATUS_QUEUED));
+    }
+
+    /**
+     * Retrieve a summary of the minions involved in one Action that are in one of the specified statuses
+     *
+     * @param actionId the Action id
+     * @param allowedStatues the list of status to filter the minions
+     * @return a list minion summaries of the minions involved in the given Action in one of the specified statuses
+     */
+    private static List<MinionSummary> findMinionSummariesInStatus(Long actionId, List<ActionStatus> allowedStatues) {
+        Session session = HibernateFactory.getSession();
+
+        Query<MinionSummary> query = session.createNamedQuery("Action.findMinionSummaries", MinionSummary.class)
+                                            .setParameter("id", actionId)
+                                            .setParameter("allowedStatues", allowedStatues);
+
+        return query.getResultList();
+    }
+
+    /**
+     * Find all minions by their server ids.
      *
      * @param serverIds the list of server ids
      * @return a list of minions

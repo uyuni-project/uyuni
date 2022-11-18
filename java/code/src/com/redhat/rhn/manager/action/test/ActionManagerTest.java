@@ -107,6 +107,7 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
+import com.suse.utils.Exceptions;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -566,11 +567,76 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         assertServerActionCount(parent, 2);
         assertActionsForUser(user, 1);
-        ActionManager.cancelActions(user, actionList, Optional.of(activeServers));
+        ActionManager.cancelActions(user, actionList, activeServers);
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 1); // shouldn't have been deleted
         // check that action was indeed not canceled on taskomatic side
         context().assertIsSatisfied();
+    }
+
+    public void testCancelActionWithFailedPrerequisite() {
+        Server first = ServerFactoryTest.createTestServer(user, true);
+        Server second = ServerFactoryTest.createTestServer(user, true);
+        List<Server> servers = List.of(first, second);
+
+        Action parent = ActionFactoryTest.createNewAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ActionFactory.save(parent);
+
+        servers.forEach(server -> {
+            ServerAction serverAction = ActionFactoryTest.createServerAction(server, parent);
+            serverAction.setStatus(first.equals(server) ? ActionFactory.STATUS_FAILED : ActionFactory.STATUS_QUEUED);
+            parent.addServerAction(serverAction);
+            ActionFactory.save(serverAction);
+        });
+
+        Action child = ActionFactoryTest.createNewAction(user, ActionFactory.TYPE_ERRATA);
+        child.setPrerequisite(parent);
+        ActionFactory.save(child);
+
+        servers.forEach(server -> {
+            ServerAction serverAction = ActionFactoryTest.createServerAction(server, child);
+            serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+            child.addServerAction(serverAction);
+            ActionFactory.save(serverAction);
+        });
+
+        // Should not cancel, there are pending prerequisites
+        List<Action> actionsToCancel = List.of(TestUtils.reload(child));
+        assertThrows(ActionIsChildException.class,
+            () -> ActionManager.cancelActions(user, actionsToCancel)
+        );
+
+        // Should cancel, first server has a failed prerequisite
+        assertDoesNotThrow(
+            () -> ActionManager.cancelActions(user, actionsToCancel, List.of(first.getId()))
+        );
+
+        // Should not cancel, second server as a valid pending prerequisite
+        assertThrows(ActionIsChildException.class,
+            () -> ActionManager.cancelActions(user, actionsToCancel, List.of(second.getId()))
+        );
+    }
+
+    private static void assertDoesNotThrow(Exceptions.ThrowingOperation runnable) {
+        try {
+            runnable.execute();
+        }
+        catch (Exception ex) {
+            fail(ex.getClass().getName() + " was thrown but no exception was expected");
+        }
+    }
+
+    private static void assertThrows(Class<? extends Exception> exceptionClass, Exceptions.ThrowingOperation runnable) {
+        try {
+            runnable.execute();
+            fail("Expected " + exceptionClass.getName() + " was not thrown");
+        }
+        catch (Exception ex) {
+            if (!exceptionClass.isInstance(ex)) {
+                fail("Expected " + exceptionClass.getName() + " was not thrown, " +
+                    ex.getClass().getName() + " was thrown instead");
+            }
+        }
     }
 
     public void testCancelActionWithParentFails() throws Exception {

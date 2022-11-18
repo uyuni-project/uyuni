@@ -34,7 +34,10 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
         proxy.setUsername("foobaruser");
         proxy.setPassword("foobarpassword");
         setProxySettings(proxy);
-        assertTrue(proxy.equals(ProxySettingsManager.getProxySettings()));
+        ProxySettingsDto proxySettingsResult = ProxySettingsManager.getProxySettings();
+        assertEquals(proxy.getHostname(), proxySettingsResult.getHostname());
+        assertEquals(proxy.getUsername(), proxySettingsResult.getUsername());
+        assertNull(proxySettingsResult.getPassword());
     }
 
     /**
