@@ -107,6 +107,29 @@ Feature: Add a repository to a channel
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Fake-Deb-AMD64-Channel." text
 
+@rhlike_minion
+  Scenario: Add the repository to the RedHat-like channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Fake-RH-Like-Channel"
+    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
+    And I click on "Update Channel"
+    Then I should see a "Channel Fake-RH-Like-Channel updated" text
+    When I follow "Repositories" in the content area
+    And I select the "fake-rpm-repo" repo
+    And I click on "Save Repositories"
+    Then I should see a "Fake-RH-Like-Channel repository information was successfully updated" text
+
+@rhlike_minion
+  Scenario: Synchronize the repository in the x86_64 channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Fake-RH-Like-Channel"
+    And I follow "Repositories" in the content area
+    And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Fake-RH-Like-Channel." text
+    And I wait until the channel "fake-rh-like-channel" has been synced
+
   Scenario: Refresh the errata cache
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"

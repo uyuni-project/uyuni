@@ -98,6 +98,19 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Fake-Deb-AMD64-Channel created." text
 
+  Scenario: Add a RedHat-like base channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Create Channel"
+    And I enter "Fake-RH-Like-Channel" as "Channel Name"
+    And I enter "fake-rh-like-channel" as "Channel Label"
+    And I select "None" from "Parent Channel"
+    And I select "x86_64" from "Architecture:"
+    And I enter "Fake-RH-Like-Channel for testing" as "Channel Summary"
+    And I enter "No more description for base channel." as "Channel Description"
+    And I click on "Create Channel"
+    Then I should see a "Channel Fake-RH-Like-Channel created." text
+
+
   Scenario: Wait for Channels generated initial metadata
     When I wait until the channel "test-channel-x86_64" has been synced
     And I wait until the channel "fake-i586-channel" has been synced
