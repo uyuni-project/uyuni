@@ -11,6 +11,7 @@ echo $PATH
 echo $PERLLIB
 
 ./build-schema.sh
+./build-reportdb-schema.sh
 
 export SYSTEMD_NO_WRAP=1
 sysctl -w kernel.shmmax=18446744073709551615
@@ -24,6 +25,13 @@ spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-pgsql.txt --
   cat /var/log/rhn/populate_db.log
   exit 1
 }
+
+# Create symlinks because uyuni-setup-reportdb uses absolute paths
+ln -s /manager/schema/spacewalk/spacewalk-sql /usr/bin/spacewalk-sql
+ln -s /manager/schema/spacewalk/spacewalk-schema-upgrade /usr/bin/spacewalk-schema-upgrade
+
+/usr/bin/uyuni-setup-reportdb remove --db reportdb --user pythia ||:
+/usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia --password oracle --local
 
 echo "Creating First Org"
 
