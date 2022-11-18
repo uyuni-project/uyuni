@@ -1,4 +1,8 @@
-- Prevent proxy data from being logged (bsc#1205339)
+-------------------------------------------------------------------
+Fri Nov 18 12:40:58 CET 2022 - jgonzalez@suse.com
+
+- version 4.2.31-1
+  * Prevent proxy data from being logged (bsc#1205339)
 
 -------------------------------------------------------------------
 Tue Oct 18 10:07:18 CEST 2022 - jgonzalez@suse.com
