@@ -20878,6 +20878,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
+        <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties" xml:space="preserve">
         <source>System Properties (&lt;a href="{0}"&gt;Edit These Properties&lt;/a&gt;)</source>
         <context-group name="ctx">
@@ -21000,6 +21006,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.overview.requires_reboot" xml:space="preserve">
         <source>The system requires a reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+        <source>System reboot scheduled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
