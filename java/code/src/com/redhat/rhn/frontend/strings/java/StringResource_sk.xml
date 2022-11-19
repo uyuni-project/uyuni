@@ -11282,7 +11282,7 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-        <target state="new"/>
+        <target state="translated">Nie je možné zrušiť akciu s nevyriešenou podmienkou.</target>
       </trans-unit>
     </body>
   </file>
