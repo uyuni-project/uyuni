@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-09 10:11+0100\n"
-"PO-Revision-Date: 2022-11-17 06:13+0000\n"
+"PO-Revision-Date: 2022-11-19 06:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools-4-3/mk/>\n"
@@ -305,7 +305,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:603
 msgid "There was an error while assembling information for the profile."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при составувањето на информациите за профилот."
 
 #: ../src/up2date_client/rhnregGui.py:624
 msgid "Error running hardware profile"
@@ -313,7 +313,7 @@ msgstr "Грешка при извршувањето на хардверскио
 
 #: ../src/up2date_client/rhnregGui.py:655
 msgid "There was an error while populating the profile."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при пополнувањето на профилот."
 
 #: ../src/up2date_client/rhnregGui.py:675
 msgid "You must choose a name for this profile."
@@ -321,7 +321,7 @@ msgstr "Мора да изберете име за овој профил."
 
 #: ../src/up2date_client/rhnregGui.py:689
 msgid "There was an error while creating the profile."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при создавањето на профилот."
 
 #: ../src/up2date_client/rhnregGui.py:700
 msgid "Registering system and sending profile information.  Please wait."
@@ -365,7 +365,7 @@ msgstr "Испрати _информации за хардверот"
 
 #: ../src/up2date_client/rhnregGui.py:795
 msgid "Problem sending hardware information."
-msgstr "Грешка при читање на информациите за хардверот:"
+msgstr "Проблем при праќање на информациите за хардверот."
 
 #. #            for row in range(self.regPackageArea.n_rows):
 #. #                rowData = self.regPackageArea.get_row_data(row)
@@ -393,7 +393,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:910
 msgid "There was an error while installing the certificate."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при инсталирање на сертификатот."
 
 #: ../src/up2date_client/rhnregGui.py:936
 msgid "You must select a certificate."
@@ -420,7 +420,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:1133
 msgid "There was an error getting the list of hardware."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при превземањето на листата на хардвер."
 
 #: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
 #, python-format
