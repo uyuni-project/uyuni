@@ -1,3 +1,4 @@
+- Add reboot needed indicator to systems list
 - Move web dependencies from susemanager-frontend-libs to
   spacewalk-web
 - Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)

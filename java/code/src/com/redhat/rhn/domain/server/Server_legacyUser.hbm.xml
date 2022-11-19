@@ -602,4 +602,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                   WHERE s.id IN (:systemIds)]]>
     </query>
 
+
+    <query name="Server.findServersPendingRebootAction">
+        <![CDATA[SELECT distinct(sa.server.id) FROM ServerAction sa
+                      WHERE sa.server.id IN (:systemIds)
+                        AND sa.parentAction.actionType.label = 'reboot.reboot'
+                        AND status in ( 0, 1 )]]>
+    </query>
+
 </hibernate-mapping>

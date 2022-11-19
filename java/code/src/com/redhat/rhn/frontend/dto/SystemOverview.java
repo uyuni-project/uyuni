@@ -97,6 +97,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
     public static final String STATUS_TYPE_UP2DATE = "up2date";
     public static final String STATUS_TYPE_CRITICAL = "critical";
     public static final String STATUS_TYPE_UPDATES = "updates";
+    public static final String STATUS_TYPE_REBOOT_NEEDED = "reboot needed";
 
 
     /**
@@ -181,10 +182,13 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         else if (Optional.ofNullable(kickstarting).orElse(SystemManager.isKickstarting(user, sid))) {
             type = STATUS_TYPE_KICKSTARTING;
         }
+        else if (SystemManager.requiresReboot(user, sid)) {
+            type = STATUS_TYPE_REBOOT_NEEDED;
+        }
         else if (getEnhancementErrata() + getBugErrata() +
-                     getSecurityErrata() > 0 &&
-                     Optional.ofNullable(unscheduledErrataCount).map(count -> count == 0)
-                             .orElse(SystemManager.hasUnscheduledErrata(user, sid))) {
+                getSecurityErrata() > 0 &&
+                Optional.ofNullable(unscheduledErrataCount).map(count -> count == 0)
+                        .orElse(SystemManager.hasUnscheduledErrata(user, sid))) {
             type = STATUS_TYPE_UPDATES_SCHEDULED;
         }
         else if (Optional.ofNullable(actionsCount).orElse(Long.valueOf(SystemManager.countActions(sid))) > 0) {
