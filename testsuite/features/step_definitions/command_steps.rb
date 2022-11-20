@@ -929,7 +929,7 @@ end
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   if suse_host?(host)
-    cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
+    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-sles-channel/getPackage/*/*/#{pkg_name}*.rpm"
   elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
