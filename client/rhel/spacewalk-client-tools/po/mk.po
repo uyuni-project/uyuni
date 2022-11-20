@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-09 10:11+0100\n"
-"PO-Revision-Date: 2022-11-19 06:13+0000\n"
+"PO-Revision-Date: 2022-11-20 22:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools-4-3/mk/>\n"
@@ -434,7 +434,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:1194
 msgid "There was an error building the list of packages."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при градење на листата на пакети."
 
 #: ../src/up2date_client/rhnregGui.py:1209
 msgid "Package"
@@ -787,7 +787,7 @@ msgstr "Системот е веќе регистриран"
 #: ../src/up2date_client/rhnreg_constants.py:135
 #: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
-msgstr "Го рестартирам up2date"
+msgstr "Изгледа дека овој систем веќе бил поставен за софтверски ажурирања:"
 
 #: ../src/up2date_client/rhnreg_constants.py:136
 #: ../data/rh_register.glade.h:131
