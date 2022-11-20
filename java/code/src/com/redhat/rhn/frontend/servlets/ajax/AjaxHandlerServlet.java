@@ -65,7 +65,7 @@ public class AjaxHandlerServlet extends HttpServlet {
     private static final Map<String, ProcessAjaxRequest> HANDLERS = new HashMap<>();
     public static final String AJAX_PREFIX = "ajax/";
     private static Gson gson = new Gson();
-    private static MirrorCredentialsRenderer mirrorCredentialsRenderer = new MirrorCredentialsRenderer();
+    protected static MirrorCredentialsRenderer mirrorCredentialsRenderer = new MirrorCredentialsRenderer();
     private static SystemGroupsRenderer systemGroupsRenderer = new SystemGroupsRenderer();
     private static TasksRenderer tasksRenderer = new TasksRenderer();
     private static InactiveSystemsRenderer inactiveSystemsRenderer = new InactiveSystemsRenderer();
@@ -79,7 +79,7 @@ public class AjaxHandlerServlet extends HttpServlet {
     private static SubscriptionWarningRenderer subscriptionWarningRenderer = new SubscriptionWarningRenderer();
     private static ItemSelector itemSelector = new ItemSelector();
 
-    Set<String> jsonResultRoutes = Set.of(
+    private Set<String> jsonResultRoutes = Set.of(
         "retrieve-proxy-settings",
         "verify-proxy-settings",
         "save-proxy-settings",
@@ -155,8 +155,8 @@ public class AjaxHandlerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        String url = req.getRequestURL().toString().split(AJAX_PREFIX)[1];
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        String url = req.getRequestURI().split(AJAX_PREFIX)[1];
         try {
             Object result = HANDLERS.get(url).doProcess(req, resp);
             String response = jsonResultRoutes.contains(url) ? gson.toJson(result) : result.toString();
