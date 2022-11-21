@@ -77,6 +77,16 @@ def __virtual__():
     '''
     return HAS_POSTGRES
 
+
+def _is_salt_ssh(opts):
+    """Check if this pillar is computed for Salt SSH.
+
+    Only in salt/client/ssh/__init__.py, the master_opts are moved into
+    opts[__master_opts__], which we use to detect Salt SSH usage.
+    """
+    return "__master_opts__" in opts
+
+
 @contextmanager
 def _get_cursor():
     def _connect_db():
@@ -103,7 +113,7 @@ def _get_cursor():
         try:
             cnx = _connect_db()
             log.debug("Connected to the DB")
-            if "__master_opts__" not in __opts__:
+            if not _is_salt_ssh(__opts__):
                 __context__["suma_minion_cnx"] = cnx
         except psycopg2.OperationalError as err:
             log.error("Error on getting database pillar: %s", err.args)
@@ -115,7 +125,7 @@ def _get_cursor():
         try:
             cnx = _connect_db()
             log.debug("Reconnected to the DB")
-            if "__master_opts__" not in __opts__:
+            if not _is_salt_ssh(__opts__):
                 __context__["suma_minion_cnx"] = cnx
             cursor = cnx.cursor()
         except psycopg2.OperationalError as err:
@@ -126,7 +136,7 @@ def _get_cursor():
     except psycopg2.DatabaseError as err:
         log.error("Error on getting database pillar: %s", err.args)
     finally:
-        if "__master_opts__" in __opts__:
+        if _is_salt_ssh(__opts__):
             cnx.close()
 
 
