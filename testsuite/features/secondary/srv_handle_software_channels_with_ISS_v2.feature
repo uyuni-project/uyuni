@@ -36,7 +36,7 @@ Feature: Export and import software channels with new ISS implementation
   Scenario: Export data with ISS v2
     When I ensure folder "/tmp/export_iss_v2" doesn't exist
     Then export folder "/tmp/export_iss_v2" shouldn't exist on server
-    When I export software channels "clone-fake-rom-sles-channel" with ISS v2 to "/tmp/export_iss_v2"
+    When I export software channels "clone-fake-rpm-sles-channel" with ISS v2 to "/tmp/export_iss_v2"
     Then "/tmp/export_iss_v2" folder on server is ISS v2 export directory
 
   Scenario: Cleanup: remove cloned channels
