@@ -79,7 +79,8 @@ public class AjaxHandlerServlet extends HttpServlet {
     private static SubscriptionWarningRenderer subscriptionWarningRenderer = new SubscriptionWarningRenderer();
     private static ItemSelector itemSelector = new ItemSelector();
 
-    private Set<String> jsonResultRoutes = Set.of(
+    // URLs whose result needs to parsed to JSON
+    private static final Set<String> JSON_RESULT_URLS = Set.of(
         "retrieve-proxy-settings",
         "verify-proxy-settings",
         "save-proxy-settings",
@@ -159,7 +160,7 @@ public class AjaxHandlerServlet extends HttpServlet {
         String url = req.getRequestURI().split(AJAX_PREFIX)[1];
         try {
             Object result = HANDLERS.get(url).doProcess(req, resp);
-            String response = jsonResultRoutes.contains(url) ? gson.toJson(result) : result.toString();
+            String response = JSON_RESULT_URLS.contains(url) ? gson.toJson(result) : result.toString();
             resp.getOutputStream().print(response);
             resp.getOutputStream().close();
         }
