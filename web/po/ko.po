@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-06 09:14+0000\n"
-"PO-Revision-Date: 2022-11-20 13:13+0000\n"
+"PO-Revision-Date: 2022-11-21 11:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -2042,7 +2042,7 @@ msgstr "SUSE 제품 기반 라이브 패치"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:40
 msgid "AppStream modules with defaults"
-msgstr "기본값이 있는 앱 스트림 모듈"
+msgstr "기본값이 있는 AppStream 모듈"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:273
