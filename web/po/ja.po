@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-18 14:27+0100\n"
-"PO-Revision-Date: 2022-11-11 09:13+0000\n"
+"PO-Revision-Date: 2022-11-22 02:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-2/ja/"
 ">\n"
@@ -1426,7 +1426,7 @@ msgstr "名前"
 #: ../html/src/manager/virtualization/ListTab.tsx:260
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:356
 msgid "Actions"
-msgstr "アクション"
+msgstr "動作"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:337
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:384
