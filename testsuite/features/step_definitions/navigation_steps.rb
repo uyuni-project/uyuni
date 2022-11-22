@@ -183,6 +183,15 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   end
 end
 
+# select an item from any dropdown
+When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
+  # let the the select2js box filter open the hidden options
+  xpath_query = "//select[@name='#{label}']"
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  # select the desired option
+  raise "#{label} #{selection} not found" unless find(:xpath, "//select[@name='#{label}']/option[contains(text(), '#{selection}')]").click
+end
+
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
   select(BASE_CHANNEL_BY_CLIENT[client], from: from, exact: false)
 end
@@ -1082,4 +1091,8 @@ end
 
 Then(/^I should see left menu empty$/) do
   raise StandardError, 'The left menu is not empty.' unless page.has_no_xpath?("//*[contains(@class, 'level1')]/*/*[contains(@class, 'nodeLink')]")
+end
+
+Then(/^I should see the text "(.*?)" in the (Operating System|Architecture|Channel Label) field/) do |text, field|
+  page.has_field?(text, with: field)
 end
