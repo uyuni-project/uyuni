@@ -1,3 +1,4 @@
+- Remove data related to RHEL below 6 
 - Increase cron_expr varchar length to 120 in suseRecurringAction
   table (bsc#1205040)
 

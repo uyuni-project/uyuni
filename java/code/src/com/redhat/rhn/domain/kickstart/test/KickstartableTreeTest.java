@@ -71,7 +71,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         KickstartableTree tree = new KickstartableTree();
         tree.setChannel(ChannelTestUtils.createBaseChannel(u));
         tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
         tree.setBasePath(basePath.getAbsolutePath());
         tree.setOrg(u.getOrg());
         createKickstartTreeItems(tree);
