@@ -129,9 +129,9 @@ Feature: Content lifecycle
     And I follow "clp_name"
     Then I should see a "Build (0)" text
     When I click on "Attach/Detach Sources"
-    And I add the "Test Base Channel" channel to sources
+    And I add the "Fake Base Channel" channel to sources
     And I click on "Save"
-    Then I wait until I see "Test Base Channel" text
+    Then I wait until I see "Fake Base Channel" text
     And I wait until I see "Build (1)" text
     And I should see a "Version 2: (draft - not built) - Check the changes below" text
     When I click on "Build (1)"

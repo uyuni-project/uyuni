@@ -215,9 +215,10 @@ end
 
 When(/^I include the recommended child channels$/) do
   toggle = "//span[@class='pointer']"
-  if page.has_xpath?(toggle, wait: 5)
-    find(:xpath, toggle).click
-  end
+  toggle_off = "//i[contains(@class, 'fa-toggle-off')]"
+  step %(I wait until I see "include recommended" text)
+  raise 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
+  find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
 end
 
 When(/^I choose "([^"]*)"$/) do |arg1|
@@ -551,7 +552,7 @@ Then(/^I should see an update in the list$/) do
 end
 
 When(/^I check test channel$/) do
-  step %(I check "Test Base Channel" in the list)
+  step %(I check "Fake Base Channel" in the list)
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|

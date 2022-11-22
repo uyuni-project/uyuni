@@ -88,8 +88,12 @@ Feature: bootstrapping with reactivation key
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
+    And I wait until I see "SUSE Channels" text, refreshing the page
+    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I wait until I do not see "Loading..." text
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"

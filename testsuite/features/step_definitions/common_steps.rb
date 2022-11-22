@@ -394,36 +394,12 @@ Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) 
 end
 
 # metadata steps
-Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  target = get_target(host)
-  arch, _code = target.run('uname -m')
-  arch.chomp!
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:test-channel-#{arch}/repodata/*primary.xml.gz"
-  target.run(cmd, timeout: 500)
-end
-
-Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  target = get_target(host)
-  arch, _code = target.run('uname -m')
-  arch.chomp!
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:test-channel-#{arch}/repodata/*primary.xml.gz"
-  target.run(cmd, timeout: 500)
-end
-
-Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
-  node = get_target(host)
-  arch, _code = node.run('uname -m')
-  arch.chomp!
-  dir_file = "/var/cache/zypp/raw/susemanager:test-channel-#{arch}/repodata/"
-  _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
-  raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
-end
-
 Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, host|
   node = get_target(host)
   arch, _code = node.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:test-channel-#{arch}/repodata/*updateinfo.xml.gz"
+  # TODO: adapt for architectures
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-sles-channel/repodata/*updateinfo.xml.gz"
   node.run(cmd, timeout: 500)
 end
 
