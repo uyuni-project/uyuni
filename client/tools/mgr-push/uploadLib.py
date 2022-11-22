@@ -26,7 +26,7 @@ import getpass
 # pylint: disable=W0702,W0703
 
 import inspect
-from uyuni.common import rhn_mpm
+from uyuni.common import rhn_mpm, rhn_deb, rhn_rpm
 from uyuni.common.rhn_pkg import package_from_filename, get_package_header
 from uyuni.common.usix import raise_with_tb
 from up2date_client import rhnserver
@@ -177,7 +177,7 @@ class UploadClass:
 
         for filename in listdir(self.options.dir):
             # only add packages
-            if filename[-3:] in ("rpm", "mpm"):
+            if filename[-3:] in ("rpm", "mpm", "deb"):
                 self.files.append(filename)
 
     def filter_excludes(self):
@@ -264,6 +264,7 @@ class UploadClass:
         # Loop through the args and only keep the newest ones
         localPackagesHash = {}
         for filename in self.files:
+            pkgtype = filename[-3:]
             nvrea = self._processFile(filename, nosig=1)['nvrea']
             name = nvrea[0]
             if name not in localPackagesHash:
@@ -277,9 +278,7 @@ class UploadClass:
                 continue
             skip_rpm = 0
             for local_nvrea in same_names_hash.keys():
-                # XXX is_mpm should be set accordingly
-                ret = packageCompare(local_nvrea, nvrea,
-                                     is_mpm=0)
+                ret = packageCompare(local_nvrea, nvrea, pkgtype)
                 if ret == 0 and local_nvrea[4] == nvrea[4]:
                     # Weird case, we've already compared the two
                     skip_rpm = 1
@@ -306,6 +305,7 @@ class UploadClass:
         pkglist = self._listChannel()
 
         for p in pkglist:
+            pkgtype = filename[-3:]
             name = p[0]
             if name not in localPackagesHash:
                 # Not in the local list
@@ -318,9 +318,7 @@ class UploadClass:
                 continue
 
             for local_nvrea in list(same_names_hash.keys()):
-                # XXX is_mpm sould be set accordingly
-                ret = packageCompare(local_nvrea, remote_nvrea,
-                                     is_mpm=0)
+                ret = packageCompare(local_nvrea, remote_nvrea, pkgtype)
                 if ret < 0:
                     # The remote package is newer than the local one
                     del same_names_hash[local_nvrea]
@@ -560,7 +558,14 @@ class UploadClass:
             lh.append(sstr(a_pkg.header['arch']))
 
         # Build the header hash to be sent
-        info = {'header': Binary(a_pkg.header.unload()),
+        if filename.endswith("deb"):
+            # The `header` data in the returned dictionary `info` is used with the `--headers` option for mgr-push.
+            # This option is not useful anymore as it was needed by `up2date`.
+            hdr = None
+        if filename.endswith("rpm") or filename.endswith("npm"):
+            hdr = Binary(a_pkg.header.unload())
+
+        info = {'header': hdr,
                 'checksum_type': a_pkg.checksum_type,
                 'checksum': a_pkg.checksum,
                 'packageSize': size,
@@ -781,7 +786,7 @@ def exists_getPackageChecksumBySession(rpc_server):
 # compare two package [n,v,r,e] tuples
 
 
-def packageCompare(pkg1, pkg2, is_mpm=None):
+def packageCompare(pkg1, pkg2, pkgtype):
     if pkg1[0] != pkg2[0]:
         raise ValueError("You should only compare packages with the same name")
     packages = []
@@ -793,11 +798,14 @@ def packageCompare(pkg1, pkg2, is_mpm=None):
             e = str(e)
         evr = (e, str(pkg[1]), str(pkg[2]))
         packages.append(evr)
-    if is_mpm:
+    if pkgtype == "mpm":
         func = rhn_mpm.labelCompare
-    else:
-        from uyuni.common import rhn_rpm
+    elif pkgtype == "deb":
+        func = rhn_deb.labelCompare
+    elif pkgtype == "rpm":
         func = rhn_rpm.labelCompare
+    else:
+        raise ValueError("Unknown package type")
     return func(packages[0], packages[1])
 
 

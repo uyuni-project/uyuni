@@ -20,7 +20,7 @@
 import sys
 import tempfile
 
-from debian import debfile
+from debian import debfile, debian_support
 
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import checksum
@@ -141,3 +141,10 @@ class DEB_Package(A_Package):
         if output_stream:
             self.payload_stream = output_stream
             self.payload_size = output_stream.tell() - output_start
+
+
+def labelCompare(t1, t2):
+    label1 = t1[1] + '-' + t1[2]
+    label2 = t2[1] + '-' + t2[2]
+    return debian_support.version_compare(label1, label2)
+
