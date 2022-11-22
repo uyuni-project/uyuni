@@ -102,7 +102,6 @@ public class FormulaFactory {
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
-    private static final Yaml YAML = new Yaml(new SafeConstructor());
 
     private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
@@ -478,15 +477,16 @@ public class FormulaFactory {
         File layoutFileManager = new File(metadataDirManager + layoutFilePath);
         File layoutFileCustom = new File(METADATA_DIR_CUSTOM + layoutFilePath);
 
+        Yaml yaml = new Yaml(new SafeConstructor());
         try {
             if (layoutFileStandalone.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileStandalone)));
+                return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layoutFileStandalone)));
             }
             else if (layoutFileManager.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileManager)));
+                return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layoutFileManager)));
             }
             else if (layoutFileCustom.exists()) {
-                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFileCustom)));
+                return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layoutFileCustom)));
             }
             else {
                 return Optional.empty();
@@ -857,15 +857,17 @@ public class FormulaFactory {
         File metadataFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + metadataFilePath);
         File metadataFileManager = new File(metadataDirManager + metadataFilePath);
         File metadataFileCustom = new File(METADATA_DIR_CUSTOM + metadataFilePath);
+
+        Yaml yaml = new Yaml(new SafeConstructor());
         try {
             if (metadataFileStandalone.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileStandalone));
+                return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileStandalone));
             }
             else if (metadataFileManager.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileManager));
+                return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileManager));
             }
             else if (metadataFileCustom.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileCustom));
+                return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileCustom));
             }
             else {
                 return Collections.emptyMap();
@@ -900,15 +902,16 @@ public class FormulaFactory {
         File pillarExampleFileManager = new File(metadataDirManager + pillarExamplePath);
         File pillarExampleFileCustom = new File(METADATA_DIR_CUSTOM + pillarExamplePath);
 
+        Yaml yaml = new Yaml(new SafeConstructor());
         try {
             if (pillarExampleFileStandalone.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileStandalone));
+                return (Map<String, Object>) yaml.load(new FileInputStream(pillarExampleFileStandalone));
             }
             else if (pillarExampleFileManager.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileManager));
+                return (Map<String, Object>) yaml.load(new FileInputStream(pillarExampleFileManager));
             }
             else if (pillarExampleFileCustom.isFile()) {
-                return (Map<String, Object>) YAML.load(new FileInputStream(pillarExampleFileCustom));
+                return (Map<String, Object>) yaml.load(new FileInputStream(pillarExampleFileCustom));
             }
             else {
                 return Collections.emptyMap();
