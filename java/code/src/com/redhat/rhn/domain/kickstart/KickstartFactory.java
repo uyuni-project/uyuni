@@ -278,9 +278,7 @@ public class KickstartFactory extends HibernateFactory {
     }
 
 
-    private static List<KickstartCommandName> lookupKickstartCommandNames(
-            KickstartData ksdata, boolean onlyAdvancedOptions) {
-
+    private static List<KickstartCommandName> lookupKickstartCommandNames(boolean onlyAdvancedOptions) {
         Session session = null;
         List names = null;
 
@@ -296,17 +294,7 @@ public class KickstartFactory extends HibernateFactory {
         List<KickstartCommandName> retval = new LinkedList<>();
         for (Object nameIn : names) {
             KickstartCommandName cn = (KickstartCommandName) nameIn;
-            if (cn.getName().equals("selinux") && ksdata.isLegacyKickstart()) {
-                continue;
-            }
-            // Don't display these options if this is a pre-RHEL5 kickstart profile:
-            else if (cn.getName().equals("lilocheck") && ksdata.isRhel5OrGreater()) {
-                continue;
-            }
-            else if (cn.getName().equals("langsupport") && ksdata.isRhel5OrGreater()) {
-                continue;
-            }
-            else {
+            if (!cn.getName().equals("lilocheck") && !cn.getName().equals("langsupport")) {
                 retval.add(cn);
             }
         }
@@ -315,32 +303,24 @@ public class KickstartFactory extends HibernateFactory {
     }
 
     /**
-     * Get the list of KickstartCommandName objects that are supportable by
-     * the passed in KickstartData.  Filters out unsupported commands such as
-     * 'selinux' for RHEL2/3
+     * Get the list of KickstartCommandName objects that are supportable.
+     * Filters out unsupported commands.
      *
-     * @param ksdata KickstartData object to check compatibility with
      * @return List of advanced KickstartCommandNames. Does not include partitions,
      * logvols, raids, varlogs or includes which is displayed sep in the UI.
      */
-    public static List<KickstartCommandName> lookupKickstartCommandNames(
-            KickstartData ksdata) {
-
-        return lookupKickstartCommandNames(ksdata, true);
+    public static List<KickstartCommandName> lookupKickstartCommandNames() {
+        return lookupKickstartCommandNames(true);
     }
 
     /**
-     * Get the list of KickstartCommandName objects that are supportable by
-     * the passed in KickstartData.  Filters out unsupported commands such as
-     * 'selinux' for RHEL2/3
+     * Get the list of KickstartCommandName objects that are supportable.
+     * Filters out unsupported commands.
      *
-     * @param ksdata KickstartData object to check compatibility with
      * @return List of  KickstartCommandNames.
      */
-    public static List<KickstartCommandName> lookupAllKickstartCommandNames(
-            KickstartData ksdata) {
-
-        return lookupKickstartCommandNames(ksdata, false);
+    public static List<KickstartCommandName> lookupAllKickstartCommandNames() {
+        return lookupKickstartCommandNames(false);
     }
 
     /**

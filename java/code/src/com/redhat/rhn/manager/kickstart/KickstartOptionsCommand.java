@@ -46,7 +46,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
      */
     public KickstartOptionsCommand(Long ksid, User userIn) {
         super(ksid, userIn);
-        this.availableOptions = KickstartFactory.lookupKickstartCommandNames(this.ksdata);
+        this.availableOptions = KickstartFactory.lookupKickstartCommandNames();
         this.requiredOptions = KickstartFactory.lookupKickstartRequiredOptions();
     }
 

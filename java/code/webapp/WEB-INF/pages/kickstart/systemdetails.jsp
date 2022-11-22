@@ -22,42 +22,40 @@
 
     <h2><bean:message key="kickstart.systemdetails.jsp.header1"/></h2>
 
-    <c:if test="${not ksdata.legacyKickstart}">
-        <h3><bean:message key="kickstart.systemdetails.jsp.header2"/></h3>
-        <div class="form-group">
-            <label class="col-lg-3 control-label">
-                <bean:message key="kickstart.selinux.jsp.label" />:
-            </label>
-            <div class="col-lg-6">
-                <div class="radio">
-                    <label>
-                        <html:radio property="selinuxMode" value="enforcing" />
-                        <bean:message key="kickstart.selinux.enforce.policy.jsp.label" />
-                    </label>
-                </div>
+    <h3><bean:message key="kickstart.systemdetails.jsp.header2"/></h3>
+    <div class="form-group">
+        <label class="col-lg-3 control-label">
+            <bean:message key="kickstart.selinux.jsp.label" />:
+        </label>
+        <div class="col-lg-6">
+            <div class="radio">
+                <label>
+                    <html:radio property="selinuxMode" value="enforcing" />
+                    <bean:message key="kickstart.selinux.enforce.policy.jsp.label" />
+                </label>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
-                <div class="radio">
-                    <label>
-                        <html:radio property="selinuxMode" value="permissive" />
-                        <bean:message key="kickstart.selinux.warn.policy.jsp.label" />
-                    </label>
-                </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-6">
+            <div class="radio">
+                <label>
+                    <html:radio property="selinuxMode" value="permissive" />
+                    <bean:message key="kickstart.selinux.warn.policy.jsp.label" />
+                </label>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
-                <div class="radio">
-                    <label>
-                        <html:radio property="selinuxMode" value="disabled" />
-                        <bean:message key="kickstart.selinux.disable.policy.jsp.label" />
-                    </label>
-                </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-6">
+            <div class="radio">
+                <label>
+                    <html:radio property="selinuxMode" value="disabled" />
+                    <bean:message key="kickstart.selinux.disable.policy.jsp.label" />
+                </label>
             </div>
         </div>
-    </c:if>
+    </div>
 
     <h3><bean:message key="kickstart.systemdetails.jsp.header3"/></h3>
         <div class="form-group">

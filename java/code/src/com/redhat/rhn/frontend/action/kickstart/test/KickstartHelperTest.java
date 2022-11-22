@@ -124,14 +124,14 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         Channel tools = ChannelTestUtils.createChildChannel(user, base);
         ksdata.getTree().setChannel(base);
         ksdata.getTree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_4));
-        assertFalse(ksdata.isRhel5());
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
+        assertTrue(ksdata.isRhel6());
         assertFalse(helper.verifyKickstartChannel(ksdata, user));
 
         PackageManagerTest.addPackageToChannel("rhn-kickstart", tools);
         assertFalse(helper.verifyKickstartChannel(ksdata, user));
         ksdata.getTree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
         assertTrue(helper.verifyKickstartChannel(ksdata, user, false));
     }
 

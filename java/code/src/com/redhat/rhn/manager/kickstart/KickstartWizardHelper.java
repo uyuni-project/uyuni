@@ -196,15 +196,7 @@ public class KickstartWizardHelper {
      * @param ksdata the data to which the repos have to be processed
      */
     public void processRepos(KickstartData ksdata) {
-        if (ksdata.isRhel5()) {
-            Set<RepoInfo> repos = ksdata.getRepoInfos();
-            RepoInfo vt = RepoInfo.vt();
-            if (!repos.contains(vt)) {
-                repos.add(vt);
-                ksdata.setRepoInfos(repos);
-            }
-        }
-        else if (ksdata.isRhel8()) {
+        if (ksdata.isRhel8()) {
             Set<RepoInfo> repos = ksdata.getRepoInfos();
             RepoInfo appstream = RepoInfo.appstream();
             if (!repos.contains(appstream)) {
@@ -220,17 +212,9 @@ public class KickstartWizardHelper {
     /**
      * Basically add or remove key --skip to the ks file...
      * mainly used for the wizard
-     * @param ksdata the ksdata to which the key command has to be aded or removed..
+     * @param ksdata the ksdata to which the key command has to be added or removed.
      */
     public void processSkipKey(KickstartData ksdata) {
-        if (ksdata.isRhel5()) {
-            KickstartCommand command = ksdata.getCommand("key");
-            if (command == null) {
-                createCommand("key", "--skip", ksdata);
-            }
-        }
-        else {
-            ksdata.removeCommand("key", false);
-        }
+        ksdata.removeCommand("key", false);
     }
 }
