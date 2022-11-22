@@ -93,3 +93,10 @@ Feature: Be able to list available channels and enable them
     When I remove the mgr-sync cache file
     And I execute mgr-sync refresh
     Then I should get "Timeout. No user input for 60 seconds. Exiting..."
+
+  Scenario: Enable Live Patching Product
+    When I execute mgr-sync "add channel sle-product-hpc-15-sp4-pool-x86_64"
+    And I execute mgr-sync "add channel sle-module-live-patching15-sp4-pool-x86_64-hpc"
+    And I execute mgr-sync "list channels"
+    Then I should get "[I] SUSE Linux Enterprise High Performance Computing 15 SP4 x86_64 x86_64 [sle-product-hpc-15-sp4-pool-x86_64]"
+    And I should get "    [I] SUSE Linux Enterprise Live Patching 15 SP4 x86_64 [sle-module-live-patching15-sp4-pool-x86_64-hpc]"

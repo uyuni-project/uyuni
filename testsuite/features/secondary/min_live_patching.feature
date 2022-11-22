@@ -10,5 +10,7 @@ Feature: Live Patching on a SLE Minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
+  Scenario: Pre-requisite: create an activation key with Live Patching product
+    When
+    # Create Activation Key with API
     
