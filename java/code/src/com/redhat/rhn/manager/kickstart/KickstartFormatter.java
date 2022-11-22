@@ -588,9 +588,7 @@ public class KickstartFormatter {
         }
         if (ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
          // packages necessary for RHEL 6+ and Fedora (salt)
-            buf.append("perl" + NEWLINE);
-            buf.append("wget" + NEWLINE);
-            buf.append("salt-minion" + NEWLINE);
+            buf.append("venv-salt-minion" + NEWLINE);
         }
         else if (this.ksdata.isRhel7OrGreater() || this.ksdata.isFedora()) {
             // packages necessary for RHEL 7 and Fedora (traditional)
@@ -754,26 +752,31 @@ public class KickstartFormatter {
             up2datehost = this.session.getSystemRhnHost();
         }
 
-        log.debug("adding perl -npe for /etc/sysconfig/rhn/up2date");
-        if (this.ksdata.isRhel2()) {
+        if (!ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
+            log.debug("adding perl -npe for /etc/sysconfig/rhn/up2date");
+            if (this.ksdata.isRhel2()) {
+                retval.append("perl -npe " +
+                        "'s|^(\\s*(noSSLS\\|s)erverURL\\s*=\\s*[^:]+://)[^/]*/|${1}" +
+                        up2datehost +
+                        "/|' -i /etc/sysconfig/rhn/rhn_register" + NEWLINE);
+            }
+            // both rhel 2 and rhel3/4 need the following
             retval.append("perl -npe " +
-                    "'s|^(\\s*(noSSLS\\|s)erverURL\\s*=\\s*[^:]+://)[^/]*/|${1}" +
-                     up2datehost +
-                     "/|' -i /etc/sysconfig/rhn/rhn_register" + NEWLINE);
+                    "'s|^(\\s*(noSSLS\\|s)erverURL\\s*=\\s*[^:]+://)[^/]*/|\\${1}" +
+                    up2datehost +
+                    "/|' -i /etc/sysconfig/rhn/up2date" + NEWLINE);
+
+            if (this.ksdata.getVerboseUp2date()) {
+                retval.append("[ -r /etc/sysconfig/rhn/up2date ] && " +
+                        "sed 's/debug=0/debug=1/' -i /etc/sysconfig/rhn/up2date" +
+                        NEWLINE);
+            }
         }
-        // both rhel 2 and rhel3/4 need the following
-        retval.append("perl -npe " +
-                "'s|^(\\s*(noSSLS\\|s)erverURL\\s*=\\s*[^:]+://)[^/]*/|\\${1}" +
-                up2datehost +
-                "/|' -i /etc/sysconfig/rhn/up2date" + NEWLINE);
 
         if (this.ksdata.getVerboseUp2date()) {
             retval.append("[ -r /etc/yum.conf ] && " +
-                    "perl -npe 's/debuglevel=2/debuglevel=5/' -i /etc/yum.conf" +
-                     NEWLINE);
-            retval.append("[ -r /etc/sysconfig/rhn/up2date ] && " +
-                    "perl -npe 's/debug=0/debug=1/' -i /etc/sysconfig/rhn/up2date" +
-                     NEWLINE);
+                    "sed 's/debuglevel=2/debuglevel=5/' -i /etc/yum.conf" +
+                    NEWLINE);
         }
 
         if (this.ksdata.getKickstartDefaults().getRemoteCommandFlag()) {
@@ -910,8 +913,10 @@ public class KickstartFormatter {
             retval.append(renderGpgKeys(gpgKeys));
         }
 
-        if (sslKeys.size() > 0) {
-            retval.append(renderSslKeys(sslKeys));
+        if (!ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
+            if (sslKeys.size() > 0) {
+                retval.append(renderSslKeys(sslKeys));
+            }
         }
         return retval.toString();
     }
