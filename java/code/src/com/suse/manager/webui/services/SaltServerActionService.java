@@ -2005,7 +2005,12 @@ public class SaltServerActionService {
         String autoinst = "http://" + host + "/cblr/svc/op/autoinstall/system/" + sys.getName();
 
         if (StringUtils.isBlank(breed) || breed.equals("redhat")) {
-           kernelOptions += " kssendmac ks=" + autoinst;
+            if (sys.getProfile().getDistro().getOsVersion().equals("rhel6")) {
+                kernelOptions += " kssendmac ks=" + autoinst;
+            }
+            else {
+                kernelOptions += " inst.ks.sendmac ks=" + autoinst;
+            }
         }
         else if (breed.equals("suse")) {
             kernelOptions += "autoyast=" + autoinst;
