@@ -376,51 +376,7 @@ public class KickstartHelper {
             // check on  a rawdata this is the place to fix that
             return true;
         }
-        //I tried to make this readable while still maintaining all the boolean
-        //shortcutting. Here is the one liner boolean:
-        return hasUpdates(ksdata) && hasFresh(ksdata) && (!checkAutoKickstart || hasKickstartPackage(ksdata, user)) &&
-                hasAppStream(ksdata, user);
-    }
-
-    private boolean hasUpdates(KickstartData ksdata) {
-        if (ksdata.isRhel4() || ksdata.isRhel3() || ksdata.isRhel2()) {
-            return hasPackages(ksdata.getChannel(), KickstartFormatter.UPDATE_PKG_NAMES);
-        }
-        return true;
-    }
-
-    private boolean hasFresh(KickstartData ksdata) {
-        //There are different 'fresh packages' for different RHEL releases.
-        //TODO: right now we do this a pretty ugly way -> we have a static
-        //      list of fresh packages for the different releases and we
-        //      check which one to use based on the install type suffix number.
-        //      If we need to support more than two lists, we should probably
-        //      make this a little more data driven.
-        if (ksdata.isRhel2()) {
-            return hasPackages(ksdata.getChannel(),
-                    KickstartFormatter.FRESH_PKG_NAMES_RHEL2);
-        }
-        if (ksdata.isRhel3() || ksdata.isRhel4()) {
-            return hasPackages(ksdata.getChannel(),
-                    KickstartFormatter.FRESH_PKG_NAMES_RHEL34);
-        }
-        return true;
-    }
-
-    private boolean hasPackages(Channel c, String[] packageNames) {
-        log.debug("HasPackages: {}", c.getId());
-        //Go through every package name.
-        for (String packageNameIn : packageNames) {
-            log.debug("hasPackages : Checking for package: {}", packageNameIn);
-            Long pid = ChannelManager.getLatestPackageEqual(c.getId(), packageNameIn);
-            //No package by this name exists in this package.
-            if (pid == null) {
-                log.debug("hasPackages : not found");
-                return false;
-            }
-        }
-        //We have a pid from every package.
-        return true;
+        return (!checkAutoKickstart || hasKickstartPackage(ksdata, user)) && hasAppStream(ksdata, user);
     }
 
     private boolean hasAppStream(KickstartData ksdata, User user) {
@@ -526,13 +482,6 @@ public class KickstartHelper {
         }
         else {
             packages.addAll(Arrays.asList(KickstartFormatter.UPDATE_PKG_NAMES));
-        }
-        //different 'fresh' packages for RHEL2
-        if (ksdata.isRhel2()) {
-            packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL2));
-        }
-        if (ksdata.isRhel3() || ksdata.isRhel4()) {
-            packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL34));
         }
         String autoKickStartPackages = ksdata.getKickstartPackageNames().stream().map(String::trim)
                 .collect(Collectors.joining("|"));

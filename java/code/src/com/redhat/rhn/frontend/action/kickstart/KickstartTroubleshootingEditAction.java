@@ -22,8 +22,7 @@ import com.redhat.rhn.manager.kickstart.KickstartTroubleshootingCommand;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,8 +49,7 @@ public class KickstartTroubleshootingEditAction extends BaseKickstartEditAction 
             BaseKickstartCommand cmdIn) {
         KickstartTroubleshootingCommand cmd = (KickstartTroubleshootingCommand) cmdIn;
 
-        ArrayList bootloaders = getBootLoaders(cmd);
-        ctx.getRequest().setAttribute(BOOTLOADER_OPTIONS, bootloaders);
+        ctx.getRequest().setAttribute(BOOTLOADER_OPTIONS, List.of(Map.of("display", "GRUB", "value", "grub")));
 
         form.set(BOOTLOADER, cmd.getBootloaderType());
         form.set(KERNEL_PARAMS, cmd.getKernelParams());
@@ -106,34 +104,4 @@ public class KickstartTroubleshootingEditAction extends BaseKickstartEditAction 
                 ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                 ctx.getCurrentUser());
     }
-
-    /**
-     * Returns formatted and ordered list of bootloaders. (Just GRUB
-     * and LILO for the forseeable future)
-     * @return List of bootloaders.
-     */
-    private ArrayList getBootLoaders(KickstartTroubleshootingCommand cmd) {
-        /* return [ { display => "GRUB", value => "grub" },
-                    { display => "LILO", value => "lilo " },
-                  ];
-        */
-
-        Map grub = new HashMap();
-        grub.put("display", "GRUB");
-        grub.put("value", "grub");
-
-        ArrayList displayList = new ArrayList();
-
-        displayList.add(grub);
-        if (!cmd.getKickstartData().isRhel5OrGreater()) {
-            Map lilo = new HashMap();
-            lilo.put("display", "LILO");
-            lilo.put("value", "lilo");
-
-            displayList.add(lilo);
-        }
-
-        return displayList;
-    }
-
 }

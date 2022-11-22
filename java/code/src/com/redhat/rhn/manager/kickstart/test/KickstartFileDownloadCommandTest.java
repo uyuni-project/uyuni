@@ -38,14 +38,13 @@ public class KickstartFileDownloadCommandTest extends
         ksdata.getKickstartDefaults().getKstree().setChannel(c);
         KickstartDataTest.addKickstartPackagesToChannel(c, true);
         ksdata.getTree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
 
         String fakeKey = "io89089sfd78r789y8989asf89asfd89we789789asfd";
         KickstartCommand keyCommand =
             KickstartFactory.createKickstartCommand(ksdata, "key");
         keyCommand.setArguments(fakeKey);
         RhnMockHttpServletRequest req = new RhnMockHttpServletRequest();
-        //req.setRequestURI("http://localhost.redhat.com");
         req.setRequestURL("http://localhost.redhat.com/");
     }
 }
