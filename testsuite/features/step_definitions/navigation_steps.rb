@@ -1120,10 +1120,8 @@ Then(/^I should see the correct timestamp for task "([^"]*)"/) do |task_name|
     page.find_all(:xpath, "//table[@class='table table-responsive']//td").each do |td|
       # if a text matching the format xx:xx is found, get and save the text
       next unless td.text.match(/\d{2}:\d{2}/)
-      if td.text.match(/\d{2}:\d{2}/)
-        # Text from cell, parsed to a Time object must match now +- 5 seconds
-        Time.parse(td.text).to_i.between?(now.to_i - 5, now.to_i + 5)
-      end
+      # Text from cell, parsed to a Time object must match now +- 5 seconds
+      Time.parse(td.text).to_i.between?(now.to_i - 5, now.to_i + 5)
     end
   end
 end

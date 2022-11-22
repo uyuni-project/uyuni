@@ -22,7 +22,7 @@ Feature: Task Engine Status
     And I should see a "Last Execution Times" link in the left menu
     And I should see a "Runtime Status" link in the left menu
   
-  Scenario: Run a remote command on a minion to have and check if it shows up on Last Execution Times page
+  Scenario: Run a remote command on the server to have and check if it shows up on Last Execution Times page
     When I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     And I run "cobbler sync" on "server"
     And I refresh the page
@@ -30,7 +30,7 @@ Feature: Task Engine Status
     And I should see the correct timestamp for task "Cobbler Sync:"
     And I should see a "FINISHED" text
 
-  Scenario: Resync a product to trigger a new tast and check if it is visible on the Runtime Status page
+  Scenario: Resync a product to trigger a new task and check if it is visible on the Runtime Status page
     When I follow the left menu "Admin > Task Engine Status > Runtime Status"
     And I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
