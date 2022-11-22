@@ -648,7 +648,10 @@ public class KickstartBuilder {
             cmd.createCommand("selinux", "--permissive", ksdata);
         }
         cmd.createCommand("text", null, ksdata);
-        cmd.createCommand("install", null, ksdata);
+
+        if (!ksdata.isRhel9OrGreater()) {
+            cmd.createCommand("install", null, ksdata);
+        }
     }
 
     /**
