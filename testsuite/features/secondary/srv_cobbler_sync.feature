@@ -19,3 +19,5 @@ Feature: Run Cobbler Sync via WebUI
     When I follow the left menu "Admin > Manager Configuration > Cobbler"
     And I click on "Update"
     Then I should see a "Cobbler Sync action was successfully executed. Look at /var/log/cobbler/*.log for more information" text
+    When I follow the left menu "Admin > Task Engine Status > Last Execution Times"
+    Then I should see the correct timestamp for task "Cobbler Sync:"
