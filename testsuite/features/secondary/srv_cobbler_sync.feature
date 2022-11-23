@@ -15,9 +15,13 @@ Feature: Run Cobbler Sync via WebUI
     And I should see a "Run Cobbler Sync" text in the content area
     And I should see a "Update" button
 
-  Scenario: Run Cobbler Sync via button and validate the result
+  Scenario: Run Cobbler Sync via button and validate UI output
     When I follow the left menu "Admin > Manager Configuration > Cobbler"
     And I click on "Update"
     Then I should see a "Cobbler Sync action was successfully executed. Look at /var/log/cobbler/*.log for more information" text
-    When I follow the left menu "Admin > Task Engine Status > Last Execution Times"
+
+  Scenario: Run Cobbler Sync via button and verify task timestamp in Last Execution Times Page
+    When I follow the left menu "Admin > Manager Configuration > Cobbler"
+    And I click on "Update"
+    And I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     Then I should see the correct timestamp for task "Cobbler Sync:"
