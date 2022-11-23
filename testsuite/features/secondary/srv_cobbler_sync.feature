@@ -6,7 +6,7 @@ Feature: Run Cobbler Sync via WebUI
   Scenario: Login as admin
     Given I am authorized for the "Admin" section
 
-  Scenario: Sanity check for page existance
+  Scenario: Sanity check if the Cobbler Sync page exists
     When I follow the left menu "Admin > Manager Configuration > Cobbler"
     Then I should see a "Uyuni Configuration - Cobbler. " text
     And I should see a "Setup your Uyuni Cobbler settings below. " text
@@ -15,7 +15,7 @@ Feature: Run Cobbler Sync via WebUI
     And I should see a "Run Cobbler Sync" text in the content area
     And I should see a "Update" button
 
-  Scenario: Run Cobbler Sync via button and validate the task ran
+  Scenario: Run Cobbler Sync via button and validate the result
     When I follow the left menu "Admin > Manager Configuration > Cobbler"
     And I click on "Update"
     Then I should see a "Cobbler Sync action was successfully executed. Look at /var/log/cobbler/*.log for more information" text
