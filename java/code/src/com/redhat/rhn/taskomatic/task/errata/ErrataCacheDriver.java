@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * Driver for the threaded errata cache update queue
  */
-public class ErrataCacheDriver implements QueueDriver {
+public class ErrataCacheDriver implements QueueDriver<Task> {
 
     private Logger logger = null;
 
@@ -77,8 +77,7 @@ public class ErrataCacheDriver implements QueueDriver {
     /**
      * {@inheritDoc}
      */
-    public QueueWorker makeWorker(Object workItem) {
-        Task task = (Task) workItem;
+    public QueueWorker makeWorker(Task task) {
         return new ErrataCacheWorker(task, logger);
     }
 
