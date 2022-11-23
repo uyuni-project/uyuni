@@ -1,4 +1,4 @@
-# Update system info on each minion start
+# Collect full system info for minion registration
 
 include:
   - util.syncmodules
@@ -10,10 +10,7 @@ status_uptime:
     - name: status.uptime
 grains_update:
   mgrcompat.module_run:
-    - name: grains.item
-    - args:
-      - kernelrelease
-      - master
+    - name: grains.items
 
 kernel_live_version:
   mgrcompat.module_run:
