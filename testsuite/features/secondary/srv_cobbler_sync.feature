@@ -6,7 +6,7 @@ Feature: Run Cobbler Sync via WebUI
   Scenario: Login as admin
     Given I am authorized for the "Admin" section
 
-  Scenario: Sanity check if the Cobbler Sync page exists
+  Scenario: Cobbler Settings Page exists
     When I follow the left menu "Admin > Manager Configuration > Cobbler"
     Then I should see a "Uyuni Configuration - Cobbler. " text
     And I should see a "Setup your Uyuni Cobbler settings below. " text
