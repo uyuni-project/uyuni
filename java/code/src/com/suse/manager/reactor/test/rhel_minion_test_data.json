@@ -1,0 +1,142 @@
+[
+  {
+    "description": "Register RHEL Minion With Multiple Release Packages",
+    "productName": "RHEL",
+    "availableReleasePackages": "redhat-release-server\nsles_es-release-server\nsles_es-release-server\nredhat-release-server",
+    "releasePackage": "redhat-release-server",
+    "packageInfo": "VERSION\u003d7.2\nPROVIDENAME\u003dcentos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\nVERSION\u003d7.3\nPROVIDENAME\u003dcentos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7Server,\nVERSION\u003d7.2\nPROVIDENAME\u003dcentos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\nVERSION\u003d7.3\nPROVIDENAME\u003dcentos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7Server,\n",
+    "releaseFileContent": "Red Hat Enterprise Linux Server release 7.2 (Maipo)",
+    "resProvider": "",
+    "sllProvider": "",
+    "osVersion": "7Server"
+  },
+  {
+    "description": "Register RHEL Minion Without Activation Key",
+    "productName": "RHEL",
+    "availableReleasePackages": "redhat-release-server",
+    "releasePackage": "redhat-release-server",
+    "packageInfo": "VERSION\u003d7.2\nPROVIDENAME\u003dconfig(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n",
+    "releaseFileContent": "Red Hat Enterprise Linux Server release 7.2 (Maipo)",
+    "resProvider": "",
+    "sllProvider": "",
+    "osVersion": "7Server"
+  },
+  {
+    "description": "Register RHEL Minion With RES Activation Key and One Base Channel",
+    "channelParameters": [
+      {
+        "friendlyName": "RHEL Expanded Support",
+        "shortName": "RES",
+        "version": "7"
+      }
+    ],
+    "productName": "RHEL",
+    "availableReleasePackages": "redhat-release-server",
+    "releasePackage": "redhat-release-server",
+    "packageInfo": "VERSION\u003d7.2\nPROVIDENAME\u003dconfig(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n",
+    "releaseFileContent": "Red Hat Enterprise Linux Server release 7.2 (Maipo)",
+    "resProvider": "",
+    "sllProvider": "",
+    "osVersion": "7Server"
+  },
+  {
+    "description": "Register RHEL Minion With RES Activation Key and Two Base Channels",
+    "channelParameters": [
+      {
+        "friendlyName": "RHEL Expanded Support",
+        "shortName": "RES",
+        "version": "7"
+      },
+      {
+        "friendlyName": "RHEL Expanded Support",
+        "shortName": "RES",
+        "version": "7"
+      }
+    ],
+    "productName": "RHEL",
+    "availableReleasePackages": "redhat-release-server",
+    "releasePackage": "redhat-release-server",
+    "packageInfo": "VERSION\u003d7.2\nPROVIDENAME\u003dconfig(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n",
+    "releaseFileContent": "Red Hat Enterprise Linux Server release 7.2 (Maipo)",
+    "resProvider": "",
+    "sllProvider": "",
+    "osVersion": "7Server"
+  },
+  {
+    "description": "Register RHEL Minion With SLL Activation Key and One Base Channel",
+    "channelParameters": [
+      {
+        "friendlyName": "SUSE Liberty Linux",
+        "shortName": "SLL",
+        "version": "9"
+      }
+    ],
+    "productName": "RHEL",
+    "availableReleasePackages": "redhat-release-server",
+    "releasePackage": "redhat-release-server",
+    "packageInfo": "VERSION\u003d9.0\nPROVIDENAME\u003dconfig(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d9.0-9.el9,9.0-9.el9,9.0-9.el9,9.0-9.el9,9.0-9.el9,9,\n",
+    "releaseFileContent": "Red Hat Enterprise Linux release 9.0 (Plow)",
+    "resProvider": "",
+    "sllProvider": "",
+    "osVersion": "9"
+  },
+  {
+    "description": "Register RHEL Minion With SLL Activation Key and Two Base Channels",
+    "channelParameters": [
+      {
+        "friendlyName": "SUSE Liberty Linux",
+        "shortName": "SLL",
+        "version": "9"
+      },
+      {
+        "friendlyName": "SUSE Liberty Linux",
+        "shortName": "SLL",
+        "version": "9"
+      }
+    ],
+    "productName": "RHEL",
+    "availableReleasePackages": "redhat-release-server",
+    "releasePackage": "redhat-release-server",
+    "packageInfo": "VERSION\u003d9.0\nPROVIDENAME\u003dconfig(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d9.0-9.el9,9.0-9.el9,9.0-9.el9,9.0-9.el9,9.0-9.el9,9,\n",
+    "releaseFileContent": "Red Hat Enterprise Linux release 9.0 (Plow)",
+    "resProvider": "",
+    "sllProvider": "",
+    "osVersion": "9"
+  },
+  {
+    "description": "Register RES Minion Without Activation Key",
+    "channelParameters": [
+      {
+        "friendlyName": "RHEL Expanded Support",
+        "shortName": "RES",
+        "version": "7"
+      }
+    ],
+    "productName": "RES",
+    "availableReleasePackages": "sles_es-release-server",
+    "releasePackage": "sles_es-release-server",
+    "packageInfo": "VERSION\u003d7.2\nPROVIDENAME\u003dcentos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\nPROVIDEVERSION\u003d,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n",
+    "releaseFileContent": "Red Hat Enterprise Linux Server release 7.2 (Maipo)\n# This is a \"SLES Expanded Support platform Server release 7.2\"\n# The above \"Red Hat Enterprise Linux \" string is only used to \n# keep software compatibility.",
+    "resProvider": "sles_es-release-server-7.2-9.el7.2.1.x86_64",
+    "sllProvider": "",
+    "osVersion": "7Server"
+  },
+  {
+    "description": "Register SLL Minion Without Activation Key",
+    "channelParameters": [
+      {
+        "friendlyName": "SUSE Liberty Linux",
+        "shortName": "SLL",
+        "version": "9"
+      }
+    ],
+    "productName": "SLL",
+    "availableReleasePackages": "sll-release",
+    "releasePackage": "sll-release",
+    "packageInfo": "VERSION\u003d9.0\nPROVIDENAME\u003dbase-module(platform:el9),centos-release,centos-release,centos-release-eula,centos-release-eula,centos-release-server,config(sll-release),redhat-release,redhat-release-client,redhat-release-computenode,redhat-release-eula,redhat-release-eula,redhat-release-server,redhat-release-workstation,sll-release,sll-release(x86-64),sll-release-client,sll-release-computenode,sll-release-eula,sll-release-eula,sll-release-server,sll-release-workstation,system-release,system-release(releasever),\nPROVIDEVERSION\u003d,,9.0-2.17.el9,,9.0-2.17.el9,,9.0-2.17.el9,9.0-2.17.el9,,,,9.0-2.17.el9,,,9.0-2.17.el9,9.0-2.17.el9,,,,9.0-2.17.el9,,,9.0-2.17.el9,9,\n",
+    "releaseFileContent": "Red Hat Enterprise Linux release 9.0 (Plow)\n# This is a \"SUSE Liberty Linux 9.0\"\n# The above \"Red Hat Enterprise Linux Server\" string is only used to\n# keep software compatibility.",
+    "resProvider": "",
+    "sllProvider": "sll-release-9.0-2.17.el9.x86_64",
+    "osVersion": "9"
+  }
+]
