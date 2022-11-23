@@ -106,6 +106,8 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -126,6 +128,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.
@@ -412,7 +415,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             assertEquals(m.getCreated(), server.getCreated());
                             assertEquals(m.getId(), server.getId());
                         },
-                        () -> assertTrue(false, "Machine ID not found"));
+                        () -> fail("Machine ID not found"));
             }, null, DEFAULT_CONTACT_METHOD);
         }
         finally {
@@ -1015,140 +1018,42 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }, DEFAULT_CONTACT_METHOD);
     }
 
-    @Test
-    public void testRegisterRHELMinionWithoutActivationKey() throws Exception {
-        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
-                .machineId(MACHINE_ID).saltbootInitrd(false)
-                .createMinionStartUpGrains();
-        executeTest(
-                (key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock)
-                            .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
-                    will(returnValue(Optional.of(minionStartUpGrains)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, "rhel", null)));
-
-                    allowing(saltServiceMock).runRemoteCommand(
-                            with(any(MinionList.class)),
-                            with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
-
-                    allowing(saltServiceMock).runRemoteCommand(
-                            with(any(MinionList.class)),
-                            with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]" +
-                                    "\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
-                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
-                            "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server," +
-                            "redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
-
-                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
-                    will(returnValue(Optional.of(new RedhatProductInfo(
-                            Optional.empty(),
-                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()
-                    ))));
-
-                }},
-                null,
-                (optMinion, machineId, key) -> {
-                    assertTrue(optMinion.isPresent());
-                    MinionServer minion = optMinion.get();
-                    assertEquals("7Server", minion.getRelease());
-                    assertTrue(minion.getFqdns().isEmpty());
-
-                    assertNull(minion.getBaseChannel());
-                }, DEFAULT_CONTACT_METHOD);
+    private static Stream<RHELMinionTestCase> provideRHELMinionTestCase() throws IOException, ClassNotFoundException {
+        var cases = getRHELMinionTestCases();
+        return cases.orElse(List.of()).stream();
     }
 
-    @Test
-    public void testRegisterRHELMinionWithRESActivationKeyOneBaseChannel() throws Exception {
-        Channel resChannel = RhelUtilsTest.createResChannel(user, "7");
-        HibernateFactory.getSession().flush();
-        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
-                .machineId(MACHINE_ID).saltbootInitrd(false)
-                .createMinionStartUpGrains();
-        executeTest(
-                (key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock)
-                            .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
-                    will(returnValue(Optional.of(minionStartUpGrains)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, "rhel", key)));
-
-                    allowing(saltServiceMock).runRemoteCommand(
-                            with(any(MinionList.class)),
-                            with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
-
-                    allowing(saltServiceMock).runRemoteCommand(
-                            with(any(MinionList.class)),
-                            with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\n" +
-                                    "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
-                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
-                            "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server," +
-                            "redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
-
-                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
-                    will(returnValue(Optional.of(new RedhatProductInfo(
-                            Optional.empty(),
-                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()
-                    ))));
-
-                }},
-                (contactMethod) -> {
-                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
-                    key.setBaseChannel(resChannel);
-                    key.setOrg(user.getOrg());
-                    ActivationKeyFactory.save(key);
-                    return key.getKey();
-                },
-                (optMinion, machineId, key) -> {
-                    assertTrue(optMinion.isPresent());
-                    MinionServer minion = optMinion.get();
-                    assertEquals("7Server", minion.getRelease());
-
-                    assertNotNull(minion.getBaseChannel());
-                    assertEquals("RES", minion.getBaseChannel().getProductName().getName());
-                    assertEquals(resChannel, minion.getBaseChannel());
-
-                    assertEquals(1, minion.getChannels().size());
-                }, DEFAULT_CONTACT_METHOD);
-    }
-
-    @Test
-    public void testRegisterRHELMinionWithRESActivationKeyTwoBaseChannels() throws Exception {
-        Channel resChannelI386 = RhelUtilsTest.createResChannel(user, "7", "ia32", "res-i386");
-        Channel resChannelX8664 = RhelUtilsTest.createResChannel(user, "7", "x86_64", "res-x86_64");
+    /*
+     * Test register a RHEL Minion with different parameters.
+     * Case 1: Register RHEL Minion With Multiple Release Packages
+     * Case 2: Register RHEL Minion Without Activation Key
+     * Case 3: Register RHEL Minion With RES Activation Key and One Base Channel
+     * Case 4: Register RHEL Minion With RES Activation Key and Two Base Channels
+     * Case 5: Register RHEL Minion With SLL Activation Key and One Base Channel
+     * Case 6: Register RHEL Minion With SLL Activation Key and Two Base Channels
+     * Case 7: Register RES Minion Without Activation Key
+     * Case 8: Register SLL Minion Without Activation Key
+     *
+     * @param testCase RHEL Minion test case parameters
+     * @throws Exception in executeTest
+     */
+    @ParameterizedTest(name = "{displayName}")
+    @MethodSource("provideRHELMinionTestCase")
+    void testRegisterRHELMinion(RHELMinionTestCase testCase) throws Exception {
+        List<Channel> channels = testCase.channelParameters != null ?
+                testCase.channelParameters
+                        .stream()
+                        .map(ch -> RhelUtilsTest.createExpandedSupportChannel(
+                                user,
+                                ch.get("version"),
+                                ch.get("shortName"),
+                                ch.get("friendlyName")
+                        ))
+                        .collect(Collectors.toList()) : null;
+        Channel baseChannel = channels != null ? channels.get(0) : null;
         MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
         HibernateFactory.getSession().flush();
-        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+        MinionStartupGrains minionStartUpGrains = new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
         try {
@@ -1158,239 +1063,76 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         will(returnValue(Optional.of(MINION_ID)));
                         allowing(saltServiceMock).getMachineId(MINION_ID);
                         will(returnValue(Optional.of(MACHINE_ID)));
-                        allowing(saltServiceMock)
-                                .getGrains(with(any(String.class)),
-                                        with(any(TypeToken.class)), with(any(String[].class)));
+                        allowing(saltServiceMock).getGrains(
+                                with(any(String.class)),
+                                with(any(TypeToken.class)),
+                                with(any(String[].class)));
                         will(returnValue(Optional.of(minionStartUpGrains)));
                         allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                         allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
 
                         allowing(saltServiceMock).getGrains(MINION_ID);
-                        will(returnValue(getGrains(MINION_ID, "rhel", key)));
+                        will(returnValue(getGrains(MINION_ID, testCase.productName.toLowerCase(),
+                                baseChannel != null ? key : null)));
 
                         allowing(saltServiceMock).runRemoteCommand(
                                 with(any(MinionList.class)),
                                 with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                        will(returnValue(Collections.singletonMap(
-                                MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
+                        will(returnValue(singletonMap(MINION_ID,
+                                new Result<>(Xor.right(testCase.availableReleasePackages + "\n")))));
 
                         allowing(saltServiceMock).runRemoteCommand(
                                 with(any(MinionList.class)),
                                 with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\n" +
-                                        "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
-                        will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
-                                "PROVIDENAME=config(redhat-release-server),redhat-release, redhat-release-server," +
-                                "redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
-                                "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7," +
-                                "7.2-9.el7,7Server,\n")))));
+                                        "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" " + testCase.releasePackage));
+                        will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right(testCase.packageInfo)))));
 
                         allowing(saltServiceMock).redhatProductInfo(MINION_ID);
                         will(returnValue(Optional.of(new RedhatProductInfo(
                                 Optional.empty(),
-                                Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
+                                Optional.of(testCase.releaseFileContent),
                                 Optional.empty(),
                                 Optional.empty(),
                                 Optional.empty(),
                                 Optional.empty(),
                                 Optional.empty(),
-                                Optional.empty()
-                                ))));
-
+                                Optional.of(testCase.resProvider),
+                                Optional.of(testCase.sllProvider)
+                        ))));
                     }},
-                    (contactMethod) -> {
+                    baseChannel != null ? (contactMethod) -> {
                         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
-                        key.setBaseChannel(resChannelX8664);
+                        key.setBaseChannel(baseChannel);
                         key.setOrg(user.getOrg());
                         ActivationKeyFactory.save(key);
                         return key.getKey();
-                    },
+                    } : null,
                     (optMinion, machineId, key) -> {
                         assertTrue(optMinion.isPresent());
                         MinionServer minion = optMinion.get();
-                        assertEquals("7Server", minion.getRelease());
+                        assertEquals(testCase.osVersion, minion.getRelease());
+                        assertTrue(minion.getFqdns().isEmpty());
 
-                        assertNotNull(minion.getBaseChannel());
-                        assertEquals("RES", minion.getBaseChannel().getProductName().getName());
-                        assertEquals(resChannelX8664, minion.getBaseChannel());
+                        Runnable baseChannelAssertions = baseChannel != null ? () -> {
+                            assertNotNull(minion.getBaseChannel());
+                            assertEquals(baseChannel, minion.getBaseChannel());
+                            assertEquals(1, minion.getChannels().size());
 
-                        assertEquals(1, minion.getChannels().size());
-
-                        SUSEProductFactory.getSession().flush();
-                        // select from view should succeed
-                        SUSEProductFactory.getSession().createNativeQuery("select * from rhnServerOverview").list();
-
+                            SUSEProductFactory.getSession().flush();
+                            // select from view should succeed
+                            SUSEProductFactory.getSession()
+                                    .createNativeQuery("select * from rhnServerOverview")
+                                    .list();
+                        } : () -> {
+                            assertNull(minion.getBaseChannel());
+                            assertEquals(0, minion.getChannels().size());
+                        };
+                        baseChannelAssertions.run();
                     }, DEFAULT_CONTACT_METHOD);
         }
         finally {
             MinionPendingRegistrationService.removeMinion(MINION_ID);
         }
-    }
-
-    @Test
-    public void testRegisterRESMinionWithoutActivationKey() throws Exception {
-        Channel resChannelX8664 = RhelUtilsTest.createResChannel(user, "7", "x86_64", "res-x86_64");
-        Channel resChannelI386 = RhelUtilsTest.createResChannel(user, "7", "ia32", "res-i386");
-        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
-                .machineId(MACHINE_ID).saltbootInitrd(false)
-                .createMinionStartUpGrains();
-        executeTest(
-                (key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock)
-                            .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
-                    will(returnValue(Optional.of(minionStartUpGrains)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, "res", null)));
-
-                    allowing(saltServiceMock).runRemoteCommand(
-                            with(any(MinionList.class)),
-                            with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("sles_es-release-server\n")))));
-
-                    allowing(saltServiceMock).runRemoteCommand(
-                            with(any(MinionList.class)),
-                            with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\n" +
-                                    "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" sles_es-release-server"));
-                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
-                            "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release," +
-                            "redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64)," +
-                            "system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1," +
-                            "7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n")))));
-
-                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
-                    will(returnValue(Optional.of(new RedhatProductInfo(
-                            Optional.empty(),
-                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)\n" +
-                                    "# This is a \"SLES Expanded Support platform Server release 7.2\"\n" +
-                                    "# The above \"Red Hat Enterprise Linux \" string is only used to \n" +
-                                    "# keep software compatibility."),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.of("sles_es-release-server-7.2-9.el7.2.1.x86_64")
-                    ))));
-                }},
-                null,
-                (optMinion, machineId, key) -> {
-                    assertTrue(optMinion.isPresent());
-                    MinionServer minion = optMinion.get();
-                    assertEquals("7Server", minion.getRelease());
-
-                    // base channel check
-                    assertNotNull(minion.getBaseChannel());
-                    assertEquals("RES", minion.getBaseChannel().getProductName().getName());
-                    assertEquals(resChannelX8664, minion.getBaseChannel());
-
-                    assertEquals(1, minion.getChannels().size());
-                }, DEFAULT_CONTACT_METHOD);
-    }
-
-    @Test
-    public void testRegisterRHELMinionWithMultipleReleasePackages() throws Exception {
-        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
-                .machineId(MACHINE_ID).saltbootInitrd(false)
-                .createMinionStartUpGrains();
-        executeTest(
-                (key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock)
-                            .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
-                    will(returnValue(Optional.of(minionStartUpGrains)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, "rhel", null)));
-
-                    allowing(saltServiceMock).runRemoteCommand(
-                            with(any(MinionList.class)),
-                            with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    // Minion returns multiple release packages/versions
-                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right(
-                            "redhat-release-server\nsles_es-release-server\nsles_es-release-server\n" +
-                                    "redhat-release-server\n")))));
-
-                    allowing(saltServiceMock).runRemoteCommand(
-                            with(any(MinionList.class)),
-                            with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\n" +
-                                    "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
-                    // Minion returns data for multiple release packages/versions
-                    will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
-                            "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release," +
-                            "redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64)," +
-                            "system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1," +
-                            "7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n" +
-                            "VERSION=7.3\n" +
-                            "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release," +
-                            "redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64)," +
-                            "system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7," +
-                            "7Server,\n" +
-                            "VERSION=7.2\n" +
-                            "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release," +
-                            "redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64)," +
-                            "system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1," +
-                            "7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n" +
-                            "VERSION=7.3\n" +
-                            "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release," +
-                            "redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64)," +
-                            "system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7," +
-                            "7Server,\n")))));
-
-                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
-                    will(returnValue(Optional.of(new RedhatProductInfo(
-                            Optional.empty(),
-                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()
-                    ))));
-
-                }},
-                null,
-                (optMinion, machineId, key) -> {
-                    assertTrue(optMinion.isPresent());
-                    MinionServer minion = optMinion.get();
-                    assertEquals("7Server", minion.getRelease());
-                    assertTrue(minion.getFqdns().isEmpty());
-
-                    assertNull(minion.getBaseChannel());
-                    assertEquals(0, minion.getChannels().size());
-                }, DEFAULT_CONTACT_METHOD);
-    }
-
-    /**
-     * Test that registration of a minion with no activation key and no creator user will
-     * put that minion in the default ("Satellite") organization
-     *
-     * @throws Exception if anything goes wrong
-     */
-    @Test
-    public void testRegisterSystemNoUser() throws Exception {
-        executeTest(
-                SLES_NO_AK_EXPECTATIONS,
-                (cm) -> null,
-                (minion, machineId, key) -> assertEquals(OrgFactory.getSatelliteOrg(), minion.get().getOrg()),
-                DEFAULT_CONTACT_METHOD
-        );
     }
 
     /**
@@ -2345,6 +2087,51 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         action.execute(new RegisterMinionEventMessage(MINION_ID, Optional.empty()));
     }
 
+    /*
+    Encapsulates test cases for RHEL minion registration tests
+     */
+    private static class RHELMinionTestCase {
+
+        private final String description;
+        private final List<Map<String, String>> channelParameters;
+        private final String productName;
+        private final String availableReleasePackages;
+        private final String releasePackage;
+        private final String packageInfo;
+        private final String releaseFileContent;
+        private final String resProvider;
+        private final String sllProvider;
+        private final String osVersion;
+
+        RHELMinionTestCase(
+                String descriptionIn, List<Map<String, String>> channelParametersIn, String productNameIn,
+                String availableReleasePackagesIn, String releasePackageIn, String packageInfoIn,
+                String releaseFileContentIn, String resProviderIn, String sllProviderIn,
+                String osVersionIn
+        ) {
+            this.description = descriptionIn;
+            this.channelParameters = channelParametersIn;
+            this.productName = productNameIn;
+            this.availableReleasePackages = availableReleasePackagesIn;
+            this.releasePackage = releasePackageIn;
+            this.packageInfo = packageInfoIn;
+            this.releaseFileContent = releaseFileContentIn;
+            this.resProvider = resProviderIn;
+            this.sllProvider = sllProviderIn;
+            this.osVersion = osVersionIn;
+        }
+    }
+
+    private static Optional<List<RHELMinionTestCase>> getRHELMinionTestCases()
+            throws ClassNotFoundException, IOException {
+        String json = readFile("rhel_minion_test_data.json");
+        List<RHELMinionTestCase> testCases = new Gson()
+                .fromJson(json, new TypeToken<List<RHELMinionTestCase>>() {
+                }.getType());
+        return Optional.of(testCases);
+    }
+
+
     private Optional<Map<String, Object>> getGrains(String minionId, String sufix, String akey)
             throws ClassNotFoundException, IOException {
         return getGrains(minionId, sufix, akey, null);
@@ -2365,7 +2152,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         return Optional.of(grains);
     }
 
-    private String readFile(String file) throws IOException, ClassNotFoundException {
+    private static String readFile(String file) throws IOException, ClassNotFoundException {
         return Files.lines(new File(TestUtils.findTestData(
                 "/com/suse/manager/reactor/test/" + file).getPath()
         ).toPath()).collect(Collectors.joining("\n"));

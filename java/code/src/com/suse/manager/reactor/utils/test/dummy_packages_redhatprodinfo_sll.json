@@ -31,12 +31,7 @@
     },
     "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
       "__run_num__": 2,
-      "changes": {
-        "pid": 477,
-        "retcode": 0,
-        "stderr": "",
-        "stdout": "sles_es-release-server-7.2-9.el7.2.1.x86_64"
-      },
+      "changes": {},
       "comment": "Command \"rpm -q --whatprovides 'sles_es-release-server'\" run",
       "duration": 281.741,
       "name": "rpm -q --whatprovides 'sles_es-release-server'",
@@ -45,7 +40,12 @@
     },
     "cmd_|-respkgquery_|-rpm -q --whatprovides 'sll-release'_|-run": {
       "__run_num__": 2,
-      "changes": {},
+      "changes": {
+        "pid": 477,
+        "retcode": 0,
+        "stderr": "",
+        "stdout": "sll-release-9.0-2.17.el9.x86_64"
+      },
       "comment": "Command \"rpm -q --whatprovides 'sll-release'\" run",
       "duration": 281.741,
       "name": "rpm -q --whatprovides 'sll-release'",
@@ -58,7 +58,7 @@
         "pid": 474,
         "retcode": 0,
         "stderr": "",
-        "stdout": "Red Hat Enterprise Linux Server release 7.2 (Maipo)\n# This is a \"SLES Expanded Support platform Server release 7.2\"\n# The above \"Red Hat Enterprise Linux \" string is only used to \n# keep software compatibility."
+        "stdout": "Red Hat Enterprise Linux release 9.0 (Plow)\n# This is a \"SUSE Liberty Linux 9.0\"\n# The above \"Red Hat Enterprise Linux Server\" string is only used to\n# keep software compatibility."
       },
       "comment": "Command \"cat /etc/redhat-release\" run",
       "duration": 241.09,

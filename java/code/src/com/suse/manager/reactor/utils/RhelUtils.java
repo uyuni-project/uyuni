@@ -199,12 +199,69 @@ public class RhelUtils {
     }
 
     /**
+     * Checks if there is a RES/SLL channels assigned or the RES/SLL release package installed
+     * @param channels channels assigned to the target
+     * @param releasePackage the package that provides release files
+     * @param productName the ES product name to search for
+     * @param packagePrefix the package prefix specific for the given ES product name
+     * @return true if an ES product is identified, false otherwise
+     */
+    static boolean checkForESProducts(
+            Set<Channel> channels, Optional<String> releasePackage, String productName, String packagePrefix
+    ) {
+        boolean hasChannels = channels
+                .stream()
+                .anyMatch(ch -> ch.getProductName() != null &&
+                        productName.equalsIgnoreCase(ch.getProductName().getName()));
+        boolean hasReleasePackage = releasePackage
+                .filter(pkg -> StringUtils.startsWith(pkg, packagePrefix))
+                .isPresent();
+        return hasChannels || hasReleasePackage;
+    }
+
+    /**
+     * For an ES related product name find the corresponding SUSE product
+     * @param rhelReleaseFile the content of /etc/redhat-release
+     * @param centosReleaseFile the content of /etc/centos-release
+     * @param arch the architecture string of the target
+     * @param productName the ES product name to search for
+     * @return the {@link RhelProduct}
+     */
+    static Optional<RhelProduct> getRHELBasedSUSEProduct(
+            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile, String arch, String productName
+    ) {
+        Optional<ReleaseFile> releaseFile = rhelReleaseFile.or(() -> centosReleaseFile)
+                .flatMap(RhelUtils::parseReleaseFile);
+        // Find the corresponding SUSEProduct in the database
+        String name = releaseFile.map(ReleaseFile::getName).orElse(productName);
+        String majorVersion = releaseFile.map(ReleaseFile::getMajorVersion)
+                .orElse("unknown");
+        String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
+
+        Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
+                        .findSUSEProduct(productName, majorVersion, release, arch, true))
+                .flatMap(resProduct -> {
+                    if (resProduct.isBase()) {
+                        return Optional.of(resProduct);
+                    }
+                    else {
+                        return Optional.ofNullable(SUSEProductFactory
+                                .findSUSEProduct("rhel-base", majorVersion, release, arch, true));
+                    }
+                })
+                .filter(SUSEProduct::isBase);
+
+        return Optional.of(new RhelProduct(suseProduct, name,
+                majorVersion, release, arch));
+    }
+
+    /**
      * Guess the SUSE product for the RedHat minion and parse the
      * /etc/redhat,centos-release file.
-     * 1) if the RES channel or a clone of the RES channel is
-     *    assigned to a system it is a RES system
-     * 2) if a RES release package (sles_es-release) is installed it is a RES.
-     * 3) otherwise it is not a RES system
+     * 1) if either the RES or the SLL channel or a clone of the RES/SLL channel is
+     *    assigned to a system it is either a RES or an SLL system
+     * 2) if either a RES or an SLL release package is installed it is a RES/SLL.
+     * 3) otherwise it is not a RES/SLL system
      * 4) if /etc/oracle-release exists, it is OracleLinux
      * 5) is it a centos system? check if /etc/centos-release file exists
      * 6) finally we can say it is a original RHEL (maybe:-)
@@ -212,6 +269,7 @@ public class RhelUtils {
      * @param channels channels assigned to the target
      * @param arch the architecture string of the target
      * @param resReleasePackage the package that provides 'sles_es-release'
+     * @param libertyReleasePackage the package that provides 'sll-release'
      * @param rhelReleaseFile the content of /etc/redhat-release
      * @param centosReleaseFile the content of /etc/centos-release
      * @param oracleReleaseFile the content of /etc/oracle-release
@@ -223,43 +281,23 @@ public class RhelUtils {
      */
     public static Optional<RhelProduct> detectRhelProduct(
             Set<Channel> channels, String arch, Optional<String> resReleasePackage,
-            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
-            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile,
-            Optional<String> almaReleaseFile, Optional<String> amazonReleaseFile,
-            Optional<String> rockyReleaseFile) {
+            Optional<String> libertyReleasePackage, Optional<String> rhelReleaseFile,
+            Optional<String> centosReleaseFile, Optional<String> oracleReleaseFile,
+            Optional<String> alibabaReleaseFile, Optional<String> almaReleaseFile,
+            Optional<String> amazonReleaseFile, Optional<String> rockyReleaseFile) {
 
-        // check first if it has RES channels assigned or the RES release package installed
-        boolean hasRESChannels = channels.stream()
-                .filter(ch -> ch.getProductName() != null &&
-                        "RES".equalsIgnoreCase(ch.getProductName().getName()))
-                .count() > 0;
-        boolean hasRESReleasePackage = resReleasePackage
-                .filter(pkg -> StringUtils.startsWith(pkg, "sles_es-release")).isPresent();
-        if (hasRESChannels || hasRESReleasePackage) {
-            // we got a RES. find the corresponding SUSE product
-            Optional<ReleaseFile> releaseFile = rhelReleaseFile.or(() -> centosReleaseFile)
-                    .flatMap(RhelUtils::parseReleaseFile);
-            // Find the corresponding SUSEProduct in the database
-            String name = releaseFile.map(ReleaseFile::getName).orElse("RES");
-            String majorVersion = releaseFile.map(ReleaseFile::getMajorVersion)
-                    .orElse("unknown");
-            String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
+        // check first if it has RES/SLL channels assigned or the RES/SLL release package installed
+        var isRes = RhelUtils
+                .checkForESProducts(channels, resReleasePackage, "RES", "sles_es-release");
+        var isSLL = RhelUtils
+                .checkForESProducts(channels, libertyReleasePackage, "SLL", "sll-release");
 
-            Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
-                    .findSUSEProduct("RES", majorVersion, release, arch, true))
-                    .flatMap(resProduct -> {
-                        if (resProduct.isBase()) {
-                            return Optional.of(resProduct);
-                        }
-                        else {
-                            return Optional.ofNullable(SUSEProductFactory
-                                    .findSUSEProduct("rhel-base", majorVersion, release, arch, true));
-                        }
-                    })
-                    .filter(SUSEProduct::isBase);
-
-            return Optional.of(new RhelProduct(suseProduct, name,
-                    majorVersion, release, arch));
+        // if we got either RES or an SLL find the corresponding SUSE product
+        if (isRes) {
+            return RhelUtils.getRHELBasedSUSEProduct(rhelReleaseFile, centosReleaseFile, arch, "RES");
+        }
+        if (isSLL) {
+            return RhelUtils.getRHELBasedSUSEProduct(rhelReleaseFile, centosReleaseFile, arch, "SLL");
         }
 
         // next check if OracleLinux
@@ -303,16 +341,17 @@ public class RhelUtils {
     /**
      * Guess the SUSE product for the RedHat minion and parse the
      * /etc/redhat,centos-release file.
-     * 1) if the RES channel or a clone of the RES channel is
-     *    assigned to a system it is a RES system
-     * 2) if a RES release package (sles_es-release) is installed it is a RES.
-     * 3) otherwise it is not a RES system
+     * 1) if either the RES or the SLL channel or a clone of the RES/SLL channel is
+     *    assigned to a system it is either a RES or an SLL system
+     * 2) if either a RES or an SLL release package is installed it is a RES/SLL.
+     * 3) otherwise it is not a RES/SLL system
      * 4) if /etc/oracle-release exists, it is OracleLinux
      * 5) is it a centos system? check if /etc/centos-release file exists
      * 6) finally we can say it is a original RHEL (maybe:-)
      *
      * @param server the minion
      * @param resReleasePackage the package that provides 'sles_es-release'
+     * @param libertyReleasePackage the package that provides 'sll-release'
      * @param rhelReleaseFile the content of /etc/redhat-release
      * @param centosReleaseFile the content of /etc/centos-release
      * @param oracleReleaseFile the content of /etc/oracle-release
@@ -324,14 +363,15 @@ public class RhelUtils {
      */
     public static Optional<RhelProduct> detectRhelProduct(
             Server server, Optional<String> resReleasePackage,
-            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
-            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile,
-            Optional<String> almaReleaseFile, Optional<String> amazonReleaseFile,
-            Optional<String> rockyReleaseFile) {
+            Optional<String> libertyReleasePackage, Optional<String> rhelReleaseFile,
+            Optional<String> centosReleaseFile, Optional<String> oracleReleaseFile,
+            Optional<String> alibabaReleaseFile, Optional<String> almaReleaseFile,
+            Optional<String> amazonReleaseFile, Optional<String> rockyReleaseFile) {
         return detectRhelProduct(
                 server.getChannels(),
                 server.getServerArch().getLabel().replace("-redhat-linux", ""),
                 resReleasePackage,
+                libertyReleasePackage,
                 rhelReleaseFile,
                 centosReleaseFile,
                 oracleReleaseFile,
@@ -356,6 +396,7 @@ public class RhelUtils {
      *
      * @param image the image
      * @param resReleasePackage the package that provides 'sles_es-release'
+     * @param libertyReleasePackage the package that provides 'sll-release'
      * @param rhelReleaseFile the content of /etc/redhat-release
      * @param centosReleaseFile the content of /etc/centos-release
      * @param oracleReleaseFile the content of /etc/oracle-release
@@ -367,14 +408,15 @@ public class RhelUtils {
      */
     public static Optional<RhelProduct> detectRhelProduct(
             ImageInfo image, Optional<String> resReleasePackage,
-            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
-            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile,
-            Optional<String> almaReleaseFile, Optional<String> amazonReleaseFile,
-            Optional<String> rockyReleaseFile) {
+            Optional<String> libertyReleasePackage, Optional<String> rhelReleaseFile,
+            Optional<String> centosReleaseFile, Optional<String> oracleReleaseFile,
+            Optional<String> alibabaReleaseFile, Optional<String> almaReleaseFile,
+            Optional<String> amazonReleaseFile, Optional<String> rockyReleaseFile) {
         return detectRhelProduct(
                 image.getChannels(),
                 image.getImageArch().getLabel().replace("-redhat-linux", ""),
                 resReleasePackage,
+                libertyReleasePackage,
                 rhelReleaseFile,
                 centosReleaseFile,
                 oracleReleaseFile,
