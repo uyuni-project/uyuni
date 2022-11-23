@@ -408,7 +408,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @scc_credentials
   Scenario: Create auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "Upload Kickstart/Autoyast File"
+    And I follow "Upload Kickstart/AutoYaST File"
     When I enter "15-sp4-kvm" as "kickstartLabel"
     And I select "SLE-15-SP4-KVM" from "kstreeId"
     And I select "KVM Virtualized Guest" from "virtualizationTypeLabel"
