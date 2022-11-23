@@ -262,31 +262,11 @@ When(/^I create an activation key including Live Patching product via API$/) do
   # Create a key with the base channel for this client
   id = description = "live_patch_key"
 
-  # TODO : GET CORRECT LIVE PATCHING PRODUCT
-
-  base_channel = LABEL_BY_BASE_CHANNEL[BASE_CHANNEL_BY_CLIENT[client]]
+  base_channel = 'SLE-Product-HPC-15-SP4-Pool for x86_64'
   key = $api_test.activationkey.create(id, description, base_channel, 100)
   raise if key.nil?
 
-  is_ssh_minion = client.include? 'ssh_minion'
-  $api_test.activationkey.set_details(key, description, base_channel, 100, is_ssh_minion ? 'ssh-push' : 'default')
-
-  # Get the list of child channels for this base channel
-  child_channels = $api_test.channel.software.list_child_channels(base_channel)
-
-  # Select all the child channels for this client
-  client.sub! 'ssh_minion', 'minion'
-  if client.include? 'buildhost'
-    selected_child_channels = ["custom_channel_#{client.sub('buildhost', 'minion')}", "custom_channel_#{client.sub('buildhost', 'client')}"]
-  elsif client.include? 'terminal'
-    selected_child_channels = ["custom_channel_#{client.sub('terminal', 'minion')}", "custom_channel_#{client.sub('terminal', 'client')}"]
-  else
-    custom_channel = "custom_channel_#{client}"
-    selected_child_channels = [custom_channel]
-  end
-  child_channels.each do |child_channel|
-    selected_child_channels.push(child_channel) unless child_channel.include? 'custom_channel'
-  end
+  selected_child_channels = 'SLE-Module-Live-Patching15-SP4-Pool for x86_64'
 
   $api_test.activationkey.add_child_channels(key, selected_child_channels)
 end
