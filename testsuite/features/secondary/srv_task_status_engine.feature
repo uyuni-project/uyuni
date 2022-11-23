@@ -22,7 +22,7 @@ Feature: Task Engine Status
     And I should see a "Last Execution Times" link in the left menu
     And I should see a "Runtime Status" link in the left menu
   
-  Scenario: Run a remote command on the server to have and check if it shows up on Last Execution Times page
+  Scenario: Run a remote command on the server to check if it shows up on Last Execution Times page
     When I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     And I run "cobbler sync" on "server"
     And I refresh the page
