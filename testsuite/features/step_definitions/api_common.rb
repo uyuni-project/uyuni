@@ -53,6 +53,12 @@ but with activation key with default contact method, I should get an API fault$/
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
 end
 
+When(/^I call system\.bootstrap\(\) on host "([^"]*)" with activation key "([^"]*)"$/) do |host, akey|
+  system_name = get_system_name(host)
+  result = $api_test.system.bootstrap_system(system_name, akey, false)
+  assert(result == 1, 'Bootstrap return code not equal to 1.')
+end
+
 When(/^I schedule a highstate for "([^"]*)" via API$/) do |host|
   system_name = get_system_name(host)
   node_id = $api_test.system.retrieve_server_id(system_name)

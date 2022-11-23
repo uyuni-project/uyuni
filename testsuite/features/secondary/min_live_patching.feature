@@ -10,7 +10,17 @@ Feature: Live Patching on a SLE Minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Pre-requisite: create an activation key with Live Patching product
-    When
-    # Create Activation Key with API
-    
+  Scenario: Pre-requisite: Delete SLES minion system profile
+    Given I am authorized for the "Admin" section
+    And I am on the Systems overview page of this "sle_minion"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    Then "sle_minion" should not be registered
+
+  Scenario: Bootstrap SLES minion with an activation key containing Live Patching product
+    Given I am logged in API as user "admin" and password "admin"
+    When I create an activation key including Live Patching product via API
+    When I call system.bootstrap() on host "sle_minion" with activation key "live_patch_key"
+    And I logout from API
