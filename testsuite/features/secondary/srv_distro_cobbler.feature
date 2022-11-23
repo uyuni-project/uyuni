@@ -61,7 +61,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Upload a profile via the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "Upload Kickstart/Autoyast File"
+    And I follow "Upload Kickstart/AutoYaST File"
     When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
     And I attach the file "/example.ks" to "fileUpload"
     And I click on "Create"
