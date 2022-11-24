@@ -31,4 +31,16 @@ Feature: Live Patching on a SLE Minion
 
 
  
-  Scenario: downgrade
+  Scenario: Pre-requisite: downgrade packages before action chain test on several systems
+    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
+    And I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I install package "andromeda-dummy-1.0" on this "sle_minion"
+    And I refresh the metadata for "sle_minion"
+
+
+
+
+
+  Scenario: Cleanup: remove package and repository used in action chain for several systems
+    When I remove package "andromeda-dummy" from this "sle_minion" without error control
+    And I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
