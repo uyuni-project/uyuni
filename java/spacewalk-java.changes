@@ -1,3 +1,4 @@
+- check for NULL in DEB package install size value
 - Add vendor_advisory to errata.getDetails (bsc#1205207)
 - Allow usage of one FQDN to deploy containerized proxy in VM (#19586)
 - disable cloned vendor channel auto selection by default (bsc#1204186)
