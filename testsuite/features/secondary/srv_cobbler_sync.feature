@@ -6,10 +6,21 @@ Feature: Run Cobbler Sync via WebUI
   Scenario: Login as admin
     Given I am authorized for the "Admin" section
 
+  @uyuni
   Scenario: Cobbler Settings Page exists
     When I follow the left menu "Admin > Manager Configuration > Cobbler"
     Then I should see a "Uyuni Configuration - Cobbler. " text
     And I should see a "Setup your Uyuni Cobbler settings below. " text
+    And I should see a "Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred. " text
+    And I should see a "For more information refer to the 'cobbler' man page. " text
+    And I should see a "Run Cobbler Sync" text in the content area
+    And I should see a "Update" button
+  
+  @susemanager
+  Scenario: Cobbler Settings Page exists
+    When I follow the left menu "Admin > Manager Configuration > Cobbler"
+    Then I should see a "SUSE Manager Configuration - Cobbler. " text
+    And I should see a "Setup your SUSE Manager Cobbler settings below. " text
     And I should see a "Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred. " text
     And I should see a "For more information refer to the 'cobbler' man page. " text
     And I should see a "Run Cobbler Sync" text in the content area
