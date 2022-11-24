@@ -19,8 +19,16 @@ Feature: Live Patching on a SLE Minion
     And I wait until I see "has been deleted" text
     Then "sle_minion" should not be registered
 
+  # Maybe we can just reuse the regular key
   Scenario: Bootstrap SLES minion with an activation key containing Live Patching product
     Given I am logged in API as user "admin" and password "admin"
     When I create an activation key including Live Patching product via API
     When I call system.bootstrap() on host "sle_minion" with activation key "live_patch_key"
     And I logout from API
+
+  Scenario: Check that kernel livepatch is installed on the minion
+    # TODO
+
+
+ 
+  Scenario: downgrade

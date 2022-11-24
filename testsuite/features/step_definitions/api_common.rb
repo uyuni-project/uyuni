@@ -268,7 +268,7 @@ When(/^I create an activation key including Live Patching product via API$/) do
   # Create a key with the base channel for this client
   id = description = "live_patch_key"
 
-  base_channel = 'SLE-Product-HPC-15-SP4-Pool for x86_64'
+  base_channel = 'SLE-Product-SLES15-SP4-Pool for x86_64'
   key = $api_test.activationkey.create(id, description, base_channel, 100)
   raise if key.nil?
 

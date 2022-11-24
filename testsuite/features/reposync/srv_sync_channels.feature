@@ -95,5 +95,4 @@ Feature: Be able to list available channels and enable them
     Then I should get "Timeout. No user input for 60 seconds. Exiting..."
 
   Scenario: Enable Live Patching Product
-    When I execute mgr-sync "add channel sle-product-hpc-15-sp4-pool-x86_64"
-    And I execute mgr-sync "add channel sle-module-live-patching15-sp4-pool-x86_64-hpc"
+    When I execute mgr-sync "add channel sle-module-live-patching15-sp4-pool-x86_64"
