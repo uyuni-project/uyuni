@@ -155,7 +155,6 @@ public class KickstartHelper {
             log.debug("org_id: {}", StringUtil.sanitizeLogInput((String) retval.get(ORG_ID)));
         }
 
-        //TODO: reconsider/cleanup this logic flow
         if (retval.get(ORG_ID) != null) {
 
             // Process label
@@ -376,10 +375,10 @@ public class KickstartHelper {
             // check on  a rawdata this is the place to fix that
             return true;
         }
-        return (!checkAutoKickstart || hasKickstartPackage(ksdata, user)) && hasAppStream(ksdata, user);
+        return (!checkAutoKickstart || hasKickstartPackage(ksdata, user)) && hasAppStream(ksdata);
     }
 
-    private boolean hasAppStream(KickstartData ksdata, User user) {
+    private boolean hasAppStream(KickstartData ksdata) {
         if (!ksdata.isRhel8()) {
             return true;
         }

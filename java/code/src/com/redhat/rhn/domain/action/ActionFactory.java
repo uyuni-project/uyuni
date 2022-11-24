@@ -831,7 +831,8 @@ public class ActionFactory extends HibernateFactory {
      * @param createdDate to filter the ServerActions by
      * @return List of ServerAction objects
      */
-    public static List listServerActionsForServer(Server serverIn, List<ActionStatus> statusList, Date createdDate) {
+    public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList,
+                                                                Date createdDate) {
         Map<String, Object> params = new HashMap<>();
         params.put("server", serverIn);
         params.put("statusList", statusList);

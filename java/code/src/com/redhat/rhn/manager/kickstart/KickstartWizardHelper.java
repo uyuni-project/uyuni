@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Provides convenience methods for creating a kickstart profile.
@@ -149,24 +150,20 @@ public class KickstartWizardHelper {
             // Setup the default CryptoKeys
             List<CryptoKey> keys = KickstartFactory
                     .lookupCryptoKeys(this.currentUser.getOrg());
-            if (keys != null && keys.size() > 0) {
+            if (keys != null && !keys.isEmpty()) {
                 if (ksdata.getCryptoKeys() == null) {
-                    ksdata.setCryptoKeys(new HashSet());
+                    ksdata.setCryptoKeys(new HashSet<>());
                 }
-                for (CryptoKey key : keys) {
-                    if (key.getCryptoKeyType().equals(
-                            KickstartFactory.KEY_TYPE_SSL)) {
-                        ksdata.getCryptoKeys().add(key);
-                    }
-                }
+                ksdata.getCryptoKeys().addAll(
+                        keys.stream()
+                            .filter(key -> key.getCryptoKeyType().equals(KickstartFactory.KEY_TYPE_SSL))
+                            .collect(Collectors.toList()));
             }
         }
         ksdata.setOrg(currentUser.getOrg());
         ksdata.setCreated(new Date());
-        if (!ksdata.isRawData()) {
-            if (ksdata.getCommand("url") != null) {
-                ksdata.getCommand("url").setCreated(new Date());
-            }
+        if (!ksdata.isRawData() && ksdata.getCommand("url") != null) {
+            ksdata.getCommand("url").setCreated(new Date());
         }
 
         ksdata.getKickstartDefaults().setCreated(new Date());

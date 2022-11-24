@@ -114,8 +114,7 @@ public class KickstartBuilder {
         StringBuilder partitionBuf = new StringBuilder();
         // Grab a list of all the available command names:
         List<KickstartCommandName> availableOptions = KickstartFactory.lookupAllKickstartCommandNames();
-        Map<String, KickstartCommandName> commandNames =
-                new HashMap<>();
+        Map<String, KickstartCommandName> commandNames = new HashMap<>();
         for (KickstartCommandName cmdName : availableOptions) {
             commandNames.put(cmdName.getName(), cmdName);
         }
@@ -165,7 +164,6 @@ public class KickstartBuilder {
             // Note: this may in fact never happen. See above, authconfig
             // is an alias to auth.
             if (!commandNames.containsKey(firstWord)) {
-                // TODO
                 log.warn("Unable to parse kickstart command: {}", firstWord);
                 continue;
             }
@@ -233,7 +231,7 @@ public class KickstartBuilder {
      * @param lines %package section of the kickstart file.
      */
     public void buildPackages(KickstartData ksData, List<String> lines) {
-        if (lines.size() == 0) {
+        if (lines.isEmpty()) {
             // Could conceivably be no packages?
             return;
         }
@@ -281,7 +279,7 @@ public class KickstartBuilder {
 
     private void parseScript(KickstartData ksData, List<String> lines, String prefix) {
 
-        if (lines.size() == 0) {
+        if (lines.isEmpty()) {
             return;
         }
 
@@ -290,7 +288,7 @@ public class KickstartBuilder {
                     "%pre tag.");
         }
 
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         String interpreter = "";
         String chroot = "Y";
         boolean errorOnFail = false;
@@ -299,7 +297,7 @@ public class KickstartBuilder {
                 if (buf.toString().length() > 0) {
                     storeScript(prefix, ksData, buf, interpreter, chroot, errorOnFail);
                 }
-                buf = new StringBuffer();
+                buf = new StringBuilder();
 
                 interpreter = getInterpreter(currentLine);
                 chroot = getChroot(prefix, currentLine);
@@ -354,7 +352,7 @@ public class KickstartBuilder {
         return false;
     }
 
-    private void storeScript(String prefix, KickstartData ksData, StringBuffer buf,
+    private void storeScript(String prefix, KickstartData ksData, StringBuilder buf,
             String interpreter, String chroot, boolean errorOnFail) {
         KickstartScriptCreateCommand scriptCommand =
                 new KickstartScriptCreateCommand(ksData.getId(), user);
@@ -416,7 +414,7 @@ public class KickstartBuilder {
         if (ksLabel.length() < MIN_KS_LABEL_LENGTH) {
             return false;
         }
-        Pattern pattern = Pattern.compile("[A-Za-z0-9_-]+", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("[a-z0-9_-]+", Pattern.CASE_INSENSITIVE);
         Matcher match = pattern.matcher(ksLabel);
         return match.matches();
     }
@@ -578,7 +576,7 @@ public class KickstartBuilder {
         setTimezone(cmd, ksdata);
         setAuth(cmd, ksdata);
         setMiscDefaults(cmd, ksdata);
-        setPartitionScheme(cmd, ksdata);
+        setPartitionScheme(ksdata);
         cmd.processSkipKey(ksdata);
         cmd.processRepos(ksdata);
         if (ksdata.getKsPackages() == null) {
@@ -644,10 +642,9 @@ public class KickstartBuilder {
     /**
      * Setup the default partition scheme for this kickstart profile's current settings.
      *
-     * @param cmd Helper
      * @param ksdata Kickstart data.
      */
-    public static void setPartitionScheme(KickstartWizardHelper cmd, KickstartData ksdata) {
+    public static void setPartitionScheme(KickstartData ksdata) {
 
         String configData = Config.get().getString(ConfigDefaults.KS_PARTITION_DEFAULT);
         if (!StringUtils.isBlank(configData)) {
@@ -657,10 +654,10 @@ public class KickstartBuilder {
             ksdata.setPartitionData("autopart --type=lvm");
         }
         else if (ksdata.getChannel().getChannelArch().getName().equals(IA64)) {
-            setItaniumParitionScheme(cmd, ksdata);
+            setItaniumParitionScheme(ksdata);
         }
         else if (ksdata.getChannel().getChannelArch().getName().equals(PPC)) {
-            setPpcPartitionScheme(cmd, ksdata);
+            setPpcPartitionScheme(ksdata);
         }
         else {
             String virtType = ksdata.getKickstartDefaults().
@@ -687,8 +684,7 @@ public class KickstartBuilder {
         }
     }
 
-    private static void setItaniumParitionScheme(KickstartWizardHelper cmd,
-            KickstartData ksdata) {
+    private static void setItaniumParitionScheme(KickstartData ksdata) {
         String data = "part /boot/efi --fstype=vfat --size=100 \n" +
                 "part swap --size=1000 --grow --maxsize=2000\n" +
                 "part pv.01 --fstype=ext3 --size=700 --grow\n" +
@@ -697,8 +693,7 @@ public class KickstartBuilder {
         ksdata.setPartitionData(data);
     }
 
-    private static void setPpcPartitionScheme(KickstartWizardHelper cmd,
-            KickstartData ksdata) {
+    private static void setPpcPartitionScheme(KickstartData ksdata) {
         log.debug("Adding PPC specific partition info:");
         String data = "part /boot --fstype=ext3 --size=200\n" +
                 "part prepboot --fstype \"PPC PReP Boot\" --size=4\n" +

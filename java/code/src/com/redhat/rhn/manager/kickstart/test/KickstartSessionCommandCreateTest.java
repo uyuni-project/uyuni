@@ -48,8 +48,7 @@ public class KickstartSessionCommandCreateTest extends BaseKickstartCommandTestC
         ksdata.getKickstartDefaults().setProfile(p);
         TestUtils.saveAndFlush(ksdata);
         Channel toolsChannel = ChannelFactoryTest.createTestChannel(user);
-        KickstartScheduleCommandTest.
-            setupChannelForKickstarting(toolsChannel, user);
+        KickstartScheduleCommandTest.setupChannelForKickstarting(toolsChannel);
         toolsChannel.setParentChannel(ksdata.getChannel());
         ChannelFactory.save(toolsChannel);
 

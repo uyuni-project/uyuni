@@ -958,7 +958,7 @@ public class ProfileHandler extends BaseHandler {
             throw new FaultException(-3, "kickstartProfileNotFound",
             "No Kickstart Profile found with label: " + ksLabel);
         }
-        LinkedHashSet options = ksdata.getCustomOptions();
+        Set<KickstartCommand> options = ksdata.getCustomOptions();
         return options.toArray();
     }
 

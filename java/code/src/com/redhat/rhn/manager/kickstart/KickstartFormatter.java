@@ -223,11 +223,6 @@ public class KickstartFormatter {
         buf.append(getHeader());
         buf.append(getCommands());
 
-        /*if (this.ksdata.isRhel5OrGreater()) {
-            buf.append(getRepoCommands());
-            buf.append(getKeyCommands());
-        }*/
-
         buf.append(NEWLINE);
         buf.append(getPackageOptions());
         buf.append(getPackages());
@@ -331,10 +326,9 @@ public class KickstartFormatter {
      */
     private String getCommands() {
         StringBuilder commands = new StringBuilder();
-        LinkedList l = new LinkedList(this.ksdata.getCommands());
+        LinkedList<KickstartCommand> l = new LinkedList<>(this.ksdata.getCommands());
         Collections.sort(l);
-        for (Object oIn : l) {
-            KickstartCommand command = (KickstartCommand) oIn;
+        for (KickstartCommand command : l) {
             String cname = command.getCommandName().getName();
             log.debug("getCommands name: {}", cname);
 
@@ -728,8 +722,8 @@ public class KickstartFormatter {
             KickstartSession ksession) {
         StringBuilder retval = new StringBuilder();
         List<ActivationKey> tokens = generateActKeyTokens(ksdata, ksession);
-        for (Iterator itr = tokens.iterator(); itr.hasNext();) {
-            ActivationKey act = (ActivationKey) itr.next();
+        for (Iterator<ActivationKey> itr = tokens.iterator(); itr.hasNext();) {
+            ActivationKey act = itr.next();
             log.debug("rhnreg: key name: {}", act.getKey());
             retval.append(act.getKey());
             if (itr.hasNext()) {
@@ -740,10 +734,6 @@ public class KickstartFormatter {
         return retval.toString();
     }
 
-
-    /**
-     * @return
-     */
     private static List<ActivationKey> generateActKeyTokens(KickstartData ksdata,
             KickstartSession ksession) {
         List<ActivationKey> tokens = new ArrayList<>();
@@ -763,8 +753,6 @@ public class KickstartFormatter {
         //if we need a reactivation key, add one
         if (defaultKey != null) {
             log.debug("Session isn't null.  Lets use the profile's activation key.");
-            //ActivationKey oneTimeKey = ActivationKeyFactory.
-            //    lookupByKickstartSession(this.session);
                 tokens.add(defaultKey);
                 if (log.isDebugEnabled()) {
                     log.debug("Found one time activation key: {}", defaultKey.getKey());
@@ -772,13 +760,11 @@ public class KickstartFormatter {
         }
         log.debug("tokens size: {}", tokens.size());
         //add the activation keys associated with the kickstart profile
-        if (ksdata.getDefaultRegTokens() != null) {
-            if (ksdata.getDefaultRegTokens().size() > 0) {
-                for (Token tk : ksdata.getDefaultRegTokens()) {
-                    ActivationKey act =
-                            ActivationKeyFactory.lookupByToken(tk);
-                    tokens.add(act);
-                }
+        if (ksdata.getDefaultRegTokens() != null && !ksdata.getDefaultRegTokens().isEmpty()) {
+            for (Token tk : ksdata.getDefaultRegTokens()) {
+                ActivationKey act =
+                        ActivationKeyFactory.lookupByToken(tk);
+                tokens.add(act);
             }
         }
         return tokens;
@@ -787,8 +773,8 @@ public class KickstartFormatter {
     private String renderKeys() {
         StringBuilder retval = new StringBuilder();
 
-        HashSet sslKeys = new HashSet();
-        HashSet gpgKeys = new HashSet();
+        HashSet<CryptoKey> sslKeys = new HashSet<>();
+        HashSet<CryptoKey> gpgKeys = new HashSet<>();
 
         // setup keys for rendering
         if (this.ksdata.getCryptoKeys() != null) {
@@ -802,7 +788,7 @@ public class KickstartFormatter {
             }
         }
 
-        if (gpgKeys.size() > 0) {
+        if (!gpgKeys.isEmpty()) {
             retval.append(renderGpgKeys(gpgKeys));
         }
 
@@ -836,12 +822,11 @@ public class KickstartFormatter {
      * @param setIn of sll keys for this kickstart
      * @return rendered sll key string for kickstart
      */
-    private String renderSslKeys(HashSet setIn) {
+    private String renderSslKeys(HashSet<CryptoKey> setIn) {
         StringBuilder retval = new StringBuilder();
         int peg = 1;
-        for (Object oIn : setIn) {
+        for (CryptoKey myKey : setIn) {
             retval.append("cat > /tmp/ssl-key-" + peg + " <<'EOF'" + NEWLINE);
-            CryptoKey myKey = (CryptoKey) oIn;
             retval.append(myKey.getKeyString() + NEWLINE);
             retval.append(NEWLINE);
             retval.append("EOF\n# ssl-key" + peg + NEWLINE);

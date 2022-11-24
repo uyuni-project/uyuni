@@ -89,10 +89,8 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
                 }
             }
         }
-        else if (this.tree.getInstallType().isRhel8OrGreater()) {
-            if (!kopts.contains("inst.repo=")) {
-                kOptsJoiner.add("inst.repo=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
-            }
+        else if (this.tree.getInstallType().isRhel8OrGreater() && !kopts.contains("inst.repo=")) {
+            kOptsJoiner.add("inst.repo=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
         }
 
         this.tree.setKernelOptions(kOptsJoiner.toString());
