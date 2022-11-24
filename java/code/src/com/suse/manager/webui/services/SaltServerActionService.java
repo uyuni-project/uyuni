@@ -2548,6 +2548,8 @@ public class SaltServerActionService {
                 // try-catch as we'd like to log the warning in case of exception
                 try {
                     result = saltApi.rawJsonCall(call, minion.getMinionId());
+                    LOG.debug("result: " + result);
+
                 }
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: " + action.getName() +
