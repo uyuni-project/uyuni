@@ -177,9 +177,9 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
 
     /**
      * Getter for errorOnFail
-     * @return Boolean to get
+     * @return boolean to get
      */
-    public Boolean getErrorOnFail() {
+    public boolean getErrorOnFail() {
         return this.errorOnFail;
     }
 
@@ -351,7 +351,7 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
     /**
      * @return Returns the raw.
      */
-    public Boolean getRaw() {
+    public boolean getRaw() {
         return raw;
     }
 

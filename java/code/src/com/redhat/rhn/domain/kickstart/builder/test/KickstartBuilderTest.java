@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.kickstart.builder.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -45,12 +46,12 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
-    private String kickstartFileContents;
 
     @Override
     @BeforeEach
@@ -60,8 +61,8 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     }
 
 
-    private KickstartParser createKickstartParser(String filename) throws Exception {
-        kickstartFileContents = TestUtils.readAll(
+    private KickstartParser createKickstartParser(String filename) throws IOException, ClassNotFoundException {
+        String kickstartFileContents = TestUtils.readAll(
                 TestUtils.findTestData(filename));
         return new KickstartParser(kickstartFileContents);
     }
@@ -82,7 +83,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testDirector() throws Exception {
+    public void testDirector() throws IOException, ClassNotFoundException {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         assertEquals(27, parser.getOptionLines().size());
         assertEquals(102, parser.getPackageLines().size());
@@ -104,7 +105,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         builder.buildCommands(ksData, lines, tree);
 
         KickstartCommand rootpw = ksData.getCommand("rootpw");
-        assertTrue(!rootpw.getArguments().contains("--iscrypted"));
+        assertFalse(rootpw.getArguments().contains("--iscrypted"));
         assertTrue(rootpw.getArguments().startsWith("$1$"));
     }
 
@@ -197,7 +198,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         builder.buildPreScripts(ksData, lines);
         assertEquals(1, ksData.getScripts().size());
         KickstartScript script = ksData.getScripts().iterator().next();
-        assertEquals(null, script.getInterpreter());
+        assertNull(script.getInterpreter());
         assertEquals(KickstartScript.TYPE_PRE, script.getScriptType());
         assertEquals("Y", script.getChroot());
     }
@@ -316,7 +317,6 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         KickstartBuilder builder = new KickstartBuilder(user);
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
-        //String randomLabel = RandomStringUtils.randomAlphabetic(10);
         KickstartData ksData = builder.createFromParser(parser, "mykslabel",
                 KickstartVirtualizationType.XEN_PARAVIRT, tree,
                 KickstartTreeUpdateType.NONE);

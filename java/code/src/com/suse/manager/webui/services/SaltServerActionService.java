@@ -31,6 +31,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -116,7 +117,6 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -181,6 +181,7 @@ import org.jose4j.lang.JoseException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -191,12 +192,14 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -205,7 +208,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Stack;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -244,6 +246,7 @@ public class SaltServerActionService {
     /** SLS pillar parameter name for the list of regular patch names. */
     public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
     public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
+
 
     private boolean commitTransaction = true;
 
@@ -349,7 +352,7 @@ public class SaltServerActionService {
             }
             return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
                     ip -> imageBuildAction(minions, Optional.ofNullable(details.getVersion()), ip,
-                            imageBuildAction.getSchedulerUser(), imageBuildAction.getId())
+                            imageBuildAction.getId())
             ).orElseGet(Collections::emptyMap);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
@@ -707,24 +710,12 @@ public class SaltServerActionService {
             }
             else if (stateApplyResult.getChanges() != null) {
                 // handle the result
-                Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult = null;
-                try {
-                    Ret<Map<String, StateApplyResult<Ret<JsonElement>>>> actionChainRet =
-                            Json.GSON.fromJson(stateApplyResult.getChanges(),
-                                    new TypeToken<Ret<Map<String, StateApplyResult<Ret<JsonElement>>>>>() {
-                                    }.getType());
-                    actionChainResult = actionChainRet.getRet();
-                }
-                catch (JsonSyntaxException e) {
-                    LOG.error("Unexpected response: {}", stateApplyResult.getChanges(), e);
-                    String msg = stateApplyResult.getChanges().toString();
-                    if ((stateApplyResult.getChanges().isJsonObject()) &&
-                            ((JsonObject)stateApplyResult.getChanges()).get("ret") != null) {
-                        msg = ((JsonObject)stateApplyResult.getChanges()).get("ret").toString();
-                    }
-                    failActionChain(minionId, firstChunkActionId, Optional.of("Unexpected response: " + msg));
+                Optional<Map<String, StateApplyResult<Ret<JsonElement>>>> optActionChainResult = getActionChainResult(
+                        stateApplyResult.getChanges(), minionId, firstChunkActionId);
+                if (optActionChainResult.isEmpty()) {
                     return false;
                 }
+                Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult = optActionChainResult.get();
                 handleActionChainResult(minionId, "",
                         actionChainResult,
                         // skip reboot, needs special handling
@@ -803,6 +794,29 @@ public class SaltServerActionService {
             return false;
         }
         return true;
+    }
+
+    private Optional<Map<String, StateApplyResult<Ret<JsonElement>>>> getActionChainResult(
+            JsonElement stateChanges, String minionId, Optional<Long> firstChunkActionId) {
+        Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult;
+        try {
+            Ret<Map<String, StateApplyResult<Ret<JsonElement>>>> actionChainRet =
+                    Json.GSON.fromJson(stateChanges,
+                            new TypeToken<Ret<Map<String, StateApplyResult<Ret<JsonElement>>>>>() {
+                            }.getType());
+            actionChainResult = actionChainRet.getRet();
+        }
+        catch (JsonSyntaxException e) {
+            LOG.error("Unexpected response: {}", stateChanges, e);
+            String msg = stateChanges.toString();
+            if ((stateChanges.isJsonObject()) &&
+                    ((JsonObject)stateChanges).get("ret") != null) {
+                msg = ((JsonObject)stateChanges).get("ret").toString();
+            }
+            failActionChain(minionId, firstChunkActionId, Optional.of("Unexpected response: " + msg));
+            return Optional.empty();
+        }
+        return Optional.of(actionChainResult);
     }
 
     /**
@@ -1000,12 +1014,12 @@ public class SaltServerActionService {
                             !mods.isEmpty() ?
                                     singletonMap("mods", mods) : emptyMap(),
                             createStateApplyKwargs(kwargs));
-                case "system.reboot":
+                case SYSTEM_REBOOT:
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,
                             serverAction.getParentAction().getId(), time);
                 default:
-                    throw new RuntimeException("Salt module call " + fun + " can't be converted to a state.");
+                    throw new RhnRuntimeException("Salt module call " + fun + " can't be converted to a state.");
             }
         }).collect(Collectors.toList());
     }
@@ -1320,15 +1334,13 @@ public class SaltServerActionService {
         // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
         Path scriptFile = saltUtils.getScriptPath(scriptAction.getId());
         try {
-            if (!Files.exists(scriptFile)) {
-                // make sure parent dir exists
-                if (!Files.exists(scriptFile.getParent())) {
-                    FileAttribute<Set<PosixFilePermission>> dirAttributes =
-                            PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-xr-x"));
+            // make sure parent dir exists
+            if (!Files.exists(scriptFile) && !Files.exists(scriptFile.getParent())) {
+                FileAttribute<Set<PosixFilePermission>> dirAttributes =
+                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-xr-x"));
 
-                    Files.createDirectory(scriptFile.getParent(), dirAttributes);
-                    // make sure correct user is set
-                }
+                Files.createDirectory(scriptFile.getParent(), dirAttributes);
+                // make sure correct user is set
             }
 
             if (!skipCommandScriptPerms) {
@@ -1341,7 +1353,7 @@ public class SaltServerActionService {
                         PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r--r--"));
                 Files.createFile(scriptFile, fileAttributes);
                 FileUtils.writeStringToFile(scriptFile.toFile(),
-                        script.replaceAll("\r\n", "\n"));
+                        script.replace("\r\n", "\n"), StandardCharsets.UTF_8);
             }
 
             if (!skipCommandScriptPerms) {
@@ -1359,7 +1371,9 @@ public class SaltServerActionService {
             String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
             LOG.error(errorMsg);
             scriptAction.getServerActions().stream()
-                    .filter(entry -> minions.contains(entry.getServer()))
+                    .filter(entry -> entry.getServer().asMinionServer()
+                            .map(minionServer -> minions.contains(new MinionSummary(minionServer)))
+                            .orElse(false))
                     .forEach(sa -> {
                         sa.fail("Error scheduling the action: " + errorMsg);
                         ActionFactory.save(sa);
@@ -1393,10 +1407,8 @@ public class SaltServerActionService {
                 minionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
         minions.forEach(minion -> {
-            List<AccessToken> tokens = new ArrayList<>();
-
             // generate access tokens
-            Set<Channel> allChannels = new HashSet();
+            Set<Channel> allChannels = new HashSet<>();
             allChannels.addAll(actionDetails.getChannels());
             if (actionDetails.getBaseChannel() != null) {
                 allChannels.add(actionDetails.getBaseChannel());
@@ -1507,7 +1519,7 @@ public class SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionSummary>> imageBuildAction(
             List<MinionSummary> minionSummaries, Optional<String> version,
-            ImageProfile profile, User user, Long actionId) {
+            ImageProfile profile, Long actionId) {
         List<ImageStore> imageStores = new LinkedList<>();
         imageStores.add(profile.getTargetStore());
 
@@ -1515,7 +1527,7 @@ public class SaltServerActionService {
                 minionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
         //TODO: optimal scheduling would be to group by host and orgid
-        Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
+        return minions.stream().collect(
                 Collectors.toMap(minion -> {
                     Map<String, Object> pillar = new HashMap<>();
 
@@ -1593,8 +1605,6 @@ public class SaltServerActionService {
                 },
                 m -> Collections.singletonList(new MinionSummary(m))
         ));
-
-        return ret;
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> distUpgradeAction(
@@ -1654,13 +1664,13 @@ public class SaltServerActionService {
             List<MinionSummary> minionSummaries, ScapActionDetails scapActionDetails) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         Map<String, Object> pillar = new HashMap<>();
-        Matcher profileMatcher = Pattern.compile("--profile ((\\w|\\.|_|-)+)")
+        Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
                 .matcher(scapActionDetails.getParametersContents());
-        Matcher ruleMatcher = Pattern.compile("--rule ((\\w|\\.|_|-)+)")
+        Matcher ruleMatcher = Pattern.compile("--rule (([\\w.-])+)")
                 .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file ((\\w|\\.|_|-|\\/)+)")
+        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file (([\\w./-])+)")
                 .matcher(scapActionDetails.getParametersContents());
-        Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id ((\\w|\\.|_|-)+)")
+        Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id (([\\w.-])+)")
                 .matcher(scapActionDetails.getParametersContents());
 
         String oldParameters = "eval " +
@@ -1714,7 +1724,7 @@ public class SaltServerActionService {
                             if (vmUuid == null) {
                                 return false;
                             }
-                            return vmUuid.getAsString().replaceAll("-", "").equals(uuid);
+                            return vmUuid.getAsString().replace("-", "").equals(uuid);
                         })
                         .map(Map.Entry::getKey)
                         .findFirst())
@@ -1988,7 +1998,7 @@ public class SaltServerActionService {
         String breed = sys.getProfile().getDistro().getBreed();
         Map<String, Object> kopts = sys.getResolvedKernelOptions();
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Resolved kernel options for " + sys.getName() + ": " + convertOptionsMap(kopts));
+            LOG.debug("Resolved kernel options for {}: {}", sys.getName(), convertOptionsMap(kopts));
         }
         if (breed.equals("suse")) {
             //SUSE is not using 'text'. Instead 'textmode' is used as kernel option.
@@ -2024,14 +2034,15 @@ public class SaltServerActionService {
 
     private String convertOptionsMap(Map<String, Object> map) {
         StringBuilder string = new StringBuilder();
-        for (String key : map.keySet()) {
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            String key = entry.getKey();
             List<String> keyList;
             try {
-                 keyList = (List)map.get(key);
+                 keyList = (List<String>)entry.getValue();
             }
             catch (ClassCastException e) {
                 keyList = new ArrayList<>();
-                keyList.add((String) map.get(key));
+                keyList.add((String) entry.getValue());
             }
             if (keyList.isEmpty()) {
                 string.append(key + " ");
@@ -2301,7 +2312,7 @@ public class SaltServerActionService {
                                 }
                                 pillar.put("dns", dns);
                             });
-                            pillar.put("action_type", def.getUuid().isPresent() ? "defined" : "running");
+                            pillar.put("action_type", def.getUuid().map(uuid -> "defined").orElse("running"));
 
                             return State.apply(
                                     Collections.singletonList("virt.network-create"),
@@ -2392,8 +2403,6 @@ public class SaltServerActionService {
         }
 
         try {
-            Map<Boolean, List<MinionSummary>> result = new HashMap<>();
-
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
             List<String> results = Opt.fold(
@@ -2401,10 +2410,8 @@ public class SaltServerActionService {
                     ArrayList::new,
                     LocalAsyncResult::getMinions);
 
-            result = minionSummaries.stream().collect(Collectors
+            return minionSummaries.stream().collect(Collectors
                     .partitioningBy(minionId -> results.contains(minionId.getMinionId())));
-
-            return result;
         }
         catch (SaltException ex) {
             LOG.debug("Failed to execute action: {}", ex.getMessage());
@@ -2434,15 +2441,14 @@ public class SaltServerActionService {
             List<String> results = saltApi
                     .callAsync(MgrActionChains.start(actionChain.getId()), new MinionList(minionIds),
                             Optional.of(ScheduleMetadata.getDefaultMetadata().withActionChain(actionChain.getId())))
-                    .get().getMinions();
+                    .map(result -> result.getMinions())
+                    .orElse(Collections.emptyList());
 
-            Map<Boolean, Set<MinionSummary>> result = minionSummaries.stream()
+            return minionSummaries.stream()
                     .collect(Collectors.partitioningBy(
                             minion -> results.contains(minion.getMinionId()),
                             Collectors.toSet()
                     ));
-
-            return result;
         }
         catch (SaltException ex) {
             LOG.debug("Failed to execute action chain: {}", ex.getMessage());
@@ -2474,10 +2480,8 @@ public class SaltServerActionService {
         Optional<ServerAction> serverAction = action.getServerActions().stream()
                 .filter(sa -> sa.getServerId().equals(minion.getId()))
                 .findFirst();
-        if (serverAction.isPresent()) {
-            ServerAction sa = serverAction.get();
-            if (sa.getStatus().equals(STATUS_FAILED) ||
-                    sa.getStatus().equals(STATUS_COMPLETED)) {
+        serverAction.ifPresent(sa -> {
+            if (List.of(STATUS_FAILED, STATUS_COMPLETED).contains(sa.getStatus())) {
                 LOG.info("Action '{}' is completed or failed. Skipping.", action.getName());
                 return;
             }
@@ -2515,19 +2519,8 @@ public class SaltServerActionService {
                     return;
                 }
 
-                if (!result.isPresent()) {
-                    LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or " +
-                            "ould not be contacted.", action.getName());
-                    sa.setStatus(STATUS_FAILED);
-                    sa.setResultMsg("Minion is down or could not be contacted.");
-                    sa.setCompletionTime(new Date());
-                    return;
-                }
-
-                result.ifPresent(r -> {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace("Salt call result: {}", r);
-                    }
+                result.ifPresentOrElse(r -> {
+                    LOG.trace("Salt call result: {}", r);
 
                     r.consume(error -> {
                         sa.setStatus(STATUS_FAILED);
@@ -2573,9 +2566,15 @@ public class SaltServerActionService {
                             }
                         }
                     });
+                }, () -> {
+                    LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or " +
+                            "could not be contacted.", action.getName());
+                    sa.setStatus(STATUS_FAILED);
+                    sa.setResultMsg("Minion is down or could not be contacted.");
+                    sa.setCompletionTime(new Date());
                 });
             }
-        }
+        });
     }
 
     /**
@@ -2625,14 +2624,16 @@ public class SaltServerActionService {
                                     .ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed"))));
 
             // walk dependent server actions recursively and set them to failed
-            Stack<Long> actionIdsDependencies = new Stack<>();
+            Deque<Long> actionIdsDependencies = new ArrayDeque<>();
             actionIdsDependencies.push(actionId);
-            List<ServerAction> serverActions = ActionFactory
-                    .listServerActionsForServer(minion.get(),
-                            Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP,
-                                    ActionFactory.STATUS_FAILED), action.getCreated());
+            List<ServerAction> serverActions = Optional.ofNullable(action).
+                    map(firstAction -> ActionFactory
+                        .listServerActionsForServer(minion.get(),
+                                Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP,
+                                        ActionFactory.STATUS_FAILED), action.getCreated()))
+                    .orElse(new ArrayList<>());
 
-            while (!actionIdsDependencies.empty()) {
+            while (!actionIdsDependencies.isEmpty()) {
                 Long acId = actionIdsDependencies.pop();
                 List<ServerAction> serverActionsWithPrereq = serverActions.stream()
                         .filter(s -> s.getParentAction().getPrerequisite() != null)
@@ -2655,7 +2656,6 @@ public class SaltServerActionService {
     private void setActionAsPickedUp(ServerAction sa) {
         sa.setStatus(ActionFactory.STATUS_PICKED_UP);
         sa.setPickupTime(new Date());
-        return;
     }
 
     /**
@@ -2723,7 +2723,7 @@ public class SaltServerActionService {
                         LOG.error("Error processing Salt job return", e);
                         // DB exceptions cause the transaction to go into rollback-only
                         // state. We need to rollback this transaction first.
-                        ActionFactory.rollbackTransaction();
+                        HibernateFactory.rollbackTransaction();
 
                         sa.fail("An unexpected error has occurred. Please check the server logs.");
 
@@ -2731,7 +2731,7 @@ public class SaltServerActionService {
                         // When we throw the exception again, the current transaction
                         // will be set to rollback-only, so we explicitly commit the
                         // transaction here
-                        ActionFactory.commitTransaction();
+                        HibernateFactory.commitTransaction();
 
                         // We don't actually want to catch any exceptions
                         throw e;
@@ -2812,7 +2812,7 @@ public class SaltServerActionService {
                 retActionChainId = stateId.get().getActionChainId();
                 chunk = stateId.get().getChunk();
                 long actionId = stateId.get().getActionId();
-                if (skipFunction.apply(actionStateApply)) {
+                if (Boolean.TRUE.equals(skipFunction.apply(actionStateApply))) {
                     continue; // skip this state from handling
                 }
 
@@ -2848,19 +2848,15 @@ public class SaltServerActionService {
                              */
 
                             final Optional<Action> action  = Optional.ofNullable(ActionFactory.lookupById(actionId));
-                            if (action.isPresent()) {
-                                if (LOG.isDebugEnabled()) {
-                                    LOG.debug("Matched salt job with action (id={})", actionId);
-                                }
-                            Optional<ServerAction> serverAction = action.get()
-                                    .getServerActions()
-                                    .stream()
-                                    .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+                            action.ifPresent(actionIn -> {
+                                LOG.debug("Matched salt job with action (id={})", actionId);
+                                Optional<ServerAction> serverAction = action.get()
+                                        .getServerActions()
+                                        .stream()
+                                        .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
-                            serverAction.ifPresent(sa -> {
-                                setActionAsPickedUp(sa);
+                                serverAction.ifPresent(sa -> setActionAsPickedUp(sa));
                             });
-                        }
                     }
                 });
             }
@@ -2869,28 +2865,27 @@ public class SaltServerActionService {
             }
         }
 
-        if (retActionChainId != null) {
-            if (actionChainFailed) {
-                long firstFailedActionId = failedActionIds.stream().min(Long::compare).get();
-                // Set rest of actions as FAILED due to failed prerequisite
-                failDependentServerActions(firstFailedActionId, minionId, Optional.empty());
-            }
-            // Removing the generated SLS file
-            SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
-                    retActionChainId, minionId, chunk, actionChainFailed);
-
-            ActionChainFactory.getActionChain(retActionChainId).ifPresent(ac -> {
-                // We need to reload server actions since saltssh will be in
-                // the same db session from when the action was started and
-                // won't see results of non ssh minions otherwise.
-                ac.getEntries().stream()
-                        .flatMap(ace -> ace.getAction().getServerActions().stream())
-                        .forEach(HibernateFactory::reload);
-                if (ac.isDone()) {
-                    ActionChainFactory.delete(ac);
-                }
-            });
+        if (actionChainFailed) {
+            failedActionIds.stream().min(Long::compare).ifPresent(firstFailedActionId ->
+                    // Set rest of actions as FAILED due to failed prerequisite
+                    failDependentServerActions(firstFailedActionId, minionId, Optional.empty())
+            );
         }
+        // Removing the generated SLS file
+        SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
+                retActionChainId, minionId, chunk, actionChainFailed);
+
+        ActionChainFactory.getActionChain(retActionChainId).ifPresent(ac -> {
+            // We need to reload server actions since saltssh will be in
+            // the same db session from when the action was started and
+            // won't see results of non ssh minions otherwise.
+            ac.getEntries().stream()
+                    .flatMap(ace -> ace.getAction().getServerActions().stream())
+                    .forEach(HibernateFactory::reload);
+            if (ac.isDone()) {
+                ActionChainFactory.delete(ac);
+            }
+        });
     }
 
     /**

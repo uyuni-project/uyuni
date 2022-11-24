@@ -54,6 +54,7 @@ public class SystemDetailsEditAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
         throws Exception {
@@ -84,15 +85,13 @@ public class SystemDetailsEditAction extends RhnAction {
      * @param request related request
      * @param response related response
      * @return jsp to render
-     * @throws Exception when error occurs - this should be handled by the app
-     * framework
      */
     public ActionForward viewSystemDetails(ActionMapping mapping,
             DynaActionForm dynaForm, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
 
         RequestContext ctx = new RequestContext(request);
-        KickstartData ksdata = lookupKickstart(ctx, dynaForm);
+        KickstartData ksdata = lookupKickstart(ctx);
         prepareForm(dynaForm, ksdata, ctx);
         request.setAttribute(RequestContext.KICKSTART, ksdata);
         return mapping.findForward("display");
@@ -110,9 +109,9 @@ public class SystemDetailsEditAction extends RhnAction {
      */
     public ActionForward updateSystemDetails(ActionMapping mapping,
             DynaActionForm dynaForm, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
         RequestContext ctx = new RequestContext(request);
-        KickstartData ksdata = lookupKickstart(ctx, dynaForm);
+        KickstartData ksdata = lookupKickstart(ctx);
         request.setAttribute("ksdata", ksdata);
 
         try {
@@ -136,8 +135,7 @@ public class SystemDetailsEditAction extends RhnAction {
 
     }
 
-    protected KickstartData lookupKickstart(RequestContext ctx,
-            DynaActionForm form) {
+    protected KickstartData lookupKickstart(RequestContext ctx) {
         KickstartEditCommand cmd = new KickstartEditCommand(ctx
                 .getRequiredParam(RequestContext.KICKSTART_ID), ctx
                 .getCurrentUser());

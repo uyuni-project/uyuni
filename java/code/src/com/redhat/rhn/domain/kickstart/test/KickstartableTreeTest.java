@@ -77,7 +77,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         createKickstartTreeItems(tree);
     }
 
-    public static void createKickstartTreeItems(KickstartableTree tree) throws Exception {
+    public static void createKickstartTreeItems(KickstartableTree tree) {
         createDirIfNotExists(new File(tree.getDefaultKernelPaths()[0]).getParentFile());
         createDirIfNotExists(new File(tree.getKernelXenPath()).getParentFile());
 
@@ -107,11 +107,11 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
             lookupKickstartTreeByLabel(k2.getLabel(), o);
         assertEquals(k3.getLabel(), k2.getLabel());
 
-        List trees = KickstartFactory.
+        List<KickstartableTree> trees = KickstartFactory.
             lookupKickstartTreesByChannelAndOrg(k2.getChannel().getId(), o);
 
         assertNotNull(trees);
-        assertTrue(trees.size() > 0);
+        assertFalse(trees.isEmpty());
 
         KickstartableTree kwithnullorg = createTestKickstartableTree();
         String label = "treewithnullorg: " + TestUtils.randomString();
@@ -150,9 +150,9 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         KickstartFactory.saveKickstartData(ksdata);
         flushAndEvict(ksdata);
 
-        List profiles = KickstartFactory.lookupKickstartDatasByTree(k);
+        List<KickstartData> profiles = KickstartFactory.lookupKickstartDatasByTree(k);
         assertNotNull(profiles);
-        assertTrue(profiles.size() > 0);
+        assertFalse(profiles.isEmpty());
     }
 
 
@@ -160,12 +160,11 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Helper method to lookup KickstartableTree by id
      * @param id Id to lookup
      * @return Returns the KickstartableTree
-     * @throws Exception something bad happened
      */
-    private KickstartableTree lookupById(Long id) throws Exception {
+    private KickstartableTree lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return (KickstartableTree) session.getNamedQuery("KickstartableTree.findById")
-                          .setLong("id", id)
+                          .setParameter("id", id)
                           .uniqueResult();
     }
 
@@ -185,10 +184,8 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Creates KickstartableTree for testing purposes.
      * @param treeChannel Channel this Tree uses.
      * @return Returns a committed KickstartableTree
-     * @throws Exception something bad happened
      */
-    public static KickstartableTree
-        createTestKickstartableTree(Channel treeChannel) throws Exception {
+    public static KickstartableTree createTestKickstartableTree(Channel treeChannel) {
         Date created = new Date();
         Date modified = new Date();
         Date lastmodified = new Date();

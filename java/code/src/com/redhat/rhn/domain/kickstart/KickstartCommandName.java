@@ -86,7 +86,7 @@ public class KickstartCommandName {
      *
      * @return if this command can have args
      */
-    public Boolean getArgs() {
+    public boolean getArgs() {
         return this.args;
     }
 

@@ -45,6 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseKickstartEditAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                   ActionForm formIn,
                                   HttpServletRequest request,
