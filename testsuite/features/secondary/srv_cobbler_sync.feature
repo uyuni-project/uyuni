@@ -7,7 +7,7 @@ Feature: Run Cobbler Sync via WebUI
     Given I am authorized for the "Admin" section
 
   @uyuni
-  Scenario: Cobbler Settings Page exists
+  Scenario: Check that the Cobbler Settings Page exists
     When I follow the left menu "Admin > Manager Configuration > Cobbler"
     Then I should see a "Uyuni Configuration - Cobbler. " text
     And I should see a "Setup your Uyuni Cobbler settings below. " text
@@ -17,7 +17,7 @@ Feature: Run Cobbler Sync via WebUI
     And I should see a "Update" button
   
   @susemanager
-  Scenario: Cobbler Settings Page exists
+  Scenario: Check that the Cobbler Settings Page exists
     When I follow the left menu "Admin > Manager Configuration > Cobbler"
     Then I should see a "SUSE Manager Configuration - Cobbler. " text
     And I should see a "Setup your SUSE Manager Cobbler settings below. " text
