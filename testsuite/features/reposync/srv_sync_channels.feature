@@ -89,9 +89,6 @@ Feature: Be able to list available channels and enable them
     And I should get "    [I] SLE-Module-Containers12-Pool for x86_64 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp4]"
     And I should get "    [I] SLE-Module-Containers12-Updates for x86_64 Containers Module 12 x86_64 [sle-module-containers12-updates-x86_64-sp4]"
 
-  Scenario: Enable Live Patching Product
-    When I execute mgr-sync "add channel sle-module-live-patching15-sp4-pool-x86_64"
-
   Scenario: Let mgr-sync time out
     When I remove the mgr-sync cache file
     And I execute mgr-sync refresh
