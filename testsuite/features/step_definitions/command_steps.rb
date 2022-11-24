@@ -184,7 +184,6 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
   end
   node = get_target(host)
   if deb_host?(host)
-    node.wait_while_process_running('apt-get')
     pkg_version = package.split('-')[-1]
     pkg_name = package.delete_suffix("-#{pkg_version}")
     pkg_version_regexp = pkg_version.gsub('.', '\\.')
@@ -193,6 +192,7 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
     else
       node.run_until_fail("dpkg -l | grep -E '^ii +#{pkg_name} +#{pkg_version_regexp} +'")
     end
+    node.wait_while_process_running('apt-get')
   else
     node.wait_while_process_running('zypper')
     if status == 'installed'
