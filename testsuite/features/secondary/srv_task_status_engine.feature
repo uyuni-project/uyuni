@@ -6,6 +6,16 @@ Feature: Task Engine Status
   Scenario: Login as admin
     Given I am authorized for the "Admin" section
     
+  @susemanager
+  Scenario: Check if the Task Engine Status page exists
+    When I follow the left menu "Admin > Task Engine Status > Last Execution Times"
+    Then I should see a "Task Engine Status" text
+    And I should see a "The following is a status report for the various tasks run by the SUSE Manager task engine:" text
+    And I should see a "Runtime Status" text
+    And I should see a "Last Execution Times" link in the left menu
+    And I should see a "Runtime Status" link in the left menu
+  
+  @uyuni
   Scenario: Check if the Task Engine Status page exists
     When I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     Then I should see a "Task Engine Status" text
