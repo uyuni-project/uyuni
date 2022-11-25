@@ -2,11 +2,26 @@ THIS_MAKEFILE := $(realpath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(dir $(THIS_MAKEFILE))
 include $(CURRENT_DIR)../../../rel-eng/Makefile.python
 
+MGRPUSH_ROOT_DIR := $(shell mktemp -d)
+RHNPUSH_PACKAGE_DIR := $(MGRPUSH_ROOT_DIR)/rhnpush
+PYTHONPATH := /manager/python/:/manager/client/rhel/spacewalk-client-tools/src/
+
 # Docker tests variables
+DOCKER_REF            = $(DOCKER_REGISTRY)/$(DOCKER_IMAGE)
 DOCKER_CONTAINER_BASE = systemsmanagement/uyuni/master/docker/containers/uyuni-master
 DOCKER_REGISTRY       = registry.opensuse.org
 DOCKER_RUN_EXPORT     = "PYTHONPATH=$PYTHONPATH"
 DOCKER_VOLUMES        = -v "$(CURDIR)/../../../:/manager"
+
+define setup_structure
+    mkdir $(RHNPUSH_PACKAGE_DIR)
+    cd /manager/client/tools/mgr-push/src/rhnpush && cp archive.py connection.py rhnpush_cache.py rhnpush_config.py rhnpush_confmanager.py rhnpush_main.py rhnpush_v2.py rpm2mpm.py uploadLib.py utils.py $(RHNPUSH_PACKAGE_DIR)
+    touch $(RHNPUSH_PACKAGE_DIR)/__init__.py
+endef
+
+__pytest ::
+	$(call setup_structure)
+	export PYTHONPATH=$(MGRPUSH_ROOT_DIR):$(PYTHONPATH) && pytest --disable-warnings --tb=native --color=yes -v
 
 __pylint ::
 	$(call update_pip_env)
@@ -14,6 +29,10 @@ __pylint ::
 
 docker_pylint ::
 	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/client/tools/mgr-push; make -f Makefile.python __pylint"
+
+docker_pytest ::
+	docker pull $(DOCKER_REF)
+	docker run -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REF) /bin/sh -c "cd /manager/client/tools/mgr-push; make -f Makefile.python __pytest"
 
 docker_shell ::
 	docker run -t -i --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash
