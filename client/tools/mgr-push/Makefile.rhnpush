@@ -14,7 +14,7 @@ FILES		= rhnpush_main rhnpush_v2 uploadLib __init__ connection \
 RHN_CONF_DIR    = /etc/sysconfig/rhn
 RHNPUSHRC       = rhnpushrc
 
-PYFILES 	:= $(addsuffix .py, $(FILES))
+PYFILES 	:= $(addprefix src/rhnpush/, $(addsuffix .py, $(FILES)))
 OBJECTS		:= $(PYFILES)
 
 ROOT		?= /usr/share/rhn
@@ -36,7 +36,7 @@ install-conf : $(RHNPUSHRC)
 
 %.inst: rhnpush.inst
 
-all	: $(MANS) $(OBJECTS)
+all	: $(MANS) $(PYFILES)
 install : all install-conf
 	$(INSTALL_DIR) $(PREFIX)$(MANDIR)/man8
 	$(INSTALL_DATA) $(MANS) $(PREFIX)$(MANDIR)/man8
@@ -44,7 +44,7 @@ install : all install-conf
 	$(INSTALL_DIR) $(PREFIX)$(ROOT)/rhnpush
 	$(INSTALL_DATA) $(PYFILES) $(PREFIX)$(ROOT)/rhnpush
 
-	$(INSTALL_BIN) rhnpush $(PREFIX)$(BINDIR)/rhnpush-$(PYTHON_VERSION)
+	$(INSTALL_BIN) bin/rhnpush $(PREFIX)$(BINDIR)/rhnpush-$(PYTHON_VERSION)
 	@ln -sfv rhnpush $(PREFIX)$(BINDIR)/rpm2mpm
 
 %.8 : %.sgml

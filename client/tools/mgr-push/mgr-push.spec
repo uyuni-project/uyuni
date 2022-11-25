@@ -84,6 +84,7 @@ BuildRequires:  python-devel
 Requires:       python2-rhn-client-tools
 Requires:       python2-uyuni-common-libs
 Requires:       rhnlib >= 2.8.3
+Requires:       python-debian
 BuildRequires:  python2-rhn-client-tools
 BuildRequires:  python2-uyuni-common-libs
 
@@ -106,6 +107,7 @@ Requires:       rpm-python3
 Requires:       python3-rhn-client-tools
 Requires:       python3-rhnlib >= 2.8.3
 Requires:       python3-uyuni-common-libs
+Requires:       python3-debian
 BuildRequires:  python3-devel
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rpm-macros
@@ -129,7 +131,7 @@ make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{python_sitelib} \
 %endif
 
 %if 0%{?build_py3}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhnpush
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' bin/rhnpush
 install -d $RPM_BUILD_ROOT/%{python3_sitelib}
 make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
     MANDIR=%{_mandir} PYTHON_VERSION=%{python3_version}

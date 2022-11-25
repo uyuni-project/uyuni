@@ -1,0 +1,31 @@
+name: Run unit tests for mgr-push
+
+on:
+  pull_request:
+    paths: 'client/tools/mgr-push/*'
+
+jobs:
+  mgrpush_tests:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pytest pyyaml pyOpenSSL python-debian
+
+      - name: Run mgr-push unit tests
+        run: |
+          export PYTHONPATH=python/:client/rhel/spacewalk-client-tools/src/
+          pytest client/tools/mgr-push/test
+

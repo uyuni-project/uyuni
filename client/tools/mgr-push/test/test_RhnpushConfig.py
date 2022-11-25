@@ -13,7 +13,8 @@
 # in this software or its documentation.
 #
 
-import rhnpush_config
+from rhnpush import rhnpush_config
+from unittest.mock import patch, mock_open
 import unittest
 
 
@@ -34,9 +35,10 @@ class RhnConfigTestCase(unittest.TestCase):
         assert self.userconfig.settings != None and self.defaultconfig.settings != None
 
     def testGetOption(self):
-        a = self.userconfig.get_option('usage')
-        b = self.defaultconfig.get_option('usage')
-        assert a != None and b != None and a == '0' and b == '0'
+        with patch('configparser.ConfigParser.get', return_value='0'):
+            a = self.userconfig.get_option('usage')
+            b = self.defaultconfig.get_option('usage')
+            assert a == '0' and b == '0'
 
     def testKeys(self):
         a = list(self.userconfig.keys())
@@ -52,9 +54,12 @@ class RhnConfigTestCase(unittest.TestCase):
         pass
 
     def testAddConfigAsAttr(self):
-        self.userconfig._add_config_as_attr()
-        self.userconfig._add_config_as_attr()
-        assert self.userconfig.usage != None and self.defaultconfig.usage != None
+        with patch('configparser.ConfigParser.has_section', return_value='0'), \
+                patch('configparser.ConfigParser.get', return_value='0'), \
+                patch('configparser.ConfigParser.options', return_value=['usage']):
+            self.userconfig._add_config_as_attr()
+            self.defaultconfig._add_config_as_attr()
+            assert self.userconfig.usage != None and self.defaultconfig.usage != None
 
 if __name__ == "__main__":
     unittest.main()
