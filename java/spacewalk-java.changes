@@ -1,3 +1,4 @@
+- Honor page size preference in new system lists
 - Fix kickstart for RHEL 9 to not add install command
 - Remove RHEL kickstart types below 6
 - Removed contents of certificates from the web UI logs (bsc#1204715)
