@@ -18,7 +18,7 @@ Tue Nov 15 16:56:13 UTC 2022 - marina.latini@suse.com
     on package operations (bsc#1203580)
   * Perform refresh with packages.pkgupdate state (bsc#1203884)
   * Prevent possible tracebacks on reading postgres opts
-    with suma_minion salt pillar extension module
+    with suma_minion salt pillar extension module (bsc#1205255)
 
 -------------------------------------------------------------------
 Mon Sep 26 12:26:35 UTC 2022 - marina.latini@suse.com
