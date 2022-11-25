@@ -21,7 +21,7 @@ Wed Sep 28 11:14:52 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1
   * Prevent possible tracebacks on reading postgres opts
-    with suma_minion salt pillar extension module
+    with suma_minion salt pillar extension module (bsc#1205255)
   * Fix mgrnet availability check
   * Remove dependence on Kiwi libraries
   * disable always the bootstrap repository also when
