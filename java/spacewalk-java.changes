@@ -1,3 +1,4 @@
+- Removed contents of certificates from the web UI logs (bsc#1204715)
 - Fix kickstart for RHEL 9 to not add install command
 - Remove RHEL kickstart types below 6
 - Don't persist the YAML parser in FormulaFactory (bsc#1205754)
