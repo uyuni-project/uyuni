@@ -10674,18 +10674,18 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         <target>Sie haben eine ungültige Variable angegeben: '{0}'.  Variablen sollten Name/Wert-Paare sein, getrennt durch ein '=' Symbol, wobei jedes Paar durch eine neue Zeile getrennt werden sollte.  Zum Beispiel: 'ip=192.168.0.1'</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>Ihr Kickstart-Vorlage ist fehlerhaft. Bitte überprüfen Sie das '{0}' Tab, um das Problem mit der Vorlage festzustellen.</target>
+        <target state="needs-adaptation">Ihr Kickstart-Vorlage ist fehlerhaft. Bitte überprüfen Sie das '{0}' Tab, um das Problem mit der Vorlage festzustellen.</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the error message below.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>Ihr Kickstart-Vorlage ist fehlerhaft. Bitte überprüfen Sie die Fehlermeldung weiter unten.</target>
+        <target state="needs-adaptation">Ihr Kickstart-Vorlage ist fehlerhaft. Bitte überprüfen Sie die Fehlermeldung weiter unten.</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
