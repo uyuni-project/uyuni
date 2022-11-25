@@ -29,6 +29,7 @@ public class RedhatProductInfo {
     private final Optional<String> centosReleaseContent;
     private final Optional<String> rhelReleaseContent;
     private final Optional<String> whatProvidesRes;
+    private final Optional<String> whatProvidesSLL;
 
     /**
      * @param centosReleaseContentIn centos release content
@@ -39,11 +40,13 @@ public class RedhatProductInfo {
      * @param amazonReleaseContentIn amazon release content
      * @param rockyReleaseContentIn rocky release content
      * @param whatProvidesResIn what provides res result
+     * @param whatProvidesSLLIn what provides sll result
      */
     public RedhatProductInfo(Optional<String> centosReleaseContentIn, Optional<String> rhelReleaseContentIn,
             Optional<String> oracleReleaseContentIn, Optional<String> alibabaReleaseContentIn,
             Optional<String> almaReleaseContentIn, Optional<String> amazonReleaseContentIn,
-            Optional<String> rockyReleaseContentIn, Optional<String> whatProvidesResIn) {
+            Optional<String> rockyReleaseContentIn, Optional<String> whatProvidesResIn,
+            Optional<String> whatProvidesSLLIn) {
         this.rockyReleaseContent = rockyReleaseContentIn;
         this.amazonReleaseContent = amazonReleaseContentIn;
         this.almaReleaseContent = almaReleaseContentIn;
@@ -52,6 +55,7 @@ public class RedhatProductInfo {
         this.centosReleaseContent = centosReleaseContentIn;
         this.rhelReleaseContent = rhelReleaseContentIn;
         this.whatProvidesRes = whatProvidesResIn;
+        this.whatProvidesSLL = whatProvidesSLLIn;
     }
 
     /**
@@ -66,6 +70,7 @@ public class RedhatProductInfo {
         this.centosReleaseContent = Optional.empty();
         this.rhelReleaseContent = Optional.empty();
         this.whatProvidesRes = Optional.empty();
+        this.whatProvidesSLL = Optional.empty();
     }
 
     /**
@@ -122,5 +127,12 @@ public class RedhatProductInfo {
      */
     public Optional<String> getWhatProvidesRes() {
         return whatProvidesRes;
+    }
+
+    /**
+     * @return what provides SLL result
+     */
+    public Optional<String> getWhatProvidesSLL() {
+        return whatProvidesSLL;
     }
 }
