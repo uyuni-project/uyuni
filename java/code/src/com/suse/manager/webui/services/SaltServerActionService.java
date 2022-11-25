@@ -1810,22 +1810,18 @@ public class SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionSummary>> virtGuestMigrateAction(List<MinionSummary> minions,
                                                                            VirtualizationMigrateGuestAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
-                Collectors.toMap(minion -> {
-                    Map<String, Object> pillar = new HashMap<>();
-                    pillar.put("primitive", action.getPrimitive());
-                    pillar.put("target", action.getTarget());
+        Map<String, Object> pillar = Map.of(
+                "primitive", action.getPrimitive(),
+                "target", action.getTarget()
+        );
 
-                    return State.apply(
-                            Collections.singletonList("virt.guest-migrate"),
-                            Optional.of(pillar));
-                }, Collections::singletonList));
-
-        ret.remove(null);
-        return ret;
+        return Map.of(
+                State.apply(Collections.singletonList("virt.guest-migrate"), Optional.of(pillar)),
+                minions
+        );
     }
 
-    private Map<String, Object> virtDomainDiskToPillar(VirtualizationCreateGuestAction action) {
+    private List<Map<String, Object>> virtDomainDiskToPillar(VirtualizationCreateGuestAction action) {
         return IntStream.range(0, action.getDetails().getDisks().size()).mapToObj(i -> {
             VirtualGuestsUpdateActionJson.DiskData disk = action.getDetails().getDisks().get(i);
             Map<String, Object> diskData = new HashMap<>();
@@ -1975,22 +1971,11 @@ public class SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionSummary>> virtPoolRefreshAction(
             List<MinionSummary> minionSummaries, String poolName) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
-                Collectors.toMap(minion -> {
-
-                    Map<String, Object> pillar = new HashMap<>();
-                    pillar.put("pool_name", poolName);
-
-                    return State.apply(
-                            Collections.singletonList("virt.pool-refreshed"),
-                            Optional.of(pillar));
-                },
-                Collections::singletonList
-        ));
-
-        ret.remove(null);
-
-        return ret;
+        return Map.of(
+                State.apply(Collections.singletonList("virt.pool-refreshed"),
+                        Optional.of(Map.of("pool_name", poolName))),
+                minionSummaries
+        );
     }
 
     private String buildKernelOptions(SystemRecord sys, String host) {
@@ -2057,44 +2042,28 @@ public class SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionSummary>> virtPoolStateChangeAction(
             List<MinionSummary> minionSummaries, String poolName, String state) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
-                Collectors.toMap(minion -> {
+        Map<String, Object> pillar = Map.of(
+                "pool_state", state,
+                "pool_name", poolName
+        );
 
-                    Map<String, Object> pillar = new HashMap<>();
-                    pillar.put("pool_state", state);
-                    pillar.put("pool_name", poolName);
-
-                    return State.apply(
-                            Collections.singletonList("virt.pool-statechange"),
-                            Optional.of(pillar));
-                },
-                Collections::singletonList
-        ));
-
-        ret.remove(null);
-
-        return ret;
+        return Map.of(
+                State.apply(Collections.singletonList("virt.pool-statechange"), Optional.of(pillar)),
+                minionSummaries
+        );
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> virtPoolDeleteAction(
             List<MinionSummary> minionSummaries, String poolName, boolean purge) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
-                Collectors.toMap(minion -> {
+        Map<String, Object> pillar = Map.of(
+                "pool_name", poolName,
+                "pool_purge", purge
+        );
 
-                    Map<String, Object> pillar = new HashMap<>();
-                    pillar.put("pool_name", poolName);
-                    pillar.put("pool_purge", purge);
-
-                    return State.apply(
-                            Collections.singletonList("virt.pool-deleted"),
-                            Optional.of(pillar));
-                },
-                Collections::singletonList
-        ));
-
-        ret.remove(null);
-
-        return ret;
+        return Map.of(
+                State.apply(Collections.singletonList("virt.pool-deleted"), Optional.of(pillar)),
+                minionSummaries
+        );
     }
 
     Map<String, Object> virtPoolSourceToPillar(VirtualizationPoolCreateAction action) {
@@ -2180,44 +2149,28 @@ public class SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionSummary>> virtVolumeDeleteAction(
             List<MinionSummary> minionSummaries, String poolName, String volumeName) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
-                Collectors.toMap(minion -> {
+        Map<String, Object> pillar = Map.of(
+                "pool_name", poolName,
+                "volume_name", volumeName
+        );
 
-                    Map<String, Object> pillar = new HashMap<>();
-                    pillar.put("pool_name", poolName);
-                    pillar.put("volume_name", volumeName);
-
-                    return State.apply(
-                            Collections.singletonList("virt.volume-deleted"),
-                            Optional.of(pillar));
-                },
-                Collections::singletonList
-        ));
-
-        ret.remove(null);
-
-        return ret;
+        return Map.of(
+                State.apply(Collections.singletonList("virt.volume-deleted"), Optional.of(pillar)),
+                minionSummaries
+        );
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> virtNetworkStateChangeAction(
             List<MinionSummary> minionSummaries, String networkName, String state) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
-                Collectors.toMap(minion -> {
+        Map<String, Object> pillar = Map.of(
+                "network_state", state,
+                "network_name", networkName
+        );
 
-                            Map<String, Object> pillar = new HashMap<>();
-                            pillar.put("network_state", state);
-                            pillar.put("network_name", networkName);
-
-                            return State.apply(
-                                    Collections.singletonList("virt.network-statechange"),
-                                    Optional.of(pillar));
-                        },
-                        Collections::singletonList
-                ));
-
-        ret.remove(null);
-
-        return ret;
+        return Map.of(
+                State.apply(Collections.singletonList("virt.network-statechange"), Optional.of(pillar)),
+                minionSummaries
+        );
     }
 
 
