@@ -1108,10 +1108,14 @@ public class SaltService implements SystemQuery, SaltApi {
                     Optional<String> whatProvidesRes = Optional
                             .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
                             .getChanges(CmdResult.class).getStdout());
+                    Optional<String> whatProvidesSLL = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLL_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
 
                     return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent,
                             oracleReleaseContent, alibabaReleaseContent, almaReleaseContent,
-                            amazonReleaseContent, rockyReleaseContent, whatProvidesRes);
+                            amazonReleaseContent, rockyReleaseContent, whatProvidesRes,
+                            whatProvidesSLL);
                 });
     }
 
