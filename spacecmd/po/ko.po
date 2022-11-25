@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-18 14:27+0100\n"
-"PO-Revision-Date: 2022-11-11 20:13+0000\n"
+"PO-Revision-Date: 2022-11-22 02:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-2/"
 "ko/>\n"
@@ -2012,7 +2012,7 @@ msgstr "사용법: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
 #: ../src/spacecmd/errata.py:553 ../src/spacecmd/scap.py:180
 msgid "Example:"
-msgstr "예:"
+msgstr "예는 다음과 같습니다."
 
 #: ../src/spacecmd/filepreservation.py:42
 msgid "filepreservation_list: List all file preservations"

@@ -2841,11 +2841,11 @@ and try again.
         <target>通知フィルターを作成</target>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
+        <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>キックスタート/Autoyastファイルをアップロード</target>
+        <target state="needs-adaptation">キックスタート/Autoyastファイルをアップロード</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>

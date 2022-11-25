@@ -2844,11 +2844,11 @@ and try again.
         <target state="translated">创建通知过滤器</target>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
+        <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="translated">上载 Kickstart/Autoyast 文件</target>
+        <target state="needs-adaptation">上载 Kickstart/Autoyast 文件</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
