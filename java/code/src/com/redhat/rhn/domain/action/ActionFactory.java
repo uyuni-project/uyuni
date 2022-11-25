@@ -1036,6 +1036,12 @@ public class ActionFactory extends HibernateFactory {
             lookupActionStatusByName("Failed");
 
     /**
+     * All the possible action statuses
+     */
+    public static final List<ActionStatus> ALL_STATUSES = List.of(STATUS_QUEUED, STATUS_PICKED_UP, STATUS_COMPLETED,
+        STATUS_FAILED);
+
+    /**
      * The constant representing Package Refresh List action.  [ID:1]
      */
     public static final ActionType TYPE_PACKAGES_REFRESH_LIST =

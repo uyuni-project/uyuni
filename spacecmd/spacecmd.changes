@@ -1,8 +1,17 @@
-- Fix dict_keys not supporting indexing in systems_setconfigchannelorger
-- Improve Proxy FQDN hint message
-- Added a warning message for traditional stack deprecation
-- Stop always showing help for valid proxy_container_config calls
-- Remove "Undefined return code" from debug messages (bsc#1203283)
+- Added two missing options to schedule product migration: allow-vendor-change
+  and remove-products-without-successor (bsc#1204126)
+- Changed schedule product migration to use the correct API method
+- Change default port of "Containerized Proxy configuration" 8022 (#19543)
+
+-------------------------------------------------------------------
+Tue Nov 15 16:46:47 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.16-1
+  * Fix dict_keys not supporting indexing in systems_setconfigchannelorger
+  * Improve Proxy FQDN hint message
+  * Added a warning message for traditional stack deprecation
+  * Stop always showing help for valid proxy_container_config calls
+  * Remove "Undefined return code" from debug messages (bsc#1203283)
 
 -------------------------------------------------------------------
 Mon Sep 26 12:29:44 UTC 2022 - marina.latini@suse.com

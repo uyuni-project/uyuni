@@ -1,8 +1,14 @@
-- add bootstrap repository definitions for SLE-Micro 5.2 and 5.3
-- add bootstrap repo definitions for oracle, alma and rocky linux 9
-- add bootstrap repo data for SUSE Liberty Linux 9
-- add python3-extras to bootstrap repo as dependency of
-  python3-libxml2 (bsc#1204437)
+- fix tools channel detection on Uyuni
+
+-------------------------------------------------------------------
+Tue Nov 15 16:41:13 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.20-1
+  * add bootstrap repository definitions for SLE-Micro 5.2 and 5.3
+  * add bootstrap repo definitions for oracle, alma and rocky linux 9
+  * add bootstrap repo data for SUSE Liberty Linux 9
+  * add python3-extras to bootstrap repo as dependency of
+    python3-libxml2 (bsc#1204437)
 
 -------------------------------------------------------------------
 Mon Sep 26 12:21:21 UTC 2022 - marina.latini@suse.com

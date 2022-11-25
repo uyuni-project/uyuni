@@ -7,6 +7,8 @@
 - features/build_validation/init_clients/centos7_ssh_minion.feature
 - features/build_validation/init_clients/rocky8_minion.feature
 - features/build_validation/init_clients/rocky8_ssh_minion.feature
+- features/build_validation/init_clients/rocky9_minion.feature
+- features/build_validation/init_clients/rocky9_ssh_minion.feature
 
 - features/build_validation/init_clients/sle12sp4_client.feature
 - features/build_validation/init_clients/sle12sp4_minion.feature
@@ -45,5 +47,6 @@
 - features/build_validation/init_clients/debian11_ssh_minion.feature
 
 - features/build_validation/init_clients/opensuse154arm_minion.feature
+- features/build_validation/init_clients/opensuse154arm_ssh_minion.feature
 
 ## Init clients END ###

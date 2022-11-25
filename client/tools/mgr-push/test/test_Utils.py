@@ -14,7 +14,7 @@
 #
 
 import unittest
-import utils
+from rhnpush import utils
 
 
 class TestObj1:

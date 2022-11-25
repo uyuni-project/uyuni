@@ -62,6 +62,8 @@ if $build_validation
   $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $rocky8_minion = twopence_init("ssh:#{ENV['ROCKY8_MINION']}") if ENV['ROCKY8_MINION']
   $rocky8_ssh_minion = twopence_init("ssh:#{ENV['ROCKY8_SSHMINION']}") if ENV['ROCKY8_SSHMINION']
+  $rocky9_minion = twopence_init("ssh:#{ENV['ROCKY9_MINION']}") if ENV['ROCKY9_MINION']
+  $rocky9_ssh_minion = twopence_init("ssh:#{ENV['ROCKY9_SSHMINION']}") if ENV['ROCKY9_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
@@ -74,9 +76,10 @@ if $build_validation
   $debian10_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN10_SSHMINION']}") if ENV['DEBIAN10_SSHMINION']
   $debian11_minion = twopence_init("ssh:#{ENV['DEBIAN11_MINION']}") if ENV['DEBIAN11_MINION']
   $debian11_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN11_SSHMINION']}") if ENV['DEBIAN11_SSHMINION']
+  $opensuse154arm_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_MINION']}") if ENV['OPENSUSE154ARM_MINION']
+  $opensuse154arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_SSH_MINION']}") if ENV['OPENSUSE154ARM_SSH_MINION']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp4_buildhost = twopence_init("ssh:#{ENV['SLE15SP4_BUILDHOST']}") if ENV['SLE15SP4_BUILDHOST']
-  $opensuse154arm_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_MINION']}") if ENV['OPENSUSE154ARM_MINION']
   $nodes += [$sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
              $sle15_client, $sle15_minion, $sle15_ssh_minion,
@@ -86,15 +89,16 @@ if $build_validation
              $sle15sp4_client, $sle15sp4_minion, $sle15sp4_ssh_minion,
              $centos7_client, $centos7_minion, $centos7_ssh_minion,
              $rocky8_minion, $rocky8_ssh_minion,
+             $rocky9_minion, $rocky9_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
              $ubuntu2204_minion, $ubuntu2204_ssh_minion,
              $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $debian11_minion, $debian11_ssh_minion,
+             $opensuse154arm_minion, $opensuse154arm_ssh_minion,
              $sle12sp5_buildhost,
-             $sle15sp4_buildhost,
-             $opensuse154arm_minion]
+             $sle15sp4_buildhost]
 else
   # Define twopence objects for QA environment
   $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
@@ -267,6 +271,7 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'deblike_minion'            => $deblike_minion,
                   'build_host'                => $build_host,
                   'kvm_server'                => $kvm_server,
+                  'sle12sp4_client'           => $sle12sp4_client,
                   'sle12sp4_minion'           => $sle12sp4_minion,
                   'sle12sp4_ssh_minion'       => $sle12sp4_ssh_minion,
                   'sle12sp5_client'           => $sle12sp5_client,
@@ -290,8 +295,10 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'centos7_client'            => $centos7_client,
                   'centos7_minion'            => $centos7_minion,
                   'centos7_ssh_minion'        => $centos7_ssh_minion,
-                  'rocky8_minion'            => $rocky8_minion,
-                  'rocky8_ssh_minion'        => $rocky8_ssh_minion,
+                  'rocky8_minion'             => $rocky8_minion,
+                  'rocky8_ssh_minion'         => $rocky8_ssh_minion,
+                  'rocky9_minion'             => $rocky9_minion,
+                  'rocky9_ssh_minion'         => $rocky9_ssh_minion,
                   'ubuntu1804_minion'         => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,
@@ -304,9 +311,10 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'debian10_ssh_minion'       => $debian10_ssh_minion,
                   'debian11_minion'           => $debian11_minion,
                   'debian11_ssh_minion'       => $debian11_ssh_minion,
+                  'opensuse154arm_minion'     => $opensuse154arm_minion,
+                  'opensuse154arm_ssh_minion' => $opensuse154arm_ssh_minion,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
-                  'sle15sp4_buildhost'        => $sle15sp4_buildhost,
-                  'opensuse154arm_minion'     => $opensuse154arm_minion }
+                  'sle15sp4_buildhost'        => $sle15sp4_buildhost }
 
 # This is the inverse of `node_by_host`.
 $host_by_node = {}

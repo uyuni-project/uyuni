@@ -1,28 +1,58 @@
-- Manage reboot in transactional update action chain (bsc#1201476)
-- Enable monitoring for RHEL 9 Salt clients
-- Optimize performance of config channels operations for UI and API (bsc#1204029)
-- Don't add the same channel twice in the System config addChannel API (bsc#1204029)
-- Optimize action chain processing on job return event (bsc#1203532)
-- Re-calculate salt event queue numbers on restart
-- Improved reboot needed handling for SLE Micro
-- Check if system has all formulas correctly assigned
-  (bsc#1201607)
-- Remove group formula assignements and data on group delete
-  (bsc#1201606)
-- Process salt events in FIFO order (bsc#1203532)
-- Remove 'SSM' column text where not applicable (bsc#1203588)
-- Fix rendering of ssm/MigrateSystems page (bsc#1204651)
-- Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
-- Upgrade Bootstrap to 3.4.1
-- Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
-- Improve Amazon EC2/Nitro detection (bsc#1203685)
-- Add channel availability check for product migration (bsc#1200296)
-- Deny packages from older module metadata when building CLM projects (bsc#1201893)
-- fix xmlrpc call randomly failing with translation error (bsc#1203633)
-- Do not explicitely remove old pillars on minion rename (bsc#1203451)
-- Fix out of memory error when building a CLM project (bsc#1202217)
-- Added a warning message for traditional stack deprecation
-- Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
+- Don't persist the YAML parser in FormulaFactory (bsc#1205754)
+- format results for package, errata and image build actions in
+  system history similar to state apply results
+- check for NULL in DEB package install size value
+- adapt permissions of temporary ssh key directory
+- Fixed traditional stack warning message to be displayed only when the system
+  has enterprise entitlement (bsc#1205350)
+- Remove invalid errata selection after patch installation (bsc#1204235)
+- Ignore insert conflicts during reporting database update (bsc#1202150)
+- Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
+- Run only minion actions that are in the pending status (bsc#1205012)
+- Allow usage of one FQDN to deploy containerized proxy in VM (#19586)
+- Migrate formulas with default values to database (bsc#1204932)
+
+-------------------------------------------------------------------
+Fri Nov 18 10:43:27 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.43-1
+  * Changed proxy settings retrieval to not include password (bsc#1205339)
+
+-------------------------------------------------------------------
+Wed Nov 16 12:02:46 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.42-1
+  * Update jackson-databind version
+
+-------------------------------------------------------------------
+Tue Nov 15 16:53:52 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.41-1
+  * Manage reboot in transactional update action chain (bsc#1201476)
+  * Enable monitoring for RHEL 9 Salt clients
+  * Optimize performance of config channels operations for UI and API (bsc#1204029)
+  * Don't add the same channel twice in the System config addChannel API (bsc#1204029)
+  * Optimize action chain processing on job return event (bsc#1203532)
+  * Re-calculate salt event queue numbers on restart
+  * Improved reboot needed handling for SLE Micro
+  * Check if system has all formulas correctly assigned
+    (bsc#1201607)
+  * Remove group formula assignements and data on group delete
+    (bsc#1201606)
+  * Process salt events in FIFO order (bsc#1203532)
+  * Remove 'SSM' column text where not applicable (bsc#1203588)
+  * Fix rendering of ssm/MigrateSystems page (bsc#1204651)
+  * Pass mgr_sudo_user pillar on salt ssh client cleanup (bsc#1202093)
+  * Upgrade Bootstrap to 3.4.1
+  * Refresh pillar data for the assigned systems when a CLM channel is built (bsc#1200169)
+  * Improve Amazon EC2/Nitro detection (bsc#1203685)
+  * Add channel availability check for product migration (bsc#1200296)
+  * Deny packages from older module metadata when building CLM projects (bsc#1201893)
+  * fix xmlrpc call randomly failing with translation error (bsc#1203633)
+  * Do not explicitely remove old pillars on minion rename (bsc#1203451)
+  * Fix out of memory error when building a CLM project (bsc#1202217)
+  * Added a warning message for traditional stack deprecation
+  * Fix hardware update where there is no DNS FQDN changes (bsc#1203611)
 
 -------------------------------------------------------------------
 Fri Nov 04 16:03:03 CET 2022 - jgonzalez@suse.com

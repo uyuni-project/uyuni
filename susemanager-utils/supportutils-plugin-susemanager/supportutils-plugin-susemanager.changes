@@ -1,4 +1,8 @@
-- Added dependency for XML Simple
+-------------------------------------------------------------------
+Tue Nov 15 16:43:35 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.5-1
+  * Added dependency for XML Simple
 
 -------------------------------------------------------------------
 Fri Mar 11 15:32:19 CET 2022 - jgonzalez@suse.com

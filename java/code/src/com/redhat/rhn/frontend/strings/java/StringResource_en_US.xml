@@ -2446,7 +2446,7 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
+        <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -7636,6 +7636,12 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.errata.duplicateerrata" xml:space="preserve">
         <source>Patch already exists with advisory {0}</source>
+      </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelpickedup"  xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+      </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild"  xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
       </trans-unit>
       <trans-unit id="api.system.invalidsnapshot" xml:space="preserve">
         <source>Invalid snapshot specified: {0}</source>

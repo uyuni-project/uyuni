@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
  *
  *
  */
-public class ChannelRepodata extends RhnQueueJob {
+public class ChannelRepodata extends RhnQueueJob<ChannelRepodataDriver> {
 
     public static final String DISPLAY_NAME = "channel_repodata";
     private static Logger log = null;
@@ -41,7 +41,7 @@ public class ChannelRepodata extends RhnQueueJob {
     }
 
     @Override
-    protected Class getDriverClass() {
+    protected Class<ChannelRepodataDriver> getDriverClass() {
         return ChannelRepodataDriver.class;
     }
 

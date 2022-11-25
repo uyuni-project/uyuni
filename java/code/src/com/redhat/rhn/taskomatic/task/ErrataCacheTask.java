@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * ErrataCacheTask
  */
-public class ErrataCacheTask extends RhnQueueJob {
+public class ErrataCacheTask extends RhnQueueJob<ErrataCacheDriver> {
 
     public static final String DISPLAY_NAME = "errata_cache";
     private static Logger log = null;
@@ -42,7 +42,7 @@ public class ErrataCacheTask extends RhnQueueJob {
     }
 
     @Override
-    protected Class getDriverClass() {
+    protected Class<ErrataCacheDriver> getDriverClass() {
         return ErrataCacheDriver.class;
     }
 
