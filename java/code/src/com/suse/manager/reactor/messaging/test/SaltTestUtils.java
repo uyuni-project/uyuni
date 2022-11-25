@@ -31,17 +31,26 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.regex.Pattern;
 
 /**
  * Provides utility functions to use in salt-related unit tests.
@@ -165,6 +174,56 @@ public class SaltTestUtils {
         return Matchers.allOf(
                 Matchers.hasProperty("moduleName", equalTo(module)),
                 Matchers.hasProperty("functionName", equalTo(func)));
+    }
+
+    /**
+     * Simple in-memory appender to capture log events on a given logger
+     */
+    public static class TestLogAppender extends AbstractAppender {
+
+        private final List<LogEvent> log;
+
+        public TestLogAppender(String name, List<LogEvent> testLog) {
+            super(name, null, null);
+            this.log = testLog;
+        }
+
+        public boolean matchInLogs(String regex) {
+            var pattern = Pattern.compile(regex);
+            return log
+                    .stream()
+                    .anyMatch(e -> pattern.matcher(e.getMessage().getFormattedMessage()).find());
+        }
+
+        public List<LogEvent> getLog() {
+            return log;
+        }
+
+        @Override
+        public void append(LogEvent logEvent) {
+            log.add(logEvent);
+        }
+
+    }
+
+    /**
+     * Injects a simple in-memory appender to capture log events on a given logger
+     * @param cls the class to associate the new appender with
+     * @return the in-memory logs appender
+     */
+    public static TestLogAppender enableTestLogging(Class<?> cls) {
+        TestLogAppender listAppender = new TestLogAppender("testAppender", new ArrayList<>());
+        listAppender.start();
+
+        LoggerContext loggerContext = (LoggerContext) LogManager.getContext(cls.getClassLoader(), false);
+        Configuration configuration = loggerContext.getConfiguration();
+        configuration.addAppender(listAppender);
+
+        LoggerConfig rootLoggerConfig = configuration.getLoggerConfig("");
+        rootLoggerConfig.removeAppender("rootAppender");
+        rootLoggerConfig.addAppender(listAppender, Level.ERROR, null);
+
+        return listAppender;
     }
 
     private SaltTestUtils() {
