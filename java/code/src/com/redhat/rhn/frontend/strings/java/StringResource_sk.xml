@@ -2851,8 +2851,8 @@ a skúste to znova.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
-        <target>Nahrať súbor Kickstart/Autoyast</target>
+        <source>Upload Kickstart/AutoYaST File</source>
+        <target state="needs-adaptation">Nahrať súbor Kickstart/Autoyast</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
