@@ -1089,3 +1089,19 @@ end
 Then(/^I should see the text "(.*?)" in the (Operating System|Architecture|Channel Label) field/) do |text, field|
   page.has_field?(text, with: field)
 end
+
+Then(/^I should see the correct timestamp for task "([^"]*)"/) do |task_name|
+  now = Time.now
+  execute_script 'window.stop()'
+  # find row with corresponding task name
+  page.find_all(:xpath, "//table[@class='table table-responsive']//tr").each do |tr|
+    next unless tr.has_text?(task_name)
+    # if task name is found, iterate through the columns to find the timestamp
+    page.find_all(:xpath, "//table[@class='table table-responsive']//td").each do |td|
+      # if a text matching the format xx:xx is found, get and save the text
+      next unless td.text.match(/\d{2}:\d{2}/)
+      # Text from cell, parsed to a Time object must match now +- 5 seconds
+      Time.parse(td.text).to_i.between?(now.to_i - 5, now.to_i + 5)
+    end
+  end
+end
