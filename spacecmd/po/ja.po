@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-09 10:12+0100\n"
+"POT-Creation-Date: 2022-11-25 16:40+0100\n"
 "PO-Revision-Date: 2022-11-11 09:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
@@ -2140,7 +2140,7 @@ msgstr "これらのシステムを削除します [y/N]:"
 #: ../src/spacecmd/group.py:164 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:136
 #: ../src/spacecmd/ssm.py:186 ../src/spacecmd/system.py:4552
-#: ../src/spacecmd/system.py:4635
+#: ../src/spacecmd/system.py:4639
 msgid "No systems found"
 msgstr "システムが見つかりませんでした"
 
@@ -4175,7 +4175,7 @@ msgstr ""
 "proxy_container_config: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:33
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL ROOT_CA CRT KEY\n"
@@ -4196,7 +4196,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
 "'config.tar.gz'\n"
-"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
 "            certicate in PEM format. May be provided multiple times.\n"
 "\n"
@@ -4237,7 +4237,7 @@ msgstr ""
 "イルを返します"
 
 #: ../src/spacecmd/proxy.py:90
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL\n"
@@ -4254,7 +4254,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
 "'config.tar.gz'\n"
-"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  --ca-crt path to the certificate of the CA to use to generate a new proxy "
 "certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
@@ -6870,7 +6870,7 @@ msgstr "スクリプトの内容"
 
 #: ../src/spacecmd/system.py:538 ../src/spacecmd/system.py:841
 #: ../src/spacecmd/system.py:969 ../src/spacecmd/system.py:1121
-#: ../src/spacecmd/system.py:1131 ../src/spacecmd/system.py:4664
+#: ../src/spacecmd/system.py:1131 ../src/spacecmd/system.py:4671
 #, python-format
 msgid "Failed to schedule %s"
 msgstr "%s をスケジュールする処理が失敗しました"
@@ -8375,6 +8375,7 @@ msgstr ""
 "system_scheduleproductmigration: システムに対して製品移行をスケジュールする。"
 
 #: ../src/spacecmd/system.py:4604
+#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8384,6 +8385,10 @@ msgid ""
 "    Options: \n"
 "        -s START_TIME \n"
 "        -d pass this flag, if you want to do a dry run \n"
+"        --allow-vendor-change pass this flag if you want to allow vendor "
+"change \n"
+"        -r pass this flag if you want to remove remove products which have "
+"no successors \n"
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
@@ -8399,23 +8404,28 @@ msgstr ""
 "        -c (子チャンネル) (カンマ区切りで子チャンネルのラベルを指定する。空白"
 "は使用しないこと)"
 
-#: ../src/spacecmd/system.py:4654
+#: ../src/spacecmd/system.py:4658
 msgid "Cannot find system "
 msgstr "システム "
 
-#: ../src/spacecmd/system.py:4654
+#: ../src/spacecmd/system.py:4658
 msgid ". Skipping it."
 msgstr "が見つかりません。読み飛ばしています。"
 
-#: ../src/spacecmd/system.py:4657
+#: ../src/spacecmd/system.py:4661
 msgid "Scheduling Product migration for system "
 msgstr "システムに対して製品移行をスケジュールしています "
 
 #: ../src/spacecmd/system.py:4662
+#, fuzzy
+msgid "Migration target "
+msgstr "  移行ターゲットがありません"
+
+#: ../src/spacecmd/system.py:4669
 msgid "Scheduled action ID: "
 msgstr "スケジュールアクション ID: "
 
-#: ../src/spacecmd/system.py:4672
+#: ../src/spacecmd/system.py:4679
 msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
@@ -8423,7 +8433,7 @@ msgstr ""
 "system_bootstrap: SaltまたはSalt SSHを介した管理のためにシステムをブートスト"
 "ラップ。"
 
-#: ../src/spacecmd/system.py:4673
+#: ../src/spacecmd/system.py:4680
 msgid ""
 "usage: bootstrap [options]\n"
 "\n"
@@ -8455,66 +8465,66 @@ msgstr ""
 "        --saltssh\n"
 "        "
 
-#: ../src/spacecmd/system.py:4707
+#: ../src/spacecmd/system.py:4714
 msgid "Hostname:"
 msgstr "ホスト名:"
 
-#: ../src/spacecmd/system.py:4708
+#: ../src/spacecmd/system.py:4715
 msgid "Port [22]:"
 msgstr "ポート[22]:"
 
-#: ../src/spacecmd/system.py:4711
+#: ../src/spacecmd/system.py:4718
 msgid "SSH User [root]:"
 msgstr "SSHユーザ[root]:"
 
-#: ../src/spacecmd/system.py:4714
+#: ../src/spacecmd/system.py:4721
 msgid "SSH Password:"
 msgstr "SSHパスワード:"
 
-#: ../src/spacecmd/system.py:4716
+#: ../src/spacecmd/system.py:4723
 msgid "SSH Private Key File:"
 msgstr "SSH機密鍵ファイル:"
 
-#: ../src/spacecmd/system.py:4717
+#: ../src/spacecmd/system.py:4724
 msgid "SSH Private Key Password:"
 msgstr "SSH機密鍵パスワード:"
 
-#: ../src/spacecmd/system.py:4720
+#: ../src/spacecmd/system.py:4727
 msgid "Activation Key:"
 msgstr "アクティベーションキー:"
 
-#: ../src/spacecmd/system.py:4723
+#: ../src/spacecmd/system.py:4730
 msgid "Reactivation Key:"
 msgstr "再アクティベーションキー:"
 
-#: ../src/spacecmd/system.py:4724
+#: ../src/spacecmd/system.py:4731
 msgid "Proxy System ID:"
 msgstr "プロキシシステムID:"
 
-#: ../src/spacecmd/system.py:4726
+#: ../src/spacecmd/system.py:4733
 msgid "Manage with Salt SSH"
 msgstr "Salt SSHで管理"
 
-#: ../src/spacecmd/system.py:4731
+#: ../src/spacecmd/system.py:4738
 msgid "Hostname must be provided"
 msgstr "ホスト名を指定する必要があります"
 
-#: ../src/spacecmd/system.py:4734
+#: ../src/spacecmd/system.py:4741
 msgid "Either a SSH Password or a private key must be provided"
 msgstr "SSHパスワードまたは機密鍵のいずれかを指定する必要があります"
 
-#: ../src/spacecmd/system.py:4742
+#: ../src/spacecmd/system.py:4749
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr ""
 "サーバは、ブートストラップ時に再アクティベーションキーをサポートしていません"
 
-#: ../src/spacecmd/system.py:4749
+#: ../src/spacecmd/system.py:4756
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr ""
 "「{}」をブートストラップしています。 これにはしばらく時間がかかる場合がありま"
 "す。"
 
-#: ../src/spacecmd/system.py:4763
+#: ../src/spacecmd/system.py:4770
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"

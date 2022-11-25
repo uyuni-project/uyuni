@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-09 10:12+0100\n"
+"POT-Creation-Date: 2022-11-25 16:40+0100\n"
 "PO-Revision-Date: 2020-10-16 10:51+0200\n"
 "Last-Translator: Pascal Arlt <parlt@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacecmd/es/"
@@ -1955,7 +1955,7 @@ msgstr ""
 #: ../src/spacecmd/group.py:164 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:136
 #: ../src/spacecmd/ssm.py:186 ../src/spacecmd/system.py:4552
-#: ../src/spacecmd/system.py:4635
+#: ../src/spacecmd/system.py:4639
 msgid "No systems found"
 msgstr ""
 
@@ -3834,7 +3834,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
 "'config.tar.gz'\n"
-"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
 "            certicate in PEM format. May be provided multiple times.\n"
 "\n"
@@ -3867,7 +3867,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
 "'config.tar.gz'\n"
-"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  --ca-crt path to the certificate of the CA to use to generate a new proxy "
 "certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
@@ -6215,7 +6215,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:538 ../src/spacecmd/system.py:841
 #: ../src/spacecmd/system.py:969 ../src/spacecmd/system.py:1121
-#: ../src/spacecmd/system.py:1131 ../src/spacecmd/system.py:4664
+#: ../src/spacecmd/system.py:1131 ../src/spacecmd/system.py:4671
 #, python-format
 msgid "Failed to schedule %s"
 msgstr ""
@@ -7563,33 +7563,41 @@ msgid ""
 "    Options: \n"
 "        -s START_TIME \n"
 "        -d pass this flag, if you want to do a dry run \n"
+"        --allow-vendor-change pass this flag if you want to allow vendor "
+"change \n"
+"        -r pass this flag if you want to remove remove products which have "
+"no successors \n"
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4654
+#: ../src/spacecmd/system.py:4658
 msgid "Cannot find system "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4654
+#: ../src/spacecmd/system.py:4658
 msgid ". Skipping it."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4657
+#: ../src/spacecmd/system.py:4661
 msgid "Scheduling Product migration for system "
 msgstr ""
 
 #: ../src/spacecmd/system.py:4662
+msgid "Migration target "
+msgstr ""
+
+#: ../src/spacecmd/system.py:4669
 msgid "Scheduled action ID: "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4672
+#: ../src/spacecmd/system.py:4679
 msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4673
+#: ../src/spacecmd/system.py:4680
 msgid ""
 "usage: bootstrap [options]\n"
 "\n"
@@ -7607,63 +7615,63 @@ msgid ""
 "        "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4707
+#: ../src/spacecmd/system.py:4714
 msgid "Hostname:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4708
+#: ../src/spacecmd/system.py:4715
 msgid "Port [22]:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4711
+#: ../src/spacecmd/system.py:4718
 msgid "SSH User [root]:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4714
+#: ../src/spacecmd/system.py:4721
 msgid "SSH Password:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4716
+#: ../src/spacecmd/system.py:4723
 msgid "SSH Private Key File:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4717
+#: ../src/spacecmd/system.py:4724
 msgid "SSH Private Key Password:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4720
+#: ../src/spacecmd/system.py:4727
 msgid "Activation Key:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4723
+#: ../src/spacecmd/system.py:4730
 msgid "Reactivation Key:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4724
+#: ../src/spacecmd/system.py:4731
 msgid "Proxy System ID:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4726
+#: ../src/spacecmd/system.py:4733
 msgid "Manage with Salt SSH"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4731
+#: ../src/spacecmd/system.py:4738
 msgid "Hostname must be provided"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4734
+#: ../src/spacecmd/system.py:4741
 msgid "Either a SSH Password or a private key must be provided"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4742
+#: ../src/spacecmd/system.py:4749
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4749
+#: ../src/spacecmd/system.py:4756
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4763
+#: ../src/spacecmd/system.py:4770
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"
