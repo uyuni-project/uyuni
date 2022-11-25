@@ -1825,109 +1825,108 @@ public class SaltServerActionService {
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionSummary>> virtCreateAction(List<MinionSummary> minions,
-            VirtualizationCreateGuestAction action) {
-        String state = action.getUuid() != null ? "virt.update-vm" : "virt.create-vm";
+    private Map<String, Object> virtDomainDiskToPillar(VirtualizationCreateGuestAction action) {
+        return IntStream.range(0, action.getDetails().getDisks().size()).mapToObj(i -> {
+            VirtualGuestsUpdateActionJson.DiskData disk = action.getDetails().getDisks().get(i);
+            Map<String, Object> diskData = new HashMap<>();
+            String diskName = "system";
+            if (i > 0) {
+                diskName = String.format("disk-%d", i);
+            }
+            diskData.put("name", diskName);
+            diskData.put("format", disk.getFormat());
+            if (disk.getSourceFile() != null || disk.getDevice().equals("cdrom")) {
+                diskData.put("source_file", disk.getSourceFile());
+            }
+            diskData.put("pool", disk.getPool());
+            diskData.put("image", disk.getTemplate());
+            if (disk.getSize() != 0) {
+                diskData.put("size", disk.getSize() * 1024);
+            }
+            diskData.put("model", disk.getBus());
+            diskData.put("device", disk.getDevice());
 
+            return diskData;
+        }).collect(Collectors.toList());
+    }
+
+    private Map<String, Object> virtDomainActionToPillar(VirtualizationCreateGuestAction action) {
         // Prepare the salt FS with kernel / initrd and pass params to kernel
         String cobblerSystemName = action.getDetails().getCobblerSystem();
         Map<String, String> bootParams = cobblerSystemName != null ?
                 prepareCobblerBoot(action.getDetails().getKickstartHost(), cobblerSystemName) :
                 null;
 
-        Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
-                Collectors.toMap(minion -> {
-                    // Some of these pillar data will be useless for update-vm, but they will just be ignored.
-                    Map<String, Object> pillar = new HashMap<>();
-                    pillar.put("name", action.getDetails().getName());
-                    pillar.put("vcpus", action.getDetails().getVcpu());
-                    pillar.put("mem", action.getDetails().getMemory());
-                    pillar.put("vm_type", action.getDetails().getType());
-                    pillar.put("os_type", action.getDetails().getOsType());
-                    pillar.put("arch", action.getDetails().getArch());
-                    pillar.put("cluster_definitions", action.getDetails().getClusterDefinitions());
-                    pillar.put("template", action.getDetails().getTemplate());
+        // Some of these pillar data will be useless for update-vm, but they will just be ignored.
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("name", action.getDetails().getName());
+        pillar.put("vcpus", action.getDetails().getVcpu());
+        pillar.put("mem", action.getDetails().getMemory());
+        pillar.put("vm_type", action.getDetails().getType());
+        pillar.put("os_type", action.getDetails().getOsType());
+        pillar.put("arch", action.getDetails().getArch());
+        pillar.put("cluster_definitions", action.getDetails().getClusterDefinitions());
+        pillar.put("template", action.getDetails().getTemplate());
 
-                    if (action.getDetails().isUefi()) {
-                        Map<String, Object> uefiData = new HashMap<>();
-                        if (action.getDetails().getUefiLoader() == null) {
-                            uefiData.put("efi", true);
-                        }
-                        else {
-                            uefiData.put("loader", action.getDetails().getUefiLoader());
-                            uefiData.put("nvram", action.getDetails().getNvramTemplate());
-                        }
-                        pillar.put("uefi", uefiData);
-                    }
+        if (action.getDetails().isUefi()) {
+            Map<String, Object> uefiData = new HashMap<>();
+            if (action.getDetails().getUefiLoader() == null) {
+                uefiData.put("efi", true);
+            }
+            else {
+                uefiData.put("loader", action.getDetails().getUefiLoader());
+                uefiData.put("nvram", action.getDetails().getNvramTemplate());
+            }
+            pillar.put("uefi", uefiData);
+        }
 
-                    // No need to handle copying the image to the minion, salt does it for us
-                    if (!action.getDetails().getDisks().isEmpty() || action.getDetails().isRemoveDisks()) {
-                        pillar.put("disks", IntStream.range(0, action.getDetails().getDisks().size()).mapToObj(i -> {
-                            VirtualGuestsUpdateActionJson.DiskData disk = action.getDetails().getDisks().get(i);
-                            Map<String, Object> diskData = new HashMap<>();
-                            String diskName = "system";
-                            if (i > 0) {
-                                diskName = String.format("disk-%d", i);
-                            }
-                            diskData.put("name", diskName);
-                            diskData.put("format", disk.getFormat());
-                            if (disk.getSourceFile() != null || disk.getDevice().equals("cdrom")) {
-                                diskData.put("source_file", disk.getSourceFile());
-                            }
-                            diskData.put("pool", disk.getPool());
-                            diskData.put("image", disk.getTemplate());
-                            if (disk.getSize() != 0) {
-                                diskData.put("size", disk.getSize() * 1024);
-                            }
-                            diskData.put("model", disk.getBus());
-                            diskData.put("device", disk.getDevice());
+        // No need to handle copying the image to the minion, salt does it for us
+        if (!action.getDetails().getDisks().isEmpty() || action.getDetails().isRemoveDisks()) {
+            pillar.put("disks", virtDomainDiskToPillar(action));
+        }
 
-                            return diskData;
-                        }).collect(Collectors.toList()));
-                    }
+        if (!action.getDetails().getInterfaces().isEmpty() || action.getDetails().isRemoveInterfaces()) {
+            pillar.put("interfaces",
+                    IntStream.range(0, action.getDetails().getInterfaces().size()).mapToObj(i -> {
+                        VirtualGuestsUpdateActionJson.InterfaceData iface = action.getDetails()
+                                .getInterfaces().get(i);
+                        Map<String, Object> ifaceData = new HashMap<>();
+                        ifaceData.put("name", String.format("eth%d", i));
+                        ifaceData.put("type", iface.getType());
+                        ifaceData.put("source", iface.getSource());
+                        ifaceData.put("mac", iface.getMac());
+                        return ifaceData;
+                    }).collect(Collectors.toList()));
+        }
 
-                    if (!action.getDetails().getInterfaces().isEmpty() || action.getDetails().isRemoveInterfaces()) {
-                        pillar.put("interfaces",
-                                   IntStream.range(0, action.getDetails().getInterfaces().size()).mapToObj(i -> {
-                            VirtualGuestsUpdateActionJson.InterfaceData iface = action.getDetails()
-                                    .getInterfaces().get(i);
-                            Map<String, Object> ifaceData = new HashMap<>();
-                            ifaceData.put("name", String.format("eth%d", i));
-                            ifaceData.put("type", iface.getType());
-                            ifaceData.put("source", iface.getSource());
-                            ifaceData.put("mac", iface.getMac());
-                            return ifaceData;
-                        }).collect(Collectors.toList()));
-                    }
+        Map<String, Object> graphicsData = new HashMap<>();
+        graphicsData.put("type", action.getDetails().getGraphicsType());
+        pillar.put("graphics", graphicsData);
 
-                    Map<String, Object> graphicsData = new HashMap<>();
-                    graphicsData.put("type", action.getDetails().getGraphicsType());
-                    pillar.put("graphics", graphicsData);
+        if (bootParams != null) {
+            pillar.put("boot", bootParams);
+        }
 
-                    if (bootParams != null) {
-                        pillar.put("boot", bootParams);
-                    }
+        // If we have a DVD image and we are creating a VM, set "cdrom hd" boot devices
+        // otherwise set "network hd"
+        boolean hasCdromIso = action.getDetails().getDisks().stream()
+                .anyMatch(disk -> disk.getDevice().equals("cdrom") && disk.getSourceFile() != null &&
+                        !disk.getSourceFile().isEmpty());
+        boolean noTemplateImage = action.getDetails().getDisks().stream()
+                .noneMatch(disk -> disk.getTemplate() != null);
+        String bootDev = noTemplateImage ? "network hd" : "hd";
+        pillar.put("boot_dev", hasCdromIso ? "cdrom hd" : bootDev);
 
-                    // If we have a DVD image and we are creating a VM, set "cdrom hd" boot devices
-                    // otherwise set "network hd"
-                    boolean hasCdromIso = action.getDetails().getDisks().stream()
-                            .anyMatch(disk -> disk.getDevice().equals("cdrom") && disk.getSourceFile() != null &&
-                                    !disk.getSourceFile().isEmpty());
-                    boolean noTemplateImage = action.getDetails().getDisks().stream()
-                            .noneMatch(disk -> disk.getTemplate() != null);
-                    String bootDev = noTemplateImage ? "network hd" : "hd";
-                    pillar.put("boot_dev", hasCdromIso ? "cdrom hd" : bootDev);
+        return pillar;
+    }
 
-                    return State.apply(
-                            Collections.singletonList(state),
-                            Optional.of(pillar));
-                },
-                Collections::singletonList
-        ));
+    private Map<LocalCall<?>, List<MinionSummary>> virtCreateAction(List<MinionSummary> minions,
+            VirtualizationCreateGuestAction action) {
+        String state = action.getUuid() != null ? "virt.update-vm" : "virt.create-vm";
 
-        ret.remove(null);
-
-        return ret;
+        Map<String, Object> pillar = virtDomainActionToPillar(action);
+        LocalCall<?> stateCall = State.apply(Collections.singletonList(state), Optional.of(pillar));
+        return Map.of(stateCall, minions);
     }
 
     private Map<String, String> prepareCobblerBoot(String kickstartHost,
@@ -2098,85 +2097,85 @@ public class SaltServerActionService {
         return ret;
     }
 
+    Map<String, Object> virtPoolSourceToPillar(VirtualizationPoolCreateAction action) {
+        Map<String, Object> source = new HashMap<>();
+        source.put("dir", action.getSource().getDir());
+        source.put("name", action.getSource().getName());
+        source.put("format", action.getSource().getFormat());
+        source.put("initiator", action.getSource().getInitiator());
+        source.put("hosts", action.getSource().getHosts());
+        if (action.getSource().getAuth() != null) {
+            Map<String, Object> auth = new HashMap<>();
+            auth.put("username", action.getSource().getAuth().getUsername());
+            // TODO We surely need this one encrypted
+            auth.put("password", action.getSource().getAuth().getPassword());
+            source.put("auth", auth);
+        }
+        if (action.getSource().getAdapter() != null) {
+            Map<String, Object> adapter = new HashMap<>();
+            adapter.put("type", action.getSource().getAdapter().getType());
+            adapter.put("name", action.getSource().getAdapter().getName());
+            adapter.put("parent", action.getSource().getAdapter().getParent());
+            adapter.put("managed", action.getSource().getAdapter().isManaged());
+            adapter.put("parent_wwnn", action.getSource().getAdapter().getParentWwnn());
+            adapter.put("parent_wwpn", action.getSource().getAdapter().getParentWwpn());
+            adapter.put("parent_fabric_wwn", action.getSource().getAdapter().getParentWwnn());
+            adapter.put("wwnn", action.getSource().getAdapter().getWwnn());
+            adapter.put("wwpn", action.getSource().getAdapter().getWwpn());
+
+            Map<String, Object> parentAddress = new HashMap<>();
+            if (action.getSource().getAdapter().getParentAddressUid() != null) {
+                parentAddress.put("unique_id", action.getSource().getAdapter().getParentAddressUid());
+            }
+            if (action.getSource().getAdapter().getParentAddress() != null) {
+                parentAddress.put("address", action.getSource().getAdapter().getParentAddressParsed());
+            }
+            if (!parentAddress.isEmpty()) {
+                adapter.put("parent_address", parentAddress);
+            }
+
+            source.put("adapter", adapter);
+        }
+        if (action.getSource().getDevices() != null) {
+            source.put("devices", action.getSource().getDevices().stream().map(device -> {
+                Map<String, Object> deviceParam = new HashMap<>();
+                deviceParam.put("path", device.getPath());
+                device.isSeparator().ifPresent(sep -> deviceParam.put("part_separator", sep));
+                return deviceParam;
+            }).collect(Collectors.toList()));
+        }
+        return source;
+    }
+
+    private Map<String, Object> virtPoolActionToPillar(VirtualizationPoolCreateAction action) {
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("pool_name", action.getPoolName());
+        pillar.put("pool_type", action.getType());
+        pillar.put("autostart", action.isAutostart());
+        pillar.put("target", action.getTarget());
+
+        Map<String, Object> permissions = new HashMap<>();
+        permissions.put("mode", action.getMode());
+        permissions.put("owner", action.getOwner());
+        permissions.put("group", action.getGroup());
+        permissions.put("label", action.getSeclabel());
+        pillar.put("permissions", permissions);
+        pillar.put("autostart", action.isAutostart());
+
+        if (action.getSource() != null) {
+            pillar.put("source", virtPoolSourceToPillar(action));
+        }
+        pillar.put("action_type", action.getUuid() != null ? "defined" : "running");
+        return pillar;
+    }
+
     private Map<LocalCall<?>, List<MinionSummary>> virtPoolCreateAction(
             List<MinionSummary> minionSummaries, VirtualizationPoolCreateAction action) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
-                Collectors.toMap(minion -> {
-                    Map<String, Object> pillar = new HashMap<>();
-                    pillar.put("pool_name", action.getPoolName());
-                    pillar.put("pool_type", action.getType());
-                    pillar.put("autostart", action.isAutostart());
-                    pillar.put("target", action.getTarget());
-
-                    Map<String, Object> permissions = new HashMap<>();
-                    permissions.put("mode", action.getMode());
-                    permissions.put("owner", action.getOwner());
-                    permissions.put("group", action.getGroup());
-                    permissions.put("label", action.getSeclabel());
-                    pillar.put("permissions", permissions);
-                    pillar.put("autostart", action.isAutostart());
-
-                    if (action.getSource() != null) {
-                        Map<String, Object> source = new HashMap<>();
-                        source.put("dir", action.getSource().getDir());
-                        source.put("name", action.getSource().getName());
-                        source.put("format", action.getSource().getFormat());
-                        source.put("initiator", action.getSource().getInitiator());
-                        source.put("hosts", action.getSource().getHosts());
-                        if (action.getSource().getAuth() != null) {
-                            Map<String, Object> auth = new HashMap<>();
-                            auth.put("username", action.getSource().getAuth().getUsername());
-                            // TODO We surely need this one encrypted
-                            auth.put("password", action.getSource().getAuth().getPassword());
-                            source.put("auth", auth);
-                        }
-                        if (action.getSource().getAdapter() != null) {
-                            Map<String, Object> adapter = new HashMap<>();
-                            adapter.put("type", action.getSource().getAdapter().getType());
-                            adapter.put("name", action.getSource().getAdapter().getName());
-                            adapter.put("parent", action.getSource().getAdapter().getParent());
-                            adapter.put("managed", action.getSource().getAdapter().isManaged());
-                            adapter.put("parent_wwnn", action.getSource().getAdapter().getParentWwnn());
-                            adapter.put("parent_wwpn", action.getSource().getAdapter().getParentWwpn());
-                            adapter.put("parent_fabric_wwn", action.getSource().getAdapter().getParentWwnn());
-                            adapter.put("wwnn", action.getSource().getAdapter().getWwnn());
-                            adapter.put("wwpn", action.getSource().getAdapter().getWwpn());
-
-                            Map<String, Object> parentAddress = new HashMap<>();
-                            if (action.getSource().getAdapter().getParentAddressUid() != null) {
-                                parentAddress.put("unique_id", action.getSource().getAdapter().getParentAddressUid());
-                            }
-                            if (action.getSource().getAdapter().getParentAddress() != null) {
-                                parentAddress.put("address", action.getSource().getAdapter().getParentAddressParsed());
-                            }
-                            if (!parentAddress.isEmpty()) {
-                                adapter.put("parent_address", parentAddress);
-                            }
-
-                            source.put("adapter", adapter);
-                        }
-                        if (action.getSource().getDevices() != null) {
-                            source.put("devices", action.getSource().getDevices().stream().map(device -> {
-                                Map<String, Object> deviceParam = new HashMap<>();
-                                deviceParam.put("path", device.getPath());
-                                device.isSeparator().ifPresent(sep -> deviceParam.put("part_separator", sep));
-                                return deviceParam;
-                            }).collect(Collectors.toList()));
-                        }
-                        pillar.put("source", source);
-                    }
-                    pillar.put("action_type", action.getUuid() != null ? "defined" : "running");
-
-                    return State.apply(
-                            Collections.singletonList("virt.pool-create"),
-                            Optional.of(pillar));
-                },
-                Collections::singletonList
-        ));
-
-        ret.remove(null);
-
-        return ret;
+        Map<String, Object> pillar = virtPoolActionToPillar(action);
+        return Map.of(
+                State.apply(Collections.singletonList("virt.pool-create"), Optional.of(pillar)),
+                minionSummaries
+        );
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> virtVolumeDeleteAction(
@@ -2222,108 +2221,105 @@ public class SaltServerActionService {
     }
 
 
+    private Map<String, Object> virtNetworkDefinitionToPillar(String networkName, NetworkDefinition def) {
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("network_name", networkName);
+        def.getBridge().ifPresent(bridge -> pillar.put("bridge", bridge));
+        pillar.put("forward", def.getForwardMode());
+        pillar.put("autostart", def.isAutostart());
+        def.getMtu().ifPresent(mtu -> pillar.put("mtu", mtu));
+        def.getDomain().ifPresent(domain -> pillar.put("domain", domain));
+        def.getPhysicalFunction().ifPresent(pf -> pillar.put("physical_function", pf));
+        if (!def.getVirtualFunctions().isEmpty()) {
+            pillar.put("addresses", String.join(" ", def.getVirtualFunctions()));
+        }
+        if (!def.getInterfaces().isEmpty()) {
+            pillar.put("interfaces", String.join(" ", def.getInterfaces()));
+        }
+        if (!def.getVlans().isEmpty()) {
+            Map<String, Object> tag = new HashMap<>();
+            def.getVlanTrunk().ifPresent(trunk -> tag.put("trunk", trunk));
+            tag.put("tags",
+                    def.getVlans().stream().map(vlan -> {
+                        HashMap<String, Object> vlanPillar = new HashMap<>();
+                        vlanPillar.put("id", vlan.getTag());
+                        vlan.getNativeMode().ifPresent(mode -> vlanPillar.put("nativeMode", mode));
+                        return vlanPillar;
+                    }).collect(Collectors.toList())
+            );
+            pillar.put("tag", tag);
+        }
+        def.getVirtualPort().ifPresent(vportData -> {
+            Map<String, Object> vport = new HashMap<>();
+            vport.put("type", vportData.getType());
+            Map<String, String> params = new HashMap<>();
+            vportData.getInstanceId().ifPresent(id -> params.put("instanceid", id));
+            vportData.getInterfaceId().ifPresent(id -> params.put("interfaceid", id));
+            vportData.getManagerId().ifPresent(id -> params.put("managerid", id));
+            vportData.getTypeId().ifPresent(id -> params.put("typeid", id));
+            vportData.getTypeIdVersion().ifPresent(v -> params.put("typeidversion", v));
+            vportData.getProfileId().ifPresent(id -> params.put("profileid", id));
+            vport.put("params", params);
+            pillar.put("vport", vport);
+        });
+        def.getNat().ifPresent(natData -> {
+            Map<String, Object> nat = new HashMap<>();
+            natData.getAddress().ifPresent(range ->
+                    nat.put("address", VirtStatesHelper.rangeToPillar(range)));
+            natData.getPort().ifPresent(ports ->
+                    nat.put("port", VirtStatesHelper.rangeToPillar(ports)));
+            pillar.put("nat", nat);
+        });
+        def.getIpv4().ifPresent(ipDef ->
+                pillar.put("ipv4_config", VirtStatesHelper.ipToPillar(ipDef)));
+        def.getIpv6().ifPresent(ipDef ->
+                pillar.put("ipv6_config", VirtStatesHelper.ipToPillar(ipDef)));
+        def.getDns().ifPresent(dnsData -> {
+            Map<String, Object> dns = new HashMap<>();
+            if (!dnsData.getForwarders().isEmpty()) {
+                dns.put("forwarders", dnsData.getForwarders().stream().map(fwd -> {
+                    Map<String, Object> out = new HashMap<>();
+                    fwd.getAddress().ifPresent(addr -> out.put("addr", addr));
+                    fwd.getDomain().ifPresent(domain -> out.put("domain", domain));
+                    return out;
+                }).collect(Collectors.toList()));
+            }
+            if (!dnsData.getHosts().isEmpty()) {
+                dns.put("hosts", dnsData.getHosts().stream()
+                        .collect(Collectors.toMap(DnsHostDef::getAddress, DnsHostDef::getNames)));
+            }
+            if (!dnsData.getTxts().isEmpty()) {
+                dns.put("txt", dnsData.getTxts().stream()
+                        .collect(Collectors.toMap(DnsTxtDef::getName, DnsTxtDef::getValue)));
+            }
+            if (!dnsData.getSrvs().isEmpty()) {
+                dns.put("srvs", dnsData.getSrvs().stream().map(srv -> {
+                    Map<String, Object> out = new HashMap<>();
+                    out.put("name", srv.getName());
+                    out.put("protocol", srv.getProtocol());
+                    srv.getTarget().ifPresent(target -> out.put("target", target));
+                    srv.getPort().ifPresent(port -> out.put("port", port));
+                    srv.getPriority().ifPresent(priority -> out.put("priority", priority));
+                    srv.getDomain().ifPresent(domain -> out.put("domain", domain));
+                    srv.getWeight().ifPresent(weight -> out.put("weight", weight));
+                    return out;
+                }).collect(Collectors.toList()));
+            }
+            pillar.put("dns", dns);
+        });
+        pillar.put("action_type", def.getUuid().map(uuid -> "defined").orElse("running"));
+
+        return pillar;
+    }
+
     private Map<LocalCall<?>, List<MinionSummary>> virtNetworkCreateAction(List<MinionSummary> minionSummaries,
                                                                            String networkName,
                                                                            NetworkDefinition def) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
-                Collectors.toMap(minion -> {
-                            Map<String, Object> pillar = new HashMap<>();
-                            pillar.put("network_name", networkName);
-                            def.getBridge().ifPresent(bridge -> pillar.put("bridge", bridge));
-                            pillar.put("forward", def.getForwardMode());
-                            pillar.put("autostart", def.isAutostart());
-                            def.getMtu().ifPresent(mtu -> pillar.put("mtu", mtu));
-                            def.getDomain().ifPresent(domain -> pillar.put("domain", domain));
-                            def.getPhysicalFunction().ifPresent(pf -> pillar.put("physical_function", pf));
-                            if (!def.getVirtualFunctions().isEmpty()) {
-                                pillar.put("addresses", String.join(" ", def.getVirtualFunctions()));
-                            }
-                            if (!def.getInterfaces().isEmpty()) {
-                                pillar.put("interfaces", String.join(" ", def.getInterfaces()));
-                            }
-                            if (!def.getVlans().isEmpty()) {
-                                Map<String, Object> tag = new HashMap<>();
-                                def.getVlanTrunk().ifPresent(trunk -> tag.put("trunk", trunk));
-                                tag.put("tags",
-                                        def.getVlans().stream().map(vlan -> {
-                                            HashMap<String, Object> vlanPillar = new HashMap<>();
-                                            vlanPillar.put("id", vlan.getTag());
-                                            vlan.getNativeMode().ifPresent(mode -> vlanPillar.put("nativeMode", mode));
-                                            return vlanPillar;
-                                        }).collect(Collectors.toList())
-                                );
-                                pillar.put("tag", tag);
-                            }
-                            def.getVirtualPort().ifPresent(vportData -> {
-                                Map<String, Object> vport = new HashMap<>();
-                                vport.put("type", vportData.getType());
-                                Map<String, String> params = new HashMap<>();
-                                vportData.getInstanceId().ifPresent(id -> params.put("instanceid", id));
-                                vportData.getInterfaceId().ifPresent(id -> params.put("interfaceid", id));
-                                vportData.getManagerId().ifPresent(id -> params.put("managerid", id));
-                                vportData.getTypeId().ifPresent(id -> params.put("typeid", id));
-                                vportData.getTypeIdVersion().ifPresent(v -> params.put("typeidversion", v));
-                                vportData.getProfileId().ifPresent(id -> params.put("profileid", id));
-                                vport.put("params", params);
-                                pillar.put("vport", vport);
-                            });
-                            def.getNat().ifPresent(natData -> {
-                                Map<String, Object> nat = new HashMap<>();
-                                natData.getAddress().ifPresent(range ->
-                                        nat.put("address", VirtStatesHelper.rangeToPillar(range)));
-                                natData.getPort().ifPresent(ports ->
-                                        nat.put("port", VirtStatesHelper.rangeToPillar(ports)));
-                                pillar.put("nat", nat);
-                            });
-                            def.getIpv4().ifPresent(ipDef ->
-                                    pillar.put("ipv4_config", VirtStatesHelper.ipToPillar(ipDef)));
-                            def.getIpv6().ifPresent(ipDef ->
-                                    pillar.put("ipv6_config", VirtStatesHelper.ipToPillar(ipDef)));
-                            def.getDns().ifPresent(dnsData -> {
-                                Map<String, Object> dns = new HashMap<>();
-                                if (!dnsData.getForwarders().isEmpty()) {
-                                    dns.put("forwarders", dnsData.getForwarders().stream().map(fwd -> {
-                                        Map<String, Object> out = new HashMap<>();
-                                        fwd.getAddress().ifPresent(addr -> out.put("addr", addr));
-                                        fwd.getDomain().ifPresent(domain -> out.put("domain", domain));
-                                        return out;
-                                    }).collect(Collectors.toList()));
-                                }
-                                if (!dnsData.getHosts().isEmpty()) {
-                                    dns.put("hosts", dnsData.getHosts().stream()
-                                        .collect(Collectors.toMap(DnsHostDef::getAddress, DnsHostDef::getNames)));
-                                }
-                                if (!dnsData.getTxts().isEmpty()) {
-                                    dns.put("txt", dnsData.getTxts().stream()
-                                        .collect(Collectors.toMap(DnsTxtDef::getName, DnsTxtDef::getValue)));
-                                }
-                                if (!dnsData.getSrvs().isEmpty()) {
-                                    dns.put("srvs", dnsData.getSrvs().stream().map(srv -> {
-                                        Map<String, Object> out = new HashMap<>();
-                                        out.put("name", srv.getName());
-                                        out.put("protocol", srv.getProtocol());
-                                        srv.getTarget().ifPresent(target -> out.put("target", target));
-                                        srv.getPort().ifPresent(port -> out.put("port", port));
-                                        srv.getPriority().ifPresent(priority -> out.put("priority", priority));
-                                        srv.getDomain().ifPresent(domain -> out.put("domain", domain));
-                                        srv.getWeight().ifPresent(weight -> out.put("weight", weight));
-                                        return out;
-                                    }).collect(Collectors.toList()));
-                                }
-                                pillar.put("dns", dns);
-                            });
-                            pillar.put("action_type", def.getUuid().map(uuid -> "defined").orElse("running"));
-
-                            return State.apply(
-                                    Collections.singletonList("virt.network-create"),
-                                    Optional.of(pillar));
-                        },
-                        Collections::singletonList
-                ));
-
-        ret.remove(null);
-
-        return ret;
+        Map<String, Object> pillar = virtNetworkDefinitionToPillar(networkName, def);
+        return Map.of(
+                State.apply(Collections.singletonList("virt.network-create"), Optional.of(pillar)),
+                minionSummaries
+        );
     }
 
 
