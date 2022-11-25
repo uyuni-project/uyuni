@@ -2851,8 +2851,8 @@ a skúste to znova.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
-        <target>Nahrať súbor Kickstart/Autoyast</target>
+        <source>Upload Kickstart/AutoYaST File</source>
+        <target state="needs-adaptation">Nahrať súbor Kickstart/Autoyast</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -11265,6 +11265,14 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>IPMI lanplus</source>
         <target state="translated">IPMI lanplus</target>
       </trans-unit>
-    </body>
+    <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
