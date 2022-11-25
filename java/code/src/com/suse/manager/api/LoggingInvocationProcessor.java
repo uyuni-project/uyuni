@@ -66,7 +66,7 @@ public abstract class LoggingInvocationProcessor {
         RESTRICTED_ARGS.put(
             "proxy.container_config",
             Map.of(
-                6, "caCrt",
+                6, "caCertificate",
                 7, "caKey",
                 8, "caPassword"
             )

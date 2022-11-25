@@ -1,3 +1,4 @@
+- Removed contents of certificates from the web UI logs (bsc#1204715)
 - Add SUSE Liberty Linux support for RHEL9 based clients
 - Don't persist the YAML parser in FormulaFactory (bsc#1205754)
 - check for NULL in DEB package install size value
