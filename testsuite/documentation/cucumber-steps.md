@@ -134,7 +134,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I am on Autoinstallation Overview page
 ```
 
-* Go to Systems => Autoinstallation => Profiles => Upload Kickstart/Autoyast File
+* Go to Systems => Autoinstallation => Profiles => Upload Kickstart/AutoYaST File
 
 ```gherkin
   When I am on the Create Autoinstallation Profile page
