@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-09 10:11+0100\n"
-"PO-Revision-Date: 2022-11-07 05:13+0000\n"
+"PO-Revision-Date: 2022-11-20 22:13+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools-4-3/mk/>\n"
@@ -205,9 +205,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhncli.py:226
 msgid "An error has occurred:"
-msgstr ""
-"Се појави неочекувана грешка во ОС:\n"
-"%s"
+msgstr "Се случи грешка:"
 
 #: ../src/up2date_client/rhncli.py:234
 msgid "See /var/log/up2date for more information"
@@ -235,7 +233,7 @@ msgstr "Предупредување"
 
 #: ../src/up2date_client/rhnregGui.py:272
 msgid "There was an error while applying your choice."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка додека се применуваше вашиот избор."
 
 #: ../src/up2date_client/rhnregGui.py:291
 msgid "You specified an invalid protocol. Only https and http are allowed."
@@ -307,7 +305,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:603
 msgid "There was an error while assembling information for the profile."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при составувањето на информациите за профилот."
 
 #: ../src/up2date_client/rhnregGui.py:624
 msgid "Error running hardware profile"
@@ -315,7 +313,7 @@ msgstr "Грешка при извршувањето на хардверскио
 
 #: ../src/up2date_client/rhnregGui.py:655
 msgid "There was an error while populating the profile."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при пополнувањето на профилот."
 
 #: ../src/up2date_client/rhnregGui.py:675
 msgid "You must choose a name for this profile."
@@ -323,7 +321,7 @@ msgstr "Мора да изберете име за овој профил."
 
 #: ../src/up2date_client/rhnregGui.py:689
 msgid "There was an error while creating the profile."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при создавањето на профилот."
 
 #: ../src/up2date_client/rhnregGui.py:700
 msgid "Registering system and sending profile information.  Please wait."
@@ -367,7 +365,7 @@ msgstr "Испрати _информации за хардверот"
 
 #: ../src/up2date_client/rhnregGui.py:795
 msgid "Problem sending hardware information."
-msgstr "Грешка при читање на информациите за хардверот:"
+msgstr "Проблем при праќање на информациите за хардверот."
 
 #. #            for row in range(self.regPackageArea.n_rows):
 #. #                rowData = self.regPackageArea.get_row_data(row)
@@ -395,7 +393,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:910
 msgid "There was an error while installing the certificate."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при инсталирање на сертификатот."
 
 #: ../src/up2date_client/rhnregGui.py:936
 msgid "You must select a certificate."
@@ -422,7 +420,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:1133
 msgid "There was an error getting the list of hardware."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при превземањето на листата на хардвер."
 
 #: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
 #, python-format
@@ -436,7 +434,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:1194
 msgid "There was an error building the list of packages."
-msgstr "Се појави фатална грешка при инсталирање на пакетот:"
+msgstr "Имаше грешка при градење на листата на пакети."
 
 #: ../src/up2date_client/rhnregGui.py:1209
 msgid "Package"
@@ -789,7 +787,7 @@ msgstr "Системот е веќе регистриран"
 #: ../src/up2date_client/rhnreg_constants.py:135
 #: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
-msgstr "Го рестартирам up2date"
+msgstr "Изгледа дека овој систем веќе бил поставен за софтверски ажурирања:"
 
 #: ../src/up2date_client/rhnreg_constants.py:136
 #: ../data/rh_register.glade.h:131
@@ -1163,27 +1161,27 @@ msgstr "Име на профил:"
 
 #: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
 msgid "Version: "
-msgstr "Верзија:"
+msgstr "Верзија: "
 
 #: ../src/up2date_client/tui.py:763
 msgid "CPU model: "
-msgstr "Модел на CPU:"
+msgstr "Модел на CPU: "
 
 #: ../src/up2date_client/tui.py:769
 msgid "Hostname: "
-msgstr "Име на домаќин:"
+msgstr "Име на хост: "
 
 #: ../src/up2date_client/tui.py:781
 msgid "CPU speed: "
-msgstr "Брзина на CPU:"
+msgstr "Брзина на CPU: "
 
 #: ../src/up2date_client/tui.py:787
 msgid "IP Address: "
-msgstr "IP адреса:"
+msgstr "IP адреса: "
 
 #: ../src/up2date_client/tui.py:796
 msgid "Memory: "
-msgstr "Меморија:"
+msgstr "Меморија: "
 
 #: ../src/up2date_client/tui.py:800
 #, python-format

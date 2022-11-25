@@ -2843,11 +2843,11 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <target>통지 필터 생성</target>
       </trans-unit>
       <trans-unit approved="yes" id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
+        <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>킥스타트/Autoyast 파일 업로드</target>
+        <target state="needs-adaptation">킥스타트/Autoyast 파일 업로드</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -11263,6 +11263,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-    </body>
+    <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <source>Cannot cancel an action in PICKED UP state.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <source>Cannot cancel an action with a pending prerequisite.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-09 10:12+0100\n"
-"PO-Revision-Date: 2022-11-04 08:13+0000\n"
+"POT-Creation-Date: 2022-11-25 16:40+0100\n"
+"PO-Revision-Date: 2022-11-22 02:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
 "ko/>\n"
@@ -400,7 +400,7 @@ msgstr "사용법: activationkey_setuniversaldefault KEY"
 
 #: ../src/spacecmd/activationkey.py:1218
 msgid "activationkey_export: Export activation key(s) to JSON format file"
-msgstr "activationkey_export: 활성화 키를 JSON 형식 파일로 내보내기"
+msgstr "activationkey_export: 활성화 키를 JSON 형식 파일로 엑스포트"
 
 #: ../src/spacecmd/activationkey.py:1219
 msgid ""
@@ -420,10 +420,10 @@ msgstr ""
 "    -f outfile.json : 출력 파일의 이름을 지정합니다. 기본 값은 단일 키를 내보"
 "내는 경우\n"
 "                      <KEY>.json이고, 여러 키의 경우 akeys.json이며,\n"
-"                      키가 지정되지 않은 경우 akey_all.json(모두 내보내기)입"
+"                      키가 지정되지 않은 경우 akey_all.json(모두 엑스포트)입"
 "니다.\n"
 "\n"
-"참고: 키 목록은 선택 사항이며, 기본값을 모든 키 내보내기입니다. "
+"참고: 키 목록은 선택 사항이며, 기본값은 모든 키 엑스포트입니다. "
 
 #. Get the key details
 #: ../src/spacecmd/activationkey.py:1235
@@ -434,7 +434,7 @@ msgstr "%s에 대한 키 기본값 가져오기"
 #: ../src/spacecmd/activationkey.py:1289
 #, python-format
 msgid "Exporting ALL activation keys to %s"
-msgstr "모든 활성화 키를 %s(으)로 내보내기"
+msgstr "모든 활성화 키를 %s(으)로 엑스포트"
 
 #: ../src/spacecmd/activationkey.py:1298
 msgid "Invalid activation key passed"
@@ -443,7 +443,7 @@ msgstr "유효하지 않은 활성화 키 전달됨"
 #: ../src/spacecmd/activationkey.py:1313
 #, python-format
 msgid "Exporting key %s to %s"
-msgstr "%s 키를 %s(으)로 내보내기"
+msgstr "%s 키를 %s(으)로 엑스포트"
 
 #: ../src/spacecmd/activationkey.py:1322
 #, python-format
@@ -452,7 +452,7 @@ msgstr "%s 파일이 있습니다. 파일을 덮어쓰시겠습니까? (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1327
 msgid "Failed to save exported keys to file: {}"
-msgstr "내보낸 키를 파일에 저장하지 못함: {}"
+msgstr "엑스포트한 키를 파일에 저장하지 못함: {}"
 
 #: ../src/spacecmd/activationkey.py:1336
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
@@ -1235,7 +1235,7 @@ msgstr "작업 ID: %i"
 
 #: ../src/spacecmd/configchannel.py:1117
 msgid "configchannel_export: export config channel(s) to json format file"
-msgstr "configchannel_export: json 파일 형식으로 구성 파일 내보내기"
+msgstr "configchannel_export: json 파일 형식으로 구성 파일 엑스포트"
 
 #: ../src/spacecmd/configchannel.py:1118
 msgid ""
@@ -1251,14 +1251,14 @@ msgid ""
 msgstr ""
 "사용법: configchannel_export <CHANNEL>... [옵션])\n"
 "옵션:\n"
-"    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값을 단일 채널을 내보"
-"내는 경우\n"
-"                      <CHANNEL>.json이고 여러 채널을 내보내는 경우 ccs.json이"
-"며\n"
+"    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값은 단일 채널을 엑스"
+"포트하는 경우\n"
+"                      <CHANNEL>.json이고 여러 채널을 엑스포트하는 경우 ccs."
+"json이며\n"
 "                      채널을 지정하지 않은 경우 cc_all.json입니다.\n"
-"                      예: (모두 내보내기)\n"
+"                      예: (모두 엑스포트)\n"
 "\n"
-"참고: 채널 목록은 선택 사항이며, 기본값은 모두 내보내기입니다."
+"참고: 채널 목록은 선택사항이며, 기본값은 모두 엑스포트입니다."
 
 #. Get the cc details
 #: ../src/spacecmd/configchannel.py:1134
@@ -1272,9 +1272,9 @@ msgid "Failed to get details for file %s from %s"
 msgstr "%s에서 %s 파일에 대한 세부 사항을 가져오지 못함"
 
 #: ../src/spacecmd/configchannel.py:1200
-#, python-format
+#, fuzzy, python-format
 msgid "File %s could not be exported "
-msgstr "%s 파일을 내보낼 수 없음 "
+msgstr "%s 파일을 엑스포트할 수 없음 "
 
 #: ../src/spacecmd/configchannel.py:1201
 msgid "with this API version(needs base64 encoding)"
@@ -1283,7 +1283,7 @@ msgstr "이 API 버전을 사용하여(base64 인코딩 필요)"
 #: ../src/spacecmd/configchannel.py:1203
 #, python-format
 msgid "File %s could not be exported as"
-msgstr "%s 파일을 다음으로 내보낼 수 없음"
+msgstr "%s 파일을 다음으로 엑스포트할 수 없음"
 
 #: ../src/spacecmd/configchannel.py:1204
 msgid " text...getting base64 encoded version"
@@ -1292,7 +1292,7 @@ msgstr " 텍스트...base64 인코딩 버전 가져오기"
 #: ../src/spacecmd/configchannel.py:1235
 #, python-format
 msgid "Exporting ALL config channels to %s"
-msgstr "모든 구성 채널을 %s(으)로 내보내는 중"
+msgstr "모든 구성 채널을 %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/configchannel.py:1242
 msgid ""
@@ -1305,7 +1305,7 @@ msgstr ""
 #: ../src/spacecmd/configchannel.py:1257
 #, python-format
 msgid "Exporting cc %s to %s"
-msgstr "cc %s을(를) %s(으)로 내보내는 중"
+msgstr "cc %s을(를) %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/configchannel.py:1264
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
@@ -1314,7 +1314,7 @@ msgstr "'{}' 파일이 있습니다. 덮어쓰시겠습니까? (y/n)"
 #: ../src/spacecmd/configchannel.py:1268
 #, python-format
 msgid "Error saving exported config channels to file: %s"
-msgstr "내보낸 구성 채널을 파일로 저장하는 중 오류: %s"
+msgstr "엑스포트한 구성 채널을 파일로 저장하는 중 오류: %s"
 
 #: ../src/spacecmd/configchannel.py:1277
 msgid "configchannel_import: import config channel(s) from json file"
@@ -1360,8 +1360,9 @@ msgid "Failed trying to import file %s (empty content)"
 msgstr "%s 파일을 가져오지 못함(비어 있는 컨텐트)"
 
 #: ../src/spacecmd/configchannel.py:1361
+#, fuzzy
 msgid "Older APIs can't export encoded files"
-msgstr "기존 API는 인코딩된 파일을 내보낼 수 없음"
+msgstr "기존 API는 인코딩된 파일을 엑스포트할 수 없음"
 
 #: ../src/spacecmd/configchannel.py:1384
 #, python-format
@@ -2014,7 +2015,7 @@ msgstr "사용법: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
 #: ../src/spacecmd/errata.py:555 ../src/spacecmd/scap.py:181
 msgid "Example:"
-msgstr "예:"
+msgstr "예는 다음과 같습니다."
 
 #: ../src/spacecmd/filepreservation.py:42
 msgid "filepreservation_list: List all file preservations"
@@ -2099,7 +2100,7 @@ msgstr "이 시스템 제거 [y/N]:"
 #: ../src/spacecmd/group.py:164 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:136
 #: ../src/spacecmd/ssm.py:186 ../src/spacecmd/system.py:4552
-#: ../src/spacecmd/system.py:4635
+#: ../src/spacecmd/system.py:4639
 msgid "No systems found"
 msgstr "시스템을 찾을 수 없음"
 
@@ -3031,8 +3032,9 @@ msgid "Kickstart profile you've entered was not found"
 msgstr "입력한 킥스타트 프로파일을 찾을 수 없음"
 
 #: ../src/spacecmd/kickstart.py:2225
+#, fuzzy
 msgid "kickstart_export: export kickstart profile(s) to json format file"
-msgstr "kickstart_export: 킥스타트 프로파일을 json 형식 파일로 내보내기"
+msgstr "kickstart_export: 킥스타트 프로파일을 json 형식 파일로 엑스포트"
 
 #: ../src/spacecmd/kickstart.py:2226
 msgid ""
@@ -3050,18 +3052,18 @@ msgstr ""
 "사용법: kickstart_export <KSPROFILE>... [옵션])\n"
 "옵션:\n"
 "    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값은 단일 킥스타트를 "
-"내보내는 경우\n"
+"엑스포트하는 경우\n"
 "                      <KSPROFILE>.json, 여러 킥스타트의 경우 profiles.json\n"
 "                      또는 KSPROFILE이 지정되지 않은 경우 ks_all.json입니"
 "다.\n"
-"                      예: (모두 내보내기)\n"
+"                      예: (모두 엑스포트)\n"
 "\n"
-"참고 : KSPROFILE 목록은 선택 사항이며, 기본값은 모두 내보내기입니다."
+"참고 : KSPROFILE 목록은 선택사항이며, 기본값은 모두 엑스포트입니다."
 
 #: ../src/spacecmd/kickstart.py:2358
 #, python-format
 msgid "Exporting ALL kickstart profiles to %s"
-msgstr "모든 킥스타트 프로파일을 %s(으)로 내보내는 중"
+msgstr "모든 킥스타트 프로파일을 %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/kickstart.py:2366
 msgid ""
@@ -3074,7 +3076,7 @@ msgstr ""
 #: ../src/spacecmd/kickstart.py:2386
 #, python-format
 msgid "Exporting ks %s to %s"
-msgstr "ks %s을(를) %s(으)로 내보내는 중"
+msgstr "ks %s을(를) %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/kickstart.py:2393
 #, python-format
@@ -3087,7 +3089,7 @@ msgstr "파일을 덮어쓰시겠습니까? (y/n)"
 
 #: ../src/spacecmd/kickstart.py:2397
 msgid "Error saving exported kickstart profiles to file"
-msgstr "파일로 내보낸 킥스타트 프로파일 저장 중 오류"
+msgstr "파일로 엑스포트한 킥스타트 프로파일 저장 중 오류"
 
 #: ../src/spacecmd/kickstart.py:2407
 msgid "kickstart_import: import kickstart profile(s) from json file"
@@ -4083,7 +4085,7 @@ msgstr ""
 "proxy_container_config: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:33
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL ROOT_CA CRT KEY\n"
@@ -4104,7 +4106,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
 "'config.tar.gz'\n"
-"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
 "            certicate in PEM format. May be provided multiple times.\n"
 "\n"
@@ -4145,7 +4147,7 @@ msgstr ""
 "환합니다."
 
 #: ../src/spacecmd/proxy.py:90
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL\n"
@@ -4162,7 +4164,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
 "'config.tar.gz'\n"
-"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  --ca-crt path to the certificate of the CA to use to generate a new proxy "
 "certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
@@ -6720,7 +6722,7 @@ msgstr "스크립트 컨텐트"
 
 #: ../src/spacecmd/system.py:538 ../src/spacecmd/system.py:841
 #: ../src/spacecmd/system.py:969 ../src/spacecmd/system.py:1121
-#: ../src/spacecmd/system.py:1131 ../src/spacecmd/system.py:4664
+#: ../src/spacecmd/system.py:1131 ../src/spacecmd/system.py:4671
 #, python-format
 msgid "Failed to schedule %s"
 msgstr "%s을(를) 예약하지 못함"
@@ -8198,6 +8200,7 @@ msgstr ""
 "다."
 
 #: ../src/spacecmd/system.py:4604
+#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8207,6 +8210,10 @@ msgid ""
 "    Options: \n"
 "        -s START_TIME \n"
 "        -d pass this flag, if you want to do a dry run \n"
+"        --allow-vendor-change pass this flag if you want to allow vendor "
+"change \n"
+"        -r pass this flag if you want to remove remove products which have "
+"no successors \n"
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
@@ -8221,30 +8228,35 @@ msgstr ""
 "        -d 모의 연습을 실행하려면 이 플래그 전달 \n"
 "        -c CHILD_CHANNELS (쉼표로 구분된 하위 채널 레이블(공백 없음))"
 
-#: ../src/spacecmd/system.py:4654
+#: ../src/spacecmd/system.py:4658
 msgid "Cannot find system "
 msgstr "시스템을 찾을 수 없음 "
 
-#: ../src/spacecmd/system.py:4654
+#: ../src/spacecmd/system.py:4658
 msgid ". Skipping it."
 msgstr ". 건너뛰는 중입니다."
 
-#: ../src/spacecmd/system.py:4657
+#: ../src/spacecmd/system.py:4661
 msgid "Scheduling Product migration for system "
 msgstr "시스템에 대한 제품 마이그레이션 예약 중 "
 
 #: ../src/spacecmd/system.py:4662
+#, fuzzy
+msgid "Migration target "
+msgstr "  마이그레이션 대상 없음"
+
+#: ../src/spacecmd/system.py:4669
 msgid "Scheduled action ID: "
 msgstr "예약된 작업 ID: "
 
-#: ../src/spacecmd/system.py:4672
+#: ../src/spacecmd/system.py:4679
 msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
 msgstr ""
 "system_bootstrap: Salt 또는 Salt SSH를 통한 관리용 시스템을 부트스트랩합니다."
 
-#: ../src/spacecmd/system.py:4673
+#: ../src/spacecmd/system.py:4680
 msgid ""
 "usage: bootstrap [options]\n"
 "\n"
@@ -8276,63 +8288,63 @@ msgstr ""
 "        --saltssh\n"
 "        "
 
-#: ../src/spacecmd/system.py:4707
+#: ../src/spacecmd/system.py:4714
 msgid "Hostname:"
 msgstr "호스트 이름:"
 
-#: ../src/spacecmd/system.py:4708
+#: ../src/spacecmd/system.py:4715
 msgid "Port [22]:"
 msgstr "포트 [22]:"
 
-#: ../src/spacecmd/system.py:4711
+#: ../src/spacecmd/system.py:4718
 msgid "SSH User [root]:"
 msgstr "SSH 사용자 [루트]:"
 
-#: ../src/spacecmd/system.py:4714
+#: ../src/spacecmd/system.py:4721
 msgid "SSH Password:"
 msgstr "SSH 비밀번호:"
 
-#: ../src/spacecmd/system.py:4716
+#: ../src/spacecmd/system.py:4723
 msgid "SSH Private Key File:"
 msgstr "SSH 개인 키 파일:"
 
-#: ../src/spacecmd/system.py:4717
+#: ../src/spacecmd/system.py:4724
 msgid "SSH Private Key Password:"
 msgstr "SSH 개인 키 비밀번호:"
 
-#: ../src/spacecmd/system.py:4720
+#: ../src/spacecmd/system.py:4727
 msgid "Activation Key:"
 msgstr "활성화 키:"
 
-#: ../src/spacecmd/system.py:4723
+#: ../src/spacecmd/system.py:4730
 msgid "Reactivation Key:"
 msgstr "재활성화 키:"
 
-#: ../src/spacecmd/system.py:4724
+#: ../src/spacecmd/system.py:4731
 msgid "Proxy System ID:"
 msgstr "프록시 시스템 ID:"
 
-#: ../src/spacecmd/system.py:4726
+#: ../src/spacecmd/system.py:4733
 msgid "Manage with Salt SSH"
 msgstr "Salt SSH를 사용하여 관리"
 
-#: ../src/spacecmd/system.py:4731
+#: ../src/spacecmd/system.py:4738
 msgid "Hostname must be provided"
 msgstr "호스트 이름을 제공해야 합니다."
 
-#: ../src/spacecmd/system.py:4734
+#: ../src/spacecmd/system.py:4741
 msgid "Either a SSH Password or a private key must be provided"
 msgstr "SSH 비밀번호 또는 개인 키를 제공해야 합니다."
 
-#: ../src/spacecmd/system.py:4742
+#: ../src/spacecmd/system.py:4749
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr "부트스트랩 시점에 서버는 재활성화 키를 지원하지 않습니다."
 
-#: ../src/spacecmd/system.py:4749
+#: ../src/spacecmd/system.py:4756
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "'{}'을(를) 부트스트랩하는 중입니다. 잠시 시간이 걸릴 수 있습니다."
 
-#: ../src/spacecmd/system.py:4763
+#: ../src/spacecmd/system.py:4770
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"

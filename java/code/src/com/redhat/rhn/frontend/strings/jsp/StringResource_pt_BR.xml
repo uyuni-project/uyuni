@@ -10682,18 +10682,18 @@ Você teria então que usar o $nome dentro do perfil para substituir no valor.</
         <target state="needs-adaptation">Você especificou uma variante inválida: '{0}'. Variantes devem ser pares do valor do nome, separado por um simbolo '=', com cada par separado por uma nova linha. Por exemplo: 'ip=192.168.0.1'</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>Existem erros em seu modelo de kickstart. Por favor, verifique a aba '{0}' para determinar o problema com o modelo.</target>
+        <target state="needs-adaptation">Existem erros em seu modelo de kickstart. Por favor, verifique a aba '{0}' para determinar o problema com o modelo.</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the error message below.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>Estes são erros em seu modelo de kickstart. Por favor, verifique a mensagem de erro abaixo.</target>
+        <target state="needs-adaptation">Estes são erros em seu modelo de kickstart. Por favor, verifique a mensagem de erro abaixo.</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
