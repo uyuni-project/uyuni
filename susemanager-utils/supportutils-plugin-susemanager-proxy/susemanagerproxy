@@ -52,7 +52,6 @@ spacewalk-proxy-management
 spacewalk-proxy-package-manager
 spacewalk-proxy-redirect
 spacewalk-remote-utils
-spacewalk-setup-jabberd
 spacewalk-ssl-cert-check
 SUSE-Manager-Proxy-release
 "
@@ -73,12 +72,7 @@ section_header "SUSE Manager Proxy Config Files"
 
 pconf_files \
     /etc/rhn/rhn.conf \
-    /etc/squid/squid.conf \
-    /etc/jabberd/c2s.xml \
-    /etc/jabberd/router-filter.xml \
-    /etc/jabberd/router.xml \
-    /etc/jabberd/s2s.xml \
-    /etc/jabberd/sm.xml
+    /etc/squid/squid.conf
 
 section_header "SUSE Manager Proxy Log Files"
 
