@@ -67,9 +67,7 @@ Requires:       %{name}-docs
 Requires:       %{name}-html
 Requires:       %{name}-redirect = %{version}
 Requires:       httpd
-Requires:       jabberd
 Requires:       spacewalk-backend >= 1.7.24
-Requires:       spacewalk-setup-jabberd
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       sos
 Requires(preun):initscripts
