@@ -38,7 +38,7 @@ SCRIPTS = rhn-config-satellite.pl \
 
 SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper mgr-monitoring-ctl uyuni-update-config
 
-CONF_FILES = service-list
+CONF_FILES =
 
 SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
 		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service salt-secrets-config.service \
@@ -59,7 +59,7 @@ all:
 
 install: $(SCRIPTS) $(PERL_DEST) $(CONF_FILES) $(CONF_DEST) $(SBIN_SCRIPTS) $(SBIN_DEST)
 	$(BIN_INSTALL) $(SCRIPTS) $(PERL_DEST)
-	$(CONF_INSTALL) $(CONF_FILES) $(CONF_DEST)
+	#$(CONF_INSTALL) $(CONF_FILES) $(CONF_DEST)
 	$(BIN_INSTALL) $(SBIN_SCRIPTS) $(SBIN_DEST)
 
 install_systemd: $(SYSTEMD_DEST) $(SYSTEMD_FILES)

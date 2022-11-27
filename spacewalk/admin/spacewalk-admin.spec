@@ -67,10 +67,6 @@ Various utility scripts and data files for Spacewalk installations.
 %if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
 mv -f spacewalk-service.systemd spacewalk-service
 make -f Makefile.admin install_systemd PREFIX=$RPM_BUILD_ROOT
-%if 0%{?suse_version} >= 1210
-install -m 644 spacewalk.target.SUSE $RPM_BUILD_ROOT%{_unitdir}/spacewalk.target
-install -m 644 spacewalk-wait-for-tomcat.service.SUSE $RPM_BUILD_ROOT%{_unitdir}/spacewalk-wait-for-tomcat.service
-%endif
 %endif
 make -f Makefile.admin install PREFIX=$RPM_BUILD_ROOT
 

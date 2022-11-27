@@ -1,7 +1,7 @@
 [Unit]
 Description=Spacewalk wait for tomcat
 After=tomcat.service
-Before=httpd.service
+Before=apache2.service
 ConditionPathExists=!/run/spacewalk-wait-for-tomcat-disable
 
 [Service]
