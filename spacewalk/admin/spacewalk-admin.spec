@@ -76,7 +76,6 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8/
 %{_bindir}/pod2man --section=8 man/rhn-install-ssl-cert.pl.pod > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-install-ssl-cert.pl.8
 install -p man/rhn-satellite.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 chmod 0644 $RPM_BUILD_ROOT%{_mandir}/man8/*.8*
-ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 %if 0%{?build_py3}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/salt-secrets-config.py
 %endif
@@ -95,7 +94,6 @@ fi
 %license LICENSE
 %{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
-%{_sbindir}/rhn-satellite
 %{_sbindir}/uyuni-update-config
 %{_bindir}/rhn-config-satellite.pl
 %{_bindir}/rhn-config-schema.pl
