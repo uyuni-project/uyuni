@@ -72,7 +72,7 @@ public class ConfigDefaults {
 
     public static final String SATELLITE_PARENT = "server.satellite.rhn_parent";
 
-    public static final String JABBER_SERVER = "server.jabber_server";
+    public static final String SERVER_HOSTNAME = "java.hostname";
 
     public static final String KICKSTART_HOST = "kickstart_host";
 
@@ -583,11 +583,11 @@ public class ConfigDefaults {
     }
 
     /**
-     * Get the configured hostname for this RHN Server.
+     * Get the configured hostname for this Uyuni Server.
      * @return String hostname
      */
     public String getHostname() {
-        return Config.get().getString(JABBER_SERVER);
+        return Config.get().getString(SERVER_HOSTNAME, "localhost");
     }
 
     /**
