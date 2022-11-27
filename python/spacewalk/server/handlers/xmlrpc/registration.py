@@ -1233,51 +1233,14 @@ class Registration(rhnHandler):
             return (0, "", "")
         return (return_code, text_title, text_message)
 
-    _query_get_dispatchers = rhnSQL.Statement("""
-        select jabber_id from rhnPushDispatcher
-    """)
-
-    def _get_dispatchers(self):
-        h = rhnSQL.prepare(self._query_get_dispatchers)
-        h.execute()
-        return [x['jabber_id'] for x in h.fetchall_dict() or []]
-
     def register_osad(self, system_id, args={}):
-        log_debug(1)
+        log_error("register_osad unsupported")
 
-        # Authenticate
-        server = self.auth_system(system_id)
-
-        jabber_server = CFG.JABBER_SERVER
-        if not jabber_server:
-            log_error("Jabber server not defined")
-            return {}
-
-        server_timestamp, client_name, shared_key = \
-            server.register_push_client()
-
-        ret = args.copy()
-        dispatchers = self._get_dispatchers()
-        ret.update({
-            'client-name': client_name,
-            'shared-key': shared_key,
-            'server-timestamp': server_timestamp,
-            'jabber-server': jabber_server,
-            'dispatchers': dispatchers,
-        })
-        return ret
+        return {}
 
     def register_osad_jid(self, system_id, args={}):
-        log_debug(1)
+        log_error("register_osad_jid unsupported")
 
-        # Authenticate
-        server = self.auth_system(system_id)
-
-        if 'jabber-id' not in args:
-            raise rhnFault(160, "No jabber-id specified", explain=0)
-
-        jid = args['jabber-id']
-        server.register_push_client_jid(jid)
         return {}
 
     def available_eus_channels(self, username, password, arch,

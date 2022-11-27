@@ -232,12 +232,6 @@ if [ -d /var/log/salt ]; then
     cp -fa /var/log/salt $DIR/salt-logs
 fi
 
-# grab jabberd info if it exists (it should)
-if [ -d /etc/jabberd ]; then
-    mkdir -p $DIR/jabberd
-    cp -fa /etc/jabberd $DIR/jabberd
-fi
-
 # tomcat for spacewalk 400+
 for tomcat in tomcat tomcat5 tomcat6 ; do
   if [ -d /etc/$tomcat ]; then
