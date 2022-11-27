@@ -56,9 +56,9 @@ public class GeneralConfigAction extends BaseConfigAction {
 
 
     private static final String[] STRING_CONFIG_ARRAY = {"traceback_mail",
-        "server.jabber_server", "server.satellite.http_proxy",
-        "server.satellite.http_proxy_username", "server.satellite.http_proxy_password",
-        "mount_point"};
+        ConfigDefaults.SERVER_HOSTNAME, ConfigDefaults.HTTP_PROXY,
+        ConfigDefaults.HTTP_PROXY_USERNAME, ConfigDefaults.HTTP_PROXY_PASSWORD,
+        ConfigDefaults.MOUNT_POINT};
 
     private static final String[] BOOLEAN_CONFIG_ARRAY = { ConfigDefaults.DISCONNECTED };
 
@@ -123,7 +123,7 @@ public class GeneralConfigAction extends BaseConfigAction {
                 else {
                     String value = (String)
                         form.get(translateFormPropertyName(configKey));
-                    if (configKey.equals("server.jabber_server")) {
+                    if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
                         value = IDN.toASCII(value);
                     }
                     csc.updateString(configKey, value);
@@ -152,14 +152,14 @@ public class GeneralConfigAction extends BaseConfigAction {
                     form.set(translateFormPropertyName(configKey),
                             configValue);
 
-                    if (configKey.equals("server.satellite.http_proxy_password")) {
+                    if (configKey.equals(ConfigDefaults.HTTP_PROXY_PASSWORD)) {
                         form.set(
                                 translateFormPropertyName("server.satellite.http_proxy_password_confirm"),
                                 configValue);
                     }
-                    else if (configKey.equals("server.jabber_server")) {
+                    else if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
                         form.set(
-                                translateFormPropertyName("server.jabber_server"),
+                                translateFormPropertyName(ConfigDefaults.SERVER_HOSTNAME),
                                 IDN.toUnicode(configValue));
                     }
                 }
@@ -200,7 +200,7 @@ public class GeneralConfigAction extends BaseConfigAction {
      * This function checks if the user entered a valid e-mail, hostname,
      * and if the password and password confirmation fields match. Any
      * errors found are returned.
-     * @param GeneralConfingForm to validate
+     * @param DynaActionForm to validate
      * @return errors that were found in the submitted form
      */
     private ActionErrors validateForm(DynaActionForm form) {
@@ -208,7 +208,7 @@ public class GeneralConfigAction extends BaseConfigAction {
 
         // Check if proxy is given as host:port
         String proxy = (String) form.get(
-                translateFormPropertyName("server.satellite.http_proxy"));
+                translateFormPropertyName(ConfigDefaults.HTTP_PROXY));
         HostPortValidator validator = HostPortValidator.getInstance();
         if (!(proxy.equals("") || validator.isValid(proxy))) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
@@ -216,13 +216,13 @@ public class GeneralConfigAction extends BaseConfigAction {
         }
 
         String password = (String) form.get(
-                   translateFormPropertyName("server.satellite.http_proxy_password"));
+                   translateFormPropertyName(ConfigDefaults.HTTP_PROXY_PASSWORD));
         String confirmationPassword = (String) form.get(
            translateFormPropertyName("server.satellite.http_proxy_password_confirm"));
 
         if (!password.equals(confirmationPassword)) {
             form.set(
-                    translateFormPropertyName("server.satellite.http_proxy_password"),
+                    translateFormPropertyName(ConfigDefaults.HTTP_PROXY_PASSWORD),
                     "");
 
             form.set(
@@ -237,4 +237,3 @@ public class GeneralConfigAction extends BaseConfigAction {
     }
 
 }
-

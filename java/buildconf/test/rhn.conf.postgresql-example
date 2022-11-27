@@ -98,6 +98,8 @@ server.satellite.http_proxy =
 server.satellite.http_proxy_username =
 server.satellite.http_proxy_password =
 
+java.hostname = localhost
+
 # Kickstart settings
 server.satellite.tiny_url_timeout = 4
 
