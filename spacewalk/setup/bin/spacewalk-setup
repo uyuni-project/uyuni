@@ -833,7 +833,6 @@ sub populate_initial_configs {
      serverDOTsatelliteDOThttp_proxy => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy'} : $answers->{'rhn-http-proxy'}) || '',
      serverDOTsatelliteDOThttp_proxy_username => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy-username'} : $answers->{'rhn-http-proxy-username'}) || '',
      serverDOTsatelliteDOThttp_proxy_password => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy-password'} :$answers->{'rhn-http-proxy-password'}) || '',
-     osadispatcherDOTosa_ssl_cert => $DOC_ROOT."/pub/RHN-ORG-TRUSTED-SSL-CERT",
      encrypted_passwords => 1,
      db_backend => $answers->{'db-backend'},
      db_user => $answers->{'db-user'},
