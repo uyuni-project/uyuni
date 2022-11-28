@@ -147,17 +147,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "RHEL or SLES ES or CentOS 8 Base" product has been added
 
 @rocky9_minion
-  Scenario: Add SUSE Linux Enterprise Server with Expanded Support 9
+  Scenario: Add Rocky Linux 9
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
-    And I enter "RHEL or SLES ES or CentOS 9 Base" as the filtered product description
-    And I select "RHEL or SLES ES or CentOS 9 Base" as a product
-    Then I should see the "RHEL or SLES ES or CentOS 9 Base" selected
-    When I open the sub-list of the product "RHEL or SLES ES or CentOS 9 Base"
-    And I select "SUSE Linux Enterprise Server with Expanded Support 9" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 9" selected
+    And I enter "Rocky Linux 9" as the filtered product description
+    And I select "Rocky Linux 9" as a product
+    Then I should see the "Rocky Linux 9" selected
     When I click the Add Product button
-    And I wait until I see "RHEL or SLES ES or CentOS 9 Base" product has been added
+    And I wait until I see "Rocky Linux 9" product has been added
 
 @ubuntu1804_minion
   Scenario: Add Ubuntu 18.04

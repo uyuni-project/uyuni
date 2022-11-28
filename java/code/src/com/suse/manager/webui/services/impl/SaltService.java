@@ -122,6 +122,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -173,6 +174,12 @@ public class SaltService implements SystemQuery, SaltApi {
     public enum KeyStatus {
         ACCEPTED, DENIED, UNACCEPTED, REJECTED
     }
+
+    private static final String CA_CERT_REGEX =
+            "(?m)^-{3,}BEGIN CERTIFICATE-{3,}$(?s).*?^-{3,}END CERTIFICATE-{3,}$";
+    private static final String RSA_KEY_REGEX =
+            "(?m)^-{3,}BEGIN RSA PRIVATE KEY-{3,}$(?s).*?^-{3,}END RSA PRIVATE KEY-{3,}$";
+    private static final Pattern SENSITIVE_DATA_PATTERN = Pattern.compile(CA_CERT_REGEX + "|" + RSA_KEY_REGEX);
 
     /**
      * Default constructor
@@ -320,8 +327,24 @@ public class SaltService implements SystemQuery, SaltApi {
         return String.format("[%s.%s]", call.getModuleName(), call.getFunctionName());
     }
 
+    private static Map<String, Object> filterPayload(Map<String, Object> payload) {
+        var kwarg = payload.get("kwarg");
+        if (kwarg == null) {
+            return payload;
+        }
+        Function<Entry<?, ?>, Object> filterValue = e -> SENSITIVE_DATA_PATTERN
+                .matcher(e.getValue().toString()).find() ? "HIDDEN" : e.getValue();
+        var kwargFiltered = kwarg instanceof Map ?
+                ((Map<?, ?>) kwarg).entrySet().stream()
+                        .filter(e -> e.getValue() != null)
+                        .collect(Collectors.toMap(Entry::getKey, filterValue)) :
+                kwarg;
+        payload.put("kwarg", kwargFiltered);
+        return payload;
+    }
+
     private String runnerCallToString(RunnerCall<?> call) {
-        return String.format(PAYLOAD_CALL_TEMPLATE, call, call.getPayload());
+        return String.format(PAYLOAD_CALL_TEMPLATE, call.getModuleName(), filterPayload(call.getPayload()));
     }
 
     /**
@@ -1108,10 +1131,14 @@ public class SaltService implements SystemQuery, SaltApi {
                     Optional<String> whatProvidesRes = Optional
                             .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
                             .getChanges(CmdResult.class).getStdout());
+                    Optional<String> whatProvidesSLL = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLL_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
 
                     return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent,
                             oracleReleaseContent, alibabaReleaseContent, almaReleaseContent,
-                            amazonReleaseContent, rockyReleaseContent, whatProvidesRes);
+                            amazonReleaseContent, rockyReleaseContent, whatProvidesRes,
+                            whatProvidesSLL);
                 });
     }
 

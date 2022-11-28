@@ -67,6 +67,8 @@ Feature: Salt SSH action chain
   Scenario: Add a package installation to an action chain on SSH minion
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I check radio button "schedule-by-action-chain"

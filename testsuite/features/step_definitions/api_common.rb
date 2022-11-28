@@ -477,9 +477,9 @@ Then(/^I should get the test channel$/) do
   arch = `uname -m`
   arch.chomp!
   channel = if arch != 'x86_64'
-              'test-channel-i586'
+              'fake-i586-channel'
             else
-              'test-channel-x86_64'
+              'fake-rpm-sles-channel'
             end
   log "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))

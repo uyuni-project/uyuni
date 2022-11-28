@@ -1,4 +1,8 @@
-- Re-added alternative usage of perl-Net-LibIDN2.
+-------------------------------------------------------------------
+Fri Nov 18 15:01:37 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Re-added alternative usage of perl-Net-LibIDN2.
 
 -------------------------------------------------------------------
 Mon Nov 14 15:07:32 CET 2022 - jgonzalez@suse.com

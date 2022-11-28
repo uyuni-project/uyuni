@@ -83,6 +83,8 @@ import java.util.stream.Collectors;
  */
 public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
+    private static int advisorySeq = 1000;
+
     @Test
     public void testAddToChannel()  throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -261,7 +263,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) throws Exception {
-        String name = Opt.fold(advisory, () -> "JAVA Test " + TestUtils.randomString(), Function.identity());
+        String name = Opt.fold(advisory, () -> "JAVA-Test-" + advisorySeq++, Function.identity());
         Org org = null;
         if (orgId != null) {
             org = OrgFactory.lookupById(orgId);
@@ -281,6 +283,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setIssueDate(new Date());
         e.setAdvisoryName(name);
         e.setAdvisoryRel(2L);
+        e.setErrataFrom("maint-coord@suse.de");
         e.setLocallyModified(Boolean.FALSE);
         e.addKeyword("keyword");
         Package testPackage = PackageTest.createTestPackage(org);

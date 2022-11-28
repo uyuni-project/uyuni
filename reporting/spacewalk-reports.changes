@@ -1,5 +1,9 @@
-* Stop using web.system_checkin_threshold configuration value
-* Add --param option to overwrite report parameter default value
+-------------------------------------------------------------------
+Fri Nov 18 15:05:43 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Stop using web.system_checkin_threshold configuration value
+  * Add --param option to overwrite report parameter default value
 
 -------------------------------------------------------------------
 Wed Sep 28 11:08:52 CEST 2022 - jgonzalez@suse.com

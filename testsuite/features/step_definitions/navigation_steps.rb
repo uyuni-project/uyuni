@@ -215,9 +215,10 @@ end
 
 When(/^I include the recommended child channels$/) do
   toggle = "//span[@class='pointer']"
-  if page.has_xpath?(toggle, wait: 5)
-    find(:xpath, toggle).click
-  end
+  toggle_off = "//i[contains(@class, 'fa-toggle-off')]"
+  step %(I wait until I see "include recommended" text)
+  raise 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
+  find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
 end
 
 When(/^I choose "([^"]*)"$/) do |arg1|
@@ -551,7 +552,7 @@ Then(/^I should see an update in the list$/) do
 end
 
 When(/^I check test channel$/) do
-  step %(I check "Test Base Channel" in the list)
+  step %(I check "Fake Base Channel" in the list)
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
@@ -1108,4 +1109,20 @@ end
 
 Then(/^I should see the text "(.*?)" in the (Operating System|Architecture|Channel Label) field/) do |text, field|
   page.has_field?(text, with: field)
+end
+
+Then(/^I should see the correct timestamp for task "([^"]*)"/) do |task_name|
+  now = Time.now
+  execute_script 'window.stop()'
+  # find row with corresponding task name
+  page.find_all(:xpath, "//table[@class='table table-responsive']//tr").each do |tr|
+    next unless tr.has_text?(task_name)
+    # if task name is found, iterate through the columns to find the timestamp
+    page.find_all(:xpath, "//table[@class='table table-responsive']//td").each do |td|
+      # if a text matching the format xx:xx is found, get and save the text
+      next unless td.text.match(/\d{2}:\d{2}/)
+      # Text from cell, parsed to a Time object must match now +- 5 seconds
+      Time.parse(td.text).to_i.between?(now.to_i - 5, now.to_i + 5)
+    end
+  end
 end

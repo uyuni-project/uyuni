@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  *
@@ -91,7 +92,7 @@ public class DebPackageWriter implements Closeable {
         out.write(vendor);
         out.newLine();
 
-        Long packagePayloadSize = pkgDto.getPayloadSize();
+        Long packagePayloadSize = Optional.ofNullable(pkgDto.getPayloadSize()).orElse(0L);
         if (packagePayloadSize > 0) {
             out.write("Installed-Size: ");
             out.write(pkgDto.getPayloadSize().toString());

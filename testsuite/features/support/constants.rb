@@ -136,8 +136,8 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool',
                            'centos7_ssh_minion' => 'RHEL x86_64 Server 7',
                            'rocky8_minion' => 'no-appstream-result-RHEL8-Pool for x86_64',
                            'rocky8_ssh_minion' => 'no-appstream-result-RHEL8-Pool for x86_64',
-                           'rocky9_minion' => 'no-appstream-result-RHEL9-Pool for x86_64',
-                           'rocky9_ssh_minion' => 'no-appstream-result-RHEL9-Pool for x86_64',
+                           'rocky9_minion' => 'no-appstream-result-Rocky Linux 9',
+                           'rocky9_ssh_minion' => 'no-appstream-result-Rocky Linux 9',
                            'ubuntu1804_minion' => 'ubuntu-18.04-pool',
                            'ubuntu1804_ssh_minion' => 'ubuntu-18.04-pool',
                            'ubuntu2004_minion' => 'ubuntu-2004-amd64-main',
@@ -163,6 +163,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' => 'sle-prod
                           'SLES15-SP4-Pool' => 'sle-product-sles15-sp4-pool-x86_64',
                           'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                           'no-appstream-result-RHEL8-Pool for x86_64' => 'no-appstream-result-rhel8-pool-x86_64',
+                          'no-appstream-result-Rocky Linux 9' => 'no-appstream-result-rockylinux9-x86_64',
                           'ubuntu-18.04-pool' => 'ubuntu-18.04-pool-amd64',
                           'ubuntu-2004-amd64-main' => 'ubuntu-2004-amd64-main-amd64',
                           'ubuntu-2204-amd64-main' => 'ubuntu-2204-amd64-main-amd64',
@@ -181,6 +182,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' =>
                                     'SLES15-SP4-Pool' => 'SLE-15-SP4-x86_64',
                                     'RHEL x86_64 Server 7' => 'RES7-x86_64',
                                     'no-appstream-result-RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
+                                    'no-appstream-result-Rocky Linux 9' => 'rockylinux9-x86_64',
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
                                     'ubuntu-2204-amd64-main' => 'ubuntu-22.04-amd64',
@@ -199,6 +201,7 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-P
                                            'SLES15-SP4-Pool' => 'sle-product-sles15-sp4-pool-x86_64',
                                            'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                                            'no-appstream-result-RHEL8-Pool for x86_64' => nil,
+                                           'no-appstream-result-Rocky Linux 9' => nil,
                                            'ubuntu-18.04-pool' => nil,
                                            'ubuntu-2004-amd64-main' => nil,
                                            'ubuntu-2204-amd64-main' => nil,
@@ -265,6 +268,13 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp4-updates-x86_64
     sle-module-basesystem15-sp4-updates-x86_64
     sle-module-server-applications15-sp4-updates-x86_64
+    sle15-sp4-installer-updates-x86_64
+    sle-module-desktop-applications15-sp4-pool-x86_64
+    sle-module-desktop-applications15-sp4-updates-x86_64
+    sle-module-devtools15-sp4-pool-x86_64
+    sle-module-devtools15-sp4-updates-x86_64
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-containers15-sp4-updates-x86_64
   ],
   '12-SP4' =>
   %w[
@@ -353,6 +363,8 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp4-updates-x86_64
     sle-module-basesystem15-sp4-updates-x86_64
     sle-module-server-applications15-sp4-updates-x86_64
+    sle-module-containers15-sp4-pool-x86_64
+    sle-module-containers15-sp4-updates-x86_64
   ],
   '8.6' =>
   %w[

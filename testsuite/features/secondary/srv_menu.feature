@@ -265,7 +265,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "File Preservation" link in the left menu
     And I should see a "Autoinstallation Snippets" link in the left menu
     And I should see a "Create Kickstart Profile" link
-    And I should see a "Upload Kickstart/Autoyast File" link
+    And I should see a "Upload Kickstart/AutoYaST File" link
     And I should see a "View a List of Autoinstallation Profiles" link
     And I should see a "Create a New Kickstart Profile" link
     And I should see a "Upload a New Kickstart/AutoYaST File" link
@@ -274,7 +274,7 @@ Feature: Web UI - Main landing page menu, texts and links
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should see a "Autoinstallation Profiles" text
     And I should see a "Create Kickstart Profile" link
-    And I should see a "Upload Kickstart/Autoyast File" link
+    And I should see a "Upload Kickstart/AutoYaST File" link
 
   Scenario: Sidebar link destination for Systems => Autoinstallation => Unprovisioned
     When I follow the left menu "Systems > Autoinstallation > Unprovisioned"
@@ -314,9 +314,9 @@ Feature: Web UI - Main landing page menu, texts and links
     And I follow "Create Kickstart Profile"
     Then I should see a "Step 1: Create Kickstart Profile" text
 
-  Scenario: "Upload Kickstart/Autoyast File" page Systems => Autoinstallation => Profiles => Upload Kickstart/Autoyast File
+  Scenario: "Upload Kickstart/AutoYaST File" page Systems => Autoinstallation => Profiles => Upload Kickstart/AutoYaST File
     When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "Upload Kickstart/Autoyast File"
+    And I follow "Upload Kickstart/AutoYaST File"
     Then I should see a "Create Autoinstallation Profile" text
     And I should see a "File Contents:" text
     And I should see a "Autoinstallation Details" text

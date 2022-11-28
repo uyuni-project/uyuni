@@ -73,7 +73,7 @@ Then(/^it should be possible to use the HTTP proxy$/) do
 end
 
 Then(/^it should be possible to use the custom download endpoint$/) do
-  url = "#{$custom_download_endpoint}/rhn/manager/download/test-channel-x86_64/repodata/repomd.xml"
+  url = "#{$custom_download_endpoint}/rhn/manager/download/fake-rpm-sles-channel/repodata/repomd.xml"
   $server.run("curl --ipv4 --location #{url} --output /dev/null")
 end
 
@@ -162,7 +162,6 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
   end
   node = get_target(host)
   if deb_host?(host)
-    node.wait_while_process_running('apt-get')
     pkg_version = package.split('-')[-1]
     pkg_name = package.delete_suffix("-#{pkg_version}")
     pkg_version_regexp = pkg_version.gsub('.', '\\.')
@@ -171,6 +170,7 @@ When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |pa
     else
       node.run_until_fail("dpkg -l | grep -E '^ii +#{pkg_name} +#{pkg_version_regexp} +'")
     end
+    node.wait_while_process_running('apt-get')
   else
     node.wait_while_process_running('zypper')
     if status == 'installed'
@@ -929,7 +929,7 @@ end
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   if suse_host?(host)
-    cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
+    cmd = "ls /var/cache/zypp/packages/susemanager:fake-rpm-sles-channel/getPackage/*/*/#{pkg_name}*.rpm"
   elsif deb_host?(host)
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
@@ -1029,18 +1029,6 @@ end
 When(/^I restart squid service on the proxy$/) do
   # We need to restart squid when we add a CNAME to the certificate
   $proxy.run("systemctl restart squid.service")
-end
-
-Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
-  # for testing buildtime of generated metadata - See bsc#1078056
-  node = get_target(host)
-  cmd = "dumpsolv /var/cache/zypp/solv/spacewalk\:test-channel-x86_64/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
-  metadata_buildtime, return_code = node.run(cmd)
-  raise "Command failed: #{cmd}" unless return_code.zero?
-  cmd = "rpm -q --qf '%{BUILDTIME}' #{pkg}"
-  rpm_buildtime, return_code = node.run(cmd)
-  raise "Command failed: #{cmd}" unless return_code.zero?
-  raise "Wrong buildtime in metadata: #{metadata_buildtime} != #{rpm_buildtime}" unless metadata_buildtime == rpm_buildtime
 end
 
 When(/^I create channel "([^"]*)" from spacecmd of type "([^"]*)"$/) do |name, type|

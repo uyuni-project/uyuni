@@ -1,3 +1,5 @@
+- Allow rhnpush to handle Debian packages
+
 -------------------------------------------------------------------
 Wed Sep 28 11:18:45 CEST 2022 - jgonzalez@suse.com
 

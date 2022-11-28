@@ -194,7 +194,7 @@ Feature: PXE boot a Retail terminal
     And I wait at most 350 seconds until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I wait until radio button "Test-Channel-x86_64" is checked, refreshing the page
+    And I wait until radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked, refreshing the page
     And I wait until event "Package List Refresh scheduled by (none)" is completed
     Then "pxeboot_minion" should have been reformatted
 
@@ -209,6 +209,8 @@ Feature: PXE boot a Retail terminal
     When I install the GPG key of the test packages repository on the PXE boot minion
     And I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
@@ -332,6 +334,8 @@ Feature: PXE boot a Retail terminal
     When I follow "pxeboot" terminal
     And I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo-dummy-2.0-1.1" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
