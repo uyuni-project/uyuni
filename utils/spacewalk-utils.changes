@@ -1,3 +1,4 @@
+- remove jabberd and osa-dispatcher
 - spacewalk-hostname-rename changes also report db host(bsc#1200801)
 
 -------------------------------------------------------------------
