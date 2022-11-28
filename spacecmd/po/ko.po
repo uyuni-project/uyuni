@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 14:49+0000\n"
+"POT-Creation-Date: 2022-11-25 16:22+0100\n"
 "PO-Revision-Date: 2022-11-22 02:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
@@ -1945,75 +1945,79 @@ msgid "CVEs"
 msgstr "CVE"
 
 #: ../src/spacecmd/errata.py:431
+msgid "Vendor Advisory"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:435
 msgid "Solution"
 msgstr "솔루션"
 
-#: ../src/spacecmd/errata.py:435
+#: ../src/spacecmd/errata.py:439
 msgid "References"
 msgstr "참조"
 
-#: ../src/spacecmd/errata.py:439
+#: ../src/spacecmd/errata.py:443
 msgid "Affected Channels"
 msgstr "영향을 받는 채널"
 
-#: ../src/spacecmd/errata.py:443 ../src/spacecmd/org.py:319
+#: ../src/spacecmd/errata.py:447 ../src/spacecmd/org.py:319
 msgid "Affected Systems"
 msgstr "영향을 받는 시스템"
 
-#: ../src/spacecmd/errata.py:447
+#: ../src/spacecmd/errata.py:451
 msgid "Affected Packages"
 msgstr "영향을 받는 패키지"
 
-#: ../src/spacecmd/errata.py:457
+#: ../src/spacecmd/errata.py:461
 msgid "errata_delete: Delete an patch"
 msgstr "errata_delete: 패치 삭제"
 
-#: ../src/spacecmd/errata.py:458
+#: ../src/spacecmd/errata.py:462
 msgid "usage: errata_delete ERRATA|search:XXX ..."
 msgstr "사용법: errata_delete ERRATA|search:XXX ..."
 
-#: ../src/spacecmd/errata.py:478
+#: ../src/spacecmd/errata.py:482
 msgid "No patches to delete"
 msgstr "삭제할 패치 없음"
 
-#: ../src/spacecmd/errata.py:481
+#: ../src/spacecmd/errata.py:485
 msgid "Erratum            Channels"
 msgstr "오류            채널"
 
-#: ../src/spacecmd/errata.py:489
+#: ../src/spacecmd/errata.py:493
 msgid "Delete these patches [y/N]:"
 msgstr "이 패치 삭제 [y/N]:"
 
-#: ../src/spacecmd/errata.py:495
+#: ../src/spacecmd/errata.py:499
 #, python-format
 msgid "Deleted %i patches"
 msgstr "삭제된 %i 패치"
 
-#: ../src/spacecmd/errata.py:505
+#: ../src/spacecmd/errata.py:509
 msgid "errata_publish: Publish an patch to a channel"
 msgstr "errata_publish: 채널에 패치 게시"
 
-#: ../src/spacecmd/errata.py:506
+#: ../src/spacecmd/errata.py:510
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 msgstr "사용법: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 
-#: ../src/spacecmd/errata.py:535
+#: ../src/spacecmd/errata.py:539
 msgid "No patches to publish"
 msgstr "게시할 패치 없음"
 
-#: ../src/spacecmd/errata.py:540
+#: ../src/spacecmd/errata.py:544
 msgid "Publish these patches [y/N]:"
 msgstr "이 패치 게시 [y/N]:"
 
-#: ../src/spacecmd/errata.py:552
+#: ../src/spacecmd/errata.py:556
 msgid "errata_search: List patches that meet the given criteria"
 msgstr "errata_search: 지정된 기준을 충족하는 패치 나열"
 
-#: ../src/spacecmd/errata.py:553
+#: ../src/spacecmd/errata.py:557
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 msgstr "사용법: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
-#: ../src/spacecmd/errata.py:555 ../src/spacecmd/scap.py:181
+#: ../src/spacecmd/errata.py:559 ../src/spacecmd/scap.py:181
 msgid "Example:"
 msgstr "예는 다음과 같습니다."
 
@@ -4085,7 +4089,7 @@ msgstr ""
 "proxy_container_config: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:33
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL ROOT_CA CRT KEY\n"
@@ -4106,7 +4110,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
 "'config.tar.gz'\n"
-"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
 "            certicate in PEM format. May be provided multiple times.\n"
 "\n"
@@ -4147,7 +4151,7 @@ msgstr ""
 "환합니다."
 
 #: ../src/spacecmd/proxy.py:90
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL\n"
@@ -4164,7 +4168,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: "
 "'config.tar.gz'\n"
-"  -p, --ssh-port SSH port the proxy listens one. Default: 22\n"
+"  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  --ca-crt path to the certificate of the CA to use to generate a new proxy "
 "certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
