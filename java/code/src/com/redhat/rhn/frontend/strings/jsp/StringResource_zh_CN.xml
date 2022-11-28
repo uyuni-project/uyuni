@@ -10833,18 +10833,18 @@ Please note that some manual configuration of these scripts may still be require
         <target state="translated">您指定了无效变量："{0}"。变量应该是名称数值对，中间用 "=" 符号隔开，每个名称数值对之间用换行符隔开。例如："ip=192.168.0.1"</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="translated">您的 kickstart/autoyast 模板中有错误。请检查 "{0}" 选项卡确定模板的问题。</target>
+        <target state="needs-adaptation">您的 kickstart/autoyast 模板中有错误。请检查 "{0}" 选项卡确定模板的问题。</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the error message below.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="translated">您的 kickstart/autoyast 模板中有错误。请检查下面的错误消息。</target>
+        <target state="needs-adaptation">您的 kickstart/autoyast 模板中有错误。请检查下面的错误消息。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>

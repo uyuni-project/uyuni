@@ -10767,18 +10767,18 @@ Please note that some manual configuration of these scripts may still be require
         <target>È stata specificata una variabile non valida: '{0}'.  Le variabili devono essere coppie di valori separati da un simbolo '=' ed ogni coppia deve essere separata da una nuova riga. Per esempio: 'ip=192.168.0.1'</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>Sono presenti alcuni errori all'interno del template di kickstart. Controllare '{0}' per determinare il tipo di problema.</target>
+        <target state="needs-adaptation">Sono presenti alcuni errori all'interno del template di kickstart. Controllare '{0}' per determinare il tipo di problema.</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
-        <source>There are errors in your kickstart/autoyast template. Please check the error message below.</source>
+        <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target>Sono presenti alcuni errori all'interno del template di kickstart. Controllare il messaggio di errore di seguito riportato.</target>
+        <target state="needs-adaptation">Sono presenti alcuni errori all'interno del template di kickstart. Controllare il messaggio di errore di seguito riportato.</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
