@@ -1,3 +1,4 @@
+- spacewalk-hostname-rename changes also report db host(bsc#1200801)
 - Add Uyuni SLE-Micro Client Tools repositories
 
 -------------------------------------------------------------------
