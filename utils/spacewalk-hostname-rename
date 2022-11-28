@@ -71,9 +71,50 @@ IPADDR_REGEX="($IPV4ADDR_REGEX)|($IPV6ADDR_REGEX)"
 
 ###############################################################################
 
+function default_or_input() {
+    local MSG="$1"
+    local VARIABLE="$2"
+    local DEFAULT="$3"
+    local SILENT="$4"
+
+    local INPUT
+    local CURRENT_VALUE=${!VARIABLE}
+    #in following code is used not so common expansion
+    #var_a=${var_b:-word}
+    #which is like: var_a = $var_b ? word
+    DEFAULT=${CURRENT_VALUE:-$DEFAULT}
+    local VARIABLE_ISSET=$(set | grep "^$VARIABLE=")
+
+    
+    echo -n "$MSG [$DEFAULT]: "
+
+    if [ -z "$VARIABLE_ISSET" ]; then
+        read -r INPUT
+    fi
+    if [ -z "$INPUT" ]; then
+        if [ "$DEFAULT" = "y/N" ] || [ "$DEFAULT" = "Y/n" ]; then
+            INPUT=$(yes_no "$DEFAULT")
+        else
+            INPUT="$DEFAULT"
+        fi
+    fi
+    eval "$(printf "%q=%q" "$VARIABLE" "$INPUT")"
+}
+
+function yes_no() {
+    case "$1" in
+        Y|y|Y/n|n/Y|1)
+            echo 1
+            ;;
+        *)
+            echo 0
+            ;;
+    esac
+}
+
 function echo_usage {
     echo "Usage:"
-    echo "   $(basename $0) <IP_ADDRESS> [ --ssl-country=<SSL_COUNTRY> --ssl-state=<SSL_STATE> --ssl-city=<SSL_CITY> --ssl-org=<SSL_ORG> --ssl-orgunit=<SSL_ORGUNIT> --ssl-email=<SSL_EMAIL> --ssl-ca-password=<SSL_CA_PASSWORD> --ssl-ca-cert=<PATH> --ssl-server-key=<PATH> --ssl-server-cert=<PATH>]"
+    echo "   $(basename $0) <IP_ADDRESS> [ --ssl-country=<SSL_COUNTRY> --ssl-state=<SSL_STATE> --ssl-city=<SSL_CITY> --ssl-org=<SSL_ORG> --ssl-orgunit=<SSL_ORGUNIT> --ssl-email=<SSL_EMAIL> --ssl-ca-password=<SSL_CA_PASSWORD> --ssl-ca-cert=<PATH> --ssl-server-key=<PATH> --ssl-server-cert=<PATH> --overwrite_report_db_host=[y/n]]"
     echo "   $(basename $0) { -h | --help }"
     exit 1
 }
@@ -195,12 +236,34 @@ function update_rhn_conf {
     #    --dest=/etc
     #    --conf=$SAT_LOCAL_RULES_CONF
     #    >> $LOG 2>&1
-    backup_file ${RHN_CONF_FILE}
     /usr/bin/rhn-config-satellite.pl \
         --target=${RHN_CONF_FILE} \
         --option=server.jabber_server=$HOSTNAME \
         --option=osa-dispatcher.jabber_server=$HOSTNAME \
         --option=cobbler.host=$HOSTNAME >> $LOG 2>&1
+}
+
+function re-generate_report_db_host {
+  REPORTDBNAME=$(sed  -n '/#/!s/\(report_db_host[[:space:]]*=[[:space:]]*\)\(.*\)/\2/p' $RHN_CONF_FILE)
+  echo "Currently Report DB Host is: $REPORTDBNAME" | tee -a $LOG
+  
+  if [ "$REPORTDBNAME" == "$HOSTNAME" ]; then
+    echo "$REPORTDBNAME is already correct. Nothing to do." | tee -a $LOG
+  fi 
+
+  if [ -z "$OVERWRITE_REPORT_DB_HOST"  ] ; then
+    default_or_input "Do you want to change it to $HOSTNAME ?" CONFIRM "y/N" "N"
+    RET=$(yes_no $CONFIRM)
+  else
+    RET=$(yes_no $OVERWRITE_REPORT_DB_HOST)
+  fi
+  
+  if [ "$RET"  == 1 ]; then
+    echo "Overwrite Report DB Host with hostname: $HOSTNAME"
+    sed -i "/#/!s/\(report_db_host[[:space:]]*=[[:space:]]*\)\(.*\)/\1${HOSTNAME}/" $RHN_CONF_FILE
+  else
+    echo "Report DB Host will remain: $REPORTDBNAME"
+  fi
 }
 
 function re-generate_server_ssl_certificate {
@@ -413,6 +476,7 @@ while [ $# -ge 1 ]; do
             --ssl-ca-cert=*) CML_SSL_CA_CERT=$(echo $1 | cut -d= -f2-);;
             --ssl-server-cert=*) CML_SSL_SERVER_CERT=$(echo $1 | cut -d= -f2-);;
             --ssl-server-key=*) CML_SSL_SERVER_KEY=$(echo $1 | cut -d= -f2-);;
+            --overwrite_report_db_host=*) OVERWRITE_REPORT_DB_HOST=$(echo $1 | cut -d= -f2-);;
             *) echo_err "Error: Invalid option $1"
                echo_usage;;
     esac
@@ -465,6 +529,9 @@ initial_system_hostname_check || bye
 echo "=============================================" | tee -a $LOG
 echo "hostname: $HOSTNAME" | tee -a $LOG
 echo "=============================================" | tee -a $LOG
+
+backup_file $RHN_CONF_FILE
+re-generate_report_db_host
 
 # stop services
 echo -n "Stopping spacewalk services ... " | tee -a $LOG
