@@ -953,6 +953,7 @@ public class CVEAuditManager {
             // Group results for the system further by package names, filtering out 'not-affected' entries
             Map<String, List<CVEPatchStatus>> resultsByPackage =
                     systemResults.stream().filter(r -> r.getErrataId().isPresent())
+                            .filter(r -> r.getChannelRank().orElse(0L) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
                             .collect(Collectors.groupingBy(r -> r.getPackageName().get()));
 
             // When live patching is available, the original kernel packages ('-default' or '-xen') must be ignored.
@@ -1050,8 +1051,7 @@ public class CVEAuditManager {
         Comparator<CVEPatchStatus> evrComparator = Comparator.comparing(r -> r.getPackageEvr().get());
 
         Optional<CVEPatchStatus> latestInstalled = packageResults.stream()
-                .filter(r -> r.isPackageInstalled() &&
-                        r.getChannelRank().orElse(null) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
+                .filter(r -> r.isPackageInstalled())
                 .max(evrComparator);
 
         Optional<CVEPatchStatus> result = latestInstalled.map(li -> {
