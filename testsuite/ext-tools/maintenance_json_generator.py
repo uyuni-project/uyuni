@@ -76,6 +76,7 @@ def parse_args():
     parser.add_argument("-v", "--version", dest="version",
                         help="Version of SUMA you want to run this script for, options are 42 for 4.2 or 43 for 4.3",
                         default="43", action='store')
+    parser.add_argument("-i", "--rrids", dest="rrids", help="RR IDs", default=None, action='store')
 
     args = parser.parse_args()
     return args
@@ -178,7 +179,10 @@ def create_url(rrid, suffix):
 
 def main():
     args = parse_args()
-    rrids = read_requests()
+    if args.rrids is not None:
+        rrids = args.rrids.split(",")
+    else:
+        rrids = read_requests()
     find_valid_repos(rrids, args.version)
 
 
