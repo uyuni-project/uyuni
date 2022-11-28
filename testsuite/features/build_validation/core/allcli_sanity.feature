@@ -135,7 +135,7 @@ Feature: Sanity checks
     And "sle15sp4_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp4_ssh_minion" should be exact
 
-@ceos7_minion
+@centos7_minion
   Scenario: The CentOS 7 Salt minion is healthy
     Then "centos7_minion" should have a FQDN
     And reverse resolution should work for "centos7_minion"
