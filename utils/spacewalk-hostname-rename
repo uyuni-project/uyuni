@@ -99,7 +99,6 @@ function default_or_input() {
             INPUT="$DEFAULT"
         fi
     fi
-    ACCUMULATED_ANSWERS+=$(printf "\n%q=%q" "$VARIABLE" "${INPUT:-$DEFAULT}")
     eval "$(printf "%q=%q" "$VARIABLE" "$INPUT")"
 }
 
