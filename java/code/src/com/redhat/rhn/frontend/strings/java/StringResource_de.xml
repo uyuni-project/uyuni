@@ -2802,11 +2802,11 @@ and try again.
         <target>Benachrichtigungsfilter erstellen</target>
       </trans-unit>
       <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
-        <source>Upload Kickstart/Autoyast File</source>
+        <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>Kickstart-Profil hochladen</target>
+        <target state="needs-adaptation">Kickstart-Profil hochladen</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
