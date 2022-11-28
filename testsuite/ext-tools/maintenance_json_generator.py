@@ -41,7 +41,10 @@ defaultdict = {
     "debian9_minion": "/SUSE_Updates_Debian_9.0-CLIENT-TOOLS_x86_64/",
     "debian10_minion": "/SUSE_Updates_Debian_10-CLIENT-TOOLS_x86_64/",
     "debian11_minion": "/SUSE_Updates_Debian_11-CLIENT-TOOLS_x86_64/",
-    "opensuse153arm_minion": "/SUSE_Updates_openSUSE-SLE_15.3/"}
+    "opensuse153arm_minion": "/SUSE_Updates_openSUSE-SLE_15.3/",
+    "rocky9_minion": "/SUSE_EL-9_Update_Products_ManagerTools_Update/",
+    "alma9_minion": "/SUSE_EL-9_Update_Products_ManagerTools_Update/",
+    "oracle9_minion": "/SUSE_EL-9_Update_Products_ManagerTools_Update/"}
 
 # Dictionary for SUMA 4.2 Server and Proxy, which is then added together with the common dictionary for client tools
 nodesdict42 = {
