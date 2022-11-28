@@ -20,6 +20,8 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 
+import com.suse.manager.metrics.PrometheusExporter;
+
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -106,6 +108,7 @@ public abstract class HibernateFactory {
      */
     public static void createSessionFactory() {
         connectionManager.initialize();
+        PrometheusExporter.INSTANCE.registerSystemsCollector();
     }
 
     /**

@@ -36,6 +36,8 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
+import io.prometheus.client.hibernate.HibernateStatisticsCollector;
+
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
@@ -192,6 +194,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
             config.setInterceptor(new EmptyVarcharInterceptor(true));
 
             sessionFactory = config.buildSessionFactory();
+            new HibernateStatisticsCollector(sessionFactory, "uyuni").register();
         }
         catch (HibernateException e) {
             LOG.error("FATAL ERROR creating HibernateFactory", e);

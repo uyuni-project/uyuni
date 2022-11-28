@@ -1077,6 +1077,21 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Returns the number of systems with outdated packages
+     *
+     * @return number of systems with outdated packages
+     */
+    public static int countOutdatedSystems() {
+        Map<String, Long> params = new HashMap<>(2);
+        SelectMode m = ModeFactory.getMode("System_queries", "count_outdated_systems");
+        DataResult<Map<String, Object>> dr = makeDataResult(params, params, null, m);
+
+        Map<String, Object> result = dr.get(0);
+        Long count = (Long) result.get("count");
+        return count.intValue();
+    }
+
+    /**
      * Returns list of ungrouped systems visible to user.
      * @param user Currently logged in user.
      * @return list of SystemOverviews.

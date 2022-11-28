@@ -74,4 +74,10 @@ public enum PrometheusExporter {
             new SchedulerCollector(scheduler, schedulerId).register();
         }
     }
+
+    public void registerSystemsCollector() {
+        if (ENABLED) {
+            new SystemsCollector().register();
+        }
+    }
 }

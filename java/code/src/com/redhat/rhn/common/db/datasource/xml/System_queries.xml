@@ -2269,4 +2269,12 @@ SELECT SP.server_id ID, S.name
   </query>
 </write-mode>
 
+<mode name="count_outdated_systems">
+    <query>
+        SELECT COUNT(DISTINCT(SO.server_id)) AS count
+        FROM rhnServerOverview SO
+        WHERE SO.outdated_packages > 0
+    </query>
+</mode>
+
 </datasource_modes>
