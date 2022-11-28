@@ -134,6 +134,8 @@ public class ConfigDefaults {
     private static final String COBBLER_NAME_SEPARATOR = "cobbler.name.separator";
     public static final String POWER_MANAGEMENT_TYPES = "java.power_management.types";
 
+    private static final String CLONED_CHANNEL_AUTO_SELECTION = "java.cloned_channel_auto_selection";
+
     private static final String COBBLER_BOOTSTRAP_KERNEL = "java.cobbler_bootstrap.kernel";
     private static final String COBBLER_BOOTSTRAP_INITRD = "java.cobbler_bootstrap.initrd";
     private static final String COBBLER_BOOTSTRAP_BREED = "java.cobbler_bootstrap.breed";
@@ -718,6 +720,14 @@ public class ConfigDefaults {
      */
     public String getCobblerBootstrapInitrd() {
         return Config.get().getString(COBBLER_BOOTSTRAP_INITRD);
+    }
+
+    /**
+     * @return return if cloned vendor channels should use automatic dependency
+     * selection
+     */
+    public boolean getClonedChannelAutoSelection() {
+        return Config.get().getBoolean(CLONED_CHANNEL_AUTO_SELECTION);
     }
 
     /**
