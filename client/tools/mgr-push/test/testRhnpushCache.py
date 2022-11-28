@@ -14,11 +14,10 @@
 #
 
 import unittest
-from rhnpush import rhnpush_cache
+import rhnpush_cache
 import time
 
 
-@unittest.skip("skipping UserInfoTestCase")
 class UserInfoTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -67,7 +66,6 @@ class UserInfoTestCase(unittest.TestCase):
         assert self.userinfo.getTimeLeft() >= 7.98 and self.userinfo.getTimeLeft() <= 8.002
 
 
-@unittest.skip("skipping CacheManagerTestCase")
 class CacheManagerTestCase(unittest.TestCase):
 
     def setUp(self):
