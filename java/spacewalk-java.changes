@@ -1,3 +1,4 @@
+- Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
 - Improve automatic dependency selection for vendor clones
 - Optimize the number of salt calls on minion startup (bsc#1203532)
 - Fix name for autoinstall snippets after Cobbler 3.3.3
