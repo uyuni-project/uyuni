@@ -89,8 +89,7 @@ function default_or_input() {
     echo -n "$MSG [$DEFAULT]: "
 
     if [ -z "$VARIABLE_ISSET" ]; then
-        MANUAL_ANSWERS=1
-        read INPUT
+        read -r INPUT
     fi
     if [ -z "$INPUT" ]; then
         if [ "$DEFAULT" = "y/N" ] || [ "$DEFAULT" = "Y/n" ]; then
