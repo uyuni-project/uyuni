@@ -151,16 +151,13 @@ public class UserNotificationFactory extends HibernateFactory {
         // We want to disable out the notifications defined on parameter: java.notifications_type_disabled
         // They are still added to the SuseNotificationTable but not associated with any user
         if (!isNotificationTypeDisabled(notificationMessageIn)) {
-            Set<User> notifyUsers = users.stream()
-                    .filter(u -> !u.isDisabled())
-                    .collect(Collectors.toSet());
-            notifyUsers
-                    .forEach(user -> UserNotificationFactory.store(new UserNotification(user, notificationMessageIn)));
-
-            String[] receipients = notifyUsers.stream()
-                    .filter(u -> u.getEmailNotify() == 1)
-                    .map(u -> u.getEmail())
-                    .toArray(size -> new String[size]);
+            String[] receipients = users.stream()
+                                        .filter(user -> !user.isDisabled())
+                                        .peek(user -> UserNotificationFactory.store(
+                                                new UserNotification(user, notificationMessageIn)))
+                                        .filter(user -> user.getEmailNotify() == 1)
+                                        .map(User::getEmail)
+                                        .toArray(String[]::new);
             if (receipients.length > 0) {
                 String subject = String.format("%s Notification from %s: %s",
                         MailHelper.PRODUCT_PREFIX,
