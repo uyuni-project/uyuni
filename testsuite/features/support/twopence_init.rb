@@ -167,13 +167,11 @@ def get_system_name(host)
       word =~ /example.sle15sp4terminal-/
     end
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
+  when 'containerized_proxy'
+    system_name = $proxy.full_hostname.sub('pxy', 'pod-pxy')
   else
-    begin
-      node = get_target(host)
-      system_name = node.full_hostname
-    rescue RuntimeError => e
-      STDOUT.puts e.message
-    end
+    node = get_target(host)
+    system_name = node.full_hostname
   end
   system_name
 end
@@ -254,6 +252,7 @@ end
 $node_by_host = { 'localhost'                 => $localhost,
                   'server'                    => $server,
                   'proxy'                     => $proxy,
+                  'containerized_proxy'       => $proxy,
                   'sle_minion'                => $minion,
                   'ssh_minion'                => $ssh_minion,
                   'rhlike_minion'             => $rhlike_minion,
@@ -312,14 +311,6 @@ end
 def client_public_ip(host)
   node = $node_by_host[host]
   raise "Cannot resolve node for host '#{host}'" if node.nil?
-
-  # For each node that we support we must know which network interface uses (see the case below).
-  # Having the IP as an attribute is something useful for the clients.
-  # Let's not implement it for nodes where we are likely not need this feature (e.g. ctl).
-  not_implemented = [$localhost]
-  not_implemented.each do |it|
-    return 'NOT_IMPLEMENTED' if node == it
-  end
 
   %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
     output, code = node.run("ip address show dev #{dev} | grep 'inet '", check_errors: false)
