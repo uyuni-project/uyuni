@@ -47,11 +47,11 @@ abstract class AbstractConnectionManager implements ConnectionManager {
 
     protected final Logger LOG;
 
+    protected SessionFactory sessionFactory;
+
     private final List<Configurator> configurators;
     private final ThreadLocal<SessionInfo> sessionInfoThreadLocal;
     private final Set<String> packageNames;
-
-    private SessionFactory sessionFactory;
 
 
     /**
@@ -194,7 +194,6 @@ abstract class AbstractConnectionManager implements ConnectionManager {
             config.setInterceptor(new EmptyVarcharInterceptor(true));
 
             sessionFactory = config.buildSessionFactory();
-            new HibernateStatisticsCollector(sessionFactory, "uyuni").register();
         }
         catch (HibernateException e) {
             LOG.error("FATAL ERROR creating HibernateFactory", e);

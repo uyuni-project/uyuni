@@ -17,9 +17,13 @@ package com.redhat.rhn.common.hibernate;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
+import com.suse.manager.metrics.SystemsCollector;
+
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+
+import io.prometheus.client.hibernate.HibernateStatisticsCollector;
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
@@ -29,6 +33,10 @@ class DefaultConnectionManager extends AbstractConnectionManager {
 
     DefaultConnectionManager() {
         super(Set.of("com.redhat.rhn.domain", "com.redhat.rhn.taskomatic.domain"));
+    }
+
+    public void registerHibernateStatisticsCollector(String componentName) {
+        new HibernateStatisticsCollector(sessionFactory, componentName).register();
     }
 
     @Override

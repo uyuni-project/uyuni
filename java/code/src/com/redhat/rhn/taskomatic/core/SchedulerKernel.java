@@ -131,6 +131,7 @@ public class SchedulerKernel {
         if (!HibernateFactory.isInitialized()) {
             throw new TaskomaticException("HibernateFactory failed to initialize");
         }
+        HibernateFactory.registerStatisticsCollector("taskomatic");
         MessageQueue.startMessaging();
         MessageQueue.configureDefaultActions(GlobalInstanceHolder.SYSTEM_QUERY, GlobalInstanceHolder.SALT_API);
         try {

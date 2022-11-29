@@ -108,7 +108,6 @@ public abstract class HibernateFactory {
      */
     public static void createSessionFactory() {
         connectionManager.initialize();
-        PrometheusExporter.INSTANCE.registerSystemsCollector();
     }
 
     /**
@@ -119,6 +118,10 @@ public abstract class HibernateFactory {
     public static void createSessionFactory(String[] additionalLocation) {
         connectionManager.setAdditionalPackageNames(additionalLocation);
         connectionManager.initialize();
+    }
+
+    public static void registerStatisticsCollector(String componentName) {
+        ((DefaultConnectionManager) connectionManager).registerHibernateStatisticsCollector(componentName);
     }
 
     /**
