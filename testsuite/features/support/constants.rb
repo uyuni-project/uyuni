@@ -274,6 +274,8 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-devtools15-sp4-updates-x86_64
     sle-module-containers15-sp4-pool-x86_64
     sle-module-containers15-sp4-updates-x86_64
+    sle-module-live-patching15-sp4-pool-x86_64
+    sle-module-live-patching15-sp4-updates-x86_64
   ],
   '12-SP4' =>
   %w[
@@ -364,6 +366,8 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-server-applications15-sp4-updates-x86_64
     sle-module-containers15-sp4-pool-x86_64
     sle-module-containers15-sp4-updates-x86_64
+    sle-module-live-patching15-sp4-pool-x86_64
+    sle-module-live-patching15-sp4-updates-x86_64
   ],
   '8.6' =>
   %w[
