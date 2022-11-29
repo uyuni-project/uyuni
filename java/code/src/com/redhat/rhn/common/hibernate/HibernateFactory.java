@@ -20,8 +20,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 
-import com.suse.manager.metrics.PrometheusExporter;
-
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -120,6 +118,10 @@ public abstract class HibernateFactory {
         connectionManager.initialize();
     }
 
+    /**
+     * Register Prometheus Statistics Collector
+     * @param componentName Name of the application component which will be added to the metric as the `unit` label
+     */
     public static void registerStatisticsCollector(String componentName) {
         ((DefaultConnectionManager) connectionManager).registerHibernateStatisticsCollector(componentName);
     }

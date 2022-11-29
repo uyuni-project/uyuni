@@ -36,8 +36,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
-import io.prometheus.client.hibernate.HibernateStatisticsCollector;
-
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated

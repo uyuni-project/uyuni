@@ -17,8 +17,6 @@ package com.redhat.rhn.common.hibernate;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
-import com.suse.manager.metrics.SystemsCollector;
-
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;

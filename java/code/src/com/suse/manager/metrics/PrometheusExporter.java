@@ -75,6 +75,9 @@ public enum PrometheusExporter {
         }
     }
 
+    /**
+     * Register collector for systems statistics
+     */
     public void registerSystemsCollector() {
         if (ENABLED) {
             new SystemsCollector().register();
