@@ -137,6 +137,14 @@ Requires:       curl
 Requires:       spacewalk-backend >= 1.7.24
 Requires(pre):  policycoreutils
 
+# weakremover used on SUSE to get rid of orphan packages which are
+# unsupported and do not have a dependency anymore
+Provides:       weakremover(jabberd)
+Provides:       weakremover(jabberd-sqlite)
+Provides:       weakremover(jabberd-db)
+Provides:       weakremover(spacewalk-setup-jabberd)
+
+
 %description common
 The Spacewalk Proxy Server allows package caching
 and local package delivery services for groups of local servers from
