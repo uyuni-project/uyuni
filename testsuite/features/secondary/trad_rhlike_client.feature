@@ -30,7 +30,7 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
     And I refresh the packages list via package manager on "rhlike_client"
     And I install the traditional stack utils on "rhlike_client"
     And I install OpenSCAP dependencies on "rhlike_client"
-    And I register "rhlike_client" as traditional client
+    And I register "rhlike_client" as traditional client with activation key "1-RH-LIKE-KEY"
     And I run "rhn-actions-control --enable-all" on "rhlike_client"
 
 @proxy
@@ -52,7 +52,7 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test Base Channel"
+    And I check radio button "Fake Base Channel"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -123,7 +123,7 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test Base Channel"
+    And I check radio button "Fake Base Channel"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text

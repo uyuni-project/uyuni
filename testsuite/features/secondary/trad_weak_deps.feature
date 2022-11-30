@@ -14,7 +14,8 @@ Feature: Weak dependencies in the package page and in the metadata on the client
 
   Scenario: Show Supplements information
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Test-Channel-x86_64"
+    And I follow "Show All Child Channels"
+    And I follow "Fake-RPM-SLES-Channel"
     And I follow "Packages"
     And I follow "virgo-dummy-2.0-1.1.noarch"
     And I follow "Dependencies"
@@ -25,7 +26,8 @@ Feature: Weak dependencies in the package page and in the metadata on the client
 
   Scenario: Show Recommends information
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Test-Channel-x86_64"
+    And I follow "Show All Child Channels"
+    And I follow "Fake-RPM-SLES-Channel"
     And I follow "Packages"
     And I follow "milkyway-dummy-2.0-1.1.x86_64"
     And I follow "Dependencies"
@@ -36,7 +38,8 @@ Feature: Weak dependencies in the package page and in the metadata on the client
 
   Scenario: Show Suggests information
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Test-Channel-x86_64"
+    And I follow "Show All Child Channels"
+    And I follow "Fake-RPM-SLES-Channel"
     And I follow "Packages"
     And I follow "milkyway-dummy-2.0-1.1.x86_64"
     And I follow "Dependencies"
@@ -48,7 +51,8 @@ Feature: Weak dependencies in the package page and in the metadata on the client
   Scenario: Show Enhances information
     # bsc#846436 - extra packages installed when performing a patch update
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Test-Channel-x86_64"
+    And I follow "Show All Child Channels"
+    And I follow "Fake-RPM-SLES-Channel"
     And I follow "Packages"
     And I follow "orion-dummy-1.1-1.1.x86_64"
     And I follow "Dependencies"

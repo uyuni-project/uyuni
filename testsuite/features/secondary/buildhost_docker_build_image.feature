@@ -37,7 +37,7 @@ Feature: Build container images
     And I follow "Create"
     And I enter "suse_key" as "label"
     And I select "galaxy-registry" from "imageStore"
-    And I select "1-DOCKER-TEST" from "activationKey"
+    And I select "1-SUSE-KEY-x86_64" from "activationKey"
     And I enter "Docker" relative to profiles as "path"
     And I click on "create-btn"
 
@@ -46,7 +46,7 @@ Feature: Build container images
     And I follow "Create"
     And I enter "suse_real_key" as "label"
     And I select "galaxy-registry" from "imageStore"
-    And I select "1-DOCKER-TEST" from "activationKey"
+    And I select "1-SUSE-KEY-x86_64" from "activationKey"
     And I enter "Docker/serverhost" relative to profiles as "path"
     And I click on "create-btn"
 

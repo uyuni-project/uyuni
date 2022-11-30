@@ -395,7 +395,7 @@ Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir('fake-rpm-sles-channel')}/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -404,7 +404,7 @@ Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, ho
   target = $client
   arch, _code = target.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*primary.xml.gz"
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir('fake-rpm-sles-channel')}/*primary.xml.gz"
   target.run(cmd, timeout: 500)
 end
 
@@ -413,16 +413,18 @@ Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   node = $client
   arch, _code = node.run('uname -m')
   arch.chomp!
-  dir_file = client_raw_repodata_dir("test-channel-#{arch}")
+  dir_file = client_raw_repodata_dir("fake-rpm-sles-channel")
   _out, code = node.run("ls -1 #{dir_file}/*#{file} 2>/dev/null")
   raise "File #{dir_file}/*#{file} not exist" unless _out.lines.count >= 1
 end
 
-Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
-  arch, _code = $client.run('uname -m')
+Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, host|
+  node = get_target(host)
+  arch, _code = node.run('uname -m')
   arch.chomp!
-  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/*updateinfo.xml.gz"
-  $client.run(cmd, timeout: 500)
+  # TODO: adapt for architectures
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/spacewalk:fake-rpm-sles-channel/repodata/*updateinfo.xml.gz"
+  node.run(cmd, timeout: 500)
 end
 
 # package steps

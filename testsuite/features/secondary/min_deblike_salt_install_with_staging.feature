@@ -50,6 +50,8 @@ Feature: Install a package on the Debian-like minion with staging enabled
     And I follow "Software" in the content area
     And I follow "Packages" in the content area
     And I follow "Install" in the content area
+    And I enter "orion-dummy-1.1-X" as the filtered package name
+    And I click on the filter button
     When I check "orion-dummy-1.1-X" in the list
     And I click on "Install Selected Packages"
     And I pick 3 minutes from now as schedule time
