@@ -406,12 +406,23 @@ public class Config {
      * @return the value or false
      */
     public boolean getBoolean(String s) {
+        return getBoolean(s, false);
+    }
+
+    /**
+     * get the config entry for string s or return default value
+     *
+     * @param s string to get the value of
+     * @param defaultValue default to use
+     * @return the value or false
+     */
+    public boolean getBoolean(String s, boolean defaultValue) {
         String value = getString(s);
         if (logger.isDebugEnabled()) {
             logger.debug("getBoolean() - {} is : {}", s, value);
         }
         if (value == null) {
-            return false;
+            return defaultValue;
         }
 
         //need to check the possible true values
