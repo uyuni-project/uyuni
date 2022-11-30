@@ -83,8 +83,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: dom4j
     repository: Leap
-  - artifact: dwr
-    repository: Uyuni_Other
   - artifact: ehcache-core
     package: ehcache
     repository: Uyuni_Other
