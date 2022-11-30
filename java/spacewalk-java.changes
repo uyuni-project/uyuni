@@ -1,3 +1,4 @@
+- Do not forward ssh command if proxy and tunnel are present (bsc#1200096)
 - check for NULL in DEB package install size value
 - Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
 - disable cloned vendor channel auto selection by default (bsc#1204186)
