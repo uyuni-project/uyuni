@@ -203,7 +203,7 @@ function pageResponse(data) {
   }
   if (document.getElementById('pagination_selcount_top')) {
     jQuery("#pagination_selcount_top").html(resp.pagination);
-    if (jQuery('#pagination_selcount_bottom').lenght > 0) {
+    if (jQuery('#pagination_selcount_bottom').length > 0) {
       jQuery('#pagination_selcount_bottom').html(resp.pagination);
     }
   }
