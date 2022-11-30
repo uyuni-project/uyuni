@@ -285,13 +285,25 @@ public class SUSEProductFactory extends HibernateFactory {
         if (channel.isCloned()) {
             if (ConfigDefaults.get().getClonedChannelAutoSelection()) {
                 return channel.originChain().filter(c -> !c.isCloned()).findFirst().map(original -> {
-                    return findSyncedMandatoryChannels(original.getLabel())
-                            .flatMap(c -> c.allClonedChannels())
-                            .filter(c ->
-                                    (c.getParentChannel() != null && c.getParentChannel()
-                                            .equals(channel.getParentChannel())) || c.equals(channel.getParentChannel())
-                            )
-                            .map(c -> (Channel) c);
+                    List<String> originalParts = List.of(original.getLabel().split("-"));
+                    List<String> selectedParts = List.of(channel.getLabel().split("-"));
+                    List<String> uniqueParts = selectedParts.stream()
+                            .filter(s -> !originalParts.contains(s))
+                            .collect(Collectors.toList());
+
+                    if (channel.isBaseChannel()) {
+                        return Stream.<Channel>empty();
+                    }
+                    else {
+                        return findSyncedMandatoryChannels(original.getLabel())
+                                .flatMap(c -> {
+                                    return c.allClonedChannels().filter(clone -> {
+                                        List<String> cloneParts = List.of(clone.getLabel().split("-"));
+                                        return cloneParts.containsAll(uniqueParts);
+                                    });
+                                })
+                                .map(c -> (Channel) c);
+                    }
                 }).orElse(Stream.empty());
             }
             else {
