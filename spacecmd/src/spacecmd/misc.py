@@ -35,16 +35,10 @@ import logging
 import readline
 import shlex
 from getpass import getpass
-try: # python 3
-    from configparser import NoOptionError
-except ImportError: # python 2
-    from ConfigParser import NoOptionError
+from configparser import NoOptionError
 
 from time import sleep
-try: # python 3
-    from xmlrpc import client as xmlrpclib
-except ImportError: # python2
-    import xmlrpclib
+from xmlrpc import client as xmlrpclib
 from spacecmd.i18n import _N
 from spacecmd.utils import *
 
