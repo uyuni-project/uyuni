@@ -1,0 +1,477 @@
+Sending build context to Docker daemon  3.584kB
+Step 1/2 : FROM opensuse/leap:15.4
+ ---> 4ea11b750d23
+Step 2/2 : RUN zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ Uyuni-Server-POOL-x86_64 &&     zypper -n  ar --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/Other/openSUSE_Leap_15.4/ Uyuni-Server-Master-Other-Build-Deps &&     zypper -n install         jakarta-oro         ant         apache-commons-cli         apache-commons-codec         apache-commons-lang3         apache-commons-logging         mybatis         apache-commons-ognl         javassist         c3p0         cglib         javapackages-tools         junit         lucene         objectweb-asm         picocontainer         quartz         redstone-xmlrpc         simple-core         slf4j         systemd         java-devel         zip         log4j &&     zypper ref -f &&     zypper clean -a
+ ---> Running in 8011719e0a72
+Adding repository 'Uyuni-Server-POOL-x86_64' [......done]
+Warning: GPG checking is disabled in configuration of repository 'Uyuni-Server-POOL-x86_64'. Integrity and origin of packages cannot be verified.
+Repository 'Uyuni-Server-POOL-x86_64' successfully added
+
+URI         : https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/
+Enabled     : Yes
+GPG Check   : No
+Autorefresh : No
+Priority    : 99 (default priority)
+
+Repository priorities are without effect. All enabled repositories share the same priority.
+Adding repository 'Uyuni-Server-Master-Other-Build-Deps' [......done]
+Warning: GPG checking is disabled in configuration of repository 'Uyuni-Server-Master-Other-Build-Deps'. Integrity and origin of packages cannot be verified.
+Repository 'Uyuni-Server-Master-Other-Build-Deps' successfully added
+
+URI         : https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/Other/openSUSE_Leap_15.4/
+Enabled     : Yes
+GPG Check   : No
+Autorefresh : No
+Priority    : 99 (default priority)
+
+Repository priorities are without effect. All enabled repositories share the same priority.
+Building repository 'Uyuni-Server-Master-Other-Build-Deps' cache [....done]
+Building repository 'Uyuni-Server-POOL-x86_64' cache [....done]
+Retrieving repository 'Update repository of openSUSE Backports' metadata [....done]
+Building repository 'Update repository of openSUSE Backports' cache [....done]
+Retrieving repository 'Non-OSS Repository' metadata [..done]
+Building repository 'Non-OSS Repository' cache [....done]
+Retrieving repository 'Main Repository' metadata [.........done]
+Building repository 'Main Repository' cache [....done]
+Retrieving repository 'Update repository with updates from SUSE Linux Enterprise 15' metadata [.......done]
+Building repository 'Update repository with updates from SUSE Linux Enterprise 15' cache [....done]
+Retrieving repository 'Main Update Repository' metadata [..done]
+Building repository 'Main Update Repository' cache [....done]
+Retrieving repository 'Update Repository (Non-Oss)' metadata [..done]
+Building repository 'Update Repository (Non-Oss)' cache [....done]
+Loading repository data...
+Reading installed packages...
+'java-devel' not found in package names. Trying capabilities.
+'jakarta-oro' not found in package names. Trying capabilities.
+Resolving package dependencies...
+
+The following 83 NEW packages are going to be installed:
+  ant apache-commons-cli apache-commons-codec apache-commons-lang3 apache-commons-logging apache-commons-ognl c3p0 cal10n cglib dbus-1 file fontconfig hamcrest-core jackson-annotations jackson-core jackson-databind java-17-openjdk java-17-openjdk-devel java-17-openjdk-headless javapackages-filesystem javapackages-tools javassist junit kbd kbd-legacy libX11-6 libX11-data libXau6 libXext6 libXi6 libXrender1 libXtst6 libapparmor1 libargon2-1 libasound2 libcryptsetup12 libcryptsetup12-hmac libdbus-1-3 libdevmapper1_03 libexpat1 libfontconfig1 libfreebl3 libfreebl3-hmac libfreetype6 libgif7 libip4tc2 libjpeg8 libjson-c3 libkmod2 liblcms2-2 libpcsclite1 libpng16-16 libseccomp2 libsoftokn3 libsoftokn3-hmac libxcb1 log4j lucene mchange-commons mozilla-nspr mozilla-nss mozilla-nss-certs mybatis objectweb-asm oro pam-config picocontainer pkg-config quartz redstone-xmlrpc servletapi5 simple-core slf4j systemd systemd-default-settings systemd-default-settings-branding-SLE systemd-presets-branding-MicroOS systemd-presets-common-SUSE xalan-j2 xerces-j2 xml-commons-apis xml-commons-resolver zip
+
+83 new packages to install.
+Overall download size: 71.8 MiB. Already cached: 0 B. After the operation, additional 241.2 MiB will be used.
+Continue? [y/n/v/...? shows all options] (y): y
+Retrieving package file-5.32-7.14.1.x86_64 (1/83),  50.0 KiB ( 81.3 KiB unpacked)
+Retrieving: file-5.32-7.14.1.x86_64.rpm [.done (32.5 KiB/s)]
+Retrieving package javapackages-filesystem-5.3.0-1.36.x86_64 (2/83),  15.5 KiB (  1.9 KiB unpacked)
+Retrieving: javapackages-filesystem-5.3.0-1.36.x86_64.rpm [done]
+Retrieving package kbd-legacy-2.4.0-150400.3.5.noarch (3/83), 538.3 KiB (560.0 KiB unpacked)
+Retrieving: kbd-legacy-2.4.0-150400.3.5.noarch.rpm [done]
+Retrieving package libXau6-1.0.8-1.26.x86_64 (4/83),  13.6 KiB ( 14.2 KiB unpacked)
+Retrieving: libXau6-1.0.8-1.26.x86_64.rpm [.done (1.2 KiB/s)]
+Retrieving package libargon2-1-0.0+git20171227.670229c-2.14.x86_64 (5/83),  19.9 KiB ( 30.2 KiB unpacked)
+Retrieving: libargon2-1-0.0+git20171227.670229c-2.14.x86_64.rpm [done]
+Retrieving package libasound2-1.2.6.1-150400.1.4.x86_64 (6/83), 437.7 KiB (  1.2 MiB unpacked)
+Retrieving: libasound2-1.2.6.1-150400.1.4.x86_64.rpm [done]
+Retrieving package libgif7-5.2.1-150000.4.8.1.x86_64 (7/83),  28.8 KiB ( 35.5 KiB unpacked)
+Retrieving: libgif7-5.2.1-150000.4.8.1.x86_64.rpm [done]
+Retrieving package libip4tc2-1.8.7-1.1.x86_64 (8/83),  24.0 KiB ( 26.8 KiB unpacked)
+Retrieving: libip4tc2-1.8.7-1.1.x86_64.rpm [done]
+Retrieving package libjpeg8-8.2.2-150400.15.9.x86_64 (9/83), 170.4 KiB (675.2 KiB unpacked)
+Retrieving: libjpeg8-8.2.2-150400.15.9.x86_64.rpm [done]
+Retrieving package libjson-c3-0.13-3.3.1.x86_64 (10/83),  40.6 KiB ( 64.9 KiB unpacked)
+Retrieving: libjson-c3-0.13-3.3.1.x86_64.rpm [done]
+Retrieving package libkmod2-29-4.15.1.x86_64 (11/83),  56.9 KiB ( 98.1 KiB unpacked)
+Retrieving: libkmod2-29-4.15.1.x86_64.rpm [done]
+Retrieving package liblcms2-2-2.12-150400.1.10.x86_64 (12/83), 146.1 KiB (375.3 KiB unpacked)
+Retrieving: liblcms2-2-2.12-150400.1.10.x86_64.rpm [done]
+Retrieving package libpcsclite1-1.9.4-150400.1.9.x86_64 (13/83),  32.8 KiB ( 38.4 KiB unpacked)
+Retrieving: libpcsclite1-1.9.4-150400.1.9.x86_64.rpm [done]
+Retrieving package libpng16-16-1.6.34-3.9.1.x86_64 (14/83), 134.2 KiB (266.0 KiB unpacked)
+Retrieving: libpng16-16-1.6.34-3.9.1.x86_64.rpm [.done (1.2 KiB/s)]
+Retrieving package libseccomp2-2.5.3-150400.2.4.x86_64 (15/83),  61.5 KiB (146.2 KiB unpacked)
+Retrieving: libseccomp2-2.5.3-150400.2.4.x86_64.rpm [done]
+Retrieving package pam-config-1.1-3.3.1.x86_64 (16/83), 128.4 KiB (635.7 KiB unpacked)
+Retrieving: pam-config-1.1-3.3.1.x86_64.rpm [.done]
+Retrieving package pkg-config-0.29.2-1.436.x86_64 (17/83), 231.6 KiB (675.4 KiB unpacked)
+Retrieving: pkg-config-0.29.2-1.436.x86_64.rpm [done]
+Retrieving package servletapi5-5.0.18-2.39.noarch (18/83), 128.5 KiB (140.0 KiB unpacked)
+Retrieving: servletapi5-5.0.18-2.39.noarch.rpm [done]
+Retrieving package systemd-default-settings-branding-SLE-0.7-3.2.1.noarch (19/83),  10.2 KiB (  1.5 KiB unpacked)
+Retrieving: systemd-default-settings-branding-SLE-0.7-3.2.1.noarch.rpm [done]
+Retrieving package systemd-default-settings-0.7-3.2.1.noarch (20/83),  11.2 KiB (  2.0 KiB unpacked)
+Retrieving: systemd-default-settings-0.7-3.2.1.noarch.rpm [done]
+Retrieving package zip-3.0-2.22.x86_64 (21/83), 250.7 KiB (838.3 KiB unpacked)
+Retrieving: zip-3.0-2.22.x86_64.rpm [.done (1.2 KiB/s)]
+Retrieving package javapackages-tools-5.3.0-1.36.x86_64 (22/83),  36.1 KiB ( 71.6 KiB unpacked)
+Retrieving: javapackages-tools-5.3.0-1.36.x86_64.rpm [done]
+Retrieving package kbd-2.4.0-150400.3.5.x86_64 (23/83),   1.8 MiB (  4.0 MiB unpacked)
+Retrieving: kbd-2.4.0-150400.3.5.x86_64.rpm [.done (4.3 MiB/s)]
+Retrieving package libX11-data-1.6.5-150000.3.24.1.noarch (24/83), 143.2 KiB (  1.2 MiB unpacked)
+Retrieving: libX11-data-1.6.5-150000.3.24.1.noarch.rpm [done]
+Retrieving package libapparmor1-3.0.4-150400.5.3.1.x86_64 (25/83),  74.4 KiB ( 79.7 KiB unpacked)
+Retrieving: libapparmor1-3.0.4-150400.5.3.1.x86_64.rpm [done]
+Retrieving package libdbus-1-3-1.12.2-150400.18.5.1.x86_64 (26/83), 151.2 KiB (325.9 KiB unpacked)
+Retrieving: libdbus-1-3-1.12.2-150400.18.5.1.x86_64.rpm [done]
+Retrieving package libdevmapper1_03-2.03.05_1.02.163-150400.185.1.x86_64 (27/83), 176.5 KiB (349.8 KiB unpacked)
+Retrieving: libdevmapper1_03-2.03.05_1.02.163-150400.185.1.x86_64.rpm [.done (1.2 KiB/s)]
+Retrieving package libexpat1-2.4.4-150400.3.12.1.x86_64 (28/83), 111.8 KiB (250.2 KiB unpacked)
+Retrieving: libexpat1-2.4.4-150400.3.12.1.x86_64.rpm [done]
+Retrieving package libfreebl3-3.79.2-150400.3.15.1.x86_64 (29/83), 407.9 KiB (764.7 KiB unpacked)
+Retrieving: libfreebl3-3.79.2-150400.3.15.1.x86_64.rpm [done]
+Retrieving package libfreebl3-hmac-3.79.2-150400.3.15.1.x86_64 (30/83), 115.8 KiB (  1.8 KiB unpacked)
+Retrieving: libfreebl3-hmac-3.79.2-150400.3.15.1.x86_64.rpm [done]
+Retrieving package mozilla-nspr-4.34.1-150000.3.26.1.x86_64 (31/83), 117.3 KiB (275.6 KiB unpacked)
+Retrieving: mozilla-nspr-4.34.1-150000.3.26.1.x86_64.rpm [.done (3.3 MiB/s)]
+Retrieving package systemd-presets-common-SUSE-15-150100.8.17.1.noarch (32/83),  20.2 KiB (  4.5 KiB unpacked)
+Retrieving: systemd-presets-common-SUSE-15-150100.8.17.1.noarch.rpm [done]
+Retrieving package libxcb1-1.13-150000.3.9.1.x86_64 (33/83),  49.4 KiB (163.0 KiB unpacked)
+Retrieving: libxcb1-1.13-150000.3.9.1.x86_64.rpm [done]
+Retrieving package libfreetype6-2.10.4-150000.4.12.1.x86_64 (34/83), 447.3 KiB (  1.1 MiB unpacked)
+Retrieving: libfreetype6-2.10.4-150000.4.12.1.x86_64.rpm [done]
+Retrieving package dbus-1-1.12.2-150400.18.5.1.x86_64 (35/83), 249.1 KiB (625.5 KiB unpacked)
+Retrieving: dbus-1-1.12.2-150400.18.5.1.x86_64.rpm [done]
+Retrieving package mozilla-nss-certs-3.79.2-150400.3.15.1.x86_64 (36/83), 280.1 KiB (539.2 KiB unpacked)
+Retrieving: mozilla-nss-certs-3.79.2-150400.3.15.1.x86_64.rpm [.done (1.2 KiB/s)]
+Retrieving package libX11-6-1.6.5-150000.3.24.1.x86_64 (37/83), 558.4 KiB (  1.3 MiB unpacked)
+Retrieving: libX11-6-1.6.5-150000.3.24.1.x86_64.rpm [done]
+Retrieving package libsoftokn3-3.79.2-150400.3.15.1.x86_64 (38/83), 288.0 KiB (469.7 KiB unpacked)
+Retrieving: libsoftokn3-3.79.2-150400.3.15.1.x86_64.rpm [done]
+Retrieving package mozilla-nss-3.79.2-150400.3.15.1.x86_64 (39/83), 751.2 KiB (  2.0 MiB unpacked)
+Retrieving: mozilla-nss-3.79.2-150400.3.15.1.x86_64.rpm [.done (3.1 MiB/s)]
+Retrieving package libsoftokn3-hmac-3.79.2-150400.3.15.1.x86_64 (40/83), 115.8 KiB (  1.8 KiB unpacked)
+Retrieving: libsoftokn3-hmac-3.79.2-150400.3.15.1.x86_64.rpm [done]
+Retrieving package java-17-openjdk-headless-17.0.5.0-150400.3.6.1.x86_64 (41/83),  38.4 MiB (179.6 MiB unpacked)
+Retrieving: java-17-openjdk-headless-17.0.5.0-150400.3.6.1.x86_64.rpm [.....done (7.4 MiB/s)]
+Retrieving package jackson-core-2.13.0-150200.3.6.1.noarch (42/83), 372.7 KiB (415.2 KiB unpacked)
+Retrieving: jackson-core-2.13.0-150200.3.6.1.noarch.rpm [done]
+Retrieving package jackson-annotations-2.13.0-150200.3.6.1.noarch (43/83),  75.5 KiB ( 98.8 KiB unpacked)
+Retrieving: jackson-annotations-2.13.0-150200.3.6.1.noarch.rpm [done]
+Retrieving package jackson-databind-2.13.4.2-150200.3.12.1.noarch (44/83),   1.4 MiB (  1.6 MiB unpacked)
+Retrieving: jackson-databind-2.13.4.2-150200.3.12.1.noarch.rpm [.done (2.7 MiB/s)]
+Retrieving package redstone-xmlrpc-1.1_20071120-0.12.42.uyuni2.noarch (45/83),  59.3 KiB ( 90.7 KiB unpacked)
+Retrieving: redstone-xmlrpc-1.1_20071120-0.12.42.uyuni2.noarch.rpm [.done (77.7 KiB/s)]
+Retrieving package objectweb-asm-9.3-1.33.uyuni2.noarch (46/83), 371.5 KiB (758.4 KiB unpacked)
+Retrieving: objectweb-asm-9.3-1.33.uyuni2.noarch.rpm [done]
+Retrieving package mybatis-3.5.6-3.34.uyuni2.noarch (47/83), 575.7 KiB (656.7 KiB unpacked)
+Retrieving: mybatis-3.5.6-3.34.uyuni2.noarch.rpm [done]
+Retrieving package libcryptsetup12-2.4.3-150400.1.110.x86_64 (48/83), 222.4 KiB (467.2 KiB unpacked)
+Retrieving: libcryptsetup12-2.4.3-150400.1.110.x86_64.rpm [.done (1.2 KiB/s)]
+Retrieving package libcryptsetup12-hmac-2.4.3-150400.1.110.x86_64 (49/83),  41.0 KiB (  130   B unpacked)
+Retrieving: libcryptsetup12-hmac-2.4.3-150400.1.110.x86_64.rpm [done]
+Retrieving package systemd-presets-branding-MicroOS-20200323-lp154.1.3.noarch (50/83),  12.4 KiB (  742   B unpacked)
+Retrieving: systemd-presets-branding-MicroOS-20200323-lp154.1.3.noarch.rpm [done]
+Retrieving package fontconfig-2.13.1-150400.1.4.x86_64 (51/83),  72.7 KiB (210.8 KiB unpacked)
+Retrieving: fontconfig-2.13.1-150400.1.4.x86_64.rpm [.done (1.2 KiB/s)]
+Retrieving package libfontconfig1-2.13.1-150400.1.4.x86_64 (52/83), 118.6 KiB (275.1 KiB unpacked)
+Retrieving: libfontconfig1-2.13.1-150400.1.4.x86_64.rpm [done]
+Retrieving package libXrender1-0.9.10-1.30.x86_64 (53/83),  24.1 KiB ( 42.6 KiB unpacked)
+Retrieving: libXrender1-0.9.10-1.30.x86_64.rpm [done]
+Retrieving package libXext6-1.3.3-1.30.x86_64 (54/83),  33.2 KiB ( 71.7 KiB unpacked)
+Retrieving: libXext6-1.3.3-1.30.x86_64.rpm [done]
+Retrieving package xml-commons-resolver-1.2-1.66.noarch (55/83), 111.0 KiB (123.3 KiB unpacked)
+Retrieving: xml-commons-resolver-1.2-1.66.noarch.rpm [done]
+Retrieving package xml-commons-apis-1.4.01-1.66.noarch (56/83), 233.1 KiB (344.9 KiB unpacked)
+Retrieving: xml-commons-apis-1.4.01-1.66.noarch.rpm [.done (1.2 KiB/s)]
+Retrieving package oro-2.0.8-9.63.noarch (57/83),  78.6 KiB ( 92.7 KiB unpacked)
+Retrieving: oro-2.0.8-9.63.noarch.rpm [done]
+Retrieving package mchange-commons-0.2.20-150400.1.6.noarch (58/83), 539.5 KiB (658.2 KiB unpacked)
+Retrieving: mchange-commons-0.2.20-150400.1.6.noarch.rpm [done]
+Retrieving package javassist-3.23.1-1.63.noarch (59/83), 714.9 KiB (778.7 KiB unpacked)
+Retrieving: javassist-3.23.1-1.63.noarch.rpm [done]
+Retrieving package hamcrest-core-1.3-12.6.1.noarch (60/83),  51.6 KiB ( 48.9 KiB unpacked)
+Retrieving: hamcrest-core-1.3-12.6.1.noarch.rpm [done]
+Retrieving package apache-commons-lang3-3.8.1-1.63.noarch (61/83), 473.5 KiB (582.0 KiB unpacked)
+Retrieving: apache-commons-lang3-3.8.1-1.63.noarch.rpm [done]
+Retrieving package log4j-2.17.1-4.20.1.noarch (62/83),   2.0 MiB (  2.3 MiB unpacked)
+Retrieving: log4j-2.17.1-4.20.1.noarch.rpm [.done (1.2 KiB/s)]
+Retrieving package cglib-3.2.4-1.63.noarch (63/83), 290.7 KiB (339.3 KiB unpacked)
+Retrieving: cglib-3.2.4-1.63.noarch.rpm [done]
+Retrieving package libXtst6-1.2.3-1.24.x86_64 (64/83),  17.2 KiB ( 22.4 KiB unpacked)
+Retrieving: libXtst6-1.2.3-1.24.x86_64.rpm [.done (1.2 KiB/s)]
+Retrieving package libXi6-1.7.9-3.2.1.x86_64 (65/83),  35.6 KiB ( 66.5 KiB unpacked)
+Retrieving: libXi6-1.7.9-3.2.1.x86_64.rpm [done]
+Retrieving package xerces-j2-2.12.0-3.3.1.noarch (66/83),   1.2 MiB (  1.4 MiB unpacked)
+Retrieving: xerces-j2-2.12.0-3.3.1.noarch.rpm [done]
+Retrieving package xalan-j2-2.7.2-9.64.noarch (67/83),   1.9 MiB (  2.1 MiB unpacked)
+Retrieving: xalan-j2-2.7.2-9.64.noarch.rpm [.done (1.2 KiB/s)]
+Retrieving package c3p0-0.9.5.5-150400.1.12.noarch (68/83), 498.5 KiB (670.4 KiB unpacked)
+Retrieving: c3p0-0.9.5.5-150400.1.12.noarch.rpm [.done (2.7 MiB/s)]
+Retrieving package junit-4.12-1.64.noarch (69/83), 330.4 KiB (398.7 KiB unpacked)
+Retrieving: junit-4.12-1.64.noarch.rpm [done]
+Retrieving package systemd-249.12-150400.8.13.1.x86_64 (70/83),   3.7 MiB ( 13.0 MiB unpacked)
+Retrieving: systemd-249.12-150400.8.13.1.x86_64.rpm [.done (4.2 MiB/s)]
+Retrieving package java-17-openjdk-17.0.5.0-150400.3.6.1.x86_64 (71/83), 259.2 KiB (447.5 KiB unpacked)
+Retrieving: java-17-openjdk-17.0.5.0-150400.3.6.1.x86_64.rpm [done]
+Retrieving package java-17-openjdk-devel-17.0.5.0-150400.3.6.1.x86_64 (72/83),   4.8 MiB (  8.8 MiB unpacked)
+Retrieving: java-17-openjdk-devel-17.0.5.0-150400.3.6.1.x86_64.rpm [.done (4.4 MiB/s)]
+Retrieving package apache-commons-ognl-4.0~20191021git51cf8f4-2.37.uyuni2.noarch (73/83), 291.7 KiB (327.7 KiB unpacked)
+Retrieving: apache-commons-ognl-4.0~20191021git51cf8f4-2.37.uyuni2.noarch.rpm [.done]
+Retrieving package simple-core-3.1.3-0.9.43.uyuni2.x86_64 (74/83), 208.7 KiB (252.2 KiB unpacked)
+Retrieving: simple-core-3.1.3-0.9.43.uyuni2.x86_64.rpm [done]
+Retrieving package quartz-2.3.0-2.85.uyuni2.noarch (75/83), 627.8 KiB (670.2 KiB unpacked)
+Retrieving: quartz-2.3.0-2.85.uyuni2.noarch.rpm [done]
+Retrieving package picocontainer-1.3.7-2.42.uyuni2.noarch (76/83), 105.2 KiB (112.8 KiB unpacked)
+Retrieving: picocontainer-1.3.7-2.42.uyuni2.noarch.rpm [.done]
+Retrieving package lucene-2.4.1-2.61.uyuni2.noarch (77/83), 926.5 KiB (  1.0 MiB unpacked)
+Retrieving: lucene-2.4.1-2.61.uyuni2.noarch.rpm [done]
+Retrieving package apache-commons-logging-1.2-9.64.noarch (78/83),  73.9 KiB (171.9 KiB unpacked)
+Retrieving: apache-commons-logging-1.2-9.64.noarch.rpm [done]
+Retrieving package apache-commons-codec-1.11-1.63.noarch (79/83), 276.4 KiB (349.8 KiB unpacked)
+Retrieving: apache-commons-codec-1.11-1.63.noarch.rpm [.done (1.2 KiB/s)]
+Retrieving package apache-commons-cli-1.4-1.63.noarch (80/83),  67.6 KiB ( 87.4 KiB unpacked)
+Retrieving: apache-commons-cli-1.4-1.63.noarch.rpm [done]
+Retrieving package ant-1.10.7-150200.4.6.1.noarch (81/83),   2.2 MiB (  2.7 MiB unpacked)
+Retrieving: ant-1.10.7-150200.4.6.1.noarch.rpm [.done (5.2 MiB/s)]
+Retrieving package cal10n-0.7.7-9.64.noarch (82/83),  38.0 KiB ( 40.0 KiB unpacked)
+Retrieving: cal10n-0.7.7-9.64.noarch.rpm [done]
+Retrieving package slf4j-1.7.36-4.1.uyuni2.noarch (83/83),  66.3 KiB ( 65.1 KiB unpacked)
+Retrieving: slf4j-1.7.36-4.1.uyuni2.noarch.rpm [.done]
+
+Checking for file conflicts: [..........done]
+( 1/83) Installing: file-5.32-7.14.1.x86_64 [.......done]
+( 2/83) Installing: javapackages-filesystem-5.3.0-1.36.x86_64 [........done]
+( 3/83) Installing: kbd-legacy-2.4.0-150400.3.5.noarch [............done]
+( 4/83) Installing: libXau6-1.0.8-1.26.x86_64 [.....done]
+( 5/83) Installing: libargon2-1-0.0+git20171227.670229c-2.14.x86_64 [....done]
+( 6/83) Installing: libasound2-1.2.6.1-150400.1.4.x86_64 [............done]
+( 7/83) Installing: libgif7-5.2.1-150000.4.8.1.x86_64 [....done]
+( 8/83) Installing: libip4tc2-1.8.7-1.1.x86_64 [....done]
+( 9/83) Installing: libjpeg8-8.2.2-150400.15.9.x86_64 [..........done]
+(10/83) Installing: libjson-c3-0.13-3.3.1.x86_64 [.....done]
+(11/83) Installing: libkmod2-29-4.15.1.x86_64 [......done]
+(12/83) Installing: liblcms2-2-2.12-150400.1.10.x86_64 [.........done]
+(13/83) Installing: libpcsclite1-1.9.4-150400.1.9.x86_64 [.....done]
+(14/83) Installing: libpng16-16-1.6.34-3.9.1.x86_64 [...........done]
+(15/83) Installing: libseccomp2-2.5.3-150400.2.4.x86_64 [........done]
+(16/83) Installing: pam-config-1.1-3.3.1.x86_64 [...........
+*** write_config (account, /etc/pam.d/common-account-pc, ...)
+**** write config for pam_access.so (account, disabled)
+**** write config for pam_unix2.so (account, disabled)
+**** write config for pam_unix.so (account, enabled)
+**** write config for pam_krb5.so (account, disabled)
+**** write config for pam_localuser.so (account, disabled)
+**** write config for pam_sss.so (account, disabled)
+**** write config for pam_ldap.so (account, disabled)
+**** write config for pam_nam.so (account, disabled)
+**** write config for pam_winbind.so (account, disabled)
+**** write config for pam_time.so (account, disabled)
+*** write_config (auth, /etc/pam.d/common-auth-pc, ...)
+**** write config for pam_env.so (auth, enabled)
+**** write config for pam_group.so (auth, disabled)
+**** write config for pam_pkcs11.so (auth, disabled)
+**** write config for pam_fp.so (auth, disabled)
+**** write config for pam_fprint.so (auth, disabled)
+**** write config for pam_fprintd.so (auth, disabled)
+**** write config for pam_thinkfinger.so (auth, disabled)
+**** write config for pam_gnome_keyring.so (auth, disabled)
+**** write config for pam_kwallet5.so (auth, disabled)
+**** write config for pam_ssh.so (auth, disabled)
+**** write config for pam_unix2.so (auth, disabled)
+**** write config for pam_unix.so (auth, enabled)
+**** write config for pam_ecryptfs.so (auth, disabled)
+**** write config for pam_krb5.so (auth, disabled)
+**** write config for pam_sss.so (auth, disabled)
+**** write config for pam_ldap.so (auth, disabled)
+**** write config for pam_nam.so (auth, disabled)
+**** write config for pam_winbind.so (auth, disabled)
+*** write_config (password, /etc/pam.d/common-password-pc, ...)
+**** write config for pam_winbind.so (password, disabled)
+**** write config for pam_pwcheck.so (password, disabled)
+**** write config for pam_passwdqc.so (password, disabled)
+**** write config for pam_cracklib.so (password, enabled)
+**** write config for pam_pwhistory.so (password, disabled)
+**** write config for pam_gnome_keyring.so (password, disabled)
+**** write config for pam_kwallet5.so (password, disabled)
+**** write config for pam_ecryptfs.so (password, disabled)
+**** write config for pam_unix2.so (password, disabled)
+**** write config for pam_unix.so (password, enabled)
+**** write config for pam_make.so (password, disabled)
+**** write config for pam_exec.so (password, disabled)
+**** write config for pam_krb5.so (password, disabled)
+**** write config for pam_sss.so (password, disabled)
+**** write config for pam_ldap.so (password, disabled)
+**** write config for pam_nam.so (password, disabled)
+*** write_config (session, /etc/pam.d/common-session-pc, ...)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_mkhomedir.so (session, disabled)
+**** write config for pam_systemd.so (session, disabled)
+**** write config for pam_limits.so (session, enabled)
+**** write config for pam_unix2.so (session, disabled)
+**** write config for pam_unix.so (session, enabled)
+**** write config for pam_apparmor.so (session, disabled)
+**** write config for pam_krb5.so (session, disabled)
+**** write config for pam_sss.so (session, disabled)
+**** write config for pam_ldap.so (session, disabled)
+**** write config for pam_winbind.so (session, disabled)
+**** write config for pam_nam.so (session, disabled)
+**** write config for pam_umask.so (session, enabled)
+**** write config for pam_ssh.so (session, disabled)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_gnome_keyring.so (session, disabled)
+**** write config for pam_kwallet5.so (session, disabled)
+**** write config for pam_exec.so (session, disabled)
+**** write config for pam_ecryptfs.so (session, disabled)
+**** write config for pam_env.so (session, enabled)
+**** write config for pam_mktemp.so (session, disabled)
+done]
+(17/83) Installing: pkg-config-0.29.2-1.436.x86_64 [...........done]
+(18/83) Installing: servletapi5-5.0.18-2.39.noarch [.........
+update-alternatives: using /usr/share/java/servletapi5-5.0.18.jar to provide /usr/share/java/servlet.jar (servlet) in auto mode
+done]
+(19/83) Installing: systemd-default-settings-branding-SLE-0.7-3.2.1.noarch [........done]
+(20/83) Installing: systemd-default-settings-0.7-3.2.1.noarch [.........done]
+(21/83) Installing: zip-3.0-2.22.x86_64 [............done]
+(22/83) Installing: javapackages-tools-5.3.0-1.36.x86_64 [..........done]
+(23/83) Installing: kbd-2.4.0-150400.3.5.x86_64 [............
+Updating /etc/sysconfig/console ...
+Updating /etc/sysconfig/keyboard ...
+done]
+(24/83) Installing: libX11-data-1.6.5-150000.3.24.1.noarch [............done]
+(25/83) Installing: libapparmor1-3.0.4-150400.5.3.1.x86_64 [......done]
+(26/83) Installing: libdbus-1-3-1.12.2-150400.18.5.1.x86_64 [.........done]
+(27/83) Installing: libdevmapper1_03-2.03.05_1.02.163-150400.185.1.x86_64 [.........done]
+(28/83) Installing: libexpat1-2.4.4-150400.3.12.1.x86_64 [..........done]
+(29/83) Installing: libfreebl3-3.79.2-150400.3.15.1.x86_64 [...........done]
+(30/83) Installing: libfreebl3-hmac-3.79.2-150400.3.15.1.x86_64 [.....done]
+(31/83) Installing: mozilla-nspr-4.34.1-150000.3.26.1.x86_64 [...........done]
+(32/83) Installing: systemd-presets-common-SUSE-15-150100.8.17.1.noarch [......done]
+(33/83) Installing: libxcb1-1.13-150000.3.9.1.x86_64 [........done]
+(34/83) Installing: libfreetype6-2.10.4-150000.4.12.1.x86_64 [............done]
+(35/83) Installing: dbus-1-1.12.2-150400.18.5.1.x86_64 [...........
+update-alternatives: using /usr/bin/dbus-launch.nox11 to provide /usr/bin/dbus-launch (dbus-launch) in auto mode
+done]
+(36/83) Installing: mozilla-nss-certs-3.79.2-150400.3.15.1.x86_64 [...........done]
+(37/83) Installing: libX11-6-1.6.5-150000.3.24.1.x86_64 [...........done]
+(38/83) Installing: libsoftokn3-3.79.2-150400.3.15.1.x86_64 [..........done]
+(39/83) Installing: mozilla-nss-3.79.2-150400.3.15.1.x86_64 [............done]
+(40/83) Installing: libsoftokn3-hmac-3.79.2-150400.3.15.1.x86_64 [.....done]
+(41/83) Installing: java-17-openjdk-headless-17.0.5.0-150400.3.6.1.x86_64 [............
+update-alternatives: using /usr/lib64/jvm/jre-17-openjdk/bin/java to provide /usr/bin/java (java) in auto mode
+update-alternatives: using /usr/lib64/jvm/jre-17-openjdk to provide /usr/lib64/jvm/jre-openjdk (jre_openjdk) in auto mode
+update-alternatives: using /usr/lib64/jvm/jre-17-openjdk to provide /usr/lib64/jvm/jre-17 (jre_17) in auto mode
+done]
+(42/83) Installing: jackson-core-2.13.0-150200.3.6.1.noarch [..........done]
+(43/83) Installing: jackson-annotations-2.13.0-150200.3.6.1.noarch [.......done]
+(44/83) Installing: jackson-databind-2.13.4.2-150200.3.12.1.noarch [............done]
+(45/83) Installing: redstone-xmlrpc-1.1_20071120-0.12.42.uyuni2.noarch [.
+warning: /var/cache/zypp/packages/Uyuni-Server-Master-Other-Build-Deps/noarch/redstone-xmlrpc-1.1_20071120-0.12.42.uyuni2.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0d20833e: NOKEY
+.....done]
+(46/83) Installing: objectweb-asm-9.3-1.33.uyuni2.noarch [.
+warning: /var/cache/zypp/packages/Uyuni-Server-Master-Other-Build-Deps/noarch/objectweb-asm-9.3-1.33.uyuni2.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0d20833e: NOKEY
+..........done]
+(47/83) Installing: mybatis-3.5.6-3.34.uyuni2.noarch [.
+warning: /var/cache/zypp/packages/Uyuni-Server-Master-Other-Build-Deps/noarch/mybatis-3.5.6-3.34.uyuni2.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0d20833e: NOKEY
+.........done]
+(48/83) Installing: libcryptsetup12-2.4.3-150400.1.110.x86_64 [..........done]
+(49/83) Installing: libcryptsetup12-hmac-2.4.3-150400.1.110.x86_64 [.....done]
+(50/83) Installing: systemd-presets-branding-MicroOS-20200323-lp154.1.3.noarch [.....done]
+(51/83) Installing: fontconfig-2.13.1-150400.1.4.x86_64 [...........done]
+(52/83) Installing: libfontconfig1-2.13.1-150400.1.4.x86_64 [...........done]
+(53/83) Installing: libXrender1-0.9.10-1.30.x86_64 [.....done]
+(54/83) Installing: libXext6-1.3.3-1.30.x86_64 [.....done]
+(55/83) Installing: xml-commons-resolver-1.2-1.66.noarch [.........done]
+(56/83) Installing: xml-commons-apis-1.4.01-1.66.noarch [.........done]
+(57/83) Installing: oro-2.0.8-9.63.noarch [.......done]
+(58/83) Installing: mchange-commons-0.2.20-150400.1.6.noarch [..........done]
+(59/83) Installing: javassist-3.23.1-1.63.noarch [...........done]
+(60/83) Installing: hamcrest-core-1.3-12.6.1.noarch [.....done]
+(61/83) Installing: apache-commons-lang3-3.8.1-1.63.noarch [............done]
+(62/83) Installing: log4j-2.17.1-4.20.1.noarch [............done]
+(63/83) Installing: cglib-3.2.4-1.63.noarch [.........done]
+(64/83) Installing: libXtst6-1.2.3-1.24.x86_64 [....done]
+(65/83) Installing: libXi6-1.7.9-3.2.1.x86_64 [.....done]
+(66/83) Installing: xerces-j2-2.12.0-3.3.1.noarch [............done]
+(67/83) Installing: xalan-j2-2.7.2-9.64.noarch [............
+update-alternatives: using /usr/share/java/xalan-j2.jar to provide /usr/share/java/jaxp_transform_impl.jar (jaxp_transform_impl) in auto mode
+done]
+(68/83) Installing: c3p0-0.9.5.5-150400.1.12.noarch [..........
+update-alternatives: using /usr/share/java/c3p0.jar to provide /usr/share/java/hibernate_jdbc_cache.jar (hibernate_jdbc_cache) in auto mode
+done]
+(69/83) Installing: junit-4.12-1.64.noarch [..........done]
+(70/83) Installing: systemd-249.12-150400.8.13.1.x86_64 [............
+Creating group systemd-journal with gid 485.
+Creating group systemd-network with gid 484.
+Creating user systemd-network (systemd Network Management) with uid 484 and gid 484.
+Creating group systemd-timesync with gid 483.
+Creating user systemd-timesync (systemd Time Synchronization) with uid 483 and gid 483.
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+/usr/lib/tmpfiles.d/journal-nocow.conf:26: Failed to resolve specifier: uninitialized /etc detected, skipping
+All rules containing unresolvable specifiers will be skipped.
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+done]
+(71/83) Installing: java-17-openjdk-17.0.5.0-150400.3.6.1.x86_64 [..........done]
+(72/83) Installing: java-17-openjdk-devel-17.0.5.0-150400.3.6.1.x86_64 [............
+update-alternatives: using /usr/lib64/jvm/java-17-openjdk/bin/javac to provide /usr/bin/javac (javac) in auto mode
+update-alternatives: using /usr/lib64/jvm/java-17-openjdk to provide /usr/lib64/jvm/java-openjdk (java_sdk_openjdk) in auto mode
+update-alternatives: using /usr/lib64/jvm/java-17-openjdk to provide /usr/lib64/jvm/java-17 (java_sdk_17) in auto mode
+done]
+(73/83) Installing: apache-commons-ognl-4.0~20191021git51cf8f4-2.37.uyuni2.noarch [.
+warning: /var/cache/zypp/packages/Uyuni-Server-Master-Other-Build-Deps/noarch/apache-commons-ognl-4.0~20191021git51cf8f4-2.37.uyuni2.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0d20833e: NOKEY
+........done]
+(74/83) Installing: simple-core-3.1.3-0.9.43.uyuni2.x86_64 [.
+warning: /var/cache/zypp/packages/Uyuni-Server-Master-Other-Build-Deps/x86_64/simple-core-3.1.3-0.9.43.uyuni2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 0d20833e: NOKEY
+.........done]
+(75/83) Installing: quartz-2.3.0-2.85.uyuni2.noarch [.
+warning: /var/cache/zypp/packages/Uyuni-Server-Master-Other-Build-Deps/noarch/quartz-2.3.0-2.85.uyuni2.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0d20833e: NOKEY
+.........done]
+(76/83) Installing: picocontainer-1.3.7-2.42.uyuni2.noarch [.
+warning: /var/cache/zypp/packages/Uyuni-Server-Master-Other-Build-Deps/noarch/picocontainer-1.3.7-2.42.uyuni2.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0d20833e: NOKEY
+......done]
+(77/83) Installing: lucene-2.4.1-2.61.uyuni2.noarch [.
+warning: /var/cache/zypp/packages/Uyuni-Server-Master-Other-Build-Deps/noarch/lucene-2.4.1-2.61.uyuni2.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0d20833e: NOKEY
+..........done]
+(78/83) Installing: apache-commons-logging-1.2-9.64.noarch [.........done]
+(79/83) Installing: apache-commons-codec-1.11-1.63.noarch [.........done]
+(80/83) Installing: apache-commons-cli-1.4-1.63.noarch [.........done]
+(81/83) Installing: ant-1.10.7-150200.4.6.1.noarch [............done]
+(82/83) Installing: cal10n-0.7.7-9.64.noarch [......done]
+(83/83) Installing: slf4j-1.7.36-4.1.uyuni2.noarch [.
+warning: /var/cache/zypp/packages/Uyuni-Server-Master-Other-Build-Deps/noarch/slf4j-1.7.36-4.1.uyuni2.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0d20833e: NOKEY
+.......done]
+Executing %posttrans script 'kbd-2.4.0-150400.3.5.x86_64.rpm' [...
+Created symlink /etc/systemd/system/default.target.wants/ca-certificates.path -> /usr/lib/systemd/system/ca-certificates.path.
+Created symlink /etc/systemd/system/multi-user.target.wants/kbdsettings.service -> /usr/lib/systemd/system/kbdsettings.service.
+Created symlink /etc/systemd/system/getty.target.wants/getty@tty1.service -> /usr/lib/systemd/system/getty@.service.
+Created symlink /etc/systemd/system/multi-user.target.wants/remote-fs.target -> /usr/lib/systemd/system/remote-fs.target.
+Created symlink /etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer -> /usr/lib/systemd/user/systemd-tmpfiles-clean.timer.
+Created symlink /etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service -> /usr/lib/systemd/user/systemd-tmpfiles-setup.service.
+.....done]
+Forcing raw metadata refresh
+Retrieving repository 'Uyuni-Server-Master-Other-Build-Deps' metadata [..done]
+Forcing building of repository cache
+Building repository 'Uyuni-Server-Master-Other-Build-Deps' cache [....done]
+Forcing raw metadata refresh
+Retrieving repository 'Uyuni-Server-POOL-x86_64' metadata [.done]
+Forcing building of repository cache
+Building repository 'Uyuni-Server-POOL-x86_64' cache [....done]
+Forcing raw metadata refresh
+Retrieving repository 'Update repository of openSUSE Backports' metadata [.done]
+Forcing building of repository cache
+Building repository 'Update repository of openSUSE Backports' cache [....done]
+Forcing raw metadata refresh
+Retrieving repository 'Non-OSS Repository' metadata [.done]
+Forcing building of repository cache
+Building repository 'Non-OSS Repository' cache [....done]
+Forcing raw metadata refresh
+Retrieving repository 'Main Repository' metadata [..done]
+Forcing building of repository cache
+Building repository 'Main Repository' cache [....done]
+Forcing raw metadata refresh
+Retrieving repository 'Update repository with updates from SUSE Linux Enterprise 15' metadata [..done]
+Forcing building of repository cache
+Building repository 'Update repository with updates from SUSE Linux Enterprise 15' cache [....done]
+Forcing raw metadata refresh
+Retrieving repository 'Main Update Repository' metadata [.done]
+Forcing building of repository cache
+Building repository 'Main Update Repository' cache [....done]
+Forcing raw metadata refresh
+Retrieving repository 'Update Repository (Non-Oss)' metadata [.done]
+Forcing building of repository cache
+Building repository 'Update Repository (Non-Oss)' cache [....done]
+All repositories have been refreshed.
+All repositories have been cleaned up.
+Removing intermediate container 8011719e0a72
+ ---> 33e3112833e1
+Successfully built 33e3112833e1
+Successfully tagged test_actions_docker_t:latest
