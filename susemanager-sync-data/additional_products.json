@@ -1,7 +1,7 @@
 [
     {
         "id" : -41,
-        "name" : "Oracle Linux 9",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "9",
@@ -108,7 +108,7 @@
     },
     {
         "id" : -40,
-        "name" : "Oracle Linux 9",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "9",
@@ -205,7 +205,7 @@
     },
     {
         "id" : -39,
-        "name" : "AlmaLinux 9",
+        "name" : "AlmaLinux",
         "identifier" : "almalinux",
         "former_identifier" : "",
         "version" : "9",
@@ -282,7 +282,7 @@
     },
     {
         "id" : -38,
-        "name" : "AlmaLinux 9",
+        "name" : "AlmaLinux",
         "identifier" : "almalinux",
         "former_identifier" : "",
         "version" : "9",
@@ -359,7 +359,7 @@
     },
     {
         "id" : -37,
-        "name" : "Rocky Linux 9",
+        "name" : "Rocky Linux",
         "identifier" : "rockylinux",
         "former_identifier" : "",
         "version" : "9",
@@ -426,7 +426,7 @@
     },
     {
         "id" : -36,
-        "name" : "Rocky Linux 9",
+        "name" : "Rocky Linux",
         "identifier" : "rockylinux",
         "former_identifier" : "",
         "version" : "9",
@@ -493,7 +493,7 @@
     },
     {
         "id" : -35,
-        "name" : "RHEL and Liberty 9 Base",
+        "name" : "RHEL and Liberty Base",
         "identifier" : "el-base",
         "former_identifier" : "",
         "version" : "9",
@@ -530,7 +530,7 @@
     },
     {
         "id" : -34,
-        "name" : "Open Enterprise Server 2023",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2023",
@@ -1128,7 +1128,7 @@
     },
     {
         "id" : -33,
-        "name" : "Ubuntu 22.04",
+        "name" : "Ubuntu",
         "identifier" : "Ubuntu-Client",
         "former_identifier" : "",
         "version" : "22.04",
@@ -1315,7 +1315,7 @@
     },
     {
         "id" : -32,
-        "name" : "Debian 11",
+        "name" : "Debian",
         "identifier" : "Debian-Client",
         "former_identifier" : "",
         "version" : "11",
@@ -1372,7 +1372,7 @@
     },
     {
         "id" : -31,
-        "name" : "CentOS 7",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "7",
@@ -1469,7 +1469,7 @@
     },
     {
         "id" : -30,
-        "name" : "CentOS 8",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "8",
@@ -1576,7 +1576,7 @@
     },
     {
         "id" : -29,
-        "name" : "Oracle Linux 8",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "8",
@@ -1663,7 +1663,7 @@
     },
     {
         "id" : -28,
-        "name" : "Oracle Linux 7",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "7",
@@ -1730,7 +1730,7 @@
     },
     {
         "id" : -27,
-        "name" : "Rocky Linux 8",
+        "name" : "Rocky Linux",
         "identifier" : "rockylinux",
         "former_identifier" : "",
         "version" : "8",
@@ -1807,7 +1807,7 @@
     },
     {
         "id" : -26,
-        "name" : "AlmaLinux 8",
+        "name" : "AlmaLinux",
         "identifier" : "almalinux",
         "former_identifier" : "",
         "version" : "8",
@@ -1884,7 +1884,7 @@
     },
     {
         "id" : -25,
-        "name" : "Amazon Linux 2",
+        "name" : "Amazon Linux",
         "identifier" : "amazonlinux",
         "former_identifier" : "",
         "version" : "2",
@@ -1931,7 +1931,7 @@
     },
     {
         "id" : -24,
-        "name" : "Rocky Linux 8",
+        "name" : "Rocky Linux",
         "identifier" : "rockylinux",
         "former_identifier" : "",
         "version" : "8",
@@ -2008,7 +2008,7 @@
     },
     {
         "id" : -23,
-        "name" : "AlmaLinux 8",
+        "name" : "AlmaLinux",
         "identifier" : "almalinux",
         "former_identifier" : "",
         "version" : "8",
@@ -2085,7 +2085,7 @@
     },
     {
         "id" : -22,
-        "name" : "Amazon Linux 2",
+        "name" : "Amazon Linux",
         "identifier" : "amazonlinux",
         "former_identifier" : "",
         "version" : "2",
@@ -2132,7 +2132,7 @@
     },
     {
         "id" : -21,
-        "name" : "Open Enterprise Server 2018 SP3",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2018.3",
@@ -2460,7 +2460,7 @@
     },
     {
         "id" : -20,
-        "name" : "Debian 10",
+        "name" : "Debian",
         "identifier" : "Debian-Client",
         "former_identifier" : "",
         "version" : "10",
@@ -2517,7 +2517,7 @@
     },
     {
         "id" : -19,
-        "name" : "Debian 9",
+        "name" : "Debian",
         "identifier" : "Debian-Client",
         "former_identifier" : "",
         "version" : "9",
@@ -2574,7 +2574,7 @@
     },
     {
         "id" : -18,
-        "name" : "Ubuntu 20.04",
+        "name" : "Ubuntu",
         "identifier" : "Ubuntu-Client",
         "former_identifier" : "",
         "version" : "20.04",
@@ -2761,7 +2761,7 @@
     },
     {
         "id" : -17,
-        "name" : "Oracle Linux 8",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "8",
@@ -2868,7 +2868,7 @@
     },
     {
         "id" : -16,
-        "name" : "Oracle Linux 6",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "6",
@@ -2945,7 +2945,7 @@
     },
     {
         "id" : -15,
-        "name" : "Oracle Linux 6",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "6",
@@ -3062,7 +3062,7 @@
     },
     {
         "id" : -14,
-        "name" : "Oracle Linux 7",
+        "name" : "Oracle Linux",
         "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "7",
@@ -3259,7 +3259,7 @@
     },
     {
         "id" : -13,
-        "name" : "CentOS 8",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "8",
@@ -3366,7 +3366,7 @@
     },
     {
         "id" : -12,
-        "name" : "CentOS 7",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "7",
@@ -3483,7 +3483,7 @@
     },
     {
         "id" : -11,
-        "name" : "CentOS 6",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "6",
@@ -3580,7 +3580,7 @@
     },
     {
         "id" : -10,
-        "name" : "CentOS 6",
+        "name" : "CentOS",
         "identifier" : "centos",
         "former_identifier" : "",
         "version" : "6",
@@ -3677,7 +3677,7 @@
     },
     {
         "id" : -9,
-        "name" : "Open Enterprise Server 2018 SP2",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2018.2",
@@ -4005,7 +4005,7 @@
     },
     {
         "id" : -8,
-        "name" : "RHEL or SLES ES or CentOS 8 Base",
+        "name" : "RHEL or SLES ES or CentOS Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "8",
@@ -4042,7 +4042,7 @@
     },
     {
         "id" : -7,
-        "name" : "RHEL7 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "7",
@@ -4079,7 +4079,7 @@
     },
     {
         "id" : -6,
-        "name" : "RHEL6 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "6",
@@ -4116,7 +4116,7 @@
     },
     {
         "id" : -5,
-        "name" : "RHEL6 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "6",
@@ -4153,7 +4153,7 @@
     },
     {
         "id" : -4,
-        "name" : "RHEL5 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "5",
@@ -4190,7 +4190,7 @@
     },
     {
         "id" : -3,
-        "name" : "RHEL5 Base",
+        "name" : "RHEL Base",
         "identifier" : "rhel-base",
         "former_identifier" : "",
         "version" : "5",
@@ -4227,7 +4227,7 @@
     },
     {
         "id" : -2,
-        "name" : "Ubuntu 16.04",
+        "name" : "Ubuntu",
         "identifier" : "Ubuntu-Client",
         "former_identifier" : "",
         "version" : "16.04",
@@ -4264,7 +4264,7 @@
     },
     {
         "id" : -1,
-        "name" : "Ubuntu 18.04",
+        "name" : "Ubuntu",
         "identifier" : "Ubuntu-Client",
         "former_identifier" : "",
         "version" : "18.04",
@@ -4301,7 +4301,7 @@
     },
     {
         "id" : 42,
-        "name" : "Open Enterprise Server 2015",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2015",
@@ -4348,7 +4348,7 @@
     },
     {
         "id" : 43,
-        "name" : "Open Enterprise Server 2015 SP1",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2015.1",
@@ -4396,7 +4396,7 @@
     },
     {
         "id" : 44,
-        "name" : "Open Enterprise Server 11 SP3",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "11.3",
@@ -4444,7 +4444,7 @@
     },
     {
         "id" : 45,
-        "name" : "Open Enterprise Server 2018",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2018",
@@ -4671,7 +4671,7 @@
     },
     {
         "id" : 46,
-        "name" : "Open Enterprise Server 2018 SP1",
+        "name" : "Open Enterprise Server",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "2018.1",
@@ -4999,7 +4999,7 @@
     },
     {
         "id" : 1232,
-        "name" : "Novell Open Enterprise Server 2 11",
+        "name" : "Novell Open Enterprise Server 2",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "11",
@@ -5046,7 +5046,7 @@
     },
     {
         "id" : 1241,
-        "name" : "Novell Open Enterprise Server 2 11.1",
+        "name" : "Novell Open Enterprise Server 2",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "11.1",
@@ -5094,7 +5094,7 @@
     },
     {
         "id" : 1242,
-        "name" : "Novell Open Enterprise Server 2 11.2",
+        "name" : "Novell Open Enterprise Server 2",
         "identifier" : "Open_Enterprise_Server",
         "former_identifier" : "",
         "version" : "11.2",
