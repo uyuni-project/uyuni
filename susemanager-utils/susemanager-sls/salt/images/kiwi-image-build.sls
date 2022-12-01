@@ -15,10 +15,11 @@
 {%- set cache_dir  = root_dir + '/cache/' %}
 {%- set bundle_id  = pillar.get('build_id') %}
 {%- set activation_key = pillar.get('activation_key') %}
-{%- set use_bundle_build = pillar.get('use_bundle_build', False) %}
+{%- set use_bundle_build = pillar.get('use_bundle_build', salt['pillar.get']('custom_info:use_bundle_build', False)) %}
+{%- set force_kiwi_ng = pillar.get('use_kiwi_ng', salt['pillar.get']('custom_info:use_kiwi_ng', False)) %}
 
 # on SLES11 and SLES12 use legacy Kiwi, use Kiwi NG elsewhere
-{%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) %}
+{%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) or force_kiwi_ng %}
 
 mgr_buildimage_prepare_source:
   file.directory:
