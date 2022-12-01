@@ -1,4 +1,8 @@
-- add SLES15 SP3 LTSS
+-------------------------------------------------------------------
+Thu Dec 01 10:48:32 UTC 2022 - marina.latini@suse.com
+
+- version 4.2.14-1
+  * add SLES15 SP3 LTSS
 
 -------------------------------------------------------------------
 Wed Jul 06 15:57:01 CEST 2022 - jmassaguerpla@suse.de
