@@ -3,6 +3,8 @@
 
 require 'tempfile'
 require 'yaml'
+require 'nokogiri'
+require 'timeout'
 
 # return current URL
 def current_url
