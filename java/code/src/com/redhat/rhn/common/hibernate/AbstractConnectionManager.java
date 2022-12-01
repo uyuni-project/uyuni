@@ -52,7 +52,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
     private final List<Configurator> configurators;
     private final ThreadLocal<SessionInfo> sessionInfoThreadLocal;
     private final Set<String> packageNames;
-    private String componentName;
+    private String unitLabelValue;
 
 
     /**
@@ -79,7 +79,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
      * {@inheritDoc}
      */
     public void setComponentName(String componentName) {
-        this.componentName = componentName;
+        this.unitLabelValue = componentName;
     }
 
     /**
@@ -164,8 +164,8 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         }
 
         createSessionFactory();
-        if (componentName != null) {
-            new HibernateStatisticsCollector(sessionFactory, componentName).register();
+        if (unitLabelValue != null) {
+            new HibernateStatisticsCollector(sessionFactory, unitLabelValue).register();
         }
     }
 
