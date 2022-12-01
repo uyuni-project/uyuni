@@ -1,3 +1,8 @@
+/**
+ * This file was created as a temporary solution to make it possible to remove the DWR library quickly.
+ * Please, don't use the functions available here in any other scenario.
+ */
+
 const onAjaxRequestError = function (res, status, error) {
   console.log("Error processing ajax request...")
   console.log(res.responseText, status, error)
