@@ -21,20 +21,16 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import io.prometheus.client.hibernate.HibernateStatisticsCollector;
-
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
  * thread-scoped Hibernate sessions.
  */
 class DefaultConnectionManager extends AbstractConnectionManager {
 
+
+
     DefaultConnectionManager() {
         super(Set.of("com.redhat.rhn.domain", "com.redhat.rhn.taskomatic.domain"));
-    }
-
-    public void registerHibernateStatisticsCollector(String componentName) {
-        new HibernateStatisticsCollector(sessionFactory, componentName).register();
     }
 
     @Override

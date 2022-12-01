@@ -36,6 +36,8 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
+import io.prometheus.client.hibernate.HibernateStatisticsCollector;
+
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
@@ -50,6 +52,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
     private final List<Configurator> configurators;
     private final ThreadLocal<SessionInfo> sessionInfoThreadLocal;
     private final Set<String> packageNames;
+    private String componentName;
 
 
     /**
@@ -70,6 +73,13 @@ abstract class AbstractConnectionManager implements ConnectionManager {
     @Override
     public void setAdditionalPackageNames(String[] packageNamesIn) {
         packageNames.addAll(Arrays.asList(packageNamesIn));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setComponentName(String componentName) {
+        this.componentName = componentName;
     }
 
     /**
@@ -154,6 +164,9 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         }
 
         createSessionFactory();
+        if (componentName != null) {
+            new HibernateStatisticsCollector(sessionFactory, componentName).register();
+        }
     }
 
     /**

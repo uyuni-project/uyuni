@@ -127,11 +127,11 @@ public class SchedulerKernel {
      * @throws TaskomaticException error occurred during Quartz or Hibernate startup
      */
     public void startup() throws TaskomaticException {
+        HibernateFactory.registerComponentName("taskomatic");
         HibernateFactory.createSessionFactory(TASKOMATIC_PACKAGE_NAMES);
         if (!HibernateFactory.isInitialized()) {
             throw new TaskomaticException("HibernateFactory failed to initialize");
         }
-        HibernateFactory.registerStatisticsCollector("taskomatic");
         MessageQueue.startMessaging();
         MessageQueue.configureDefaultActions(GlobalInstanceHolder.SYSTEM_QUERY, GlobalInstanceHolder.SALT_API);
         try {

@@ -119,11 +119,11 @@ public abstract class HibernateFactory {
     }
 
     /**
-     * Register Prometheus Statistics Collector
+     * Register Prometheus Statistics Collector component name
      * @param componentName Name of the application component which will be added to the metric as the `unit` label
      */
-    public static void registerStatisticsCollector(String componentName) {
-        ((DefaultConnectionManager) connectionManager).registerHibernateStatisticsCollector(componentName);
+    public static void registerComponentName(String componentName) {
+        connectionManager.setComponentName(componentName);
     }
 
     /**

@@ -124,11 +124,11 @@ public class RhnServletListener implements ServletContextListener {
         startMessaging();
         logStart("Messaging");
 
+        HibernateFactory.registerComponentName(SystemsCollector.PRODUCT_NAME);
         startHibernate();
         logStart("Hibernate");
 
         PrometheusExporter.INSTANCE.registerSystemsCollector();
-        HibernateFactory.registerStatisticsCollector(SystemsCollector.PRODUCT_NAME);
 
         // the following is not safe to run in the testsuite
         // and will be excluded from test runs
