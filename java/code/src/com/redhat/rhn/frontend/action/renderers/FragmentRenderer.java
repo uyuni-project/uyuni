@@ -16,6 +16,9 @@
 package com.redhat.rhn.frontend.action.renderers;
 
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,7 +35,6 @@ public interface FragmentRenderer {
      * @param request the request
      * @param response the response
      * @return generated content
-     * @throws Exception sometimes things just don't work out
      */
-    String renderAsync(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    String renderAsync(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 }

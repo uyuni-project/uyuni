@@ -59,15 +59,15 @@ function saveCredentials() {
 
     var responseHandler = function(result) {
       if (result == "ok") {
-        ajax('render-mirror-credentials', '', makeRendererHandler("listset-container", false).callback)
+        ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback)
       }
       else {
-        jQuery('#mirror-credentials-error-container').show(); // show the error container
-        jQuery('#' + result).show(); //result contains the id of the error element to be shown
+        jQuery("#mirror-credentials-error-container").show(); // show the error container
+        jQuery("#" + result).show(); //result contains the id of the error element to be shown
       }
     };
 
-    ajax('save-mirror-credentials', { id: editId, user, password }, responseHandler)
+    ajax("save-mirror-credentials", { id: editId, user, password }, responseHandler)
 
     jQuery("#edit-credentials-spinner").hide();
   }
@@ -82,7 +82,7 @@ function deleteCredentials() {
 // Make primary credentials
 function makePrimaryCredentials(id) {
   showSpinner("primary-" + id);
-  ajax('make-primary-mirror-credentials', { id }, makeRendererHandler("listset-container", false).callback)
+  ajax("make-primary-mirror-credentials", { id }, makeRendererHandler("listset-container", false).callback)
 }
 
 function setDeleteAllowed(id, allowed) {
@@ -113,7 +113,7 @@ function verifyCredentials(id, refresh) {
 
   showSpinner(elemId);
   setDeleteAllowed(id, false);
-  ajax('verify-mirror-credentials', { id, refresh }, responseHandler, "application/json")
+  ajax("verify-mirror-credentials", { id, refresh }, responseHandler, "application/json")
 }
 
 // relevant for the mirror credentials page
@@ -126,6 +126,6 @@ jQuery(document).ready(function() {
   // Load subscriptions when modal is shown
   jQuery('#modal-list-subscriptions').on('show.bs.modal', function() {
     showSpinner("modal-list-subscriptions-body");
-    ajax('list-mirror-subscriptions', { subscriptionsId }, makeRendererHandler('modal-list-subscriptions-body', false).callback)
+    ajax("list-mirror-subscriptions", { subscriptionsId }, makeRendererHandler("modal-list-subscriptions-body", false).callback)
   });
 });

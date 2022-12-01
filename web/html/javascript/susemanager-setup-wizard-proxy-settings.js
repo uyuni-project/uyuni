@@ -9,7 +9,7 @@ function saveProxySettings() {
   password = jQuery('#http-proxy-input-password').val();
   
   function onSuccess(res) {
-    settings = JSON.parse(res);
+    const settings = JSON.parse(res);
     console.log("Proxy settings saved!");
     jQuery('#http-proxy-save').prop('disabled', false);
     // TODO make sure it succeeded
@@ -20,12 +20,12 @@ function saveProxySettings() {
     verifyProxySettings(true);
   }
 
-  ajax('save-proxy-settings', { hostname, username, password }, onSuccess)
+  ajax("save-proxy-settings", { hostname, username, password }, onSuccess)
 }
 
 // sets in the UI if the proxy settings were verified
 function setProxySettingsVerified(result) {
-  valid = JSON.parse(result)
+  const valid = JSON.parse(result)
   if (valid) {
     jQuery('#http-proxy-verify').html('<i class="fa fa-check-square text-success"></i>');
   } else {
