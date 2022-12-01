@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.servlets.ajax.dto;
 
+/**
+ * DTO class used by {@link com.redhat.rhn.frontend.servlets.ajax.AjaxHandlerServlet}
+ * when processing requests addressed to
+ * {@link com.redhat.rhn.frontend.action.renderers.setupwizard.MirrorCredentialsRenderer#verifyCredentials}
+ */
 public class VerifyMirrorCredentialsDto {
     private Long id;
     private boolean refresh;

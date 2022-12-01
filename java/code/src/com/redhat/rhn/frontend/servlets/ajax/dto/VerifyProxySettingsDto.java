@@ -13,7 +13,13 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.ajax.dto;
+//
 
+/**
+ * DTO class used by {@link com.redhat.rhn.frontend.servlets.ajax.AjaxHandlerServlet}
+ * when processing requests addressed to
+ * {@link com.redhat.rhn.frontend.action.renderers.setupwizard.ProxySettingsRenderer#verifyProxySettings}
+ */
 public class VerifyProxySettingsDto {
     private boolean forceRefresh;
 

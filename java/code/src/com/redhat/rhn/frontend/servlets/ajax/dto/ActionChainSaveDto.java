@@ -16,6 +16,11 @@ package com.redhat.rhn.frontend.servlets.ajax.dto;
 
 import java.util.List;
 
+/**
+ * DTO class used by {@link com.redhat.rhn.frontend.servlets.ajax.AjaxHandlerServlet}
+ * when processing requests addressed to
+ * {@link com.redhat.rhn.frontend.action.schedule.ActionChainSaveAction#save}
+ */
 public class ActionChainSaveDto {
 
     private Long actionChainId;
