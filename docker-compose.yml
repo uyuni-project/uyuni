@@ -1,0 +1,52 @@
+version: "3.9"
+services:
+  sles-minion:
+    image: "ghcr.io/jordimassaguerpla/uyuni/sle-minion:master"
+  opensuse-minion:
+    image: "ghcr.io/jordimassaguerpla/uyuni/opensuse-minion:master"
+  opensuse-ssh-minion:
+    image: "ghcr.io/jordimassaguerpla/uyuni/opensuse-minion:master"
+  ubuntu-minion:
+    image: "ghcr.io/jordimassaguerpla/uyuni/ubuntu-minion:master"
+  rocky-minion:
+    image: "ghcr.io/jordimassaguerpla/uyuni/rocky-minion:master"
+  opensuse-proxy:
+    image: "ghcr.io/jordimassaguerpla/uyuni/opensuse-proxy:master"
+  proxy-httpd-test:
+    build:
+      context: .
+      dockerfile: dockerfiles/proxy-http-test/Dockerfile
+  proxy-salt-broker-test:
+    build:
+      context: .
+      dockerfile: dockerfiles/proxy-salt-broker-test/Dockerfile
+  proxy-squid:
+    image: "ghcr.io/jordimassaguerpla/uyuni/proxy-squid:master"
+  proxy-ssh:
+    image: "ghcr.io/jordimassaguerpla/uyuni/proxy-ssh:master"
+  proxy-tftpd:
+    image: "ghcr.io/jordimassaguerpla/uyuni/proxy-tftpd:master"
+  server-h-test:
+    ports:
+      - "1234:80"
+    build:
+      context: .
+      dockerfile: dockerfiles/server-httpd-test/Dockerfile
+  server-s-test:
+    build:
+      context: .
+      dockerfile: dockerfiles/server-search-test/Dockerfile
+  server-t-test:
+    build:
+      context: .
+      dockerfile: dockerfiles/server-taskomatic-test/Dockerfile
+  server-j-test:
+    build:
+      context: .
+      dockerfile: dockerfiles/server-java-app-test/Dockerfile
+  server-pg:
+    image: "ghcr.io/jordimassaguerpla/uyuni/server-postgresql:master"
+  server-salt-master:
+    image: "ghcr.io/jordimassaguerpla/uyuni/server-salt-master:master"
+  server-salt-api:
+    image: "ghcr.io/jordimassaguerpla/uyuni/server-salt-api:master"

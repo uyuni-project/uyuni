@@ -1,0 +1,36 @@
+name: hello-world
+on: pull_request
+jobs:
+  test-uyuni:
+    runs-on: ubuntu-latest
+    steps:
+      - name: my-step
+        run: echo "Hello World!"
+      - uses: actions/checkout@v3
+      - uses: isbang/compose-action@v1.4.1
+      - name: wait a bit
+        run: sleep 30s  
+      - name: dockerps
+        run: docker ps
+      - name: install-deps
+        run: sudo apt-get install -y nmap
+      - name: nmap_from_host
+        run: nmap server-httpd-test
+      - name: docker-networks
+        run: docker network ls
+      - name: test_from_host
+        run: curl http://localhost:1234/test.html
+      - name: test_from_container
+        run: docker run -a stdout -a stderr --network uyuni_default ghcr.io/jordimassaguerpla/uyuni/controller-dev:master bash -c "curl http://server-h-test/test.html"
+      - name: build_new_container
+        run: docker build -t dockerfiles/controller-test/Dockerfile . -t controller-test:master
+      - name: run_new_container
+        run: docker run --rm -a stdout -a stderr --network uyuni_default --name controller-test_1 controller-test:master bash -c "cucumber"
+      - name: remove_controller
+        run: docker kill controller-test_1
+      - name: remove_controller_image
+        run: docker rmi controller-test:master
+      - name: last-step
+        run: echo "bye bye!"
+
+

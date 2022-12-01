@@ -1,0 +1,15 @@
+name: test-all-in-one
+on: pull_request
+jobs:
+  test-uyuni:
+    runs-on: ubuntu-latest
+    steps:
+      - name: my-step
+        run: echo "Hello World!"
+      - uses: actions/checkout@v3
+      - name: start-server-container
+        run: docker run --tmpfs /run -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns=host --add-host=download.opensuse.org:195.135.221.134 -h uyuni-server-all-in-one-test-1 -p 8443:443 -p 8080:80 -p 4505:4505 -p 4506:4506 -d --name=uyuni-server-all-in-one-test-1 uyuni/server:1.0 
+      - name: last-step
+        run: echo "bye bye!"
+
+
