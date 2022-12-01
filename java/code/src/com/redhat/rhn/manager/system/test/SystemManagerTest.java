@@ -2089,4 +2089,17 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 .map(NetworkDto::getId)
                 .collect(Collectors.toSet());
     }
+
+    public void testCountOutdatedSystems() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+        Server server = ServerFactoryTest.createTestServer(user);
+        Long sid = server.getId();
+        Package pack = PackageTest.createTestPackage(user.getOrg());
+
+        ErrataCacheManager.insertNeededErrataCache(sid, null, pack.getId());
+        SystemsOverviewUpdateWorker.doUpdate(sid);
+
+        assertEquals(1, SystemManager.countOutdatedSystems());
+    }
 }
