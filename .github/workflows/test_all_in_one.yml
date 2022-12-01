@@ -5,11 +5,47 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: my-step
-        run: echo "Hello World!"
+        run: echo "Starting..."
+      - name: create_tmp
+        run: bash -c "rm -rf /tmp/test-all-in-one && mkdir /tmp/test-all-in-one"
       - uses: actions/checkout@v3
+      - name: create-docker-network
+        run: docker network create uyuni-network-1
+      - name: start_controller
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name controller-test-1 -h controller-test-1 -v /home/runner/work/uyuni/uyuni/testsuite:/testsuite ghcr.io/jordimassaguerpla/uyuni/controller-dev:master
+      - name: sleep5
+        run: sleep 5
+      - name: docker_ps
+        run: docker ps
+      - name: create_ssh_conf
+        run: docker exec controller-test-1 bash -c "ssh-keygen -f /root/.ssh/id_rsa -t rsa -N \"\" && cp /root/.ssh/id_rsa.pub /tmp/authorized_keys && cd /testsuite && bundle.ruby2.5 install --gemfile Gemfile"
       - name: start-server-container
-        run: docker run --tmpfs /run -v /sys/fs/cgroup:/sys/fs/cgroup:rw --cgroupns=host --add-host=download.opensuse.org:195.135.221.134 -h uyuni-server-all-in-one-test-1 -p 8443:443 -p 8080:80 -p 4505:4505 -p 4506:4506 -d --name=uyuni-server-all-in-one-test-1 uyuni/server:1.0 
+        run: docker run --rm --tmpfs /run -v /home/runner/work/uyuni/uyuni/web:/web -v /home/runner/work/uyuni/uyuni/branding:/branding -v /home/runner/work/uyuni/uyuni/java:/java -v /sys/fs/cgroup:/sys/fs/cgroup:rw -v /tmp/test-all-in-one:/tmp  --cgroupns=host --add-host=download.opensuse.org:195.135.221.134 -h uyuni-server-all-in-one-test-1 -p 8443:443 -p 8080:80 -p 4505:4505 -p 4506:4506 -d --name=uyuni-server-all-in-one-test-1 --network uyuni-network-1 ghcr.io/jordimassaguerpla/uyuni/server-all-in-one-dev:master 
+      - name: mgr-setup
+        run: docker exec uyuni-server-all-in-one-test-1 bash -c "/usr/lib/susemanager/bin/mgr-setup -l /var/log/susemanager_setup.log -s"
+      - name: java-build
+        run: docker exec uyuni-server-all-in-one-test-1 bash -c "cd /java && ant -f manager-build.xml ivy refresh-branding-jar deploy-local"
+      - name: js-build
+        run: docker exec uyuni-server-all-in-one-test-1 bash -c "cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build:novalidate; rsync -av dist/ /srv/www/htdocs/"
+      - name: opensuse-minion
+        run: docker run --rm -d --network uyuni-network-1 -v /tmp/test-all-in-one:/tmp --name uyuni-opensuse-minion-test-1 -h ssh_minion ghcr.io/jordimassaguerpla/uyuni/opensuse-minion:master
+      - name: docker-ps
+        run: docker ps
+      - name: test_from_host
+        run: curl --insecure https://localhost:8443/rhn/help/Copyright.do
+      - name: test_from_container
+        run: docker exec uyuni-opensuse-minion-test-1 curl --insecure https://uyuni-server-all-in-one-test-1:443/rhn/help/Copyright.do
+      - name: start_sshd_in_server
+        run: docker exec uyuni-server-all-in-one-test-1 bash -c "ssh-keygen -A && /usr/sbin/sshd -e"
+      - name: copy_ssh_to_server
+        run: docker exec uyuni-server-all-in-one-test-1 bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
+      - name: set_up_opensuse_minion
+        run: docker exec uyuni-opensuse-minion-test-1 bash -c "echo 'root:linux' | chpasswd && echo 123456789 > /etc/machine-id"
+      - name: copy_ssh_to_ssh_minion
+        run: docker exec uyuni-opensuse-minion-test-1 bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
+      - name: copy_ssh_to_controller
+        run: docker exec controller-test-1 bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
+      - name: run_cucumber
+        run: docker exec controller-test-1 bash -c "export PROVIDER=docker && export SERVER=uyuni-server-all-in-one-test-1 && export HOSTNAME=controller-test-1 && export SSH_MINION=uyuni-opensuse-minion-test-1 && cd /testsuite && rake cucumber:poc"
       - name: last-step
         run: echo "bye bye!"
-
-
