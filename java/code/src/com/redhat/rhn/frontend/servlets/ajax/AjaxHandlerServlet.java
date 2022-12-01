@@ -56,7 +56,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Handler for ajax requests previously handled by the DWR library that was removed
+ * Handler for ajax requests previously handled by the DWR library that was removed.
+ *
+ * This class was designed to work as a temporary replacement for the DWR library and therefore must not be reused
+ * or extended. The plan is to gradually evolve the features depending on this class to use the HTTP API as a
+ * replacement for these ajax requests.
  */
 @WebServlet("/ajax/*")
 public class AjaxHandlerServlet extends HttpServlet {
@@ -79,14 +83,14 @@ public class AjaxHandlerServlet extends HttpServlet {
     private static SubscriptionWarningRenderer subscriptionWarningRenderer = new SubscriptionWarningRenderer();
     private static ItemSelector itemSelector = new ItemSelector();
 
-    // URLs whose result needs to parsed to JSON
+    // URLs whose result needs to be parsed to JSON
     private static final Set<String> JSON_RESULT_URLS = Set.of(
         "retrieve-proxy-settings",
         "verify-proxy-settings",
         "save-proxy-settings",
         "item-selector"
     );
-    
+
     @FunctionalInterface
     interface ProcessAjaxRequest {
         Object doProcess(HttpServletRequest req, HttpServletResponse resp)
@@ -94,6 +98,7 @@ public class AjaxHandlerServlet extends HttpServlet {
     }
 
     static {
+        // The following 7 handlers are used only in the Your RHN page.
         HANDLERS.put("systems-groups", systemGroupsRenderer::renderAsync);
         HANDLERS.put("tasks", tasksRenderer::renderAsync);
         HANDLERS.put("inactive-systems", inactiveSystemsRenderer::renderAsync);
@@ -103,6 +108,7 @@ public class AjaxHandlerServlet extends HttpServlet {
         HANDLERS.put("recent-systems", recentSystemsRenderer::renderAsync);
         HANDLERS.put("subscription-warning", subscriptionWarningRenderer::renderAsync);
 
+        // The following 3 handlers are used in the Proxy Setup page (Admin -> Setup Wizard -> HTTP Proxy)
         HANDLERS.put("retrieve-proxy-settings", (req, resp) -> proxySettingsRenderer.retrieveProxySettings());
         HANDLERS.put("verify-proxy-settings", (req, resp) -> proxySettingsRenderer.verifyProxySettings(
             req, parseBody(req, VerifyProxySettingsDto.class).isForceRefresh()
@@ -111,6 +117,8 @@ public class AjaxHandlerServlet extends HttpServlet {
             (req, resp) -> proxySettingsRenderer.saveProxySettings(req, parseBody(req, ProxySettingsDto.class))
         );
 
+        // The following 6 handlers are used in the Organization Credentials page
+        // (Admin -> Setup Wizard -> Organization Credentials)
         HANDLERS.put("verify-mirror-credentials", (req, resp) -> {
             VerifyMirrorCredentialsDto dto = parseBody(req, VerifyMirrorCredentialsDto.class);
             return mirrorCredentialsRenderer.verifyCredentials(req, resp, dto.getId(), dto.isRefresh());
@@ -133,6 +141,7 @@ public class AjaxHandlerServlet extends HttpServlet {
             return mirrorCredentialsRenderer.deleteCredentials(req, resp, dto.getId());
         });
 
+        // The following 2 handlers are used in the Action Chains page (Schedule -> Action Chains)
         HANDLERS.put("action-chain-entries", (req, resp) -> {
             ActionChainEntriesDto dto = parseBody(req, ActionChainEntriesDto.class);
             return actionChainEntryRenderer.renderAsync(req, resp, dto.getActionChainId(), dto.getSortOrder());
@@ -149,6 +158,7 @@ public class AjaxHandlerServlet extends HttpServlet {
             );
         }));
 
+        // The following handler is used in all the pages using the rl:selectablecolumn custom tag
         HANDLERS.put("item-selector", (req, resp) -> {
             ItemSelectorDto item = parseBody(req, ItemSelectorDto.class);
             return itemSelector.select(req, item.getLabel(), item.getValues(), item.isChecked());

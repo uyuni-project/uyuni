@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.servlets.ajax.dto;
 
+/**
+ * DTO class used by {@link com.redhat.rhn.frontend.servlets.ajax.AjaxHandlerServlet}
+ * when processing requests addressed to {@link com.redhat.rhn.frontend.taglibs.ItemSelector#select}
+ */
 public class ItemSelectorDto {
     private String label;
     private String[] values;
