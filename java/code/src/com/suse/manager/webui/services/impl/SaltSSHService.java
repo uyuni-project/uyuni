@@ -440,7 +440,7 @@ public class SaltSSHService {
             else {
                 key = PROXY_SSH_PUSH_KEY;
             }
-            if (!tunnel && i == proxyPath.size() - 1) {
+            if (i == proxyPath.size() - 1) {
                 stdioFwd = String.format(" -W %s:%s", minionHostname, sshPushPort);
             }
 
@@ -469,9 +469,7 @@ public class SaltSSHService {
                             "-o StrictHostKeyChecking=no -o User=${user} ${minion}"));
         }
         proxyCommand.append("'");
-        List<String> sshcommand = Arrays.asList("StrictHostKeyChecking=no", proxyCommand.toString());
-        LOG.debug("SSH Command: " + sshcommand);
-        return Optional.of(sshcommand);
+        return Optional.of(Arrays.asList("StrictHostKeyChecking=no", proxyCommand.toString()));
     }
 
     private boolean addSaltSSHMinionsFromDb(SaltRoster roster) {
