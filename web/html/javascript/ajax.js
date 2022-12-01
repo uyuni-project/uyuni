@@ -1,9 +1,9 @@
-var onAjaxRequestError = function (res, status, error) {
+const onAjaxRequestError = function (res, status, error) {
   console.log("Error processing ajax request...")
   console.log(res.responseText, status, error)
 }
 
-var ajax_post = function(url, data, onSuccess, onError, contentType = false) {
+const ajax_post = function(url, data, onSuccess, onAjaxRequestError, contentType = false) {
   jQuery.ajax({
     type: 'POST',
     url: `/rhn/ajax/${url}`,
@@ -11,10 +11,10 @@ var ajax_post = function(url, data, onSuccess, onError, contentType = false) {
     data,
     contentType: contentType,
     success: onSuccess,
-    error: onError
+    error: onAjaxRequestError
   })
 }
 
-function ajax(url, data, onSuccess, contentType) {
-  ajax_post(url, JSON.stringify(data), onSuccess, onAjaxRequestError, contentType)
+function ajax(url, data, onSuccess, contentType, onError) {
+  ajax_post(url, JSON.stringify(data), onSuccess, onError, contentType)
 }

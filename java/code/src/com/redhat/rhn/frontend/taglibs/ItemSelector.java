@@ -105,7 +105,7 @@ public class ItemSelector {
     private String getResponse(int setSize, String setLabel) {
         StringBuilder responseText = new StringBuilder();
         LocalizationService ls = LocalizationService.getInstance();
-        Boolean systemsRelated = RhnSetDecl.SYSTEMS.getLabel().equals(setLabel);
+        boolean systemsRelated = RhnSetDecl.SYSTEMS.getLabel().equals(setLabel);
         if (systemsRelated) {
             StringBuilder headerMessage = new StringBuilder();
             headerMessage.append("<span id='spacewalk-set-system_list-counter'")

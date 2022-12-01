@@ -23,7 +23,7 @@ jQuery(function() {
     var sortOrder = group.data("sort-order");
     // if needed, load list via Ajax
     if (list.is(":empty")) {
-      ajax('action-chain-entries', { actionChainId, sortOrder }, makeRendererHandler(listId, false).callback)
+      ajax("action-chain-entries", { actionChainId, sortOrder }, makeRendererHandler(listId, false).callback)
     }
     else {
       list.fadeToggle();
@@ -125,7 +125,7 @@ jQuery(function() {
       return jQuery(element).data("sort-order");
     }).get();
 
-    data = {
+    const data = {
       actionChainId,
       label: newLabel,
       deletedEntries,
@@ -133,7 +133,7 @@ jQuery(function() {
       reorderedSortOrders
     }
     function handler(resultString) {
-      var result = JSON.parse(resultString);
+      const result = JSON.parse(resultString);
       if (result.success) {
         jQuery(".entry.deleted").remove();
         jQuery(".group.deleted").remove();
@@ -148,10 +148,11 @@ jQuery(function() {
       }
     }
     function onError(message) {
+      console.log("Error processing ajax request... ", message)
       clearUnsavedData();
     }
 
-    ajax('action-chain-save', data, handler)
+    ajax("action-chain-save", data, handler, false, onError)
   }
 
   function renumberGroups(){

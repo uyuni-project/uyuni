@@ -192,11 +192,11 @@ function update_server_set(variable, set_label, checked, values) {
     values,
     checked
   }
-  ajax('item-selector', data, pageResponse, "application/json")
+  ajax("item-selector", data, pageResponse, "application/json")
 }
 
 function pageResponse(data) {
-  var resp = JSON.parse(data)
+  let resp = JSON.parse(data)
   resp = JSON.parse(resp)
   if (typeof(resp['header']) != 'undefined') {
     jQuery("#header_selcount").html(resp.header);
