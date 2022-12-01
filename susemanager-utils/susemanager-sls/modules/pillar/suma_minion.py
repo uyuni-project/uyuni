@@ -491,16 +491,3 @@ def load_formula_metadata(formula_name):
 
     formulas_metadata_cache[formula_name] = metadata
     return metadata
-
-def _pillar_value_by_path(data, path):
-    result = data
-    first_key = None
-    for token in path.split(":"):
-        if token == "*":
-            first_key = next(iter(result))
-            result = result[first_key] if first_key else None
-        elif token in result:
-            result = result[token]
-        else:
-            break
-    return result, first_key
