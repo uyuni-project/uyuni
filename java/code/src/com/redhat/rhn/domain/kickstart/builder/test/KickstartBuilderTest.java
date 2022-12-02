@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -73,7 +72,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
         KickstartData data =
                 builder.create(TestUtils.randomString(), tree,
                         KickstartVirtualizationType.XEN_PARAVIRT,
@@ -81,47 +80,6 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
                 KickstartTreeUpdateType.NONE);
         assertNotNull(data);
     }
-
-    //
-    @Test
-    public void testDepricatedAnacondCommands() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
-
-        KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
-        tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_4));
-        KickstartData rhel4data =
-                builder.create(TestUtils.randomString(),
-                        tree, KickstartVirtualizationType.XEN_PARAVIRT,
-                        "http://localhost/ks", "redhat",
-                KickstartTreeUpdateType.NONE);
-
-        String contents = FileUtils.readStringFromFile(rhel4data.getCobblerFileName());
-        assertTrue(contents.indexOf("langsupport") > 0);
-        assertTrue(contents.indexOf("mouse") > 0);
-        assertTrue(contents.indexOf("zerombr yes") > 0);
-        assertTrue(contents.indexOf("resolvedeps") > 0);
-
-        System.out.println("Contents: " + contents);
-
-        tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
-        KickstartData rhel5data =
-                builder.create(TestUtils.randomString(),
-                        tree, KickstartVirtualizationType.XEN_PARAVIRT,
-                        "http://localhost/ks", "redhat",
-                KickstartTreeUpdateType.NONE);
-
-        contents = FileUtils.readStringFromFile(rhel5data.getCobblerFileName());
-        System.out.println("Contents: " + contents);
-        assertTrue(!contents.contains("langsupport"));
-        assertTrue(!contents.contains("mouse"));
-        assertTrue(!contents.contains("zerombr yes"));
-        assertTrue(contents.indexOf("zerombr") > 0);
-        assertTrue(!contents.contains("resolvedeps"));
-
-    }
-
 
     @Test
     public void testDirector() throws Exception {

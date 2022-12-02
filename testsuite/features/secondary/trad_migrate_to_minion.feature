@@ -47,18 +47,20 @@ Feature: Migrate a traditional client into a Salt minion
 
   Scenario: Check that channels are still the same after migration
     Given I am on the Systems overview page of this "sle_client"
-    Then I should see a "Test-Channel-x86_64" text
+    Then I should see a "SLE-Product-SLES15-SP4-Pool for x86_64" text
 
   Scenario: Check that events history is still the same after migration
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Events" in the content area
     And I follow "History" in the content area
-    Then I should see a "subscribed to channel test-channel-x86_64" text
+    Then I should see a "subscribed to channel fake-rpm-sles-channel" text
 
   Scenario: Install a package onto the migrated minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
     And I follow "Install"
+    And I enter "perseus-dummy-1.1-1.1" as the filtered package name
+    And I click on the filter button
     And I check row with "perseus-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Install Selected Packages"
     And I click on "Confirm"

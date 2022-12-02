@@ -251,7 +251,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertTrue(types.size() > 0);
         assertTrue(types.get(0) instanceof KickstartInstallType);
 
-        assertNotNull(KickstartFactory.lookupKickstartInstallTypeByLabel("rhel_4"));
+        assertNotNull(KickstartFactory.lookupKickstartInstallTypeByLabel("rhel_8"));
 
         KickstartData k = createTestKickstartData(user.getOrg());
         KickstartDefaults d1 = createDefaults(k, user);
@@ -718,17 +718,13 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         KickstartData k = createKickstartWithChannel(user.getOrg());
         k.getTree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
-        assertFalse(k.isRhel2());
-        assertFalse(k.isRhel3());
-        assertFalse(k.isRhel4());
-        assertTrue(k.isRhel5());
-        assertTrue(k.isRhel5OrGreater());
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
+        assertTrue(k.isRhel6OrGreater());
 
         k.getTree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.FEDORA_PREFIX + "18"));
-        assertTrue(k.isRhel5OrGreater());
-        assertFalse(k.isRhel5());
+        assertTrue(k.isRhel6OrGreater());
+        assertFalse(k.isRhel6());
     }
 
     @Test

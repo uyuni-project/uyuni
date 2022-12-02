@@ -150,9 +150,7 @@ public class SystemDetailsEditAction extends RhnAction {
                 .getCurrentUser());
 
         transferRootPasswordEdits(form, command);
-        if (!ksdata.isLegacyKickstart()) {
-            command.setMode(SELinuxMode.lookup(form.getString(SE_LINUX_PARAM)));
-        }
+        command.setMode(SELinuxMode.lookup(form.getString(SE_LINUX_PARAM)));
         command.setRegistrationType(form.getString(REGISTRATION_TYPE_PARAM));
         transferFlagEdits(form, command);
         command.store();

@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.kickstart;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
@@ -789,11 +788,11 @@ public class KickstartData {
     }
 
     /**
-     * @return if this kickstart profile is rhel 5 installer type
+     * @return if this kickstart profile is rhel 6 installer type
      */
-    public boolean isRhel5() {
+    public boolean isRhel6() {
         if (getInstallType() != null) {
-            return getInstallType().isRhel5();
+            return getInstallType().isRhel6();
         }
         return false;
     }
@@ -809,35 +808,22 @@ public class KickstartData {
     }
 
     /**
+     * @return if this kickstart profile is rhel 9 installer type or greater (for rhel8)
+     */
+    public boolean isRhel9OrGreater() {
+        if (getInstallType() != null) {
+            return (getInstallType().isRhel9OrGreater() || getInstallType().isFedora());
+        }
+        return false;
+    }
+
+    /**
      * @return if this kickstart profile is rhel 6 installer type or greater (for rhel7)
      */
     public boolean isRhel6OrGreater() {
         if (getInstallType() != null) {
             return (getInstallType().isRhel6OrGreater() ||
                     getInstallType().isFedora());
-        }
-        return false;
-    }
-
-    /**
-     * @return if this kickstart profile is rhel 5 installer type or greater (for rhel6)
-     */
-    public boolean isRhel5OrGreater() {
-        if (getInstallType() != null) {
-            return (getInstallType().isRhel5OrGreater() ||
-                    getInstallType().isFedora());
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @return if this kickstart profile is RHEL 5 or less
-     */
-    public boolean isRHEL5OrLess() {
-        if (getInstallType() != null) {
-            return (getInstallType().isRhel5() ||
-                    !this.isRhel5OrGreater());
         }
         return false;
     }
@@ -905,37 +891,6 @@ public class KickstartData {
     public boolean isSUSE() {
         if (getInstallType() != null) {
             return getInstallType().isSUSE();
-        }
-        return false;
-    }
-
-    /**
-     * @return if this kickstart profile is rhel 4 installer type
-     */
-    public boolean isRhel4() {
-        if (getInstallType() != null) {
-            return getInstallType().isRhel4();
-        }
-        return false;
-    }
-
-    /**
-     * @return if this kickstart profile is rhel 3 installer type
-     */
-    public boolean isRhel3() {
-        if (getInstallType() != null) {
-            return getInstallType().isRhel3();
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @return if this kickstart profile is rhel 2 installer type
-     */
-    public boolean isRhel2() {
-        if (getInstallType() != null) {
-            return getInstallType().isRhel2();
         }
         return false;
     }
@@ -1266,27 +1221,6 @@ public class KickstartData {
     }
 
     /**
-     * Util method to determine if we are RHEL3/2.1
-     * @return boolean if this KickstartData is using RHEL2.1 or RHEL3
-     */
-    public boolean isLegacyKickstart() {
-        if (this.getTree() != null && this.getTree().getInstallType() != null) {
-            String installType = this.getTree().getInstallType().getLabel();
-            return (installType.equals(KickstartInstallType.RHEL_21) ||
-                    installType.equals(KickstartInstallType.RHEL_3));
-        }
-        return false;
-    }
-
-    /**
-     * Bean wrapper so we can call isLegacyKickstart() from JSTL
-     * @return boolean if this KickstartData is using RHEL2.1 or RHEL3
-     */
-    public boolean getLegacyKickstart() {
-        return isLegacyKickstart();
-    }
-
-    /**
      * Get the list of possible name of the kickstart packages this KS could use.
      * @return List of kickstart packages like auto-kickstart-ks-rhel-i386-as-4
      */
@@ -1418,7 +1352,7 @@ public class KickstartData {
     /**
      * @return Returns if up2date/yum should be verbose
      */
-    public Boolean getVerboseUp2date() {
+    public boolean getVerboseUp2date() {
         return this.verboseUp2date;
     }
 
@@ -1680,25 +1614,11 @@ public class KickstartData {
     }
 
     /**
-     * Return the default args to the auth command for this ksdata
-     * @return default auth args
-     */
-    public String defaultAuthArgs() {
-        if (this.isRHEL5OrLess()) {
-            return "--enablemd5 --enableshadow";
-        }
-        return "--enableshadow --passalgo=sha256";
-    }
-
-    /**
      * Encrypt the password with whichever algorithm is appropriate for this ksdata
      * @param password the password to encrypt
      * @return the encrypted password
      */
     public String encryptPassword(String password) {
-        if (this.isRHEL5OrLess()) {
-            return MD5Crypt.crypt(password);
-        }
         return SHA256Crypt.crypt(password);
     }
 

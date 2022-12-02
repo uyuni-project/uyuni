@@ -18,7 +18,7 @@ import unittest
 import zipfile
 
 # test import
-from rhnpush import archive
+import archive
 
 # globals ----------------------------------------------------------------
 
@@ -37,7 +37,7 @@ FOUR: foo
 
 # test case --------------------------------------------------------------
 
-@unittest.skip("skipping ArchiveTest")
+
 class ArchiveTest(unittest.TestCase):
 
     def setUp(self):

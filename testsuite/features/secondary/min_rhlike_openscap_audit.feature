@@ -73,3 +73,16 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     When I remove OpenSCAP dependencies from "rhlike_minion"
     And I disable repository "CentOS-Base" on this "rhlike_minion"
     And I disable client tools repositories on "rhlike_minion"
+
+  Scenario: Cleanup: restore the base channel for the Red Hat-like minion
+    Given I am on the Systems overview page of this "rhlike_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Fake Base Channel"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed

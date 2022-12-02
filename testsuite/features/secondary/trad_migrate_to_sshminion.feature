@@ -14,6 +14,8 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
     And I follow "Install"
+    And I enter "orion-dummy-1.1-1.1" as the filtered package name
+    And I click on the filter button
     And I check row with "orion-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Install Selected Packages"
     And I click on "Confirm"
@@ -25,6 +27,9 @@ Feature: Migrate a traditional client into a Salt SSH minion
   Scenario: Change contact method of activation key to ssh-push
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I select "Push via SSH" from "contactMethodId"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
@@ -68,18 +73,20 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Check that channels are still the same after migration to Salt SSH
     Given I am on the Systems overview page of this "sle_client"
-    Then I should see a "Test-Channel-x86_64" text
+    Then I should see a "SLE-Product-SLES15-SP4-Pool for x86_64" text
 
   Scenario: Check that events history is still the same after migration to Salt SSH
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Events" in the content area
     And I follow "History" in the content area
-    Then I should see a "subscribed to channel test-channel-x86_64" text
+    Then I should see a "subscribed to channel sle-product-sles15-sp4-pool-x86_64" text
 
   Scenario: Install a package to the migrated SSH minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
     And I follow "Install"
+    And I enter "perseus-dummy-1.1-1.1" as the filtered package name
+    And I click on the filter button
     And I check row with "perseus-dummy-1.1-1.1" and arch of "sle_client"
     And I click on "Install Selected Packages"
     And I click on "Confirm"
@@ -123,6 +130,9 @@ Feature: Migrate a traditional client into a Salt SSH minion
   Scenario: Cleanup: change contact method of activation key back to default
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I select "Default" from "contactMethodId"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text

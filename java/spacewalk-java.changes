@@ -1,3 +1,11 @@
+- Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
+- Add vendor_advisory to errata.getDetails (bsc#1205207)
+- Fix ClassCastException
+- disable cloned vendor channel auto selection by default (bsc#1204186) 
+- Add SUSE Liberty Linux support for RHEL9 based clients
+- Removed contents of certificates from the web UI logs (bsc#1204715)
+- Fix kickstart for RHEL 9 to not add install command
+- Remove RHEL kickstart types below 6
 - Don't persist the YAML parser in FormulaFactory (bsc#1205754)
 - format results for package, errata and image build actions in
   system history similar to state apply results

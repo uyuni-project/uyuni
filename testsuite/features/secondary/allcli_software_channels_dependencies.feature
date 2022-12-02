@@ -39,8 +39,8 @@ Feature: Channel subscription with recommended or required dependencies
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    And I should see a table line with "Test-Channel-x86_64", "2"
-    When I select "System Default Base Channel" from drop-down in table line with "Test-Channel-x86_64"
+    And I should see a table line with "Fake-RPM-SLES-Channel", "1"
+    When I select "System Default Base Channel" from drop-down in table line with "Fake-RPM-SLES-Channel"
     And I click on "Next"
     Then I should see the toggler "disabled"
     And I should see a "SLE-Module-Basesystem15-SP3-Pool for x86_64" text

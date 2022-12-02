@@ -137,16 +137,12 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   refute_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   assert_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
 end
 
 Then(/^"(.*?)" should have been reformatted$/) do |host|
@@ -387,6 +383,10 @@ end
 
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
+  repeat_until_timeout(timeout: 60, retries: 30, message: "Search button not enabled", report_result: true) do
+    break unless find('button#search').disabled?
+    sleep 1
+  end
   find('button#search').click
 end
 

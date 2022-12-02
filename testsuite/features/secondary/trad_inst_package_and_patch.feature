@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021 SUSE LLC
+# Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -14,9 +14,11 @@ Feature: Install a package to the traditional client
 
   Scenario: Install a package to the traditional client
     Given I am on the Systems overview page of this "sle_client"
-    And metadata generation finished for "test-channel-x86_64"
+    And metadata generation finished for "fake-rpm-sles-channel"
     When I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"

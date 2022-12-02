@@ -14,20 +14,20 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
-import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
@@ -37,7 +37,6 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,13 +84,13 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testRhel3() throws Exception {
+    public void testRhel7() throws Exception {
         Channel treeChannel = ChannelFactoryTest.createTestChannel(user);
         KickstartableTree tree = KickstartableTreeTest.
             createTestKickstartableTree(treeChannel);
-        tree.setInstallType(KickstartFactory.lookupKickstartInstallTypeByLabel("rhel_3"));
+        tree.setInstallType(KickstartFactory.lookupKickstartInstallTypeByLabel("rhel_7"));
         KickstartFactory.saveKickstartableTree(tree);
-        tree = (KickstartableTree) TestUtils.reload(tree);
+        tree = TestUtils.reload(tree);
         setRequestPathInfo("/kickstart/CreateProfileWizard");
         actionPerform();
         verifyNoActionMessages();
@@ -108,8 +107,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         verifyNoActionMessages();
         KickstartData ksdata = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 label, user.getOrg().getId());
-        // This is the key step.  Make sure we don't have selinux for rhel3
-        assertNull(ksdata.getCommand("selinux"));
+        assertEquals("--permissive", ksdata.getCommand("selinux").getArguments());
     }
 
     @Test
@@ -118,9 +116,9 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         Channel treeChannel = ChannelFactoryTest.createTestChannel(user);
         KickstartableTree tree = KickstartableTreeTest.
             createTestKickstartableTree(treeChannel);
-        tree.setBasePath("rhn/kickstart/ks-rhel-i386-server-5");
+        tree.setBasePath("rhn/kickstart/ks-rhel-i386-server-7");
         tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
         setRequestPathInfo("/kickstart/CreateProfileWizard");
         actionPerform();
         verifyNoActionMessages();
@@ -304,48 +302,26 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         assertNotNull(ksdata.getCommand("reboot"));
         assertNotNull(ksdata.getCommand("skipx"));
         assertNotNull(ksdata.getCommand("clearpart"));
-        if (!ksdata.isLegacyKickstart()) {
-            assertNotNull(ksdata.getCommand("selinux"));
-        }
+        assertNotNull(ksdata.getCommand("selinux"));
         assertNotNull(ksdata.getCommand("text"));
         assertNotNull(ksdata.getCommand("install"));
 
-        boolean correctswap = false;
-        boolean correctrepos = false;
-        for (KickstartCommand cmd : ksdata.getCommands()) {
-            if (cmd.getCommandName().getName().equals("repo")) {
-                RepoInfo repo = RepoInfo.parse(cmd);
-                assertNotNull(repo);
-                assertTrue(!StringUtils.isBlank(repo.getName()));
-                assertTrue(!StringUtils.isBlank(repo.getUrl()));
-                correctrepos = true;
-
-            }
-        }
-
-        assertTrue(correctrepos);
-
+        // Special repositories only on RHEL 8
+        assertTrue(ksdata.getCommands().stream().noneMatch(cmd -> cmd.getCommandName().equals("repo")));
 
         //checking to make sure args for the defaults were set correctly
-        assertTrue(ksdata.getCommand("lang").getArguments().equals("en_US"));
-        assertTrue(ksdata.getCommand("keyboard").getArguments().equals("us"));
-        assertTrue(ksdata.getCommand("zerombr").getArguments() == null);
-        assertTrue(ksdata.getCommand("clearpart").getArguments().equals("--all"));
-        assertTrue(ksdata.getCommand("bootloader").getArguments()
-                                                  .equals("--location mbr"));
-        assertTrue(ksdata.getCommand("timezone").getArguments()
-                                                .equals("America/New_York"));
-        assertTrue(ksdata.getCommand("auth").getArguments()
-                                            .equals("--enablemd5 --enableshadow"));
+        assertEquals("en_US", ksdata.getCommand("lang").getArguments());
+        assertEquals("us", ksdata.getCommand("keyboard").getArguments());
+        assertNull(ksdata.getCommand("zerombr").getArguments());
+        assertEquals("--all", ksdata.getCommand("clearpart").getArguments());
+        assertEquals("--location mbr", ksdata.getCommand("bootloader").getArguments());
+        assertEquals("America/New_York", ksdata.getCommand("timezone").getArguments());
+        assertEquals("--enableshadow --passalgo=sha256", ksdata.getCommand("auth").getArguments());
         // Test the keys associated with the profile.
         assertNotNull(ksdata.getCryptoKeys());
-        assertTrue(ksdata.getCryptoKeys().size() > 0);
+        assertFalse(ksdata.getCryptoKeys().isEmpty());
         for (CryptoKey key : ksdata.getCryptoKeys()) {
-            assertFalse(key.getCryptoKeyType().
-                    equals(KickstartFactory.KEY_TYPE_GPG));
+            assertNotEquals(key.getCryptoKeyType(), KickstartFactory.KEY_TYPE_GPG);
         }
-
-        assertTrue(ksdata.getCommand("key").getArguments().equals("--skip"));
-
     }
 }

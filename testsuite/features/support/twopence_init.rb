@@ -176,13 +176,11 @@ def get_system_name(host)
       word =~ /example.sle15sp4terminal-/
     end
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
+  when 'containerized_proxy'
+    system_name = $proxy.full_hostname.sub('pxy', 'pod-pxy')
   else
-    begin
-      node = get_target(host)
-      system_name = node.full_hostname
-    rescue RuntimeError => e
-      STDOUT.puts e.message
-    end
+    node = get_target(host)
+    system_name = node.full_hostname
   end
   system_name
 end
@@ -263,6 +261,7 @@ end
 $node_by_host = { 'localhost'                 => $localhost,
                   'server'                    => $server,
                   'proxy'                     => $proxy,
+                  'containerized_proxy'       => $proxy,
                   'sle_client'                => $client,
                   'sle_minion'                => $minion,
                   'ssh_minion'                => $ssh_minion,
@@ -332,27 +331,14 @@ def client_public_ip(host)
   node = $node_by_host[host]
   raise "Cannot resolve node for host '#{host}'" if node.nil?
 
-  # For each node that we support we must know which network interface uses (see the case below).
-  # Having the IP as an attribute is something useful for the clients.
-  # Let's not implement it for nodes where we are likely not need this feature (e.g. ctl).
-  not_implemented = [$localhost]
-  not_implemented.each do |it|
-    return 'NOT_IMPLEMENTED' if node == it
+  %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
+    output, code = node.run("ip address show dev #{dev} | grep 'inet '", check_errors: false)
+    if code.zero?
+      node.init_public_interface(dev)
+      return output.split[1].split('/')[0]
+    end
   end
-
-  interface = case host
-              when /^deblike/, /^debian11/, /^ubuntu/
-                $is_cloud_provider ? 'eth0' : 'ens3'
-              when 'kvm_server', 'xen_server'
-                'br0'
-              else
-                'eth0'
-              end
-  node.init_public_interface(interface)
-  output, code = node.run("ip address show dev #{interface} | grep 'inet '")
-  raise 'Cannot resolve public ip' unless code.zero?
-
-  output.split[1].split('/')[0]
+  raise 'Cannot resolve public ip'
 end
 
 # Initialize IP address or domain name
