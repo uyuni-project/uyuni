@@ -68,7 +68,7 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
-    And I enter target "*centos*"
+    And I enter target "rhlike_minion"
     And I click on preview
     And I click on run
     Then I should see "rhlike_minion" hostname
