@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 16:40+0100\n"
+"POT-Creation-Date: 2022-12-02 15:52+0100\n"
 "PO-Revision-Date: 2022-11-22 02:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
@@ -1945,75 +1945,79 @@ msgid "CVEs"
 msgstr "CVE"
 
 #: ../src/spacecmd/errata.py:431
+msgid "Vendor Advisory"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:435
 msgid "Solution"
 msgstr "솔루션"
 
-#: ../src/spacecmd/errata.py:435
+#: ../src/spacecmd/errata.py:439
 msgid "References"
 msgstr "참조"
 
-#: ../src/spacecmd/errata.py:439
+#: ../src/spacecmd/errata.py:443
 msgid "Affected Channels"
 msgstr "영향을 받는 채널"
 
-#: ../src/spacecmd/errata.py:443 ../src/spacecmd/org.py:319
+#: ../src/spacecmd/errata.py:447 ../src/spacecmd/org.py:319
 msgid "Affected Systems"
 msgstr "영향을 받는 시스템"
 
-#: ../src/spacecmd/errata.py:447
+#: ../src/spacecmd/errata.py:451
 msgid "Affected Packages"
 msgstr "영향을 받는 패키지"
 
-#: ../src/spacecmd/errata.py:457
+#: ../src/spacecmd/errata.py:461
 msgid "errata_delete: Delete an patch"
 msgstr "errata_delete: 패치 삭제"
 
-#: ../src/spacecmd/errata.py:458
+#: ../src/spacecmd/errata.py:462
 msgid "usage: errata_delete ERRATA|search:XXX ..."
 msgstr "사용법: errata_delete ERRATA|search:XXX ..."
 
-#: ../src/spacecmd/errata.py:478
+#: ../src/spacecmd/errata.py:482
 msgid "No patches to delete"
 msgstr "삭제할 패치 없음"
 
-#: ../src/spacecmd/errata.py:481
+#: ../src/spacecmd/errata.py:485
 msgid "Erratum            Channels"
 msgstr "오류            채널"
 
-#: ../src/spacecmd/errata.py:489
+#: ../src/spacecmd/errata.py:493
 msgid "Delete these patches [y/N]:"
 msgstr "이 패치 삭제 [y/N]:"
 
-#: ../src/spacecmd/errata.py:495
+#: ../src/spacecmd/errata.py:499
 #, python-format
 msgid "Deleted %i patches"
 msgstr "삭제된 %i 패치"
 
-#: ../src/spacecmd/errata.py:505
+#: ../src/spacecmd/errata.py:509
 msgid "errata_publish: Publish an patch to a channel"
 msgstr "errata_publish: 채널에 패치 게시"
 
-#: ../src/spacecmd/errata.py:506
+#: ../src/spacecmd/errata.py:510
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 msgstr "사용법: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 
-#: ../src/spacecmd/errata.py:535
+#: ../src/spacecmd/errata.py:539
 msgid "No patches to publish"
 msgstr "게시할 패치 없음"
 
-#: ../src/spacecmd/errata.py:540
+#: ../src/spacecmd/errata.py:544
 msgid "Publish these patches [y/N]:"
 msgstr "이 패치 게시 [y/N]:"
 
-#: ../src/spacecmd/errata.py:552
+#: ../src/spacecmd/errata.py:556
 msgid "errata_search: List patches that meet the given criteria"
 msgstr "errata_search: 지정된 기준을 충족하는 패치 나열"
 
-#: ../src/spacecmd/errata.py:553
+#: ../src/spacecmd/errata.py:557
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 msgstr "사용법: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
-#: ../src/spacecmd/errata.py:555 ../src/spacecmd/scap.py:181
+#: ../src/spacecmd/errata.py:559 ../src/spacecmd/scap.py:181
 msgid "Example:"
 msgstr "예는 다음과 같습니다."
 
@@ -4510,7 +4514,7 @@ msgid "usage: report_ipaddresses [<SYSTEMS>]"
 msgstr "사용법: report_ipaddresses [<SYSTEMS>]"
 
 #: ../src/spacecmd/report.py:204 ../src/spacecmd/report.py:268
-#: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:209
+#: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:210
 #: ../src/spacecmd/system.py:218 ../src/spacecmd/system.py:399
 #: ../src/spacecmd/system.py:584 ../src/spacecmd/system.py:749
 #: ../src/spacecmd/system.py:905 ../src/spacecmd/system.py:1042
