@@ -1,3 +1,6 @@
+- Make python3-extras optional, as SLES 15 does not have it and it
+  is only required on SP4 or greater (bsc#1204437) 
+
 -------------------------------------------------------------------
 Tue Nov 15 16:41:13 UTC 2022 - marina.latini@suse.com
 
