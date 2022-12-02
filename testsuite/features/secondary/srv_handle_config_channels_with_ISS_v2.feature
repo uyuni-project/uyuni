@@ -33,8 +33,8 @@ Feature: Export and import configuration channels with new ISS implementation
     And file "/srv/susemanager/salt/manager_org_1/testconfigchannel/etc/s-mgr/config" should exist on server
 
   Scenario: Export data with ISS v2
-    When I ensure folder "/tmp/export_iss_v2" doesn't exist
-    Then export folder "/tmp/export_iss_v2" shouldn't exist on server
+    When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
+    Then export folder "/tmp/export_iss_v2" shouldn't exist on "server"
     When I export config channels "testconfigchannel" with ISS v2 to "/tmp/export_iss_v2"
     Then "/tmp/export_iss_v2" folder on server is ISS v2 export directory
 
@@ -64,5 +64,5 @@ Feature: Export and import configuration channels with new ISS implementation
     And I should not see a "Test Config Channel" link
 
   Scenario: Cleanup: remove ISS v2 export folder
-    When I ensure folder "/tmp/export_iss_v2" doesn't exist
-    Then export folder "/tmp/export_iss_v2" shouldn't exist on server
+    When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
+    Then export folder "/tmp/export_iss_v2" shouldn't exist on "server"

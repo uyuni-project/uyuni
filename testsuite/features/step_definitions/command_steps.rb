@@ -1601,8 +1601,9 @@ Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
   raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql.gz")
 end
 
-Then(/^export folder "(.*?)" shouldn't exist on server$/) do |folder|
-  raise "Folder exists" if folder_exists?($server, folder)
+Then(/^export folder "(.*?)" shouldn't exist on "(.*?)"$/) do |folder, host|
+  node = get_target(host)
+  raise "Folder exists" if folder_exists?(node, folder)
 end
 
 When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
