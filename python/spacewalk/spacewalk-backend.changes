@@ -1,4 +1,8 @@
-- Add 'octet-stream' to accepted content-types for reposync mirrorlists
+-------------------------------------------------------------------
+Fri Dec 02 14:53:12 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Add 'octet-stream' to accepted content-types for reposync mirrorlists
 
 -------------------------------------------------------------------
 Fri Nov 25 09:45:11 CET 2022 - jgonzalez@suse.com
