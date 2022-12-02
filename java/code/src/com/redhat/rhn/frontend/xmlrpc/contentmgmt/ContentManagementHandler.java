@@ -606,7 +606,7 @@ public class ContentManagementHandler extends BaseHandler {
      *   #item("by type - field: advisory_type (e.g. 'Security Advisory'); matcher: equals")
      *   #item("by synopsis - field: synopsis; matcher: equals, contains or matches")
      *   #item("by keyword - field: keyword; matcher: contains")
-     *   #item("by date - field: issue_date; matcher: greater or greatereq")
+     *   #item("by date - field: issue_date; matcher: greater or greatereq; value needs to be in ISO format e.g 2022-12-10T12:00:00Z")
      *   #item("by affected package name - field: package_name; matcher: contains_pkg_name or matches_pkg_name")
      *   #item("by affected package with version - field: package_nevr; matcher: contains_pkg_lt_evr,
      *   contains_pkg_le_evr, contains_pkg_eq_evr, contains_pkg_ge_evr or contains_pkg_gt_evr")
