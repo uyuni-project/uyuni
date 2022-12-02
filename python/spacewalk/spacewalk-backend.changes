@@ -1,4 +1,3 @@
-- Add 'octet-stream' to accepted content-types for reposync mirrorlists
 - Add rhel_9 as Salt-enabled kickstart installation
 - Remove AppStream variant from EL8 and derivatives treeinfos
 
