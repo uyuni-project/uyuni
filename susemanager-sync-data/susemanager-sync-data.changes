@@ -1,4 +1,6 @@
 - change OES 2023 URL to https (bsc#1205644)
+- remove version from product names as they are held separate
+
 -------------------------------------------------------------------
 Thu Nov 24 17:20:48 UTC 2022 - marina.latini@suse.com
 
