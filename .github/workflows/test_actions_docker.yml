@@ -1,0 +1,23 @@
+name: hello-world
+on: pull_request
+jobs:
+  test-uyuni:
+    runs-on: ubuntu-latest
+    steps:
+      - name: my-step
+        run: echo "Hello World!"
+      - uses: actions/checkout@v3
+      - uses: isbang/compose-action@v1.4.1
+      - name: wait a bit
+        run: sleep 30s  
+      - name: dockerps
+        run: docker ps
+      - name: osrelease
+        uses: docker://ghcr.io/jordimassaguerpla/uyuni/controller:master
+        with:
+          entrypoint: cat
+          args: /etc/os-release 
+      - name: last-step
+        run: echo "bye bye!"
+
+
