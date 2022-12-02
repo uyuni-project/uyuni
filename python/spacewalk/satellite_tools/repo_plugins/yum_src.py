@@ -537,8 +537,7 @@ class ContentSource:
         try:
             webpage = requests.get(url, proxies=proxies, cert=cert, verify=verify)
             content_type = webpage.headers["Content-Type"]
-            # amazonlinux core channels content-type = binary/octet-stream
-            if "text/plain" not in content_type and "xml" not in content_type and "octet-stream" not in content_type:
+            if "text/plain" not in content_type and "xml" not in content_type:
                 # Not a valid mirrorlist or metalink; continue without it
                 return returnlist
         except requests.exceptions.RequestException as exc:
