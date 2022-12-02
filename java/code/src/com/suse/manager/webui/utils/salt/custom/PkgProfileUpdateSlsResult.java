@@ -51,7 +51,7 @@ public class PkgProfileUpdateSlsResult {
     public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
             "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
     public static final String PKG_PROFILE_WHATPROVIDES_SLL_RELEASE =
-            "cmd_|-respkgquery_|-rpm -q --whatprovides 'sll-release'_|-run";
+            "cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run";
 
     @SerializedName("mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|" +
             "-module_run")
