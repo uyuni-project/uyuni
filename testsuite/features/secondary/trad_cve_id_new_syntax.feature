@@ -19,10 +19,10 @@ Feature: Support for new CVE-ID syntax
 
   Scenario: Check local metadata for long CVE IDs
     When I refresh the metadata for "sle_client"
-    Then I should have 'reference.*id="CVE-1999-12345' in the patch metadata
-    And I should have 'reference.*id="CVE-1999-99781' in the patch metadata
-    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-12345' in the patch metadata
-    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-99781' in the patch metadata
+    Then I should have 'reference.*id="CVE-1999-12345' in the patch metadata for "sle_client"
+    And I should have 'reference.*id="CVE-1999-99781' in the patch metadata for "sle_client"
+    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-12345' in the patch metadata for "sle_client"
+    And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-99781' in the patch metadata for "sle_client"
 
   Scenario: Search for CVE ID with the new format
     When I follow the left menu "Patches > Advanced Search"

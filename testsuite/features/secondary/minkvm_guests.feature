@@ -445,6 +445,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I follow "SLE-15-SP3-KVM"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
-    Then I should not see a "SLE-15-SP4-KVM" text
+    And I remove package "tftpboot-installation-SLE-15-SP3-x86_64" from this "server"
+    And I wait for "tftpboot-installation-SLE-15-SP3-x86_64" to be uninstalled on "server"
+    Then I should not see a "SLE-15-SP3-KVM" text

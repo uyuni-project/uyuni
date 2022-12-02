@@ -98,6 +98,7 @@ Feature: CVE Audit on traditional clients
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "patch update has been scheduled" text
+    And I wait until event "Patch Update: milkyway-dummy-2345" is completed
 
   Scenario: List systems by patch status via API after patch
     When I am logged in API as user "admin" and password "admin"
