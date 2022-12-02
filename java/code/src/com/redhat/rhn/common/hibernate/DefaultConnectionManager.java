@@ -27,8 +27,6 @@ import java.util.Set;
  */
 class DefaultConnectionManager extends AbstractConnectionManager {
 
-
-
     DefaultConnectionManager() {
         super(Set.of("com.redhat.rhn.domain", "com.redhat.rhn.taskomatic.domain"));
     }
