@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-18 14:27+0100\n"
+"POT-Creation-Date: 2022-12-02 15:47+0100\n"
 "PO-Revision-Date: 2020-10-16 10:51+0200\n"
 "Last-Translator: Pascal Arlt <parlt@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacecmd/es/"
@@ -4031,7 +4031,7 @@ msgid "usage: report_ipaddresses [<SYSTEMS>]"
 msgstr ""
 
 #: ../src/spacecmd/report.py:202 ../src/spacecmd/report.py:266
-#: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:208
+#: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:209
 #: ../src/spacecmd/system.py:215 ../src/spacecmd/system.py:396
 #: ../src/spacecmd/system.py:581 ../src/spacecmd/system.py:745
 #: ../src/spacecmd/system.py:900 ../src/spacecmd/system.py:1035
