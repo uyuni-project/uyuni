@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 16:22+0100\n"
-"PO-Revision-Date: 2022-11-11 22:13+0000\n"
+"POT-Creation-Date: 2022-12-02 15:32+0100\n"
+"PO-Revision-Date: 2022-11-28 20:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
 ">\n"
@@ -1990,7 +1990,7 @@ msgstr "CVE"
 
 #: ../src/spacecmd/errata.py:431
 msgid "Vendor Advisory"
-msgstr ""
+msgstr "Upozornenie dodávateľa"
 
 #: ../src/spacecmd/errata.py:435
 msgid "Solution"
@@ -4161,7 +4161,7 @@ msgstr ""
 "súbor"
 
 #: ../src/spacecmd/proxy.py:33
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL ROOT_CA CRT KEY\n"
@@ -4227,7 +4227,7 @@ msgstr ""
 "konfiguračný súbor"
 
 #: ../src/spacecmd/proxy.py:90
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL\n"
@@ -4603,7 +4603,7 @@ msgid "usage: report_ipaddresses [<SYSTEMS>]"
 msgstr "použitie: report_ipaddresses [<SYSTÉMY>]"
 
 #: ../src/spacecmd/report.py:204 ../src/spacecmd/report.py:268
-#: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:209
+#: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:210
 #: ../src/spacecmd/system.py:218 ../src/spacecmd/system.py:399
 #: ../src/spacecmd/system.py:584 ../src/spacecmd/system.py:749
 #: ../src/spacecmd/system.py:905 ../src/spacecmd/system.py:1042
