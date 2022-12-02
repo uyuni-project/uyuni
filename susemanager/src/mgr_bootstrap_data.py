@@ -488,7 +488,7 @@ PKGLIST15_TRAD = [
     "python3-dmidecode",
     "python3-dbus-python",
     "python3-dmidecode",
-    "python3-extras", # needed for new python3-libxml2
+    "python3-extras*", # needed for new python3-libxml2 on SLE15SP4, but not required on SLE15SP1
     "python3-gobject",
     "python3-libxml2|python3-libxml2-python", # was renamed - old name was python3-libxml2-python
     "python3-netifaces",

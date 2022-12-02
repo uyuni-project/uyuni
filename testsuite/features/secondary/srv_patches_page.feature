@@ -80,7 +80,7 @@ Feature: Patches page
     And I should see a "Test Topic" text
     And I should see a "Test Description" text
     And I should see a "Test Solution" text
-    And I should see a "Test Base Channel" link
+    And I should see a "Fake Base Channel" link
     And I should see a "Test Summary" link
     And I should see a "keywords, test" text
     And I should see a "Test Reference" text
@@ -88,7 +88,7 @@ Feature: Patches page
 
   Scenario: Assert that patch is now in test base channel
     When I follow the left menu "Software > Channel List > All"
-    And I follow "Test Base Channel"
+    And I follow "Fake Base Channel"
     And I follow "Patches" in the content area
     Then I should see a "Test Patch" text
 

@@ -17,12 +17,12 @@ Feature: Channel subscription via SSM
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    When I select "Test Base Channel" from drop-down in table line with "Test-Channel-x86_64"
+    When I select "Fake Base Channel" from drop-down in table line with "SLE-Product-SLES15-SP3-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Child Channels" text
-    And I should see a "Test Base Channel" text
+    And I should see a "Fake Base Channel" text
     And I should see a "1 system(s) to subscribe" text
-    When I choose radio button "Subscribe" for child channel "Test Child Channel"
+    When I choose radio button "Subscribe" for child channel "Fake Child Channel"
     And I click on "Next"
     Then I should see a "Channel Changes Overview" text
     And I should see a "1 system(s) to subscribe" text
@@ -43,12 +43,12 @@ Feature: Channel subscription via SSM
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    When I select "Test Base Channel" from drop-down in table line with "Test-Channel-x86_64"
+    When I select "Fake Base Channel" from drop-down in table line with "SLE-Product-SLES15-SP3-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Child Channels" text
-    And I should see a "Test Base Channel" text
+    And I should see a "Fake Base Channel" text
     And I should see a "1 system(s) to subscribe" text
-    When I choose radio button "Subscribe" for child channel "Test Child Channel"
+    When I choose radio button "Subscribe" for child channel "Fake Child Channel"
     And I click on "Next"
     Then I should see a "Channel Changes Overview" text
     And I should see a "1 system(s) to subscribe" text
@@ -65,9 +65,9 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Test-Channel-x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP3-Pool for x86_64" is checked
     And I wait until I do not see "Loading..." text
-    And I should see "Test-Channel-x86_64 Child Channel" as unchecked
+    And I should see "SLE15-SP3-Installer-Updates for x86_64" as unchecked
 
 @sle_client
   Scenario: Check SLES client is still subscribed to old channels before channel change completes
@@ -75,21 +75,21 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Test-Channel-x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP3-Pool for x86_64" is checked
     And I wait until I do not see "Loading..." text
-    And I should see "Test-Channel-x86_64 Child Channel" as unchecked
+    And I should see "SLE15-SP3-Installer-Updates for x86_64" as unchecked
 
 @sle_minion
   Scenario: Check old channels are still enabled on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "1" channels should be enabled on "sle_minion"
-    And channel "Test-Channel-x86_64" should be enabled on "sle_minion"
+    Then "15" channels should be enabled on "sle_minion"
+    And channel "SLE-Product-SLES15-SP3-Pool for x86_64" should be enabled on "sle_minion"
 
 @sle_client
   Scenario: Check old channels are still enabled on SLES client before channel change completes
     When I refresh the metadata for "sle_client"
-    Then "1" channels with prefix "spacewalk:" should be enabled on "sle_client"
-    And channel "Test-Channel-x86_64" should be enabled on "sle_client"
+    Then "15" channels with prefix "spacewalk:" should be enabled on "sle_client"
+    And channel "SLE-Product-SLES15-SP3-Pool for x86_64" should be enabled on "sle_minion"
 
   Scenario: Wait 3 minutes for the scheduled action to be executed
     When I wait for "180" seconds
@@ -112,9 +112,9 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Test Base Channel" is checked
+    Then radio button "Fake Base Channel" is checked
     And I wait until I do not see "Loading..." text
-    And I should see "Test Child Channel" as checked
+    And I should see "Fake Child Channel" as checked
 
 @sle_client
   Scenario: Check the SLES client is subscribed to the new channels
@@ -122,23 +122,23 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Test Base Channel" is checked
+    Then radio button "Fake Base Channel" is checked
     And I wait until I do not see "Loading..." text
-    And I should see "Test Child Channel" as checked
+    And I should see "Fake Child Channel" as checked
 
 @sle_minion
   Scenario: Check the new channels are enabled on the SLES minion
     When I refresh the metadata for "sle_minion"
     Then "2" channels should be enabled on "sle_minion"
-    And channel "Test Base Channel" should be enabled on "sle_minion"
-    And channel "Test Child Channel" should be enabled on "sle_minion"
+    And channel "Fake Base Channel" should be enabled on "sle_minion"
+    And channel "Fake Child Channel" should be enabled on "sle_minion"
 
 @sle_client
   Scenario: Check the new channels are enabled on the SLES client
     When I refresh the metadata for "sle_client"
     Then "2" channels with prefix "spacewalk:" should be enabled on "sle_client"
-    And channel "Test Base Channel" should be enabled on "sle_client"
-    And channel "Test Child Channel" should be enabled on "sle_client"
+    And channel "Fake Base Channel" should be enabled on "sle_client"
+    And channel "Fake Child Channel" should be enabled on "sle_client"
 
 @rhlike_minion
   Scenario: System default channel can't be determined on the Red Hat-like minion
@@ -148,7 +148,7 @@ Feature: Channel subscription via SSM
     Then I should see "1" systems selected for SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
-    And I select "System Default Base Channel" from drop-down in table line with "Test Base Channel"
+    And I select "System Default Base Channel" from drop-down in table line with "Fake Base Channel"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Couldn't determine new base channel" text
@@ -168,7 +168,7 @@ Feature: Channel subscription via SSM
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then radio button "Test Base Channel" is checked
+    Then radio button "Fake Base Channel" is checked
 
 @deblike_minion
   Scenario: System default channel can't be determined on the Debian-like minion
@@ -178,7 +178,7 @@ Feature: Channel subscription via SSM
     Then I should see "1" systems selected for SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
-    And I select "System Default Base Channel" from drop-down in table line with "Test-Channel-Deb-AMD64"
+    And I select "System Default Base Channel" from drop-down in table line with "Fake-Deb-AMD64-Channel"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Couldn't determine new base channel" text
@@ -198,7 +198,7 @@ Feature: Channel subscription via SSM
     Given I am on the Systems overview page of this "deblike_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then radio button "Test-Channel-Deb-AMD64" is checked
+    Then radio button "Fake-Deb-AMD64-Channel" is checked
 
 @sle_minion
   Scenario: Cleanup: subscribe the SLES minion back to previous channels
@@ -206,17 +206,22 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
+    And I check radio button "SLE-Product-SLES15-SP3-Pool for x86_64"
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I wait until I do not see "Loading..." text
-    And I wait until I see "Test-Channel-x86_64 Child Channel" text
-    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I wait until I see "SLE15-SP3-Installer-Updates for x86_64" text
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Test-Channel-x86_64 Child Channel" should not be enabled on "sle_minion"
+    Then channel "SLE15-SP3-Installer-Updates for x86_64" should not be enabled on "sle_minion"
 
 @sle_client
   Scenario: Cleanup: subscribe the SLES client back to previous channels
@@ -224,17 +229,19 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
+    And I check radio button "SLE-Product-SLES15-SP3-Pool for x86_64"
     And I wait until I do not see "Loading..." text
-    And I wait until I see "Test-Channel-x86_64 Child Channel" text
-    And I uncheck "Test-Channel-x86_64 Child Channel"
+    And I include the recommended child channels
+    And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
+    And I check "Fake-RPM-SLES-Channel"
+    And I wait until I see "SLE15-SP3-Installer-Updates for x86_64" text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Test-Channel-x86_64 Child Channel" should not be enabled on "sle_client"
+    Then channel "SLE15-SP3-Installer-Updates for x86_64" should not be enabled on "sle_client"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
     When I follow "Clear"

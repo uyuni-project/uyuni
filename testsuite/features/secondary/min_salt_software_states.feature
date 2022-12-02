@@ -40,13 +40,13 @@ Feature: Salt package states
     Then the system should have a base channel set
 
   Scenario: Remove a package through the UI
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" should be installed on "sle_minion"
+    And I wait until I see "milkyway-dummy" text
+    Then "milkyway-dummy" should be installed on "sle_minion"
     And I change the state of "milkyway-dummy" to "Removed" and ""
     Then I should see a "1 Change" text
     And I click save
@@ -55,13 +55,13 @@ Feature: Salt package states
     And I wait for "milkyway-dummy" to be uninstalled on "sle_minion"
 
   Scenario: Install a package through the UI
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" should not be installed on "sle_minion"
+    And I wait until I see "milkyway-dummy" text
+    Then "milkyway-dummy" should not be installed on "sle_minion"
     And I change the state of "milkyway-dummy" to "Installed" and ""
     Then I should see a "1 Change" text
     And I click save
@@ -70,13 +70,13 @@ Feature: Salt package states
     And I wait for "milkyway-dummy" to be installed on "sle_minion"
 
   Scenario: Install an already installed package through the UI
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "virgo-dummy" text
-    And "virgo-dummy-1.0" should be installed on "sle_minion"
+    And I wait until I see "virgo-dummy" text
+    Then "virgo-dummy-1.0" should be installed on "sle_minion"
     And I change the state of "virgo-dummy" to "Installed" and "Any"
     Then I should see a "1 Change" text
     And I click save
@@ -85,13 +85,13 @@ Feature: Salt package states
     And I wait for "virgo-dummy-1.0" to be installed on "sle_minion"
 
   Scenario: Upgrade a package through the UI
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I follow "Search"
     And I should see a "Package States" text
     And I list packages with "dummy"
-    Then I should see a "andromeda-dummy" text
-    And "andromeda-dummy-1.0" should be installed on "sle_minion"
+    And I wait until I see "andromeda-dummy" text
+    Then "andromeda-dummy-1.0" should be installed on "sle_minion"
     And I change the state of "andromeda-dummy" to "Installed" and "Latest"
     Then I should see a "1 Change" text
     And I click save
@@ -100,7 +100,7 @@ Feature: Salt package states
     And I wait for "andromeda-dummy-2.0-1.1" to be installed on "sle_minion"
 
   Scenario: Verify the package states
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Packages"
     And I should see a "Package States" text
     And I should see a "milkyway-dummy" text
@@ -108,7 +108,7 @@ Feature: Salt package states
     And I should see a "virgo-dummy" text
 
   Scenario: Use Salt presence mechanism on an active minion
-    Then I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Highstate" in the content area
     And I click on "Show full highstate output"
     And I wait for "6" seconds

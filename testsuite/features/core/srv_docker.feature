@@ -24,19 +24,6 @@ Feature: Prepare server for using Docker
     And I check "role_image_admin"
     And I click on "Update"
 
-  Scenario: Create Docker activation key
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "Create Key"
-    When I enter "Docker testing" as "description"
-    And I enter "DOCKER-TEST" as "key"
-    And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
-    And I click on "Create Activation Key"
-    And I follow "Packages"
-    And I enter "orion-dummy perseus-dummy" as "packages"
-    And I click on "Update Activation Key"
-    Then I should see a "Activation key Docker testing has been modified" text
-
 @no_auth_registry
   Scenario: Create an image store without credentials
     When I follow the left menu "Images > Stores"

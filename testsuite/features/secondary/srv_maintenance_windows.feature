@@ -78,10 +78,10 @@ Feature: Maintenance windows
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Test-Channel-x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP3-Pool for x86_64" is checked
     When I wait until I do not see "Loading..." text
-    Then I should see "Test-Channel-x86_64 Child Channel" as unchecked
-    When I check "Test-Channel-x86_64 Child Channel"
+    Then I should see "SLE15-SP3-Installer-Updates for x86_64" as unchecked
+    When I check "SLE15-SP3-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I pick "17:30" as time

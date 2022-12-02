@@ -14,7 +14,7 @@ Feature: Install a package to the traditional client
 
   Scenario: Install a package to the traditional client
     Given I am on the Systems overview page of this "sle_client"
-    And metadata generation finished for "test-channel-x86_64"
+    And metadata generation finished for "fake-rpm-sles-channel"
     When I follow "Software" in the content area
     And I follow "Install"
     And I check "virgo-dummy" in the list

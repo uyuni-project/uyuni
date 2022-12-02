@@ -1,3 +1,4 @@
+- Correctly understand 'ssm' keyword on scap scheduling
 - Fix dict_keys not supporting indexing in systems_setconfigchannelorger
 
 -------------------------------------------------------------------

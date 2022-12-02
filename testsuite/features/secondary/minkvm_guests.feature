@@ -384,7 +384,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @scc_credentials
   Scenario: Create auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "Upload Kickstart/Autoyast File"
+    And I follow "Upload Kickstart/AutoYaST File"
     When I enter "15-sp3-kvm" as "kickstartLabel"
     And I select "SLE-15-SP3-KVM" from "kstreeId"
     And I select "KVM Virtualized Guest" from "virtualizationTypeLabel"
@@ -445,6 +445,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I follow "SLE-15-SP3-KVM"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
-    Then I should not see a "SLE-15-SP4-KVM" text
+    And I remove package "tftpboot-installation-SLE-15-SP3-x86_64" from this "server"
+    And I wait for "tftpboot-installation-SLE-15-SP3-x86_64" to be uninstalled on "server"
+    Then I should not see a "SLE-15-SP3-KVM" text
