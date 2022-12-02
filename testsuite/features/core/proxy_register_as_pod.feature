@@ -20,9 +20,12 @@ Feature: Setup Containerized Proxy
   Scenario: Pre-requisite: Stop traditional proxy service
     When I stop salt-minion on "proxy"
     And I run "spacewalk-proxy stop" on "proxy"
+    # workaround for bsc#1205976
+    And I stop "tftp" service on "proxy"
     And I wait until "squid" service is inactive on "proxy"
     And I wait until "apache2" service is inactive on "proxy"
     And I wait until "jabberd" service is inactive on "proxy"
+    And I wait until "tftp" service is inactive on "proxy"
 
   Scenario: Generate Containerized Proxy configuration
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of Containerized Proxy on the server
