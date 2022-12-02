@@ -890,6 +890,10 @@ When(/^I install packages? "([^"]*)" on this "([^"]*)"((?: without error control
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
     not_found_msg = 'Unable to locate package'
+  elsif slemicro_host?(host)
+    cmd = "transactional-update pkg install -n #{package}"
+    successcodes = [0, 100, 101, 102, 103, 106]
+    not_found_msg = 'not found in package names'
   else
     cmd = "zypper --non-interactive install -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]

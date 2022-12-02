@@ -324,6 +324,26 @@ Before('@opensuse154arm_ssh_minion') do
   skip_this_scenario unless $opensuse154arm_ssh_minion
 end
 
+Before('@slemicro') do |scenario|
+  skip_this_scenario unless scenario.location.file.include? 'slemicro'
+end
+
+Before('@slemicro52_minion') do
+  skip_this_scenario unless $slemicro52_minion
+end
+
+Before('@slemicro52_ssh_minion') do
+  skip_this_scenario unless $slemicro52_ssh_minion
+end
+
+Before('@slemicro53_minion') do
+  skip_this_scenario unless $slemicro53_minion
+end
+
+Before('@slemicro53_ssh_minion') do
+  skip_this_scenario unless $slemicro53_ssh_minion
+end
+
 Before('@sle12sp5_buildhost') do
   skip_this_scenario unless $sle12sp5_buildhost
 end
@@ -366,6 +386,10 @@ end
 
 Before('@skip_for_rocky9') do
   skip_this_scenario if $rocky9_minion || $rocky_ssh_minion
+end
+
+Before('@skip_for_sle_micro') do
+  skip_this_scenario if scenario.location.file.include? 'slemicro'
 end
 
 # do some tests only if we have SCC credentials

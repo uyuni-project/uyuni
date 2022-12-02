@@ -48,6 +48,10 @@ if $build_validation
   $sle15sp3_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP3_SSHMINION']}") if ENV['SLE15SP3_SSHMINION']
   $sle15sp4_minion = twopence_init("ssh:#{ENV['SLE15SP4_MINION']}") if ENV['SLE15SP4_MINION']
   $sle15sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP4_SSHMINION']}") if ENV['SLE15SP4_SSHMINION']
+  $slemicro52_minion = twopence_init("ssh:#{ENV['SLEMICRO52_MINION']}") if ENV['SLEMICRO52_MINION']
+  $slemicro52_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO52_SSHMINION']}") if ENV['SLEMICRO52_SSHMINION']
+  $slemicro53_minion = twopence_init("ssh:#{ENV['SLEMICRO53_MINION']}") if ENV['SLEMICRO53_MINION']
+  $slemicro53_ssh_minion = twopence_init("ssh:#{ENV['SLEMICRO53_SSHMINION']}") if ENV['SLEMICRO53_SSHMINION']
   $centos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $centos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $rocky8_minion = twopence_init("ssh:#{ENV['ROCKY8_MINION']}") if ENV['ROCKY8_MINION']
@@ -83,6 +87,8 @@ if $build_validation
              $sle15sp2_minion, $sle15sp2_ssh_minion,
              $sle15sp3_minion, $sle15sp3_ssh_minion,
              $sle15sp4_minion, $sle15sp4_ssh_minion,
+             $slemicro52_minion, $slemicro52_ssh_minion,
+             $slemicro53_minion, $slemicro53_ssh_minion,
              $centos7_minion, $centos7_ssh_minion,
              $rocky8_minion, $rocky8_ssh_minion,
              $rocky9_minion, $rocky9_ssh_minion,
@@ -280,6 +286,10 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp3_ssh_minion'       => $sle15sp3_ssh_minion,
                   'sle15sp4_minion'           => $sle15sp4_minion,
                   'sle15sp4_ssh_minion'       => $sle15sp4_ssh_minion,
+                  'slemicro52_minion'         => $slemicro52_minion,
+                  'slemicro52_ssh_minion'     => $slemicro52_ssh_minion,
+                  'slemicro53_minion'         => $slemicro53_minion,
+                  'slemicro53_ssh_minion'     => $slemicro53_ssh_minion,
                   'centos7_minion'            => $centos7_minion,
                   'centos7_ssh_minion'        => $centos7_ssh_minion,
                   'rocky8_minion'             => $rocky8_minion,
