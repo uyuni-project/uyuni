@@ -305,7 +305,7 @@ public class ErrataManager extends BaseManager {
                 .map(er -> srcErrata.contains(er.getOriginal())).orElse(false)))
                 .collect(Collectors.toUnmodifiableSet());
 
-        removeErratumAndPackagesFromChannel(filteredErrata, tgtChannel, user);
+        removeErratumAndPackagesFromChannel(filteredErrata, srcErrata, tgtChannel, user);
     }
 
     private static Optional<ClonedErrata> asCloned(Errata e) {
@@ -1307,25 +1307,31 @@ public class ErrataManager extends BaseManager {
      * Remove an erratum and its packages from a channel and updates the errata cache accordingly.
      * The errata is not removed from child channels if they exist!
      *
-     * @param errata the errata to remove
+     * @param excludedErrata the erratas to remove
+     * @param includedErrata the erratas to keep
      * @param chan the channel to remove the erratum from
      * @param user the user doing the removing
      */
-    public static void removeErratumAndPackagesFromChannel(Set<Errata> errata, Channel chan, User user) {
+    public static void removeErratumAndPackagesFromChannel(Set<Errata> excludedErrata, Set<Errata> includedErrata,
+                                                           Channel chan, User user) {
         if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(RoleFactory.CHANNEL_ADMIN);
         }
 
 
         //Remove the errata from the channel
-        chan.getErratas().removeAll(errata);
-        List<Long> eList = errata.stream().map(Errata::getId).collect(toList());
+        chan.getErratas().removeAll(excludedErrata);
+        List<Long> eList = excludedErrata.stream().map(Errata::getId).collect(toList());
         //First delete the cache entries
         ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);
 
-        Set<Package> packages = new HashSet<>();
-        errata.forEach(e -> packages.addAll(e.getPackages()));
-        List<Long> pids = packages.stream().map(Package::getId).collect(Collectors.toList());
+        //Packages to remove should be all of excluded errata except if it is also present in any included errata.
+        Set<Package> packagesToRemove = excludedErrata.stream().flatMap(
+            e -> e.getPackages().stream().filter(
+                p -> includedErrata.stream().noneMatch(included -> included.getPackages().contains(p))
+            )
+        ).collect(Collectors.toUnmodifiableSet());
+        List<Long> pids = packagesToRemove.stream().map(Package::getId).collect(Collectors.toList());
         ErrataCacheManager.deleteCacheEntriesForChannelPackages(chan.getId(), pids);
 
         // remove packages
@@ -2194,5 +2200,19 @@ public class ErrataManager extends BaseManager {
 
         // update search index via XMLRPC
         updateSearchIndex();
+    }
+
+    /**
+     * Remove from RhnSet erratas that are not needed for the server.
+     * This is useful to remove elements that were included when the errata was needed and remained.
+     *
+     * @param serverId the server id
+     */
+    public static void updateErrataSet(Long serverId) {
+        String errataLabel = RhnSetDecl.generateCustomSetName(RhnSetDecl.ERRATA, serverId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("label", errataLabel);
+        WriteMode m = ModeFactory.getWriteMode("Errata_queries", "delete_invalid_erratas_from_set");
+        m.executeUpdate(params);
     }
 }

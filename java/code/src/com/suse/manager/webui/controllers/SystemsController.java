@@ -21,6 +21,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -132,9 +133,9 @@ public class SystemsController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/list/virtual",
-                withCsrfToken(withDocsLocale(withUser(this::virtualListPage))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::virtualListPage)))), jade);
         get("/manager/systems/list/all",
-                withCsrfToken(withDocsLocale(withUser(this::allListPage))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::allListPage)))), jade);
         get("/manager/systems/details/mgr-server-info/:sid",
                 withCsrfToken(withDocsLocale(withUserAndServer(this::mgrServerInfoPage))),
                 jade);

@@ -610,17 +610,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testEusReleaseCmpRhel4() {
-        EusReleaseComparator comparator = new EusReleaseComparator("4AS");
-        assertEquals(0, comparator.compare("4.6", "4"));
-        assertEquals(0, comparator.compare("4.6", "4.2"));
-        assertEquals(1, comparator.compare("9", "8"));
-        assertEquals(-1, comparator.compare("8", "9"));
-        assertEquals(-1, comparator.compare("8.7", "9.5"));
-        assertEquals(-1, comparator.compare("8.7", "10.10"));
-    }
-
-    @Test
     public void testEusReleaseCmpRhel5() {
         EusReleaseComparator comparator = new EusReleaseComparator("5Server");
         assertEquals(0, comparator.compare("5.3.0.1", "5.3.0.5"));
@@ -810,10 +799,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testNormalizeRhelReleaseForMapping() {
-        assertEquals("4", ChannelManager.normalizeRhelReleaseForMapping("4AS", "4.6"));
-        assertEquals("4", ChannelManager.normalizeRhelReleaseForMapping("4AS", "4.6.9"));
-        assertEquals("3", ChannelManager.normalizeRhelReleaseForMapping("4AS", "3"));
-
         assertEquals("4.6.9", ChannelManager.normalizeRhelReleaseForMapping("5Server",
                 "4.6.9"));
         assertEquals("5.0.0", ChannelManager.normalizeRhelReleaseForMapping("5Server",

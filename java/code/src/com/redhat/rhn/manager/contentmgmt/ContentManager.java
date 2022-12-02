@@ -1064,7 +1064,7 @@ public class ContentManager {
         // Truncate extra errata in target channel
         ErrataManager.truncateErrata(includedErrata, tgt, user);
         // Remove packages from excluded errata
-        ErrataManager.removeErratumAndPackagesFromChannel(excludedErrata, tgt, user);
+        ErrataManager.removeErratumAndPackagesFromChannel(excludedErrata, includedErrata, tgt, user);
         // Merge the included errata
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
     }

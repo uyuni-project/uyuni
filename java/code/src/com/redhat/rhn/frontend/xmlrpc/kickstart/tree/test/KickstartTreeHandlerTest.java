@@ -77,7 +77,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         handler.create(admin, label,
                 KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath(),
-                baseChan.getLabel(), KickstartInstallType.RHEL_5);
+                baseChan.getLabel(), KickstartInstallType.RHEL_6);
         assertTrue(origCount + 1 == KickstartFactory.
                 lookupAccessibleTreesByOrg(admin.getOrg()).size());
     }

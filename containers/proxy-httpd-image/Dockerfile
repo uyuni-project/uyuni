@@ -18,7 +18,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     spacewalk-proxy-broker \
     spacewalk-proxy-redirect \
     spacewalk-proxy-html \
-    susemanager-tftpsync-recv\
+    susemanager-tftpsync-recv \
+    release-notes-susemanager-proxy \
     python3-rhnlib \
     python3-PyYAML && \
     sh remove_unused.sh

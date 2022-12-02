@@ -958,7 +958,7 @@ public class ProfileHandler extends BaseHandler {
             throw new FaultException(-3, "kickstartProfileNotFound",
             "No Kickstart Profile found with label: " + ksLabel);
         }
-        LinkedHashSet options = ksdata.getCustomOptions();
+        Set<KickstartCommand> options = ksdata.getCustomOptions();
         return options.toArray();
     }
 
@@ -1464,9 +1464,7 @@ public class ProfileHandler extends BaseHandler {
         KickstartableTree ksTree = ksData.getKickstartDefaults().getKstree();
 
         List<String> items = new ArrayList<>();
-        if (ksTree != null && !ksTree.getInstallType().isRhel2() &&
-                !ksTree.getInstallType().isRhel3() &&
-                !ksTree.getInstallType().isRhel4()) {
+        if (ksTree != null) {
             Set<RepoInfo> selected = ksData.getRepoInfos();
             for (RepoInfo repo : selected) {
                 items.add(repo.getName());
@@ -1493,24 +1491,22 @@ public class ProfileHandler extends BaseHandler {
         }
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
-        if (ksData.isRhel5OrGreater()) {
-            List<RepoInfo> repoList = RepoInfo.getStandardRepos(
-                    ksData.getKickstartDefaults().getKstree());
-            Map<String, RepoInfo> repoSet = new HashMap<>();
-            for (RepoInfo rInfo : repoList) {
-                repoSet.put(rInfo.getName(), rInfo);
-            }
-            Set<RepoInfo> selected = new HashSet<>();
-            for (String repoIn : repoLabels) {
-                RepoInfo repoInfo = repoSet.get(repoIn);
-                if (repoInfo != null) {
-                    selected.add(repoInfo);
-                }
-            }
-            ksData.setRepoInfos(selected);
-            KickstartWizardHelper ksHelper = new KickstartWizardHelper(loggedInUser);
-            ksHelper.processSkipKey(ksData);
+        List<RepoInfo> repoList = RepoInfo.getStandardRepos(
+                ksData.getKickstartDefaults().getKstree());
+        Map<String, RepoInfo> repoSet = new HashMap<>();
+        for (RepoInfo rInfo : repoList) {
+            repoSet.put(rInfo.getName(), rInfo);
         }
+        Set<RepoInfo> selected = new HashSet<>();
+        for (String repoIn : repoLabels) {
+            RepoInfo repoInfo = repoSet.get(repoIn);
+            if (repoInfo != null) {
+                selected.add(repoInfo);
+            }
+        }
+        ksData.setRepoInfos(selected);
+        KickstartWizardHelper ksHelper = new KickstartWizardHelper(loggedInUser);
+        ksHelper.processSkipKey(ksData);
         return 1;
     }
 

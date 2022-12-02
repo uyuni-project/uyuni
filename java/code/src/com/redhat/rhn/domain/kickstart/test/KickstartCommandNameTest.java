@@ -15,11 +15,10 @@
 package com.redhat.rhn.domain.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
-import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -34,35 +33,22 @@ import java.util.List;
 public class KickstartCommandNameTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testCommandName() throws Exception {
+    public void testCommandName() {
 
         String query = "KickstartCommandName.listAdvancedOptions";
 
         Session session = HibernateFactory.getSession();
-        List l1 = session.getNamedQuery(query)
+        List<KickstartCommandName> l1 = session.getNamedQuery(query)
                                        //Retrieve from cache if there
                                        .setCacheable(true).list();
 
-        assertTrue(l1.size() > 0);
+        assertFalse(l1.isEmpty());
 
-        KickstartCommandName c = (KickstartCommandName) l1.get(0);
+        KickstartCommandName c = l1.get(0);
         assertEquals(c.getOrder(), Long.valueOf(1));
 
-        KickstartData ks = KickstartDataTest.
-                createTestKickstartData(user.getOrg());
-        List<KickstartCommandName> l2 = KickstartFactory.lookupKickstartCommandNames(ks);
-
-
-
-        // RHEL5 has two commands less - "lilocheck" and "langsupport"
-        if (ks.isRhel5OrGreater()) {
-            assertEquals(l1.size(), l2.size() + 2);
-        }
-        else {
-            assertEquals(l1.size(), l2.size());
-        }
-
-
+        List<KickstartCommandName> l2 = KickstartFactory.lookupKickstartCommandNames();
+        assertEquals(l1.size(), l2.size() + 2);
     }
 
 }

@@ -8,21 +8,10 @@
 
 # IMMUTABLE ORDER
 
-# initialize Uyuni server
-- features/core/srv_first_settings.feature
-- features/core/srv_disable_local_repos_off.feature
-- features/core/srv_organization_credentials.feature
-- features/core/srv_user_preferences.feature
-- features/core/srv_channels_add.feature
-- features/core/srv_create_repository.feature
-- features/core/srv_create_activationkey.feature
-- features/core/srv_osimage.feature
-- features/core/srv_docker.feature
-
 # initialize Uyuni proxy
-  # one of: proxy_register_as_minion_with_script.feature
+  # one of: proxy_register_as_trad_with_script.feature
+  #         proxy_register_as_minion_with_script.feature
   #         proxy_register_as_minion_with_gui.feature
-  #         proxy_register_as_pod.feature
 - features/core/proxy_register_as_minion_with_script.feature
 - features/core/proxy_branch_network.feature
 

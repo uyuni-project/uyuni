@@ -188,11 +188,12 @@ if __name__ == '__main__':
 
             # Convert the parameters into a dict
             params = {}
-            for param_value in options.params:
-                matcher = re.match("^([^=]+)=([^=]+)$", param_value)
-                if not matcher:
-                    systemExit(-5, 'Invalid parameter value: ' + param_value)
-                params[matcher.group(1)] = matcher.group(2)
+            if options.params is not None:
+                for param_value in options.params:
+                    matcher = re.match("^([^=]+)=([^=]+)$", param_value)
+                    if not matcher:
+                        systemExit(-5, 'Invalid parameter value: ' + param_value)
+                    params[matcher.group(1)] = matcher.group(2)
 
             try:
                 report = reports.report(report_name, dataDir, params)

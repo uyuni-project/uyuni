@@ -15,12 +15,12 @@
 package com.redhat.rhn.domain.kickstart.builder.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -46,12 +46,12 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
-    private String kickstartFileContents;
 
     @Override
     @BeforeEach
@@ -61,8 +61,8 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     }
 
 
-    private KickstartParser createKickstartParser(String filename) throws Exception {
-        kickstartFileContents = TestUtils.readAll(
+    private KickstartParser createKickstartParser(String filename) throws IOException, ClassNotFoundException {
+        String kickstartFileContents = TestUtils.readAll(
                 TestUtils.findTestData(filename));
         return new KickstartParser(kickstartFileContents);
     }
@@ -73,7 +73,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
         KickstartData data =
                 builder.create(TestUtils.randomString(), tree,
                         KickstartVirtualizationType.XEN_PARAVIRT,
@@ -82,49 +82,8 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         assertNotNull(data);
     }
 
-    //
     @Test
-    public void testDepricatedAnacondCommands() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
-
-        KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
-        tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_4));
-        KickstartData rhel4data =
-                builder.create(TestUtils.randomString(),
-                        tree, KickstartVirtualizationType.XEN_PARAVIRT,
-                        "http://localhost/ks", "redhat",
-                KickstartTreeUpdateType.NONE);
-
-        String contents = FileUtils.readStringFromFile(rhel4data.getCobblerFileName());
-        assertTrue(contents.indexOf("langsupport") > 0);
-        assertTrue(contents.indexOf("mouse") > 0);
-        assertTrue(contents.indexOf("zerombr yes") > 0);
-        assertTrue(contents.indexOf("resolvedeps") > 0);
-
-        System.out.println("Contents: " + contents);
-
-        tree.setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
-        KickstartData rhel5data =
-                builder.create(TestUtils.randomString(),
-                        tree, KickstartVirtualizationType.XEN_PARAVIRT,
-                        "http://localhost/ks", "redhat",
-                KickstartTreeUpdateType.NONE);
-
-        contents = FileUtils.readStringFromFile(rhel5data.getCobblerFileName());
-        System.out.println("Contents: " + contents);
-        assertTrue(!contents.contains("langsupport"));
-        assertTrue(!contents.contains("mouse"));
-        assertTrue(!contents.contains("zerombr yes"));
-        assertTrue(contents.indexOf("zerombr") > 0);
-        assertTrue(!contents.contains("resolvedeps"));
-
-    }
-
-
-    @Test
-    public void testDirector() throws Exception {
+    public void testDirector() throws IOException, ClassNotFoundException {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
         assertEquals(27, parser.getOptionLines().size());
         assertEquals(102, parser.getPackageLines().size());
@@ -146,7 +105,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         builder.buildCommands(ksData, lines, tree);
 
         KickstartCommand rootpw = ksData.getCommand("rootpw");
-        assertTrue(!rootpw.getArguments().contains("--iscrypted"));
+        assertFalse(rootpw.getArguments().contains("--iscrypted"));
         assertTrue(rootpw.getArguments().startsWith("$1$"));
     }
 
@@ -239,7 +198,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         builder.buildPreScripts(ksData, lines);
         assertEquals(1, ksData.getScripts().size());
         KickstartScript script = ksData.getScripts().iterator().next();
-        assertEquals(null, script.getInterpreter());
+        assertNull(script.getInterpreter());
         assertEquals(KickstartScript.TYPE_PRE, script.getScriptType());
         assertEquals("Y", script.getChroot());
     }
@@ -358,7 +317,6 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
         KickstartBuilder builder = new KickstartBuilder(user);
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
-        //String randomLabel = RandomStringUtils.randomAlphabetic(10);
         KickstartData ksData = builder.createFromParser(parser, "mykslabel",
                 KickstartVirtualizationType.XEN_PARAVIRT, tree,
                 KickstartTreeUpdateType.NONE);

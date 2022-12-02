@@ -1,3 +1,6 @@
+- remove version from product names as they are held separate
+- change "EL 9 Base" to "RHEL and Liberty 9 Base"
+
 -------------------------------------------------------------------
 Fri Nov 18 15:01:19 CET 2022 - jgonzalez@suse.com
 

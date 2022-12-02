@@ -122,15 +122,6 @@ public class ChannelManager extends BaseManager {
 
     public static final String QRY_ROLE_MANAGE = "manage";
     public static final String QRY_ROLE_SUBSCRIBE = "subscribe";
-
-    // Valid RHEL 4 EUS Channel Versions (from rhnReleaseChannelMap):
-    public static final Set<String> RHEL4_EUS_VERSIONS;
-    static {
-        RHEL4_EUS_VERSIONS = new HashSet<>();
-        RHEL4_EUS_VERSIONS.add("4AS");
-        RHEL4_EUS_VERSIONS.add("4ES");
-    }
-
     public static final String RHEL7_EUS_VERSION = "7Server";
 
 
@@ -1547,19 +1538,15 @@ public class ChannelManager extends BaseManager {
      * Convert redhat-release release values to those that are stored in the
      * rhnReleaseChannelMap table.
      *
-     * RHEL 4 release samples: 7.6, 8, 9
-     * RHEL 5 release samples: 5.1.0.1, 5.2.0.2, 5.3.0.3
      * RHEL 6 release samples: 6.7.0.3.el6
      * RHEL 7 release samples: 7.2-9.el7 7.3-1.el7 7.4-1.el7
-     * RHEL 4 must be treated specially, if the release is X.Y, we only wish to look at
-     * the X portion.
      *
      * For RHEL 5 and presumably all future releases, we only look at the W.X.Y portion of
      * W.X.Y.Z. (works only for RHEL5 and 6)
      *
      * For RHEL7, format is W.X-Y.noise, all we need is W.X
      *
-     * @param rhelVersion RHEL version we're comparing release for. (5Server, 4AS, 4ES)
+     * @param rhelVersion RHEL version we're comparing release for.
      * @param originalRelease Original package release.
      * @return Release version for rhnReleaseChannelMap.
      */
@@ -1568,13 +1555,7 @@ public class ChannelManager extends BaseManager {
 
         String [] tokens = originalRelease.split("\\.");
 
-        if (RHEL4_EUS_VERSIONS.contains(rhelVersion)) {
-            if (tokens.length <= 1) {
-                return originalRelease;
-            }
-            return tokens[0];
-        }
-        else if (RHEL7_EUS_VERSION.equals(rhelVersion)) {
+        if (RHEL7_EUS_VERSION.equals(rhelVersion)) {
             // rhnreleasechnnelmap release like '7.1-1.el7' - PackageEvr will be
             // returned as 7.1.1.el7. We might be normalizing either.
             // Replace '-' with '.', then split and use [0].[1]

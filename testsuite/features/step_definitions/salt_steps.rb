@@ -137,16 +137,12 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   refute_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   assert_includes($api_test.system.list_systems.map { |s| s['name'] }, system_name)
-  $api_test.auth.logout
 end
 
 Then(/^"(.*?)" should have been reformatted$/) do |host|

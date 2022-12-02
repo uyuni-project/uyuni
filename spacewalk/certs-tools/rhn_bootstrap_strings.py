@@ -123,10 +123,6 @@ REGISTER_THIS_BOX=1
 #     PROFILENAME=`hostname -f`      # FQDN
 PROFILENAME=""   # Empty by default to let it be set automatically.
 
-# After registration, before updating the system (or at least the installer)
-# disable all repos not provided by SUSE Manager.
-DISABLE_LOCAL_REPOS=1
-
 # SUSE Manager Specific settings:
 #
 # - Alternate location of the client tool repos providing 
@@ -855,12 +851,6 @@ enable_fqdns_grains: False
 start_event_grains: [machine_id, saltboot_initrd, susemanager]
 mine_enabled: False
 EOF
-    if [ "$DISABLE_LOCAL_REPOS" -eq 0 ]; then
-        echo "Do not disable local repos"
-        cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
-disable_local_repos: False
-EOF
-    fi
     cat <<EOF >> "$SUSEMANAGER_MASTER_FILE"
 
 grains:

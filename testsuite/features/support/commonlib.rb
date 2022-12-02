@@ -3,6 +3,8 @@
 
 require 'tempfile'
 require 'yaml'
+require 'nokogiri'
+require 'timeout'
 
 # return current URL
 def current_url
@@ -233,11 +235,9 @@ def get_uptime_from_host(host)
   { seconds: seconds, minutes: minutes, hours: hours, days: days }
 end
 
-# Copyright (c) 2010-2022 SUSE LLC.
-# Licensed under the terms of the MIT license.
-
-require 'nokogiri'
-require 'timeout'
+def escape_regex(text)
+  text.gsub(%r{([$.*\[/^])}) { |match| "\\#{match}" }
+end
 
 def get_system_id(node)
   $api_test.system.search_by_name(node.full_hostname).first['id']

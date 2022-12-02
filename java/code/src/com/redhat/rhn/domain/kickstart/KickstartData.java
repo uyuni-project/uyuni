@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.kickstart;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
@@ -105,7 +104,7 @@ public class KickstartData {
         {"partitions", "raids", "logvols", "volgroups", "include",
         "repo", "custom", "custom_partition"};
 
-    private final String DEFAULT_KICKSTART_PACKAGE_FOR_TRADITIONAL = "spacewalk-koan";
+    private static final String DEFAULT_KICKSTART_PACKAGE_FOR_TRADITIONAL = "spacewalk-koan";
 
     private static final List<String> ADANCED_OPTIONS = Arrays.asList(advancedOptions);
 
@@ -253,7 +252,7 @@ public class KickstartData {
      * Getter for isOrgDefault
      * @return String to get
      */
-    public Boolean isOrgDefault() {
+    public boolean isOrgDefault() {
         return getIsOrgDefault();
     }
 
@@ -512,7 +511,7 @@ public class KickstartData {
 
     private KickstartScript lookupScriptByType(String typeIn) {
         if (this.getScripts() != null &&
-                this.getScripts().size() > 0) {
+                !this.getScripts().isEmpty()) {
             for (KickstartScript kss : this.getScripts()) {
                 if (kss.getScriptType().equals(typeIn)) {
                     return kss;
@@ -537,7 +536,7 @@ public class KickstartData {
      */
     public boolean hasCommand(String commandName) {
         boolean retval = false;
-        if (this.commands != null && this.commands.size() > 0) {
+        if (this.commands != null && !this.commands.isEmpty()) {
             for (KickstartCommand cmd : this.commands) {
                 if (cmd.getCommandName().getName().equals(label)) {
                     retval = true;
@@ -554,7 +553,7 @@ public class KickstartData {
      * @param removeFirst if true only stop at first instance, otherwise remove all
      */
     public void removeCommand(String commandName, boolean removeFirst) {
-        if (this.commands != null && this.commands.size() > 0) {
+        if (this.commands != null && !this.commands.isEmpty()) {
             for (Iterator<KickstartCommand> iter = this.commands.iterator();
                     iter.hasNext();) {
                 KickstartCommand cmd = iter.next();
@@ -575,7 +574,7 @@ public class KickstartData {
      */
     public KickstartCommand getCommand(String commandName) {
         KickstartCommand retval = null;
-        if (this.commands != null && this.commands.size() > 0) {
+        if (this.commands != null && !this.commands.isEmpty()) {
             for (KickstartCommand cmd : this.commands) {
                 if (cmd.getCommandName().getName().equals(commandName)) {
                     retval = cmd;
@@ -598,14 +597,14 @@ public class KickstartData {
      * Convenience method to remove all commands
      */
     public void removeCommands() {
-        if (this.commands != null && this.commands.size() > 0) {
+        if (this.commands != null && !this.commands.isEmpty()) {
             this.commands.clear();
         }
     }
 
     private Set<KickstartCommand> getCommandSubset(String name) {
         Set<KickstartCommand> retval = new LinkedHashSet<>();
-        if (this.commands != null && this.commands.size() > 0) {
+        if (this.commands != null && !this.commands.isEmpty()) {
             for (KickstartCommand cmd : this.commands) {
                 logger.debug("getCommandSubset : working with: {}", cmd.getCommandName().getName());
                 if (cmd.getCommandName().getName().equals(name)) {
@@ -664,7 +663,7 @@ public class KickstartData {
     /**
      * @return Returns the customOptions.
      */
-    public LinkedHashSet<KickstartCommand> getCustomOptions() {
+    public Set<KickstartCommand> getCustomOptions() {
         return new LinkedHashSet<>(getCommandSubset("custom"));
     }
 
@@ -702,7 +701,7 @@ public class KickstartData {
         // 'partitions', 'raids', 'logvols', 'volgroups', 'include', 'repo', 'custom'
         logger.debug("returning all commands except: {}", ADANCED_OPTIONS);
         Set<KickstartCommand> retval = new HashSet<>();
-        if (this.commands != null && this.commands.size() > 0) {
+        if (this.commands != null && !this.commands.isEmpty()) {
             for (KickstartCommand cmd : this.commands) {
                 logger.debug("working with: {}", cmd.getCommandName().getName());
                 if (!ADANCED_OPTIONS.contains(cmd.getCommandName().getName())) {
@@ -789,11 +788,11 @@ public class KickstartData {
     }
 
     /**
-     * @return if this kickstart profile is rhel 5 installer type
+     * @return if this kickstart profile is rhel 6 installer type
      */
-    public boolean isRhel5() {
+    public boolean isRhel6() {
         if (getInstallType() != null) {
-            return getInstallType().isRhel5();
+            return getInstallType().isRhel6();
         }
         return false;
     }
@@ -809,35 +808,22 @@ public class KickstartData {
     }
 
     /**
+     * @return if this kickstart profile is rhel 9 installer type or greater (for rhel8)
+     */
+    public boolean isRhel9OrGreater() {
+        if (getInstallType() != null) {
+            return (getInstallType().isRhel9OrGreater() || getInstallType().isFedora());
+        }
+        return false;
+    }
+
+    /**
      * @return if this kickstart profile is rhel 6 installer type or greater (for rhel7)
      */
     public boolean isRhel6OrGreater() {
         if (getInstallType() != null) {
             return (getInstallType().isRhel6OrGreater() ||
                     getInstallType().isFedora());
-        }
-        return false;
-    }
-
-    /**
-     * @return if this kickstart profile is rhel 5 installer type or greater (for rhel6)
-     */
-    public boolean isRhel5OrGreater() {
-        if (getInstallType() != null) {
-            return (getInstallType().isRhel5OrGreater() ||
-                    getInstallType().isFedora());
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @return if this kickstart profile is RHEL 5 or less
-     */
-    public boolean isRHEL5OrLess() {
-        if (getInstallType() != null) {
-            return (getInstallType().isRhel5() ||
-                    !this.isRhel5OrGreater());
         }
         return false;
     }
@@ -905,37 +891,6 @@ public class KickstartData {
     public boolean isSUSE() {
         if (getInstallType() != null) {
             return getInstallType().isSUSE();
-        }
-        return false;
-    }
-
-    /**
-     * @return if this kickstart profile is rhel 4 installer type
-     */
-    public boolean isRhel4() {
-        if (getInstallType() != null) {
-            return getInstallType().isRhel4();
-        }
-        return false;
-    }
-
-    /**
-     * @return if this kickstart profile is rhel 3 installer type
-     */
-    public boolean isRhel3() {
-        if (getInstallType() != null) {
-            return getInstallType().isRhel3();
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @return if this kickstart profile is rhel 2 installer type
-     */
-    public boolean isRhel2() {
-        if (getInstallType() != null) {
-            return getInstallType().isRhel2();
         }
         return false;
     }
@@ -1088,7 +1043,7 @@ public class KickstartData {
         if (bootloaderCommand != null) {
             retval =  true;
             bootloaderCommand.setArguments(
-                    bootloaderCommand.getArguments().replaceAll(
+                    bootloaderCommand.getArguments().replace(
                             "--useLilo", "").trim());
             if (type.equalsIgnoreCase("lilo")) {
                 bootloaderCommand.setArguments(bootloaderCommand.getArguments() +
@@ -1105,10 +1060,8 @@ public class KickstartData {
      * @return Channel object associated with this KickstartData
      */
     public Channel getChannel() {
-        if (this.kickstartDefaults != null) {
-            if (this.kickstartDefaults.getKstree() != null) {
-                return this.kickstartDefaults.getKstree().getChannel();
-            }
+        if (this.kickstartDefaults != null && this.kickstartDefaults.getKstree() != null) {
+            return this.kickstartDefaults.getKstree().getChannel();
         }
         return null;
     }
@@ -1120,9 +1073,6 @@ public class KickstartData {
      */
     public String getTimezone() {
         KickstartCommand tzCommand = this.getCommand("timezone");
-
-        // my @args = grep { not /--/ } split / /, $tzCommand;
-        // return @args ? $args[0] : "";
 
         if (tzCommand == null || tzCommand.getArguments() == null) {
             return "";
@@ -1176,12 +1126,11 @@ public class KickstartData {
      */
     public KickstartData deepCopy(User user, String newLabel) {
         KickstartData cloned = new KickstartData();
-        updateCloneDetails(cloned, user, newLabel);
+        updateCloneDetails(cloned, newLabel);
         return cloned;
     }
 
-    protected void updateCloneDetails(KickstartData cloned, User user,
-            String newLabel) {
+    protected void updateCloneDetails(KickstartData cloned, String newLabel) {
 
         cloned.setLabel(newLabel);
         cloned.setActive(this.getActive());
@@ -1204,8 +1153,6 @@ public class KickstartData {
             cloned.setCryptoKeys(new HashSet<>(this.getCryptoKeys()));
         }
 
-
-
         // NOTE: Make sure we *DONT* clone isOrgDefault
         cloned.setIsOrgDefault(Boolean.FALSE);
         cloned.setKernelParams(this.getKernelParams());
@@ -1214,9 +1161,7 @@ public class KickstartData {
         }
         cloned.setOrg(this.getOrg());
         if (this.getKsPackages() != null) {
-            for (KickstartPackage kp : this.getKsPackages()) {
-                cloned.getKsPackages().add(kp.deepCopy(cloned));
-            }
+            this.getKsPackages().forEach(kp -> cloned.getKsPackages().add(kp.deepCopy(cloned)));
         }
 
         if (this.getPreserveFileLists() != null) {
@@ -1266,27 +1211,6 @@ public class KickstartData {
     }
 
     /**
-     * Util method to determine if we are RHEL3/2.1
-     * @return boolean if this KickstartData is using RHEL2.1 or RHEL3
-     */
-    public boolean isLegacyKickstart() {
-        if (this.getTree() != null && this.getTree().getInstallType() != null) {
-            String installType = this.getTree().getInstallType().getLabel();
-            return (installType.equals(KickstartInstallType.RHEL_21) ||
-                    installType.equals(KickstartInstallType.RHEL_3));
-        }
-        return false;
-    }
-
-    /**
-     * Bean wrapper so we can call isLegacyKickstart() from JSTL
-     * @return boolean if this KickstartData is using RHEL2.1 or RHEL3
-     */
-    public boolean getLegacyKickstart() {
-        return isLegacyKickstart();
-    }
-
-    /**
      * Get the list of possible name of the kickstart packages this KS could use.
      * @return List of kickstart packages like auto-kickstart-ks-rhel-i386-as-4
      */
@@ -1307,21 +1231,21 @@ public class KickstartData {
     /**
      * @return Returns if the post scripts should be logged.
      */
-    public Boolean getPostLog() {
+    public boolean getPostLog() {
         return postLog;
     }
 
     /**
      * @return Returns if the pre scripts should be logged.
      */
-    public Boolean getPreLog() {
+    public boolean getPreLog() {
         return preLog;
     }
 
     /**
      * @return Returns if we should copy ks.cfg and %include'd fragments to /root
      */
-    public Boolean getKsCfg() {
+    public boolean getKsCfg() {
         return ksCfg;
     }
 
@@ -1418,7 +1342,7 @@ public class KickstartData {
     /**
      * @return Returns if up2date/yum should be verbose
      */
-    public Boolean getVerboseUp2date() {
+    public boolean getVerboseUp2date() {
         return this.verboseUp2date;
     }
 
@@ -1432,7 +1356,7 @@ public class KickstartData {
     /**
      * @return Returns if nonchroot post script is to be logged
      */
-    public Boolean getNonChrootPost() {
+    public boolean getNonChrootPost() {
         return this.nonChrootPost;
     }
 
@@ -1589,15 +1513,9 @@ public class KickstartData {
      * @param type the registration type
      * @param user the user needed to load the profile form cobbler
      */
-    public void  setRegistrationType(RegistrationType type, User user) {
+    public void setRegistrationType(RegistrationType type, User user) {
         Profile prof = getCobblerObject(user);
-        Map<String, Object> meta;
-        if (prof.getKsMeta().isPresent()) {
-            meta = prof.getKsMeta().get();
-        }
-        else {
-            meta = new HashMap<>();
-        }
+        Map<String, Object> meta = prof.getKsMeta().orElse(new HashMap<>());
         meta.put(RegistrationType.COBBLER_VAR, type.getType());
         prof.setKsMeta(Optional.of(meta));
         prof.save();
@@ -1680,25 +1598,11 @@ public class KickstartData {
     }
 
     /**
-     * Return the default args to the auth command for this ksdata
-     * @return default auth args
-     */
-    public String defaultAuthArgs() {
-        if (this.isRHEL5OrLess()) {
-            return "--enablemd5 --enableshadow";
-        }
-        return "--enableshadow --passalgo=sha256";
-    }
-
-    /**
      * Encrypt the password with whichever algorithm is appropriate for this ksdata
      * @param password the password to encrypt
      * @return the encrypted password
      */
     public String encryptPassword(String password) {
-        if (this.isRHEL5OrLess()) {
-            return MD5Crypt.crypt(password);
-        }
         return SHA256Crypt.crypt(password);
     }
 

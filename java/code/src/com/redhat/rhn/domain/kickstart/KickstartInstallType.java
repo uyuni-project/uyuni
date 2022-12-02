@@ -25,13 +25,10 @@ public class KickstartInstallType extends BaseDomainHelper {
 
     // Spacewalk's install type strings. Those may or may not correspond
     // to Cobbler's OS versions, see getCobblerOsVersion()
-    public static final String RHEL_21 = "rhel_2.1";
-    public static final String RHEL_3 = "rhel_3";
-    public static final String RHEL_4 = "rhel_4";
-    public static final String RHEL_5 = "rhel_5";
     public static final String RHEL_6 = "rhel_6";
     public static final String RHEL_7 = "rhel_7";
     public static final String RHEL_8 = "rhel_8";
+    public static final String RHEL_9 = "rhel_9";
     public static final String GENERIC_RPM = "generic_rpm";
 
     // Spacewalk's install type prefixes for some multi-version
@@ -52,6 +49,13 @@ public class KickstartInstallType extends BaseDomainHelper {
     private String name;
 
     /**
+     * @return if this installer type is rhel 9 or greater
+     */
+    public boolean isRhel9OrGreater() {
+        return (isRhel8OrGreater() && !isRhel8());
+    }
+
+    /**
      * @return if this installer type is rhel 8 or greater
      */
     public boolean isRhel8OrGreater() {
@@ -62,23 +66,21 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return if this installer type is rhel 7 or greater (for rhel8)
      */
     public boolean isRhel7OrGreater() {
-        return (isRhel6OrGreater() && !isRhel6());
+        return (!isRhel6());
     }
 
     /**
      * @return if this installer type is rhel 6 or greater (for rhel7)
      */
     public boolean isRhel6OrGreater() {
-        return (isRhel5OrGreater() && !isRhel5());
+        return !isFedora() && !isGeneric() && !isSUSE();
     }
 
     /**
-     * @return if this installer type is rhel 5 or greater (for rhel6)
+     * @return true if the installer type is rhel 9
      */
-    public boolean isRhel5OrGreater() {
-        // we need to reverse logic here
-        return (!isRhel2() && !isRhel3() && !isRhel4() && !isFedora() && !isGeneric() &&
-                !isSUSE());
+    public boolean isRhel9() {
+        return RHEL_9.equals(getLabel());
     }
 
     /**
@@ -103,38 +105,10 @@ public class KickstartInstallType extends BaseDomainHelper {
     }
 
     /**
-     * @return true if the installer type is rhel 5
-     */
-    public boolean isRhel5() {
-        return RHEL_5.equals(getLabel());
-    }
-
-    /**
-     * @return true if the installer type is rhel 4
-     */
-    public boolean isRhel4() {
-        return RHEL_4.equals(getLabel());
-    }
-
-    /**
-     * @return true if the installer type is rhel 53
-     */
-    public boolean isRhel3() {
-        return RHEL_3.equals(getLabel());
-    }
-
-    /**
-     * @return true if the installer type is rhel 2
-     */
-    public boolean isRhel2() {
-        return RHEL_21.equals(getLabel());
-    }
-
-    /**
      * @return true if the installer type is rhel
      */
     public boolean isRhel() {
-        return isRhel2() || isRhel3() || isRhel4() || isRhel5() || isRhel6() || isRhel7() || isRhel8();
+        return isRhel6() || isRhel7() || isRhel8() || isRhel9();
     }
 
     /**

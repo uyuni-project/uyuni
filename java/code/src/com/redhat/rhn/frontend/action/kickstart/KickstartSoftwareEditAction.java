@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.kickstart;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
@@ -87,18 +86,18 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         List<KickstartableTree> trees = null;
         Long incomingChannelId = (Long) form.get(CHANNEL);
         Long channelId = incomingChannelId;
-        if (fieldChanged.equals("channel")) {
+        if (fieldChanged.equals(CHANNEL)) {
             trees = cmd.getTrees(incomingChannelId, ctx.getCurrentUser().getOrg());
             KickstartableTree kstree = null;
-            if (trees != null && trees.size() > 0) {
+            if (trees != null && !trees.isEmpty()) {
                 kstree = trees.get(trees.size() - 1);
                 form.set(TREE, kstree.getId());
             }
-            if (kstree == null && (trees != null && trees.size() > 0)) {
+            if (kstree == null && (trees != null && !trees.isEmpty())) {
                 kstree = KickstartFactory.lookupKickstartTreeByIdAndOrg(tree.getId(),
                         ctx.getCurrentUser().getOrg());
             }
-            setupUrl(ctx, form, kstree);
+            setupUrl(form, kstree);
             selectedTree = kstree;
             updateType = KickstartTreeUpdateType.NONE;
         }
@@ -112,18 +111,18 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
             trees = cmd.getTrees(channelId,
                     ctx.getCurrentUser().getOrg());
             KickstartableTree kstree = null;
-            if (trees != null && trees.size() > 0) {
+            if (trees != null && !trees.isEmpty()) {
                 kstree = KickstartFactory.lookupKickstartTreeByIdAndOrg(tree.getId(),
                         ctx.getCurrentUser().getOrg());
             }
-            setupUrl(ctx, form, kstree);
+            setupUrl(form, kstree);
             selectedTree = kstree;
         }
         if (fieldChanged.equals("kstree")) {
             KickstartableTree kstree =
                     KickstartFactory.lookupKickstartTreeByIdAndOrg((Long) form.get(TREE),
                             ctx.getCurrentUser().getOrg());
-            setupUrl(ctx, form, kstree);
+            setupUrl(form, kstree);
             selectedTree = kstree;
             updateType = KickstartTreeUpdateType.NONE;
         }
@@ -140,7 +139,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
             }
         }
         ctx.getRequest().setAttribute(TREES, trees);
-        if (trees == null || trees.size() == 0) {
+        if (trees == null || trees.isEmpty()) {
             ctx.getRequest().setAttribute("notrees", "true");
         }
 
@@ -170,7 +169,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         if (form.getString(URL) == null) {
             ctx.getRequest().setAttribute("nourl", "true");
         }
-        setupRepos(ctx, form, cmd.getKickstartData(), selectedTree);
+        setupRepos(form, cmd.getKickstartData(), selectedTree);
     }
 
     private void setupChildChannels(RequestContext ctx, Long channelId,
@@ -180,7 +179,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         List<Channel> childchannels = ChannelManager
                 .userAccessibleChildChannels(
                         ctx.getCurrentUser().getOrg().getId(), channelId);
-        if (childchannels == null || childchannels.size() == 0) {
+        if (childchannels == null || childchannels.isEmpty()) {
             ctx.getRequest().setAttribute("nochildchannels", "true");
         }
         else {
@@ -199,18 +198,16 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
             }
         }
 
-        ctx.getRequest().setAttribute("stored_child_channels", selectedChannels);
+        ctx.getRequest().setAttribute(STORED_CHILD_CHANNELS, selectedChannels);
         log.debug("scc: {}", selectedChannels);
 
     }
     /**
      * Sets the computed file url for the File Location field..
-     * @param ctx the request context
      * @param form the dyna form
      * @param kstree the kickstart tree
      */
-    private void setupUrl(RequestContext ctx, DynaActionForm form,
-            KickstartableTree kstree) {
+    private void setupUrl(DynaActionForm form, KickstartableTree kstree) {
         if (kstree != null) {
             form.set(URL, kstree.getDefaultDownloadLocation());
         }
@@ -230,7 +227,6 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
             BaseKickstartCommand cmdIn) {
 
         KickstartData ksdata = cmdIn.getKickstartData();
-        boolean wasRhel5OrLess = ksdata.isRHEL5OrLess();
         RequestContext ctx = new RequestContext(request);
         KickstartTreeUpdateType updateType = null;
         KickstartableTree tree = null;
@@ -274,14 +270,6 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
 
         ksdata.setRealUpdateType(updateType);
 
-        // need to reset auth field
-        if (wasRhel5OrLess != cmd.getKickstartData().isRHEL5OrLess()) {
-            KickstartCommand auth = cmd.getKickstartData().getCommand("auth");
-            if (auth != null) {
-                auth.setArguments(cmd.getKickstartData().defaultAuthArgs());
-            }
-        }
-
         CobblerProfileEditCommand cpec = new CobblerProfileEditCommand(ksdata,
                 ctx.getCurrentUser());
         cpec.store();
@@ -296,13 +284,8 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         return null;
     }
 
-    private void setupRepos(RequestContext context,
-            DynaActionForm form, KickstartData ksdata,
-            KickstartableTree tree) {
-
-        if (tree != null && !tree.getInstallType().isRhel2() &&
-                !tree.getInstallType().isRhel3() &&
-                !tree.getInstallType().isRhel4()) {
+    private void setupRepos(DynaActionForm form, KickstartData ksdata, KickstartableTree tree) {
+        if (tree != null) {
             List<LabelValueEnabledBean> repos = new LinkedList<>();
             for (RepoInfo repo : RepoInfo.getStandardRepos(tree)) {
                 repos.add(lve(repo.getName(), repo.getName(), !repo.isAvailable()));

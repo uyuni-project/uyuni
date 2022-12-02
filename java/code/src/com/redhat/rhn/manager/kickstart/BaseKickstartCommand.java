@@ -84,7 +84,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
 
             KickstartWizardHelper helper = new KickstartWizardHelper(user);
             KickstartBuilder.setBootloader(helper, ksData);
-            KickstartBuilder.setPartitionScheme(helper, ksData);
+            KickstartBuilder.setPartitionScheme(ksData);
         }
 
 

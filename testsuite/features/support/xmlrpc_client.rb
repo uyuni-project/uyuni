@@ -7,7 +7,8 @@ require 'xmlrpc/client'
 class XmlrpcClient
   def initialize(host)
     puts 'Activating XML-RPC API'
-    @xmlrpc_client = XMLRPC::Client.new2('https://' + host + '/rpc/api', nil, DEFAULT_TIMEOUT)
+    protocol = $debug_mode ? 'http://' : 'https://'
+    @xmlrpc_client = XMLRPC::Client.new2(protocol + host + '/rpc/api', nil, DEFAULT_TIMEOUT)
   end
 
   def call(name, params)
