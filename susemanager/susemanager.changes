@@ -1,5 +1,6 @@
 - add python3-extras to bootstrap repo as dependency of
-  python3-libxml2 (bsc#1204437)
+  python3-libxml2, optional SLES 15 does not have it and it
+  is only required on SP4 or greater (bsc#1204437) 
 
 -------------------------------------------------------------------
 Tue Oct 18 10:06:46 CEST 2022 - jgonzalez@suse.com
