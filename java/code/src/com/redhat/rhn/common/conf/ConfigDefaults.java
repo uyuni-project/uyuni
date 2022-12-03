@@ -72,7 +72,7 @@ public class ConfigDefaults {
 
     public static final String SATELLITE_PARENT = "server.satellite.rhn_parent";
 
-    public static final String JABBER_SERVER = "server.jabber_server";
+    public static final String SERVER_HOSTNAME = "java.hostname";
 
     public static final String KICKSTART_HOST = "kickstart_host";
 
@@ -212,9 +212,9 @@ public class ConfigDefaults {
     /**
      * HTTP proxy defaults
      */
-    private static final String HTTP_PROXY = "server.satellite.http_proxy";
-    private static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
-    private static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
+    public static final String HTTP_PROXY = "server.satellite.http_proxy";
+    public static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
+    public static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
     private static final int DEFAULT_HTTP_PROXY_PORT = 80;
 
     /**
@@ -583,11 +583,11 @@ public class ConfigDefaults {
     }
 
     /**
-     * Get the configured hostname for this RHN Server.
+     * Get the configured hostname for this Uyuni Server.
      * @return String hostname
      */
     public String getHostname() {
-        return Config.get().getString(JABBER_SERVER);
+        return Config.get().getString(SERVER_HOSTNAME, "localhost");
     }
 
     /**

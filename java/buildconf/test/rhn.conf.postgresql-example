@@ -98,6 +98,8 @@ server.satellite.http_proxy =
 server.satellite.http_proxy_username =
 server.satellite.http_proxy_password =
 
+java.hostname = localhost
+
 # Kickstart settings
 server.satellite.tiny_url_timeout = 4
 
@@ -127,10 +129,6 @@ web.subscribe_proxy_channel = 0
 web.audit.logdir = /var/lib/spacewalk/systemlogs
 
 web.ssh_push_port_https = 1233
-
-# OSA configuration
-server.jabber_server = linux.fritz.box
-osa-dispatcher.jabber_server = linux.fritz.box
 
 # Enable system snapshots
 enable_snapshots = 1

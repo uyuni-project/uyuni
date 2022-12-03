@@ -109,7 +109,6 @@ Requires:       perl-Net-LibIDN
 Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-java-lib >= 2.4.5
-Requires:       spacewalk-setup-jabberd
 Requires:       uyuni-setup-reportdb
 %if 0%{?rhel}
 Requires(post): libxslt-devel

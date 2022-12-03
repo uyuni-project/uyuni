@@ -1,3 +1,4 @@
+- remove jabberd and osa-dispatcher
 - Add subscription warning notification to overview page
 - Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
 - Remove invalid errata selection after patch installation (bsc#1204235)

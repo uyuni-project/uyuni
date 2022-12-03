@@ -67,9 +67,7 @@ Requires:       %{name}-docs
 Requires:       %{name}-html
 Requires:       %{name}-redirect = %{version}
 Requires:       httpd
-Requires:       jabberd
 Requires:       spacewalk-backend >= 1.7.24
-Requires:       spacewalk-setup-jabberd
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       sos
 Requires(preun):initscripts
@@ -138,6 +136,14 @@ Requires:       %{name}-broker >= %{version}
 Requires:       curl
 Requires:       spacewalk-backend >= 1.7.24
 Requires(pre):  policycoreutils
+
+# weakremover used on SUSE to get rid of orphan packages which are
+# unsupported and do not have a dependency anymore
+Provides:       weakremover(jabberd)
+Provides:       weakremover(jabberd-sqlite)
+Provides:       weakremover(jabberd-db)
+Provides:       weakremover(spacewalk-setup-jabberd)
+
 
 %description common
 The Spacewalk Proxy Server allows package caching
