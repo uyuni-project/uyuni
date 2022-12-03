@@ -152,7 +152,8 @@ public class NotificationMessage implements Serializable {
             case StateApplyFailed: return "State apply failed";
             case PaygAuthenticationUpdateFailed: return "Pay-as-you-go refresh authentication data failed";
             case EndOfLifePeriod: return "End of Life Period";
-            default: throw new RuntimeException("should not happen!");
+            case SubscriptionWarning: return "Subscription Warning";
+            default: return getType().name();
         }
     }
 
