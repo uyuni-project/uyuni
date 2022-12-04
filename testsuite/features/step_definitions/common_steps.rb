@@ -72,8 +72,10 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
+  $api_test.auth.login('admin', 'admin')
   client_id = $api_test.system.search_by_name(get_system_name(host)).first['id']
   step %(I should see a "#{client_id.to_s}" text)
+  $api_test.auth.logout
 end
 
 Then(/^the system name for "([^"]*)" should be correct$/) do |host|
