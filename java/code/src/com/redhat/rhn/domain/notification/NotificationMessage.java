@@ -139,6 +139,25 @@ public class NotificationMessage implements Serializable {
     }
 
     /**
+     * Return the Notification Type as human readable string
+     * @return the notification type as string
+     */
+    @Transient
+    public String getTypeAsString() {
+        switch (getType()) {
+            case OnboardingFailed: return "Onboarding failed";
+            case ChannelSyncFailed: return "Channel sync failed";
+            case ChannelSyncFinished: return "Channel sync finished";
+            case CreateBootstrapRepoFailed: return "Creating Bootstrap Repository failed";
+            case StateApplyFailed: return "State apply failed";
+            case PaygAuthenticationUpdateFailed: return "Pay-as-you-go refresh authentication data failed";
+            case EndOfLifePeriod: return "End of Life Period";
+            case SubscriptionWarning: return "Subscription Warning";
+            default: return getType().name();
+        }
+    }
+
+    /**
      * @param dataIn The description to set.
      */
     public void setData(String dataIn) {
