@@ -1,6 +1,3 @@
-- Add missing proxy release notes package
-- Prefix log messages with a package name to ease analysis
-
 -------------------------------------------------------------------
 Fri Nov 18 14:16:12 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
