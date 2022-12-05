@@ -38,7 +38,7 @@
       "result": true,
       "start_time": "06:54:14.789762"
     },
-    "cmd_|-respkgquery_|-rpm -q --whatprovides 'sll-release'_|-run": {
+    "cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run": {
       "__run_num__": 2,
       "changes": {
         "pid": 477,
