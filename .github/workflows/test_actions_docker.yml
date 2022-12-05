@@ -21,6 +21,7 @@ jobs:
       - name: nmap
         uses: docker://ghcr.io/jordimassaguerpla/uyuni/controller:master
         with:
+          network: uyuni_default
           entrypoint: /usr/bin/nmap
           args: server-httpd-test
       - name: last-step
