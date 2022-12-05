@@ -24,6 +24,8 @@ Feature: Retracted patches
     When I am on the "Software" page of this "sle_minion"
     And I follow "Packages"
     And I follow "Install"
+    And I enter "rute-dummy" as the filtered package name
+    And I click on the filter button until page does contain "rute-dummy" text
     Then I should see a "rute-dummy-2.0-1.2" text
     And I should not see a "rute-dummy-2.1-1.1" text
 
@@ -106,8 +108,8 @@ Feature: Retracted patches
     Then the table row for "rute-dummy-2.1-1.1.x86_64" should contain "retracted" icon
 
   Scenario: SSM: Retracted package should not be available for installation
-    When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    When I follow the left menu "Systems > System List > All"
+    And I click on "Clear"
     And I check the "sle_minion" client 
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages" in the content area
@@ -116,3 +118,4 @@ Feature: Retracted patches
     Then I should see a "rute-dummy-2.0-1.2" text
     And I should not see a "rute-dummy-2.1-1.1" text
     And I follow "Clear"
+    

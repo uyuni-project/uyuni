@@ -69,7 +69,7 @@ Feature: Distribution Channel Mapping
     And I should see the text "sle-product-sles15-sp3-pool-x86_64" in the Channel Label field
     When I follow "Ubuntu 22.04.01 LTS"
     And I enter "Ubuntu 22.04.01 LTS modified" as "os"
-    And I select "Test Base Channel" from "channel_label" dropdown
+    And I select "Fake Base Channel" from "channel_label" dropdown
     And I click on "Update Mapping"
     Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field
     And I should see the text "test_base_channel" in the Channel Label field

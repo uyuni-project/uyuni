@@ -17,6 +17,8 @@ Feature: Install a package to the traditional client
     And metadata generation finished for "fake-rpm-sles-channel"
     When I follow "Software" in the content area
     And I follow "Install"
+    And I enter "virgo-dummy" as the filtered package name
+    And I click on the filter button
     And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"

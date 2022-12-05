@@ -6,8 +6,8 @@
 
 ## Core - Initialize clients BEGIN ##
 
-- features/init_clients/sle_client.feature
 - features/init_clients/allcli_update_activationkeys.feature
+- features/init_clients/sle_client.feature
 - features/init_clients/srv_check_reposync.feature
 - features/init_clients/sle_minion.feature
 - features/init_clients/sle_ssh_minion.feature
