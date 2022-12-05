@@ -27,6 +27,7 @@ RUN zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/system
         systemd \
         java-devel \
         zip \
+        ncat \
         log4j && \
     zypper ref -f && \ 
     zypper clean -a
