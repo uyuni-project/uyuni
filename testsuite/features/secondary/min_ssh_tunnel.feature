@@ -7,6 +7,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete the Salt minion for SSH tunnel bootstrap
     Given I am on the Systems overview page of this "ssh_minion"
@@ -87,3 +88,6 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I accept "ssh_minion" key in the Salt master
     Then I should see "ssh_minion" via spacecmd
     And I wait until onboarding is completed for "ssh_minion"
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

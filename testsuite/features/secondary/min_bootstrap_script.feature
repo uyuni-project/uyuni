@@ -12,6 +12,7 @@ Feature: Register a Salt minion via Bootstrap-script
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete SLES minion system profile before script bootstrap test
     Given I am on the Systems overview page of this "sle_minion"
@@ -83,3 +84,6 @@ Feature: Register a Salt minion via Bootstrap-script
   Scenario: Cleanup: remove package from script-bootstrapped SLES minion
    When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
    Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

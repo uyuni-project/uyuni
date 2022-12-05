@@ -6,6 +6,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete SLES minion system profile
     Given I am on the Systems overview page of this "sle_minion"
@@ -121,3 +122,6 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Check events history for failures on SLES minion with activation key
     Given I am on the Systems overview page of this "sle_minion"
     Then I check for failed events on history event page
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

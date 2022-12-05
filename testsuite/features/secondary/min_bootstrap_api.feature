@@ -6,6 +6,7 @@ Feature: Register a Salt minion via API
 
   Scenario: Delete SLES minion system profile before API bootstrap test
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
     And I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
