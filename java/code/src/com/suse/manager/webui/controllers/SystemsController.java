@@ -60,6 +60,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.PageControlHelper;
@@ -139,6 +140,7 @@ public class SystemsController {
         get("/manager/systems/details/mgr-server-info/:sid",
                 withCsrfToken(withDocsLocale(withUserAndServer(this::mgrServerInfoPage))),
                 jade);
+        get("/manager/systems/details/by-name/:name", withUser(this::getDetailsByName));
         post("/manager/api/systems/:sid/mgr-server-reportdb-newpw", withUser(this::mgrServerNewReportDbPassword));
         post("/manager/api/systems/:sid/delete", withUser(this::delete));
         get("/manager/api/systems/:sid/channels", withUser(this::getChannels));
@@ -149,6 +151,16 @@ public class SystemsController {
                 withUser(this::getAccessibleChannelChildren));
         get("/manager/api/systems/list/virtual", asJson(withUser(this::virtualSystems)));
         get("/manager/api/systems/list/all", asJson(withUser(this::allSystems)));
+    }
+
+    private String getDetailsByName(Request request, Response response, User user) {
+        String name = request.params("name");
+        List<SystemOverview> matches = SystemManager.listSystemsByName(user, name);
+        if (matches.size() != 1) {
+            throw new NotFoundException("No or multiple systems matching the name");
+        }
+        response.redirect("/rhn/systems/details/Overview.do?sid=" + matches.get(0).getId());
+        return null;
     }
 
     private Object virtualSystems(Request request, Response response, User user) {
