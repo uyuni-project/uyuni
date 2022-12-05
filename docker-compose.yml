@@ -10,8 +10,6 @@ services:
     image: "ghcr.io/jordimassaguerpla/uyuni/ubuntu-minion:master"
   rocky-minion:
     image: "ghcr.io/jordimassaguerpla/uyuni/rocky-minion:master"
-  opensuse-server:
-    image: "ghcr.io/jordimassaguerpla/uyuni/opensuse-server:master"
   opensuse-proxy:
     image: "ghcr.io/jordimassaguerpla/uyuni/opensuse-proxy:master"
   proxy-httpd-test:
@@ -28,4 +26,20 @@ services:
     image: "ghcr.io/jordimassaguerpla/uyuni/proxy-ssh:master"
   proxy-tftpd:
     image: "ghcr.io/jordimassaguerpla/uyuni/proxy-tftpd:master"
+  server-httpd-test:
+    build:
+      context: .
+      dockerfile: dockerfiles/server-httpd-test/Dockerfile
+  server-search-test:
+    build:
+      context: .
+      dockerfile: dockerfiles/server-search-test/Dockerfile
+  server-taskomatic-test:
+    build:
+      context: .
+      dockerfile: dockerfiles/server-taskomatic-test/Dockerfile
 
+  server-java-app-test:
+    build:
+      context: .
+      dockerfile: dockerfiles/server-java-app-test/Dockerfile

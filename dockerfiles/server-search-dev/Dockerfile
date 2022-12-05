@@ -30,8 +30,4 @@ RUN zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/system
         log4j && \
     zypper ref -f && \ 
     zypper clean -a
-#TODO:
-#RUN  make build and make install
-#COPY files
-CMD /usr/sbin/rhn-search
 
