@@ -7,6 +7,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Remove mgrcompat module from minion synced modules and schedule Hardware Refresh
     Given I remove "minion/extmods/states/mgrcompat.py" from salt cache on "sle_minion"
@@ -104,3 +105,6 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API
