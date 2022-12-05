@@ -1,4 +1,8 @@
-- Prefix log messages with a package name to ease analysis
+-------------------------------------------------------------------
+Mon Dec  5 16:07:14 UTC 2022 - Marina Latini <marina.latini@suse.com>
+
+- Update the image version to 4.3.3
+  * Prefix log messages with a package name to ease analysis
 
 -------------------------------------------------------------------
 Fri Nov  4 15:06:21 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
