@@ -30,19 +30,21 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/server-httpd-test/Dockerfile
-  server-search-test:
+  server-s-test:
     build:
       context: .
       dockerfile: dockerfiles/server-search-test/Dockerfile
-  server-taskomatic-test:
+  server-t-test:
     build:
       context: .
       dockerfile: dockerfiles/server-taskomatic-test/Dockerfile
-  server-java-app-test:
+  server-j-test:
     build:
       context: .
       dockerfile: dockerfiles/server-java-app-test/Dockerfile
-  server-postgresql:
-    build:
-      image: "ghcr.io/jordimassaguerpla/uyuni/server-postgresql:master"
-
+  server-pg:
+    image: "ghcr.io/jordimassaguerpla/uyuni/server-postgresql:master"
+  server-salt-master:
+    image: "ghcr.io/jordimassaguerpla/uyuni/server-salt-master:master"
+  server-salt-api:
+    image: "ghcr.io/jordimassaguerpla/uyuni/server-salt-api:master"
