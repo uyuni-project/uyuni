@@ -12,6 +12,10 @@ jobs:
         run: sleep 30s  
       - name: dockerps
         run: docker ps
+      - name: nmap_from_host
+        run: nmap server-httpd-test
+      - name: docker-networks
+        run: docker network ls
       - name: nmap
         uses: docker://ghcr.io/jordimassaguerpla/uyuni/controller:master
         with:
