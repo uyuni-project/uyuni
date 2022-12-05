@@ -1,3 +1,4 @@
+- Handle tftp in rhn-proxy (bsc#1205976)
 - remove jabberd and osa-dispatcher
 
 -------------------------------------------------------------------
