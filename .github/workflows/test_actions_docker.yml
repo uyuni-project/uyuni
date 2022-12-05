@@ -15,8 +15,8 @@ jobs:
       - name: osrelease
         uses: docker://ghcr.io/jordimassaguerpla/uyuni/controller:master
         with:
-          entrypoint: cat
-          args: /etc/os-release 
+          entrypoint: mmap
+          args: server-httpd-test
       - name: last-step
         run: echo "bye bye!"
 
