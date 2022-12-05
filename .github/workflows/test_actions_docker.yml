@@ -12,10 +12,10 @@ jobs:
         run: sleep 30s  
       - name: dockerps
         run: docker ps
-      - name: osrelease
+      - name: nmap
         uses: docker://ghcr.io/jordimassaguerpla/uyuni/controller:master
         with:
-          entrypoint: mmap
+          entrypoint: /usr/bin/mmap
           args: server-httpd-test
       - name: last-step
         run: echo "bye bye!"
