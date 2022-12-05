@@ -74,32 +74,14 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
     public XmlResourceBundle(String filelocation) throws IOException {
         strings = new HashMap<>();
         try {
-            // These are namespace URLs, and don't actually
-            // resolve to real documents that get downloaded on the
-            // web.
-            // Turn on validation
-            String validationFeature
-                = "http://xml.org/sax/features/validation";
-            // Turn on schema validation
-            String schemaFeature
-                = "http://apache.org/xml/features/validation/schema";
-            // We have to store the xsd locally because we may not have
-            // access to it over the web when starting up the service.
-            String xsdLocation =
-                this.getClass().getResource("/xliff-core-1.1.xsd").toString();
             SAXParserFactory factory = SAXParserFactory.newInstance();
-            factory.setFeature(validationFeature, false);
-            factory.setFeature(schemaFeature, false);
             factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
             factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             SAXParser parser = factory.newSAXParser();
             XMLReader reader = parser.getXMLReader();
-            reader.setProperty("http://apache.org/xml/properties/schema/" +
-                    "external-noNamespaceSchemaLocation", xsdLocation);
             XmlResourceBundleParser handler = new XmlResourceBundleParser();
             reader.setContentHandler(handler);
-            reader.parse(new InputSource(this.getClass().
-                                         getResourceAsStream(filelocation)));
+            reader.parse(new InputSource(this.getClass().getResourceAsStream(filelocation)));
             strings = handler.getMessages();
         }
         catch (SAXException | ParserConfigurationException e) {
