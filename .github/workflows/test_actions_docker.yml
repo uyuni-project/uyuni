@@ -12,11 +12,18 @@ jobs:
         run: sleep 30s  
       - name: dockerps
         run: docker ps
-      - name: osrelease
+      - name: install-deps
+        run: sudo apt-get install -y nmap
+      - name: nmap_from_host
+        run: nmap server-httpd-test
+      - name: docker-networks
+        run: docker network ls
+      - name: nmap
         uses: docker://ghcr.io/jordimassaguerpla/uyuni/controller:master
         with:
-          entrypoint: cat
-          args: /etc/os-release 
+          network: uyuni_default
+          entrypoint: /usr/bin/nmap
+          args: server-httpd-test
       - name: last-step
         run: echo "bye bye!"
 
