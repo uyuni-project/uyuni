@@ -15,7 +15,7 @@ jobs:
       - name: nmap
         uses: docker://ghcr.io/jordimassaguerpla/uyuni/controller:master
         with:
-          entrypoint: /usr/bin/mmap
+          entrypoint: /usr/bin/nmap
           args: server-httpd-test
       - name: last-step
         run: echo "bye bye!"
