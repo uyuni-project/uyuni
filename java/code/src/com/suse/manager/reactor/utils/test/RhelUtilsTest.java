@@ -221,7 +221,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         String whatProvidesRes = map.get("cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        String whatProvidesSLL = map.get("cmd_|-respkgquery_|-rpm -q --whatprovides 'sll-release'_|-run")
+        String whatProvidesSLL = map.get("cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
         MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);

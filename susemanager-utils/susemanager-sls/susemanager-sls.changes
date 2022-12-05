@@ -1,3 +1,4 @@
+- Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
 - drop legacy way to prevent disabling local repos
 
 -------------------------------------------------------------------
