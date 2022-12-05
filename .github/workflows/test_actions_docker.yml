@@ -12,6 +12,8 @@ jobs:
         run: sleep 30s  
       - name: dockerps
         run: docker ps
+      - name: install-deps
+        run: sudo apt-get install -y nmap
       - name: nmap_from_host
         run: nmap server-httpd-test
       - name: docker-networks
