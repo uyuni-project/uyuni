@@ -1,4 +1,8 @@
-- Add the log level value to the config.yaml
+-------------------------------------------------------------------
+Mon Dec  5 16:06:10 UTC 2022 - Marina Latini <marina.latini@suse.com>
+
+- Update the image version to 4.3.3
+  * Add the log level value to the config.yaml
 
 -------------------------------------------------------------------
 Mon Sep 26 12:38:52 UTC 2022 - Marina Latini <marina.latini@suse.com>
