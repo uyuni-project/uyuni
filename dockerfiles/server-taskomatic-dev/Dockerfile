@@ -88,6 +88,7 @@ RUN zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/system
         # hibernate-ehcache \
         ant-nodeps \
         classmate \
+        ncat \
         libxml2-tools && \
     zypper clean -a
 

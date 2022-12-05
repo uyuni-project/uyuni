@@ -38,8 +38,11 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/server-taskomatic-test/Dockerfile
-
   server-java-app-test:
     build:
       context: .
       dockerfile: dockerfiles/server-java-app-test/Dockerfile
+  server-postgresql:
+    build:
+      image: "ghcr.io/jordimassaguerpla/uyuni/server-postgresql:master"
+
