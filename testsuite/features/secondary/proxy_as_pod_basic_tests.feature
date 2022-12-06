@@ -36,7 +36,6 @@ Feature: Register and test a Containerized Proxy
     And I stop "tftp" service on "proxy"
     And I wait until "squid" service is inactive on "proxy"
     And I wait until "apache2" service is inactive on "proxy"
-    And I wait until "jabberd" service is inactive on "proxy"
     And I wait until "tftp" service is inactive on "proxy"
 
   Scenario: Generate Containerized Proxy configuration
@@ -253,7 +252,6 @@ Feature: Register and test a Containerized Proxy
     And I start "tftp" service on "proxy"
     And I wait until "squid" service is active on "proxy"
     And I wait until "apache2" service is active on "proxy"
-    And I wait until "jabberd" service is active on "proxy"
     And I wait until "tftp" service is active on "proxy"
 
   Scenario: Cleanup: Bootstrap a Salt minion in the traditional proxy
