@@ -27,6 +27,7 @@ services:
   proxy-tftpd:
     image: "ghcr.io/jordimassaguerpla/uyuni/proxy-tftpd:master"
   server-httpd-test:
+    ports: [8080:443]
     build:
       context: .
       dockerfile: dockerfiles/server-httpd-test/Dockerfile

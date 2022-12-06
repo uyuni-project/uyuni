@@ -22,7 +22,7 @@ jobs:
         uses: docker://ghcr.io/jordimassaguerpla/uyuni/controller:master
         with:
           entrypoint: /usr/bin/nmap
-          args: server-httpd-test
+          args: localhost
       - name: last-step
         run: echo "bye bye!"
 
