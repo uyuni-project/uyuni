@@ -1030,7 +1030,7 @@
                 "name" : "OES2023-SLE-Manager-Tools15-Pool",
                 "distro_target" : "sle-15-x86_64",
                 "description" : "SLE-Manager-Tools15-Pool for sle-15-x86_64",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
             },
@@ -1040,7 +1040,7 @@
                 "name" : "OES2023-SLE-Manager-Tools15-Updates",
                 "distro_target" : "sle-15-x86_64",
                 "description" : "SLE-Manager-Tools15-Updates for sle-15-x86_64",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
