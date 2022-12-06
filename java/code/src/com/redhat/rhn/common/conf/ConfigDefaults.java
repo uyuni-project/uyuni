@@ -210,6 +210,12 @@ public class ConfigDefaults {
     private static final String TASKOMATIC_CHANNEL_REPODATA_WORKERS = "java.taskomatic_channel_repodata_workers";
 
     /**
+     * TLS protocols which should be allowed by Uyuni server
+     */
+
+    private static final String TLS_PROTOCOLS_SUPPORTED_BY_SERVER = "java.supported.tls.protocols";
+
+    /**
      * HTTP proxy defaults
      */
     public static final String HTTP_PROXY = "server.satellite.http_proxy";
@@ -861,6 +867,14 @@ public class ConfigDefaults {
      */
     public int getTaskoChannelRepodataWorkers() {
         return Config.get().getInt(TASKOMATIC_CHANNEL_REPODATA_WORKERS, 1);
+    }
+
+    /**
+     * Returns the list of TLS protocols that are supported by Server
+     * @return the list of TLS protocols that are supported by Server
+     */
+    public static List<String> getTlsProtocolsSupportedByServer() {
+        return Config.get().getList(TLS_PROTOCOLS_SUPPORTED_BY_SERVER);
     }
 
     /**
