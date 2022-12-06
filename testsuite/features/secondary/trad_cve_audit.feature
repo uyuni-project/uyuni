@@ -11,6 +11,7 @@ Feature: CVE Audit on traditional clients
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     When I enable repository "test_repo_rpm_pool" on this "sle_client"
@@ -80,14 +81,12 @@ Feature: CVE Audit on traditional clients
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-    And I am logged in API as user "admin" and password "admin"
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for this client
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for this client
     And I should get the test channel
     And I should get the "milkyway-dummy-2345" patch
-    Then I logout from API
 
   Scenario: Apply patches
     Given I am on the Systems overview page of this "sle_client"
@@ -101,10 +100,8 @@ Feature: CVE Audit on traditional clients
     And I wait until event "Patch Update: milkyway-dummy-2345" is completed
 
   Scenario: List systems by patch status via API after patch
-    When I am logged in API as user "admin" and password "admin"
     And I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
     Then I should get status "PATCHED" for this client
-    When I logout from API
 
   Scenario: Cleanup: remove installed packages
     When I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
@@ -113,3 +110,6 @@ Feature: CVE Audit on traditional clients
 
   Scenario: Cleanup: remove remaining systems from SSM after CVE audit tests
     When I follow "Clear"
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

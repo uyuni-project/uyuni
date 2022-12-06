@@ -8,6 +8,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: downgrade repositories to lower version on traditional client
     When I enable repository "test_repo_rpm_pool" on this "sle_client"
@@ -27,10 +28,8 @@ Feature: Action chain on traditional clients
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on traditional client
-    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
-    And I logout from API
 
   Scenario: Add a package installation to an action chain on traditional client
     Given I am on the Systems overview page of this "sle_client"
@@ -178,7 +177,6 @@ Feature: Action chain on traditional clients
     When I run "rhn_check -vvv" on "sle_client"
 
   Scenario: Create an action chain via API
-    Given I am logged in API as user "admin" and password "admin"
     When I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.list_chains() if label "throwaway_chain" is there
     And I delete the action chain
@@ -189,10 +187,8 @@ Feature: Action chain on traditional clients
     When I delete an action chain, labeled "throwaway_chain_renamed"
     Then there should be no action chain with the label "throwaway_chain_renamed"
     And no action chain with the label "throwaway_chain"
-    When I logout from API
 
   Scenario: Add operations to the action chain via API for traditional client
-    Given I am logged in API as user "admin" and password "admin"
     When I want to operate on this "sle_client"
     And I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_package_install()
@@ -205,10 +201,8 @@ Feature: Action chain on traditional clients
     When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty
     When I delete the action chain
-    And I logout from API
 
   Scenario: Run and cancel an action chain via API
-    Given I am logged in API as user "admin" and password "admin"
     When I want to operate on this "sle_client"
     And I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_system_reboot()
@@ -219,10 +213,8 @@ Feature: Action chain on traditional clients
     When I cancel all scheduled actions
     And I wait until there are no more scheduled actions
     And I delete the action chain
-    And I logout from API
 
   Scenario: Run an action chain via API on traditional client
-    Given I am logged in API as user "admin" and password "admin"
     When I want to operate on this "sle_client"
     And I run "rhn-actions-control --enable-all" on "sle_client"
     And I call actionchain.create_chain() with chain label "multiple_scripts"
@@ -235,7 +227,6 @@ Feature: Action chain on traditional clients
     When I run "rhn_check -vvv" on "sle_client"
     Then file "/tmp/action_chain.log" should contain "123" on "sle_client"
     When I wait until there are no more scheduled actions
-    And I logout from API
 
   Scenario: Cleanup: remove traditional client from configuration channel
     When I follow the left menu "Configuration > Channels"
@@ -259,3 +250,6 @@ Feature: Action chain on traditional clients
 
   Scenario: Cleanup: remove temporary files for testing action chains on traditional client
     When I run "rm -f /tmp/action_chain.log" on "sle_client" without error control
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

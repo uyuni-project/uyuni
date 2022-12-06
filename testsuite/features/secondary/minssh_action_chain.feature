@@ -8,6 +8,7 @@ Feature: Salt SSH action chain
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: downgrade repositories to lower version on SSH minion
     When I enable repository "test_repo_rpm_pool" on this "ssh_minion"
@@ -38,10 +39,8 @@ Feature: Salt SSH action chain
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on SSH minion
-    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
-    And I logout from API
 
   Scenario: Add a patch installation to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
@@ -208,7 +207,6 @@ Feature: Salt SSH action chain
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Add operations to the action chain via API for SSH minions
-    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "ssh_minion"
     When I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_package_install()
@@ -220,10 +218,8 @@ Feature: Salt SSH action chain
     When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty
     When I delete the action chain
-    And I logout from API
 
   Scenario: Run an action chain via API on SSH minion
-    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "ssh_minion"
     When I call actionchain.create_chain() with chain label "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
@@ -236,7 +232,6 @@ Feature: Salt SSH action chain
     When I wait until file "/tmp/action_chain_done" exists on "ssh_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "ssh_minion"
     When I wait until there are no more scheduled actions
-    And I logout from API
 
   Scenario: Cleanup: remove SSH minion from configuration channel
     When I follow the left menu "Configuration > Channels"
@@ -263,3 +258,6 @@ Feature: Salt SSH action chain
     And I run "rm -f /tmp/action_chain_done" on "ssh_minion" without error control
     And I run "rm -f /etc/action-chain.cnf" on "ssh_minion" without error control
     And I run "rm -f /tmp/action_chain_one_system_done" on "ssh_minion" without error control
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

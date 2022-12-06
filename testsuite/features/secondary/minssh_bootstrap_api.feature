@@ -23,9 +23,7 @@ Feature: Register a salt-ssh system via API
     Given I block connections from "server" on "ssh_minion"
 
   Scenario: Bootstrap a SLES SSH minion via API
-    Given I am logged in API as user "admin" and password "admin"
     When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
-    And I logout from API
 
   Scenario: Check new API bootstrapped salt-ssh system in System Overview page
     When I follow the left menu "Systems > Overview"
