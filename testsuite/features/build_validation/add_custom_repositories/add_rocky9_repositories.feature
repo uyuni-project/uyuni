@@ -15,21 +15,21 @@ Feature: Add the Rocky 9 distribution custom repositories
     And I click on "Create Filter"
     And I wait at most 10 seconds until I see modal containing "Create a new filter" text
     Then I should see a "Create a new filter" text
-    And I enter "ruby-3.0" as "filter_name"
+    And I enter "ruby-3.1" as "filter_name"
     And I select "Module (Stream)" from "type"
     And I enter "ruby" as "moduleName"
-    And I enter "3.0" as "moduleStream"
+    And I enter "3.1" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
-    Then I should see a "ruby-3.0" text
+    Then I should see a "ruby-3.1" text
     When I click on "Create Filter"
     Then I wait at most 10 seconds until I see modal containing "Create a new filter" text
     Then I should see a "Create a new filter" text
-    When I enter "python-3.9" as "filter_name"
+    When I enter "php-8.1" as "filter_name"
     And I select "Module (Stream)" from "type"
-    And I enter "python39" as "moduleName"
-    And I enter "3.9" as "moduleStream"
+    And I enter "php" as "moduleName"
+    And I enter "8.1" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
-    Then I should see a "python-3.9" text
+    Then I should see a "php-8.1" text
 
   Scenario: Create a CLM project to remove AppStream metadata from Rocky 9
     When I follow the left menu "Content Lifecycle > Projects"
@@ -39,15 +39,15 @@ Feature: Add the Rocky 9 distribution custom repositories
     And I click on "Create"
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Rocky 9" text
     When I click on "Attach/Detach Sources"
-    And I select "Rocky Linux 9" from "selectedBaseChannel"
-    And I check "Rocky Linux 9 AppStream"
+    And I select "rockylinux-9 for x86_64" from "selectedBaseChannel"
+    # "rockylinux-9-appstream for x86_64" is already checked
     And I click on "Save"
-    Then I should see a "Custom Channel for Rocky Linux 9" text
+    Then I should see a "EL9-Manager-Tools-Pool for x86_64 Rocky" text
     When I click on "Attach/Detach Filters"
-    And I check "python-3.9: enable module python39:3.9"
-    And I check "ruby-3.0: enable module ruby:3.0"
+    And I check "php-8.1: enable module php:8.1"
+    And I check "ruby-3.1: enable module ruby:3.1"
     And I click on "Save"
-    Then I should see a "python-3.9: enable module python39:3.9" text
+    Then I should see a "php-8.1: enable module php:8.1" text
     When I click on "Add Environment"
     And I enter "result" as "name"
     And I enter "result" as "label"
