@@ -196,8 +196,7 @@ function update_server_set(variable, set_label, checked, values) {
 }
 
 function pageResponse(data) {
-  let resp = JSON.parse(data)
-  resp = JSON.parse(resp)
+  const resp = JSON.parse(data)
   if (typeof(resp['header']) != 'undefined') {
     jQuery("#header_selcount").html(resp.header);
   }
