@@ -47,6 +47,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -169,6 +170,9 @@ public class AjaxHandlerServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String url = req.getRequestURI().split(AJAX_PREFIX)[1];
         try {
+            if (!HANDLERS.containsKey(url)) {
+                throw new NoSuchElementException("No ajax handler found for the informed URL " + req.getRequestURI());
+            }
             Object result = HANDLERS.get(url).doProcess(req, resp);
             String response = JSON_RESULT_URLS.contains(url) ? gson.toJson(result) : result.toString();
             resp.getOutputStream().print(response);
