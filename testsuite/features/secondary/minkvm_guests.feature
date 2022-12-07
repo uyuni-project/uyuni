@@ -14,6 +14,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Show the KVM host system overview
+    Given I am on the Systems overview page of this "kvm_server"
+
   Scenario: Prepare a KVM test virtual machine and list it
     When I delete default virtual network on "kvm_server"
     And I create test-net0 virtual network on "kvm_server"
@@ -23,9 +26,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I create "test-vm" virtual machine on "kvm_server"
     And I follow "Virtualization" in the content area
     And I wait until I see "test-vm" text
-
-  Scenario: Show the KVM host virtualization tab
-    Given I follow "Virtualization" in the content area
 
   Scenario: Start a KVM virtual machine
     When I click on "Start" in row "test-vm"
