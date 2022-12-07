@@ -30,7 +30,5 @@ RUN zypper ref -f && \
       chromedriver \
       npm8 \
       && \
-    zypper clean -a && \
-    bundle.ruby2.5 install --gemfile testsuite/Gemfile && \
-    npm install cucumber-htmlreporter@5.5.0 --save-dev
+    zypper clean -a
 
