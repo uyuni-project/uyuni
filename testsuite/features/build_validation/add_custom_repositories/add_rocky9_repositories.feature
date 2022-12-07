@@ -34,10 +34,10 @@ Feature: Add the Rocky 9 distribution custom repositories
   Scenario: Create a CLM project to remove AppStream metadata from Rocky 9
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "Create Project"
-    And I enter "Remove AppStream metadata" as "name"
+    And I enter "Remove AppStream metadata from Rocky 9" as "name"
     And I enter "no-appstream" as "label"
     And I click on "Create"
-    Then I should see a "Content Lifecycle Project - Remove AppStream metadata" text
+    Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Rocky 9" text
     When I click on "Attach/Detach Sources"
     And I select "Rocky Linux 9" from "selectedBaseChannel"
     And I check "Rocky Linux 9 AppStream"
