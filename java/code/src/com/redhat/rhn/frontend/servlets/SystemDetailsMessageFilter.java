@@ -17,6 +17,8 @@ package com.redhat.rhn.frontend.servlets;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.common.BadParameterException;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -29,6 +31,7 @@ import org.apache.struts.action.ActionMessages;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -56,8 +59,19 @@ public class SystemDetailsMessageFilter implements Filter {
         chain.doFilter(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         RequestContext rctx = new RequestContext(req);
-        Long sid = rctx.getRequiredParam("sid");
         User user = rctx.getCurrentUser();
+        Long sid = null;
+        String name = rctx.getParam("name", false);
+        if (name != null) {
+            List<SystemOverview> matches = SystemManager.listSystemsByName(user, name);
+            if (matches.size() != 1) {
+                throw new BadParameterException("No or multiple systems matching the name");
+            }
+            sid = matches.get(0).getId();
+        }
+        else {
+            sid = rctx.getRequiredParam("sid");
+        }
         Server s = SystemManager.lookupByIdAndUser(sid, user);
         this.processSystemMessages(req, s);
     }

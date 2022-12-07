@@ -29,6 +29,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.action.common.BadParameterException;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -155,8 +157,8 @@ public class Access extends BaseHandler {
      * @return true if access is granted, false otherwise
      */
     public boolean aclSystemFeature(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getSid(map);
         String feature = params[0];
 
         return SystemManager.serverHasFeature(sid, feature);
@@ -169,8 +171,8 @@ public class Access extends BaseHandler {
      * @return True if system has virtualization entitlement, false otherwise.
      */
     public boolean aclSystemHasVirtualizationEntitlement(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getSid(map);
         User user = (User) map.get("user");
 
         return SystemManager.serverHasVirtuaizationEntitlement(sid, user.getOrg());
@@ -183,8 +185,8 @@ public class Access extends BaseHandler {
      * @return True if system has virtualization entitlement, false otherwise.
      */
     public boolean aclSystemHasBootstrapEntitlement(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getSid(map);
 
         return SystemManager.serverHasBootstrapEntitlement(sid);
     }
@@ -212,8 +214,8 @@ public class Access extends BaseHandler {
      * @return True if system has management entitlement, false otherwise.
      */
     public boolean aclSystemHasManagementEntitlement(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getSid(map);
         User user = (User) map.get("user");
         try {
             Server server = SystemManager.lookupByIdAndUser(sid, user);
@@ -236,7 +238,7 @@ public class Access extends BaseHandler {
     public boolean aclSystemHasSaltEntitlement(Object ctx, String[] params) {
         @SuppressWarnings("unchecked")
         Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Long sid = getSid(map);
         boolean ret = false;
         if (sid != null) {
             User user = (User) map.get("user");
@@ -262,7 +264,7 @@ public class Access extends BaseHandler {
     public boolean aclSystemHasAnsibleControlNodeEntitlement(Object ctx, String[] params) {
         @SuppressWarnings("unchecked")
         Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Long sid = getSid(map);
         boolean ret = false;
         if (sid != null) {
             User user = (User) map.get("user");
@@ -283,7 +285,7 @@ public class Access extends BaseHandler {
     public boolean aclSystemHasForeignEntitlement(Object ctx, String[] params) {
         @SuppressWarnings("unchecked")
         Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Long sid = getSid(map);
         boolean ret = false;
         if (sid != null) {
             User user = (User) map.get("user");
@@ -303,7 +305,7 @@ public class Access extends BaseHandler {
      */
     public boolean aclSystemIsBootstrapMinionServer(Object ctx, String[] params) {
         Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Long sid = getSid(map);
         boolean ret = false;
         if (sid != null) {
             User user = (User) map.get("user");
@@ -326,7 +328,7 @@ public class Access extends BaseHandler {
     public boolean aclAnySystemWithSaltEntitlement(Object ctx, String[] params) {
         @SuppressWarnings("unchecked")
         Map<String, Object> map = (Map<String, Object>) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Long sid = getSid(map);
         User user = (User) map.get("user");
         boolean ret = false;
         if (sid != null) {
@@ -351,8 +353,8 @@ public class Access extends BaseHandler {
      * @return true if a system is a satellite, false otherwise
      */
     public boolean aclSystemIsVirtual(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getSid(map);
         User user = (User) map.get("user");
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
 
@@ -366,8 +368,8 @@ public class Access extends BaseHandler {
      * @return true if a system is a proxy, false otherwise
      */
     public boolean aclSystemIsProxy(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getSid(map);
         User user = (User) map.get("user");
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
 
@@ -381,8 +383,8 @@ public class Access extends BaseHandler {
      * @return True if system has management entitlement, false otherwise.
      */
     public boolean aclSystemIsInSSM(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getSid(map);
         User user = (User) map.get("user");
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         return set.contains(sid);
@@ -559,6 +561,34 @@ public class Access extends BaseHandler {
         return e != null && e.getOrg() != null;
     }
 
+    private Long getSid(Map<String, Object> ctx) {
+        User user = (User) ctx.get("user");
+
+        if (ctx.containsKey("name")) {
+            Object o = ctx.get("name");
+            String name = null;
+            if (o instanceof String) {
+                name = (String) o;
+            }
+            else if (o instanceof String[]) {
+                String[] names = (String[]) o;
+                if (names.length == 1) {
+                    name = names[0];
+                }
+            }
+            if (name == null) {
+                throw new BadParameterException("Invalid name parameter value");
+            }
+
+            List<SystemOverview> matches = SystemManager.listSystemsByName(user, name);
+            if (matches.size() != 1) {
+                throw new BadParameterException("No or multiple systems matching the name");
+            }
+            return matches.get(0).getId();
+        }
+        return getAsLong(ctx.get("sid"));
+    }
+
     /**
      * Checks a value from a formula for equality with the given argument.
      * @param ctx acl context
@@ -566,9 +596,9 @@ public class Access extends BaseHandler {
      * @return whether the formula values is equal to the given arg
      */
     public boolean aclFormulaValueEquals(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Map<String, Object> map = (Map<String, Object>) ctx;
         User user = (User) map.get("user");
+        Long sid = getSid(map);
         if (params == null || params.length < 3) {
             return false;
         }
@@ -586,8 +616,8 @@ public class Access extends BaseHandler {
      * @return true if the server uses ssh-push or ssh-push-tunnel
      */
     public boolean aclHasSshPushContactMethod(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getSid(map);
         User user = (User) map.get("user");
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
         return ContactMethodUtil.isSSHPushContactMethod(lookedUp.getContactMethod());
