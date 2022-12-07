@@ -143,9 +143,7 @@ Feature: Cobbler and distribution autoinstallation
     When I trigger cobbler system record on the "sle_minion"
 
   Scenario: Create a cobbler system record via API
-    When I am logged in API as user "admin" and password "admin"
-    And I create a system record
-    And I logout from API
+    When I create a system record
     And I wait until file "/srv/tftpboot/pxelinux.cfg/01-00-22-22-77-ee-cc" contains "ks=.*testserver:1" on server
     Then the cobbler report should contain "testserver.example.com" for cobbler system name "testserver:1"
     And the cobbler report should contain "1.1.1.1" for cobbler system name "testserver:1"

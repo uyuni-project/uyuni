@@ -10,7 +10,6 @@ Feature: CVE Audit on SLE Salt Minions
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
@@ -106,6 +105,3 @@ Feature: CVE Audit on SLE Salt Minions
 
   Scenario: Cleanup: remove remaining systems from SSM after CVE audit tests
     When I click on "Clear"
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

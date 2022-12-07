@@ -9,7 +9,7 @@ Feature: Left Menu Filter
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-  
+
   Scenario: Search a word and expect the right result
     When I enter "Admin" as the left menu search field
     Then I should see a "Admin" link in the left menu  

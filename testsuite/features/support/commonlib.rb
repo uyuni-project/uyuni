@@ -184,9 +184,7 @@ def deb_host?(name)
 end
 
 def repository_exist?(repo)
-  $api_test.auth.login('admin', 'admin')
   repo_list = $api_test.channel.software.list_user_repos
-  $api_test.auth.logout
   repo_list.include? repo
 end
 

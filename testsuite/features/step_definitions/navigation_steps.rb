@@ -406,6 +406,12 @@ end
 
 # access the clients
 Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+  visit("https://#{$server.full_hostname}/rhn/systems/details/Overview.do?sid=#{system_id}")
+end
+
+Given(/^I navigate to the Systems overview page of this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   steps %(
     Given I am on the Systems page

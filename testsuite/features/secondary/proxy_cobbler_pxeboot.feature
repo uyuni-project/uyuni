@@ -13,7 +13,6 @@ Feature: PXE boot a terminal with Cobbler
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Configure PXE part of DHCP on the proxy
     Given I am on the Systems overview page of this "proxy"
@@ -149,6 +148,3 @@ Feature: PXE boot a terminal with Cobbler
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API
