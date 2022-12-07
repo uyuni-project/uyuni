@@ -94,7 +94,7 @@
     "immer": "9.0.6",
     "ip-regex": "^4.3.0",
     "jexl": "2.2.2",
-    "jquery-ui": "1.10.4",
+    "jquery-ui": "1.13.2",
     "jquery": "3.5.1",
     "less-loader": "^10.2.0",
     "less": "^4.1.2",

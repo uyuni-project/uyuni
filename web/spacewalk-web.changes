@@ -1,3 +1,4 @@
+- Upgrade jquery-ui to 1.13.2
 - Move web dependencies from susemanager-frontend-libs to
   spacewalk-web
 
