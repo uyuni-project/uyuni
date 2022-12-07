@@ -33,7 +33,7 @@ function request<Returns>(
   type: "GET" | "POST" | "DELETE" | "PUT",
   headers: Record<string, string> | undefined,
   data: any,
-  contentType: string | boolean,
+  contentType: string,
   processData: boolean = true
 ): Cancelable<Returns> {
   const isRegularObject = typeof data === "object" && !(data instanceof FormData);
@@ -64,7 +64,7 @@ function request<Returns>(
 function post<Returns = any, Payload = any>(
   url: string,
   data?: DataType<Payload>,
-  contentType: string | boolean = "application/json",
+  contentType: string = "application/json",
   processData: boolean = true
 ): Cancelable<Returns> {
   return request<Returns>(url, "POST", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
