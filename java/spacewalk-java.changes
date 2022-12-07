@@ -1,3 +1,5 @@
+- Move web dependencies from susemanager-frontend-libs to
+  spacewalk-web
 - Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
 - send notifications also as email if email notifications are enabled
 - remove jabberd and osa-dispatcher

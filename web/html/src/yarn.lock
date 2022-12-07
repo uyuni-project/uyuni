@@ -2912,6 +2912,10 @@ accepts@~1.3.4, accepts@~1.3.5, accepts@~1.3.7:
     mime-types "~2.1.24"
     negotiator "0.6.2"
 
+ace-builds@ajaxorg/ace-builds#v1.3.3:
+  version "1.3.3"
+  resolved "https://codeload.github.com/ajaxorg/ace-builds/tar.gz/c915483e909bc1b3061cabaaf932f796c723226b"
+
 acorn-dynamic-import@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/acorn-dynamic-import/-/acorn-dynamic-import-4.0.0.tgz#482210140582a36b83c3e342e1cfebcaa9240948"
@@ -3523,6 +3527,11 @@ bootstrap@3.4.1, bootstrap@^3.3.6:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.4.1.tgz#c3a347d419e289ad11f4033e3c4132b87c081d72"
   integrity sha512-yN5oZVmRCwe5aKwzRj6736nSmKDX7pLYwsXiCj/EYmo16hODaBiT4En5btW/jhBF/seV+XMx3aYwukYC3A49DA==
+
+bootstrap@>=2.0.0:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.2.2.tgz#834e053eed584a65e244d8aa112a6959f56e27a0"
+  integrity sha512-dEtzMTV71n6Fhmbg4fYJzQsw1N29hJKO1js5ackCgIpDcGid2ETMGC6zwSYw09v05Y+oRdQ9loC54zB1La3hHQ==
 
 bootstrap@^4.3.1:
   version "4.6.1"
@@ -6017,6 +6026,11 @@ follow-redirects@^1.0.0:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
   integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
 
+font-awesome@4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.4.0.tgz#9fe43f82cf72726badcbdb2704407aadaca17da9"
+  integrity sha512-h45v/TF2b9d6JiBnyluFrjZRyJXXkRjWbTKxb0ygTScxdP8gWdgMBaghbDuSLQFHNkj3M0eNrLxfTEiQo93ARQ==
+
 for-in@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
@@ -7836,10 +7850,20 @@ jexl@2.2.2:
   resolved "https://registry.yarnpkg.com/jexl/-/jexl-2.2.2.tgz#eb06cd84684a52b6408be94604c5529f416ccd2f"
   integrity sha512-HYDGbiZtGLbaxp1b0S7Nqbtegu5zhxaUBzsrMIpoEJDNr1M8lSuowpO7ziXldc/+wGGvwkZYQSS8mW2cPpiGgA==
 
+jquery-ui@1.10.4:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.10.4.tgz#a096fe5f4e0f2ab69a0585cf10455877f57506bd"
+  integrity sha512-VdBz+azK9w7aLfrynqRjhDClgKF57L5fOcj6xDRar/PC0F/WFVD2a5Rfp1W15NYa2kkAvKp1YzAd2/lnGlmOmw==
+
 jquery@3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
   integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
+
+jquery@>=1.7, jquery@>=1.7.0:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.1.tgz#fab0408f8b45fc19f956205773b62b292c147a16"
+  integrity sha512-opJeO4nCucVnsjiXOE+/PcCgYw9Gwpvs/a6B1LL/lQhwWwpbVEVYDZ1FokFr8PRc7ghYlrFPuyHuiiDNTQxmcw==
 
 jquery@^3.6.0:
   version "3.6.0"
@@ -9808,6 +9832,14 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+pwstrength-bootstrap@1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/pwstrength-bootstrap/-/pwstrength-bootstrap-1.2.6.tgz#734fb2e1b38231404030d955e3d40244e7fa3899"
+  integrity sha512-t8g4Z9OGBV9mCREyrEyuREzTn50meosd3z3FF03Pe2FKmxEGJg7zzT7T1RxQtpou6js8fyY+OV9uOFPuE/3qaA==
+  dependencies:
+    bootstrap ">=2.0.0"
+    jquery ">=1.7.0"
+
 q-i@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/q-i/-/q-i-2.0.1.tgz#fec7e3f0e713f3467358bb5ac80bcc4c115187d6"
@@ -10714,6 +10746,16 @@ select-hose@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
   integrity sha1-Yl2GWPhlr0Psliv8N2o3NZpJlMo=
+
+select2-bootstrap-css@1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/select2-bootstrap-css/-/select2-bootstrap-css-1.4.6.tgz#5cfb68246f5299ca1858e01efd788804c734997e"
+  integrity sha512-BBsisfivUYjwhj3QdWNS15sBqC/DHoszRC4B3GIzJwMNO1pT1uVvwDm5u2TLXi7oj/3S4vIeQ6yAuMa86d7c9A==
+
+select2@3.4.5:
+  version "3.4.5"
+  resolved "https://registry.yarnpkg.com/select2/-/select2-3.4.5.tgz#c0555ed77da22b1d402ec9e1a69687abc15e747a"
+  integrity sha512-M+XNsLYyQ8oML8cRqqcPWuRs90gOxbS0O+OZtZycJ8ybJuJ1m/B/I3DJ5HlLWEXH1s6rZPsa0j2392XWdOQAaQ==
 
 selfsigned@^1.10.8:
   version "1.10.14"
@@ -11629,6 +11671,13 @@ thunky@^1.0.2:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
+
+timepicker@1.11.14:
+  version "1.11.14"
+  resolved "https://registry.yarnpkg.com/timepicker/-/timepicker-1.11.14.tgz#a7b8202fabc4d83514e3f591edc108769f0f096b"
+  integrity sha512-EsI/rWNaY+XrdPro7qEFj/ITNLDb2GVHVrCWb4N+rQImo/hWrC4JctriL2oPAhTss8WD6meYePc5IyG9O9ANcA==
+  dependencies:
+    jquery ">=1.7"
 
 tiny-warning@^1.0.2:
   version "1.0.3"

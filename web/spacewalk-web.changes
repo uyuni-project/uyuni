@@ -1,3 +1,6 @@
+- Move web dependencies from susemanager-frontend-libs to
+  spacewalk-web
+
 -------------------------------------------------------------------
 Fri Nov 18 15:14:52 CET 2022 - jgonzalez@suse.com
 
