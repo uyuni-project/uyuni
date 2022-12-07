@@ -174,7 +174,11 @@ public class AjaxHandlerServlet extends HttpServlet {
                 throw new NoSuchElementException("No ajax handler found for the informed URL " + req.getRequestURI());
             }
             Object result = HANDLERS.get(url).doProcess(req, resp);
-            String response = JSON_RESULT_URLS.contains(url) ? gson.toJson(result) : result.toString();
+            boolean isJsonResponse = JSON_RESULT_URLS.contains(url);
+
+            String response = isJsonResponse ? gson.toJson(result) : result.toString();
+            String contentType = isJsonResponse ? "application/json" : "text/html";
+            resp.setContentType(contentType);
             resp.getOutputStream().print(response);
             resp.getOutputStream().close();
         }
