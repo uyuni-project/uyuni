@@ -29,6 +29,9 @@ defaultdict = {
     "sle15sp3_minion": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
                         "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
+    "sle15sp4_client": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
+                        "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
+                        "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"],
     "sle15sp4_minion": ["/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
                         "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"],
@@ -42,9 +45,14 @@ defaultdict = {
     "debian10_minion": "/SUSE_Updates_Debian_10-CLIENT-TOOLS_x86_64/",
     "debian11_minion": "/SUSE_Updates_Debian_11-CLIENT-TOOLS_x86_64/",
     "opensuse153arm_minion": "/SUSE_Updates_openSUSE-SLE_15.3/",
+    "opensuse154arm_minion": "/SUSE_Updates_openSUSE-SLE_15.4/",
+    "rhel9_minion": "/SUSE_Updates_EL_9-CLIENT-TOOLS_x86_64/",
     "rocky9_minion": "/SUSE_Updates_EL_9-CLIENT-TOOLS_x86_64/",
     "alma9_minion": "/SUSE_Updates_EL_9-CLIENT-TOOLS_x86_64/",
-    "oracle9_minion": "/SUSE_Updates_EL_9-CLIENT-TOOLS_x86_64/"}
+    "oracle9_minion": "/SUSE_Updates_EL_9-CLIENT-TOOLS_x86_64/",
+    "slemicro52_minion": ["/SUSE_Updates_SLE-Manager-Tools-For-Micro_5_x86_64/",
+                          "/SUSE_Updates_SUSE-MicroOS_5.2_x86_64/"]
+    }
 
 # Dictionary for SUMA 4.2 Server and Proxy, which is then added together with the common dictionary for client tools
 nodesdict42 = {
