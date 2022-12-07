@@ -88,7 +88,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "Create Project"
     And I enter "Remove AppStream metadata from Rocky 8" as "name"
-    And I enter "no-appstream" as "label"
+    And I enter "no-appstream-8" as "label"
     And I click on "Create"
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Rocky 8" text
     When I click on "Attach/Detach Sources"
