@@ -21,7 +21,7 @@ jobs:
       - name: test_from_host
         run: curl http://localhost:1234/test.html
       - name: test_from_container
-        run: docker run -a stdout -a stderr --network uyuni_default controller_1 bash -c "curl http://server-h-test/test.html" 
+        run: docker run -a stdout -a stderr --network ghcr.io/jordimassaguerpla/uyuni/controller:master bash -c "curl http://server-h-test/test.html"
       - name: last-step
         run: echo "bye bye!"
 
