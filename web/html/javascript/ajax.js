@@ -3,21 +3,14 @@
  * Please, don't use the functions available here in any other scenario.
  */
 
-const onAjaxRequestError = function (res, status, error) {
-  console.log("Error processing ajax request...")
-  console.log(res.responseText, status, error)
+const onAjaxRequestError = function (error) {
+  console.log("Error processing ajax request...", error)
 }
 
-const ajax_post = function(url, data, onSuccess, onAjaxRequestError, contentType = false) {
-  jQuery.ajax({
-    type: 'POST',
-    url: `/rhn/ajax/${url}`,
-    processData: false,
-    data,
-    contentType: contentType,
-    success: onSuccess,
-    error: onAjaxRequestError
-  })
+const ajax_post = function(url, data, onSuccess, onError = onAjaxRequestError, contentType = false) {
+  network.post(`/rhn/ajax/${url}`, data, contentType, false)
+    .then(onSuccess)
+    .catch(onError)
 }
 
 function ajax(url, data, onSuccess, contentType, onError) {

@@ -60,8 +60,7 @@ function setProxySettings(settings) {
 function retrieveProxySettings() {
   showSpinner('http-proxy-verify');
   
-  function onSuccess(res) {
-    const settings = JSON.parse(res)
+  function onSuccess(settings) {
     setProxySettings(settings);
 
     if (settings.hostname) {
