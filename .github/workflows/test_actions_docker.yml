@@ -18,11 +18,13 @@ jobs:
         run: nmap server-httpd-test
       - name: docker-networks
         run: docker network ls
-      - name: nmap
+      - name: test_from_container
         uses: docker://ghcr.io/jordimassaguerpla/uyuni/controller:master
         with:
-          entrypoint: /usr/bin/nmap
-          args: localhost
+          entrypoint: curl
+          args: http://localhost:1234/test.html
+      - name: test_from_host
+        run: curl http://localhost:1234/test.html
       - name: last-step
         run: echo "bye bye!"
 
