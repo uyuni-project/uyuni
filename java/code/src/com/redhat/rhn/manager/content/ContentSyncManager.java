@@ -98,6 +98,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -937,8 +938,9 @@ public class ContentSyncManager {
             }
 
             rootProducts.stream()
-                        .map(root -> convertToProductSCCRepository(root, ptfInfo))
-                        .forEach(productReposToSave::add);
+                    .map(root -> convertToProductSCCRepository(root, ptfInfo))
+                    .filter(Objects::nonNull)
+                    .forEach(productReposToSave::add);
 
             reposToSave.add(ptfInfo.getRepository());
         }
@@ -1030,7 +1032,11 @@ public class ContentSyncManager {
                    prodRepoLink.setChannelLabel(String.join("-", cList).toLowerCase().replaceAll("( for | )", "-"));
                    prodRepoLink.setChannelName(String.join(" ", cList));
                });
-
+        if (StringUtils.isBlank(prodRepoLink.getChannelLabel())) {
+            // mandatory field is missing. This happens when a product does not have suseProductSCCRepositories
+            log.info("Product '" + root.toString() + "' does not have repositories. Skipping.");
+            return null;
+        }
         return prodRepoLink;
     }
 
