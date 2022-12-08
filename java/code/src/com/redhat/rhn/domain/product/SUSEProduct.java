@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * POJO for a suseProducts row.
@@ -368,5 +369,17 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
             .append(getRelease())
             .append(getArch())
             .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", SUSEProduct.class.getSimpleName() + "[", "]")
+                .add(Long.toString(getId()))
+                .add(getName())
+                .add(getVersion())
+                .add(getRelease())
+                .add(getArch().getLabel())
+                .add("SCCid=" + Long.toString(getProductId()))
+                .toString();
     }
 }
