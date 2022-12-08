@@ -122,14 +122,14 @@ public class ErrataFactory extends HibernateFactory {
      * @param org User organization
      * @return list of erratas found
      */
-    public static List lookupByIdentifier(String identifier, Org org) {
+    public static List<Errata> lookupByIdentifier(String identifier, Org org) {
         Long eid = null;
-        List retval = new LinkedList();
+        List<Errata> retval = new LinkedList<>();
         try {
             eid = Long.parseLong(identifier);
         }
         catch (NumberFormatException e) {
-            eid = null;
+            // Nothing to do
         }
         if (eid != null) {
             Errata errata = ErrataFactory.lookupErrataById(eid);
@@ -422,13 +422,13 @@ public class ErrataFactory extends HibernateFactory {
      * @param fileType file type label
      * @return list of ErrataFile instances
      */
-    public static List lookupErrataFilesByErrataAndFileType(Long errataId,
+    public static List<ErrataFile> lookupErrataFilesByErrataAndFileType(Long errataId,
             String fileType) {
         Session session = null;
-        List retval = null;
+        List<ErrataFile> retval = null;
         try {
             session = HibernateFactory.getSession();
-            Query q = session.getNamedQuery("ErrataFile.listByErrataAndFileType");
+            Query<ErrataFile> q = session.getNamedQuery("ErrataFile.listByErrataAndFileType");
             q.setLong("errata_id", errataId);
             q.setString("file_type", fileType.toUpperCase());
             retval =  q.list();
@@ -553,19 +553,15 @@ public class ErrataFactory extends HibernateFactory {
      * @param cve cve text
      * @return Errata if found, otherwise null
      */
-    public static List lookupByCVE(String cve) {
-        List retval = new LinkedList();
+    public static List<Errata> lookupByCVE(String cve) {
         SelectMode mode = ModeFactory.getMode("Errata_queries", "erratas_for_cve");
         Map<String, Object> params = new HashMap<>();
         params.put("cve", cve);
-        List result = mode.execute(params);
+        DataResult<Map<String, Object>> result = mode.execute(params);
         Session session = HibernateFactory.getSession();
-        for (Object oIn : result) {
-            Map row = (Map) oIn;
-            Long rawId = (Long) row.get("id");
-            retval.add(session.load(Errata.class, rawId));
-        }
-        return retval;
+        return result.stream()
+                .map(row -> session.load(Errata.class, (Long) row.get("id")))
+                .collect(Collectors.toList());
     }
 
     /**
