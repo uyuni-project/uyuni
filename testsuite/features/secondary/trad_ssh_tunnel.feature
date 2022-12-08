@@ -6,6 +6,7 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete the traditional client for SSH tunnel bootstrap
     Given I am on the Systems overview page of this "sle_client"
@@ -45,3 +46,6 @@ Feature: Register a traditional system to be managed via SSH push
   Scenario: Cleanup: register a traditional client after SSH tunnel tests
     When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

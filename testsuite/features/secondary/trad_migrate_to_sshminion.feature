@@ -9,6 +9,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Install a package before migration to Salt SSH minion
     Given I am on the Systems overview page of this "sle_client"
@@ -141,3 +142,6 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:.*Management" regex, refreshing the page
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API
