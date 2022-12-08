@@ -8,8 +8,7 @@ function saveProxySettings() {
   username = jQuery('#http-proxy-input-username').val();
   password = jQuery('#http-proxy-input-password').val();
   
-  function onSuccess(res) {
-    const settings = JSON.parse(res);
+  function onSuccess(settings) {
     console.log("Proxy settings saved!");
     jQuery('#http-proxy-save').prop('disabled', false);
     // TODO make sure it succeeded
