@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.security;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -64,13 +67,9 @@ public class RedirectServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String REDIRECT_URI = "/rhn/Redirect";
+    private static final Logger LOG = LogManager.getLogger(RedirectServlet.class);
 
-    /**
-     *
-     */
-    public RedirectServlet() {
-    }
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
@@ -84,7 +83,12 @@ public class RedirectServlet extends HttpServlet {
             requestURL.append("?").append(queryString);
         }
 
-        response.sendRedirect(requestURL.toString());
+        try {
+            response.sendRedirect(requestURL.toString());
+        }
+        catch (IOException e) {
+            LOG.error("Failed to redirect request", e);
+        }
     }
 
 }

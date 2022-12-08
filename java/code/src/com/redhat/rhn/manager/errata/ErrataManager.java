@@ -140,14 +140,13 @@ public class ErrataManager extends BaseManager {
      * @param errataFiles list of files to resolve
      * @return list of corresponding java.io.File instances
      */
-    public static List resolveOvalFiles(List errataFiles) {
+    public static List<File> resolveOvalFiles(List<ErrataFile> errataFiles) {
         if (errataFiles == null || errataFiles.size() == 0) {
             return null;
         }
-        List retval = new LinkedList();
-        for (Object errataFileIn : errataFiles) {
+        List<File> retval = new LinkedList<>();
+        for (ErrataFile errataFile : errataFiles) {
             String directory = Config.get().getString("web.mount_point");
-            ErrataFile ef = (ErrataFile) errataFileIn;
             if (directory == null) {
                 return null;
             }
@@ -155,7 +154,7 @@ public class ErrataManager extends BaseManager {
                 directory += "/";
             }
             directory += "rhn/errata/oval/";
-            String fileName = ef.getFileName();
+            String fileName = errataFile.getFileName();
             if (!fileName.toLowerCase().startsWith(directory)) {
                 fileName = directory + fileName;
             }
@@ -174,7 +173,7 @@ public class ErrataManager extends BaseManager {
      * @param org User organization
      * @return list of erratas found
      */
-    public static List lookupErrataByIdentifier(String identifier, Org org) {
+    public static List<Errata> lookupErrataByIdentifier(String identifier, Org org) {
         return ErrataFactory.lookupByIdentifier(identifier, org);
     }
 

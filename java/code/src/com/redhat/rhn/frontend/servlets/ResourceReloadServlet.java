@@ -20,10 +20,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,27 +32,16 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public class ResourceReloadServlet extends HttpServlet {
-    private static Logger log = LogManager.getLogger(ResourceReloadServlet.class);
-
-
-    /**
-     * initialize the servlet
-     */
-    public void init() {
-    }
+    private static final Logger LOG = LogManager.getLogger(ResourceReloadServlet.class);
 
     /**
      * executed when a get request happens
      *
      * @param request the request object
      * @param response the response object
-     * @throws ServletException if an error occurs
-     * @throws IOException if an error occurs
      */
-    public void doGet(HttpServletRequest request,
-                       HttpServletResponse response)
-        throws ServletException, IOException {
-
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
         reloadStringResources(response);
     }
 
@@ -63,35 +50,29 @@ public class ResourceReloadServlet extends HttpServlet {
      *
      * @param request the request object
      * @param response the response object
-     * @throws ServletException if a read error occurs
-     * @throws IOException if a read error occurs
      */
-    public void doPost(HttpServletRequest request,
-                       HttpServletResponse response)
-        throws ServletException, IOException {
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
         reloadStringResources(response);
     }
 
-    private void reloadStringResources(HttpServletResponse response)
-        throws ServletException, IOException {
+    private void reloadStringResources(HttpServletResponse response) {
 
         response.setContentType("text/plain");
         boolean reloaded = LocalizationService.getInstance().reloadResourceFiles();
-        OutputStream out = response.getOutputStream();
         try {
+            OutputStream out = response.getOutputStream();
             String results = "Reloaded resource files: [" + reloaded + "]";
             response.setContentLength(results.length());
-            if (log.isDebugEnabled()) {
-                log.debug("Reloaded result [{}]", new String(results));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Reloaded result [{}]", results);
             }
             out.write(results.getBytes());
             out.flush();
         }
         // Lazy here since this is just a dev Servlet.
         catch (Exception e) {
-            log.error("Exception trying to reload.", e);
-            throw new ServletException("Throwable from ResourceReloadServlet", e);
+            LOG.error("Exception trying to reload.", e);
         }
-
     }
 }
