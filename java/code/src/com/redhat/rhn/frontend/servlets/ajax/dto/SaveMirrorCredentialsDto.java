@@ -20,12 +20,16 @@ package com.redhat.rhn.frontend.servlets.ajax.dto;
  * {@link com.redhat.rhn.frontend.action.renderers.setupwizard.MirrorCredentialsRenderer#saveCredentials}
  */
 public class SaveMirrorCredentialsDto {
-    private Long id;
+    private String id;
     private String user;
     private String password;
 
-    public Long getId() {
+    public String getId() {
         return id;
+    }
+
+    public Long getIdValue() {
+        return id == null || id.isEmpty() ? null : Long.parseLong(id);
     }
 
     public String getUser() {

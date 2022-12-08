@@ -131,7 +131,7 @@ public class AjaxHandlerServlet extends HttpServlet {
         HANDLERS.put("render-mirror-credentials", mirrorCredentialsRenderer::renderCredentials);
         HANDLERS.put("save-mirror-credentials", (req, resp) -> {
             SaveMirrorCredentialsDto dto = parseBody(req, SaveMirrorCredentialsDto.class);
-            return mirrorCredentialsRenderer.saveCredentials(req, dto.getId(), dto.getUser(), dto.getPassword());
+            return mirrorCredentialsRenderer.saveCredentials(req, dto.getIdValue(), dto.getUser(), dto.getPassword());
         });
         HANDLERS.put("make-primary-mirror-credentials", (req, resp) -> {
             MakePrimaryMirrorCredentialsDto dto = parseBody(req, MakePrimaryMirrorCredentialsDto.class);
