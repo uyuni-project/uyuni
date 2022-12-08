@@ -156,6 +156,16 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Rocky Linux 9" product has been added
 
+@rhel9_minion
+Scenario: Add Red Hat Linux 9
+  When I follow the left menu "Admin > Setup Wizard > Products"
+  And I wait until I do not see "Loading" text
+  And I enter "RHEL and Liberty 9 Base" as the filtered product description
+  And I select "RHEL and Liberty 9 Base" as a product
+  Then I should see the "RHEL and Liberty 9 Base" selected
+  When I click the Add Product button
+  And I wait until I see "RHEL and Liberty 9 Base" product has been added
+
 @ubuntu1804_minion
   Scenario: Add Ubuntu 18.04
     When I follow the left menu "Admin > Setup Wizard > Products"
