@@ -85,6 +85,7 @@ if $build_validation
              $centos7_minion, $centos7_ssh_minion,
              $rocky8_minion, $rocky8_ssh_minion,
              $rocky9_minion, $rocky9_ssh_minion,
+             $rhel9_minion, $rhel9_ssh_minion,
              $ubuntu1804_minion, $ubuntu1804_ssh_minion,
              $ubuntu2004_minion, $ubuntu2004_ssh_minion,
              $ubuntu2204_minion, $ubuntu2204_ssh_minion,
