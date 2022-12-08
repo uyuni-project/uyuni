@@ -9,6 +9,8 @@ import * as Preprocessing from "./data-processing/preprocessing";
 import * as HierarchyView from "./ui/hierarchy-view";
 import * as Utils from "./utils";
 
+(window as any).d3 = d3;
+
 // See java/code/src/com/suse/manager/webui/templates/visualization/hierarchy.jade
 declare global {
   interface Window {
@@ -153,7 +155,9 @@ function appendPatchStatus(cell, patchCountsArray) {
   }
 }
 
-function updateDetailBox(d) {
+function updateDetailBox(event) {
+  const target = event.target.closest("g.node");
+  const [d] = d3.select(target).data();
   const data = d.data;
 
   const detailBox = d3.select(".detailBox");
