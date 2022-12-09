@@ -122,7 +122,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testDeleteNotificationMessagesBefore() {
         UserNotificationFactory.setMailer(mailer);
         // Clean up all notifications that might be present
-        if (UserNotificationFactory.listAllNotificationMessages().size() > 0) {
+        if (!UserNotificationFactory.listAllNotificationMessages().isEmpty()) {
             UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
         }
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
@@ -151,7 +151,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testDeleteNotificationMessages() {
         UserNotificationFactory.setMailer(mailer);
         // Clean up all notifications that might be present
-        if (UserNotificationFactory.listAllNotificationMessages().size() > 0) {
+        if (!UserNotificationFactory.listAllNotificationMessages().isEmpty()) {
             UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
         }
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());

@@ -55,7 +55,7 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
         KickstartWizardHelper cmd = new KickstartWizardHelper(user);
         List trees = cmd.getKickstartableTrees();
         assertNotNull(trees);
-        assertTrue(trees.size() > 0);
+        assertTrue(!trees.isEmpty());
         boolean foundBaseTree = false;
         for (Object treeIn : trees) {
             KickstartableTree t = (KickstartableTree) treeIn;

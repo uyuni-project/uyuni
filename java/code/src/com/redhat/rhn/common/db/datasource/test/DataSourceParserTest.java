@@ -215,7 +215,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         while (i.hasNext()) {
             Map hm = (Map)i.next();
             List elab = (List)hm.get(elabName);
-            assertTrue(elab.size() > 0);
+            assertTrue(!elab.isEmpty());
             for (Object oIn : elab) {
                 Map curr = (Map) oIn;
                 assertTrue(((Number) curr.get("column_id")).intValue() > 0);
@@ -342,8 +342,8 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         Iterator i = dr.iterator();
         TableData first = (TableData)i.next();
         assertTrue(first.getTableName().toLowerCase().startsWith("rhn"));
-        assertTrue(first.getColumnName().size() > 0);
-        assertTrue(first.getColumnId().size() > 0);
+        assertTrue(!first.getColumnName().isEmpty());
+        assertTrue(!first.getColumnId().isEmpty());
     }
 
     @Test

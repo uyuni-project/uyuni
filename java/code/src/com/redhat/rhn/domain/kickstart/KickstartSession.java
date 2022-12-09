@@ -530,7 +530,7 @@ public class KickstartSession {
      * @return String if there is history.  null if not.
      */
     public String getMostRecentHistory() {
-        if (this.history != null && this.history.size() > 0) {
+        if (this.history != null && !this.history.isEmpty()) {
 
             SortedMap sorted = new TreeMap();
             for (Object oIn : this.history) {

@@ -43,7 +43,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
         List<String> packages = handler.getSoftwareList(admin, ksProfile.getLabel());
 
         // Note: the test profile created should have had at least 1 package listed
-        assertTrue(ksProfile.getKsPackages().size() > 0);
+        assertTrue(!ksProfile.getKsPackages().isEmpty());
         assertEquals(ksProfile.getKsPackages().size(), packages.size());
     }
 

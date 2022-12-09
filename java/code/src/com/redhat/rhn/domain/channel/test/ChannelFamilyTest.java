@@ -86,7 +86,7 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
     public static void ensurePrivateChannelFamilyExists(User user, ChannelFamily channelFamily) {
         Set<PrivateChannelFamily> families = channelFamily.getPrivateChannelFamilies();
 
-        if (families.size() == 0) {
+        if (families.isEmpty()) {
             PrivateChannelFamily privateChannelFamily = new PrivateChannelFamily();
             privateChannelFamily.setOrg(user.getOrg());
             privateChannelFamily.setChannelFamily(channelFamily);

@@ -111,7 +111,7 @@ public class Scrubber {
     }
 
     private Object scrubMap(Map value) {
-        if (value == null || value.size() == 0) {
+        if (value == null || value.isEmpty()) {
             return value;
         }
         for (Object k : value.keySet()) {

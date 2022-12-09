@@ -113,7 +113,7 @@ public class RhnSetImpl implements RhnSet {
      * {@inheritDoc}
      */
     public void addElement(String elem) {
-        if (elem != null && elem.length() > 0) {
+        if (elem != null && !elem.isEmpty()) {
             addElement(new RhnSetElement(getUserId(), getLabel(), elem));
         }
 
@@ -144,7 +144,7 @@ public class RhnSetImpl implements RhnSet {
         }
 
         for (String elemIn : elems) {
-            if (elemIn != null && elemIn.length() > 0) {
+            if (elemIn != null && !elemIn.isEmpty()) {
                 RhnSetElement elem = new RhnSetElement(getUserId(),
                         getLabel(), elemIn);
                 removeElement(elem);

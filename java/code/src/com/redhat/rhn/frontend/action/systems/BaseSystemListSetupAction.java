@@ -52,7 +52,7 @@ public abstract class BaseSystemListSetupAction extends RhnListAction {
         clampListBounds(pc, request, user);
         DataResult dr = getDataResult(user, pc, formIn);
         RhnSet set = getSetDecl().get(user);
-        if (!(dr.size() > 0)) {
+        if (dr.isEmpty()) {
             request.setAttribute(SHOW_NO_SYSTEMS, Boolean.TRUE);
         }
 

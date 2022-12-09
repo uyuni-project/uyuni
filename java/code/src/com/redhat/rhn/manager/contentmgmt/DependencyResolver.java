@@ -107,7 +107,7 @@ public class DependencyResolver {
         // Transform module filters to package filters
         // If no module filters are attached, no modular package should be filtered out
         DependencyResolutionResult resolved = null;
-        if (moduleFilters.size() > 0) {
+        if (!moduleFilters.isEmpty()) {
             resolved = resolveModularDependencies(moduleFilters);
             updatedFilters.addAll(resolved.getFilters());
             updatedFilters.removeAll(moduleFilters);

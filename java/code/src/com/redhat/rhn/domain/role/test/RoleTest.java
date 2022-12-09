@@ -165,7 +165,7 @@ public class RoleTest extends RhnBaseTestCase {
     public void testUserWithNoRoles() throws Exception {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        assertTrue(usr.getRoles().size() == 0);
+        assertTrue(usr.getRoles().isEmpty());
     }
 
     /**

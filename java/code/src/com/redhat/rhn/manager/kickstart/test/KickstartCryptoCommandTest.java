@@ -48,6 +48,6 @@ public class KickstartCryptoCommandTest extends BaseKickstartCommandTestCase {
         cmd.removeKeysById(ids);
         cmd.store();
         flushAndEvict(cmd.getKickstartData());
-        assertTrue(cmd.getKickstartData().getCryptoKeys().size() == 0);
+        assertTrue(cmd.getKickstartData().getCryptoKeys().isEmpty());
     }
 }

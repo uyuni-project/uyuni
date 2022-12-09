@@ -831,9 +831,9 @@ public class ConfigDefaults {
         }
 
         final StringBuilder connectionUrl = new StringBuilder(proto).append(':');
-        if (host != null && host.length() > 0) {
+        if (host != null && !host.isEmpty()) {
             connectionUrl.append("//").append(host);
-            if (port != null && port.length() > 0) {
+            if (port != null && !port.isEmpty()) {
                 connectionUrl.append(':').append(port);
             }
             connectionUrl.append('/');

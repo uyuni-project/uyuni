@@ -2423,7 +2423,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemsOverviewUpdateWorker.doUpdate(server2.getId());
 
         List<SystemOverview> servers = handler.listUngroupedSystems(admin);
-        assertTrue(servers.size() > 0);
+        assertTrue(!servers.isEmpty());
         boolean sidExists  = false;
         for (SystemOverview s : servers) {
             if (testServer.getId().equals(s.getId())) {

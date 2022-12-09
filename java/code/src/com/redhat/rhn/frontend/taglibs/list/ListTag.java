@@ -376,7 +376,7 @@ public class ListTag extends BodyTagSupport {
      * @throws JspException if row name is empty
      */
     public void setRowname(String nameIn) throws JspException {
-        if (rowName == null || rowName.length() == 0) {
+        if (rowName == null || rowName.isEmpty()) {
             throw new JspException("Row name cannot be empty");
         }
         rowName = nameIn;
@@ -548,7 +548,7 @@ public class ListTag extends BodyTagSupport {
         request.setAttribute("dataSize", String
                .valueOf(pageData.size() + 1));
 
-        if (pageData != null && pageData.size() > 0) {
+        if (pageData != null && !pageData.isEmpty()) {
             iterator = pageData.iterator();
         }
         else {
@@ -874,7 +874,7 @@ public class ListTag extends BodyTagSupport {
             ListTagUtil.write(pageContext, "<div class=\"site-info\">");
 
             if (manip.getTotalDataSetSize() != manip.getUnfilteredDataSize()) {
-                if (manip.getAllData().size() == 0) {
+                if (manip.getAllData().isEmpty()) {
                     ListTagUtil.write(pageContext, ls.getMessage(
                             "listtag.filteredmessageempty",
                             manip.getTotalDataSetSize()));

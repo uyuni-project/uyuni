@@ -83,7 +83,7 @@ public class SystemNoteEditAction extends RhnAction {
                         new ActionMessage("edit.note.subjecttoolong"));
             }
 
-            if (daForm.getString("subject").length() == 0) {
+            if (daForm.getString("subject").isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("edit.note.subjecttooshort"));
             }

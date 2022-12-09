@@ -49,7 +49,7 @@ public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
         KickstartOptionsCommand command = new KickstartOptionsCommand(k.getId(), ksUser);
 
         assertNotNull(command);
-        assertTrue(command.getDisplayOptions().size() > 0);
+        assertTrue(!command.getDisplayOptions().isEmpty());
         assertTrue(command.getDisplayOptions().size() >=
             command.getKickstartData().getOptions().size());
 

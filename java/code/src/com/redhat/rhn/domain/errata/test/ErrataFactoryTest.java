@@ -217,7 +217,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testBugs() throws Exception {
         var e = createTestErrata(user.getOrg().getId());
-        assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
+        assertTrue(e.getBugs() == null || e.getBugs().isEmpty());
         e.addBug(ErrataFactory.createBug(123L, "test bug",
                 "https://bugzilla.redhat.com/show_bug.cgi?id=" + (Long) 123L));
         assertEquals(1, e.getBugs().size());

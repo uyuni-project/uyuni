@@ -330,7 +330,7 @@ public class ActionFactory extends HibernateFactory {
         query.setParameter("serverId", serverId);
         query.setParameter("label", "kickstart.initiate");
         List retval = query.list();
-        return (retval != null && retval.size() > 0);
+        return (retval != null && !retval.isEmpty());
     }
 
     /**
@@ -346,7 +346,7 @@ public class ActionFactory extends HibernateFactory {
         query.setParameter("serverId", serverId);
         query.setParameter("label", "distupgrade.upgrade");
         List<ServerAction> list = query.list();
-        if (list != null && list.size() > 0) {
+        if (list != null && !list.isEmpty()) {
             ret = list.get(0).getParentAction();
         }
         return ret;
@@ -365,7 +365,7 @@ public class ActionFactory extends HibernateFactory {
         query.setParameter("serverId", serverId);
         query.setParameter("label", "reboot.reboot");
         List list = query.list();
-        if (list != null && list.size() > 0) {
+        if (list != null && !list.isEmpty()) {
             ret = ((ServerAction) list.get(0)).getParentAction();
         }
         return ret;
@@ -779,7 +779,7 @@ public class ActionFactory extends HibernateFactory {
                 actionsAtHierarchyLevel.add(((Action) resultIn).getId());
             }
         }
-        while (actionsAtHierarchyLevel.size() > 0);
+        while (!actionsAtHierarchyLevel.isEmpty());
 
         return returnSet.stream();
     }

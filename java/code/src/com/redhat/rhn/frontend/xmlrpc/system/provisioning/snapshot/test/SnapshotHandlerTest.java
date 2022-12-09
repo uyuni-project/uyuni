@@ -111,7 +111,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         Map dateInfo = new HashMap();
         List<ServerSnapshot> list = handler.listSnapshots(admin,
                 server.getId().intValue(), dateInfo);
-        assertTrue(list.size() == 0);
+        assertTrue(list.isEmpty());
 
     }
 
@@ -129,6 +129,6 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         handler.deleteSnapshots(admin, server.getId().intValue(), dateInfo);
         List<ServerSnapshot> list = handler.listSnapshots(admin,
                 server.getId().intValue(), dateInfo);
-        assertTrue(list.size() == 0);
+        assertTrue(list.isEmpty());
     }
 }

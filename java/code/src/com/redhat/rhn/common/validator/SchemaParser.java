@@ -290,7 +290,7 @@ public class SchemaParser {
     private void processRequiredIfConstraint(Element simpleType, RequiredIfConstraint lc) {
         List requiredIfFields =
              simpleType.getChildren("requiredIf", schemaNamespace);
-        if (requiredIfFields != null && requiredIfFields.size() > 0) {
+        if (requiredIfFields != null && !requiredIfFields.isEmpty()) {
             for (Object requiredIfFieldIn : requiredIfFields) {
                 Element requiredIf = (Element) requiredIfFieldIn;
                 String fieldName = requiredIf.getAttributeValue("field");

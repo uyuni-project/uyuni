@@ -281,7 +281,7 @@ public class OrgManager extends BaseManager {
      */
     public static void checkOrgName(String newOrgName) throws ValidatorException {
         if (newOrgName == null ||
-                newOrgName.trim().length() == 0 ||
+                newOrgName.trim().isEmpty() ||
                 newOrgName.trim().length() < 3 ||
                 newOrgName.trim().length() > 128) {
             ValidatorException.raiseException("orgname.jsp.error");

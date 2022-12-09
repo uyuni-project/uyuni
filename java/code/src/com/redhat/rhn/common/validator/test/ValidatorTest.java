@@ -67,7 +67,7 @@ public class ValidatorTest  {
 
     @Test
     public void testGetConstraints() {
-        assertTrue(validator.getConstraints().size() > 0);
+        assertTrue(!validator.getConstraints().isEmpty());
         Object constraint = validator.getConstraints().get(0);
         assertTrue(constraint instanceof Constraint);
     }

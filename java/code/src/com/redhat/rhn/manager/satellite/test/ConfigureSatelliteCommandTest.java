@@ -86,7 +86,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertEquals("--option=test.null_config.config_sat_test=", cmdargs[4]);
         assertEquals(9, cmdargs.length);
         assertNull(cmd.storeConfiguration());
-        assertTrue(cmd.getKeysToBeUpdated().size() == 0);
+        assertTrue(cmd.getKeysToBeUpdated().isEmpty());
         // Test setting back to the original value
         cmd.updateBoolean(TEST_CONFIG_BOOLEAN, origValue);
         assertEquals(1, cmd.getKeysToBeUpdated().size());
@@ -101,9 +101,9 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         // Now test to see if updating it to FALSE doesnt
         // indicate we need actual changes written out.
         cmd.updateBoolean(TEST_CONFIG_BOOLEAN, Boolean.FALSE);
-        assertTrue(cmd.getKeysToBeUpdated().size() == 0);
+        assertTrue(cmd.getKeysToBeUpdated().isEmpty());
         cmd.updateString(TEST_CONFIG_STRING, testString);
-        assertTrue(cmd.getKeysToBeUpdated().size() == 0);
+        assertTrue(cmd.getKeysToBeUpdated().isEmpty());
 
     }
 

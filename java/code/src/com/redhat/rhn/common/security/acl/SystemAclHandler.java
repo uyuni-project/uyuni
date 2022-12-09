@@ -184,7 +184,7 @@ public class SystemAclHandler extends BaseHandler {
         Map map = (Map) ctx;
         User user = (User)map.get("user");
         List  proxies = ServerFactory.lookupProxiesByOrg(user);
-        return proxies.size() > 0;
+        return !proxies.isEmpty();
     }
 
     /**

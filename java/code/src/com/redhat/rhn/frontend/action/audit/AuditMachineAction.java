@@ -67,7 +67,7 @@ public class AuditMachineAction extends RhnAction implements Listable {
         reviewed = request.getParameter("reviewed");
 
         // is this a review?
-        if (reviewed != null && reviewed.length() > 0) {
+        if (reviewed != null && !reviewed.isEmpty()) {
             start = Long.parseLong(request.getParameter("startMilli"));
             end = Long.parseLong(request.getParameter("endMilli"));
             username = requestContext.getCurrentUser().getLogin();

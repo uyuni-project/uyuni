@@ -44,7 +44,7 @@ public class TreeDeleteAction extends BaseTreeAction {
         super.processRequestAttributes(rctx, opr);
         BaseTreeEditOperation bte = (BaseTreeEditOperation) opr;
         List profiles = KickstartFactory.lookupKickstartDatasByTree(bte.getTree());
-        if (profiles != null && profiles.size() > 0) {
+        if (profiles != null && !profiles.isEmpty()) {
             rctx.getRequest().setAttribute(RequestContext.PAGE_LIST,
                     new DataResult(profiles));
         }

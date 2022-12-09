@@ -73,7 +73,7 @@ public class SystemDetailsCommand extends BaseKickstartCommand {
         validatePasswordChange(rootPw, rootPwConfirm);
         KickstartCommandName commandName = null;
         KickstartCommand cmd = null;
-        if (rootPw != null && rootPw.length() > 0) {
+        if (rootPw != null && !rootPw.isEmpty()) {
             if (rootPw.equals(rootPwConfirm)) {
                 ksdata.removeCommand("rootpw", true);
                 commandName = findCommandName("rootpw");
@@ -90,8 +90,8 @@ public class SystemDetailsCommand extends BaseKickstartCommand {
     private  void validatePasswordChange(String rootPw, String rootPwConfirm) {
         ValidatorResult vr = new ValidatorResult();
         int passwdMin = 1;
-        if (rootPw == null || rootPw.length() == 0 || rootPwConfirm == null ||
-                rootPwConfirm.length()  == 0) {
+        if (rootPw == null || rootPw.isEmpty() || rootPwConfirm == null ||
+                rootPwConfirm.isEmpty()) {
             vr.addError("kickstart.systemdetails.passwords.jsp.minerror");
         }
         else if (!rootPw.equals(rootPwConfirm)) {

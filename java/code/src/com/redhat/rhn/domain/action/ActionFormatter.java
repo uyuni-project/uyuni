@@ -115,7 +115,7 @@ public class ActionFormatter {
         // The default StringBuilder with nothing in it
         // has the value of "null" so we also want to check
         // for that.
-        if (retval.toString().length() == 0 ||
+        if (retval.toString().isEmpty() ||
                 retval.toString().equals("null")) {
             return LocalizationService.getInstance().getMessage("no notes");
         }

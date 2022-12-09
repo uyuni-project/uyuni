@@ -897,7 +897,7 @@ public class ServerFactory extends HibernateFactory {
         List<ServerArch> archs = SINGLETON.listObjectsByNamedQuery(
                 "ServerArch.findByName",
                 params);
-        if (archs != null && archs.size() > 0) {
+        if (archs != null && !archs.isEmpty()) {
             return archs.get(0);
         }
         return null;

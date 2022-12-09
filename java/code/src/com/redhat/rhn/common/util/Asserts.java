@@ -99,8 +99,8 @@ public final class Asserts {
      */
     public static void assertNotEmpty(String s, String label)
         throws IllegalStateException {
-        if (s == null || s.trim().length() == 0) {
-            assertTrue(s != null && s.trim().length() > 0,
+        if (s == null || s.trim().isEmpty()) {
+            assertTrue(s != null && !s.trim().isEmpty(),
                     "Value of " + label + " is empty.");
         }
     }

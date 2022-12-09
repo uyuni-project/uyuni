@@ -148,7 +148,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
         }
 
         ActionMessages msgs = new ActionMessages();
-        if (actionChain == null && servers.size() > 0) {
+        if (actionChain == null && !servers.isEmpty()) {
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("channels.subscribe.target.systems.channel.scheduled",
                             servers.size(),

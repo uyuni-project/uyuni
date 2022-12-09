@@ -224,7 +224,7 @@ public class TrustAction extends FormDispatcher {
             }
             removed.add(trust);
         }
-        if (removed.size() == 0) {
+        if (removed.isEmpty()) {
             return commitAction(mapping, form, request, response);
         }
         request.setAttribute("org", theOrg);

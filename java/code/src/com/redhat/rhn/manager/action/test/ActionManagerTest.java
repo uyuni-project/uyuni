@@ -181,7 +181,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         pc.setStart(1);
         DataResult<ScheduledAction> dr = ActionManager.pendingActions(user, pc);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
     }
 
     @Test
@@ -791,7 +791,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         ActionFactory.save(a1);
         DataResult dr = ActionManager.inProgressSystems(user, a1, null);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
         assertTrue(dr.get(0) instanceof ActionedSystem);
         ActionedSystem as = (ActionedSystem) dr.get(0);
         as.setSecurityErrata(1L);
@@ -806,7 +806,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         sa.setStatus(ActionFactory.STATUS_FAILED);
         ActionFactory.save(a1);
 
-        assertTrue(ActionManager.failedSystems(user, a1, null).size() > 0);
+        assertTrue(!ActionManager.failedSystems(user, a1, null).isEmpty());
     }
 
     @Test
@@ -1105,7 +1105,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     public static void assertNotEmpty(Collection coll) {
         assertNotNull(coll);
-        if (coll.size() == 0) {
+        if (coll.isEmpty()) {
             fail("Collection is empty");
         }
     }

@@ -403,7 +403,7 @@ public class SystemHandler extends BaseHandler {
         // Determine if user passed in a list of channel ids or labels... note: the list
         // must contain all ids or labels (i.e. not a combination of both)
         boolean receivedLabels = false;
-        if (channelIdsOrLabels.size() > 0) {
+        if (!channelIdsOrLabels.isEmpty()) {
             if (channelIdsOrLabels.get(0) instanceof String) {
                 receivedLabels = true;
             }
@@ -532,7 +532,7 @@ public class SystemHandler extends BaseHandler {
             List<Long> channelIds = new ArrayList<>();
             channelIds = ChannelFactory.getChannelIds(channelLabels);
 
-            if (channelIds.size() > 0) {
+            if (!channelIds.isEmpty()) {
                 cmd = new UpdateBaseChannelCommand(loggedInUser, server, channelIds.get(0));
                 cmd.setScheduleApplyChannelsState(true);
             }
@@ -1734,7 +1734,7 @@ public class SystemHandler extends BaseHandler {
         MessageQueue.publish(event);
 
         // If we skipped any systems, create an error message and throw a FaultException
-        if (skippedSids.size() > 0) {
+        if (!skippedSids.isEmpty()) {
             StringBuilder msg = new StringBuilder(
                     "The following systems were NOT deleted: ");
             for (Integer sid :  skippedSids) {
@@ -2105,7 +2105,7 @@ public class SystemHandler extends BaseHandler {
             MinionPillarManager.PillarSubset.CUSTOM_INFO));
 
         // If we skipped any keys, we need to throw an exception and let the user know.
-        if (skippedKeys.size() > 0) {
+        if (!skippedKeys.isEmpty()) {
             // We need to throw an exception. Append each undefined key to the
             // exception message.
             StringBuilder msg = new StringBuilder("One or more of the following " +
@@ -2209,7 +2209,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         // If we skipped any keys, we need to throw an exception and let the user know.
-        if (skippedKeys.size() > 0) {
+        if (!skippedKeys.isEmpty()) {
             // We need to throw an exception. Append each undefined key to the
             // exception message.
             StringBuilder msg = new StringBuilder("One or more of the following " +
@@ -2501,7 +2501,7 @@ public class SystemHandler extends BaseHandler {
             }
 
             final List<Map<String, String>> additionalInfo = createActionSpecificDetails(action, sAction);
-            if (additionalInfo.size() > 0) {
+            if (!additionalInfo.isEmpty()) {
                 result.put("additional_info", additionalInfo);
             }
 
@@ -4146,7 +4146,7 @@ public class SystemHandler extends BaseHandler {
                     packageNevra.get("package_name"), packageNevra.get("package_version"),
                     packageNevra.get("package_release"), epoch, arch);
 
-            if (pl == null || pl.size() == 0) {
+            if (pl == null || pl.isEmpty()) {
                 PackageName pkgName =  PackageFactory.lookupPackageName(packageNevra.get("package_name"));
                 if (pkgName == null || !lookupNevra) {
                     throw new InvalidPackageException(packageNevra.get("package_name"));
@@ -5513,7 +5513,7 @@ public class SystemHandler extends BaseHandler {
             if (this.systemEntitlementManager.canEntitleServer(server, ent)) {
                 ValidatorResult vr = this.systemEntitlementManager.addEntitlementToServer(server, ent);
                 needsSnapshot = true;
-                if (vr.getErrors().size() > 0) {
+                if (!vr.getErrors().isEmpty()) {
                     throw new InvalidEntitlementException();
                 }
             }
@@ -6645,7 +6645,7 @@ public class SystemHandler extends BaseHandler {
             }
         }
         // One device is needed at least
-        if (server.getNetworkInterfaces().size() == 0) {
+        if (server.getNetworkInterfaces().isEmpty()) {
             throw new FaultException(-2, "networkDeviceError",
                     "At least one valid network device is needed");
         }
@@ -7773,7 +7773,7 @@ public class SystemHandler extends BaseHandler {
         if (!removeProductsWithNoSuccessorAfterMigration || StringUtils.isBlank(targetIdent)) {
             targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
         }
-        if (targets.size() > 0) {
+        if (!targets.isEmpty()) {
             SUSEProductSet targetProducts = null;
             if (StringUtils.isBlank(targetIdent)) {
                 log.info("Target migration id is empty. " +

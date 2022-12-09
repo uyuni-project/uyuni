@@ -132,7 +132,7 @@ public class EnableConfigHelper {
         if (error) {
             return false;  //there was an error, bail out
         }
-        else if (packages.size() == 0) {
+        else if (packages.isEmpty()) {
             return true;  //This particular system didn't need any packages
         }
 

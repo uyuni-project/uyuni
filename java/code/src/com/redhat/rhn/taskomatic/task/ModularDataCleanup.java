@@ -77,7 +77,7 @@ public class ModularDataCleanup extends RhnJavaJob {
     }
 
     private void logCleaning(List<Path> unusedModularPaths) {
-        if (unusedModularPaths.size() > 0) {
+        if (!unusedModularPaths.isEmpty()) {
             log.info("Cleaning {} unused modular data files", unusedModularPaths.size());
             if (log.isDebugEnabled()) {
                 log.debug("Cleaning: {}",

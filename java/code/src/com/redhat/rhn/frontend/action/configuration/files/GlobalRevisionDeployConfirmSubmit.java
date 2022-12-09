@@ -114,7 +114,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
             servers.add(sid);
             //created the action.  One action per server.
             try {
-                if (revisions.size() > 0 && !ActionChainManager.createConfigActions(user,
+                if (!revisions.isEmpty() && !ActionChainManager.createConfigActions(user,
                         revisions, servers, deploy, earliest, actionChain).isEmpty()) {
                     successes++;
                 }

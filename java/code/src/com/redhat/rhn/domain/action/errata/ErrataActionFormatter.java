@@ -46,7 +46,7 @@ public class ErrataActionFormatter extends ActionFormatter {
     protected String getNotesBody() {
         StringBuilder retval = new StringBuilder();
         Set<Errata> erratas = ((ErrataAction) this.getAction()).getErrata();
-        if (erratas != null && erratas.size() > 0) {
+        if (erratas != null && !erratas.isEmpty()) {
             for (Errata errata : erratas) {
                 retval.append("<strong><a href=\"/rhn/errata/details/Details.do?eid=");
                 retval.append(errata.getId().toString());

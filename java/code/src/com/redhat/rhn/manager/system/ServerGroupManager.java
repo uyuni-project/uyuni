@@ -134,7 +134,7 @@ public class ServerGroupManager {
         params.put("user_id", user.getId());
         params.put("sgid", group.getId());
         List result = m.execute(params);
-        return result.size() > 0;
+        return !result.isEmpty();
     }
 
     /**

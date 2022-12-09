@@ -56,7 +56,7 @@ public class ErrataMailer extends RhnJavaJob {
         throws JobExecutionException {
 
         List results = getErrataToProcess();
-        if (results == null || results.size() == 0) {
+        if (results == null || results.isEmpty()) {
             if (log.isDebugEnabled()) {
                 log.debug("No patch found...exiting");
             }
@@ -122,7 +122,7 @@ public class ErrataMailer extends RhnJavaJob {
                 errataId);
         List orgServers = getOrgRelevantServers(errataId, orgId, channelId);
 
-        if (orgServers == null || orgServers.size() == 0) {
+        if (orgServers == null || orgServers.isEmpty()) {
             log.debug("No relevant servers found for patch {} in channel {} for org {} ... skipping.",
                     errata.getId(), channelId, orgId);
             return;

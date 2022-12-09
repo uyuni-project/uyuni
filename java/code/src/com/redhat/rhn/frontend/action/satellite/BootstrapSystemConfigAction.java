@@ -115,7 +115,7 @@ public class BootstrapSystemConfigAction extends RhnAction {
             .findBootstrap();
         Org currentOrg = user.getOrg();
         Org enabledOrg = null;
-        if (previousActivationKeys.size() > 0) {
+        if (!previousActivationKeys.isEmpty()) {
             enabledOrg = previousActivationKeys.get(0).getOrg();
         }
         request.setAttribute(CURRENT_ORG, currentOrg.getName());
