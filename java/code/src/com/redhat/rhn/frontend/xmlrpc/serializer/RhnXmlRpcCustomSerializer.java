@@ -68,12 +68,6 @@ public abstract class RhnXmlRpcCustomSerializer implements XmlRpcCustomSerialize
         return helper;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract Class getSupportedClass();
-
     protected abstract void doSerialize(Object obj, Writer writer,
                     XmlRpcSerializer serializer) throws XmlRpcException, IOException;
 
