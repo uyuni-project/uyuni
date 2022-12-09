@@ -55,6 +55,8 @@ Feature: Register a Salt minion via Bootstrap-script
    Given I am on the Systems overview page of this "sle_minion"
    When I follow "Software" in the content area
    And I follow "Install"
+   And I enter "orion-dummy" as the filtered package name
+   And I click on the filter button
    And I check row with "orion-dummy" and arch of "sle_minion"
    And I click on "Install Selected Packages"
    And I click on "Confirm"

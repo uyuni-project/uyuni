@@ -1,3 +1,4 @@
+- Add 'octet-stream' to accepted content-types for reposync mirrorlists
 - Exclude invalid mirror urls for reposync (bsc#1203826)
 - do not fetch mirrorlist when a file url is given
 - Keep older module metadata files in database (bsc#1201893)
