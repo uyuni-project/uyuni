@@ -32,8 +32,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -69,12 +67,6 @@ public abstract class BaseScheduledListAction extends RhnAction implements Lista
      */
     protected abstract RhnSetDecl getSetDecl();
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract List getResult(RequestContext context);
 
     /**
      * Handle the submit
