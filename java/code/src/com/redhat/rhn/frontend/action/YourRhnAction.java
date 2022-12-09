@@ -110,7 +110,7 @@ public class YourRhnAction extends RhnAction {
         pc.setStart(1);
         pc.setPageSize(5);
 
-        if (panes != null && !panes.isEmpty()) {
+        if (!panes.isEmpty()) {
             anyListsSelected = true;
             for (Object oIn : panes.keySet()) {
                 String key = (String) oIn;
