@@ -99,21 +99,8 @@ public class SmtpMail implements Mail {
 
         // Get session
         Session session = Session.getDefaultInstance(props, auth);
-        try {
-            message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-        }
-        catch (AddressException me) {
-            String msg = "Malformed address in traceback configuration: " +
-                                from;
-            log.warn(msg);
-            throw new JavaMailException(msg, me);
-        }
-        catch (MessagingException me) {
-            String msg = "MessagingException while trying to send email: " + me;
-            log.warn(msg);
-            throw new JavaMailException(msg, me);
-        }
+        message = new MimeMessage(session);
+        setFrom(from);
     }
 
     /** {@inheritDoc} */
