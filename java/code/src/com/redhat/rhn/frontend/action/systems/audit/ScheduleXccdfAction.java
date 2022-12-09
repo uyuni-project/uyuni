@@ -54,9 +54,10 @@ public class ScheduleXccdfAction extends ScapSetupAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         ActionForward forward = null;
         DynaActionForm form = (DynaActionForm) formIn;

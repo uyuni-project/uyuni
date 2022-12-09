@@ -27,6 +27,7 @@ import java.util.List;
 public class BugErrataListAllAction extends ErrataListAllAction {
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
 
         User user = context.getCurrentUser();

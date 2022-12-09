@@ -42,10 +42,11 @@ public class SnapshotTagCreateAction extends RhnAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm)formIn;
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");

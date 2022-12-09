@@ -25,6 +25,7 @@ import java.util.List;
 public class SnapshotConfigChannelsAction extends SnapshotBaseAction {
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         Long ssid = context.getRequiredParam(SNAPSHOT_ID);

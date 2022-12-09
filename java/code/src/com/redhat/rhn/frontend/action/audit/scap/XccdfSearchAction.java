@@ -52,8 +52,9 @@ public class XccdfSearchAction extends BaseSearchAction {
     private static final String TESTRESULT_ID = "tr";
     private static final String RULERESULT_ID = "rr";
 
+    @Override
     protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
-                    DynaActionForm form)
+                                      DynaActionForm form)
             throws MalformedURLException, XmlRpcException, XmlRpcFault {
         RequestContext context = new RequestContext(request);
         String searchString = form.getString(SEARCH_STR);

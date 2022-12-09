@@ -72,6 +72,7 @@ public class SpanTag extends TagSupport {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public void release() {
         style = null;
         url = null;
@@ -83,6 +84,7 @@ public class SpanTag extends TagSupport {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         ListCommand cmd = ListTagUtil.getCurrentCommand(this, pageContext);
         ListTag parent = (ListTag) TagSupport.findAncestorWithClass(this, ListTag.class);

@@ -40,12 +40,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class GlobalRevisionDeploySubmit extends BaseSetOperateOnSelectedItemsAction {
 
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILE_DEPLOY_SYSTEMS;
     }
 
+    @Override
     protected DataResult getDataResult(User user, ActionForm formIn,
-            HttpServletRequest request) {
+                                       HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
         User usr = ctx.getCurrentUser();
         ConfigFile cf = ConfigActionHelper.getFile(ctx.getRequest());
@@ -53,11 +55,13 @@ public class GlobalRevisionDeploySubmit extends BaseSetOperateOnSelectedItemsAct
         return ConfigurationManager.getInstance().listGlobalFileDeployInfo(usr, cc, cf, null);
     }
 
+    @Override
     protected void processParamMap(
             ActionForm form, HttpServletRequest request, Map<String, Object> params) {
         ConfigActionHelper.processParamMap(request, params);
     }
 
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("deploy.jsp.deploybutton", "navToConfirm");
     }

@@ -33,6 +33,7 @@ public class ActivationKeysSetupAction extends BaseKickstartListSetupAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
 
         return KickstartLister.getInstance().
@@ -44,6 +45,7 @@ public class ActivationKeysSetupAction extends BaseKickstartListSetupAction {
      *
      * @return the kickstart profile security label
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.KICKSTART_ACTIVATION_KEYS;
     }
@@ -51,6 +53,7 @@ public class ActivationKeysSetupAction extends BaseKickstartListSetupAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Iterator getCurrentItemsIterator(KickstartData ksdata) {
         return ksdata.getDefaultRegTokens().iterator();
     }

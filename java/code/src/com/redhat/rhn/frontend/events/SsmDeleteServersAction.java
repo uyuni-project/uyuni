@@ -50,6 +50,7 @@ public class SsmDeleteServersAction implements MessageAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void execute(EventMessage msg) {
         SsmDeleteServersEvent event = (SsmDeleteServersEvent) msg;
         User user = UserFactory.lookupById(event.getUserId());

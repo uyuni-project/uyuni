@@ -57,6 +57,7 @@ public class EusReleaseComparator implements Comparator<EssentialChannelDto> {
      * @return 1 if {@literal first is > second}, 0 if they are equal,
      * -1 if {@literal first is < second}.
      */
+    @Override
     public int compare(EssentialChannelDto chan1, EssentialChannelDto chan2) {
         return compare(chan1.getRelease(), chan2.getRelease());
     }

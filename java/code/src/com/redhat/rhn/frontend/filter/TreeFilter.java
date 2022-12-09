@@ -70,8 +70,9 @@ public class TreeFilter implements ResultsFilter {
      *  /      \
      * C3      C5
      */
+    @Override
     public void filterData(DataResult dr, String filterData,
-            String filterColumn) {
+                           String filterColumn) {
 
         /*
          * The overall logic of this function is to go through

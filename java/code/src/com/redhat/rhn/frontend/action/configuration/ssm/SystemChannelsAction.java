@@ -30,6 +30,7 @@ public class SystemChannelsAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pc) {
         User user = rctxIn.getCurrentUser();
         ConfigurationManager cm = ConfigurationManager.getInstance();
@@ -41,10 +42,12 @@ public class SystemChannelsAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         rctxIn.lookupAndBindServer();
     }
 
+    @Override
     protected void processPageControl(PageControl pcIn) {
         pcIn.setFilter(true);
         pcIn.setFilterColumn("name");

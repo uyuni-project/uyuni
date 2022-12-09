@@ -74,6 +74,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void writeHunk(Hunk hunkIn) {
         hunkIn.visit(this);
     }
@@ -81,6 +82,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(ChangeHunk hunk) {
         processEditHunk(hunk);
     }
@@ -88,6 +90,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(DeleteHunk hunk) {
         processEditHunk(hunk);
     }
@@ -95,6 +98,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(InsertHunk hunk) {
         processEditHunk(hunk);
     }
@@ -127,6 +131,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(MatchHunk hunk) {
         int startLine = hunk.getOldLines().getFromLine();
         int endLine = hunk.getOldLines().getToLine();

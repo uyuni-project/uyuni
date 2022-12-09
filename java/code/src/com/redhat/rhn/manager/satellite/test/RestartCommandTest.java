@@ -35,6 +35,7 @@ public class RestartCommandTest extends BaseTestCaseWithUser {
     public void testCreateCommand() throws Exception {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         cmd = new RestartCommand(user) {
+            @Override
             protected Executor getExecutor() {
                 return new TestExecutor();
             }
@@ -48,6 +49,7 @@ public class RestartCommandTest extends BaseTestCaseWithUser {
     */
     public class TestExecutor implements Executor {
 
+        @Override
         public int execute(String[] args) {
             if (args.length != 2) {
                 return -1;
@@ -63,10 +65,12 @@ public class RestartCommandTest extends BaseTestCaseWithUser {
             }
         }
 
+        @Override
         public String getLastCommandOutput() {
             return null;
         }
 
+        @Override
         public String getLastCommandErrorMessage() {
             return null;
         }

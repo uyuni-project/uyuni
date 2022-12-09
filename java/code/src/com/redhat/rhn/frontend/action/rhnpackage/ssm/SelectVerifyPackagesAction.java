@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SelectVerifyPackagesAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -62,6 +63,7 @@ public class SelectVerifyPackagesAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         User user = context.getCurrentUser();
 

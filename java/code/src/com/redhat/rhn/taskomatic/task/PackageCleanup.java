@@ -43,6 +43,7 @@ public class PackageCleanup extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         try {
             String pkgDir = Config.get().getString("web.mount_point");

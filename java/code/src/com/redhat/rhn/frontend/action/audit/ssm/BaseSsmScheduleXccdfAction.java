@@ -46,6 +46,7 @@ public abstract class BaseSsmScheduleXccdfAction
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         return ScapManager.systemsInSsmAndScapCapability(context.getCurrentUser());
     }

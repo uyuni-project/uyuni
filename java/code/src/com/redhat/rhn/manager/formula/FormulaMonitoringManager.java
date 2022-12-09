@@ -46,6 +46,7 @@ public class FormulaMonitoringManager implements MonitoringManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void enableMonitoring(MinionServer minion) throws IOException, ValidatorException {
         // Assign the monitoring formula to the system unless it belongs to a group with monitoring enabled
         if (!FormulaFactory.isMemberOfGroupHavingMonitoring(minion)) {
@@ -61,6 +62,7 @@ public class FormulaMonitoringManager implements MonitoringManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void disableMonitoring(MinionServer minion) throws IOException {
         if (this.isMonitoringCleanupNeeded(minion)) {
             // Get the current data and set all exporters to disabled

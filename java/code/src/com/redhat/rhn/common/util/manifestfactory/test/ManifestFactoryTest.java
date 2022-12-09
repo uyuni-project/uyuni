@@ -71,6 +71,7 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
 
     public class TestGetObjectThread extends Thread {
 
+        @Override
         public void run() {
             try {
                 Collection keys = PrimitiveFactory.getKeys();

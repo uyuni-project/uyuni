@@ -60,10 +60,11 @@ public class MigrateSystemsAction extends RhnAction implements Listable {
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
 
         RequestContext rctx = new RequestContext(request);
@@ -111,6 +112,7 @@ public class MigrateSystemsAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext contextIn) {
         return SystemManager.inSet(contextIn.getCurrentUser(),
                                         RhnSetDecl.SYSTEMS.getLabel());

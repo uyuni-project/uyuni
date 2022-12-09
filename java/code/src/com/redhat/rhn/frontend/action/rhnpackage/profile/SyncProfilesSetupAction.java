@@ -50,6 +50,7 @@ public class SyncProfilesSetupAction extends RhnAction implements Listable {
         new CompareProfileSetupAction();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -95,6 +96,7 @@ public class SyncProfilesSetupAction extends RhnAction implements Listable {
      * @param context RequestContext
      * @return list of packages prepared for synchronization
      */
+    @Override
     public List getResult(RequestContext context) {
         Long sid = context.getRequiredParam("sid");
         Long prid = context.getRequiredParam("prid");

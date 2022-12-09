@@ -56,10 +56,11 @@ public class ErrataRemoveAction extends RhnListAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
@@ -112,6 +113,7 @@ public class ErrataRemoveAction extends RhnListAction implements Listable {
      *
      * {@inheritDoc}
      */
+    @Override
     public DataResult getResult(RequestContext context) {
         Long cid = Long.parseLong(context.getRequest().getParameter(CID));
         User user = context.getCurrentUser();

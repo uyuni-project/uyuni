@@ -82,9 +82,10 @@ public class AffectedSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult<SystemOverview> getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+                                                       ActionForm formIn,
+                                                       HttpServletRequest request) {
         Long eid = new RequestContext(request).getParamAsLong("eid");
         return  ErrataManager.systemsAffected(user, eid, null);
     }
@@ -92,6 +93,7 @@ public class AffectedSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("affectedsystems.jsp.apply", "applyErrata");
     }
@@ -100,8 +102,9 @@ public class AffectedSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn, HttpServletRequest request,
-            Map<String, Object> params) {
+                                   Map<String, Object> params) {
         Long eid = new RequestContext(request).getParamAsLong("eid");
 
         if (eid != null) {
@@ -109,6 +112,7 @@ public class AffectedSystemsAction extends RhnSetAction {
         }
     }
 
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.SYSTEMS_AFFECTED;
     }

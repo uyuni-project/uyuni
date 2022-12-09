@@ -96,6 +96,7 @@ public class PackageKey extends BaseDomainHelper implements Comparable<PackageKe
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageKey o) {
         if (equals(o)) {
             return 0;

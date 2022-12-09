@@ -40,6 +40,7 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
      * @throws Exception if things go wrong
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

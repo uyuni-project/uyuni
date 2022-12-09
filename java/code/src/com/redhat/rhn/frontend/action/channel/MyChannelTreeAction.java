@@ -27,8 +27,9 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 public class MyChannelTreeAction extends BaseChannelTreeAction {
 
     /** {@inheritDoc} */
+    @Override
     protected DataResult<ChannelTreeNode> getDataResult(RequestContext requestContext,
-            ListControl lc) {
+                                                        ListControl lc) {
         User user = requestContext.getCurrentUser();
         return ChannelManager.myChannelTree(user, lc);
     }

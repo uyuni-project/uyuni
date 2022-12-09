@@ -35,12 +35,14 @@ public class ConfigChannelFilter extends BaseConfigFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected List activeNames() {
         return fields;
     }
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getI18NPrefix() {
         return "configchannelfilter";
     }

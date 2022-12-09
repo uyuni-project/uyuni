@@ -44,6 +44,7 @@ public class SessionStatusAction extends RhnAction {
     private static final int GUEST_TIME_OUT_MINUTES = 15;
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

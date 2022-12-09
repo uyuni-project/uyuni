@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthFilterTest extends MockObjectTestCase {
 
     private class AuthFilterStub extends AuthFilter {
+        @Override
         public void setAuthenticationService(AuthenticationService service) {
             super.setAuthenticationService(service);
         }

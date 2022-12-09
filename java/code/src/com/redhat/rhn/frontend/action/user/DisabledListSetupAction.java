@@ -50,6 +50,7 @@ public class DisabledListSetupAction extends RhnAction {
     public static final String LIST_NAME = "disabledUserList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

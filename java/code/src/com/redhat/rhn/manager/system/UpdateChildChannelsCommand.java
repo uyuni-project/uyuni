@@ -67,6 +67,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
         List<Long> remove = new ArrayList<>();
         /*

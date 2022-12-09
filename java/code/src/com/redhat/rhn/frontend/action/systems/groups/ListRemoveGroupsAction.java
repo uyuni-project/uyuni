@@ -49,6 +49,7 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable {
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -97,6 +98,7 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         Server server = context.lookupAndBindServer();
         return server.getManagedGroups();

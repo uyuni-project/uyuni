@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SelectUpgradePackagesAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm,
                                  HttpServletRequest request, HttpServletResponse response)
         throws Exception {
@@ -68,6 +69,7 @@ public class SelectUpgradePackagesAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return PackageManager.upgradablePackagesFromServerSet(user);

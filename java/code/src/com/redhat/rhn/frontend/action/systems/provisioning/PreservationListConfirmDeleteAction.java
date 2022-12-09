@@ -38,6 +38,7 @@ public class PreservationListConfirmDeleteAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
 
         RhnSet set = getSetDecl().get(rctx.getCurrentUser());
@@ -58,11 +59,13 @@ public class PreservationListConfirmDeleteAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.FILE_LISTS;
     }
 
     /** {@inheritDoc} */
+    @Override
     protected boolean preClearSet() {
         return false;
     }

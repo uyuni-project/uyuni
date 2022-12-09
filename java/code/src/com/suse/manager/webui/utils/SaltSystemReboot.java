@@ -69,6 +69,7 @@ public class SaltSystemReboot extends AbstractSaltRequisites implements Identifi
     /**
      * @return id to get
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -76,6 +77,7 @@ public class SaltSystemReboot extends AbstractSaltRequisites implements Identifi
     /**
      * @param idIn to set
      */
+    @Override
     public void setId(String idIn) {
         this.id = idIn;
     }

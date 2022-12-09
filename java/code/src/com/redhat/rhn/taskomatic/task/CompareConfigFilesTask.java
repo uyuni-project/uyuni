@@ -55,6 +55,7 @@ public class CompareConfigFilesTask extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext context)
             throws JobExecutionException {
 

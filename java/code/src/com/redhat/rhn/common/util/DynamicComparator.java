@@ -73,6 +73,7 @@ public class DynamicComparator implements Comparator  {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare(Object o1, Object o2) {
         Comparable val1 = null;
         Comparable val2 = null;

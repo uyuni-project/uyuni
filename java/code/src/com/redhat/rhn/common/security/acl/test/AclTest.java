@@ -47,6 +47,7 @@ public class AclTest extends RhnBaseTestCase {
     private MockAclHandler handler = null;
 
     /** Sets up the acl, handler, and context objects. */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         acl = new Acl();
@@ -57,6 +58,7 @@ public class AclTest extends RhnBaseTestCase {
     }
 
     /** Tears down the acl, handler, and context objects. */
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
@@ -393,6 +395,7 @@ public class AclTest extends RhnBaseTestCase {
         * the parameters given to the handler when Acl calls handleAcl.
         * The expectation values get reset when this is called.
         */
+       @Override
        public void verify() {
            Collection expectedValues = expected.values();
            for (Object expectedValueIn : expectedValues) {

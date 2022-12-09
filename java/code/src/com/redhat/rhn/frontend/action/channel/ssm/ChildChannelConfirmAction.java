@@ -60,10 +60,11 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         long overallStart;
 
@@ -172,6 +173,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
      *
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         return (List) context.getRequest().getAttribute("data");
     }

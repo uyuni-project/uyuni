@@ -132,6 +132,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
      * Store the Configuration to the filesystem
      * @return ValidatorError
      */
+    @Override
     public ValidatorError[] storeConfiguration() {
         if (logger.isDebugEnabled()) {
             logger.debug("storeConfiguration() - start");

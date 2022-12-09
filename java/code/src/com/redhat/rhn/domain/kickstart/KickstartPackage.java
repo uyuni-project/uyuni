@@ -138,6 +138,7 @@ public class KickstartPackage
      * @param that KickstartPackage to be compared
      * @return -1,0,1 for sort algo
      */
+    @Override
     public int compareTo(KickstartPackage that) {
 
         final int equal = 0;

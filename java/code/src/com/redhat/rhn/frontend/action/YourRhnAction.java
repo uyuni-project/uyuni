@@ -98,8 +98,9 @@ public class YourRhnAction extends RhnAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
         Map panes = getDisplayPanes(user);

@@ -37,6 +37,7 @@ public class LatestErrataRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         PageControl erratapc = new PageControl();
         erratapc.setStart(1);
@@ -62,6 +63,7 @@ public class LatestErrataRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getPageUrl() {
         return "/WEB-INF/pages/common/fragments/yourrhn/errata.jsp";
     }

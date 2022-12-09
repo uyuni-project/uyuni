@@ -37,6 +37,7 @@ public class UuidCleanup extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext context)
             throws JobExecutionException {
 

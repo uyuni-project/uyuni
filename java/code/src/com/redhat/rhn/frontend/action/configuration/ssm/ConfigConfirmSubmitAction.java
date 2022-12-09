@@ -67,6 +67,7 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("diffconfirm.jsp.confirm", "diff");
         map.put("deployconfirm.jsp.confirm", "deploy");
@@ -75,8 +76,9 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm form,
-            HttpServletRequest requestIn, Map<String, Object> params) {
+                                   HttpServletRequest requestIn, Map<String, Object> params) {
         //no-op for diff
         if (form != null) {
             getStrutsDelegate().rememberDatePicker(params, (DynaActionForm)form,

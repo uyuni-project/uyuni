@@ -43,21 +43,25 @@ public abstract class BaseMode implements Mode {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setName(String n) {
         name = n;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getName() {
         return name;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setQuery(CachedStatement q) {
         query = q;
     }
 
     /** {@inheritDoc} */
+    @Override
     public CachedStatement getQuery() {
         return query;
     }

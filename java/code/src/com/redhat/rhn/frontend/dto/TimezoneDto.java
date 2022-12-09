@@ -35,6 +35,7 @@ public class TimezoneDto extends BaseDto implements RowCallback {
      * Returns the Timezone's id.
      * @return the Timezone's id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -82,6 +83,7 @@ public class TimezoneDto extends BaseDto implements RowCallback {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void callback(ResultSet rs) throws SQLException {
     }
 
@@ -89,6 +91,7 @@ public class TimezoneDto extends BaseDto implements RowCallback {
      *
      * {@inheritDoc}
      */
+    @Override
     public List<String> getCallBackColumns() {
         return new ArrayList<>();
     }

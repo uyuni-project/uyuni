@@ -51,6 +51,7 @@ public class UserTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();
@@ -59,6 +60,7 @@ public class UserTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();

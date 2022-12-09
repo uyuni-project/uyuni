@@ -34,6 +34,7 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
     protected KickstartData ksdata;
     protected KickstartData ksdataOptions;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.common.EditFileListCommand;
 public class PreservationListEditAction extends
         BasePreservationListEditAction {
 
+    @Override
     protected PersistOperation getCommand(RequestContext ctx) {
         return new EditFileListCommand(ctx.getCurrentUser(),
                 ctx.getRequiredParam(RequestContext.FILE_LIST_ID));

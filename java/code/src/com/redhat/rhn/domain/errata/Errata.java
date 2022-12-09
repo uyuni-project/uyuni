@@ -756,6 +756,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @return whether this object is selectable for RhnSet
      */
+    @Override
     public boolean isSelectable() {
         return true;
     }
@@ -763,6 +764,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @return the selected
      */
+    @Override
     public boolean isSelected() {
         return selected;
     }
@@ -770,6 +772,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @param isSelected the selected to set
      */
+    @Override
     public void setSelected(boolean isSelected) {
         this.selected = isSelected;
     }
@@ -777,6 +780,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @return the selection key
      */
+    @Override
     public String getSelectionKey() {
         return String.valueOf(getId());
     }

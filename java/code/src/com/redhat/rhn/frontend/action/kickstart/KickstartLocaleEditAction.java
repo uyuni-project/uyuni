@@ -43,8 +43,9 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx, DynaActionForm form,
-            BaseKickstartCommand cmdIn) {
+                                   BaseKickstartCommand cmdIn) {
         KickstartLocaleCommand cmd = (KickstartLocaleCommand) cmdIn;
 
         ArrayList timezones = cmd.getValidTimezones();
@@ -58,9 +59,10 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected ValidatorError processFormValues(HttpServletRequest request,
-            DynaActionForm form,
-            BaseKickstartCommand cmd) {
+                                               DynaActionForm form,
+                                               BaseKickstartCommand cmd) {
 
         ValidatorError retval = null;
 
@@ -98,6 +100,7 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected String getSuccessKey() {
         return "kickstart.locale.success";
     }
@@ -106,6 +109,7 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected BaseKickstartCommand getCommand(RequestContext ctx) {
         return new KickstartLocaleCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                 ctx.getCurrentUser());

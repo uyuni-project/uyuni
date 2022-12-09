@@ -31,6 +31,7 @@ public abstract class BaseListFilter implements ListFilter {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public void prepare(Locale userLocale) {
         fieldMap = new HashMap();
         processMap(fieldMap, userLocale);
@@ -39,8 +40,9 @@ public abstract class BaseListFilter implements ListFilter {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public boolean filter(Object object, String field,
-            String criteria) {
+                          String criteria) {
 
         //So this is kind of a hack, but without re-writing the whole
         // filter subsystem this is the only way to be able to use the
@@ -61,6 +63,7 @@ public abstract class BaseListFilter implements ListFilter {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List getFieldNames() {
         return new LinkedList(fieldMap.keySet());
     }

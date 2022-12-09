@@ -29,6 +29,7 @@ public class ConfigFileTypeComparator implements Comparator {
      * @return 0 if the 2 files are equal, other wise  1/-1
      *  based on the file type of the latest revision
      */
+    @Override
     public int compare(Object arg0, Object arg1) {
         ConfigFile one = (ConfigFile) arg0;
         ConfigFile other = (ConfigFile) arg1;

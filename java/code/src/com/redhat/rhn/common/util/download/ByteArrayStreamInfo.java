@@ -44,6 +44,7 @@ public class ByteArrayStreamInfo implements StreamInfo {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getContentType() {
         return contentType;
     }
@@ -51,6 +52,7 @@ public class ByteArrayStreamInfo implements StreamInfo {
     /**
      * {@inheritDoc}
      */
+    @Override
     public InputStream getInputStream() throws IOException {
         return new ByteArrayInputStream(bytes);
     }

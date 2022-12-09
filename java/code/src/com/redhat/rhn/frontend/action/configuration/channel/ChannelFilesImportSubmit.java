@@ -40,10 +40,12 @@ import javax.servlet.http.HttpServletResponse;
 public class ChannelFilesImportSubmit extends BaseSetOperateOnSelectedItemsAction {
     public static final String KEY_IMPORT = "addfiles.jsp.import.jspf.submit";
 
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(KEY_IMPORT, "processImport");
     }
 
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
@@ -106,6 +108,7 @@ public class ChannelFilesImportSubmit extends BaseSetOperateOnSelectedItemsActio
         return Boolean.TRUE;
     }
 
+    @Override
     protected DataResult getDataResult(User u,
                                        ActionForm formIn,
                                        HttpServletRequest request) {
@@ -120,6 +123,7 @@ public class ChannelFilesImportSubmit extends BaseSetOperateOnSelectedItemsActio
      * We affect the selected-files set
      * @return FILE_LISTS identifier
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILES;
     }

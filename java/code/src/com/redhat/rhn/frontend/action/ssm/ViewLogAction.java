@@ -29,12 +29,14 @@ import java.util.List;
 public class ViewLogAction extends BaseViewLogAction {
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
                 User user = context.getCurrentUser();
         return SsmOperationManager.inProgressOperations(user);
     }
 
     /** {@inheritDoc} */
+    @Override
     protected String getSummaryKey() {
         return "ssm.operations.inprogress.summary";
     }

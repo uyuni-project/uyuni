@@ -35,6 +35,7 @@ public class FileListSetupAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILE_NAMES;
     }
@@ -42,17 +43,20 @@ public class FileListSetupAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pc) {
         User user = rctxIn.getCurrentUser();
         Server server = rctxIn.lookupAndBindServer();
         return ConfigurationManager.getInstance().listFileNamesForSystem(user, server, pc);
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilter(true);
         pc.setFilterColumn("path");
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         super.processRequestAttributes(rctxIn);
         rctxIn.lookupAndBindServer();

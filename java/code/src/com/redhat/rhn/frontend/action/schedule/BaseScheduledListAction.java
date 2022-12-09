@@ -47,10 +47,11 @@ public abstract class BaseScheduledListAction extends RhnAction implements Lista
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         ListRhnSetHelper helper = new ListRhnSetHelper(this, request, getSetDecl());
         helper.execute();
@@ -72,6 +73,7 @@ public abstract class BaseScheduledListAction extends RhnAction implements Lista
      *
      * {@inheritDoc}
      */
+    @Override
     public abstract List getResult(RequestContext context);
 
     /**

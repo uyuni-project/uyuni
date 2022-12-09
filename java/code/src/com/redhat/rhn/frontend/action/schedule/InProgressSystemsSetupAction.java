@@ -29,6 +29,7 @@ public class InProgressSystemsSetupAction extends ActionSystemsSetupAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User user, Action action, PageControl pc) {
         // TODO Auto-generated method stub
         return ActionManager.inProgressSystems(user, action, pc);
@@ -37,6 +38,7 @@ public class InProgressSystemsSetupAction extends ActionSystemsSetupAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.ACTIONS_UNSCHEDULE;
     }

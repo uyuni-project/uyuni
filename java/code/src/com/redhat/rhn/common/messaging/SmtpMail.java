@@ -90,6 +90,7 @@ public class SmtpMail implements Mail {
         Authenticator auth = null;
         if (smtpAuth) {
             auth = new Authenticator() {
+                @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(smtpUser, smtpPass);
                 }
@@ -116,6 +117,7 @@ public class SmtpMail implements Mail {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setHeader(String name, String value) {
         try {
             message.setHeader(name, value);
@@ -128,6 +130,7 @@ public class SmtpMail implements Mail {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setFrom(String from) {
         try {
             message.setFrom(new InternetAddress(from));
@@ -147,6 +150,7 @@ public class SmtpMail implements Mail {
 
 
     /** {@inheritDoc} */
+    @Override
     public void send() {
 
         try {
@@ -165,21 +169,25 @@ public class SmtpMail implements Mail {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setRecipient(String recipIn) {
         setRecipients(new String[]{recipIn});
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setRecipients(String[] emailAddrs) {
         setRecipients(Message.RecipientType.TO, emailAddrs);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setCCRecipients(String[] emailAddrs) {
         setRecipients(Message.RecipientType.CC, emailAddrs);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setBCCRecipients(String[] emailAddrs) {
         setRecipients(Message.RecipientType.BCC, emailAddrs);
     }
@@ -215,6 +223,7 @@ public class SmtpMail implements Mail {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setSubject(String subIn) {
         try {
             message.setSubject(subIn);
@@ -227,6 +236,7 @@ public class SmtpMail implements Mail {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setBody(String textIn) {
         try {
             message.setText(textIn);

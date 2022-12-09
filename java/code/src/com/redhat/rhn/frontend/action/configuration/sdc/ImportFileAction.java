@@ -33,12 +33,14 @@ public class ImportFileAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
         User user = rctx.getCurrentUser();
         Server server = rctx.lookupServer();
         return ConfigurationManager.getInstance().listFileNamesForSystem(user, server, pc);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctx) {
         if (!rctx.isSubmitted()) {
             getSetDecl().clear(rctx.getCurrentUser());
@@ -49,6 +51,7 @@ public class ImportFileAction extends BaseSetListAction {
         SdcHelper.ssmCheck(rctx.getRequest(), server.getId(), user);
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilter(true);
         pc.setFilterColumn("path");
@@ -57,6 +60,7 @@ public class ImportFileAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILE_NAMES;
     }

@@ -42,6 +42,7 @@ public class CobblerSystemRemoveCommand extends CobblerCommand {
      * Remove the System from cobbler
      * @return ValidatorError if the remoev failed.
      */
+    @Override
     public ValidatorError store() {
         SystemRecord sr = lookupExisting(server);
         if (sr != null) {

@@ -46,6 +46,7 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
     private final String DIALOG_NAV = "com.redhat.rhn.frontend.nav.DialognavRenderer";
     private NavDialogMenuTag nmt;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         nmt = new NavDialogMenuTag();

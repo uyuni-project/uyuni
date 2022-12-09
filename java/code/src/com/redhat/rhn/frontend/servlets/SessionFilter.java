@@ -42,13 +42,15 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
     private static final Logger LOG = LogManager.getLogger(SessionFilter.class);
 
     /** {@inheritDoc} */
+    @Override
     public void init(FilterConfig config) throws ServletException {
         // no-op
     }
 
     /** {@inheritDoc} */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain) throws IOException, ServletException {
+                         FilterChain chain) throws IOException, ServletException {
         boolean committed = false;
         try {
             logHere("Calling doFilter");
@@ -100,6 +102,7 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
     }
 
     /** {@inheritDoc} */
+    @Override
     public void destroy() {
         // no-op
     }

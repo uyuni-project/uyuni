@@ -38,6 +38,7 @@ import java.util.Optional;
 import spark.Request;
 
 public class SSOControllerTest extends BaseControllerTestCase {
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

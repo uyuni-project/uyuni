@@ -44,6 +44,7 @@ public class AuthHandler extends BaseHandler {
 
     private static Logger log = LogManager.getLogger(AuthHandler.class);
 
+    @Override
     protected boolean providesAuthentication() {
         return true;
     }

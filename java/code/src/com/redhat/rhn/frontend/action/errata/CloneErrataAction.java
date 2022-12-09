@@ -48,6 +48,7 @@ public class CloneErrataAction extends RhnAction implements Listable {
     public static final String ANY_CHANNEL = "any_channel";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -75,6 +76,7 @@ public class CloneErrataAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         User user = context.getCurrentUser();
         Long orgId = user.getOrg().getId();

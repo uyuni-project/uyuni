@@ -45,12 +45,14 @@ public class AdminListAction extends BaseListAction {
     private ManagedServerGroup serverGroup;
     private User user;
 
+    @Override
     protected void setup(HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);
         serverGroup = requestContext.lookupAndBindServerGroup();
         user = requestContext.getCurrentUser();
     }
 
+    @Override
     protected void processHelper(ListSessionSetHelper helper) {
         helper.ignoreEmptySelection();
 
@@ -62,6 +64,7 @@ public class AdminListAction extends BaseListAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected ActionForward handleDispatch(
             ListSessionSetHelper helper,
             ActionMapping mapping,
@@ -101,6 +104,7 @@ public class AdminListAction extends BaseListAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         List<UserOverview> userList = UserManager.activeInOrg2(user);
         for (UserOverview uo : userList) {

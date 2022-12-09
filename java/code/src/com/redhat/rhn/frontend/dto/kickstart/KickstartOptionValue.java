@@ -170,6 +170,7 @@ public class KickstartOptionValue implements Comparable<KickstartOptionValue> {
      *
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(KickstartOptionValue o) {
         return getName().compareTo(o.getName());
     }

@@ -32,6 +32,7 @@ class BufferedServletOutputStream extends LegacyServletOutputStream {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public void write(int b) throws IOException {
         buffer.write(b);
     }
@@ -39,6 +40,7 @@ class BufferedServletOutputStream extends LegacyServletOutputStream {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public void flush() throws IOException {
         buffer.flush();
     }

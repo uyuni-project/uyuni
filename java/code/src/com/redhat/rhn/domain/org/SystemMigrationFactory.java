@@ -43,6 +43,7 @@ import java.util.Map;
     * show up on the correct class
     * @return Logger to use
     */
+    @Override
     protected Logger getLogger() {
         return log;
     }

@@ -55,10 +55,11 @@ public abstract class BaseCryptoKeyEditAction extends RhnAction {
     public static final String CSRF_TOKEN = "csrfToken";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(org_admin) or user_role(config_admin)",
             request, null)) {

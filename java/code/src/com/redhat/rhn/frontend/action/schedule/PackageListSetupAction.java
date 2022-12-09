@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 public class PackageListSetupAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -75,6 +76,7 @@ public class PackageListSetupAction extends RhnAction implements Listable {
      *
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         Long actionId = context.getParamAsLong("aid");
         return ActionManager.getPackageList(actionId, null);

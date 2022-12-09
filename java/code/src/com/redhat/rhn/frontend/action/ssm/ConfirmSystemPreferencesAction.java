@@ -41,10 +41,11 @@ public class ConfirmSystemPreferencesAction extends RhnAction {
     private static Logger log = LogManager.getLogger(ConfirmSystemPreferencesAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         DynaActionForm form = (DynaActionForm) formIn;

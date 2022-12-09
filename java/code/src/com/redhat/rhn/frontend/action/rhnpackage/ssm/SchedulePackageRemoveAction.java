@@ -76,6 +76,7 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -116,6 +117,7 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<Map<String, Object>> getResult(RequestContext context) {
         return getResult(context, false);
 

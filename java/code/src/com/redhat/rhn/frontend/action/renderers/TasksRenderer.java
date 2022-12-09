@@ -34,6 +34,7 @@ public class TasksRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         request.setAttribute(TASKS, Boolean.TRUE);
         request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
@@ -46,6 +47,7 @@ public class TasksRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getPageUrl() {
         return "/WEB-INF/pages/common/fragments/yourrhn/tasks.jsp";
     }

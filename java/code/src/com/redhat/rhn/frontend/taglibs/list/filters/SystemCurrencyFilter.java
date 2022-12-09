@@ -29,6 +29,7 @@ public class SystemCurrencyFilter extends BaseListFilter {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public void processMap(Map map, Locale userLocale) {
         LocalizationService ls =
             LocalizationService.getInstance();

@@ -40,10 +40,11 @@ public class ListSystemsAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.setListName("systemList");
         helper.setDataSetName(RequestContext.PAGE_LIST);
@@ -54,6 +55,7 @@ public class ListSystemsAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         return SystemManager.inSet(context.getCurrentUser(),
                 RhnSetDecl.SYSTEMS.getLabel());

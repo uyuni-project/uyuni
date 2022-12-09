@@ -47,6 +47,7 @@ public class ScheduleDetailAction extends RhnAction {
     static final String SCHEDULE_NAME_REGEX = "^[a-z\\d][a-z\\d\\-\\.\\_]*$";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

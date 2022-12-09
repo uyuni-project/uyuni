@@ -60,6 +60,7 @@ public class AuditMachineDto extends BaseDto implements Comparable<AuditMachineD
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -86,6 +87,7 @@ public class AuditMachineDto extends BaseDto implements Comparable<AuditMachineD
     }
 
     /** {@inheritDoc} */
+    @Override
     public int compareTo(AuditMachineDto other) {
         return getName().compareTo(other.getName());
     }

@@ -32,6 +32,7 @@ public class SubscriptionsSetupAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS_RANKING;
     }
@@ -39,6 +40,7 @@ public class SubscriptionsSetupAction extends BaseSetListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctx) {
         if (!rctx.isSubmitted()) {
             getSetDecl().clear(rctx.getCurrentUser());
@@ -49,6 +51,7 @@ public class SubscriptionsSetupAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext context, PageControl pc) {
         User user = context.getCurrentUser();
         ConfigurationManager cm = ConfigurationManager.getInstance();

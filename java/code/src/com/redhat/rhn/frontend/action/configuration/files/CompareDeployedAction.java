@@ -32,10 +32,12 @@ public class CompareDeployedAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         ConfigActionHelper.processRequestAttributes(rctxIn);
         super.processRequestAttributes(rctxIn);
@@ -44,6 +46,7 @@ public class CompareDeployedAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());

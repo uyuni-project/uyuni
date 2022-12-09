@@ -119,6 +119,7 @@ public abstract class BaseSearchAction extends RhnAction {
      * The default execute() workflow for search-related actions is to call executeBody(),
      * handle any execptions thrown, and return whatever destination executeBody returned.
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

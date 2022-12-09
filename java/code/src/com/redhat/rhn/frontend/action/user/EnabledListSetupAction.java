@@ -40,8 +40,9 @@ public class EnabledListSetupAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
         ListHelper helper = new ListHelper(this, request);
         helper.setListName(LIST_NAME);
         helper.setDataSetName(getDataSetName());
@@ -60,6 +61,7 @@ public class EnabledListSetupAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return UserManager.activeInOrg2(user);

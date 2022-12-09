@@ -29,6 +29,7 @@ public class TrustListFilter extends BaseListFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("unchecked")
     public void processMap(Map map, Locale userLocale) {
         LocalizationService ls = LocalizationService.getInstance();

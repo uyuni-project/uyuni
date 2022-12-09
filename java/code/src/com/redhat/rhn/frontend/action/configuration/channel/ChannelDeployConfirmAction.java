@@ -61,8 +61,9 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
@@ -135,6 +136,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         return cc;
     }
 
+    @Override
     protected Map makeParamMap(HttpServletRequest request) {
         Map m = super.makeParamMap(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(request);

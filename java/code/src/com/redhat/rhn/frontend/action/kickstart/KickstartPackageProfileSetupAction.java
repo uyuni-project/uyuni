@@ -51,10 +51,11 @@ public class KickstartPackageProfileSetupAction extends RhnAction implements Lis
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
 
@@ -104,6 +105,7 @@ public class KickstartPackageProfileSetupAction extends RhnAction implements Lis
      *
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext rctx) {
         KickstartData ksdata = KickstartFactory
         .lookupKickstartDataByIdAndOrg(rctx.getCurrentUser().getOrg(),

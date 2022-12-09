@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class VisibleSystemsListSetupAction extends RhnListAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

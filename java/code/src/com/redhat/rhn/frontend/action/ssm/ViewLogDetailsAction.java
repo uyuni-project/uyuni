@@ -45,6 +45,7 @@ public class ViewLogDetailsAction extends RhnListAction implements Listable {
     private static final String PARAM_OPERATION_ID = "oid";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -73,6 +74,7 @@ public class ViewLogDetailsAction extends RhnListAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         HttpServletRequest request = context.getRequest();
         long oid = Long.parseLong(request.getParameter(PARAM_OPERATION_ID));

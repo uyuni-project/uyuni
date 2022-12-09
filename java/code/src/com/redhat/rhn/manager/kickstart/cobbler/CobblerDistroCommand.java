@@ -52,6 +52,7 @@ public class CobblerDistroCommand extends CobblerCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
         throw new UnsupportedOperationException();
     }

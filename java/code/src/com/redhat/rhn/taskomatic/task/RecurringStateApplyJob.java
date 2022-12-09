@@ -47,6 +47,7 @@ public class RecurringStateApplyJob extends RhnJavaJob {
      *
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String scheduleName = context.getJobDetail().getKey().getName();
         Optional<RecurringAction> recurringAction = RecurringActionFactory.lookupByJobName(scheduleName);

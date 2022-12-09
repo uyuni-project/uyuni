@@ -47,6 +47,7 @@ public class ScriptAction extends Action {
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionFormatter getFormatter() {
         if (formatter == null) {
             formatter = new ScriptActionFormatter(this);

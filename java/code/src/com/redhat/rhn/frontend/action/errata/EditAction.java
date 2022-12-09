@@ -76,6 +76,7 @@ public class EditAction extends LookupDispatchAction {
      * @param response HttpServletResponse
      * @return ActionForward, the forward for the jsp
      */
+    @Override
     public ActionForward unspecified(ActionMapping mapping,
                                      ActionForm formIn,
                                      HttpServletRequest request,
@@ -398,6 +399,7 @@ public class EditAction extends LookupDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Map getKeyMethodMap() {
         Map map = new HashMap();
         map.put("errata.edit.sendnotification", "notify");

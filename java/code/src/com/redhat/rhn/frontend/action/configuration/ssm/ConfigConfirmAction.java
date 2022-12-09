@@ -45,6 +45,7 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         String feature  = rctxIn.getRequest().getParameter("feature");
@@ -52,6 +53,7 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
                                     feature);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         User user = rctxIn.getCurrentUser();
         int size = RhnSetDecl.CONFIG_FILE_NAMES.get(user).size();
@@ -59,6 +61,7 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
         super.processRequestAttributes(rctxIn);
     }
 
+    @Override
     protected void processPageControl(PageControl pcIn) {
         pcIn.setFilter(true);
         pcIn.setFilterColumn("name");
@@ -67,6 +70,7 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processForm(RequestContext ctxt, ActionForm formIn) {
         if (formIn == null) {
             return; //no date picker on diff page

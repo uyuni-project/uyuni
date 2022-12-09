@@ -39,6 +39,7 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
      * override the setupUp method
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -60,35 +61,44 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
         request.setAttribute(Globals.MULTIPART_KEY, UploadsHandler.class.getName());
 
         final FormFile ff = new FormFile() {
+            @Override
             public void destroy() {
             }
 
+            @Override
             public String getContentType() {
                 return "text/plain";
             }
 
+            @Override
             public byte[] getFileData() throws FileNotFoundException, IOException {
                 return contents.getBytes();
             }
 
+            @Override
             public String getFileName() {
                 return fileName;
             }
 
+            @Override
             public int getFileSize() {
                 return contents.length();
             }
 
+            @Override
             public InputStream getInputStream() throws FileNotFoundException, IOException {
                 return new ByteArrayInputStream(contents.getBytes());
             }
 
+            @Override
             public void setContentType(String contentType) {
             }
 
+            @Override
             public void setFileName(String fileName) {
             }
 
+            @Override
             public void setFileSize(int fileSize) {
             }
         };

@@ -30,19 +30,22 @@ import org.apache.struts.action.DynaActionForm;
  */
 public class SessionCancelAction extends BaseSystemEditAction {
 
+    @Override
     protected BaseSystemOperation getOperation(RequestContext ctx) {
         return new CancelKickstartSessionOperation(
                 ctx.getCurrentUser(), ctx.getRequiredParam(RequestContext.SID));
     }
 
+    @Override
     protected ValidatorError processFormValues(DynaActionForm form,
-            BaseSystemOperation cmd) {
+                                               BaseSystemOperation cmd) {
         return cmd.store();
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getSuccessKey() {
         return "kickstart.session_cancel.success";
     }
@@ -50,8 +53,9 @@ public class SessionCancelAction extends BaseSystemEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx, DynaActionForm form,
-            BaseSystemOperation cmd) {
+                                   BaseSystemOperation cmd) {
         KickstartSession kss = KickstartFactory.
             lookupKickstartSessionByServer(cmd.getServer().getId());
         ctx.getRequest().setAttribute(RequestContext.KICKSTART_SESSION, kss);

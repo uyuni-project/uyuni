@@ -42,8 +42,9 @@ public class PackageNameOverviewAction extends RhnAction {
     private static Logger log = LogManager.getLogger(PackageNameOverviewAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         String pkgName = request.getParameter("package_name");
         String subscribedChannels = request.getParameter("search_subscribed_channels");
         String channelFilter = request.getParameter("channel_filter");

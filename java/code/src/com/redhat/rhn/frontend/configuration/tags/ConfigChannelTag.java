@@ -49,6 +49,7 @@ public class ConfigChannelTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         StringBuilder result = new StringBuilder();
         if (nolink || id == null) {
@@ -74,6 +75,7 @@ public class ConfigChannelTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         id = null;
         name = null;
@@ -86,6 +88,7 @@ public class ConfigChannelTag extends TagSupport {
     /**
      * @param val the id to set
      */
+    @Override
     public void setId(String val) {
         this.id = val;
     }

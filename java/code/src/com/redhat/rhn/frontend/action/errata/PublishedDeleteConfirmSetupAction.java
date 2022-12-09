@@ -42,6 +42,7 @@ public class PublishedDeleteConfirmSetupAction extends RhnListAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

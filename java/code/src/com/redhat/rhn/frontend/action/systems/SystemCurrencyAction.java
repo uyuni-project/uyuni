@@ -26,6 +26,7 @@ import org.apache.struts.action.ActionForm;
  */
 public class SystemCurrencyAction extends BaseSystemsAction {
 
+    @Override
     protected DataResult getDataResult(User user, PageControl pc, ActionForm formIn) {
 
         return SystemManager.systemCurrencyList(user, pc);

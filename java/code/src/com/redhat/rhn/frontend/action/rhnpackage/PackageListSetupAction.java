@@ -29,6 +29,7 @@ public class PackageListSetupAction extends BaseSystemPackagesAction {
      * @param server The system.
      * @return List of installed packages
      */
+    @Override
     protected DataResult getDataResult(Server server) {
         DataResult<PackageListItem> result = PackageManager.systemPackageList(server.getId(), null);
         result.elaborate();

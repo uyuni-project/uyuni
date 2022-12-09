@@ -33,6 +33,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     private String encoding;
 
     /** {@inheritDoc} */
+    @Override
     public void addCookie(Cookie cookie) {
         cookies.put(cookie.getName(), cookie);
     }
@@ -41,6 +42,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      *
      * {@inheritDoc}
      */
+    @Override
     public void addHeader(String key, String value) {
         header.put(key, value);
     }
@@ -50,6 +52,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      * @param key the header name
      * @return header value or null...
      */
+    @Override
     public String getHeader(String key) {
         return (String) header.get(key);
     }
@@ -68,6 +71,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      * @param aURL The URL for this redirect
      * @throws java.io.IOException will never throw
      */
+    @Override
     public void sendRedirect(String aURL) throws java.io.IOException {
         redirect = aURL;
     }
@@ -90,6 +94,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCharacterEncoding(String encodingIn) {
         this.encoding = encodingIn;
     }
@@ -97,6 +102,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getCharacterEncoding() {
         return this.encoding;
     }
@@ -104,6 +110,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCommitted() {
         return false;
     }

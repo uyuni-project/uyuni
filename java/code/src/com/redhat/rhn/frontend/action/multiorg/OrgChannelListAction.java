@@ -53,6 +53,7 @@ import javax.servlet.http.HttpServletResponse;
 public class OrgChannelListAction extends RhnAction implements Listable<OrgChannelDto> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -105,6 +106,7 @@ public class OrgChannelListAction extends RhnAction implements Listable<OrgChann
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<OrgChannelDto> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         Org org = user.getOrg();

@@ -39,6 +39,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
 
     private Server s;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

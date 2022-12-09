@@ -37,6 +37,7 @@ public class ScriptActionFormatter extends ActionFormatter {
      * Output the Errata info into the body.
      * @return String of the Errata HTML
      */
+    @Override
     protected String getNotesBody() {
         StringBuilder retval = new StringBuilder();
         ScriptAction sa = (ScriptAction) getAction();

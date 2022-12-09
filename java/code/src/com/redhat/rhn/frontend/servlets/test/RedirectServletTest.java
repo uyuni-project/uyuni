@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 public class RedirectServletTest extends MockObjectTestCase {
 
     private class RedirectServletStub extends RedirectServlet {
+        @Override
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

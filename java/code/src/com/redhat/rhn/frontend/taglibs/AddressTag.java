@@ -150,6 +150,7 @@ public class AddressTag extends TagSupport {
     /** {@inheritDoc}
      * @throws JspException jsp exception
      */
+    @Override
     public int doStartTag() throws JspException {
 
         JspWriter out = null;
@@ -257,6 +258,7 @@ public class AddressTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         type = null;
         action = null;

@@ -35,6 +35,7 @@ public class IssMasterOrg extends BaseDto {
      * Getter for id
      * @return Long to get
     */
+    @Override
     public Long getId() {
         return this.id;
     }

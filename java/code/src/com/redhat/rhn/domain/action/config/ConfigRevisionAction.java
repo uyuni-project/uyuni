@@ -70,6 +70,7 @@ public class ConfigRevisionAction extends ActionChild {
      * Getter for created
      * @return Date to get
     */
+    @Override
     public Date getCreated() {
         return this.created;
     }
@@ -78,6 +79,7 @@ public class ConfigRevisionAction extends ActionChild {
      * Setter for created
      * @param createdIn to set
     */
+    @Override
     public void setCreated(Date createdIn) {
         this.created = createdIn;
     }
@@ -86,6 +88,7 @@ public class ConfigRevisionAction extends ActionChild {
      * Getter for modified
      * @return Date to get
     */
+    @Override
     public Date getModified() {
         return this.modified;
     }
@@ -94,6 +97,7 @@ public class ConfigRevisionAction extends ActionChild {
      * Setter for modified
      * @param modifiedIn to set
     */
+    @Override
     public void setModified(Date modifiedIn) {
         this.modified = modifiedIn;
     }

@@ -40,6 +40,7 @@ import java.util.List;
 public class PreservationListDeleteActionTest extends RhnBaseTestCase {
     private Action action = null;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         action = new PreservationListDeleteAction();

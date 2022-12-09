@@ -54,6 +54,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User userIn,
                                        ActionForm formIn,
                                        HttpServletRequest requestIn) {
@@ -66,6 +67,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
@@ -73,6 +75,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> mapIn) {
         mapIn.put("comparedeployed.jsp.schedule", "schedule");
     }
@@ -80,6 +83,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest requestIn,
                                    Map<String, Object> paramsIn) {

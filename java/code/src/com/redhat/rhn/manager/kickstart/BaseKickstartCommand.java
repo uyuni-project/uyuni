@@ -74,6 +74,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
      * Save the Kickstart Data to DB
      * @return ValdiatorError if there was an error.  Currently always returns null
      */
+    @Override
     public ValidatorError store() {
         KickstartData ksData = getKickstartData();
         if (rebuildPartitionCommands) {
@@ -100,6 +101,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
     /**
      * @return the user
      */
+    @Override
     public User getUser() {
         return user;
     }

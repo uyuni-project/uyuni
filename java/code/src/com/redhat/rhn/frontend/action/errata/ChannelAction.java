@@ -214,9 +214,10 @@ public class ChannelAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public DataResult<ChannelOverview> getDataResult(User user,
-                                    ActionForm formIn,
-                                    HttpServletRequest request) {
+                                                     ActionForm formIn,
+                                                     HttpServletRequest request) {
         //returns *all* items for the select all list function
         return ChannelManager.channelsOwnedByOrg(user.getOrg().getId(), null);
     }
@@ -225,6 +226,7 @@ public class ChannelAction extends RhnSetAction {
      * {@inheritDoc}
      * Add publish method to our map of dispatch methods
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("errata.publish.publisherrata", "publish");
         map.put("errata.channels.updatechannels", "updateChannels");
@@ -234,9 +236,10 @@ public class ChannelAction extends RhnSetAction {
      * {@inheritDoc}
      * Add eid to our parameter map
      */
+    @Override
     public void processParamMap(ActionForm formIn,
-                                   HttpServletRequest request,
-                                   Map<String, Object> params) {
+                                HttpServletRequest request,
+                                Map<String, Object> params) {
         //keep eid in params
         Long eid = new RequestContext(request).getParamAsLong(ERRATA_ID);
         if (eid != null) {
@@ -250,6 +253,7 @@ public class ChannelAction extends RhnSetAction {
         }
     }
 
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CHANNELS_FOR_ERRATA;
     }

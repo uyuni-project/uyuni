@@ -46,6 +46,7 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void sendRedirect(java.lang.String location) throws IOException {
 
         if (location == null) {
@@ -89,6 +90,7 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String encodeRedirectUrl(String arg0) {
         String rc = super.encodeRedirectUrl(arg0);
         return rc;
@@ -97,6 +99,7 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String encodeRedirectURL(String arg0) {
         String rc = super.encodeRedirectURL(arg0);
         return rc;
@@ -105,6 +108,7 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCharacterEncoding(String charsetIn) {
         charset = charsetIn;
     }
@@ -112,6 +116,7 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getCharacterEncoding() {
         return charset;
     }

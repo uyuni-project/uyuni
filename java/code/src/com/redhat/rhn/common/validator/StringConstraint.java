@@ -75,6 +75,7 @@ public class StringConstraint extends RequiredIfConstraint {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ValidatorError checkConstraint(Object value) {
 
         ValidatorError requiredCheck = super.checkConstraint(value);

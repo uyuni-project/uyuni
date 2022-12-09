@@ -81,6 +81,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -101,6 +102,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx,
                                    DynaActionForm form, BaseKickstartCommand cmdIn) {
         KickstartEditCommand cmd = (KickstartEditCommand) cmdIn;
@@ -250,6 +252,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ValidatorError processFormValues(HttpServletRequest request,
                                                DynaActionForm form,
                                                BaseKickstartCommand cmdIn) {
@@ -301,6 +304,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
         }
     }
 
+    @Override
     protected String getSuccessKey() {
         return "kickstart.details.success";
     }
@@ -308,6 +312,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected BaseKickstartCommand getCommand(RequestContext ctx) {
         return new KickstartEditCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                 ctx.getCurrentUser());

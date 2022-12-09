@@ -44,12 +44,14 @@ public class ChannelFilesListSubmit extends BaseSetOperateOnSelectedItemsAction 
     public static final String KEY_COPY_TO_SYSTEMS = "channelfiles.jsp.copy2systems";
     public static final String KEY_COPY_TO_CHANNELS = "channelfiles.jsp.copy2channels";
 
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(KEY_REMOVE, "processRemove");
         map.put(KEY_COPY_TO_SYSTEMS, "processCopyToSystems");
         map.put(KEY_COPY_TO_CHANNELS, "processCopyToChannels");
     }
 
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
@@ -151,6 +153,7 @@ public class ChannelFilesListSubmit extends BaseSetOperateOnSelectedItemsAction 
         return processCopy("copy2channels", mapping, formIn, request, response);
     }
 
+    @Override
     protected DataResult getDataResult(User u,
                                        ActionForm formIn,
                                        HttpServletRequest request) {
@@ -165,6 +168,7 @@ public class ChannelFilesListSubmit extends BaseSetOperateOnSelectedItemsAction 
      * We affect the selected-files set
      * @return FILE_LISTS identifier
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILES;
     }

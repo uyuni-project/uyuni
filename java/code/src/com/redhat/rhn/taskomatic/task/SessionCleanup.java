@@ -39,6 +39,7 @@ public class SessionCleanup extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext context)
             throws JobExecutionException {
         Config c = Config.get();

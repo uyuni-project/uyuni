@@ -35,6 +35,7 @@ public class XccdfRuleResultDto extends BaseDto {
      * Returns id of xccdf:rule-result
      * @return the id
      */
+    @Override
     public Long getId() {
         return this.id;
     }

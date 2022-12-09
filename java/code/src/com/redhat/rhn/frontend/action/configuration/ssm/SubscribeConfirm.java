@@ -68,9 +68,10 @@ public class SubscribeConfirm extends RhnAction {
      * @param response HttpServletResponse
      * @return an ActionForward to the same page
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn, HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn, HttpServletRequest request,
+                                 HttpServletResponse response) {
         //check that we have a viable priority
         checkPosition(request);
 

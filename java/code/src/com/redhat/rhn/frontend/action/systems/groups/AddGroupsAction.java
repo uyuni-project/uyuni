@@ -85,6 +85,7 @@ public class AddGroupsAction extends RhnAction implements Listable {
     }
 
         /** {@inheritDoc} */
+    @Override
     public DataResult<ManagedServerGroup> getResult(RequestContext context) {
 
         Server server = context.lookupAndBindServer();

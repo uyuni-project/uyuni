@@ -80,6 +80,7 @@ public class ScapResultFile implements StreamInfo {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getContentType() {
         if (filename.endsWith(".xml")) {
             return "text/xml";
@@ -95,6 +96,7 @@ public class ScapResultFile implements StreamInfo {
     /**
      * {@inheritDoc}
      */
+    @Override
     public InputStream getInputStream() {
         try {
             return new FileInputStream(getAbsolutePath());

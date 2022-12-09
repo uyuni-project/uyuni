@@ -34,6 +34,7 @@ public class RhnMockServletOutputStream extends LegacyServletOutputStream {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void println(String s) throws IOException {
         super.println(s);
         contents.append(s);
@@ -42,6 +43,7 @@ public class RhnMockServletOutputStream extends LegacyServletOutputStream {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void write(byte[] b) throws IOException {
         contents.append(new String(b));
     }
@@ -57,6 +59,7 @@ public class RhnMockServletOutputStream extends LegacyServletOutputStream {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void write(int b) throws IOException {
         contents.append(b + "");
     }
@@ -64,6 +67,7 @@ public class RhnMockServletOutputStream extends LegacyServletOutputStream {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void write(byte[] b, int off, int len) throws IOException {
         String bytes = new String(b);
         contents.append(bytes.toCharArray(), off, len);

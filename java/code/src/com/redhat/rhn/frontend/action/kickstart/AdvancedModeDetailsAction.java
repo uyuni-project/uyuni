@@ -84,10 +84,11 @@ public class AdvancedModeDetailsAction extends RhnAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
         RequestContext context = new RequestContext(request);
 
 

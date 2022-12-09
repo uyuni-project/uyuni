@@ -46,6 +46,7 @@ public abstract class SsmPackagesAction implements MessageAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(EventMessage msg) {
         SsmPackageEvent event = (SsmPackageEvent) msg;
 

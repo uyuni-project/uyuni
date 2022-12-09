@@ -35,6 +35,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

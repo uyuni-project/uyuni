@@ -89,6 +89,7 @@ public class ErrataListAction extends ErrataSetupAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         String type = context.getParam(SELECTOR, false);
         List<String> typeList = getTypes(type);

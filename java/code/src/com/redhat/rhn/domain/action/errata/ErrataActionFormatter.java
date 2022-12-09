@@ -43,6 +43,7 @@ public class ErrataActionFormatter extends ActionFormatter {
      * Output the Errata info into the body.
      * @return String of the Errata HTML
      */
+    @Override
     protected String getNotesBody() {
         StringBuilder retval = new StringBuilder();
         Set<Errata> erratas = ((ErrataAction) this.getAction()).getErrata();

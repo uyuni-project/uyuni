@@ -36,6 +36,7 @@ public class MapBuilderTest extends RhnBaseTestCase {
     private MapBuilder builder;
     private TestBean bean;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         builder = new MapBuilder();

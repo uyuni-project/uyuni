@@ -27,6 +27,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
  */
 public class CompareChannelAction extends BaseListAction {
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         ConfigActionHelper.processRequestAttributes(rctxIn);
     }
@@ -34,6 +35,7 @@ public class CompareChannelAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
 

@@ -51,6 +51,7 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      * Getter for id
      * @return Long to get
     */
+    @Override
     public Long getId() {
         return this.id;
     }

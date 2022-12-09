@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ManageChannelsAction extends RhnAction implements Listable<ChannelTreeNode> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -51,6 +52,7 @@ public class ManageChannelsAction extends RhnAction implements Listable<ChannelT
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<ChannelTreeNode> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return ChannelManager.ownedChannelsTree(user);

@@ -30,6 +30,7 @@ public class VisibleSystems extends BaseDto {
      * get the id
      * @return the id
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -98,6 +99,7 @@ public class VisibleSystems extends BaseDto {
      * They are false otherwise
      * @return whether the current system is UI selectable
      */
+    @Override
     public boolean isSelectable() {
         return selectable;
     }

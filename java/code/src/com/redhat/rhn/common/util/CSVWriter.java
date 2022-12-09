@@ -63,6 +63,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
      * Set columns
      * @param columnsIn List of Strings containing the names of the columns
      */
+    @Override
     public void setColumns(List<String> columnsIn) {
         columns = new LinkedList<>();
         for (String column : columnsIn) {
@@ -105,6 +106,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void write(List listIn) {
         try {
             this.writeList(listIn);
@@ -222,6 +224,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
      * Write a string to the Writer
      * {@inheritDoc}
      */
+    @Override
     public void write(String s) throws IOException {
         // If the string does not contain a comma, just write it out
         if (s.indexOf(separatorChar) == -1 && s.indexOf('"') == -1) {
@@ -260,6 +263,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getContents() {
         try {
             this.flush();
@@ -278,6 +282,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getMimeType() {
         return "text/csv";
     }
@@ -285,6 +290,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFileExtension() {
         return "csv";
     }

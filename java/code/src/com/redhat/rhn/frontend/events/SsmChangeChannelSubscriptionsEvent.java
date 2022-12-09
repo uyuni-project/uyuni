@@ -63,6 +63,7 @@ public class SsmChangeChannelSubscriptionsEvent implements EventMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Long getUserId() {
         return user.getId();
     }
@@ -82,6 +83,7 @@ public class SsmChangeChannelSubscriptionsEvent implements EventMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toText() {
         return toString();
     }

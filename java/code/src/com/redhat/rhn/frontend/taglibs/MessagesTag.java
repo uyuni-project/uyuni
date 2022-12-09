@@ -38,6 +38,7 @@ public class MessagesTag extends TagSupport {
     /** {@inheritDoc}
      * @throws JspException JSP exception
      */
+    @Override
     public int doStartTag() throws JspException {
         JspWriter out = null;
         try {
@@ -58,6 +59,7 @@ public class MessagesTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         JspWriter out = null;
         try {
@@ -80,6 +82,7 @@ public class MessagesTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         baseTag = null;
         super.release();

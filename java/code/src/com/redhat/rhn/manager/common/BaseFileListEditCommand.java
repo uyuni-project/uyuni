@@ -45,6 +45,7 @@ public abstract class BaseFileListEditCommand extends BasePersistOperation {
     /**
      * @return Returns the user.
      */
+    @Override
     public User getUser() {
         return user;
     }
@@ -70,6 +71,7 @@ public abstract class BaseFileListEditCommand extends BasePersistOperation {
      *
      * @return ValidatorError[] if there were errors before the save.
      */
+    @Override
     public abstract ValidatorError store();
 
     /**

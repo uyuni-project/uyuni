@@ -36,6 +36,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
 
     private CreateUserCommand command;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         command = new CreateUserCommand();
