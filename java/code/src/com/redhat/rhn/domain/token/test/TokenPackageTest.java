@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
  */
 public class TokenPackageTest extends BaseTestCaseWithUser {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

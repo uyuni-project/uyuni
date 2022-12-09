@@ -50,6 +50,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -60,6 +61,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     public void testCreateCommand() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
+            @Override
             public ValidatorError[] storeConfiguration() {
                 this.clearUpdates();
                 return null;
@@ -148,6 +150,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     public void testUpdateHostname() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
+            @Override
             protected Executor getExecutor() {
                 return new TestExecutor();
             }
@@ -163,6 +166,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     public void testMountPoint() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
+            @Override
             protected Executor getExecutor() {
                 return new TestExecutor();
             }
@@ -193,14 +197,17 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     }
 
     public class TestExecutor implements Executor {
+        @Override
         public int execute(String[] args) {
             return 0;
         }
 
+        @Override
         public String getLastCommandOutput() {
             return null;
         }
 
+        @Override
         public String getLastCommandErrorMessage() {
             return null;
         }

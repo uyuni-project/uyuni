@@ -59,8 +59,9 @@ public class ErrataSearchAction extends BaseSearchAction {
 
     private static final Logger LOG = LogManager.getLogger(ErrataSearchAction.class);
 
+    @Override
     protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
-                    DynaActionForm form)
+                                      DynaActionForm form)
         throws MalformedURLException, XmlRpcFault {
         RequestContext ctx = new RequestContext(request);
 
@@ -146,6 +147,7 @@ public class ErrataSearchAction extends BaseSearchAction {
      * can find them
      * @param form where we expect values to be
      */
+    @Override
     protected void insureFormDefaults(HttpServletRequest request, DynaActionForm form) {
         String viewmode = form.getString(VIEW_MODE);
         if (viewmode.equals("")) { //first time viewing page

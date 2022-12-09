@@ -34,6 +34,7 @@ public class KickstartPreservationListSetupAction extends BaseKickstartListSetup
      *
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
         return KickstartLister.getInstance().preservationListsInOrg(
                 rctx.getCurrentUser().getOrg(), pc);
@@ -42,6 +43,7 @@ public class KickstartPreservationListSetupAction extends BaseKickstartListSetup
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.FILE_LISTS;
     }
@@ -49,6 +51,7 @@ public class KickstartPreservationListSetupAction extends BaseKickstartListSetup
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Iterator getCurrentItemsIterator(KickstartData ksdata) {
         if (ksdata.getPreserveFileLists() != null) {
             return ksdata.getPreserveFileLists().iterator();

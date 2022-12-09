@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CreateUserSetupAction extends BaseUserSetupAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

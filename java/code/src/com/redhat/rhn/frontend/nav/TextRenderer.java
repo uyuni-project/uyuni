@@ -37,10 +37,12 @@ public class TextRenderer extends Renderable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void preNavLevel(StringBuffer sb, int depth) {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void preNavNode(StringBuffer sb, int depth) {
         if (!canRender(null, depth)) {
             return;
@@ -52,6 +54,7 @@ public class TextRenderer extends Renderable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void navNodeActive(StringBuffer sb,
                               NavNode node,
                               NavTreeIndex treeIndex,
@@ -71,6 +74,7 @@ public class TextRenderer extends Renderable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void navNodeInactive(StringBuffer sb,
                                 NavNode node,
                                 NavTreeIndex treeIndex,
@@ -90,23 +94,28 @@ public class TextRenderer extends Renderable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void postNavNode(StringBuffer sb, int depth) {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void postNavLevel(StringBuffer sb, int depth) {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean nodeRenderInline(int depth) {
         return true;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void preNav(StringBuffer sb) {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void postNav(StringBuffer sb) {
     }
 }

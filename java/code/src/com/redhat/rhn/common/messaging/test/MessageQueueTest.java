@@ -34,6 +34,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
     private static Logger logger = LogManager.getLogger(MessageQueueTest.class);
     protected User user;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         logger.debug("setUp - start");
@@ -45,6 +46,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("setUp - end");
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
@@ -228,6 +230,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
           * This is the method that loops waiting for a message so that it can
           * hand the message to the regstered action types.
           */
+        @Override
         public void run() {
             // simulate doing some work
             try {
@@ -253,6 +256,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
           * This is the method that loops waiting for a message so that it can
           * hand the message to the regstered action types.
           */
+        @Override
         public void run() {
             // simulate doing some work
             try {
@@ -278,6 +282,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
           * This is the method that loops waiting for a message so that it can
           * hand the message to the regstered action types.
           */
+        @Override
         public void run() {
             // simulate doing some work
             try {

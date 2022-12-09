@@ -1069,6 +1069,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             oneOf(saltServiceMock).callAsync(
                     with(any(LocalCall.class)), with(any(Target.class)), with(any(Optional.class)));
             LocalAsyncResult<?> result = new LocalAsyncResult() {
+                @Override
                 public List<String> getMinions() {
                     return Arrays.asList(testMinionServer.getMinionId());
                 }

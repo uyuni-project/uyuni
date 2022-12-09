@@ -143,6 +143,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -247,6 +248,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean changeRowColor() {
        return !(this.getDepth() > 1);
     }
@@ -254,6 +256,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean greyOutRow() {
         if (channelFamilyId == null || channelFamilySearchedFor == null) {
             return false;
@@ -266,6 +269,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getNodeIdString() {
         if (parentId != null) {
             return "c" + id;
@@ -362,6 +366,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
      *
      * {@inheritDoc}
      */
+    @Override
     public long depth() {
         return getDepth();
     }
@@ -372,6 +377,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
      *
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(ChannelTreeNode arg0) {
         //if they are both parents, just sort by name
         if (this.isParent() && arg0.isParent()) {

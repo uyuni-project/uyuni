@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  */
 public class CopyFileSandboxAction extends BaseCopyConfigFileAction {
 
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());
@@ -40,18 +41,22 @@ public class CopyFileSandboxAction extends BaseCopyConfigFileAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
 
+    @Override
     protected String getLabel() {
         return ConfigChannelType.sandbox().getLabel();
     }
 
+    @Override
     protected String getType() {
         return BaseCopyConfigFileAction.SANDBOX_TYPE;
     }
 
+    @Override
     protected String getFilterAttr() {
         return BaseCopyConfigFileAction.SYSTEM_FILTER;
     }

@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserPrefSetupAction extends BaseUserSetupAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

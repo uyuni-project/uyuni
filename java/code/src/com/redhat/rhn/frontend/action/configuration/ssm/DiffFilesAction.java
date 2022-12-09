@@ -35,6 +35,7 @@ public class DiffFilesAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pc) {
         User user = rctxIn.getCurrentUser();
         Server server = rctxIn.lookupServer();
@@ -48,6 +49,7 @@ public class DiffFilesAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         HttpServletRequest request = rctxIn.getRequest();
         User user = rctxIn.getCurrentUser();
@@ -58,6 +60,7 @@ public class DiffFilesAction extends BaseListAction {
         SdcHelper.ssmCheck(request, server.getId(), user);
     }
 
+    @Override
     protected void processPageControl(PageControl pcIn) {
         pcIn.setFilter(true);
         pcIn.setFilterColumn("path");

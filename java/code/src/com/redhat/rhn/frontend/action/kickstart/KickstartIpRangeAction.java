@@ -63,10 +63,11 @@ public class KickstartIpRangeAction extends RhnAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public final ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                       ActionForm formIn,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(org_admin) or user_role(config_admin)",
             request, null)) {

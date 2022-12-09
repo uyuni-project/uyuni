@@ -57,6 +57,7 @@ public class AclGuard implements RenderGuard {
      * @param depth ignored.
      * @return true if the acl of the NavNode evalutes to true.
      */
+    @Override
     public boolean canRender(NavNode node, int depth) {
         // we ignore depth
         if (node == null) {

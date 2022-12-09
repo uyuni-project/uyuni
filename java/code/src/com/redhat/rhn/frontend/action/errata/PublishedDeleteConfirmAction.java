@@ -25,6 +25,7 @@ public class PublishedDeleteConfirmAction extends BaseDeleteErrataAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void deleteErrata(User user) {
         ErrataManager.deleteErrataInSet(user, "errata_to_delete");
     }

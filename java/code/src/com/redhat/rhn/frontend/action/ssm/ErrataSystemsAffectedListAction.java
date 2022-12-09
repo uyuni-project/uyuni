@@ -58,6 +58,7 @@ public class ErrataSystemsAffectedListAction extends RhnAction implements
     }
 
     /** {@inheritDoc} */
+    @Override
     @SuppressWarnings("rawtypes")
     public List getResult(RequestContext context) {
         return ErrataManager.systemsAffectedInSet(context.getCurrentUser(),

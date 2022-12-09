@@ -85,6 +85,7 @@ public class PackageOverview extends BaseDto {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }

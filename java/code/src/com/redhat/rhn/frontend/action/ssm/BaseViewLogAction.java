@@ -45,6 +45,7 @@ public abstract class BaseViewLogAction extends RhnListAction implements Listabl
     protected abstract String getSummaryKey();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,

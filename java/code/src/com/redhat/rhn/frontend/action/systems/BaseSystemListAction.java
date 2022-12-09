@@ -33,6 +33,7 @@ public abstract class BaseSystemListAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         //no op
     }
@@ -40,12 +41,14 @@ public abstract class BaseSystemListAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
         // no-op
     }
 
+    @Override
     protected abstract DataResult getDataResult(User user,
                                                 ActionForm formIn,
                                                 HttpServletRequest request);
@@ -53,6 +56,7 @@ public abstract class BaseSystemListAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.SYSTEMS;
     }

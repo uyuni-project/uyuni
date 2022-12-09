@@ -31,6 +31,7 @@ public class CachingOutputStream extends LegacyServletOutputStream {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void write(int c) throws IOException {
         buffer.write(c);
     }

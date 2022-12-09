@@ -87,6 +87,7 @@ public class PackageName implements Comparable<PackageName> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageName o) {
         if (equals(o)) {
             return 0;

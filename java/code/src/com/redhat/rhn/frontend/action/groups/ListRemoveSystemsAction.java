@@ -74,6 +74,7 @@ public class ListRemoveSystemsAction extends BaseListAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         ManagedServerGroup sg = context.lookupAndBindServerGroup();
         return SystemManager.systemsInGroup(sg.getId(), null);

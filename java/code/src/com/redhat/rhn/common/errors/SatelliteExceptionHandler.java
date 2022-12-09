@@ -38,12 +38,14 @@ public class SatelliteExceptionHandler extends ExceptionHandler {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void logException(Exception ex) {
         Logger log = LogManager.getLogger(LookupExceptionHandler.class);
         log.error(ex);
         exception = ex;
     }
 
+    @Override
     protected void storeException(HttpServletRequest request, String property,
                                   ActionMessage msg, ActionForward forward, String scope) {
         TraceBackEvent evt = new TraceBackEvent();

@@ -44,6 +44,7 @@ public class ChannelSystemsListSubmit extends BaseSetOperateOnSelectedItemsActio
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(KEY_UNSUBSCRIBE, "processUnsubscribe");
     }
@@ -51,6 +52,7 @@ public class ChannelSystemsListSubmit extends BaseSetOperateOnSelectedItemsActio
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
@@ -58,8 +60,9 @@ public class ChannelSystemsListSubmit extends BaseSetOperateOnSelectedItemsActio
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User u, ActionForm formIn,
-            HttpServletRequest request) {
+                                       HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(ctx.getRequest());
         return ConfigurationManager.getInstance().listSystemInfoForChannel(u, cc, null);
@@ -68,6 +71,7 @@ public class ChannelSystemsListSubmit extends BaseSetOperateOnSelectedItemsActio
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest requestIn,
                                    Map<String, Object> paramsIn) {

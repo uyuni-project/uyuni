@@ -43,6 +43,7 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
 
     private Sequence idSequence;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         idSequence = new Sequence();

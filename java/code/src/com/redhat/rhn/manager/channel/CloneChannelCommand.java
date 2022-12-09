@@ -75,6 +75,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
      * @throws InvalidParentChannelException thrown if parent label is not a
      * valid base channel.
      */
+    @Override
     public Channel create()
         throws InvalidChannelLabelException, InvalidChannelNameException,
         InvalidParentChannelException {

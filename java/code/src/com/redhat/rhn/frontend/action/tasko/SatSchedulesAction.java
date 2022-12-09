@@ -40,16 +40,18 @@ import javax.servlet.http.HttpServletResponse;
 public class SatSchedulesAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext contextIn) {
         User user =  contextIn.getCurrentUser();
         try {

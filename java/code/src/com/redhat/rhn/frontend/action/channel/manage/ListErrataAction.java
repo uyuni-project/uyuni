@@ -107,6 +107,7 @@ public class ListErrataAction extends RhnListAction implements Listable<ErrataOv
      *
      * {@inheritDoc}
      */
+    @Override
     public DataResult<ErrataOverview> getResult(RequestContext context) {
         Long cid = Long.parseLong(context.getRequest().getParameter(CID));
         User user = context.getCurrentUser();

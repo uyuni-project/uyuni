@@ -43,6 +43,7 @@ public class CachingResponseWrapper extends HttpServletResponseWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ServletOutputStream getOutputStream() throws IOException {
         return stream;
     }
@@ -50,6 +51,7 @@ public class CachingResponseWrapper extends HttpServletResponseWrapper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public PrintWriter getWriter() throws IOException {
         return writer;
     }

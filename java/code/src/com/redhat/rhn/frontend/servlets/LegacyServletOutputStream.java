@@ -33,6 +33,7 @@ public abstract class LegacyServletOutputStream extends ServletOutputStream {
      * Check if async support is ready.
      * @return we do not support this, return false
      */
+    @Override
     public boolean isReady() {
         return false;
     }
@@ -41,6 +42,7 @@ public abstract class LegacyServletOutputStream extends ServletOutputStream {
      * Set listener for async support.
      * @param listener listener matching our dummy interface
      */
+    @Override
     public void setWriteListener(WriteListener listener) {
         // DO NOTHING
     }

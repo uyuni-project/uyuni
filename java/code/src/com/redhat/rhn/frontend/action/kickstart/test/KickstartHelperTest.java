@@ -55,6 +55,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

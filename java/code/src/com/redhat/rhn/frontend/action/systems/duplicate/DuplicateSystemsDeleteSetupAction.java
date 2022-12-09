@@ -43,10 +43,11 @@ public class DuplicateSystemsDeleteSetupAction extends RhnAction implements List
     /**
     * {@inheritDoc}
     */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-           ActionForm formIn,
-           HttpServletRequest request,
-           HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
        RequestContext context = new RequestContext(request);
        if (context.wasDispatched("ssm.delete.systems.confirmbutton")) {
            return handleConfirm(context, mapping);
@@ -89,6 +90,7 @@ public class DuplicateSystemsDeleteSetupAction extends RhnAction implements List
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext contextIn) {
         return SystemManager.inSet(contextIn.getCurrentUser(),
                 RhnSetDecl.DUPLICATE_SYSTEMS.getLabel(), true);

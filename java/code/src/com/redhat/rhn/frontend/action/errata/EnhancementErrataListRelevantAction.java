@@ -29,6 +29,7 @@ public class EnhancementErrataListRelevantAction extends
         ErrataListRelevantAction {
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
 
         User user = context.getCurrentUser();

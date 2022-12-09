@@ -23,11 +23,13 @@ import java.util.List;
 public class ViewCompletedLogAction extends BaseViewLogAction {
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SsmOperationManager.completedOperations(user);
     }
 
+    @Override
     protected String getSummaryKey() {
         return "ssm.operations.completed.summary";
     }

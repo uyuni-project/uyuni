@@ -89,6 +89,7 @@ public class ListSetTag extends BodyTagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doStartTag() throws JspException {
         //if legend was set, process legends
         if (legend != null) {
@@ -102,6 +103,7 @@ public class ListSetTag extends BodyTagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         endForm();
         return BodyTagSupport.EVAL_PAGE;
@@ -110,6 +112,7 @@ public class ListSetTag extends BodyTagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         uniqueName = null;
         super.release();

@@ -149,6 +149,7 @@ public class ScapFactory extends HibernateFactory {
      * show up on the correct class.
      * @return Logger
      */
+     @Override
      protected Logger getLogger() {
          return log;
      }

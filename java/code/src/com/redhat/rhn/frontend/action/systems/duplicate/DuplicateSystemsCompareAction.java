@@ -64,10 +64,11 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
 
         Map<String, Object> params = new HashMap<>();
@@ -138,6 +139,7 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext contextIn) {
         String key = contextIn.getRequiredParamAsString(KEY);
         String keyType = contextIn.getRequiredParamAsString(KEY_TYPE);

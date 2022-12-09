@@ -45,6 +45,7 @@ public class ModeElaborator implements Elaborator, Serializable {
      *
      * {@inheritDoc}
      */
+    @Override
     public void elaborate(List objectsToElaborate) {
         mode.elaborate(objectsToElaborate, params);
     }

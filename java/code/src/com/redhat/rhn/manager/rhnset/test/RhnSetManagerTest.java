@@ -41,12 +41,14 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     private static final String TEST_USER_NAME = "automated_test_user_jesusr";
     private static final String TEST_ORG_NAME = "automated_test_org_jesusr";
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         userId = UserTestUtils.createUser(TEST_USER_NAME, TEST_ORG_NAME);
         cleanup = new TestSetCleanup();
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         userId = null;
@@ -231,6 +233,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
             super("test", "test");
         }
 
+        @Override
         protected int cleanup(RhnSet set) {
             return callbacks++;
         }

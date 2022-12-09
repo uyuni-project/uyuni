@@ -114,6 +114,7 @@ public class PowerManagementConfigurationAction extends RhnAction implements Lis
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List<SystemOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SystemManager.entitledInSet(user, RhnSetDecl.SYSTEMS.getLabel(),

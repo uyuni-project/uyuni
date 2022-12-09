@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ErrataConfirmSetupAction extends RhnListAction implements MaintenanceWindowsAware {
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

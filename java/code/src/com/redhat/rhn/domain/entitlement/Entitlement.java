@@ -70,6 +70,7 @@ public abstract class Entitlement implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(final Object other) {
         Entitlement castOther = (Entitlement) other;
         return new CompareToBuilder().append(label, castOther.label)

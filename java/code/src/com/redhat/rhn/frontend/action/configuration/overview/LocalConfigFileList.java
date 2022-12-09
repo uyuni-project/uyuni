@@ -27,11 +27,13 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 public class LocalConfigFileList extends BaseListAction {
 
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn("path");
         pc.setFilter(true);
     }
 
+    @Override
     protected DataResult getDataResult(RequestContext context, PageControl pc) {
         User user = context.getCurrentUser();
         return ConfigurationManager.getInstance().listLocalConfigFiles(user, pc);

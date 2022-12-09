@@ -63,8 +63,9 @@ public class AuthFilter implements Filter {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain) throws IOException, ServletException {
+                         FilterChain chain) throws IOException, ServletException {
 
         if (log.isDebugEnabled()) {
             log.debug("ENTER AuthFilter.doFilter: {} [{}] ({})", request.getRemoteAddr(), new Date(),
@@ -138,12 +139,14 @@ public class AuthFilter implements Filter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void destroy() {
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void init(FilterConfig arg0) throws ServletException {
         AuthenticationServiceFactory factory = AuthenticationServiceFactory.getInstance();
         authenticationService = factory.getAuthenticationService();

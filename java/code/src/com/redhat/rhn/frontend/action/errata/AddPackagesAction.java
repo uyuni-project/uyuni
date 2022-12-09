@@ -50,6 +50,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AddPackagesAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -96,6 +97,7 @@ public class AddPackagesAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         HttpServletRequest request = context.getRequest();
         User user = context.getCurrentUser();

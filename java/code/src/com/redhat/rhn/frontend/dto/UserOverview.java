@@ -114,6 +114,7 @@ public class UserOverview extends BaseDto {
      * get the id
      * @return the id
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -326,6 +327,7 @@ public class UserOverview extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSelectable() {
         return selectable;
     }

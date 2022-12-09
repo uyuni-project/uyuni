@@ -47,6 +47,7 @@ public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void appendExceptionToLogError(Exception e) {
         getLogger().error(e.getMessage(), e);
     }
@@ -81,6 +82,7 @@ public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext ctx, TaskoRun runIn)
             throws JobExecutionException {
         setJobRun(runIn);
@@ -92,6 +94,7 @@ public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         TaskQueueFactory factory = TaskQueueFactory.get();
         String queueName = getQueueName();

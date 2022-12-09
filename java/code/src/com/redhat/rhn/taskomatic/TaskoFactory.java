@@ -51,6 +51,7 @@ public class TaskoFactory extends HibernateFactory {
         super();
     }
 
+    @Override
     protected Logger getLogger() {
         return log;
     }

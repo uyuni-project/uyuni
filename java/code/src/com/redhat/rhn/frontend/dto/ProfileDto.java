@@ -26,6 +26,7 @@ public class ProfileDto extends BaseDto {
     /**
      * @return the id
      */
+    @Override
     public Long getId() {
         return id;
     }

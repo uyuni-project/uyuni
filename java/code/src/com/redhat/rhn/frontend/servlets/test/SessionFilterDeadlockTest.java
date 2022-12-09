@@ -42,6 +42,7 @@ public class SessionFilterDeadlockTest extends BaseFilterTst {
     public void testDeadlockFilter() throws Exception {
         // Make sure the chain blows up.
         chain = new MockFilterChain() {
+            @Override
             public void doFilter(ServletRequest req, ServletResponse resp)
             throws IOException, ServletException {
                 throw new IOException("Test IOException");

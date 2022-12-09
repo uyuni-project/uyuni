@@ -40,6 +40,7 @@ public class PermissionExceptionHandler extends ExceptionHandler {
      * Custom Handler for HibernateLookupExceptions
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(Exception ex, ExceptionConfig exConfig,
                                  ActionMapping mapping, ActionForm form,
                                  HttpServletRequest request, HttpServletResponse response)

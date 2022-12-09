@@ -44,6 +44,7 @@ public class DataListTest extends RhnBaseTestCase {
     private String db_sufix;
     private String db_user;
 
+    @Override
     @BeforeEach
     public void setUp() {
         db_sufix = "_pg";
@@ -56,6 +57,7 @@ public class DataListTest extends RhnBaseTestCase {
         elabParams.put("user_name", db_user);
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();

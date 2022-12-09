@@ -54,6 +54,7 @@ import java.util.Map;
 */
 public class TokenSerializer extends ApiResponseSerializer<Token> {
 
+   @Override
    public Class<Token> getSupportedClass() {
        return Token.class;
    }

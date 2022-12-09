@@ -40,8 +40,9 @@ public class KickstartCryptoKeysSubmitAction extends BaseKickstartListSubmitActi
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void operateOnRemovedElements(List<RhnSetElement> elements,
-            HttpServletRequest request) {
+                                            HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         KickstartCryptoKeyCommand cmd = new KickstartCryptoKeyCommand(
                 rctx.getRequiredParam(RequestContext.KICKSTART_ID), rctx.getCurrentUser());
@@ -53,8 +54,9 @@ public class KickstartCryptoKeysSubmitAction extends BaseKickstartListSubmitActi
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void operateOnAddedElements(List<RhnSetElement> elements,
-            HttpServletRequest request) {
+                                          HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         KickstartCryptoKeyCommand cmd = new KickstartCryptoKeyCommand(
                 rctx.getRequiredParam(RequestContext.KICKSTART_ID), rctx.getCurrentUser());
@@ -66,10 +68,12 @@ public class KickstartCryptoKeysSubmitAction extends BaseKickstartListSubmitActi
      *
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.GPGSSL_KEYS;
     }
 
+    @Override
     protected DataResult getDataResult(User user,
                                        ActionForm formIn,
                                        HttpServletRequest request) {
@@ -78,10 +82,12 @@ public class KickstartCryptoKeysSubmitAction extends BaseKickstartListSubmitActi
             cryptoKeysInOrg(rctx.getCurrentUser().getOrg());
     }
 
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(UPDATE_METHOD, "operateOnDiff");
     }
 
+    @Override
     protected Iterator getCurrentItemsIterator(RequestContext ctx) {
         KickstartCryptoKeyCommand cmd = new KickstartCryptoKeyCommand(
                 ctx.getRequiredParam(RequestContext.KICKSTART_ID), ctx.getCurrentUser());

@@ -42,6 +42,7 @@ import java.util.HashSet;
 public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     private ManagedServerGroup managedGroup;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

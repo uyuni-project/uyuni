@@ -134,6 +134,7 @@ public class InProgressSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User user,
                                        ActionForm formIn,
                                        HttpServletRequest request) {
@@ -148,6 +149,7 @@ public class InProgressSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("actions.jsp.unscheduleaction", "unscheduleAction");
     }
@@ -155,6 +157,7 @@ public class InProgressSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
@@ -165,6 +168,7 @@ public class InProgressSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.ACTIONS_UNSCHEDULE;
     }

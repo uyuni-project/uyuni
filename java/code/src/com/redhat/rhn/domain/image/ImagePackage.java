@@ -182,6 +182,7 @@ public class ImagePackage implements Comparable<ImagePackage> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(ImagePackage ip) {
         if (equals(ip)) {
             return 0;

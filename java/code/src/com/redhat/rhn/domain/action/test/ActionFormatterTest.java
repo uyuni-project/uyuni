@@ -37,6 +37,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
 
     private User user;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         user = UserTestUtils.findNewUser("testUser",

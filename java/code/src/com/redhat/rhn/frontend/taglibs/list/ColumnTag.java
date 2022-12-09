@@ -138,6 +138,7 @@ public class ColumnTag extends BodyTagSupport {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public int doStartTag() throws JspException {
         ListCommand command = ListTagUtil.getCurrentCommand(this, pageContext);
         ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
@@ -171,6 +172,7 @@ public class ColumnTag extends BodyTagSupport {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         if (sortable && attributeName == null && sortAttribute == null) {
             throw new JspException("Sortable columns must use either attr or sortAttr");
@@ -191,6 +193,7 @@ public class ColumnTag extends BodyTagSupport {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public void release() {
         width = null;
         styleClass = null;

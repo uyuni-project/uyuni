@@ -40,6 +40,7 @@ public class OrgDto extends BaseDto {
      *
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return id;
     }

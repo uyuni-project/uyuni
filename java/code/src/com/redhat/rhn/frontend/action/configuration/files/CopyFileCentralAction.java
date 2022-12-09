@@ -31,6 +31,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  */
 public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
 
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());
@@ -39,10 +40,12 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
         return cm.listChannelsForFileCopy(user, file, channelTypeLabel, pcIn);
     }
 
+    @Override
     protected String getLabel() {
         return ConfigChannelType.normal().getLabel();
     }
 
+    @Override
     protected String getType() {
         return BaseCopyConfigFileAction.CENTRAL_TYPE;
     }
@@ -51,6 +54,7 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
      * Only config-admins get to copy files into central channels
      * {@inheritDoc}
      */
+    @Override
     protected String checkPreConditions(RequestContext rctxIn) {
         User user = rctxIn.getCurrentUser();
         if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
@@ -59,6 +63,7 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
         return null;
     }
 
+    @Override
     protected String getFilterAttr() {
         return BaseCopyConfigFileAction.CHANNEL_FILTER;
     }
@@ -66,6 +71,7 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS;
     }

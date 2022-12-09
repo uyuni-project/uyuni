@@ -49,6 +49,7 @@ public class TestEventMessage implements EventMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getUserId() {
         return null;
     }

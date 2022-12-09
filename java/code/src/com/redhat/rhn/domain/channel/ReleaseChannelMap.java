@@ -137,6 +137,7 @@ public class ReleaseChannelMap implements Serializable,
      * @param o the other object
      * @return the compare return
      */
+    @Override
     public int compareTo(ReleaseChannelMap o) {
         List<Comparator> compar = new ArrayList<>();
 

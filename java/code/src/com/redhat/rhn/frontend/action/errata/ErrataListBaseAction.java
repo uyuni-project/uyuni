@@ -47,6 +47,7 @@ public abstract class ErrataListBaseAction extends RhnAction implements Listable
     protected abstract ErrataFilter getErrataFilter();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -60,6 +61,7 @@ public abstract class ErrataListBaseAction extends RhnAction implements Listable
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
 
         User user = context.getCurrentUser();

@@ -59,6 +59,7 @@ public class SystemCommandExecutor implements Executor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int execute(String[] args) {
         if (logger.isDebugEnabled()) {
             logger.debug("execute(String[] args={}) - start", Arrays.asList(args));
@@ -118,6 +119,7 @@ public class SystemCommandExecutor implements Executor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLastCommandOutput() {
         return lastCommandOutput;
     }
@@ -125,6 +127,7 @@ public class SystemCommandExecutor implements Executor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLastCommandErrorMessage() {
         return lastCommandError;
     }

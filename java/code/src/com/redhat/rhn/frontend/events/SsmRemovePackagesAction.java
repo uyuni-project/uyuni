@@ -39,10 +39,12 @@ import java.util.Set;
 public class SsmRemovePackagesAction extends SsmPackagesAction {
     private static Logger log = LogManager.getLogger(SsmRemovePackagesAction.class);
 
+    @Override
     protected String getOperationName() {
         return "ssm.package.remove.operationname";
     }
 
+    @Override
     protected List<Long> getAffectedServers(SsmPackageEvent event, User u) {
         SsmRemovePackagesEvent srpe = (SsmRemovePackagesEvent) event;
         List<Long> sids = new ArrayList<>();
@@ -54,8 +56,9 @@ public class SsmRemovePackagesAction extends SsmPackagesAction {
         return sids;
     }
 
+    @Override
     protected List<Action> doSchedule(SsmPackageEvent event, User user, List<Long> sids,
-        Date earliest, ActionChain actionChain) throws TaskomaticApiException {
+                                      Date earliest, ActionChain actionChain) throws TaskomaticApiException {
 
         SsmRemovePackagesEvent srpe = (SsmRemovePackagesEvent) event;
 

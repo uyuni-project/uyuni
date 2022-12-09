@@ -37,10 +37,11 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseSystemListSetupAction extends RhnListAction {
     public static final String SHOW_NO_SYSTEMS = "showNoSystems";
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();

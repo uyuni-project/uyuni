@@ -36,6 +36,7 @@ public class Copy2ChannelsAction extends BaseCopyToAction {
      * we could copy files into
      * {@inheritDoc}
      */
+    @Override
     public List getData(HttpServletRequest req) {
         RequestContext ctx = new RequestContext(req);
         User user = ctx.getCurrentUser();
@@ -48,6 +49,7 @@ public class Copy2ChannelsAction extends BaseCopyToAction {
      * In this context, the destination-id isA config-channel-id
      * {@inheritDoc}
      */
+    @Override
     public ConfigChannel getDestinationFromId(Long destId) {
         return ConfigurationFactory.lookupConfigChannelById(destId);
     }
@@ -56,6 +58,7 @@ public class Copy2ChannelsAction extends BaseCopyToAction {
      * JSP knows channels
      * {@inheritDoc}
      */
+    @Override
     public String getJspLabel() {
         return "channels";
     }
@@ -64,6 +67,7 @@ public class Copy2ChannelsAction extends BaseCopyToAction {
      * The set we use to handle selection is CONFIG_CHANNELS
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS;
     }
@@ -71,6 +75,7 @@ public class Copy2ChannelsAction extends BaseCopyToAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSuccessKey(int numFiles, int numChannels) {
         if (numFiles == 1 && numChannels == 1) {
             return "copy2channels.jsp.success.1x1";

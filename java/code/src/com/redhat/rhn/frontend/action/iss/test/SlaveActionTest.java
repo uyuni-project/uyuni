@@ -23,14 +23,17 @@ import com.redhat.rhn.frontend.action.iss.SlaveAction;
  */
 public class SlaveActionTest extends BaseIssTestAction {
 
+    @Override
     protected String getUrl() {
         return "/admin/iss/Slave";
     }
 
+    @Override
     protected String getListName() {
         return SlaveAction.DATA_SET;
     }
 
+    @Override
     protected Class getListClass() {
         return IssMaster.class;
     }

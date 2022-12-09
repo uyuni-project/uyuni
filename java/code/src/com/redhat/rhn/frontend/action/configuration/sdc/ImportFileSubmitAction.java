@@ -51,8 +51,9 @@ public class ImportFileSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User user, ActionForm form,
-            HttpServletRequest request) {
+                                       HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         return ConfigurationManager.getInstance().listFileNamesForSystem(user,
                 rctx.lookupServer(), null);
@@ -61,6 +62,7 @@ public class ImportFileSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILE_NAMES;
     }
@@ -68,6 +70,7 @@ public class ImportFileSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("sdcimportfile.jsp.button", "importFile");
     }
@@ -75,8 +78,9 @@ public class ImportFileSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn, HttpServletRequest requestIn,
-            Map<String, Object> paramsIn) {
+                                   Map<String, Object> paramsIn) {
         //keep sid around
         paramsIn.put("sid", requestIn.getParameter("sid"));
     }

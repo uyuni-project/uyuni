@@ -260,6 +260,7 @@ public class ConfigSystemDto extends BaseDto {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -393,6 +394,7 @@ public class ConfigSystemDto extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSelectable() {
         return !capable;
     }

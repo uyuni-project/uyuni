@@ -93,6 +93,7 @@ public class RequireTag extends TagSupport {
     /** {@inheritDoc}
      * @throws JspException JSP exception
      */
+    @Override
     public int doStartTag() throws JspException {
         try {
             if (acl == null || "".equals(acl)) {
@@ -117,6 +118,7 @@ public class RequireTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         acl = null;
         mixins = null;

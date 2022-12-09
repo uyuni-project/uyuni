@@ -311,6 +311,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageMetadata o) {
         return getName().toLowerCase().compareTo(o.getName().toLowerCase());
     }
@@ -350,6 +351,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return getNameId();
     }

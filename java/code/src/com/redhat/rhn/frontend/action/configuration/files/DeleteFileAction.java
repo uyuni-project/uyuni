@@ -42,6 +42,7 @@ public class DeleteFileAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping map,
                                  ActionForm form,
                                  HttpServletRequest req,

@@ -28,6 +28,7 @@ public class ChannelRepodata extends RhnQueueJob<ChannelRepodataDriver> {
     public static final String DISPLAY_NAME = "channel_repodata";
     private static Logger log = null;
 
+    @Override
     protected Logger getLogger() {
         if (log == null) {
             log = LogManager.getLogger(ChannelRepodata.class);

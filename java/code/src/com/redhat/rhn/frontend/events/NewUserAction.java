@@ -46,6 +46,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
      * so we need to override the default execute() method.
      * @param msg EventMessage to executed.
      */
+    @Override
     public void execute(EventMessage msg) {
         if (logger.isDebugEnabled()) {
             logger.debug("execute(EventMessage msg={}) - start", msg);
@@ -101,6 +102,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
     }
 
 
+    @Override
     protected String getSubject(BaseEvent evtIn) {
         if (logger.isDebugEnabled()) {
             logger.debug("getSubject(User userIn={}) - start", evtIn.getUser());
@@ -114,6 +116,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         return returnString;
     }
 
+    @Override
     protected String[] getRecipients(User userIn) {
         if (logger.isDebugEnabled()) {
             logger.debug("getRecipients(User userIn={}) - start", userIn);

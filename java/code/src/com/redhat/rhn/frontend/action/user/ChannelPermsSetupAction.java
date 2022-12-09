@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ChannelPermsSetupAction extends RhnListAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

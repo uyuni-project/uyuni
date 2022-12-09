@@ -38,6 +38,7 @@ public class CopyFileLocalSubmitAction extends BaseCopyFileSubmitAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User userIn,
                                        ActionForm formIn,
                                        HttpServletRequest requestIn) {
@@ -51,15 +52,18 @@ public class CopyFileLocalSubmitAction extends BaseCopyFileSubmitAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
 
+    @Override
     protected ConfigChannel getChannelFromElement(User usr, Long anId) {
         Server srv = ServerFactory.lookupById(anId);
         return srv.getLocalOverride();
     }
 
+    @Override
     protected String getLabel() {
         return ConfigChannelType.local().getLabel();
     }

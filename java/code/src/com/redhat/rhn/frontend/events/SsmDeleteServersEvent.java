@@ -58,6 +58,7 @@ public class SsmDeleteServersEvent implements EventMessage {
     /**
      * @return will not be <code>null</code>
      */
+    @Override
     public Long getUserId() {
         return userId;
     }
@@ -70,6 +71,7 @@ public class SsmDeleteServersEvent implements EventMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toText() {
         return toString();
     }

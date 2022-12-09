@@ -69,8 +69,9 @@ public class TargetSystemsConfirmAction extends RhnAction implements Maintenance
     private static Logger log = LogManager.getLogger(TargetSystemsConfirmAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 

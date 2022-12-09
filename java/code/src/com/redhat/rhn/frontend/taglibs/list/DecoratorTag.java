@@ -43,6 +43,7 @@ public class DecoratorTag extends BodyTagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         ListCommand command = ListTagUtil.getCurrentCommand(this, pageContext);
         if (command.equals(ListCommand.ENUMERATE)) {

@@ -57,8 +57,9 @@ public class SystemMigrateAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext rctx = new RequestContext(request);
         DynaActionForm daForm = (DynaActionForm) form;
         User user = rctx.getCurrentUser();

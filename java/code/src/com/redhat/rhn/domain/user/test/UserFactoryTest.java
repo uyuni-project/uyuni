@@ -56,6 +56,7 @@ import java.util.TimeZone;
 public class UserFactoryTest extends RhnBaseTestCase {
     private UserFactory factory;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

@@ -55,10 +55,11 @@ public class DistChannelMapEditAction extends RhnAction {
             "channel/manage/validation/distChannelMapForm.xsd";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm) formIn;
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();

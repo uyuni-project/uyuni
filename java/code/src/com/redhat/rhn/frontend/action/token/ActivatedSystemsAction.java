@@ -44,6 +44,7 @@ public class ActivatedSystemsAction extends BaseListAction {
     private static final String DATE_MAP = "dateMap";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -58,6 +59,7 @@ public class ActivatedSystemsAction extends BaseListAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         ActivationKey key = context.lookupAndBindActivationKey();
         List<Server> servers = new LinkedList<>(

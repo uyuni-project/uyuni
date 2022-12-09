@@ -76,6 +76,7 @@ public class SsmSystemRebootEvent implements EventDatabaseMessage {
      *
      * @return User ID
      */
+    @Override
     public Long getUserId() {
         return userId;
     }
@@ -125,11 +126,13 @@ public class SsmSystemRebootEvent implements EventDatabaseMessage {
      * Represent the object in ASCII text.
      * @return String representation
      */
+    @Override
     public String toText() {
         return this.toString();
     }
 
     /** {@inheritDoc} */
+    @Override
     public Transaction getTransaction() {
         return txn;
     }

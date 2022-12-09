@@ -38,6 +38,7 @@ public class MockXMLRPCInvoker implements XMLRPCInvoker {
         log.debug("Constructor: {}", TestUtils.randomString());
     }
 
+    @Override
     public Object invokeMethod(String procedureName, List args)
         throws XmlRpcFault {
         MockConnection con = new MockConnection("url", "token");

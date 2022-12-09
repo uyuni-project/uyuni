@@ -57,6 +57,7 @@ import java.util.List;
  * ActivationKeyTest
  */
 public class ActivationKeyTest extends BaseTestCaseWithUser {
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

@@ -37,6 +37,7 @@ public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
     /**
      * @return the URL including authentication info
      */
+    @Override
     @Transient
     public String getUrl() {
         if (getCredentials() == null) {

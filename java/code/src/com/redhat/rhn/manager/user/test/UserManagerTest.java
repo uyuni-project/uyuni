@@ -92,6 +92,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         this.users = new HashSet<>();

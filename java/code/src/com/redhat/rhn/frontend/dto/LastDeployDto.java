@@ -36,6 +36,7 @@ public class LastDeployDto extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return id;
     }

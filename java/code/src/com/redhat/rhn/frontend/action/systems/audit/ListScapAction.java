@@ -54,9 +54,10 @@ public class ListScapAction extends ScapSetupAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         Server server = context.lookupAndBindServer();

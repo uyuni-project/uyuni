@@ -32,6 +32,7 @@ public class XmlMessageResourcesFactory extends MessageResourcesFactory {
      * @param config Configuration parameter(s) for the requested bundle
      * @return A new instance of a MessageResources class.
      */
+    @Override
     public MessageResources createResources(String config) {
         return new XmlMessageResources(this, config, this.returnNull);
     }

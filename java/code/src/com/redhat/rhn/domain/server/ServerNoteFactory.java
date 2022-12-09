@@ -41,6 +41,7 @@ public class ServerNoteFactory extends HibernateFactory {
      * Get the Logger for the derived class so log messages show up on the
      * correct class
      */
+    @Override
     protected Logger getLogger() {
         return LOG;
     }

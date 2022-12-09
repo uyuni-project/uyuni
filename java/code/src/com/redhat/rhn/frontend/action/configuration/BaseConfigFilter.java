@@ -40,6 +40,7 @@ public abstract class BaseConfigFilter implements ListFilter {
      * is (path, channelLabel) at the moment
      * {@inheritDoc}
      */
+    @Override
     public void prepare(Locale userLocale) {
         buildMap(userLocale);
     }
@@ -47,6 +48,7 @@ public abstract class BaseConfigFilter implements ListFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getFieldNames() {
         return new ArrayList(fieldMap.keySet());
     }
@@ -54,6 +56,7 @@ public abstract class BaseConfigFilter implements ListFilter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean filter(Object object, String field, String criteria) {
         String methodName = (String) fieldMap.get(field);
         criteria = criteria.toLowerCase();

@@ -34,6 +34,7 @@ public class RestartSatelliteAction implements MessageAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(EventMessage msgIn) {
 
         RestartSatelliteEvent evt = (RestartSatelliteEvent) msgIn;

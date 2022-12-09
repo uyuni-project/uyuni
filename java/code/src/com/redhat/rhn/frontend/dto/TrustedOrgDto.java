@@ -33,6 +33,7 @@ public class TrustedOrgDto extends BaseDto {
      *
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return id;
     }

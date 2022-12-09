@@ -58,10 +58,11 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
     private final String ORPHAN_PACKAGES_SELECTED = "orphan_selected";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();

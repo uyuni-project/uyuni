@@ -51,10 +51,11 @@ public class DuplicateSystemsAction extends RhnAction implements
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext ctx = new RequestContext(request);
         request.setAttribute(mapping.getParameter(), mapping.getParameter());
@@ -102,6 +103,7 @@ public class DuplicateSystemsAction extends RhnAction implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<DuplicateSystemGrouping> getResult(RequestContext contextIn) {
         Long count = (Long) contextIn.getRequest().getAttribute(INACTIVE_COUNT);
         if (contextIn.getRequest().getAttribute(HOSTNAME) != null) {

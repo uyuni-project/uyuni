@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  */
 public class CopyFileLocalAction extends BaseCopyConfigFileAction {
 
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());
@@ -41,18 +42,22 @@ public class CopyFileLocalAction extends BaseCopyConfigFileAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
 
+    @Override
     protected String getLabel() {
         return ConfigChannelType.local().getLabel();
     }
 
+    @Override
     protected String getType() {
         return BaseCopyConfigFileAction.LOCAL_TYPE;
     }
 
+    @Override
     protected String getFilterAttr() {
         return BaseCopyConfigFileAction.SYSTEM_FILTER;
     }

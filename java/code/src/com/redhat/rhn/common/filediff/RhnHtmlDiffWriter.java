@@ -52,6 +52,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void writeHunk(Hunk hunk) {
         hunk.visit(this);
     }
@@ -59,6 +60,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(ChangeHunk hunk) {
         printStartDiv("changed");
         int numOld = printLines(oldfile, hunk.getOldLines());
@@ -77,6 +79,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(DeleteHunk hunk) {
         printStartDiv("deleted");
         int numlines = printLines(oldfile, hunk.getOldLines());
@@ -91,6 +94,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(MatchHunk hunk) {
         if (!onlyChanged) {
             printLines(oldfile, hunk.getOldLines());
@@ -106,6 +110,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(InsertHunk hunk) {
         printStartDiv("inserted");
         int numlines = printLines(newfile, hunk.getNewLines());

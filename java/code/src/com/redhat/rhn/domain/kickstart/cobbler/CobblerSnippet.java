@@ -370,6 +370,7 @@ public class CobblerSnippet implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(Object o) {
         if (equals(o)) {
             return 0;

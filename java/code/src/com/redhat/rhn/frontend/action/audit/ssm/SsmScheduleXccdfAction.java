@@ -34,10 +34,11 @@ public class SsmScheduleXccdfAction extends BaseSsmScheduleXccdfAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm) formIn;
 
         if (isSubmitted(form)) {

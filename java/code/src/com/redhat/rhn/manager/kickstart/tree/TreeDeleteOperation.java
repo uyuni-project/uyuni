@@ -75,6 +75,7 @@ public class TreeDeleteOperation extends BaseTreeEditOperation {
      * store() here actually does a remove operation.
      * It is done to reuse code from BaseTreeEditOperation and BaseTreeAction
      */
+    @Override
     public ValidatorError store() {
 
         ValidatorError error = null;
@@ -108,6 +109,7 @@ public class TreeDeleteOperation extends BaseTreeEditOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected CobblerCommand getCobblerCommand() {
         return new CobblerDistroDeleteCommand(this.tree, this.user);
     }

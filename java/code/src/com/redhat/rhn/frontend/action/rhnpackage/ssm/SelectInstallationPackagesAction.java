@@ -43,6 +43,7 @@ public class SelectInstallationPackagesAction extends RhnAction implements
         Listable<PackageListItem> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -69,6 +70,7 @@ public class SelectInstallationPackagesAction extends RhnAction implements
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<PackageListItem> getResult(RequestContext context) {
         Long cid = context.getRequiredParam(RequestContext.CID);
         return ChannelManager.latestPackagesInChannel(cid);

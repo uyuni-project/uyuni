@@ -43,6 +43,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     protected KickstartIpRange ip1;
     protected KickstartIpRange ip2;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

@@ -118,6 +118,7 @@ public class KickstartCommand implements Comparable {
      * @param kc KickstartCommand to compare
      * @return how does it stack up!
      */
+    @Override
     public int compareTo(Object kc) {
         if (kc == this) {
             return 0;

@@ -90,6 +90,7 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
      * Getter for id
      * @return Long to get
     */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -318,6 +319,7 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
      * @param scriptIn KickstartScript to compare order to
      * @return the position order of this script
      */
+    @Override
     public int compareTo(KickstartScript scriptIn) {
         final int before = -1;
         final int after = 1;

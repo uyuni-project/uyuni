@@ -72,6 +72,7 @@ public abstract class ExtGroup extends BaseDomainHelper implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(Object objectIn) {
         if (objectIn == null || objectIn instanceof UserExtGroup) {
             return 0;

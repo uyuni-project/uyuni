@@ -377,6 +377,7 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError doValidation() {
         if (guestName.length() < MIN_NAME_SIZE) {
             return new ValidatorError(

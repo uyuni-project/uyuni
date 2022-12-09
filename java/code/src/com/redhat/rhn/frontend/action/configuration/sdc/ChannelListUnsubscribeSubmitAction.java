@@ -47,8 +47,9 @@ public class ChannelListUnsubscribeSubmitAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User user, ActionForm formIn,
-            HttpServletRequest request) {
+                                       HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         Server server = rctx.lookupServer();
         return ConfigurationManager.getInstance().
@@ -58,6 +59,7 @@ public class ChannelListUnsubscribeSubmitAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS_TO_UNSUBSCRIBE;
     }
@@ -65,6 +67,7 @@ public class ChannelListUnsubscribeSubmitAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(UNSUBSCRIBE_ACTION, "processUnsubscribeAction");
 
@@ -73,8 +76,9 @@ public class ChannelListUnsubscribeSubmitAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm form, HttpServletRequest request,
-            Map<String, Object> params) {
+                                   Map<String, Object> params) {
         // TODO Auto-generated method stub
 
     }

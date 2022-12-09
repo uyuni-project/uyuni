@@ -44,12 +44,14 @@ public class RhnSetDeclTest extends RhnBaseTestCase {
 
     private User user;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();

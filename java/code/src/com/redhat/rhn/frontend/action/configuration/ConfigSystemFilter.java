@@ -31,10 +31,12 @@ public class ConfigSystemFilter extends BaseConfigFilter {
         fields.add("name");
     }
 
+    @Override
     protected List activeNames() {
         return fields;
     }
 
+    @Override
     protected String getI18NPrefix() {
         return "configsystemfilter";
     }

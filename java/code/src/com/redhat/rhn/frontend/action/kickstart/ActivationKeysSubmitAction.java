@@ -46,9 +46,10 @@ public class ActivationKeysSubmitAction extends BaseKickstartListSubmitAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult<ActivationKeyDto> getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+                                                         ActionForm formIn,
+                                                         HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         Org org = rctx.getCurrentUser().getOrg();
         return KickstartLister.getInstance().getActivationKeysInOrg(org, null);
@@ -58,6 +59,7 @@ public class ActivationKeysSubmitAction extends BaseKickstartListSubmitAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void operateOnRemovedElements(List<RhnSetElement> elements,
                                             HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
@@ -83,8 +85,9 @@ public class ActivationKeysSubmitAction extends BaseKickstartListSubmitAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void operateOnAddedElements(List<RhnSetElement> elements,
-            HttpServletRequest request) {
+                                          HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
 
         KickstartActivationKeysCommand cmd =
@@ -108,6 +111,7 @@ public class ActivationKeysSubmitAction extends BaseKickstartListSubmitAction {
      *
      * @return security label for activation keys
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.KICKSTART_ACTIVATION_KEYS;
     }
@@ -115,10 +119,12 @@ public class ActivationKeysSubmitAction extends BaseKickstartListSubmitAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(UPDATE_METHOD, "operateOnDiff");
     }
 
+    @Override
     protected Iterator<Token> getCurrentItemsIterator(RequestContext ctx) {
         KickstartActivationKeysCommand cmd =
             new KickstartActivationKeysCommand(

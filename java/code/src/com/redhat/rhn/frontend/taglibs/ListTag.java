@@ -70,6 +70,7 @@ public class ListTag extends BodyTagSupport {
 
 
     /** {@inheritDoc} */
+    @Override
     public int doStartTag() throws JspException {
         JspWriter out = null;
 
@@ -171,6 +172,7 @@ public class ListTag extends BodyTagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         pageList = null;
         noDataText = null;

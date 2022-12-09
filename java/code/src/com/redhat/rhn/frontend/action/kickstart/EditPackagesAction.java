@@ -48,10 +48,11 @@ public class EditPackagesAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
         DynaActionForm dynaForm = (DynaActionForm) form;
         RequestContext ctx = new RequestContext(request);
         KickstartEditCommand cmd = new KickstartEditCommand(

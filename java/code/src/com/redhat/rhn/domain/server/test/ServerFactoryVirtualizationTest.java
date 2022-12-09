@@ -37,6 +37,7 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
     private VirtualInstanceManufacturer virtualInstanceFactory;
     private User user;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         user = UserTestUtils.findNewUser("testUser",

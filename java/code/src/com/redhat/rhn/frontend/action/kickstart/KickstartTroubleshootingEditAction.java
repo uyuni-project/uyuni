@@ -45,8 +45,9 @@ public class KickstartTroubleshootingEditAction extends BaseKickstartEditAction 
      *
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx, DynaActionForm form,
-            BaseKickstartCommand cmdIn) {
+                                   BaseKickstartCommand cmdIn) {
         KickstartTroubleshootingCommand cmd = (KickstartTroubleshootingCommand) cmdIn;
 
         ctx.getRequest().setAttribute(BOOTLOADER_OPTIONS, List.of(Map.of("display", "GRUB", "value", "grub")));
@@ -61,9 +62,10 @@ public class KickstartTroubleshootingEditAction extends BaseKickstartEditAction 
      *
      * {@inheritDoc}
      */
+    @Override
     protected ValidatorError processFormValues(HttpServletRequest request,
-            DynaActionForm form,
-            BaseKickstartCommand cmd) {
+                                               DynaActionForm form,
+                                               BaseKickstartCommand cmd) {
 
         ValidatorError retval = null;
 
@@ -91,6 +93,7 @@ public class KickstartTroubleshootingEditAction extends BaseKickstartEditAction 
      *
      * {@inheritDoc}
      */
+    @Override
     protected String getSuccessKey() {
         return "kickstart.troubleshooting.success";
     }
@@ -99,6 +102,7 @@ public class KickstartTroubleshootingEditAction extends BaseKickstartEditAction 
      *
      * {@inheritDoc}
      */
+    @Override
     protected BaseKickstartCommand getCommand(RequestContext ctx) {
         return new KickstartTroubleshootingCommand(
                 ctx.getRequiredParam(RequestContext.KICKSTART_ID),

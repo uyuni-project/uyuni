@@ -54,6 +54,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void freeze() {
         fc.freeze();
     }
@@ -61,6 +62,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getModule() {
         return fc.getModule();
     }
@@ -68,6 +70,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return fc.getName();
     }
@@ -75,6 +78,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getPath() {
         return fc.getPath();
     }
@@ -82,6 +86,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getRedirect() {
         return fc.getRedirect();
     }
@@ -96,6 +101,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setModule(String module0) {
         fc.setModule(module0);
     }
@@ -103,6 +109,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setName(String name0) {
         // The super constructor calls this method
         // before fc is initialized; we want to ignore that
@@ -114,6 +121,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setPath(String path0) {
         // The super constructor calls this method
         // before fc is initialized; we want to ignore that
@@ -126,6 +134,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRedirect(boolean redirect0) {
         // The super constructor calls this method
         // before fc is initialized; we want to ignore that

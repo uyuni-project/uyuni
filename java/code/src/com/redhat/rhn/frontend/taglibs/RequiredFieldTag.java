@@ -76,6 +76,7 @@ public class RequiredFieldTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         JspWriter writer = pageContext.getOut();
         //<span class="required-form-field">*</span>

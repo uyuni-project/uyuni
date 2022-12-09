@@ -42,6 +42,7 @@ public class MockMail implements Mail {
     /**
     * Send the actual message
     */
+    @Override
     public void send() {
         sendCount++;
     }
@@ -51,6 +52,7 @@ public class MockMail implements Mail {
      *
      * @param recipIn recipient email
     */
+    @Override
     public void setRecipient(String recipIn) {
         verifyAddress(recipIn);
     }
@@ -60,6 +62,7 @@ public class MockMail implements Mail {
      *
      * @param recipIn recipients emails list
     */
+    @Override
     public void setRecipients(String[] recipIn) {
         if (recipIn != null) {
             for (String sIn : recipIn) {
@@ -71,6 +74,7 @@ public class MockMail implements Mail {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCCRecipients(String[] emailAddrs) {
         if (emailAddrs != null) {
             for (String emailAddrIn : emailAddrs) {
@@ -82,6 +86,7 @@ public class MockMail implements Mail {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setBCCRecipients(String[] emailAddrs) {
         if (emailAddrs != null) {
             for (String emailAddrIn : emailAddrs) {
@@ -93,6 +98,7 @@ public class MockMail implements Mail {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFrom(String from) {
         verifyAddress(from);
     }
@@ -109,6 +115,7 @@ public class MockMail implements Mail {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setHeader(String name, String value) {
     }
 
@@ -117,6 +124,7 @@ public class MockMail implements Mail {
      *
      * @param subIn the email subject
      */
+    @Override
     public void setSubject(String subIn) {
         subject = subIn;
     }
@@ -126,6 +134,7 @@ public class MockMail implements Mail {
      *
      * @param bodyIn the email body
      */
+    @Override
     public void setBody(String bodyIn) {
         body = bodyIn;
     }

@@ -29,6 +29,7 @@ public class UpdateErrataCacheAction implements MessageAction {
     private static Logger log = LogManager.getLogger(UpdateErrataCacheAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public void execute(EventMessage msg) {
         UpdateErrataCacheEvent evt = (UpdateErrataCacheEvent) msg;
         if (log.isDebugEnabled()) {

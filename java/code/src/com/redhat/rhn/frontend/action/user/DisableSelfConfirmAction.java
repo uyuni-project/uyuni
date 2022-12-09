@@ -40,8 +40,9 @@ public class DisableSelfConfirmAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response)
+                                 HttpServletRequest request, HttpServletResponse response)
         throws Exception {
 
         RequestContext requestContext = new RequestContext(request);

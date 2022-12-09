@@ -67,6 +67,7 @@ public class CompletedSystemsAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

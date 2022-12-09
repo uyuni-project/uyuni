@@ -37,6 +37,7 @@ public class KickstartIpRangeFilter extends BaseListFilter {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public void processMap(Map map, Locale userLocale) {
         LocalizationService ls =
             LocalizationService.getInstance();
@@ -48,8 +49,9 @@ public class KickstartIpRangeFilter extends BaseListFilter {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public boolean filter(Object object, String field,
-            String criteria) {
+                          String criteria) {
 
         KickstartIpRangeDto range = (KickstartIpRangeDto) object;
 

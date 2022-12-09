@@ -26,11 +26,13 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
  */
 public class GlobalConfigFileList extends BaseListAction {
 
+    @Override
     protected DataResult getDataResult(RequestContext context, PageControl pc) {
         User user = context.getCurrentUser();
         return ConfigurationManager.getInstance().listGlobalConfigFiles(user, pc);
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn("path");
         pc.setFilter(true);

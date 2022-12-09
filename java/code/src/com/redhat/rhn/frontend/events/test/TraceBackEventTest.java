@@ -46,6 +46,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         mailer = new MockMail();
@@ -77,6 +78,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         TraceBackEvent evt = createTestEventWithValue("password", "no-secret");
         mailer.setExpectedSendCount(1);
         TraceBackAction action = new TraceBackAction() {
+            @Override
             protected Mail getMail() {
                 return mailer;
             }
@@ -93,6 +95,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         TraceBackEvent evt = createTestEventWithValue("passsword", "no-secret");
         mailer.setExpectedSendCount(1);
         TraceBackAction action = new TraceBackAction() {
+            @Override
             protected Mail getMail() {
                 return mailer;
             }
@@ -120,6 +123,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         TraceBackEvent evt = createTestEvent();
         mailer.setExpectedSendCount(1);
         TraceBackAction action = new TraceBackAction() {
+            @Override
             protected Mail getMail() {
                 return mailer;
             }
@@ -138,6 +142,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         // In the implementation we use getHeaderNames so we override it with
         // one that returns an empty implementation.
         MockHttpServletRequest request = new MockHttpServletRequest() {
+            @Override
             public Enumeration<String> getHeaderNames() {
                 return new Vector<String>().elements();
             }
@@ -163,6 +168,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         // In the implementation we use getHeaderNames so we override it with
         // one that returns an empty implementation.
         MockHttpServletRequest request = new MockHttpServletRequest() {
+            @Override
             public Enumeration<String> getHeaderNames() {
                 return new Vector<String>().elements();
             }

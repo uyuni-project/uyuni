@@ -36,6 +36,7 @@ public class RestartSatelliteActionTest extends BaseTestCaseWithUser {
         command = new TestRestartCommand(user);
         RestartSatelliteEvent event = new RestartSatelliteEvent(user);
         RestartSatelliteAction action = new RestartSatelliteAction() {
+            @Override
             protected RestartCommand getCommand(User currentUser) {
                 return command;
             }
@@ -54,6 +55,7 @@ public class RestartSatelliteActionTest extends BaseTestCaseWithUser {
         /**
          * {@inheritDoc}
          */
+        @Override
         public ValidatorError[] storeConfiguration() {
             stored = true;
             return null;

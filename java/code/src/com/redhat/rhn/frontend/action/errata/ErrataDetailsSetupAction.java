@@ -53,6 +53,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
     private static final Logger LOG = LogManager.getLogger(ErrataDetailsSetupAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

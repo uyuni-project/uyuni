@@ -139,6 +139,7 @@ public class PackageArch extends BaseDomainHelper implements Comparable<PackageA
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageArch o) {
         if (equals(o)) {
             return 0;
