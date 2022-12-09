@@ -66,7 +66,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         ksdata = (KickstartData) reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
-        assertTrue(ksdata.getScripts().size() > 0);
+        assertTrue(!ksdata.getScripts().isEmpty());
     }
 
     @Test
@@ -83,7 +83,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         ksdata = (KickstartData) reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
-        assertTrue(ksdata.getScripts().size() > 0);
+        assertTrue(!ksdata.getScripts().isEmpty());
     }
 
     @Test

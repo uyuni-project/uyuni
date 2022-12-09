@@ -368,7 +368,7 @@ public class UserImpl extends BaseDomainHelper implements User {
          * If we have a valid pamAuthService and the user uses pam authentication,
          * authenticate via pam, otherwise, use the db.
          */
-        if (pamAuthService != null && pamAuthService.trim().length() > 0 &&
+        if (pamAuthService != null && !pamAuthService.trim().isEmpty() &&
                 this.getUsePamAuthentication()) {
             Pam pam = new Pam(pamAuthService);
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
@@ -896,7 +896,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         Address baddr = null;
         Address addr = null;
         Address[] addrA = addresses.toArray(new Address[addresses.size()]);
-        if (addresses.size() > 0) {
+        if (!addresses.isEmpty()) {
             for (Address addressIn : addrA) {
                 if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
                     addr = addressIn;
@@ -1204,7 +1204,7 @@ public class UserImpl extends BaseDomainHelper implements User {
             Address baddr = null;
             Address addr = null;
             Address[] addrA = addresses.toArray(new Address[addresses.size()]);
-            if (addresses.size() > 0) {
+            if (!addresses.isEmpty()) {
                 for (Address addressIn : addrA) {
                     if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
                         addr = addressIn;

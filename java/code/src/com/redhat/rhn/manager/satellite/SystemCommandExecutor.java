@@ -77,7 +77,7 @@ public class SystemCommandExecutor implements Executor {
             }
 
             lastCommandError = inputStreamToString(p.getErrorStream());
-            if (lastCommandError != null && lastCommandError.trim().length() > 0) {
+            if (lastCommandError != null && !lastCommandError.trim().isEmpty()) {
                 String msg1 = "Error encountered executing (args=" +
                         Arrays.asList(args) + ")";
                 String msg2 = "Error message from process: " + lastCommandError;

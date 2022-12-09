@@ -172,7 +172,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         // Technically speaking an inattentive user could submit this screen with all
         // channels set to "No Change":
-        if (changedChannels.entrySet().size() == 0) {
+        if (changedChannels.entrySet().isEmpty()) {
             return handleNoChanges(mapping, request);
         }
 
@@ -218,7 +218,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     }
                 }
 
-                if (skippedServers.size() > 0) {
+                if (!skippedServers.isEmpty()) {
                     // Display the name list of not manageable to the user
                     // and return empty handed.
                     StrutsDelegate strutsDelegate = getStrutsDelegate();
@@ -314,7 +314,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                             SystemManager.
                         getSsmSystemsSubscribedToChannel(user, c.getId());
                     log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
-                    if (serversAffected.size() > 0) {
+                    if (!serversAffected.isEmpty()) {
                         matched.add(new ChildChannelPreservationDto(c.getId(), c.getName(),
                                 match.getId(), match.getName(), serversAffected));
                     }
@@ -325,7 +325,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                         List<Map<String, Object>> serversAffected =
                             SystemManager.getSsmSystemsSubscribedToChannel(user, c.getId());
                         log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
-                        if (serversAffected.size() > 0) {
+                        if (!serversAffected.isEmpty()) {
                             unmatched.add(new ChildChannelPreservationDto(c.getId(),
                                     c.getName(), c.getParentChannel().getId(),
                                     c.getParentChannel().getName(), serversAffected));
@@ -349,7 +349,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         request.setAttribute(MATCHED_CHILD_CHANNELS, matched);
-        request.setAttribute(FOUND_UNMATCHED_CHANNELS, unmatched.size() > 0);
+        request.setAttribute(FOUND_UNMATCHED_CHANNELS, !unmatched.isEmpty());
         request.setAttribute(UNMATCHED_CHILD_CHANNELS, unmatched);
 
         log.debug("end confirmUpdateBaseChannels()");
@@ -510,7 +510,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 SystemManager.systemsWithoutBaseChannelsInSet(user);
 
         // If there are any...
-        if (noBase != null && noBase.size() > 0) {
+        if (noBase != null && !noBase.isEmpty()) {
             // ...create the "(None)" row
             rslt = createNoneRow(noBase);
 

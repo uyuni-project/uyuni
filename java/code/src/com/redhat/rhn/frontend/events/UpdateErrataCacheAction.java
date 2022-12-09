@@ -64,7 +64,7 @@ public class UpdateErrataCacheAction implements MessageAction {
                 if (log.isDebugEnabled()) {
                     log.debug("Updating errata cache for channel: {} and errata:{}", cid, evt.getErrataId());
                 }
-                if (evt.getPackageIds() == null || evt.getPackageIds().size() == 0) {
+                if (evt.getPackageIds() == null || evt.getPackageIds().isEmpty()) {
                     uecc.updateErrataCacheForErrata(cid, evt.getErrataId());
                 }
                 else {

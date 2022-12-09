@@ -204,7 +204,7 @@ public class KickstartHelper {
         retval.put(KSDATA, ksdata);
 
 
-        if (retval.size() == 0) {
+        if (retval.isEmpty()) {
             retval = null;
         }
         return retval;

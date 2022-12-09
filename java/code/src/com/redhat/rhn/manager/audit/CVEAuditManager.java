@@ -234,7 +234,7 @@ public class CVEAuditManager {
         List<Long> relevantChannelProductIDs = convertProductId(suseProductID);
 
         // Find relevant channels
-        if (relevantChannelProductIDs.size() > 0) {
+        if (!relevantChannelProductIDs.isEmpty()) {
             List<Channel> productChannels = findProductChannels(
                     relevantChannelProductIDs, baseChannelId);
             if (productChannels != null) {
@@ -301,7 +301,7 @@ public class CVEAuditManager {
         result = new LinkedList<>();
         List<SUSEProductDto> targets = DistUpgradeManager
                 .findTargetProducts(suseProductID);
-        while (targets.size() > 0) {
+        while (!targets.isEmpty()) {
             // We assume that there is always only one target!
             if (targets.size() > 1) {
                 log.warn("More than one migration target found for {}", suseProductID);
@@ -333,7 +333,7 @@ public class CVEAuditManager {
         result = new LinkedList<>();
         List<SUSEProductDto> sources = DistUpgradeManager
                 .findSourceProducts(suseProductID);
-        while (sources.size() > 0) {
+        while (!sources.isEmpty()) {
             // We assume that there is always only one source!
             if (sources.size() > 1) {
                 SUSEProduct product = SUSEProductFactory.getProductById(suseProductID);

@@ -306,7 +306,7 @@ public class SaltActionChainGeneratorService {
      * @return a requisite reference
      */
     private Optional<Pair<String, String>> prevRequisiteRef(List<SaltState> fileStates) {
-        if (fileStates.size() > 0) {
+        if (!fileStates.isEmpty()) {
             SaltState previousState = fileStates.get(fileStates.size() - 1);
             return previousState.getData().entrySet().stream().findFirst()
                 .map(entry -> ((Map<String, ?>)entry.getValue()).entrySet().stream()
@@ -337,7 +337,7 @@ public class SaltActionChainGeneratorService {
                     Map<String, List<List<String>>> paramPillar =
                             (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
                     if (!paramPillar.get("param_pkgs").stream()
-                            .filter(e -> e.size() > 0)
+                            .filter(e -> !e.isEmpty())
                             .map(e -> e.get(0))
                             .filter("salt"::equals)
                             .collect(Collectors.toList()).isEmpty()) {

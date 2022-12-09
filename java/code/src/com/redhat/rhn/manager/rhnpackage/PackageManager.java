@@ -815,7 +815,7 @@ public class PackageManager extends BaseManager {
             packageFileName.append(pkg.getPath().trim());
         }
         String pfn = packageFileName.toString().trim();
-        if (pfn.length() > 0) {
+        if (!pfn.isEmpty()) {
             schedulePackageFileForDeletion(pfn);
         }
 

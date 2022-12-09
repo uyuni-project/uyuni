@@ -439,7 +439,7 @@ public class PackageFactory extends HibernateFactory {
         SelectMode m = null;
 
         if (searchType.equals(PackageSearchAction.ARCHITECTURE)) {
-            if (!(archLabels != null && archLabels.size() > 0)) {
+            if (!(archLabels != null && !archLabels.isEmpty())) {
                 throw new MissingArchitectureException(
                         "archLabels must not be null for architecture search!");
             }

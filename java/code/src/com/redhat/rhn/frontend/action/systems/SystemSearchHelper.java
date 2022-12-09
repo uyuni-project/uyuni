@@ -533,7 +533,7 @@ public class SystemSearchHelper {
             serverItem.put("score", result.get("score"));
             serverItem.put("name", result.get("name"));
             String matchingField = (String)result.get("matchingField");
-            if (matchingField.length() == 0) {
+            if (matchingField.isEmpty()) {
                 matchingField = (String)result.get("name");
             }
             else if ("system_id".compareTo(matchingField) == 0) {
@@ -575,7 +575,7 @@ public class SystemSearchHelper {
             serverItem.put("name", result.get("name"));
             serverItem.put("hwdeviceId", result.get("id"));
             String matchingField = (String)result.get("matchingField");
-            if (matchingField.length() == 0) {
+            if (matchingField.isEmpty()) {
                 matchingField = (String)result.get("name");
             }
             serverItem.put("matchingField", matchingField);
@@ -602,7 +602,7 @@ public class SystemSearchHelper {
             serverItem.put("name", result.get("name"));
             serverItem.put("snapshotId", result.get("snapshotId"));
             String matchingField = (String)result.get("matchingField");
-            if (matchingField.length() == 0) {
+            if (matchingField.isEmpty()) {
                 matchingField = (String)result.get("name");
             }
             serverItem.put("matchingField", matchingField);
@@ -629,12 +629,12 @@ public class SystemSearchHelper {
             serverItem.put("name", result.get("value"));
             serverItem.put("snapshotId", result.get("snapshotId"));
             String matchingField = (String)result.get("matchingField");
-            if (matchingField.length() == 0) {
+            if (matchingField.isEmpty()) {
                 matchingField = (String)result.get("value");
             }
             serverItem.put("matchingField", matchingField);
             String matchingFieldValue = (String)result.get("matchingFieldValue");
-            if (matchingFieldValue.length() == 0) {
+            if (matchingFieldValue.isEmpty()) {
                 matchingFieldValue = (String)result.get("value");
             }
             serverItem.put("matchingFieldValue", matchingFieldValue);

@@ -112,7 +112,7 @@ public class MessageQueue {
         if (msg != null) {
             synchronized (ACTIONS) {
                 List<MessageAction> handlers = ACTIONS.get(msg.getClass());
-                if (handlers != null && handlers.size() > 0) {
+                if (handlers != null && !handlers.isEmpty()) {
                     logger.debug("creating ActionExecutor");
                     ActionExecutor executor = new ActionExecutor(handlers, msg);
                     try {
@@ -238,7 +238,7 @@ public class MessageQueue {
         }
         String[] retval = null;
         synchronized (ACTIONS) {
-            if (ACTIONS.keySet().size() > 0) {
+            if (!ACTIONS.keySet().isEmpty()) {
                 retval = new String[ACTIONS.keySet().size()];
                 int index = 0;
                 for (Class klazz : ACTIONS.keySet()) {

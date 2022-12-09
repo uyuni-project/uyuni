@@ -135,8 +135,8 @@ public class ErrataTest extends BaseTestCaseWithUser {
     public void testAddChannelsToErrata() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(
                 user.getOrg().getId());
-        assertTrue(e.getFiles().size() > 0);
-        assertTrue(e.getPackages().size() > 0);
+        assertTrue(!e.getFiles().isEmpty());
+        assertTrue(!e.getPackages().isEmpty());
         Channel c = ChannelTestUtils.createTestChannel(user);
         Package p = PackageManagerTest.addPackageToChannel("some-errata-package", c);
         c = (Channel) reload(c);
@@ -163,13 +163,13 @@ public class ErrataTest extends BaseTestCaseWithUser {
         // Now test clearing it out
         e.clearChannels();
         e = (Errata) TestUtils.saveAndReload(e);
-        assertTrue(e.getChannels() == null || e.getChannels().size() == 0);
+        assertTrue(e.getChannels() == null || e.getChannels().isEmpty());
         Iterator i = e.getFiles().iterator();
         boolean matched = false;
         while (i.hasNext()) {
             ErrataFile f1 = (ErrataFile) i.next();
             assertNotNull(f1.getChannels());
-            assertTrue(f1.getChannels() == null || f1.getChannels().size() == 0);
+            assertTrue(f1.getChannels() == null || f1.getChannels().isEmpty());
             matched = true;
         }
         assertTrue(matched, "didnt match the erratafile");

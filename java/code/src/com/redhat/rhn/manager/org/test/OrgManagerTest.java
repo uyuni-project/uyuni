@@ -52,6 +52,6 @@ public class OrgManagerTest extends RhnBaseTestCase {
 
         DataList orgs = OrgManager.activeOrgs(user);
         assertNotNull(orgs);
-        assertTrue(orgs.size() > 0);
+        assertTrue(!orgs.isEmpty());
     }
 }

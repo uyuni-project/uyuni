@@ -121,7 +121,7 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
         //make sure there is a file
         if (file == null ||
             file.getFileName() == null ||
-            file.getFileName().trim().length() == 0) {
+                file.getFileName().trim().isEmpty()) {
             msgs.addError(new ValidatorError("error.config-not-specified"));
 
         }

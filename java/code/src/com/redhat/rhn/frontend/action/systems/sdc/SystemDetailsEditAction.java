@@ -273,14 +273,14 @@ public class SystemDetailsEditAction extends RhnAction {
                 log.debug("Entitling server with: {}", e);
                 ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(s, e);
 
-                if (vr.getWarnings().size() > 0) {
+                if (!vr.getWarnings().isEmpty()) {
                     getStrutsDelegate().saveMessages(request,
                             RhnValidationHelper.validatorWarningToActionMessages(
                                     vr.getWarnings().toArray(new ValidatorWarning[] {})));
                 }
 
 
-                if (vr.getErrors().size() > 0) {
+                if (!vr.getErrors().isEmpty()) {
                     ValidatorError ve = vr.getErrors().get(0);
                     log.debug("Got error: {}", ve);
                     getStrutsDelegate().saveMessages(request,

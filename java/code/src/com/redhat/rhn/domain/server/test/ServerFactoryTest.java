@@ -189,7 +189,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testServerGroupMembers() throws Exception {
         Server s = createTestServer(user);
         assertNotNull(s.getEntitledGroups());
-        assertTrue(s.getEntitledGroups().size() > 0);
+        assertTrue(!s.getEntitledGroups().isEmpty());
     }
 
     @Test
@@ -210,7 +210,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // add the test key to the server and make sure we can get to it.
         testServer.addCustomDataValue(testKey.getLabel(), "foo", user);
         assertNotNull(testServer.getCustomDataValue(testKey));
-        assertTrue(testServer.getCustomDataValues().size() > 0);
+        assertTrue(!testServer.getCustomDataValues().isEmpty());
 
         // try sending null for key
         int numVals = testServer.getCustomDataValues().size();
@@ -885,7 +885,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set servers = new HashSet();
         servers.add(serverToSearch);
         SERVER_GROUP_MANAGER.addServers(group, servers, admin);
-        assertTrue(group.getServers().size() > 0);
+        assertTrue(!group.getServers().isEmpty());
         //create admins set and add it to the grup
         Set admins = new HashSet();
         admins.add(regular);

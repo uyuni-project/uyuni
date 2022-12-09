@@ -213,7 +213,7 @@ public class SetTag extends ColumnTag {
      * @param elementIn The element to set.
      */
     public void setElement(String elementIn) {
-        if (elementIn != null && elementIn.length() > 0) {
+        if (elementIn != null && !elementIn.isEmpty()) {
             if (isRadio()) {
                 radioElement = elementIn;
             }
@@ -235,7 +235,7 @@ public class SetTag extends ColumnTag {
      * @param elementIn The elementTwo to set.
      */
     public void setElementTwo(String elementIn) {
-        if (elementIn != null && elementIn.length() > 0) {
+        if (elementIn != null && !elementIn.isEmpty()) {
             elementTwo = Long.decode(elementIn);
         }
     }

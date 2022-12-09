@@ -51,7 +51,7 @@ public class PackageCleanup extends RhnJavaJob {
             List candidates = findCandidates();
 
             // Bail if no work to do
-            if (candidates == null || candidates.size() == 0) {
+            if (candidates == null || candidates.isEmpty()) {
                 if (log.isDebugEnabled()) {
                     log.debug("No orphaned packages found");
                 }

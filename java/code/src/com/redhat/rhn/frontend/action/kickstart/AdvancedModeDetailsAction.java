@@ -240,7 +240,7 @@ public class AdvancedModeDetailsAction extends RhnAction {
                 return;
             }
             // set commands if they haven't been set yet
-            if (commands == null || commands.size() == 0) {
+            if (commands == null || commands.isEmpty()) {
                 KickstartBuilder builder = new KickstartBuilder(user);
                 KickstartParser parser = new KickstartParser(data.getData());
                 KickstartableTree tree =
@@ -286,7 +286,7 @@ public class AdvancedModeDetailsAction extends RhnAction {
             RequestContext context) {
 
         List<KickstartableTree> trees = cmd.getKickstartableTrees();
-        if (trees == null || trees.size() == 0) {
+        if (trees == null || trees.isEmpty()) {
             context.getRequest().setAttribute(NOTREES_PARAM, Boolean.TRUE);
             form.set(KSTREE_ID_PARAM, null);
         }

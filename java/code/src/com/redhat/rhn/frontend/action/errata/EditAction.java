@@ -243,12 +243,12 @@ public class EditAction extends LookupDispatchAction {
 
         //add keywords... split on commas and add separately to list
         String keywordsField = form.getString("keywords");
-        if (keywordsField != null && keywordsField.length() > 0) {
+        if (keywordsField != null && !keywordsField.isEmpty()) {
             List keywordsOnPage = Arrays.asList(keywordsField.split(","));
             for (Object oIn : keywordsOnPage) {
                 String keyword = (String) oIn;
                 keyword = keyword.trim();
-                if (keyword != null && keyword.length() > 0) {
+                if (keyword != null && !keyword.isEmpty()) {
                     e.addKeyword(keyword);
                 }
             }
@@ -342,21 +342,21 @@ public class EditAction extends LookupDispatchAction {
             }
 
             //Test that all existing bugs have the id field filled in
-            if (!newbug && id.length() == 0) {
+            if (!newbug && id.isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                            new ActionMessage("errata.edit.error.id"));
             }
             //Test that all existing bugs have the summary field filled in
-            if (!newbug && summary.length() == 0) {
+            if (!newbug && summary.isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("errata.edit.error.summary"));
             }
             //Test that new bugs have either both or neither id and summary
-            if (newbug && id.length() > 0 && summary.length() == 0) {
+            if (newbug && !id.isEmpty() && summary.isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("errata.edit.error.summary"));
             }
-            if (newbug && summary.length() > 0 && id.length() == 0) {
+            if (newbug && !summary.isEmpty() && id.isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("errata.edit.error.id"));
             }
@@ -383,7 +383,7 @@ public class EditAction extends LookupDispatchAction {
 
             //Add this bug to the collection so that we can update the errata easily
             ids.add(id);
-            if (!newbug || id.length() > 0) {
+            if (!newbug || !id.isEmpty()) {
                 String[] bug = new String[3];
                 bug[0] = id;
                 bug[1] = summary;

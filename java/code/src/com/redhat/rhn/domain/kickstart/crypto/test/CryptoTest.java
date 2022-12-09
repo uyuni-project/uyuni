@@ -67,7 +67,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         ksdata = addKeyToKickstart(ksdata);
         assertNotNull(ksdata.getCryptoKeys());
-        assertTrue(ksdata.getCryptoKeys().size() > 0);
+        assertTrue(!ksdata.getCryptoKeys().isEmpty());
     }
 
     public static CryptoKey createTestKey(Org orgIn) {

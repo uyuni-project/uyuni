@@ -99,7 +99,7 @@ public class StringConstraint extends RequiredIfConstraint {
         if (hasMinLength()) {
             // If its zero length just warn that the field is required
             // NOTE: We trim the string here.
-            if (strValue.trim().length() == 0) {
+            if (strValue.trim().isEmpty()) {
                 Object[] args = new Object[1];
                 args[0] = localizedIdentifier;
                 return new ValidatorError("errors.required", args);

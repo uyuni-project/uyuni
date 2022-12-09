@@ -583,7 +583,7 @@ public class RequestContext {
         Map<String, Object> params = new HashMap<>();
         String lower = processPagination();
 
-        if (lower != null && lower.length() > 0 && StringUtils.isNumeric(lower)) {
+        if (lower != null && !lower.isEmpty() && StringUtils.isNumeric(lower)) {
             params.put("lower", lower);
         }
 

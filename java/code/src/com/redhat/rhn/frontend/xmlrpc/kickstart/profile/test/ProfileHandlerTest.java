@@ -467,7 +467,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         handler.removeIpRange(admin, ks1.getLabel(), "192.168.0.1");
         ks1 = KickstartFactory.lookupKickstartDataByLabelAndOrgId(ks1.getLabel(),
                 admin.getOrg().getId());
-        assertTrue(ks1.getIps().size() == 0);
+        assertTrue(ks1.getIps().isEmpty());
     }
 
     @Test

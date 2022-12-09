@@ -183,7 +183,7 @@ public class AddRedHatErrataAction extends RhnListAction {
             sortChannelsAndChildify(channelSet, channelList, user, selectedChannelStr);
             request.setAttribute(CHANNEL_LIST, channelList);
         }
-        if (channelList.size() > 0 && selectedChannelStr == null) {
+        if (!channelList.isEmpty() && selectedChannelStr == null) {
             selectedChannelStr = channelList.get(0).getId().toString();
         }
 

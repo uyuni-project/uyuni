@@ -175,7 +175,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         server = reload(server);
 
         String key = null;
-        if (retval.getErrors().size() > 0) {
+        if (!retval.getErrors().isEmpty()) {
             key = retval.getErrors().get(0).getKey();
         }
         assertFalse(retval.hasErrors(), "Got back: " + key);

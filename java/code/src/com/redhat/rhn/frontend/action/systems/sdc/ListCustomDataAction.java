@@ -62,7 +62,7 @@ public class ListCustomDataAction extends RhnAction {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         Set customDataValues = server.getCustomDataValues();
 
-        if (customDataValues.size() == 0) {
+        if (customDataValues.isEmpty()) {
             request.setAttribute("listEmpty", "1");
         }
 

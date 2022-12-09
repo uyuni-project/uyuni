@@ -100,7 +100,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
     @Test
     public void testGetServerGroupTypeFeatures() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
-        assertTrue(org1.getEntitledServerGroups().size() > 0);
+        assertTrue(!org1.getEntitledServerGroups().isEmpty());
 
         // we assume existence of salt entitlement
         EntitlementServerGroup serverGroup = org1.getEntitledServerGroups().stream()
@@ -108,7 +108,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
                 .findFirst()
                 .orElseThrow();
         assertNotNull(serverGroup.getGroupType().getFeatures());
-        assertTrue(serverGroup.getGroupType().getFeatures().size() > 0);
+        assertTrue(!serverGroup.getGroupType().getFeatures().isEmpty());
     }
 
     @Test

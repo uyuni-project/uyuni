@@ -131,7 +131,7 @@ public class RhnTagFunctions {
     public static String localizedValue(String messageId, String params) {
         LocalizationService service = LocalizationService.getInstance();
 
-        if (params != null && params.trim().length() > 0) {
+        if (params != null && !params.trim().isEmpty()) {
             Object [] args = params.split("\\|");
             for (int i = 0; i < args.length; i++) {
                 args[i] = ((String)args[i]).trim();
@@ -151,7 +151,7 @@ public class RhnTagFunctions {
     public static String localizedValueAndParams(String messageId, String params) {
         LocalizationService service = LocalizationService.getInstance();
 
-        if (params != null && params.trim().length() > 0) {
+        if (params != null && !params.trim().isEmpty()) {
             Object [] args = params.split("\\|");
             for (int i = 0; i < args.length; i++) {
                 args[i] = service.getMessage(((String)args[i]).trim());

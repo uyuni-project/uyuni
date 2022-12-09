@@ -249,7 +249,7 @@ public class ContentSyncManager {
         Iterator<Credentials> i = credentials.iterator();
 
         // stop as soon as a credential pair works
-        while (i.hasNext() && productList.size() == 0) {
+        while (i.hasNext() && productList.isEmpty()) {
             Credentials c = i.next();
             try {
                 SCCClient scc = getSCCClient(c);

@@ -832,7 +832,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
             StringWriter paginationContent = new StringWriter();
 
             pageContext.pushBody(alphaBarContent);
-            if (getPageList().getIndex().size() > 0 &&
+            if (!getPageList().getIndex().isEmpty() &&
                     getPageList().size() < getPageList().getTotalSize()) {
 
                 //renderViewAllLink(alphaBarContent);

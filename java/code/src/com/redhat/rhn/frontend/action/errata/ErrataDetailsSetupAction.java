@@ -111,7 +111,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
         String retval = null;
         List files =
             ErrataFactory.lookupErrataFilesByErrataAndFileType(errataId, "oval");
-        if (files == null || files.size() == 0) {
+        if (files == null || files.isEmpty()) {
             return null;
         }
         ErrataFile ef = (ErrataFile) files.get(0);

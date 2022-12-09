@@ -1829,7 +1829,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                     retval.add(c);
                 }
             }
-            if (retval.size() == 0) {
+            if (retval.isEmpty()) {
                 return new HashSet<>();
             }
             return retval;

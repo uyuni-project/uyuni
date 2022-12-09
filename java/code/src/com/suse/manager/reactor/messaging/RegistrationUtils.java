@@ -207,10 +207,10 @@ public class RegistrationUtils {
                     e.isAllowedOnServer(server, grains) &&
                     systemEntitlementManager.canEntitleServer(server, e)) {
                 ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, e);
-                if (vr.getWarnings().size() > 0) {
+                if (!vr.getWarnings().isEmpty()) {
                     LOG.warn(vr.getWarnings().toString());
                 }
-                if (vr.getErrors().size() > 0) {
+                if (!vr.getErrors().isEmpty()) {
                     LOG.error(vr.getErrors().toString());
                 }
             }

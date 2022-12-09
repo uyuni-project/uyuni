@@ -1280,7 +1280,7 @@ public class ErrataHandler extends BaseHandler {
      */
     private List<Channel> verifyChannelList(List<String> channelsLabels, User user,
                                             List<String> vendorChannelOverride) {
-        if (channelsLabels.size() == 0) {
+        if (channelsLabels.isEmpty()) {
             throw new NoChannelsSelectedException();
         }
 

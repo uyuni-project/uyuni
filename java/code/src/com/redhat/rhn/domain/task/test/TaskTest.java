@@ -79,7 +79,7 @@ public class TaskTest extends RhnBaseTestCase {
 
         List lookedup = TaskFactory.getTaskListByNameLike("task_object_unit_test_");
         assertNotNull(lookedup);
-        assertTrue(lookedup.size() > 0);
+        assertTrue(!lookedup.isEmpty());
         assertTrue(lookedup.get(0) != null);
         assertTrue(lookedup.get(0) instanceof Task);
     }

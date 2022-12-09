@@ -56,7 +56,7 @@ public class SandboxCleanup extends RhnJavaJob {
         CallableMode removeMode =
             ModeFactory.getCallableMode("Task_queries", removeQuery);
         List candidates = candidateMode.execute(candidateParams);
-        if (candidates != null && candidates.size() > 0) {
+        if (candidates != null && !candidates.isEmpty()) {
             if (removeQuery.contains("file")) {
                 log.info("Removing sandbox files: {}", candidates.size());
             }

@@ -198,7 +198,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
     public static void setupProxyInfo(RequestContext ctx) {
         List<OrgProxyServer> proxies = SystemManager.
                 listProxies(ctx.getCurrentUser().getOrg());
-        if (proxies != null && proxies.size() > 0) {
+        if (proxies != null && !proxies.isEmpty()) {
             List<LabelValueBean> formatted = new LinkedList<>();
 
             formatted.add(lvl10n("kickstart.schedule.default.proxy.jsp", ""));
@@ -494,11 +494,11 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             // Disable the package/system sync radio buttons if no profiles are
             // available:
             String syncPackageDisabled = "false";
-            if (packageProfiles.size() == 0) {
+            if (packageProfiles.isEmpty()) {
                 syncPackageDisabled = "true";
             }
             String syncSystemDisabled = "false";
-            if (systemProfiles.size() == 0) {
+            if (systemProfiles.isEmpty()) {
                 syncSystemDisabled = "true";
             }
             ctx.getRequest()
@@ -914,7 +914,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
         }
 
-        if (errors.size() > 0) {
+        if (!errors.isEmpty()) {
             addErrors(ctx.getRequest(), errors);
             return false;
         }

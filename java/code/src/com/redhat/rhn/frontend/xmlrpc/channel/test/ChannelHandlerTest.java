@@ -57,7 +57,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
 
         List<Map<String, Object>> result = handler.listSoftwareChannels(admin);
         assertNotNull(result);
-        assertTrue(result.size() > 0);
+        assertTrue(!result.isEmpty());
 
         for (Map<String, Object> item : result) {
             Set<String> keys = item.keySet();

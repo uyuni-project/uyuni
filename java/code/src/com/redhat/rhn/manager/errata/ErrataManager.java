@@ -141,7 +141,7 @@ public class ErrataManager extends BaseManager {
      * @return list of corresponding java.io.File instances
      */
     public static List<File> resolveOvalFiles(List<ErrataFile> errataFiles) {
-        if (errataFiles == null || errataFiles.size() == 0) {
+        if (errataFiles == null || errataFiles.isEmpty()) {
             return null;
         }
         List<File> retval = new LinkedList<>();
@@ -2175,7 +2175,7 @@ public class ErrataManager extends BaseManager {
                 }
                 else {
                     List<Errata> clones = ErrataFactory.lookupErrataByOriginal(user.getOrg(), errata);
-                    if (clones.size() == 0) {
+                    if (clones.isEmpty()) {
                         log.debug("Cloning errata");
                         var clonedId = ErrataHelper.cloneErrataFaster(eid, user.getOrg());
                         ErrataCacheManager.addErrataRefreshing(cids, clonedId);
@@ -2191,7 +2191,7 @@ public class ErrataManager extends BaseManager {
         });
 
         // Trigger channel repodata re-generation
-        if (list.size() > 0 && requestRepodataRegen) {
+        if (!list.isEmpty() && requestRepodataRegen) {
             channel.setLastModified(new Date());
             ChannelFactory.save(channel);
             ChannelManager.queueChannelChange(channel.getLabel(), "java::cloneErrata", "Errata cloned");

@@ -52,7 +52,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
             createTestKickstartableTree(baseChan);
         List ksTrees = handler.list(admin,
                 baseChan.getLabel());
-        assertTrue(ksTrees.size() > 0);
+        assertTrue(!ksTrees.isEmpty());
 
         boolean found = false;
         for (Object ksTreeIn : ksTrees) {
@@ -151,7 +151,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
     public void testListTreeTypes() throws Exception {
         List types = handler.listInstallTypes(admin);
         assertNotNull(types);
-        assertTrue(types.size() > 0);
+        assertTrue(!types.isEmpty());
         System.out.println("type: " + types.get(0).getClass().getName());
         assertTrue(types.get(0) instanceof KickstartInstallType);
     }

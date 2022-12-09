@@ -81,7 +81,7 @@ public class TreeDeleteOperation extends BaseTreeEditOperation {
         List<KickstartData> profiles = KickstartFactory.lookupKickstartDatasByTree(
             this.tree);
 
-        if (profiles != null && profiles.size() > 0) {
+        if (profiles != null && !profiles.isEmpty()) {
 
             if (deleteProfiles) {
                 for (KickstartData profile : profiles) {

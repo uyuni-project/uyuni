@@ -164,7 +164,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
     protected void verifyList(String attribName, Class classIn) {
         List dr = (List) request.getAttribute(attribName);
         Assertions.assertNotNull(dr, "Your list: " + attribName + " is null");
-        Assertions.assertTrue(dr.size() > 0, "Your list: " + attribName + " is empty");
+        Assertions.assertTrue(!dr.isEmpty(), "Your list: " + attribName + " is empty");
         Assertions.assertEquals(classIn, dr.iterator().next().getClass(),
                 "Your list: " + attribName + " is the wrong class");
     }
@@ -195,7 +195,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
         DynaActionForm form = (DynaActionForm) getActionForm();
         List dr = (List) form.get(attribName);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
         assertEquals(classIn, dr.iterator().next().getClass());
     }
 

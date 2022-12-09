@@ -440,7 +440,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         int recordsRead = 0;
         while (recordsRead < idsIn.size()) {
             List<Long> chunkIDs = idsIn.subList(recordsRead, toIndex);
-            if (chunkIDs.size() == 0) {
+            if (chunkIDs.isEmpty()) {
                 LOG.warn("Processing 0 size chunkIDs....something seems wrong.");
                 break;
             }

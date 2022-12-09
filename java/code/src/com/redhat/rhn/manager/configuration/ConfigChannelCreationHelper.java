@@ -90,7 +90,7 @@ public class ConfigChannelCreationHelper {
         ValidatorResult result = new ValidatorResult();
 
         // Check label
-        if (label == null || label.trim().length() == 0) {
+        if (label == null || label.trim().isEmpty()) {
             result.addError(new ValidatorError(ERROR_REQUIRED,
                                             ls.getMessage(LABEL)));
         }
@@ -107,7 +107,7 @@ public class ConfigChannelCreationHelper {
             form.set(LABEL, label);
         }
         // Check name
-        if (name == null || name.trim().length() == 0) {
+        if (name == null || name.trim().isEmpty()) {
             result.addError(new ValidatorError(ERROR_REQUIRED,
                                             ls.getMessage(NAME)));
         }
@@ -120,7 +120,7 @@ public class ConfigChannelCreationHelper {
             form.set(NAME, name);
         }
         // Check description
-        if (description == null || description.trim().length() == 0) {
+        if (description == null || description.trim().isEmpty()) {
             result.addError(new ValidatorError(ERROR_REQUIRED,
                                                 ls.getMessage(DESCRIPTION)));
         }

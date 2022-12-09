@@ -60,7 +60,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartableTreeTest.createTestKickstartableTree(baseChan,
                 KickstartInstallType.FEDORA_PREFIX + "18");
         List<Channel> ksChannels = handler.listKickstartableChannels(admin);
-        assertTrue(ksChannels.size() > 0);
+        assertTrue(!ksChannels.isEmpty());
         assertTrue(ksChannels.contains(baseChan));
     }
 
@@ -70,7 +70,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartableTreeTest.createTestKickstartableTree(baseChan,
                 KickstartInstallType.SLES_PREFIX + "12generic");
         List<Channel> ksChannels = handler.listAutoinstallableChannels(admin);
-        assertTrue(ksChannels.size() > 0);
+        assertTrue(!ksChannels.isEmpty());
         assertTrue(ksChannels.contains(baseChan));
     }
 
@@ -80,7 +80,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartableTree testTree = KickstartableTreeTest.
             createTestKickstartableTree(baseChan);
         List ksTrees = new KickstartTreeHandler().list(admin, baseChan.getLabel());
-        assertTrue(ksTrees.size() > 0);
+        assertTrue(!ksTrees.isEmpty());
 
         boolean found = false;
         for (Object ksTreeIn : ksTrees) {

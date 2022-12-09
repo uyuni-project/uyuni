@@ -232,7 +232,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
                 ChannelFactory.getChannelsWithClonableErrata(
                 user.getOrg());
 
-        assertTrue(channels.size() > 0);
+        assertTrue(!channels.isEmpty());
     }
 
     @Test

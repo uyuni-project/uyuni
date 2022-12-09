@@ -137,7 +137,7 @@ public class OvalFileAggregator {
     }
 
     private boolean isEmpty() {
-        return defs.size() == 0 && tests.size() == 0 && states.size() == 0;
+        return defs.isEmpty() && tests.isEmpty() && states.isEmpty();
     }
 
     private void attachChildren(Element parent, Map children) {

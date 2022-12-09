@@ -73,7 +73,7 @@ public class CreateUserSetupAction extends BaseUserSetupAction {
         * checkbox and instructions
         */
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (pamAuthService != null && pamAuthService.trim().length() > 0) {
+        if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
             request.setAttribute("displaypamcheckbox", "true");
         }
 
