@@ -7261,13 +7261,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>Email アドレス</target>
       </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-        <target>ホスト名</target>
-      </trans-unit>
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
         <source>E-mail notifications disabled globally</source>
@@ -11238,6 +11231,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
   </trans-unit>
       <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
       <target state="new"/>
   </trans-unit>
       </body>
