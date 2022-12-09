@@ -3,7 +3,7 @@
 
 @sle_minion
 @scope_onboarding
-Feature: bootstrapping with reactivation key
+Feature: Bootstrapping with reactivation key
   In order to re-register valid minions
   As an authorized user
   I want to avoid re-registration with invalid input parameters
