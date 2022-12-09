@@ -1037,7 +1037,7 @@ public class ContentSyncManager {
                });
         if (StringUtils.isBlank(prodRepoLink.getChannelLabel())) {
             // mandatory field is missing. This happens when a product does not have suseProductSCCRepositories
-            log.info("Product '" + root.toString() + "' does not have repositories. Skipping.");
+            log.info("Product '{}' does not have repositories. Skipping.", root);
             return null;
         }
         return prodRepoLink;
