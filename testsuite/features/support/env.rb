@@ -196,7 +196,7 @@ Before('@rhel9_minion') do
   skip_this_scenario unless $rhel9_minion
 end
 
-Before('@rhel9_sshminion') do
+Before('@rhel9_ssh_minion') do
   skip_this_scenario unless $rhel9_ssh_minion
 end
 
