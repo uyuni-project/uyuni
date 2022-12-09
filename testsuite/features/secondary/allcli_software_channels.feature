@@ -144,6 +144,7 @@ Feature: Channel subscription via SSM
     And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SLES-Channel"
     And I wait until I do not see "Loading..." text
     And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
