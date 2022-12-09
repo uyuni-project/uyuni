@@ -10,9 +10,9 @@
     "changes": {},
     "result": true
   },
-  "cmd_|-respkgquery_|-rpm -q --whatprovides 'sll-release'_|-run": {
+  "cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run": {
     "comment": "onlyif execution failed",
-    "__id__": "respkgquery",
+    "__id__": "sllpkgquery",
     "name": "rpm -q --whatprovides 'sll-release'",
     "duration": 86.271,
     "__run_num__": 3,

@@ -7,6 +7,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete the Salt minion for SSH tunnel bootstrap
     Given I am on the Systems overview page of this "ssh_minion"
@@ -82,8 +83,11 @@ Feature: Register a Salt system to be managed via SSH tunnel
     Then "ssh_minion" should not be registered
 
   Scenario: Cleanup: register a Salt minion after SSH tunnel tests
-    When I bootstrap minion client "ssh_minion" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    When I bootstrap minion client "ssh_minion" using bootstrap script with activation key "1-SUSE-SSH-KEY-x86_64" from the proxy
     And I wait at most 10 seconds until Salt master sees "ssh_minion" as "unaccepted"
     And I accept "ssh_minion" key in the Salt master
     Then I should see "ssh_minion" via spacecmd
     And I wait until onboarding is completed for "ssh_minion"
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

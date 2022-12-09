@@ -6,6 +6,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Create a configuration channel for mixed client types
     When I follow the left menu "Configuration > Channels"
@@ -189,55 +190,43 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_client
   Scenario: Check configuration channel and files via API for traditional client
-    Given I am logged in API as user "admin" and password "admin"
     Then channel "mixedchannel" should exist
     And channel "mixedchannel" should contain file "/etc/s-mgr/config"
     And "sle_client" should be subscribed to channel "mixedchannel"
-    When I logout from API
 
 @sle_minion
   Scenario: Check configuration channel and files via API for Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     Then channel "mixedchannel" should exist
     And channel "mixedchannel" should contain file "/etc/s-mgr/config"
     And "sle_minion" should be subscribed to channel "mixedchannel"
-    When I logout from API
 
 @sle_minion
   Scenario: Extend configuration channel and deploy files via API for Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     When I store "COLOR=green" into file "/etc/s-mgr/config" on "sle_minion"
     And I add file "/etc/s-mgr/other" containing "NAME=Dante" to channel "mixedchannel"
     And I deploy all systems registered to channel "mixedchannel"
     And I wait until file "/etc/s-mgr/other" exists on "sle_minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_minion"
     And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle_minion"
-    When I logout from API
 
 @sle_client
   Scenario: Extend configuration channel and deploy files via API for traditional client
-    Given I am logged in API as user "admin" and password "admin"
     When I store "COLOR=yellow" into file "/etc/s-mgr/config" on "sle_client"
     And I add file "/etc/s-mgr/other" containing "NAME=Dante" to channel "mixedchannel"
     And I deploy all systems registered to channel "mixedchannel"
     And I run "rhn_check -vvv" on "sle_client"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_client"
     And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle_client"
-    When I logout from API
 
 @sle_client
   Scenario: Unsubscribe systems via API for traditional client
-    Given I am logged in API as user "admin" and password "admin"
     When I unsubscribe "sle_client" from configuration channel "mixedchannel"
     Then "sle_client" should not be subscribed to channel "mixedchannel"
-    When I logout from API
 
 @sle_minion
   Scenario: Unsubscribe systems via API for Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     When I unsubscribe "sle_minion" from configuration channel "mixedchannel"
     Then "sle_minion" should not be subscribed to channel "mixedchannel"
-    When I logout from API
 
 @sle_client
   Scenario: Re-add Salt minion via SSM
@@ -300,3 +289,6 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients
     When I follow "Clear"
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

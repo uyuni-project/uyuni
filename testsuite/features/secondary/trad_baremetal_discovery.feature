@@ -6,6 +6,7 @@ Feature: Bare metal discovery
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete the normal traditional client for bare metal feature
     Given I am on the Systems overview page of this "sle_client"
@@ -142,4 +143,7 @@ Feature: Bare metal discovery
     Then I should see "sle_client" via spacecmd
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
-    When I follow "Clear"
+    When I click on "Clear"
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

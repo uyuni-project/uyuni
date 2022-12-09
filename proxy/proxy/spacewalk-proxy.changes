@@ -1,3 +1,5 @@
+- Handle tftp in rhn-proxy (bsc#1205976)
+
 -------------------------------------------------------------------
 Tue Nov 15 16:53:10 UTC 2022 - marina.latini@suse.com
 

@@ -15,6 +15,7 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete the Red Hat-like minion before traditional client tests
     When I am on the Systems overview page of this "rhlike_minion"
@@ -130,3 +131,6 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

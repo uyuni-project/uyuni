@@ -1,6 +1,13 @@
 - fix tools channel detection on Uyuni
 
 -------------------------------------------------------------------
+Fri Dec 02 11:55:08 UTC 2022 - marina.latini@suse.com
+
+- version 4.3.21-1
+  * Make python3-extras optional, as SLES 15 does not have it and it
+    is only required on SP4 or greater (bsc#1204437) 
+
+-------------------------------------------------------------------
 Tue Nov 15 16:41:13 UTC 2022 - marina.latini@suse.com
 
 - version 4.3.20-1

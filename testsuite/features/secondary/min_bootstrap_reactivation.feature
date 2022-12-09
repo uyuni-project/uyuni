@@ -10,6 +10,7 @@ Feature: bootstrapping with reactivation key
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Generate a re-activation key
     Given I am on the Systems overview page of this "sle_minion"
@@ -99,3 +100,6 @@ Feature: bootstrapping with reactivation key
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I wait until event "Subscribe channels scheduled by admin" is completed
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

@@ -12,6 +12,7 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete the Debian-like minion
     When I am on the Systems overview page of this "deblike_minion"
@@ -69,7 +70,7 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
-    And I enter target "*ubuntu*"
+    And I enter target "deblike_minion"
     And I click on preview
     And I click on run
     Then I should see "deblike_minion" hostname
@@ -115,3 +116,6 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

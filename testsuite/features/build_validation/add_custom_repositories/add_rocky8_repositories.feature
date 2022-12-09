@@ -87,10 +87,10 @@ Feature: Add the Rocky 8 distribution custom repositories
   Scenario: Create a CLM project to remove AppStream metadata from Rocky 8
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "Create Project"
-    And I enter "Remove AppStream metadata" as "name"
-    And I enter "no-appstream" as "label"
+    And I enter "Remove AppStream metadata from Rocky 8" as "name"
+    And I enter "no-appstream-8" as "label"
     And I click on "Create"
-    Then I should see a "Content Lifecycle Project - Remove AppStream metadata" text
+    Then I should see a "Content Lifecycle Project - Remove AppStream metadata from Rocky 8" text
     When I click on "Attach/Detach Sources"
     And I select "RHEL8-Pool for x86_64" from "selectedBaseChannel"
     And I check "Custom Channel for Rocky 8 DVD"

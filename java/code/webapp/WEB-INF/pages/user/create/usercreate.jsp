@@ -51,7 +51,7 @@
                   </div>
                 </div>
               </div>
-              <script type="text/javascript" src="/javascript/pwstrength-bootstrap-1.0.2.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
+              <script type="text/javascript" src="/javascript/legacy/pwstrength-bootstrap-1.0.2.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
               <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
               <script type="text/javascript">
 function toggleAsterisk() {

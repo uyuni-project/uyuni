@@ -6,6 +6,7 @@ Feature: The system details of each minion and client provides an overview of th
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
 @sle_client
   Scenario: Traditional client hardware refresh
@@ -112,3 +113,6 @@ Feature: The system details of each minion and client provides an overview of th
     And the system name for "ssh_minion" should be correct
     And the uptime for "ssh_minion" should be correct
     And I should see several text fields for "ssh_minion"
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API
