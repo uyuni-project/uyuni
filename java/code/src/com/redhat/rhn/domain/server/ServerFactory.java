@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -57,6 +58,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
+import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
@@ -536,6 +538,19 @@ public class ServerFactory extends HibernateFactory {
                         Collectors.mapping(row -> Long.valueOf(row[1].toString()), Collectors.toList())
                         )
                 );
+    }
+
+    /**
+     * Look for servers that have a reboot action scheduled
+     * @param systems the systems to check
+     * @return list of servers pending reoot action
+     */
+    public static List<Long> findSystemsPendingRebootActions(List<SystemOverview> systems) {
+        List<Long> sids = systems.stream().map(SystemOverview::getId).collect(Collectors.toList());
+        Session session = HibernateFactory.getSession();
+        Query query = session.getNamedQuery("Server.findServersPendingRebootAction");
+        query.setParameter("systemIds", sids);
+        return query.list();
     }
 
     /**

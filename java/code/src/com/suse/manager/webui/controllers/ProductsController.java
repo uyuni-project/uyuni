@@ -58,9 +58,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -274,10 +276,17 @@ public class ProductsController {
             List<Long> channelIdList = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
             Map<Long, List<Long>> result = channelIdList.stream().collect(Collectors.toMap(
                     channelId -> channelId,
-                    channelId -> SUSEProductFactory.findSyncedMandatoryChannels(
-                            ChannelFactory.lookupById(channelId).getLabel())
-                            .map(Channel::getId)
-                            .collect(Collectors.toList())
+                    channelId -> {
+                        Stream<Channel> channels = Stream.empty();
+                        try {
+                            channels = SUSEProductFactory.findSyncedMandatoryChannels(
+                                    ChannelFactory.lookupById(channelId).getLabel());
+                        }
+                        catch (NoSuchElementException e) {
+                            log.error("Fail to load mandatory channels for channel {}", channelId, e);
+                        }
+                        return channels.map(Channel::getId).collect(Collectors.toList());
+                    }
             ));
             return json(response, ResultJson.success(result));
         });

@@ -6248,7 +6248,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
+      <trans-unit id="java|hostname" xml:space="preserve">
         <source>Hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
@@ -9401,6 +9401,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey.failed">
         <source>Generating salt-ssh public key failed: {0}.</source>
+      </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.summary">
+        <source>You have subscriptions that need attention.</source>
+      </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.detail">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
       </trans-unit>
       <trans-unit id="notification.endoflife.expired.summary">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>

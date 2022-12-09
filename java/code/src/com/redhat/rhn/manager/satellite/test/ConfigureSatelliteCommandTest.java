@@ -153,7 +153,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
             }
         };
 
-        cmd.updateString(ConfigDefaults.JABBER_SERVER, "test.hostname.jabber");
+        cmd.updateString(ConfigDefaults.SERVER_HOSTNAME, "test.hostname.jabber");
         ValidatorError[] verrors = cmd.storeConfiguration();
         assertNull(verrors);
     }

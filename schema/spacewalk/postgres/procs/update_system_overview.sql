@@ -262,6 +262,8 @@ begin
         new_status_type = 'awol';
     elsif coalesce(new_kickstarting, FALSE) then
         new_status_type = 'kickstarting';
+    elsif new_requires_reboot then
+        new_status_type = 'reboot needed';
     elsif new_enhancement_errata + new_bug_errata + new_security_errata > 0 and new_unscheduled_errata_count = 0 then
         new_status_type = 'updates scheduled';
     elsif new_actions_count > 0 then

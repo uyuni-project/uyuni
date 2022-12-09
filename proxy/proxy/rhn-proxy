@@ -6,7 +6,7 @@ if [ -e /usr/lib/systemd/system/apache2.service -o -e /etc/init.d/apache2 ]; the
     HTTPD="apache2"
 fi
 
-SERVICES="squid $HTTPD jabberd salt-broker"
+SERVICES="squid $HTTPD salt-broker tftp"
 
 if [ -e /etc/init.d/functions ]; then
     . /etc/init.d/functions
@@ -52,6 +52,9 @@ start() {
 stop() {
         echo "Shutting down spacewalk-proxy..."
 	reverse_services stop
+	if [ -e /usr/lib/systemd/system/tftp.socket ]; then
+    systemctl stop tftp.socket
+    fi
 	echo "Done."
         return 0
 }

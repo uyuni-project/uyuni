@@ -32,6 +32,7 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Enable the PXE formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
@@ -429,3 +430,6 @@ Feature: PXE boot a Retail terminal
   Scenario: Reset TFTP defaults
     When I stop tftp on the proxy
     And I reset tftp defaults on the proxy
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

@@ -4,9 +4,12 @@
 @scope_onboarding
 Feature: Register a Salt minion via API
 
-  Scenario: Delete SLES minion system profile before API bootstrap test
+  Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am on the Systems overview page of this "sle_minion"
+    And I am logged in API as user "admin" and password "admin"
+
+  Scenario: Delete SLES minion system profile before API bootstrap test
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
@@ -14,9 +17,7 @@ Feature: Register a Salt minion via API
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap a SLES minion via API
-    Given I am logged in API as user "admin" and password "admin"
     When I call system.bootstrap() on host "sle_minion" and salt-ssh "disabled"
-    And I logout from API
 
   Scenario: Check new minion bootstrapped via API in System Overview page
     When I follow the left menu "Salt > Keys"
@@ -62,9 +63,10 @@ Feature: Register a Salt minion via API
     Then I check for failed events on history event page
 
   Scenario: Bootstrap via API a non-existing system
-    Given I am logged in API as user "admin" and password "admin"
     When I call system.bootstrap() on unknown host, I should get an API fault
 
   Scenario: Bootstrap a salt-ssh system with activation key and default contact method
     When I call system.bootstrap() on a Salt minion with saltSSH = true, but with activation key with default contact method, I should get an API fault
-    And I logout from API
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

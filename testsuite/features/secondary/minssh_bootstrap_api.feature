@@ -8,6 +8,7 @@ Feature: Register a salt-ssh system via API
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete SSH minion system profile before API bootstrap test
     Given I am on the Systems overview page of this "ssh_minion"
@@ -22,9 +23,7 @@ Feature: Register a salt-ssh system via API
     Given I block connections from "server" on "ssh_minion"
 
   Scenario: Bootstrap a SLES SSH minion via API
-    Given I am logged in API as user "admin" and password "admin"
     When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
-    And I logout from API
 
   Scenario: Check new API bootstrapped salt-ssh system in System Overview page
     When I follow the left menu "Systems > System List > All"
@@ -69,3 +68,6 @@ Feature: Register a salt-ssh system via API
 @proxy
   Scenario: cleanup and flush the firewall rules
     When I flush firewall on "ssh_minion"
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

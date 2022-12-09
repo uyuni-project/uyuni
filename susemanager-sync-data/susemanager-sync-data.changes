@@ -1,3 +1,5 @@
+- change OES 2023 URL to https and make the tools channels mandatory
+  (bsc#1205644)
 - remove version from product names as they are held separate
 - change "EL 9 Base" to "RHEL and Liberty 9 Base"
 

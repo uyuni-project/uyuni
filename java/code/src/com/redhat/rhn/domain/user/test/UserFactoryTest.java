@@ -294,7 +294,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
                             availablePrefixes().toArray()[0];
         usr.setPrefix(prefix);
 
-        usr.setEmail("redhatJavaTest@redhat.com");
+        usr.setEmail("javaTest@example.com");
 
         Address addr1 = UserFactory.createAddress();
         addr1.setAddress1("444 Castro");

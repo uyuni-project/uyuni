@@ -32,9 +32,11 @@ Feature: Register and test a Containerized Proxy
   Scenario: Pre-requisite: Stop traditional proxy service
     When I stop salt-minion on "proxy"
     And I run "spacewalk-proxy stop" on "proxy"
+    # workaround for bsc#1205976
+    And I stop "tftp" service on "proxy"
     And I wait until "squid" service is inactive on "proxy"
     And I wait until "apache2" service is inactive on "proxy"
-    And I wait until "jabberd" service is inactive on "proxy"
+    And I wait until "tftp" service is inactive on "proxy"
 
   Scenario: Generate Containerized Proxy configuration
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of Containerized Proxy on the server
@@ -246,9 +248,11 @@ Feature: Register and test a Containerized Proxy
   Scenario: Cleanup: Start traditional proxy service
     When I start salt-minion on "proxy"
     And I run "spacewalk-proxy start" on "proxy"
+    # workaround for bsc#1205976
+    And I start "tftp" service on "proxy"
     And I wait until "squid" service is active on "proxy"
     And I wait until "apache2" service is active on "proxy"
-    And I wait until "jabberd" service is active on "proxy"
+    And I wait until "tftp" service is active on "proxy"
 
   Scenario: Cleanup: Bootstrap a Salt minion in the traditional proxy
     When I follow the left menu "Systems > Bootstrapping"
@@ -257,6 +261,7 @@ Feature: Register and test a Containerized Proxy
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text

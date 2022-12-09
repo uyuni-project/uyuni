@@ -101,13 +101,13 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
                 GeneralConfigAction.translateFormPropertyName("traceback_mail"),
                 "testuser@redhat.com");
         addRequestParameter(
-                GeneralConfigAction.translateFormPropertyName("server.jabber_server"),
+                GeneralConfigAction.translateFormPropertyName("java.hostname"),
                 "testbox");
 
         actionPerform();
 
         assertEquals("testuser@redhat.com", Config.get().getString("traceback_mail"));
-        assertEquals("testbox", Config.get().getString("server.jabber_server"));
+        assertEquals("testbox", Config.get().getString("java.hostname"));
 
         verifyActionMessages(new String[] {"config.restartrequired"});
 

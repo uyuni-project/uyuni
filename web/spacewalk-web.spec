@@ -252,6 +252,8 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 %defattr(644,root,root,755)
 %dir %{www_path}/css
 %{www_path}/css/*.{css,js}
+%dir %{www_path}/css/legacy
+%{www_path}/css/legacy/*.css
 %dir %{www_path}/fonts
 %{www_path}/fonts/*
 %dir %{www_path}/img
@@ -266,6 +268,10 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 %{www_path}/javascript/manager/*.{js,js.LICENSE.txt,css}
 %dir %{www_path}/javascript/legacy
 %{www_path}/javascript/legacy/*.{js,js.LICENSE.txt,css}
+%dir %{www_path}/javascript/legacy/select2
+%{www_path}/javascript/legacy/select2/*
+%dir %{www_path}/javascript/legacy/ace-editor
+%{www_path}/javascript/legacy/ace-editor/*
 %license LICENSE
 
 %files -n spacewalk-html-debug

@@ -10,6 +10,7 @@ Feature: CVE Audit on SLE Salt Minions
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
@@ -78,14 +79,12 @@ Feature: CVE Audit on SLE Salt Minions
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
-    And I am logged in API as user "admin" and password "admin"
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for "sle_minion"
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for "sle_minion"
     And I should get the test channel
     And I should get the "milkyway-dummy-2345" patch
-    Then I logout from API
 
   Scenario: Apply patches
     Given I am on the Systems overview page of this "sle_minion"
@@ -98,10 +97,8 @@ Feature: CVE Audit on SLE Salt Minions
     And I wait until event "Patch Update: milkyway-dummy-2345" is completed
 
   Scenario: List systems by patch status via API after patch
-    When I am logged in API as user "admin" and password "admin"
     And I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
     Then I should get status "PATCHED" for "sle_minion"
-    When I logout from API
 
   Scenario: Cleanup: remove installed packages
     When I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
@@ -109,3 +106,6 @@ Feature: CVE Audit on SLE Salt Minions
 
   Scenario: Cleanup: remove remaining systems from SSM after CVE audit tests
     When I click on "Clear"
+
+  Scenario: Cleanup: Logout from API
+    When I logout from API

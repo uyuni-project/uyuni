@@ -53,6 +53,10 @@ const _MESSAGE_TYPE = {
     id: "EndOfLifePeriod",
     text: t("End of Life Period"),
   },
+  SubscriptionWarning: {
+    id: "SubscriptionWarning",
+    text: t("Subscription Warning"),
+  },
 };
 
 function reloadData(dataUrlSlice: string) {

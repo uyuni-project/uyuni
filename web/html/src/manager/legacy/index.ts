@@ -3,3 +3,4 @@
  */
 import "./DateTimePicker";
 import "./toastr";
+import "./network";

@@ -118,7 +118,7 @@ public class UserTestUtils  {
         String prefix = (String) LocalizationService.getInstance().
         availablePrefixes().toArray()[0];
         usr.setPrefix(prefix);
-        usr.setEmail("redhatJavaTest@redhat.com");
+        usr.setEmail("javaTest@example.com");
 
         return usr;
     }

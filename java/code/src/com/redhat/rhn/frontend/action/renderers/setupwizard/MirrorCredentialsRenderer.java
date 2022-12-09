@@ -24,8 +24,6 @@ import com.redhat.rhn.manager.setup.SubscriptionDto;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,6 +60,7 @@ public class MirrorCredentialsRenderer {
 
     /**
      * Add or edit pair of credentials and re-render the whole list.
+     * @param request the request
      * @param id ID of the credential to edit or null for new mirror credential
      * @param user username for new credentials
      * @param password password for new credentials
@@ -70,11 +69,8 @@ public class MirrorCredentialsRenderer {
      * @throws IOException in case something really bad happens
      * @throws ContentSyncException in case of problems storing the credentials
      */
-    public String saveCredentials(Long id, String user, String password)
+    public String saveCredentials(HttpServletRequest request, Long id, String user, String password)
         throws ServletException, IOException, ContentSyncException {
-        // Find the current request
-        WebContext webContext = WebContextFactory.get();
-        HttpServletRequest request = webContext.getHttpServletRequest();
 
         MirrorCredentialsDto creds;
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
@@ -112,36 +108,38 @@ public class MirrorCredentialsRenderer {
 
     /**
      * Delete a pair of credentials given by ID.
+     * @param request the request
+     * @param response the response
      * @param id ID of the credentials to delete
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
      * @throws ContentSyncException in case of problems making new primary creds
      */
-    public String deleteCredentials(long id) throws ServletException, IOException,
+    public String deleteCredentials(HttpServletRequest request, HttpServletResponse response, long id)
+            throws ServletException, IOException,
             ContentSyncException {
-        // Find the current request
-        WebContext webContext = WebContextFactory.get();
-        HttpServletRequest request = webContext.getHttpServletRequest();
-
         // Delete the credentials
         if (logger.isDebugEnabled()) {
             logger.debug("Deleting credentials: {}", id);
         }
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         credsManager.deleteMirrorCredentials(id, request);
-        return renderCredentials();
+        return renderCredentials(request, response);
     }
 
     /**
      * Make primary credentials for a given ID.
+     * @param request the request
+     * @param response the response
      * @param id ID of credentials to make the primary ones
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
      * @throws ContentSyncException in case the credentials cannot be found
      */
-    public String makePrimaryCredentials(long id) throws ServletException, IOException,
+    public String makePrimaryCredentials(HttpServletRequest request, HttpServletResponse response, long id)
+            throws ServletException, IOException,
             ContentSyncException {
         // Make primary credentials
         if (logger.isDebugEnabled()) {
@@ -149,19 +147,19 @@ public class MirrorCredentialsRenderer {
         }
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         credsManager.makePrimaryCredentials(id);
-        return renderCredentials();
+        return renderCredentials(request, response);
     }
 
     /**
      * Render the mirror credentials set of panels.
+     * @param request the request
+     * @param response the response
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
      */
-    public String renderCredentials() throws ServletException, IOException {
-        WebContext webContext = WebContextFactory.get();
-        HttpServletRequest request = webContext.getHttpServletRequest();
-
+    public String renderCredentials(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         // Find mirror credentials
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
@@ -169,7 +167,6 @@ public class MirrorCredentialsRenderer {
             logger.debug("Found {} pairs of credentials", creds.size());
         }
         request.setAttribute(ATTRIB_MIRRCREDS, creds);
-        HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(CREDS_LIST_URL, request, response);
     }
 
@@ -177,15 +174,14 @@ public class MirrorCredentialsRenderer {
      * Get subscriptions for credentials and asynchronously render the page fragment.
      * @param id ID of the credentials to verify
      * @param refresh force a cache refresh
+     * @param request the request
+     * @param response the response
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
      */
-    public String verifyCredentials(Long id, boolean refresh)
+    public String verifyCredentials(HttpServletRequest request, HttpServletResponse response, Long id, boolean refresh)
         throws ServletException, IOException {
-        WebContext webContext = WebContextFactory.get();
-        HttpServletRequest request = webContext.getHttpServletRequest();
-
         // Load credentials for given ID and the subscriptions
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         MirrorCredentialsDto creds = credsManager.findMirrorCredentials(id);
@@ -201,21 +197,20 @@ public class MirrorCredentialsRenderer {
 
         request.setAttribute(ATTRIB_SUCCESS, subs != null);
         request.setAttribute(ATTRIB_CREDS_ID, id);
-        HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(CREDS_VERIFY_URL, request, response);
     }
 
     /**
      * Get subscriptions for credentials and asynchronously render the page fragment.
      * @param id ID of the credentials to use for listing
+     * @param request the request
+     * @param response the response
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
      */
-    public String listSubscriptions(Long id) throws ServletException, IOException {
-        WebContext webContext = WebContextFactory.get();
-        HttpServletRequest request = webContext.getHttpServletRequest();
-
+    public String listSubscriptions(HttpServletRequest request, HttpServletResponse response, Long id)
+            throws ServletException, IOException {
         // Load credentials for given ID and the subscriptions
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         MirrorCredentialsDto creds = credsManager.findMirrorCredentials(id);
@@ -224,7 +219,6 @@ public class MirrorCredentialsRenderer {
         }
         List<SubscriptionDto> subs = credsManager.getSubscriptions(creds, request, false);
         request.setAttribute(ATTRIB_SUBSCRIPTIONS, subs);
-        HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(LIST_SUBSCRIPTIONS_URL, request, response);
     }
 }

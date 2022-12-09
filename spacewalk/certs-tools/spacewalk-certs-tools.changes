@@ -1,3 +1,4 @@
+- remove jabberd and osa-dispatcher
 - drop legacy way to prevent disabling local repos
 
 -------------------------------------------------------------------

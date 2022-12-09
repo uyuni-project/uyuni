@@ -142,13 +142,6 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
             return null;
         }
 
-        if (keysToBeUpdated.contains(ConfigDefaults.JABBER_SERVER)) {
-            // if hostname changes, we must update
-            // osa-dispatcher.server_jabber as well
-            this.updateString("osa-dispatcher.jabber_server",
-                    ConfigDefaults.get().getHostname());
-        }
-
         if (keysToBeUpdated.contains(ConfigDefaults.MOUNT_POINT)) {
             this.updateString(ConfigDefaults.KICKSTART_MOUNT_POINT,
                     Config.get().getString(ConfigDefaults.MOUNT_POINT));

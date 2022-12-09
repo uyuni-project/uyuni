@@ -14,132 +14,91 @@
 # in this software or its documentation.
 #
 
-get_rhnconf_value() {
-   echo `cat $1 2>/dev/null | grep -v \# | grep $2 | cut -d '=' -f 2 | sed -e 's/ //g'`;
-}
-
 if [ $EUID -ne 0 ]; then
    echo -e "This script must be run as root!\n"
    exit 1
 fi
 
 
-if [ -x /etc/init.d/tomcat5 ]; then
-   TOMCAT="tomcat5"
-fi
 
-if [ -x /etc/init.d/tomcat6 -o -e /lib/systemd/system/tomcat6.service ]; then
-   TOMCAT="tomcat6"
-fi
-
-if [ -e /lib/systemd/system/tomcat.service ]; then
-   TOMCAT="tomcat"
-fi
-
-HTTPD="httpd"
-
-if [ -e /lib/systemd/system/apache2.service -o -e /etc/init.d/apache2 ]; then
-   HTTPD="apache2"
-fi
-
-SERVICES="jabberd $SUSE_AUDITLOG $DB_SERVICE $TOMCAT $HTTPD osa-dispatcher rhn-search cobblerd taskomatic"
-if [ -f /etc/rhn/service-list ] ; then
-   . /etc/rhn/service-list
-fi
-
-#. /etc/init.d/functions
-
-forward_services() {
-    ACTION="$1"
-
-    RET=0
-    E_STAT=0
-    for service in $SERVICES; do
-	if [ -e /etc/init.d/$service -o -e /lib/systemd/system/$service.service ]; then
-	    /sbin/service $service $ACTION
-            E_STAT=$?
-            if [ "$service" == "$TOMCAT" \
-                -a "$ACTION" == "start" \
-                -a "$WAIT_FOR_TOMCAT" == "1" ] ; then
-                /usr/sbin/spacewalk-startup-helper wait-for-tomcat
-            fi
-	fi
-        if [ $E_STAT -ne 0 ]; then
-            RET=$E_STAT
-	fi
+spacewalk_target_services() {
+    FEXISTS=""
+    for t in /usr/lib/systemd/system/*.service; do
+        FEXISTS="$FEXISTS $(basename $t)"
     done
-    return $RET
-}
-
-reverse_services() {
-    ACTION="$1"
-
-    RET=0
-    E_STAT=0
-    for service in $(echo $SERVICES | tac -s" "); do
-	if [ -e /etc/init.d/$service -o -e /lib/systemd/system/$service.service ]; then
-	    /sbin/service $service $ACTION
-            E_STAT=$?
-	fi
-        if [ $E_STAT -ne 0 ]; then
-            RET=$E_STAT
-	fi
-    done
-    return $RET
-}
-
-chkconfig() {
-    RET=0
-    E_STAT=0
-    for service in $SERVICES; do
-        if [ -e /etc/init.d/$service -o -e /lib/systemd/system/$service.service ]; then
-            /sbin/chkconfig $service "$@"
-            E_STAT=$?
-        fi
-        if [ $E_STAT -ne 0 ]; then
-            RET=$E_STAT
-        fi
-    done
-    return $RET
+    awk -F= 'BEGIN {split("'"$EXCLUDE"'", keys, / +/);
+                    split("'"$FEXISTS"'", srvs, / +/);
+                    for (i in keys) {exclude[keys[i]]};
+                    for (j in srvs) {fexists[srvs[j]]}
+                   }
+             /Requires=/ {if (!($2 in exclude)) {print $2}}
+             /Wants=/ {if (($2 in fexists) && !($2 in exclude)) {print $2}}' \
+             /usr/lib/systemd/system/spacewalk.target
 }
 
 turn_on() {
    echo "Enabling spacewalk services..."
-   chkconfig on "$@"
+   spacewalk_target_services | xargs systemctl enable --quiet
+   systemctl enable --quiet spacewalk.target
    echo "Done"
    return 0
 }
 
 turn_off() {
    echo "Disabling spacewalk services..."
-   chkconfig off "$@"
+   spacewalk_target_services | xargs systemctl disable --quiet
+   systemctl disable --quiet spacewalk.target
    echo "Done"
    return 0
 }
 
 list() {
    echo "Listing spacewalk services..."
-   chkconfig --list
+   systemctl list-unit-files --type=service | grep -F "$(spacewalk_target_services)"
    echo "Done"
    return 0
 }
 
 start() {
-        echo "Starting spacewalk services..."
-	forward_services start
-	echo "Done."
-        return 0
+    echo "Starting spacewalk services..."
+    DISABLE_FILE=/run/spacewalk-wait-for-tomcat-disable
+    if [ "$WAIT_FOR_TOMCAT" == "1" ] ; then
+        rm -f $DISABLE_FILE
+    else
+        touch $DISABLE_FILE
+    fi
+    echo "  Checking DB schema and running DB schema upgrade if needed. This may take a while."
+    echo "  Call the following command to see progress: journalctl -f -u uyuni-check-database.service"
+    if grep -E -m1 "^db_host[[:space:]]*=[[:space:]]*localhost" /etc/rhn/rhn.conf >/dev/null && \
+       grep "md5" /var/lib/pgsql/data/pg_hba.conf >/dev/null; then
+         echo
+         echo "INFO: Migrating password encryption mechanism to scram-sha-256"
+    fi
+    MSG1=$(systemctl start spacewalk.target 2>&1) || {
+        MSG2=$(systemctl status uyuni-check-database.service)
+        if [ $? -ne 0 ]; then
+            echo -e "$MSG2"
+        else
+            echo -e "$MSG1"
+        fi
+        echo "FAILED"
+        return 1
+    }
+    rm -f $DISABLE_FILE
+    echo "Done."
+    return 0
 }
 
 stop() {
-        echo "Shutting down spacewalk services..."
-	reverse_services stop
-	echo "Done."
-        return 0
+    echo "Shutting down spacewalk services..."
+    spacewalk_target_services | xargs systemctl stop
+    echo "Done."
+    return 0
 }
 
 status() {
-    forward_services status
+    spacewalk_target_services | xargs systemctl status --no-pager -n0
+    systemctl status -n0 spacewalk.target
     return $?
 }
 
@@ -155,8 +114,6 @@ while true ; do
         -e|--exclude)
             EXCLUDE=$2
             shift
-            # the space in "$SERVICE " is intentional, don't remove it 
-            SERVICES=$(while read -d " " service ; do echo ${service/$EXCLUDE}; done <<<"$SERVICES ")
             ;;
         -l|--level)
             LEVEL="--level $2"
@@ -198,7 +155,6 @@ case "$1" in
         ;;
     restart|reload)
         stop
-        sleep 4
 
         /usr/sbin/spacewalk-startup-helper ensure-httpd-down
 

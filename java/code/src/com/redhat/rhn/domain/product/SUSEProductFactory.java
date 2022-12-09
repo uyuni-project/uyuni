@@ -278,6 +278,9 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Stream<Channel> findSyncedMandatoryChannels(String channelLabel) {
         Channel channel = ChannelFactory.lookupByLabel(channelLabel);
+        if (channel == null) {
+            throw new NoSuchElementException("Broken channel " + channelLabel);
+        }
         Channel baseChannel = Optional.ofNullable(channel.getParentChannel()).orElse(channel);
         if (channel.isCloned()) {
             if (ConfigDefaults.get().getClonedChannelAutoSelection()) {
