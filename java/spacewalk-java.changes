@@ -1,3 +1,4 @@
+- Fix errata email subject header when patch advisory or synopsis has newlines
 - Fix internal server error when transferring system between organizations
 - Fix products controller to keep loading mandatory channels even when there are
   broken channels (bsc#1204270)

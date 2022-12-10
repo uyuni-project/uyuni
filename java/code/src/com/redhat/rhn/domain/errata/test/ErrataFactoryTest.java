@@ -273,7 +273,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
         e.setProduct("Red Hat Linux");
         e.setDescription("Test desc ..");
-        e.setSynopsis("Test synopsis");
+        e.setSynopsis("Test\nsynopsis");
         e.setSolution("Test solution");
         e.setNotes("Test notes for test errata");
         e.setRights("Copyright for test errata");
