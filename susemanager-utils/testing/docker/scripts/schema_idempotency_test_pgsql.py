@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import argparse
 import difflib
 import distutils.version as DV
@@ -70,7 +70,7 @@ def find_next_version(schema_path):
     return last_version.rsplit('.', 1)[0] + '.' + str(int(last_version.rsplit('.', 1)[1])+1)
 
 def get_ordered_files(path, start, end, schema_path):
-    n = path[start].keys()[0]
+    n = list(path[start].keys())[0]
     res = []
     d = "%s/%s-to-%s" % (schema_path, start, n)
     for f in sorted(os.listdir(d)):
