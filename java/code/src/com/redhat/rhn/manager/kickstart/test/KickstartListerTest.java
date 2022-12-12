@@ -64,7 +64,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
    public void testKickstartsInOrg() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         DataResult dr = KickstartLister.getInstance().kickstartsInOrg(k.getOrg(), null);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
         KickstartDto row = (KickstartDto) dr.get(0);
         assertNotNull(row.getId());
         assertEquals(k.getOrg().getId().longValue(), row.getOrgId().longValue());
@@ -82,7 +82,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
        flushAndEvict(key);
 
        DataResult dr = KickstartLister.getInstance().cryptoKeysInOrg(o);
-       assertTrue(dr.size() > 0);
+       assertTrue(!dr.isEmpty());
        assertTrue(dr.get(0) instanceof CryptoKeyDto);
    }
 
@@ -95,7 +95,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
 
        DataResult dr = KickstartLister.getInstance().preservationListsInOrg(o, null);
        assertTrue(dr.get(0) instanceof FilePreservationDto);
-       assertTrue(dr.size() > 0);
+       assertTrue(!dr.isEmpty());
    }
 
     @Test

@@ -155,7 +155,7 @@ public class KickstartLister extends BaseManager {
         fakeScript.setEditable(false);
         fakeScript.setChroot("y");
 
-        if (scripts.size() != 0) {
+        if (!scripts.isEmpty()) {
             scripts.add(fakeScript);
             Collections.sort(scripts);
         }

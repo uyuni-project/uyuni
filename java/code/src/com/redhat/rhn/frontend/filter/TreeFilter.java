@@ -191,7 +191,7 @@ public class TreeFilter implements ResultsFilter {
      * @param result list of nodes to solve
      */
     protected void handleOrphans(DataResult result) {
-        if (result.size() > 0) {
+        if (!result.isEmpty()) {
             Class clazz = result.get(0).getClass();
             if (result.get(0) instanceof Comparable) {
                 Collections.sort(result);

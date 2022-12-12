@@ -58,7 +58,7 @@ public class KickstartCleanup extends RhnJavaJob {
                 log.debug("Found {} entries to process", dr.size());
             }
             // Bail early if no candidates
-            if (dr.size() == 0) {
+            if (dr.isEmpty()) {
                 return;
             }
 
@@ -83,7 +83,7 @@ public class KickstartCleanup extends RhnJavaJob {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_KSCLEANUP_FIND_FAILED_STATE_ID);
         DataResult dr = select.execute(Collections.EMPTY_MAP);
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             retval = (Long) ((Map) dr.get(0)).get("id");
         }
         return retval;
@@ -136,7 +136,7 @@ public class KickstartCleanup extends RhnJavaJob {
             log.debug("dr: {}", dr);
         }
 
-        while (dr.size() > 0 && preqid != null) {
+        while (!dr.isEmpty() && preqid != null) {
             preqid = (Long)
                 ((Map) dr.get(0)).get("prerequisite");
             if (preqid != null) {

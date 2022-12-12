@@ -174,7 +174,7 @@ public class ListViewHelper {
     }
 
     private void filterData() {
-        if (result.size() == 0 || getFilterParam() == null) {
+        if (result.isEmpty() || getFilterParam() == null) {
             return;
         }
         List filteredData = new LinkedList();

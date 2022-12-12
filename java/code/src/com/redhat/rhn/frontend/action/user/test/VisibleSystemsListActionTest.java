@@ -54,8 +54,8 @@ public class VisibleSystemsListActionTest extends RhnBaseTestCase {
         ah.getRequest().setupAddParameter("uid", user.getId().toString());
 
         RhnSetDecl.SYSTEMS.clear(user);
-        assertTrue(0 == RhnSetDecl.SYSTEMS.get(user).size());
+        assertTrue(RhnSetDecl.SYSTEMS.get(user).isEmpty());
         ah.executeAction("selectall");
-        assertTrue(0 < RhnSetDecl.SYSTEMS.get(user).size());
+        assertTrue(!RhnSetDecl.SYSTEMS.get(user).isEmpty());
     }
 }

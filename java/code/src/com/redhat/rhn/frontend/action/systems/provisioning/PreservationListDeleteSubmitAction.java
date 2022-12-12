@@ -54,7 +54,7 @@ public class PreservationListDeleteSubmitAction extends RhnSetAction {
 
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
-        if (set.size() == 0) {
+        if (set.isEmpty()) {
             strutsDelegate.saveMessage("filelists.jsp.selectafilelist", request);
             forwardName = RhnHelper.DEFAULT_FORWARD;
         }

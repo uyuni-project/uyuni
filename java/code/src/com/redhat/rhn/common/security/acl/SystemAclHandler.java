@@ -88,7 +88,7 @@ public class SystemAclHandler extends BaseHandler {
         queryParams.put("label", label);
         queryParams.put("sid", sid);
         DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
+        return (!dr.isEmpty());
     }
 
     /**
@@ -117,7 +117,7 @@ public class SystemAclHandler extends BaseHandler {
         Map queryParams = new HashMap();
         queryParams.put("sid", sid);
         DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
+        return (!dr.isEmpty());
     }
 
     /**
@@ -134,7 +134,7 @@ public class SystemAclHandler extends BaseHandler {
         Map queryParams = new HashMap();
         queryParams.put("sid", sid);
         DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
+        return (!dr.isEmpty());
     }
 
     /**

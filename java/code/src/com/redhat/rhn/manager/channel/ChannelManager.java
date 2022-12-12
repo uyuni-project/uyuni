@@ -1968,7 +1968,7 @@ public class ChannelManager extends BaseManager {
         DataResult<EssentialChannelDto> dr =
                 makeDataResult(params, new HashMap<String, Object>(), null, m,
                         EssentialChannelDto.class);
-        if (dr.size() == 0) {
+        if (dr.isEmpty()) {
             return null;
         }
         dr.sort(new EusReleaseComparator(rhelVersion));
@@ -2493,7 +2493,7 @@ public class ChannelManager extends BaseManager {
                 TaskConstants.TASK_QUERY_REPOMD_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channel);
-        return (selector.execute(params).size() > 0);
+        return (!selector.execute(params).isEmpty());
     }
 
     /**

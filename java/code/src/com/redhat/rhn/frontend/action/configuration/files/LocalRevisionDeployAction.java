@@ -130,7 +130,7 @@ public class LocalRevisionDeployAction extends RhnAction {
         if (cc.isLocalChannel()) {
             DataResult dr = ConfigurationManager.getInstance().getSuccesfulDeploysTo(usr,
                     cf.getConfigFileName(), srv);
-            if (dr != null && dr.size() > 0) {
+            if (dr != null && !dr.isEmpty()) {
                 request.setAttribute(LAST_DEPLOY, dr.get(0));
             }
         }
