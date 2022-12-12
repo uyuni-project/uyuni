@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration status="warn" name="UyuniConfig">
     <Appenders> 
-        <RollingFile name="rootAppender" fileName="/var/log/rhn/search/rhn_search_daemon.log" filePattern="rhn_search_daemon-%i.log">
+        <RollingFile name="rootAppender" fileName="/var/log/rhn/search/rhn_search_daemon.log"
+                filePattern="/var/log/rhn/search/rhn_search_daemon-%i.log">
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
-        <RollingFile name="SearchAppender" fileName="/var/log/rhn/search/rhn_search.log" filePattern="rhn_search-%i.log">
+        <RollingFile name="SearchAppender" fileName="/var/log/rhn/search/rhn_search.log"
+                filePattern="/var/log/rhn/search/rhn_search-%i.log">
             <PatternLayout pattern="[%d] %-5p - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
