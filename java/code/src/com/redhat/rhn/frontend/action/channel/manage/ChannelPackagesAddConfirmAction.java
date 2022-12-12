@@ -91,7 +91,7 @@ public class ChannelPackagesAddConfirmAction extends RhnAction {
         String button = LocalizationService.getInstance().getMessage(
         "channel.jsp.package.addconfirmbutton");
 
-        if (button.equals(request.getParameter("confirm")) && set.size() > 0) {
+        if (button.equals(request.getParameter("confirm")) && !set.isEmpty()) {
             int setSize = set.size();
             addPackages(user, chan, set);
             ActionMessages msg = new ActionMessages();

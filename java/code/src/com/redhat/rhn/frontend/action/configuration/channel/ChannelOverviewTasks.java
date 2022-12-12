@@ -163,7 +163,7 @@ public class ChannelOverviewTasks extends RhnAction {
         DataResult systems = mgr.listChannelSystems(usr, cc, null);
         DataResult revs = mgr.listCurrentFiles(usr, cc, null);
 
-        if (systems.size() == 0 || revs.size() == 0) {
+        if (systems.isEmpty() || revs.isEmpty()) {
             createErrorMessage(req, "comparetask.error.emptysets", null);
             return;
         }

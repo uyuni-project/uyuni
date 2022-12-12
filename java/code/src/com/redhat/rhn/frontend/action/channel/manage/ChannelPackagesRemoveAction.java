@@ -89,7 +89,7 @@ public class ChannelPackagesRemoveAction extends RhnAction {
         String button = LocalizationService.getInstance().getMessage(
         "channel.jsp.package.confirmbutton");
 
-        if (button.equals(request.getParameter("confirm")) && set.size() > 0) {
+        if (button.equals(request.getParameter("confirm")) && !set.isEmpty()) {
             removePackages(user, chan, set);
             ActionMessages msg = new ActionMessages();
             String[] actionParams = {set.size() + "", chan.getName()};

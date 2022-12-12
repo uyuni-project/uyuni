@@ -199,7 +199,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         DataResult<ProfileDto> dr = ProfileManager.compatibleWithChannel(p.getBaseChannel(),
                 user.getOrg(), null);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
         assertTrue(dr.iterator().next() instanceof ProfileDto);
 
     }

@@ -175,7 +175,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             KickstartScheduleCommand cmd = getKickstartScheduleCommand(sid,
                     user);
             DataResult<KickstartDto> profiles = cmd.getKickstartProfiles();
-            if (profiles.size() == 0) {
+            if (profiles.isEmpty()) {
                 addMessage(ctx.getRequest(), "kickstart.schedule.noprofiles");
                 ctx.getRequest().setAttribute(HAS_PROFILES,
                         Boolean.FALSE.toString());

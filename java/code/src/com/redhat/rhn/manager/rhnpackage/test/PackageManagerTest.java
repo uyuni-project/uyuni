@@ -362,7 +362,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelTestUtils.createTestChannel(user);
         DataResult dr = PackageManager.possiblePackagesForPushingIntoChannel(c.getId(),
                 e.getId(), null);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
    }
 
 

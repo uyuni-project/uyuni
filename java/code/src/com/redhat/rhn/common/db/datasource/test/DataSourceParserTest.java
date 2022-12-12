@@ -280,7 +280,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         hm.put("username", db_user);
         DataResult dr = m.execute(hm);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
     }
 
     @Test
@@ -322,7 +322,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         assertEquals("com.redhat.rhn.common.db.datasource.test.TableData", clazz);
         DataResult dr = m.execute(new HashMap());
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
         Iterator i = dr.iterator();
         TableData first = (TableData)i.next();
         assertTrue(first.getTableName().toLowerCase().startsWith("rhn"));
@@ -335,7 +335,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         assertEquals("com.redhat.rhn.common.db.datasource.test.TableData", clazz);
         DataResult dr = m.execute(new HashMap());
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
         dr = dr.subList(0, 1);
         dr.elaborate(new HashMap());
 
@@ -355,7 +355,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         hm.put("username", db_user);
         DataResult dr = m.execute(hm);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
 
         dr.elaborate(hm);
 

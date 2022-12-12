@@ -1177,7 +1177,7 @@ public class ConfigurationManager extends BaseManager {
         summary.setNumSls(getSlsCount(user, channel));
 
         DataResult dr = getFileInfo(user, channel);
-        if (dr != null && dr.size() > 0) {
+        if (dr != null && !dr.isEmpty()) {
             ConfigFileDto mostRecent = (ConfigFileDto)dr.get(0);
             Long revid = mostRecent.getId();
             ConfigRevision rev =
@@ -1189,7 +1189,7 @@ public class ConfigurationManager extends BaseManager {
         }
 
         dr = getSystemInfo(user, channel);
-        if (dr != null && dr.size() > 0) {
+        if (dr != null && !dr.isEmpty()) {
             ConfigSystemDto mostRecent = (ConfigSystemDto)dr.get(0);
             Long sysid = mostRecent.getId();
             Server sys = ServerFactory.lookupById(sysid);
@@ -2417,7 +2417,7 @@ public class ConfigurationManager extends BaseManager {
         if (cc.isLocalChannel() || cc.isSandboxChannel()) {
             Long sid = null;
             DataResult dr =  listChannelSystems(user, cc, null);
-            if (dr == null || dr.size() == 0) {
+            if (dr == null || dr.isEmpty()) {
                 return null;
             }
             ConfigSystemDto csd = (ConfigSystemDto)dr.get(0);

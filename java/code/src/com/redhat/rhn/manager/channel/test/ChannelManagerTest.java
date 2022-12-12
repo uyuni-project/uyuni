@@ -649,7 +649,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         DataResult<ChildChannelDto> childChannels =
                 ChannelManager.childrenAvailableToSet(user);
         assertNotNull(childChannels);
-        assertTrue(childChannels.size() == 0);
+        assertTrue(childChannels.isEmpty());
     }
 
     @Test
