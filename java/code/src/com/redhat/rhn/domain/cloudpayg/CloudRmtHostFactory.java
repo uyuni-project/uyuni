@@ -101,6 +101,6 @@ public class CloudRmtHostFactory extends HibernateFactory {
     public static List<CloudRmtHost> lookupCloudRmtHostsToUpdate() {
         log.debug("Retrieving repositories from cache");
         return SINGLETON.listObjectsByNamedQuery("CloudRmtHost.listHostToUpdate",
-                Collections.EMPTY_MAP);
+                Collections.emptyMap());
     }
 }

@@ -109,7 +109,7 @@ public abstract class BaseSetListAction extends BaseListAction {
      */
     protected Iterator getSelectedItemsIterator(RequestContext ctx,
                                                     ActionForm form) {
-        return Collections.EMPTY_LIST.iterator();
+        return Collections.emptyList().iterator();
     }
 
     /**

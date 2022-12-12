@@ -86,7 +86,7 @@ public class PackageCleanup extends RhnJavaJob {
     private void resetQueue() {
         WriteMode update = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_PKGCLEANUP_RESET_QUEUE);
-        update.executeUpdate(Collections.EMPTY_MAP);
+        update.executeUpdate(Collections.emptyMap());
     }
 
     private void deletePackage(String pkgDir, String path) {
@@ -119,7 +119,7 @@ public class PackageCleanup extends RhnJavaJob {
     private List findCandidates() {
         SelectMode query = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_PKGCLEANUP_FIND_CANDIDATES);
-        DataResult dr = query.execute(Collections.EMPTY_MAP);
+        DataResult dr = query.execute(Collections.emptyMap());
         return dr;
     }
 

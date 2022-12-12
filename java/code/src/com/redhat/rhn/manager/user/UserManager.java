@@ -887,7 +887,7 @@ public class UserManager extends BaseManager {
         params.put("user_id", user.getId());
 
         DataResult<SystemSearchResult> dr = m.execute(params, ids);
-        dr.setElaborationParams(Collections.EMPTY_MAP);
+        dr.setElaborationParams(Collections.emptyMap());
         return dr;
     }
 

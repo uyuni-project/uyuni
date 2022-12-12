@@ -54,7 +54,7 @@ public class PackageNameOverviewAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
 
-        List dr = Collections.EMPTY_LIST;
+        List dr = Collections.emptyList();
         if (StringUtils.equals(subscribedChannels, "yes")) {
             dr = PackageManager.lookupPackageNameOverview(
                     user.getOrg(), pkgName);
@@ -70,7 +70,7 @@ public class PackageNameOverviewAction extends RhnAction {
             }
             catch (NumberFormatException e) {
                 log.warn("Exception caught, unable to parse channel ID: {}", channelFilter);
-                dr = Collections.EMPTY_LIST;
+                dr = Collections.emptyList();
             }
         }
         else if (channelArches != null && channelArches.length > 0) {

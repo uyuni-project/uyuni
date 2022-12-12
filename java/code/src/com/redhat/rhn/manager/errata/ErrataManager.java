@@ -661,7 +661,7 @@ public class ErrataManager extends BaseManager {
      */
     public static List<Errata> lookupErrataByIds(List<Long> eids, User user) {
         if (eids.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         List<Errata> erratas = ErrataFactory.listErrata(eids, user.getOrg().getId());
@@ -771,7 +771,7 @@ public class ErrataManager extends BaseManager {
         params.put("eid", erratum.getId());
         params.put("user_id", user.getId());
         params.put("sgid", serverGroup.getId());
-        return makeDataResult(params, Collections.EMPTY_MAP, pc,
+        return makeDataResult(params, Collections.emptyMap(), pc,
             ModeFactory.getMode("Errata_queries", "in_group_and_affected_by_errata"));
     }
 
@@ -788,7 +788,7 @@ public class ErrataManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("eid", eid);
         params.put("user_id", user.getId());
-        return makeDataResult(params, Collections.EMPTY_MAP, pc,
+        return makeDataResult(params, Collections.emptyMap(), pc,
                 ModeFactory.getMode("Errata_queries", "in_set_and_affected_by_errata"));
     }
 

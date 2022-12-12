@@ -53,7 +53,7 @@ public class SaltEventFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<Long> countSaltEvents(int queuesCount) {
         List<Object[]> countObjects = singleton.listObjectsByNamedQuery("SaltEvent.countSaltEvents",
-                    Collections.EMPTY_MAP);
+                    Collections.emptyMap());
 
         return IntStream.range(0, queuesCount).mapToLong(i -> countObjects.stream()
                 .filter(c -> c[0].equals(i))

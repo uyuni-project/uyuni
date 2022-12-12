@@ -155,7 +155,7 @@ public class DataResult<T> extends ArrayList<T> {
     public void elaborate() {
         if (mode != null) {
             if (getElaborationParams() == null) {
-                mode.elaborate(this, Collections.EMPTY_MAP);
+                mode.elaborate(this, Collections.emptyMap());
             }
             else {
                 mode.elaborate(this, getElaborationParams());

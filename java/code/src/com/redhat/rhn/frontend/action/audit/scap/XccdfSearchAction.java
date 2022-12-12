@@ -69,14 +69,14 @@ public class XccdfSearchAction extends BaseSearchAction {
                 getPickerDate(request, "end"), getRuleResultLabel(form),
                 isTestestResultRequested(form), context);
             request.setAttribute(RequestContext.PAGE_LIST,
-                    results != null ? results : Collections.EMPTY_LIST);
+                    results != null ? results : Collections.emptyList());
             if (isTestestResultRequested(form) && results != null) {
                 TagHelper.bindElaboratorTo("searchResultsTr", results.getElaborator(),
                         request);
             }
         }
         else {
-            request.setAttribute(RequestContext.PAGE_LIST, Collections.EMPTY_LIST);
+            request.setAttribute(RequestContext.PAGE_LIST, Collections.emptyList());
             picker.processDatePickers(false, false);
         }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

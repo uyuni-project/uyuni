@@ -383,7 +383,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     public DataResult<KickstartDto> getKickstartProfiles() {
         log.debug("getKickstartProfiles()");
         DataResult<KickstartDto> retval = new DataResult<KickstartDto>(
-                Collections.EMPTY_LIST);
+                Collections.emptyList());
 
         // Profiles are associated with the host; the target system might not be created
         // yet.  Also, the host will be the one performing the kickstart, so the profile
@@ -473,7 +473,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             return ProfileManager.compatibleWithChannel(this.ksdata.getKickstartDefaults().getKstree().getChannel(),
                     user.getOrg(), null);
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
 
     }
 
@@ -776,7 +776,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         // We will schedule the kickstart action against the host server, since the host
         // server is the liason for the target server.
-        Set fileList = Collections.EMPTY_SET;
+        Set fileList = Collections.emptySet();
 
         if (!isCobblerOnly()) {
             fileList = ksdata.getPreserveFileLists();
@@ -1246,7 +1246,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             return SystemManager.systemsSubscribedToChannel(
                     this.getKsdata().getKickstartDefaults().getKstree().getChannel(), user);
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
 

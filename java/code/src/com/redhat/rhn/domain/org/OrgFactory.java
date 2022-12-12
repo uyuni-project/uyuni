@@ -283,7 +283,7 @@ public class OrgFactory extends HibernateFactory {
                 "activation_keys_for_org");
         Map<String, Long> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
-        DataList keys = DataList.getDataList(m, params, Collections.EMPTY_MAP);
+        DataList keys = DataList.getDataList(m, params, Collections.emptyMap());
         return (long) keys.size();
     }
 
@@ -297,7 +297,7 @@ public class OrgFactory extends HibernateFactory {
                 "kickstarts_for_org");
         Map<String, Long> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
-        DataList kickstarts = DataList.getDataList(m, params, Collections.EMPTY_MAP);
+        DataList kickstarts = DataList.getDataList(m, params, Collections.emptyMap());
         return (long) kickstarts.size();
     }
     /**

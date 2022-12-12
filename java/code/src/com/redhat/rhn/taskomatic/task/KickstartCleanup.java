@@ -53,7 +53,7 @@ public class KickstartCleanup extends RhnJavaJob {
         try {
             SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                     TaskConstants.TASK_QUERY_KSCLEANUP_FIND_CANDIDATES);
-            DataResult dr = select.execute(Collections.EMPTY_MAP);
+            DataResult dr = select.execute(Collections.emptyMap());
             if (log.isDebugEnabled()) {
                 log.debug("Found {} entries to process", dr.size());
             }
@@ -82,7 +82,7 @@ public class KickstartCleanup extends RhnJavaJob {
         Long retval = null;
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_KSCLEANUP_FIND_FAILED_STATE_ID);
-        DataResult dr = select.execute(Collections.EMPTY_MAP);
+        DataResult dr = select.execute(Collections.emptyMap());
         if (!dr.isEmpty()) {
             retval = (Long) ((Map) dr.get(0)).get("id");
         }

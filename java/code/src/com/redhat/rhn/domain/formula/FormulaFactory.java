@@ -216,7 +216,7 @@ public class FormulaFactory {
                 .orElseGet(() -> {
                     LOG.error("Unable to read formulas from folder '{}'. Check if it exists and have the " +
                             "correct permissions (755).", formulasFolder.getAbsolutePath());
-                    return Collections.EMPTY_LIST;
+                    return Collections.emptyList();
                 });
     }
 

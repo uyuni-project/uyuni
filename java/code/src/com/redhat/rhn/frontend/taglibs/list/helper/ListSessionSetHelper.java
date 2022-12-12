@@ -101,7 +101,7 @@ public class ListSessionSetHelper extends ListSetHelper {
      * @param req the servlet request
      */
     public ListSessionSetHelper(Listable inp, HttpServletRequest req) {
-        this(inp, req, Collections.EMPTY_MAP);
+        this(inp, req, Collections.emptyMap());
     }
 
     /** {@inheritDoc} */

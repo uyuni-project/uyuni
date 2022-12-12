@@ -90,7 +90,7 @@ public class ListHelper {
      * @param request http servlet request
      */
     public ListHelper(Listable inp, HttpServletRequest request) {
-        this(inp, request, Collections.EMPTY_MAP);
+        this(inp, request, Collections.emptyMap());
     }
     /**
      * Setup  the appropriate data bindings.
