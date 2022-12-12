@@ -277,7 +277,7 @@ public class PackagesSearchHandler extends BaseHandler {
         }
         Set<TokenPackage> keyPkgs = key.getPackages();
         if (keyPkgs == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         // build up a set of all package names and archs in act key
         Set<String> ids = new HashSet<>();

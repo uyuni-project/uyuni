@@ -53,7 +53,7 @@ public class SatManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         DataResult dr = m.execute(params);
         if (dr == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return dr;
     }
@@ -69,7 +69,7 @@ public class SatManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         DataResult dr = m.execute(params);
         if (dr == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return dr;
     }

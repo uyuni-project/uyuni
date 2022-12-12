@@ -64,7 +64,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
         assertKey(map, "size", pkg.getPackageSize().toString());
         assertKey(map, "payload_size", pkg.getPayloadSize().toString());
 
-        assertKey(map, "providing_channels", Collections.EMPTY_LIST);
+        assertKey(map, "providing_channels", Collections.emptyList());
     }
 
     @Test

@@ -352,7 +352,7 @@ public class ListTag extends BodyTagSupport {
             }
         }
         else {
-            pageData = Collections.EMPTY_LIST;
+            pageData = Collections.emptyList();
         }
     }
 
@@ -843,7 +843,7 @@ public class ListTag extends BodyTagSupport {
             }
         }
         else {
-            pageData = Collections.EMPTY_LIST;
+            pageData = Collections.emptyList();
         }
     }
     /**
@@ -899,7 +899,7 @@ public class ListTag extends BodyTagSupport {
 
                 ListTagUtil.write(pageContext,
                         ListTagUtil.makeParamsLink(pageContext.getRequest(), name,
-                                Collections.EMPTY_MAP, excludeParams));
+                                Collections.emptyMap(), excludeParams));
 
                 ListTagUtil.write(pageContext, "\">" +
                                             ls.getMessage("listtag.clearfilter"));

@@ -163,6 +163,6 @@ public class MinionActionManager {
                 }
             }
         }
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 }

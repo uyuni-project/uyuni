@@ -87,7 +87,7 @@ public abstract class ListSetHelper extends ListHelper {
     private boolean willClearSet = true;
     private boolean preSelectAll = false;
     private boolean parentIsElement = true;
-    private Set initSet = Collections.EMPTY_SET;
+    private Set initSet = Collections.emptySet();
     private List dataList;
 
     /**
@@ -106,7 +106,7 @@ public abstract class ListSetHelper extends ListHelper {
      * @param request the servlet request
      */
     ListSetHelper(Listable inp, HttpServletRequest request) {
-        this(inp, request, Collections.EMPTY_MAP);
+        this(inp, request, Collections.emptyMap());
     }
 
 

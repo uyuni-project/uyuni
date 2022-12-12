@@ -60,7 +60,7 @@ public class PaneFactory {
             log.error("Hibernate exception while retirevieng panes: ", he);
 
         }
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
 }

@@ -261,7 +261,7 @@ public class CVEAuditManager {
     @SuppressWarnings("unchecked")
     public static List<SystemOverview> listAllServers() {
         SelectMode m = ModeFactory.getMode("cve_audit_queries", "find_all_servers");
-        return m.execute(Collections.EMPTY_MAP);
+        return m.execute(Collections.emptyMap());
     }
 
     /**

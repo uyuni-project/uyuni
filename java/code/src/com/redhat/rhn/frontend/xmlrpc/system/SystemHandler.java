@@ -8531,7 +8531,7 @@ public class SystemHandler extends BaseHandler {
     public Set<PackageState> listPackageState(User loggedInUser, Integer sid) {
         MinionServer minion = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + sid));
-        return StateFactory.latestPackageStates(minion).orElse(Collections.EMPTY_SET);
+        return StateFactory.latestPackageStates(minion).orElse(Collections.emptySet());
     }
 
     /**
