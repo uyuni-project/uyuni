@@ -340,7 +340,7 @@ public class LoginHelper {
 
         SelectMode m = ModeFactory.getMode("General_queries", "pg_version_num");
         DataResult<HashMap> dr = m.execute();
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             serverVersion = Long.valueOf((String) dr.get(0).get("server_version_num"));
         }
         if (serverVersion == null) {
@@ -348,7 +348,7 @@ public class LoginHelper {
         }
         m = ModeFactory.getMode("General_queries", "pg_version");
         dr = m.execute();
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             pgVersion = (String) dr.get(0).get("server_version");
         }
 
@@ -388,7 +388,7 @@ public class LoginHelper {
 
         m = ModeFactory.getMode("General_queries", "installed_schema_version");
         dr = m.execute();
-        if (dr.size() == 0) {
+        if (dr.isEmpty()) {
             validationErrors.add(ls.getMessage("error.unfinished_schema_upgrade"));
             log.error(ls.getMessage("error.unfinished_schema_upgrade"));
         }
@@ -410,7 +410,7 @@ public class LoginHelper {
         SelectMode m = ModeFactory.getMode("General_queries", "installed_schema_version");
         DataResult<HashMap> dr = m.execute();
         String installedSchemaVersion = null;
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             installedSchemaVersion = (String) dr.get(0).get("version");
         }
 

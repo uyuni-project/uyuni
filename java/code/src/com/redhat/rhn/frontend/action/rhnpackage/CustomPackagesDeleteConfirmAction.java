@@ -85,7 +85,7 @@ public class CustomPackagesDeleteConfirmAction extends RhnAction {
         "channel.jsp.manage.package.confirmbutton");
 
 
-        if (button.equals(request.getParameter("confirm")) && set.size() > 0) {
+        if (button.equals(request.getParameter("confirm")) && !set.isEmpty()) {
             int setSize = set.size();
 
             if (sourcePackagesChecked) {

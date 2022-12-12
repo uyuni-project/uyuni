@@ -53,7 +53,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
         DataResult dr = KickstartLister.getInstance()
             .getActivationKeysInOrg(ksdata.getOrg(), null);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
         boolean found = false;
         for (Object oIn : dr) {
             ActivationKeyDto row = (ActivationKeyDto) oIn;

@@ -85,7 +85,7 @@ public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
 
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
         assertNotNull(set);
         assertTrue(!set.isEmpty());
         assertEquals(rhnsetLabel, set.getLabel());

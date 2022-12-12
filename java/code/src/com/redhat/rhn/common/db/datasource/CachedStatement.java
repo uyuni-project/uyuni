@@ -672,7 +672,7 @@ public class CachedStatement implements Serializable {
             // bowels of CachedStatement inside datasource.
             // Remove this pointless coupling once we move the paging
             // logic elsewhere.
-            if (dr.size() > 0) {
+            if (!dr.isEmpty()) {
                 dr.setStart(1);
                 dr.setEnd(dr.size());
                 dr.setTotalSize(dr.size());

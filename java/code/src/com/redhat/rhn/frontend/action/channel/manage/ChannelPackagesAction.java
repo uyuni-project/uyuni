@@ -107,7 +107,7 @@ public class ChannelPackagesAction extends RhnAction {
 
 
         if (button.equals(request.getParameter(RhnHelper.CONFIRM_FORWARD)) &&
-            set.size() > 0) {
+                !set.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             params.put("cid", cid);
             return getStrutsDelegate().forwardParams(

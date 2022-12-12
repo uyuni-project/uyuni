@@ -82,7 +82,7 @@ public class ResetPasswordFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("token", token);
         DataResult<ResetPassword> dr = sm.execute(params);
-        if (dr == null || dr.size() == 0) {
+        if (dr == null || dr.isEmpty()) {
             return null;
         }
         else {

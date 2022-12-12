@@ -2987,7 +2987,7 @@ public class SystemManager extends BaseManager {
         SelectMode m =
                 ModeFactory.getMode("System_queries", mode);
         DataResult toReturn = m.execute(params);
-        return toReturn.size() > 0;
+        return !toReturn.isEmpty();
     }
 
     /**
