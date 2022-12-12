@@ -104,7 +104,7 @@ public class ListRhnSetHelper extends ListSetHelper {
      */
     public ListRhnSetHelper(Listable inp, HttpServletRequest request,
                             RhnSetDecl declIn) {
-        this(inp, request, declIn, Collections.EMPTY_MAP);
+        this(inp, request, declIn, Collections.emptyMap());
     }
 
     /**

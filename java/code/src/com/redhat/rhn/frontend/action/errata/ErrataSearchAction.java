@@ -123,7 +123,7 @@ public class ErrataSearchAction extends BaseSearchAction {
                     search, viewmode, form);
 
             request.setAttribute(RequestContext.PAGE_LIST,
-                    results != null ? results : Collections.EMPTY_LIST);
+                    results != null ? results : Collections.emptyList());
         }
         else {
             // Reset info on date pickers
@@ -133,7 +133,7 @@ public class ErrataSearchAction extends BaseSearchAction {
                 LOG.debug("Issue Start Date = {}", dates.getStart().getDate());
                 LOG.debug("End Start Date = {}", dates.getEnd().getDate());
             }
-            request.setAttribute(RequestContext.PAGE_LIST, Collections.EMPTY_LIST);
+            request.setAttribute(RequestContext.PAGE_LIST, Collections.emptyList());
 
         }
         ActionMessages dateErrors = dates.getErrors();

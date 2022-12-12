@@ -1030,7 +1030,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Server> listConfigEnabledSystems() {
         return SINGLETON.listObjectsByNamedQuery(
-                "Server.listConfigEnabledSystems", Collections.EMPTY_MAP);
+                "Server.listConfigEnabledSystems", Collections.emptyMap());
     }
 
     /**
@@ -1064,7 +1064,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Server> listConfigDiffEnabledSystems() {
         return SINGLETON.listObjectsByNamedQuery(
-                "Server.listConfigDiffEnabledSystems", Collections.EMPTY_MAP);
+                "Server.listConfigDiffEnabledSystems", Collections.emptyMap());
     }
 
     /**

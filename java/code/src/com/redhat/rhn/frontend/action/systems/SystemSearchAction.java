@@ -309,7 +309,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
             LOG.debug("SystemSearchSetupAction.getResult() calling performSearch()");
             return performSearch(context);
         }
-        LOG.debug("SystemSearchSetupAction.getResult() returning Collections.EMPTY_LIST");
+        LOG.debug("SystemSearchSetupAction.getResult() returning Collections.emptyList()");
         return Collections.emptyList();
     }
 

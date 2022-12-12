@@ -126,7 +126,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ContentSourceType> listContentSourceTypes() {
         return singleton.listObjectsByNamedQuery("ContentSourceType.listAllTypes",
-                Collections.EMPTY_MAP);
+                Collections.emptyMap());
     }
 
     /**
@@ -147,7 +147,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ContentSource> lookupOrphanVendorContentSources() {
         return singleton.listObjectsByNamedQuery(
-                "ContentSource.findOrphanVendorContentSources", Collections.EMPTY_MAP);
+                "ContentSource.findOrphanVendorContentSources", Collections.emptyMap());
     }
 
     /**
@@ -156,7 +156,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<Channel> lookupOrphanVendorChannels() {
         return singleton.listObjectsByNamedQuery(
-                "Channel.findOrphanVendorChannels", Collections.EMPTY_MAP);
+                "Channel.findOrphanVendorChannels", Collections.emptyMap());
     }
 
     /**
@@ -164,7 +164,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static void cleanupOrphanVendorContentSource() {
         List<ContentSource> unused = singleton.listObjectsByNamedQuery(
-                "ContentSource.findUnusedVendorContentSources", Collections.EMPTY_MAP);
+                "ContentSource.findUnusedVendorContentSources", Collections.emptyMap());
         unused.forEach(ChannelFactory::remove);
     }
 
@@ -725,7 +725,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ChecksumType> listYumSupportedChecksums() {
         return singleton.listObjectsByNamedQuery(
-                "ChecksumType.loadAllForYum", Collections.EMPTY_MAP);
+                "ChecksumType.loadAllForYum", Collections.emptyMap());
     }
 
     /**

@@ -269,7 +269,7 @@ public class SystemSearchHelper {
             log.debug("results = [{}]", results);
         }
         if (results.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return results;
     }

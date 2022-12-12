@@ -233,7 +233,7 @@ public class KickstartLister extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult<ActivationKeyDto>  returnDataResult = makeDataResult(params,
-                                                    Collections.EMPTY_MAP, pc, m);
+                                                    Collections.emptyMap(), pc, m);
 
         logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}", returnDataResult);
         return returnDataResult;

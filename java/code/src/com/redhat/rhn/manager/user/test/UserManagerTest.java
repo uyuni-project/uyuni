@@ -734,7 +734,7 @@ public class UserManagerTest extends RhnBaseTestCase {
        DataResult<SystemSearchResult> dr =
            UserManager.visibleSystemsAsDtoFromList(user, ids);
        assertTrue(dr.size() >= 1);
-       dr.elaborate(Collections.EMPTY_MAP);
+       dr.elaborate(Collections.emptyMap());
        SystemSearchResult sr = dr.get(0);
        assertNotNull(sr.getDescription());
    }

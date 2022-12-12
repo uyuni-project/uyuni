@@ -131,7 +131,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
             String newMac = details.getMacAddress();
             if (newMac == null || newMac.equals("")) {
                 newMac = (String) invokeXMLRPC("get_random_mac",
-                        Collections.EMPTY_LIST);
+                        Collections.emptyList());
             }
             Network net = new Network(getCobblerConnection(), "eth0");
             net.setMacAddress(newMac);

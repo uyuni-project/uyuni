@@ -56,6 +56,6 @@ public class KickstartPreservationListSetupAction extends BaseKickstartListSetup
         if (ksdata.getPreserveFileLists() != null) {
             return ksdata.getPreserveFileLists().iterator();
         }
-        return Collections.EMPTY_LIST.iterator();
+        return Collections.emptyList().iterator();
     }
 }

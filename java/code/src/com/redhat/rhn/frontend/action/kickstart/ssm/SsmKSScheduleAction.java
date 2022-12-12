@@ -229,7 +229,7 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
     @Override
     public List getResult(RequestContext ctx) {
         if (isIP(ctx.getRequest())) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         User user = ctx.getCurrentUser();
