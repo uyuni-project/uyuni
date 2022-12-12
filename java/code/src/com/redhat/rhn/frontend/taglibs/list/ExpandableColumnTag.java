@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.taglibs.list.row.ExpandableRowRenderer;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * List tag construct to render expandable columns
@@ -44,7 +45,7 @@ public class ExpandableColumnTag  extends BodyTagSupport {
     }
     protected Object getCurrent() {
         ListTag parent = (ListTag)
-        BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+        TagSupport.findAncestorWithClass(this, ListTag.class);
         return parent.getCurrentObject();
     }
 
@@ -96,7 +97,7 @@ public class ExpandableColumnTag  extends BodyTagSupport {
 
     protected String getListName() {
         ListTag parent = (ListTag)
-            BodyTagSupport.findAncestorWithClass(this, ListTag.class);
+            TagSupport.findAncestorWithClass(this, ListTag.class);
         return parent.getUniqueName();
     }
 }

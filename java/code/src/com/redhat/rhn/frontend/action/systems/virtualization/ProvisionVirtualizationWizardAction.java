@@ -39,6 +39,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 import org.cobbler.Profile;
 
@@ -263,7 +264,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
         String name = form.getString(GUEST_NAME);
 
         if (name.length() < ProvisionVirtualInstanceCommand.MIN_NAME_SIZE) {
-            errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                     "frontend.actions.systems.virt.invalidguestnamelength",
                     (ProvisionVirtualInstanceCommand.MIN_NAME_SIZE)));
         }
@@ -272,7 +273,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 ProvisionVirtualInstanceCommand.GUEST_NAME_REGEXP,
                 Pattern.CASE_INSENSITIVE);
         if (!pattern.matcher(name).matches()) {
-            errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                     "frontend.actions.systems.virt.invalidregexp"));
         }
 
@@ -284,7 +285,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 }
             }
             catch (NumberFormatException e) {
-                errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "frontend.actions.systems.virt.invalidmemvalue"));
             }
         }
@@ -297,7 +298,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 }
             }
             catch (NumberFormatException e) {
-                errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "frontend.actions.systems.virt.invalidcpuvalue",
                         (ProvisionVirtualInstanceCommand.MAX_CPU + 1)));
             }
@@ -311,7 +312,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 }
             }
             catch (NumberFormatException e) {
-                errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "frontend.actions.systems.virt.invalidstoragevalue"));
                 form.set(LOCAL_STORAGE_GB, "");
             }
@@ -327,7 +328,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 }
             }
             catch (NumberFormatException e) {
-                errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "frontend.actions.systems.virt.invalidmacaddressvalue"));
                 form.set(MAC_ADDRESS, "");
             }

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.sync.slave;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.iss.IssFactory;
@@ -72,7 +73,7 @@ public class SlaveHandler extends BaseHandler {
         slave.setEnabled(isEnabled ? "Y" : "N");
         slave.setAllowAllOrgs(allowAllOrgs ? "Y" : "N");
         IssFactory.save(slave);
-        slave = (IssSlave) IssFactory.reload(slave);
+        slave = HibernateFactory.reload(slave);
         return slave;
     }
 
@@ -105,7 +106,7 @@ public class SlaveHandler extends BaseHandler {
         slave.setEnabled(isEnabled ? "Y" : "N");
         slave.setAllowAllOrgs(allowAllOrgs ? "Y" : "N");
         IssFactory.save(slave);
-        slave = (IssSlave) IssFactory.reload(slave);
+        slave = HibernateFactory.reload(slave);
         return slave;
     }
 

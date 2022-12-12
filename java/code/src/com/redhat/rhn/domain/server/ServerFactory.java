@@ -1149,7 +1149,7 @@ public class ServerFactory extends HibernateFactory {
      * @param snap the snapshot to delete
      */
     public static void deleteSnapshot(ServerSnapshot snap) {
-        ServerFactory.getSession().delete(snap);
+        HibernateFactory.getSession().delete(snap);
     }
 
     /**
@@ -1157,7 +1157,7 @@ public class ServerFactory extends HibernateFactory {
      * @param path the server path to delete
      */
     public static void deleteServerPath(ServerPath path) {
-        ServerFactory.getSession().delete(path);
+        HibernateFactory.getSession().delete(path);
     }
 
     /**

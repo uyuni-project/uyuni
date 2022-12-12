@@ -26,6 +26,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
@@ -1572,7 +1573,7 @@ public class ActionManager extends BaseManager {
         ActionType lookedUpType = ActionFactory.lookupActionTypeByLabel(type.getLabel());
         Action action = createScheduledAction(user, lookedUpType, name, earliestAction);
         ActionFactory.save(action);
-        ActionFactory.getSession().flush();
+        HibernateFactory.getSession().flush();
         return action;
     }
 
