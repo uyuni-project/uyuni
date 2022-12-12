@@ -540,7 +540,7 @@ end
 
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
+  text = "You have just created your first #{product} user."
   step %(I wait until I see "#{text}" text)
   # raise "The welcome message (#{text}) is not shown" unless has_content?(text)
 end
