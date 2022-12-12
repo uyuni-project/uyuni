@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 
@@ -96,19 +96,19 @@ public class RadioColumnTag extends TagSupport {
     public int doStartTag() throws JspException {
 
         ListCommand command = ListTagUtil.getCurrentCommand(this, pageContext);
-        ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
+        ListTag parent = (ListTag) TagSupport.findAncestorWithClass(this,
                 ListTag.class);
         listName = parent.getUniqueName();
-        int retval = BodyTagSupport.SKIP_BODY;
+        int retval = Tag.SKIP_BODY;
 
         if (command.equals(ListCommand.ENUMERATE)) {
             parent.addColumn();
             renderHiddenField();
-            retval = BodyTagSupport.EVAL_PAGE;
+            retval = Tag.EVAL_PAGE;
         }
         else if (command.equals(ListCommand.COL_HEADER)) {
             renderHeader(parent);
-            retval = BodyTagSupport.EVAL_PAGE;
+            retval = Tag.EVAL_PAGE;
         }
         else if (command.equals(ListCommand.RENDER)) {
             render(valueExpr);
@@ -127,7 +127,7 @@ public class RadioColumnTag extends TagSupport {
             ListTagUtil.write(pageContext, "</td>");
         }
         release();
-        return BodyTagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     private void render(String value) throws JspException {

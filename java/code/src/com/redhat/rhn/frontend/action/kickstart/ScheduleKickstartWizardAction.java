@@ -543,7 +543,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
             if (distro.getKernelOptions().isEmpty()) {
                 ctx.getRequest().setAttribute("distro_kernel_params",
-                        Distro.INHERIT_KEY);
+                        CobblerObject.INHERIT_KEY);
             }
             else {
                 ctx.getRequest().setAttribute("distro_kernel_params",
@@ -553,7 +553,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
             if (distro.getKernelOptionsPost().isEmpty()) {
                 ctx.getRequest().setAttribute("distro_post_kernel_params",
-                        Distro.INHERIT_KEY);
+                        CobblerObject.INHERIT_KEY);
             }
             else {
                 ctx.getRequest().setAttribute("distro_post_kernel_params",
@@ -567,7 +567,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
             if (profile.getKernelOptions().isEmpty()) {
                 ctx.getRequest().setAttribute("profile_kernel_params",
-                        org.cobbler.Profile.INHERIT_KEY);
+                        CobblerObject.INHERIT_KEY);
             }
             else {
                 ctx.getRequest().setAttribute("profile_kernel_params",
@@ -577,7 +577,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
             if (profile.getKernelOptionsPost().isEmpty()) {
                 ctx.getRequest().setAttribute("profile_post_kernel_params",
-                        org.cobbler.Profile.INHERIT_KEY);
+                        CobblerObject.INHERIT_KEY);
             }
             else {
                 ctx.getRequest().setAttribute("profile_post_kernel_params",
@@ -594,7 +594,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     if (StringUtils.isBlank(form.getString(KERNEL_PARAMS_TYPE))) {
                         form.set(KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
                         if (rec.getKernelOptions().isEmpty()) {
-                            form.set(KERNEL_PARAMS, org.cobbler.Profile.INHERIT_KEY);
+                            form.set(KERNEL_PARAMS, CobblerObject.INHERIT_KEY);
                         }
                         else {
                             form.set(KERNEL_PARAMS,
@@ -605,7 +605,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     if (StringUtils.isBlank(form.getString(POST_KERNEL_PARAMS_TYPE))) {
                         form.set(POST_KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
                         if (rec.getKernelOptionsPost().isEmpty()) {
-                            form.set(POST_KERNEL_PARAMS, org.cobbler.Profile.INHERIT_KEY);
+                            form.set(POST_KERNEL_PARAMS, CobblerObject.INHERIT_KEY);
                         }
                         else {
                             form.set(POST_KERNEL_PARAMS,

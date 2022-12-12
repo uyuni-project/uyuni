@@ -15,6 +15,7 @@
 
 package com.suse.manager.admin;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -128,7 +129,7 @@ public class PaygAdminManager {
 
         PaygSshDataFactory.savePaygSshData(paygSshData);
         // we need to commit before call the taskomatic task, otherwise new data will not be available
-        PaygSshDataFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
         try {
             taskomaticApi.scheduleSinglePaygUpdate(paygSshData);
         }
@@ -300,7 +301,7 @@ public class PaygAdminManager {
         paygSshData.setErrorMessage("");
         PaygSshDataFactory.savePaygSshData(paygSshData);
         // we need to commit before call the taskomatic task, otherwise new data will not be available
-        PaygSshDataFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
 
         try {
             taskomaticApi.scheduleSinglePaygUpdate(paygSshData);
@@ -308,7 +309,7 @@ public class PaygAdminManager {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             LOG.warn("unable to start task to update authentication data", e);
         }
-        return PaygSshDataFactory.reload(paygSshData);
+        return HibernateFactory.reload(paygSshData);
     }
 
     /**

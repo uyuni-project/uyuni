@@ -81,7 +81,7 @@ import javax.servlet.http.HttpServletRequest;
  * }</pre>
  * @author paji
  */
-abstract class ListSetHelper extends ListHelper {
+public abstract class ListSetHelper extends ListHelper {
     private boolean dispatched = false;
     private boolean ignoreEmptySelection = false;
     private boolean willClearSet = true;

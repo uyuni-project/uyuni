@@ -115,7 +115,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
     @Override
     public String getCobblerSystemRecordName() {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
-        return CobblerVirtualSystemCommand.getCobblerSystemRecordName(hostName, getOrgId()) + sep +
+        return CobblerSystemCreateCommand.getCobblerSystemRecordName(hostName, getOrgId()) + sep +
                 guestName.replace(' ', '_').replaceAll("[^a-zA-Z0-9_\\-\\.]", "");
     }
 

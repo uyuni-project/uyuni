@@ -2374,7 +2374,7 @@ public class ChannelManager extends BaseManager {
         ChannelManager.refreshWithNewestPackages(chan, "Remove errata");
         ErrataCacheManager.deleteCacheEntriesForChannelPackages(chan.getId(), pids);
         ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), ids);
-        ChannelFactory.getSession().refresh(chan);
+        HibernateFactory.getSession().refresh(chan);
     }
 
     /**
