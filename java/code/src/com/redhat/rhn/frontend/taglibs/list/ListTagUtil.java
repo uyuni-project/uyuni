@@ -38,8 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Provides various utility functions for the ListTag, ColumnTag, and SpanTag
@@ -105,7 +105,7 @@ public class ListTagUtil {
     public static ListCommand getCurrentCommand(Tag caller, PageContext ctx) {
         ListTag parent = null;
         if (!(caller instanceof ListTag)) {
-            parent = (ListTag) BodyTagSupport.findAncestorWithClass(caller, ListTag.class);
+            parent = (ListTag) TagSupport.findAncestorWithClass(caller, ListTag.class);
         }
         else {
             parent = (ListTag) caller;

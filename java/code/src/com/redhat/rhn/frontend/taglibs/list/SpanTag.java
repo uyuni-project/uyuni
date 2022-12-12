@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.taglibs.list;
 
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
@@ -94,7 +95,7 @@ public class SpanTag extends TagSupport {
         else if (cmd.equals(ListCommand.BEFORE_RENDER) && role.equals("footer")) {
             renderFooter(parent);
         }
-        return TagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     private void renderHeader(ListTag parent) throws JspException {

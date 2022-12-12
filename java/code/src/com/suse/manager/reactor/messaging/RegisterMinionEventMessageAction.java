@@ -19,6 +19,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -691,7 +692,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 // change the type of the hibernate entity from Server to MinionServer
                 SystemManager.addMinionInfoToServer(s.getId(), minionId);
                 // need to clear the session to avoid NonUniqueObjectException
-                ServerFactory.getSession().clear();
+                HibernateFactory.getSession().clear();
             }
             Optional<MinionServer> optMinionServer = MinionServerFactory.lookupById(s.getId());
             if (optMinionServer.isPresent()) {

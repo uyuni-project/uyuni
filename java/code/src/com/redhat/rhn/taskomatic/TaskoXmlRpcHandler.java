@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic;
 
 import static org.quartz.TriggerKey.triggerKey;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.CreateBootstrapRepoFailed;
@@ -131,12 +132,12 @@ public class TaskoXmlRpcHandler {
         TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, jobLabel, params,
                 startTime, endTime, cronExpression);
         TaskoFactory.save(schedule);
-        TaskoFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
         // create job
         Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
         if (scheduleDate == null) {
             TaskoFactory.delete(schedule);
-            TaskoFactory.commitTransaction();
+            HibernateFactory.commitTransaction();
         }
         return scheduleDate;
     }
@@ -331,12 +332,12 @@ public class TaskoXmlRpcHandler {
         TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, jobLabel, params,
                 start, null, null);
         TaskoFactory.save(schedule);
-        TaskoFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
         // create job
         Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
         if (scheduleDate == null) {
             TaskoFactory.delete(schedule);
-            TaskoFactory.commitTransaction();
+            HibernateFactory.commitTransaction();
         }
         return scheduleDate;
     }
@@ -372,7 +373,7 @@ public class TaskoXmlRpcHandler {
                     .withZoneSameInstant(ZoneId.systemDefault()).toInstant());
             TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, label, params, start, null, null);
             TaskoFactory.save(schedule);
-            TaskoFactory.commitTransaction();
+            HibernateFactory.commitTransaction();
 
             // create job
             Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
@@ -381,7 +382,7 @@ public class TaskoXmlRpcHandler {
             }
             scheduleDates.add(scheduleDate);
         }
-        TaskoFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
         return scheduleDates;
     }
 

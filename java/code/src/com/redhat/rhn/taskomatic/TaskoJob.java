@@ -58,7 +58,7 @@ public class TaskoJob implements Job {
             tasks.put(task.getName(), 0);
             lastStatus.put(task.getName(), TaskoRun.STATUS_FINISHED);
         }
-        TaskoFactory.closeSession();
+        HibernateFactory.closeSession();
     }
 
     /**
@@ -167,8 +167,8 @@ public class TaskoJob implements Job {
                                 }
 
                                 // rollback everything, what the application changed and didn't committed
-                                if (TaskoFactory.getSession().getTransaction().isActive()) {
-                                    TaskoFactory.rollbackTransaction();
+                                if (HibernateFactory.getSession().getTransaction().isActive()) {
+                                    HibernateFactory.rollbackTransaction();
                                     HibernateFactory.closeSession();
                                 }
 

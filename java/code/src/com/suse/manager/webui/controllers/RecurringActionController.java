@@ -194,7 +194,7 @@ public class RecurringActionController {
 
         try {
             RecurringAction action = createOrGetAction(user, json);
-            RecurringActionFactory.getSession().evict(action); // entity -> detached, prevent hibernate flushes
+            HibernateFactory.getSession().evict(action); // entity -> detached, prevent hibernate flushes
             mapJsonToAction(json, action);
             RecurringActionManager.saveAndSchedule(action, user);
         }

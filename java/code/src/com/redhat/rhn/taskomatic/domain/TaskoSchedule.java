@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.domain;
 
-import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -89,7 +89,7 @@ public class TaskoSchedule {
             if ((cronExpr == null) || (cronExpr.isEmpty())) {
                 // set activeTill for single runs
                 setActiveTill(new Date());
-                TaskoFactory.commitTransaction();
+                HibernateFactory.commitTransaction();
             }
         }
     }
