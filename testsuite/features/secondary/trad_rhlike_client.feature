@@ -85,11 +85,9 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
     Then I should see a "ensure_redhat_gpgkey_installed" link
 
   Scenario: Schedule some actions on the Red Hat-like traditional client
-    When I am logged in API as user "admin" and password "admin"
-    And I refresh the packages on traditional "rhlike_client" through API
+    When I refresh the packages on traditional "rhlike_client" through API
     And I run a script on traditional "rhlike_client" through API
     And I reboot traditional "rhlike_client" through API
-    And I logout from API
 
   Scenario: Cleanup: delete the Red Hat-like traditional client
     Given I am on the Systems overview page of this "rhlike_client"
