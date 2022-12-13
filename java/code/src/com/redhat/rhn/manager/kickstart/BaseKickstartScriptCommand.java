@@ -18,8 +18,6 @@ import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 
@@ -27,12 +25,6 @@ import java.nio.charset.StandardCharsets;
  * KickstartScriptCommand
  */
 public class BaseKickstartScriptCommand extends BaseKickstartCommand {
-
-    /**
-     * Logger for this class
-     */
-    private static Logger logger = LogManager.getLogger(BaseKickstartScriptCommand.class);
-
 
     protected KickstartScript script;
 
