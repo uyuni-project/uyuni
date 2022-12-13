@@ -17,8 +17,8 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "no-appstream-result-RHEL8-Pool for x86_64"
-    And I check "no-appstream-result-Custom Channel for Rocky 8 DVD"
+    And I check radio button "no-appstream-8-result-RHEL8-Pool for x86_64"
+    And I check "no-appstream-8-result-Custom Channel for Rocky 8 DVD"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
