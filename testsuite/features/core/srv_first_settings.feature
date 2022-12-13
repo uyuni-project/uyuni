@@ -55,7 +55,7 @@ Feature: Very first settings
   Scenario: Update user
     When I follow the left menu "Home > User Account > My Account"
     And I select "Mr." from "prefix"
-    And I click on "Create Organization"
+    And I click on "Update"
     And I save a screenshot as "updated.png"
     Then I should see a "User information updated" text
 
