@@ -21,6 +21,7 @@ Feature: Very first settings
     And I save a screenshot as "create.png"
     And I click on "Create Organization"
     And I save a screenshot as "welcome.png"
+    And I wait for "6" seconds
     Then I am logged in
 
   Scenario: Log in as admin user
@@ -51,13 +52,6 @@ Feature: Very first settings
     And I click on "Update"
     Then I should see a "User information updated" text
     And I should see a "testing" text
-
-  Scenario: Update user
-    When I follow the left menu "Home > User Account > My Account"
-    And I select "Mr." from "prefix"
-    And I click on "Update"
-    And I save a screenshot as "updated.png"
-    Then I should see a "User information updated" text
 
   Scenario: Wait for refresh of list of products to finish
     When I wait until mgr-sync refresh is finished
