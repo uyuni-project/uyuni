@@ -61,7 +61,7 @@ function statusDisplay(system: any, isAdmin: boolean) {
   const type = system["statusType"];
 
   const systems = {
-    untitled: {
+    unentitled: {
       iconTitle: "System not entitled",
       iconType: "system-unknown",
       url: isAdmin && "/rhn/systems/details/Edit.do?sid=" + sid,

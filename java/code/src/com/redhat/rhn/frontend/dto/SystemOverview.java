@@ -112,7 +112,8 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
      * @param tuple JPA tuple
      */
     public SystemOverview(Tuple tuple) {
-        id = ((Number)tuple.get("id")).longValue();
+        // Unregistered virtual systems have no id
+        id = getTupleValue(tuple, "id", Number.class).map(Number::longValue).orElse(null);
         selectable = getTupleValue(tuple, "selectable", Boolean.class).orElse(Boolean.FALSE);
 
         // To speed up selection, when querying the selection we only get 2 fields, ignore the others
@@ -151,7 +152,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         }
     }
 
-    private static <T> Optional<T> getTupleValue(Tuple tuple, String name, Class<T> clazz) {
+    protected static <T> Optional<T> getTupleValue(Tuple tuple, String name, Class<T> clazz) {
         try {
             return Optional.ofNullable(tuple.get(name, clazz));
         }
