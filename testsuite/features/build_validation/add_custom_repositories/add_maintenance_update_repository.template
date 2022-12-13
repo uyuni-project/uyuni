@@ -7,7 +7,7 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Add a child channel for <client>
+  Scenario: Add the custom child channel for <client>
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Custom Channel for <client>" as "Channel Name"
