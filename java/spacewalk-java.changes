@@ -1,4 +1,8 @@
-- Changed proxy settings retrieval to not include password (bsc#1205339)
+-------------------------------------------------------------------
+Tue Dec 13 13:30:21 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Changed proxy settings retrieval to not include password (bsc#1205339)
 
 -------------------------------------------------------------------
 Fri Nov 18 15:14:35 CET 2022 - jgonzalez@suse.com
