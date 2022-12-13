@@ -59,15 +59,17 @@ function setProxySettings(settings) {
 function retrieveProxySettings() {
   showSpinner('http-proxy-verify');
   
-  function onSuccess(settings) {
-    setProxySettings(settings);
+  ProxySettingsRenderer.retrieveProxySettings(
+    makeAjaxHandler(function(settings) {
+      setProxySettings(settings);
 
-    if (settings.hostname) {
-      verifyProxySettings(false);
-    } else {
-      setProxySettingsEditable(true);
-    }
-  }
+      if (settings.hostname) {
+        verifyProxySettings(false);
+      } else {
+        setProxySettingsEditable(true);
+      }
+    })
+  )
 
   ajax('retrieve-proxy-settings', '', onSuccess, 'application/json')
 }
