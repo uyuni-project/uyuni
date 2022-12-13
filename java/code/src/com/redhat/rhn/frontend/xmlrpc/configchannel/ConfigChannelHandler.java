@@ -59,7 +59,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -164,12 +163,7 @@ public class ConfigChannelHandler extends BaseHandler {
             cc  = HibernateFactory.reload(cc);
             String contents = "";
             if (pathInfo.containsKey(ConfigRevisionSerializer.CONTENTS)) {
-                try {
-                    contents = ccHelper.getContents(pathInfo);
-                }
-                catch (UnsupportedEncodingException e) {
-                    throw new ConfigFileErrorException(e.getMessage());
-                }
+                contents = ccHelper.getContents(pathInfo);
             }
             helper.createInitSlsFile(user, cc, contents);
             return cc;
@@ -484,23 +478,15 @@ public class ConfigChannelHandler extends BaseHandler {
         }
         ConfigFile configFile = ConfigurationManager.getInstance().lookupConfigFile(user, channel.getId(), path);
         ConfigInfo configInfo = configFile.getLatestConfigRevision().getConfigInfo();
-        ConfigRevision result;
-        try {
-            SLSFileData form = new SLSFileData(helper.getContents(pathInfo));
-            //Only contents can be updated, rest is inherited from existing revision info
-            form.setGroup(configInfo.getGroupname());
-            form.setOwner(configInfo.getUsername());
-            form.setPermissions(configInfo.getFilemode().toString());
-            if (pathInfo.containsKey(ConfigRevisionSerializer.REVISION)) {
-                form.setRevNumber(String.valueOf(pathInfo.get(ConfigRevisionSerializer.REVISION)));
-            }
-            result = ConfigFileBuilder.getInstance().update(form, user, configFile);
-
-         }
-         catch (UnsupportedEncodingException e) {
-             throw new ConfigFileErrorException(e.getMessage());
+        SLSFileData form = new SLSFileData(helper.getContents(pathInfo));
+        //Only contents can be updated, rest is inherited from existing revision info
+        form.setGroup(configInfo.getGroupname());
+        form.setOwner(configInfo.getUsername());
+        form.setPermissions(configInfo.getFilemode().toString());
+        if (pathInfo.containsKey(ConfigRevisionSerializer.REVISION)) {
+            form.setRevNumber(String.valueOf(pathInfo.get(ConfigRevisionSerializer.REVISION)));
         }
-        return result;
+        return ConfigFileBuilder.getInstance().update(form, user, configFile);
     }
 
     /**

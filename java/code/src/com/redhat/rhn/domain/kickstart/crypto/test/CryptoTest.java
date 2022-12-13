@@ -28,12 +28,13 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * CryptoTest - test
  */
 public class CryptoTest extends BaseTestCaseWithUser {
 
-    private static final String UTF8 = "UTF-8";
 
     @Test
     public void testCryptoKey() throws Exception {
@@ -42,7 +43,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         key = (CryptoKey) reload(key);
         assertNotNull(key.getId());
         String testString = "aaaaaabbbbb";
-        key.setKey(new String(testString).getBytes(UTF8));
+        key.setKey(new String(testString).getBytes(StandardCharsets.UTF_8));
         assertEquals(key.getKeyString(), testString);
     }
 
@@ -92,7 +93,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         CryptoKey gpgFooKey = new CryptoKey();
         gpgFooKey.setCryptoKeyType(KickstartFactory.KEY_TYPE_GPG);
         gpgFooKey.setDescription("gpg key test" + TestUtils.randomString());
-        gpgFooKey.setKey(gpgContent.getBytes(UTF8));
+        gpgFooKey.setKey(gpgContent.getBytes(StandardCharsets.UTF_8));
         gpgFooKey.setOrg(ksdata.getOrg());
         KickstartFactory.saveCryptoKey(gpgFooKey);
 
@@ -100,7 +101,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         CryptoKey sslFooKey = new CryptoKey();
         sslFooKey.setCryptoKeyType(KickstartFactory.KEY_TYPE_SSL);
         sslFooKey.setDescription("ssl key test" + TestUtils.randomString());
-        sslFooKey.setKey(sslContent.getBytes(UTF8));
+        sslFooKey.setKey(sslContent.getBytes(StandardCharsets.UTF_8));
         sslFooKey.setOrg(ksdata.getOrg());
         KickstartFactory.saveCryptoKey(sslFooKey);
 

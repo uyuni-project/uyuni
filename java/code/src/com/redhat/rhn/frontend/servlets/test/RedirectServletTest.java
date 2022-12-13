@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -107,7 +108,7 @@ public class RedirectServletTest extends MockObjectTestCase {
         redirect.doGet(getRequest(), getResponse());
     }
 
-    private String encode(String string) throws Exception {
-        return URLEncoder.encode(string, "UTF-8");
+    private String encode(String string) {
+        return URLEncoder.encode(string, StandardCharsets.UTF_8);
     }
 }

@@ -34,8 +34,8 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.upload.FormFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -284,15 +284,11 @@ public class StrutsDelegate {
         String retval = null;
         try {
             if (f != null && f.getFileData() != null) {
-                String fileString = new String(f.getFileData(), "UTF-8");
+                String fileString = new String(f.getFileData(), StandardCharsets.UTF_8);
                 if (!StringUtils.isEmpty(fileString)) {
                     retval = fileString;
                 }
             }
-        }
-        catch (FileNotFoundException e) {
-            LOG.error(e);
-            throw new RuntimeException(e);
         }
         catch (IOException e) {
             LOG.error(e);
