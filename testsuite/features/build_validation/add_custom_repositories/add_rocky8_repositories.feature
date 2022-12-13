@@ -95,6 +95,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I select "RHEL8-Pool for x86_64" from "selectedBaseChannel"
     And I check "Custom Channel for Rocky 8 DVD"
     And I check "RES-AS-8-Updates for x86_64"
+    And I check "Custom Channel for rocky8_minion"
     And I click on "Save"
     Then I should see a "Custom Channel for Rocky 8 DVD" text
     When I click on "Attach/Detach Filters"
