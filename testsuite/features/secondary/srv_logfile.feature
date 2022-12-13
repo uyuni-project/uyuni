@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 
-Feature: Sanity check that all logfiles exists
+Feature: Sanity check that all logfiles exist
   In order to be secure
   As an authorized user
   I want to watch different logfiles
