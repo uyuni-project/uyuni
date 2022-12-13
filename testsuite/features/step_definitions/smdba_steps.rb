@@ -65,7 +65,7 @@ Then(/^the configuration should not be set to "(.*?)"$/) do |value|
 end
 
 Then(/^I issue command "(.*?)"$/) do |command|
-  $output, _code = $server.run(command, check_errors: false)
+  $output, _code = $server.run(command, check_errors: true)
 end
 
 Then(/^tablespace "([^"]*)" should be listed$/) do |ts|
