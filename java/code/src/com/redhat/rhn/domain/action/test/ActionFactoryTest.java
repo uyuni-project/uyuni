@@ -67,6 +67,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -286,7 +287,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         ConfigRevisionActionResult cresult = new ConfigRevisionActionResult();
         cresult.setCreated(new Date());
         cresult.setModified(new Date());
-        byte [] text = "Differed In Foo ".getBytes("UTF-8");
+        byte [] text = "Differed In Foo ".getBytes(StandardCharsets.UTF_8);
         cresult.setResult(text);
         cresult.setConfigRevisionAction(crad);
         crad.setConfigRevisionActionResult(cresult);
@@ -471,7 +472,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
             sad.setUsername("AFTestTestUser");
             sad.setGroupname("AFTestTestGroup");
             String script = "#!/bin/csh\nls -al";
-            sad.setScript(script.getBytes("UTF-8"));
+            sad.setScript(script.getBytes(StandardCharsets.UTF_8));
             sad.setTimeout(9999L);
             sad.setParentAction(newA);
             ((ScriptRunAction) newA).setScriptActionDetails(sad);

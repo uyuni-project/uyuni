@@ -28,8 +28,8 @@ import org.jmock.Expectations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -77,8 +77,8 @@ public class ServletUtilsTest extends MockObjectTestCase {
         return parameterMap;
     }
 
-    private String encode(String string) throws UnsupportedEncodingException {
-        return URLEncoder.encode(string, "UTF-8");
+    private String encode(String string) {
+        return URLEncoder.encode(string, StandardCharsets.UTF_8);
     }
 
     @Test

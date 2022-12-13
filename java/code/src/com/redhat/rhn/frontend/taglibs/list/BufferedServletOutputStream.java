@@ -19,7 +19,7 @@ import com.redhat.rhn.frontend.servlets.LegacyServletOutputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Buffers servlet output rather than streaming it to the client
@@ -48,9 +48,8 @@ class BufferedServletOutputStream extends LegacyServletOutputStream {
     /**
      * Gets buffered content as UTF-8 encoded string
      * @return String
-     * @throws UnsupportedEncodingException
      */
-    public String getBufferedContent() throws UnsupportedEncodingException {
-        return new String(buffer.toByteArray(), "UTF-8");
+    public String getBufferedContent() {
+        return buffer.toString(StandardCharsets.UTF_8);
     }
 }

@@ -90,7 +90,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -305,15 +305,7 @@ public class ActionFactory extends HibernateFactory {
         sad.setUsername(username);
         sad.setGroupname(groupname);
         sad.setTimeout(timeout);
-
-        try {
-            sad.setScript(script.getBytes("UTF-8"));
-        }
-        catch (UnsupportedEncodingException uee) {
-            throw new
-            IllegalArgumentException(
-                    "This VM or environment doesn't support UTF-8");
-        }
+        sad.setScript(script.getBytes(StandardCharsets.UTF_8));
 
         return sad;
     }

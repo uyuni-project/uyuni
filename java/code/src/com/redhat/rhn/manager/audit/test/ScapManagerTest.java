@@ -42,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -214,7 +215,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 "</benchmark-resume>\n";
 
         XccdfTestResult result = ScapManager.xccdfEvalResume(minion, action, 2, "",
-                new ByteArrayInputStream(resume.getBytes("UTF-8")));
+                new ByteArrayInputStream(resume.getBytes(StandardCharsets.UTF_8)));
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
