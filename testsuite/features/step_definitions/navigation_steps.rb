@@ -159,16 +159,14 @@ end
 #
 # Check a checkbox of the given id
 #
-When(/^I check "([^"]*)"$/) do |arg1|
-  check(arg1)
+When(/^I check "([^"]*)"$/) do |identifier|
+  check(identifier)
+  raise "Checkbox #{identifier} not checked." unless has_checked_field?(identifier)
 end
 
-When(/^I uncheck "([^"]*)"$/) do |arg1|
-  uncheck(arg1)
-end
-
-When(/^I check "([^"]*)" if not checked$/) do |arg1|
-  check(arg1) unless has_checked_field?(arg1)
+When(/^I uncheck "([^"]*)"$/) do |identifier|
+  uncheck(identifier)
+  raise "Checkbox #{identifier} not unchecked." if has_checked_field?(identifier)
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
@@ -975,7 +973,7 @@ end
 
 # Check a Prometheus exporter
 When(/^I check "([^"]*)" exporter$/) do |exporter_type|
-  step %(I check "exporters##{exporter_type}_exporter#enabled" if not checked)
+  step %(I check "exporters##{exporter_type}_exporter#enabled")
 end
 
 # Navigate to a service endpoint
