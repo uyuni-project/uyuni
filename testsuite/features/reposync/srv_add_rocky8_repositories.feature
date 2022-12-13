@@ -86,7 +86,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I should see a "There are no entries to show." text
     When I follow "Create Project"
     And I enter "Remove AppStream metadata" as "name"
-    And I enter "no-appstream" as "label"
+    And I enter "no-appstream-8" as "label"
     And I click on "Create"
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata" text
     When I click on "Attach/Detach Sources"
