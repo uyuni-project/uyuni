@@ -518,4 +518,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - name: test
-        run: docker run -ti --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/controller-dev:master echo hello
+        run: docker run -ti --rmi ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/controller-dev:master echo hello
