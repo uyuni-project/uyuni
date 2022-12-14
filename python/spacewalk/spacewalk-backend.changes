@@ -1,6 +1,10 @@
-- remove jabberd and osa-dispatcher
-- Add rhel_9 as Salt-enabled kickstart installation
-- Remove AppStream variant from EL8 and derivatives treeinfos
+-------------------------------------------------------------------
+Wed Dec 14 14:14:34 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * remove jabberd and osa-dispatcher
+  * Add rhel_9 as Salt-enabled kickstart installation
+  * Remove AppStream variant from EL8 and derivatives treeinfos
 
 -------------------------------------------------------------------
 Fri Dec 02 14:53:12 CET 2022 - jgonzalez@suse.com
