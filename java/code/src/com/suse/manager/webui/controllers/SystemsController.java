@@ -504,7 +504,7 @@ public class SystemsController {
                     HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error("invalid_server_id"));
         }
-        Server server = ServerFactory.lookupById(serverId);
+        Server server = ServerFactory.lookupByIdAndOrg(serverId, user.getOrg());
         if (server == null) {
             return json(response,
                     HttpStatus.SC_NOT_FOUND,
