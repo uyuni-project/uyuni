@@ -413,7 +413,7 @@ Given(/^I navigate to the Systems overview page of this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   steps %(
     Given I am on the Systems page
-    When I enter "#{system_name}" as "criteria"
+    When I enter "#{system_name}" as "list_1680466951_filterval"
     And I wait until I do not see "Loading..." text
     And I follow "#{system_name}"
     And I wait until I see "System Status" text
