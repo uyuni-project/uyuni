@@ -74,6 +74,7 @@ public class ListRemoveChannelsAction extends BaseListAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listGlobalChannelsForActivationKey(

@@ -183,7 +183,7 @@ public abstract class BaseTag {
      * @return true if this tag has a body defined.
      */
     public boolean hasBody() {
-        return (body.size() > 0);
+        return (!body.isEmpty());
     }
 
 }

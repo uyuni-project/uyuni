@@ -44,6 +44,7 @@ public class DataListTest extends RhnBaseTestCase {
     private String db_sufix;
     private String db_user;
 
+    @Override
     @BeforeEach
     public void setUp() {
         db_sufix = "_pg";
@@ -56,6 +57,7 @@ public class DataListTest extends RhnBaseTestCase {
         elabParams.put("user_name", db_user);
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
@@ -112,7 +114,7 @@ public class DataListTest extends RhnBaseTestCase {
     private DataList getList() {
         //test the get method
         DataList list = DataList.getDataList(hsm, params, elabParams);
-        assertTrue(list.size() > 0);
+        assertTrue(!list.isEmpty());
         assertFalse(hsm.isElaborated());
         return list;
     }

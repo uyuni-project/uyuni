@@ -41,6 +41,7 @@ public class SelectChannelAction extends RhnListAction implements
         Listable<ChannelTreeNode> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -54,6 +55,7 @@ public class SelectChannelAction extends RhnListAction implements
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<ChannelTreeNode> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return  ChannelManager.getChannelsForSsm(user, null);

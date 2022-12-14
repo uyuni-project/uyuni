@@ -68,6 +68,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     /**
      * @return the minion id
      */
+    @Override
     public String getMinionId() {
         return minionId;
     }
@@ -164,6 +165,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      *
      * @return <code>true</code> if OS supports Transactional Update
      */
+    @Override
     public boolean doesOsSupportsTransactionalUpdate() {
         return isSLEMicro();
     }

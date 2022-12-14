@@ -81,10 +81,11 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward unspecified(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                     ActionForm formIn,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm) formIn;
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
@@ -338,6 +339,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
                 RequestContext.SID, s.getId().toString());
     }
 
+    @Override
     protected Map getKeyMethodMap() {
         Map<String, String> map = new HashMap<>();
         map.put("sdc.channels.edit.confirm_update_base", "confirmUpdateBaseChannel");

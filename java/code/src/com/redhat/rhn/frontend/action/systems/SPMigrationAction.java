@@ -239,7 +239,7 @@ public class SPMigrationAction extends RhnAction {
                     ctx.getCurrentUser()
             );
 
-            if (migrationTargets.size() == 0) {
+            if (migrationTargets.isEmpty()) {
                 // Latest SP is apparently installed
                 logger.debug("Latest SP is apparently installed");
                 request.setAttribute(LATEST_SP, true);

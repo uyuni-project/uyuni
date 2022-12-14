@@ -32,8 +32,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -47,10 +45,11 @@ public abstract class BaseScheduledListAction extends RhnAction implements Lista
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         ListRhnSetHelper helper = new ListRhnSetHelper(this, request, getSetDecl());
         helper.execute();
@@ -68,11 +67,6 @@ public abstract class BaseScheduledListAction extends RhnAction implements Lista
      */
     protected abstract RhnSetDecl getSetDecl();
 
-    /**
-     *
-     * {@inheritDoc}
-     */
-    public abstract List getResult(RequestContext context);
 
     /**
      * Handle the submit

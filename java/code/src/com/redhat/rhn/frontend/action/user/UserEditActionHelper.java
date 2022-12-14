@@ -126,7 +126,7 @@ public abstract class UserEditActionHelper extends RhnAction {
     protected void updatePamAttribute(User loggedInUser, User targetUser,
             DynaActionForm form) {
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (pamAuthService != null && pamAuthService.trim().length() > 0 &&
+        if (pamAuthService != null && !pamAuthService.trim().isEmpty() &&
                 loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
             if (form.get("usepam") != null &&
                     (Boolean) form.get("usepam")) {

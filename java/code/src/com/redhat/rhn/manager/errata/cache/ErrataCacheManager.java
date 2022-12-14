@@ -55,6 +55,7 @@ public class ErrataCacheManager extends HibernateFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }

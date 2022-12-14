@@ -66,6 +66,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("sdcimportconfirm.jsp.confirm", "importFile");
         map.put("sdcdeployconfirm.jsp.schedule", "deploy");
@@ -75,8 +76,9 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn, HttpServletRequest request,
-            Map<String, Object> params) {
+                                   Map<String, Object> params) {
         params.put("sid", request.getParameter("sid"));
         getStrutsDelegate().rememberDatePicker(params, (DynaActionForm)formIn,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);

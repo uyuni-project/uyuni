@@ -84,7 +84,7 @@ public class SystemCompareDto {
 
 
     private List<List<Item>> compareList(List<List> lists) {
-        return compareList(lists, Collections.EMPTY_MAP);
+        return compareList(lists, Collections.emptyMap());
     }
 
     /**
@@ -124,7 +124,7 @@ public class SystemCompareDto {
     }
 
     private List<Item> compare(List strings) {
-        return compare(strings, Collections.EMPTY_MAP);
+        return compare(strings, Collections.emptyMap());
     }
 
     private List<Item> compare(List strings, Map<String, String> idMap) {

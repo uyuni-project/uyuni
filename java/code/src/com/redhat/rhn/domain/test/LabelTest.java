@@ -36,10 +36,12 @@ public class LabelTest  {
             this.beerName = name;
         }
 
+        @Override
         public String getName() {
             return beerName;
         }
 
+        @Override
         public String getLabel() {
             return beerLabel;
         }

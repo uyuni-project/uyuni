@@ -24,6 +24,7 @@ public class InsertHunk extends Hunk {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void visit(DiffVisitor visitor) {
         visitor.accept(this);
     }

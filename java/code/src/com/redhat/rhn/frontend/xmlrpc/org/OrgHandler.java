@@ -177,7 +177,7 @@ public class OrgHandler extends BaseHandler {
 
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
         if (usePamAuth) {
-            if (pamAuthService != null && pamAuthService.trim().length() > 0) {
+            if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
                 cmd.setUsePam(usePamAuth);
             }
             else {

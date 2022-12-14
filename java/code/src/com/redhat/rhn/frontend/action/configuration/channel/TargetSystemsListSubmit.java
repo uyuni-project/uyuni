@@ -46,6 +46,7 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User userIn,
                                        ActionForm formIn,
                                        HttpServletRequest requestIn) {
@@ -57,6 +58,7 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_TARGET_SYSTEMS;
     }
@@ -64,6 +66,7 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> mapIn) {
         mapIn.put("targetsystems.jsp.subscribe", "processSubscribe");
     }
@@ -71,6 +74,7 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest requestIn,
                                    Map<String, Object> paramsIn) {

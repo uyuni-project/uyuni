@@ -25,6 +25,7 @@ import java.util.List;
 public class SnapshotConfigFilesAction extends SnapshotBaseAction {
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         Long ssid = context.getRequiredParam(SNAPSHOT_ID);
         return ConfigurationManager.systemSnapshotConfigFiles(ssid, null);

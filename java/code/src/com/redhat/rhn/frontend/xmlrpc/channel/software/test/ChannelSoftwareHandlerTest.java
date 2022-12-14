@@ -478,7 +478,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         List<ChannelArch> arches = csh.listArches(admin);
         assertNotNull(arches);
-        assertTrue(arches.size() > 0);
+        assertTrue(!arches.isEmpty());
     }
 
     @Test
@@ -487,7 +487,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
             List<ChannelArch> arches = csh.listArches(admin);
             assertNotNull(arches);
-            assertTrue(arches.size() > 0);
+            assertTrue(!arches.isEmpty());
         }
         catch (PermissionCheckFailureException e) {
             assertTrue(true);

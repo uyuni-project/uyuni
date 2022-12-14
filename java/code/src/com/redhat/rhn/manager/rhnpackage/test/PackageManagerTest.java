@@ -333,7 +333,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
                 " and package.packageName.id = " + pn.getId());
         List packages = query.list();
         Package retval = null;
-        if (packages != null && packages.size() > 0) {
+        if (packages != null && !packages.isEmpty()) {
             retval = (Package) packages.get(0);
         }
         else {
@@ -362,7 +362,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelTestUtils.createTestChannel(user);
         DataResult dr = PackageManager.possiblePackagesForPushingIntoChannel(c.getId(),
                 e.getId(), null);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
    }
 
 
@@ -504,7 +504,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         channel2.addPackage(pack);
         test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
                 channel2.getId());
-        assertTrue(test.size() == 0);
+        assertTrue(test.isEmpty());
     }
 
     @Test
@@ -522,7 +522,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         test = PackageManager.lookupCustomPackagesForChannel(
                 channel1.getId(), user.getOrg().getId());
 
-        assertTrue(test.size() == 0);
+        assertTrue(test.isEmpty());
     }
 
     @Test
@@ -538,7 +538,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         channel1.addPackage(pack);
         test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
-        assertTrue(test.size() == 0);
+        assertTrue(test.isEmpty());
         Package pack2 = PackageTest.createTestPackage(user.getOrg());
         test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 

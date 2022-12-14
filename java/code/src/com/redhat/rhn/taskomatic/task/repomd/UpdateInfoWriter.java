@@ -170,7 +170,7 @@ public class UpdateInfoWriter extends RepomdWriter {
                 channel.getId(), erratum.getId())) {
             long pkgId = pkg.getId();
             String epoch = pkg.getEpoch();
-            if (epoch == null || epoch.length() == 0) {
+            if (epoch == null || epoch.isEmpty()) {
                 epoch = "0";
             }
             attr.clear();

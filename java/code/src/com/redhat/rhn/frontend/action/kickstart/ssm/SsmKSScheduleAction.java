@@ -71,8 +71,9 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         DynaActionForm form = (DynaActionForm)formIn;
@@ -225,9 +226,10 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext ctx) {
         if (isIP(ctx.getRequest())) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         User user = ctx.getCurrentUser();

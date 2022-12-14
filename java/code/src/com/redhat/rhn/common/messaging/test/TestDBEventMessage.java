@@ -55,6 +55,7 @@ public class TestDBEventMessage implements EventDatabaseMessage {
         msgReceived = msgIn;
     }
 
+    @Override
     public Transaction getTransaction() {
         return this.txn;
     }
@@ -66,6 +67,7 @@ public class TestDBEventMessage implements EventDatabaseMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getUserId() {
         return null;
     }

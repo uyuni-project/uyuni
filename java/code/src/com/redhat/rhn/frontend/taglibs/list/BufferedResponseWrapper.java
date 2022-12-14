@@ -42,6 +42,7 @@ class BufferedResponseWrapper extends HttpServletResponseWrapper {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ServletOutputStream getOutputStream() throws IOException {
         return out;
     }
@@ -49,6 +50,7 @@ class BufferedResponseWrapper extends HttpServletResponseWrapper {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public PrintWriter getWriter() throws IOException {
         return writer;
     }

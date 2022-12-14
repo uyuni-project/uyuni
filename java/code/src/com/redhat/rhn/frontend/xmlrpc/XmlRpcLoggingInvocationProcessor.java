@@ -56,7 +56,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         // HACK ALERT!  We need the caller, would be better in
         // the postProcess, but that works for ALL methods except
         // logout.  So we do it here.
-        if ((arguments != null) && (arguments.size() > 0)) {
+        if ((arguments != null) && (!arguments.isEmpty())) {
             if (arguments.get(0) instanceof User) {
                 setCaller((User)arguments.get(0));
             }

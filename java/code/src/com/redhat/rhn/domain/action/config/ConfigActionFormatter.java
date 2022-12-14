@@ -48,6 +48,7 @@ public class ConfigActionFormatter extends ActionFormatter {
      * Shows a single revision per line.
      * @return The html notes string
      */
+    @Override
     protected String getNotesBody() {
         StringBuilder buffy = new StringBuilder();
         ConfigAction action = (ConfigAction)getAction();

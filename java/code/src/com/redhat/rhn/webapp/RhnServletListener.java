@@ -117,6 +117,7 @@ public class RhnServletListener implements ServletContextListener {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void contextInitialized(ServletContextEvent sce) {
         startMessaging();
         logStart("Messaging");
@@ -154,6 +155,7 @@ public class RhnServletListener implements ServletContextListener {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void contextDestroyed(ServletContextEvent sce) {
         saltReactor.stop();
         logStop("Salt reactor");

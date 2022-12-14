@@ -28,6 +28,7 @@ public class EditSlaveSetupActionTest extends BaseIssTestAction {
     public void testExecute() throws Exception {
     }
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

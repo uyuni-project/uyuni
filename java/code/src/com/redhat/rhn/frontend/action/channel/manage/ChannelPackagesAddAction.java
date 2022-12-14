@@ -58,10 +58,11 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
     private final String ORPHAN_PACKAGES_SELECTED = "orphan_selected";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -87,7 +88,7 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
         String button = LocalizationService.getInstance().getMessage(
         "channel.jsp.package.addbutton");
         if (button.equals(request.getParameter(RhnHelper.CONFIRM_FORWARD)) &&
-            set.size() > 0) {
+                !set.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             params.put("cid", cid);
             return getStrutsDelegate().forwardParams(

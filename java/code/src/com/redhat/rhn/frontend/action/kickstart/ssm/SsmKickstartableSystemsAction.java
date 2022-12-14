@@ -44,8 +44,9 @@ public class SsmKickstartableSystemsAction extends RhnAction implements Listable
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestContext context = new RequestContext(request);
         if (context.wasDispatched("ssm.config.subscribe.jsp.continue")) {
             if (Boolean.TRUE.toString().equals(request.getParameter("scheduleManual"))) {
@@ -75,6 +76,7 @@ public class SsmKickstartableSystemsAction extends RhnAction implements Listable
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         User user = context.getCurrentUser();
         List ret = KickstartManager.getInstance().kickstartableSystemsInSsm(user);

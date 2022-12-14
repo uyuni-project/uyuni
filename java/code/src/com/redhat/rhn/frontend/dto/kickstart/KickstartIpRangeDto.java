@@ -47,6 +47,7 @@ public class KickstartIpRangeDto extends BaseDto {
      *
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return id;
     }

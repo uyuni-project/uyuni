@@ -29,6 +29,7 @@ public class TaskoXmlRpcInvocationInterceptor implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object after(XmlRpcInvocation invocation, Object returnValue) {
         HibernateFactory.closeSession();
         return returnValue;
@@ -37,6 +38,7 @@ public class TaskoXmlRpcInvocationInterceptor implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean before(XmlRpcInvocation invocation) {
         return true;
     }
@@ -44,6 +46,7 @@ public class TaskoXmlRpcInvocationInterceptor implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public void onException(XmlRpcInvocation incovation, Throwable exception) {
         HibernateFactory.rollbackTransaction();
         HibernateFactory.closeSession();

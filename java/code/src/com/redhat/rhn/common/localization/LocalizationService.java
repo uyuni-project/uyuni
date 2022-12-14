@@ -104,7 +104,7 @@ public class LocalizationService {
         for (String packageIn : packages) {
             addKeysToMap(packageIn);
         }
-        if (supportedLocales.size() > 0) {
+        if (!supportedLocales.isEmpty()) {
             supportedLocales.clear();
         }
         loadSupportedLocales();

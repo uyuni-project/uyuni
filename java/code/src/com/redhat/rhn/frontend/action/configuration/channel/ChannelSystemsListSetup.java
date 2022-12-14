@@ -33,21 +33,25 @@ public class ChannelSystemsListSetup extends BaseSetListAction {
      * We affect the selected-files set
      * @return FILE_LISTS identifier
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctx) {
         super.processRequestAttributes(rctx);
         ConfigChannel cc = ConfigActionHelper.getChannel(rctx.getRequest());
         ConfigActionHelper.setupRequestAttributes(rctx, cc);
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn("name");
         pc.setFilter(true);
     }
 
+    @Override
     protected DataResult getDataResult(RequestContext ctx, PageControl pc) {
         User user = ctx.getCurrentUser();
         ConfigChannel cc = ConfigActionHelper.getChannel(ctx.getRequest());

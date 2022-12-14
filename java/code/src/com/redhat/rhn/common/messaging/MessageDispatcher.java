@@ -71,6 +71,7 @@ public class MessageDispatcher implements Runnable {
      * Main run loop where events are popped off the queue
      * and executed. Events are wrapped inside of a Runnable instance
      */
+    @Override
     public void run() {
 
         // register the executor service for exporting metrics

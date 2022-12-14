@@ -58,6 +58,7 @@ public class SnapshotIndexAction extends RhnAction
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<Map<String, Object>> getResult(RequestContext context) {
         Long sid = context.getRequiredParam("sid");
         return SystemManager.systemSnapshots(sid, null);

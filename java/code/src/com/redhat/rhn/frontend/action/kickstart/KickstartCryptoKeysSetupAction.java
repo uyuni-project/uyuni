@@ -33,6 +33,7 @@ public class KickstartCryptoKeysSetupAction extends BaseKickstartListSetupAction
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
        return RhnSetDecl.GPGSSL_KEYS;
     }
@@ -40,6 +41,7 @@ public class KickstartCryptoKeysSetupAction extends BaseKickstartListSetupAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
         return KickstartLister.getInstance().
             cryptoKeysInOrg(rctx.getCurrentUser().getOrg());
@@ -49,11 +51,12 @@ public class KickstartCryptoKeysSetupAction extends BaseKickstartListSetupAction
      *
      * {@inheritDoc}
      */
+    @Override
     protected Iterator getCurrentItemsIterator(KickstartData ksdata) {
         if (ksdata.getCryptoKeys() != null) {
             return ksdata.getCryptoKeys().iterator();
         }
-        return Collections.EMPTY_LIST.iterator();
+        return Collections.emptyList().iterator();
     }
 
 }

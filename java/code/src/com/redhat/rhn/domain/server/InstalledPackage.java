@@ -173,6 +173,7 @@ public class InstalledPackage implements Serializable, Comparable<InstalledPacka
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(InstalledPackage ip) {
         if (equals(ip)) {
             return 0;

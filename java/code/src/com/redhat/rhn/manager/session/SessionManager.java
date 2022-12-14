@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.session;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.HMAC;
 import com.redhat.rhn.common.util.TimeUtils;
@@ -85,7 +86,7 @@ public class SessionManager extends BaseManager {
 
         s.setExpires(TimeUtils.currentTimeSeconds() + duration);
         WebSessionFactory.save(s);
-        WebSessionFactory.getSession().flush();
+        HibernateFactory.getSession().flush();
         return s;
     }
 

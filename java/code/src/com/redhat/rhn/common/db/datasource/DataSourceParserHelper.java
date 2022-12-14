@@ -59,6 +59,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void characters(char[] text, int start, int length) throws SAXException {
 
         if (sqlBuilder != null) {
@@ -67,8 +68,9 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void startElement(String namespaceURI, String localName, String qualifiedName,
-            Attributes atts) {
+                             Attributes atts) {
 
         logger.debug("startElement({})", localName);
 
@@ -120,6 +122,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void endElement(String namespaceURI, String localName, String qualifiedName) {
 
         logger.debug("endElement({})", localName);
@@ -190,6 +193,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void endDocument() {
         // Implement sanity check? Look for queries with names but no sql
         // statement.
@@ -240,31 +244,38 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
 
     // do-nothing methods
     /** {@inheritDoc} */
+    @Override
     public void setDocumentLocator(Locator locator) {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void startDocument() {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void startPrefixMapping(String prefix, String uri) {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void endPrefixMapping(String prefix) {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void ignorableWhitespace(char[] text, int start, int length)
         throws SAXException {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void processingInstruction(String target, String data) {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void skippedEntity(String name) {
     }
 

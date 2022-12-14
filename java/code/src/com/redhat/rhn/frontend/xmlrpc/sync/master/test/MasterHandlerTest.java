@@ -46,6 +46,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
     private String[] masterOrgNames = {"masterOrg01", "masterOrg02", "masterOrg03"};
     private String masterName;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

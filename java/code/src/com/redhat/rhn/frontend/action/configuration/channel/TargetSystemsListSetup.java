@@ -32,21 +32,25 @@ public class TargetSystemsListSetup extends BaseSetListAction {
      * We affect the selected-files set
      * @return CONFIG_SYSTEMS identifier
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_TARGET_SYSTEMS;
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn("name");
         pc.setFilter(true);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctx) {
         super.processRequestAttributes(rctx);
         ConfigChannel cc = ConfigActionHelper.getChannel(rctx.getRequest());
         ConfigActionHelper.setupRequestAttributes(rctx, cc);
     }
 
+    @Override
     protected DataResult getDataResult(RequestContext ctx, PageControl pc) {
 
         ConfigChannel cc = ConfigActionHelper.getChannel(ctx.getRequest());

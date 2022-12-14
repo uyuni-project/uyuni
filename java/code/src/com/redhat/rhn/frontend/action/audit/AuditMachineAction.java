@@ -47,6 +47,7 @@ public class AuditMachineAction extends RhnAction implements Listable {
     private static Logger log = LogManager.getLogger(AuditMachineAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
@@ -67,7 +68,7 @@ public class AuditMachineAction extends RhnAction implements Listable {
         reviewed = request.getParameter("reviewed");
 
         // is this a review?
-        if (reviewed != null && reviewed.length() > 0) {
+        if (reviewed != null && !reviewed.isEmpty()) {
             start = Long.parseLong(request.getParameter("startMilli"));
             end = Long.parseLong(request.getParameter("endMilli"));
             username = requestContext.getCurrentUser().getLogin();
@@ -110,6 +111,7 @@ public class AuditMachineAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public DataResult getResult(RequestContext context) {
         return AuditManager.getMachineReviewSections(
             context.getParam("machine", false));

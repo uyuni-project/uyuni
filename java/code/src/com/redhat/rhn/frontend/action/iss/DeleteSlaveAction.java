@@ -39,8 +39,9 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteSlaveAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request, HttpServletResponse response)
+                                 HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {

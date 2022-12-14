@@ -78,6 +78,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
             new JsonParser<>(new TypeToken<>() {
             });
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

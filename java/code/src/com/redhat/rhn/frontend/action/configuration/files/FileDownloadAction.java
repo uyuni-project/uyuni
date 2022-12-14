@@ -41,8 +41,9 @@ public class FileDownloadAction extends RhnAction {
     public static final String CSRF_TOKEN = "csrfToken";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         Map params = makeParamMap(request);
         ConfigFileForm cff = (ConfigFileForm) form;
 

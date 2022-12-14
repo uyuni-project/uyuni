@@ -46,9 +46,10 @@ public class XccdfDetailsAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         Long sid = context.getRequiredParam("sid");
@@ -71,6 +72,7 @@ public class XccdfDetailsAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         Long xid = context.getRequiredParam("xid");
         return ScapManager.ruleResultsPerScan(xid);

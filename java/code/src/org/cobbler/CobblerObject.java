@@ -845,7 +845,7 @@ public abstract class CobblerObject {
      * will also return True. All other cases return False.
      */
     protected boolean isBlank(String str) {
-        return str == null || str.trim().length() == 0;
+        return str == null || str.trim().isEmpty();
     }
 
     /**

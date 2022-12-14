@@ -72,6 +72,7 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
      * Save the Cobbler profile to cobbler.
      * @return ValidatorError if there was a problem
      */
+    @Override
     public ValidatorError store() {
         log.debug("Token : [{}]", xmlRpcToken);
 

@@ -84,7 +84,7 @@ public class CustomPackageListAction extends RhnAction {
                 "source".equals(request.getParameter("package_type"));
 
         if (button.equals(request.getParameter(RhnHelper.CONFIRM_FORWARD)) &&
-            set.size() > 0) {
+                !set.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             // Forward type of the list
             params.put("source_checked", sourcePackagesChecked);

@@ -61,6 +61,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private GuestBuilder builder;
     private SystemEntitlementManager systemEntitlementManager;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         virtualInstanceDAO = new VirtualInstanceFactory();

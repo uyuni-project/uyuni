@@ -133,17 +133,17 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRemoveEntitlements() throws Exception {
-        assertTrue(server.getEntitlements().size() > 0);
+        assertTrue(!server.getEntitlements().isEmpty());
 
         migrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
         server = ServerFactory.lookupById(server.getId());
 
-        assertTrue(server.getEntitlements().size() == 0);
+        assertTrue(server.getEntitlements().isEmpty());
     }
 
     @Test
     public void testRemoveSystemGroups() throws Exception {
-        assertTrue(server.getGuests().size() > 0);
+        assertTrue(!server.getGuests().isEmpty());
         assertEquals(1, server.getManagedGroups().size());
         ManagedServerGroup serverGroup1 = server.getManagedGroups().get(0);
 
@@ -160,7 +160,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     public void testRemoveChannels() throws Exception {
 
         // verify that server was initially created w/channels
-        assertTrue(server.getChannels().size() > 0);
+        assertTrue(!server.getChannels().isEmpty());
 
         migrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
 
@@ -231,7 +231,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         server2.getEntitledGroups().forEach(ent -> assertEquals(destOrg.getId(), ent.getOrg().getId()));
 
         assertNotNull(server.getHistory());
-        assertTrue(server.getHistory().size() > 0);
+        assertTrue(!server.getHistory().isEmpty());
         boolean migrationRecorded = false;
         for (ServerHistoryEvent event : server.getHistory()) {
             if (event.getSummary().equals("System migration") &&
@@ -270,7 +270,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertEquals(bootstrapServer.getOrg(), destOrg);
 
         assertNotNull(bootstrapServer.getHistory());
-        assertTrue(bootstrapServer.getHistory().size() > 0);
+        assertTrue(!bootstrapServer.getHistory().isEmpty());
         boolean migrationRecorded = false;
         for (ServerHistoryEvent event : bootstrapServer.getHistory()) {
             if (event.getSummary().equals("System migration") &&

@@ -31,6 +31,7 @@ public abstract class BaseKickstartListSubmitAction extends BaseSetOperateOnDiff
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {

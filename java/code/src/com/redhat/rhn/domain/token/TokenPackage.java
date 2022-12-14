@@ -35,6 +35,7 @@ public class TokenPackage implements Identifiable {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }

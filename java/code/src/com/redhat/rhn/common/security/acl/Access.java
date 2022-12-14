@@ -127,7 +127,7 @@ public class Access extends BaseHandler {
         queryParams.put("label", label);
         queryParams.put("org_id", user.getOrg().getId());
         DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
+        return (!dr.isEmpty());
     }
 
     /**
@@ -145,7 +145,7 @@ public class Access extends BaseHandler {
         Map queryParams = new HashMap();
         queryParams.put("org_id", user.getOrg().getId());
         DataResult dr = m.execute(queryParams);
-        return (dr.size() > 0);
+        return (!dr.isEmpty());
     }
 
     /**
@@ -466,7 +466,7 @@ public class Access extends BaseHandler {
         User user = (User) map.get("user");
         if (user != null) {
             List chans = UserManager.channelManagement(user, null);
-            return (user.hasRole(RoleFactory.CHANNEL_ADMIN)) || chans.size() > 0;
+            return (user.hasRole(RoleFactory.CHANNEL_ADMIN)) || !chans.isEmpty();
         }
 
         return false;

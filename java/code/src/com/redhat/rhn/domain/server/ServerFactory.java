@@ -897,7 +897,7 @@ public class ServerFactory extends HibernateFactory {
         List<ServerArch> archs = SINGLETON.listObjectsByNamedQuery(
                 "ServerArch.findByName",
                 params);
-        if (archs != null && archs.size() > 0) {
+        if (archs != null && !archs.isEmpty()) {
             return archs.get(0);
         }
         return null;
@@ -1030,7 +1030,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Server> listConfigEnabledSystems() {
         return SINGLETON.listObjectsByNamedQuery(
-                "Server.listConfigEnabledSystems", Collections.EMPTY_MAP);
+                "Server.listConfigEnabledSystems", Collections.emptyMap());
     }
 
     /**
@@ -1064,7 +1064,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Server> listConfigDiffEnabledSystems() {
         return SINGLETON.listObjectsByNamedQuery(
-                "Server.listConfigDiffEnabledSystems", Collections.EMPTY_MAP);
+                "Server.listConfigDiffEnabledSystems", Collections.emptyMap());
     }
 
     /**
@@ -1149,7 +1149,7 @@ public class ServerFactory extends HibernateFactory {
      * @param snap the snapshot to delete
      */
     public static void deleteSnapshot(ServerSnapshot snap) {
-        ServerFactory.getSession().delete(snap);
+        HibernateFactory.getSession().delete(snap);
     }
 
     /**
@@ -1157,7 +1157,7 @@ public class ServerFactory extends HibernateFactory {
      * @param path the server path to delete
      */
     public static void deleteServerPath(ServerPath path) {
-        ServerFactory.getSession().delete(path);
+        HibernateFactory.getSession().delete(path);
     }
 
     /**

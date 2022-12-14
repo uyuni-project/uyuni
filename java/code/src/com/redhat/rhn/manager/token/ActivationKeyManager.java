@@ -399,7 +399,7 @@ public class ActivationKeyManager {
                         "system.entitle.invalid_addon_entitlement", entitlementLabel));
             }
         }
-        if (ve.getErrors().size() > 0) {
+        if (!ve.getErrors().isEmpty()) {
             throw new ValidatorException(ve);
         }
     }

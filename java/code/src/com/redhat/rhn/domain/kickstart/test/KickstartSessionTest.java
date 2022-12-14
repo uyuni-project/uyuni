@@ -48,6 +48,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     private KickstartSession ksession;
     private Server s;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

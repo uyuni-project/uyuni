@@ -53,8 +53,9 @@ public class AllowSlaveOrgsAction extends RhnAction {
     private static final String LIST_NAME = "localOrgsList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {
             LocalizationService ls = LocalizationService.getInstance();

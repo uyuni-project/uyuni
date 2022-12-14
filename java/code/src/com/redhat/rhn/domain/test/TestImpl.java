@@ -29,26 +29,32 @@ public class TestImpl implements TestInterface {
     private String noColumnField;
     private Date created;
 
+    @Override
     public void setId(Long i) {
         id = i;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setPin(Integer i) {
         pin = i;
     }
 
+    @Override
     public Integer getPin() {
         return pin;
     }
 
+    @Override
     public void setFoobar(String foo) {
         foobar = foo;
     }
 
+    @Override
     public String getFoobar() {
         return foobar;
     }
@@ -62,26 +68,32 @@ public class TestImpl implements TestInterface {
         return hidden;
     }
 
+    @Override
     public void setTestColumn(String foo) {
         testColumn = foo;
     }
 
+    @Override
     public String getTestColumn() {
         return testColumn;
     }
 
+    @Override
     public void setNoColumnField(String foo) {
         this.noColumnField = foo;
     }
 
+    @Override
     public String getNoColumnField() {
         return this.noColumnField;
     }
 
+    @Override
     public void setCreated(Date d) {
         created = d;
     }
 
+    @Override
     public Date getCreated() {
         return created;
     }

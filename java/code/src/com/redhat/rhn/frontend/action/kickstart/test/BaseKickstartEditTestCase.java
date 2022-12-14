@@ -31,6 +31,7 @@ public class BaseKickstartEditTestCase extends RhnPostMockStrutsTestCase {
 
     protected KickstartData ksdata;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

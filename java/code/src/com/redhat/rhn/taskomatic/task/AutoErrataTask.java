@@ -61,17 +61,18 @@ public class AutoErrataTask extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext context)
         throws JobExecutionException {
 
         List<Long> systems = getAutoErrataSystems();
-        if (systems == null || systems.size() == 0) {
+        if (systems == null || systems.isEmpty()) {
             log.debug("No systems with auto errata enabled");
             return;
         }
 
         List<Map<String, Long>> results = getErrataToProcess(filterSystemsInMaintenanceMode(systems));
-        if (results == null || results.size() == 0) {
+        if (results == null || results.isEmpty()) {
             log.debug("No unapplied auto errata found. Skipping systems not in maintenance mode... exiting");
             return;
         }
@@ -158,7 +159,7 @@ public class AutoErrataTask extends RhnJavaJob {
          * where rtb.name = 'repo-sync-bunch'
          *   and rtr.status in ('RUNNING','READY')
          */
-        if (sids == null || sids.size() == 0) {
+        if (sids == null || sids.isEmpty()) {
             return new ArrayList<>();
         }
 

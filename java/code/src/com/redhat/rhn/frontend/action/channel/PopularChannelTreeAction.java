@@ -45,10 +45,11 @@ public class PopularChannelTreeAction extends BaseChannelTreeAction {
     private final String COUNTS = "counts";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         String countStr = request.getParameter(SERVER_COUNT);
         Long count;
@@ -88,8 +89,9 @@ public class PopularChannelTreeAction extends BaseChannelTreeAction {
 
 
     /** {@inheritDoc} */
+    @Override
     protected DataResult<ChannelTreeNode> getDataResult(RequestContext requestContext,
-            ListControl lc) {
+                                                        ListControl lc) {
         User user = requestContext.getCurrentUser();
         return ChannelManager.popularChannelTree(user,
                 (Long) requestContext.getRequest().getAttribute("count"), lc);

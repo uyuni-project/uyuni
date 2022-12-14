@@ -40,6 +40,7 @@ public abstract class BaseFragmentRenderer implements FragmentRenderer {
      * {@inheritDoc}
      * @throws Exception sometimes things just don't work out
      */
+    @Override
     public String renderAsync(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestContext rhnCtx = new RequestContext(req);
         User user = rhnCtx.getCurrentUser();

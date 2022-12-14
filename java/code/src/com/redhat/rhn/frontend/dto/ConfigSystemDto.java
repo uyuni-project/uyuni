@@ -260,6 +260,7 @@ public class ConfigSystemDto extends BaseDto {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -343,7 +344,7 @@ public class ConfigSystemDto extends BaseDto {
          * they have all the requirements for capability, then make sure that we
          * don't tell them that configuration management is pending
          */
-        if (actions.size() == 0 && (rhncfg == PENDING ||
+        if (actions.isEmpty() && (rhncfg == PENDING ||
                 rhncfgActions == PENDING || rhncfgClient == PENDING)) {
             return ls.getMessage("targetsystems.jsp.pending");
         }
@@ -393,6 +394,7 @@ public class ConfigSystemDto extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSelectable() {
         return !capable;
     }

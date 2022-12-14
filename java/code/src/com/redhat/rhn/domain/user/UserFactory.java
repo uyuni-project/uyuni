@@ -206,7 +206,7 @@ public  class UserFactory extends HibernateFactory {
             }
         }
         // Deal with the remainder:
-        if (blockOfIds.size() > 0) {
+        if (!blockOfIds.isEmpty()) {
             results.addAll(realLookupByIds(blockOfIds));
         }
         return results;

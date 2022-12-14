@@ -38,6 +38,7 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.query.Query;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
@@ -923,7 +924,7 @@ public class KickstartFactory extends HibernateFactory {
         Session session = getSession();
         Criteria c = session.createCriteria(KickstartData.class);
         // Hibernate does not filter out duplicate references by default
-        c.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        c.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         return c.list();
     }
 

@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TagSupport;
 
 
 /**
@@ -50,11 +51,12 @@ public class RowRendererTag extends BodyTagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         ListCommand command = ListTagUtil.getCurrentCommand(this, pageContext);
         if (command.equals(ListCommand.ENUMERATE)) {
             if (!StringUtils.isBlank(name)) {
-                ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
+                ListTag parent = (ListTag) TagSupport.findAncestorWithClass(this,
                         ListTag.class);
 
                 try {

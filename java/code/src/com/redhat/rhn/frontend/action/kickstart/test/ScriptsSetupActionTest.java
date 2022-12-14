@@ -41,6 +41,6 @@ public class ScriptsSetupActionTest extends RhnMockStrutsTestCase {
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(ScriptsSetupAction.LIST_NAME);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
     }
 }

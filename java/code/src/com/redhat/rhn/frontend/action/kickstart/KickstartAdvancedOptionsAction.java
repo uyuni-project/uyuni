@@ -64,10 +64,11 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public final ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                       ActionForm formIn,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
 
         RequestContext ctx = new RequestContext(request);
         KickstartHelper helper = new KickstartHelper(request);

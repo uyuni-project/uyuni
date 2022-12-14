@@ -61,10 +61,11 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
 
         User user = context.getCurrentUser();
@@ -114,6 +115,7 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext contextIn) {
         return SystemManager.inSet(contextIn.getCurrentUser(),
                                         RhnSetDecl.SYSTEMS.getLabel());

@@ -26,6 +26,7 @@ import java.util.Map;
 public class SnapshotPackagesAction extends SnapshotBaseAction {
 
     /** {@inheritDoc} */
+    @Override
     public List<Map<String, Object>> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         Long ssid = context.getRequiredParam(SNAPSHOT_ID);

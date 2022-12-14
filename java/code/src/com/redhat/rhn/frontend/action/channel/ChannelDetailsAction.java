@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.channel;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -81,7 +82,7 @@ public class ChannelDetailsAction extends RhnAction {
             }
 
             // this is evil but necessary
-            chan = (Channel) ChannelFactory.reload(chan);
+            chan = HibernateFactory.reload(chan);
             params.put("cid", cid);
             fwd = "success";
             ServerFactory.listMinionsByChannel(cid).stream()

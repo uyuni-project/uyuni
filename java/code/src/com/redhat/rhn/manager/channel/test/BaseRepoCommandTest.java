@@ -39,6 +39,7 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
     private int label_count = 0;
     private User user = null;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());

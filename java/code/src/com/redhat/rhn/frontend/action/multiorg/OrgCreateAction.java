@@ -50,10 +50,11 @@ public class OrgCreateAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         ActionForward retval = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         DynaActionForm dynaForm = (DynaActionForm) formIn;
@@ -68,7 +69,7 @@ public class OrgCreateAction extends RhnAction {
          * checkbox and instructions
          */
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (pamAuthService != null && pamAuthService.trim().length() > 0) {
+        if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
             request.setAttribute("displaypamcheckbox", "true");
         }
 

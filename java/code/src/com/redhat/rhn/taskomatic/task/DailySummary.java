@@ -200,8 +200,8 @@ public class DailySummary extends RhnJavaJob {
             List awol = getAwolServers(ru.idAsLong());
             // send email
             List actions = getActionInfo(ru.idAsLong());
-            if ((awol == null || awol.size() == 0) && (actions == null ||
-                    actions.size() == 0)) {
+            if ((awol == null || awol.isEmpty()) && (actions == null ||
+                    actions.isEmpty())) {
                 log.debug("Skipping ORG {} because daily summary info has changed", orgId);
                 continue;
             }

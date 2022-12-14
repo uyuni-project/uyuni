@@ -31,6 +31,7 @@ public class DiffSystemsAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pc) {
         User user = rctxIn.getCurrentUser();
         Long cfnid = rctxIn.getRequiredParam("cfnid");
@@ -41,12 +42,14 @@ public class DiffSystemsAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         Long cfnid = rctxIn.getRequiredParam("cfnid");
         ConfigFileName name = ConfigurationFactory.lookupConfigFileNameById(cfnid);
         rctxIn.getRequest().setAttribute("filepath", name.getPath());
     }
 
+    @Override
     protected void processPageControl(PageControl pcIn) {
         pcIn.setFilter(true);
         pcIn.setFilterColumn("name");

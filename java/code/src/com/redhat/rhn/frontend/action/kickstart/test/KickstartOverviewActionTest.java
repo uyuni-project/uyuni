@@ -32,7 +32,7 @@ public class KickstartOverviewActionTest extends BaseKickstartEditTestCase {
         DataResult ksdr = (DataResult) request.getAttribute(
                                             KickstartOverviewAction.KICKSTART_SUMMARY);
         assertNotNull(ksdr);
-        assertTrue(ksdr.size() > 0);
+        assertTrue(!ksdr.isEmpty());
         assertNotNull(request.getAttribute(
                                 KickstartOverviewAction.SYSTEMS_CURRENTLY_KICKSTARTING));
         assertNotNull(request.getAttribute(

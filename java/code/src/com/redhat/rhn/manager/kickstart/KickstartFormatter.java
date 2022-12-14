@@ -422,7 +422,7 @@ public class KickstartFormatter {
             String ksDistro) {
 
         String gateway;
-        if (preferIpv6Gateway && gw6 != null && gw6.length() != 0) {
+        if (preferIpv6Gateway && gw6 != null && !gw6.isEmpty()) {
             gateway = gw6;
         }
         else {
@@ -432,17 +432,17 @@ public class KickstartFormatter {
         String command = String.format(STATIC_NETWORK_COMMAND, device, gateway,
             nameServer, hostName);
 
-        if (ip4 != null && ip4.length() > 0 && nm4 != null && nm4.length() > 0) {
+        if (ip4 != null && !ip4.isEmpty() && nm4 != null && !nm4.isEmpty()) {
             command += String.format(STATIC_NETWORK_COMMAND1, ip4, nm4);
         }
         else {
             command += " --noipv4";
         }
 
-        if (ip6 != null && ip6.length() > 0 && ksDistro != null &&
+        if (ip6 != null && !ip6.isEmpty() && ksDistro != null &&
             (ksDistro.startsWith(KickstartInstallType.FEDORA_PREFIX) ||
              ksDistro.equals(KickstartInstallType.RHEL_6))) {
-            if (nm6 == null || nm6.length() == 0 ||
+            if (nm6 == null || nm6.isEmpty() ||
                 !ksDistro.startsWith(KickstartInstallType.FEDORA_PREFIX)) {
                 command += String.format(STATIC_NETWORK_COMMAND2, ip6);
             }

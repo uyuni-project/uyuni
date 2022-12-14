@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 public class PackageListAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -73,6 +74,7 @@ public class PackageListAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         Long prid = context.getRequiredParam(RequestContext.PRID);
         return ProfileManager.listProfilePackages(prid);

@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.common.CreateFileListCommand;
 public class PreservationListCreateAction extends
         BasePreservationListEditAction {
 
+    @Override
     protected PersistOperation getCommand(RequestContext ctx) {
         return new CreateFileListCommand(ctx.getCurrentUser());
     }

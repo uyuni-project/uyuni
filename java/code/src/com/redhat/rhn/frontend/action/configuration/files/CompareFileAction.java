@@ -33,6 +33,7 @@ public class CompareFileAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         HttpServletRequest request = rctxIn.getRequest();
         ConfigActionHelper.processRequestAttributes(rctxIn);
@@ -42,6 +43,7 @@ public class CompareFileAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         HttpServletRequest request = rctxIn.getRequest();
         User user = rctxIn.getCurrentUser();

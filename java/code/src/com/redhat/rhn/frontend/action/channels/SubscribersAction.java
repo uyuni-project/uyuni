@@ -49,10 +49,11 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
@@ -123,6 +124,7 @@ public class SubscribersAction extends RhnAction implements Listable<UserOvervie
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<UserOverview> getResult(RequestContext context) {
         User currentUser = context.getCurrentUser();
         List<UserOverview> userList = UserManager.activeInOrg2(currentUser);

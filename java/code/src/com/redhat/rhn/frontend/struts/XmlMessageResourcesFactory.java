@@ -32,6 +32,7 @@ public class XmlMessageResourcesFactory extends MessageResourcesFactory {
      * @param config Configuration parameter(s) for the requested bundle
      * @return A new instance of a MessageResources class.
      */
+    @Override
     public MessageResources createResources(String config) {
         return new XmlMessageResources(this, config, this.returnNull);
     }
@@ -47,7 +48,7 @@ public class XmlMessageResourcesFactory extends MessageResourcesFactory {
         // Force the factoryclass to be set to the one *we* want it to be set to.
         // Struts is hardcoded in the base class MessageResourcesFactory
         // to use PropertyMessageResourceFactory which is lame, IMHO
-        XmlMessageResourcesFactory.
+        MessageResourcesFactory.
             setFactoryClass("com.redhat.rhn.frontend.struts.XmlMessageResourcesFactory");
         // Since its a static method we can't override it, we have to encapsulate it
         return MessageResourcesFactory.createFactory();

@@ -33,6 +33,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         // TODO Auto-generated method stub

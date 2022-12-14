@@ -57,10 +57,11 @@ public class ErrataCloneAction extends RhnListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();

@@ -24,7 +24,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.PackageSearchAction;
+import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.dto.BooleanWrapper;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.manager.user.UserManager;
@@ -86,6 +86,7 @@ public class PackageFactory extends HibernateFactory {
      * Get the Logger for the derived class so log messages show up on the
      * correct class
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -108,8 +109,7 @@ public class PackageFactory extends HibernateFactory {
      */
     private static List<Package> lookupById(List<Long> ids) {
         Map<String, Object> params = new HashMap<>();
-        return (List<Package>)
-                singleton.listObjectsByNamedQuery("Package.findByIds", params, ids, "pids");
+        return singleton.listObjectsByNamedQuery("Package.findByIds", params, ids, "pids");
     }
 
     /**
@@ -438,8 +438,8 @@ public class PackageFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         SelectMode m = null;
 
-        if (searchType.equals(PackageSearchAction.ARCHITECTURE)) {
-            if (!(archLabels != null && archLabels.size() > 0)) {
+        if (searchType.equals(BaseSearchAction.ARCHITECTURE)) {
+            if (!(archLabels != null && !archLabels.isEmpty())) {
                 throw new MissingArchitectureException(
                         "archLabels must not be null for architecture search!");
             }
@@ -461,7 +461,7 @@ public class PackageFactory extends HibernateFactory {
             CachedStatement cs = m.getQuery();
             cs.modifyQuery(":channel_arch_labels", archLabels, value -> value.matches("^[a-zA-Z0-9\\-_]*$"));
         }
-        else if (searchType.equals(PackageSearchAction.RELEVANT)) {
+        else if (searchType.equals(BaseSearchAction.RELEVANT)) {
             if (relevantUserId == null) {
                 throw new IllegalArgumentException(
                         "relevantUserId must not be null for relevant search!");
@@ -469,7 +469,7 @@ public class PackageFactory extends HibernateFactory {
             params.put("uid", relevantUserId);
             m = ModeFactory.getMode("Package_queries", "relevantSearchById");
         }
-        else if (searchType.equals(PackageSearchAction.CHANNEL)) {
+        else if (searchType.equals(BaseSearchAction.CHANNEL)) {
             if (filterChannelId == null) {
                 throw new IllegalArgumentException(
                         "filterChannelId must not be null for channel search!");
@@ -682,7 +682,7 @@ public class PackageFactory extends HibernateFactory {
         SelectMode m =
                 ModeFactory.getMode("System_queries", mode);
         DataResult toReturn = m.execute(params);
-        return toReturn.size() > 0;
+        return !toReturn.isEmpty();
     }
 
 }

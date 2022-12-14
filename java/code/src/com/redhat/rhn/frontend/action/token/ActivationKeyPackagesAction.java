@@ -42,6 +42,7 @@ public class ActivationKeyPackagesAction extends RhnAction {
     public static final String DESCRIPTION = "description";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

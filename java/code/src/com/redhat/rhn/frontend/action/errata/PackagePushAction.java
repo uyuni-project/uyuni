@@ -50,6 +50,7 @@ public class PackagePushAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.PACKAGES_TO_PUSH;
     }
@@ -118,8 +119,9 @@ public class PackagePushAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User user, ActionForm formIn,
-            HttpServletRequest request) {
+                                       HttpServletRequest request) {
         DynaActionForm daForm = (DynaActionForm) formIn;
         Long cid = (Long) daForm.get("cid");
         Long eid = (Long) daForm.get("eid");
@@ -129,8 +131,9 @@ public class PackagePushAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm form, HttpServletRequest request,
-            Map<String, Object> params) {
+                                   Map<String, Object> params) {
         DynaActionForm daForm = (DynaActionForm) form;
         params.put("eid", daForm.get("eid"));
 
@@ -139,6 +142,7 @@ public class PackagePushAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("errata.publish.packagepush.continue", "pushPackages");
     }

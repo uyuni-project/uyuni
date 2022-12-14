@@ -49,10 +49,11 @@ public class CustomPackagesDeleteConfirmAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -84,7 +85,7 @@ public class CustomPackagesDeleteConfirmAction extends RhnAction {
         "channel.jsp.manage.package.confirmbutton");
 
 
-        if (button.equals(request.getParameter("confirm")) && set.size() > 0) {
+        if (button.equals(request.getParameter("confirm")) && !set.isEmpty()) {
             int setSize = set.size();
 
             if (sourcePackagesChecked) {

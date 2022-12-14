@@ -591,7 +591,7 @@ public class PackageManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "server_packages_needing_update");
         DataResult dr = m.execute(params);
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             Long id = (Long) ((Map) dr.get(0)).get("id");
             return id;
         }
@@ -613,7 +613,7 @@ public class PackageManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "lookup_id_combo_by_name");
         DataResult dr = m.execute(params);
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             return (Map) dr.get(0);
         }
         return null;
@@ -815,7 +815,7 @@ public class PackageManager extends BaseManager {
             packageFileName.append(pkg.getPath().trim());
         }
         String pfn = packageFileName.toString().trim();
-        if (pfn.length() > 0) {
+        if (!pfn.isEmpty()) {
             schedulePackageFileForDeletion(pfn);
         }
 

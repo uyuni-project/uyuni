@@ -42,10 +42,11 @@ public class CobblerSnippetViewAction extends RhnAction {
     public static final String PATH = "path";
     public static final String DATA = "data";
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext ctx = new RequestContext(request);
         try {
             CobblerSnippet snip = CobblerSnippet.loadReadOnly(

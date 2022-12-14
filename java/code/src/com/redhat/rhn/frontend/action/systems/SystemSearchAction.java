@@ -177,8 +177,9 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
         request.setAttribute(WHERE_TO_SEARCH, where);
     }
 
+   @Override
    protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
-                   DynaActionForm form) {
+                                     DynaActionForm form) {
         String viewMode = form.getString(VIEW_MODE);
         String searchString = form.getString(SEARCH_STR).trim();
 
@@ -300,6 +301,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         String searchString = (String)context.getRequest().getAttribute(SEARCH_STR);
 
@@ -307,7 +309,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
             LOG.debug("SystemSearchSetupAction.getResult() calling performSearch()");
             return performSearch(context);
         }
-        LOG.debug("SystemSearchSetupAction.getResult() returning Collections.EMPTY_LIST");
+        LOG.debug("SystemSearchSetupAction.getResult() returning Collections.emptyList()");
         return Collections.emptyList();
     }
 

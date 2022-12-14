@@ -50,6 +50,7 @@ public class DisabledListSetupAction extends RhnAction {
     public static final String LIST_NAME = "disabledUserList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -81,7 +82,7 @@ public class DisabledListSetupAction extends RhnAction {
 
         DataResult dr = UserManager.disabledInOrg(user, pc);
 
-        dr.setElaborationParams(Collections.EMPTY_MAP);
+        dr.setElaborationParams(Collections.emptyMap());
         // if its a list action update the set and the selections
         if (ListTagHelper.getListAction(LIST_NAME, request) != null) {
             helper.execute(set, LIST_NAME, dr);

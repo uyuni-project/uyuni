@@ -36,6 +36,7 @@ public abstract class DispatchedAction extends RhnAction {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(
             ActionMapping mapping,
             ActionForm form,

@@ -87,8 +87,8 @@ public class OrgManager extends BaseManager {
         }
         SelectMode m = ModeFactory.getMode("Org_queries", "orgs_in_satellite");
 
-        return DataList.getDataList(m, Collections.EMPTY_MAP,
-                Collections.EMPTY_MAP);
+        return DataList.getDataList(m, Collections.emptyMap(),
+                Collections.emptyMap());
     }
 
     private static PermissionException getNoAdminError(Role role, String list) {
@@ -115,7 +115,7 @@ public class OrgManager extends BaseManager {
         params.put("org_id", orgIdIn);
 
         return DataList.getDataList(m, params,
-                Collections.EMPTY_MAP);
+                Collections.emptyMap());
     }
 
     /**
@@ -132,7 +132,7 @@ public class OrgManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Org_queries", "trust_overview");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIdIn);
-        return DataList.getDataList(m, params, Collections.EMPTY_MAP);
+        return DataList.getDataList(m, params, Collections.emptyMap());
     }
 
     /**
@@ -144,7 +144,7 @@ public class OrgManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("User_queries", "users_in_multiorg");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIdIn);
-        return DataList.getDataList(m, params, Collections.EMPTY_MAP);
+        return DataList.getDataList(m, params, Collections.emptyMap());
     }
 
     /**
@@ -159,7 +159,7 @@ public class OrgManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("cid", cid);
-        return DataList.getDataList(m, params, Collections.EMPTY_MAP);
+        return DataList.getDataList(m, params, Collections.emptyMap());
     }
 
     /**
@@ -169,8 +169,8 @@ public class OrgManager extends BaseManager {
     public static DataList allUsers() {
         SelectMode m = ModeFactory.getMode("User_queries",
                 "all_users_in_multiorg");
-        return DataList.getDataList(m, Collections.EMPTY_MAP,
-                Collections.EMPTY_MAP);
+        return DataList.getDataList(m, Collections.emptyMap(),
+                Collections.emptyMap());
     }
 
     /**
@@ -281,7 +281,7 @@ public class OrgManager extends BaseManager {
      */
     public static void checkOrgName(String newOrgName) throws ValidatorException {
         if (newOrgName == null ||
-                newOrgName.trim().length() == 0 ||
+                newOrgName.trim().isEmpty() ||
                 newOrgName.trim().length() < 3 ||
                 newOrgName.trim().length() > 128) {
             ValidatorException.raiseException("orgname.jsp.error");

@@ -46,6 +46,7 @@ public class MissingPackageSetupAction extends RhnAction implements Listable {
         new CompareSystemSetupAction();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -83,6 +84,7 @@ public class MissingPackageSetupAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         String type = context.getParam("sync", true);

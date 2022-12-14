@@ -38,6 +38,7 @@ public class NoScriptTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         HtmlTag input = new HtmlTag("input");
         input.setAttribute("type", HIDDEN);

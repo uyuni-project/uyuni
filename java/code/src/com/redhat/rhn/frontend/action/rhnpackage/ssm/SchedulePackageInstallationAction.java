@@ -70,6 +70,7 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -152,6 +153,7 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<EssentialServerDto> getResult(RequestContext context) {
         Long cid = context.getRequiredParam(RequestContext.CID);
         User user = context.getCurrentUser();

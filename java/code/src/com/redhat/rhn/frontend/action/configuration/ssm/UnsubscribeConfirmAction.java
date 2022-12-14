@@ -29,11 +29,13 @@ public class UnsubscribeConfirmAction extends BaseListAction {
     /*
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         return ConfigurationManager.getInstance().ssmSystemListForChannels(user, pcIn);
     }
 
+    @Override
     protected void processPageControl(PageControl pcIn) {
         pcIn.setFilter(true);
         pcIn.setFilterColumn("name");

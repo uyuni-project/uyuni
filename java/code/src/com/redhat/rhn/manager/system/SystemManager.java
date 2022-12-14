@@ -1610,7 +1610,7 @@ public class SystemManager extends BaseManager {
                 "activation_keys_for_server");
         Map<String, Object> params = new HashMap<>();
         params.put("server_id", serverIn.getId());
-        return makeDataResult(params, Collections.EMPTY_MAP, null, m,
+        return makeDataResult(params, Collections.emptyMap(), null, m,
                 ActivationKeyDto.class);
     }
 
@@ -1625,7 +1625,7 @@ public class SystemManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("System_queries", "system_entitlement_list");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
-        return makeDataResult(params, Collections.EMPTY_MAP, pc, m, SystemOverview.class);
+        return makeDataResult(params, Collections.emptyMap(), pc, m, SystemOverview.class);
     }
 
 
@@ -2987,7 +2987,7 @@ public class SystemManager extends BaseManager {
         SelectMode m =
                 ModeFactory.getMode("System_queries", mode);
         DataResult toReturn = m.execute(params);
-        return toReturn.size() > 0;
+        return !toReturn.isEmpty();
     }
 
     /**

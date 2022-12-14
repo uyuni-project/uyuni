@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.action.systems.SystemListAction;
  */
 public class SystemListActionTest extends BaseSystemListActionTestCase {
 
+    @Override
     protected BaseSystemListAction createAction() {
         return new SystemListAction();
     }

@@ -38,8 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Provides various utility functions for the ListTag, ColumnTag, and SpanTag
@@ -105,7 +105,7 @@ public class ListTagUtil {
     public static ListCommand getCurrentCommand(Tag caller, PageContext ctx) {
         ListTag parent = null;
         if (!(caller instanceof ListTag)) {
-            parent = (ListTag) BodyTagSupport.findAncestorWithClass(caller, ListTag.class);
+            parent = (ListTag) TagSupport.findAncestorWithClass(caller, ListTag.class);
         }
         else {
             parent = (ListTag) caller;
@@ -468,7 +468,7 @@ public class ListTagUtil {
      */
     public static boolean toBoolean(String value) {
         boolean retval = false;
-        if (value != null && value.length() > 0) {
+        if (value != null && !value.isEmpty()) {
             retval = Boolean.valueOf(value);
             if (!retval &&
                 (value.equalsIgnoreCase("t") ||
@@ -523,7 +523,7 @@ public class ListTagUtil {
             tmp.add(strtok.nextToken().trim());
         }
         String[] retval = null;
-        if (tmp.size() == 0) {
+        if (tmp.isEmpty()) {
             retval = new String[0];
         }
         else {
@@ -542,7 +542,7 @@ public class ListTagUtil {
      */
     public static void renderPaginationLinks(PageContext pageContext,
             String[] linkNames, Map links) throws JspException {
-        if (links.size() == 0) {
+        if (links.isEmpty()) {
             return;
         }
         ListTagUtil.write(pageContext,
@@ -609,7 +609,7 @@ public class ListTagUtil {
 
 
         List fields = filter.getFieldNames();
-        if (fields == null || fields.size() == 0) {
+        if (fields == null || fields.isEmpty()) {
             throw new JspException(
                     "ListFilter.getFieldNames() returned no field names");
         }
@@ -703,7 +703,7 @@ public class ListTagUtil {
     private static String makeNonPagedLink(HttpServletRequest request, String listName) {
         String url = (String) request.getAttribute("parentUrl");
         String queryString = request.getQueryString();
-        if (queryString != null && queryString.length() > 0) {
+        if (queryString != null && !queryString.isEmpty()) {
             url += "?";
             for (StringTokenizer strtok = new StringTokenizer(queryString, "&");
                     strtok.hasMoreTokens();) {

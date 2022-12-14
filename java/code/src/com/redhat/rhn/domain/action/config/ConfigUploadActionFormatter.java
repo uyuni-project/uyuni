@@ -44,6 +44,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
      * Shows the destination channels followed by the filenames.
      * @return The html notes string
      */
+    @Override
     protected String getNotesBody() {
         StringBuffer buffy = new StringBuffer();
         ConfigUploadAction action = (ConfigUploadAction)getAction();

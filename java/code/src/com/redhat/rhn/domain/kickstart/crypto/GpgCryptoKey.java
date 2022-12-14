@@ -23,6 +23,7 @@ public class GpgCryptoKey extends CryptoKey {
     *
     * @return if this is a GPG key
     */
+   @Override
    public boolean isGPG() {
        return true;
    }

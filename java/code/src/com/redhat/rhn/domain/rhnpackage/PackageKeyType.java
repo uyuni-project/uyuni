@@ -80,6 +80,7 @@ public class PackageKeyType extends BaseDomainHelper implements Comparable<Packa
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageKeyType o) {
         if (equals(o)) {
             return 0;

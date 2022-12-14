@@ -220,7 +220,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
     public void testNoEntitlements() {
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
-        assertTrue(dr.size() == 0);
+        assertTrue(dr.isEmpty());
         assertNull(request.getAttribute(SystemEntitlementsSetupAction.SHOW_COMMANDS));
         assertNotNull(request.getAttribute(SystemEntitlementsSetupAction.SHOW_NO_SYSTEMS));
     }
@@ -229,7 +229,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
     }
 
     /**
@@ -240,7 +240,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
     public void testEntitlementCountMessage() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        assertTrue(server.getEntitlements().size() > 0);
+        assertTrue(!server.getEntitlements().isEmpty());
 
         EntitlementServerGroup eGrp = null;
         for (EntitlementServerGroup sg : server.getEntitledGroups()) {

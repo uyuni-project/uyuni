@@ -52,10 +52,11 @@ public class UpdateCustomKeyAction extends RhnAction implements Listable {
     private final String MODIFIER_PARAM = "modifier";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         DynaActionForm form = (DynaActionForm)formIn;
@@ -122,6 +123,7 @@ public class UpdateCustomKeyAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} **/
+    @Override
     public  List getResult(RequestContext context) {
         User user  = context.getCurrentUser();
         Long cikid = context.getParamAsLong(CIKID_PARAM);

@@ -72,10 +72,11 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -148,7 +149,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
         }
 
         ActionMessages msgs = new ActionMessages();
-        if (actionChain == null && servers.size() > 0) {
+        if (actionChain == null && !servers.isEmpty()) {
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("channels.subscribe.target.systems.channel.scheduled",
                             servers.size(),
@@ -167,6 +168,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
      *
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         User user =  context.getCurrentUser();
         Long cid = context.getRequiredParam(RequestContext.CID);

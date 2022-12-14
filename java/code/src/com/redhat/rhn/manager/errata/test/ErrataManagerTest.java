@@ -322,7 +322,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         DataResult systems = ErrataManager.systemsAffected(user, a.getId(), pc);
         assertNotNull(systems);
         assertTrue(systems.isEmpty());
-        assertFalse(systems.size() > 0);
+        assertFalse(!systems.isEmpty());
 
         DataResult systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
         assertTrue(systems2.isEmpty());
@@ -353,14 +353,14 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List erratas = ErrataManager.lookupErrataByType(bugfix);
         outputErrataList(erratas);
         System.out.println("Got bugfixes: "  + erratas.size() + " time: " + st);
-        assertTrue(erratas.size() > 0);
+        assertTrue(!erratas.isEmpty());
         erratas = ErrataManager.lookupErrataByType(pea);
         outputErrataList(erratas);
         System.out.println("Got pea enhancments: "  + erratas.size() + " time: " + st);
-        assertTrue(erratas.size() > 0);
+        assertTrue(!erratas.isEmpty());
         erratas = ErrataManager.lookupErrataByType(security);
         outputErrataList(erratas);
-        assertTrue(erratas.size() > 0);
+        assertTrue(!erratas.isEmpty());
         System.out.println("Got security advisories: "  + erratas.size() + " time: " + st);
         st.stop();
         System.out.println("TIME: " + st.getTime());
@@ -417,7 +417,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<ErrataOverview> toClone = ErrataFactory
                 .relevantToOneChannelButNotAnother(original.getId(), cloned.getId());
         Set<Long> eids = ErrataManager.cloneChannelErrata(toClone, cloned.getId(), user);
-        assertTrue(eids.size() > 0);
+        assertTrue(!eids.isEmpty());
         assertTrue(new HashSet<>(eids).size() == eids.size());
     }
 

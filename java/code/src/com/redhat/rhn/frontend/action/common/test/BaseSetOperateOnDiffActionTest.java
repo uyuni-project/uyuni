@@ -51,7 +51,7 @@ public class BaseSetOperateOnDiffActionTest extends RhnPostMockStrutsTestCase {
             TestUtils.flushAndEvict(key);
         }
         assertTrue((ksdata.getDefaultRegTokens() == null ||
-                ksdata.getDefaultRegTokens().size() == 0));
+                ksdata.getDefaultRegTokens().isEmpty()));
         setRequestPathInfo("/kickstart/ActivationKeysSubmit");
         addSelectedItem(ActivationKeyTest.createTestActivationKey(user,
                 ServerFactoryTest.createTestServer(user)).getId());
@@ -65,7 +65,7 @@ public class BaseSetOperateOnDiffActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         verifyActionMessage("kickstart_activation_keys.added");
         assertTrue((ksdata.getDefaultRegTokens() != null &&
-                ksdata.getDefaultRegTokens().size() > 0));
+                !ksdata.getDefaultRegTokens().isEmpty()));
 
     }
 }

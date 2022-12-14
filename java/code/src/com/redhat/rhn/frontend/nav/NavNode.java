@@ -312,7 +312,7 @@ public class NavNode {
      * @return "best" most "proper" URL for this node
      */
     public String getPrimaryURL() {
-        if (urls != null && urls.size() > 0) {
+        if (urls != null && !urls.isEmpty()) {
             return urls.get(0);
         }
         throw new IndexOutOfBoundsException("attempt to ask for primary URL of " +

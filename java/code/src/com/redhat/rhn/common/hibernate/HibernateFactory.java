@@ -236,7 +236,7 @@ public abstract class HibernateFactory {
                                         Collection col, String colLabel) {
 
         if (col.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         ArrayList<Long> tmpList = new ArrayList<>();

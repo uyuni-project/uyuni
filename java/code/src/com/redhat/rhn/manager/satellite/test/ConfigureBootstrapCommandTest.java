@@ -35,6 +35,7 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
     public void testCreateCommand() throws Exception {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         cmd = new ConfigureBootstrapCommand(user) {
+            @Override
             protected Executor getExecutor() {
                 return new TestExecutor();
             }
@@ -57,6 +58,7 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
     */
     public class TestExecutor implements Executor {
 
+        @Override
         public int execute(String[] args) {
             if (args.length != 11) {
                 return -1;
@@ -99,10 +101,12 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
             }
         }
 
+        @Override
         public String getLastCommandOutput() {
             return null;
         }
 
+        @Override
         public String getLastCommandErrorMessage() {
             return null;
         }

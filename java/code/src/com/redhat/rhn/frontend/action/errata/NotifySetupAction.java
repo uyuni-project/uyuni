@@ -29,6 +29,7 @@ public class NotifySetupAction extends BaseErrataSetupAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

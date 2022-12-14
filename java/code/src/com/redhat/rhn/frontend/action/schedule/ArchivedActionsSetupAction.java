@@ -43,6 +43,7 @@ public class ArchivedActionsSetupAction extends BaseScheduledListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.ACTIONS_ARCHIVED;
     }
@@ -51,6 +52,7 @@ public class ArchivedActionsSetupAction extends BaseScheduledListAction {
     *
     * {@inheritDoc}
     */
+   @Override
    public List getResult(RequestContext context) {
        return ActionManager.archivedActions(context.getCurrentUser(), null);
    }
@@ -59,9 +61,10 @@ public class ArchivedActionsSetupAction extends BaseScheduledListAction {
     *
     * {@inheritDoc}
     */
+   @Override
    protected ActionForward handleSubmit(ActionMapping mapping,
-           ActionForm formIn, HttpServletRequest request,
-           HttpServletResponse response) {
+                                        ActionForm formIn, HttpServletRequest request,
+                                        HttpServletResponse response) {
        RequestContext requestContext = new RequestContext(request);
        StrutsDelegate strutsDelegate = getStrutsDelegate();
 

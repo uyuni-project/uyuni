@@ -74,6 +74,7 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
@@ -113,6 +114,7 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
 
         HttpServletRequest request = context.getRequest();

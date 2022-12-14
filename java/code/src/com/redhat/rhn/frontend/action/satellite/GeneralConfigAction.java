@@ -78,6 +78,7 @@ public class GeneralConfigAction extends BaseConfigAction {
      */
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -190,6 +191,7 @@ public class GeneralConfigAction extends BaseConfigAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getCommandClassName() {
         return Config.get().getString("web.com.redhat.rhn.frontend." +
                 "action.satellite.GeneralConfigAction.command",

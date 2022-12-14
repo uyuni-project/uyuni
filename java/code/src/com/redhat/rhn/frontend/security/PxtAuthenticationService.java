@@ -119,6 +119,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean skipCsfr(HttpServletRequest request) {
         return requestURIdoesLogin(request) || requestPostCsfrWhitelist(request);
     }
@@ -126,6 +127,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean validate(HttpServletRequest request, HttpServletResponse response) {
         if (requestURIRequiresAuthentication(request)) {
             if (isAuthenticationRequired(request)) {
@@ -159,6 +161,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void redirectToLogin(HttpServletRequest request, HttpServletResponse response)
         throws ServletException {
 
@@ -197,8 +200,9 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void redirectTo(HttpServletRequest request, HttpServletResponse response,
-            String path)
+                           String path)
         throws ServletException {
             response.setHeader("Location", path);
             response.setStatus(response.SC_SEE_OTHER);
@@ -207,6 +211,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void invalidate(HttpServletRequest request, HttpServletResponse response) {
         pxtDelegate.invalidatePxtSession(request, response);
     }

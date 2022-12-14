@@ -44,14 +44,16 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User user, ActionForm form,
-            HttpServletRequest request) {
+                                       HttpServletRequest request) {
         return ConfigurationManager.getInstance().ssmChannelListForSubscribe(user, null);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS_RANKING;
     }
@@ -59,6 +61,7 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("ssm.config.subscribe.jsp.continue", "proceed");
     }
@@ -66,8 +69,9 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm form,
-            HttpServletRequest request, Map<String, Object> params) {
+                                   HttpServletRequest request, Map<String, Object> params) {
         //no-op
     }
 
@@ -122,6 +126,7 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected ActionMessage getNoScriptMessage() {
        return new ActionMessage(
                "common.config.subscription.jsp.error.nojavascript");

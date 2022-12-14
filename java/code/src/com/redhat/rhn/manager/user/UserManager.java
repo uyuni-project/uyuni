@@ -887,7 +887,7 @@ public class UserManager extends BaseManager {
         params.put("user_id", user.getId());
 
         DataResult<SystemSearchResult> dr = m.execute(params, ids);
-        dr.setElaborationParams(Collections.EMPTY_MAP);
+        dr.setElaborationParams(Collections.emptyMap());
         return dr;
     }
 
@@ -934,7 +934,7 @@ public class UserManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         DataResult dr = m.execute(params);
         dr.setTotalSize(dr.size());
-        if (pc != null && dr.size() > 0) {
+        if (pc != null && !dr.isEmpty()) {
                 dr = dr.subList(pc.getStart() - 1, pc.getEnd());
                 dr.elaborate(new HashMap());
         }

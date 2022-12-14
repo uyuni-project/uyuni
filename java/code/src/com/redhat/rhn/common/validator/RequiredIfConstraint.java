@@ -87,9 +87,9 @@ public class RequiredIfConstraint extends ParsedConstraint {
                  * other field is not null.
                  */
                 // required tag doesn't contain a value
-                if ((fieldValue == null || fieldValue.length() == 0) &&
+                if ((fieldValue == null || fieldValue.isEmpty()) &&
                             // but something is in the required field
-                            (requiredIfValue != null && requiredIfValue.length() > 0)) {
+                            (requiredIfValue != null && !requiredIfValue.isEmpty())) {
                     required = true; // set this required = true
                 }
                 else if (requiredIfValue.equals(fieldValue)) {

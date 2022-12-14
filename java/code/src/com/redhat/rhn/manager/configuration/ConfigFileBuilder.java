@@ -84,7 +84,7 @@ public class ConfigFileBuilder {
             User user, String path, ConfigChannel cc) {
         ConfigFile file = null;
 
-        if (path != null && path.trim().length() > 0) {
+        if (path != null && !path.trim().isEmpty()) {
             file = ConfigurationManager.getInstance().
                 lookupConfigFile(user, cc.getId(), path);
         }

@@ -26,10 +26,12 @@ import java.util.Map;
  */
 
 public class PrimitiveBuilder implements ManifestFactoryBuilder {
+    @Override
     public String getManifestFilename() {
         return "factory-manifest.xml";
     }
 
+    @Override
     public Object createObject(Map params) {
         String type = (String)params.get("type");
         if (type == null) {

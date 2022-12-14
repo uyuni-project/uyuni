@@ -75,13 +75,14 @@ public class TreeDeleteOperation extends BaseTreeEditOperation {
      * store() here actually does a remove operation.
      * It is done to reuse code from BaseTreeEditOperation and BaseTreeAction
      */
+    @Override
     public ValidatorError store() {
 
         ValidatorError error = null;
         List<KickstartData> profiles = KickstartFactory.lookupKickstartDatasByTree(
             this.tree);
 
-        if (profiles != null && profiles.size() > 0) {
+        if (profiles != null && !profiles.isEmpty()) {
 
             if (deleteProfiles) {
                 for (KickstartData profile : profiles) {
@@ -108,6 +109,7 @@ public class TreeDeleteOperation extends BaseTreeEditOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected CobblerCommand getCobblerCommand() {
         return new CobblerDistroDeleteCommand(this.tree, this.user);
     }

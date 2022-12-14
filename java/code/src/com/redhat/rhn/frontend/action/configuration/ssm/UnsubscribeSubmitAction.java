@@ -39,6 +39,7 @@ public class UnsubscribeSubmitAction extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User userIn,
                                        ActionForm formIn,
                                        HttpServletRequest requestIn) {
@@ -48,6 +49,7 @@ public class UnsubscribeSubmitAction extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS;
     }
@@ -55,6 +57,7 @@ public class UnsubscribeSubmitAction extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> mapIn) {
         mapIn.put("unsubscribe.jsp.unsubscribe", "unsubscribe");
     }
@@ -62,6 +65,7 @@ public class UnsubscribeSubmitAction extends BaseSetOperateOnSelectedItemsAction
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest requestIn,
                                    Map<String, Object> paramsIn) {

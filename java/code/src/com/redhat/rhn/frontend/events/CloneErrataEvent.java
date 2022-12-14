@@ -65,6 +65,7 @@ public class CloneErrataEvent implements EventDatabaseMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toText() {
         // really a noop
         return "";
@@ -83,6 +84,7 @@ public class CloneErrataEvent implements EventDatabaseMessage {
      *
      * {@inheritDoc}
      */
+    @Override
     public Transaction getTransaction() {
         return txn;
     }
@@ -128,6 +130,7 @@ public class CloneErrataEvent implements EventDatabaseMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getUserId() {
         return userId;
     }

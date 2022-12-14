@@ -287,7 +287,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
             insert("foobar" + TestUtils.randomString(), i);
         }
         SelectMode m = ModeFactory.getMode("test_queries", "find_all_in_table");
-        DataResult<AdvDataSourceDto> dr = m.execute(Collections.EMPTY_MAP);
+        DataResult<AdvDataSourceDto> dr = m.execute(Collections.emptyMap());
         dr.elaborate();
         for (AdvDataSourceDto row : dr) {
             assertNotNull(row.getTestColumn());
@@ -306,7 +306,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         }
         SelectMode m = ModeFactory.getMode("test_queries", "find_all_in_table");
         m.setMaxRows(10);
-        DataResult<AdvDataSourceDto> dr = m.execute(Collections.EMPTY_MAP);
+        DataResult<AdvDataSourceDto> dr = m.execute(Collections.emptyMap());
         assertEquals(10, dr.size());
         dr.elaborate();
         assertTrue(dr.size() <= 10);
@@ -332,6 +332,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     }
 
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {

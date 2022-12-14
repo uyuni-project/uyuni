@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.recurringactions;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
@@ -217,7 +218,7 @@ public class RecurringActionManager {
      */
     public static RecurringAction saveAndSchedule(RecurringAction action, User user) throws TaskomaticApiException {
         validateAction(action, user);
-        RecurringAction saved = (RecurringAction) RecurringActionFactory.getSession().merge(action);
+        RecurringAction saved = (RecurringAction) HibernateFactory.getSession().merge(action);
         taskomaticApi.scheduleRecurringAction(saved, user);
         return saved;
     }

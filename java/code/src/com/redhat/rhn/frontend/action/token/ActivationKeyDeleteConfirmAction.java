@@ -35,6 +35,7 @@ public class ActivationKeyDeleteConfirmAction extends RhnAction {
     private static final String DELETE_KEY = "activation-key.jsp.delete-key";
     private static final String DELETED_MESSAGE_KEY = "activation-key.java.deleted";
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

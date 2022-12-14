@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 public class NotifyAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

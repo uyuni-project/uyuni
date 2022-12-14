@@ -24,6 +24,7 @@ public class LocalConfigFileNameDto extends ConfigFileNameDto {
      *
      * {@inheritDoc}
      */
+    @Override
     public String getSelectionKey() {
         return String.valueOf(getLocalConfigFileId());
     }

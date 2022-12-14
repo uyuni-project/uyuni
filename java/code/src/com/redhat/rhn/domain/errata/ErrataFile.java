@@ -155,6 +155,7 @@ public class ErrataFile extends BaseDomainHelper {
      * Created
      * @param createdIn created
      */
+    @Override
     public void setCreated(Date createdIn) {
         created = createdIn;
     }
@@ -163,6 +164,7 @@ public class ErrataFile extends BaseDomainHelper {
      * Created
      * @return created
      */
+    @Override
     public Date getCreated() {
         return created;
     }
@@ -171,6 +173,7 @@ public class ErrataFile extends BaseDomainHelper {
      * Modified
      * @param mod modified
      */
+    @Override
     public void setModified(Date mod) {
         modified = mod;
     }
@@ -179,6 +182,7 @@ public class ErrataFile extends BaseDomainHelper {
      * Modified
      * @return modified
      */
+    @Override
     public Date getModified() {
         return modified;
     }

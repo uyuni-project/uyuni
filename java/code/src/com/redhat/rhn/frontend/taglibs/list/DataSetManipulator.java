@@ -102,8 +102,8 @@ public class DataSetManipulator {
         filterBy = request.getParameter(filterByKey);
         filterValue = ListTagHelper.getFilterValue(request, uniqueName);
 
-        if (f == null || filterBy == null || filterBy.length() == 0 ||
-                filterValue == null || filterValue.length() == 0) {
+        if (f == null || filterBy == null || filterBy.isEmpty() ||
+                filterValue == null || filterValue.isEmpty()) {
             return;
         }
         filter = f;
@@ -299,7 +299,7 @@ public class DataSetManipulator {
      */
     public Map getPaginationLinks() {
         Map links = new HashMap();
-        if (pageSize > 0 && dataset.size() > 0 && getTotalDataSetSize() > pageSize) {
+        if (pageSize > 0 && !dataset.isEmpty() && getTotalDataSetSize() > pageSize) {
             String pageLinkName = "list_" + uniqueName + "_page";
             String[] data = new String[4];
             if (!isFirstPage()) {
@@ -364,7 +364,7 @@ public class DataSetManipulator {
      * @return boolean
      */
     public boolean isListEmpty() {
-        return dataset == null || dataset.size() == 0;
+        return dataset == null || dataset.isEmpty();
     }
 
     /**

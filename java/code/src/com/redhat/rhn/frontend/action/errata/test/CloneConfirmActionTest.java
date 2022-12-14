@@ -42,6 +42,7 @@ import java.util.List;
  */
 public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

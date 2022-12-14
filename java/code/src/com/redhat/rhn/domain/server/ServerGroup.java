@@ -67,6 +67,7 @@ public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
      * Getter for name
      * @return String to get
      */
+    @Override
     public String getName() {
         return this.name;
     }

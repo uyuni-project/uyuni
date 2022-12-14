@@ -219,6 +219,7 @@ public class RendererTest extends RhnBaseTestCase {
          * @param depth the current depth
          * @return boolean whether or not to render
          */
+        @Override
         public boolean canRender(NavNode node, int depth) {
             return false;
         }
@@ -236,6 +237,7 @@ public class RendererTest extends RhnBaseTestCase {
          * @param depth the current depth
          * @return boolean whether or not to render
          */
+        @Override
         public boolean canRender(NavNode node, int depth) {
             return true;
         }

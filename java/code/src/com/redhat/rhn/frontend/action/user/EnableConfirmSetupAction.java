@@ -54,6 +54,7 @@ public class EnableConfirmSetupAction extends RhnListAction {
     public static final String LIST_NAME = "userConfirmList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -87,7 +88,7 @@ public class EnableConfirmSetupAction extends RhnListAction {
 
         clampListBounds(pc, request, user);
         DataResult dr = UserManager.usersInSet(user, "user_list", pc);
-        dr.setElaborationParams(Collections.EMPTY_MAP);
+        dr.setElaborationParams(Collections.emptyMap());
         request.setAttribute(RequestContext.PAGE_LIST, dr);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 

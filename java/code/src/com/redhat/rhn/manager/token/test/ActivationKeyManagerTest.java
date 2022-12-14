@@ -55,6 +55,7 @@ import java.util.Set;
 public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     private ActivationKeyManager manager;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

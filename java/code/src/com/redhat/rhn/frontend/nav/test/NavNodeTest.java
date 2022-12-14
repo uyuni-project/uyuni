@@ -38,6 +38,7 @@ public class NavNodeTest extends RhnBaseTestCase {
 
     private NavNode node;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         node = new NavNode();

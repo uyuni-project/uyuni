@@ -107,6 +107,7 @@ public class PackageProvider extends BaseDomainHelper implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageProvider o) {
         if (equals(o)) {
             return 0;

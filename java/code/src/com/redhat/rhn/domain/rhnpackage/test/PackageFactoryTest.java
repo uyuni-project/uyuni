@@ -147,7 +147,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        Package pack = PackageTest.createTestPackage(user.getOrg());
 
        List<PackageSource> list = PackageFactory.lookupPackageSources(pack);
-       assertTrue(list.size() > 0);
+       assertTrue(!list.isEmpty());
 
    }
 

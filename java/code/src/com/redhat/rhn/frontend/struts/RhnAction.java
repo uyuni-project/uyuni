@@ -143,6 +143,7 @@ public abstract class RhnAction extends Action {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void saveMessages(HttpServletRequest request, ActionMessages messages) {
         getStrutsDelegate().saveMessages(request, messages);
      }

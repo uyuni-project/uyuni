@@ -237,6 +237,7 @@ public class MissingPackageAction extends BaseProfilesAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Map getKeyMethodMap() {
         Map map = new HashMap();
         map.put("missingpkgs.jsp.selectnewpackageprofile", "selectNewPackageProfile");

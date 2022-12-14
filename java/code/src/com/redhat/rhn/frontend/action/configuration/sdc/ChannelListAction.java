@@ -32,6 +32,7 @@ public class ChannelListAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pc) {
         User user = rctxIn.getCurrentUser();
         Server server = rctxIn.lookupAndBindServer();
@@ -39,6 +40,7 @@ public class ChannelListAction extends BaseSetListAction {
         return ConfigurationManager.getInstance().listChannelsForSystem(user, server, pc);
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilter(true);
         pc.setFilterColumn("name");
@@ -49,6 +51,7 @@ public class ChannelListAction extends BaseSetListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS_TO_UNSUBSCRIBE;
     }

@@ -84,11 +84,13 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                      "FROM FOOBAR";
 
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         session = HibernateFactory.getSession();
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         session = null;

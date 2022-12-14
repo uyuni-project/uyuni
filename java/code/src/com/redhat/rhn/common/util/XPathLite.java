@@ -70,7 +70,7 @@ public class XPathLite {
         if (current != null) {
             return current.getChildren();
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     private Element findChild(Element current, String name) {

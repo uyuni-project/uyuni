@@ -54,6 +54,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUserId(Long id) {
         uid = id;
     }
@@ -61,6 +62,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getUserId() {
         return uid;
     }
@@ -68,6 +70,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLabel(String lbl) {
         label = lbl;
     }
@@ -75,6 +78,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLabel() {
         return label;
     }
@@ -83,6 +87,7 @@ public class RhnSetImpl implements RhnSet {
      * Adds an element to the set.
      * @param element Element to be added to the set.
      */
+    @Override
     public void addElement(RhnSetElement element) {
         elements.add(element);
     }
@@ -92,11 +97,13 @@ public class RhnSetImpl implements RhnSet {
      * @param elem Element one
      * @param elemTwo Element two
      */
+    @Override
     public void addElement(Long elem, Long elemTwo) {
         addElement(new RhnSetElement(getUserId(), getLabel(), elem, elemTwo));
     }
 
     /** {@inheritDoc} */
+    @Override
     public void addElement(Long elem, Long elemTwo, Long elemThree) {
        addElement(new RhnSetElement(getUserId(), getLabel(), elem, elemTwo, elemThree));
     }
@@ -105,6 +112,7 @@ public class RhnSetImpl implements RhnSet {
      * Adds an element to the set.
      * @param elem Element one
      */
+    @Override
     public void addElement(Long elem) {
         addElement(elem, null);
     }
@@ -112,8 +120,9 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addElement(String elem) {
-        if (elem != null && elem.length() > 0) {
+        if (elem != null && !elem.isEmpty()) {
             addElement(new RhnSetElement(getUserId(), getLabel(), elem));
         }
 
@@ -124,6 +133,7 @@ public class RhnSetImpl implements RhnSet {
      * Adds an array of elements to the set.
      * @param elems String [] - array of elements to add
      */
+    @Override
     public void addElements(String [] elems) {
         if (elems == null) {
             return;
@@ -138,13 +148,14 @@ public class RhnSetImpl implements RhnSet {
      * Removes an array of elements to the set.
      * @param elems String [] - array of elements to add
      */
+    @Override
     public void removeElements(String [] elems) {
         if (elems == null) {
             return;
         }
 
         for (String elemIn : elems) {
-            if (elemIn != null && elemIn.length() > 0) {
+            if (elemIn != null && !elemIn.isEmpty()) {
                 RhnSetElement elem = new RhnSetElement(getUserId(),
                         getLabel(), elemIn);
                 removeElement(elem);
@@ -155,6 +166,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeElement(RhnSetElement element) {
         elements.remove(element);
     }
@@ -162,6 +174,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeElement(Long elem, Long elemTwo) {
         removeElement(new RhnSetElement(getUserId(), getLabel(), elem, elemTwo));
     }
@@ -169,6 +182,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeElement(Long elem) {
         removeElement(new RhnSetElement(getUserId(), getLabel(), elem, null));
     }
@@ -176,6 +190,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() {
         elements = new HashSet<>();
     }
@@ -183,6 +198,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<RhnSetElement> getElements() {
         return elements;
     }
@@ -190,6 +206,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<Long> getElementValues() {
         Set<Long> values = new HashSet<>();
         for (RhnSetElement element : elements) {
@@ -201,6 +218,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains(RhnSetElement e) {
         return elements.contains(e);
     }
@@ -208,6 +226,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains(Long elem, Long elemTwo) {
         return elements.contains(new RhnSetElement(getUserId(), getLabel(),
                 elem, elemTwo));
@@ -216,6 +235,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains(Long elem) {
         return elements.contains(new RhnSetElement(getUserId(), getLabel(), elem, null));
     }
@@ -223,6 +243,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int size() {
         return elements.size();
     }
@@ -230,6 +251,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEmpty() {
         return elements.isEmpty();
     }
@@ -294,6 +316,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean add(Object e) {
         if (e instanceof String) {
             addElement((String)e);
@@ -311,6 +334,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean addAll(Collection c) {
         for (Object o : c) {
             add(o);
@@ -321,6 +345,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean contains(Object o) {
         if (o instanceof String) {
             return elements.contains(new RhnSetElement(this.getUserId(),
@@ -336,6 +361,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean containsAll(Collection c) {
         return elements.containsAll(c);
     }
@@ -343,6 +369,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Iterator<RhnSetElement> iterator() {
         return elements.iterator();
     }
@@ -350,6 +377,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove(Object o) {
         return elements.remove(o);
     }
@@ -387,6 +415,7 @@ public class RhnSetImpl implements RhnSet {
      * removes a collection of RhnSetElemnets from the set
      * {@inheritDoc}
      */
+    @Override
     public boolean removeAll(Collection c) {
         return elements.removeAll(c);
     }
@@ -395,6 +424,7 @@ public class RhnSetImpl implements RhnSet {
      * retains a collection of RhnSetElemnets from the set
      * {@inheritDoc}
      */
+    @Override
     public boolean retainAll(Collection c) {
         return elements.retainAll(c);
     }
@@ -402,6 +432,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object[] toArray() {
         return elements.toArray();
     }
@@ -409,6 +440,7 @@ public class RhnSetImpl implements RhnSet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object[] toArray(Object[] a) {
         return elements.toArray(a);
     }

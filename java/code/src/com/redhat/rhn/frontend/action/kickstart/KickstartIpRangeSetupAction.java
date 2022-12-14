@@ -43,10 +43,11 @@ import javax.servlet.http.HttpServletResponse;
 public class KickstartIpRangeSetupAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();

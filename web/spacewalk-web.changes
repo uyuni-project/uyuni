@@ -4,6 +4,12 @@
   spacewalk-web
 
 -------------------------------------------------------------------
+Tue Dec 13 13:30:49 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Prevent proxy data from being logged (bsc#1205339)
+
+-------------------------------------------------------------------
 Fri Nov 18 15:14:52 CET 2022 - jgonzalez@suse.com
 
 - version 4.4.3-1

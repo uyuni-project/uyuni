@@ -63,6 +63,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map getMap() {
         return actual;
     }
@@ -99,6 +100,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      * @param name Name to be associated.
      * @param value Value to associate with name.
      */
+    @Override
     public void set(String name, Object value) {
         // Nothin to do here if we are inserting a
         // null value.
@@ -152,6 +154,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      * @param name Property whose value you seek.
      * @return Object value found for given name.
      */
+    @Override
     public Object get(String name) {
         return actual.get(name);
     }
@@ -159,6 +162,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * Verifies the object received the expected values.
      */
+    @Override
     public void verify() {
         // need to compare the values in the expected list with
         // those of the actual list.
@@ -188,6 +192,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasExpectations() {
         return !expected.isEmpty();
     }
@@ -195,6 +200,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setExpectNothing() {
         expectNothing = true;
     }
@@ -202,6 +208,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFailOnVerify() {
         // do nothing
     }

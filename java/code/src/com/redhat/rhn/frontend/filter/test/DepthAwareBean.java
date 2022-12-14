@@ -46,6 +46,7 @@ public class DepthAwareBean implements DepthAware {
     /**
      * {@inheritDoc}
      */
+    @Override
     public long depth() {
         // TODO Auto-generated method stub
         return depth;

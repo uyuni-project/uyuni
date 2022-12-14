@@ -1128,7 +1128,7 @@ public class ErrataFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("eid", eid);
         DataResult<ErrataOverview> results = mode.execute(params);
-        if (results.size() == 0) {
+        if (results.isEmpty()) {
             return null;
         }
         results.elaborate();
@@ -1145,7 +1145,7 @@ public class ErrataFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("advisory", advisory);
         DataResult<ErrataOverview> results = mode.execute(params);
-        if (results.size() == 0) {
+        if (results.isEmpty()) {
             return null;
         }
         results.elaborate();

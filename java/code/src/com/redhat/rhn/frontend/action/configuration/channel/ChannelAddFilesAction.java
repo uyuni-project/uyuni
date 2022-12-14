@@ -29,6 +29,7 @@ public class ChannelAddFilesAction extends BaseAddFilesAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ConfigChannel getConfigChannel(HttpServletRequest requestIn) {
         return ConfigActionHelper.getChannel(requestIn);
     }
@@ -36,6 +37,7 @@ public class ChannelAddFilesAction extends BaseAddFilesAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequest(HttpServletRequest requestIn) {
         ConfigActionHelper.setupRequestAttributes(new RequestContext(requestIn),
                 getConfigChannel(requestIn));

@@ -64,7 +64,7 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
             log.error("error when writing the hosts file", e);
         }
         finally {
-            if (hostToUpdate.size() > 0) {
+            if (!hostToUpdate.isEmpty()) {
                 try {
                     String[] cmd = {"systemctl", "is-active", "--quiet", "ca-certificates.path"};
                     executeExtCmd(cmd);

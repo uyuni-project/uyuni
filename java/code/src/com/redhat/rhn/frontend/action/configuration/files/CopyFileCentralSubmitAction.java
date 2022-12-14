@@ -35,6 +35,7 @@ public class CopyFileCentralSubmitAction extends BaseCopyFileSubmitAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User userIn,
                                        ActionForm formIn,
                                        HttpServletRequest requestIn) {
@@ -47,14 +48,17 @@ public class CopyFileCentralSubmitAction extends BaseCopyFileSubmitAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS;
     }
 
+    @Override
     protected String getLabel() {
         return ConfigChannelType.normal().getLabel();
     }
 
+    @Override
     protected ConfigChannel getChannelFromElement(User usr, Long anId) {
         return ConfigurationManager.getInstance()
             .lookupConfigChannel(usr, anId);

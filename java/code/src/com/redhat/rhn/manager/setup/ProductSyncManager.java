@@ -391,7 +391,7 @@ public class ProductSyncManager {
                 TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channelLabel);
-        if (selector.execute(params).size() > 0) {
+        if (!selector.execute(params).isEmpty()) {
             return new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
         }
 

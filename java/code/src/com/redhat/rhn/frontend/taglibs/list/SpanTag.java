@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.taglibs.list;
 
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
@@ -72,6 +73,7 @@ public class SpanTag extends TagSupport {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public void release() {
         style = null;
         url = null;
@@ -83,6 +85,7 @@ public class SpanTag extends TagSupport {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         ListCommand cmd = ListTagUtil.getCurrentCommand(this, pageContext);
         ListTag parent = (ListTag) TagSupport.findAncestorWithClass(this, ListTag.class);
@@ -92,7 +95,7 @@ public class SpanTag extends TagSupport {
         else if (cmd.equals(ListCommand.BEFORE_RENDER) && role.equals("footer")) {
             renderFooter(parent);
         }
-        return TagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     private void renderHeader(ListTag parent) throws JspException {

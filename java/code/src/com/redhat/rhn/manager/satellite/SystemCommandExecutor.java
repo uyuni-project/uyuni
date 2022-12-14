@@ -59,6 +59,7 @@ public class SystemCommandExecutor implements Executor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int execute(String[] args) {
         if (logger.isDebugEnabled()) {
             logger.debug("execute(String[] args={}) - start", Arrays.asList(args));
@@ -77,7 +78,7 @@ public class SystemCommandExecutor implements Executor {
             }
 
             lastCommandError = inputStreamToString(p.getErrorStream());
-            if (lastCommandError != null && lastCommandError.trim().length() > 0) {
+            if (lastCommandError != null && !lastCommandError.trim().isEmpty()) {
                 String msg1 = "Error encountered executing (args=" +
                         Arrays.asList(args) + ")";
                 String msg2 = "Error message from process: " + lastCommandError;
@@ -118,6 +119,7 @@ public class SystemCommandExecutor implements Executor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLastCommandOutput() {
         return lastCommandOutput;
     }
@@ -125,6 +127,7 @@ public class SystemCommandExecutor implements Executor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLastCommandErrorMessage() {
         return lastCommandError;
     }

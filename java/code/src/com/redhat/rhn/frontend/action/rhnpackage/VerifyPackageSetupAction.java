@@ -27,6 +27,7 @@ public class VerifyPackageSetupAction extends BaseSystemPackagesAction {
      * @param server The system.
      * @return List of packages that can be installed..
      */
+    @Override
     protected DataResult getDataResult(Server server) {
         return PackageManager.systemPackageList(server.getId(), null);
     }

@@ -57,8 +57,9 @@ public class LocalRevisionDeployAction extends RhnAction {
     public static final String DEPLOYABLE = "deployable";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         Map params = makeParamMap(request);
@@ -103,7 +104,7 @@ public class LocalRevisionDeployAction extends RhnAction {
         ConfigChannel cc = cf.getConfigChannel();
         if (cc.isLocalChannel() || cc.isSandboxChannel()) {
             List infos = ConfigurationManager.getInstance().getSystemInfo(usr, cc);
-            if (infos != null && infos.size() > 0) {
+            if (infos != null && !infos.isEmpty()) {
                 long srvId = ((ConfigSystemDto)infos.get(0)).getId();
                 srv = ServerFactory.lookupById(srvId);
             }
@@ -129,7 +130,7 @@ public class LocalRevisionDeployAction extends RhnAction {
         if (cc.isLocalChannel()) {
             DataResult dr = ConfigurationManager.getInstance().getSuccesfulDeploysTo(usr,
                     cf.getConfigFileName(), srv);
-            if (dr != null && dr.size() > 0) {
+            if (dr != null && !dr.isEmpty()) {
                 request.setAttribute(LAST_DEPLOY, dr.get(0));
             }
         }

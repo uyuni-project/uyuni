@@ -41,6 +41,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
     private SlaveHandler handler = new SlaveHandler();
     private String slaveName;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

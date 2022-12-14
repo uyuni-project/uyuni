@@ -37,6 +37,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -66,7 +67,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         ksdata = (KickstartData) reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
-        assertTrue(ksdata.getScripts().size() > 0);
+        assertTrue(!ksdata.getScripts().isEmpty());
     }
 
     @Test
@@ -83,7 +84,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         ksdata = (KickstartData) reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
-        assertTrue(ksdata.getScripts().size() > 0);
+        assertTrue(!ksdata.getScripts().isEmpty());
     }
 
     @Test

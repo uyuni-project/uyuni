@@ -67,10 +67,11 @@ public class ChannelOverviewTasks extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping map,
-            ActionForm form,
-            HttpServletRequest req,
-            HttpServletResponse resp) throws Exception {
+                                 ActionForm form,
+                                 HttpServletRequest req,
+                                 HttpServletResponse resp) throws Exception {
 
         Map params = makeParamMap(req);
         String mode = req.getParameter(MODE_PARAM);
@@ -162,7 +163,7 @@ public class ChannelOverviewTasks extends RhnAction {
         DataResult systems = mgr.listChannelSystems(usr, cc, null);
         DataResult revs = mgr.listCurrentFiles(usr, cc, null);
 
-        if (systems.size() == 0 || revs.size() == 0) {
+        if (systems.isEmpty() || revs.isEmpty()) {
             createErrorMessage(req, "comparetask.error.emptysets", null);
             return;
         }
@@ -191,6 +192,7 @@ public class ChannelOverviewTasks extends RhnAction {
         makeMessage(systems.size(), req);
     }
 
+    @Override
     protected Map makeParamMap(HttpServletRequest req) {
         Map m = new HashMap();
         ConfigChannel cc = ConfigActionHelper.getChannel(req);

@@ -35,6 +35,7 @@ public class Copy2SystemsAction extends BaseCopyToAction {
      * Return the list of systems whose local-channels this user can copy files to
      * {@inheritDoc}
      */
+    @Override
     public List getData(HttpServletRequest req) {
         RequestContext ctx = new RequestContext(req);
         User user = ctx.getCurrentUser();
@@ -47,6 +48,7 @@ public class Copy2SystemsAction extends BaseCopyToAction {
      * config-channel is the local channel for that system
      * {@inheritDoc}
      */
+    @Override
     public ConfigChannel getDestinationFromId(Long destId) {
         Server s = ServerFactory.lookupById(destId);
         return s.getLocalOverride();
@@ -56,6 +58,7 @@ public class Copy2SystemsAction extends BaseCopyToAction {
      * JSP is showing systems
      * {@inheritDoc}
      */
+    @Override
     public String getJspLabel() {
         return "systems";
     }
@@ -64,6 +67,7 @@ public class Copy2SystemsAction extends BaseCopyToAction {
      * The RhnSet we use to handle selection is the CONFIG_SYSTEMS set
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
@@ -71,6 +75,7 @@ public class Copy2SystemsAction extends BaseCopyToAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSuccessKey(int numFiles, int numChannels) {
         if (numFiles == 1 && numChannels == 1) {
             return "copy2systems.jsp.success.1x1";

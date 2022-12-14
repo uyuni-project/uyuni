@@ -45,10 +45,11 @@ public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         if (context.wasDispatched("ssm.delete.systems.confirmbutton")) {
             return handleConfirm(context, mapping);
@@ -94,6 +95,7 @@ public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext contextIn) {
         return SystemManager.inSet(contextIn.getCurrentUser(),
                                         RhnSetDecl.SYSTEMS.getLabel());

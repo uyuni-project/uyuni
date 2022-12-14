@@ -41,6 +41,7 @@ public class RecentSystemsRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         DataResult<SystemOverview> rdr = SystemManager.registeredList(user, pc, 30);
         String registeredSystemsCSSTable = null;
@@ -58,6 +59,7 @@ public class RecentSystemsRenderer extends BaseFragmentRenderer {
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
     }
 
+    @Override
     protected String getPageUrl() {
         return "/WEB-INF/pages/common/fragments/yourrhn/recentlyRegistered.jsp";
     }

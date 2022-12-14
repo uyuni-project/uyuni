@@ -23,6 +23,7 @@ import com.redhat.rhn.manager.kickstart.crypto.CreateCryptoKeyCommand;
  */
 public class CryptoKeyCreateAction extends BaseCryptoKeyEditAction {
 
+    @Override
     protected BaseCryptoKeyCommand getCommand(RequestContext ctx) {
         return new CreateCryptoKeyCommand(ctx.getCurrentUser().getOrg());
     }

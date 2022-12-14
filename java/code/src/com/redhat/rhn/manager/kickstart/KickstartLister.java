@@ -155,7 +155,7 @@ public class KickstartLister extends BaseManager {
         fakeScript.setEditable(false);
         fakeScript.setChroot("y");
 
-        if (scripts.size() != 0) {
+        if (!scripts.isEmpty()) {
             scripts.add(fakeScript);
             Collections.sort(scripts);
         }
@@ -233,7 +233,7 @@ public class KickstartLister extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgIn.getId());
         DataResult<ActivationKeyDto>  returnDataResult = makeDataResult(params,
-                                                    Collections.EMPTY_MAP, pc, m);
+                                                    Collections.emptyMap(), pc, m);
 
         logger.debug("activationKeysForKickstartProfile(Org, PageControl) - end - return value={}", returnDataResult);
         return returnDataResult;

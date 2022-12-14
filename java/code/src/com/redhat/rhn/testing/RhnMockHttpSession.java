@@ -44,6 +44,7 @@ public class RhnMockHttpSession extends MockHttpSession {
      * @param name Name of attribute whose value is sought.
      * @return Object value of attribute with given name.
      */
+    @Override
     public Object getAttribute(String name) {
         return attributes.get(name);
     }
@@ -53,6 +54,7 @@ public class RhnMockHttpSession extends MockHttpSession {
      * @param name attribute name
      * @param value attribute value
      */
+    @Override
     public void setAttribute(String name, Object value) {
         attributes.put(name, value);
     }
@@ -66,6 +68,7 @@ public class RhnMockHttpSession extends MockHttpSession {
      * Removes an attribute from the session
      * @param name attribute name
      */
+    @Override
     public void removeAttribute(String name) {
         attributes.remove(name);
     }

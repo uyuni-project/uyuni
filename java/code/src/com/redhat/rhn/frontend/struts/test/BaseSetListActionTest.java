@@ -44,6 +44,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         tla = new TestSetupListAction();
@@ -84,6 +85,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
 
     public class TestSetupListAction extends BaseSetListAction {
 
+        @Override
         protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
 
             List values = new LinkedList();
@@ -97,6 +99,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
             return dr;
         }
 
+        @Override
         public RhnSetDecl getSetDecl() {
             return RhnSetDecl.TEST;
         }

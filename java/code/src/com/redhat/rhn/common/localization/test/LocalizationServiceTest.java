@@ -48,6 +48,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * sets up the test
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         ls = LocalizationService.getInstance();
@@ -66,6 +67,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
@@ -269,7 +271,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     @Test
     public void testGetCountriesPrefixes() {
         assertNotNull(ls.availableCountries().get("Peru"));
-        assertTrue(ls.availablePrefixes().size() > 0);
+        assertTrue(!ls.availablePrefixes().isEmpty());
     }
 
     /** Test to make sure debug mode works
@@ -288,7 +290,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     @Test
     public void testSupportedLocales() {
         List locales = ls.getSupportedLocales();
-        assertTrue(locales.size() > 0);
+        assertTrue(!locales.isEmpty());
         assertTrue(ls.isLocaleSupported(Locale.US));
         assertTrue(ls.isLocaleSupported(Locale.TAIWAN));
     }

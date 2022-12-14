@@ -1,3 +1,5 @@
+- Fix password generation in uyuni-setup-reportdb (bsc#1205919)
+
 -------------------------------------------------------------------
 Wed Sep 28 11:01:10 CEST 2022 - jgonzalez@suse.com
 

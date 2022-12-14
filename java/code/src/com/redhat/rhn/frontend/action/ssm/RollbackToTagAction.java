@@ -53,8 +53,9 @@ public class RollbackToTagAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         Long tagId = context.getRequiredParam(TAG_ID);
         if (context.wasDispatched("ssm.provisioning.rollbacktotag.rollback-button")) {
@@ -87,6 +88,7 @@ public class RollbackToTagAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         Long uid = context.getCurrentUser().getId();
         Long tagid = context.getRequiredParam(TAG_ID);

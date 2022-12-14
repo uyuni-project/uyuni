@@ -143,6 +143,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * Gets the current value of id
      * @return long the current value
      */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -159,6 +160,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * Gets the current value of name
      * @return String the current value
      */
+    @Override
     public String getName() {
         return this.name;
     }

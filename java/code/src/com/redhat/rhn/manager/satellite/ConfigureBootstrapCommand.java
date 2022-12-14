@@ -54,6 +54,7 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError[] storeConfiguration() {
         Executor e = getExecutor();
         ValidatorError[] errors = new ValidatorError[1];

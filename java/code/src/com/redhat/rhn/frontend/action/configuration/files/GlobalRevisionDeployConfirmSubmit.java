@@ -59,6 +59,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(
             ActionForm form, HttpServletRequest request, Map<String, Object> params) {
         ConfigActionHelper.processParamMap(request, params);
@@ -67,6 +68,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("deployconfirm.jsp.deploybutton", "scheduleDeploy");
     }
@@ -114,7 +116,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
             servers.add(sid);
             //created the action.  One action per server.
             try {
-                if (revisions.size() > 0 && !ActionChainManager.createConfigActions(user,
+                if (!revisions.isEmpty() && !ActionChainManager.createConfigActions(user,
                         revisions, servers, deploy, earliest, actionChain).isEmpty()) {
                     successes++;
                 }

@@ -58,6 +58,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
     private OrgTrustHandler handler = new OrgTrustHandler();
     private OrgHandler orgHandler = new OrgHandler(new MigrationManager(new ServerGroupManager(new TestSaltApi())));
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

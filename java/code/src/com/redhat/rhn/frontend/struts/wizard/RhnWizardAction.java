@@ -76,7 +76,7 @@ public abstract class RhnWizardAction extends RhnAction {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         synchronized (this) {
-            if (this.steps.size() == 0) {
+            if (this.steps.isEmpty()) {
                 generateWizardSteps(steps);
             }
         }

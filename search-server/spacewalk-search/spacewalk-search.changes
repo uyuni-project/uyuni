@@ -1,3 +1,4 @@
+- fix logging configuration of the search daemon (bsc#1206336)
 - Remove unneeded sysv init script
 
 -------------------------------------------------------------------

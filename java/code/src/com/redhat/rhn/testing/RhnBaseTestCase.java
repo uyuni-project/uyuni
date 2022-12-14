@@ -156,7 +156,7 @@ public abstract class RhnBaseTestCase  {
      */
     public static void assertNotEmpty(String msg, Collection coll) {
         assertNotNull(coll);
-        if (coll.size() == 0) {
+        if (coll.isEmpty()) {
             fail(msg);
         }
     }

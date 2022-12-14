@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class TreeDeleteAction extends BaseTreeAction {
 
+    @Override
     protected String getSuccessKey() {
         return "tree.delete.success";
     }
@@ -40,11 +41,12 @@ public class TreeDeleteAction extends BaseTreeAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctx, PersistOperation opr) {
         super.processRequestAttributes(rctx, opr);
         BaseTreeEditOperation bte = (BaseTreeEditOperation) opr;
         List profiles = KickstartFactory.lookupKickstartDatasByTree(bte.getTree());
-        if (profiles != null && profiles.size() > 0) {
+        if (profiles != null && !profiles.isEmpty()) {
             rctx.getRequest().setAttribute(RequestContext.PAGE_LIST,
                     new DataResult(profiles));
         }
@@ -55,6 +57,7 @@ public class TreeDeleteAction extends BaseTreeAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected PersistOperation getCommand(RequestContext ctx) {
         return new TreeDeleteOperation(ctx.getRequiredParam(RequestContext.KSTREE_ID),
                                             ctx.getCurrentUser());
@@ -63,6 +66,7 @@ public class TreeDeleteAction extends BaseTreeAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processFormValues(PersistOperation operation, DynaActionForm form) {
         // NOOOP For delete
     }
@@ -70,8 +74,9 @@ public class TreeDeleteAction extends BaseTreeAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ValidatorError processCommandSetters(PersistOperation operation,
-            DynaActionForm form, HttpServletRequest request) {
+                                                   DynaActionForm form, HttpServletRequest request) {
        return null;
     }
 

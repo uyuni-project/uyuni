@@ -77,10 +77,11 @@ public class AddRedHatErrataAction extends RhnListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -183,7 +184,7 @@ public class AddRedHatErrataAction extends RhnListAction {
             sortChannelsAndChildify(channelSet, channelList, user, selectedChannelStr);
             request.setAttribute(CHANNEL_LIST, channelList);
         }
-        if (channelList.size() > 0 && selectedChannelStr == null) {
+        if (!channelList.isEmpty() && selectedChannelStr == null) {
             selectedChannelStr = channelList.get(0).getId().toString();
         }
 

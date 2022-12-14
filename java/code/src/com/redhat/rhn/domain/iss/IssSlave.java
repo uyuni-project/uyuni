@@ -49,6 +49,7 @@ public class IssSlave extends BaseDto {
      *
      * @return Long to get
      */
+    @Override
     public Long getId() {
         return this.id;
     }

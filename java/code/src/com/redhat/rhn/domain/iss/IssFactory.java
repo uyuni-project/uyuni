@@ -38,6 +38,7 @@ public class IssFactory extends HibernateFactory {
         super();
     }
 
+    @Override
     protected Logger getLogger() {
         return log;
     }

@@ -71,6 +71,7 @@ public class KickstartOverviewAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {

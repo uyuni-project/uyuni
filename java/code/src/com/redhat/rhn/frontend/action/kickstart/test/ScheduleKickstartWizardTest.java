@@ -190,7 +190,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         List ks = KickstartLister.getInstance()
                                  .kickstartsInOrg(user.getOrg(), null);
 
-        if (ks.size() == 0) {
+        if (ks.isEmpty()) {
             verifyActionMessage("kickstart.schedule.noprofiles");
         }
 

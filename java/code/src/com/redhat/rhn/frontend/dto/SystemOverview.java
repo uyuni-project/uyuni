@@ -680,7 +680,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         // localized versions of the labels and make into a comma-delimited list
         LocalizationService ls = LocalizationService.getInstance();
         List ent = getEntitlement();
-        if (ent != null && ent.size() > 0) {
+        if (ent != null && !ent.isEmpty()) {
             return ls.getMessage((String) ent.get(0));
         }
         return ls.getMessage("unentitled");

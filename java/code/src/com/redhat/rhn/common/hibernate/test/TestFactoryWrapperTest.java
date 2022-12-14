@@ -42,6 +42,7 @@ import java.util.List;
 public class TestFactoryWrapperTest extends RhnBaseTestCase {
     private static Logger log = LogManager.getLogger(TestFactoryWrapperTest.class);
 
+    @Override
     @BeforeEach
     public void setUp() {
         HibernateFactory.createSessionFactory();
@@ -119,7 +120,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     @Test
     public void testLookupMultipleObjects() throws Exception {
         List allTests = TestFactory.lookupAll();
-        assertTrue(allTests.size() > 0);
+        assertTrue(!allTests.isEmpty());
     }
 
     @Test

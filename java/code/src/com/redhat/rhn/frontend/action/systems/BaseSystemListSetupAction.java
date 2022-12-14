@@ -37,10 +37,11 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseSystemListSetupAction extends RhnListAction {
     public static final String SHOW_NO_SYSTEMS = "showNoSystems";
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
@@ -52,7 +53,7 @@ public abstract class BaseSystemListSetupAction extends RhnListAction {
         clampListBounds(pc, request, user);
         DataResult dr = getDataResult(user, pc, formIn);
         RhnSet set = getSetDecl().get(user);
-        if (!(dr.size() > 0)) {
+        if (dr.isEmpty()) {
             request.setAttribute(SHOW_NO_SYSTEMS, Boolean.TRUE);
         }
 

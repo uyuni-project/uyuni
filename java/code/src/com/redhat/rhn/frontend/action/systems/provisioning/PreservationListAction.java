@@ -27,6 +27,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 public class PreservationListAction extends BaseSetListAction {
 
 
+    @Override
     protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
         return KickstartLister.getInstance().preservationListsInOrg(
                 rctx.getCurrentUser().getOrg(), pc);
@@ -35,6 +36,7 @@ public class PreservationListAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.FILE_LISTS;
     }

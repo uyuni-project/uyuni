@@ -121,7 +121,7 @@ public class SystemEntitler {
             LOG.debug("setting up system for virt.");
             ValidatorResult virtSetupResults = setupSystemForVirtualization(server.getOrg(), server.getId());
             result.append(virtSetupResults);
-            if (virtSetupResults.getErrors().size() > 0) {
+            if (!virtSetupResults.getErrors().isEmpty()) {
                 LOG.debug("error trying to setup virt ent: {}", virtSetupResults.getMessage());
                 return result;
             }
@@ -312,7 +312,7 @@ public class SystemEntitler {
                 List<Map<String, Object>> packageResults =
                         ChannelManager.listLatestPackagesEqual(
                         toolsChannel.getId(), ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
-                if (packageResults.size() > 0) {
+                if (!packageResults.isEmpty()) {
                     Map<String, Object> row = packageResults.get(0);
                     Long nameId = (Long) row.get("name_id");
                     Long evrId = (Long) row.get("evr_id");

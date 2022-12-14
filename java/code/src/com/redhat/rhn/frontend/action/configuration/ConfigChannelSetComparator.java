@@ -28,6 +28,7 @@ public class ConfigChannelSetComparator implements Comparator {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare(Object o1, Object o2) {
         Long first = ((RhnSetElement)o1).getElementTwo();
         Long second = ((RhnSetElement)o2).getElementTwo();

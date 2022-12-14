@@ -61,6 +61,6 @@ public class FilePreservationListsCommandTest extends BaseKickstartCommandTestCa
         cmd.store();
         flushAndEvict(cmd.getKickstartData());
 
-        assertTrue(cmd.getKickstartData().getPreserveFileLists().size() == 0);
+        assertTrue(cmd.getKickstartData().getPreserveFileLists().isEmpty());
     }
 }

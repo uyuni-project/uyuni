@@ -48,8 +48,9 @@ public class AddToSSMAction extends RhnAction {
                                                        .RECEIVE_NOTIFICATIONS};
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext rctx = new RequestContext(request);
         Long sid = rctx.getRequiredParam("sid");
         User user = rctx.getCurrentUser();

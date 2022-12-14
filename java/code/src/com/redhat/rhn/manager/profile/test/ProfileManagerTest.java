@@ -63,6 +63,7 @@ import java.util.Set;
  */
 public class ProfileManagerTest extends BaseTestCaseWithUser {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -198,7 +199,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         DataResult<ProfileDto> dr = ProfileManager.compatibleWithChannel(p.getBaseChannel(),
                 user.getOrg(), null);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertTrue(!dr.isEmpty());
         assertTrue(dr.iterator().next() instanceof ProfileDto);
 
     }

@@ -16,6 +16,8 @@ package com.redhat.rhn.frontend.taglibs.list;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Provides a container for the new-style lists
@@ -89,6 +91,7 @@ public class ListSetTag extends BodyTagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doStartTag() throws JspException {
         //if legend was set, process legends
         if (legend != null) {
@@ -96,20 +99,22 @@ public class ListSetTag extends BodyTagSupport {
         }
         verifyEnvironment();
         startForm();
-        return BodyTagSupport.EVAL_BODY_INCLUDE;
+        return Tag.EVAL_BODY_INCLUDE;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         endForm();
-        return BodyTagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         uniqueName = null;
         super.release();
@@ -133,7 +138,7 @@ public class ListSetTag extends BodyTagSupport {
     }
 
     private void verifyEnvironment() throws JspException {
-        if (BodyTagSupport.findAncestorWithClass(this, this.getClass()) != null) {
+        if (TagSupport.findAncestorWithClass(this, this.getClass()) != null) {
             throw new JspException("ListSet tags may not be nested.");
         }
         if (pageContext.getRequest().getAttribute("parentUrl") == null) {

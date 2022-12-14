@@ -50,6 +50,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -60,6 +61,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     public void testCreateCommand() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
+            @Override
             public ValidatorError[] storeConfiguration() {
                 this.clearUpdates();
                 return null;
@@ -86,7 +88,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertEquals("--option=test.null_config.config_sat_test=", cmdargs[4]);
         assertEquals(9, cmdargs.length);
         assertNull(cmd.storeConfiguration());
-        assertTrue(cmd.getKeysToBeUpdated().size() == 0);
+        assertTrue(cmd.getKeysToBeUpdated().isEmpty());
         // Test setting back to the original value
         cmd.updateBoolean(TEST_CONFIG_BOOLEAN, origValue);
         assertEquals(1, cmd.getKeysToBeUpdated().size());
@@ -101,9 +103,9 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         // Now test to see if updating it to FALSE doesnt
         // indicate we need actual changes written out.
         cmd.updateBoolean(TEST_CONFIG_BOOLEAN, Boolean.FALSE);
-        assertTrue(cmd.getKeysToBeUpdated().size() == 0);
+        assertTrue(cmd.getKeysToBeUpdated().isEmpty());
         cmd.updateString(TEST_CONFIG_STRING, testString);
-        assertTrue(cmd.getKeysToBeUpdated().size() == 0);
+        assertTrue(cmd.getKeysToBeUpdated().isEmpty());
 
     }
 
@@ -148,6 +150,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     public void testUpdateHostname() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
+            @Override
             protected Executor getExecutor() {
                 return new TestExecutor();
             }
@@ -163,6 +166,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     public void testMountPoint() throws Exception {
 
         cmd = new ConfigureSatelliteCommand(user) {
+            @Override
             protected Executor getExecutor() {
                 return new TestExecutor();
             }
@@ -193,14 +197,17 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     }
 
     public class TestExecutor implements Executor {
+        @Override
         public int execute(String[] args) {
             return 0;
         }
 
+        @Override
         public String getLastCommandOutput() {
             return null;
         }
 
+        @Override
         public String getLastCommandErrorMessage() {
             return null;
         }

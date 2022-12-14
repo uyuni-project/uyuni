@@ -98,8 +98,9 @@ public class YourRhnAction extends RhnAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
         Map panes = getDisplayPanes(user);
@@ -109,7 +110,7 @@ public class YourRhnAction extends RhnAction {
         pc.setStart(1);
         pc.setPageSize(5);
 
-        if (panes != null && panes.size() > 0) {
+        if (!panes.isEmpty()) {
             anyListsSelected = true;
             for (Object oIn : panes.keySet()) {
                 String key = (String) oIn;

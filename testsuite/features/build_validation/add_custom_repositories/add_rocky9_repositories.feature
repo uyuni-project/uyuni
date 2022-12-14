@@ -41,6 +41,7 @@ Feature: Add the Rocky 9 distribution custom repositories
     When I click on "Attach/Detach Sources"
     And I select "rockylinux-9 for x86_64" from "selectedBaseChannel"
     # "rockylinux-9-appstream for x86_64" is already checked
+    And I check "Custom Channel for rocky9_minion"
     And I click on "Save"
     Then I should see a "EL9-Manager-Tools-Pool for x86_64 Rocky" text
     When I click on "Attach/Detach Filters"

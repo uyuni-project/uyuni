@@ -139,7 +139,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         ChannelTestUtils.addDistMapToChannel(c);
         c = (Channel) reload(c);
         assertNotNull(c.getDistChannelMaps());
-        assertTrue(c.getDistChannelMaps().size() > 0);
+        assertTrue(!c.getDistChannelMaps().isEmpty());
     }
 
     @Test

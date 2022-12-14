@@ -284,7 +284,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         }
 
         if (server != null) {
-            if (this.activationKeys == null || this.activationKeys.length() == 0) {
+            if (this.activationKeys == null || this.activationKeys.isEmpty()) {
                 log.error("This cobbler profile does not " +
                         "have a redhat_management_key set ");
             }
@@ -432,11 +432,11 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                         }
 
                         ArrayList<String> ipv6Addresses = n.getGlobalIpv6Addresses();
-                        if (ipv6Addresses.size() > 0) {
+                        if (!ipv6Addresses.isEmpty()) {
                             net.setIpv6Address(ipv6Addresses.get(0));
                             ipv6Addresses.remove(0);
                         }
-                        if (ipv6Addresses.size() > 0) {
+                        if (!ipv6Addresses.isEmpty()) {
                             net.setIpv6Secondaries(ipv6Addresses);
                         }
                         if (setupBridge && bridgeSlaves.contains(n.getName())) {

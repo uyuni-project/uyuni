@@ -40,6 +40,7 @@ public class EditFileListCommand extends BaseFileListEditCommand {
      *
      * @return ValidatorError[] if there were errors before the save.
      */
+    @Override
     public ValidatorError store() {
         if (list.getLabel() != null && list.getLabel().equals(this.newLabel)) {
             CommonFactory.saveFileList(this.list);

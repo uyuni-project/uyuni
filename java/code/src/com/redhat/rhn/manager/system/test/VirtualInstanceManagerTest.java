@@ -64,6 +64,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     private User user;
     private Server server;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         user = UserTestUtils.findNewUser("testUser",

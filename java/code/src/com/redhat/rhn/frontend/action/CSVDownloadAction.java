@@ -65,8 +65,9 @@ public class CSVDownloadAction extends DownloadAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response)
+                                 HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         try {
             super.execute(mapping, form, request, response);
@@ -185,10 +186,11 @@ public class CSVDownloadAction extends DownloadAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response)
+                                       ActionForm form,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response)
     throws Exception {
         HttpSession session = request.getSession(false);
         if (null == session) {

@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuditAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
@@ -66,6 +67,7 @@ public class AuditAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public DataResult getResult(RequestContext context) {
         return AuditManager.getMachines();
     }

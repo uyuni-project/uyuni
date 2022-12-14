@@ -53,7 +53,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         DynaActionForm form = (DynaActionForm) getActionForm();
         String formval = (String)form.get(KickstartPartitionEditAction.PARTITIONS);
-        assertTrue(formval.length() > 0);
+        assertTrue(!formval.isEmpty());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         DynaActionForm form = (DynaActionForm) getActionForm();
         String formval = (String)form.get(KickstartPartitionEditAction.PARTITIONS);
         assertNotNull(formval);
-        assertTrue(formval.length() > 0);
+        assertTrue(!formval.isEmpty());
         assertEquals(data, formval);
         String[] keys = {"kickstart.partition.success",
                          "kickstart.software.changeencryption"};
@@ -94,7 +94,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         DynaActionForm form = (DynaActionForm) getActionForm();
         String formval = (String)form.get(KickstartPartitionEditAction.PARTITIONS);
 
-        assertTrue(formval.length() > 0);
+        assertTrue(!formval.isEmpty());
         assertEquals(data, formval);
         assertNotNull(ksdata.getPartitionData());
         assertEquals(data, ksdata.getPartitionData());

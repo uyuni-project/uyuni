@@ -31,6 +31,7 @@ public class ProfileOverviewDto extends BaseDto {
      * Retrieve profile id.
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return id;
     }

@@ -616,7 +616,7 @@ public class ChannelManager extends BaseManager {
     public static Optional<Long> applyChannelState(User user, List<MinionServer> minions)
             throws TaskomaticApiException {
         Optional<Long> actionId = Optional.empty();
-        if (minions.size() > 0) {
+        if (!minions.isEmpty()) {
             for (MinionServer ms: minions) {
                 MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet());
             }
@@ -1132,7 +1132,7 @@ public class ChannelManager extends BaseManager {
     public static Long getLatestPackageEqual(Long channelId, String packageName) {
         List<Map<String, Object>> latestPkgs =
                 listLatestPackagesEqual(channelId, packageName);
-        if (latestPkgs != null && latestPkgs.size() > 0) {
+        if (latestPkgs != null && !latestPkgs.isEmpty()) {
             return (Long) latestPkgs.get(0).get("package_id");
         }
         return null;
@@ -1162,7 +1162,7 @@ public class ChannelManager extends BaseManager {
         // of a heuristic because we may want to install a non-default-arch package
         // at some point in the future. Much easier and almost just as good to
         // have a hueristic here that returns the package arch we probably want.
-        if (results != null && results.size() > 0) {
+        if (results != null && !results.isEmpty()) {
             Map<String, Object> row = results.get(0);
             if (results.size() == 1) {
                 return (Long) row.get("package_id");
@@ -1602,26 +1602,26 @@ public class ChannelManager extends BaseManager {
                     ChannelManager.
                 listLatestPackagesLike(child.getId(),
                         KickstartData.LEGACY_KICKSTART_PACKAGE_NAME);
-            if (kspackages.size() > 0) {
+            if (!kspackages.isEmpty()) {
                 return child;
             }
 
             // Search for rhn-kickstart package name:
             kspackages = ChannelManager.listLatestPackagesEqual(child.getId(),
                     ConfigDefaults.get().getKickstartPackageNames());
-            if (kspackages.size() > 0) {
+            if (!kspackages.isEmpty()) {
                 return child;
             }
         }
         List kspackages = ChannelManager.
              listLatestPackagesLike(baseChannel.getId(),
                       KickstartData.LEGACY_KICKSTART_PACKAGE_NAME);
-        if (kspackages.size() > 0) {
+        if (!kspackages.isEmpty()) {
             return baseChannel;
         }
         kspackages = ChannelManager.listLatestPackagesEqual(baseChannel.getId(),
                 ConfigDefaults.get().getKickstartPackageNames());
-        if (kspackages.size() > 0) {
+        if (!kspackages.isEmpty()) {
             return baseChannel;
         }
 
@@ -1968,7 +1968,7 @@ public class ChannelManager extends BaseManager {
         DataResult<EssentialChannelDto> dr =
                 makeDataResult(params, new HashMap<String, Object>(), null, m,
                         EssentialChannelDto.class);
-        if (dr.size() == 0) {
+        if (dr.isEmpty()) {
             return null;
         }
         dr.sort(new EusReleaseComparator(rhelVersion));
@@ -2374,7 +2374,7 @@ public class ChannelManager extends BaseManager {
         ChannelManager.refreshWithNewestPackages(chan, "Remove errata");
         ErrataCacheManager.deleteCacheEntriesForChannelPackages(chan.getId(), pids);
         ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), ids);
-        ChannelFactory.getSession().refresh(chan);
+        HibernateFactory.getSession().refresh(chan);
     }
 
     /**
@@ -2493,7 +2493,7 @@ public class ChannelManager extends BaseManager {
                 TaskConstants.TASK_QUERY_REPOMD_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channel);
-        return (selector.execute(params).size() > 0);
+        return (!selector.execute(params).isEmpty());
     }
 
     /**
@@ -2763,7 +2763,7 @@ public class ChannelManager extends BaseManager {
         params.put("org_id", org.getId());
         List<Map<String, Object>> result = m.execute(params);
 
-        if (result.size() != 0) {
+        if (!result.isEmpty()) {
             return (Long) result.get(0).get("id");
         }
 

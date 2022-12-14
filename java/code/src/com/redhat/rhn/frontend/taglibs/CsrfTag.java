@@ -38,6 +38,7 @@ public class CsrfTag extends HiddenTag {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doStartTag() throws JspException {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         HttpSession session = request.getSession(true);

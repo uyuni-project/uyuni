@@ -36,10 +36,12 @@ public class ManageRevisionSetup extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_REVISIONS;
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         rctxIn.getRequest().setAttribute(ManageRevisionSetup.MAX_SIZE,
                  StringUtil.displayFileSize(ConfigFile.getMaxFileSize()));
@@ -52,6 +54,7 @@ public class ManageRevisionSetup extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());

@@ -48,10 +48,11 @@ public class EditPackagesAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
         DynaActionForm dynaForm = (DynaActionForm) form;
         RequestContext ctx = new RequestContext(request);
         KickstartEditCommand cmd = new KickstartEditCommand(
@@ -114,7 +115,7 @@ public class EditPackagesAction extends RhnAction {
 
     private void prepareForm(KickstartData ksdata, DynaActionForm form) {
         Set ksPackages = ksdata.getKsPackages();
-        if (ksPackages != null && ksPackages.size() > 0) {
+        if (ksPackages != null && !ksPackages.isEmpty()) {
             StringBuilder buf = new StringBuilder();
             for (Object ksPackageIn : ksPackages) {
                 KickstartPackage pn = (KickstartPackage) ksPackageIn;
@@ -139,13 +140,13 @@ public class EditPackagesAction extends RhnAction {
         ksdata.clearKsPackages();
 
         String newPackages = form.getString(PACKAGE_LIST);
-        if (newPackages != null && newPackages.length() > 0) {
+        if (newPackages != null && !newPackages.isEmpty()) {
             for (StringTokenizer strtok = new StringTokenizer(newPackages, "\n");
                     strtok.hasMoreTokens();) {
 
                 String pkg = strtok.nextToken();
                 pkg = pkg.trim();
-                if (pkg.length() == 0) {
+                if (pkg.isEmpty()) {
                     continue;
                 }
 

@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
  */
 public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         TestUtils.disableLocalizationLogging();

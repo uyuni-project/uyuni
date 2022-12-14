@@ -48,6 +48,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
     private KickstartRawData ksdata;
     private final String fileContents = "test kickstart file\n";
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

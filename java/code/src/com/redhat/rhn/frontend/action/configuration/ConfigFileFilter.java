@@ -32,10 +32,12 @@ public class ConfigFileFilter extends BaseConfigFilter {
         fields.add("path");
     }
 
+    @Override
     protected List activeNames() {
         return fields;
     }
 
+    @Override
     protected String getI18NPrefix() {
         return "configfilefilter";
     }

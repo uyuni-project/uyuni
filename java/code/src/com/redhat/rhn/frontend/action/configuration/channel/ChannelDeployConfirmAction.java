@@ -61,8 +61,9 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
@@ -135,6 +136,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         return cc;
     }
 
+    @Override
     protected Map makeParamMap(HttpServletRequest request) {
         Map m = super.makeParamMap(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
@@ -146,7 +148,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         User usr = new RequestContext(req).getCurrentUser();
 
         RhnSet files = RhnSetDecl.CONFIG_CHANNEL_DEPLOY_REVISIONS.get(usr);
-        if (files.size() == 0) {
+        if (files.isEmpty()) {
             // Error - you have to have files selcted
             createErrorMessage(req, "deployconfirm.jsp.zeroFiles", null);
             return false;
@@ -154,7 +156,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         Set fileIds = buildIds(files);
 
         RhnSet systems = RhnSetDecl.CONFIG_CHANNEL_DEPLOY_SYSTEMS.get(usr);
-        if (systems.size() == 0) {
+        if (systems.isEmpty()) {
             // Error - you have to have systems selcted
             createErrorMessage(req, "deployconfirm.jsp.zeroSystems", null);
             return false;

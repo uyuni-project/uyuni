@@ -42,6 +42,7 @@ public abstract class FileListConfirmSetupAction extends BaseListAction implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         Server server = rctxIn.lookupAndBindServer();
@@ -55,10 +56,12 @@ public abstract class FileListConfirmSetupAction extends BaseListAction implemen
                 getSetDecl().getLabel(), pcIn);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         rctxIn.lookupAndBindServer();
     }
 
+    @Override
     protected void processForm(RequestContext ctxt, ActionForm form) {
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(ctxt.getRequest(),
                 (DynaActionForm) form, "date", DatePicker.YEAR_RANGE_POSITIVE);

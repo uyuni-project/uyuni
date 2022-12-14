@@ -127,7 +127,7 @@ public class AuditManager /* extends BaseManager */ {
             log.warn("AAAAHHHH IOException", ioex);
         }
 
-        if (dr == null || dr.size() == 0) {
+        if (dr == null || dr.isEmpty()) {
             return null;
         }
 
@@ -313,7 +313,7 @@ public class AuditManager /* extends BaseManager */ {
         Pattern fnregex = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
 
         // if machineName is null, look up all review sections by recursion
-        if (machineName == null || machineName.length() == 0) {
+        if (machineName == null || machineName.isEmpty()) {
             dr = null;
 
             for (AuditMachineDto aumachine : getMachines()) {

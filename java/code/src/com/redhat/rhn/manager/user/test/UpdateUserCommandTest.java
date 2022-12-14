@@ -39,6 +39,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
 
     private UpdateUserCommand command;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());

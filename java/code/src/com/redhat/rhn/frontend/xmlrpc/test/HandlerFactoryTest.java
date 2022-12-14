@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 public class HandlerFactoryTest extends RhnBaseTestCase {
     private HandlerFactory factory = null;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         factory = HandlerFactory.getDefaultHandlerFactory();

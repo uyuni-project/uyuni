@@ -124,6 +124,7 @@ public class SetCleanup {
             super("noop", "noop");
         }
 
+        @Override
         protected int cleanup(RhnSet set) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Noop cleanup for set {} and user {}", set.getLabel(), set.getUserId(), new Throwable());
@@ -148,6 +149,7 @@ public class SetCleanup {
             super(mode);
         }
 
+        @Override
         protected int cleanup(RhnSet set) {
             WriteMode m = ModeFactory.getWriteMode("Set_queries", getMode());
             Map p = new HashMap();

@@ -45,6 +45,7 @@ public class SsmVerifyPackagesAction implements MessageAction {
     private static final Logger LOG = LogManager.getLogger(SsmVerifyPackagesAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public void execute(EventMessage msg) {
         SsmVerifyPackagesEvent event = (SsmVerifyPackagesEvent) msg;
 

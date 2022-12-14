@@ -138,6 +138,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Map getKeyMethodMap() {
         Map map = new HashMap();
         map.put("schedulesync.jsp.schedulesync", "scheduleSync");

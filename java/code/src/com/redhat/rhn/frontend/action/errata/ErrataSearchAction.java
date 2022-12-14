@@ -59,8 +59,9 @@ public class ErrataSearchAction extends BaseSearchAction {
 
     private static final Logger LOG = LogManager.getLogger(ErrataSearchAction.class);
 
+    @Override
     protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
-                    DynaActionForm form)
+                                      DynaActionForm form)
         throws MalformedURLException, XmlRpcFault {
         RequestContext ctx = new RequestContext(request);
 
@@ -122,7 +123,7 @@ public class ErrataSearchAction extends BaseSearchAction {
                     search, viewmode, form);
 
             request.setAttribute(RequestContext.PAGE_LIST,
-                    results != null ? results : Collections.EMPTY_LIST);
+                    results != null ? results : Collections.emptyList());
         }
         else {
             // Reset info on date pickers
@@ -132,7 +133,7 @@ public class ErrataSearchAction extends BaseSearchAction {
                 LOG.debug("Issue Start Date = {}", dates.getStart().getDate());
                 LOG.debug("End Start Date = {}", dates.getEnd().getDate());
             }
-            request.setAttribute(RequestContext.PAGE_LIST, Collections.EMPTY_LIST);
+            request.setAttribute(RequestContext.PAGE_LIST, Collections.emptyList());
 
         }
         ActionMessages dateErrors = dates.getErrors();
@@ -146,6 +147,7 @@ public class ErrataSearchAction extends BaseSearchAction {
      * can find them
      * @param form where we expect values to be
      */
+    @Override
     protected void insureFormDefaults(HttpServletRequest request, DynaActionForm form) {
         String viewmode = form.getString(VIEW_MODE);
         if (viewmode.equals("")) { //first time viewing page
@@ -440,7 +442,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         int recordsRead = 0;
         while (recordsRead < idsIn.size()) {
             List<Long> chunkIDs = idsIn.subList(recordsRead, toIndex);
-            if (chunkIDs.size() == 0) {
+            if (chunkIDs.isEmpty()) {
                 LOG.warn("Processing 0 size chunkIDs....something seems wrong.");
                 break;
             }

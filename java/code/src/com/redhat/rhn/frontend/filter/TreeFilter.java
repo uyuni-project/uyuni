@@ -70,8 +70,9 @@ public class TreeFilter implements ResultsFilter {
      *  /      \
      * C3      C5
      */
+    @Override
     public void filterData(DataResult dr, String filterData,
-            String filterColumn) {
+                           String filterColumn) {
 
         /*
          * The overall logic of this function is to go through
@@ -190,7 +191,7 @@ public class TreeFilter implements ResultsFilter {
      * @param result list of nodes to solve
      */
     protected void handleOrphans(DataResult result) {
-        if (result.size() > 0) {
+        if (!result.isEmpty()) {
             Class clazz = result.get(0).getClass();
             if (result.get(0) instanceof Comparable) {
                 Collections.sort(result);

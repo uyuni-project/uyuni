@@ -38,10 +38,11 @@ public abstract class BaseEditAction extends RhnAction {
     public static final String REFRESH = "refreshForm";
 
     /** {@inheritDoc} */
+    @Override
     public final ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                       ActionForm formIn,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
 
         DynaActionForm form = (DynaActionForm) formIn;
         ActionForward retval = mapping.findForward(RhnHelper.DEFAULT_FORWARD);

@@ -42,9 +42,10 @@ public class ListXccdfAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
 
@@ -54,6 +55,7 @@ public class ListXccdfAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         HttpServletRequest request = context.getRequest();
         User user = context.getCurrentUser();

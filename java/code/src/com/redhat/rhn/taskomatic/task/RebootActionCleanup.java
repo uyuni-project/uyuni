@@ -64,7 +64,7 @@ public class RebootActionCleanup extends RhnJavaJob {
                 invalidateKickstartSession(sid, fAid);
             }
         }
-        if (failedRebootActions.size() > 0) {
+        if (!failedRebootActions.isEmpty()) {
             log.info("Set {} reboot action(s) to failed. Running longer than 6 hours.", failedRebootActions.size());
             if (log.isDebugEnabled()) {
                 log.debug("failed (server,action) ids{}", failedRebootActions.stream()

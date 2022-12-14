@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Exports a List of data to a comma separated value string
@@ -159,7 +161,7 @@ public class CSVTag extends BodyTagSupport {
             renderExport();
         }
         release();
-        return BodyTagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     /**
@@ -169,7 +171,7 @@ public class CSVTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
 
         verifyEnvironment();
-        return BodyTagSupport.EVAL_BODY_INCLUDE;
+        return Tag.EVAL_BODY_INCLUDE;
     }
 
     /**
@@ -202,7 +204,7 @@ public class CSVTag extends BodyTagSupport {
     }
 
     private void verifyEnvironment() throws JspException {
-        if (BodyTagSupport.findAncestorWithClass(this, ListSetTag.class) == null) {
+        if (TagSupport.findAncestorWithClass(this, ListSetTag.class) == null) {
             throw new JspException("List must be enclosed by a ListSetTag");
         }
     }

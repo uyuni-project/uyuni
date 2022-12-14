@@ -57,10 +57,11 @@ public class ChannelPackagesRemoveAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -88,7 +89,7 @@ public class ChannelPackagesRemoveAction extends RhnAction {
         String button = LocalizationService.getInstance().getMessage(
         "channel.jsp.package.confirmbutton");
 
-        if (button.equals(request.getParameter("confirm")) && set.size() > 0) {
+        if (button.equals(request.getParameter("confirm")) && !set.isEmpty()) {
             removePackages(user, chan, set);
             ActionMessages msg = new ActionMessages();
             String[] actionParams = {set.size() + "", chan.getName()};

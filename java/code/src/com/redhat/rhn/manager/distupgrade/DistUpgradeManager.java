@@ -161,7 +161,7 @@ public class DistUpgradeManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Channel_queries", "suse_base_channels_for_suse_product");
         List<EssentialChannelDto> channels = makeDataResult(params, null, null, m);
         EssentialChannelDto ret = null;
-        if (channels.size() > 0) {
+        if (!channels.isEmpty()) {
             ret = channels.get(0);
         }
         if (channels.size() > 1) {
