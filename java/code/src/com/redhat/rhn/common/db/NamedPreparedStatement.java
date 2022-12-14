@@ -44,7 +44,7 @@ public final class NamedPreparedStatement {
     private NamedPreparedStatement() {
     }
 
-    private static int findColon(int start, StringBuffer query) {
+    private static int findColon(int start, StringBuilder query) {
         boolean inQuotes = false;
         for (int i = start; i < query.length(); i++) {
             char c = query.charAt(i);
@@ -78,7 +78,7 @@ public final class NamedPreparedStatement {
      */
     public static String replaceBindParams(String rawSQL,
             Map<String, List<Integer>> parameterMap) {
-        StringBuffer sql = new StringBuffer(rawSQL);
+        StringBuilder sql = new StringBuilder(rawSQL);
 
         int idx = findColon(0, sql);
         int variableNumber = 1;
@@ -152,7 +152,7 @@ public final class NamedPreparedStatement {
      * logic is to find the first character that can't be used in a Java
      * identifier.  This may be wrong, but we'll fix that later.
      */
-    private static int findEndofVariable(StringBuffer sql, int idx) {
+    private static int findEndofVariable(StringBuilder sql, int idx) {
         int i = idx + 1;
         while (i < sql.length() && Character.isJavaIdentifierPart(sql.charAt(i))) {
             i++;

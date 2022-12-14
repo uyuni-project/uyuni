@@ -38,12 +38,12 @@ public class TextRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void preNavLevel(StringBuffer sb, int depth) {
+    public void preNavLevel(StringBuilder sb, int depth) {
     }
 
     /** {@inheritDoc} */
     @Override
-    public void preNavNode(StringBuffer sb, int depth) {
+    public void preNavNode(StringBuilder sb, int depth) {
         if (!canRender(null, depth)) {
             return;
         }
@@ -55,7 +55,7 @@ public class TextRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void navNodeActive(StringBuffer sb,
+    public void navNodeActive(StringBuilder sb,
                               NavNode node,
                               NavTreeIndex treeIndex,
                               Map parameters,
@@ -75,7 +75,7 @@ public class TextRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void navNodeInactive(StringBuffer sb,
+    public void navNodeInactive(StringBuilder sb,
                                 NavNode node,
                                 NavTreeIndex treeIndex,
                                 Map parameters,
@@ -95,12 +95,12 @@ public class TextRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void postNavNode(StringBuffer sb, int depth) {
+    public void postNavNode(StringBuilder sb, int depth) {
     }
 
     /** {@inheritDoc} */
     @Override
-    public void postNavLevel(StringBuffer sb, int depth) {
+    public void postNavLevel(StringBuilder sb, int depth) {
     }
 
     /** {@inheritDoc} */
@@ -111,12 +111,12 @@ public class TextRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void preNav(StringBuffer sb) {
+    public void preNav(StringBuilder sb) {
     }
 
     /** {@inheritDoc} */
     @Override
-    public void postNav(StringBuffer sb) {
+    public void postNav(StringBuilder sb) {
     }
 }
 

@@ -239,7 +239,7 @@ public class SmtpMail implements Mail {
      * {@inheritDoc}
      */
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         try {
             buf.append("Using SMTP host: ").append(this.smtpHost);
             buf.append("\nFrom: ");
@@ -257,7 +257,7 @@ public class SmtpMail implements Mail {
         return buf.toString();
     }
 
-    private void appendHeaders(StringBuffer buf, Enumeration headers) {
+    private void appendHeaders(StringBuilder buf, Enumeration headers) {
         while (headers.hasMoreElements()) {
             buf.append(headers.nextElement());
             buf.append("\n");
@@ -265,7 +265,7 @@ public class SmtpMail implements Mail {
         buf.append("\n");
     }
 
-    private void appendAddresses(StringBuffer buf, Address[] addrs) {
+    private void appendAddresses(StringBuilder buf, Address[] addrs) {
         if (addrs != null) {
             for (int x = 0; x < addrs.length; x++) {
                 buf.append(addrs[x].toString());

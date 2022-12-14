@@ -37,18 +37,18 @@ import java.util.stream.Collectors;
  */
 
 public class DialognavRenderer extends Renderable {
-    private final StringBuffer titleBuf;
+    private final StringBuilder titleBuf;
     /**
      * Public constructor
      */
     public DialognavRenderer() {
          // empty
-        titleBuf = new StringBuffer();
+        titleBuf = new StringBuilder();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void preNav(StringBuffer sb) {
+    public void preNav(StringBuilder sb) {
         HtmlTag div = new HtmlTag("div");
         div.setAttribute("class", "spacewalk-content-nav");
         sb.append(div.renderOpenTag());
@@ -56,7 +56,7 @@ public class DialognavRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void preNavLevel(StringBuffer sb, int depth) {
+    public void preNavLevel(StringBuilder sb, int depth) {
         if (!canRender(null, depth)) {
             return;
         }
@@ -73,12 +73,12 @@ public class DialognavRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void preNavNode(StringBuffer sb, int depth) {
+    public void preNavNode(StringBuilder sb, int depth) {
     }
 
     /** {@inheritDoc} */
     @Override
-    public void navNodeActive(StringBuffer sb,
+    public void navNodeActive(StringBuilder sb,
                               NavNode node,
                               NavTreeIndex treeIndex,
                               Map parameters,
@@ -95,7 +95,7 @@ public class DialognavRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void navNodeInactive(StringBuffer sb,
+    public void navNodeInactive(StringBuilder sb,
                                 NavNode node,
                                 NavTreeIndex treeIndex,
                                 Map parameters,
@@ -107,7 +107,7 @@ public class DialognavRenderer extends Renderable {
         renderNode(sb, node, treeIndex, parameters, "");
     }
 
-    private void renderNode(StringBuffer sb, NavNode node,
+    private void renderNode(StringBuilder sb, NavNode node,
                             NavTreeIndex treeIndex, Map parameters,
                             String cssClass) {
         HtmlTag li = new HtmlTag("li");
@@ -163,12 +163,12 @@ public class DialognavRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void postNavNode(StringBuffer sb, int depth) {
+    public void postNavNode(StringBuilder sb, int depth) {
     }
 
     /** {@inheritDoc} */
     @Override
-    public void postNavLevel(StringBuffer sb, int depth) {
+    public void postNavLevel(StringBuilder sb, int depth) {
         if (!canRender(null, depth)) {
             return;
         }
@@ -180,7 +180,7 @@ public class DialognavRenderer extends Renderable {
 
     /** {@inheritDoc} */
     @Override
-    public void postNav(StringBuffer sb) {
+    public void postNav(StringBuilder sb) {
         HtmlTag div = new HtmlTag("div");
         sb.append(div.renderCloseTag());
         sb.append("\n");
