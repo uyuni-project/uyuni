@@ -1,12 +1,11 @@
 name: hello-world
-on:
-- pull_request_target
+on: pull_request
 jobs:
   test-uyuni:
     runs-on: ubuntu-latest
     steps:
       - name: hello_world
-        run: echo "Hello World 2!"
+        run: echo "Hello World!"
       - uses: actions/checkout@v3
       - uses: isbang/compose-action@v1.4.1
       - name: wait a bit
@@ -22,7 +21,7 @@ jobs:
       - name: test_from_host
         run: curl http://localhost:1234/test.html
       - name: test_from_container
-        run: docker run -a stdout -a stderr --network uyuni_default ghcr.io/uyuni-project/uyuni/controller-dev:master bash -c "curl http://server-h-test/test.html"
+        run: docker run -a stdout -a stderr --network uyuni_default ghcr.io/jordimassaguerpla/uyuni/controller-dev:master bash -c "curl http://server-h-test/test.html"
       - name: build_new_container
         run: docker build -f dockerfiles/controller-test/Dockerfile . -t controller-test:master
       - name: run_new_container
