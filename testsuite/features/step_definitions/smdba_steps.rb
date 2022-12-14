@@ -107,10 +107,6 @@ Then(/^I should see error message that asks "(.*?)" has same permissions as "(.*
                   "The \"#{bkp_dir}\" directory must have the same permissions as \"#{data_dir}\" directory.")
 end
 
-Then(/^I should not see error messages in the output$/) do
-  raise "Error detected: #{$output}" if $output.include? 'error'
-end
-
 Then(/^I remove backup directory "(.*?)"$/) do |bkp_dir|
   $server.run("test -d #{bkp_dir} && rm -rf #{bkp_dir}")
 end
