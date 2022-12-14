@@ -1082,13 +1082,9 @@ public class SystemManager extends BaseManager {
      * @return number of systems with outdated packages
      */
     public static long countOutdatedSystems() {
-        Map<String, Long> params = Collections.emptyMap();
         SelectMode m = ModeFactory.getMode("System_queries", "count_outdated_systems");
-        DataResult<Map<String, Object>> dr = makeDataResult(params, params, null, m);
-
-        Map<String, Object> result = dr.get(0);
-        Long count = (Long) result.get("count");
-        return count.longValue();
+        DataResult<Map<String, Long>> dr = m.execute();
+        return dr.get(0).get("count");
     }
 
     /**
