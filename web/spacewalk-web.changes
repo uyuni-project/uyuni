@@ -1,7 +1,11 @@
-- Remove DWR library
-- Add reboot needed indicator to systems list
-- Move web dependencies from susemanager-frontend-libs to
-  spacewalk-web
+-------------------------------------------------------------------
+Wed Dec 14 14:16:24 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Remove DWR library
+  * Add reboot needed indicator to systems list
+  * Move web dependencies from susemanager-frontend-libs to
+    spacewalk-web
 
 -------------------------------------------------------------------
 Tue Dec 13 13:30:49 CET 2022 - jgonzalez@suse.com
