@@ -162,7 +162,9 @@ end
 
 When(/^I restore database from the backup$/) do
   log "\n*** Restoring database from the backup. This will may take a while. ***\n\n"
-  $server.run('smdba backup-restore')
+  output, code = $server.run('smdba backup-restore')
+  log "#{output}\n\n"
+  raise 'Restore Failed' unless code.zero?
 end
 
 Then(/^I disable backup in the directory "(.*?)"$/) do |_arg1|
