@@ -21,7 +21,7 @@ Feature: Very first settings
     And I save a screenshot as "create.png"
     And I click on "Create Organization"
     And I save a screenshot as "welcome.png"
-    And I wait for "6" seconds
+    And I wait until I see "created successfully" text
     Then I am logged in
 
   Scenario: Log in as admin user
