@@ -1,5 +1,6 @@
 name: hello-world
-on: pull_request_target
+on:
+- pull_request_target
 jobs:
   test-uyuni:
     runs-on: ubuntu-latest
