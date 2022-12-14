@@ -65,7 +65,7 @@ Then(/^the configuration should not be set to "(.*?)"$/) do |value|
 end
 
 Then(/^I issue command "(.*?)"$/) do |command|
-  $output, _code = $server.run(command, check_errors: true)
+  $output, _code = $server.run(command, check_errors: false)
 end
 
 Then(/^tablespace "([^"]*)" should be listed$/) do |ts|
@@ -105,6 +105,10 @@ end
 Then(/^I should see error message that asks "(.*?)" has same permissions as "(.*?)" directory$/) do |bkp_dir, data_dir|
   assert_includes($output,
                   "The \"#{bkp_dir}\" directory must have the same permissions as \"#{data_dir}\" directory.")
+end
+
+Then(/^I should not see error messages in the output$/) do
+  raise "Error detected: #{$output}" if $output.include? 'error'
 end
 
 Then(/^I remove backup directory "(.*?)"$/) do |bkp_dir|
