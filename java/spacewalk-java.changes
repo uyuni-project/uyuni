@@ -1,27 +1,31 @@
-- Fix internal server error when transferring system between organizations
-- Fix products controller to keep loading mandatory channels even when there are
-  broken channels (bsc#1204270)
-- Remove DWR library
-- Add reboot needed indicator to systems list
-- Move web dependencies from susemanager-frontend-libs to
-  spacewalk-web
-- Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
-- send notifications also as email if email notifications are enabled
-- remove jabberd and osa-dispatcher
-- Add subscription warning notification to overview page
-- Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
-- Remove invalid errata selection after patch installation (bsc#1204235)
-- Ignore insert conflicts during reporting database update (bsc#1202150)
-- Honor page size preference in new system lists
-- Fix kickstart for RHEL 9 to not add install command
-- Remove RHEL kickstart types below 6
-- Removed contents of certificates from the web UI logs (bsc#1204715)
-- Add SUSE Liberty Linux support for RHEL9 based clients
-- Don't persist the YAML parser in FormulaFactory (bsc#1205754)
-- check for NULL in DEB package install size value
-- Add vendor_advisory to errata.getDetails (bsc#1205207)
-- Allow usage of one FQDN to deploy containerized proxy in VM (#19586)
-- disable cloned vendor channel auto selection by default (bsc#1204186)
+-------------------------------------------------------------------
+Wed Dec 14 14:16:07 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Fix internal server error when transferring system between organizations
+  * Fix products controller to keep loading mandatory channels even when there are
+    broken channels (bsc#1204270)
+  * Remove DWR library
+  * Add reboot needed indicator to systems list
+  * Move web dependencies from susemanager-frontend-libs to
+    spacewalk-web
+  * Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
+  * send notifications also as email if email notifications are enabled
+  * remove jabberd and osa-dispatcher
+  * Add subscription warning notification to overview page
+  * Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
+  * Remove invalid errata selection after patch installation (bsc#1204235)
+  * Ignore insert conflicts during reporting database update (bsc#1202150)
+  * Honor page size preference in new system lists
+  * Fix kickstart for RHEL 9 to not add install command
+  * Remove RHEL kickstart types below 6
+  * Removed contents of certificates from the web UI logs (bsc#1204715)
+  * Add SUSE Liberty Linux support for RHEL9 based clients
+  * Don't persist the YAML parser in FormulaFactory (bsc#1205754)
+  * check for NULL in DEB package install size value
+  * Add vendor_advisory to errata.getDetails (bsc#1205207)
+  * Allow usage of one FQDN to deploy containerized proxy in VM (#19586)
+  * disable cloned vendor channel auto selection by default (bsc#1204186)
 
 -------------------------------------------------------------------
 Tue Dec 13 13:30:21 CET 2022 - jgonzalez@suse.com
