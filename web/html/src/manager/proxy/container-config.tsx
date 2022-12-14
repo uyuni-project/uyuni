@@ -178,7 +178,7 @@ export function ProxyConfig() {
     <TopPanel
       title={t("Container Based Proxy Configuration")}
       icon="fa fa-cogs"
-      helpUrl="reference/proxy/container-based-config.html"
+      helpUrl="installation-and-upgrade/proxy-container-setup.html"
     >
       <p>
         {t(
