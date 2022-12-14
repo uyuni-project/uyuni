@@ -1,6 +1,10 @@
-- Correctly understand 'ssm' keyword on scap scheduling
-- Add vendor_advisory information to errata_details call (bsc#1205207)
-- Change default port of "Containerized Proxy configuration" 8022
+-------------------------------------------------------------------
+Wed Dec 14 14:07:34 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Correctly understand 'ssm' keyword on scap scheduling
+  * Add vendor_advisory information to errata_details call (bsc#1205207)
+  * Change default port of "Containerized Proxy configuration" 8022
 
 -------------------------------------------------------------------
 Fri Nov 18 15:02:05 CET 2022 - jgonzalez@suse.com
