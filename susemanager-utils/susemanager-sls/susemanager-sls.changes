@@ -1,5 +1,9 @@
-- Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
-- drop legacy way to prevent disabling local repos
+-------------------------------------------------------------------
+Wed Dec 14 14:15:05 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
+  * drop legacy way to prevent disabling local repos
 
 -------------------------------------------------------------------
 Fri Nov 18 15:13:42 CET 2022 - jgonzalez@suse.com
