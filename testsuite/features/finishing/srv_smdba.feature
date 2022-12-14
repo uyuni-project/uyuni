@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_smdba
 Feature: SMDBA database helper tool
   In order to protect the data in Uyuni
   As a database administrator
