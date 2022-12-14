@@ -79,7 +79,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
      * {@inheritDoc}
      */
     public Object after(XmlRpcInvocation invocation, Object returnValue) {
-        StringBuffer arguments = processArguments(
+        StringBuilder arguments = processArguments(
             invocation.getHandlerName(),
             invocation.getMethodName(),
             invocation.getArguments()
@@ -98,7 +98,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
      * {@inheritDoc}
      */
     public void onException(XmlRpcInvocation invocation, Throwable exception) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         try {
             buf.append("REQUESTED FROM: ");
             buf.append(RhnXmlRpcServer.getCallerIp());
@@ -128,9 +128,9 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
         }
     }
 
-    private StringBuffer processArguments(String handler, String method,
+    private StringBuilder processArguments(String handler, String method,
                                   List arguments) {
-        StringBuffer ret = new StringBuffer();
+        StringBuilder ret = new StringBuilder();
         if (arguments != null) {
             int size = arguments.size();
             for (int i = 0; i < size; i++) {

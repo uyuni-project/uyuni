@@ -27,21 +27,21 @@ public abstract class Renderable {
      * called before the nav is rendered
      * @param sb string buffer to append to
      */
-    public abstract void preNav(StringBuffer sb);
+    public abstract void preNav(StringBuilder sb);
 
     /**
      * called before a nav level is rendered
      * @param sb string buffer to append to
      * @param depth current depth of rendering
      */
-    public abstract void preNavLevel(StringBuffer sb, int depth);
+    public abstract void preNavLevel(StringBuilder sb, int depth);
 
     /**
      * called before a nav node is rendered
      * @param sb string buffer to append to
      * @param depth current depth of rendering
      */
-    public abstract void preNavNode(StringBuffer sb, int depth);
+    public abstract void preNavNode(StringBuilder sb, int depth);
 
     /**
      * called to render an active node (ie, one that should be
@@ -53,7 +53,7 @@ public abstract class Renderable {
      * @param parameters name value pair of generic parameters for the node.
      * @param depth the current render depth
      */
-    public abstract void navNodeActive(StringBuffer sb,
+    public abstract void navNodeActive(StringBuilder sb,
                        NavNode node,
                        NavTreeIndex treeIndex,
                        Map parameters,
@@ -69,7 +69,7 @@ public abstract class Renderable {
      * @param parameters name value pair of generic parameters for the node.
      * @param depth the current render depth
      */
-    public abstract void navNodeInactive(StringBuffer sb,
+    public abstract void navNodeInactive(StringBuilder sb,
                          NavNode node,
                          NavTreeIndex treeIndex,
                          Map parameters,
@@ -80,20 +80,20 @@ public abstract class Renderable {
      * @param sb string buffer to append to
      * @param depth current depth of rendering
      */
-    public abstract void postNavNode(StringBuffer sb, int depth);
+    public abstract void postNavNode(StringBuilder sb, int depth);
 
     /**
      * called after a nav level is rendered
      * @param sb string buffer to append to
      * @param depth current depth of rendering
      */
-    public abstract void postNavLevel(StringBuffer sb, int depth);
+    public abstract void postNavLevel(StringBuilder sb, int depth);
 
     /**
      * called after the full nav is rendered
      * @param sb string buffer to append to
      */
-    public abstract void postNav(StringBuffer sb);
+    public abstract void postNav(StringBuilder sb);
 
     /**
      * returns true if a child node should render inline with its

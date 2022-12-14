@@ -85,12 +85,12 @@ public abstract class LoggingInvocationProcessor {
     public void afterProcess(
         String handlerName,
         String methodName,
-        StringBuffer arguments,
+        StringBuilder arguments,
         String ip
     ) {
         try {
             // Create the call in a separate buffer for reuse
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             buf.append("REQUESTED FROM: ");
             buf.append(ip);
             buf.append(" CALL: ");
