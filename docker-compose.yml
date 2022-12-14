@@ -1,17 +1,17 @@
 version: "3.9"
 services:
   sles-minion:
-    image: "ghcr.io/jordimassaguerpla/uyuni/sle-minion:master"
+    image: "ghcr.io/uyuni-project/uyuni/sle-minion:master"
   opensuse-minion:
-    image: "ghcr.io/jordimassaguerpla/uyuni/opensuse-minion:master"
+    image: "ghcr.io/uyuni-project/uyuni/opensuse-minion:master"
   opensuse-ssh-minion:
-    image: "ghcr.io/jordimassaguerpla/uyuni/opensuse-minion:master"
+    image: "ghcr.io/uyuni-project/uyuni/opensuse-minion:master"
   ubuntu-minion:
-    image: "ghcr.io/jordimassaguerpla/uyuni/ubuntu-minion:master"
+    image: "ghcr.io/uyuni-project/uyuni/ubuntu-minion:master"
   rocky-minion:
-    image: "ghcr.io/jordimassaguerpla/uyuni/rocky-minion:master"
+    image: "ghcr.io/uyuni-project/uyuni/rocky-minion:master"
   opensuse-proxy:
-    image: "ghcr.io/jordimassaguerpla/uyuni/opensuse-proxy:master"
+    image: "ghcr.io/uyuni-project/uyuni/opensuse-proxy:master"
   proxy-httpd-test:
     build:
       context: .
@@ -21,11 +21,11 @@ services:
       context: .
       dockerfile: dockerfiles/proxy-salt-broker-test/Dockerfile
   proxy-squid:
-    image: "ghcr.io/jordimassaguerpla/uyuni/proxy-squid:master"
+    image: "ghcr.io/uyuni-project/uyuni/proxy-squid:master"
   proxy-ssh:
-    image: "ghcr.io/jordimassaguerpla/uyuni/proxy-ssh:master"
+    image: "ghcr.io/uyuni-project/uyuni/proxy-ssh:master"
   proxy-tftpd:
-    image: "ghcr.io/jordimassaguerpla/uyuni/proxy-tftpd:master"
+    image: "ghcr.io/uyuni-project/uyuni/proxy-tftpd:master"
   server-h-test:
     ports:
       - "1234:80"
@@ -45,8 +45,8 @@ services:
       context: .
       dockerfile: dockerfiles/server-java-app-test/Dockerfile
   server-pg:
-    image: "ghcr.io/jordimassaguerpla/uyuni/server-postgresql:master"
+    image: "ghcr.io/uyuni-project/uyuni/server-postgresql:master"
   server-salt-master:
-    image: "ghcr.io/jordimassaguerpla/uyuni/server-salt-master:master"
+    image: "ghcr.io/uyuni-project/uyuni/server-salt-master:master"
   server-salt-api:
-    image: "ghcr.io/jordimassaguerpla/uyuni/server-salt-api:master"
+    image: "ghcr.io/uyuni-project/uyuni/server-salt-api:master"
