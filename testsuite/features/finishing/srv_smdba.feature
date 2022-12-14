@@ -86,6 +86,7 @@ Feature: SMDBA database helper tool
     And I destroy "/var/lib/pgsql/data/pg_wal" directory on server
     And I restore database from the backup
     And I issue command "smdba db-status"
+    Then I should not see error messages in the output
 
   Scenario: Cleanup: remove backup directory
     Given a postgresql database is running
