@@ -37,8 +37,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      - name: test
-        run: docker run -a stdout -a stderr --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ubuntu-minion:master echo hello
   build-and-push-opensuse-minion-image:
     runs-on: ubuntu-latest
     permissions:
