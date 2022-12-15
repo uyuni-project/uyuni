@@ -24995,6 +24995,9 @@ given channel.</source>
       <trans-unit id="spmigration.jsp.confirm.channels-after-migration" xml:space="preserve">
         <source>Channel subscriptions after the migration:</source>
       </trans-unit>
+      <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
         <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
       </trans-unit>
