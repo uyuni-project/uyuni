@@ -1,3 +1,5 @@
+- Limit changelog data in generated metadata to 20 entries
+
 -------------------------------------------------------------------
 Wed Dec 14 14:16:07 CET 2022 - jgonzalez@suse.com
 
