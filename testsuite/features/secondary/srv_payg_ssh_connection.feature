@@ -122,3 +122,7 @@ Feature: Pay as you go
     And I click on "Delete" in "Delete Pay-as-you-go" modal
     Then I should not see a "my-bastion.local" link
     And I should not see a "my-host.local" text
+
+  # workaround for bsc#1205943
+  Scenario: Cleanup: Trigger a refresh of the product catalog
+    When I refresh SCC
