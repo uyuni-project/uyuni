@@ -177,6 +177,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import javax.persistence.Tuple;
+
 
 /**
  * SystemManager
@@ -1082,9 +1084,12 @@ public class SystemManager extends BaseManager {
      * @return number of systems with outdated packages
      */
     public static long countOutdatedSystems() {
-        SelectMode m = ModeFactory.getMode("System_queries", "count_outdated_systems");
-        DataResult<Map<String, Long>> dr = m.execute();
-        return dr.get(0).get("count");
+        String SQL_QUERY = "SELECT COUNT(DISTINCT(id)) FROM susesystemoverview WHERE outdated_packages > 0";
+        return HibernateFactory.getSession()
+                .createNativeQuery(SQL_QUERY, Tuple.class)
+                .getSingleResult()
+                .get("count", Number.class)
+                .longValue();
     }
 
     /**
