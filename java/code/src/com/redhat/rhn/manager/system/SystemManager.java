@@ -1084,9 +1084,9 @@ public class SystemManager extends BaseManager {
      * @return number of systems with outdated packages
      */
     public static long countOutdatedSystems() {
-        String SQL_QUERY = "SELECT COUNT(DISTINCT(id)) FROM susesystemoverview WHERE outdated_packages > 0";
+        String selectCountQuery = "SELECT COUNT(DISTINCT(id)) FROM susesystemoverview WHERE outdated_packages > 0";
         return HibernateFactory.getSession()
-                .createNativeQuery(SQL_QUERY, Tuple.class)
+                .createNativeQuery(selectCountQuery, Tuple.class)
                 .getSingleResult()
                 .get("count", Number.class)
                 .longValue();
