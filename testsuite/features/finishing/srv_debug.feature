@@ -16,4 +16,4 @@ Feature: Debug the server after the testsuite has run
     Then the taskomatic logs should not contain errors
 
   Scenario: Check for out of memory errors
-   Then the log messages should not contain out of memory errors
+    Then the log messages should not contain out of memory errors
