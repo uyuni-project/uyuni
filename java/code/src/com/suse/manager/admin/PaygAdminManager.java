@@ -145,9 +145,9 @@ public class PaygAdminManager {
     private void validateSetDetailsFields(Map<String, Object> details) {
         ValidatorResult result = new ValidatorResult();
         details.keySet().forEach(field -> {
-            if (!Arrays.stream(PaygAdminFields.values())
+            if (Arrays.stream(PaygAdminFields.values())
                     .filter(PaygAdminFields::isEditable)
-                    .anyMatch(f -> f.name().equals(field))) {
+                    .noneMatch(f -> f.name().equals(field))) {
                 result.addError("payg.unknown_edit_field", field);
             }
         });
@@ -170,6 +170,11 @@ public class PaygAdminManager {
         Integer port = null;
         Integer bastionPort = null;
 
+        String username;
+        String password;
+        String key;
+        String keyPassword;
+
         if (paygProperties.isInstanceEdit()) {
             if (!StringUtils.isEmpty(paygProperties.getPort())) {
                 try {
@@ -179,10 +184,25 @@ public class PaygAdminManager {
                     result.addFieldError(PaygAdminFields.port.name(), "payg.port_invalid");
                 }
             }
+            username = paygProperties.getUsername();
+            password = paygProperties.getPassword();
+            key = paygProperties.getKey();
+            keyPassword = paygProperties.getKeyPassword();
         }
         else {
             port = paygSshData.getPort();
+            username = paygSshData.getUsername();
+            password = paygSshData.getPassword();
+            key = paygSshData.getKey();
+            keyPassword = paygSshData.getKeyPassword();
         }
+
+        String bastionHost;
+        String bastionUsername;
+        String bastionPassword;
+        String bastionKey;
+        String bastionKeyPassword;
+
         if (paygProperties.isBastionEdit()) {
             if (!StringUtils.isEmpty(paygProperties.getBastionPort())) {
                 try {
@@ -192,26 +212,35 @@ public class PaygAdminManager {
                     result.addFieldError(PaygAdminFields.bastion_port.name(), "payg.bastion_port_invalid");
                 }
             }
+            bastionHost = paygProperties.getBastionHost();
+            bastionUsername = paygProperties.getBastionUsername();
+            bastionPassword = paygProperties.getBastionPassword();
+            bastionKey = paygProperties.getBastionKey();
+            bastionKeyPassword = paygProperties.getBastionKeyPassword();
         }
         else {
             bastionPort = paygSshData.getBastionPort();
+            bastionHost = paygSshData.getBastionHost();
+            bastionUsername = paygSshData.getBastionUsername();
+            bastionPassword = paygSshData.getBastionPassword();
+            bastionKey = paygSshData.getBastionKey();
+            bastionKeyPassword = paygSshData.getBastionKeyPassword();
         }
 
         return setDetails(paygSshData,
                 paygProperties.getDescription(),
                 paygSshData.getHost(),
                 port,
-                paygProperties.isInstanceEdit() ? paygProperties.getUsername() : paygSshData.getUsername(),
-                paygProperties.isInstanceEdit() ? paygProperties.getPassword() : paygSshData.getPassword(),
-                paygProperties.isInstanceEdit() ? paygProperties.getKey() : paygSshData.getKey(),
-                paygProperties.isInstanceEdit() ? paygProperties.getKeyPassword() : paygSshData.getKeyPassword(),
-                paygProperties.isBastionEdit() ? paygProperties.getBastionHost() : paygSshData.getBastionHost(),
+                username,
+                password,
+                key,
+                keyPassword,
+                bastionHost,
                 bastionPort,
-                paygProperties.isBastionEdit() ? paygProperties.getBastionUsername() : paygSshData.getBastionUsername(),
-                paygProperties.isBastionEdit() ? paygProperties.getBastionPassword() : paygSshData.getBastionPassword(),
-                paygProperties.isBastionEdit() ? paygProperties.getBastionKey() : paygSshData.getBastionKey(),
-                paygProperties.isBastionEdit() ? paygProperties.getBastionKeyPassword() :
-                        paygSshData.getBastionKeyPassword());
+                bastionUsername,
+                bastionPassword,
+                bastionKey,
+                bastionKeyPassword);
     }
 
     /**
