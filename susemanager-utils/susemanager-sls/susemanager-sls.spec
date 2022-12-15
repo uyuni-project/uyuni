@@ -102,7 +102,7 @@ cp -R reactor/* %{buildroot}/usr/share/susemanager/reactor
 cp -R scap/* %{buildroot}/usr/share/susemanager/scap
 
 # Manually install Python part to already prepared structure
-cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
+cp src/beacons/*.py %{buildroot}/usr/share/susemanager/salt/_beacons
 cp src/grains/*.py %{buildroot}/usr/share/susemanager/salt/_grains/
 rm %{buildroot}/usr/share/susemanager/salt/_grains/__init__.py
 cp src/modules/*.py %{buildroot}/usr/share/susemanager/salt/_modules
