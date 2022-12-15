@@ -1,3 +1,4 @@
+- Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
 - Updated logrotate configuration (bsc#1206470)
 - Limit changelog data in generated metadata to 20 entries
 - Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
