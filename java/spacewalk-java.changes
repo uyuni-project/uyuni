@@ -1,3 +1,4 @@
+- Fix server error in product migration outside maintenance window (bsc#1206276)
 - Updated logrotate configuration (bsc#1206470)
 - Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
 - Source Select2 and jQuery UI from susemanager-frontend-libs
