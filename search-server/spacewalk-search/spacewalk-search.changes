@@ -1,3 +1,5 @@
+- fix logging configuration of the search daemon (bsc#1206336)
+
 -------------------------------------------------------------------
 Mon Sep 26 12:06:22 UTC 2022 - marina.latini@suse.com
 

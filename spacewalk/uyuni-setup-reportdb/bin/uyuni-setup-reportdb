@@ -484,7 +484,7 @@ while true ; do
                 echo "Invalid options: do not use --password together with --autgenpw!" >&2
                 exit 1
             fi
-            PGPASSWORD=$(head -10 /dev/urandom | tr -dc '[:alnum:]' | fold -w 25 | head -n 1)
+            PGPASSWORD=$(dd status=none bs=18 count=1 < /dev/random | base64)
             ;;
         -s|--standalone)
             STANDALONE=true

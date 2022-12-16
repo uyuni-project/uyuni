@@ -886,9 +886,9 @@ When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) 
     get_target(host).run('rhn_check -vvv')
   else
     steps %(
-      And I wait at most 500 seconds until event "Hardware List Refresh" is completed
-      And I wait at most 500 seconds until event "Apply states" is completed
-      And I wait at most 500 seconds until event "Package List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and 500 seconds until the event "Apply states" is completed
+      And I wait 180 seconds until the event is picked up and 500 seconds until the event "Hardware List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and 500 seconds until the event "Package List Refresh" is completed
     )
   end
 end
@@ -1296,10 +1296,8 @@ end
 
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  $api_test.auth.login('admin', 'admin')
   node_id = $api_test.system.retrieve_server_id(system_name)
   react_key = $api_test.system.obtain_reactivation_key(node_id)
-  $api_test.auth.logout
   log "Reactivation Key: #{react_key}"
   step %(I enter "#{react_key}" as "reactivationKey")
 end

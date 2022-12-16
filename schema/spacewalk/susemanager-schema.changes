@@ -1,3 +1,4 @@
+- Remove legacy cluster_admin user group
 - add subscription warning info pane
 - Remove data related to RHEL below 6 
 - Increase cron_expr varchar length to 120 in suseRecurringAction

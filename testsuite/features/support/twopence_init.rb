@@ -151,9 +151,6 @@ end
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
 # rubocop:disable Metrics/MethodLength
 def get_system_name(host)
-  # If the system is not known, just return the parameter
-  system_name = host
-
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
   # therefore they are not represented by a twopence node
@@ -178,8 +175,13 @@ def get_system_name(host)
   when 'containerized_proxy'
     system_name = $proxy.full_hostname.sub('pxy', 'pod-pxy')
   else
-    node = get_target(host)
-    system_name = node.full_hostname
+    begin
+      node = get_target(host)
+      system_name = node.full_hostname
+    rescue RuntimeError
+      # If the node for that host is not defined, just return the host parameter as system_name
+      system_name = host
+    end
   end
   system_name
 end

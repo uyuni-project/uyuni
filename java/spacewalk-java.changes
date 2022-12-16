@@ -1,3 +1,5 @@
+- Limit changelog data in generated metadata to 20 entries
+- Fix internal server error when transferring system between organizations
 - Fix products controller to keep loading mandatory channels even when there are
   broken channels (bsc#1204270)
 - Move web dependencies from susemanager-frontend-libs to
