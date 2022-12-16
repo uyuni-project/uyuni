@@ -73,9 +73,8 @@ end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
-  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
-    output, _code = target.run("#{salt_call} -lquiet saltutil.running")
+    output, _code = target.run('venv-salt-call -lquiet saltutil.running 2> /dev/null || salt-call -lquiet saltutil.running')
     break if output == "local:\n"
     sleep 3
   end
