@@ -1,3 +1,4 @@
+- Don't use hash in apidoc links
 - Limit changelog data in generated metadata to 20 entries
 - Fix internal server error when transferring system between organizations
 - Fix products controller to keep loading mandatory channels even when there are
