@@ -279,21 +279,27 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   # Get the list of child channels for this base channel
   child_channels = $api_test.channel.software.list_child_channels(base_channel)
 
-  # Select all the child channels for this client
-  client.sub! 'ssh_minion', 'minion'
-  if client.include? 'buildhost'
-    selected_child_channels = ["custom_channel_#{client.sub('buildhost', 'minion')}", "custom_channel_#{client.sub('buildhost', 'client')}"]
-  elsif client.include? 'terminal'
-    selected_child_channels = ["custom_channel_#{client.sub('terminal', 'minion')}", "custom_channel_#{client.sub('terminal', 'client')}"]
-  else
-    custom_channel = "custom_channel_#{client}"
-    selected_child_channels = [custom_channel]
-  end
-  child_channels.each do |child_channel|
-    selected_child_channels.push(child_channel) unless child_channel.include? 'custom_channel'
-  end
+  # Filter out the custom channels
+  # This is needed because we might have both a traditional custom channel and a Salt custom channel
+  child_channels.reject! { |channel| channel.include? 'custom_channel' }
 
-  $api_test.activationkey.add_child_channels(key, selected_child_channels)
+  # Re-add the desired custom channel
+  # This too can go away when we get rid of traditional clients for good
+  client.sub! 'ssh_minion', 'minion'
+  client.sub! 'buildhost', 'minion'
+  client.sub! 'terminal', 'minion'
+  client.sub! 'monitoring_server', 'sle15sp4_minion'
+  custom_channel = if client.include? 'rocky8'
+                     'no-appstream-8-result-custom_channel_rocky8_minion'
+                   elsif client.include? 'rocky9'
+                     'no-appstream-9-result-custom_channel_rocky9_minion'
+                   else
+                     "custom_channel_#{client}"
+                   end
+  child_channels.push(custom_channel)
+
+  # Add child channels to the key
+  $api_test.activationkey.add_child_channels(key, child_channels)
 end
 
 ## actionchain namespace
