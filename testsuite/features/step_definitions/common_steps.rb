@@ -869,9 +869,9 @@ When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) 
     get_target(host).run('rhn_check -vvv')
   else
     steps %(
-      And I wait at most 500 seconds until event "Hardware List Refresh" is completed
-      And I wait at most 500 seconds until event "Apply states" is completed
-      And I wait at most 500 seconds until event "Package List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and 500 seconds until the event "Apply states" is completed
+      And I wait 180 seconds until the event is picked up and 500 seconds until the event "Hardware List Refresh" is completed
+      And I wait 180 seconds until the event is picked up and 500 seconds until the event "Package List Refresh" is completed
     )
   end
 end
