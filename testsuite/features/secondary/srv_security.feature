@@ -7,7 +7,7 @@ Feature: Basic web security measures and recommendations
   As an authorized user
   I want to avoid session and other attacks
 
-  Background:
+  Scenario: Clear browser cookies for Basic web security measures
     When I clear browser cookies
 
   Scenario: Caching should be enabled for static content
