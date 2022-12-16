@@ -20,7 +20,12 @@ Feature: Very first settings
     And I enter "galaxy-noise@suse.de" as "email"
 #    And I save a screenshot as "create.png"
     And I click on "Create Organization"
-#    And I save a screenshot as "welcome.png"
+    And I save a screenshot as "welcome.png"
+    And I wait for "5" seconds
+    And I save a screenshot as "welcome2.png"
+    And I wait for "5" seconds
+    And I save a screenshot as "welcome3.png"
+    And I wait for "5" seconds
     And I wait until I see "created successfully" text
     Then I am logged in
 
