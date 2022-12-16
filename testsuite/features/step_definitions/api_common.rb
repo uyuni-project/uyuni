@@ -288,7 +288,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   client.sub! 'ssh_minion', 'minion'
   client.sub! 'buildhost', 'minion'
   client.sub! 'terminal', 'minion'
-  client.sub! 'monitoring_server', 'sle15sp4_minion'
+  client.sub! 'monitoring_server', 'sle15sp3_minion'
   custom_channel = if client.include? 'rocky8'
                      'no-appstream-8-result-custom_channel_rocky8_minion'
                    elsif client.include? 'rocky9'
