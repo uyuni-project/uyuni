@@ -19,6 +19,7 @@ Feature: Very first settings
     And I enter "Admin" as "lastName"
     And I enter "galaxy-noise@suse.de" as "email"
 #    And I save a screenshot as "create.png"
+    And I wait for "5" seconds
     And I click on "Create Organization"
     And I save a screenshot as "welcome.png"
     And I wait for "5" seconds
