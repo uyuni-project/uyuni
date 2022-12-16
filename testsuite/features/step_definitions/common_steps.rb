@@ -832,9 +832,9 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
-    And I wait at most 500 seconds until event "Hardware List Refresh" is completed
-    And I wait at most 500 seconds until event "Apply states" is completed
-    And I wait at most 500 seconds until event "Package List Refresh" is completed
+    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Apply states" is completed
+    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Hardware List Refresh" is completed
+    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Package List Refresh" is completed
   )
 end
 
