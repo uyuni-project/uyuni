@@ -24177,6 +24177,12 @@ given channel.</source>
       <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
       </trans-unit>
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+        <source>System Overview Update Queue</source>
+      </trans-unit>
+        <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+        <source>Update System Overview</source>
+      </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
       </trans-unit>
