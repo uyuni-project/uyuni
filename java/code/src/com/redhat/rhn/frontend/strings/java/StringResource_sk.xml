@@ -11273,14 +11273,14 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>Cannot cancel an action with a pending prerequisite.</source>
         <target state="translated">Nie je možné zrušiť akciu s nevyriešenou podmienkou.</target>
       </trans-unit>
-    <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
+      <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
         <source>You have subscriptions that need attention.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Máte predplatné, ktoré si vyžaduje pozornosť.</target>
+      </trans-unit>
       <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve">
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Vaše predplatné čoskoro vyprší alebo už vypršalo. Prosím, skontrolujte stránku &lt;a href="/rhn/manager/subscription-matching"&gt;Priraďovanie predplatného&lt;/a&gt; page.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
