@@ -14,11 +14,11 @@ Feature: Very first settings
     And I enter "admin" as "login"
     And I enter "admin" as "desiredpassword"
     And I enter "admin" as "desiredpasswordConfirm"
-    And I enter "galaxy-noise@suse.de" as "email"
-    And I select "Mr." from "prefix"
     And I enter "Admin" as "firstNames"
     And I enter "Admin" as "lastName"
+    And I enter "galaxy-noise@suse.de" as "email"
 #    And I wait for "1" seconds
+    And I select "Mr." from "prefix"
     And I click on "Create Organization"
     Then I am logged in
 
