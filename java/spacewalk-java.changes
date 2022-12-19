@@ -1,3 +1,4 @@
+- Source Select2 and jQuery UI from susemanager-frontend-libs
 - Don't use hash in apidoc links
 - Limit changelog data in generated metadata to 20 entries
 - Fix internal server error when transferring system between organizations

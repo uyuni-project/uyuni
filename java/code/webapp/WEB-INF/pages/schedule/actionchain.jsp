@@ -10,7 +10,7 @@
 <body>
     <script type="text/javascript" src="/rhn/dwr/interface/ActionChainEntriesRenderer.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
     <script type="text/javascript" src="/rhn/dwr/interface/ActionChainSaveAction.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
-    <script type="text/javascript" src="/javascript/legacy/jquery-ui.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
+    <script type="text/javascript" src="/javascript/jquery-ui.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
     <script type="text/javascript" src="/javascript/actionchain.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
     <rhn:toolbar base="h1" icon="header-chain"
         helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/schedule/action-chains.html">

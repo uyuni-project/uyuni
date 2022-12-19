@@ -1,3 +1,4 @@
+- Source Select2 and jQuery UI from susemanager-frontend-libs
 - fix frontend logging in react pages
 - Move web dependencies from susemanager-frontend-libs to
   spacewalk-web
