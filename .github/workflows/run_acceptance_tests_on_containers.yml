@@ -2,7 +2,7 @@ name: run-acceptance-tests-on-containers
 on: pull_request
 env:
   GITHUB_REGISTRY: ghcr.io
-  GITHUB_PROJECT: ${{ github.repository }}
+  GITHUB_PROJECT: uyuni-project/uyuni 
 jobs:
   test-uyuni:
     runs-on: ubuntu-latest
