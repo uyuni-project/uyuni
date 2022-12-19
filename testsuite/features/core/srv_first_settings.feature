@@ -10,7 +10,7 @@ Feature: Very first settings
     Given I access the host the first time
     And I run "rm -Rf /srv/salt/*" on "server"
     When I go to the home page
-    And I enter "SUSE Test" as "orgName"
+#    And I enter "SUSE Test" as "orgName"
     And I enter "admin" as "login"
     And I enter "admin" as "desiredpassword"
     And I enter "admin" as "desiredpasswordConfirm"
@@ -19,7 +19,7 @@ Feature: Very first settings
     And I enter "galaxy-noise@suse.de" as "email"
 #    And I wait for "1" seconds
     And I select "Mr." from "prefix"
-    Then I should see a "galaxy-noise@suse.de" text
+#    Then I should see a "galaxy-noise@suse.de" text
     And I click on "Create Organization"
     Then I am logged in
 
