@@ -27,7 +27,6 @@ jobs:
       - name: test_from_host
         run: curl http://localhost:1234/test.html
       - name: test_from_container
-        env:
         run: docker run -a stdout -a stderr --network uyuni_default ghcr.io/uyuni-project/uyuni/controller-dev:master bash -c "echo helloworld"
       - name: last-step
         run: echo "bye bye!"
