@@ -8,6 +8,8 @@ jobs:
       - name: hello_world
         run: echo "This is a test. Please ignore. 4!"
       - name: test_from_container
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: docker run -a stdout -a stderr --network uyuni_default ghcr.io/uyuni-project/uyuni/controller-dev:master bash -c "echo helloworld"
       - name: last-step
         run: echo "bye bye!"
