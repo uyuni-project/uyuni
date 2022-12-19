@@ -46,8 +46,10 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         log.debug("Running CloudRmUpdateHostsTask");
         List<CloudRmtHost> hostToUpdate = CloudRmtHostFactory.lookupCloudRmtHostsToUpdate();
-        loadHttpsCertificates(hostToUpdate);
-        updateHost(hostToUpdate);
+        if (!hostToUpdate.isEmpty()) {
+            loadHttpsCertificates(hostToUpdate);
+            updateHost(hostToUpdate);
+        }
     }
 
     private void loadHttpsCertificates(List<CloudRmtHost> hostToUpdate) throws JobExecutionException {
@@ -94,7 +96,7 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
                     commentStart = false;
                 }
             }
-            try (FileWriter fw = new FileWriter("/etc/hosts", false)) {
+            try (FileWriter fw = new FileWriter(HOSTS, false)) {
                 try (BufferedWriter bw = new BufferedWriter(fw)) {
                     for (String nl : newLines) {
                         bw.write(nl);
@@ -104,7 +106,7 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
                     if (!hostToUpdate.isEmpty()) {
                         bw.write(HOST_COMMENT_START + RETAIN_COMMENT);
                         for (CloudRmtHost host : hostToUpdate) {
-                            bw.write(String.format("%s\t%s\n", host.getIp(), host.getHost()));
+                            bw.write(String.format("%s\t%s%n", host.getIp(), host.getHost()));
                         }
                         bw.write(HOST_COMMENT_END + RETAIN_COMMENT);
                     }
