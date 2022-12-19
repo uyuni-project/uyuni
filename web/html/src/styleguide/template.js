@@ -15,8 +15,8 @@ module.exports = {
       `/fonts/font-spacewalk/css/spacewalk-font.css?cb=${noCache}`,
       `/css/jquery.timepicker.css?cb=${noCache}`,
       `/css/bootstrap-datepicker.css?cb=${noCache}`,
-      `/javascript/legacy/select2/select2.css?cb=${noCache}`,
-      `/javascript/legacy/select2/select2-bootstrap.css?cb=${noCache}`,
+      `/javascript/select2/select2.css?cb=${noCache}`,
+      `/javascript/select2/select2-bootstrap.css?cb=${noCache}`,
     ]
       .map(relativeToProxyUrl)
       .map((url) => ({
