@@ -1,4 +1,8 @@
-- Source Select2 and jQuery UI from susemanager-frontend-libs
+-------------------------------------------------------------------
+Mon Dec 19 11:42:37 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.8-1
+  * Source Select2 and jQuery UI from susemanager-frontend-libs
 
 -------------------------------------------------------------------
 Fri Dec 16 17:36:28 CET 2022 - jgonzalez@suse.com
