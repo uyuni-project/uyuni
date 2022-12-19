@@ -27,11 +27,9 @@ jobs:
       - name: test_from_host
         run: curl http://localhost:1234/test.html
       - name: test_from_container
-        run: docker run -a stdout -a stderr --network uyuni_default ghcr.io/uyuni-project/uyuni/controller-dev:master bash -c "curl http://server-h-test/test.html"
-      - name: build_new_container
-        run: docker build -f dockerfiles/controller-test/Dockerfile . -t controller-test:master
-      - name: run_new_container
-        run: docker run --rm -a stdout -a stderr --network uyuni_default --name controller-test_1 controller-test:master bash -c "CUCUMBER_PUBLISH_TOKEN=95eb386d-cb35-4824-a477-d827783c8f0c cucumber"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: docker run -a stdout -a stderr --network uyuni_default ghcr.io/uyuni-project/uyuni/controller-dev:master bash -c "echo helloworld"
       - name: last-step
         run: echo "bye bye!"
 
