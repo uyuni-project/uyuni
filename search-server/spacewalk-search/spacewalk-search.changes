@@ -1,3 +1,4 @@
+- Updated logrotate configuration (bsc#1206470)
 - fix logging configuration of the search daemon (bsc#1206336)
 
 -------------------------------------------------------------------

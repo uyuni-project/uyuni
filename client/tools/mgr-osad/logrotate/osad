@@ -1,5 +1,4 @@
 /var/log/osad {
-    weekly
     rotate 5
     copytruncate
     compress

@@ -1,3 +1,4 @@
+- Updated logrotate configuration (bsc#1206470)
 - Handle tftp in rhn-proxy (bsc#1205976)
 
 -------------------------------------------------------------------

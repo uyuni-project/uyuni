@@ -1,3 +1,5 @@
+- Updated logrotate configuration (bsc#1206470)
+
 -------------------------------------------------------------------
 Tue Apr 19 11:53:23 CEST 2022 - jgonzalez@suse.com
 
