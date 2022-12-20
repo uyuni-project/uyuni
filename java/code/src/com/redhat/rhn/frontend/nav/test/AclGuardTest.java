@@ -27,6 +27,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * AclGuardTest
@@ -76,7 +77,7 @@ public class AclGuardTest extends RhnBaseTestCase {
          * @param params ignored
          * @return true
          */
-        public boolean aclTrueTest(Object ctx, String[] params) {
+        public boolean aclTrueTest(Map<String, Object> ctx, String[] params) {
             return true;
         }
 
@@ -86,7 +87,7 @@ public class AclGuardTest extends RhnBaseTestCase {
          * @param params ignored
          * @return false
          */
-        public boolean aclFalseTest(Object ctx, String[] params) {
+        public boolean aclFalseTest(Map<String, Object> ctx, String[] params) {
             return false;
         }
     }

@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeSet;
+import java.util.Set;
 
 /*
  * Test for {@link Acl}
@@ -273,17 +273,6 @@ public class AclTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testBadRegisterByClass() {
-        try {
-            acl.registerHandler(Object.class);
-            fail("Expected call to fail");
-        }
-        catch (IllegalArgumentException e) {
-            // good.
-        }
-    }
-
-    @Test
     public void testRegisterByString() {
         acl.registerHandler(MockAclHandlerWithFunkyNames.class.getName());
         assertTrue(acl.evalAcl(context, "xml_test()"));
@@ -314,7 +303,7 @@ public class AclTest extends RhnBaseTestCase {
     public void testGetAclHandlerNames() {
         Acl localAcl = new Acl();
         localAcl.registerHandler(MockAclHandler.class.getName());
-        TreeSet ts = localAcl.getAclHandlerNames();
+        Set<String> ts = localAcl.getAclHandlerNames();
         ts.contains("handler_zero");
         ts.contains("handler_one");
         ts.contains("handle_two");
@@ -368,18 +357,18 @@ public class AclTest extends RhnBaseTestCase {
                exp.setExpected(Arrays.asList(params));
            }
        }
-       public boolean aclHandlerZero(Object ctx, String[] params) {
+       public boolean aclHandlerZero(Map<String, Object> ctx, String[] params) {
            return handlerDelegate("handler_zero", ctx, params);
        }
-       public boolean aclHandlerOne(Object ctx, String[] params) {
+       public boolean aclHandlerOne(Map<String, Object> ctx, String[] params) {
            return handlerDelegate("handler_one", ctx, params);
        }
-       public boolean aclHandlerTwo(Object ctx, String[] params) {
+       public boolean aclHandlerTwo(Map<String, Object> ctx, String[] params) {
            return handlerDelegate("handler_two", ctx, params);
        }
 
        private boolean handlerDelegate(
-               String name, Object ctx, String[] params) {
+               String name, Map<String, Object> ctx, String[] params) {
            ExpectationValue exp = (ExpectationValue)expected.get(name);
            exp.setActual(Arrays.asList(params));
 
@@ -411,19 +400,19 @@ public class AclTest extends RhnBaseTestCase {
     */
    public static class MockAclHandlerWithFunkyNames implements AclHandler {
        public boolean aclTheQuickBrownFoxJumpedOverTheLazyDog(
-               Object ctx, String[] params) {
+               Map<String, Object> ctx, String[] params) {
            return true;
        }
-       public boolean aclTestXMLFile(Object ctx, String[] params) {
+       public boolean aclTestXMLFile(Map<String, Object> ctx, String[] params) {
            return true;
        }
-       public boolean aclTestX(Object ctx, String[] params) {
+       public boolean aclTestX(Map<String, Object> ctx, String[] params) {
            return true;
        }
-       public boolean aclTestXML(Object ctx, String[] params) {
+       public boolean aclTestXML(Map<String, Object> ctx, String[] params) {
            return true;
        }
-       public boolean aclXMLTest(Object ctx, String[] params) {
+       public boolean aclXMLTest(Map<String, Object> ctx, String[] params) {
            return true;
        }
    }

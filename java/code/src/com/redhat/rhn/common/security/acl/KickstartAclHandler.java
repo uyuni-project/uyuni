@@ -52,9 +52,8 @@ public class KickstartAclHandler extends BaseHandler {
      * @param params check parameters
      * @return true if a raw format, false else
      */
-    public boolean aclIsKsRaw(Object ctx, String[] params) {
-        Map ctxMap = (Map)ctx;
-        User usr = (User)ctxMap.get(USER);
+    public boolean aclIsKsRaw(Map<String, Object> ctx, String[] params) {
+        User usr = (User)ctx.get(USER);
         KickstartData ks =  getKickstart(usr, params);
         if (ks != null) {
             return ks.isRawData();
@@ -68,9 +67,8 @@ public class KickstartAclHandler extends BaseHandler {
      * @param params check parameters
      * @return true if a wizard format, false else
      */
-    public boolean aclIsKsNotRaw(Object ctx, String[] params) {
-        Map ctxMap = (Map)ctx;
-        User usr = (User)ctxMap.get(USER);
+    public boolean aclIsKsNotRaw(Map<String, Object> ctx, String[] params) {
+        User usr = (User)ctx.get(USER);
         KickstartData ks =  getKickstart(usr, params);
         if (ks == null) {
             return false;
@@ -86,10 +84,9 @@ public class KickstartAclHandler extends BaseHandler {
      * @return true if the kickstart tree is synced
      * to cobbler
      */
-    public boolean aclTreeIsSynced(Object ctx, String[] params) {
-        Map ctxMap = (Map)ctx;
-        User usr = (User)ctxMap.get(USER);
-        Long id = getAsLong(ctxMap.get(RequestContext.KSTREE_ID));
+    public boolean aclTreeIsSynced(Map<String, Object> ctx, String[] params) {
+        User usr = (User)ctx.get(USER);
+        Long id = getAsLong(ctx.get(RequestContext.KSTREE_ID));
         if (id == null) {
             return false;
         }
@@ -107,10 +104,9 @@ public class KickstartAclHandler extends BaseHandler {
      * @return true if the kickstart profile is valid
      * to cobbler
      */
-    public boolean aclProfileIsValid(Object ctx, String[] params) {
-        Map ctxMap = (Map)ctx;
-        User usr = (User)ctxMap.get(USER);
-        Long id = getAsLong(ctxMap.get(RequestContext.KICKSTART_ID));
+    public boolean aclProfileIsValid(Map<String, Object> ctx, String[] params) {
+        User usr = (User)ctx.get(USER);
+        Long id = getAsLong(ctx.get(RequestContext.KICKSTART_ID));
         if (id == null) {
             return false;
         }
