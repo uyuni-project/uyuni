@@ -56,6 +56,7 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
     node.run('rcsalt-minion restart', check_errors: false)
   else
     node.run('systemctl restart salt-minion', check_errors: false)
+    node.run('systemctl restart venv-salt-minion', check_errors: false)
   end
 end
 
