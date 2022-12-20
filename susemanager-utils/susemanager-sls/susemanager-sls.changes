@@ -1,3 +1,4 @@
+- Add state to properly configure the reboot action for transactional systems
 - Updated logrotate configuration (bsc#1206470)
 - Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
 - Avoid installing recommended packages from assigned products (bsc#1204330)
