@@ -19,7 +19,7 @@ Feature: Very first settings
     And I enter "galaxy-noise@suse.de" as "email"
 #    And I wait for "1" seconds
     And I select "Mr." from "prefix"
-#    Then I should see a "galaxy-noise@suse.de" text
+    Then I should not see a "is required" text
     And I click on "Create Organization"
     Then I am logged in
 
