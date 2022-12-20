@@ -886,13 +886,20 @@ if [[ $ACTIVATION_KEYS =~ , ]]; then
     exit 1
 fi
 
-MINION_ID_FILE="/etc/salt/minion_id"
-SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/susemanager.conf"
+SNAPSHOT_PREFIX=""
+if [ -n $SNAPSHOT_ID ]; then
+    SNAPSHOT_PREFIX="/var/lib/overlay/$SNAPSHOT_ID"
+fi
+
+MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/salt/minion_id"
+MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/salt/minion.d"
+SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
 MINION_SERVICE="salt-minion"
 
 if [ $VENV_ENABLED -eq 1 ]; then
-    MINION_ID_FILE="/etc/venv-salt-minion/minion_id"
-    SUSEMANAGER_MASTER_FILE="/etc/venv-salt-minion/minion.d/susemanager.conf"
+    MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion_id"
+    MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion.d"
+    SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
     MINION_SERVICE="venv-salt-minion"
 fi
 
@@ -939,7 +946,16 @@ system-environment:
       _:
         SALT_RUNNING: 1
 EOF
-fi
+
+if [ -n "$SNAPSHOT_ID" ]; then
+    cat <<EOF >> "${{MINION_CONFIG_DIR}}/transactional_update.conf"
+# Enable the transactional_update executor
+module_executors:
+  - transactional_update
+  - direct_call
+EOF
+fi # -n SNAPSHOT_ID
+fi # REGISTER_THIS_BOX eq 1
 
 echo "* removing TLS certificate used for bootstrap"
 echo "  (will be re-added via salt state)"
@@ -950,7 +966,7 @@ echo "* starting salt daemon and enabling it during boot"
 
 if [ -n "$SNAPSHOT_ID" ]; then
     call_tukit "systemctl enable '$MINION_SERVICE'"
-    tukit close $SNAPSHOT_ID
+    tukit -q close $SNAPSHOT_ID
     if [ "$SCHEDULE_REBOOT_AFTER_TRANSACTION" -eq 1 ]; then
         transactional-update reboot
     else
