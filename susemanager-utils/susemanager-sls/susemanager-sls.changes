@@ -1,3 +1,4 @@
+- Optimize the number of salt calls on minion startup (bsc#1203532)
 - install SUSE Liberty v2 GPG key
 - Bootstrap state now writes salt config in correct overlay on SLE Micro (bsc#1206294)
 - Fix reboot info beacon installation

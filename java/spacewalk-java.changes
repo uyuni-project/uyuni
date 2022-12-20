@@ -1,3 +1,4 @@
+- Optimize the number of salt calls on minion startup (bsc#1203532)
 - Fix name for autoinstall snippets after Cobbler 3.3.3
 - prevent ISE on activation key page when selected base channel value is null
 - Trigger a package profile update when a new live-patch is installed (bsc#1206249)
