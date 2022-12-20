@@ -10,7 +10,7 @@ Feature: Very first settings
     Given I access the host the first time
     And I run "rm -Rf /srv/salt/*" on "server"
     When I go to the home page
-#    And I enter "SUSE Test" as "orgName"
+    And I enter "SUSE Test" as "orgName"
     And I enter "admin" as "login"
     And I enter "admin" as "desiredpassword"
     And I enter "admin" as "desiredpasswordConfirm"
