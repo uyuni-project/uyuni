@@ -34,3 +34,11 @@ INSERT INTO rhnChannelContentSource (source_id, channel_id)
   FROM rhnChannel C
   WHERE C.label = 'oraclelinux9-aarch64';
 
+UPDATE rhnContentSource
+   SET label = 'External - Oracle Linux 9 (x86_64)'
+ WHERE label = 'Extern - Oracle Linux 9 (x86_64)';
+
+UPDATE rhnContentSource
+   SET label = 'External - Oracle Linux 9 (aarch64)'
+ WHERE label = 'Extern - Oracle Linux 9 (aarch64)';
+
