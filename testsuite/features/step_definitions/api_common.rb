@@ -10,16 +10,6 @@ $api_test = if $debug_mode
               $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
             end
 
-## auth namespace
-
-When(/^I am logged in API as user "([^"]*)" and password "([^"]*)"$/) do |user, password|
-  $api_test.auth.login(user, password)
-end
-
-When(/^I logout from API$/) do
-  $api_test.auth.logout
-end
-
 ## system namespace
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|

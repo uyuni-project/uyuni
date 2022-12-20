@@ -605,13 +605,6 @@ Note that the text area variant handles the new lines characters while the other
 
 ### XML-RPC or HTTP API
 
-* Log into and out from the API on the server
-
-```gherkin
-  Given I am logged in API as user "admin" and password "admin"
-  When I logout from API
-```
-
 * Calling various API methods
 
 For example:

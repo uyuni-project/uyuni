@@ -8,7 +8,6 @@ Feature: Move a ssh minion from a proxy to direct connection
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete minion system profile before bootstrap
     Given I am on the Systems overview page of this "ssh_minion"
@@ -90,6 +89,3 @@ Feature: Move a ssh minion from a proxy to direct connection
   Scenario: Check events history for failures on the minion
     Given I am on the Systems overview page of this "ssh_minion"
     Then I check for failed events on history event page
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

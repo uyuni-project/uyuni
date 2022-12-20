@@ -49,4 +49,3 @@ Feature: Add common channels and schedule their synchronization
     Then I should see a "Repository sync scheduled for Ubuntu 18.04 LTS AMD64 Main Security." text
 
   # No common channels for Ubuntu 20.04
-

@@ -6,7 +6,6 @@ Feature: IPMI Power management API
 
   Scenario: Setup an IPMI host for API test
     When the server starts mocking an IPMI host
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Check the power management settings for API test
     When I want to operate on this "sle_client"
@@ -45,4 +44,3 @@ Feature: IPMI Power management API
 
   Scenario: Cleanup: tear down the IPMI host for API test
     When the server stops mocking an IPMI host
-    And I logout from API

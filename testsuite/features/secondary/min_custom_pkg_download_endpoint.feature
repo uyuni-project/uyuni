@@ -81,4 +81,3 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Cleanup: recheck the default RPM download point values
     Then the susemanager repo file should exist on the "sle_minion"
     And the repo file should contain the normal download endpoint on the "sle_minion"
-

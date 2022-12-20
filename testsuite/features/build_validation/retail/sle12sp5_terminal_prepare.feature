@@ -4,13 +4,11 @@
 @sle12sp5_terminal
 Feature: Prepare prerequisites for SLES 12 SP5 terminal deployment
 
-  Scenario: Prepare activation key for SLES 12 SP5 terminal
-    When I am logged in API as user "admin" and password "admin"
-    And I create an activation key including custom channels for "sle12sp5_terminal" via API
-    And I logout from API
-
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+
+  Scenario: Prepare activation key for SLES 12 SP5 terminal
+    When I create an activation key including custom channels for "sle12sp5_terminal" via API
 
   Scenario: Create hardware type group for SLES 12 SP5 terminal
     When I follow the left menu "Systems > System Groups"
