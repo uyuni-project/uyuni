@@ -46,7 +46,7 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    protected DataResult<ConfigSystemDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         String feature  = rctxIn.getRequest().getParameter("feature");
         return ConfigurationManager.getInstance().listSystemsForConfigAction(user, pcIn,

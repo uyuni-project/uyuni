@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigRevisionDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -40,7 +41,7 @@ public class CompareRevisionAction extends BaseListAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    protected DataResult<ConfigRevisionDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         HttpServletRequest request = rctxIn.getRequest();
         User user = rctxIn.getCurrentUser();
 

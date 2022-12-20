@@ -54,10 +54,9 @@ public class EnableConfigHelper {
      */
     public void enableSystems(String setLabel, Date earliestIn)
         throws TaskomaticApiException {
-        // earliest = earliestIn;
         ConfigurationManager cm = ConfigurationManager.getInstance();
         //Get the list of systems and what we need to do to them.
-        DataResult dr = cm.listNonManagedSystemsInSetElaborate(user, setLabel);
+        DataResult<ConfigSystemDto> dr = cm.listNonManagedSystemsInSetElaborate(user, setLabel);
 
         /*
          * The set going to store the system ids and an error code
@@ -77,8 +76,7 @@ public class EnableConfigHelper {
         RhnSet set = RhnSetDecl.CONFIG_ENABLE_SYSTEMS.create(user);
 
         //iterate through the dataresult and perform actions
-        for (int n = 0; n < dr.getTotalSize(); n++) {
-            ConfigSystemDto dto = (ConfigSystemDto)dr.get(n);
+        for (ConfigSystemDto dto : dr) {
             Long sid = dto.getId();
             Server current = SystemManager.lookupByIdAndUser(sid, user);
             set.addElement(dto.getId(),

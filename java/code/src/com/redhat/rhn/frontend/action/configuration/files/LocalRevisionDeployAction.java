@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
+import com.redhat.rhn.frontend.dto.LastDeployDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -103,9 +104,9 @@ public class LocalRevisionDeployAction extends RhnAction {
         ConfigFile cf = cr.getConfigFile();
         ConfigChannel cc = cf.getConfigChannel();
         if (cc.isLocalChannel() || cc.isSandboxChannel()) {
-            List infos = ConfigurationManager.getInstance().getSystemInfo(usr, cc);
+            List<ConfigSystemDto> infos = ConfigurationManager.getInstance().getSystemInfo(usr, cc);
             if (infos != null && !infos.isEmpty()) {
-                long srvId = ((ConfigSystemDto)infos.get(0)).getId();
+                long srvId = infos.get(0).getId();
                 srv = ServerFactory.lookupById(srvId);
             }
         }
@@ -128,7 +129,7 @@ public class LocalRevisionDeployAction extends RhnAction {
         request.setAttribute(SYSTEM_ID, srv.getId());
 
         if (cc.isLocalChannel()) {
-            DataResult dr = ConfigurationManager.getInstance().getSuccesfulDeploysTo(usr,
+            DataResult<LastDeployDto> dr = ConfigurationManager.getInstance().getSuccesfulDeploysTo(usr,
                     cf.getConfigFileName(), srv);
             if (dr != null && !dr.isEmpty()) {
                 request.setAttribute(LAST_DEPLOY, dr.get(0));
@@ -140,9 +141,9 @@ public class LocalRevisionDeployAction extends RhnAction {
             Server srv, User u) {
         Date datePicked = getStrutsDelegate().
            readScheduleDate(form, "date", DatePicker.YEAR_RANGE_POSITIVE);
-        Set file = new HashSet();
+        Set<Long> file = new HashSet<>();
         file.add(cr.getConfigFile().getId());
-        Set system = new HashSet();
+        Set<Long> system = new HashSet<>();
         system.add(srv.getId());
         ConfigurationManager.getInstance().deployFiles(u, file, system, datePicked);
     }

@@ -43,11 +43,11 @@ import org.apache.struts.action.ActionMessages;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -137,14 +137,14 @@ public class ChannelOverviewTasks extends RhnAction {
         }
 
         if (chooseSystems) {
-            DataResult systems = mgr.listChannelSystems(usr, cc, null);
+            DataResult<ConfigSystemDto> systems = mgr.listChannelSystems(usr, cc, null);
             RhnSetHelper sysHelper = new RhnSetHelper(map, sysSet, req);
             sysHelper.setForward(ALL_FILES_TO_ALL_SYS);
             sysHelper.selectall(systems, params);
         }
 
         if (chooseFiles) {
-            DataResult files = mgr.listCurrentFiles(usr, cc, null);
+            DataResult<ConfigFileDto> files = mgr.listCurrentFiles(usr, cc, null);
             RhnSetHelper fileHelper = new RhnSetHelper(map, revSet, req);
             fileHelper.setForward(ALL_FILES_TO_ALL_SYS);
             fileHelper.selectall(files, params);
@@ -160,26 +160,20 @@ public class ChannelOverviewTasks extends RhnAction {
         ConfigChannel cc = ConfigActionHelper.getChannel(req);
         User usr = new RequestContext(req).getCurrentUser();
 
-        DataResult systems = mgr.listChannelSystems(usr, cc, null);
-        DataResult revs = mgr.listCurrentFiles(usr, cc, null);
+        DataResult<ConfigSystemDto> systems = mgr.listChannelSystems(usr, cc, null);
+        DataResult<ConfigFileDto> revs = mgr.listCurrentFiles(usr, cc, null);
 
         if (systems.isEmpty() || revs.isEmpty()) {
             createErrorMessage(req, "comparetask.error.emptysets", null);
             return;
         }
 
-        Set crids = new HashSet();
-        for (Object revIn : revs) {
-            ConfigFileDto cfd = (ConfigFileDto) revIn;
-            crids.add(cfd.getLatestConfigRevisionId());
-        }
+        Set<Long> crids = revs.stream().map(ConfigFileDto::getLatestConfigRevisionId).collect(Collectors.toSet());
 
-        Map<Long, Collection<Long>> serverConfigMap =
-                new HashMap<>();
+        Map<Long, Collection<Long>> serverConfigMap = new HashMap<>();
 
         List<Long> servers = new LinkedList<>();
-        for (Object systemIn : systems) {
-            ConfigSystemDto csd = (ConfigSystemDto) systemIn;
+        for (ConfigSystemDto csd : systems) {
             servers.add(csd.getId());
             serverConfigMap.put(csd.getId(), crids);
         }

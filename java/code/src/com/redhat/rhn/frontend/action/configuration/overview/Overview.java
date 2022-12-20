@@ -50,7 +50,7 @@ public class Overview extends RhnAction {
 
         ConfigurationManager manager = ConfigurationManager.getInstance();
 
-        Map summary = manager.getOverviewSummary(user);
+        Map<String, Long> summary = manager.getOverviewSummary(user);
         request.setAttribute("summary", summary);
         request.setAttribute("is_admin", AclManager
                 .hasAcl("user_role(org_admin)",

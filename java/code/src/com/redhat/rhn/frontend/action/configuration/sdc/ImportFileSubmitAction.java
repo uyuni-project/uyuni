@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -52,8 +53,8 @@ public class ImportFileSubmitAction extends RhnSetAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User user, ActionForm form,
-                                       HttpServletRequest request) {
+    protected DataResult<ConfigFileNameDto> getDataResult(User user, ActionForm form,
+                                                          HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         return ConfigurationManager.getInstance().listFileNamesForSystem(user,
                 rctx.lookupServer(), null);

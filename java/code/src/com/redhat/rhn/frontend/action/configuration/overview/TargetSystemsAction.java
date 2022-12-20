@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -95,7 +96,7 @@ public class TargetSystemsAction extends RhnListAction {
      * page.
      * @return list of non-managed systems
      */
-    protected DataResult getDataResult(User user, PageControl pcIn) {
+    protected DataResult<ConfigSystemDto> getDataResult(User user, PageControl pcIn) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listNonManagedSystems(user, pcIn);
     }

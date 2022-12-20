@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.configuration.channel;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -51,7 +52,7 @@ public class TargetSystemsListSetup extends BaseSetListAction {
     }
 
     @Override
-    protected DataResult getDataResult(RequestContext ctx, PageControl pc) {
+    protected DataResult<ConfigSystemDto> getDataResult(RequestContext ctx, PageControl pc) {
 
         ConfigChannel cc = ConfigActionHelper.getChannel(ctx.getRequest());
         return ConfigurationManager.getInstance().listSystemsNotInChannel(ctx.getCurrentUser(), cc, pc);

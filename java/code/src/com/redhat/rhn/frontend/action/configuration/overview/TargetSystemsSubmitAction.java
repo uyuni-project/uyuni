@@ -19,6 +19,7 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
@@ -54,9 +55,9 @@ public class TargetSystemsSubmitAction extends RhnSetAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    protected DataResult<ConfigSystemDto> getDataResult(User userIn,
+                                                        ActionForm formIn,
+                                                        HttpServletRequest requestIn) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listNonManagedSystems(userIn, null);
     }

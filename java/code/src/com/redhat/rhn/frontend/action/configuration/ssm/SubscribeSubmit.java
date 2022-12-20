@@ -45,8 +45,8 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User user, ActionForm form,
-                                       HttpServletRequest request) {
+    protected DataResult<ConfigChannelDto> getDataResult(User user, ActionForm form,
+                                                        HttpServletRequest request) {
         return ConfigurationManager.getInstance().ssmChannelListForSubscribe(user, null);
     }
 
@@ -109,10 +109,9 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
            so they take place in the ranking.
          */
         ConfigurationManager manager = ConfigurationManager.getInstance();
-        DataResult channels = manager.ssmChannelListForSubscribeAlreadySubbed(user);
+        DataResult<ConfigChannelDto> channels = manager.ssmChannelListForSubscribeAlreadySubbed(user);
 
-        for (Object channelIn : channels) {
-            ConfigChannelDto channel = (ConfigChannelDto) channelIn;
+        for (ConfigChannelDto channel : channels) {
             set.addElement(channel.getId());
         }
 

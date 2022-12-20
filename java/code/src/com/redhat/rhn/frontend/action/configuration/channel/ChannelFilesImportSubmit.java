@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -109,9 +110,9 @@ public class ChannelFilesImportSubmit extends BaseSetOperateOnSelectedItemsActio
     }
 
     @Override
-    protected DataResult getDataResult(User u,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<ConfigFileDto> getDataResult(User u,
+                                                      ActionForm formIn,
+                                                      HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
         ConfigActionHelper.setupRequestAttributes(ctx, cc);

@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -295,7 +296,7 @@ public class ViewModifyPathsAction extends RhnAction implements Listable {
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext context) {
+    public List<ConfigFileNameDto> getResult(RequestContext context) {
         Server server  = context.lookupAndBindServer();
         User user = context.getCurrentUser();
         ConfigChannelType type = (ConfigChannelType)
