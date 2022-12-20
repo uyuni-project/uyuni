@@ -1,3 +1,4 @@
+- Optimize the number of salt calls on minion startup (bsc#1203532)
 - Updated logrotate configuration (bsc#1206470)
 
 -------------------------------------------------------------------
