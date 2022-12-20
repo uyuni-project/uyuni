@@ -134,7 +134,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
-    And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I enter "/var/testsuite-data/leap-disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
     And I click on "add_disk"
@@ -172,7 +172,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
-    And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I enter "/var/testsuite-data/leap-disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I check "uefi"
     And I enter "/usr/share/qemu/ovmf-x86_64-ms.bin" as "uefiLoader"
