@@ -41,7 +41,7 @@ public class ChannelAclHandler extends BaseHandler {
      * Sometimes, "cid" is an array of strings of len-1 where the -entry- is the
      * cid-str (rhn:require) Sigh.
      */
-    protected Channel getChannel(User usr, Map ctx) {
+    protected Channel getChannel(User usr, Map<String, Object> ctx) {
         Object cidObj = ctx.get(CID);
         String cidStr = null;
         if (cidObj instanceof String) {
@@ -71,10 +71,9 @@ public class ChannelAclHandler extends BaseHandler {
      * @param params check parameters
      * @return true if allowed, false else
      */
-    public boolean aclUserCanAdminChannel(Object ctx, String[] params) {
-        Map ctxMap = (Map)ctx;
-        User usr = (User)ctxMap.get(USER);
-        Channel chan = getChannel(usr, ctxMap);
+    public boolean aclUserCanAdminChannel(Map<String, Object> ctx, String[] params) {
+        User usr = (User)ctx.get(USER);
+        Channel chan = getChannel(usr, ctx);
         if (chan != null) {
             return UserManager.verifyChannelAdmin(usr, chan);
         }
@@ -87,10 +86,9 @@ public class ChannelAclHandler extends BaseHandler {
      * @param params check parameters [not_globally_subscribable]
      * @return true if allowed, false else
      */
-    public boolean aclOrgChannelSetting(Object ctx, String[] params) {
-        Map ctxMap = (Map)ctx;
-        User usr = (User)ctxMap.get(USER);
-        Channel chan = getChannel(usr, ctxMap);
+    public boolean aclOrgChannelSetting(Map<String, Object> ctx, String[] params) {
+        User usr = (User)ctx.get(USER);
+        Channel chan = getChannel(usr, ctx);
         if (chan != null) {
             String p0 = (params.length > 0 ? params[0] : null);
             boolean subscribable = ChannelFactory.isGloballySubscribable(usr.getOrg(),
@@ -111,7 +109,7 @@ public class ChannelAclHandler extends BaseHandler {
      * @param params check parameters [errata]
      * @return true if allowed, false else
      */
-    public boolean aclChannelTypeCapable(Object ctx, String[] params) {
+    public boolean aclChannelTypeCapable(Map<String, Object> ctx, String[] params) {
 
         if (params == null || params.length == 0) {
             return true;
@@ -121,9 +119,8 @@ public class ChannelAclHandler extends BaseHandler {
             return false;
         }
 
-        Map ctxMap = (Map)ctx;
-        User usr = (User)ctxMap.get(USER);
-        Channel chan = getChannel(usr, ctxMap);
+        User usr = (User)ctx.get(USER);
+        Channel chan = getChannel(usr, ctx);
         String archType = chan.getChannelArch().getArchType().getLabel();
         return archType.equals(RPM);
     }
@@ -134,17 +131,9 @@ public class ChannelAclHandler extends BaseHandler {
      * @param params check parameters
      * @return true if allowed, false else
      */
-    public boolean aclChannelSubscribable(Object ctx, String[] params) {
-        Map ctxMap = (Map)ctx;
-        User usr = (User)ctxMap.get(USER);
-        Channel chan = getChannel(usr, ctxMap);
-
-        // From Channel.pm:
-        // return 0 unless channel_accessible($pxt);
-        // return 0 if channel_is_base($pxt);
-        // return 0 if channel_is_satellite($pxt);
-        // return 0 if channel_is_proxy($pxt);
-        // return 0 unless $pxt->user->verify_channel_subscribe($pxt->param('cid'));
+    public boolean aclChannelSubscribable(Map<String, Object> ctx, String[] params) {
+        User usr = (User)ctx.get(USER);
+        Channel chan = getChannel(usr, ctx);
 
         if (chan != null) {
             return  !chan.isBaseChannel() &&
@@ -159,10 +148,9 @@ public class ChannelAclHandler extends BaseHandler {
      * @param params check parameters
      * @return true if channel-vers is RHEL5, false else
      */
-    public boolean aclIsRhel5(Object ctx, String[] params) {
-        Map ctxMap = (Map)ctx;
-        User usr = (User)ctxMap.get(USER);
-        Channel chan = getChannel(usr, ctxMap);
+    public boolean aclIsRhel5(Map<String, Object> ctx, String[] params) {
+        User usr = (User)ctx.get(USER);
+        Channel chan = getChannel(usr, ctx);
         if (chan != null) {
             Set<ChannelVersion> vers = ChannelManager.getChannelVersions(chan);
             return (vers != null && vers.contains(ChannelVersion.RHEL5));
@@ -177,9 +165,8 @@ public class ChannelAclHandler extends BaseHandler {
      * @param params  check params
      * @return true if it does exist false otherwise
      */
-    public boolean aclChannelExists(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Object idObj = map.get("cid");
+    public boolean aclChannelExists(Map<String, Object> ctx, String[] params) {
+        Object idObj = ctx.get("cid");
 
         if (idObj != null) {
             Long id = Long.parseLong((String)idObj);
@@ -196,10 +183,8 @@ public class ChannelAclHandler extends BaseHandler {
      * @param params  check params
      * @return true if it is a clone
      */
-    public boolean aclChannelIsClone(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Object idObj = map.get("cid");
-        Channel chan = getChannel((User)map.get(USER), map);
+    public boolean aclChannelIsClone(Map<String, Object> ctx, String[] params) {
+        Channel chan = getChannel((User)ctx.get(USER), ctx);
         if (chan == null) {
             return false;
         }

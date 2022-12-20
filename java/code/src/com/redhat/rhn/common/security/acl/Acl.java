@@ -37,6 +37,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -189,7 +190,7 @@ public class Acl {
     private static Logger log = LogManager.getLogger(Acl.class);
 
     /** Store acl handlers against keys referenced in acl statements */
-    private Map handlers = new HashMap();
+    private Map<String, InstanceMethodPair> handlers = new HashMap<>();
 
     /** store the compiled regex that will be re-used for evalAcl invocations */
     private static Pattern parsePattern = null;
@@ -235,7 +236,7 @@ public class Acl {
      */
     public void registerHandler(String aclClassname) {
         try {
-            Class clazz = Class.forName(aclClassname);
+            Class<? extends AclHandler> clazz = Class.forName(aclClassname).asSubclass(AclHandler.class);
             registerHandler(clazz);
         }
         catch (ClassNotFoundException e) {
@@ -250,14 +251,14 @@ public class Acl {
      * @param aclClazz an {@link AclHandler} implementation
      * @see #registerHandler(AclHandler)
      */
-    public void registerHandler(Class aclClazz) {
+    public void registerHandler(Class<? extends AclHandler> aclClazz) {
         try {
             if (!AclHandler.class.isAssignableFrom(aclClazz)) {
                 throw new IllegalArgumentException(
                     LocalizationService.getInstance().getMessage("bad-class",
                         aclClazz.getName()));
             }
-            AclHandler instance = (AclHandler)aclClazz.newInstance();
+            AclHandler instance = aclClazz.newInstance();
             registerHandler(instance);
         }
         catch (InstantiationException | IllegalAccessException e) {
@@ -285,7 +286,7 @@ public class Acl {
     public void registerHandler(AclHandler aclHandler) {
 
         try {
-            Class clazz = aclHandler.getClass();
+            Class<? extends AclHandler> clazz = aclHandler.getClass();
             // find all the acl* methods. and store them
             BeanInfo info = Introspector.getBeanInfo(clazz);
             MethodDescriptor[] methodDescriptors = info.getMethodDescriptors();
@@ -300,11 +301,11 @@ public class Acl {
                     continue;
                 }
                 Method method = methodDescriptor.getMethod();
-                Class[] params = method.getParameterTypes();
+                Class<?>[] params = method.getParameterTypes();
                 if (!method.getReturnType().equals(Boolean.TYPE) ||
                         method.getExceptionTypes().length > 0 ||
                         params.length != 2 ||
-                        !params[0].equals(Object.class) ||
+                        !params[0].equals(Map.class) ||
                         !params[1].equals(String[].class)) {
                     log.warn(LocalizationService.getInstance().getMessage(
                             "bad-signature", method.toString()));
@@ -364,8 +365,8 @@ public class Acl {
     /** Returns the set of registered ACL handler names.
      *  @return set of handler names usable in an ACL string
      * */
-    public TreeSet getAclHandlerNames() {
-        return new TreeSet(handlers.keySet());
+    public Set<String> getAclHandlerNames() {
+        return new TreeSet<>(handlers.keySet());
     }
 
     /** Evaluates an ACL string within a given context.
@@ -376,7 +377,7 @@ public class Acl {
      *  false otherwise
      *  @see AclHandler
      */
-    public boolean evalAcl(Object context, String acl) {
+    public boolean evalAcl(Map<String, Object> context, String acl) {
 
         if (log.isDebugEnabled()) {
             log.debug("acl: {}", acl);
@@ -437,14 +438,13 @@ public class Acl {
 
                 String params = matchResult.group(PARAM_GROUP);
 
-                InstanceMethodPair pair =
-                    (InstanceMethodPair)handlers.get(func);
+                InstanceMethodPair pair = handlers.get(func);
 
                 if (pair == null) {
                     Object[] args = new Object[3];
                     args[0] = func;
                     args[1] = statement;
-                    args[2] = new TreeSet(handlers.keySet()).toString();
+                    args[2] = new TreeSet<>(handlers.keySet()).toString();
                     throw new IllegalArgumentException(
                         LocalizationService.getInstance().getMessage(
                             "bad-handler", args));

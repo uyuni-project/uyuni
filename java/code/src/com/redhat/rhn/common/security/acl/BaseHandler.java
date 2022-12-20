@@ -18,6 +18,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Map;
+
 /**
  * BaseHandler is the base class for all Acl handlers and should
  * be where we put common reusable methods.
@@ -38,7 +40,7 @@ public abstract class BaseHandler implements AclHandler {
      * @param params nothing
      * @return true if satellite, false if spacewalk
      */
-    public boolean aclIsSuma(Object ctx, String[] params) {
+    public boolean aclIsSuma(Map<String, Object> ctx, String[] params) {
         return !ConfigDefaults.get().isUyuni();
     }
 
