@@ -7,7 +7,6 @@ Feature: Action chains on Salt minions
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
@@ -270,6 +269,3 @@ Feature: Action chains on Salt minions
 
   Scenario: Cleanup: remove downloaded files
     When I run "rm -f /tmp/downloads/action-chain.cnf" on "localhost" without error control
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

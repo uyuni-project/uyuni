@@ -50,10 +50,8 @@ Feature: Action chains on several systems at once
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on several systems
-    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
-    And I logout from API
 
   Scenario: Add an action chain using system set manager for Red Hat-like minion and SLE minion
     When I follow the left menu "Systems > System List > All"

@@ -110,7 +110,6 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Fake-RH-Like-Channel created." text
 
-
   Scenario: Wait for Channels generated initial metadata
     When I wait until the channel "test-channel-x86_64" has been synced
     And I wait until the channel "fake-i586-channel" has been synced

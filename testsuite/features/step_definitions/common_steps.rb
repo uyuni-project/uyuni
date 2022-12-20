@@ -323,7 +323,6 @@ end
 
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
-  $api_test.auth.login('admin', 'admin')
   # -------------------------------
   # Cleanup kickstart distros and their profiles, if any.
 
@@ -344,7 +343,6 @@ When(/^I remove kickstart profiles and distros$/) do
   profiles = $server.run('cobbler profile list')[0].split
   profiles.each { |profile| $server.run("cobbler profile remove --name '#{profile}'") }
   distros_api.each { |distro| $server.run("cobbler distro remove --name '#{distro}'") }
-  $api_test.auth.logout
 end
 
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|

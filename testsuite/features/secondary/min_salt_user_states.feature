@@ -17,11 +17,9 @@ Feature: Coexistence with user-defined states
     Then I should see a "user_defined_state" or "running as PID" text in element "highstate"
 
   Scenario: Trigger highstate from API
-    And I am logged in API as user "admin" and password "admin"
     When I schedule a highstate for "sle_minion" via API
     And I wait until event "Apply highstate scheduled by admin" is completed
     Then file "/tmp/test_user_defined_state" should exist on "sle_minion"
-    And I logout from API
 
   Scenario: Cleanup: remove user-defined state and the file it created
     When I follow "States" in the content area

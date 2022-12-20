@@ -6,7 +6,6 @@ Feature: Register a Salt minion via API
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete SLES minion system profile before API bootstrap test
     Given I am on the Systems overview page of this "sle_minion"
@@ -67,6 +66,3 @@ Feature: Register a Salt minion via API
 
   Scenario: Bootstrap a salt-ssh system with activation key and default contact method
     When I call system.bootstrap() on a Salt minion with saltSSH = true, but with activation key with default contact method, I should get an API fault
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

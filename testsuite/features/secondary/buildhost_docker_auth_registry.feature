@@ -8,7 +8,6 @@ Feature: Build image with authenticated registry
 
   Scenario: Log in as docker user
     Given I am authorized as "docker" with password "docker"
-    And I am logged in API as user "docker" and password "docker"
 
   Scenario: Create an authenticated image store as Docker admin
     When I follow the left menu "Images > Stores"
@@ -59,4 +58,3 @@ Feature: Build image with authenticated registry
 
   Scenario: Cleanup: delete registry image
     When I delete the image "auth_registry_profile" with version "latest" via API calls
-    And I logout from API

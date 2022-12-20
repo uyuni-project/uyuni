@@ -645,7 +645,6 @@ end
 
 When(/^I wait until rhn-search is responding$/) do
   step %(I wait until "rhn-search" service is active on "server")
-  $api_test.auth.login('admin', 'admin')
   repeat_until_timeout(timeout: 60, message: 'rhn-search is not responding properly.') do
     begin
       log "Search by hostname: #{$minion.hostname}"
@@ -657,7 +656,6 @@ When(/^I wait until rhn-search is responding$/) do
       sleep 3
     end
   end
-  $api_test.auth.logout
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do

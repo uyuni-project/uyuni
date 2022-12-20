@@ -6,7 +6,6 @@ Feature: Bare metal discovery
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete the Salt Minion for bare metal feature
     Given I am on the Systems overview page of this "sle_minion"
@@ -152,6 +151,3 @@ Feature: Bare metal discovery
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
     When I click on "Clear"
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

@@ -16,7 +16,6 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: Unregister Salt minion in the traditional proxy
     Given I am on the Systems overview page of this "sle_minion"
@@ -274,6 +273,3 @@ Feature: Register and test a Containerized Proxy
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
     Then the Salt master can reach "sle_minion"
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

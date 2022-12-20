@@ -14,9 +14,7 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
     When I perform a full salt minion cleanup on "sle15sp4_buildhost"
 
   Scenario: Prepare activation key for SLES 15 SP4 build host
-    When I am logged in API as user "admin" and password "admin"
-    And I create an activation key including custom channels for "sle15sp4_buildhost" via API
-    And I logout from API
+    When I create an activation key including custom channels for "sle15sp4_buildhost" via API
 
   Scenario: Bootstrap the SLES 15 SP4 build host
     When I bootstrap "sle15sp4_buildhost" using bootstrap script with activation key "1-sle15sp4_buildhost_key" from the proxy

@@ -6,7 +6,6 @@ Feature: Empty minion profile operations
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Create an empty minion profile with HW address via API
     When I call system.create_system_profile() with name "empty-profile" and HW address "00:11:22:33:44:55"
@@ -47,6 +46,3 @@ Feature: Empty minion profile operations
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

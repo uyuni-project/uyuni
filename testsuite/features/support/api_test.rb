@@ -5,7 +5,6 @@ require_relative 'namespaces/actionchain'
 require_relative 'namespaces/activationkey'
 require_relative 'namespaces/api'
 require_relative 'namespaces/audit'
-require_relative 'namespaces/auth'
 require_relative 'namespaces/channel'
 require_relative 'namespaces/configchannel'
 require_relative 'namespaces/image'
@@ -23,7 +22,6 @@ class ApiTest
     @activationkey = NamespaceActivationkey.new(self)
     @api = NamespaceApi.new(self)
     @audit = NamespaceAudit.new(self)
-    @auth = NamespaceAuth.new(self)
     @channel = NamespaceChannel.new(self)
     @configchannel = NamespaceConfigchannel.new(self)
     @image = NamespaceImage.new(self)
@@ -33,13 +31,13 @@ class ApiTest
     @user = NamespaceUser.new(self)
     @connection = nil
     @token = nil
+    @semaphore = Mutex.new
   end
 
   attr_reader :actionchain
   attr_reader :activationkey
   attr_reader :api
   attr_reader :audit
-  attr_reader :auth
   attr_reader :channel
   attr_reader :configchannel
   attr_reader :image
@@ -50,8 +48,18 @@ class ApiTest
   attr_reader :token
   attr_writer :token
 
-  def call(*params)
-    @connection.call(*params)
+  def call(name, *params)
+    thread =
+      Thread.new do
+        @semaphore.synchronize do
+          @token = @connection.call('auth.login', login: 'admin', password: 'admin')
+          params[0][:sessionKey] = @token
+          response = @connection.call(name, *params)
+          @connection.call('auth.logout', sessionKey: @token)
+          response
+        end
+      end
+    thread.value
   end
 end
 

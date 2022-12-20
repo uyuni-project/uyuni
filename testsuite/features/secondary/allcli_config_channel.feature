@@ -6,7 +6,6 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Create a configuration channel for mixed client types
     When I follow the left menu "Configuration > Channels"
@@ -226,6 +225,3 @@ Feature: Management of configuration of all types of clients in a single channel
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients
     When I click on "Clear"
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API
