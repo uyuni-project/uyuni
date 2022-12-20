@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -61,8 +62,8 @@ public class ChannelSystemsListSubmit extends BaseSetOperateOnSelectedItemsActio
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User u, ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<ConfigSystemDto> getDataResult(User u, ActionForm formIn,
+                                                        HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(ctx.getRequest());
         return ConfigurationManager.getInstance().listSystemInfoForChannel(u, cc, null);

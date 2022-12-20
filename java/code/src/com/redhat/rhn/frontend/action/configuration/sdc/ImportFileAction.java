@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -34,7 +35,7 @@ public class ImportFileAction extends BaseSetListAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+    protected DataResult<ConfigFileNameDto> getDataResult(RequestContext rctx, PageControl pc) {
         User user = rctx.getCurrentUser();
         Server server = rctx.lookupServer();
         return ConfigurationManager.getInstance().listFileNamesForSystem(user, server, pc);

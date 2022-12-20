@@ -96,7 +96,7 @@ public class EnableListAction extends RhnListAction implements MaintenanceWindow
                 .collect(Collectors.toSet());
     }
 
-    protected DataResult getDataResult(User user, PageControl pcIn) {
+    protected DataResult<ConfigSystemDto> getDataResult(User user, PageControl pcIn) {
         String setLabel = SYSTEMS.getLabel();
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listNonManagedSystemsInSet(user, pcIn, setLabel);

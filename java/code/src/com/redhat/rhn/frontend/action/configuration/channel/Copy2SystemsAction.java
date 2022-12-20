@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -36,7 +37,7 @@ public class Copy2SystemsAction extends BaseCopyToAction {
      * {@inheritDoc}
      */
     @Override
-    public List getData(HttpServletRequest req) {
+    public List<ConfigSystemDto> getData(HttpServletRequest req) {
         RequestContext ctx = new RequestContext(req);
         User user = ctx.getCurrentUser();
         ConfigurationManager cm = ConfigurationManager.getInstance();

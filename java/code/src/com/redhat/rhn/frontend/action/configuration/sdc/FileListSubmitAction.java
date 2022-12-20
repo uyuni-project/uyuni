@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -46,8 +47,8 @@ public class FileListSubmitAction extends RhnSetAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User user, ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<ConfigFileNameDto> getDataResult(User user, ActionForm formIn,
+                                                          HttpServletRequest request) {
         Server server = new RequestContext(request).lookupAndBindServer();
         return ConfigurationManager.getInstance()
                 .listFileNamesForSystem(user, server, null);
