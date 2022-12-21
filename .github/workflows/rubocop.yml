@@ -3,8 +3,10 @@ name: RuboCop
 on:
   pull_request:
     paths:
-      - 'testsuite/features/**.rb'
       - '.github/workflows/rubocop.yml'
+      - 'testsuite/features/**.rb'
+      - 'testsuite/.rubocop.yml'
+      - 'testsuite/.rubocop_todo.yml'
 
 jobs:
   rubocop:
