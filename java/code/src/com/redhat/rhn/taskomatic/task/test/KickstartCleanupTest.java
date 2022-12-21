@@ -46,6 +46,7 @@ import java.util.Date;
 
 public class KickstartCleanupTest extends RhnBaseTestCase {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         verifyDatasourceConfig();

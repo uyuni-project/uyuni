@@ -105,6 +105,7 @@ public class ProductName {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
        return new HashCodeBuilder().append(getId()).
                            append(getName()).append(getLabel()).toHashCode();
@@ -114,6 +115,7 @@ public class ProductName {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -130,6 +132,7 @@ public class ProductName {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
             return new ToStringBuilder(this).append("id", getId())
                     .append("label", getLabel()).

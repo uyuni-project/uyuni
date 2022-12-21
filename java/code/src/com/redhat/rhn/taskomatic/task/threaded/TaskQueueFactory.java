@@ -109,6 +109,7 @@ public class TaskQueueFactory {
             factory = factoryIn;
         }
 
+        @Override
         public void run() {
             factory.closeAllQueues();
         }

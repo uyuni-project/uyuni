@@ -259,6 +259,7 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         ConfigChannel that = (ConfigChannel) obj;
         return new EqualsBuilder().
@@ -273,6 +274,7 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         // The id field has been intentionally ignored here
         // because for a new object the id can be null

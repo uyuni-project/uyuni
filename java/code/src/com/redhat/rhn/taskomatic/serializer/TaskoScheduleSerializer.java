@@ -35,6 +35,7 @@ public class TaskoScheduleSerializer extends RhnXmlRpcCustomSerializer {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Class getSupportedClass() {
         return TaskoSchedule.class;
     }
@@ -42,8 +43,9 @@ public class TaskoScheduleSerializer extends RhnXmlRpcCustomSerializer {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer)
+                            XmlRpcSerializer serializer)
         throws XmlRpcException, IOException {
 
         TaskoSchedule schedule = (TaskoSchedule) value;

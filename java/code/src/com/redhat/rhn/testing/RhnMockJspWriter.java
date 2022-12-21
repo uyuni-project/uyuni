@@ -71,6 +71,7 @@ public class RhnMockJspWriter extends MockJspWriter {
      *
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return buf.toString();
     }

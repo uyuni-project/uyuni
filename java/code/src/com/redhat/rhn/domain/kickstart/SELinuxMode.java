@@ -79,6 +79,7 @@ public enum SELinuxMode {
     /**
      * @return appropriate to string.
      */
+    @Override
     public String toString() {
         return getValue();
     }

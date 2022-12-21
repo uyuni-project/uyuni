@@ -79,6 +79,7 @@ public class PackageComparison extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("name", name)
             .append("currentNvre", currentNvrea).append("newNvre", newNvrea)

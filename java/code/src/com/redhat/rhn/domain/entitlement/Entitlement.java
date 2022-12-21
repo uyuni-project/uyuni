@@ -63,6 +63,7 @@ public abstract class Entitlement implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
             return new ToStringBuilder(this).append("label", label).toString();
     }

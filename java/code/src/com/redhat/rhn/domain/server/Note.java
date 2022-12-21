@@ -105,6 +105,7 @@ public class Note extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof Note)) {
             return false;
@@ -123,6 +124,7 @@ public class Note extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
                                     .append(subject)

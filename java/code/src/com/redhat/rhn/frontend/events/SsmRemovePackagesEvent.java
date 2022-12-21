@@ -45,6 +45,7 @@ public class SsmRemovePackagesEvent extends SsmPackageEvent {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmRemovePackagesEvent[" + super.toString() + "]";
     }

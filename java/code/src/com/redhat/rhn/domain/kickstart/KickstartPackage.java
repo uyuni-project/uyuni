@@ -162,6 +162,7 @@ public class KickstartPackage
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof KickstartPackage)) {
             return false;
@@ -173,6 +174,7 @@ public class KickstartPackage
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
             .append(getKsData().getId())
@@ -184,6 +186,7 @@ public class KickstartPackage
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return "{ " + this.getKsData().getId().toString() +
                ", " + this.getPosition().toString() +

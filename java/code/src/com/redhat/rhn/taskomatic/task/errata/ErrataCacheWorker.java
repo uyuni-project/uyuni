@@ -49,6 +49,7 @@ public class ErrataCacheWorker implements QueueWorker {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void run() {
         try {
             removeTask();
@@ -100,6 +101,7 @@ public class ErrataCacheWorker implements QueueWorker {
      * Set the parent so we can tell it when we're done
      * @param queue the parent queue
      */
+    @Override
     public void setParentQueue(TaskQueue queue) {
         parentQueue = queue;
     }

@@ -89,6 +89,7 @@ public class SsmChangeChannelSubscriptionsEvent implements EventMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmChannelSubscriptionsEvent[User: " + user.getLogin() +
                 ", Change Count: " + changes.size() + "]";

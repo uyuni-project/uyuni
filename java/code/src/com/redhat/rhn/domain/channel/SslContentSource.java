@@ -91,6 +91,7 @@ public class SslContentSource extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof SslContentSource)) {
             return false;
@@ -107,6 +108,7 @@ public class SslContentSource extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getCaCert())
                 .append(getClientCert())

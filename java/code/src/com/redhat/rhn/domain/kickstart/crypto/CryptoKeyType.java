@@ -113,6 +113,7 @@ public class CryptoKeyType {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof CryptoKeyType)) {
             return false;
@@ -124,6 +125,7 @@ public class CryptoKeyType {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getLabel()).toHashCode();
     }

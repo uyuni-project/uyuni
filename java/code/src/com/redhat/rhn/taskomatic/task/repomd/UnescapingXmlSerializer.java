@@ -42,6 +42,7 @@ public class UnescapingXmlSerializer extends XMLSerializer {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void printEscaped(String source) throws IOException {
         _printer.printText(source);
     }
@@ -50,6 +51,7 @@ public class UnescapingXmlSerializer extends XMLSerializer {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void printXMLChar(int ch) throws IOException {
         _printer.printText((char)ch);
     }

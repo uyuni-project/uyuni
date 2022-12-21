@@ -68,6 +68,7 @@ public enum KickstartTreeUpdateType {
      * Standard toString function
      * @return the String to return
      */
+    @Override
     public String toString() {
         return getType();
     }

@@ -81,6 +81,7 @@ public class RegisterMinionEventMessage implements EventMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return "RegisterMinionEvent[minionId: " + minionId + "]";
     }

@@ -74,6 +74,7 @@ public class RhnMockHttpSession extends MockHttpSession {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return this.getClass().getName() + " attributes: " + attributes;
     }

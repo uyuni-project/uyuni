@@ -106,6 +106,7 @@ public class ConfigFileCount {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof ConfigFileCount)) {
             return false;
@@ -123,6 +124,7 @@ public class ConfigFileCount {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().
                         append(files).

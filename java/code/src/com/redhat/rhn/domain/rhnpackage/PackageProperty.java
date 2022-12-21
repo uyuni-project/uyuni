@@ -94,6 +94,7 @@ public class PackageProperty extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder hash = new HashCodeBuilder();
         hash.append(this.getSense());
@@ -106,6 +107,7 @@ public class PackageProperty extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof PackageProperty)) {
             return false;

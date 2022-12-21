@@ -150,6 +150,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return "ID: " + id + " name: " + name +
                   " desc: " + description + " orgid: " + orgId;

@@ -29,6 +29,7 @@ public class SynchProbeState extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext arg0In) {
         // Do nothing.
         // Probes are a monitoring thing and no longer exist, but there's no easy

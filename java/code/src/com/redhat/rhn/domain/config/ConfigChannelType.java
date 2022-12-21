@@ -186,6 +186,7 @@ public class ConfigChannelType extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object arg) {
         ConfigChannelType that = (ConfigChannelType) arg;
         return new EqualsBuilder().
@@ -198,6 +199,7 @@ public class ConfigChannelType extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().
                     append(this.getLabel()).

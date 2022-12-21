@@ -148,6 +148,7 @@ public class ChannelArch extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ChannelArch)) {
             return false;
@@ -160,6 +161,7 @@ public class ChannelArch extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getId()).toHashCode();
     }
@@ -167,6 +169,7 @@ public class ChannelArch extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", this.getId()).append("label",
                 this.getLabel()).append("name", this.getName()).append("archType",

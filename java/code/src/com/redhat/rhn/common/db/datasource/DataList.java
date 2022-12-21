@@ -237,6 +237,7 @@ public class DataList<E> extends ArrayList<E> {
      * Prevents a database call to elaborate by not accessing the
      * data of the list.
      */
+    @Override
     public String toString() {
         StringBuilder buffy = new StringBuilder();
         buffy.append("DataList(");

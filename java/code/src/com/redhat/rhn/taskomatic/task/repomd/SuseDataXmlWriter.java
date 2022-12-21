@@ -45,6 +45,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
     /**
      * end xml metadata generation
      */
+    @Override
     public void end() {
         try {
             handler.endElement("susedata");
@@ -59,6 +60,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
      * Start xml metadata generation
      * @param channel channel data
      */
+    @Override
     public void begin(Channel channel) {
         channelId = channel.getId();
         SimpleAttributesImpl attr = new SimpleAttributesImpl();

@@ -43,6 +43,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean before(XmlRpcInvocation invocation) {
 
         // we start the timing and return true so processing
@@ -78,6 +79,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object after(XmlRpcInvocation invocation, Object returnValue) {
         StringBuilder arguments = processArguments(
             invocation.getHandlerName(),
@@ -97,6 +99,7 @@ public class XmlRpcLoggingInvocationProcessor extends LoggingInvocationProcessor
     /**
      * {@inheritDoc}
      */
+    @Override
     public void onException(XmlRpcInvocation invocation, Throwable exception) {
         StringBuilder buf = new StringBuilder();
         try {

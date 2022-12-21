@@ -36,6 +36,7 @@ public class ChangeLogCleanUp extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext arg0In)
         throws JobExecutionException {
         // TODO Auto-generated method stub

@@ -44,6 +44,7 @@ public class ValidatorWarning extends ValidationMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "ValidatorWarning [Key: " + getKey() + "]";
     }

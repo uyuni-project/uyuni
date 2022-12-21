@@ -39,8 +39,9 @@ public class ErrataMailerTest extends BaseTestCaseWithUser {
         // We still test the majority of the stuff in ErrataMailer(), just not
         // the queries that get all the users and errata.
         ErrataMailer em = new ErrataMailer() {
+            @Override
             protected List getOrgRelevantServers(Long errataId, Long orgId,
-                    Long channelId) {
+                                                 Long channelId) {
                 List retval = new LinkedList();
                 Map row = new HashMap();
                 row.put("server_id", 5000);
@@ -52,6 +53,7 @@ public class ErrataMailerTest extends BaseTestCaseWithUser {
                 return retval;
             }
 
+            @Override
             protected List getErrataToProcess() {
                 List retval = new LinkedList();
                 Map row = new HashMap();
