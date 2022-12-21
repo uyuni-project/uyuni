@@ -258,10 +258,10 @@ public class Acl {
                     LocalizationService.getInstance().getMessage("bad-class",
                         aclClazz.getName()));
             }
-            AclHandler instance = aclClazz.newInstance();
+            AclHandler instance = aclClazz.getDeclaredConstructor().newInstance();
             registerHandler(instance);
         }
-        catch (InstantiationException | IllegalAccessException e) {
+        catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             IllegalArgumentException exc = new IllegalArgumentException();
             exc.initCause(e);
             throw exc;
@@ -296,27 +296,23 @@ public class Acl {
                 String methodName = methodDescriptor.getName();
 
                 // we only care about methods with signatures:
-                // public boolean aclXXX(Object obj, String[] params);
-                if (!methodName.startsWith(ACL_PREFIX)) {
-                    continue;
+                // public boolean aclXXX(Object obj, String[] params)
+                if (methodName.startsWith(ACL_PREFIX)) {
+                    Method method = methodDescriptor.getMethod();
+                    Class<?>[] params = method.getParameterTypes();
+                    if (!method.getReturnType().equals(Boolean.TYPE) ||
+                            method.getExceptionTypes().length > 0 ||
+                            params.length != 2 ||
+                            !params[0].equals(Map.class) ||
+                            !params[1].equals(String[].class)) {
+                        log.warn(LocalizationService.getInstance().getMessage("bad-signature", method.toString()));
+                        continue;
+                    }
+
+                    String aclName = methodNameToAclName(methodName);
+                    handlers.put(aclName,
+                            new InstanceMethodPair(aclHandler, method));
                 }
-                Method method = methodDescriptor.getMethod();
-                Class<?>[] params = method.getParameterTypes();
-                if (!method.getReturnType().equals(Boolean.TYPE) ||
-                        method.getExceptionTypes().length > 0 ||
-                        params.length != 2 ||
-                        !params[0].equals(Map.class) ||
-                        !params[1].equals(String[].class)) {
-                    log.warn(LocalizationService.getInstance().getMessage(
-                            "bad-signature", method.toString()));
-
-                    continue;
-
-                }
-
-                String aclName = methodNameToAclName(methodName);
-                handlers.put(aclName,
-                        new InstanceMethodPair(aclHandler, method));
             }
         }
         // from reading the javadocs for IntrospectionException,
@@ -378,10 +374,7 @@ public class Acl {
      *  @see AclHandler
      */
     public boolean evalAcl(Map<String, Object> context, String acl) {
-
-        if (log.isDebugEnabled()) {
-            log.debug("acl: {}", acl);
-        }
+        log.debug("acl: {}", acl);
 
         // protect against nulls.
         if (acl == null) {
@@ -395,121 +388,115 @@ public class Acl {
 
         boolean result = false;
 
-        PatternMatcher matcher = new Perl5Matcher();
-
         for (int exprIdx = 0; exprIdx < exprLen; ++exprIdx) {
-
             String expression = expressions[exprIdx];
-
-            if (log.isDebugEnabled()) {
-                log.debug("expression[{}]: {}", exprIdx, expression);
-            }
+            log.debug("expression[{}]: {}", exprIdx, expression);
 
             String[] statements = expression.split(EXPR_SPLIT_REGEX);
             int statementLen = statements.length;
 
             for (int stmtIdx = 0; stmtIdx < statementLen; ++stmtIdx) {
-
                 String statement = statements[stmtIdx];
+                log.debug("statement[{}]: {}", stmtIdx, statement);
 
-                if (log.isDebugEnabled()) {
-                    log.debug("statement[{}]: {}", stmtIdx, statement);
-                }
-
-                boolean itMatches = matcher.matches(statement, parsePattern);
-                MatchResult matchResult = matcher.getMatch();
-                if (!itMatches || matchResult == null || matchResult.groups() <
-                        EXPECTED_GROUPS) {
-                    throw new IllegalArgumentException(
-                                  LocalizationService.getInstance().getMessage(
-                                     "bad-syntax", statement));
-                }
-
-                if (log.isDebugEnabled()) {
-                    log.debug("num groups: {}", matchResult.groups());
-                    log.debug("not: {}", matchResult.group(NEGATION_GROUP));
-                    log.debug("handler: {}", matchResult.group(HANDLERNAME_GROUP));
-                    log.debug("params: {}", matchResult.group(PARAM_GROUP));
-                }
-
-                boolean negated = matchResult.group(NEGATION_GROUP) != null;
-
-                String func = matchResult.group(HANDLERNAME_GROUP);
-
-                String params = matchResult.group(PARAM_GROUP);
-
-                InstanceMethodPair pair = handlers.get(func);
-
-                if (pair == null) {
-                    Object[] args = new Object[3];
-                    args[0] = func;
-                    args[1] = statement;
-                    args[2] = new TreeSet<>(handlers.keySet()).toString();
-                    throw new IllegalArgumentException(
-                        LocalizationService.getInstance().getMessage(
-                            "bad-handler", args));
-                }
-
-                Method handler = pair.getMethod();
-
-                String[] paramArray = params.split(PARAM_SPLIT_REGEX);
-
-                // if no args were givien, make sure we pass a 0-length array
-                if (paramArray.length == 1 && paramArray[0].trim().equals("")) {
-                    paramArray = new String[0];
-                }
-
-                try {
-                    result = (Boolean) handler.invoke(pair.getInstance(),
-                            new Object[]{context, paramArray});
-                }
-                // we shouldn't hit any of these exceptions, because the
-                // handler classes should have been adequately junit-tested
-                catch (IllegalAccessException iae) {
-                    Object[] args = new Object[3];
-                    args[0] = handler.getName();
-                    args[1] = statement;
-                    args[2] = iae.getMessage();
-
-                    throw new MethodInvocationException(
-                        LocalizationService.getInstance().getMessage(
-                        "illegal-access", args), iae);
-                }
-                catch (InvocationTargetException ite) {
-                    Object[] args = new Object[3];
-                    args[0] = handler.getName();
-                    args[1] = statement;
-                    args[2] = ite.getMessage();
-
-                    throw new MethodInvocationException(
-                        LocalizationService.getInstance().getMessage(
-                        "invocation-target-exception", args), ite);
-                }
-
-                if (negated) {
-                    result = !result;
-                }
-
+                result = evalAclStatement(statement, context);
                 // break if we hit true, since we're in an or's loop
                 if (result) {
                     break;
                 }
             }
 
-            // if we got a false, then return that, because we're in an
-            // and loop
+            // if we got a false, then return that, because we're in an and loop
             if (!result) {
                 return result;
             }
-
         }
 
         // if we got this far, all acl's passed
-        if (log.isDebugEnabled()) {
-            log.debug("acl: {} returning true", acl);
-        }
+        log.debug("acl: {} returning true", acl);
         return true;
+    }
 
+    private boolean evalAclStatement(String statement, Map<String, Object> context) {
+        boolean result;
+        PatternMatcher matcher = new Perl5Matcher();
+        boolean itMatches = matcher.matches(statement, parsePattern);
+        MatchResult matchResult = matcher.getMatch();
+        if (!itMatches || matchResult == null || matchResult.groups() < EXPECTED_GROUPS) {
+            throw new IllegalArgumentException(
+                    LocalizationService.getInstance().getMessage(
+                            "bad-syntax", statement));
+        }
+
+        String negation = matchResult.group(NEGATION_GROUP);
+        String func = matchResult.group(HANDLERNAME_GROUP);
+        String params = matchResult.group(PARAM_GROUP);
+
+        log.debug("num groups: {}", matchResult.groups());
+        log.debug("not: {}", negation);
+        log.debug("handler: {}", func);
+        log.debug("params: {}", params);
+
+        boolean negated = negation != null;
+
+        InstanceMethodPair pair = handlers.get(func);
+
+        if (pair == null) {
+            Object[] args = new Object[3];
+            args[0] = func;
+            args[1] = statement;
+            args[2] = new TreeSet<>(handlers.keySet()).toString();
+            throw new IllegalArgumentException(
+                    LocalizationService.getInstance().getMessage(
+                            "bad-handler", args));
+        }
+
+        Method handler = pair.getMethod();
+
+        String[] paramArray = params.split(PARAM_SPLIT_REGEX);
+
+        // if no args were givien, make sure we pass a 0-length array
+        if (paramArray.length == 1 && paramArray[0].trim().equals("")) {
+            paramArray = new String[0];
+        }
+
+        result = invokeAcl(handler, pair.getInstance(), statement, context, paramArray);
+
+        if (negated) {
+            result = !result;
+        }
+        return result;
+    }
+
+    private boolean invokeAcl(Method handler, Object instance, String statement,
+                              Map<String, Object> context, String[] paramArray) {
+        boolean result;
+        try {
+            result = (Boolean) handler.invoke(instance, context, paramArray);
+        }
+        // we shouldn't hit any of these exceptions, because the
+        // handler classes should have been adequately junit-tested
+        catch (IllegalAccessException iae) {
+            Object[] args = new Object[3];
+            args[0] = handler.getName();
+            args[1] = statement;
+            args[2] = iae.getMessage();
+
+            throw new MethodInvocationException(
+                    LocalizationService.getInstance().getMessage(
+                            "illegal-access", args), iae);
+        }
+        catch (InvocationTargetException ite) {
+            Object[] args = new Object[3];
+            args[0] = handler.getName();
+            args[1] = statement;
+            args[2] = ite.getMessage();
+
+            throw new MethodInvocationException(
+                    LocalizationService.getInstance().getMessage(
+                            "invocation-target-exception", args), ite);
+        }
+        return result;
     }
 
     private static class InstanceMethodPair {
