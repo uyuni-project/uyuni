@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.rhnpackage.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,6 +43,7 @@ import com.redhat.rhn.domain.rpm.test.SourceRpmTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -57,7 +59,7 @@ import java.util.Map;
 public class PackageTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testIsType() throws Exception {
+    public void testIsType() {
         Package pkgRpm = PackageTest.createTestPackage(user.getOrg(),
                 PackageFactory.lookupPackageArchByLabel("x86_64"));
 
@@ -72,7 +74,7 @@ public class PackageTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testPackage() throws Exception {
+    public void testPackage() {
         Package pkg = createTestPackage(user.getOrg());
         assertNotNull(pkg);
         //make sure we got written to the db
@@ -80,11 +82,12 @@ public class PackageTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(pkg);
 
         Package lookup = PackageFactory.lookupByIdAndOrg(pkg.getId(), pkg.getOrg());
+        assertNotNull(lookup);
         assertNotNull(lookup.getBuildTime());
     }
 
     @Test
-    public void testFile() throws Exception {
+    public void testFile() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Package pkg = createTestPackage(user.getOrg());
@@ -109,7 +112,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         assertEquals("foo", pkg.getFile());
     }
 
-    public static Package createTestPackage(Org org, PackageArch arch) throws Exception {
+    public static Package createTestPackage(Org org, PackageArch arch) {
         Package p = new Package();
         populateTestPackage(p, org, arch);
 
@@ -118,20 +121,19 @@ public class PackageTest extends BaseTestCaseWithUser {
         return p;
     }
 
-    public static Package createTestPackage(Org org) throws Exception {
-        Package p = new Package();
-        populateTestPackage(p, org);
-
+    public static Package createTestPackage(Org org) {
+        Package p = populateTestPackage(new Package(), org);
         TestUtils.saveAndFlush(p);
-
         return p;
     }
 
-    public static Package populateTestPackage(Package p, Org org,
-            PackageName pname,
-            PackageEvr pevr,
-            PackageArch parch
-    ) throws Exception {
+    public static Package createTestPackage(Org org, String packageName) {
+        Package p = populateTestPackage(new Package(), packageName, org);
+        TestUtils.saveAndFlush(p);
+        return p;
+    }
+
+    public static Package populateTestPackage(Package p, Org org, PackageName name, PackageEvr evr, PackageArch arch) {
         PackageGroup pgroup = PackageGroupTest.createTestPackageGroup();
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
 
@@ -155,11 +157,11 @@ public class PackageTest extends BaseTestCaseWithUser {
         p.setLastModified(new Date());
 
         p.setOrg(org);
-        p.setPackageName(pname);
-        p.setPackageEvr(pevr);
+        p.setPackageName(name);
+        p.setPackageEvr(evr);
         p.setPackageGroup(pgroup);
         p.setSourceRpm(srpm);
-        p.setPackageArch(parch);
+        p.setPackageArch(arch);
 
         p.getPackageFiles().add(createTestPackageFile(p));
         p.getPackageFiles().add(createTestPackageFile(p));
@@ -168,20 +170,25 @@ public class PackageTest extends BaseTestCaseWithUser {
         return p;
     }
 
-    public static Package populateTestPackage(Package p, Org org, PackageArch parch) throws Exception {
+    public static Package populateTestPackage(Package p, Org org, PackageArch parch) {
         PackageName pname = PackageNameTest.createTestPackageName();
+        return populateTestPackage(p, org, parch, pname);
+    }
+
+    private static Package populateTestPackage(Package p, Org org, PackageArch parch, PackageName pname) {
         PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(parch.getArchType().getPackageType());
         return populateTestPackage(p, org, pname, pevr, parch);
     }
 
-    public static Package populateTestPackage(Package p, Org org) throws Exception {
-        PackageArch parch =
-            (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+    public static Package populateTestPackage(Package p, Org org) {
+        PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
         return populateTestPackage(p, org, parch);
     }
 
-
-
+    public static Package populateTestPackage(Package p, String packageName, Org org) {
+        PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+        return populateTestPackage(p, org, parch, PackageNameTest.createTestPackageName(packageName));
+    }
     public static PackageSource createTestPackageSource(SourceRpm rpm, Org org) {
 
         PackageSource source = new PackageSource();
@@ -218,7 +225,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         cap.setName(TestUtils.randomString());
         cap.setVersion(TestUtils.randomString());
         cap.setCreated(new Date());
-        cap = (PackageCapability) TestUtils.saveAndReload(cap);
+        cap = TestUtils.saveAndReload(cap);
 
         file.setCapability(cap);
         file.setPack(pack);
@@ -273,7 +280,7 @@ public class PackageTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGetNevraWithEpoch() throws Exception {
+    public void testGetNevraWithEpoch() {
         Package pkg = createTestPackage(user.getOrg());
         PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr("1", "2", "3", PackageType.RPM);
         pkg.setPackageEvr(evr);
@@ -288,7 +295,7 @@ public class PackageTest extends BaseTestCaseWithUser {
 
         expectedNevra = pkg.getPackageName().getName() + "-0:2-3." + pkg.getPackageArch().getLabel();
         assertEquals(expectedNevra, pkg.getNevraWithEpoch());
-        assertFalse(pkg.getNameEvra().equals(pkg.getNevraWithEpoch()));
+        assertNotEquals(pkg.getNameEvra(), pkg.getNevraWithEpoch());
     }
 
     @Test
@@ -297,11 +304,25 @@ public class PackageTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGetExtraTag() throws Exception {
+    public void testGetExtraTag() {
         Package pkg = createTestPackage(user.getOrg());
         pkg.getExtraTags().put(PackageManagerTest.createExtraTagKey("mytag"), "myvalue");
 
         assertEquals("myvalue", pkg.getExtraTag("mytag"));
         assertNull(pkg.getExtraTag("doesnotexist"));
     }
+
+    @Test
+    public void testRetrievePtfInformation() {
+        Package masterPtfPackage = PackageTestUtils.createPtfMaster("123456", "1", user.getOrg());
+
+        assertTrue(masterPtfPackage.isMasterPtfPackage());
+        assertFalse(masterPtfPackage.isPartOfPtf());
+
+        Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", user.getOrg());
+
+        assertFalse(ptfPackage.isMasterPtfPackage());
+        assertTrue(ptfPackage.isPartOfPtf());
+    }
+
 }

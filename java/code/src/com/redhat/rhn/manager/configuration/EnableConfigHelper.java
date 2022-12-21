@@ -146,7 +146,7 @@ public class EnableConfigHelper {
     private boolean installPackagesHelper(Server current,
             List packages, String packageName, int status) {
         if (status == ConfigSystemDto.NEEDED) {
-            Map map = PackageManager.lookupEvrIdByPackageName(current.getId(), packageName);
+            Map<String, Long> map = PackageManager.lookupEvrIdByPackageName(current.getId(), packageName);
             if (map == null) {
                 return true;
             }
