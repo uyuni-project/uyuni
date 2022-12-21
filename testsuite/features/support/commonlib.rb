@@ -240,3 +240,7 @@ def get_uptime_from_host(host)
   days = (hours / 24.0) # 24 hours
   { seconds: seconds, minutes: minutes, hours: hours, days: days }
 end
+
+def get_system_id(node)
+  $api_test.system.search_by_name(node.full_hostname).first['id']
+end
