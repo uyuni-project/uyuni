@@ -187,7 +187,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool' =>
                                     'RHEL x86_64 Server 7' => 'RES7-x86_64',
                                     'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
                                     'rockylinux-9 for x86_64' => 'rockylinux-9-x86_64',
-                                    'EL9-Pool' => 'SUSE-LibertyLinux9-x86_64'
+                                    'EL9-Pool' => 'SUSE-LibertyLinux9-x86_64',
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
                                     'ubuntu-2204-amd64-main' => 'ubuntu-22.04-amd64',
