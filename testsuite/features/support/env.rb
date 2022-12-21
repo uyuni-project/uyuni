@@ -343,6 +343,7 @@ end
 
 Before('@sle15sp3_buildhost') do
   skip_this_scenario unless $sle15sp3_buildhost
+end
 
 Before('@monitoring_server') do
   skip_this_scenario unless $monitoring_server
