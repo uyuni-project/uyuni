@@ -86,6 +86,7 @@ public class ChannelRepodataWorker implements QueueWorker {
      * Sets the parent queue
      * @param queue task queue
      */
+    @Override
     public void setParentQueue(TaskQueue queue) {
         parentQueue = queue;
     }
@@ -93,6 +94,7 @@ public class ChannelRepodataWorker implements QueueWorker {
     /**
      * runner method to process the parentQueue
      */
+    @Override
     public void run() {
         // if a channel has a EnvironmentTarget associated, we update it too
         Optional<SoftwareEnvironmentTarget> envTarget = ContentProjectFactory

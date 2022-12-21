@@ -629,6 +629,7 @@ public class ColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         // This method specifically does _NOT_ compare the url portion of
         // the ColumnTag when checking for equality.  Doing so does not work.
@@ -711,6 +712,7 @@ public class ColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         int result = 17;
         result = 37 * (header == null ? 0 : header.hashCode());

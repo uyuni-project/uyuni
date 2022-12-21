@@ -115,6 +115,7 @@ public class SsmConfigFilesEvent implements EventDatabaseMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmConfigFilesEvent[UserId: " + userId + "]";
     }

@@ -57,6 +57,7 @@ public class Capability {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getId())
                                     .append(this.getName())
@@ -66,6 +67,7 @@ public class Capability {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object oth) {
         if (!(oth instanceof Capability)) {
             return false;
@@ -79,6 +81,7 @@ public class Capability {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return getClass().getName() + " : id: " + getId();
     }

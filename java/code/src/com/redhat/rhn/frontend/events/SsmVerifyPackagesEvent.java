@@ -96,6 +96,7 @@ public class SsmVerifyPackagesEvent implements EventDatabaseMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmPackageVerifyEvent[UserId: " + userId + "]";
     }

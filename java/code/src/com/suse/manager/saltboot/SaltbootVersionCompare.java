@@ -40,6 +40,7 @@ public class SaltbootVersionCompare implements Comparator<String> {
      * @param image2
      * @return 1 if image2 is newer than image1, -1 if image1 is newer than image2, 0 if they are the same version
      */
+    @Override
     public int compare(String image1, String image2) {
         // Validate version format
         if (image1 == null || image2 == null) {

@@ -166,6 +166,7 @@ public class Dmi extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof Dmi)) {
             return false;
@@ -185,6 +186,7 @@ public class Dmi extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
                                     .append(vendor)
@@ -270,6 +272,7 @@ public class Dmi extends BaseDomainHelper {
         /**
          * {@inheritDoc}
          */
+        @Override
         public boolean equals(final Object other) {
             if (!(other instanceof Bios)) {
                 return false;
@@ -284,6 +287,7 @@ public class Dmi extends BaseDomainHelper {
         /**
          * {@inheritDoc}
          */
+        @Override
         public int hashCode() {
             return new HashCodeBuilder().append(vendor)
                                         .append(version)

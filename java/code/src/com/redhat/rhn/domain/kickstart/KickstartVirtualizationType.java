@@ -163,6 +163,7 @@ public class KickstartVirtualizationType
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof KickstartVirtualizationType)) {
             return false;
@@ -186,6 +187,7 @@ public class KickstartVirtualizationType
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getId()).
             append(this.getLabel()).toHashCode();

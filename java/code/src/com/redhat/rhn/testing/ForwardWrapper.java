@@ -47,6 +47,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         return fc.equals(obj);
     }
@@ -94,6 +95,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return fc.hashCode();
     }
@@ -146,6 +148,7 @@ public class ForwardWrapper extends ActionForward {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return fc.toString();
     }

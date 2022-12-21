@@ -91,6 +91,7 @@ public class ImageStoreType {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ImageStoreType)) {
             return false;
@@ -104,6 +105,7 @@ public class ImageStoreType {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(label)
                                     .append(name)

@@ -67,6 +67,7 @@ public abstract class BaseMode implements Mode {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "[ Name = " + getName() + "  query = " + (query == null ? "null" : query.toString());
     }

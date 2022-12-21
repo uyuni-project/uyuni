@@ -156,6 +156,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof Profile)) {
             return false;
@@ -174,6 +175,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
                                     .append(name)
@@ -188,6 +190,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("name", name).toString();
     }

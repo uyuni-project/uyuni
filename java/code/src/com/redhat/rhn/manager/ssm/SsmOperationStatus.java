@@ -51,6 +51,7 @@ public enum SsmOperationStatus {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return text;
     }

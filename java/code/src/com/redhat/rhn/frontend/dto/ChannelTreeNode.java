@@ -344,6 +344,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null || !getClass().equals(object.getClass())) {
             return false;
@@ -358,6 +359,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.id).toHashCode();
     }

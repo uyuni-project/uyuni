@@ -31,6 +31,7 @@ public abstract class LoggingInvocationProcessor {
     private static final Logger LOGGER = LogManager.getLogger(LoggingInvocationProcessor.class);
 
     private static ThreadLocal timer = new ThreadLocal() {
+        @Override
         protected synchronized Object initialValue() {
             return new StopWatch();
         }

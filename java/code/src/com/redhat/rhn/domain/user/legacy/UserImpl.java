@@ -782,6 +782,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     * Output User to String for debugging
     * @return String output of the User
     */
+    @Override
     public String toString() {
         return LocalizationService.getInstance().getDebugMessage("user") + " " + getLogin() +
                 " (id " + getId() + ", org_id " + getOrg().getId() + ")";
@@ -790,6 +791,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
         if (other == null || !(other instanceof User)) {
             return false;
@@ -804,6 +806,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(login).append(org).append(id).toHashCode();
     }

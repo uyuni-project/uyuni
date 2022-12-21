@@ -188,6 +188,7 @@ public class ImageInfoCustomDataValue {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other == null || !(other instanceof ImageInfoCustomDataValue)) {
             return false;
@@ -202,6 +203,7 @@ public class ImageInfoCustomDataValue {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(key)

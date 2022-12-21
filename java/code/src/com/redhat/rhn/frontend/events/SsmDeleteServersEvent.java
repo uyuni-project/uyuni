@@ -84,6 +84,7 @@ public class SsmDeleteServersEvent implements EventMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmChannelSubscriptionsEvent[User Id: " + userId +
             ", Delete Count: " + sids.size() + "]";

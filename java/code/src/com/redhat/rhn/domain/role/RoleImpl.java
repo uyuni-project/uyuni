@@ -76,11 +76,13 @@ public class RoleImpl extends BaseDomainHelper implements Role {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "RoleImpl.label: " + label;
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof RoleImpl)) {
             return false;
@@ -92,6 +94,7 @@ public class RoleImpl extends BaseDomainHelper implements Role {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getName()).
             append(getLabel()).toHashCode();

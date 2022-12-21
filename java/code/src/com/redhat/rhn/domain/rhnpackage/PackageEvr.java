@@ -162,6 +162,7 @@ public class PackageEvr implements Comparable<PackageEvr> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof PackageEvr)) {
             return false;
@@ -178,6 +179,7 @@ public class PackageEvr implements Comparable<PackageEvr> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getId()).append(this.getEpoch()).append(
                 this.getVersion()).append(this.getRelease()).toHashCode();

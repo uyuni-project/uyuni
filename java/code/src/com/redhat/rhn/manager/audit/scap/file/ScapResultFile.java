@@ -113,6 +113,7 @@ public class ScapResultFile implements StreamInfo {
      * Get human readable representation of this class
      * @return string
      */
+    @Override
     public String toString() {
         return this.getClass().getName() + "[path=" + getAbsolutePath() + "]";
     }

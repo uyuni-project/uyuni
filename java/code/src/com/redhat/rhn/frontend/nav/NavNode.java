@@ -121,6 +121,7 @@ public class NavNode {
      *  String version of node
      *  @return String the stringified node
      */
+    @Override
     public String toString() {
         return
             ToStringBuilder.reflectionToString(this,

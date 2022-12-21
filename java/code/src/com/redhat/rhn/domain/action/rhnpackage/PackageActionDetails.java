@@ -128,6 +128,7 @@ public class PackageActionDetails extends ActionChild {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other == null || !(other instanceof PackageActionDetails)) {
             return false;
@@ -146,6 +147,7 @@ public class PackageActionDetails extends ActionChild {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         int result = 37 * (getParentAction() == null ? 0 :
                           (getParentAction().getId() == null ? 0 :

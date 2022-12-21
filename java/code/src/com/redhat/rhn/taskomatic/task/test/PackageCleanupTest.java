@@ -27,6 +27,7 @@ import java.sql.Statement;
 
 public class PackageCleanupTest extends RhnBaseTestCase {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         HibernateFactory.getSession().doWork(connection -> {

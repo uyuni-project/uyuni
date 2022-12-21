@@ -631,6 +631,7 @@ public class PackageListItem extends IdComboDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);
 
@@ -701,6 +702,7 @@ public class PackageListItem extends IdComboDto {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -715,6 +717,7 @@ public class PackageListItem extends IdComboDto {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return idCombo != null ? idCombo.hashCode() : 0;
     }

@@ -80,6 +80,7 @@ public class DailySummary extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext ctxIn)
         throws JobExecutionException {
 

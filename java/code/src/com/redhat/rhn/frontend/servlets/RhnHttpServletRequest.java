@@ -108,6 +108,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
      * Kind of a standard method here.
      * @return lots of information about this object in a String object.
      */
+    @Override
     public String toString() {
         StringBuilder retval = new StringBuilder();
 

@@ -87,6 +87,7 @@ public class ProfileEntry implements Serializable {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder builder =  new HashCodeBuilder();
         builder.append(name.getName())
@@ -104,6 +105,7 @@ public class ProfileEntry implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
 
         if (other instanceof ProfileEntry) {

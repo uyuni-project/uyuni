@@ -185,6 +185,7 @@ public class IssSlave extends BaseDto {
     /**
      * @return hashCode based on id
      */
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -197,6 +198,7 @@ public class IssSlave extends BaseDto {
      * @param obj The Thing we're comparing against
      * @return true if obj.Id equal our.Id, false else
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

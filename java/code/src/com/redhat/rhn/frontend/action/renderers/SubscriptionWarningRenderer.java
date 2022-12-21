@@ -33,6 +33,7 @@ public class SubscriptionWarningRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         request.setAttribute(SUBSCRIPTION_WARNING, sw.expiresSoon());
         RendererHelper.setTableStyle(request, null);
@@ -41,6 +42,7 @@ public class SubscriptionWarningRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getPageUrl() {
         return "/WEB-INF/pages/common/fragments/yourrhn/subwarn.jsp";
     }

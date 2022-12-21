@@ -154,6 +154,7 @@ public class Pane {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getId()).toHashCode();
     }
@@ -163,6 +164,7 @@ public class Pane {
      * One important thing to note though is
      * that only the Pane id is used  to differentiate between 2 Panes
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof Pane) {
 

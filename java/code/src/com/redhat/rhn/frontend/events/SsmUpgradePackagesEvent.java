@@ -57,6 +57,7 @@ public class SsmUpgradePackagesEvent extends SsmPackageEvent {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmUpgradePackagesEvent[" + super.toString() + "]";
     }
