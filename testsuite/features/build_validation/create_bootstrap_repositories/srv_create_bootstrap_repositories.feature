@@ -38,6 +38,10 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLES 15 SP4 minion
     When I create the bootstrap repository for "sle15sp4_minion" on the server
 
+@monitoring_server
+  Scenario: Create the bootstrap repository for the monitoring server
+    When I create the bootstrap repository for "monitoring_server" on the server
+
 @centos7_minion
   Scenario: Create the bootstrap repository for a CentOS 7 Salt minion
     When I create the bootstrap repository for "centos7_minion" on the server

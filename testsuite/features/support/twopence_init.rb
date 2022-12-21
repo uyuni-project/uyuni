@@ -72,6 +72,7 @@ if $build_validation
   $opensuse154arm_ssh_minion = twopence_init("ssh:#{ENV['OPENSUSE154ARM_SSHMINION']}") if ENV['OPENSUSE154ARM_SSHMINION']
   $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
   $sle15sp4_buildhost = twopence_init("ssh:#{ENV['SLE15SP4_BUILDHOST']}") if ENV['SLE15SP4_BUILDHOST']
+  $monitoring_server = twopence_init("ssh:#{ENV['MONITORING_SERVER']}") if ENV['MONITORING_SERVER']
   $nodes += [$sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_minion, $sle12sp5_ssh_minion,
              $sle15_minion, $sle15_ssh_minion,
@@ -90,7 +91,8 @@ if $build_validation
              $debian11_minion, $debian11_ssh_minion,
              $opensuse154arm_minion, $opensuse154arm_ssh_minion,
              $sle12sp5_buildhost,
-             $sle15sp4_buildhost]
+             $sle15sp4_buildhost,
+             $monitoring_server]
 else
   # Define twopence objects for QA environment
   $minion = twopence_init("ssh:#{ENV['MINION']}") if ENV['MINION']
@@ -295,7 +297,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'opensuse154arm_minion'     => $opensuse154arm_minion,
                   'opensuse154arm_ssh_minion' => $opensuse154arm_ssh_minion,
                   'sle12sp5_buildhost'        => $sle12sp5_buildhost,
-                  'sle15sp4_buildhost'        => $sle15sp4_buildhost }
+                  'sle15sp4_buildhost'        => $sle15sp4_buildhost,
+                  'monitoring_server'         => $monitoring_server }
 
 # This is the inverse of `node_by_host`.
 $host_by_node = {}

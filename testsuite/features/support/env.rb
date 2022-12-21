@@ -320,6 +320,10 @@ Before('@sle15sp4_buildhost') do
   skip_this_scenario unless $sle15sp4_buildhost
 end
 
+Before('@monitoring_server') do
+  skip_this_scenario unless $monitoring_server
+end
+
 Before('@sle15sp4_terminal') do
   skip_this_scenario unless $sle15sp4_terminal_mac
 end

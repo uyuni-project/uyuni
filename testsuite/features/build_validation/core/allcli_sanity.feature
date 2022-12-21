@@ -284,3 +284,10 @@ Feature: Sanity checks
     And reverse resolution should work for "sle15sp4_buildhost"
     And "sle15sp4_buildhost" should communicate with the server using public interface
     And the clock from "sle15sp4_buildhost" should be exact
+
+@monitoring_server
+  Scenario: The monitoring server is healthy
+    Then "monitoring_server" should have a FQDN
+    And reverse resolution should work for "monitoring_server"
+    And "monitoring_server" should communicate with the server using public interface
+    And the clock from "monitoring_server" should be exact
