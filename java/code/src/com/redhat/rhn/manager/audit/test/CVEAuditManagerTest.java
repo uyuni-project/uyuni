@@ -717,6 +717,74 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Verify that a CVE Audit selects a parent channels errata over a successors errata as most
+     * suitable candidate if there are no patches in the cloned channel and both parent channel
+     * and successor products channel contain valid errata.
+     *
+     * See also here https://bugzilla.suse.com/show_bug.cgi?id=1206168
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testChannelOrderWithClonedChannelsAndSucessorErrata() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<>();
+        cves.add(cve);
+
+        // Create base and successor products + upgrade path
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct baseProduct = createTestSUSEProduct(channelFamily);
+        SUSEProduct successorProduct = createTestSUSEProduct(channelFamily);
+        createTestSUSEUpgradePath(baseProduct, successorProduct);
+
+        // Create a base channel with errata and packages
+        User user = createTestUser();
+        ChannelProduct baseChannelProduct = createTestChannelProduct();
+        Channel baseChannel = createTestVendorBaseChannel(channelFamily, baseChannelProduct);
+        createTestSUSEProductChannel(baseChannel, baseProduct, true);
+
+        Errata baseErrata = createTestErrata(user, cves);
+        baseChannel.addErrata(baseErrata);
+        TestUtils.saveAndFlush(baseChannel);
+
+        Package unpatched = createTestPackage(user, baseChannel, "noarch");
+        Package patched = createLaterTestPackage(user, baseErrata, baseChannel, unpatched);
+        List<Package> packages = new ArrayList<>();
+        packages.add(unpatched);
+
+        // Create clones of channel and errata
+        Errata errataClone = createTestClonedErrata(user, baseErrata, cves, patched);
+        Channel channelClone =
+                createTestClonedChannel(user, errataClone, baseChannel, packages);
+
+        // Create successor channel and errata
+        ChannelProduct successorChannelProduct = createTestChannelProduct();
+        Channel successorChannel = createTestVendorBaseChannel(channelFamily, successorChannelProduct);
+        createTestSUSEProductChannel(successorChannel, successorProduct, true);
+        Errata successorErrata = createTestErrata(user, cves);
+        successorChannel.addErrata(successorErrata);
+        TestUtils.saveAndFlush(successorChannel);
+        createLaterTestPackage(user, successorErrata, successorChannel, unpatched);
+
+        // Subscribe server to channel and install unpatched package
+        Set<Channel> assignedChannels = new HashSet<>();
+        assignedChannels.add(channelClone);
+        Server server = createTestServer(user, assignedChannels);
+        createTestInstalledPackage(unpatched, server);
+        installSUSEProductOnServer(baseProduct, server);
+
+        // Find the relevant channels and ask for the above CVE
+        CVEAuditManager.populateCVEChannels();
+        List<CVEAuditServer> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, EnumSet.allOf(PatchStatus.class));
+
+        assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_INAPPLICABLE, results);
+        assertEquals(baseChannel.getName(), results.get(0).getChannelName());
+    }
+
+    /**
      * Verify that bnc#831047 is fixed:
      * Test the ON DELETE CASCADE of FK constraint to rhnServer.
      * @throws Exception if anything goes wrong

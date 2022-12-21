@@ -1,3 +1,5 @@
+- Fix CVE Audit ignoring errata in parent channels if patch in successor
+  product exists (bsc#1206168)
 - Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
 - Rename monitoring entitlement
 - Remove outdated advice from errata mail

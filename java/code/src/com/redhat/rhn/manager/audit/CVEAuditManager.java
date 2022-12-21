@@ -1078,10 +1078,16 @@ public class CVEAuditManager {
             return newerPatch;
         }).orElse(
                 // The CVE is not patched against
-                // Compare channel ranks to find the top channel (assigned channels come first)
+                // Compare channel ranks to find the top channel. Assigned channels come first.
+                // Vendor and cloned channels next. Last come successor channels.
                 packageResults.stream().max(Comparator.comparing(CVEPatchStatus::isChannelAssigned)
-                .thenComparing(Comparator.nullsLast(Comparator.comparingLong(r -> r.getChannelRank().orElse(null))))));
-
+                        .thenComparingLong(r -> {
+                            Long rank = r.getChannelRank().orElse(0L);
+                            return rank < SUCCESSOR_PRODUCT_RANK_BOUNDARY ? rank : 0L;
+                        })
+                        .thenComparingLong(r -> r.getChannelRank().orElse(0L))
+                )
+        );
         return result;
     }
 
