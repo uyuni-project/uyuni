@@ -1,3 +1,5 @@
+- Fix CVE Audit ignoring errata in parent channels if patch in successor
+  product exists (bsc#1206168)
 - Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
 - Improve automatic dependency selection for vendor clones
 - Optimize the number of salt calls on minion startup (bsc#1203532)
