@@ -1,7 +1,7 @@
 # Copyright (c) 2022 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-@scope_monitoring
+@scope_spacewalk_utils
 @sle_minion
 Feature: Advanced Search
   In order to check and maintain the minions
@@ -16,6 +16,7 @@ Feature: Advanced Search
     And I enter "sle_minion" hostname on the search field
     And I select "Hostname" from "Field to Search"
     And I check "invert"
+    And I save a screenshot as "inverse_results.png"
     And I click on the search button
     Then I should see a "No results found." text
 
