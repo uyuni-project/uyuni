@@ -39,20 +39,17 @@ import java.util.Map;
 
 public class DataListTest extends RhnBaseTestCase {
     private HookedSelectMode hsm;
-    private Map params;
-    private Map elabParams;
-    private String db_user;
+    private Map<String, Object> elabParams;
 
     @Override
     @BeforeEach
     public void setUp() {
-        db_user = Config.get().getString(ConfigDefaults.DB_USER);
+        String dbUser = Config.get().getString(ConfigDefaults.DB_USER);
 
         hsm = new HookedSelectMode(
                 ModeFactory.getMode("test_queries", "user_tables_pg"));
-        params = new HashMap();
-        elabParams = new HashMap();
-        elabParams.put("user_name", db_user);
+        elabParams = new HashMap<>();
+        elabParams.put("user_name", dbUser);
     }
 
     @Override
@@ -60,7 +57,6 @@ public class DataListTest extends RhnBaseTestCase {
     public void tearDown() throws Exception {
         super.tearDown();
         hsm = null;
-        params = null;
         elabParams = null;
     }
 
@@ -111,8 +107,8 @@ public class DataListTest extends RhnBaseTestCase {
 
     private DataList getList() {
         //test the get method
-        DataList list = DataList.getDataList(hsm, params, elabParams);
-        assertTrue(!list.isEmpty());
+        DataList list = DataList.getDataList(hsm, new HashMap<>(), elabParams);
+        assertFalse(list.isEmpty());
         assertFalse(hsm.isElaborated());
         return list;
     }
@@ -120,7 +116,7 @@ public class DataListTest extends RhnBaseTestCase {
     private DataList getSubList(DataList list) {
         int end = list.size() < 11 ? list.size() - 1 : 10;
         List sub = list.subList(0, end);
-        assertTrue(sub.size() == end);
+        assertEquals(sub.size(), end);
         assertEquals(sub.getClass(), DataList.class);
         return (DataList) sub;
     }
