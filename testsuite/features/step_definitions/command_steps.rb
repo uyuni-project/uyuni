@@ -665,6 +665,11 @@ Then(/^I should see "(.*?)" in the output$/) do |arg1|
   raise "Command Output #{@command_output} don't include #{arg1}" unless @command_output.include? arg1
 end
 
+When(/^I (start|stop) "([^"]*)" service on "([^"]*)"$/) do |action, service, host|
+  node = get_target(host)
+  node.run("systemctl #{action} #{service}")
+end
+
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}'", check_errors: false)

@@ -99,6 +99,7 @@ Feature: Migrate a traditional client into a Salt minion
     When I enable client tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "salt-minion" from this "sle_client"
+    And I remove package "venv-salt-minion" from this "sle_client" without error control
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 

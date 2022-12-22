@@ -122,7 +122,7 @@ Feature: Salt package states
     And I wait until I see "No reply from minion" text
 
   Scenario: Cleanup: restart the salt service on SLES minion
-    When I run "rcsalt-minion restart" on "sle_minion"
+    When I restart salt-minion on "sle_minion"
 
   Scenario: Cleanup: remove old packages from SLES minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"

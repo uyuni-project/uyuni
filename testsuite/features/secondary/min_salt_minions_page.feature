@@ -23,6 +23,7 @@ Feature: Management of minion keys
     Then I should see a "Keys" text in the content area
 
   Scenario: Minion is visible in the Pending section
+    When I stop "venv-salt-minion" service on "sle_minion"
     And I restart salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I follow the left menu "Salt > Keys"
@@ -56,6 +57,7 @@ Feature: Management of minion keys
     Then the Salt master can reach "sle_minion"
     When I get OS information of "sle_minion" from the Master
     Then it should contain the OS of "sle_minion"
+    When I start "venv-salt-minion" service on "sle_minion"
 
   Scenario: Delete profile of unreacheable minion
     Given I am on the Systems overview page of this "sle_minion"
