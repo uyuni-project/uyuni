@@ -30,12 +30,12 @@ When(/^I enter URI, username and password for registry$/) do
   )
 end
 
-When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
+When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is built successfully via API$/) do |timeout, name, version|
   images_list = $api_test.image.list_images
   log "List of images: #{images_list}"
   image_id = 0
   images_list.each do |element|
-    if element['name'] == name
+    if element['name'] == name && element['version'] == version
       image_id = element['id']
       break
     end
@@ -43,11 +43,31 @@ When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfu
   raise 'unable to find the image id' if image_id.zero?
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
-    idetails = $api_test.image.get_details(image_id)
-    log "Image Details: #{idetails}"
-    break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
-    raise 'image build failed.' if idetails['buildStatus'] == 'failed'
-    raise 'image inspect failed.' if idetails['inspectStatus'] == 'failed'
+    image_details = $api_test.image.get_details(image_id)
+    log "Image Details: #{image_details}"
+    break if image_details['buildStatus'] == 'completed'
+    raise 'image build failed.' if image_details['buildStatus'] == 'failed'
+    sleep 5
+  end
+end
+
+When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is inspected successfully via API$/) do |timeout, name, version|
+  images_list = $api_test.image.list_images
+  log "List of images: #{images_list}"
+  image_id = 0
+  images_list.each do |element|
+    if element['name'] == name && element['version'] == version
+      image_id = element['id']
+      break
+    end
+  end
+  raise 'unable to find the image id' if image_id.zero?
+
+  repeat_until_timeout(timeout: timeout.to_i, message: 'image inspection did not complete') do
+    image_details = $api_test.image.get_details(image_id)
+    log "Image Details: #{image_details}"
+    break if image_details['inspectStatus'] == 'completed'
+    raise 'image inspect failed.' if image_details['inspectStatus'] == 'failed'
     sleep 5
   end
 end
