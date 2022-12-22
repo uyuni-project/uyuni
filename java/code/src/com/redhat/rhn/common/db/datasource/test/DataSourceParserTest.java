@@ -45,11 +45,9 @@ import java.util.Map;
 
 public class DataSourceParserTest extends RhnBaseTestCase {
 
-    private String db_sufix;
     private String db_user;
 
     public DataSourceParserTest() {
-        db_sufix = "_pg";
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
     }
 
@@ -84,7 +82,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
     @Test
     public void testExternalElaborator() throws Exception {
         SelectMode m = ModeFactory.getMode("test_queries",
-            "user_tables_external_elaborator" + db_sufix);
+            "user_tables_external_elaborator_pg");
         assertNotNull(m);
 
         DataResult dr = m.execute(new HashMap());
@@ -110,14 +108,14 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         i = dr.iterator();
         while (i.hasNext()) {
             Map hm = (Map)i.next();
-            Map elab = (Map)hm.get("external_elaborator" + db_sufix);
+            Map elab = (Map)hm.get("external_elaborator_pg");
             assertTrue(((Long)elab.get("table_count")).intValue() > 0);
         }
     }
 
     @Test
     public void testRunQuery() throws Exception {
-        SelectMode m = ModeFactory.getMode("test_queries", "user_tables" + db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "user_tables_pg");
         assertNotNull(m);
 
         DataResult dr = m.execute(new HashMap());
@@ -143,7 +141,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         i = dr.iterator();
         while (i.hasNext()) {
             Map hm = (Map)i.next();
-            Map elab = (Map)hm.get("table_elaborator" + db_sufix);
+            Map elab = (Map)hm.get("table_elaborator_pg");
             assertTrue(((Long)elab.get("table_count")).intValue() > 0);
         }
     }
@@ -227,13 +225,13 @@ public class DataSourceParserTest extends RhnBaseTestCase {
 
     @Test
     public void testPercentS() throws Exception {
-        runTestQuery("all_tables" + db_sufix, "elaborator0");
+        runTestQuery("all_tables_pg", "elaborator0");
     }
 
     @Test
     public void testBrokenDriving() throws Exception {
         try {
-            runTestQuery("broken_driving" + db_sufix, "elaborator0");
+            runTestQuery("broken_driving_pg", "elaborator0");
             fail("Should have thrown an exception");
         }
         catch (MapColumnNotFoundException e) {
@@ -245,7 +243,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
     @Test
     public void testBrokenElaborator() throws Exception {
         try {
-            runTestQuery("broken_elaborator" + db_sufix, "elaborator0");
+            runTestQuery("broken_elaborator_pg", "elaborator0");
             fail("Should have thrown an exception");
         }
         catch (MapColumnNotFoundException e) {
@@ -256,12 +254,12 @@ public class DataSourceParserTest extends RhnBaseTestCase {
 
     @Test
     public void testAlias() throws Exception {
-        runTestQuery("all_tables_with_alias" + db_sufix, "details" + db_sufix);
+        runTestQuery("all_tables_with_alias_pg", "details_pg");
     }
 
     @Test
     public void testExtraParams() throws Exception {
-        SelectMode m = ModeFactory.getMode("test_queries", "all_tables" + db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "all_tables_pg");
         assertNotNull(m);
 
         Map<String, Object> params = new HashMap<>();
@@ -272,8 +270,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
 
     @Test
     public void testDrivingParams() throws Exception {
-        SelectMode m = ModeFactory.getMode("test_queries", "user_tables_for_user" +
-                db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "user_tables_for_user_pg");
         assertNotNull(m);
 
         Map hm = new HashMap();
@@ -285,8 +282,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
 
     @Test
     public void testNullParam() throws Exception {
-        SelectMode m = ModeFactory.getMode("test_queries", "user_tables_for_user" +
-                db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "user_tables_for_user_pg");
         assertNotNull(m);
 
         try {
@@ -310,14 +306,14 @@ public class DataSourceParserTest extends RhnBaseTestCase {
 
     @Test
     public void testSpecifiedClass() throws Exception {
-        SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "withClass_pg");
         String clazz = m.getClassString();
         assertEquals("com.redhat.rhn.common.db.datasource.test.TableData", clazz);
     }
 
     @Test
     public void testSpecifiedClassExecute() throws Exception {
-        SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "withClass_pg");
         String clazz = m.getClassString();
         assertEquals("com.redhat.rhn.common.db.datasource.test.TableData", clazz);
         DataResult dr = m.execute(new HashMap());
@@ -330,7 +326,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
 
     @Test
     public void testClassElaborateList() throws Exception {
-        SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "withClass_pg");
         String clazz = m.getClassString();
         assertEquals("com.redhat.rhn.common.db.datasource.test.TableData", clazz);
         DataResult dr = m.execute(new HashMap());
@@ -348,7 +344,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
 
     @Test
     public void testSpecifiedClassElaborate() throws Exception {
-        SelectMode m = ModeFactory.getMode("test_queries", "user_class" + db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "user_class_pg");
         String clazz = m.getClassString();
         assertEquals("com.redhat.rhn.common.db.datasource.test.UserData", clazz);
         Map hm = new HashMap();
