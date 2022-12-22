@@ -148,13 +148,6 @@
   </query>
 </callable-mode>
 
-<callable-mode name="stored_procedure_oracle_format">
-  <query params="label, arch">
-      { :arch = call lookup_package_arch( :label ) }
-  </query>
-</callable-mode>
-
-
 <!-- Test to benchmark datasource vs hibernate -->
 <mode name="withClass_pg" class="com.redhat.rhn.common.db.datasource.test.TableData">
   <query params="">

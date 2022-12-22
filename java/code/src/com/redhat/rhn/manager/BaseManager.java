@@ -142,7 +142,7 @@ public abstract class BaseManager {
      * Returns a DataResult for the given SelectMode with no bounds.  This
      * can be usefull if you want a list without pagination controls.
      *
-     * @param <myClass> the DataResults type
+     * @param <T> the DataResults type
      * @param queryParams Named parameters for the driving query.
      * @param elabParams Named parameters for the elaboration query.
      * @param m datasource SelectMode.
@@ -150,11 +150,11 @@ public abstract class BaseManager {
      * @return resulting DataResult bounded by the values of the
      * PageControl.
      */
-    protected static <myClass> DataResult<myClass> makeDataResultNoPagination(
+    protected static <T> DataResult<T> makeDataResultNoPagination(
             Map queryParams,
-            Map elabParams, SelectMode m, Class myClass) {
+            Map elabParams, SelectMode m, Class<T> myClass) {
         // execute the driving query to get the initial data set.
-        DataResult<myClass> dr = makeDataResult(queryParams, elabParams, null, m, myClass);
+        DataResult<T> dr = makeDataResult(queryParams, elabParams, null, m, myClass);
         dr.setStart(1);
         dr.setEnd(dr.getTotalSize());
         return dr;
@@ -168,9 +168,9 @@ public abstract class BaseManager {
      * @param pc Page Control boundary definition.
      * @return DataResult modified (filtered) by the PageControl
      */
-    protected static DataResult processPageControl(DataResult dr,
+    protected static <T> DataResult<T> processPageControl(DataResult<T> dr,
                                             PageControl pc,
-                                            Map elabParams) {
+                                            Map<String, Object> elabParams) {
         if (elabParams != null) {
             dr.setElaborationParams(elabParams);
         }
