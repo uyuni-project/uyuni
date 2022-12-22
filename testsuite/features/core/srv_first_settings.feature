@@ -21,6 +21,20 @@ Feature: Very first settings
     And I select "Mr." from "prefix"
     Then I should not see a "is required" text
     And I click on "Create Organization"
+    And I wait for "10" seconds
+    I save a screenshot as "wait1.png"
+    And I wait for "10" seconds
+    I save a screenshot as "wait2.png"
+    And I wait for "10" seconds
+    I save a screenshot as "wait3.png"
+    And I wait for "10" seconds
+    I save a screenshot as "wait4.png"
+    And I wait for "10" seconds
+    I save a screenshot as "wait5.png"
+    And I wait for "10" seconds
+    I save a screenshot as "wait6.png"
+    And I wait for "10" seconds
+    I save a screenshot as "wait7.png"
     Then I am logged in
 
   Scenario: Log in as admin user
