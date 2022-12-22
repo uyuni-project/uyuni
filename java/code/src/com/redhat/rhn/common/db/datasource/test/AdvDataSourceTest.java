@@ -56,12 +56,10 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
     private static Logger log = LogManager.getLogger(AdvDataSourceTest.class);
     private final Random random = new Random();
-    private String db_sufix;
     private String db_user;
 
     public AdvDataSourceTest() {
         super();
-        db_sufix = "_pg";
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
     }
 
@@ -91,7 +89,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
     @Test
     public void testMaxRows() {
-        SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "withClass_pg");
         try {
             m.setMaxRows(-10);
             fail("setMaxRows should NOT allow negative numbers.");
@@ -111,7 +109,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
      */
     @Test
     public void testModes() {
-        SelectMode m = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
+        SelectMode m = ModeFactory.getMode("test_queries", "withClass_pg");
         Map params = null;
         DataResult dr = m.execute(params);
         assertNotNull(dr);
@@ -124,7 +122,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
         //Try over-riding and getting a Map back
         SelectMode m2 = ModeFactory.getMode("test_queries",
-                "withClass" + db_sufix, Map.class);
+                "withClass_pg", Map.class);
         dr = m2.execute(params);
         assertNotNull(dr);
         assertTrue(dr.size() > 1);
@@ -134,7 +132,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
         //Try over-riding with something incompatible
         SelectMode m3 = ModeFactory.getMode("test_queries",
-                "withClass" + db_sufix, Set.class);
+                "withClass_pg", Set.class);
         try {
             dr = m3.execute(params);
             fail();
@@ -144,12 +142,12 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         }
 
         //Make sure our selectMode object was a copy and not the one cached
-        SelectMode m2a = ModeFactory.getMode("test_queries", "withClass" + db_sufix);
+        SelectMode m2a = ModeFactory.getMode("test_queries", "withClass_pg");
         assertFalse(m2a.getClassString().equals("java.util.Set"));
         assertFalse(m2a.getClassString().equals("java.util.Map"));
 
         //finally, make sure that by default our DataResult objects contain Maps
-        SelectMode m4 = ModeFactory.getMode("test_queries", "all_tables" + db_sufix);
+        SelectMode m4 = ModeFactory.getMode("test_queries", "all_tables_pg");
         dr = m4.execute(params);
         assertNotNull(dr);
         assertTrue(dr.size() > 1);

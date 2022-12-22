@@ -41,17 +41,15 @@ public class DataListTest extends RhnBaseTestCase {
     private HookedSelectMode hsm;
     private Map params;
     private Map elabParams;
-    private String db_sufix;
     private String db_user;
 
     @Override
     @BeforeEach
     public void setUp() {
-        db_sufix = "_pg";
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
 
         hsm = new HookedSelectMode(
-                ModeFactory.getMode("test_queries", "user_tables" + db_sufix));
+                ModeFactory.getMode("test_queries", "user_tables_pg"));
         params = new HashMap();
         elabParams = new HashMap();
         elabParams.put("user_name", db_user);

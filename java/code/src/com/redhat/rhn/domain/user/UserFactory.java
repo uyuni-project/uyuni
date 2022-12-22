@@ -429,8 +429,6 @@ public  class UserFactory extends HibernateFactory {
      * @param usr the user to sync
      */
     protected void syncUserPerms(User usr) {
-        // Here we are replacing the functionality in add/remove_from_usergroup
-        // and update_perms_for_user stored procedures
         UserImpl uimpl = (UserImpl) usr;
 
         boolean orgAdminChanged = false;
