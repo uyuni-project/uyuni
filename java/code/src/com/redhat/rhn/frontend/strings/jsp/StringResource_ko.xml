@@ -29746,6 +29746,10 @@ given channel.</source>
         <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
         <target state="translated">기존 스택은 SUSE 관리자 4.3 릴리스부터 더 이상 사용되지 않습니다. 다음 주요 릴리스인 버전 4.4 이상에서는 지원되지 않습니다. 이 릴리스 전에 솔트 미니언으로 마이그레이션하는 것을 고려하십시오.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
