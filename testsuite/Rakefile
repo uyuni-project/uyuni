@@ -62,6 +62,7 @@ namespace :utils do
   task :generate_smoke_tests do
     clients = Rake::FileList['features/build_validation/init_clients/*.feature']
     clients.reject! { |client| client.include? 'proxy' }
+    clients.reject! { |client| client.include? 'monitoring_server' }
     clients.reject! { |client| (client.include? 'buildhost') || (client.include? 'terminal') }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke('features/build_validation/smoke_tests/smoke_tests.template',
@@ -76,6 +77,7 @@ namespace :utils do
   task :generate_add_maintenance_update_repository_features do
     clients = Rake::FileList['features/build_validation/init_clients/*.feature']
     clients.reject! { |client| client.include? 'ssh'}
+    clients.reject! { |client| client.include? 'monitoring_server' }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke('features/build_validation/add_custom_repositories/add_maintenance_update_repository.template',
                                            File.basename(client,'.feature'),

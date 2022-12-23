@@ -113,9 +113,7 @@ Feature: Maintenance windows
     Then I should see a "Maintenance schedule has been cleared" text
 
   Scenario: Cleanup: cancel all scheduled actions
-    Given I am logged in API as user "admin" and password "admin"
     When I cancel all scheduled actions
-    And I logout from API
 
   Scenario: Delete maintenance schedules
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"

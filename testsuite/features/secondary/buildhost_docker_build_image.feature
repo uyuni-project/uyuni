@@ -14,7 +14,6 @@ Feature: Build container images
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Create a simple image profile without activation key
     When I follow the left menu "Images > Profiles"
@@ -147,4 +146,3 @@ Feature: Build container images
     And I should see a "Are you sure you want to delete selected profiles?" text
     And I click on the red confirmation button
     And I wait until I see "Image profiles have been deleted" text
-    And I logout from API

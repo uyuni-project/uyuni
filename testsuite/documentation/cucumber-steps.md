@@ -30,18 +30,19 @@ The corresponding notion in Cucumber steps is "step host names".
 
 Possible values are currently:
 
-| Test host | Ruby target |  Bash environment variable | Step host name | sumaform module |
-| --------- | ----------- | -------------------------- | -------------- | --------------- |
-| SUSE Manager server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
-| SUSE Manager proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
-| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
-| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` | ```"minion"``` |
-| SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
-| SLES Salt SSH minion | ```$ssh_minion``` | ```$SSH_MINION``` | ```"ssh_minion"``` | ```"minion"``` |
-| Red Hat-like Salt minion | ```$rhlike_minion``` | ```$RHLIKE_MINION``` | ```"rhlike_minion"``` | ```"minion"``` |
-| Debian-like Salt minion | ```$deblike_minion``` | ```$DEBLIKE_MINION``` | ```"deblike_minion"``` | ```"minion"``` |
-| PXE-boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
-| KVM virtual host minion | ```$kvm_server``` | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"``` | ```"virthost"``` |
+| Test host                       | Ruby target              | Bash environment variable                                | Step host name           | sumaform module            |
+|---------------------------------|--------------------------|----------------------------------------------------------|--------------------------|----------------------------|
+| SUSE Manager server             | ```$server```            | ```$SERVER```                                            |                          | ```"suse_manager"```       |
+| SUSE Manager proxy              | ```$proxy```             | ```$PROXY```                                             | ```"proxy"```            | ```"suse_manager_proxy"``` |
+| SLES traditional client         | ```$client```            | ```$CLIENT```                                            | ```"sle_client"```       | ```"client"```             |
+| SLES Salt minion                | ```$minion```            | ```$MINION```                                            | ```"sle_minion"```       | ```"minion"```             |
+| SLES Docker and Kiwi build host | ```$build_host```        | ```$BUILD_HOST```                                        | ```"build_host"```       | ```"build_host"```         |
+| Monitoring Server               | ```$monitoring_server``` | ```$MONITORING_SERVER```                                 | ```"monitoring_server``` | ```"minion"```             |
+| SLES Salt SSH minion            | ```$ssh_minion```        | ```$SSH_MINION```                                        | ```"ssh_minion"```       | ```"minion"```             |
+| Red Hat-like Salt minion        | ```$rhlike_minion```     | ```$RHLIKE_MINION```                                     | ```"rhlike_minion"```    | ```"minion"```             |
+| Debian-like Salt minion         | ```$deblike_minion```    | ```$DEBLIKE_MINION```                                    | ```"deblike_minion"```   | ```"minion"```             |
+| PXE-boot minion                 | None                     | ```$PXEBOOT_MAC```                                       | ```"pxeboot_minion"```   | ```"pxeboot"```            |
+| KVM virtual host minion         | ```$kvm_server```        | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"```       | ```"virthost"```           |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -604,13 +605,6 @@ Note that the text area variant handles the new lines characters while the other
 ```
 
 ### XML-RPC or HTTP API
-
-* Log into and out from the API on the server
-
-```gherkin
-  Given I am logged in API as user "admin" and password "admin"
-  When I logout from API
-```
 
 * Calling various API methods
 

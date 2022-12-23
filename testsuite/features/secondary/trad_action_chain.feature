@@ -8,7 +8,6 @@ Feature: Action chain on traditional clients
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: downgrade repositories to lower version on traditional client
     When I enable repository "test_repo_rpm_pool" on this "sle_client"
@@ -250,6 +249,3 @@ Feature: Action chain on traditional clients
 
   Scenario: Cleanup: remove temporary files for testing action chains on traditional client
     When I run "rm -f /tmp/action_chain.log" on "sle_client" without error control
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

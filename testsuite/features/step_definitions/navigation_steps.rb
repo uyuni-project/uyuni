@@ -395,6 +395,12 @@ end
 
 # access the clients
 Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+  visit("https://#{$server.full_hostname}/rhn/systems/details/Overview.do?sid=#{system_id}")
+end
+
+Given(/^I navigate to the Systems overview page of this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   steps %(
     Given I am on the Systems page
@@ -980,15 +986,27 @@ end
 When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   node = get_target(host)
   system_name = get_system_name(host)
+  os_family = node.os_family
   port, protocol, path, text = case service
                                when 'Proxy' then [443, 'https', '/pub/', 'Index of /pub']
                                when 'Prometheus' then [9090, 'http', '', 'graph']
                                when 'Prometheus node exporter' then [9100, 'http', '', 'Node Exporter']
                                when 'Prometheus apache exporter' then [9117, 'http', '', 'Apache Exporter']
                                when 'Prometheus postgres exporter' then [9187, 'http', '', 'Postgres Exporter']
+                               when 'Grafana' then [3000, 'http', '', 'Grafana Labs']
                                else raise "Unknown port for service #{service}"
                                end
-  node.run_until_ok("curl -s -k #{protocol}://#{system_name}:#{port}#{path} | grep -i '#{text}'")
+  # debian based systems don't come with curl installed
+  if (os_family.include? 'debian') || (os_family.include? 'ubuntu')
+    node.run_until_ok("wget --no-check-certificate -qO- #{protocol}://#{system_name}:#{port}#{path} | grep -i '#{text}'")
+  else
+    node.run_until_ok("curl -s -k #{protocol}://#{system_name}:#{port}#{path} | grep -i '#{text}'")
+  end
+end
+
+When(/^I enter the "([^"]*)" hostname as the Prometheus URL$/) do |host|
+  node = get_target(host)
+  step %(I enter "http://#{node.full_hostname}:9090" as "Prometheus URL")
 end
 
 When(/^I select the next maintenance window$/) do
@@ -1110,4 +1128,9 @@ Then(/^I should see the correct timestamp for task "([^"]*)"/) do |task_name|
       Time.parse(td.text).to_i.between?(now.to_i - 5, now.to_i + 5)
     end
   end
+end
+
+When(/^I visit the grafana dashboards of this "([^"]*)"$/) do |host|
+  node = get_target(host)
+  visit("http://#{node.public_ip}:3000/dashboards")
 end

@@ -8,7 +8,6 @@ Feature: Salt SSH action chain
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: downgrade repositories to lower version on SSH minion
     When I enable repository "test_repo_rpm_pool" on this "ssh_minion"
@@ -258,6 +257,3 @@ Feature: Salt SSH action chain
     And I run "rm -f /tmp/action_chain_done" on "ssh_minion" without error control
     And I run "rm -f /etc/action-chain.cnf" on "ssh_minion" without error control
     And I run "rm -f /tmp/action_chain_one_system_done" on "ssh_minion" without error control
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

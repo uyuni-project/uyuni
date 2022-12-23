@@ -6,7 +6,6 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete SLES minion system profile before bootstrap with SSH key test
     Given I am on the Systems overview page of this "sle_minion"
@@ -65,6 +64,3 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
 
   Scenario: Cleanup: restore authorized keys
     When I restore the SSH authorized_keys file of host "sle_minion"
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

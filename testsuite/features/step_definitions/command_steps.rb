@@ -665,7 +665,6 @@ end
 
 When(/^I wait until rhn-search is responding$/) do
   step %(I wait until "rhn-search" service is active on "server")
-  $api_test.auth.login('admin', 'admin')
   repeat_until_timeout(timeout: 60, message: 'rhn-search is not responding properly.') do
     begin
       log "Search by hostname: #{$minion.hostname}"
@@ -677,7 +676,6 @@ When(/^I wait until rhn-search is responding$/) do
       sleep 3
     end
   end
-  $api_test.auth.logout
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
@@ -1137,8 +1135,8 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   disk_path = "/tmp/#{vm_name}_disk.qcow2"
 
   # Create the throwable overlay image
-  raise '/var/testsuite-data/disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/disk-image-template.qcow2')
-  node.run("cp /var/testsuite-data/disk-image-template.qcow2 #{disk_path}")
+  raise '/var/testsuite-data/leap-disk-image-template.qcow2 not found' unless file_exists?(node, '/var/testsuite-data/leap-disk-image-template.qcow2')
+  node.run("cp /var/testsuite-data/leap-disk-image-template.qcow2 #{disk_path}")
 
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
