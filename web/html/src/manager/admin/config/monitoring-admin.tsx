@@ -146,7 +146,12 @@ const ListPlaceholder = (props) => {
   );
 };
 
-const HelpPanel = (props) => {
+type HelpPanelProps = {
+  isUyuni: boolean;
+};
+
+const HelpPanel = (props: HelpPanelProps) => {
+  const docsDirectory = props.isUyuni ? "/uyuni" : "/suse-manager";
   return (
     <div className="col-sm-3 hidden-xs" id="wizard-faq">
       <h4>{t("Server Monitoring")}</h4>
@@ -160,7 +165,7 @@ const HelpPanel = (props) => {
       <p>
         {t("Refer to the ")}
         <a
-          href={"/docs/" + docsLocale + "/suse-manager/administration/monitoring.html"}
+          href={"/docs/" + docsLocale + docsDirectory + "/administration/monitoring.html"}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -197,7 +202,11 @@ const ExportersMessages = (props: {
   }
 };
 
-const MonitoringAdmin = (props) => {
+type MonitoringAdminProps = {
+  isUyuni: boolean;
+};
+
+const MonitoringAdmin = (props: MonitoringAdminProps) => {
   const {
     action,
     fetchStatus,
@@ -328,7 +337,7 @@ const MonitoringAdmin = (props) => {
         <h1>
           <i className="fa fa-info-circle"></i>
           {t("SUSE Manager Configuration - Monitoring")}
-          <HelpLink url="suse-manager/administration/monitoring.html" />
+          <HelpLink url={`${props.isUyuni ? "uyuni" : "suse-manager"}/administration/monitoring.html`} />
         </h1>
       </div>
       <div className="page-summary">
@@ -402,7 +411,7 @@ const MonitoringAdmin = (props) => {
               <ExportersMessages messages={exportersMessages} />
             </div>
           </div>
-          <HelpPanel />
+          <HelpPanel isUyuni={props.isUyuni} />
         </div>
       </Panel>
     </div>
