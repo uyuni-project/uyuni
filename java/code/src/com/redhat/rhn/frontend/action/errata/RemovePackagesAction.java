@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -46,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * RemovePackages
  */
-public class RemovePackagesAction extends RhnAction implements Listable {
+public class RemovePackagesAction extends RhnAction implements Listable<PackageOverview> {
 
     /**
      * {@inheritDoc}
@@ -147,7 +148,7 @@ public class RemovePackagesAction extends RhnAction implements Listable {
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext context) {
+    public List<PackageOverview> getResult(RequestContext context) {
         return PackageManager.packageIdsInSet(context.getCurrentUser(),
                                               RhnSetDecl.PACKAGES_TO_REMOVE.getLabel());
     }

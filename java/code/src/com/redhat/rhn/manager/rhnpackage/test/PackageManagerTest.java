@@ -379,11 +379,9 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testPackageIdsInSet() throws Exception {
-
-        DataResult dr = PackageManager.packageIdsInSet(user, "packages_to_add",
+    public void testPackageIdsInSet() {
+        DataResult<PackageOverview> dr = PackageManager.packageIdsInSet(user, "packages_to_add",
                                                        new PageControl());
-
         assertNotNull(dr);
     }
 

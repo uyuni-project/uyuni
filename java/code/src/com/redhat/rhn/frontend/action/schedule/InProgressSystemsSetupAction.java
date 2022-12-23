@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.schedule;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -30,8 +31,7 @@ public class InProgressSystemsSetupAction extends ActionSystemsSetupAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User user, Action action, PageControl pc) {
-        // TODO Auto-generated method stub
+    protected DataResult<ActionedSystem> getDataResult(User user, Action action, PageControl pc) {
         return ActionManager.inProgressSystems(user, action, pc);
     }
 

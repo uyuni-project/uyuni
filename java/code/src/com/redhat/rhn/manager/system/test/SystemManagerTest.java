@@ -34,6 +34,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -681,11 +682,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
 
         // Ok let's finally test what we came here for.
-        List<Map<String, Object>> list = SystemManager.compatibleWithServer(user, srvr);
+        List<Row> list = SystemManager.compatibleWithServer(user, srvr);
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
-        for (Map<String, Object> o : list) {
+        for (Row o: list) {
             if (srvr1.getName().equals(o.get("name"))) {
                 found = true;
             }
@@ -1004,7 +1005,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(packagesSet);
 
         // Test
-        DataResult<Map<String, Object>> result =
+        DataResult<Row> result =
             SystemManager.ssmSystemPackagesToRemove(admin, packagesSet.getLabel(), false);
         assertNotNull(result);
 
@@ -1014,7 +1015,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // Verify
         assertEquals(2, result.size());
 
-        for (Map<String, Object> map : result) {
+        for (Row map : result) {
 
             if (map.get("id").equals(server1.getId())) {
                 assertEquals(server1.getName(), map.get("system_name"));

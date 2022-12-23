@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SecurityErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
@@ -28,7 +29,7 @@ public class SecurityErrataListAllAction extends ErrataListAllAction {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<SecurityErrataOverview> getResult(RequestContext context) {
 
         User user = context.getCurrentUser();
         return ErrataManager.allSecurityErrata(user);

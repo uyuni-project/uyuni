@@ -612,9 +612,9 @@ public class CachedStatement implements Serializable {
                  * If no className was specified *or* if the caller wants a Map
                  */
                 if (className == null || className.equals("java.util.Map")) {
-                    Map<String, Object> resultMap;
+                    Row resultMap;
                     if (pointers == null) {
-                        resultMap = new HashMap<>();
+                        resultMap = new Row();
                     }
                     else {
                         Integer pos = pointers.get(getObject(rs, getColumn()));
@@ -626,8 +626,7 @@ public class CachedStatement implements Serializable {
                          * a bug here or a bug with the query that allows such
                          * effect. Decide what to do about it.
                          */
-                        resultMap =
-                                (Map<String, Object>) currentResults.get(pos);
+                        resultMap = (Row) currentResults.get(pos);
                     }
                     addToMap(columns, rs, resultMap,
                             mode.getElaborators().indexOf(parentStatement));
@@ -884,8 +883,8 @@ public class CachedStatement implements Serializable {
         while (i.hasNext()) {
             Object row = i.next();
 
-            if (row instanceof Map) {
-                pointers.put(((Map<String, Object>) row).get(key), pos);
+            if (row instanceof Row) {
+                pointers.put(((Row) row).get(key), pos);
             }
             else {
                 Object keyData = MethodUtil.callMethod(row,

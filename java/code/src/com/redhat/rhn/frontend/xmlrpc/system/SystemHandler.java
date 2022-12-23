@@ -24,6 +24,7 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -2523,9 +2524,8 @@ public class SystemHandler extends BaseHandler {
                 type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
 
             // retrieve the list of package names associated with the action...
-            DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
-            for (Object pkgIn : pkgs) {
-                Map pkg = (Map) pkgIn;
+            DataResult<Row> pkgs = ActionManager.getPackageList(action.getId(), null);
+            for (Row pkg : pkgs) {
                 String detail = (String) pkg.get("nvre");
 
                 Map<String, String> info = new HashMap<>();
@@ -5959,10 +5959,9 @@ public class SystemHandler extends BaseHandler {
      * @return True is systems are compatible, false otherwise.
      */
     private boolean isCompatible(User user, Server target, Server source) {
-        List<Map<String, Object>> compatibleServers =
-                SystemManager.compatibleWithServer(user, target);
+        List<Row> compatibleServers = SystemManager.compatibleWithServer(user, target);
         boolean found = false;
-        for (Map<String, Object> m : compatibleServers) {
+        for (Row m : compatibleServers) {
             Long currentId = (Long) m.get("id");
             if (currentId.longValue() == source.getId().longValue()) {
                 found = true;

@@ -87,7 +87,7 @@ public class EnableConfirmSetupAction extends RhnListAction {
         PageControl pc = new PageControl();
 
         clampListBounds(pc, request, user);
-        DataResult dr = UserManager.usersInSet(user, "user_list", pc);
+        DataResult<UserOverview> dr = UserManager.usersInSet(user, "user_list", pc);
         dr.setElaborationParams(Collections.emptyMap());
         request.setAttribute(RequestContext.PAGE_LIST, dr);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
@@ -122,12 +122,12 @@ public class EnableConfirmSetupAction extends RhnListAction {
                     ls.getMessage("permission.jsp.summary.enableuser"));
         }
 
-        Iterator users = UserManager.usersInSet(user, "user_list", null).iterator();
+        Iterator<UserOverview> users = UserManager.usersInSet(user, "user_list", null).iterator();
         ActionErrors errors = new ActionErrors();
         int count = 0;
 
         while (users.hasNext()) {
-            long id = ((UserOverview) users.next()).getId();
+            long id = users.next().getId();
             User nextUser = UserManager.lookupUser(user, id);
             try {
                  UserManager.enableUser(user, nextUser);

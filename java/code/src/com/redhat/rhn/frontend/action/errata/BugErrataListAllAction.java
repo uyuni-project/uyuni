@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
@@ -28,7 +29,7 @@ public class BugErrataListAllAction extends ErrataListAllAction {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<ErrataOverview> getResult(RequestContext context) {
 
         User user = context.getCurrentUser();
         return ErrataManager.allErrataByType(user, ErrataFactory.ERRATA_TYPE_BUG);

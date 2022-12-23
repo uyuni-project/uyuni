@@ -25,6 +25,7 @@ import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -123,7 +124,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         assertTrue(dr.size() > 1);
         obj = dr.iterator().next();
         //make sure we got some sort of a Map back
-        assertEquals("java.util.HashMap", obj.getClass().getName());
+        assertEquals(Row.class, obj.getClass());
 
         //Try over-riding with something incompatible
         SelectMode m3 = ModeFactory.getMode(TEST_QUERIES,
@@ -147,7 +148,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         assertNotNull(dr);
         assertTrue(dr.size() > 1);
         obj = dr.iterator().next();
-        assertEquals("java.util.HashMap", obj.getClass().getName());
+        assertEquals(Row.class, obj.getClass());
     }
 
     @Test

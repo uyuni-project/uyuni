@@ -18,6 +18,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -44,6 +45,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageComparison;
 import com.redhat.rhn.frontend.dto.PackageFileDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
+import com.redhat.rhn.frontend.dto.PackageMergeDto;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -267,7 +270,7 @@ public class PackageManager extends BaseManager {
      * @return Returns a list of errata that provide the given package
      */
     public static DataResult providingErrata(Long orgId, Long pid) {
-        SelectMode m = ModeFactory.getMode("Errata_queries", "org_pkg_errata", Map.class);
+        SelectMode m = ModeFactory.getMode("Errata_queries", "org_pkg_errata");
         Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
         params.put("org_id", orgId);
@@ -372,7 +375,7 @@ public class PackageManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries", template);
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
-        return makeDataResult(params, params, pc, m, PackageListItem.class);
+        return makeDataResult(params, params, pc, m);
     }
 
     /**
@@ -405,8 +408,8 @@ public class PackageManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
 
-        DataResult dr = makeDataResult(params, null, null, m);
-        return ((Long)((HashMap)dr.get(0)).get("count")).intValue();
+        DataResult<Row> dr = makeDataResult(params, null, null, m);
+        return ((Long)dr.get(0).get("count")).intValue();
     }
 
     /**
@@ -437,7 +440,7 @@ public class PackageManager extends BaseManager {
      * @param errata The errata in question
      * @return Returns the list of packages available for this particular errata.
      */
-    public static DataResult packagesAvailableToErrata(Errata errata) {
+    public static DataResult<PackageOverview> packagesAvailableToErrata(Errata errata) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_errata");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", errata.getOrg().getId());
@@ -455,7 +458,7 @@ public class PackageManager extends BaseManager {
      * @return Returns the list of packages available for this particular errata in
      * this particular channel.
      */
-    public static DataResult packagesAvailableToErrataInChannel(Errata errata,
+    public static DataResult<PackageOverview> packagesAvailableToErrataInChannel(Errata errata,
                                                                 Long cid,
                                                                 User user) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_errata_in_channel");
@@ -468,7 +471,7 @@ public class PackageManager extends BaseManager {
         return makeDataResult(params, elabParams, null, m);
     }
 
-    private static DataResult getPackageIdsInSet(User user, String label,
+    private static DataResult<PackageOverview> getPackageIdsInSet(User user, String label,
                                                  PageControl pc, String query) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 query);
@@ -476,10 +479,10 @@ public class PackageManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("set_label", label);
 
-        Map elabs = new HashMap();
+        Map<String, Object> elabs = new HashMap<>();
         elabs.put("org_id", user.getOrg().getId());
 
-        DataResult dr;
+        DataResult<PackageOverview> dr;
         if (pc != null) {
             dr = makeDataResult(params, elabs, pc, m);
         }
@@ -499,8 +502,7 @@ public class PackageManager extends BaseManager {
      * @param pc The page control for the user
      * @return Returns the list of packages whose id's are in the given set
      */
-    public static DataResult packageIdsInSet(User user, String label,
-                                             PageControl pc) {
+    public static DataResult<PackageOverview> packageIdsInSet(User user, String label, PageControl pc) {
         return getPackageIdsInSet(user, label, pc, "package_ids_in_set");
     }
 
@@ -512,8 +514,7 @@ public class PackageManager extends BaseManager {
      * @param pc The page control for the user
      * @return Returns the list of packages whose id's are in the given set
      */
-    public static DataResult sourcePackageIdsInSet(User user, String label,
-                                             PageControl pc) {
+    public static DataResult<PackageOverview> sourcePackageIdsInSet(User user, String label, PageControl pc) {
         return getPackageIdsInSet(user, label, pc, "source_package_ids_in_set");
     }
 
@@ -524,7 +525,7 @@ public class PackageManager extends BaseManager {
      * @param label The label of the set we want
      * @return Returns the list of packages whose id's are in the given set
      */
-    public static DataResult packageIdsInSet(User user, String label) {
+    public static DataResult<PackageOverview> packageIdsInSet(User user, String label) {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "package_ids_in_set");
@@ -532,10 +533,10 @@ public class PackageManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("set_label", label);
 
-        Map<String, Long> elabs = new HashMap<>();
+        Map<String, Object> elabs = new HashMap<>();
         elabs.put("org_id", user.getOrg().getId());
 
-        DataResult dr;
+        DataResult<PackageOverview> dr;
         dr = makeDataResult(params, elabs, null, m);
         return dr;
 
@@ -548,7 +549,7 @@ public class PackageManager extends BaseManager {
      * @param pc The page control for the logged in user
      * @return The packages associated with this errata
      */
-    public static DataResult packagesInErrata(Errata errata, PageControl pc) {
+    public static DataResult<PackageOverview> packagesInErrata(Errata errata, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_in_errata");
         Map<String, Object> params = new HashMap<>();
         params.put("eid", errata.getId());
@@ -556,7 +557,7 @@ public class PackageManager extends BaseManager {
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
         }
-        DataResult dr = m.execute(params);
+        DataResult<PackageOverview> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }
@@ -645,13 +646,11 @@ public class PackageManager extends BaseManager {
      * @param pc Page control object.
      * @return  DataResult containing locked packages data.
      */
-    public static DataResult<PackageListItem> systemLockedPackages(
-            Long sid, PageControl pc) {
+    public static DataResult<PackageListItem> systemLockedPackages(Long sid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries", "system_locked_packages");
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
-        Map elabParams = new HashMap();
-        return makeDataResult(params, elabParams, pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -665,11 +664,10 @@ public class PackageManager extends BaseManager {
     public static DataResult<PackageListItem> systemSetLockedPackages(
             Long sid, Long aid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries", "system_set_locked_packages");
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("aid", aid);
-        Map elabParams = new HashMap();
-        return makeDataResult(params, elabParams, pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -1146,7 +1144,7 @@ public class PackageManager extends BaseManager {
      * @param label The label of the set we want
      * @return Returns the list of packages whose id's are in the given set
      */
-    public static DataResult mergePackagesFromSet(User user, String label) {
+    public static DataResult<PackageMergeDto> mergePackagesFromSet(User user, String label) {
 
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "managed_channel_merge_confirm");
@@ -1154,12 +1152,10 @@ public class PackageManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("set_label", label);
 
-        Map<String, Long> elabs = new HashMap<>();
+        Map<String, Object> elabs = new HashMap<>();
         elabs.put("org_id", user.getOrg().getId());
 
-        DataResult dr;
-        dr = makeDataResult(params, elabs, null, m);
-        return dr;
+        return makeDataResult(params, elabs, null, m);
     }
 
     /**

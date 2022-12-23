@@ -81,9 +81,9 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
        KickstartFactory.saveCryptoKey(key);
        flushAndEvict(key);
 
-       DataResult dr = KickstartLister.getInstance().cryptoKeysInOrg(o);
+       DataResult<CryptoKeyDto> dr = KickstartLister.getInstance().cryptoKeysInOrg(o);
        assertTrue(!dr.isEmpty());
-       assertTrue(dr.get(0) instanceof CryptoKeyDto);
+        assertNotNull(dr.get(0));
    }
 
     @Test
@@ -93,8 +93,8 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
        CommonFactory.saveFileList(f);
        flushAndEvict(f);
 
-       DataResult dr = KickstartLister.getInstance().preservationListsInOrg(o, null);
-       assertTrue(dr.get(0) instanceof FilePreservationDto);
+       DataResult<FilePreservationDto> dr = KickstartLister.getInstance().preservationListsInOrg(o, null);
+       assertNotNull(dr.get(0));
        assertTrue(!dr.isEmpty());
    }
 
@@ -134,7 +134,6 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
         PageControl pc = new PageControl();
         pc.setStart(1);
 
-        @SuppressWarnings("unchecked")
         DataResult<ActivationKeyDto> result =
                 KickstartLister.getInstance().getActiveActivationKeysInOrg(user.getOrg(),
                         pc);
@@ -151,7 +150,6 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
         PageControl pc = new PageControl();
         pc.setStart(1);
 
-        @SuppressWarnings("unchecked")
         DataResult<ActivationKeyDto> result =
                 KickstartLister.getInstance().getActiveActivationKeysInOrg(user.getOrg(),
                         pc);

@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -52,7 +53,6 @@ import com.redhat.rhn.testing.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -176,7 +176,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         verifyFormList(ScheduleKickstartWizardAction.SYNCH_PACKAGES,
                 ProfileDto.class);
         verifyFormList(ScheduleKickstartWizardAction.SYNCH_SYSTEMS,
-                HashMap.class);
+                Row.class);
     }
 
     public void executeStepThree(boolean addProxy) throws Exception {

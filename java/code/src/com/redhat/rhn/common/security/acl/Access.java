@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.dto.ChannelPerms;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -443,7 +444,7 @@ public class Access extends BaseHandler {
     public boolean aclUserCanManageChannels(Map<String, Object> ctx, String[] params) {
         User user = (User) ctx.get("user");
         if (user != null) {
-            List chans = UserManager.channelManagement(user, null);
+            List<ChannelPerms> chans = UserManager.channelManagement(user, null);
             return (user.hasRole(RoleFactory.CHANNEL_ADMIN)) || !chans.isEmpty();
         }
 

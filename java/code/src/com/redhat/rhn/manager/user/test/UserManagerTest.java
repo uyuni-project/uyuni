@@ -526,7 +526,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         User peon = UserTestUtils.createUser("testBob", user.getOrg().getId());
 
-        DataResult orgUsers = UserManager.usersInOrg(user, pc);
+        DataResult<UserOverview> orgUsers = UserManager.usersInOrg(user, pc);
         assertNotNull(orgUsers);
         assertEquals(numTotal + 1, orgUsers.getTotalSize());
 
@@ -663,12 +663,12 @@ public class UserManagerTest extends RhnBaseTestCase {
        PageControl pc = new PageControl();
        pc.setStart(1);
        pc.setPageSize(10);
-       DataResult dr = UserManager.usersInSet(user, "test_user_list", pc);
+       DataResult<UserOverview> dr = UserManager.usersInSet(user, "test_user_list", pc);
 
        assertEquals(5, dr.size());
        assertTrue(dr.iterator().hasNext());
-       assertTrue(dr.iterator().next() instanceof UserOverview);
-       UserOverview m = (UserOverview)(dr.iterator().next());
+        assertNotNull(dr.iterator().next());
+       UserOverview m = dr.iterator().next();
        assertNotNull(m.getUserLogin());
    }
 

@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -124,7 +125,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -847,13 +847,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         flushAndEvict(srvr1);
         srvr = reload(srvr);
         // Ok let's finally test what we came here for.
-        List list = ServerFactory.compatibleWithServer(user, srvr);
+        List<Row> list = ServerFactory.compatibleWithServer(user, srvr);
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
-        for (Object o : list) {
-            assertEquals(HashMap.class, o.getClass(), "List contains something other than Profiles");
-            Map s = (Map) o;
+        for (Row s : list) {
+            assertNotNull(s, "List contains something other than Profiles");
             if (srvr1.getName().equals(s.get("name"))) {
                 found = true;
             }

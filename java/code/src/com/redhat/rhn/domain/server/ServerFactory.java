@@ -21,6 +21,7 @@ import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -922,7 +923,7 @@ public class ServerFactory extends HibernateFactory {
      * @param server Server whose profiles we want.
      * @return a list of Servers which are compatible with the given server.
      */
-    public static List<Map<String, Object>> compatibleWithServer(User user, Server server) {
+    public static List<Row> compatibleWithServer(User user, Server server) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "compatible_with_server");
 
