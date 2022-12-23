@@ -21,6 +21,7 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -790,10 +791,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         ActionFactory.save(a1);
-        DataResult dr = ActionManager.inProgressSystems(user, a1, null);
-        assertTrue(!dr.isEmpty());
-        assertTrue(dr.get(0) instanceof ActionedSystem);
-        ActionedSystem as = (ActionedSystem) dr.get(0);
+        DataResult<ActionedSystem> dr = ActionManager.inProgressSystems(user, a1, null);
+        assertFalse(dr.isEmpty());
+        assertNotNull(dr.get(0));
+        ActionedSystem as = dr.get(0);
         as.setSecurityErrata(1L);
         assertNotNull(as.getSecurityErrata());
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2022 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,22 +12,29 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.errata;
+package com.redhat.rhn.common.db.datasource;
 
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.errata.ErrataManager;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * PublishedDeleteConfirmAction
+ * Generic query result row
  */
-public class PublishedDeleteConfirmAction extends BaseDeleteErrataAction {
+public class Row extends HashMap<String, Object> {
 
     /**
-     * {@inheritDoc}
+     * Build an empty row
      */
-    @Override
-    public void deleteErrata(User user) {
-        ErrataManager.deleteErrataInSet(user);
+    public Row() {
+        super();
     }
 
+    /**
+     * Build a row with initial data
+     *
+     * @param data data to create the row with
+     */
+    public Row(Map<String, Object> data) {
+        super(data);
+    }
 }

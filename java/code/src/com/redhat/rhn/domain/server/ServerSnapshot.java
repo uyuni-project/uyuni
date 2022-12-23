@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -492,7 +493,7 @@ public class ServerSnapshot extends BaseDomainHelper {
     /**
      * @return return list of unservable packages for snapshot
      */
-    public DataResult<Map<String, Object>> getUnservablePackages() {
+    public DataResult<Row> getUnservablePackages() {
         return SystemManager.systemSnapshotUnservablePackages(org.getId(),
                 server.getId(), id, null);
     }

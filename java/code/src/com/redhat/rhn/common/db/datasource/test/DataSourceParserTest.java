@@ -29,6 +29,7 @@ import com.redhat.rhn.common.db.datasource.ModeNotFoundException;
 import com.redhat.rhn.common.db.datasource.ParameterValueNotFoundException;
 import com.redhat.rhn.common.db.datasource.ParsedMode;
 import com.redhat.rhn.common.db.datasource.ParsedQuery;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateHelper;
@@ -200,7 +201,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         SelectMode m = ModeFactory.getMode(TEST_QUERIES, queryName);
         assertNotNull(m);
 
-        DataResult<Map<String, Object>> dr = m.execute(new HashMap<>());
+        DataResult<Row> dr = m.execute(new HashMap<>());
         assertNotNull(dr);
 
         // Pick the first three tables, just so that we aren't elaborating
@@ -211,7 +212,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         assertNotNull(dr);
         assertEquals(3, dr.size());
 
-        for (Map<String, Object> hm : dr) {
+        for (Row hm : dr) {
             List<Map<String, Object>> elab = (List<Map<String, Object>>) hm.get(elabName);
             assertFalse(elab.isEmpty());
             for (Map<String, Object> curr : elab) {

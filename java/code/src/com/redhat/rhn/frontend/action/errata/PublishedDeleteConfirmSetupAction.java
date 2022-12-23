@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.OwnedErrata;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -37,7 +38,7 @@ public class PublishedDeleteConfirmSetupAction extends RhnListAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user, PageControl pc) {
+    protected DataResult<OwnedErrata> getDataResult(User user, PageControl pc) {
         return ErrataManager.allInSet(user, pc, "errata_to_delete");
     }
 
@@ -55,7 +56,7 @@ public class PublishedDeleteConfirmSetupAction extends RhnListAction {
 
         clampListBounds(pc, request, user);
 
-        DataResult dr = getDataResult(user, pc);
+        DataResult<OwnedErrata> dr = getDataResult(user, pc);
 
         request.setAttribute(RequestContext.PAGE_LIST, dr);
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

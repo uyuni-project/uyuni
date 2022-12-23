@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -62,10 +63,10 @@ public abstract class ErrataListBaseAction extends RhnAction implements Listable
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<? extends ErrataOverview> getResult(RequestContext context) {
 
         User user = context.getCurrentUser();
-        DataResult result;
+        DataResult<ErrataOverview> result;
 
         switch (getErrataFilter()) {
             case ALL:

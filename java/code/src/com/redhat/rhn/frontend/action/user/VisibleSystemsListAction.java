@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.dto.BaseDto;
+import com.redhat.rhn.frontend.dto.VisibleSystems;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -87,9 +88,9 @@ public class VisibleSystemsListAction extends RhnSetAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<VisibleSystems> getDataResult(User user,
+                                                       ActionForm formIn,
+                                                       HttpServletRequest request) {
         //user is logged in user, but we care about target user
         Long uid = new RequestContext(request).getRequiredParam("uid");
         User targetUser = UserManager.lookupUser(user, uid);

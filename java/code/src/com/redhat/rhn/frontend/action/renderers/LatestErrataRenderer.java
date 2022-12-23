@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.action.renderers;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
@@ -42,7 +43,7 @@ public class LatestErrataRenderer extends BaseFragmentRenderer {
         PageControl erratapc = new PageControl();
         erratapc.setStart(1);
         erratapc.setPageSize(10);
-        DataResult sedr = ErrataManager.relevantErrataByType(user, erratapc,
+        DataResult<ErrataOverview> sedr = ErrataManager.relevantErrataByType(user, erratapc,
                 ErrataFactory.ERRATA_TYPE_SECURITY);
 
         String securityErrataCSSTable = null;

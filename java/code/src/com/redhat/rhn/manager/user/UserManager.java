@@ -41,9 +41,11 @@ import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.domain.user.UserServerPreference;
+import com.redhat.rhn.frontend.dto.ChannelPerms;
 import com.redhat.rhn.frontend.dto.SystemGroupOverview;
 import com.redhat.rhn.frontend.dto.SystemSearchResult;
 import com.redhat.rhn.frontend.dto.UserOverview;
+import com.redhat.rhn.frontend.dto.VisibleSystems;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.BaseManager;
@@ -733,7 +735,7 @@ public class UserManager extends BaseManager {
      * @param clazz The class you want the returned DataResult to contain.
      * @return A DataResult containing the specified number of users.
      */
-    public static DataResult usersInOrg(User user,
+    public static DataResult<UserOverview> usersInOrg(User user,
                                             PageControl pc, Class clazz) {
         SelectMode m = ModeFactory.getMode("User_queries", "users_in_org", clazz);
         return getUsersInOrg(user, pc, m);
@@ -746,14 +748,14 @@ public class UserManager extends BaseManager {
      * @param m The select mode.
      * @return A list containing the specified number of users.
      */
-    private static DataResult getUsersInOrg(User user,
+    private static DataResult<UserOverview> getUsersInOrg(User user,
                                                 PageControl pc, SelectMode m) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw getNoAdminError();
         }
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -762,14 +764,14 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return.
      * @return A list containing the specified number of users.
      */
-    public static DataResult activeInOrg(User user, PageControl pc) {
+    public static DataResult<UserOverview> activeInOrg(User user, PageControl pc) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw getNoAdminError();
         }
         SelectMode m = ModeFactory.getMode("User_queries", "active_in_org");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
-        return  makeDataResult(params, new HashMap(), pc, m);
+        return  makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -792,14 +794,14 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return.
      * @return A list containing the specified number of users.
      */
-    public static DataResult disabledInOrg(User user, PageControl pc) {
+    public static DataResult<UserOverview> disabledInOrg(User user, PageControl pc) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw getNoAdminError();
         }
         SelectMode m = ModeFactory.getMode("User_queries", "disabled_in_org");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     private static PermissionException getNoAdminError() {
@@ -817,13 +819,13 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return.
      * @return A list containing the specified number of channels.
      */
-    public static DataResult channelSubscriptions(User user, PageControl pc) {
+    public static DataResult<ChannelPerms> channelSubscriptions(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                                            "user_subscribe_perms");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -832,12 +834,12 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return.
      * @return A list containing the specified number of channels.
      */
-    public static DataResult channelManagement(User user, PageControl pc) {
+    public static DataResult<ChannelPerms> channelManagement(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "user_manage_perms");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**
@@ -846,14 +848,14 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the visible systems for the user
      */
-    public static DataResult visibleSystems(User user, PageControl pc) {
+    public static DataResult<VisibleSystems> visibleSystems(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "visible_to_uid");
         Map<String, Object> params = new HashMap<>();
         params.put("formvar_uid", user.getId());
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
         }
-        DataResult dr = m.execute(params);
+        DataResult<VisibleSystems> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         return dr;
     }
@@ -864,7 +866,7 @@ public class UserManager extends BaseManager {
      * @param user The user in question
      * @return A list containing the visible systems for the user
      */
-    public static DataResult visibleSystems(User user) {
+    public static DataResult<VisibleSystems> visibleSystems(User user) {
         return visibleSystems(user, null);
     }
 
@@ -898,12 +900,12 @@ public class UserManager extends BaseManager {
      * @param pc Page Control
      * @return completed DataResult
      */
-    public static DataResult usersInSet(User user, String label, PageControl pc) {
+    public static DataResult<UserOverview> usersInSet(User user, String label, PageControl pc) {
         SelectMode m = ModeFactory.getMode("User_queries", "in_set");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", label);
-        return makeDataResult(params, new HashMap(), pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     /**

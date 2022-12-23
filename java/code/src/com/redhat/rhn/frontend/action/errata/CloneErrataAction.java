@@ -19,6 +19,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ClonableErrataDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -87,7 +88,7 @@ public class CloneErrataAction extends RhnAction implements Listable {
         // Determine whether or not to show already cloned errata
         boolean showAlreadyCloned = context.getParam("showalreadycloned", false) != null;
 
-        DataResult result;
+        DataResult<ClonableErrataDto> result;
 
         if (channel == null || channel.equals(ANY_CHANNEL)) {
             result = ErrataManager.clonableErrata(orgId, showAlreadyCloned);

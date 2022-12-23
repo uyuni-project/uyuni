@@ -27,6 +27,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -81,7 +82,7 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
-import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
+import com.redhat.rhn.frontend.dto.Capability;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -390,7 +391,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", serverId);
 
-        return makeDataResult(params, params, null, m, PackageListItem.class);
+        return makeDataResult(params, params, null, m);
     }
 
     /**
@@ -607,12 +608,12 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<EmptySystemProfileOverview> listEmptySystemProfiles(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "xmlrpc_empty_profiles", EmptySystemProfileOverview.class);
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
-        Map<String, Long> elabParams = new HashMap<>();
+        Map<String, Object> elabParams = new HashMap<>();
 
-        return makeDataResult(params, elabParams, pc, m, BootstrapSystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -892,7 +893,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -952,11 +953,11 @@ public class SystemManager extends BaseManager {
             PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "xmlrpc_visible_to_user",
                 ShortSystemInfo.class);
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
-        Map<String, Long> elabParams = new HashMap<>();
+        Map<String, Object> elabParams = new HashMap<>();
 
-        return makeDataResult(params, elabParams, pc, m, ShortSystemInfo.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -990,7 +991,7 @@ public class SystemManager extends BaseManager {
         params.put("checkin_threshold", inactiveThreshold);
         Map<String, Object> elabParams = new HashMap<>();
 
-        return makeDataResult(params, elabParams, pc, m, ShortSystemInfo.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1008,7 +1009,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<>();
 
-        return makeDataResult(params, elabParams, pc, m, ShortSystemInfo.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1026,7 +1027,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("sgid", sg.getId());
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1041,7 +1042,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1058,7 +1059,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("feature", feature);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1129,7 +1130,7 @@ public class SystemManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1193,7 +1194,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("sid", sid);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, VirtualSystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1213,7 +1214,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("set_label", setLabel);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, VirtualSystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1229,7 +1230,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("org_id", user.getOrg().getId());
         elabParams.put("user_id", user.getId());
-        return makeDataResult(params, elabParams, pc, m, SystemGroupOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1249,7 +1250,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemGroupOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1264,7 +1265,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1278,7 +1279,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, null, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, null, m);
     }
 
     /**
@@ -1295,7 +1296,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("schedule_id", schedule.getId());
-        return makeDataResult(params, emptyMap(), pc, m, EssentialServerDto.class);
+        return makeDataResult(params, emptyMap(), pc, m);
     }
 
     /**
@@ -1309,7 +1310,7 @@ public class SystemManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("System_queries", "visible_to_user_with_schedules");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
-        return makeDataResult(params, emptyMap(), pc, m, SystemScheduleDto.class);
+        return makeDataResult(params, emptyMap(), pc, m);
     }
 
     /**
@@ -1321,7 +1322,7 @@ public class SystemManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("System_queries", "actions_count");
         Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
-        DataResult<Map<String, Object>> dr = makeDataResult(params, params, null, m);
+        DataResult<Row> dr = makeDataResult(params, params, m);
         return ((Long) dr.get(0).get("count")).intValue();
     }
 
@@ -1334,7 +1335,7 @@ public class SystemManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("System_queries", "package_actions_count");
         Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
-        DataResult<Map<String, Object>> dr = makeDataResult(params, params, null, m);
+        DataResult<Row> dr = makeDataResult(params, params,  m);
         return ((Long) dr.get(0).get("count")).intValue();
     }
 
@@ -1354,7 +1355,7 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
 
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, Errata.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -1369,7 +1370,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("sid", sid);
-        DataResult<Map<String, Object>> dr = makeDataResult(params, null, null, m);
+        DataResult<Row> dr = makeDataResult(params, null, m);
         return ((Long) dr.get(0).get("count")).intValue() > 0;
     }
 
@@ -1387,7 +1388,7 @@ public class SystemManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("sid", sid);
 
-        return makeDataResult(params, params, null, m, KickstartSessionDto.class);
+        return makeDataResult(params, params, null, m);
     }
 
     /**
@@ -1423,7 +1424,7 @@ public class SystemManager extends BaseManager {
         elabParams.put("sid", sid);
         elabParams.put("user_id", user.getId());
 
-        return makeDataResultNoPagination(params, elabParams, m, ErrataOverview.class);
+        return makeDataResultNoPagination(params, elabParams, m);
     }
 
     /**
@@ -1498,7 +1499,7 @@ public class SystemManager extends BaseManager {
         elabParams.put("sid", sid);
         elabParams.put("user_id", user.getId());
 
-        return makeDataResultNoPagination(params, elabParams, m, ErrataOverview.class);
+        return makeDataResultNoPagination(params, elabParams, m);
     }
 
     /**
@@ -1516,7 +1517,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("sid", sid);
 
-        DataResult<Map<String, Object>> dr = makeDataResult(params, null, null, m);
+        DataResult<Row> dr = makeDataResult(params, null, m);
         return ((Long) dr.get(0).get("count")).intValue();
     }
 
@@ -1535,7 +1536,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("sid", sid);
 
-        DataResult<Map<String, Object>> dr = makeDataResult(params, null, null, m);
+        DataResult<Row> dr = makeDataResult(params, null, null, m);
         return ((Long) dr.get(0).get("count")).intValue();
     }
 
@@ -1641,8 +1642,7 @@ public class SystemManager extends BaseManager {
                 "activation_keys_for_server");
         Map<String, Object> params = new HashMap<>();
         params.put("server_id", serverIn.getId());
-        return makeDataResult(params, Collections.emptyMap(), null, m,
-                ActivationKeyDto.class);
+        return makeDataResult(params, Collections.emptyMap(), null, m);
     }
 
     /**
@@ -1656,7 +1656,7 @@ public class SystemManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("System_queries", "system_entitlement_list");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
-        return makeDataResult(params, Collections.emptyMap(), pc, m, SystemOverview.class);
+        return makeDataResult(params, Collections.emptyMap(), pc, m);
     }
 
 
@@ -1674,7 +1674,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
 
-        DataResult<Map<String, Object>> dr = makeDataResult(params, null, null, m);
+        DataResult<Row> dr = makeDataResult(params, null, m);
 
         if (dr.isEmpty()) {
             return null;
@@ -1790,13 +1790,13 @@ public class SystemManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "count_systems_in_set_without_feature");
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", setLabel);
         params.put("feature_label", featureLabel);
 
-        DataResult dr = makeDataResult(params, null, null, m);
-        return ((Long)((HashMap)dr.get(0)).get("count")).intValue();
+        DataResult<Row> dr = makeDataResult(params, null,  m);
+        return ((Long)dr.get(0).get("count")).intValue();
     }
 
     /**
@@ -1812,7 +1812,7 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         params.put("name", capability);
 
-        DataResult dr = makeDataResult(params, params, null, m);
+        DataResult<Capability> dr = makeDataResult(params, params, m);
         return !dr.isEmpty();
     }
 
@@ -1822,7 +1822,7 @@ public class SystemManager extends BaseManager {
      * @param server Server whose profiles we want.
      * @return  a list of Servers which are compatible with the given server.
      */
-    public static List<Map<String, Object>> compatibleWithServer(User user, Server server) {
+    public static List<Row> compatibleWithServer(User user, Server server) {
         return ServerFactory.compatibleWithServer(user, server);
     }
 
@@ -2344,14 +2344,14 @@ public class SystemManager extends BaseManager {
      * @return number of systems subscribed to the channel
      */
     public static int countSystemsSubscribedToChannel(Long channelId, User user) {
-        Map<String, Long> params = new HashMap<>(2);
+        Map<String, Object> params = new HashMap<>(2);
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("cid", channelId);
 
         SelectMode m = ModeFactory.getMode("System_queries",
                 "count_systems_subscribed_to_channel");
-        DataResult<Map<String, Object>> dr = makeDataResult(params, params, null, m);
+        DataResult<Row> dr = makeDataResult(params, params, m);
 
         Map<String, Object> result = dr.get(0);
         Long count = (Long) result.get("count");
@@ -2789,7 +2789,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("entitlement_label", EntitlementManager.ENTERPRISE_ENTITLED);
-        DataResult<Map<String, Object>> dr = makeDataResult(params, null, null, m);
+        DataResult<Row> dr = makeDataResult(params, null, null, m);
         return ((Long) dr.get(0).get("count")).intValue() > 0;
     }
 
@@ -2909,7 +2909,7 @@ public class SystemManager extends BaseManager {
      *                        string for the package (only the id combo)
      * @return description of server information as well as a list of relevant packages
      */
-    public static DataResult<Map<String, Object>> ssmSystemPackagesToRemove(User user,
+    public static DataResult<Row> ssmSystemPackagesToRemove(User user,
             String packageSetLabel,
             boolean shortened) {
         SelectMode m;
@@ -2940,7 +2940,7 @@ public class SystemManager extends BaseManager {
      *                        established by the caller prior to calling this method
      * @return description of server information as well as a list of all relevant packages
      */
-    public static DataResult ssmSystemPackagesToUpgrade(User user,
+    public static DataResult<Row> ssmSystemPackagesToUpgrade(User user,
             String packageSetLabel) {
 
         SelectMode m =
@@ -2951,7 +2951,7 @@ public class SystemManager extends BaseManager {
         params.put("set_label", RhnSetDecl.SYSTEMS.getLabel());
         params.put("package_set_label", packageSetLabel);
 
-        return makeDataResult(params, params, null, m);
+        return makeDataResult(params, params, m);
     }
 
     /**
@@ -3146,7 +3146,7 @@ public class SystemManager extends BaseManager {
         params.put("name", name);
         Map<String, Object> elabParams = new HashMap<>();
         DataResult<SystemOverview> result =
-                makeDataResult(params, elabParams, null, mode, SystemOverview.class);
+                makeDataResult(params, elabParams, null, mode);
         result.elaborate();
         return result;
     }
@@ -3159,7 +3159,7 @@ public class SystemManager extends BaseManager {
         params.put("uid", user.getId());
         params.put("key", key);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, null, mode, SystemOverview.class);
+        return makeDataResult(params, elabParams, null, mode);
     }
 
     private static List<DuplicateSystemGrouping> listDuplicates(User user, String query,
@@ -3367,7 +3367,7 @@ public class SystemManager extends BaseManager {
         params.put("offset", null);
 
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemEventDto.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -3422,7 +3422,7 @@ public class SystemManager extends BaseManager {
      * @param pc pageContext
      * @return Returns system snapshot list
      */
-    public static DataResult<Map<String, Object>> systemSnapshots(Long sid,
+    public static DataResult<Row> systemSnapshots(Long sid,
             PageControl pc) {
         SelectMode m = ModeFactory.getMode("General_queries", "system_snapshots");
         Map<String, Object> params = new HashMap<>();
@@ -3437,7 +3437,7 @@ public class SystemManager extends BaseManager {
      * @param pc pageContext
      * @return Returns system vs. snapshot packages comparision list
      */
-    public static DataResult<Map<String, Object>> systemSnapshotPackages(Long sid,
+    public static DataResult<Row> systemSnapshotPackages(Long sid,
             Long ssid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                                            "compare_packages_to_snapshot");
@@ -3454,8 +3454,7 @@ public class SystemManager extends BaseManager {
      * @param pc pageContext
      * @return Returns system vs. snapshot groups comparision list
      */
-    public static DataResult<Map<String, Object>> systemSnapshotGroups(Long sid, Long ssid,
-            PageControl pc) {
+    public static DataResult<Row> systemSnapshotGroups(Long sid, Long ssid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries",
                                            "snapshot_group_diff");
         Map<String, Object> params = new HashMap<>();
@@ -3471,8 +3470,7 @@ public class SystemManager extends BaseManager {
      * @param pc pageContext
      * @return Returns system vs. snapshot channels comparision list
      */
-    public static DataResult<Map<String, Object>> systemSnapshotChannels(Long sid,
-            Long ssid, PageControl pc) {
+    public static DataResult<Row> systemSnapshotChannels(Long sid, Long ssid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                                            "snapshot_channel_diff");
         Map<String, Object> params = new HashMap<>();
@@ -3506,7 +3504,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SystemPendingEventDto.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -3520,7 +3518,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SnapshotTagDto.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -3537,7 +3535,7 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         params.put("ss_id", ssId);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SnapshotTagDto.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -3556,7 +3554,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("set_label", setLabel);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, SnapshotTagDto.class);
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -3566,7 +3564,7 @@ public class SystemManager extends BaseManager {
      * @param pc pageControl
      * @return Returns unservable packages for a system
      */
-    public static DataResult<Map<String, Object>> systemSnapshotUnservablePackages(
+    public static DataResult<Row> systemSnapshotUnservablePackages(
             Long orgId, Long sid,
             Long ssId, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries",
@@ -3734,10 +3732,10 @@ public class SystemManager extends BaseManager {
     public static DataResult<SystemOverview> bootstrapList(User user,
             PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "bootstrap");
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        Map<String, Long> elabParams = new HashMap<>();
+        Map<String, Object> elabParams = new HashMap<>();
         return makeDataResult(params, elabParams, pc, m);
     }
 
@@ -3751,7 +3749,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, null, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, null, m);
     }
 
     /**

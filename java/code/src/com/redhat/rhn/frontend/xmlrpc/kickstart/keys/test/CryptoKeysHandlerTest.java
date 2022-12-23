@@ -50,7 +50,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
         // Test
         CryptoKeysHandler handler = new CryptoKeysHandler();
 
-        List allKeys = handler.listAllKeys(otherOrg);
+        List<CryptoKeyDto> allKeys = handler.listAllKeys(otherOrg);
 
         // Verify
         assertNotNull(allKeys);

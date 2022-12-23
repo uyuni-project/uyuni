@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
+import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
@@ -72,9 +73,9 @@ public class PreservationListDeleteAction extends
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<FilePreservationDto> getDataResult(User user,
+                                                            ActionForm formIn,
+                                                            HttpServletRequest request) {
         return KickstartLister.getInstance().preservationListsInOrg(
                                                         user.getOrg(), null);
     }

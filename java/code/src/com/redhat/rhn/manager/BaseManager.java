@@ -40,6 +40,25 @@ public abstract class BaseManager {
     /**
      * Returns a DataResult for the given SelectMode bounded
      * by the values of the PageControl.
+     * @param <T> the DataResults type
+     * @param queryParams Named parameters for the driving query.
+     * @param elabParams Named parameters for the elaboration query.
+     * @param m datasource SelectMode.
+     * @return resulting DataResult bounded by the values of the
+     * PageControl.
+     */
+    protected static <T> DataResult<T> makeDataResult(Map<String, Object> queryParams,
+                                                      Map<String, Object> elabParams, SelectMode m) {
+        // execute the driving query to get the initial data set.
+        DataResult<T> dr = m.execute(queryParams);
+        dr.setTotalSize(dr.size());
+        return processPageControl(dr, null, elabParams);
+    }
+
+    /**
+     * Returns a DataResult for the given SelectMode bounded
+     * by the values of the PageControl.
+     * @param <T> the DataResults type
      * @param queryParams Named parameters for the driving query.
      * @param elabParams Named parameters for the elaboration query.
      * @param pc Page Control boundary definition.
@@ -47,13 +66,10 @@ public abstract class BaseManager {
      * @return resulting DataResult bounded by the values of the
      * PageControl.
      */
-    protected static DataResult makeDataResult(Map queryParams,
-                                             Map elabParams,
-                                             PageControl pc,
-                                             SelectMode m) {
-
+    protected static <T> DataResult<T> makeDataResult(Map<String, Object> queryParams,
+                                                      Map<String, Object> elabParams, PageControl pc, SelectMode m) {
         // execute the driving query to get the initial data set.
-        DataResult dr = m.execute(queryParams);
+        DataResult<T> dr = m.execute(queryParams);
         dr.setTotalSize(dr.size());
         dr = processPageControl(dr, pc, elabParams);
         return dr;
@@ -61,81 +77,21 @@ public abstract class BaseManager {
 
     /**
      * Returns a DataResult for the given SelectMode bounded
-     * by the values of the PageControl.
-     * @param <myClass> the DataResults type
-     * @param queryParams Named parameters for the driving query.
-     * @param elabParams Named parameters for the elaboration query.
-     * @param pc Page Control boundary definition.
-     * @param m datasource SelectMode.
-     * @param myClass Class of the DataResults
-     * @return resulting DataResult bounded by the values of the
-     * PageControl.
-     */
-    protected static <myClass> DataResult<myClass> makeDataResult(Map queryParams,
-            Map elabParams, PageControl pc, SelectMode m, Class myClass) {
-        return makeDataResult(queryParams, elabParams, pc, m);
-    }
-
-    /**
-     * Returns a DataResult for the given SelectMode bounded
      * by the values of the ListControl.
+     * @param <T> the DataResults type
      * @param queryParams Named parameters for the driving query.
      * @param elabParams Named parameters for the elaboration query.
      * @param lc ListControl filtering definition
      * @param m datasource SelectMode.
-     * @return resulting DataResult bounded by the values of the
-     * PageControl.
+     * @return resulting DataResult bounded by the values of the PageControl.
      */
-    protected static DataResult makeDataResult(Map queryParams,
-                                             Map elabParams,
-                                             ListControl lc,
-                                             SelectMode m) {
-
+    protected static <T> DataResult<T> makeDataResult(Map<String, Object> queryParams,
+                                                      Map<String, Object> elabParams, ListControl lc,
+                                                      SelectMode m) {
         // execute the driving query to get the initial data set.
-        DataResult dr = m.execute(queryParams);
+        DataResult<T> dr = m.execute(queryParams);
         dr.setTotalSize(dr.size());
-        dr = processListControl(dr, lc, elabParams);
-        return dr;
-    }
-
-    /**
-     * Returns a DataResult for the given SelectMode bounded
-     * by the values of the ListControl.
-     * @param <myClass> the DataResults type
-     * @param queryParams Named parameters for the driving query.
-     * @param elabParams Named parameters for the elaboration query.
-     * @param lc ListControl filtering definition
-     * @param m datasource SelectMode.
-     * @param myClass the class of the DataResult to return
-     * @return resulting DataResult bounded by the values of the
-     * PageControl.
-     */
-    protected static <myClass> DataResult<myClass> makeDataResult(Map queryParams,
-            Map elabParams, ListControl lc, SelectMode m, Class myClass) {
-        return makeDataResult(queryParams, elabParams, lc, m);
-    }
-
-    /**
-     * Returns a DataResult for the given SelectMode with no bounds.  This
-     * can be usefull if you want a list without pagination controls.
-     *
-     * @param queryParams Named parameters for the driving query.
-     * @param elabParams Named parameters for the elaboration query.
-     * @param m datasource SelectMode.
-     * @return resulting DataResult bounded by the values of the
-     * PageControl.
-     */
-    protected static DataResult makeDataResultNoPagination(Map queryParams,
-                                             Map elabParams,
-                                             SelectMode m) {
-
-
-
-        // execute the driving query to get the initial data set.
-        DataResult dr = makeDataResult(queryParams, elabParams, null, m);
-        dr.setStart(1);
-        dr.setEnd(dr.getTotalSize());
-        return dr;
+        return processListControl(dr, lc, elabParams);
     }
 
     /**
@@ -146,15 +102,14 @@ public abstract class BaseManager {
      * @param queryParams Named parameters for the driving query.
      * @param elabParams Named parameters for the elaboration query.
      * @param m datasource SelectMode.
-     * @param myClass Type of dataresult we will be returning
      * @return resulting DataResult bounded by the values of the
      * PageControl.
      */
     protected static <T> DataResult<T> makeDataResultNoPagination(
-            Map queryParams,
-            Map elabParams, SelectMode m, Class<T> myClass) {
+            Map<String, Object> queryParams,
+            Map<String, Object> elabParams, SelectMode m) {
         // execute the driving query to get the initial data set.
-        DataResult<T> dr = makeDataResult(queryParams, elabParams, null, m, myClass);
+        DataResult<T> dr = makeDataResult(queryParams, elabParams, null, m);
         dr.setStart(1);
         dr.setEnd(dr.getTotalSize());
         return dr;

@@ -159,7 +159,7 @@ public class ScapManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", setLabel);
-        return makeDataResult(params, new HashMap<String, Object>(), null, m);
+        return makeDataResult(params, new HashMap<>(), null, m);
     }
 
     /**

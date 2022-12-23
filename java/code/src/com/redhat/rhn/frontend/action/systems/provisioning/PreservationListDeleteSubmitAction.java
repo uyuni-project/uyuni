@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
@@ -67,9 +68,9 @@ public class PreservationListDeleteSubmitAction extends RhnSetAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<FilePreservationDto> getDataResult(User user,
+                                                            ActionForm formIn,
+                                                            HttpServletRequest request) {
         return KickstartLister.getInstance().preservationListsInOrg(
                                                          user.getOrg(), null);
     }

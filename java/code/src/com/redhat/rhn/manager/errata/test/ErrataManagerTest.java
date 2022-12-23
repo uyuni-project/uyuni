@@ -255,7 +255,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         PageControl pc = new PageControl();
         pc.setStart(1);
         pc.setPageSize(20);
-        DataResult errata =
+        DataResult<ErrataOverview> errata =
             ErrataManager.relevantErrataByType(user, pc, ErrataFactory.ERRATA_TYPE_BUG);
         assertNotNull(errata);
         assertTrue(errata.size() >= 1);
