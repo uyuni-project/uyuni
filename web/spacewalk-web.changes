@@ -1,3 +1,4 @@
+- fix frontend logging in react pages
 - Add bugzilla references to past security fixes
   * shell-quote fix CVE-2021-42740 (bsc#1203287)
   * moment fix CVE-2022-31129 (bsc#1203288)

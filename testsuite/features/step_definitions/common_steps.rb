@@ -683,9 +683,15 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
 
   # Prepare bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
+
   node = get_target(host)
+
+  force_bundle = node.os_family.include?('sle') ? '--force-bundle' : ''
+  # TODO: once use_salt_bundle tag is implemented uncomment following line and delete previous line
+  # force_bundle = $use_salt_bundle ? '--force-bundle' : ''
+
   gpg_keys = get_gpg_keys(node, target)
-  cmd = "mgr-bootstrap #{client} &&
+  cmd = "mgr-bootstrap #{client} #{force_bundle} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&

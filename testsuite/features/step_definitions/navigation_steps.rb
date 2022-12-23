@@ -979,10 +979,21 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
                when 'Prometheus node exporter' then [9100, 'Node Exporter']
                when 'Prometheus apache exporter' then [9117, 'Apache Exporter']
                when 'Prometheus postgres exporter' then [9187, 'Postgres Exporter']
+               when 'Grafana' then [3000, 'Grafana Labs']
                else raise "Unknown port for service #{service}"
                end
-  _output, code = node.run("curl -s http://#{system_name}:#{port} | grep -i '#{text}'")
+  # debian based systems don't come with curl installed
+  if (os_family.include? 'debian') || (os_family.include? 'ubuntu')
+    _output, code = node.run("wget -qO- http://#{system_name}:#{port} | grep -i '#{text}'")
+  else
+    _output, code = node.run("curl -s http://#{system_name}:#{port} | grep -i '#{text}'")
+  end
   raise unless code.zero?
+end
+
+When(/^I enter the "([^"]*)" hostname as the Prometheus URL$/) do |host|
+  node = get_target(host)
+  step %(I enter "http://#{node.full_hostname}:9090" as "Prometheus URL")
 end
 
 When(/^I select the next maintenance window$/) do
@@ -1104,4 +1115,9 @@ Then(/^I should see the correct timestamp for task "([^"]*)"/) do |task_name|
       Time.parse(td.text).to_i.between?(now.to_i - 5, now.to_i + 5)
     end
   end
+end
+
+When(/^I visit the grafana dashboards of this "([^"]*)"$/) do |host|
+  node = get_target(host)
+  visit("http://#{node.public_ip}:3000/dashboards")
 end

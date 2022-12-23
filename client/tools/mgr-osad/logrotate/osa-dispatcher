@@ -1,7 +1,6 @@
 # logrotation file for Red Hat  Satellite's osa-dispatcher
 
 /var/log/rhn/osa-dispatcher.log {
-    weekly
     rotate 5
     copytruncate
     compress
@@ -12,7 +11,6 @@
 }
 
 /var/log/rhn/oracle/osa-dispatcher/sqlnet.ora {
-    weekly
     rotate 5
     copytruncate
     compress

@@ -52,6 +52,7 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   os_version = node.os_version
   os_family = node.os_family
+  # TODO: once use_salt_bundle tag is implemented sync the following lines with 4.3 branch
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('rcsalt-minion restart', check_errors: false)
   else
@@ -74,6 +75,7 @@ end
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
   repeat_until_timeout(message: "A Salt job is still running on #{minion}") do
+    # TODO: once use_salt_bundle tag is implemented sync following line with 4.3 branch
     output, _code = target.run('venv-salt-call -lquiet saltutil.running 2> /dev/null || salt-call -lquiet saltutil.running')
     break if output == "local:\n"
     sleep 3
@@ -362,6 +364,10 @@ end
 
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
+  repeat_until_timeout(timeout: 60, retries: 30, message: "Search button not enabled", report_result: true) do
+    break unless find('button#search').disabled?
+    sleep 1
+  end
   find('button#search').click
 end
 

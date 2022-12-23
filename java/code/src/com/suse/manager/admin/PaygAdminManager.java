@@ -21,6 +21,7 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
@@ -352,10 +353,12 @@ public class PaygAdminManager {
     }
 
     private boolean delete(PaygSshData paygSshData) {
-        LOG.debug("deleting " + paygSshData.getId() + " -> " + paygSshData.getHost());
-        List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.
-                lookupRepositoryAuthByCredential(paygSshData.getCredentials());
-        existingRepos.forEach(a -> SCCCachingFactory.deleteRepositoryAuth(a));
+        Credentials creds = paygSshData.getCredentials();
+        if (creds != null) {
+            LOG.debug("deleting " + paygSshData.getId() + " -> " + paygSshData.getHost());
+            List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.lookupRepositoryAuthByCredential(creds);
+            existingRepos.forEach(SCCCachingFactory::deleteRepositoryAuth);
+        }
         Optional.ofNullable(paygSshData.getCredentials()).ifPresent(c-> CredentialsFactory.removeCredentials(c));
         Optional.ofNullable(paygSshData.getRmtHosts()).ifPresent(h -> CloudRmtHostFactory.deleteCloudRmtHost(h));
         PaygSshDataFactory.deletePaygSshData(paygSshData);
