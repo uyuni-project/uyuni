@@ -27,8 +27,8 @@ import org.stringtree.json.JSONReader;
 import org.stringtree.json.JSONWriter;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -703,14 +703,7 @@ public class StringUtil {
      * @return Encoded version of source.
      */
     public static String urlEncode(String source) {
-        String encodedParam = null;
-        try {
-            encodedParam = URLEncoder.encode(source, "UTF-8");
-        }
-        catch (Exception e) {
-            encodedParam = URLEncoder.encode(source);
-        }
-        return encodedParam;
+        return URLEncoder.encode(source, StandardCharsets.UTF_8);
     }
 
     /**
@@ -848,14 +841,9 @@ public class StringUtil {
      * @return truncated String
      */
     public static String getBytesTruncatedString(String str, int length) {
-        try {
-            byte[] bytes = str.getBytes("UTF-8");
-            if (bytes.length > length) {
-                return new String(Arrays.copyOf(bytes, length), "UTF-8");
-            }
-        }
-        catch (UnsupportedEncodingException e) {
-            logger.warn("Unable to convert to UTF-8 bytes.");
+        byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+        if (bytes.length > length) {
+            return new String(Arrays.copyOf(bytes, length), StandardCharsets.UTF_8);
         }
         return str;
     }

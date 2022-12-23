@@ -99,7 +99,7 @@ public class SpanTag extends TagSupport {
     }
 
     private void renderHeader(ListTag parent) throws JspException {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         renderCommonAttributes(buf, parent);
         ListTagUtil.write(pageContext, buf.toString());
         ListTagUtil.includeContent(pageContext, url);
@@ -107,7 +107,7 @@ public class SpanTag extends TagSupport {
     }
 
     private void renderFooter(ListTag parent) throws JspException {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append("<tr>");
         renderCommonAttributes(buf, parent);
         ListTagUtil.write(pageContext, buf.toString());
@@ -115,7 +115,7 @@ public class SpanTag extends TagSupport {
         ListTagUtil.write(pageContext, "</td></tr>");
     }
 
-    private void renderCommonAttributes(StringBuffer buf, ListTag parent) {
+    private void renderCommonAttributes(StringBuilder buf, ListTag parent) {
         buf.append("<tr><td ");
         buf.append("colspan=\"").append(parent.getColumnCount()).append("\"");
         if (style != null) {

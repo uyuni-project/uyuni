@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.manager.errata;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 /**
  * If someone attempts to schedule a synchronous errata clone into a
@@ -32,11 +32,11 @@ import java.util.Hashtable;
  */
 public class AsyncErrataCloneCounter {
     // hashtable is syncronized, so is threadsafe
-    private final Hashtable<Long, Integer> count;
+    private final HashMap<Long, Integer> count;
     private static AsyncErrataCloneCounter instance = new AsyncErrataCloneCounter();
 
     private AsyncErrataCloneCounter() {
-        count = new Hashtable<>();
+        count = new HashMap<>();
     }
 
     /**

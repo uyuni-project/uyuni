@@ -323,7 +323,6 @@ end
 
 When(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
-  $api_test.auth.login('admin', 'admin')
   # -------------------------------
   # Cleanup kickstart distros and their profiles, if any.
 
@@ -344,7 +343,6 @@ When(/^I remove kickstart profiles and distros$/) do
   profiles = $server.run('cobbler profile list')[0].split
   profiles.each { |profile| $server.run("cobbler profile remove --name '#{profile}'") }
   distros_api.each { |distro| $server.run("cobbler distro remove --name '#{distro}'") }
-  $api_test.auth.logout
 end
 
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
@@ -580,7 +578,7 @@ Then(/^the SLE12 SP5 product should be added$/) do
   if $product != 'Uyuni'
     raise unless output.include? '[I] SLE-Manager-Tools12-Pool for x86_64 SP5 SUSE Linux Enterprise Server 12 SP5 x86_64 [sle-manager-tools12-pool-x86_64-sp5]'
   end
-  raise unless output.include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
+  raise unless output.include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP5 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
 end
 
 Then(/^the SLE15 (SP3|SP4) product should be added$/) do |sp_version|
@@ -832,9 +830,9 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
     When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
-    And I wait at most 500 seconds until event "Hardware List Refresh" is completed
-    And I wait at most 500 seconds until event "Apply states" is completed
-    And I wait at most 500 seconds until event "Package List Refresh" is completed
+    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Apply states" is completed
+    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Hardware List Refresh" is completed
+    And I wait 180 seconds until the event is picked up and 500 seconds until the event "Package List Refresh" is completed
   )
 end
 

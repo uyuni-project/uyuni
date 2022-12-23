@@ -156,5 +156,13 @@ mgrchannels_install_products:
       - mgrcompat: sync_states
 {%- endif %}
 {%- endif %}
+{%- endif %}
 
+{%- if grains['os_family'] == 'Suse' and "opensuse" not in grains['oscodename']|lower %}
+{# take care that the suse-build-key package with the PTF key is installed #}
+mgrchannels_inst_suse_build_key:
+  pkg.installed:
+    - name: suse-build-key
+    - require:
+      - file: mgrchannels_repo
 {%- endif %}

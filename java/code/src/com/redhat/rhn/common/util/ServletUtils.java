@@ -15,13 +15,11 @@
 
 package com.redhat.rhn.common.util;
 
-import com.redhat.rhn.common.RhnRuntimeException;
-
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -176,12 +174,7 @@ public class ServletUtils {
      * @return The encoded String.
      */
     public static String encode(String string) {
-        try {
-            return URLEncoder.encode(string, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new RhnRuntimeException(e);
-        }
+        return URLEncoder.encode(string, StandardCharsets.UTF_8);
     }
 
     private static boolean endsWith(StringBuffer buffer, char c) {

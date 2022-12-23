@@ -606,15 +606,15 @@ public class PackageManager extends BaseManager {
      * @return A map with keys 'name_id' and 'evr_id' containing Long types.
      *         Null if nothing found.
      */
-    public static Map lookupEvrIdByPackageName(Long sid, String name) {
+    public static Map<String, Long> lookupEvrIdByPackageName(Long sid, String name) {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("name", name);
-        SelectMode m = ModeFactory.getMode("Package_queries",
-                "lookup_id_combo_by_name");
-        DataResult dr = m.execute(params);
+        SelectMode m = ModeFactory.getMode("Package_queries", "lookup_id_combo_by_name");
+        @SuppressWarnings("unchecked")
+        DataResult<Map<String, Long>> dr = m.execute(params);
         if (!dr.isEmpty()) {
-            return (Map) dr.get(0);
+            return dr.get(0);
         }
         return null;
     }

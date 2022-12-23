@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -43,9 +44,9 @@ public class ConfigListSubmitAction extends BaseSetOperateOnSelectedItemsAction 
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    protected DataResult<ConfigFileNameDto> getDataResult(User userIn,
+                                                          ActionForm formIn,
+                                                          HttpServletRequest requestIn) {
         return ConfigurationManager.getInstance().listFileNamesForSsm(userIn, null);
     }
 

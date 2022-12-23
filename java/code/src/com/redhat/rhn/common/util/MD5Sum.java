@@ -17,7 +17,6 @@ package com.redhat.rhn.common.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -35,22 +34,6 @@ public class MD5Sum {
     private static MessageDigest md = null;
 
     private MD5Sum() {
-    }
-
-    /**
-     * Method: md5Sum Purpose: calculate the MD5 in a way compatible with how
-     * the scour.net protocol encodes its passwords (incidentally, it also
-     * outputs a string identical to the md5sum unix command).
-     * @param str the String from which to calculate the sum
-     * @return the MD5 checksum
-     */
-    public static String md5Sum(String str) {
-        try {
-            return md5Sum(str.getBytes("UTF-8"));
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException(e.getMessage());
-        }
     }
 
     /**

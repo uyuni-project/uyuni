@@ -5,7 +5,7 @@ Feature: Task Engine Status
 
   Scenario: Login as admin
     Given I am authorized for the "Admin" section
-    
+
   @susemanager
   Scenario: Check if the Task Engine Status page exists
     When I follow the left menu "Admin > Task Engine Status > Last Execution Times"

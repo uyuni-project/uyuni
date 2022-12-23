@@ -50,7 +50,7 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -192,13 +192,8 @@ public class LoginHelper {
     }
 
     private static String decodeFromIso88591(String string, String defaultString) {
-        try {
-            if (string != null) {
-                return new String(string.getBytes("ISO8859-1"), "UTF-8");
-            }
-        }
-        catch (UnsupportedEncodingException e) {
-            log.warn("Unable to decode: {}", string);
+        if (string != null) {
+            return new String(string.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         }
         return defaultString;
     }

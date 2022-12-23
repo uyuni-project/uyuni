@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.configuration.overview;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -34,7 +35,7 @@ public class LocalConfigFileList extends BaseListAction {
     }
 
     @Override
-    protected DataResult getDataResult(RequestContext context, PageControl pc) {
+    protected DataResult<ConfigFileDto> getDataResult(RequestContext context, PageControl pc) {
         User user = context.getCurrentUser();
         return ConfigurationManager.getInstance().listLocalConfigFiles(user, pc);
     }

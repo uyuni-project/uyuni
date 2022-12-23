@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.configuration.ssm;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -31,7 +32,7 @@ public class SystemChannelsAction extends BaseListAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pc) {
+    protected DataResult<ConfigChannelDto> getDataResult(RequestContext rctxIn, PageControl pc) {
         User user = rctxIn.getCurrentUser();
         ConfigurationManager cm = ConfigurationManager.getInstance();
 

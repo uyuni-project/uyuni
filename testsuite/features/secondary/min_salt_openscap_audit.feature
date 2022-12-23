@@ -10,7 +10,6 @@ Feature: OpenSCAP audit of Salt minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "sle_minion"
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Install the OpenSCAP packages on the SLE minion
     When I refresh the metadata for "sle_minion"
@@ -87,4 +86,3 @@ Feature: OpenSCAP audit of Salt minion
 
   Scenario: Cleanup: remove the OpenSCAP packages from the SLE minion
     When I remove OpenSCAP dependencies from "sle_minion"
-    And I logout from API

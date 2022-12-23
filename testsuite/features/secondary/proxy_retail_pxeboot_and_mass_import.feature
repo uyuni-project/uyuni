@@ -32,7 +32,6 @@ Feature: PXE boot a Retail terminal
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Enable the PXE formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
@@ -192,7 +191,7 @@ Feature: PXE boot a Retail terminal
     And I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
     # Workaround: Increase timeout temporarily get rid of timeout issues
-    And I wait at most 350 seconds until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
+    And I wait at most 350 seconds until event "Apply states [saltboot] scheduled by (none)" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked, refreshing the page
@@ -430,6 +429,3 @@ Feature: PXE boot a Retail terminal
   Scenario: Reset TFTP defaults
     When I stop tftp on the proxy
     And I reset tftp defaults on the proxy
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

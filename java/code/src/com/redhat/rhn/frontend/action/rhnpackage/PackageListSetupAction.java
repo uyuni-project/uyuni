@@ -30,9 +30,13 @@ public class PackageListSetupAction extends BaseSystemPackagesAction {
      * @return List of installed packages
      */
     @Override
-    protected DataResult getDataResult(Server server) {
+    protected DataResult<PackageListItem> getDataResult(Server server) {
         DataResult<PackageListItem> result = PackageManager.systemPackageList(server.getId(), null);
         result.elaborate();
+
+        // Force the selection to be restricted to only non ptf packages
+        result.stream().filter(p -> p.isPartOfPtf() || p.isMasterPtfPackage()).forEach(p -> p.setSelectable(false));
+
         return result;
     }
 }

@@ -48,50 +48,45 @@
             </div>
         </div>
     </c:if>
-        <rl:list dataset="pageList"
-         width="100%"
-         name="packageList"
-         emptykey="packagelist.jsp.nopackages"
-         alphabarcolumn="nvre">
-                        <rl:decorator name="PageSizeDecorator"/>
-                <rl:decorator name="SelectableDecorator"/>
-                        <rl:selectablecolumn value="${current.selectionKey}"
-                                selected="${current.selected}"
-                                disabled="${not current.selectable}"/>
 
-                  <rl:column headerkey="packagelist.jsp.packagename" bound="false"
-                        sortattr="nvre"
-                        sortable="true" filterattr="nvre" defaultsort="asc">
-                    <c:if test="${current.retracted}">
-                        <rhn:icon type="errata-retracted" title="errata.jsp.retracted-package-tooltip" />
-                    </c:if>
+    <rl:list dataset="pageList" width="100%" name="packageList" emptykey="packagelist.jsp.nopackages" alphabarcolumn="nvre">
+        <rl:decorator name="PageSizeDecorator"/>
+        <rl:decorator name="SelectableDecorator"/>
+        <rl:selectablecolumn value="${current.selectionKey}" selected="${current.selected}" disabled="${not current.selectable}"/>
+
+        <rl:column headerkey="packagelist.jsp.packagename" bound="false" sortattr="nvre" sortable="true" filterattr="nvre" defaultsort="asc">
+            <c:if test="${current.retracted}">
+                <rhn:icon type="errata-retracted" title="errata.jsp.retracted-package-tooltip" />
+            </c:if>
             <c:choose>
                 <c:when test="${not empty current.packageId}">
-                    <a href="/rhn/software/packages/Details.do?pid=${current.packageId}">
-                            ${current.nvre}</a>
+                    <a href="/rhn/software/packages/Details.do?pid=${current.packageId}">${current.nvre}</a>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${current.nvre}"/>
                 </c:otherwise>
             </c:choose>
-                  </rl:column>
-    <rl:column headerkey="packagelist.jsp.packagearch" bound="false">
-        <c:choose>
+        </rl:column>
+        <rl:column headerkey="packagelist.jsp.packagesummary" bound="false" sortable="true" sortattr="summary">
+            <c:choose>
+                <c:when test="${not empty current.summary}">${current.summary}</c:when>
+            </c:choose>
+        </rl:column>
+        <rl:column headerkey="packagelist.jsp.packagearch" bound="false">
+            <c:choose>
                 <c:when test ="${not empty current.arch}">${current.arch}</c:when>
                 <c:otherwise><bean:message key="packagelist.jsp.notspecified"/></c:otherwise>
-        </c:choose>
-    </rl:column>
-    <rl:column headerkey="packagelist.jsp.installtime" bound="false"
-                sortattr="installTimeObj" sortable="true">
-                <c:choose>
-            <c:when test ="${not empty current.installTime}">
-                <rhn:formatDate humanStyle="calendar" value="${current.installTimeObj}"
-                              type="both" dateStyle="short" timeStyle="long"/>
-            </c:when>
-            <c:otherwise><bean:message key="packagelist.jsp.notspecified"/></c:otherwise>
-        </c:choose>
-    </rl:column>
-        </rl:list>
+            </c:choose>
+        </rl:column>
+        <rl:column headerkey="packagelist.jsp.installtime" bound="false" sortattr="installTimeObj" sortable="true">
+            <c:choose>
+                <c:when test ="${not empty current.installTime}">
+                    <rhn:formatDate humanStyle="calendar" value="${current.installTimeObj}" type="both" dateStyle="short" timeStyle="long"/>
+                </c:when>
+                <c:otherwise><bean:message key="packagelist.jsp.notspecified"/></c:otherwise>
+            </c:choose>
+        </rl:column>
+    </rl:list>
 </rl:listset>
 </body>
 </html>

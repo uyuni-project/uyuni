@@ -1,5 +1,13 @@
-- Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
-- drop legacy way to prevent disabling local repos
+- enforce installation of the PTF GPG key package
+- Optimize the number of salt calls on minion startup (bsc#1203532)
+- Updated logrotate configuration (bsc#1206470)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:15:05 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
+  * drop legacy way to prevent disabling local repos
 
 -------------------------------------------------------------------
 Fri Nov 18 15:13:42 CET 2022 - jgonzalez@suse.com

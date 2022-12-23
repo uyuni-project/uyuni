@@ -84,7 +84,7 @@ public class MessageQueue {
      */
     private static Logger logger = LogManager.getLogger(MessageQueue.class);
 
-    private static final Map<Class, List<MessageAction>> ACTIONS =
+    private static final Map<Class<? extends EventMessage>, List<MessageAction>> ACTIONS =
             new HashMap<>();
     private static Channel messages = new LinkedQueue();
     private static Thread dispatcherThread = null;
@@ -199,7 +199,7 @@ public class MessageQueue {
      * @param act MessageAction
      * @param eventType type of event.
      */
-    public static void registerAction(MessageAction act, Class eventType) {
+    public static void registerAction(MessageAction act, Class<? extends EventMessage> eventType) {
         if (logger.isDebugEnabled()) {
             logger.debug("registerAction(MessageAction, Class) - : {} class: {}", act, eventType.getName());
         }
@@ -214,7 +214,7 @@ public class MessageQueue {
      * @param act MessageAction.
      * @param eventType Type of event.
      */
-    public static void deRegisterAction(MessageAction act, Class eventType) {
+    public static void deRegisterAction(MessageAction act, Class<? extends EventMessage> eventType) {
         if (logger.isDebugEnabled()) {
             logger.debug("deRegisterAction(MessageAction, Class) - start");
         }
@@ -241,7 +241,7 @@ public class MessageQueue {
             if (!ACTIONS.keySet().isEmpty()) {
                 retval = new String[ACTIONS.keySet().size()];
                 int index = 0;
-                for (Class klazz : ACTIONS.keySet()) {
+                for (Class<? extends EventMessage> klazz : ACTIONS.keySet()) {
                     retval[index] = klazz.getName();
                     index++;
                 }

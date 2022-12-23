@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -47,7 +48,7 @@ public class CompareDeployedAction extends BaseSetListAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    protected DataResult<ConfigSystemDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());
         Long cfnid =  file.getConfigFileName().getId();

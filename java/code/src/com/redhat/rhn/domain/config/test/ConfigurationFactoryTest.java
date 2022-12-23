@@ -37,6 +37,7 @@ import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
@@ -237,7 +238,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     public void testCreateNewRevisionFromStream() throws Exception {
         String startData = "this is some original data";
         ByteArrayInputStream stream =
-            new ByteArrayInputStream(startData.getBytes("UTF-8"));
+            new ByteArrayInputStream(startData.getBytes(StandardCharsets.UTF_8));
         ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
         ConfigRevision cr2 = ConfigurationFactory.createNewRevisionFromStream(
                 user, stream, (long) startData.length(), cr.getConfigFile());

@@ -164,64 +164,10 @@ public final class XmlMessages {
      * @param key the key for the string to be obtained from the resource bundle
     * @return the message for the given key
     */
-    public String getMessage(final Class clazz,
+    public String getMessage(final Class<?> clazz,
                                     final Locale locale,
                                     final String key) {
         return format(clazz, locale, key, (Object[]) null);
-    }
-
-    /**
-     * Convenience method to format a string from the resource bundle, which
-     * takes a single argument.
-     * @param clazz the class to which the string belongs
-     * @param locale the locale used to find the resource bundle
-     * @param key the key for the string to be obtained from the resource bundle
-     * @param arg1 the first argument to use in the formatted text
-     * @return the formatted message for the given key and argument
-     */
-    public String format(final Class clazz,
-                                final Locale locale,
-                                final String key,
-                                final String arg1) {
-        return format(clazz, locale, key, new Object[]{arg1});
-    }
-
-    /**
-     * Convenience method to format a string from the resource bundle, which
-     * takes two arguments.
-     * @param clazz the class to which the string belongs
-     * @param locale the locale used to find the resource bundle
-     * @param key the key for the string to be obtained from the resource bundle
-     * @param arg1 the first argument to use in the formatted text
-     * @param arg2 the second argument to use in the formatted text
-     * @return the formatted message for the given key and arguments
-     */
-    public String format(final Class clazz,
-                                final Locale locale,
-                                final String key,
-                                final String arg1,
-                                final String arg2) {
-        return format(clazz, locale, key, new Object[]{arg1, arg2});
-    }
-
-    /**
-     * Convenience method to format a string from the resource bundle, which
-     * takes three arguments.
-     * @param clazz the class to which the string belongs
-     * @param locale the locale used to find the resource bundle
-     * @param key the key for the string to be obtained from the resource bundle
-     * @param arg1 the first argument to use in the formatted text
-     * @param arg2 the second argument to use in the formatted text
-     * @param arg3 the third argument to use in the formatted text
-     * @return the formatted message for the given key and arguments
-     */
-    public String format(final Class clazz,
-                                final Locale locale,
-                                final String key,
-                                final String arg1,
-                                final String arg2,
-                                final String arg3) {
-        return format(clazz, locale, key, new Object[]{arg1, arg2, arg3});
     }
 
     /**
@@ -238,7 +184,7 @@ public final class XmlMessages {
      * from the resource bundle. Can be null, to represent no arguments
      * @return the formatted message for the given key and arguments
      */
-    public String format(final Class clazz,
+    public String format(final Class<?> clazz,
                                 final Locale locale,
                                 final String key,
                                 final Object... args) {
@@ -247,16 +193,16 @@ public final class XmlMessages {
         ResourceBundle bundle = getBundle(getBundleName(clazz), locale);
         String pattern = StringEscapeUtils.unescapeHtml4(bundle.getString(key));
 
-        pattern = pattern.replaceAll(PRODUCT_NAME_MACRO,
+        pattern = pattern.replace(PRODUCT_NAME_MACRO,
                 Config.get().getString("product_name"));
 
-        pattern = pattern.replaceAll(VENDOR_NAME_MACRO,
+        pattern = pattern.replace(VENDOR_NAME_MACRO,
                 Config.get().getString("java.vendor_name"));
 
-        pattern = pattern.replaceAll(ENTERPRISE_LINUX_NAME_MACRO,
+        pattern = pattern.replace(ENTERPRISE_LINUX_NAME_MACRO,
                 Config.get().getString("java.enterprise_linux_name"));
 
-        pattern = pattern.replaceAll(VENDOR_SERVICE_NAME_MACRO,
+        pattern = pattern.replace(VENDOR_SERVICE_NAME_MACRO,
                 Config.get().getString("java.vendor_service_name"));
 
         if (args == null || args.length == 0) {
@@ -266,12 +212,12 @@ public final class XmlMessages {
         //MessageFormat uses single quotes to escape text. Therefore, we have to
         //escape the single quote so that MessageFormat keeps the single quote and
         //does replace all arguments after it.
-        String escapedPattern = pattern.replaceAll("'", "''");
+        String escapedPattern = pattern.replace("'", "''");
         MessageFormat mf = new MessageFormat(escapedPattern, locale);
         return mf.format(args);
     }
 
-    private String getBundleName(final Class clazz) {
+    private String getBundleName(final Class<?> clazz) {
         String fullyQualifiedClassName = clazz.getName();
         int idx = fullyQualifiedClassName.lastIndexOf('.');
         return fullyQualifiedClassName.substring(0, idx + 1) + RESOURCE_BUNDLE_CLASSNAME;
@@ -285,7 +231,7 @@ public final class XmlMessages {
      * @param locale locale used to retrieve the resource bundle
      * @return the Iterator of all the keys
     */
-    public Enumeration getKeys(final Class clazz,
+    public Enumeration<String> getKeys(final Class<?> clazz,
                                 final Locale locale) {
         return getBundle(getBundleName(clazz), locale).getKeys();
     }

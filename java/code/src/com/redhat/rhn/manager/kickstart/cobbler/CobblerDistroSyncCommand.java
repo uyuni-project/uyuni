@@ -106,7 +106,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
             }
 
         }
-        StringBuffer messages = new StringBuffer();
+        StringBuilder messages = new StringBuilder();
         for (String errorIn : errors) {
             messages.append(errorIn);
             messages.append("\n");
@@ -201,7 +201,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
                 }
             }
         }
-        StringBuffer messages = new StringBuffer();
+        StringBuilder messages = new StringBuilder();
         for (String errorIn : errors) {
             messages.append(errorIn);
             messages.append("\n");

@@ -45,7 +45,7 @@ FROM (
                          p.name_id,
                          p.package_arch_id
                     from rhnPackageEVR                           pe,
-                         rhnPackage                              p,
+                         susePackageExcludingPartOfPtf            p,
                          suseChannelPackageRetractedStatusView   cp
                    where p.evr_id = pe.id
                      and cp.package_id = p.id

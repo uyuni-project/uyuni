@@ -1,7 +1,21 @@
-- Remove DWR library
-- Add reboot needed indicator to systems list
-- Move web dependencies from susemanager-frontend-libs to
-  spacewalk-web
+- Added CLM filters to match product temporary fixes packages
+- fix frontend logging in react pages
+- Fix virtual systems list for unentitled systems
+
+-------------------------------------------------------------------
+Mon Dec 19 11:42:59 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Source Select2 and jQuery UI from susemanager-frontend-libs
+
+-------------------------------------------------------------------
+Wed Dec 14 14:16:24 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Remove DWR library
+  * Add reboot needed indicator to systems list
+  * Move web dependencies from susemanager-frontend-libs to
+    spacewalk-web
 
 -------------------------------------------------------------------
 Tue Dec 13 13:30:49 CET 2022 - jgonzalez@suse.com

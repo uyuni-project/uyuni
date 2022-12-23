@@ -18,21 +18,13 @@ import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * KickstartScriptCommand
  */
 public class BaseKickstartScriptCommand extends BaseKickstartCommand {
-
-    /**
-     * Logger for this class
-     */
-    private static Logger logger = LogManager.getLogger(BaseKickstartScriptCommand.class);
-
 
     protected KickstartScript script;
 
@@ -71,15 +63,7 @@ public class BaseKickstartScriptCommand extends BaseKickstartCommand {
             throw new IllegalArgumentException("Unknown script type: " + typeIn);
         }
 
-        try {
-            this.script.setData(contentsIn.getBytes("UTF-8"));
-        }
-        catch (UnsupportedEncodingException e) {
-            logger.error("setPreScript(String, String)", e);
-            throw new RuntimeException("UnsupportedEncodingException" +
-                    " while trying to set Pre script", e);
-
-        }
+        this.script.setData(contentsIn.getBytes(StandardCharsets.UTF_8));
 
         if (StringUtils.isBlank(language)) {
             language = null;

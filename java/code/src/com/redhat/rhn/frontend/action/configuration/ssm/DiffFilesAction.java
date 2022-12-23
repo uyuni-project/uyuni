@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -36,11 +37,11 @@ public class DiffFilesAction extends BaseListAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pc) {
+    protected DataResult<ConfigFileNameDto> getDataResult(RequestContext rctxIn, PageControl pc) {
         User user = rctxIn.getCurrentUser();
         Server server = rctxIn.lookupServer();
 
-        DataResult dr = ConfigurationManager.getInstance()
+        DataResult<ConfigFileNameDto> dr = ConfigurationManager.getInstance()
                 .listFileNamesInSetForSystem(user, server, pc);
         rctxIn.getRequest().setAttribute("datasize", dr.getTotalSize());
         return dr;

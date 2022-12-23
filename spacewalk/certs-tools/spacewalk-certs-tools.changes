@@ -1,5 +1,9 @@
-- remove jabberd and osa-dispatcher
-- drop legacy way to prevent disabling local repos
+-------------------------------------------------------------------
+Wed Dec 14 14:12:51 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * remove jabberd and osa-dispatcher
+  * drop legacy way to prevent disabling local repos
 
 -------------------------------------------------------------------
 Fri Nov 18 15:04:43 CET 2022 - jgonzalez@suse.com

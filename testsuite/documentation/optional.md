@@ -253,12 +253,12 @@ export VIRTHOST_KVM_PASSWORD=therootpwd
 ```
 
 Make sure the image to use for the test virtual machines is located in
-`/var/testsuite-data/disk-image-template.qcow2` on the virtual hosts.
+`/var/testsuite-data/` on the virtual hosts.
 
 In order for the virtual hosts to be able to report to the test server,
 use a bridge virtual network for the test machines.
 
-The `disk-image-template.qcow2` virtual disk image should
+The `leap-disk-image-template.qcow2` virtual disk image should
 have avahi daemon installed and running at first boot, and should be capable to be booted
 as a KVM guest. The disk images used by sumaform are good candidates
 for this.

@@ -47,16 +47,14 @@ public class ModuleFilterTest extends BaseTestCaseWithUser {
     public void testGetModule() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule");
         ModuleFilter filter =
-                (ModuleFilter) contentManager.createFilter("mymodule-filter-1", ALLOW, MODULE, criteria, user)
-                        .asModuleFilter().get();
+                (ModuleFilter) contentManager.createFilter("mymodule-filter-1", ALLOW, MODULE, criteria, user);
 
         Module module = filter.getModule();
         assertEquals("mymodule", module.getName());
         assertNull(module.getStream());
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule:mystream:foo");
-        filter = (ModuleFilter) contentManager.createFilter("mymodule-filter-2", ALLOW, MODULE, criteria, user)
-                .asModuleFilter().get();
+        filter = (ModuleFilter) contentManager.createFilter("mymodule-filter-2", ALLOW, MODULE, criteria, user);
 
         // The field value is interpreted as module_name : stream_name
         // Additional colons must be included in the stream name

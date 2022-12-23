@@ -388,10 +388,9 @@ public class SystemManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries",
                                            "extra_packages_for_system");
         Map<String, Object> params = new HashMap<>();
-        params.put("serverid", serverId);
-        Map<String, Object> elabParams = new HashMap<>();
+        params.put("sid", serverId);
 
-        return makeDataResult(params, elabParams, null, m, PackageListItem.class);
+        return makeDataResult(params, params, null, m, PackageListItem.class);
     }
 
     /**
@@ -1139,13 +1138,45 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<VirtualSystemOverview> virtualSystemsList(
-            User user, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "virtual_servers");
-        Map<String, Object> params = new HashMap<>();
-        params.put("user_id", user.getId());
-        Map<String, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m, VirtualSystemOverview.class);
+    public static DataResult<VirtualSystemOverview> virtualSystemsList(User user, PageControl pc) {
+        return virtualSystemsListQueryBuilder()
+                .run(Map.of("user_id", user.getId()), pc, PagedSqlQueryBuilder::parseFilterAsText,
+                        VirtualSystemOverview.class);
+    }
+
+    /**
+     * @return the Paged SQL query builder used for the virtual systems list.
+     */
+    public static PagedSqlQueryBuilder virtualSystemsListQueryBuilder() {
+        return new PagedSqlQueryBuilder("VI.uuid")
+                .select(
+                        "S.id, " +
+                            "S.channel_id, " +
+                            "S.channel_labels, " +
+                            "S.status_type, " +
+                            "VI.host_system_id, " +
+                            "(SELECT S.name FROM rhnServer S WHERE S.id = VI.host_system_id) as host_server_name, " +
+                            "VI.virtual_system_id, " +
+                            "VI.uuid, " +
+                            "COALESCE(VII.name, '(none)') AS server_name, " +
+                            "COALESCE(VIS.name, '(unknown)') AS STATE_NAME, " +
+                            "COALESCE(VIS.label, 'unknown') AS STATE_LABEL, " +
+                            "COALESCE(VII.vcpus, 0) AS VCPUS, " +
+                            "COALESCE(VII.memory_size, 0) AS MEMORY, " +
+                            "rhn_channel.user_role_check((" +
+                            "   select channel_id " +
+                            "   from rhnServerOverview " +
+                            "   where server_id = VI.virtual_system_id), :user_id, 'subscribe') AS subscribable")
+                .from("rhnVirtualInstance VI " +
+                        "    LEFT OUTER JOIN rhnVirtualInstanceInfo VII ON VI.id = VII.instance_id " +
+                        "    LEFT OUTER JOIN rhnVirtualInstanceState VIS ON VII.state = VIS.id " +
+                        "    LEFT OUTER JOIN suseSystemOverview S ON S.id = VI.virtual_system_id")
+                .where("EXISTS ( " +
+                        "   SELECT 1 " +
+                        "   FROM rhnUserServerPerms USP " +
+                        "   WHERE USP.user_id = :user_id " +
+                        "     AND (USP.server_id = VI.host_system_id OR USP.server_id = VI.virtual_system_id) " +
+                        ") AND VI.uuid IS NOT NULL");
     }
 
     /**

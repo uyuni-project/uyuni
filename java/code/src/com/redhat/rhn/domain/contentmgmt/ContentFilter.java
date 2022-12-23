@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import javax.persistence.Column;
@@ -63,9 +62,10 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
     public enum EntityType {
         PACKAGE("package"),
         ERRATUM("erratum"),
-        MODULE("module");
+        MODULE("module"),
+        PTF("ptf");
 
-        private String label;
+        private final String label;
 
         EntityType(String labelIn) {
             this.label = labelIn;
@@ -142,27 +142,6 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
      */
     @Transient
     public abstract EntityType getEntityType();
-
-    /**
-     * Returns the filter as {@link PackageFilter} if it is one
-     *
-     * @return Optional of {@link PackageFilter}
-     */
-    public abstract Optional<PackageFilter> asPackageFilter();
-
-    /**
-     * Returns the filter as {@link ErrataFilter} if it is one
-     *
-     * @return Optional of {@link ErrataFilter}
-     */
-    public abstract Optional<ErrataFilter> asErrataFilter();
-
-    /**
-     * Returns the filter as {@link ModuleFilter} if it is one
-     *
-     * @return Optional of {@link ModuleFilter}
-     */
-    public abstract Optional<ModuleFilter> asModuleFilter();
 
     /**
      * Gets the id.
@@ -273,7 +252,7 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
             return false;
         }
 
-        ContentFilter that = (ContentFilter) o;
+        ContentFilter<?> that = (ContentFilter<?>) o;
 
         return new EqualsBuilder()
                 .append(org, that.org)

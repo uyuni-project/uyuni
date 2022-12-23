@@ -18,6 +18,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * SnapshotConfigChannelsAction
@@ -26,7 +27,7 @@ public class SnapshotConfigChannelsAction extends SnapshotBaseAction {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<Map<String, Object>> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         Long ssid = context.getRequiredParam(SNAPSHOT_ID);
         return ConfigurationManager.systemSnapshotConfigChannels(sid, ssid, null);

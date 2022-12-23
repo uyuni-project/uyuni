@@ -46,7 +46,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
      */
     @Override
     protected String getNotesBody() {
-        StringBuffer buffy = new StringBuffer();
+        StringBuilder buffy = new StringBuilder();
         ConfigUploadAction action = (ConfigUploadAction)getAction();
 
         /* display the list of destination config channels and then
@@ -83,7 +83,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
         return (StringEscapeUtils.escapeHtml4(name.getPath()) + "<br />");
     }
 
-    private void displayChannels(StringBuffer buffy, Set channelSet) {
+    private void displayChannels(StringBuilder buffy, Set channelSet) {
         /* most of the time, there is only going to be one channel because it
          * will usually be one server's sandbox channel.
          * Therefore, deal with one channel as a special case
@@ -118,7 +118,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
         //else don't display desination info (invalid config upload action!)
     }
 
-    private void displayFileNames(StringBuffer buffy, Set fileNameSet) {
+    private void displayFileNames(StringBuilder buffy, Set fileNameSet) {
         buffy.append(renderHeading("config.upload.filenames"));
 
         //There could be multiple config file name actions per file name

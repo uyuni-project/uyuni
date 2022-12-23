@@ -2907,6 +2907,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/manage/AddPackagesConfirm.do</context>
         </context-group>
       </trans-unit>
+        <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="packagelist.jsp.packagearch" xml:space="preserve">
         <source>Architecture</source>
         <context-group name="ctx">
@@ -23136,6 +23142,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
       </trans-unit>
+        <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="targetsystems.jsp.installpackage" xml:space="preserve">
         <source>Install</source>
         <context-group name="ctx">
@@ -24177,6 +24189,12 @@ given channel.</source>
       <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
       </trans-unit>
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+        <source>System Overview Update Queue</source>
+      </trans-unit>
+        <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+        <source>Update System Overview</source>
+      </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
       </trans-unit>
@@ -24976,6 +24994,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.channels-after-migration" xml:space="preserve">
         <source>Channel subscriptions after the migration:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
         <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>

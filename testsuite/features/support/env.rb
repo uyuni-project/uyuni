@@ -192,6 +192,14 @@ Before('@rocky9_minion') do
   skip_this_scenario unless $rocky9_minion
 end
 
+Before('@rhel9_minion') do
+  skip_this_scenario unless $rhel9_minion
+end
+
+Before('@rhel9_ssh_minion') do
+  skip_this_scenario unless $rhel9_ssh_minion
+end
+
 Before('@rocky9_ssh_minion') do
   skip_this_scenario unless $rocky9_ssh_minion
 end
@@ -318,6 +326,10 @@ end
 
 Before('@sle15sp4_buildhost') do
   skip_this_scenario unless $sle15sp4_buildhost
+end
+
+Before('@monitoring_server') do
+  skip_this_scenario unless $monitoring_server
 end
 
 Before('@sle15sp4_terminal') do

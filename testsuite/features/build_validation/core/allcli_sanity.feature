@@ -173,6 +173,13 @@ Feature: Sanity checks
     And "rocky9_ssh_minion" should communicate with the server using public interface
     And the clock from "rocky9_ssh_minion" should be exact
 
+@rhel9_minion
+Scenario: The Red Hat Linux 9 Salt minion is healthy
+  Then "rhel9_minion" should have a FQDN
+  And reverse resolution should work for "rhel9_minion"
+  And "rhel9_minion" should communicate with the server using public interface
+  And the clock from "rhel9_minion" should be exact
+
 @ubuntu1804_minion
   Scenario: The Ubuntu 18.04 Salt minion is healthy
     Then "ubuntu1804_minion" should have a FQDN
@@ -284,3 +291,10 @@ Feature: Sanity checks
     And reverse resolution should work for "sle15sp4_buildhost"
     And "sle15sp4_buildhost" should communicate with the server using public interface
     And the clock from "sle15sp4_buildhost" should be exact
+
+@monitoring_server
+  Scenario: The monitoring server is healthy
+    Then "monitoring_server" should have a FQDN
+    And reverse resolution should work for "monitoring_server"
+    And "monitoring_server" should communicate with the server using public interface
+    And the clock from "monitoring_server" should be exact

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -40,9 +41,9 @@ public class UnsubscribeSubmitAction extends BaseSetOperateOnSelectedItemsAction
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    protected DataResult<ConfigChannelDto> getDataResult(User userIn,
+                                                         ActionForm formIn,
+                                                         HttpServletRequest requestIn) {
         return ConfigurationManager.getInstance().ssmChannelList(userIn, null);
     }
 

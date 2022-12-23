@@ -87,11 +87,11 @@ public class CompareConfigFilesTask extends RhnJavaJob {
                 ActionFactory.addConfigRevisionToAction(crev, server, cfact);
             }
 
-            if (act.getServerActions() == null || act.getServerActions().size() < 1) {
+            if (act.getServerActions() == null || act.getServerActions().isEmpty()) {
                 continue;
             }
             Set<ConfigRevisionAction> cra = cfact.getConfigRevisionActions();
-            if (cra == null || cra.size() < 1) {
+            if (cra == null || cra.isEmpty()) {
                 continue;
             }
 

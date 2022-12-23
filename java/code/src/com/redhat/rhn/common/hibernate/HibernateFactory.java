@@ -38,7 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -515,14 +515,7 @@ public abstract class HibernateFactory {
         String retval = "";
 
         if (barr != null) {
-            try {
-                retval = new String(barr, "UTF-8");
-            }
-            catch (UnsupportedEncodingException uee) {
-                throw new RuntimeException("Illegal Argument: " +
-              "This VM or environment doesn't support UTF-8: Data - " +
-                                                 barr, uee);
-            }
+            retval = new String(barr, StandardCharsets.UTF_8);
         }
         return retval;
     }
@@ -575,14 +568,7 @@ public abstract class HibernateFactory {
             return null;
         }
 
-        try {
-            return data.getBytes("UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Illegal Argument: " +
-            "This VM or environment doesn't support UTF-8 - Data - " +
-                                             data, e);
-        }
+        return data.getBytes(StandardCharsets.UTF_8);
     }
 
     /**

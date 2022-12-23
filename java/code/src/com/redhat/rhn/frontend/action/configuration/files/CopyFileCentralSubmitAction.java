@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
@@ -36,9 +37,9 @@ public class CopyFileCentralSubmitAction extends BaseCopyFileSubmitAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    protected DataResult<ConfigChannelDto> getDataResult(User userIn,
+                                                         ActionForm formIn,
+                                                         HttpServletRequest requestIn) {
         ConfigFile file = ConfigActionHelper.getFile(requestIn);
         ConfigurationManager cm = ConfigurationManager.getInstance();
         String channelTypeLabel = file.getConfigChannel().getConfigChannelType().getLabel();

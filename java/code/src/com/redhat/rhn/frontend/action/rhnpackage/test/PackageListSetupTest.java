@@ -14,17 +14,28 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.action.rhnpackage.PackageListSetupAction;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 /**
  * PackageListSetupTest
@@ -38,11 +49,75 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
         PackageManagerTest.addPackageToSystemAndChannel(
                 "test-package-name" + TestUtils.randomString(), server,
                 ChannelFactoryTest.createTestChannel(user));
-        server = (Server)TestUtils.reload(server);
+        server = TestUtils.reload(server);
         //.do?sid=1000010000
         setRequestPathInfo("/systems/details/packages/PackageList");
         addRequestParameter("sid", server.getId().toString());
         actionPerform();
         verifyList(PackageListSetupAction.DATA_SET, PackageListItem.class);
+    }
+
+    @Test
+    public void testExecuteWithPtf() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+
+        Package standard = PackageTest.createTestPackage(user.getOrg());
+        standard.setDescription("Standard package");
+
+        Package ptfMaster = PackageTestUtils.createPtfMaster("123456", "1", user.getOrg());
+        Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", user.getOrg());
+
+        channel.getPackages().addAll(List.of(standard, ptfMaster, ptfPackage));
+        channel = TestUtils.saveAndReload(channel);
+
+        SystemManager.subscribeServerToChannel(user, server, channel);
+        PackageTestUtils.installPackagesOnServer(List.of(standard, ptfMaster, ptfPackage), server);
+        server = TestUtils.reload(server);
+
+        assertFalse(ptfPackage.isMasterPtfPackage());
+        assertTrue(ptfPackage.isPartOfPtf());
+
+        assertTrue(ptfMaster.isMasterPtfPackage());
+        assertFalse(ptfMaster.isPartOfPtf());
+
+        //.do?sid=1000010000
+        setRequestPathInfo("/systems/details/packages/PackageList");
+        addRequestParameter("sid", server.getId().toString());
+        actionPerform();
+
+        @SuppressWarnings("unchecked")
+        List<PackageListItem> result = (List<PackageListItem>) request.getAttribute(PackageListSetupAction.DATA_SET);
+        assertNotNull(result, "The result list is null");
+        assertTrue(result.size() > 0, "Your result list is empty");
+
+        // Check the status for the normal package
+        String standardPackageName = standard.getPackageName().getName();
+        PackageListItem standardItem = result.stream()
+                                             .filter(pli -> standardPackageName.equals(pli.getName()))
+                                             .findFirst().orElse(null);
+        assertNotNull(standardItem, "No entry in the list for the standard package");
+        assertTrue(standardItem.isSelectable());
+
+        // Check the status for the ptf package
+        String ptfPackageName = ptfPackage.getPackageName().getName();
+        PackageListItem ptfItem = result.stream()
+                                        .filter(pli -> ptfPackageName.equals(pli.getName()))
+                                        .findFirst().orElse(null);
+        assertNotNull(ptfItem, "No entry in the list for the ptf package");
+        assertFalse(ptfItem.isMasterPtfPackage());
+        assertTrue(ptfItem.isPartOfPtf());
+        assertFalse(ptfItem.isSelectable());
+
+        // Check the status for the ptf package
+        String ptfMasterName = ptfMaster.getPackageName().getName();
+        PackageListItem ptfMasterItem = result.stream()
+                                        .filter(pli -> ptfMasterName.equals(pli.getName()))
+                                        .findFirst().orElse(null);
+        assertNotNull(ptfMasterItem, "No entry in the list for the ptf master package");
+        assertTrue(ptfMasterItem.isMasterPtfPackage());
+        assertFalse(ptfMasterItem.isPartOfPtf());
+        assertFalse(ptfMasterItem.isSelectable());
     }
 }

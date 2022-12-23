@@ -184,17 +184,17 @@ def deb_host?(name)
 end
 
 def repository_exist?(repo)
-  $api_test.auth.login('admin', 'admin')
   repo_list = $api_test.channel.software.list_user_repos
-  $api_test.auth.logout
   repo_list.include? repo
 end
 
 def generate_repository_name(repo_url)
   repo_name = repo_url.strip
-  repo_name.delete_prefix! 'http://download.suse.de/ibs/SUSE:/Maintenance:/'
-  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/Maintenance:/'
-  repo_name.delete_prefix! 'http://download.suse.de/download/ibs/SUSE:/'
+  repo_name.sub!(%r{http:\/\/download.suse.de\/ibs\/SUSE:\/Maintenance:\/}, '')
+  repo_name.sub!(%r{http:\/\/download.suse.de\/download\/ibs\/SUSE:\/Maintenance:\/}, '')
+  repo_name.sub!(%r{http:\/\/download.suse.de\/download\/ibs\/SUSE:\/}, '')
+  repo_name.sub!(%r{http:\/\/.*compute.internal\/SUSE:\/}, '')
+  repo_name.sub!(%r{http:\/\/.*compute.internal\/SUSE:\/Maintenance:\/}, '')
   repo_name.gsub!('/', '_')
   repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label

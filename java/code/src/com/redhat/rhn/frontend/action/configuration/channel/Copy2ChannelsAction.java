@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -37,7 +38,7 @@ public class Copy2ChannelsAction extends BaseCopyToAction {
      * {@inheritDoc}
      */
     @Override
-    public List getData(HttpServletRequest req) {
+    public List<ConfigChannelDto> getData(HttpServletRequest req) {
         RequestContext ctx = new RequestContext(req);
         User user = ctx.getCurrentUser();
         ConfigChannel cc = ConfigActionHelper.getChannel(req);
