@@ -10934,6 +10934,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Product Temporary Fixes packages (PTF): {0}</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
