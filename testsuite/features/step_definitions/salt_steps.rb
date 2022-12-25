@@ -61,7 +61,7 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
-  cmd = "venv-salt-key --list #{key_type}"
+  cmd = "salt-key --list #{key_type}"
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
     system_name = get_system_name(minion)
     unless system_name.empty?
