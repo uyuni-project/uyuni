@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-23 14:02+0100\n"
-"PO-Revision-Date: 2022-12-09 19:13+0000\n"
+"PO-Revision-Date: 2022-12-25 21:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2016,7 +2016,7 @@ msgstr "Poskytuje názov"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:223
 msgid "Number"
-msgstr ""
+msgstr "Číslo"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
@@ -2133,7 +2133,7 @@ msgstr "Oprava"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
 msgid "Product Temporary Fix"
-msgstr ""
+msgstr "Product Temporary Fix"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -2251,11 +2251,11 @@ msgstr "poskytuje rovnaký názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:125
 msgid "all"
-msgstr ""
+msgstr "všetky"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
 msgid "all product temporary fixes"
-msgstr ""
+msgstr "všetky dočasné opravy produktov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:139
 msgid "NEVRA"
@@ -2286,14 +2286,12 @@ msgid "Contains Package"
 msgstr "Obsahuje balík"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:217
-#, fuzzy
 msgid "All"
-msgstr "Umožniť"
+msgstr "Všetky"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:235
-#, fuzzy
 msgid "Fixes Package Name"
-msgstr "Názov balíka"
+msgstr "Názov balíka opráv"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:256
 msgid "enable module"
