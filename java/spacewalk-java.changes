@@ -1,3 +1,4 @@
+- Remove outdated advice from errata mail
 - Fix name for autoinstall snippets after Cobbler 3.3.3
 - prevent ISE on activation key page when selected base channel value is null
 - Add systems and hibernate metrics collectors (#14240)
