@@ -1,3 +1,4 @@
+- Fix unexpected unauthorized in HTTP API (bsc#1206267)
 - Fix link to documentation in monitoring page
 - Fix server error in product migration outside maintenance window (bsc#1206276)
 - Show the package summary where applicable to better describe PTF packages
