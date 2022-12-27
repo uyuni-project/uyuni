@@ -60,9 +60,15 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        HibernateFactory.getSession().createQuery("DELETE FROM ActivationKey").executeUpdate();
         manager = ActivationKeyManager.getInstance();
     }
+
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+        HibernateFactory.getSession().createQuery("DELETE FROM ActivationKey").executeUpdate();
+    }
+
     @Test
     public void testDelete() throws Exception {
         user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);

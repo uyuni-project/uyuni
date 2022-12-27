@@ -50,8 +50,8 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void tearDown() throws Exception {
+        super.tearDown();
         HibernateFactory.getSession().createQuery("DELETE FROM ActivationKey").executeUpdate();
     }
 
