@@ -69,6 +69,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     public void tearDown() throws Exception {
         super.tearDown();
         HibernateFactory.getSession().createQuery("DELETE FROM ActivationKey").executeUpdate();
+        HibernateFactory.commitTransaction();
     }
 
     @Test
