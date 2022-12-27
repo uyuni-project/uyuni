@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
@@ -33,7 +32,6 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
@@ -47,14 +45,6 @@ import java.util.Set;
  * Tests Cobbler default PXE configuration for bare-metal server registration.
  */
 public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
-
-    @Override
-    @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
-        HibernateFactory.getSession().createQuery("DELETE FROM ActivationKey").executeUpdate();
-        HibernateFactory.commitTransaction();
-    }
 
     /**
      * Tests the execution of this Cobbler command.

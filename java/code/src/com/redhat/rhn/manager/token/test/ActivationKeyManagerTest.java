@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
@@ -42,7 +41,6 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -63,15 +61,6 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         super.setUp();
         manager = ActivationKeyManager.getInstance();
     }
-
-    @Override
-    @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
-        HibernateFactory.getSession().createQuery("DELETE FROM ActivationKey").executeUpdate();
-        HibernateFactory.commitTransaction();
-    }
-
     @Test
     public void testDelete() throws Exception {
         user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);

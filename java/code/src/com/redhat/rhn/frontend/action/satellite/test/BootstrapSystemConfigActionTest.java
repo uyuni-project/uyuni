@@ -18,11 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.action.satellite.BootstrapSystemConfigAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,6 +49,15 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/BootstrapSystems");
+    }
+
+    @Override
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
+        // clean activation keys after running the tests to avoid side effects in other tests
+        HibernateFactory.getSession().createQuery("DELETE FROM ActivationKey").executeUpdate();
+        HibernateFactory.commitTransaction();
     }
 
     /**
