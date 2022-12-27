@@ -33,7 +33,7 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
@@ -49,7 +49,7 @@ import java.util.Set;
 public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
 
     @Override
-    @BeforeEach
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
         HibernateFactory.getSession().createQuery("DELETE FROM ActivationKey").executeUpdate();
