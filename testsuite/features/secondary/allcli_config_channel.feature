@@ -224,4 +224,4 @@ Feature: Management of configuration of all types of clients in a single channel
     When I destroy "/etc/s-mgr" directory on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients
-    When I click on "Clear"
+    When I follow "clear-ssm"

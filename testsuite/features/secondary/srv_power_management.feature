@@ -95,4 +95,4 @@ Feature: IPMI Power management
     When the server stops mocking an IPMI host
 
   Scenario: Cleanup: remove remaining systems from SSM after power management tests
-    When I click on "Clear"
+    When I follow "clear-ssm"

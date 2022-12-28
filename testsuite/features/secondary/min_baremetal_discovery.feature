@@ -150,4 +150,4 @@ Feature: Bare metal discovery
     And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
-    When I click on "Clear"
+    When I follow "clear-ssm"
