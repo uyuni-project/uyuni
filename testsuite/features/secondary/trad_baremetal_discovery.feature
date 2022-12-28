@@ -142,4 +142,4 @@ Feature: Bare metal discovery
     Then I should see "sle_client" via spacecmd
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
-    When I click on "Clear"
+    When I follow "clear-ssm"
