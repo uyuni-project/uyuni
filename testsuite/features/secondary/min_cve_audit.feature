@@ -59,7 +59,7 @@ Feature: CVE Audit on SLE Salt Minions
     Then I should see a "The specified CVE number was not found" text
 
   Scenario: Select a system for the System Set Manager
-    When I click on "Clear"
+    When I follow "clear-ssm"
     And I follow the left menu "Audit > CVE Audit"
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
@@ -104,4 +104,4 @@ Feature: CVE Audit on SLE Salt Minions
     And I remove package "milkyway-dummy" from this "sle_minion" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM after CVE audit tests
-    When I click on "Clear"
+    When I follow "clear-ssm"

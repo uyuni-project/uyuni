@@ -92,4 +92,4 @@ Feature: Redfish Power management
     When the server stops mocking a Redfish host
 
   Scenario: Cleanup: remove remaining systems from SSM after Redfish power management tests
-    When I click on "Clear"
+    When I follow "clear-ssm"
