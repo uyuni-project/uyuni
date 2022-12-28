@@ -1,3 +1,4 @@
+- Fix HTTP API login status code when using wrong credentials (bsc#1206666)
 - Fix physical systems list
 - Configure the reboot action for transactional systems appropriately
 - Fix link to documentation in monitoring page
