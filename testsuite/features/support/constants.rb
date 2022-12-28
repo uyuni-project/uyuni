@@ -372,7 +372,7 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     sle-module-containers15-sp4-pool-x86_64
     sle-module-containers15-sp4-updates-x86_64
   ],
-  '8.6' =>
+  '8' =>
   %w[
     res8-manager-tools-pool-x86_64
     res8-manager-tools-updates-x86_64
