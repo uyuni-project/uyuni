@@ -44,6 +44,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -168,6 +170,7 @@ public class LoginController {
         }
         else {
             log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
+            response.status(HttpServletResponse.SC_UNAUTHORIZED);
             return json(response, new LoginResult(false, errors.toArray(new String[0])));
         }
     }
