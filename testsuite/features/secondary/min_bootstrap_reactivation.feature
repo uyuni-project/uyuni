@@ -31,6 +31,7 @@ Feature: Bootstrapping with reactivation key
 
   Scenario: Bootstrap should fail when system already exists in the server
     Given I delete "sle_minion" key in the Salt master
+    And I remove package "venv-salt-minion" from this "sle_minion"
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
@@ -88,6 +89,8 @@ Feature: Bootstrapping with reactivation key
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
+    # Workaround bug https://bugzilla.suse.com/show_bug.cgi?id=1206423
+    And I wait until I see "SUSE Channels" text, refreshing the page
     And I check radio button "SLE-Product-SLES15-SP3-Pool for x86_64"
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
