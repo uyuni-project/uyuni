@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.nav.DepthGuard;
 import com.redhat.rhn.frontend.nav.NavCache;
@@ -68,8 +67,8 @@ public class NavTest extends RhnBaseTestCase {
         st.start();
         NavTree nt =
             NavDigester.buildTree(TestUtils.findTestData("sitenav.xml"));
-        assertTrue(nt.getTitleDepth() == 0);
-        assertTrue(nt.getLabel().equals("sitenav_unauth"));
+        assertEquals(0, nt.getTitleDepth());
+        assertEquals("sitenav_unauth", nt.getLabel());
         assertNotNull(nt.getAclMixins());
 
         NavTreeIndex nti = new NavTreeIndex(nt);

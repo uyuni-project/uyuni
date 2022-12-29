@@ -177,7 +177,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         handler.addRole(admin, regular.getLogin(), "org_admin");
 
         roles = regular.getRoles();
-        assertTrue(!roles.isEmpty());
+        assertFalse(roles.isEmpty());
 
         //Remove org_admin from regular user
         handler.removeRole(admin, regular.getLogin(), "org_admin");

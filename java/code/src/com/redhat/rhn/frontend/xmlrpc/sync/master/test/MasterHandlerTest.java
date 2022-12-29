@@ -176,13 +176,13 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
             assertEquals(1, rc);
             IssMaster retMaster = handler.getDefaultMaster(admin);
             assertNotNull(retMaster);
-            assertTrue(retMaster.getId().equals(master1.getId()));
+            assertEquals(retMaster.getId(), master1.getId());
 
             rc = handler.makeDefault(admin, master3.getId().intValue());
             assertEquals(1, rc);
             retMaster = handler.getDefaultMaster(admin);
             assertNotNull(retMaster);
-            assertTrue(retMaster.getId().equals(master3.getId()));
+            assertEquals(retMaster.getId(), master3.getId());
 
             retMaster = handler.getMaster(admin, master1.getId().intValue());
             assertNotNull(retMaster);

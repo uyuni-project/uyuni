@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.errata.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -135,8 +136,8 @@ public class ErrataTest extends BaseTestCaseWithUser {
     public void testAddChannelsToErrata() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(
                 user.getOrg().getId());
-        assertTrue(!e.getFiles().isEmpty());
-        assertTrue(!e.getPackages().isEmpty());
+        assertFalse(e.getFiles().isEmpty());
+        assertFalse(e.getPackages().isEmpty());
         Channel c = ChannelTestUtils.createTestChannel(user);
         Package p = PackageManagerTest.addPackageToChannel("some-errata-package", c);
         c = (Channel) reload(c);
@@ -197,23 +198,23 @@ public class ErrataTest extends BaseTestCaseWithUser {
         Date now = new Date();
 
         err.setAdvisory(foo);
-        assertTrue(err.getAdvisory().equals("foo"));
+        assertEquals("foo", err.getAdvisory());
         err.setAdvisory(null);
         assertNull(err.getAdvisory());
 
         err.setAdvisoryName(foo);
-        assertTrue(err.getAdvisoryName().equals("foo"));
+        assertEquals("foo", err.getAdvisoryName());
         err.setAdvisoryName(null);
         assertNull(err.getAdvisoryName());
 
         err.setAdvisoryRel(one);
-        assertTrue(err.getAdvisoryRel().equals(one));
-        assertFalse(err.getAdvisoryRel().equals(two));
+        assertEquals(err.getAdvisoryRel(), one);
+        assertNotEquals(err.getAdvisoryRel(), two);
         err.setAdvisoryRel(null);
         assertNull(err.getAdvisoryRel());
 
         err.setAdvisoryType(foo);
-        assertTrue(err.getAdvisoryType().equals("foo"));
+        assertEquals("foo", err.getAdvisoryType());
         assertFalse(err.isBugFix());
         assertFalse(err.isProductEnhancement());
         assertFalse(err.isSecurityAdvisory());
@@ -231,17 +232,17 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertFalse(err.isSecurityAdvisory());
 
         err.setDescription(foo);
-        assertTrue(err.getDescription().equals("foo"));
+        assertEquals("foo", err.getDescription());
         err.setDescription(null);
         assertNull(err.getDescription());
 
         err.setIssueDate(now);
-        assertTrue(err.getIssueDate().equals(now));
+        assertEquals(err.getIssueDate(), now);
         err.setIssueDate(null);
         assertNull(err.getIssueDate());
 
         err.setLastModified(now);
-        assertTrue(err.getLastModified().equals(now));
+        assertEquals(err.getLastModified(), now);
         err.setLastModified(null);
         assertNull(err.getLastModified());
 
@@ -251,44 +252,44 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertFalse(err.getLocallyModified());
 
         err.setNotes(foo);
-        assertTrue(err.getNotes().equals("foo"));
+        assertEquals("foo", err.getNotes());
         err.setNotes(null);
         assertNull(err.getNotes());
 
         err.setProduct(foo);
-        assertTrue(err.getProduct().equals("foo"));
+        assertEquals("foo", err.getProduct());
         err.setProduct(null);
         assertNull(err.getProduct());
 
         err.setRefersTo(foo);
-        assertTrue(err.getRefersTo().equals("foo"));
+        assertEquals("foo", err.getRefersTo());
         err.setRefersTo(null);
         assertNull(err.getRefersTo());
 
         err.setSolution(foo);
-        assertTrue(err.getSolution().equals("foo"));
+        assertEquals("foo", err.getSolution());
         err.setSolution(null);
         assertNull(err.getSolution());
 
         err.setSynopsis(foo);
-        assertTrue(err.getSynopsis().equals("foo"));
+        assertEquals("foo", err.getSynopsis());
         err.setSynopsis(null);
         assertNull(err.getSynopsis());
 
         err.setTopic(foo);
-        assertTrue(err.getTopic().equals("foo"));
+        assertEquals("foo", err.getTopic());
         err.setTopic(null);
         assertNull(err.getTopic());
 
         err.setUpdateDate(now);
-        assertTrue(err.getUpdateDate().equals(now));
+        assertEquals(err.getUpdateDate(), now);
         err.setUpdateDate(null);
         assertNull(err.getUpdateDate());
 
         Org org1 = user.getOrg();
 
         err.setOrg(org1);
-        assertTrue(err.getOrg().equals(org1));
+        assertEquals(err.getOrg(), org1);
         err.setOrg(null);
         assertNull(err.getOrg());
 

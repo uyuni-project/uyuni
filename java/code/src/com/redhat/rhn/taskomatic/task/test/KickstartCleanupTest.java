@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -70,7 +70,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         session.clear();
         ksession = (KickstartSession)
             session.load(KickstartSession.class, ksession.getId());
-        assertTrue(ksession.getState().getId().equals(failedState.getId()));
+        assertEquals(ksession.getState().getId(), failedState.getId());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         session.clear();
         ksession = (KickstartSession)
             session.load(KickstartSession.class, ksession.getId());
-        assertTrue(ksession.getState().getId().equals(failedState.getId()));
+        assertEquals(ksession.getState().getId(), failedState.getId());
     }
 
     private static void backdateKickstartSession(Session session,

@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.systems.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
@@ -105,7 +105,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         System.err.println("getMockResponse() = " + getMockResponse());
         System.err.println("getMockResponse().getStatusCode() = " +
                 getMockResponse().getStatusCode());
-        assertTrue(getMockResponse().getStatusCode() == 302);
+        assertEquals(302, getMockResponse().getStatusCode());
     }
 
     @Test

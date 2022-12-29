@@ -597,7 +597,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
                 "management tools and technology certifications across the platform, and each product is " +
                 "enterprise-class.", pool.getDescription());
-        assertEquals(true, pool.getSuseProductChannels().stream().findFirst().get().isMandatory());
+        assertTrue(pool.getSuseProductChannels().stream().findFirst().get().isMandatory());
         assertEquals("SLES12-Updates for x86_64", update.getName());
         assertEquals("SUSE Linux Enterprise Server 12 x86_64", update.getSummary());
         assertEquals("SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. " +
@@ -642,7 +642,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             "powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common " +
             "management tools and technology certifications across the platform, and each product is " +
             "enterprise-class.", changedPool.getDescription());
-        assertEquals(false, changedPool.getSuseProductChannels().stream().findFirst().get().isMandatory());
+        assertFalse(changedPool.getSuseProductChannels().stream().findFirst().get().isMandatory());
         assertEquals("SLES12-Updates for x86_64 UPDATED", changedUpdate.getName());
         assertEquals("SUSE Linux Enterprise Server 12 x86_64 UPDATED", changedUpdate.getSummary());
         assertEquals(
@@ -1624,7 +1624,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             HibernateFactory.getSession().flush();
 
             // There should be no upgrade paths
-            assertEquals(true, SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
+            assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(upgradePathsEmptyJson);
@@ -1689,7 +1689,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     .build()).collect(Collectors.toList()));
 
             // There should be no upgrade paths
-            assertEquals(true, SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
+            assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(upgradePathsEmptyJson);
@@ -1730,10 +1730,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 foundDebugPool = true;
             }
             else if (c.getLabel().equals("sles12-installer-updates-x86_64")) {
-                assertTrue(false, "Unexpected Installer Update channel found");
+                fail("Unexpected Installer Update channel found");
             }
             else if (c.getLabel().startsWith("suse-enterprise-storage")) {
-                assertTrue(false, "Storage Channels should not be listed");
+                fail("Storage Channels should not be listed");
             }
         }
         assertTrue(foundPool, "Pool channel not found");
@@ -1967,14 +1967,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals("sles12-pool-x86_64", cs.getLabel());
         }
         for (SUSEProductChannel pc : channel.getSuseProductChannels()) {
-            assertEquals(true, pc.isMandatory());
+            assertTrue(pc.isMandatory());
             assertEquals(1117L, pc.getProduct().getProductId());
         }
 
         channel = ChannelFactory.lookupByLabel("sle-module-legacy12-debuginfo-pool-x86_64");
-        assertTrue(channel.getLabel().equals("sle-module-legacy12-debuginfo-pool-x86_64"));
+        assertEquals("sle-module-legacy12-debuginfo-pool-x86_64", channel.getLabel());
         for (SUSEProductChannel pc : channel.getSuseProductChannels()) {
-            assertEquals(false, pc.isMandatory());
+            assertFalse(pc.isMandatory());
             assertEquals(1150L, pc.getProduct().getProductId());
         }
         assertTrue(csm.listChannels().stream().anyMatch(c -> c.getLabel().equals("rhel-x86_64-server-7")));

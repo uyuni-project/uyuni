@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.servlets.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.manager.session.SessionManager;
@@ -150,7 +151,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
     public final void testCreatePxtCookieSetsSecure() {
         Cookie pxtCookie = manager.createPxtCookie(pxtSessionId, getRequest(), TIMEOUT);
 
-        assertEquals(true, pxtCookie.getSecure());
+        assertTrue(pxtCookie.getSecure());
     }
 
 }

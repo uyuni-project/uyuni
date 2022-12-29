@@ -713,13 +713,11 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         k.getKickstartDefaults().setVirtualizationType(
                 KickstartVirtualizationType.kvmGuest());
 
-        assertTrue(k.getDefaultVirtBridge().equals(
-                ConfigDefaults.get().getDefaultKVMVirtBridge()));
+        assertEquals(k.getDefaultVirtBridge(), ConfigDefaults.get().getDefaultKVMVirtBridge());
 
         k.getKickstartDefaults().setVirtualizationType(
                 KickstartVirtualizationType.xenPV());
 
-        assertTrue(k.getDefaultVirtBridge().equals(
-                ConfigDefaults.get().getDefaultXenVirtBridge()));
+        assertEquals(k.getDefaultVirtBridge(), ConfigDefaults.get().getDefaultXenVirtBridge());
     }
 }

@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -52,8 +52,8 @@ public class LocationTest extends RhnBaseTestCase {
         Location loc1 = createTestLocation();
         Location loc2 = new Location();
 
-        assertFalse(loc1.equals(loc2));
-        assertFalse(loc1.equals(new Date()));
+        assertNotEquals(loc1, loc2);
+        assertNotEquals(loc1, new Date());
 
         Session session = HibernateFactory.getSession();
         loc2 = (Location) session.getNamedQuery("Location.findById")

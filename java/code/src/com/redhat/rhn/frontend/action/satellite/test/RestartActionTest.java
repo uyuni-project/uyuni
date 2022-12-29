@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.satellite.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -63,8 +63,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RestartAction.RESTART, Boolean.TRUE.toString());
         actionPerform();
         verifyActionMessages(new String[]{"restart.config.success"});
-        assertTrue((request.getParameter(RestartAction.RESTART).
-                    equals(Boolean.TRUE.toString())));
+        assertEquals(request.getParameter(RestartAction.RESTART), Boolean.TRUE.toString());
     }
 
     @Test
@@ -74,8 +73,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RestartAction.RESTART, Boolean.FALSE.toString());
         actionPerform();
         verifyActionMessages(new String[]{"restart.config.norestart"});
-        assertTrue((request.getParameter(RestartAction.RESTART).
-                    equals(Boolean.FALSE.toString())));
+        assertEquals(request.getParameter(RestartAction.RESTART), Boolean.FALSE.toString());
     }
 
     @Test

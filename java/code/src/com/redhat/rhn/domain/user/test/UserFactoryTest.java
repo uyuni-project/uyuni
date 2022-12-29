@@ -80,19 +80,19 @@ public class UserFactoryTest extends RhnBaseTestCase {
          */
         Thread.sleep(1000);
 
-        assertTrue(normalUser.getStateChanges().size() == 1);
+        assertEquals(1, normalUser.getStateChanges().size());
         assertTrue(normalUser.isDisabled());
 
         //make sure our state change was set correctly
         StateChange change = (StateChange) normalUser.getStateChanges().toArray()[0];
-        assertTrue(change.getUser().equals(normalUser));
-        assertTrue(change.getChangedBy().equals(orgAdmin));
-        assertTrue(change.getState().equals(UserFactory.DISABLED));
+        assertEquals(change.getUser(), normalUser);
+        assertEquals(change.getChangedBy(), orgAdmin);
+        assertEquals(change.getState(), UserFactory.DISABLED);
 
         //enable the normal user
         factory.enable(normalUser, orgAdmin);
 
-        assertTrue(normalUser.getStateChanges().size() == 2);
+        assertEquals(2, normalUser.getStateChanges().size());
         assertFalse(normalUser.isDisabled());
 
         Long id = normalUser.getId();
@@ -103,7 +103,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         User usr = UserFactory.lookupById(id);
         assertFalse(usr.isDisabled());
-        assertTrue(usr.getStateChanges().size() == 2);
+        assertEquals(2, usr.getStateChanges().size());
     }
 
     @Test
@@ -178,7 +178,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     public void testGetTimeZoneOlson() {
         RhnTimeZone tz = UserFactory.getTimeZone("America/Los_Angeles");
         assertNotNull(tz);
-        assertTrue(tz.getOlsonName().equals("America/Los_Angeles"));
+        assertEquals("America/Los_Angeles", tz.getOlsonName());
 
         RhnTimeZone tz2 = UserFactory.getTimeZone("foo");
         assertNull(tz2);
@@ -188,8 +188,8 @@ public class UserFactoryTest extends RhnBaseTestCase {
     public void testGetTimeZoneId() {
         RhnTimeZone tz = UserFactory.getTimeZone(UserFactory
                 .getTimeZone("America/Los_Angeles").getTimeZoneId());
-        assertTrue(UserFactory.getTimeZone("America/Los_Angeles").equals(tz));
-        assertTrue(tz.getOlsonName().equals("America/Los_Angeles"));
+        assertEquals(UserFactory.getTimeZone("America/Los_Angeles"), tz);
+        assertEquals("America/Los_Angeles", tz.getOlsonName());
 
         RhnTimeZone tz2 = UserFactory.getTimeZone(-23);
         assertNull(tz2);
@@ -199,7 +199,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     public void testGetTimeZoneDefault() {
         RhnTimeZone tz = UserFactory.getDefaultTimeZone();
         assertNotNull(tz);
-        assertTrue(tz.getTimeZone().getRawOffset() == TimeZone.getDefault().getRawOffset());
+        assertEquals(tz.getTimeZone().getRawOffset(), TimeZone.getDefault().getRawOffset());
     }
 
     @Test
@@ -271,7 +271,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         for (int i = 0; i < len; i++) {
             User usr = UserFactory.lookupByLogin(logins[i]);
-            assertTrue(usr.getLogin().equals(logins[i]));
+            assertEquals(usr.getLogin(), logins[i]);
         }
     }
 

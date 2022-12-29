@@ -105,7 +105,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         handler.enableConfigManagement(admin, profile.getLabel());
         KickstartData newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 profile.getLabel(), admin.getOrg().getId());
-        assertEquals(true, newKsProfile.isConfigManageable());
+        assertTrue(newKsProfile.isConfigManageable());
 
         boolean configManaged = handler.checkConfigManagement(admin, profile.getLabel());
         assertTrue(configManaged);
@@ -113,7 +113,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         handler.disableConfigManagement(admin, profile.getLabel());
         newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 profile.getLabel(), admin.getOrg().getId());
-        assertEquals(false, newKsProfile.isConfigManageable());
+        assertFalse(newKsProfile.isConfigManageable());
 
         configManaged = handler.checkConfigManagement(admin, profile.getLabel());
         assertFalse(configManaged);
@@ -126,7 +126,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         handler.enableRemoteCommands(admin, profile.getLabel());
         KickstartData newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 profile.getLabel(), admin.getOrg().getId());
-        assertEquals(true, newKsProfile.isRemoteCommandable());
+        assertTrue(newKsProfile.isRemoteCommandable());
 
         boolean remoteCommands = handler.checkRemoteCommands(admin, profile.getLabel());
         assertTrue(remoteCommands);
@@ -134,7 +134,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         handler.disableRemoteCommands(admin, profile.getLabel());
         newKsProfile = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 profile.getLabel(), admin.getOrg().getId());
-        assertEquals(false, newKsProfile.isRemoteCommandable());
+        assertFalse(newKsProfile.isRemoteCommandable());
 
         remoteCommands = handler.checkRemoteCommands(admin, profile.getLabel());
         assertFalse(remoteCommands);

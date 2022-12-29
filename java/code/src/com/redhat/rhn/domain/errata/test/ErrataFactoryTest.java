@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -329,7 +330,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(1, list.size());
         var clone = (ClonedErrata) list.get(0);
-        assertTrue(clone.getOriginal().equals(testErrata));
+        assertEquals(clone.getOriginal(), testErrata);
     }
 
     @Test
@@ -354,7 +355,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         }
         catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
     }
 

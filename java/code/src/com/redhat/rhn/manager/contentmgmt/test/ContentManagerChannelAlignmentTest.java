@@ -28,6 +28,7 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -789,7 +790,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
 
         assertEquals(1, tgtChannel.getErratas().size()); // assumption
-        assertFalse(tgtChannel.getErratas().iterator().next().getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
+        assertNotSame(tgtChannel.getErratas().iterator().next().getAdvisoryStatus(), AdvisoryStatus.RETRACTED);
 
         // enable patch sync in my org, retract patch, align again
         OrgManager.setClmSyncPatchesConfig(user, user.getOrg().getId(), true);

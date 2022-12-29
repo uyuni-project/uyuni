@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.virtualization.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -380,7 +381,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("raw", def.getDisks().get(1).getFormat());
         assertEquals("hda", def.getDisks().get(1).getTarget());
         assertEquals("ide", def.getDisks().get(1).getBus());
-        assertEquals(null, def.getDisks().get(1).getSource());
+        assertNull(def.getDisks().get(1).getSource());
 
         assertEquals("volume", def.getDisks().get(2).getType());
         assertEquals("disk", def.getDisks().get(2).getDevice());

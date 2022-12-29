@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.action.kickstart.KickstartOverviewAction;
@@ -32,7 +32,7 @@ public class KickstartOverviewActionTest extends BaseKickstartEditTestCase {
         DataResult ksdr = (DataResult) request.getAttribute(
                                             KickstartOverviewAction.KICKSTART_SUMMARY);
         assertNotNull(ksdr);
-        assertTrue(!ksdr.isEmpty());
+        assertFalse(ksdr.isEmpty());
         assertNotNull(request.getAttribute(
                                 KickstartOverviewAction.SYSTEMS_CURRENTLY_KICKSTARTING));
         assertNotNull(request.getAttribute(

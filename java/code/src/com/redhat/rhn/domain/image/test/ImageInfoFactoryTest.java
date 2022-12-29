@@ -357,7 +357,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(store, info.getStore());
         assertEquals(user.getOrg(), info.getOrg());
         assertEquals(2, info.getChannels().size());
-        assertTrue(info.getChannels().equals(key.getChannels()));
+        assertEquals(info.getChannels(), key.getChannels());
         assertTrue(info.getCustomDataValues().isEmpty());
         assertFalse(info.isExternalImage());
 
@@ -494,7 +494,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(user.getOrg(), info.getOrg());
         assertEquals(0, info.getCustomDataValues().size());
         assertEquals(2, info.getChannels().size());
-        assertTrue(info.getChannels().equals(channels.get()));
+        assertEquals(info.getChannels(), channels.get());
         assertTrue(info.getPackages().isEmpty());
         assertTrue(info.getInstalledProducts().isEmpty());
 

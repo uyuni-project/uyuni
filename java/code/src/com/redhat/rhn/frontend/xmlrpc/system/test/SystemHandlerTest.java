@@ -19,6 +19,7 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -1336,7 +1337,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
         List<SystemOverview> idList = handler.getId(admin, server.getName());
-        assertTrue(1 == idList.size());
+        assertEquals(1, idList.size());
         SystemOverview smap = idList.get(0);
         assertEquals(server.getId(), smap.getId());
         assertEquals(server.getName(), smap.getName());
@@ -1349,14 +1350,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Map name = handler.getName(admin, server.getId().intValue());
 
-        assertTrue(null != name);
+        assertNotNull(name);
         assertEquals(server.getId(), name.get("id"));
         assertEquals(server.getName(), (String)name.get("name"));
         assertNotNull(name.get("last_checkin"));
 
         try {
             Map invalid = handler.getName(admin, 10001234);
-            assertTrue(null != invalid);
+            assertNotNull(invalid);
             assertNull(invalid.get("id"));
             assertNull(invalid.get("name"));
         }
@@ -1398,7 +1399,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         String id2 =  childMap2.getId().toString();
 
         //make sure the two aren't equal
-        assertFalse(id1.equals(id2));
+        assertNotEquals(id1, id2);
         //make sure each one is in the list
         assertTrue(id1.equals(child.getId().toString()) ||
                 id2.equals(child.getId().toString()));
@@ -1416,11 +1417,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server2.setName("ydjdk-test1234");
 
         List<ShortSystemInfo> sysList = handler.searchByName(admin, "ydjdk1");
-        assertTrue(sysList.size() == 1);
+        assertEquals(1, sysList.size());
         SystemOverview result = sysList.get(0);
         assertEquals(server.getId().intValue(), (result.getId().intValue()));
         assertEquals("ydjdk1234", result.getName());
-        assertTrue(null != result.getLastCheckin());
+        assertNotNull(result.getLastCheckin());
     }
 
     @Test
@@ -2423,7 +2424,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemsOverviewUpdateWorker.doUpdate(server2.getId());
 
         List<SystemOverview> servers = handler.listUngroupedSystems(admin);
-        assertTrue(!servers.isEmpty());
+        assertFalse(servers.isEmpty());
         boolean sidExists  = false;
         for (SystemOverview s : servers) {
             if (testServer.getId().equals(s.getId())) {
@@ -2966,7 +2967,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         //Case #2 Include targets even missing successor.
 
         List<Map<String, Object>> targets  = handler.listMigrationTargets(admin, server.getId().intValue(), false);
-        assertTrue(targets.size() == 1);
+        assertEquals(1, targets.size());
         assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
         String ident = targets.get(0).get("ident").toString();
 
@@ -3063,7 +3064,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertTrue(targets.isEmpty());
         // case#2 all targets returned even with missing successors ones
         targets = handler.listMigrationTargets(admin, server.getId().intValue(), false);
-        assertTrue(targets.size() == 1);
+        assertEquals(1, targets.size());
         assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
     }
 
@@ -3278,7 +3279,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 assertEquals(VersionConstraints.LATEST, pst.getVersionConstraint());
             }
             else {
-                assertTrue(false, "unexpected package state");
+                fail("unexpected package state");
             }
         }
 
@@ -3295,7 +3296,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 assertEquals(VersionConstraints.ANY, pst.getVersionConstraint());
             }
             else {
-                assertTrue(false, "unexpected package state");
+                fail("unexpected package state");
             }
         }
 
@@ -3312,7 +3313,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 assertEquals(PackageStates.REMOVED, pst.getPackageState());
             }
             else {
-                assertTrue(false, "unexpected package state");
+                fail("unexpected package state");
             }
         }
 
@@ -3365,7 +3366,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 assertEquals(PackageStates.REMOVED, pst.getPackageState());
             }
             else {
-                assertTrue(false, "unexpected package state");
+                fail("unexpected package state");
             }
         }
 
@@ -3443,8 +3444,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Set<PackageState> packageStates = systemHandler.listPackageState(admin, server.getId().intValue());
         assertNotEmpty(packageStates);
         assertEquals(1, packageStates.size());
-        assertTrue(PackageStates.REMOVED.id() == packageStates.iterator().next().getPackageStateTypeId());
-        assertTrue(VersionConstraints.LATEST.id() == packageStates.iterator().next().getVersionConstraintId());
+        assertEquals(PackageStates.REMOVED.id(), packageStates.iterator().next().getPackageStateTypeId());
+        assertEquals(VersionConstraints.LATEST.id(), packageStates.iterator().next().getVersionConstraintId());
     }
 
     /**

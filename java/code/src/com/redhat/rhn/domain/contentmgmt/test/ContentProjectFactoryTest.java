@@ -415,7 +415,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(fstEntry.getMessage(), fstEntryFromDb.getMessage());
         assertEquals(sndEntry.getMessage(), sndEntryFromDb.getMessage());
 
-        assertTrue(!sndEntryFromDb.getCreated().before(fstEntryFromDb.getCreated()));
+        assertFalse(sndEntryFromDb.getCreated().before(fstEntryFromDb.getCreated()));
 
         UserFactory.deleteUser(user.getId());
         fstEntryFromDb = (ContentProjectHistoryEntry) HibernateFactory.reload(fstEntryFromDb);

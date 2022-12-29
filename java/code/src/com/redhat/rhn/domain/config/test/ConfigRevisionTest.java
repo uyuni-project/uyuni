@@ -52,7 +52,7 @@ public class ConfigRevisionTest extends BaseTestCaseWithUser {
         assertTrue(cr.isDirectory());
 
         assertNotNull(cr.getChangedById());
-        assertTrue(cr.getChangedById().equals(user.getId()));
+        assertEquals(cr.getChangedById(), user.getId());
         assertNotNull(cr.getChangedBy());
         assertEquals(user.getLogin(), cr.getChangedBy().getLogin());
     }

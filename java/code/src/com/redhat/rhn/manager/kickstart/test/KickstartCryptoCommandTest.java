@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -44,7 +45,7 @@ public class KickstartCryptoCommandTest extends BaseKickstartCommandTestCase {
         cmd.addKeysByIds(ids);
         cmd.store();
         flushAndEvict(cmd.getKickstartData());
-        assertTrue(cmd.getKickstartData().getCryptoKeys().size() == 1);
+        assertEquals(1, cmd.getKickstartData().getCryptoKeys().size());
         cmd.removeKeysById(ids);
         cmd.store();
         flushAndEvict(cmd.getKickstartData());

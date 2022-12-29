@@ -181,12 +181,12 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         List<Package> newP = handler.findByNvrea(admin, p.getPackageName().getName(),
                 p.getPackageEvr().getVersion(), p.getPackageEvr().getRelease(),
                 p.getPackageEvr().getEpoch(), p.getPackageArch().getLabel());
-        assertTrue(newP.size() == 1);
+        assertEquals(1, newP.size());
         assertEquals(p, newP.get(0));
         newP = handler.findByNvrea(admin, p.getPackageName().getName(),
                 p.getPackageEvr().getVersion(), p.getPackageEvr().getRelease(),
                 "", p.getPackageArch().getLabel());
-        assertTrue(newP.size() == 1);
+        assertEquals(1, newP.size());
         assertEquals(p, newP.get(0));
     }
 

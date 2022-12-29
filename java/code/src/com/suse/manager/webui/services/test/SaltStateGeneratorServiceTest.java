@@ -17,6 +17,7 @@ package com.suse.manager.webui.services.test;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -147,7 +148,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         // State file for minion 1 should be regenerated
         assertFalse(Arrays.equals(min1InitialContent, min1FinalContent));
         // State file for minion 1 should NOT be regenerated
-        assertTrue(Arrays.equals(min2InitialContent, min2FinalContent));
+        assertArrayEquals(min2InitialContent, min2FinalContent);
 
         // Assert file contents
         Map<String, Object> map;

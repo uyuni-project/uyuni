@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -47,8 +47,8 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         NetworkInterface netint1 = createTestNetworkInterface();
         NetworkInterface netint2 = new NetworkInterface();
 
-        assertFalse(netint1.equals(netint2));
-        assertFalse(netint1.equals(new Date()));
+        assertNotEquals(netint1, netint2);
+        assertNotEquals(netint1, new Date());
 
         Session session = HibernateFactory.getSession();
         netint2 = (NetworkInterface) session.getNamedQuery("NetworkInterface.lookup")

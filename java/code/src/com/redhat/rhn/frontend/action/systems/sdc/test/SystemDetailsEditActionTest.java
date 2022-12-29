@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.systems.sdc.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -208,7 +209,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         String name = s.getName();
         systemEntitlementManager.removeAllServerEntitlements(s);
         s = ServerFactory.lookupById(id);
-        assertTrue(s.getBaseEntitlement() == null);
+        assertNull(s.getBaseEntitlement());
 
         request.addParameter(SystemDetailsEditAction.NAME, name);
         request.addParameter(SystemDetailsEditAction.BASE_ENTITLEMENT,
@@ -216,20 +217,20 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         addSubmitted();
         actionPerform();
         s = ServerFactory.lookupById(id);
-        assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));
+        assertEquals(s.getBaseEntitlement(), EntitlementManager.MANAGEMENT);
     }
 
     @Test
     public void testUnentitle() throws Exception {
         request.addParameter(SystemDetailsEditAction.NAME, s.getName());
-        assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));
+        assertEquals(s.getBaseEntitlement(), EntitlementManager.MANAGEMENT);
         request.addParameter(SystemDetailsEditAction.BASE_ENTITLEMENT,
                 "unentitle");
         addSubmitted();
         actionPerform();
         s = TestUtils.reload(s);
 
-        Assertions.assertTrue(s.getBaseEntitlement() == null, "we shouldnt have a base entitlement");
+        Assertions.assertNull(s.getBaseEntitlement(), "we shouldnt have a base entitlement");
     }
 
 
@@ -299,6 +300,6 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
             Assertions.assertFalse(s.hasEntitlement(e), "does have: " + e);
         }
 
-        assertTrue(s.getAutoUpdate().equals("Y"));
+        assertEquals("Y", s.getAutoUpdate());
     }
 }

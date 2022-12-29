@@ -202,7 +202,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             if (p.getPackageName().getName().equals(item.getName())) {
                 containsSamePackage = true;
             }
-            assertTrue(item.getIdCombo().split("\\|").length == 3);
+            assertEquals(3, item.getIdCombo().split("\\|").length);
         }
         assertTrue(containsSamePackage);
     }
@@ -362,7 +362,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelTestUtils.createTestChannel(user);
         DataResult dr = PackageManager.possiblePackagesForPushingIntoChannel(c.getId(),
                 e.getId(), null);
-        assertTrue(!dr.isEmpty());
+        assertFalse(dr.isEmpty());
    }
 
 
@@ -494,7 +494,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
         List test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
                 channel2.getId());
-        assertTrue(test.size() == 1);
+        assertEquals(1, test.size());
         PackageOverview packOver = (PackageOverview) test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
@@ -512,7 +512,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         List test = PackageManager.lookupCustomPackagesForChannel(
                 channel1.getId(), user.getOrg().getId());
 
-        assertTrue(test.size() == 1);
+        assertEquals(1, test.size());
         PackageOverview packOver = (PackageOverview) test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
@@ -529,7 +529,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Package pack = PackageTest.createTestPackage(user.getOrg());
         List test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
-        assertTrue(test.size() == 1);
+        assertEquals(1, test.size());
         PackageOverview packOver = (PackageOverview) test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
@@ -540,7 +540,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Package pack2 = PackageTest.createTestPackage(user.getOrg());
         test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
-        assertTrue(test.size() == 1);
+        assertEquals(1, test.size());
 
     }
 
@@ -567,7 +567,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         // Test
         DataResult result = PackageManager.upgradablePackagesFromServerSet(user);
 
-        assertTrue(result != null);
+        assertNotNull(result);
         assertEquals(2, result.size());
     }
 

@@ -195,12 +195,12 @@ public class UserTest extends RhnBaseTestCase {
         assertEquals(50, usr.getPageSize());
 
         usr.setTimeZone(UserFactory.getTimeZone("America/Los_Angeles"));
-        assertTrue(usr.getTimeZone().equals(UserFactory
-                .getTimeZone("America/Los_Angeles")));
-        assertTrue(usr.getTimeZone().getOlsonName().equals("America/Los_Angeles"));
+        assertEquals(usr.getTimeZone(), UserFactory
+                .getTimeZone("America/Los_Angeles"));
+        assertEquals("America/Los_Angeles", usr.getTimeZone().getOlsonName());
 
         usr.setUsePamAuthentication(false);
-        assertEquals(false, usr.getUsePamAuthentication());
+        assertFalse(usr.getUsePamAuthentication());
 
         usr.setShowSystemGroupList(foo);
         assertEquals(foo, usr.getShowSystemGroupList());
@@ -263,7 +263,7 @@ public class UserTest extends RhnBaseTestCase {
             // This fails, though it succeeds in testAUthenticateTrue, giving
             // us some confidence that a different auth mechanism was indeed
             // being used
-            assertTrue(!usr.authenticate("password"));
+            assertFalse(usr.authenticate("password"));
         }
         finally {
             Config.get().setString("web.pam_auth_service", oldValue);

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.server.Server;
@@ -47,7 +48,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
         serializer.serialize(server, output, new XmlRpcSerializer());
         String finalOutput = output.toString();
         commonAssertions(finalOutput, server);
-        assertTrue(!finalOutput.contains("machine_id"));
+        assertFalse(finalOutput.contains("machine_id"));
 
     }
     /**

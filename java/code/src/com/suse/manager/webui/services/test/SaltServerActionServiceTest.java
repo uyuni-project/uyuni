@@ -19,6 +19,7 @@ import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -478,7 +479,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals("x86_64", resultPkg2.get(1));
         assertTrue(Arrays.asList("1.0.0", "1.0.1").contains(resultPkg1.get(2)));
         assertTrue(Arrays.asList("1.0.0", "1.0.1").contains(resultPkg2.get(2)));
-        assertTrue(resultPkg1.get(2) != resultPkg2.get(2));
+        assertNotSame(resultPkg1.get(2), resultPkg2.get(2));
     }
 
     @Test

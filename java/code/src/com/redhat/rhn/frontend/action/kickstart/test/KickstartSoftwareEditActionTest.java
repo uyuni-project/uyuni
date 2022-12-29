@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -99,7 +100,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
         String[] keys = {"kickstart.software.success"};
         verifyActionMessages(keys);
         ksdata = (KickstartData) TestUtils.reload(ksdata);
-        assertTrue(!ksdata.getChildChannels().isEmpty());
+        assertFalse(ksdata.getChildChannels().isEmpty());
 
     }
 

@@ -15,7 +15,6 @@
 package com.redhat.rhn.manager.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -36,7 +35,7 @@ public class IpAddressTest extends RhnBaseTestCase {
         long ipNum = addr.getNumber();
         IpAddress addr2 = new IpAddress(ipNum);
 
-        assertTrue(addr.equals(addr2));
+        assertEquals(addr, addr2);
 
         long packNum = Long.parseLong("3232235777");
         assertEquals(addr.getNumber(), packNum); //compare to what perl's pack returns

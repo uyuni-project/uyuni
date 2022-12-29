@@ -172,7 +172,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         ActivationKey key = ActivationKeyFactory.createNewKey(user,
                 TestUtils.randomString());
         assertNotNull(key.getEntitlements());
-        assertTrue(key.getEntitlements().size() == 1);
+        assertEquals(1, key.getEntitlements().size());
     }
 
     // See BZ: 191007
@@ -202,7 +202,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
                 createTestChannel(user);
             k.addChannel(c);
         }
-        assertTrue(k.getChannels().size() == 5);
+        assertEquals(5, k.getChannels().size());
     }
 
     @Test
@@ -213,7 +213,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         createTestActivationKey(user, s);
         createTestActivationKey(user, s);
         List keys = ActivationKeyFactory.lookupByServer(s);
-        assertTrue(keys.size() == 4);
+        assertEquals(4, keys.size());
     }
 
     @Test

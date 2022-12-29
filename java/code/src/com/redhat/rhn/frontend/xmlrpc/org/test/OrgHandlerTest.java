@@ -194,7 +194,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         Org testOrg = createOrg();
         List<MultiOrgUserOverview> users = handler.listUsers(admin,
                                                 testOrg.getId().intValue());
-        assertTrue(users.size() == 1);
+        assertEquals(1, users.size());
         User user = UserFactory.lookupByLogin(
                 testOrg.getActiveOrgAdmins().get(0).getLogin());
         assertEquals(users.get(0).getId(), user.getId());
