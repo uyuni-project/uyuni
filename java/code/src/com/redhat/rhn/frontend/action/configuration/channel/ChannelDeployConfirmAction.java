@@ -118,7 +118,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         DataList<ConfigSystemDto> configSystemsList = new DataList<>(systems);
         configSystemsList.setMode(systems.getMode());
         configSystemsList.setElaboratorParams(systems.getElaborationParams());
-        request.setAttribute("selectedSystems", list);
+        request.setAttribute("selectedSystems", configSystemsList);
 
         ActionErrors errs = new ActionErrors();
         if (files.getTotalSize() == 0) {
