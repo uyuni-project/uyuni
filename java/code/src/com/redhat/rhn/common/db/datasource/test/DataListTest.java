@@ -205,17 +205,17 @@ public class DataListTest extends RhnBaseTestCase {
         }
 
         @Override
-        public DataResult execute(List<?> inClause) {
+        public <T> DataResult<T> execute(List<?> inClause) {
             return selectMode.execute(inClause);
         }
 
         @Override
-        public DataResult execute() {
+        public <T> DataResult<T> execute() {
             return selectMode.execute();
         }
 
         @Override
-        public DataResult execute(Map<String, ?> parameters, List<?> inClause) {
+        public <T> DataResult<T> execute(Map<String, ?> parameters, List<?> inClause) {
             return selectMode.execute(parameters, inClause);
         }
 

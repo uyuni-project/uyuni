@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.FlushModeType;
 
@@ -229,8 +230,7 @@ public class CachedStatement implements Serializable {
     }
 
     int executeUpdate(Map<String, ?> parameters, List<?> inClause) {
-        Integer res = (Integer) internalExecute(parameters, inClause, null);
-        return res;
+        return internalExecuteUpdate(parameters, inClause, null);
     }
 
     /**
@@ -268,73 +268,109 @@ public class CachedStatement implements Serializable {
     }
 
 
-    @SuppressWarnings("unchecked")
-    DataResult<Object> execute(Map<String, ?> parameters, Mode mode) {
-        return (DataResult<Object>) internalExecute(parameters, null, mode);
+    <T> DataResult<T> execute(Map<String, ?> parameters, Mode mode) {
+        return internalExecute(parameters, null, mode);
     }
 
-    @SuppressWarnings("unchecked")
-    DataResult<Object> execute(List<?> parameters, Mode mode) {
-        return (DataResult<Object>) internalExecute(null, parameters, mode);
+    <T> DataResult<T> execute(List<?> parameters, Mode mode) {
+        return internalExecute(null, parameters, mode);
     }
 
-    @SuppressWarnings("unchecked")
-    DataResult<Object> execute(Map<String, ?> parameters, List<?> inClause,
+    <T> DataResult<T> execute(Map<String, ?> parameters, List<?> inClause,
             Mode mode) {
-        return (DataResult<Object>) internalExecute(parameters, inClause, mode);
+        return internalExecute(parameters, inClause, mode);
+    }
+
+    private Integer internalExecuteUpdateNoSubClause(Map<String, ?> parameters, Mode mode) {
+        Object resultObj = executeChecking(sqlStatement, qMap, parameters, mode, null);
+        if (resultObj instanceof Integer) {
+            return (Integer) resultObj;
+        }
+        return 0;
+    }
+
+    private <T> DataResult<T> internalExecuteNoSubClause(Map<String, ?> parameters, Mode mode) {
+        storeForRestart(parameters, null, mode);
+        this.sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
+        Object resultObj = executeChecking(sqlStatement, qMap, parameters, mode, null);
+        Class<DataResult<T>> drClazz = (Class<DataResult<T>>)(Class<?>) DataResult.class;
+        if (drClazz.isAssignableFrom(resultObj.getClass())) {
+            return drClazz.cast(executeChecking(sqlStatement, qMap, parameters, mode, null));
+        }
+        return new DataResult<>(mode);
+    }
+
+    private int internalExecuteUpdate(Map<String, ?> parameters, List<?> inClause, Mode mode) {
+        storeForRestart(parameters, inClause, mode);
+        this.sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
+
+        if (sqlStatement.contains("%s")) {
+            int returnInt = 0;
+
+            int subStart = 0;
+            while (subStart < inClause.size()) {
+                int subLength = subStart + BATCH_SIZE >= inClause.size() ? inClause.size() - subStart : BATCH_SIZE;
+
+                List<?> subClause = inClause.subList(subStart, subStart + subLength);
+                String finalQuery = sqlStatement.replace("%s", commaSeparatedList(subClause));
+                Object resultObj = executeChecking(finalQuery, qMap, parameters, mode, null);
+                subStart += subLength;
+
+                if (resultObj instanceof Integer) {
+                    returnInt = returnInt + (Integer) resultObj;
+                }
+            }
+            return returnInt;
+        }
+        else {
+            return internalExecuteUpdateNoSubClause(parameters, mode);
+        }
+    }
+
+    private List<String> queryBatches(List<?> inClause) {
+        List<String> queries = new ArrayList<>();
+
+        int subStart = 0;
+        while (subStart < inClause.size()) {
+            int subLength = subStart + BATCH_SIZE >= inClause.size() ?
+                    inClause.size() - subStart : BATCH_SIZE;
+
+            List<?> subClause = inClause.subList(subStart, subStart + subLength);
+            queries.add(sqlStatement.replace("%s", commaSeparatedList(subClause)));
+            subStart += subLength;
+        }
+        return queries;
     }
 
     @SuppressWarnings("unchecked")
-    private Object internalExecute(Map<String, ?> parameters, List<?> inClause,
-            Mode mode) {
+    private <T> DataResult<T> internalExecute(Map<String, ?> parameters, List<?> inClause, Mode mode) {
 
         storeForRestart(parameters, inClause, mode);
         this.sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
 
-        if (sqlStatement.indexOf("%s") > 0) {
+        if (sqlStatement.contains("%s")) {
             if (inClause == null || inClause.isEmpty()) {
                 return new DataResult<>(mode);
             }
-            // one of these two items is the return value. Ugly, but...
-            Integer returnInt = null;
-            DataResult<Object> returnDataResult = null;
+            Class<DataResult<T>> drClazz = (Class<DataResult<T>>)(Class<?>) DataResult.class;
 
-            int subStart = 0;
-            while (subStart < inClause.size()) {
-                int subLength = subStart + BATCH_SIZE >= inClause.size() ?
-                        inClause.size() - subStart : BATCH_SIZE;
-
-                List<?> subClause = inClause.subList(subStart, subStart + subLength);
-                String finalQuery =
-                        sqlStatement.replaceAll("%s", commaSeparatedList(subClause));
-                Object resultObj =
-                        executeChecking(finalQuery, qMap, parameters, mode, null);
-                subStart += subLength;
-
-                if (resultObj instanceof DataResult) {
-                    if (returnDataResult == null) {
-                        returnDataResult = (DataResult<Object>) resultObj;
-                    }
-                    else {
-                        returnDataResult.addDataResult((DataResult<Object>) resultObj);
-                    }
-                }
-                else {
-                    if (returnInt == null) {
-                        returnInt = (Integer) resultObj;
-                    }
-                    else {
-                        returnInt = returnInt + (Integer) resultObj;
-                    }
+            List<String> batches = queryBatches(inClause);
+            List<DataResult<T>> results = batches.stream()
+                    .map(finalQuery -> executeChecking(finalQuery, qMap, parameters, mode, null))
+                    .filter(res -> drClazz.isAssignableFrom(res.getClass()))
+                    .map(res -> drClazz.cast(res))
+                    .collect(Collectors.toList());
+            DataResult<T> result = null;
+            if (!results.isEmpty()) {
+                result = results.get(0);
+                for (DataResult<T> subResult : results.subList(1, results.size())) {
+                    result.addDataResult(subResult);
                 }
             }
-            if (returnInt != null) {
-                return returnInt;
-            }
-            return returnDataResult;
+            return result;
         }
         else {
-            return executeChecking(sqlStatement, qMap, parameters, mode, null);
+            return internalExecuteNoSubClause(parameters, mode);
         }
     }
 
