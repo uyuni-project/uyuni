@@ -951,13 +951,14 @@ public class CachedStatement implements Serializable {
     /**
      * Restart the latest query
      * @param newSession the new hibernate session to use
+     * @param <T> the type of the returned items
      * @return what the previous query returned or null.
      */
-    public DataResult<?> restartQuery(Session newSession) {
+    public <T> DataResult<T> restartQuery(Session newSession) {
         session = newSession;
 
         return restartData == null ? null :
-                (DataResult<?>) internalExecute(restartData.getParameters(),
+                internalExecute(restartData.getParameters(),
                         restartData.getInClause(), restartData.getMode());
     }
 
@@ -972,7 +973,7 @@ public class CachedStatement implements Serializable {
             try {
                 sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
 
-                return executeBatch(connection, sqlStatement, qMap, batch, null, null);
+                return executeBatch(connection, sqlStatement, qMap, batch);
             }
             catch (SQLException e) {
                 throw SqlExceptionTranslator.sqlException(e);
@@ -991,8 +992,7 @@ public class CachedStatement implements Serializable {
     }
 
     private int [] executeBatch(Connection connection, String sql,
-            Map<String, List<Integer>> parameterMap, DataResult<Map<String, Object>> batch, Mode mode,
-            List<Object> dr) throws SQLException {
+            Map<String, List<Integer>> parameterMap, DataResult<Map<String, Object>> batch) throws SQLException {
         if (log.isDebugEnabled()) {
             log.debug("execute() - Executing: {}", sql);
             log.debug("execute() - With: {}", batch);
@@ -1000,7 +1000,7 @@ public class CachedStatement implements Serializable {
 
         PreparedStatement ps = null;
         try {
-            ps = prepareStatement(connection, sql, mode);
+            ps = prepareStatement(connection, sql, null);
             return NamedPreparedStatement.executeBatch(ps, parameterMap, batch);
         }
         finally {
