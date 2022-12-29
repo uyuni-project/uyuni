@@ -108,4 +108,4 @@ Feature: Action chains on several systems at once
     And I run "rm /tmp/action_chain_done" on "ssh_minion" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM after action chain tests on several systems
-    When I follow "clear-ssm"
+    When I click on "Clear"
