@@ -15,9 +15,9 @@
 package com.redhat.rhn.domain.rhnpackage.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -147,7 +147,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        Package pack = PackageTest.createTestPackage(user.getOrg());
 
        List<PackageSource> list = PackageFactory.lookupPackageSources(pack);
-       assertTrue(!list.isEmpty());
+        assertFalse(list.isEmpty());
 
    }
 

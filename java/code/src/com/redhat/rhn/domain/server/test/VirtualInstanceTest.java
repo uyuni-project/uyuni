@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.server.Server;
@@ -72,7 +73,7 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
         VirtualInstance refGuest = createVirtualInstance(host, guest, uuid1);
 
         assertEquals(refGuest, createVirtualInstance(host, guest, uuid1));
-        assertFalse(refGuest.equals(createVirtualInstance(host, guest, uuid2)));
+        assertNotEquals(refGuest, createVirtualInstance(host, guest, uuid2));
     }
 
     private VirtualInstance createVirtualInstance(Server host, Server guest, String uuid) {

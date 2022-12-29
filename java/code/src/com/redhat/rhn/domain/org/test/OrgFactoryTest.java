@@ -266,7 +266,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
     public void testLookupAllOrgs() throws Exception {
         ServerTestUtils.createTestSystem();
         List<Org> totalOrgs = OrgFactory.lookupAllOrgs();
-        assertTrue(!totalOrgs.isEmpty());
+        assertFalse(totalOrgs.isEmpty());
     }
 
     @Test

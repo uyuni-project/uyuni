@@ -16,7 +16,6 @@ package com.redhat.rhn.manager.audit.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -46,7 +45,7 @@ public class AuditManagerTest  {
 
         DataResult dr = AuditManager.getMachines();
         assertNotNull(dr);
-        assertTrue(dr.size() == 1);
+        assertEquals(1, dr.size());
         AuditMachineDto dto = (AuditMachineDto) dr.get(0);
         assertEquals(machinename, dto.getName());
 

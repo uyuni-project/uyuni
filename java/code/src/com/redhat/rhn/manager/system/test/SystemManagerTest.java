@@ -469,7 +469,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         DataResult<SystemOverview> systems = SystemManager.systemList(user, null);
         assertNotNull(systems);
         assertFalse(systems.isEmpty());
-        assertTrue(!systems.isEmpty());
+        assertFalse(systems.isEmpty());
     }
 
     @Test
@@ -494,7 +494,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(systems);
 
         assertFalse(systems.isEmpty());
-        assertTrue(!systems.isEmpty());
+        assertFalse(systems.isEmpty());
         assertTrue(newCount > origCount);
         assertTrue(systems.size() <= 20);
     }
@@ -604,7 +604,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         errata = SystemManager.unscheduledErrata(user, server.getId(), pc);
         assertNotNull(errata);
         assertFalse(errata.isEmpty());
-        assertTrue(errata.size() == 1);
+        assertEquals(1, errata.size());
         assertTrue(SystemManager.hasUnscheduledErrata(user, server.getId()));
     }
 
@@ -742,7 +742,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(dr.size(), 1);
         EssentialServerDto m = dr.get(0);
         Long id = m.getId();
-        assertTrue(s.getId().equals(id));
+        assertEquals(s.getId(), id);
 
         // Create a new no-base-channel-server
         Server s2 = ServerTestUtils.createTestSystem(user);
@@ -894,7 +894,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
 
         List<CustomDataKeyOverview> list = SystemManager.listDataKeys(admin);
-        assertTrue(1 == list.size());
+        assertEquals(1, list.size());
         CustomDataKeyOverview dataKey = list.get(0);
         assertEquals(key.getLabel(), dataKey.getLabel());
     }
@@ -1050,7 +1050,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         server = ServerFactory.lookupById(server.getId());
         int sizeAfter = server.getNotes().size();
-        assertTrue(sizeAfter == (sizeBefore + 1));
+        assertEquals(sizeAfter, (sizeBefore + 1));
 
         Note deleteMe = server.getNotes().iterator().next();
 
@@ -1079,7 +1079,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         server = ServerFactory.lookupById(server.getId());
         int sizeAfter = server.getNotes().size();
-        assertTrue(sizeAfter == (sizeBefore + 4));
+        assertEquals(sizeAfter, (sizeBefore + 4));
 
         // Test
         SystemManager.deleteNotes(admin, server.getId());
@@ -1140,7 +1140,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                     e.getId(), pkg.getId());
             List<SystemOverview> systems =
                     SystemManager.listSystemsWithNeededPackage(user, pkg.getId());
-            assertTrue(systems.size() == 1);
+            assertEquals(1, systems.size());
             SystemOverview so = systems.get(0);
             assertEquals(so.getId(), server.getId());
         }
@@ -1148,7 +1148,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         errata = SystemManager.unscheduledErrata(user, server.getId(), pc);
         assertNotNull(errata);
         assertFalse(errata.isEmpty());
-        assertTrue(errata.size() == 1);
+        assertEquals(1, errata.size());
         assertTrue(SystemManager.hasUnscheduledErrata(user, server.getId()));
     }
 
@@ -1172,7 +1172,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ServerFactory.save(s);
 
         list = SystemManager.listInstalledPackage("kernel", s);
-        assertTrue(list.size() == 1);
+        assertEquals(1, list.size());
         assertEquals(list.get(0).get("name_id"), p.getName().getId());
         assertEquals(list.get(0).get("evr_id"), p.getEvr().getId());
 
@@ -1206,7 +1206,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 "testOrg" + this.getClass().getSimpleName());
         Server s = ServerFactoryTest.createTestServer(user, true);
         List<SystemOverview> list = SystemManager.listSystemsByName(user, s.getName());
-        assertTrue(list.size() == 1);
+        assertEquals(1, list.size());
         assertEquals(list.get(0).getId(), s.getId());
 
     }
@@ -1223,10 +1223,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         List<SystemOverview> list = SystemManager.listDuplicatesByHostname(user, "duphost");
-        assertTrue(list.size() == 2);
+        assertEquals(2, list.size());
 
         DataResult<SystemOverview> dr = SystemManager.systemList(user, null);
-        assertTrue(dr.size() == 3);
+        assertEquals(3, dr.size());
 
     }
 

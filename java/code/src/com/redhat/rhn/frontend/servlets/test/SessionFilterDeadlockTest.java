@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -64,7 +65,7 @@ public class SessionFilterDeadlockTest extends BaseFilterTst {
             }
         }
         Configurator.setLevel(this.getClass().getName(), orig);
-        assertTrue(caughtCount == 5);
+        assertEquals(5, caughtCount);
         HibernateFactory.getSession();
         assertTrue(HibernateFactory.inTransaction());
     }

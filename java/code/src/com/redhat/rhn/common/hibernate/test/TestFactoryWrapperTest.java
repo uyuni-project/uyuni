@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.hibernate.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,7 +64,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         // 1 is a magic number, this is basically checking that the id is set
         // correctly.  We know this will be 1, because we create the sequence
         // to start at 0, and Blarg is the first value inserted.
-        assertTrue(obj.getId() == 1);
+        assertEquals(1, (long) obj.getId());
     }
 
     @Test
@@ -74,7 +75,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
          // 1 is a magic number, this is basically checking that the id is set
          // correctly.  We know this will be 1, because we create the sequence
          // to start at 0, and Blarg is the first value inserted.
-         assertTrue(obj.getId() == 1);
+        assertEquals(1, (long) obj.getId());
      }
 
     @Test
@@ -120,7 +121,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     @Test
     public void testLookupMultipleObjects() throws Exception {
         List allTests = TestFactory.lookupAll();
-        assertTrue(!allTests.isEmpty());
+        assertFalse(allTests.isEmpty());
     }
 
     @Test
@@ -138,7 +139,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         result.setTestColumn(null);
         TestFactory.save(result);
         result = TestFactory.lookupByFoobar("After_change3");
-        assertTrue(result.getTestColumn() == null);
+        assertNull(result.getTestColumn());
     }
 
     @Test

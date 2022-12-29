@@ -130,7 +130,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         assertNotNull(url);
         // http://xmlrpc.rhn.webdev.redhat.com/ty/gtIKQrRN
         assertTrue(url.startsWith("http"));
-        assertTrue(url.indexOf("http://xmlrpc.rhn.webdev.redhat.com/ty/") == 0);
+        assertEquals(0, url.indexOf("http://xmlrpc.rhn.webdev.redhat.com/ty/"));
 
     }
 

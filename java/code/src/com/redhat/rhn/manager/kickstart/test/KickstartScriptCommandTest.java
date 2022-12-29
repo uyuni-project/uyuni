@@ -15,8 +15,8 @@
 package com.redhat.rhn.manager.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -67,7 +67,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         ksdata = (KickstartData) reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
-        assertTrue(!ksdata.getScripts().isEmpty());
+        assertFalse(ksdata.getScripts().isEmpty());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         ksdata = (KickstartData) reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
-        assertTrue(!ksdata.getScripts().isEmpty());
+        assertFalse(ksdata.getScripts().isEmpty());
     }
 
     @Test

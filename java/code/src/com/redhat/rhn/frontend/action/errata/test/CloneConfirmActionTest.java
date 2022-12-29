@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.action.errata.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -96,7 +95,7 @@ public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
 
             assertEquals(1, clones.size());
             var clone = (ClonedErrata) clones.get(0);
-            assertTrue(clone.getOriginal().equals(e));
+            assertEquals(clone.getOriginal(), e);
         }
     }
 }

@@ -75,7 +75,7 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
         public void run() {
             try {
                 Collection keys = PrimitiveFactory.getKeys();
-                assertTrue(keys.size() == 3);
+                assertEquals(3, keys.size());
                 String s = (String)PrimitiveFactory.getObject("string-object-foo");
                 assertEquals("Foo", s);
             }

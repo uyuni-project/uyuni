@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -86,6 +87,6 @@ public class SSOControllerTest extends BaseControllerTestCase {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         Request requestWithCsrf = getRequestWithCsrf("/manager/sso/metadata");
         SSOController.getMetadata(requestWithCsrf, response);
-        assertTrue(response.raw().getOutputStream().toString().equals(StringUtils.EMPTY));
+        assertEquals(StringUtils.EMPTY, response.raw().getOutputStream().toString());
     }
 }

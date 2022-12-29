@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.validator.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -67,7 +68,7 @@ public class ValidatorTest  {
 
     @Test
     public void testGetConstraints() {
-        assertTrue(!validator.getConstraints().isEmpty());
+        assertFalse(validator.getConstraints().isEmpty());
         Object constraint = validator.getConstraints().get(0);
         assertTrue(constraint instanceof Constraint);
     }

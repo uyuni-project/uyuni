@@ -16,7 +16,7 @@ package com.redhat.rhn.manager.system.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -161,7 +161,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
                 assertEquals(1024, guest.getTotalMemory().longValue());
             }
             else {
-                assertTrue(false);
+                fail();
             }
         }
     }
@@ -309,7 +309,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
                 assertEquals(STATE_CRASHED, guest.getState().getLabel());
             }
             else {
-                assertTrue(false);
+                fail();
             }
         }
     }

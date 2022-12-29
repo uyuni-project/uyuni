@@ -100,8 +100,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
 
         assertEquals(expectedScript,
                      scriptaction.getScriptActionDetails().getScriptContents());
-        assertTrue(scriptaction.getScriptActionDetails().getParentAction()
-                .equals(scriptaction));
+        assertEquals(scriptaction.getScriptActionDetails().getParentAction(), scriptaction);
 
     }
 

@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -85,9 +85,9 @@ public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
 
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(dr);
-        assertTrue(!dr.isEmpty());
+        assertFalse(dr.isEmpty());
         assertNotNull(set);
-        assertTrue(!set.isEmpty());
+        assertFalse(set.isEmpty());
         assertEquals(rhnsetLabel, set.getLabel());
 
         // clean up

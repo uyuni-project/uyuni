@@ -15,6 +15,7 @@
 package com.redhat.rhn.testing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -165,7 +166,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
     protected void verifyList(String attribName, Class classIn) {
         List dr = (List) request.getAttribute(attribName);
         Assertions.assertNotNull(dr, "Your list: " + attribName + " is null");
-        Assertions.assertTrue(!dr.isEmpty(), "Your list: " + attribName + " is empty");
+        assertFalse(dr.isEmpty(), "Your list: " + attribName + " is empty");
         Assertions.assertEquals(classIn, dr.iterator().next().getClass(),
                 "Your list: " + attribName + " is the wrong class");
     }
@@ -196,7 +197,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
         DynaActionForm form = (DynaActionForm) getActionForm();
         List dr = (List) form.get(attribName);
         assertNotNull(dr);
-        assertTrue(!dr.isEmpty());
+        assertFalse(dr.isEmpty());
         assertEquals(classIn, dr.iterator().next().getClass());
     }
 

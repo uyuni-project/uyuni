@@ -18,7 +18,6 @@ package com.redhat.rhn.manager.kickstart.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -64,7 +63,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
    public void testKickstartsInOrg() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         DataResult dr = KickstartLister.getInstance().kickstartsInOrg(k.getOrg(), null);
-        assertTrue(!dr.isEmpty());
+        assertFalse(dr.isEmpty());
         KickstartDto row = (KickstartDto) dr.get(0);
         assertNotNull(row.getId());
         assertEquals(k.getOrg().getId().longValue(), row.getOrgId().longValue());
@@ -82,7 +81,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
        flushAndEvict(key);
 
        DataResult<CryptoKeyDto> dr = KickstartLister.getInstance().cryptoKeysInOrg(o);
-       assertTrue(!dr.isEmpty());
+        assertFalse(dr.isEmpty());
         assertNotNull(dr.get(0));
    }
 
@@ -95,7 +94,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
 
        DataResult<FilePreservationDto> dr = KickstartLister.getInstance().preservationListsInOrg(o, null);
        assertNotNull(dr.get(0));
-       assertTrue(!dr.isEmpty());
+        assertFalse(dr.isEmpty());
    }
 
     @Test

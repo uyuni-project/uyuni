@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.common.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
@@ -57,13 +56,13 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
         files =  cmd.getFileListString() + baseStr + version++;
         cmd.updateFiles(files);
 
-        assertTrue(cmd.getFileListString().equals("Test10.1"));
+        assertEquals("Test10.1", cmd.getFileListString());
 
 
         files =  cmd.getFileListString() + "\n" + baseStr + version++;
         cmd.updateFiles(files);
 
-        assertTrue(cmd.getFileListString().equals("Test10.1\nTest10.2"));
+        assertEquals("Test10.1\nTest10.2", cmd.getFileListString());
 
         while (version < 11) {
             files += "\n" + baseStr + version++;
@@ -71,7 +70,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
         }
 
         cmd.updateFiles(files);
-        assertTrue(cmd.getFileListString().equals(fileList));
+        assertEquals(cmd.getFileListString(), fileList);
     }
 
 

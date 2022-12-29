@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.kickstart.crypto.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -68,7 +68,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         ksdata = addKeyToKickstart(ksdata);
         assertNotNull(ksdata.getCryptoKeys());
-        assertTrue(!ksdata.getCryptoKeys().isEmpty());
+        assertFalse(ksdata.getCryptoKeys().isEmpty());
     }
 
     public static CryptoKey createTestKey(Org orgIn) {

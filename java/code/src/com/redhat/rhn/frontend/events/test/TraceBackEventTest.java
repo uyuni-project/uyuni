@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.events.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -130,8 +131,8 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         };
         action.execute(evt);
         mailer.verify();
-        assertTrue(mailer.getSubject().indexOf("WEB TRACEBACK from ") == 0);
-        assertTrue(mailer.getBody().indexOf("The following exception occurred") == 0);
+        assertEquals(0, mailer.getSubject().indexOf("WEB TRACEBACK from "));
+        assertEquals(0, mailer.getBody().indexOf("The following exception occurred"));
         assertTrue(mailer.getBody().indexOf("Request:") > 0);
         assertTrue(mailer.getBody().indexOf("User Information:") > 0);
         assertTrue(mailer.getBody().indexOf("Exception:") > 0);

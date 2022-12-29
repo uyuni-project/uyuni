@@ -182,7 +182,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         pc.setStart(1);
         DataResult<ScheduledAction> dr = ActionManager.pendingActions(user, pc);
         assertNotNull(dr);
-        assertTrue(!dr.isEmpty());
+        assertFalse(dr.isEmpty());
     }
 
     @Test
@@ -780,7 +780,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         ActionManager.rescheduleAction(a1);
         sa = (ServerAction) ActionFactory.reload(sa);
-        assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
+        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
         assertTrue(sa.getRemainingTries() > 0);
     }
 
@@ -807,7 +807,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         sa.setStatus(ActionFactory.STATUS_FAILED);
         ActionFactory.save(a1);
 
-        assertTrue(!ActionManager.failedSystems(user, a1, null).isEmpty());
+        assertFalse(ActionManager.failedSystems(user, a1, null).isEmpty());
     }
 
     @Test
@@ -819,7 +819,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         a = ActionManager.createErrataAction(user, errata);
         assertNotNull(a);
         assertNotNull(a.getOrg());
-        assertTrue(a.getActionType().equals(ActionFactory.TYPE_ERRATA));
+        assertEquals(a.getActionType(), ActionFactory.TYPE_ERRATA);
     }
 
     @Test
@@ -834,8 +834,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(a.getServerActions().size(), 1);
         Object[] array = a.getServerActions().toArray();
         ServerAction sa = (ServerAction)array[0];
-        assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
-        assertTrue(sa.getServer().equals(s));
+        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertEquals(sa.getServer(), s);
     }
 
     @Test
@@ -1100,7 +1100,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 new Date(),
                 actionChain, user);
 
-        assertTrue(action != null);
+        assertNotNull(action);
         assertEquals("Build an Image Profile", action.getActionType().getName());
     }
 

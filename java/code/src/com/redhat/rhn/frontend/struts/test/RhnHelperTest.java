@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.struts.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -56,7 +55,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
         form.set("somevalue", value);
         String stripped = RhnHelper.getTextAreaValue(form, "somevalue");
         assertNotNull(stripped);
-        assertTrue(stripped.indexOf('\r') == -1);
+        assertEquals(-1, stripped.indexOf('\r'));
     }
 
     @Test

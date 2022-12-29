@@ -237,8 +237,8 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         assertNotNull(kickstartAction.getId());
         assertNotNull(kickstartAction.getKickstartActionDetails().
                 getFileLists());
-        assertTrue(kickstartAction.getKickstartActionDetails().
-                getFileLists().size() == 1);
+        assertEquals(1, kickstartAction.getKickstartActionDetails().
+                getFileLists().size());
     }
 
     @Test

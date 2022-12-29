@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -56,7 +57,7 @@ public class FilePreservationListsCommandTest extends BaseKickstartCommandTestCa
         cmd.store();
 
         flushAndEvict(cmd.getKickstartData());
-        assertTrue(cmd.getKickstartData().getPreserveFileLists().size() == 3);
+        assertEquals(3, cmd.getKickstartData().getPreserveFileLists().size());
         cmd.removeFileListsByIds(ids);
         cmd.store();
         flushAndEvict(cmd.getKickstartData());

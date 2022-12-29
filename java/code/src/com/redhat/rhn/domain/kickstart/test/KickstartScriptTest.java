@@ -115,7 +115,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         ksdata = (KickstartData) reload(ksdata);
         Iterator i = ksdata.getScripts().iterator();
         boolean found = false;
-        assertTrue(ksdata.getScripts().size() == 2);
+        assertEquals(2, ksdata.getScripts().size());
         while (i.hasNext()) {
             KickstartScript loaded = (KickstartScript) i.next();
             if (loaded.getDataContents().equals(largeString)) {

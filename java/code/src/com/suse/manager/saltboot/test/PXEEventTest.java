@@ -104,7 +104,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
             assertEquals(Optional.of("custom=option"), e.getKernelParameters());
             assertEquals("POS_Image_JeOS7-7.0.0-1", e.getBootImage());
             // Localhost device should be parsed out
-            assertTrue(e.getHwAddresses().size() == 1);
+            assertEquals(1, e.getHwAddresses().size());
             assertEquals(e.getHwAddresses().get(0), "00:11:22:33:44:55");
         });
     }
@@ -214,7 +214,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
             assertEquals(Optional.empty(), e.getKernelParameters());
             assertEquals("POS_Image_JeOS7-7.0.0-1", e.getBootImage());
             // Localhost device should be parsed out
-            assertTrue(e.getHwAddresses().size() == 1);
+            assertEquals(1, e.getHwAddresses().size());
             assertEquals(e.getHwAddresses().get(0), "00:11:22:33:44:55");
         });
     }
@@ -244,7 +244,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
             assertEquals(Optional.of("custom=option"), e.getKernelParameters());
             assertEquals("POS_Image_JeOS7-7.0.0-1", e.getBootImage());
             // Localhost device should be parsed out
-            assertTrue(e.getHwAddresses().size() == 1);
+            assertEquals(1, e.getHwAddresses().size());
             assertEquals(e.getHwAddresses().get(0), "00:11:22:33:44:55");
         });
     }

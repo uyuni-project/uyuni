@@ -15,7 +15,7 @@
 package com.redhat.rhn.common.translation.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -155,8 +155,8 @@ public class ExceptionsWrapperTest  {
                     for (StackTraceElement elementIn : elements) {
                         String method = elementIn.getMethodName();
                         String className = elementIn.getClassName();
-                        assertFalse(className.equals(EXCEPTION_TRANSLATOR));
-                        assertFalse(method.equals("convert"));
+                        assertNotEquals(EXCEPTION_TRANSLATOR, className);
+                        assertNotEquals("convert", method);
                     }
                 }
             }

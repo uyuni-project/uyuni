@@ -451,10 +451,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, ACTIVATION_KEY_SUPPLIER,
                 (minion, machineId, key) -> MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
                 m -> {
-                    assertTrue(m.getCreated().equals(server.getCreated()));
+                    assertEquals(m.getCreated(), server.getCreated());
                     assertEquals(m.getId(), server.getId());
                 },
-                () -> assertTrue(false, "Machine ID not found")), null, DEFAULT_CONTACT_METHOD);
+                () -> fail("Machine ID not found")), null, DEFAULT_CONTACT_METHOD);
     }
 
     /*
@@ -1443,7 +1443,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(minion.getManagedGroups().contains(hwGroup));
                     assertTrue(minion.getManagedGroups().contains(terminalsGroup));
                     assertTrue(minion.getManagedGroups().contains(branchGroup));
-                    assertTrue(minion.getOrg().equals(user.getOrg()));
+                    assertEquals(minion.getOrg(), user.getOrg());
                 }, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
     }
 

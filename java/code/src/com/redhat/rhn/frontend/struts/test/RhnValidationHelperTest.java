@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.struts.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -45,7 +46,7 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
         errors[2] = new ValidatorError("error 3", "someval2");
         ActionErrors am = RhnValidationHelper.validatorErrorToActionErrors(errors);
         assertNotNull(am);
-        assertTrue(am.size() == 3);
+        assertEquals(3, am.size());
      }
 
     @Test

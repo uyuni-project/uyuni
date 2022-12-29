@@ -189,7 +189,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testServerGroupMembers() throws Exception {
         Server s = createTestServer(user);
         assertNotNull(s.getEntitledGroups());
-        assertTrue(!s.getEntitledGroups().isEmpty());
+        assertFalse(s.getEntitledGroups().isEmpty());
     }
 
     @Test
@@ -210,7 +210,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // add the test key to the server and make sure we can get to it.
         testServer.addCustomDataValue(testKey.getLabel(), "foo", user);
         assertNotNull(testServer.getCustomDataValue(testKey));
-        assertTrue(!testServer.getCustomDataValues().isEmpty());
+        assertFalse(testServer.getCustomDataValues().isEmpty());
 
         // try sending null for key
         int numVals = testServer.getCustomDataValues().size();
@@ -295,8 +295,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         SERVER_GROUP_MANAGER.addServers(sg1, servers, user);
 
         server = reload(server);
-        assertTrue(server.getEntitledGroupTypes().size() == 1);
-        assertTrue(server.getManagedGroups().size() == 1);
+        assertEquals(1, server.getEntitledGroupTypes().size());
+        assertEquals(1, server.getManagedGroups().size());
 
 
         String changedName = "The group name has been changed" +
@@ -310,7 +310,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().evict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(id, user.getOrg());
-        assertTrue(server2.getManagedGroups().size() == 1);
+        assertEquals(1, server2.getManagedGroups().size());
         sg1 = server2.getManagedGroups().iterator().next();
 
         assertEquals(changedName, sg1.getName());
@@ -884,7 +884,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set servers = new HashSet();
         servers.add(serverToSearch);
         SERVER_GROUP_MANAGER.addServers(group, servers, admin);
-        assertTrue(!group.getServers().isEmpty());
+        assertFalse(group.getServers().isEmpty());
         //create admins set and add it to the grup
         Set admins = new HashSet();
         admins.add(regular);
@@ -1174,7 +1174,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             Collection<String> regularPatches = (Collection<String>) pillar
                     .get(SaltServerActionService.PARAM_REGULAR_PATCHES);
             assertEquals(1, regularPatches.size());
-            assertEquals(true, regularPatches.contains("SUSE-" + updateTag + "-2016-1234"));
+            assertTrue(regularPatches.contains("SUSE-" + updateTag + "-2016-1234"));
 
             Collection<String> updateStackPatches = (Collection<String>) pillar
                     .get(SaltServerActionService.PARAM_UPDATE_STACK_PATCHES);

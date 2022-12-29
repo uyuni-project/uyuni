@@ -271,7 +271,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     @Test
     public void testGetCountriesPrefixes() {
         assertNotNull(ls.availableCountries().get("Peru"));
-        assertTrue(!ls.availablePrefixes().isEmpty());
+        assertFalse(ls.availablePrefixes().isEmpty());
     }
 
     /** Test to make sure debug mode works
@@ -290,7 +290,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     @Test
     public void testSupportedLocales() {
         List locales = ls.getSupportedLocales();
-        assertTrue(!locales.isEmpty());
+        assertFalse(locales.isEmpty());
         assertTrue(ls.isLocaleSupported(Locale.US));
         assertTrue(ls.isLocaleSupported(Locale.TAIWAN));
     }

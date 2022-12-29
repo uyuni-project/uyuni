@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,7 +54,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
         DataResult dr = KickstartLister.getInstance()
             .getActivationKeysInOrg(ksdata.getOrg(), null);
-        assertTrue(!dr.isEmpty());
+        assertFalse(dr.isEmpty());
         boolean found = false;
         for (Object oIn : dr) {
             ActivationKeyDto row = (ActivationKeyDto) oIn;

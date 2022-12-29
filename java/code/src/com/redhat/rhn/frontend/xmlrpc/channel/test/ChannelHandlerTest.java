@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.channel.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -57,7 +58,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
 
         List<Map<String, Object>> result = handler.listSoftwareChannels(admin);
         assertNotNull(result);
-        assertTrue(!result.isEmpty());
+        assertFalse(result.isEmpty());
 
         for (Map<String, Object> item : result) {
             Set<String> keys = item.keySet();
@@ -108,7 +109,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         Object[] result = handler.listManageableChannels(regular);
 
         assertNotNull(result);
-        assertTrue(result.length == 0);
+        assertEquals(0, result.length);
 
         regular.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
 

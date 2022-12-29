@@ -1958,7 +1958,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         List<CVEAuditImage> results =
                 CVEAuditManager.listImagesByPatchStatus(user, cveName, filter);
         // We are not going to check for PATCHED/UNPATCHED because of the null epoch
-        assertTrue(results.size() == 1);
+        assertEquals(1, results.size());
     }
 
     /**
@@ -2060,8 +2060,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, EnumSet.allOf(PatchStatus.class));
 
-        assertEquals(true, checkSystemRecordIsUnique(server1, results));
-        assertEquals(true, checkSystemRecordIsUnique(server2, results));
+        assertTrue(checkSystemRecordIsUnique(server1, results));
+        assertTrue(checkSystemRecordIsUnique(server2, results));
     }
 
     @Test
@@ -2100,7 +2100,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
             List<CVEAuditServer> results =
                     CVEAuditManager.listSystemsByPatchStatus(user, cveName, EnumSet.allOf(PatchStatus.class));
         // We are not going to check for PATCHED/UNPATCHED because of the null epoch
-        assertTrue(results.size() == 2);
+        assertEquals(2, results.size());
     }
 
     /**

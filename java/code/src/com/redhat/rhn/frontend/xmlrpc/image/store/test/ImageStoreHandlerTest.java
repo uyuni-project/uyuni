@@ -101,7 +101,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
             assertContains(e.getMessage(), "registry.mgr");
             return;
         }
-        assertFalse(true);
+        fail();
     }
 
     @Test

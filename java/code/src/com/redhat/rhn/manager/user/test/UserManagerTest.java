@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.user.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -172,7 +173,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         User foundUser2 = UserFactory.lookupById(user2.getId());
         assertEquals(foundUser2.getId(), user2.getId());
-        assertFalse(foundUser2.getOrg().getId().equals(group.getOrg().getId()));
+        assertNotEquals(foundUser2.getOrg().getId(), group.getOrg().getId());
 
         Set userGroups2 = foundUser2.getAssociatedServerGroups();
         assertNotNull(userGroups2);

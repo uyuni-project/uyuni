@@ -15,8 +15,7 @@
 package com.redhat.rhn.domain.action.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -37,13 +36,13 @@ public class ActionStatusTest extends RhnBaseTestCase {
     public void testEquals() throws Exception {
         ActionStatus s1 = new ActionStatus();
         ActionStatus s2 = null;
-        assertFalse(s1.equals(s2));
+        assertNotEquals(s1, s2);
         s1 = ActionFactory.STATUS_QUEUED;
         s2 = ActionFactory.STATUS_QUEUED;
-        assertTrue(s1.equals(s2));
+        assertEquals(s1, s2);
         ActionStatus s3 = ActionFactory.STATUS_FAILED;
-        assertFalse(s1.equals(s3));
-        assertTrue(s1.equals(s1));
+        assertNotEquals(s1, s3);
+        assertEquals(s1, s1);
     }
 
     /**

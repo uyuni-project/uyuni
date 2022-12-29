@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.Row;
@@ -114,7 +113,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         proxy.setHostname("proxy");
         ServerFactory.save(proxy);
         TestUtils.flushAndEvict(proxy);
-        assertTrue(SystemManager.listProxies(user.getOrg()).size() == 1);
+        assertEquals(1, SystemManager.listProxies(user.getOrg()).size());
         return proxy;
     }
 

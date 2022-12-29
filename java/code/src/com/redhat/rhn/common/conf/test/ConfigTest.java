@@ -17,6 +17,7 @@ package com.redhat.rhn.common.conf.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -431,8 +432,8 @@ public class ConfigTest extends RhnBaseTestCase {
         String somevalue = Config.get().getString("somevalue8923984",
                 "xmlrpc.rhn.redhat.com");
         assertNotNull(somevalue);
-        assertFalse(somevalue.equals(""));
-        assertTrue(somevalue.equals("xmlrpc.rhn.redhat.com"));
+        assertNotEquals("", somevalue);
+        assertEquals("xmlrpc.rhn.redhat.com", somevalue);
     }
     @Test
     public void testForNull() {

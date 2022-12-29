@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -54,8 +55,8 @@ public class ServerGroupTest extends RhnBaseTestCase {
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(user);
         ServerGroup sg2 = new ServerGroup();
 
-        assertFalse(sg1.equals(sg2));
-        assertFalse(sg1.equals("foo"));
+        assertNotEquals(sg1, sg2);
+        assertNotEquals("foo", sg1);
 
         Session session = HibernateFactory.getSession();
         sg2 = (ServerGroup) session.getNamedQuery("ServerGroup.lookupByIdAndOrg")
@@ -100,7 +101,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
     @Test
     public void testGetServerGroupTypeFeatures() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
-        assertTrue(!org1.getEntitledServerGroups().isEmpty());
+        assertFalse(org1.getEntitledServerGroups().isEmpty());
 
         // we assume existence of salt entitlement
         EntitlementServerGroup serverGroup = org1.getEntitledServerGroups().stream()
@@ -108,7 +109,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
                 .findFirst()
                 .orElseThrow();
         assertNotNull(serverGroup.getGroupType().getFeatures());
-        assertTrue(!serverGroup.getGroupType().getFeatures().isEmpty());
+        assertFalse(serverGroup.getGroupType().getFeatures().isEmpty());
     }
 
     @Test
