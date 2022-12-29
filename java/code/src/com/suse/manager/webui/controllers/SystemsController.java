@@ -212,11 +212,13 @@ public class SystemsController {
                             List<String> values = List.of("proxy", "mgr_server", "virtual_host",
                                                           "virtual_guest", "physical");
                             if (values.contains(control.getFilterData())) {
-                                control.setFilterColumn(control.getFilterData());
-                                control.setFilterData("true");
                                 if ("physical".equals(control.getFilterData())) {
                                     control.setFilterColumn("virtual_guest");
                                     control.setFilterData("false");
+                                }
+                                else {
+                                    control.setFilterColumn(control.getFilterData());
+                                    control.setFilterData("true");
                                 }
                             }
                             else {
