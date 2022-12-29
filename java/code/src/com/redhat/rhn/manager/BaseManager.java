@@ -171,9 +171,9 @@ public abstract class BaseManager {
      * @param lc ListControl filtering definition.
      * @return DataResult modified (filtered) by the PageControl
      */
-    protected static DataResult processListControl(DataResult dr,
+    protected static <T> DataResult<T> processListControl(DataResult<T> dr,
                                             ListControl lc,
-                                            Map elabParams) {
+                                            Map<String, Object> elabParams) {
         if (elabParams != null) {
             dr.setElaborationParams(elabParams);
         }
@@ -189,17 +189,13 @@ public abstract class BaseManager {
             // If we are filtering the content, _don't_ show the alphabar.
             // This matches what the perl code does.  If we want to show a
             // smaller alphabar, just remove the if statement.
-            if (lc.getFilterData() == null || lc.getFilterData().equals("")) {
-                if (lc.hasIndex()) {
-                    dr.setIndex(lc.createIndex(dr));
-                }
+            if ((lc.getFilterData() == null || lc.getFilterData().equals("")) && lc.hasIndex()) {
+                dr.setIndex(lc.createIndex(dr));
             }
 
             //elaborate the data result to get the detailed information.
             dr.elaborate(elabParams);
         }
-
-
         return dr;
     }
 }
