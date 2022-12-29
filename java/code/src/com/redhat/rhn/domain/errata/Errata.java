@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
@@ -728,7 +729,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @return all errata notifications
      */
-    public List getNotificationQueue() {
+    public List<Row> getNotificationQueue() {
         return ErrataManager.listErrataNotifications(this);
     }
 

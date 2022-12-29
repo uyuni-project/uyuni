@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.action.common.DateRangePicker;
 import com.redhat.rhn.frontend.action.common.DateRangePicker.DatePickerResults;
+import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -288,7 +289,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         // In order to maintain the ranking from the search server, we
         // need to reorder the database results to match. This will lead
         // to a better user experience.
-        List<ErrataOverview> unsorted = new ArrayList<>();
+        List<ErrataOverview> unsorted;
         if (OPT_PKG_NAME.equals(mode)) {
             unsorted = ErrataManager.searchByPackageIdsWithOrg(ids,
                     ctx.getCurrentUser().getOrg());
@@ -302,7 +303,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             // Flesh out all CVEs for each errata returned..generally this is a
             // small number of Errata to operate on.
             for (ErrataOverview eo : unsorted) {
-                DataResult dr = ErrataManager.errataCVEs(eo.getId());
+                DataResult<CVE> dr = ErrataManager.errataCVEs(eo.getId());
                 eo.setCves(dr);
             }
         }

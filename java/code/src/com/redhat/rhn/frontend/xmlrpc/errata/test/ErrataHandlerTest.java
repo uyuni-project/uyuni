@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
@@ -60,6 +61,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -453,8 +455,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertTrue(userErrataCheck.getAdvisory().equals(userErrata.getAdvisory()));
         assertTrue(userErrataCheck.getId().equals(userErrata.getId()));
 
-        DataResult dr = ErrataManager.applicableChannels(Arrays.asList(userErrata.getId()),
-                            user.getOrg().getId(), null, Map.class);
+        DataResult<Row> dr = ErrataManager.applicableChannels(Collections.singletonList(userErrata.getId()),
+                            user.getOrg().getId());
 
         Object[] channels = handler.applicableToChannels(admin, userErrata.getAdvisory());
         assertEquals(dr.size(), channels.length);
@@ -466,15 +468,15 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         ErrataFactory.save(userErrata);
 
-        DataResult applicableChannelsForUserErrata = ErrataManager.applicableChannels(Arrays.asList(userErrata.getId()),
-                            user.getOrg().getId(), null, Map.class);
+        DataResult<Row> applicableChannelsForUserErrata = ErrataManager.applicableChannels(
+                Collections.singletonList(userErrata.getId()), user.getOrg().getId());
 
         channels = handler.applicableToChannels(admin, userErrata.getAdvisory());
 
         assertEquals(applicableChannelsForUserErrata.size(), channels.length);
         assertEquals(channels.length, 1);
         assertTrue(Arrays.stream(channels).allMatch(chn1 -> applicableChannelsForUserErrata.stream()
-                .anyMatch(chn2 ->((Map) chn1).get("id").equals(((Map) chn2).get("id")))));
+                .anyMatch(chn2 ->((Map) chn1).get("id").equals(chn2.get("id")))));
 
         //two errata, for user's and vendor's org, with the same AdvisoryName. Applicable to user and vendor channels
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(null, Optional.of(userErrata.getAdvisory()));
@@ -491,15 +493,15 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertTrue(vendorErrataCheck.getAdvisory().equals(userErrata.getAdvisory()));
         assertFalse(vendorErrataCheck.getId().equals(userErrata.getId()));
 
-        DataResult applicableChannelsForUserAndVendorErrata = ErrataManager.applicableChannels(
-                Arrays.asList(vendorErrata.getId(), userErrata.getId()), user.getOrg().getId(), null, Map.class);
+        DataResult<Row> applicableChannelsForUserAndVendorErrata = ErrataManager.applicableChannels(
+                Arrays.asList(vendorErrata.getId(), userErrata.getId()), user.getOrg().getId());
 
         channels = handler.applicableToChannels(admin, vendorErrata.getAdvisory());
         assertEquals(applicableChannelsForUserAndVendorErrata.size(), channels.length);
         assertEquals(channels.length, 2);
 
         assertTrue(Arrays.stream(channels).allMatch(chn1 -> applicableChannelsForUserAndVendorErrata.stream()
-                .anyMatch(chn2 ->((Map) chn1).get("id").equals(((Map) chn2).get("id")))));
+                .anyMatch(chn2 ->((Map) chn1).get("id").equals(chn2.get("id")))));
     }
 
     @Test
