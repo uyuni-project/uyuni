@@ -150,13 +150,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     private void searchByPackagesIdsHelper(Optional<Channel> channel,
-                                           Function<List, List<ErrataOverview>> errataSearchFn) throws Exception {
+                                           Function<List<Long>, List<ErrataOverview>> errataSearchFn) {
         Package p = PackageTest.createTestPackage(user.getOrg());
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
         Bug b1 = ErrataManagerTest.createTestBug(42L, "test bug");
-        assertTrue(b1 instanceof Bug);
         Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
@@ -188,7 +187,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         mode.executeUpdate(params);
 
         // now test for errata
-        List pids = new ArrayList();
+        List<Long> pids = new ArrayList<>();
         pids.add(p.getId());
         List<ErrataOverview> eos = errataSearchFn.apply(pids);
         assertNotNull(eos);

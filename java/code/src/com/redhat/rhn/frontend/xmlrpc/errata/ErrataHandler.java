@@ -48,6 +48,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.CVE;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DuplicateErrataException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidAdvisoryReleaseException;
@@ -465,7 +466,7 @@ public class ErrataHandler extends BaseHandler {
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
-        DataResult dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errataIds);
+        DataResult<SystemOverview> dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errataIds);
 
         return dr.toArray();
     }
@@ -566,7 +567,7 @@ public class ErrataHandler extends BaseHandler {
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
         return ErrataManager.applicableChannels(errataIds,
-                loggedInUser.getOrg().getId(), null, Map.class).toArray();
+                loggedInUser.getOrg().getId()).toArray();
     }
 
     /**
@@ -587,14 +588,14 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.returntype #array_single("string", "CVE name")
      */
     @ReadOnly
-    public List listCves(User loggedInUser, String advisoryName) throws FaultException {
+    public List<String> listCves(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
-        DataResult dr = ErrataManager.errataCVEs(errataIds);
+        DataResult<CVE> dr = ErrataManager.errataCVEs(errataIds);
 
-        return (List) dr.stream().map(cve -> ((CVE) cve).getName()).collect(toList());
+        return dr.stream().map(CVE::getName).collect(toList());
     }
 
     /**
