@@ -160,4 +160,4 @@ Feature: Channel subscription via SSM
     Then channel "SLE15-SP4-Installer-Updates for x86_64" should not be enabled on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
-    When I follow "clear-ssm"
+    When I click on "Clear"
