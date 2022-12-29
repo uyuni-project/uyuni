@@ -34,26 +34,26 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I click on "Attach/Detach Sources"
-    And I select "SLES12-SP5-Pool for x86_64" from "selectedBaseChannel"
-    And I wait until I see "SLES12-SP5-Pool for x86_64" text
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
     And I click on "Save"
-    And I wait until I see "SLES12-SP5-Pool for x86_64" text
+    And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
 @uyuni
   Scenario: Verify added sources for Uyuni
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    Then I should see a "SLES12-SP5-Updates for x86_64" text
+    Then I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
     And I should see a "Build (2)" text
 
 @susemanager
   Scenario: Verify added sources for SUSE Manager
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    Then I should see a "SLE-Manager-Tools12-Updates for x86_64 SP5" text
-    And I should see a "SLES12-SP5-Updates for x86_64" text
-    And I should see a "SLE-Manager-Tools12-Pool for x86_64 SP5" text
+    Then I should see a "SLE-Manager-Tools15-Updates for x86_64 SP4" text
+    And I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
+    And I should see a "SLE-Manager-Tools15-Pool for x86_64 SP4" text
     And I should see a "Build (4)" text
 
   Scenario: Add environments to the project
