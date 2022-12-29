@@ -569,7 +569,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
                 .filter(storedPkg -> userErrata.getPackages().stream()
                         .anyMatch(userPkg -> userPkg.getId().equals(storedPkg.getId()))).count(), 1);
 
-        List<Map> pkgs = handler.listPackages(admin, userErrata.getAdvisory());
+        List<Map<String, Object>> pkgs = handler.listPackages(admin, userErrata.getAdvisory());
 
         assertNotNull(pkgs);
         assertEquals(userErrata.getPackages().size(), pkgs.size());

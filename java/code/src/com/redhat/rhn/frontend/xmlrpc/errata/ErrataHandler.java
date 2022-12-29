@@ -641,7 +641,7 @@ public class ErrataHandler extends BaseHandler {
      *           #array_end()
      */
     @ReadOnly
-    public List<Map> listPackages(User loggedInUser, String advisoryName) throws FaultException {
+    public List<Map<String, Object>> listPackages(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
