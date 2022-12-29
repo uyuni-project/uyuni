@@ -309,7 +309,7 @@ public class PackageManager extends BaseManager {
      * @param pid The package in question
      * @return Returns a list of providing channels (id, name, label) for a package
      */
-    public static DataResult providingChannels(User user, Long pid) {
+    public static DataResult<Row> providingChannels(User user, Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "providing_channels",
                                            Map.class);
         Map<String, Object> params = new HashMap<>();

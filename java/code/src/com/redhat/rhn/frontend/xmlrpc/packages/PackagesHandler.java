@@ -99,7 +99,7 @@ public class PackagesHandler extends BaseHandler {
      *    #struct_end()
      */
     @ReadOnly
-    public Map getDetails(User loggedInUser, Integer pid) throws FaultException {
+    public Map<String, Object> getDetails(User loggedInUser, Integer pid) throws FaultException {
         // Get the logged in user
         Package pkg = lookupPackage(loggedInUser, pid);
 

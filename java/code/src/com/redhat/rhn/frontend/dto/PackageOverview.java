@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.db.datasource.Row;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URLEncoder;
@@ -31,7 +33,7 @@ public class PackageOverview extends BaseDto {
     private String description;
     private String packageNvre;
     private String nvrea;
-    private List packageChannels;
+    private List<Row> packageChannels;
     private String packageArch;
     private String provider;
     private String version;
@@ -43,14 +45,14 @@ public class PackageOverview extends BaseDto {
     /**
      * @return Returns the packageChannels.
      */
-    public List getPackageChannels() {
+    public List<Row> getPackageChannels() {
         return packageChannels;
     }
 
     /**
      * @param packageChannelsIn The packageChannels to set.
      */
-    public void setPackageChannels(List packageChannelsIn) {
+    public void setPackageChannels(List<Row> packageChannelsIn) {
         this.packageChannels = packageChannelsIn;
     }
 
