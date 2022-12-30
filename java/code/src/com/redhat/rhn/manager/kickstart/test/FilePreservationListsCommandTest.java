@@ -48,7 +48,7 @@ public class FilePreservationListsCommandTest extends BaseKickstartCommandTestCa
         list2 = (FileList) reload(list2);
         list3 = (FileList) reload(list3);
 
-        ArrayList ids = new ArrayList();
+        ArrayList ids = new ArrayList<>();
         ids.add(list1.getId());
         ids.add(list2.getId());
         ids.add(list3.getId());

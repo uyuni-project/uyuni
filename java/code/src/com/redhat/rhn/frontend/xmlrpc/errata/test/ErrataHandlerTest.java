@@ -714,7 +714,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Errata toClone = ErrataFactoryTest.createTestErrata(orgId);
         toClone.addPackage(errataPack);
 
-        ArrayList errata = new ArrayList();
+        ArrayList errata = new ArrayList<>();
         errata.add(toClone.getAdvisory());
 
         Object[] returnValue = handler.clone(admin,
@@ -750,10 +750,10 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         populateErrataInfo(errataInfo);
         errataInfo.put("advisory_name", advisoryName);
 
-        ArrayList packages = new ArrayList();
-        ArrayList bugs = new ArrayList();
-        ArrayList keywords = new ArrayList();
-        ArrayList channels = new ArrayList();
+        ArrayList packages = new ArrayList<>();
+        ArrayList bugs = new ArrayList<>();
+        ArrayList keywords = new ArrayList<>();
+        ArrayList channels = new ArrayList<>();
         channels.add(channel.getLabel());
 
         Errata errata = handler.create(admin, errataInfo,
@@ -805,10 +805,10 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         populateErrataInfo(errataInfo);
         errataInfo.put("advisory_name", advisoryName);
 
-        ArrayList packages = new ArrayList();
-        ArrayList bugs = new ArrayList();
-        ArrayList keywords = new ArrayList();
-        ArrayList channels = new ArrayList();
+        ArrayList packages = new ArrayList<>();
+        ArrayList bugs = new ArrayList<>();
+        ArrayList keywords = new ArrayList<>();
+        ArrayList channels = new ArrayList<>();
         channels.add(channel.getLabel());
 
         try {
@@ -833,10 +833,10 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("advisory_name", advisoryName);
         errataInfo.put("advisory_release", 10000);
 
-        ArrayList packages = new ArrayList();
-        ArrayList bugs = new ArrayList();
-        ArrayList keywords = new ArrayList();
-        ArrayList channels = new ArrayList();
+        ArrayList packages = new ArrayList<>();
+        ArrayList bugs = new ArrayList<>();
+        ArrayList keywords = new ArrayList<>();
+        ArrayList channels = new ArrayList<>();
         channels.add(channel.getLabel());
 
         try {
@@ -861,10 +861,10 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("advisory_name", advisoryName);
         errataInfo.put("advisory_release", 9999);
 
-        ArrayList packages = new ArrayList();
-        ArrayList bugs = new ArrayList();
-        ArrayList keywords = new ArrayList();
-        ArrayList channels = new ArrayList();
+        ArrayList packages = new ArrayList<>();
+        ArrayList bugs = new ArrayList<>();
+        ArrayList keywords = new ArrayList<>();
+        ArrayList channels = new ArrayList<>();
         channels.add(channel.getLabel());
 
         Errata errata = handler.create(admin, errataInfo,
@@ -884,7 +884,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
-        ArrayList channels = new ArrayList();
+        ArrayList channels = new ArrayList<>();
         channels.add(channel.getLabel());
         Errata published = handler.publish(admin, e.getAdvisoryName(), channels);
 
@@ -902,7 +902,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         e.setOrg(null); // let the errata be a vendor one
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
-        ArrayList channels = new ArrayList();
+        ArrayList channels = new ArrayList<>();
         channels.add(channel.getLabel());
         Errata published = handler.publish(admin, e.getAdvisoryName(), channels);
 
@@ -929,10 +929,10 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("notes", TestUtils.randomString());
         errataInfo.put("severity", "important");
 
-        ArrayList packages = new ArrayList();
-        ArrayList bugs = new ArrayList();
-        ArrayList keywords = new ArrayList();
-        ArrayList channels = new ArrayList();
+        ArrayList packages = new ArrayList<>();
+        ArrayList bugs = new ArrayList<>();
+        ArrayList keywords = new ArrayList<>();
+        ArrayList channels = new ArrayList<>();
         channels.add(channel.getLabel());
 
         // default path

@@ -111,7 +111,7 @@ public class RankChannelsAction  extends RhnAction {
      *                   their new  rankings.
      */
     private List<Long> getChannelIds(DynaActionForm form) {
-        List channels = new ArrayList();
+        List channels = new ArrayList<>();
         String rankedValues = (String)form.get(RANKED_VALUES);
         if (StringUtils.isNotBlank(rankedValues)) {
             String [] values = rankedValues.split(",");

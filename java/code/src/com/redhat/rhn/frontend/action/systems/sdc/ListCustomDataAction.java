@@ -67,14 +67,14 @@ public class ListCustomDataAction extends RhnAction {
             request.setAttribute("listEmpty", "1");
         }
 
-        List<String> keyList = new ArrayList();
+        List<String> keyList = new ArrayList<>();
         for (Object customDataValueIn : customDataValues) {
             CustomDataValue val = (CustomDataValue) customDataValueIn;
             keyList.add(val.getKey().getLabel());
         }
         Collections.sort(keyList);
 
-        List pageList = new ArrayList();
+        List pageList = new ArrayList<>();
         for (String keyLabel : keyList) {
             Map returnMap = new HashMap<>();
 

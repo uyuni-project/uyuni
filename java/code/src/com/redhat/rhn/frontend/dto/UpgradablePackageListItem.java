@@ -27,9 +27,9 @@ import java.util.Set;
  */
 public class UpgradablePackageListItem extends PackageListItem {
     private Long serverId;
-    private List errataId = new ArrayList();
-    private List errataAdvisory = new ArrayList();
-    private List errataAdvisoryType = new ArrayList();
+    private List errataId = new ArrayList<>();
+    private List errataAdvisory = new ArrayList<>();
+    private List errataAdvisoryType = new ArrayList<>();
     private Set installed;
     private String installedPackage = new String();
     private boolean packageReboot;
@@ -117,7 +117,7 @@ public class UpgradablePackageListItem extends PackageListItem {
      * @return list of HashMaps with advisory, id, and type keys
      */
     public List getErrata() {
-        List retval = new ArrayList();
+        List retval = new ArrayList<>();
         for (int i = 0; i < errataAdvisory.size(); i++) {
             Map current = new HashMap<>();
             current.put("advisory", errataAdvisory.get(i));

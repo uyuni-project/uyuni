@@ -81,7 +81,7 @@ public class MissingPackageAction extends BaseProfilesAction {
                 return null;
             }
 
-            List args = new ArrayList();
+            List args = new ArrayList<>();
             args.add(sid.toString());
             args.add(pa.getId().toString());
             args.add(StringUtil.htmlifyText(
@@ -101,7 +101,7 @@ public class MissingPackageAction extends BaseProfilesAction {
                 return null;
             }
 
-            List args = new ArrayList();
+            List args = new ArrayList<>();
             args.add(sid.toString());
             args.add(pa.getId().toString());
             args.add(StringUtil.htmlifyText(

@@ -1009,7 +1009,7 @@ public class SystemHandler extends BaseHandler {
 
         List toCheck = packagesToCheck(server, name);
 
-        List returnList = new ArrayList();
+        List returnList = new ArrayList<>();
         /*
          * Loop through the packages to check and compare the evr parts to what was
          * passed in from the user. If the package is older, add it to returnList.
@@ -1085,7 +1085,7 @@ public class SystemHandler extends BaseHandler {
         );
 
         List toCheck = packagesToCheck(server, name);
-        List returnList = new ArrayList();
+        List returnList = new ArrayList<>();
         /*
          * Loop through the packages to check and compare the evr parts to what was
          * passed in from the user. If the package is newer, add it to returnList.

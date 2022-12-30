@@ -86,7 +86,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
         User newUser = UserTestUtils.createUser("testDiffUser", user.getOrg().getId());
         assertFalse(manager.canAccess(newUser, sg));
-        List admins = new ArrayList();
+        List admins = new ArrayList<>();
         admins.add(newUser);
         manager.associateAdmins(sg, admins, user);
         assertTrue(manager.canAccess(newUser, sg));
@@ -114,7 +114,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
             //passed
         }
 
-        List admins = new ArrayList();
+        List admins = new ArrayList<>();
         admins.add(newUser);
         manager.associateAdmins(sg, admins, user);
         try {
@@ -179,7 +179,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         User newUser = UserTestUtils.
             createUser("testDiffUser", user.getOrg().getId());
-        List admins = new ArrayList();
+        List admins = new ArrayList<>();
         admins.add(newUser);
         manager.associateAdmins(sg, admins, user);
 
@@ -190,7 +190,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         User orgAdmin = UserTestUtils.createUser("testDiffUser",
                 user.getOrg().getId());
         orgAdmin.addPermanentRole(RoleFactory.ORG_ADMIN);
-        List admins1 = new ArrayList();
+        List admins1 = new ArrayList<>();
         admins1.add(orgAdmin);
         manager.associateAdmins(sg, admins1, user);
         //even though we asked the

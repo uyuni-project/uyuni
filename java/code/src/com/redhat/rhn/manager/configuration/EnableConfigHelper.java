@@ -112,7 +112,7 @@ public class EnableConfigHelper {
     private boolean installPackages(ConfigSystemDto dto, Server current, Date earliest)
         throws TaskomaticApiException {
         boolean error = false;
-        List packages = new ArrayList();
+        List packages = new ArrayList<>();
 
         /*
          * If there is ever an error, we will stop what we are doing.  Utilizing

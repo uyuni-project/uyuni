@@ -140,7 +140,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertNotNull(manager.lookup(NAME, admin));
         User newbie = UserTestUtils.createUser("Hahaha", admin.getOrg().getId());
 
-        List logins = new ArrayList();
+        List logins = new ArrayList<>();
         logins.add(newbie.getLogin());
 
 
@@ -214,7 +214,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertTrue(groups.contains(group1));
         assertTrue(groups.contains(group2));
 
-        List logins = new ArrayList();
+        List logins = new ArrayList<>();
         logins.add(regular.getLogin());
         handler.addOrRemoveAdmins(admin, group1.getName(), logins, true);
         assertTrue(manager.canAccess(regular, group1));
@@ -244,7 +244,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertNotNull(manager.lookup(NAME, admin));
 
         User unpriv = UserTestUtils.createUser("Unpriv", admin.getOrg().getId());
-        List logins = new ArrayList();
+        List logins = new ArrayList<>();
         logins.add(regular.getLogin());
         logins.add(unpriv.getLogin());
 
@@ -350,7 +350,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createTestSystem(admin);
         Server server2 = ServerTestUtils.createTestSystem(admin);
 
-        List  test = new ArrayList();
+        List  test = new ArrayList<>();
         test.add(server);
         test.add(server2);
         manager.addServers(group, test, admin);
@@ -373,7 +373,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createTestSystem(admin);
         Server server2 = ServerTestUtils.createTestSystem(admin);
 
-        List  test = new ArrayList();
+        List  test = new ArrayList<>();
         test.add(server);
         test.add(server2);
 

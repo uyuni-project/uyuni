@@ -78,7 +78,7 @@ public class TranslationsTest extends RhnBaseTestCase {
 
     @Test
     public void testListToString() {
-        List list = new ArrayList();
+        List list = new ArrayList<>();
         list.add(10);
         list.add("list");
         String s = (String) TestTranslations.convert(list, String.class);

@@ -208,7 +208,7 @@ public class ScheduleDetailAction extends RhnAction {
     private void prepDropdowns(RequestContext ctx) {
         User loggedInUser = ctx.getCurrentUser();
         // populate parent base channels
-        List dropDown = new ArrayList();
+        List dropDown = new ArrayList<>();
         try {
             List<Map> bunches = new TaskomaticApi().listSatBunchSchedules(loggedInUser);
             // Since recurring states have their own place in the webUI we don't

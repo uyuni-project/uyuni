@@ -169,7 +169,7 @@ public class AddRedHatErrataAction extends RhnListAction {
             }
 
             List<Channel> channelSet = findChannelsByVersion(user, selectedVersionStr);
-            channelList = new ArrayList();
+            channelList = new ArrayList<>();
             if (channelSet != null) {
                 sortChannelsAndChildify(channelSet, channelList, user, selectedChannelStr);
                 request.setAttribute(CHANNEL_LIST, channelList);
@@ -179,7 +179,7 @@ public class AddRedHatErrataAction extends RhnListAction {
 
         // show all channels in the list
         List<Channel> channelSet = ChannelFactory.listRedHatBaseChannels();
-        channelList = new ArrayList();
+        channelList = new ArrayList<>();
         if (channelSet != null) {
             sortChannelsAndChildify(channelSet, channelList, user, selectedChannelStr);
             request.setAttribute(CHANNEL_LIST, channelList);
@@ -295,7 +295,7 @@ public class AddRedHatErrataAction extends RhnListAction {
             return null;
         }
         List<Channel> channels = ChannelFactory.listRedHatBaseChannels(user);
-        List toReturn = new ArrayList();
+        List toReturn = new ArrayList<>();
         for (Channel chan : channels) {
             for (DistChannelMap map : chan.getDistChannelMaps()) {
                 if (ChannelVersion.getChannelVersionForDistChannelMap(map).

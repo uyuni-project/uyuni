@@ -259,7 +259,7 @@ public class SystemSearchHelper {
         log.info("Performing system search: index = {}, query = {}", index, query);
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
-        List args = new ArrayList();
+        List args = new ArrayList<>();
         args.add(sessionId.toString());
         args.add(index);
         args.add(query);
@@ -651,7 +651,7 @@ public class SystemSearchHelper {
             String viewMode) {
         DataResult<SystemSearchResult> serverList =
             UserManager.visibleSystemsAsDtoFromList(userIn,
-                    new ArrayList(serverIds.keySet()));
+                    new ArrayList<>(serverIds.keySet()));
         if (serverList == null) {
             return null;
         }

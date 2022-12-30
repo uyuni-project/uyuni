@@ -380,7 +380,7 @@ public class PackageListItem extends IdComboDto {
      * @return list of HashMaps with name and id keys
      */
     public List getChannels() {
-        List retval = new ArrayList();
+        List retval = new ArrayList<>();
         for (int i = 0; i < channelId.size(); i++) {
             Map current = new HashMap<>();
             current.put("id", channelId.get(i));

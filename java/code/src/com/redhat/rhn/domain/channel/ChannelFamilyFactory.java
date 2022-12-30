@@ -149,7 +149,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
         Iterator i = m.execute(params).iterator();
 
         //Insert permissions for this org
-        List ids = new ArrayList();
+        List ids = new ArrayList<>();
         WriteMode m2 = ModeFactory.getWriteMode("Channel_queries", "insert_family_perms");
         while (i.hasNext()) {
             Long next = ((ChannelOverview) i.next()).getId();

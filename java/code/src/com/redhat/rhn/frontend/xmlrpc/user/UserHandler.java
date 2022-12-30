@@ -140,7 +140,7 @@ public class UserHandler extends BaseHandler {
     public Object[] listRoles(User loggedInUser, String login) throws FaultException {
         // Get the logged in user
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
-        List roles = new ArrayList(); //List of role labels to return
+        List roles = new ArrayList<>(); //List of role labels to return
 
         //Loop through the target users roles and stick the labels into the ArrayList
         Set roleObjects = target.getPermanentRoles();
@@ -870,7 +870,7 @@ public class UserHandler extends BaseHandler {
         Set<Long> ids =  target.getDefaultSystemGroupIds();
 
 
-        List<ServerGroup> sgs = new ArrayList(ids.size());
+        List<ServerGroup> sgs = new ArrayList<>(ids.size());
         for (Long id : ids) {
             sgs.add(ServerGroupFactory.lookupByIdAndOrg(id, target.getOrg()));
         }
@@ -977,7 +977,7 @@ public class UserHandler extends BaseHandler {
      */
     public int removeAssignedSystemGroup(User loggedInUser,
             String login, String sgName, Boolean setDefault) {
-            List groups = new ArrayList();
+            List groups = new ArrayList<>();
             groups.add(sgName);
             return removeAssignedSystemGroups(loggedInUser, login, groups, setDefault);
     }

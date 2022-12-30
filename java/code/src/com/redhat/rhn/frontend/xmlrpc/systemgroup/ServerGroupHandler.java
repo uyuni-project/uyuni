@@ -331,7 +331,7 @@ public class ServerGroupHandler extends BaseHandler {
     public List<ManagedServerGroup> listAllGroups(User loggedInUser) {
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(
                 loggedInUser.getOrg());
-        List<ManagedServerGroup> toReturn = new ArrayList();
+        List<ManagedServerGroup> toReturn = new ArrayList<>();
         for (ManagedServerGroup group : groups) {
             if (serverGroupManager.canAccess(loggedInUser, group)) {
                 toReturn.add(group);

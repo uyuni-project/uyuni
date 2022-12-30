@@ -59,7 +59,7 @@ public class Translator extends Translations {
      * @return Returns a list containing i
      */
     public static List int2List(Integer i) {
-        List list = new ArrayList();
+        List list = new ArrayList<>();
         if (i != null) {
             list.add(i);
         }

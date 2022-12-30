@@ -395,7 +395,7 @@ public class ServerTest extends BaseTestCaseWithUser {
             setOrg(user.getOrg());
             EntitlementServerGroup group = serverGroupManager.
                         lookupEntitled(EntitlementManager.VIRTUALIZATION, user);
-            List servers = new ArrayList();
+            List servers = new ArrayList<>();
             servers.add(this);
             serverGroupManager.addServers(group, servers, user);
         }

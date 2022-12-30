@@ -237,7 +237,7 @@ public abstract class CobblerCommand {
 
         }
 
-        List<String> args = new ArrayList();
+        List<String> args = new ArrayList<>();
         args.add(xmlRpcToken);
         List<Map> systems = (List) invokeXMLRPC("get_systems", args);
         for (Map row : systems) {

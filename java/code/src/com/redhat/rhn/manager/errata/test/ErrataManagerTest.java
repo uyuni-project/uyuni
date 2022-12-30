@@ -228,7 +228,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata publish = publishedList.get(0);
         assertTrue(publish instanceof Errata);
 
-        List eids = new ArrayList();
+        List eids = new ArrayList<>();
         eids.add(publish.getId());
         List<ErrataOverview> eos = ErrataManager.search(eids, user.getOrg());
         assertNotNull(eos);

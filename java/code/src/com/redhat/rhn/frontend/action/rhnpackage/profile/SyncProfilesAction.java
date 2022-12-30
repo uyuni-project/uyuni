@@ -85,7 +85,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
                 addHardwareMessage(pa, requestContext);
 
                 // sid, actionid, servername, profilename
-                List args = new ArrayList();
+                List args = new ArrayList<>();
                 args.add(sid.toString());
                 args.add(pa.getId().toString());
                 args.add(StringUtil.htmlifyText(

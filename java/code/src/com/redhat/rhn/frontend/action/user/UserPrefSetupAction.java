@@ -122,7 +122,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
      * @return List of page sizes in increments of 5 upto max.
      */
     private List getPageSizes() {
-        List pages = new ArrayList();
+        List pages = new ArrayList<>();
         for (int i : PageSizeDecorator.getPageSizes()) {
             String istr = String.valueOf(i);
             pages.add(createDisplayMap(istr, istr));
@@ -134,9 +134,9 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
         // sets up the possible tasks...
         Set userPanes = user.getHiddenPanes();
 
-        List displayPanes = new ArrayList();
+        List displayPanes = new ArrayList<>();
 
-        List selectedPanes = new ArrayList();
+        List selectedPanes = new ArrayList<>();
 
         Map allPanes = PaneFactory.getAllPanes();
 

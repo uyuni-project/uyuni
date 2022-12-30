@@ -149,7 +149,7 @@ public class TranslatorTest extends RhnBaseTestCase {
 
     @Test
     public void testList2String() {
-        List l = new ArrayList();
+        List l = new ArrayList<>();
         l.add(1);
         l.add(2);
         assertEquals(l.toString(), Translator.list2String(l));

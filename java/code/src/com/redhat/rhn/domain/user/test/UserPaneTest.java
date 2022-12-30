@@ -47,7 +47,7 @@ public class UserPaneTest extends BaseTestCaseWithUser {
     }
 
     private List addPanes() {
-        List panes = new ArrayList(PaneFactory.getAllPanes().values());
+        List panes = new ArrayList<>(PaneFactory.getAllPanes().values());
         UserFactory.save(user);
         Long id = user.getId();
         user = null;

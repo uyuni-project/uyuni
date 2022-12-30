@@ -185,15 +185,15 @@ public class SystemHardwareAction extends RhnAction {
         request.setAttribute("network_cnames", server.getDecodedCnames());
         request.setAttribute("fqdns", server.getFqdns());
 
-        List<String> nicList = new ArrayList();
+        List<String> nicList = new ArrayList<>();
         for (NetworkInterface n : server.getNetworkInterfaces()) {
             nicList.add(n.getName());
         }
         Collections.sort(nicList);
 
-        List nicList2 = new ArrayList();
-        List nicList3 = new ArrayList();
-        List nicList4 = new ArrayList();
+        List nicList2 = new ArrayList<>();
+        List nicList3 = new ArrayList<>();
+        List nicList4 = new ArrayList<>();
         for (String nicName : nicList) {
             NetworkInterface n = server.getNetworkInterface(nicName);
             boolean hasIPv4 = false;
@@ -232,11 +232,11 @@ public class SystemHardwareAction extends RhnAction {
         request.setAttribute("ipv6_network_interfaces", nicList3);
         request.setAttribute("noip_network_interfaces", nicList4);
 
-        List miscDevices = new ArrayList();
-        List videoDevices = new ArrayList();
-        List audioDevices = new ArrayList();
-        List captureDevices = new ArrayList();
-        List usbDevices = new ArrayList();
+        List miscDevices = new ArrayList<>();
+        List videoDevices = new ArrayList<>();
+        List audioDevices = new ArrayList<>();
+        List captureDevices = new ArrayList<>();
+        List usbDevices = new ArrayList<>();
 
         for (Device d : server.getDevices()) {
             Map device = new HashMap<>();
@@ -285,7 +285,7 @@ public class SystemHardwareAction extends RhnAction {
             }
         }
 
-        List storageDevices = new ArrayList();
+        List storageDevices = new ArrayList<>();
         for (Device hd : ServerFactory.lookupStorageDevicesByServer(server)) {
             Map device = new HashMap<>();
             device.put("description", hd.getDescription());
@@ -305,7 +305,7 @@ public class SystemHardwareAction extends RhnAction {
     }
 
     private List getNetworkInterfaces(Server s) {
-        List pages = new ArrayList();
+        List pages = new ArrayList<>();
         for (NetworkInterface ni : s.getActiveNetworkInterfaces()) {
             String istr = ni.getName();
             pages.add(createDisplayMap(istr, istr));
