@@ -204,7 +204,7 @@ public class Translator extends Translations {
      * @param m map to be converted
      * @return map.toString()
      */
-    public static String map2String(Map m) {
+    public static String map2String(Map<?, ?> m) {
         return (m == null) ? "" : m.toString();
     }
 

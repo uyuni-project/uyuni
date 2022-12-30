@@ -59,7 +59,7 @@ public class TaskoScheduleSerializer extends RhnXmlRpcCustomSerializer {
         if (schedule.getCronExpr() != null) {
             helper.add("cron_expr", schedule.getCronExpr());
         }
-        Map dataMap = schedule.getDataMap();
+        Map<String, Object> dataMap = schedule.getDataMap();
         if (dataMap == null) {
             dataMap = new HashMap<>();
         }

@@ -226,9 +226,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Errata> publishedList = ErrataFactory.addToChannel(errataList,
                 baseChannel, user, false);
         Errata publish = publishedList.get(0);
-        assertTrue(publish instanceof Errata);
+        assertNotNull(publish);
 
-        List eids = new ArrayList<>();
+        List<Long> eids = new ArrayList<>();
         eids.add(publish.getId());
         List<ErrataOverview> eos = ErrataManager.search(eids, user.getOrg());
         assertNotNull(eos);
@@ -239,26 +239,24 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testRelevantErrataList() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        ErrataCacheManagerTest.createServerNeededCache(user,
-                ErrataFactory.ERRATA_TYPE_BUG);
-        DataResult errata = ErrataManager.relevantErrata(user);
+        ErrataCacheManagerTest.createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
+        DataResult<ErrataOverview> errata = ErrataManager.relevantErrata(user);
         assertNotNull(errata);
-        assertTrue(errata.size() >= 1);
+        assertFalse(errata.isEmpty());
     }
 
     @Test
     public void testRelevantErrataByTypeList() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        ErrataCacheManagerTest.createServerNeededCache(user,
-                ErrataFactory.ERRATA_TYPE_BUG);
+        ErrataCacheManagerTest.createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
         PageControl pc = new PageControl();
         pc.setStart(1);
         pc.setPageSize(20);
         DataResult<ErrataOverview> errata =
             ErrataManager.relevantErrataByType(user, pc, ErrataFactory.ERRATA_TYPE_BUG);
         assertNotNull(errata);
-        assertTrue(errata.size() >= 1);
+        assertFalse(errata.isEmpty());
     }
 
     @Test

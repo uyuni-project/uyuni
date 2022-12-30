@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.Writer;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
@@ -56,7 +57,7 @@ public class ListTagTest extends MockObjectTestCase {
     public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TestUtils.disableLocalizationLogging();
-        final List dataList = CSVWriterTest.getTestListOfMaps();
+        final List<Map<String, String>> dataList = CSVWriterTest.getTestListOfMaps();
 
         req = mock(HttpServletRequest.class);
         pageContext = mock(PageContext.class);

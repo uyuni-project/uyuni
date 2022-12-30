@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.rhnpackage.profile;
 
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
+import com.redhat.rhn.frontend.dto.ProfilePackageOverviewDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * and allow one to be seleted.
  *
  */
-public class PackageListAction extends RhnAction implements Listable {
+public class PackageListAction extends RhnAction implements Listable<ProfilePackageOverviewDto> {
 
     /** {@inheritDoc} */
     @Override
@@ -65,7 +66,7 @@ public class PackageListAction extends RhnAction implements Listable {
         helper.setDataSetName(RequestContext.PAGE_LIST);
         helper.execute();
 
-        Map forwardParams = new HashMap<>();
+        Map<String, Object> forwardParams = new HashMap<>();
         forwardParams.put(RequestContext.PRID,
                 context.getRequiredParam(RequestContext.PRID));
 
@@ -75,7 +76,7 @@ public class PackageListAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<ProfilePackageOverviewDto> getResult(RequestContext context) {
         Long prid = context.getRequiredParam(RequestContext.PRID);
         return ProfileManager.listProfilePackages(prid);
     }

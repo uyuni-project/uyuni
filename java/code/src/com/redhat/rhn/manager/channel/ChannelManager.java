@@ -2643,12 +2643,13 @@ public class ChannelManager extends BaseManager {
      * @param channel channel
      * @return only SLE11 products
      */
-    @Deprecated public static DataResult listSuseProductsInChannel(Channel channel) {
+    @Deprecated
+    public static DataResult<Row> listSuseProductsInChannel(Channel channel) {
         String mode = "suse_products_in_channel";
-        Map params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", channel.getId());
 
-        SelectMode m = ModeFactory.getMode("Package_queries", mode, Map.class);
+        SelectMode m = ModeFactory.getMode("Package_queries", mode);
         return m.execute(params);
     }
 

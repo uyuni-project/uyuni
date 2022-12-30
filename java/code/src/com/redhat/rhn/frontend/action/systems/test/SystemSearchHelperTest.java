@@ -66,7 +66,7 @@ public class SystemSearchHelperTest  {
     static final long EMPTY_SID = 666L;
 
     protected Map<String, SystemOverview> dtos;
-    protected Map<Long, Map<String, Double>> scores;
+    protected Map<Long, Map<String, Object>> scores;
     protected SystemSearchHelper.SearchResultScoreComparator cmp;
     protected SystemSearchHelper.SearchResultScoreComparator nullCmp;
 
@@ -77,11 +77,11 @@ public class SystemSearchHelperTest  {
 
         for (String vals : TEST_DATA) {
             String[] entries = vals.split(";");
-            Map<String, Double> serverScore = new HashMap<>();
+            Map<String, Object> serverScore = new HashMap<>();
             SystemOverview aDto = new SystemOverview();
             aDto.setId(Long.parseLong(entries[SID]));
             aDto.setName(entries[PROFILE_NAME]);
-            Double aScore = Double.parseDouble(entries[SCORE]);
+            double aScore = Double.parseDouble(entries[SCORE]);
             if (aScore > 0.0d) {
                 serverScore.put("score", aScore);
             }

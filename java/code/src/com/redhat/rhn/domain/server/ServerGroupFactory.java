@@ -195,7 +195,7 @@ public class ServerGroupFactory extends HibernateFactory {
      */
     public static EntitlementServerGroup lookupEntitled(Entitlement ent,
                                                             Org org) {
-        Map qryParams = new HashMap<>();
+        Map<String, Object> qryParams = new HashMap<>();
         qryParams.put("label", ent.getLabel());
         qryParams.put("org", org);
         return (EntitlementServerGroup) SINGLETON.lookupObjectByNamedQuery(

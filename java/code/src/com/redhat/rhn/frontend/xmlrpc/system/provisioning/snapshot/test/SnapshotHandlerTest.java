@@ -41,7 +41,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -76,9 +75,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         snap.addGroup(grp);
 
         TestUtils.saveAndFlush(snap);
-        Map dateInfo = new HashMap<>();
-        List<ServerSnapshot> list = handler.listSnapshots(admin,
-                server.getId().intValue(), dateInfo);
+        List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
         assertContains(list, snap);
         assertContains(snap.getGroups(), grp);
 
@@ -108,9 +105,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         TestUtils.saveAndFlush(snap);
 
         handler.deleteSnapshot(admin, snap.getId().intValue());
-        Map dateInfo = new HashMap<>();
-        List<ServerSnapshot> list = handler.listSnapshots(admin,
-                server.getId().intValue(), dateInfo);
+        List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
         assertTrue(list.isEmpty());
 
     }
@@ -125,10 +120,8 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         generateSnapshot(server);
         TestUtils.saveAndFlush(snap);
 
-        Map dateInfo = new HashMap<>();
-        handler.deleteSnapshots(admin, server.getId().intValue(), dateInfo);
-        List<ServerSnapshot> list = handler.listSnapshots(admin,
-                server.getId().intValue(), dateInfo);
+        handler.deleteSnapshots(admin, server.getId().intValue(), new HashMap<>());
+        List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
         assertTrue(list.isEmpty());
     }
 }

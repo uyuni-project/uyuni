@@ -188,11 +188,10 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpgradable() throws Exception {
-        Map info = ErrataCacheManagerTest.
-            createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
+        Map<String, Object> info = ErrataCacheManagerTest.createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
         Server s = (Server) info.get("server");
         Package p = (Package) info.get("package");
-        p = (Package) TestUtils.saveAndReload(p);
+        p = TestUtils.saveAndReload(p);
 
         DataResult<UpgradablePackageListItem> dr =
             PackageManager.upgradable(s.getId(), null);
@@ -492,12 +491,11 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Package pack = PackageTest.createTestPackage(null);
         channel1.addPackage(pack);
 
-        List test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
+        List<PackageOverview> test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
                 channel2.getId());
         assertEquals(1, test.size());
-        PackageOverview packOver = (PackageOverview) test.get(0);
+        PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
-
 
         channel2.addPackage(pack);
         test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
@@ -509,11 +507,11 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     public void testLookupCustomPackagesForChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Package pack = PackageTest.createTestPackage(user.getOrg());
-        List test = PackageManager.lookupCustomPackagesForChannel(
+        List<PackageOverview> test = PackageManager.lookupCustomPackagesForChannel(
                 channel1.getId(), user.getOrg().getId());
 
         assertEquals(1, test.size());
-        PackageOverview packOver = (PackageOverview) test.get(0);
+        PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
         channel1.addPackage(pack);
@@ -527,10 +525,10 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     public void testListOrphanPackages() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Package pack = PackageTest.createTestPackage(user.getOrg());
-        List test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
+        List<PackageOverview> test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
         assertEquals(1, test.size());
-        PackageOverview packOver = (PackageOverview) test.get(0);
+        PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
         channel1.addPackage(pack);

@@ -238,8 +238,8 @@ public class MissingPackageAction extends BaseProfilesAction {
      * {@inheritDoc}
      */
     @Override
-    protected Map getKeyMethodMap() {
-        Map map = new HashMap<>();
+    protected Map<String, String> getKeyMethodMap() {
+        Map<String, String> map = new HashMap<>();
         map.put("missingpkgs.jsp.selectnewpackageprofile", "selectNewPackageProfile");
         map.put("missingpkgs.jsp.removelistedpackagesfromsync", "removePackagesFromSync");
         map.put("missingpkgs.jsp.subscribetochannels", "subscribeToChannels");

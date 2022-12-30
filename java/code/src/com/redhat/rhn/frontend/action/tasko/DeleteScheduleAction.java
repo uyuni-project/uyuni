@@ -51,7 +51,7 @@ public class DeleteScheduleAction extends RhnAction {
         if (ctx.hasParam("schid")) {
             Long scheduleId = ctx.getParamAsLong(("schid"));
             TaskomaticApi tapi = new TaskomaticApi();
-            Map schedule = new HashMap<>();
+            Map<String, Object> schedule = new HashMap<>();
             try {
                 schedule = tapi.lookupScheduleById(loggedInUser, scheduleId);
             }
@@ -99,7 +99,7 @@ public class DeleteScheduleAction extends RhnAction {
                 request.getParameterMap());
     }
 
-    private Boolean isActive(Map schedule) {
+    private boolean isActive(Map<String, Object> schedule) {
         Date till = (Date) schedule.get("active_till");
         if (till == null) {
             return Boolean.TRUE;

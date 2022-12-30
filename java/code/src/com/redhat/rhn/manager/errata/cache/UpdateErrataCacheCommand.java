@@ -199,7 +199,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
     private void processImage(Long imageId) {
         CallableMode m = ModeFactory.getCallableMode(
                 "ErrataCache_queries", "update_image_needed_cache");
-        Map inParams = new HashMap<>();
+        Map<String, Object> inParams = new HashMap<>();
         inParams.put("image_id", imageId);
 
         m.execute(inParams, new HashMap<>());

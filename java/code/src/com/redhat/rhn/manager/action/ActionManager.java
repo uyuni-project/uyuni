@@ -294,7 +294,7 @@ public class ActionManager extends BaseManager {
     public static void deleteActionsByIdAndType(Long id, Integer type) {
         WriteMode m = ModeFactory.getWriteMode("Action_queries",
                 "delete_actions_by_id_and_type");
-        Map params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("action_type", type);
         m.executeUpdate(params);
@@ -1403,7 +1403,7 @@ public class ActionManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static PackageAction schedulePackageInstall(User scheduler,
-            Server srvr, List pkgs, Date earliestAction) throws TaskomaticApiException {
+            Server srvr, List<Map<String, Long>> pkgs, Date earliestAction) throws TaskomaticApiException {
         return (PackageAction) schedulePackageAction(scheduler, pkgs,
                 ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, srvr);
     }
@@ -1842,8 +1842,8 @@ public class ActionManager extends BaseManager {
      */
     public static Action schedulePackageInstall(User scheduler, Server srvr,
             Long nameId, Long evrId, Long archId) throws TaskomaticApiException {
-        List packages = new LinkedList();
-        Map row = new HashMap<>();
+        List<Map<String, Long>> packages = new LinkedList<>();
+        Map<String, Long> row = new HashMap<>();
         row.put("name_id", nameId);
         row.put("evr_id", evrId);
         row.put("arch_id", archId);
@@ -1867,9 +1867,9 @@ public class ActionManager extends BaseManager {
         if (pkgs.isEmpty()) {
             return null;
         }
-        List packages = new LinkedList();
+        List<Map<String, Long>> packages = new LinkedList<>();
         for (Package pkg : pkgs) {
-            Map row = new HashMap<>();
+            Map<String, Long> row = new HashMap<>();
             row.put("name_id", pkg.getPackageName().getId());
             row.put("evr_id", pkg.getPackageEvr().getId());
             row.put("arch_id", pkg.getPackageArch().getId());
@@ -1897,7 +1897,7 @@ public class ActionManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static Action schedulePackageAction(User scheduler,
-            List pkgs,
+            List<Map<String, Long>> pkgs,
             ActionType type,
             Date earliestAction,
             Server...servers) throws TaskomaticApiException {
@@ -1923,7 +1923,7 @@ public class ActionManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Action schedulePackageAction(User scheduler, List pkgs, ActionType type,
+    public static Action schedulePackageAction(User scheduler, List<Map<String, Long>> pkgs, ActionType type,
             Date earliestAction, Set<Long> serverIds)
         throws TaskomaticApiException {
 
@@ -1932,7 +1932,7 @@ public class ActionManager extends BaseManager {
         Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
         ActionFactory.save(action);
 
-        addPackageActionDetails(Arrays.asList(action), pkgs);
+        addPackageActionDetails(List.of(action), pkgs);
         taskomaticApi.scheduleActionExecution(action);
         if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
             MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), scheduler.getOrg());
@@ -2026,9 +2026,9 @@ public class ActionManager extends BaseManager {
             ActionType type, Date earliestAction)
         throws TaskomaticApiException {
 
-        List packages = new LinkedList();
+        List<Map<String, Long>> packages = new LinkedList<>();
         for (RhnSetElement rse : pkgs.getElements()) {
-            Map row = new HashMap<>();
+            Map<String, Long> row = new HashMap<>();
             row.put("name_id", rse.getElement());
             row.put("evr_id", rse.getElementTwo());
             row.put("arch_id", rse.getElementThree());

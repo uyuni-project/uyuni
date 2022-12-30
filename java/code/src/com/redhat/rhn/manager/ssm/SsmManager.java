@@ -107,7 +107,7 @@ public class SsmManager {
         CallableMode m = ModeFactory.getCallableMode("Channel_queries",
                 "subscribe_server_to_channel");
 
-        Map in = new HashMap<>();
+        Map<String, Object> in = new HashMap<>();
         in.put("server_id", sid);
         in.put("user_id", uid);
         in.put("channel_id", cid);

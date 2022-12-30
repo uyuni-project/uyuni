@@ -79,7 +79,7 @@ public class DatePickerTest  {
 
     @Test
     public void testReadWriteFromMap() throws ParseException {
-        Map form = new HashMap<>();
+        Map<String, Integer> form = new HashMap<>();
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");
         p.setDate(d);

@@ -30,7 +30,7 @@ import java.util.Map;
 public class ForwardWrapper extends ActionForward {
 
     private ForwardConfig fc;
-    private Map       params;
+    private Map<String, String> params;
 
     /**
      * Create a new forward that decorates <code>fc0</code>
@@ -174,7 +174,7 @@ public class ForwardWrapper extends ActionForward {
         if (params == null) {
             populateParams();
         }
-        return (String) params.get(pname);
+        return params.get(pname);
     }
 
     private void populateParams() {

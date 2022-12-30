@@ -149,7 +149,7 @@ public class RankChannelsAction extends BaseRankChannels {
     }
 
     @Override
-    protected void processParams(RequestContext context, Map map) {
+    protected void processParams(RequestContext context, Map<String, String> map) {
         Server server = context.lookupAndBindServer();
         map.put(RequestContext.SID, server.getId().toString());
 

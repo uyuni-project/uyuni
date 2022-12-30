@@ -36,7 +36,6 @@ import com.redhat.rhn.frontend.events.NewUserEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -158,7 +157,7 @@ public class CreateUserCommand {
                         user.getLogin() + " default system group", user.getOrg());
             }
             UserManager.grantServerGroupPermission(user, sg.getId());
-            user.setDefaultSystemGroupIds(new HashSet<>(Arrays.asList(sg.getId())));
+            user.setDefaultSystemGroupIds(Set.of(sg.getId()));
         }
         // assign server groups permissions
         for (ServerGroup sg : serverGroups) {

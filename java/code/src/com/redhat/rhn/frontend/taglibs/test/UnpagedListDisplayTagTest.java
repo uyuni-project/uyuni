@@ -65,7 +65,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
         ldt.setPageContext(context);
         ldt.setParent(lt);
 
-        lt.setPageList(new DataResult(CSVWriterTest.getTestListOfMaps()));
+        lt.setPageList(new DataResult<>(CSVWriterTest.getTestListOfMaps()));
 
         context().checking(new Expectations() { {
             atLeast(1).of(context).getOut();

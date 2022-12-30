@@ -307,18 +307,18 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks = KickstartDataTest.createKickstartWithProfile(admin);
 
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
-        List<Map> l1 = new ArrayList<>();
+        List<Map<String, String>> l1 = new ArrayList<>();
 
         for (Object oIn : s1) {
-            l1.add((Map) oIn);
+            l1.add((Map<String, String>) oIn);
         }
 
-        Map m1 = new HashMap<>();
-        Map m2 = new HashMap<>();
-        Map m3 = new HashMap<>();
-        Map m4 = new HashMap<>();
-        Map m5 = new HashMap<>();
-        Map m6 = new HashMap<>();
+        Map<String, String> m1 = new HashMap<>();
+        Map<String, String> m2 = new HashMap<>();
+        Map<String, String> m3 = new HashMap<>();
+        Map<String, String> m4 = new HashMap<>();
+        Map<String, String> m5 = new HashMap<>();
+        Map<String, String> m6 = new HashMap<>();
 
         //all required options
         m1.put("name", "lang");
@@ -368,18 +368,18 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks = KickstartDataTest.createKickstartWithProfile(admin);
 
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
-        List<Map> l1 = new ArrayList<>();
+        List<Map<String, String>> l1 = new ArrayList<>();
 
         for (Object oIn : s1) {
-            l1.add((Map) oIn);
+            l1.add((Map<String, String>) oIn);
         }
 
-        Map m1 = new HashMap<>();
-        Map m2 = new HashMap<>();
-        Map m3 = new HashMap<>();
-        Map m4 = new HashMap<>();
-        Map m5 = new HashMap<>();
-        Map m6 = new HashMap<>();
+        Map<String, String> m1 = new HashMap<>();
+        Map<String, String> m2 = new HashMap<>();
+        Map<String, String> m3 = new HashMap<>();
+        Map<String, String> m4 = new HashMap<>();
+        Map<String, String> m5 = new HashMap<>();
+        Map<String, String> m6 = new HashMap<>();
 
         //all required options
         m1.put("name", "lang");

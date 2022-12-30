@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class RhnMockHttpSession extends MockHttpSession {
 
-    private Map attributes;
+    private Map<String, Object> attributes;
 
     /**
      * default constructor

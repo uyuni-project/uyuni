@@ -100,68 +100,63 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     @Test
     public void testColonInQuotes() throws Exception {
         String jdbcQuery;
-        Map pMap = new HashMap<>();
+        Map<String, List<Integer>> pMap = new HashMap<>();
 
-        jdbcQuery = NamedPreparedStatement.replaceBindParams(COLON_IN_QUOTES,
-                                                             pMap);
+        jdbcQuery = NamedPreparedStatement.replaceBindParams(COLON_IN_QUOTES, pMap);
 
         assertEquals(COLON_IN_QUOTES, jdbcQuery);
-
         assertTrue(pMap.isEmpty());
     }
 
     @Test
     public void testCreateSQL() throws Exception {
         String jdbcQuery;
-        Map pMap = new HashMap<>();
+        Map<String, List<Integer>> pMap = new HashMap<>();
 
-        jdbcQuery = NamedPreparedStatement.replaceBindParams(SIMPLE_QUERY,
-                                                             pMap);
+        jdbcQuery = NamedPreparedStatement.replaceBindParams(SIMPLE_QUERY, pMap);
         assertEquals(SIMPLE_QUERY_SUBST, jdbcQuery);
 
-        List lst = (List)pMap.get("org_id");
+        List<Integer> lst = pMap.get("org_id");
         assertNotNull(lst);
         assertEquals(1, lst.size());
-        assertEquals(1, ((Integer)lst.get(0)).intValue());
+        assertEquals(1, lst.get(0).intValue());
     }
 
     @Test
     public void testPrepare() throws Exception {
         String jdbcQuery;
-        Map pMap = new HashMap<>();
+        Map<String, List<Integer>> pMap = new HashMap<>();
 
-        jdbcQuery = NamedPreparedStatement.replaceBindParams(SIMPLE_QUERY,
-                                                             pMap);
+        jdbcQuery = NamedPreparedStatement.replaceBindParams(SIMPLE_QUERY, pMap);
         assertEquals(SIMPLE_QUERY_SUBST, jdbcQuery);
 
-        List lst = (List)pMap.get("org_id");
+        List<Integer> lst = pMap.get("org_id");
         assertNotNull(lst);
         assertEquals(1, lst.size());
-        assertEquals(1, ((Integer)lst.get(0)).intValue());
+        assertEquals(1, lst.get(0).intValue());
 
         session.doWork(c -> c.prepareStatement(jdbcQuery));
     }
 
     @Test
     public void testTwoBindPrepare() throws Exception {
-        List lst;
+        List<Integer> lst;
         String jdbcQuery;
-        Map pMap = new HashMap<>();
+        Map<String, List<Integer>> pMap = new HashMap<>();
 
-        jdbcQuery = NamedPreparedStatement.replaceBindParams(TWO_VAR_QUERY,
-                                                             pMap);
+        jdbcQuery = NamedPreparedStatement.replaceBindParams(TWO_VAR_QUERY, pMap);
         assertEquals(TWO_VAR_QUERY_SUBST, jdbcQuery);
 
-        lst = (List)pMap.get("sid");
+        lst = pMap.get("sid");
         assertNotNull(lst);
         assertEquals(LIST_SIZE, lst.size());
-        assertEquals(FIRST_POS, ((Integer)lst.get(0)).intValue());
-        assertEquals(SECOND_POS, ((Integer)lst.get(1)).intValue());
+        assertEquals(FIRST_POS, lst.get(0).intValue());
+        assertEquals(SECOND_POS, lst.get(1).intValue());
 
-        lst = (List)pMap.get("user_id");
+        lst = pMap.get("user_id");
         assertNotNull(lst);
         assertEquals(1, lst.size());
-        assertEquals(1, ((Integer)lst.get(0)).intValue());
+        assertEquals(1, lst.get(0).intValue());
 
         session.doWork(c -> c.prepareStatement(jdbcQuery));
     }
@@ -170,8 +165,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     public void testNotFoundBindParam() throws Exception {
         Map<String, List<Integer>> pMap = new HashMap<>();
 
-        String jdbcQuery = NamedPreparedStatement.replaceBindParams(TWO_VAR_QUERY,
-                                                             pMap);
+        String jdbcQuery = NamedPreparedStatement.replaceBindParams(TWO_VAR_QUERY, pMap);
         assertEquals(TWO_VAR_QUERY_SUBST, jdbcQuery);
 
         List<Integer> params = pMap.get("sid");
