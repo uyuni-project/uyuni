@@ -31,7 +31,6 @@ Feature: Bootstrapping with reactivation key
 
   Scenario: Bootstrap should fail when system already exists in the server
     Given I delete "sle_minion" key in the Salt master
-    And I remove package "venv-salt-minion" from this "sle_minion"
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
@@ -51,6 +50,7 @@ Feature: Bootstrapping with reactivation key
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I enter the reactivation key of "sle_minion"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > Overview"
