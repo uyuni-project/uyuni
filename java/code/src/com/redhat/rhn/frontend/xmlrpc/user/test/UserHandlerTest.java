@@ -125,7 +125,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testPasswordViaSetDetails() throws Exception {
-        Map details = new HashMap();
+        Map details = new HashMap<>();
         details.put("password", "");
 
         try {
@@ -140,7 +140,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testSetDetails() throws Exception {
 
-        Map newDetails = new HashMap();
+        Map newDetails = new HashMap<>();
         newDetails.put("first_name", "firstnames_edited");
 
         //admin editing self
@@ -376,7 +376,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testPrefixes() {
-        Map details = new HashMap();
+        Map details = new HashMap<>();
         details.put("prefix", "");
 
         try {

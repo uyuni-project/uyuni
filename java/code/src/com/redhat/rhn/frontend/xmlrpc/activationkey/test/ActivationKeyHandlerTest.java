@@ -242,7 +242,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         String key = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
 
-        Map details = new HashMap();
+        Map details = new HashMap<>();
         String description2 = "Test Key 2";
         Channel baseChannel2 = ChannelTestUtils.createBaseChannel(admin);
         String baseChannelId2 = baseChannel2.getLabel();
@@ -267,7 +267,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         String key = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
 
-        Map details = new HashMap();
+        Map details = new HashMap<>();
         details.put("usage_limit", 15); // should be ignored
         details.put("unlimited_usage_limit", Boolean.TRUE);
         keyHandler.setDetails(admin, key, details);

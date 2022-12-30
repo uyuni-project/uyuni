@@ -537,7 +537,7 @@ public class LocalizationService {
         SelectMode prefixMode = ModeFactory.getMode("util_queries",
                 "available_prefixes");
         // no params for this query
-        DataResult<Map<String, Object>> dr = prefixMode.execute(new HashMap());
+        DataResult<Map<String, Object>> dr = prefixMode.execute(new HashMap<>());
 
         SortedSet<String> ret = new TreeSet<>();
         for (Map<String, Object> row : dr) {

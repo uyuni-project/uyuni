@@ -142,7 +142,7 @@ public class TaskManager {
      */
     public static DataResult getTaskStatusInfo() {
         SelectMode m = ModeFactory.getMode("Task_queries", "taskomatic_task_status");
-        return m.execute(new HashMap());
+        return m.execute(new HashMap<>());
     }
 
     /**

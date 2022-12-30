@@ -76,7 +76,7 @@ public class ListCustomDataAction extends RhnAction {
 
         List pageList = new ArrayList();
         for (String keyLabel : keyList) {
-            Map returnMap = new HashMap();
+            Map returnMap = new HashMap<>();
 
             CustomDataKey key = OrgFactory.lookupKeyByLabelAndOrg(keyLabel, user.getOrg());
             CustomDataValue val = server.getCustomDataValue(key);

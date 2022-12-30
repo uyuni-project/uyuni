@@ -132,7 +132,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
 
     public static Map createServerNeededCache(User userIn,
             String errataType) throws Exception {
-        Map retval = new HashMap();
+        Map retval = new HashMap<>();
         Errata e = ErrataFactoryTest.createTestErrata(userIn.getOrg().getId());
         e.setAdvisoryType(errataType);
         e = (Errata) TestUtils.saveAndReload(e);

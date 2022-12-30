@@ -148,7 +148,7 @@ public abstract class BaseRankChannels extends RhnLookupDispatchAction {
             saveMessage("common.config.rank.jsp.error.nojavascript", request);
         }
 
-        Map map = new HashMap();
+        Map map = new HashMap<>();
         processParams(context, map);
         User user = context.getCurrentUser();
         RhnSet set = getRhnSet(user);

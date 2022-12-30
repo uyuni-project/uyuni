@@ -36,7 +36,7 @@ public class RhnMockHttpSession extends MockHttpSession {
      */
     public RhnMockHttpSession() {
         super();
-        attributes = new HashMap();
+        attributes = new HashMap<>();
     }
 
     /**

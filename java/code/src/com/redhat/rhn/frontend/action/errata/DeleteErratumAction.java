@@ -96,7 +96,7 @@ public class DeleteErratumAction extends LookupDispatchAction {
      */
     @Override
     protected Map getKeyMethodMap() {
-        Map map = new HashMap();
+        Map map = new HashMap<>();
         map.put("delete.jsp.delete", "deleteErratum");
         return map;
     }

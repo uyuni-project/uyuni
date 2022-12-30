@@ -1786,7 +1786,7 @@ public class SystemManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "count_systems_in_set_without_entitlement");
 
-        Map params = new HashMap();
+        Map params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("set_label", setLabel);
         DataResult dr = m.execute(params, entitlements);
@@ -3601,7 +3601,7 @@ public class SystemManager extends BaseManager {
     public static DataResult systemsInSetWithTag(Long uid, Long tid) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "systems_in_set_with_tag");
-        Map params = new HashMap();
+        Map params = new HashMap<>();
         params.put("user_id", uid);
         params.put("tag_id",  tid);
         return m.execute(params);

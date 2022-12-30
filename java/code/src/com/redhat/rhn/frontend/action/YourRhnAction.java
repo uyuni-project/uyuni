@@ -57,7 +57,7 @@ public class YourRhnAction extends RhnAction {
      * No-arg constructor
      */
     public YourRhnAction() {
-        Map renderers = new HashMap();
+        Map renderers = new HashMap<>();
 
         SubscriptionWarning sw = new SubscriptionWarning();
         List tasks = Arrays.asList(Pane.ALL_PANES);
@@ -141,7 +141,7 @@ public class YourRhnAction extends RhnAction {
     private Map getDisplayPanes(User user) {
         Map panes = PaneFactory.getAllPanes();
         Set hiddenPanes = user.getHiddenPanes();
-        Map mergedPanes = new HashMap();
+        Map mergedPanes = new HashMap<>();
 
         for (Object oIn : panes.values()) {
             Pane pane = (Pane) oIn;

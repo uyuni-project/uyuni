@@ -65,7 +65,7 @@ public class PackageListAction extends RhnAction implements Listable {
         helper.setDataSetName(RequestContext.PAGE_LIST);
         helper.execute();
 
-        Map forwardParams = new HashMap();
+        Map forwardParams = new HashMap<>();
         forwardParams.put(RequestContext.PRID,
                 context.getRequiredParam(RequestContext.PRID));
 

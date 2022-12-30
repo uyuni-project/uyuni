@@ -702,7 +702,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcDeployConfiguration() {
         ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(
                 this.admin.getOrg());
-        Map<String, Object> revisionSpecifier = new HashMap();
+        Map<String, Object> revisionSpecifier = new HashMap<>();
         ConfigFile configFile = configRevision.getConfigFile();
         revisionSpecifier.put("channelLabel", configFile.getConfigChannel().getLabel());
         revisionSpecifier.put("filePath", configFile.getConfigFileName().getPath());
@@ -729,7 +729,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcDeployConfigurationFailureNoChain() {
         ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(
                 this.admin.getOrg());
-        Map<String, Object> revisionSpecifier = new HashMap();
+        Map<String, Object> revisionSpecifier = new HashMap<>();
         ConfigFile configFile = configRevision.getConfigFile();
         revisionSpecifier.put("channelLabel", configFile.getConfigChannel().getLabel());
         revisionSpecifier.put("filePath", configFile.getConfigFileName().getPath());

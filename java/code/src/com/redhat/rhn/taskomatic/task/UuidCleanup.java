@@ -47,7 +47,7 @@ public class UuidCleanup extends RhnJavaJob {
             log.debug("Calling WriteMode " + TaskConstants.MODE_NAME + "::" +
                     TaskConstants.TASK_QUERY_UUID_CLEANUP);
         }
-        m.executeUpdate(new HashMap());
+        m.executeUpdate(new HashMap<>());
         if (log.isDebugEnabled()) {
             log.debug("WriteMode " + TaskConstants.MODE_NAME + "::" +
                     TaskConstants.TASK_QUERY_UUID_CLEANUP + " returned");
@@ -59,7 +59,7 @@ public class UuidCleanup extends RhnJavaJob {
             log.debug("Calling CallableMode " + TaskConstants.MODE_NAME + "::" +
                     TaskConstants.TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP);
         }
-        m2.executeUpdate(new HashMap());
+        m2.executeUpdate(new HashMap<>());
         if (log.isDebugEnabled()) {
             log.debug("WriteMode " + TaskConstants.MODE_NAME + "::" +
                     TaskConstants.TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP +

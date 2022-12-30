@@ -43,7 +43,7 @@ public class ErrataMailerTest extends BaseTestCaseWithUser {
             protected List getOrgRelevantServers(Long errataId, Long orgId,
                                                  Long channelId) {
                 List retval = new LinkedList();
-                Map row = new HashMap();
+                Map row = new HashMap<>();
                 row.put("server_id", 5000);
                 row.put("name", "test_client_hostname");
                 row.put("release", "test_release");
@@ -56,7 +56,7 @@ public class ErrataMailerTest extends BaseTestCaseWithUser {
             @Override
             protected List getErrataToProcess() {
                 List retval = new LinkedList();
-                Map row = new HashMap();
+                Map row = new HashMap<>();
                 row.put("channel_id", c.getId());
                 row.put("errata_id", e.getId());
                 row.put("org_id", user.getOrg().getId());

@@ -163,7 +163,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
     }
 
     private Map createDisplayMap(String display, String value) {
-        Map selection = new HashMap();
+        Map selection = new HashMap<>();
         selection.put("display", display);
         selection.put("value", value);
         return selection;

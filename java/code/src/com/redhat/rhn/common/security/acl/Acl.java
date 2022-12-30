@@ -102,7 +102,7 @@ import java.util.TreeSet;
  *
  *  The following demonstrates the use of the Acl class:
  *  <pre>
- *  Map context = new HashMap();
+ *  Map context = new HashMap<>();
  *  context.put("thingamajig", "foo");
  *  context.put("doodad", "bar");
  *  context.put("widget", "baz");

@@ -294,7 +294,7 @@ public class ActionManager extends BaseManager {
     public static void deleteActionsByIdAndType(Long id, Integer type) {
         WriteMode m = ModeFactory.getWriteMode("Action_queries",
                 "delete_actions_by_id_and_type");
-        Map params = new HashMap();
+        Map params = new HashMap<>();
         params.put("id", id);
         params.put("action_type", type);
         m.executeUpdate(params);
@@ -1843,7 +1843,7 @@ public class ActionManager extends BaseManager {
     public static Action schedulePackageInstall(User scheduler, Server srvr,
             Long nameId, Long evrId, Long archId) throws TaskomaticApiException {
         List packages = new LinkedList();
-        Map row = new HashMap();
+        Map row = new HashMap<>();
         row.put("name_id", nameId);
         row.put("evr_id", evrId);
         row.put("arch_id", archId);
@@ -1869,7 +1869,7 @@ public class ActionManager extends BaseManager {
         }
         List packages = new LinkedList();
         for (Package pkg : pkgs) {
-            Map row = new HashMap();
+            Map row = new HashMap<>();
             row.put("name_id", pkg.getPackageName().getId());
             row.put("evr_id", pkg.getPackageEvr().getId());
             row.put("arch_id", pkg.getPackageArch().getId());
@@ -2028,7 +2028,7 @@ public class ActionManager extends BaseManager {
 
         List packages = new LinkedList();
         for (RhnSetElement rse : pkgs.getElements()) {
-            Map row = new HashMap();
+            Map row = new HashMap<>();
             row.put("name_id", rse.getElement());
             row.put("evr_id", rse.getElementTwo());
             row.put("arch_id", rse.getElementThree());

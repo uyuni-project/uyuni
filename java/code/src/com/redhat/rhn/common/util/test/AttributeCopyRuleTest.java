@@ -43,7 +43,7 @@ public class AttributeCopyRuleTest extends RhnBaseTestCase {
         DummyObject result =
             (DummyObject)digester.parse(url.openStream());
 
-        Map expected = new HashMap();
+        Map expected = new HashMap<>();
         expected.put("foo", "1");
         expected.put("bar", "baz");
 

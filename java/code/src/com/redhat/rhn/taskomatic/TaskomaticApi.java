@@ -127,7 +127,7 @@ public class TaskomaticApi {
      */
     public void scheduleSSHActionExecution(Action actionIn, MinionServer sshMinion, boolean forcePackageListRefresh)
             throws TaskomaticApiException {
-        Map scheduleParams = new HashMap();
+        Map scheduleParams = new HashMap<>();
         scheduleParams.put("action_id", Long.toString(actionIn.getId()));
         scheduleParams.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
         scheduleParams.put("ssh_minion_id", sshMinion.getMinionId());
@@ -148,7 +148,7 @@ public class TaskomaticApi {
      */
     public void scheduleSingleRepoSync(Channel chan, User user)
                                     throws TaskomaticApiException {
-        Map scheduleParams = new HashMap();
+        Map scheduleParams = new HashMap<>();
         scheduleParams.put("channel_id", chan.getId().toString());
         invoke("tasko.scheduleSingleBunchRun", user.getOrg().getId(),
                 "repo-sync-bunch", scheduleParams);
@@ -211,7 +211,7 @@ public class TaskomaticApi {
         if (task != null) {
             unscheduleRepoTask(jobLabel, user);
         }
-        Map scheduleParams = new HashMap();
+        Map scheduleParams = new HashMap<>();
         scheduleParams.put("channel_id", chan.getId().toString());
         return (Date) invoke("tasko.scheduleBunch", user.getOrg().getId(),
                 "repo-sync-bunch", jobLabel, cron, scheduleParams);
@@ -341,7 +341,7 @@ public class TaskomaticApi {
         if (task != null) {
             doUnscheduleSatTask(jobLabel);
         }
-        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron, new HashMap());
+        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron, new HashMap<>());
     }
 
     /**
@@ -758,7 +758,7 @@ public class TaskomaticApi {
      */
     public void scheduleSinglePaygUpdate(PaygSshData sshdata)
             throws TaskomaticApiException {
-        Map scheduleParams = new HashMap();
+        Map scheduleParams = new HashMap<>();
         scheduleParams.put("sshData_id", sshdata.getId().toString());
         invoke("tasko.scheduleSingleSatBunchRun",
                 "update-payg-data-bunch", scheduleParams);

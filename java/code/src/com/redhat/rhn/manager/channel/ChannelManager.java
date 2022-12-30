@@ -2645,7 +2645,7 @@ public class ChannelManager extends BaseManager {
      */
     @Deprecated public static DataResult listSuseProductsInChannel(Channel channel) {
         String mode = "suse_products_in_channel";
-        Map params = new HashMap();
+        Map params = new HashMap<>();
         params.put("channel_id", channel.getId());
 
         SelectMode m = ModeFactory.getMode("Package_queries", mode, Map.class);

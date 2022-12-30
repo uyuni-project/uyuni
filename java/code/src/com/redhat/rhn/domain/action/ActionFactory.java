@@ -235,7 +235,7 @@ public class ActionFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("action_id", actionId);
         params.put("server_id",  sid);
-        mode.execute(params, new HashMap());
+        mode.execute(params, new HashMap<>());
     }
 
 

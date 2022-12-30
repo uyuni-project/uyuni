@@ -168,7 +168,7 @@ public class AssignedGroupsSetupAction extends RhnListAction {
                 display = " (*) " + display;
             }
 
-            Map map = new HashMap();
+            Map map = new HashMap<>();
             map.put("value", item.getId());
             map.put("display", display);
             selDefaults.add(map);

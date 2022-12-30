@@ -145,7 +145,7 @@ public class RankChannelsAction  extends RhnAction {
             saveMessage("common.config.rank.jsp.error.nojavascript", request);
         }
 
-        Map map = new HashMap();
+        Map map = new HashMap<>();
         processParams(context, map);
         Set<String> set = getSet(context);
         setup(context, (DynaActionForm)formIn, set);

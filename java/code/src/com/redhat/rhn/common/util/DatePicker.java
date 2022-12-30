@@ -113,7 +113,7 @@ public class DatePicker {
     public static final int YEAR_RANGE_NEGATIVE = 1;
 
     private static final int YEAR_RANGE_SIZE = 5;
-    private static final Map FIELD_CALENDAR_MAP = new HashMap();
+    private static final Map FIELD_CALENDAR_MAP = new HashMap<>();
 
     static {
         FIELD_CALENDAR_MAP.put(Boolean.TRUE, makeFieldCalendarMap(true));
@@ -594,7 +594,7 @@ public class DatePicker {
     }
 
     private static Map makeFieldCalendarMap(boolean isLatin) {
-        Map result = new HashMap();
+        Map result = new HashMap<>();
         result.put(YEAR, Calendar.YEAR);
         result.put(MONTH, Calendar.MONTH);
         result.put(DAY, Calendar.DAY_OF_MONTH);

@@ -61,7 +61,7 @@ public class TaskoScheduleSerializer extends RhnXmlRpcCustomSerializer {
         }
         Map dataMap = schedule.getDataMap();
         if (dataMap == null) {
-            dataMap = new HashMap();
+            dataMap = new HashMap<>();
         }
         helper.add("data_map", dataMap);
 

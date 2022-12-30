@@ -42,7 +42,7 @@ public class TaskomaticDaemon {
     public static final int SUCCESS = Integer.MIN_VALUE;
     public static final Logger LOG = LogManager.getLogger(TaskomaticDaemon.class);
 
-    private Map masterOptionsMap = new HashMap();
+    private Map masterOptionsMap = new HashMap<>();
     private SchedulerKernel kernel;
 
     /**
@@ -175,7 +175,7 @@ public class TaskomaticDaemon {
     }
 
     private Map parseOverrides(CommandLine commandLine) {
-        Map configOverrides = new HashMap();
+        Map configOverrides = new HashMap<>();
         // Loop thru all possible options and let's see what we get
         for (Object oIn : this.masterOptionsMap.keySet()) {
 

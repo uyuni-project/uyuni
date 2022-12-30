@@ -49,6 +49,6 @@ public class ChangeLogCleanUp extends RhnJavaJob {
     private int deleteOrphanedChangelogEntries() {
         WriteMode m = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_PACKAGE_CHANGELOG_CLEANUP);
-        return m.executeUpdate(new HashMap());
+        return m.executeUpdate(new HashMap<>());
     }
 }

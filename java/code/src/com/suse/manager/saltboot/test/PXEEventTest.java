@@ -48,7 +48,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
     private Map<String, Object> createTestData(String minionId, String saltbootGroup, String root, String saltDevice,
                                   String bootImage, String kernelOptions, boolean includeMACs) {
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<>();
         JsonObject jsonData = new JsonObject();
         if (!saltbootGroup.isEmpty()) {
             jsonData.addProperty("minion_id_prefix", saltbootGroup);

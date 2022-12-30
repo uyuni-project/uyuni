@@ -679,7 +679,7 @@ public class PackageManager extends BaseManager {
      */
     public static void lockPackages(Long sid, Set<Package> packages) {
         for (Package pkg : packages) {
-            Map params = new HashMap();
+            Map params = new HashMap<>();
             params.put("sid", sid);
             params.put("pkgid", pkg.getId());
             params.put("nid", pkg.getPackageName().getId());
@@ -700,7 +700,7 @@ public class PackageManager extends BaseManager {
      */
     public static void unlockPackages(Long sid, Set<Package> packages) {
         for (Package pkg : packages) {
-            Map params = new HashMap();
+            Map params = new HashMap<>();
             params.put("sid", sid);
             params.put("pkgid", pkg.getId());
             ModeFactory.getWriteMode("Package_queries",
@@ -715,7 +715,7 @@ public class PackageManager extends BaseManager {
      * @param actionId Action ID
      */
     public static void syncLockedPackages(Long sid, Long actionId) {
-        Map params = new HashMap();
+        Map params = new HashMap<>();
         params.put("sid", sid);
         params.put("action_id", actionId);
         ModeFactory.getWriteMode("Package_queries", "remove_orphan_lock_on_action_cancel").executeUpdate(params);
@@ -728,7 +728,7 @@ public class PackageManager extends BaseManager {
      * @param actionId Action ID
      */
     public static void updateLockedPackages(Long sid, Long actionId) {
-        Map params = new HashMap();
+        Map params = new HashMap<>();
         params.put("sid", sid);
         params.put("action_id", actionId);
         ModeFactory.getWriteMode("Package_queries", "update_pkg_lock_on_action").executeUpdate(params);
@@ -741,7 +741,7 @@ public class PackageManager extends BaseManager {
      * @param actionId Action ID
      */
     public static void updateUnlockedPackages(Long sid, Long actionId) {
-        Map params = new HashMap();
+        Map params = new HashMap<>();
         params.put("sid", sid);
         params.put("action_id", actionId);
         ModeFactory.getWriteMode("Package_queries", "update_pkg_unlock_on_action").executeUpdate(params);
@@ -771,7 +771,7 @@ public class PackageManager extends BaseManager {
             pendingStatus = null;
         }
 
-        Map params = new HashMap();
+        Map params = new HashMap<>();
         params.put("pkg_id", pkgId);
         params.put("pending", pendingStatus);
         ModeFactory.getWriteMode("Package_queries",
@@ -1071,7 +1071,7 @@ public class PackageManager extends BaseManager {
                     "Package_queries", "packages_for_channel_from_channel");
 
             DataResult dr = m.execute(params);
-            dr.setElaborationParams(new HashMap());
+            dr.setElaborationParams(new HashMap<>());
             return dr;
     }
 
@@ -1093,7 +1093,7 @@ public class PackageManager extends BaseManager {
                     "Package_queries", "custom_packages_for_channel");
 
             DataResult dr = m.execute(params);
-            dr.setElaborationParams(new HashMap());
+            dr.setElaborationParams(new HashMap<>());
             return dr;
     }
 
@@ -1112,7 +1112,7 @@ public class PackageManager extends BaseManager {
                     "Package_queries", "compare_managed_channel_packages");
 
             DataResult dr = m.execute(params);
-            dr.setElaborationParams(new HashMap());
+            dr.setElaborationParams(new HashMap<>());
             return dr;
     }
 
@@ -1134,7 +1134,7 @@ public class PackageManager extends BaseManager {
                     "Package_queries", "managed_channel_merge_preview");
 
             DataResult dr = m.execute(params);
-            dr.setElaborationParams(new HashMap());
+            dr.setElaborationParams(new HashMap<>());
             return dr;
     }
 
@@ -1216,7 +1216,7 @@ public class PackageManager extends BaseManager {
         }
 
             DataResult dr = m.execute(params);
-            dr.setElaborationParams(new HashMap());
+            dr.setElaborationParams(new HashMap<>());
             return dr;
     }
 
@@ -1241,7 +1241,7 @@ public class PackageManager extends BaseManager {
         }
 
             DataResult dr = m.execute(params);
-            Map elabs = new HashMap();
+            Map elabs = new HashMap<>();
             elabs.put("org_id", orgId);
             dr.setElaborationParams(elabs);
             return dr;
@@ -1271,7 +1271,7 @@ public class PackageManager extends BaseManager {
         }
 
             DataResult dr = m.execute(params);
-            Map elabs = new HashMap();
+            Map elabs = new HashMap<>();
             elabs.put("org_id", orgId);
             dr.setElaborationParams(elabs);
             return dr;

@@ -1224,7 +1224,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
             Package p = PackageFactory.lookupByIdAndUser(packageId, this.user);
 
-            Map evrmap = new HashMap();
+            Map evrmap = new HashMap<>();
             evrmap.put("name_id", p.getPackageName().getId());
             evrmap.put("evr_id", p.getPackageEvr().getId());
             evrmap.put("arch_id", p.getPackageArch().getId());

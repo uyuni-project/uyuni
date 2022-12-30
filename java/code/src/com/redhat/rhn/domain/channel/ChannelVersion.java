@@ -43,7 +43,7 @@ public class ChannelVersion {
 
     // Map releases to channel version constants. Anything not in this map
     // will be assumed to be legacy.
-    public static final Map DIST_CHANNEL_MAP_TO_CHANNEL_VERSION = new HashMap();
+    public static final Map DIST_CHANNEL_MAP_TO_CHANNEL_VERSION = new HashMap<>();
 
     static {
         DIST_CHANNEL_MAP_TO_CHANNEL_VERSION.put("7Client", ChannelVersion.RHEL7);

@@ -121,7 +121,7 @@ public class Access extends BaseHandler {
 
         SelectMode m = ModeFactory.getMode("Org_queries",
                 "has_channel_family_entitlement");
-        Map queryParams = new HashMap();
+        Map queryParams = new HashMap<>();
         queryParams.put("label", label);
         queryParams.put("org_id", user.getOrg().getId());
         DataResult dr = m.execute(queryParams);
@@ -139,7 +139,7 @@ public class Access extends BaseHandler {
 
         SelectMode m = ModeFactory.getMode("System_queries",
                 "org_proxy_servers");
-        Map queryParams = new HashMap();
+        Map queryParams = new HashMap<>();
         queryParams.put("org_id", user.getOrg().getId());
         DataResult dr = m.execute(queryParams);
         return (!dr.isEmpty());

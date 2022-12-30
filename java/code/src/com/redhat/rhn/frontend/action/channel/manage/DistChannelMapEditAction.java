@@ -68,7 +68,7 @@ public class DistChannelMapEditAction extends RhnAction {
         List channelArches = new ArrayList();
         List<ChannelArch> arches = ChannelManager.getChannelArchitectures();
         for (ChannelArch arch : arches) {
-            Map selection = new HashMap();
+            Map selection = new HashMap<>();
             selection.put("label", arch.getName());
             selection.put("value", arch.getLabel());
             channelArches.add(selection);
@@ -80,7 +80,7 @@ public class DistChannelMapEditAction extends RhnAction {
         List<Channel> subscribableBaseChannels =
                 ChannelFactory.listSubscribableBaseChannels(user);
         for (Channel channel : subscribableBaseChannels) {
-            Map selection = new HashMap();
+            Map selection = new HashMap<>();
             selection.put("label", channel.getName());
             selection.put("value", channel.getLabel());
             channels.add(selection);

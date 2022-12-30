@@ -116,7 +116,7 @@ public class ErrataSetupAction extends RhnAction implements Listable {
            showButton = "false";
         }
 
-        Map params =  new HashMap();
+        Map params =  new HashMap<>();
         Set keys = request.getParameterMap().keySet();
         for (Object keyIn : keys) {
             String key = (String) keyIn;

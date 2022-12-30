@@ -1187,7 +1187,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         //make sure the value was set properly
         assertEquals(val1, val.getValue());
 
-        Map valuesToSet = new HashMap();
+        Map valuesToSet = new HashMap<>();
         valuesToSet.put(keyLabel, val2);
 
         int setResult = handler.setCustomValues(admin,
@@ -1995,7 +1995,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         systemEntitlementManager.removeAllServerEntitlements(server);
 
-        Map details = new HashMap();
+        Map details = new HashMap<>();
         String profileName = "blah";
         String description = "some description";
         String address1 = "address1";
@@ -2047,7 +2047,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         systemEntitlementManager.removeAllServerEntitlements(server);
 
-        Map details = new HashMap();
+        Map details = new HashMap<>();
         details.put("contact_method", "foobar");
         try {
             handler.setDetails(admin, server.getId().intValue(), details);
@@ -2062,7 +2062,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testSetDetailsContactMethodForSalt() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
 
-        Map details = new HashMap();
+        Map details = new HashMap<>();
         details.put("contact_method", "ssh-push");
         try {
             handler.setDetails(admin, server.getId().intValue(), details);
@@ -2102,7 +2102,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testSetDetailsUnentitleServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         systemEntitlementManager.removeAllServerEntitlements(server);
-        Map details = new HashMap();
+        Map details = new HashMap<>();
         details.put("base_entitlement", "unentitle");
 
         handler.setDetails(admin, server.getId().intValue(), details);
@@ -2116,7 +2116,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testSetDetailsBaseEntitlementAsNonOrgAdmin() throws Exception {
         Server server = ServerFactoryTest.createTestServer(regular, true);
         systemEntitlementManager.removeAllServerEntitlements(server);
-        Map details = new HashMap();
+        Map details = new HashMap<>();
         details.put("base_entitlement", "unentitle");
 
         try {

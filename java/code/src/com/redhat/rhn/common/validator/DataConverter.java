@@ -45,7 +45,7 @@ public class DataConverter {
      */
     private DataConverter() {
         schemaMappings = getSchemaMappings();
-        javaMappings = new HashMap();
+        javaMappings = new HashMap<>();
         for (Object key : schemaMappings.keySet()) {
             javaMappings.put(schemaMappings.get(key), key);
         }
@@ -100,7 +100,7 @@ public class DataConverter {
      * @return <code>Map</code> - data type mappings.
      */
     private Map getSchemaMappings() {
-        Map map = new HashMap();
+        Map map = new HashMap<>();
 
         // Key is Java type, value is XML Schema type
         map.put("String", "string");

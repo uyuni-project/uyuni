@@ -103,7 +103,7 @@ public class CobblerSnippetDetailsAction extends RhnAction {
     }
 
     private Map makeValidationMap(DynaActionForm form) {
-        Map map = new HashMap();
+        Map map = new HashMap<>();
         map.put(NAME, form.getString(NAME));
         map.put(OLD_NAME, form.getString(OLD_NAME));
         map.put(CONTENTS, form.getString(CONTENTS));

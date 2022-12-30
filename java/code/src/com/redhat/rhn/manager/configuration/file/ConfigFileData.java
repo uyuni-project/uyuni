@@ -363,7 +363,7 @@ public abstract class ConfigFileData {
      * @return a map with key = ConfigFIleForms keys, and value = ConfigFIleData values..
      */
     protected Map makeValidationMap() {
-        Map map = new HashMap();
+        Map map = new HashMap<>();
         map.put(ConfigFileForm.REV_UID, getOwner());
         map.put(ConfigFileForm.REV_GID, getGroup());
         map.put(ConfigFileForm.REV_PERMS, getPermissions());

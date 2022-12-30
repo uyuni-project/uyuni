@@ -165,8 +165,8 @@ public class RpmVersionComparatorTest  {
     private int testRPMVersionCompareInDatabase(String operand1, String operand2) {
         // test the stored function
         CallableMode m = ModeFactory.getCallableMode("test_queries", "rpmstrcmp");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map inParams = new HashMap<>();
+        Map outParams = new HashMap<>();
         outParams.put("compareResult", Types.INTEGER);
         Integer result;
         inParams.put("operand1", operand1);

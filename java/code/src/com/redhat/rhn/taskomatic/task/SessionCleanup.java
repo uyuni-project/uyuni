@@ -43,7 +43,7 @@ public class SessionCleanup extends RhnJavaJob {
     public void execute(JobExecutionContext context)
             throws JobExecutionException {
         Config c = Config.get();
-        Map inParams = new HashMap();
+        Map inParams = new HashMap<>();
 
         //retrieves info from user preferences
         long window = c.getInt("web.session_database_lifetime");

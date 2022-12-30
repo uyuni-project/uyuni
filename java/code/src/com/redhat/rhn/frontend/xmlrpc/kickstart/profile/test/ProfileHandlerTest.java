@@ -313,12 +313,12 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
             l1.add((Map) oIn);
         }
 
-        Map m1 = new HashMap();
-        Map m2 = new HashMap();
-        Map m3 = new HashMap();
-        Map m4 = new HashMap();
-        Map m5 = new HashMap();
-        Map m6 = new HashMap();
+        Map m1 = new HashMap<>();
+        Map m2 = new HashMap<>();
+        Map m3 = new HashMap<>();
+        Map m4 = new HashMap<>();
+        Map m5 = new HashMap<>();
+        Map m6 = new HashMap<>();
 
         //all required options
         m1.put("name", "lang");
@@ -374,12 +374,12 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
             l1.add((Map) oIn);
         }
 
-        Map m1 = new HashMap();
-        Map m2 = new HashMap();
-        Map m3 = new HashMap();
-        Map m4 = new HashMap();
-        Map m5 = new HashMap();
-        Map m6 = new HashMap();
+        Map m1 = new HashMap<>();
+        Map m2 = new HashMap<>();
+        Map m3 = new HashMap<>();
+        Map m4 = new HashMap<>();
+        Map m5 = new HashMap<>();
+        Map m6 = new HashMap<>();
 
         //all required options
         m1.put("name", "lang");

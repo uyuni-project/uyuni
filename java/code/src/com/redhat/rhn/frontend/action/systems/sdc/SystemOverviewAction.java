@@ -80,7 +80,7 @@ public class SystemOverviewAction extends RhnAction {
         }
 
         // System Channels
-        Map baseChannel = new HashMap();
+        Map baseChannel = new HashMap<>();
         List childChannels = new ArrayList();
         DataResult channelList = SystemManager.systemChannelSubscriptions(sid);
 

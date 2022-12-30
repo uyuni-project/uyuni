@@ -55,7 +55,7 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         super.execute(msg);
         NewUserEvent evt = (NewUserEvent) msg;
 
-        Map map = new HashMap();
+        Map map = new HashMap<>();
         map.put("login", evt.getUser().getLogin());
         map.put("email-address", evt.getUser().getEmail());
 

@@ -50,10 +50,10 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
      */
     public RhnMockHttpServletRequest() {
         super();
-        attributes = new HashMap();
-        headers = new HashMap();
+        attributes = new HashMap<>();
+        headers = new HashMap<>();
         locales = new ArrayList();
-        parameterMap = new HashMap();
+        parameterMap = new HashMap<>();
         cookies = new ArrayList();
         setupServerName("somehost.rhn.redhat.com");
         setupGetRequestURI("/rhn/network/somepage.do");

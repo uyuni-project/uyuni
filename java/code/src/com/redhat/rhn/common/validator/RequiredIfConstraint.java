@@ -121,7 +121,7 @@ public class RequiredIfConstraint extends ParsedConstraint {
     * @param fieldValueIn the value of the field
     */
     public void addField(String fieldNameIn, String fieldValueIn) {
-        Map fieldAndValue = new HashMap();
+        Map fieldAndValue = new HashMap<>();
         fieldAndValue.put(fieldNameIn, fieldValueIn);
         fieldValueList.add(fieldAndValue);
     }

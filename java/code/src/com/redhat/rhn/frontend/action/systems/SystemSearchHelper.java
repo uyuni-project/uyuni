@@ -470,7 +470,7 @@ public class SystemSearchHelper {
             List searchResults, String viewMode) {
         // this is our main result Map which we will return, it's keys
         // represent the list of server Ids this search yielded
-        Map serverMaps = new HashMap();
+        Map serverMaps = new HashMap<>();
         log.info("Entering getResultMapFromPackagesIndex() searchResults.size() = {}", searchResults.size());
 
         for (Object item : searchResults) {
@@ -486,7 +486,7 @@ public class SystemSearchHelper {
             if (serverIds.size() < 1) {
                 continue;
             }
-            Map pkgItem = new HashMap();
+            Map pkgItem = new HashMap<>();
             pkgItem.put("rank", result.get("rank"));
             pkgItem.put("score", result.get("score"));
             pkgItem.put("name", result.get("name"));
@@ -505,7 +505,7 @@ public class SystemSearchHelper {
                     }
                     log.info("Package {}, id = {}, score = {}, serverIds associated with package = {}",
                             pkg.getNameEvra(), pkgId, currentScore, serverIds.size());
-                    Map serverInfo = new HashMap();
+                    Map serverInfo = new HashMap<>();
                     serverInfo.put("score", result.get("score"));
                     serverInfo.put("matchingField", "packageName");
                     serverInfo.put("matchingFieldValue", pkg.getNvrea());
@@ -525,10 +525,10 @@ public class SystemSearchHelper {
         if (log.isDebugEnabled()) {
             log.debug("forming results for: {}", searchResults);
         }
-        Map serverIds = new HashMap();
+        Map serverIds = new HashMap<>();
         for (Object obj : searchResults) {
             Map result = (Map)obj;
-            Map serverItem = new HashMap();
+            Map serverItem = new HashMap<>();
             serverItem.put("rank", result.get("rank"));
             serverItem.put("score", result.get("score"));
             serverItem.put("name", result.get("name"));
@@ -555,7 +555,7 @@ public class SystemSearchHelper {
         if (log.isDebugEnabled()) {
             log.debug("forming results for: {}", searchResults);
         }
-        Map serverIds = new HashMap();
+        Map serverIds = new HashMap<>();
         for (Object obj : searchResults) {
             Map result = (Map)obj;
             Long sysId = Long.valueOf((String)result.get("serverId"));
@@ -569,7 +569,7 @@ public class SystemSearchHelper {
                 }
             }
 
-            Map serverItem = new HashMap();
+            Map serverItem = new HashMap<>();
             serverItem.put("rank", result.get("rank"));
             serverItem.put("score", result.get("score"));
             serverItem.put("name", result.get("name"));
@@ -593,10 +593,10 @@ public class SystemSearchHelper {
         if (log.isDebugEnabled()) {
             log.debug("forming results for: {}", searchResults);
         }
-        Map serverIds = new HashMap();
+        Map serverIds = new HashMap<>();
         for (Object obj : searchResults) {
             Map result = (Map)obj;
-            Map serverItem = new HashMap();
+            Map serverItem = new HashMap<>();
             serverItem.put("rank", result.get("rank"));
             serverItem.put("score", result.get("score"));
             serverItem.put("name", result.get("name"));
@@ -620,10 +620,10 @@ public class SystemSearchHelper {
         if (log.isDebugEnabled()) {
             log.debug("forming results for: {}", searchResults);
         }
-        Map serverIds = new HashMap();
+        Map serverIds = new HashMap<>();
         for (Object obj : searchResults) {
             Map result = (Map)obj;
-            Map serverItem = new HashMap();
+            Map serverItem = new HashMap<>();
             serverItem.put("rank", result.get("rank"));
             serverItem.put("score", result.get("score"));
             serverItem.put("name", result.get("value"));
@@ -767,12 +767,12 @@ public class SystemSearchHelper {
         }
         log.info("Will use <{}> as the value to supply for matchingField in all of these invertMatches", matchingField);
         // Get list of all SystemIds and save to new Map
-        Map invertedIds = new HashMap();
+        Map invertedIds = new HashMap<>();
         DataResult<SystemOverview> dr = SystemManager.systemList(user, null);
         log.info("{} systems came back as the total number of visible systems to this user", dr.size());
         for (SystemOverview so : dr) {
             log.debug("Adding system id: {} to allIds map", so.getId());
-            Map info = new HashMap();
+            Map info = new HashMap<>();
             info.put("matchingField", matchingField);
             invertedIds.put(so.getId(), info);
         }

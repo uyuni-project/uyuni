@@ -204,7 +204,7 @@ public class UserHandler extends BaseHandler {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
         LocalizationService ls = LocalizationService.getInstance();
 
-        Map ret = new HashMap();
+        Map ret = new HashMap<>();
         ret.put("first_names", StringUtils.defaultString(target.getFirstNames()));
         ret.put("first_name", StringUtils.defaultString(target.getFirstNames()));
         ret.put("last_name",   StringUtils.defaultString(target.getLastName()));
@@ -715,7 +715,7 @@ public class UserHandler extends BaseHandler {
 
         List groups = ServerGroupFactory.listManagedGroups(target.getOrg());
 
-        Map groupMap = new HashMap();
+        Map groupMap = new HashMap<>();
 
         // sigh.  After looking through all of the apache collections package
         // I couldn't find anything that would create a map from a list using
@@ -803,7 +803,7 @@ public class UserHandler extends BaseHandler {
         }
 
         List groups = ServerGroupFactory.listManagedGroups(target.getOrg());
-        Map groupMap = new HashMap();
+        Map groupMap = new HashMap<>();
 
         // sigh.  After looking through all of the apache collections package
         // I couldn't find anything that would create a map from a list using

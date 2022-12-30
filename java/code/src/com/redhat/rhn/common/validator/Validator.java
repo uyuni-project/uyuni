@@ -91,7 +91,7 @@ public class Validator {
             instances.put(schemaURL.toString(), validator);
             return validator;
         }
-        instances = new HashMap();
+        instances = new HashMap<>();
         Validator validator = new Validator(schemaURL);
         instances.put(schemaURL.toString(), validator);
         return validator;

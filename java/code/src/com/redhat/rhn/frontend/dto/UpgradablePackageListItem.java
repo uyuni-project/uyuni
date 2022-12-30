@@ -119,7 +119,7 @@ public class UpgradablePackageListItem extends PackageListItem {
     public List getErrata() {
         List retval = new ArrayList();
         for (int i = 0; i < errataAdvisory.size(); i++) {
-            Map current = new HashMap();
+            Map current = new HashMap<>();
             current.put("advisory", errataAdvisory.get(i));
             current.put("id", errataId.get(i));
             if (i < errataAdvisoryType.size()) {

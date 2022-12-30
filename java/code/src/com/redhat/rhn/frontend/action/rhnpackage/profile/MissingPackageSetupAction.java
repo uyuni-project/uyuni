@@ -64,7 +64,7 @@ public class MissingPackageSetupAction extends RhnAction implements Listable {
         helper.execute();
 
         if (request.getParameter(RequestContext.DISPATCH) != null) {
-            Map param = new HashMap();
+            Map param = new HashMap<>();
             param.put(RequestContext.SID, sid);
             param.put(RequestContext.SID1, sid1);
             param.put(RequestContext.PRID, prid);

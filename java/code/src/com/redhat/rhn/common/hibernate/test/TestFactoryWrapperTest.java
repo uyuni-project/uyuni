@@ -147,7 +147,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
         for (int i = 0; i < 20; i++) {
             SelectMode m = ModeFactory.getMode("test_queries", "get_test_users");
-            m.execute(new HashMap());
+            m.execute(new HashMap<>());
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
         }

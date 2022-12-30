@@ -65,7 +65,7 @@ public class SandboxCleanup extends RhnJavaJob {
                 log.info("Removing sandbox channels: {}", candidates.size());
             }
             Map<String, Object> params = new HashMap<>();
-            Map out = new HashMap();
+            Map out = new HashMap<>();
             for (Object candidateIn : candidates) {
                 Map row = (Map) candidateIn;
                 params.put("id", row.get("id"));

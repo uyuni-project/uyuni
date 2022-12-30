@@ -68,7 +68,7 @@ public class MapBuilder {
      * @return a map containing the debeanified values.
      */
     public Map mapify(Object bean) {
-        Map retval = new HashMap();
+        Map retval = new HashMap<>();
         try {
             Map properties = BeanUtils.describe(bean);
             for (Object oIn : properties.keySet()) {
