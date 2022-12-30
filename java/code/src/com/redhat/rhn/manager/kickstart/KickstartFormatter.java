@@ -231,14 +231,7 @@ public class KickstartFormatter {
         buf.append("%" + KickstartScript.TYPE_PRE);
         buf.append(NEWLINE);
 
-        if (CobblerXMLRPCHelper.getCobblerVersion() >= 2.2) {
-            addCobblerSnippet(buf, "kickstart_start");
-        }
-        else {
-            buf.append("$kickstart_start");
-            buf.append(NEWLINE);
-        }
-
+        addCobblerSnippet(buf, "autoinstall_start");
         buf.append(NEWLINE);
         addCobblerSnippet(buf, "pre_install_network_config");
         buf.append(NEWLINE);
@@ -282,12 +275,7 @@ public class KickstartFormatter {
         addCobblerSnippet(buf, "koan_environment");
         buf.append(NEWLINE);
 
-        if (CobblerXMLRPCHelper.getCobblerVersion() >= 2.2) {
-            addCobblerSnippet(buf, "kickstart_done");
-        }
-        else {
-            buf.append("$kickstart_done");
-        }
+        addCobblerSnippet(buf, "autoinstall_done");
 
         buf.append(NEWLINE);
         buf.append(END + NEWLINE);
