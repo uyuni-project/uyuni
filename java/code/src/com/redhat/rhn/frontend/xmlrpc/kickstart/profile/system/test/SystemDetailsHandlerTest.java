@@ -224,7 +224,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         //   Add the key to the profile
         KickstartCryptoKeyCommand command =
             new KickstartCryptoKeyCommand(profile.getId(), userNotOrgOne);
-        List keyList = new ArrayList();
+        List keyList = new ArrayList<>();
         keyList.add(key.getDescription());
         command.addKeysByDescriptionAndOrg(keyList, userNotOrgOne.getOrg());
         command.store();
@@ -267,7 +267,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         KickstartData profile = createProfile(userNotOrgOne, userKey);
 
         // Test
-        List descriptions = new ArrayList();
+        List descriptions = new ArrayList<>();
         descriptions.add(key.getDescription());
         int result = handler.addKeys(userNotOrgOne, profile.getLabel(), descriptions);
 
@@ -301,7 +301,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         //   Create profile to add the key to
         KickstartData profile = createProfile(userNotOrgOne, userKey);
 
-        List descriptions = new ArrayList();
+        List descriptions = new ArrayList<>();
         descriptions.add(key.getDescription());
         int result = handler.addKeys(userNotOrgOne, profile.getLabel(), descriptions);
 

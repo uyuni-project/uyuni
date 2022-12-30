@@ -93,7 +93,7 @@ public class BaseUserSetupAction extends RhnAction {
      */
     public List getTimeZones() {
         List dataList = UserManager.lookupAllTimeZones();
-        List displayList = new ArrayList();
+        List displayList = new ArrayList<>();
         for (Object oIn : dataList) {
             String display = LocalizationService.getInstance()
                     .getMessage(((RhnTimeZone) oIn).getOlsonName());

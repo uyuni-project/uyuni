@@ -307,7 +307,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks = KickstartDataTest.createKickstartWithProfile(admin);
 
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
-        List<Map> l1 = new ArrayList();
+        List<Map> l1 = new ArrayList<>();
 
         for (Object oIn : s1) {
             l1.add((Map) oIn);
@@ -368,7 +368,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks = KickstartDataTest.createKickstartWithProfile(admin);
 
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
-        List<Map> l1 = new ArrayList();
+        List<Map> l1 = new ArrayList<>();
 
         for (Object oIn : s1) {
             l1.add((Map) oIn);

@@ -50,7 +50,7 @@ public abstract class BaseConfigFilter implements ListFilter {
      */
     @Override
     public List getFieldNames() {
-        return new ArrayList(fieldMap.keySet());
+        return new ArrayList<>(fieldMap.keySet());
     }
 
     /**

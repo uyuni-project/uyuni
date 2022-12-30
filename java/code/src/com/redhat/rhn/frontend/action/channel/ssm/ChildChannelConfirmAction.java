@@ -86,7 +86,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
         Map<Long, ChannelActionDAO> sysSubList = ChannelManager.filterChildSubscriptions(
                 RhnSetDecl.SYSTEMS.getLabel(),  chanSubList, chanUnsubList, user);
 
-        List list = new ArrayList();
+        List list = new ArrayList<>();
         list.addAll(sysSubList.values());
         request.setAttribute("data", list);
 

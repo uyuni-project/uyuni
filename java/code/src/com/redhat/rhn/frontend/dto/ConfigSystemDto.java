@@ -327,7 +327,7 @@ public class ConfigSystemDto extends BaseDto {
             return ""; //for those that have the egg but lost the chicken
         }
         LocalizationService ls = LocalizationService.getInstance();
-        List actions = new ArrayList();
+        List actions = new ArrayList<>();
         Server server = ServerFactory.lookupById(id);
         if (server.getOs().startsWith("redhat-release") && server.getRelease().startsWith("8")) {
             displayHelper(actions, appStream, ls, "subscribeappstream");

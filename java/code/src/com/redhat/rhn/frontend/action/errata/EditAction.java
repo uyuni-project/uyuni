@@ -176,7 +176,7 @@ public class EditAction extends LookupDispatchAction {
 
         DynaActionForm form = (DynaActionForm) formIn;
         //Validate the form to make sure everything was filled out correctly
-        List bugs = new ArrayList();
+        List bugs = new ArrayList<>();
         ActionErrors errors = validateForm(form, request, e, bugs);
 
         //set l10n-ed advisoryTypeLabels list for select drop down
@@ -294,7 +294,7 @@ public class EditAction extends LookupDispatchAction {
          * The implementation here is a little annoying, but since there can be
          * any number of bugs here, this seems to be the only real way.
          */
-        List bugIds = new ArrayList();
+        List bugIds = new ArrayList<>();
         while (params.hasNext()) {
             String next = (String) params.next();
             if (next.startsWith("buglistId")) {

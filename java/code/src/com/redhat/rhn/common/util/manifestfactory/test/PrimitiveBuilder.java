@@ -49,7 +49,7 @@ public class PrimitiveBuilder implements ManifestFactoryBuilder {
             String containedType = (String)params.get("contained-type");
 
             int len = Integer.valueOf(lenStr);
-            List ret = new ArrayList();
+            List ret = new ArrayList<>();
             for (int i = 0; i < len; i++) {
                 try {
                     ret.add(Class.forName(containedType).newInstance());

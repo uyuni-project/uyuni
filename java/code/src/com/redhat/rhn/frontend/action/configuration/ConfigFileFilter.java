@@ -28,7 +28,7 @@ public class ConfigFileFilter extends BaseConfigFilter {
      * Create a new filter with "path" added to its filter-criteria
      */
     public ConfigFileFilter() {
-        fields = new ArrayList();
+        fields = new ArrayList<>();
         fields.add("path");
     }
 

@@ -91,7 +91,7 @@ public class ChannelEditor {
         }
 
         // make sure we work with long ids
-        List<Long> longPackageIds = new ArrayList();
+        List<Long> longPackageIds = new ArrayList<>();
         for (Object packageIdIn : packageIds) {
             longPackageIds.add(((Number) packageIdIn).longValue());
         }

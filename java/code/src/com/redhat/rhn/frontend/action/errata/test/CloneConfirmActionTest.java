@@ -52,7 +52,7 @@ public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testExecute() throws Exception {
 
-        List list = new ArrayList();
+        List list = new ArrayList<>();
 
         RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),
                                                           "clone_errata_list",

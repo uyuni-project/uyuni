@@ -985,7 +985,7 @@ public class ServerFactory extends HibernateFactory {
         params.put("orgId", user.getOrg().getId());
         List<Number> ids = SINGLETON.listObjectsByNamedQuery(
                 "Server.listProxies", params);
-        List<Server> servers = new ArrayList(ids.size());
+        List<Server> servers = new ArrayList<>(ids.size());
         for (Number id : ids) {
             servers.add(lookupById(id.longValue()));
         }

@@ -203,7 +203,7 @@ public class PackagesHandler extends BaseHandler {
 
         List<PackageFileDto> dr = PackageManager.packageFiles(pkg.getId());
 
-        List returnList = new ArrayList();
+        List returnList = new ArrayList<>();
 
         /*
          * Loop through the data result and merge the data into the correct format
@@ -298,7 +298,7 @@ public class PackagesHandler extends BaseHandler {
         Package pkg = lookupPackage(loggedInUser, pid);
 
         // The list we'll eventually return
-        List returnList = new ArrayList();
+        List returnList = new ArrayList<>();
 
         /*
          * Loop through each of the types of dependencies and create a map representing the

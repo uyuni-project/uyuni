@@ -71,7 +71,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         String viewmode = form.getString(VIEW_MODE);
         Boolean fineGrained = (Boolean)form.get(FINE_GRAINED);
 
-        List searchOptions = new ArrayList();
+        List searchOptions = new ArrayList<>();
         // setup the option list for select box (view_mode).
         addOption(searchOptions, OPT_ALL_FIELDS, OPT_ALL_FIELDS);
         addOption(searchOptions, OPT_ADVISORY, OPT_ADVISORY);
@@ -199,7 +199,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
         String path = null;
-        List args = new ArrayList();
+        List args = new ArrayList<>();
         args.add(sessionId.toString());
         // do a package search instead of an errata one. This uses
         // a different lucene index to find pkgs then reconciles
@@ -211,7 +211,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             args.add("errata");
         }
 
-        List results = new ArrayList();
+        List results = new ArrayList<>();
         //
         // Note:  This is how "issue date" search works.
         // It functions in one of 2 ways, depending on the state of "searchString"

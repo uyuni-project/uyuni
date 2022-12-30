@@ -122,7 +122,7 @@ public class TokenTest extends RhnBaseTestCase {
         proc.add(t.getConfigChannelsFor(user), global2);
 
         TokenFactory.save(t);
-        List ls = new ArrayList();
+        List ls = new ArrayList<>();
         ls.add(global1);
         ls.add(global2);
 

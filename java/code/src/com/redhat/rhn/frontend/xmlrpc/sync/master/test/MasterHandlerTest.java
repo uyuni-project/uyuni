@@ -398,7 +398,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         IssMasterOrg org = new IssMasterOrg();
         org.setMasterOrgName("newMasterOrg");
         org.setMasterOrgId(1013L);
-        List<Map<String, Object>> mapOrgs = new ArrayList();
+        List<Map<String, Object>> mapOrgs = new ArrayList<>();
         mapOrgs.add(orgToMap(org));
         IssMaster m3 = handler.getMaster(admin, master.getId().intValue());
         int rc = handler.setMasterOrgs(admin,
@@ -507,7 +507,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
 
     private List<IssMasterOrg> getBareOrgs(boolean map) {
         long id = 1001L;
-        List<IssMasterOrg> orgs = new ArrayList();
+        List<IssMasterOrg> orgs = new ArrayList<>();
         for (String name : masterOrgNames) {
             IssMasterOrg org = new IssMasterOrg();
             org.setMasterOrgName(name);

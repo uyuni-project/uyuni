@@ -81,7 +81,7 @@ public class SystemOverviewAction extends RhnAction {
 
         // System Channels
         Map baseChannel = new HashMap<>();
-        List childChannels = new ArrayList();
+        List childChannels = new ArrayList<>();
         DataResult channelList = SystemManager.systemChannelSubscriptions(sid);
 
         for (Object oIn : channelList) {
@@ -176,7 +176,7 @@ public class SystemOverviewAction extends RhnAction {
     }
 
     protected List findUserServerPreferences(User user, Server s) {
-        List serverPreferenceList = new ArrayList();
+        List serverPreferenceList = new ArrayList<>();
 
         if (user.getEmailNotify() == 0) {
             serverPreferenceList.add("sdc.details.overview.notifications.disabled");

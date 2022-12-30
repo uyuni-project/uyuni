@@ -52,9 +52,9 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
         super();
         attributes = new HashMap<>();
         headers = new HashMap<>();
-        locales = new ArrayList();
+        locales = new ArrayList<>();
         parameterMap = new HashMap<>();
-        cookies = new ArrayList();
+        cookies = new ArrayList<>();
         setupServerName("somehost.rhn.redhat.com");
         setupGetRequestURI("/rhn/network/somepage.do");
         setLocale(Locale.getDefault());

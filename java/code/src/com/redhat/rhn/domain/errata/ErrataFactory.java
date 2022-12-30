@@ -307,7 +307,7 @@ public class ErrataFactory extends HibernateFactory {
 
         }
         ChannelFactory.save(chan);
-        List chanList = new ArrayList();
+        List chanList = new ArrayList<>();
         chanList.add(chan.getId());
 
         ErrataCacheManager.insertCacheForChannelErrataAsync(chanList, errata);

@@ -131,8 +131,8 @@ public class AssignedGroupsSetupAction extends RhnListAction {
 
         //Bottom form
         DynaActionForm form = (DynaActionForm)formIn;
-        List selDefaults = new ArrayList();
-        List selGroups = new ArrayList();
+        List selDefaults = new ArrayList<>();
+        List selGroups = new ArrayList<>();
         processList(dr, selGroups, selDefaults);
         form.set("selectedGroups", convert(selGroups));
         form.set("defaultGroups", getDefaultGroupStrings(user));

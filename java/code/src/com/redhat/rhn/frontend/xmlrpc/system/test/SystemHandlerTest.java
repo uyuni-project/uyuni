@@ -360,7 +360,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server = reload(server);
         assertNotNull(server.getBaseChannel());
 
-        List cids = new ArrayList();
+        List cids = new ArrayList<>();
         cids.add(child1.getId().intValue());
         cids.add(child2.getId().intValue());
 
@@ -370,7 +370,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(3, server.getChannels().size());
 
         //Try 'unsubscribing' from child1...
-        cids = new ArrayList();
+        cids = new ArrayList<>();
         cids.add(child2.getId().intValue());
         assertEquals(1, cids.size());
 
@@ -380,7 +380,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, server.getChannels().size());
 
         //Try putting an invalid channel in there
-        cids = new ArrayList();
+        cids = new ArrayList<>();
         cids.add(-32339);
         assertEquals(1, cids.size());
 
@@ -395,7 +395,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Channel base2 = ChannelFactoryTest.createTestChannel(admin);
         base2.setParentChannel(null);
-        cids = new ArrayList();
+        cids = new ArrayList<>();
         cids.add(base2.getId().intValue());
         assertEquals(1, cids.size());
 
@@ -413,7 +413,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // try setting the base channel of an s390 server to
         // IA-32.
         try {
-            List ia32Children = new ArrayList();
+            List ia32Children = new ArrayList<>();
             ia32Children.add(child1.getId().intValue());
             ia32Children.add(child2.getId().intValue());
 
@@ -451,7 +451,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server = reload(server);
         assertNotNull(server.getBaseChannel());
 
-        List channelLabels = new ArrayList();
+        List channelLabels = new ArrayList<>();
         channelLabels.add(new String(child1.getLabel()));
         channelLabels.add(new String(child2.getLabel()));
 
@@ -461,7 +461,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(3, server.getChannels().size());
 
         //Try 'unsubscribing' from child1...
-        channelLabels = new ArrayList();
+        channelLabels = new ArrayList<>();
         channelLabels.add(new String(child2.getLabel()));
         assertEquals(1, channelLabels.size());
 
@@ -471,7 +471,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, server.getChannels().size());
 
         //Try putting an invalid channel in there
-        channelLabels = new ArrayList();
+        channelLabels = new ArrayList<>();
         channelLabels.add(new String("invalid-unknown-channel-label"));
         assertEquals(1, channelLabels.size());
 
@@ -486,7 +486,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Channel base2 = ChannelFactoryTest.createTestChannel(admin);
         base2.setParentChannel(null);
-        channelLabels = new ArrayList();
+        channelLabels = new ArrayList<>();
         channelLabels.add(new String(base2.getLabel()));
         assertEquals(1, channelLabels.size());
 
@@ -504,7 +504,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // try setting the base channel of an s390 server to
         // IA-32.
         try {
-            List ia32Children = new ArrayList();
+            List ia32Children = new ArrayList<>();
             ia32Children.add(new String(child1.getLabel()));
             ia32Children.add(new String(child2.getLabel()));
 
@@ -960,7 +960,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server test = SystemManager.lookupByIdAndUser(sid, admin);
         assertNotNull(test);
         //ok, we have an admin with a server he has access to
-        List sids = new ArrayList();
+        List sids = new ArrayList<>();
         sids.add(id);
         try {
             handler.deleteSystems(regular, sids);
@@ -1715,7 +1715,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         SystemManagerTest.giveCapability(server.getId(), "script.run", 1L);
 
-        List serverIds = new ArrayList();
+        List serverIds = new ArrayList<>();
         serverIds.add(server.getId().intValue());
 
         Integer actionId = handler.scheduleScriptRun(admin,
@@ -1737,7 +1737,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testScheduleScriptMissingCapability() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
-        List serverIds = new ArrayList();
+        List serverIds = new ArrayList<>();
         serverIds.add(server.getId().intValue());
 
         try {
@@ -1755,7 +1755,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testScheduleScriptAsUnentitledUser() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
-        List serverIds = new ArrayList();
+        List serverIds = new ArrayList<>();
         serverIds.add(server.getId().intValue());
 
         try {
@@ -1771,7 +1771,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testScheduleScriptNoSuchServer() throws Exception {
-        List serverIds = new ArrayList();
+        List serverIds = new ArrayList<>();
         serverIds.add(-1);
 
         try {
@@ -1792,7 +1792,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         SystemManagerTest.giveCapability(server.getId(), "script.run", 1L);
 
-        List serverIds = new ArrayList();
+        List serverIds = new ArrayList<>();
         serverIds.add(server.getId().intValue());
 
         Integer actionId = handler.scheduleScriptRun(admin,
@@ -1854,7 +1854,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testApplyIrrelevantErrata() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
-        List serverIds = new ArrayList();
+        List serverIds = new ArrayList<>();
         serverIds.add(server.getId().intValue());
 
         Errata irrelevantErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());

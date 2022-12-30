@@ -288,7 +288,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testServerGroups() throws Exception {
         Long id = server.getId();
 
-        Collection servers = new ArrayList();
+        Collection servers = new ArrayList<>();
         servers.add(server);
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg1 = SERVER_GROUP_MANAGER.create(user, "FooFooFOO", "Foo Description");

@@ -183,7 +183,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return list of GuestAndNonVirtHostView objects
      */
     private static List convertToView(List out) {
-        List ret = new ArrayList(out.size());
+        List ret = new ArrayList<>(out.size());
         /**
          * guest.id as guest_id,
          guest.org_id as guest_org_id,

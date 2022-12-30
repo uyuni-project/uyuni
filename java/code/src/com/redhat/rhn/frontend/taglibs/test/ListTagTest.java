@@ -86,7 +86,7 @@ public class ListTagTest extends RhnBaseTestCase {
     @Test
     public void testTagNoOutput() throws Exception {
         ListTag lt = new ListTag();
-        DataResult dr = new DataResult(new ArrayList());
+        DataResult dr = new DataResult(new ArrayList<>());
 
         lt.setPageList(dr);
         lt.setNoDataText("cant have spaces");
@@ -112,7 +112,7 @@ public class ListTagTest extends RhnBaseTestCase {
 
         // Invent some data so we have a non-empty list
         String[] vals = {"one", "two", "three"};
-        List<String> results = new ArrayList();
+        List<String> results = new ArrayList<>();
         for (String s : vals) {
             results.add(s);
         }

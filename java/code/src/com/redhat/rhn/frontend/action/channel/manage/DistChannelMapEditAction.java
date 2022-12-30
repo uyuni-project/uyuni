@@ -65,7 +65,7 @@ public class DistChannelMapEditAction extends RhnAction {
         User user = ctx.getCurrentUser();
 
         // setup channel architectures
-        List channelArches = new ArrayList();
+        List channelArches = new ArrayList<>();
         List<ChannelArch> arches = ChannelManager.getChannelArchitectures();
         for (ChannelArch arch : arches) {
             Map selection = new HashMap<>();
@@ -76,7 +76,7 @@ public class DistChannelMapEditAction extends RhnAction {
         ctx.getRequest().setAttribute("channelArches", channelArches);
 
         // setup subscribable base channels
-        List channels = new ArrayList();
+        List channels = new ArrayList<>();
         List<Channel> subscribableBaseChannels =
                 ChannelFactory.listSubscribableBaseChannels(user);
         for (Channel channel : subscribableBaseChannels) {

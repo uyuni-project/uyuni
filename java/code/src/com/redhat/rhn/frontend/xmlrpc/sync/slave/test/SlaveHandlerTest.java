@@ -239,7 +239,7 @@ public class SlaveHandlerTest extends BaseHandlerTestCase {
 
     // Add half of any existing Orgs to this list
     private List<Integer> getBareOrgs() {
-        List<Integer> orgs = new ArrayList();
+        List<Integer> orgs = new ArrayList<>();
         int i = 0;
         for (Org o : OrgFactory.lookupAllOrgs()) {
             if (i++ % 2 == 0) {

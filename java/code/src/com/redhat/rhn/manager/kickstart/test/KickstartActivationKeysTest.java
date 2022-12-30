@@ -92,17 +92,17 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
         ActivationKeyFactory.save(key2);
         ActivationKeyFactory.save(key3);
 
-        ArrayList one = new ArrayList();
+        ArrayList one = new ArrayList<>();
         one.add(key1.getId());
-        ArrayList two = new ArrayList();
+        ArrayList two = new ArrayList<>();
         two.add(key2.getId());
-        ArrayList oneAndTwo = new ArrayList();
+        ArrayList oneAndTwo = new ArrayList<>();
         oneAndTwo.add(key1.getId());
         oneAndTwo.add(key2.getId());
-        ArrayList oneAndThree = new ArrayList();
+        ArrayList oneAndThree = new ArrayList<>();
         oneAndThree.add(key1.getId());
         oneAndThree.add(key3.getId());
-        ArrayList all = new ArrayList();
+        ArrayList all = new ArrayList<>();
         all.add(key1.getId());
         all.add(key2.getId());
         all.add(key3.getId());

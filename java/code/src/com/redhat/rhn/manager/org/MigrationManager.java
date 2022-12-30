@@ -142,7 +142,7 @@ public class MigrationManager extends BaseManager {
 
         // Unsubscribe from all channels to change channel entitlements
         UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(user, server,
-                new ArrayList());
+                new ArrayList<>());
         cmd.store();
         SystemManager.unsubscribeServerFromChannel(server, server.getBaseChannel());
 
