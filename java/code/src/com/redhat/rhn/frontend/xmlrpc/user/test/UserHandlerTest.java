@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
@@ -125,7 +126,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testPasswordViaSetDetails() throws Exception {
-        Map details = new HashMap<>();
+        Map<String, String> details = new HashMap<>();
         details.put("password", "");
 
         try {
@@ -140,7 +141,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testSetDetails() throws Exception {
 
-        Map newDetails = new HashMap<>();
+        Map<String, String> newDetails = new HashMap<>();
         newDetails.put("first_name", "firstnames_edited");
 
         //admin editing self
@@ -155,7 +156,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
         //regular editing admin
         try {
-            result = handler.setDetails(regular, admin.getLogin(), newDetails);
+            handler.setDetails(regular, admin.getLogin(), newDetails);
             fail();
         }
         catch (PermissionCheckFailureException e) {
@@ -170,7 +171,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testAddRemoveRole() throws Exception {
-        Set roles = regular.getRoles();
+        Set<Role> roles = regular.getRoles();
         assertEquals(0, roles.size());
 
         //Add org_admin to regular user
@@ -376,7 +377,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testPrefixes() {
-        Map details = new HashMap<>();
+        Map<String, String> details = new HashMap<>();
         details.put("prefix", "");
 
         try {
@@ -409,10 +410,6 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         Integer usePamAuth = 1;
         Integer noPamAuth = 0;
 
-        // test the method without a password
-        //handler.create(admin, login, firstName, lastName, email, usePamAuth);
-
-        login = "testCreateDelete" + TestUtils.randomString();
         // pass in empty password
         handler.create(admin, login, "", firstName, lastName, email, usePamAuth);
 
@@ -462,7 +459,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         // pass in empty array
         try {
             handler.addDefaultSystemGroups(
-                    admin, admin.getLogin(), new LinkedList());
+                    admin, admin.getLogin(), new LinkedList<>());
             fail("empty array should be invalid");
         }
         catch (IllegalArgumentException iae) {
@@ -534,7 +531,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                 regular.getLogin());
         assertEquals(0, groups.length);
 
-        List names = new LinkedList();
+        List<String> names = new LinkedList<>();
         names.add(sg1.getName());
         names.add(sg2.getName());
         handler.addAssignedSystemGroups(admin, regular.getLogin(), names,
@@ -554,7 +551,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                 regular.getLogin());
         assertEquals(0, groups.length);
 
-        List names = new LinkedList();
+        List<String> names = new LinkedList<>();
         names.add(sg1.getName());
         names.add(sg2.getName());
         names.add("notarealgroup");
@@ -585,7 +582,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                 regular.getLogin());
         assertEquals(0, defaults.length);
 
-        List names = new LinkedList();
+        List<String> names = new LinkedList<>();
         names.add(sg1.getName());
         handler.addAssignedSystemGroups(admin, regular.getLogin(), names,
                 Boolean.FALSE);

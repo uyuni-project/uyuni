@@ -27,8 +27,8 @@ import javax.servlet.http.Cookie;
  * implementation of MockHttpServletResponse.
  */
 public class RhnMockHttpServletResponse extends MockHttpServletResponse {
-    private Map cookies = new HashMap<>();
-    private Map header = new HashMap<>();
+    private final Map<String, Cookie> cookies = new HashMap<>();
+    private final Map<String, String> header = new HashMap<>();
     private String redirect;
     private String encoding;
 
@@ -54,7 +54,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      */
     @Override
     public String getHeader(String key) {
-        return (String) header.get(key);
+        return header.get(key);
     }
 
     /**
@@ -63,7 +63,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      * @return a Cookie matching the given name, null otherwise.
      */
     public Cookie getCookie(String name) {
-        return (Cookie) cookies.get(name);
+        return cookies.get(name);
     }
 
     /**

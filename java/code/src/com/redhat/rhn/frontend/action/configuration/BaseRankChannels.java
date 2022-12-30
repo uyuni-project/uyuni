@@ -148,7 +148,7 @@ public abstract class BaseRankChannels extends RhnLookupDispatchAction {
             saveMessage("common.config.rank.jsp.error.nojavascript", request);
         }
 
-        Map map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         processParams(context, map);
         User user = context.getCurrentUser();
         RhnSet set = getRhnSet(user);
@@ -164,7 +164,7 @@ public abstract class BaseRankChannels extends RhnLookupDispatchAction {
      * @param context the request context of the current request.
      * @param params the params to be updated
      */
-    protected abstract void processParams(RequestContext context, Map params);
+    protected abstract void processParams(RequestContext context, Map<String, String> params);
 
     /**
      * Extension point for doing additional setup stuff

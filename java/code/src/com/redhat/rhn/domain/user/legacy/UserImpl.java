@@ -452,13 +452,13 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     /** {@inheritDoc} */
     @Override
-    public Set getDefaultSystemGroupIds() {
+    public Set<Long> getDefaultSystemGroupIds() {
         return UserManager.getDefaultSystemGroupIds(this);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setDefaultSystemGroupIds(Set dsg) {
+    public void setDefaultSystemGroupIds(Set<Long> dsg) {
         UserManager.setDefaultSystemGroupIds(this, dsg);
     }
 

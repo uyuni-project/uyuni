@@ -68,7 +68,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         ldt.setPageContext(pageContext);
         ldt.setParent(lt);
 
-        lt.setPageList(new DataResult(CSVWriterTest.getTestListOfMaps()));
+        lt.setPageList(new DataResult<>(CSVWriterTest.getTestListOfMaps()));
 
         context().checking(new Expectations() { {
             atLeast(1).of(pageContext).getOut();

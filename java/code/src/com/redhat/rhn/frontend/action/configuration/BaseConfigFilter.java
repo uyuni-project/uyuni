@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public abstract class BaseConfigFilter implements ListFilter {
 
-    private Map fieldMap;
+    private Map<String, String> fieldMap;
     /**
      * Map method-names to I18N strings for the fields we might filter on (which
      * is (path, channelLabel) at the moment
@@ -49,7 +49,7 @@ public abstract class BaseConfigFilter implements ListFilter {
      * {@inheritDoc}
      */
     @Override
-    public List getFieldNames() {
+    public List<String> getFieldNames() {
         return new ArrayList<>(fieldMap.keySet());
     }
 
@@ -58,7 +58,7 @@ public abstract class BaseConfigFilter implements ListFilter {
      */
     @Override
     public boolean filter(Object object, String field, String criteria) {
-        String methodName = (String) fieldMap.get(field);
+        String methodName = fieldMap.get(field);
         criteria = criteria.toLowerCase();
         boolean retval = false;
         if (methodName != null) {

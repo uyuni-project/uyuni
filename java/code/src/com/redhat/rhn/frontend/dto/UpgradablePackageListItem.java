@@ -116,10 +116,10 @@ public class UpgradablePackageListItem extends PackageListItem {
      * a list of HashMaps all in a single convenient Object
      * @return list of HashMaps with advisory, id, and type keys
      */
-    public List getErrata() {
-        List retval = new ArrayList<>();
+    public List<Map<String, Object>> getErrata() {
+        List<Map<String, Object>> retval = new ArrayList<>();
         for (int i = 0; i < errataAdvisory.size(); i++) {
-            Map current = new HashMap<>();
+            Map<String, Object> current = new HashMap<>();
             current.put("advisory", errataAdvisory.get(i));
             current.put("id", errataId.get(i));
             if (i < errataAdvisoryType.size()) {

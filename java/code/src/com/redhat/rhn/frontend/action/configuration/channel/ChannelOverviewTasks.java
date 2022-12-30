@@ -187,8 +187,8 @@ public class ChannelOverviewTasks extends RhnAction {
     }
 
     @Override
-    protected Map makeParamMap(HttpServletRequest req) {
-        Map m = new HashMap<>();
+    protected Map<String, Object> makeParamMap(HttpServletRequest req) {
+        Map<String, Object> m = new HashMap<>();
         ConfigChannel cc = ConfigActionHelper.getChannel(req);
         ConfigActionHelper.processParamMap(cc, m);
         return m;

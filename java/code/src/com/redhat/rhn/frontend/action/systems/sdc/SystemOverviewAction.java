@@ -76,16 +76,15 @@ public class SystemOverviewAction extends RhnAction {
 
         if (s.getDescription() != null) {
             description = StringEscapeUtils.escapeHtml4(s.getDescription())
-                .replaceAll("\\n", "<br/>");
+                .replace("\\n", "<br/>");
         }
 
         // System Channels
-        Map baseChannel = new HashMap<>();
-        List childChannels = new ArrayList<>();
-        DataResult channelList = SystemManager.systemChannelSubscriptions(sid);
+        Map<String, Object> baseChannel = new HashMap<>();
+        List<Map<String, Object>> childChannels = new ArrayList<>();
+        DataResult<Map<String, Object>> channelList = SystemManager.systemChannelSubscriptions(sid);
 
-        for (Object oIn : channelList) {
-            Map ch = (HashMap) oIn;
+        for (Map<String, Object> ch : channelList) {
 
             if (s.getBaseChannel() != null &&
                     ch.get("id").equals(s.getBaseChannel().getId())) {
@@ -175,8 +174,8 @@ public class SystemOverviewAction extends RhnAction {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    protected List findUserServerPreferences(User user, Server s) {
-        List serverPreferenceList = new ArrayList<>();
+    protected List<String> findUserServerPreferences(User user, Server s) {
+        List<String> serverPreferenceList = new ArrayList<>();
 
         if (user.getEmailNotify() == 0) {
             serverPreferenceList.add("sdc.details.overview.notifications.disabled");

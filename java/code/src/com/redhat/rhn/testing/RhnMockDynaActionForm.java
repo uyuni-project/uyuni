@@ -39,9 +39,9 @@ public class RhnMockDynaActionForm extends DynaActionForm
     private String formName;
 
     /** Map of actual properties which have been set */
-    private Map actual;
+    private Map<String, Object> actual;
     /** Map of expected properties to be set */
-    private Map expected;
+    private Map<String, Object> expected;
 
     /**
      * True if we are not to expect anything but simply be a Form;
@@ -49,7 +49,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      */
     private boolean expectNothing;
 
-    private Map formPropertyConfigs;
+    private Map<String, FormPropertyConfig> formPropertyConfigs;
 
     /**
      * Create class with a Form Name
@@ -64,7 +64,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      * {@inheritDoc}
      */
     @Override
-    public Map getMap() {
+    public Map<String, Object> getMap() {
         return actual;
     }
 
@@ -125,8 +125,8 @@ public class RhnMockDynaActionForm extends DynaActionForm
 
             // Get existing properties as well as new one
             // and add it to the config.
-            for (Object oIn : formPropertyConfigs.values()) {
-                beanConfig.addFormPropertyConfig((FormPropertyConfig) oIn);
+            for (FormPropertyConfig config : formPropertyConfigs.values()) {
+                beanConfig.addFormPropertyConfig(config);
             }
 
             // Construct a corresponding DynaActionFormClass
@@ -167,8 +167,8 @@ public class RhnMockDynaActionForm extends DynaActionForm
         // need to compare the values in the expected list with
         // those of the actual list.
 
-        Set keys = expected.keySet();
-        for (Object key : keys) {
+        Set<String> keys = expected.keySet();
+        for (String key : keys) {
             Object expValue = expected.get(key);
             Object actValue = actual.get(key);
 
@@ -184,7 +184,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
                         "] actual value [" +
                         actValue +
                         "]";
-                fail(msg.toString());
+                fail(msg);
             }
         }
     }

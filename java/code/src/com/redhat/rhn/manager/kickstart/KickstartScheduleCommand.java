@@ -131,7 +131,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     protected boolean cobblerOnly;
     private KickstartSession kickstartSession;
     private Date scheduleDate;
-    private List packagesToInstall;
+    private List<Map<String, Long>> packagesToInstall;
     private String profileType;
     private String proxyHost;
     private Server targetServer;
@@ -1155,18 +1155,18 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     // Check to make sure up2date is 2.9.0
     protected ValidatorError validateUp2dateVersion() {
         Server hostServer = getHostServer();
-        List packages = PackageManager.systemPackageList(hostServer.getId(), null);
+        List<PackageListItem> packages = PackageManager.systemPackageList(hostServer.getId(), null);
         if (packages != null) {
             log.debug("    packages.size() : {}", packages.size());
         }
         // PackageListItem
-        Iterator i = packages.iterator();
+        Iterator<PackageListItem> i = packages.iterator();
         String up2dateepoch = null;
         String up2dateversion = null;
         String up2daterelease = null;
 
         while (i.hasNext()) {
-            PackageListItem pli = (PackageListItem) i.next();
+            PackageListItem pli = i.next();
             if (pli.getName().equals("dnf-plugin-spacewalk")) {
                 // found dnf-plugin-spacewalk - returning
                 return null;
@@ -1224,7 +1224,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
             Package p = PackageFactory.lookupByIdAndUser(packageId, this.user);
 
-            Map evrmap = new HashMap<>();
+            Map<String, Long> evrmap = new HashMap<>();
             evrmap.put("name_id", p.getPackageName().getId());
             evrmap.put("evr_id", p.getPackageEvr().getId());
             evrmap.put("arch_id", p.getPackageArch().getId());

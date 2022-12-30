@@ -102,7 +102,7 @@ import java.util.TreeSet;
  *
  *  The following demonstrates the use of the Acl class:
  *  <pre>
- *  Map context = new HashMap<>();
+ *  Map&lt;String, Object&gt; context = new HashMap<>();
  *  context.put("thingamajig", "foo");
  *  context.put("doodad", "bar");
  *  context.put("widget", "baz");
@@ -131,9 +131,8 @@ import java.util.TreeSet;
  *
  *  public class DefaultHandler implements AclHandler {
  *      // return true if the context has the specified thingamajig
- *      public boolean aclHasThingmajig(Object context, String[] params) {
- *          Map map = (Map)context;
- *          String thingamajig = (String)map.get("thingamajig");
+ *      public boolean aclHasThingmajig(Map&lt;String, Object&gt; context, String[] params) {
+ *          String thingamajig = (String)context.get("thingamajig");
  *          return thingamajig.equals(params[0]);
  *      }
  *  }
@@ -146,15 +145,13 @@ import java.util.TreeSet;
  *
  *  public class MyHandler implements AclHandler {
  *      // return true if the context has the specified doodad
- *      public boolean aclHasDooDad(Object context, String[] params) {
- *          Map map = (Map)context;
- *          String doodad = (String)map.get("doodad");
+ *      public boolean aclHasDooDad(Map&lt;String, Object&gt; context, String[] params) {
+ *          String doodad = (String)context.get("doodad");
  *          return doodad.equals(params[0]);
  *      }
  *      // return true if the context has the specified widget
  *      public boolean aclHasWidget(Object context, String[] params) {
- *          Map map = (Map)context;
- *          String widget = (String)map.get("widget");
+ *          String widget = (String)context.get("widget");
  *          return widget.equals(params[0]);
  *      }
  *  }

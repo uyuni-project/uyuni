@@ -284,13 +284,13 @@ public class PackageFactory extends HibernateFactory {
     public static long lookupOrCreatePackageNameId(String name) {
         CallableMode m = ModeFactory.getCallableMode("Package_queries", "lookup_package_name");
 
-        Map inParams = new HashMap<>();
+        Map<String, Object> inParams = new HashMap<>();
         inParams.put("name", name);
 
-        Map outParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
         outParams.put("nameId", Types.NUMERIC);
 
-        Map result = m.execute(inParams, outParams);
+        Map<String, Object> result = m.execute(inParams, outParams);
 
         return (Long) result.get("nameId");
     }
@@ -597,8 +597,7 @@ public class PackageFactory extends HibernateFactory {
      */
     public static List<PackageProvider> listPackageProviders() {
         Map<String, Object> params = new HashMap<>();
-        return (List<PackageProvider>) singleton
-                .listObjectsByNamedQuery("PackageProvider.listProviders", params);
+        return singleton.listObjectsByNamedQuery("PackageProvider.listProviders", params);
     }
 
     /**
@@ -637,7 +636,7 @@ public class PackageFactory extends HibernateFactory {
      */
     public static List<PackageKey> listPackageKeys() {
         Map<String, Object> params = new HashMap<>();
-        return (List<PackageKey>) singleton.listObjectsByNamedQuery("PackageKey.listKeys", params);
+        return singleton.listObjectsByNamedQuery("PackageKey.listKeys", params);
     }
 
     /**

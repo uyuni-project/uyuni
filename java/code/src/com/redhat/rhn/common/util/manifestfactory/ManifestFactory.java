@@ -31,7 +31,7 @@ import java.util.Map;
  */
 
 public class ManifestFactory {
-    private Map objects;
+    private Map<String, Object> objects;
     private ManifestFactoryBuilder builder;
 
     /** public constructor, requires a builder
@@ -65,7 +65,7 @@ public class ManifestFactory {
      * Get the list of keys from the factory
      * @return Collection the Collection of keys contained within this Factory
      */
-    public Collection getKeys() {
+    public Collection<String> getKeys() {
         return objects.keySet();
     }
 

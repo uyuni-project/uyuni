@@ -39,21 +39,22 @@ public class PreservationListConfirmDeleteAction extends BaseSetListAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+    protected DataResult<Map<String, Object>> getDataResult(RequestContext rctx, PageControl pc) {
 
         RhnSet set = getSetDecl().get(rctx.getCurrentUser());
         User user = rctx.getCurrentUser();
-        List selectedFileList = new LinkedList();
+
+        List<Map<String, Object>> selectedFileList = new LinkedList<>();
         for (RhnSetElement elem : set.getElements()) {
             FileList fl = CommonFactory.lookupFileList(elem.getElement(),
                     user.getOrg());
-            Map flRow = new HashMap<>();
+            Map<String, Object> flRow = new HashMap<>();
             flRow.put("label", fl.getLabel());
             flRow.put("id", fl.getId());
             selectedFileList.add(flRow);
         }
 
-        return new DataResult(selectedFileList);
+        return new DataResult<>(selectedFileList);
     }
 
     /**

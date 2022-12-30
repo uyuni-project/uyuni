@@ -39,7 +39,6 @@ public class ChangeLogCleanUp extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext arg0In)
         throws JobExecutionException {
-        // TODO Auto-generated method stub
         int rowsDeleted = deleteOrphanedChangelogEntries();
         if (rowsDeleted > 0) {
             log.info("Deleted {} row(s) of orphaned package changelog data.", rowsDeleted);

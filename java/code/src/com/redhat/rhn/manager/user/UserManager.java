@@ -21,6 +21,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -67,6 +68,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.security.auth.login.LoginException;
 
@@ -473,20 +475,15 @@ public class UserManager extends BaseManager {
      * @param usr User for which to get the default system groups.
      * @return groupSet Set of default system groups IDs for the user.
      */
-    public static Set getDefaultSystemGroupIds(User usr) {
+    public static Set<Long> getDefaultSystemGroupIds(User usr) {
         SelectMode prefixMode = ModeFactory.getMode("User_queries",
                                                     "default_system_groups");
 
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", usr.getId());
-        DataResult dr = prefixMode.execute(params);
+        DataResult<Row> dr = prefixMode.execute(params);
 
-        Set groupSet = new HashSet();
-        for (Object oIn : dr) {
-            Map row = (Map) oIn;
-            groupSet.add(row.get("system_group_id"));
-        }
-        return groupSet;
+        return dr.stream().map(row -> (Long)row.get("system_group_id")).collect(Collectors.toSet());
     }
 
     /**
@@ -498,7 +495,7 @@ public class UserManager extends BaseManager {
      * @param usr User for which to set the default groups.
      * @param groups Set of groups to associate with the user.
      */
-    public static void setDefaultSystemGroupIds(final User usr, final Set groups) {
+    public static void setDefaultSystemGroupIds(final User usr, final Set<Long> groups) {
         WriteMode m = ModeFactory.getWriteMode("User_queries",
                 "delete_all_system_groups_for_user");
         Map<String, Object> params = new HashMap<>();
@@ -506,8 +503,7 @@ public class UserManager extends BaseManager {
         m.executeUpdate(params);
 
         m = ModeFactory.getWriteMode("User_queries", "set_system_group");
-        for (Object groupIn : groups) {
-            Long sgid = (Long) groupIn;
+        for (Long sgid : groups) {
             params.put("sgid", sgid);
             m.executeUpdate(params);
         }
@@ -928,13 +924,13 @@ public class UserManager extends BaseManager {
      * @param pc Bounding PageControl
      * @return The DataResult of the SystemGroups.
      */
-    public static DataResult getSystemGroups(User user, PageControl pc) {
+    public static DataResult<SystemGroupOverview> getSystemGroups(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries",
                                            "user_permissions", SystemGroupOverview.class);
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
-        DataResult dr = m.execute(params);
+        DataResult<SystemGroupOverview> dr = m.execute(params);
         dr.setTotalSize(dr.size());
         if (pc != null && !dr.isEmpty()) {
                 dr = dr.subList(pc.getStart() - 1, pc.getEnd());

@@ -329,16 +329,16 @@ public class SnapshotHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     @ApiIgnore(ApiType.HTTP)
-    public int deleteSnapshots(User loggedInUser, Integer sid, Map dateDetails) {
+    public int deleteSnapshots(User loggedInUser, Integer sid, Map<String, Date> dateDetails) {
         validateDateKeys(dateDetails);
         Date startDate = null;
         Date endDate = null;
 
         if (dateDetails.containsKey("startDate")) {
-            startDate = (Date)dateDetails.get("startDate");
+            startDate = dateDetails.get("startDate");
         }
         if (dateDetails.containsKey("endDate")) {
-            endDate = (Date)dateDetails.get("endDate");
+            endDate = dateDetails.get("endDate");
         }
         return deleteSnapshots(loggedInUser, sid, startDate, endDate);
     }

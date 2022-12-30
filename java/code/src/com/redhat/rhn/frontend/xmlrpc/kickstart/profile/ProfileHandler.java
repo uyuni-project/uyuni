@@ -837,7 +837,7 @@ public class ProfileHandler extends BaseHandler {
      *   #array_end()
      * @apidoc.returntype #return_int_success()
      */
-    public int setAdvancedOptions(User loggedInUser, String ksLabel, List<Map> options)
+    public int setAdvancedOptions(User loggedInUser, String ksLabel, List<Map<String, String>> options)
     throws FaultException {
         KickstartData ksdata = KickstartFactory.
             lookupKickstartDataByLabelAndOrgId(ksLabel, loggedInUser.
@@ -850,8 +850,8 @@ public class ProfileHandler extends BaseHandler {
         List<String> validOptions = Arrays.asList(VALIDOPTIONNAMES);
 
         Set<String> givenOptions = new HashSet<>();
-        for (Map option : options) {
-            givenOptions.add((String) option.get("name"));
+        for (Map<String, String> option : options) {
+            givenOptions.add(option.get("name"));
         }
 
 
@@ -882,10 +882,10 @@ public class ProfileHandler extends BaseHandler {
         Set<KickstartCommand> customSet = new HashSet<>();
 
         for (Object oIn : cmd.getAvailableOptions()) {
-            Map option = null;
+            Map<String, String> option = null;
             KickstartCommandName cn = (KickstartCommandName) oIn;
             if (givenOptions.contains(cn.getName())) {
-                for (Map o : options) {
+                for (Map<String, String> o : options) {
                     if (cn.getName().equals(o.get("name"))) {
                         option = o;
                         break;
@@ -900,7 +900,7 @@ public class ProfileHandler extends BaseHandler {
                 if (cn.getArgs()) {
                     // handle password encryption
                     if (cn.getName().equals("rootpw")) {
-                        String pwarg = (String) option.get("arguments");
+                        String pwarg = option.get("arguments");
                         // password already encrypted
                         if (!md5cryptRootPw(options)) {
                             kc.setArguments(pwarg);
@@ -911,7 +911,7 @@ public class ProfileHandler extends BaseHandler {
                         }
                     }
                     else {
-                        kc.setArguments((String) option.get("arguments"));
+                        kc.setArguments(option.get("arguments"));
                     }
                 }
                 customSet.add(kc);
@@ -923,10 +923,10 @@ public class ProfileHandler extends BaseHandler {
         return 1;
     }
 
-    private boolean md5cryptRootPw(List<Map> options) {
-        for (Map m : options) {
+    private boolean md5cryptRootPw(List<Map<String, String>> options) {
+        for (Map<String, String> m : options) {
             if ("md5_crypt_rootpw".equals(m.get("name"))) {
-                return BooleanUtils.toBoolean((String)m.get("arguments"));
+                return BooleanUtils.toBoolean(m.get("arguments"));
             }
         }
         return false;
