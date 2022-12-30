@@ -100,7 +100,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     @Test
     public void testColonInQuotes() throws Exception {
         String jdbcQuery;
-        Map pMap = new HashMap();
+        Map pMap = new HashMap<>();
 
         jdbcQuery = NamedPreparedStatement.replaceBindParams(COLON_IN_QUOTES,
                                                              pMap);
@@ -113,7 +113,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     @Test
     public void testCreateSQL() throws Exception {
         String jdbcQuery;
-        Map pMap = new HashMap();
+        Map pMap = new HashMap<>();
 
         jdbcQuery = NamedPreparedStatement.replaceBindParams(SIMPLE_QUERY,
                                                              pMap);
@@ -128,7 +128,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     @Test
     public void testPrepare() throws Exception {
         String jdbcQuery;
-        Map pMap = new HashMap();
+        Map pMap = new HashMap<>();
 
         jdbcQuery = NamedPreparedStatement.replaceBindParams(SIMPLE_QUERY,
                                                              pMap);
@@ -146,7 +146,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     public void testTwoBindPrepare() throws Exception {
         List lst;
         String jdbcQuery;
-        Map pMap = new HashMap();
+        Map pMap = new HashMap<>();
 
         jdbcQuery = NamedPreparedStatement.replaceBindParams(TWO_VAR_QUERY,
                                                              pMap);

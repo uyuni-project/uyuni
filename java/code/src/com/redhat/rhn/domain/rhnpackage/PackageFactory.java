@@ -284,10 +284,10 @@ public class PackageFactory extends HibernateFactory {
     public static long lookupOrCreatePackageNameId(String name) {
         CallableMode m = ModeFactory.getCallableMode("Package_queries", "lookup_package_name");
 
-        Map inParams = new HashMap();
+        Map inParams = new HashMap<>();
         inParams.put("name", name);
 
-        Map outParams = new HashMap();
+        Map outParams = new HashMap<>();
         outParams.put("nameId", Types.NUMERIC);
 
         Map result = m.execute(inParams, outParams);

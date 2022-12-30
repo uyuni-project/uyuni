@@ -51,7 +51,7 @@ public class AclTest extends RhnBaseTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         acl = new Acl();
-        context = new HashMap();
+        context = new HashMap<>();
         handler = new MockAclHandler();
 
         acl.registerHandler(handler);
@@ -325,7 +325,7 @@ public class AclTest extends RhnBaseTestCase {
            reset();
        }
        private void reset() {
-           expected = new HashMap();
+           expected = new HashMap<>();
            expected.put("handler_zero",
                    new ExpectationValue("handler_zero params"));
            expected.put("handler_one",

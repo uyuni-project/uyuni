@@ -76,7 +76,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         snap.addGroup(grp);
 
         TestUtils.saveAndFlush(snap);
-        Map dateInfo = new HashMap();
+        Map dateInfo = new HashMap<>();
         List<ServerSnapshot> list = handler.listSnapshots(admin,
                 server.getId().intValue(), dateInfo);
         assertContains(list, snap);
@@ -108,7 +108,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         TestUtils.saveAndFlush(snap);
 
         handler.deleteSnapshot(admin, snap.getId().intValue());
-        Map dateInfo = new HashMap();
+        Map dateInfo = new HashMap<>();
         List<ServerSnapshot> list = handler.listSnapshots(admin,
                 server.getId().intValue(), dateInfo);
         assertTrue(list.isEmpty());
@@ -125,7 +125,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         generateSnapshot(server);
         TestUtils.saveAndFlush(snap);
 
-        Map dateInfo = new HashMap();
+        Map dateInfo = new HashMap<>();
         handler.deleteSnapshots(admin, server.getId().intValue(), dateInfo);
         List<ServerSnapshot> list = handler.listSnapshots(admin,
                 server.getId().intValue(), dateInfo);

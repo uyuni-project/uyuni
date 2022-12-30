@@ -382,7 +382,7 @@ public class PackageListItem extends IdComboDto {
     public List getChannels() {
         List retval = new ArrayList();
         for (int i = 0; i < channelId.size(); i++) {
-            Map current = new HashMap();
+            Map current = new HashMap<>();
             current.put("id", channelId.get(i));
             current.put("name", channelName.get(i));
             retval.add(current);

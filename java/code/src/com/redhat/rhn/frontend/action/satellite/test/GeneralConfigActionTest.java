@@ -51,7 +51,7 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/GeneralConfig");
         Iterator i = GeneralConfigAction.ALLOWED_CONFIGS.iterator();
-        Map originalConfigValues = new HashMap();
+        Map originalConfigValues = new HashMap<>();
         while (i.hasNext()) {
             String config = (String) i.next();
             String value = Config.get().getString(config);

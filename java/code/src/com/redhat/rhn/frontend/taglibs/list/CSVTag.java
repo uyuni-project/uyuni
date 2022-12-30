@@ -269,7 +269,7 @@ public class CSVTag extends BodyTagSupport {
     }
 
     private Map makePartialResult(List result) {
-        Map output = new HashMap();
+        Map output = new HashMap<>();
         for (Object oIn : result) {
             SystemSearchResult r = (SystemSearchResult) oIn;
             SystemSearchPartialResult partial = new SystemSearchPartialResult(r);

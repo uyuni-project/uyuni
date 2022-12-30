@@ -33,7 +33,7 @@ public abstract class BaseListFilter implements ListFilter {
      */
     @Override
     public void prepare(Locale userLocale) {
-        fieldMap = new HashMap();
+        fieldMap = new HashMap<>();
         processMap(fieldMap, userLocale);
     }
 

@@ -744,7 +744,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
 
-        Map errataInfo = new HashMap();
+        Map errataInfo = new HashMap<>();
 
         String advisoryName = TestUtils.randomString();
         populateErrataInfo(errataInfo);
@@ -798,7 +798,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     public void testAdvisoryLength() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
 
-        Map errataInfo = new HashMap();
+        Map errataInfo = new HashMap<>();
 
 
         String advisoryName = RandomStringUtils.randomAscii(101);
@@ -826,7 +826,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     public void testAdvisoryReleaseAboveMax() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
-        Map errataInfo = new HashMap();
+        Map errataInfo = new HashMap<>();
 
         String advisoryName = TestUtils.randomString();
         populateErrataInfo(errataInfo);
@@ -854,7 +854,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     public void testAdvisoryReleaseAtMax() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
-        Map errataInfo = new HashMap();
+        Map errataInfo = new HashMap<>();
 
         String advisoryName = TestUtils.randomString();
         populateErrataInfo(errataInfo);
@@ -913,7 +913,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     public void testCreateErrataAdvisoryStatus() throws Exception {
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
-        Map errataInfo = new HashMap();
+        Map errataInfo = new HashMap<>();
 
         String advisoryName = TestUtils.randomString();
         errataInfo.put("advisory_name", advisoryName);

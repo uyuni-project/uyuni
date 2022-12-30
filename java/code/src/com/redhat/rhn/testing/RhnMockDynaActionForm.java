@@ -73,10 +73,10 @@ public class RhnMockDynaActionForm extends DynaActionForm
      */
     public RhnMockDynaActionForm() {
         super();
-        actual = new HashMap();
-        expected = new HashMap();
+        actual = new HashMap<>();
+        expected = new HashMap<>();
         expectNothing = false;
-        formPropertyConfigs = new HashMap();
+        formPropertyConfigs = new HashMap<>();
 
         // Setup the empty config.
         FormBeanConfig beanConfig = new FormBeanConfig();

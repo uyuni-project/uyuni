@@ -27,8 +27,8 @@ import javax.servlet.http.Cookie;
  * implementation of MockHttpServletResponse.
  */
 public class RhnMockHttpServletResponse extends MockHttpServletResponse {
-    private Map cookies = new HashMap();
-    private Map header = new HashMap();
+    private Map cookies = new HashMap<>();
+    private Map header = new HashMap<>();
     private String redirect;
     private String encoding;
 

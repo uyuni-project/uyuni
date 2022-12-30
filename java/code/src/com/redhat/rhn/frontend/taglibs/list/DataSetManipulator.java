@@ -298,7 +298,7 @@ public class DataSetManipulator {
      * @return map (String, String[])
      */
     public Map getPaginationLinks() {
-        Map links = new HashMap();
+        Map links = new HashMap<>();
         if (pageSize > 0 && !dataset.isEmpty() && getTotalDataSetSize() > pageSize) {
             String pageLinkName = "list_" + uniqueName + "_page";
             String[] data = new String[4];

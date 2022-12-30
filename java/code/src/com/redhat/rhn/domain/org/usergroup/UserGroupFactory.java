@@ -83,7 +83,7 @@ public class UserGroupFactory extends HibernateFactory {
                     "to access extauth groups");
         }
         return singleton.listObjectsByNamedQuery(
-                "UserExtGroup.listAll", new HashMap());
+                "UserExtGroup.listAll", new HashMap<>());
     }
 
     /**
@@ -108,7 +108,7 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static UserExtGroup lookupExtGroupById(Long gidIn) {
-        Map<String, Long> params = new HashMap();
+        Map<String, Long> params = new HashMap<>();
         params.put("gid", gidIn);
         return (UserExtGroup) singleton.lookupObjectByNamedQuery(
                 "UserExtGroup.lookupById", params);
@@ -121,7 +121,7 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static OrgUserExtGroup lookupOrgExtGroupByIdAndOrg(Long gidIn, Org orgIn) {
-        Map<String, Long> params = new HashMap();
+        Map<String, Long> params = new HashMap<>();
         params.put("gid", gidIn);
         params.put("org_id", orgIn.getId());
         return (OrgUserExtGroup) singleton.lookupObjectByNamedQuery(
@@ -158,7 +158,7 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static UserExtGroup lookupExtGroupByLabel(String labelIn) {
-        Map<String, String> params = new HashMap();
+        Map<String, String> params = new HashMap<>();
         params.put("label", labelIn);
         return (UserExtGroup) singleton.lookupObjectByNamedQuery(
                 "UserExtGroup.lookupByLabel", params);
@@ -172,7 +172,7 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static OrgUserExtGroup lookupOrgExtGroupByLabelAndOrg(String labelIn,
             Org orgIn) {
-        Map<String, Object> params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("label", labelIn);
         params.put("org_id", orgIn.getId());
         return (OrgUserExtGroup) singleton.lookupObjectByNamedQuery(

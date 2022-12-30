@@ -61,7 +61,7 @@ public class ScheduleDetailAction extends RhnAction {
 
         if (ctx.hasParam("schid")) {
             params.put("schid", scheduleId);
-            Map schedule = new HashMap();
+            Map schedule = new HashMap<>();
             try {
                 schedule = new TaskomaticApi().lookupScheduleById(loggedInUser, scheduleId);
             }
@@ -226,7 +226,7 @@ public class ScheduleDetailAction extends RhnAction {
     }
 
     private void addOption(List options, String key, String value) {
-        Map selection = new HashMap();
+        Map selection = new HashMap<>();
         selection.put("label", key);
         selection.put("value", value);
         options.add(selection);

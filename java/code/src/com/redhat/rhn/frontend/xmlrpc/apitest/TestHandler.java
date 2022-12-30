@@ -59,7 +59,7 @@ public class TestHandler extends BaseHandler {
      * @param testMap test map to see if we get a map coming in.
      * @return Map with key:foobar, value:baz   */
     public Map hashChecking(Map testMap) {
-        Map result = new HashMap();
+        Map result = new HashMap<>();
         result.put("foobar", "baz");
         return result;
     }

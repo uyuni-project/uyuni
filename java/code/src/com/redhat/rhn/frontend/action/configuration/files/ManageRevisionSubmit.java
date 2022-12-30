@@ -307,7 +307,7 @@ public class ManageRevisionSubmit extends RhnSetAction {
         boolean acl = AclManager.hasAcl("config_channel_editable(" +
                 configFile.getConfigChannel().getId() + ")", user,
                 "com.redhat.rhn.common.security.acl.ConfigAclHandler",
-                new HashMap());
+                new HashMap<>());
         if (!acl) {
             throw new PermissionException("Can not edit Config Channel.");
         }

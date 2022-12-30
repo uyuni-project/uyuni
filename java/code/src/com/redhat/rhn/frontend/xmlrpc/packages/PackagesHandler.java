@@ -318,7 +318,7 @@ public class PackagesHandler extends BaseHandler {
              * to the returnList
              */
             for (Object oIn : dr) {
-                Map row = new HashMap(); // The map we'll put into returnList
+                Map row = new HashMap<>(); // The map we'll put into returnList
                 Map map = (Map) oIn;
 
                 String name = (String) map.get("name");

@@ -49,7 +49,7 @@ public class AclManager {
             return true;
         }
         return hasAcl(acl, new RequestContext(request).getCurrentUser(), mixins,
-                new HashMap(request.getParameterMap()));
+                new HashMap<>(request.getParameterMap()));
     }
 
     /**

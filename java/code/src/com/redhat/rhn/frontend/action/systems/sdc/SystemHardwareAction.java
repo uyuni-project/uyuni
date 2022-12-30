@@ -199,7 +199,7 @@ public class SystemHardwareAction extends RhnAction {
             boolean hasIPv4 = false;
             boolean hasIPv6 = false;
             for (ServerNetAddress4 na4 : n.getIPv4Addresses()) {
-                Map nic = new HashMap();
+                Map nic = new HashMap<>();
                 nic.put("name", n.getName());
                 nic.put("ip", na4.getAddress());
                 nic.put("netmask", na4.getNetmask());
@@ -210,7 +210,7 @@ public class SystemHardwareAction extends RhnAction {
                 hasIPv4 = true;
             }
             for (ServerNetAddress6 na6 : n.getIPv6Addresses()) {
-                Map nic = new HashMap();
+                Map nic = new HashMap<>();
                 nic.put("name", n.getName());
                 nic.put("hwaddr", n.getHwaddr());
                 nic.put("module", n.getModule());
@@ -221,7 +221,7 @@ public class SystemHardwareAction extends RhnAction {
                 hasIPv6 = true;
             }
             if (!(hasIPv4 || hasIPv6)) {
-                Map nic = new HashMap();
+                Map nic = new HashMap<>();
                 nic.put("name", n.getName());
                 nic.put("hwaddr", n.getHwaddr());
                 nic.put("module", n.getModule());
@@ -239,7 +239,7 @@ public class SystemHardwareAction extends RhnAction {
         List usbDevices = new ArrayList();
 
         for (Device d : server.getDevices()) {
-            Map device = new HashMap();
+            Map device = new HashMap<>();
             String desc = null;
             String vendor = null;
 
@@ -287,7 +287,7 @@ public class SystemHardwareAction extends RhnAction {
 
         List storageDevices = new ArrayList();
         for (Device hd : ServerFactory.lookupStorageDevicesByServer(server)) {
-            Map device = new HashMap();
+            Map device = new HashMap<>();
             device.put("description", hd.getDescription());
             device.put("device", hd.getDevice());
             device.put("bus", hd.getBus());
@@ -314,7 +314,7 @@ public class SystemHardwareAction extends RhnAction {
     }
 
     private Map createDisplayMap(String display, String value) {
-        Map selection = new HashMap();
+        Map selection = new HashMap<>();
         selection.put("display", display);
         selection.put("value", value);
         return selection;

@@ -167,7 +167,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                 // forward to confirm page
                 request.setAttribute("org", ctx.getCurrentUser().getOrg());
                 formToAttributes(request, form);
-                Map urlParams = new HashMap();
+                Map urlParams = new HashMap<>();
                 urlParams.put(RequestContext.CID,
                             ctx.getRequiredParam(RequestContext.CID));
                 ListHelper helper = new ListHelper(this, request, urlParams);

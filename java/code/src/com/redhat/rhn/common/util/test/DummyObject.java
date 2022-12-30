@@ -26,7 +26,7 @@ public class DummyObject {
     private Map values;
 
     public DummyObject() {
-        values = new HashMap();
+        values = new HashMap<>();
     }
 
     public Map getValues() {

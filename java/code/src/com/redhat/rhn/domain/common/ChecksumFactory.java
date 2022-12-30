@@ -71,8 +71,8 @@ public class ChecksumFactory extends HibernateFactory {
         // Lookup existing or create new checksum
         CallableMode m = ModeFactory.getCallableMode("checksum_queries",
             "create_new_checksum");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map inParams = new HashMap<>();
+        Map outParams = new HashMap<>();
         inParams.put("checksum_in", hash);
         inParams.put("checksum_type_in", hashType);
         //Outparam

@@ -401,7 +401,7 @@ public class EditAction extends LookupDispatchAction {
      */
     @Override
     protected Map getKeyMethodMap() {
-        Map map = new HashMap();
+        Map map = new HashMap<>();
         map.put("errata.edit.sendnotification", "notify");
         map.put("errata.edit.submit", "addBug");
         map.put("errata.edit.delete", "deleteBug");

@@ -140,7 +140,7 @@ public class TranslatorTest extends RhnBaseTestCase {
 
     @Test
     public void testMap2String() {
-        Map foo = new HashMap();
+        Map foo = new HashMap<>();
         foo.put("bar", "nut");
         foo.put("java", "sucks");
         assertEquals(foo.toString(), Translator.map2String(foo));

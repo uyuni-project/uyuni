@@ -77,7 +77,7 @@ public abstract class BaseConfigFilter implements ListFilter {
 
     private void buildMap(Locale aLoc) {
         LocalizationService ls = LocalizationService.getInstance();
-        fieldMap = new HashMap();
+        fieldMap = new HashMap<>();
         List names = activeNames();
         for (Object nameIn : names) {
             String aName = nameIn.toString();

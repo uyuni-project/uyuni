@@ -178,7 +178,7 @@ public class ForwardWrapper extends ActionForward {
     }
 
     private void populateParams() {
-        params = new HashMap();
+        params = new HashMap<>();
         int index = getPath().indexOf('?');
         if (index == -1) {
             return;

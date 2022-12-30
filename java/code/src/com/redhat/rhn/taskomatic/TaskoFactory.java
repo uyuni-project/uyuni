@@ -184,7 +184,7 @@ public class TaskoFactory extends HibernateFactory {
      */
     public static List<TaskoTask> listTasks() {
         return singleton.listObjectsByNamedQuery(
-                                       "TaskoTask.listTasks", new HashMap());
+                                       "TaskoTask.listTasks", new HashMap<>());
     }
 
     /**

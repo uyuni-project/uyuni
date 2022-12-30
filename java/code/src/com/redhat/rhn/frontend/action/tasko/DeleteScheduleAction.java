@@ -51,7 +51,7 @@ public class DeleteScheduleAction extends RhnAction {
         if (ctx.hasParam("schid")) {
             Long scheduleId = ctx.getParamAsLong(("schid"));
             TaskomaticApi tapi = new TaskomaticApi();
-            Map schedule = new HashMap();
+            Map schedule = new HashMap<>();
             try {
                 schedule = tapi.lookupScheduleById(loggedInUser, scheduleId);
             }
@@ -80,7 +80,7 @@ public class DeleteScheduleAction extends RhnAction {
                             }
                             return getStrutsDelegate().forwardParams(
                                     mapping.findForward("success"),
-                                    new HashMap());
+                                    new HashMap<>());
                         }
                         catch (TaskomaticApiException e) {
                             createErrorMessage(request,

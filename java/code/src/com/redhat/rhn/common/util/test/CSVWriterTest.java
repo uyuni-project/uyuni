@@ -121,7 +121,7 @@ public class CSVWriterTest {
         List values = new LinkedList();
 
         for (int i = 0; i < 10; i++) {
-            Map testmap = new HashMap();
+            Map testmap = new HashMap<>();
             testmap.put("column1", "cval1-" + i);
             testmap.put("column2", "cval2-" + i);
             testmap.put("column3", "cval3-" + i);

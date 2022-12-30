@@ -47,7 +47,7 @@ public class PreservationListConfirmDeleteAction extends BaseSetListAction {
         for (RhnSetElement elem : set.getElements()) {
             FileList fl = CommonFactory.lookupFileList(elem.getElement(),
                     user.getOrg());
-            Map flRow = new HashMap();
+            Map flRow = new HashMap<>();
             flRow.put("label", fl.getLabel());
             flRow.put("id", fl.getId());
             selectedFileList.add(flRow);

@@ -73,7 +73,7 @@ public class ManifestFactory {
         String filename = builder.getManifestFilename();
         URL u = builder.getClass().getResource(filename);
 
-        objects = new HashMap();
+        objects = new HashMap<>();
         parseURL(u);
     }
 
