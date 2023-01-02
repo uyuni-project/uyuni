@@ -154,12 +154,23 @@ salt-minion-package:
 salt-minion-package:
   mgrcompat.module_run:
     - name: transactional_update.pkg_install
-    - pkg: "venv-salt-minion"
+    - pkg: {{ salt_minion_name }}
     - args: "--no-recommends"
     - require:
       - file: bootstrap_repo
+{# hack until transactional_update.run is fixed to use venv-salt-call #}
+{# Writing  to the future - find latest etc overlay which was created for package installation and use that as etc root #}
+{# this only works here in bootstrap when we are not running in transaction #}
+{%- set pending_transaction_id = salt['cmd.run']('snapper --no-dbus list --columns=number | grep "+" | tr -d "+"', python_shell=True) %}
+{%- if not pending_transaction_id %}
+{#  if we did not get pending transaction id, write to current upperdir #}
+{%- set pending_transaction_id = salt['cmd.run']('snapper --no-dbus list --columns number | grep "*" | tr -d "*"', python_shell=True) %}
 {%- endif %}
-
+{# increase transaction id by 1 since jinja is doing this before new transaction for package install is created #}
+{# this is working under assumption there will be only one transaction between jinja render and actual package installation #}
+{%- set pending_transaction_id = pending_transaction_id|int + 1 %}
+{%- set salt_config_dir = '/var/lib/overlay/' + pending_transaction_id|string + salt_config_dir %}
+{%- endif %}
 
 {# We must install "python3-contextvars" on DEB based distros, running Salt 3004, with Python version < 3.7, like Ubuntu 18.04 #}
 {# We cannot make this package a hard depedendency for Salt DEB package because this is only needed in Ubuntu 18.04 #}
@@ -191,6 +202,15 @@ salt-install-contextvars:
     - makedirs: True
     - require:
       - salt-minion-package
+{{ salt_config_dir }}/minion.d/transactional_update.conf:
+  file.managed:
+    - source:
+      - salt://bootstrap/transactional_update.conf
+    - template: jinja
+    - mode: 644
+    - makedirs: True
+    - require:
+      - file: {{ salt_config_dir }}/minion.d/susemanager.conf
 
 {{ salt_config_dir }}/minion_id:
   file.managed:
@@ -219,7 +239,6 @@ salt-install-contextvars:
     - makedirs: True
     - require:
       - salt-minion-package
-
 {%- endif %}
 
 {%- if not transactional %}
@@ -245,6 +264,12 @@ salt-install-contextvars:
     - require:
       - salt-minion-package
       - host: mgr_server_localhost_alias_absent
+      - file: {{ salt_config_dir }}/minion_id
+      - file: {{ salt_config_dir }}/minion.d/susemanager.conf
+  {%- if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
+      - file: {{ salt_config_dir }}/pki/minion/minion.pem
+      - file: {{ salt_config_dir }}/pki/minion/minion.pub
+  {%- endif %}
 
 {# Use transactional reboot support -> server will be rebooted according to maintentance schedule #}
 reboot_transactional_server:
