@@ -661,6 +661,11 @@ public class FormulaFactory {
             else if (value instanceof Map) {
                 convertIntegers((Map<String, Object>) value);
             }
+            else if (value instanceof List) {
+                for (Map<String, Object> v: (List<Map<String, Object>>)value) {
+                    convertIntegers(v);
+                }
+            }
         }
         return map;
     }
