@@ -1,3 +1,5 @@
+- Fix integer conversions for list of values
+- Convert passed data to expected class when saving form values through API (bsc#1204442)
 - Add systems and hibernate metrics collectors (#14240)
 - Fix HTTP API login status code when using wrong credentials (bsc#1206666)
 - Fix physical systems list
