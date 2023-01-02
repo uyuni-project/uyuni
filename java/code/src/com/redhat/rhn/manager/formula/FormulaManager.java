@@ -128,6 +128,58 @@ public class FormulaManager {
     }
 
     /**
+     * Automatically convert String to Double and vice-versa to fulfill form type requirements
+     * @param content Content to be processed
+     * @param layout Form layout to be used for the content processing
+     */
+    public static void convertTypes(Map<String, Object> content, Map<String, Object> layout) {
+        for (String key: content.keySet()) {
+            Object value = content.get(key);
+            Map<String, Object> entryLayout = (Map<String, Object>)layout.get(key);
+            if (Objects.isNull(entryLayout)) {
+                continue;
+            }
+            switch ((String) entryLayout.get(TYPE_KEY)) {
+                case "number":
+                    if (value instanceof String) {
+                        // Convert to double if supplied as string. Double->Int is done later if needed
+                        content.put(key, Double.parseDouble((String) value));
+                    }
+                    break;
+                case "text":
+                    content.put(key, value.toString());
+                    break;
+                case "edit-group":
+                    if (value instanceof List) {
+                        for (Map<String, Object> val: (List<Map<String, Object>>)value) {
+                            convertTypes(val, (Map<String, Object>)entryLayout.get(PROTOTYPE));
+                        }
+                    }
+                    else if (value instanceof Map) {
+                        convertTypes((Map<String, Object>)content, (Map<String, Object>)entryLayout.get(PROTOTYPE));
+                    }
+                    break;
+                case "group":
+                case "namespace":
+                case "hidden-group":
+                    convertTypes((Map<String, Object>)value, entryLayout);
+                default:
+                    // No auto-conversion for other types
+            }
+        }
+    }
+
+    /**
+     * Automatically convert String to Double and vice-versa to fulfill form type requirements
+     * @param formulaName Name of the formula
+     * @param contents Formula data
+     */
+    public static void convertTypes(String formulaName, Map<String, Object> contents) {
+        Map<String, Object> layout = getFormulaLayout(formulaName);
+        convertTypes(contents, layout);
+    }
+
+    /**
      * Validate the provided data
      * @param formulaName formula name
      * @param contents contents
@@ -303,7 +355,7 @@ public class FormulaManager {
      * @param formulaName formulaName
      * @return the lay out definition if exist else empty map
      */
-    private Map<String, Object> getFormulaLayout(String formulaName) {
+    private static Map<String, Object> getFormulaLayout(String formulaName) {
         return FormulaFactory.getFormulaLayoutByName(formulaName).orElseGet(Collections::emptyMap);
     }
 

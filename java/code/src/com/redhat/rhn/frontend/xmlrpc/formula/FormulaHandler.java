@@ -307,6 +307,8 @@ public class FormulaHandler extends BaseHandler {
             boolean assigned = formulaManager.hasSystemFormulaAssignedCombined(formulaName, server);
             if (assigned) {
                 formulaManager.validateInput(formulaName, content);
+                FormulaManager.convertTypes(formulaName, content);
+                FormulaFactory.convertIntegers(content);
                 formulaManager.saveServerFormulaData(loggedInUser, systemId.longValue(), formulaName, content);
             }
             else {
@@ -348,6 +350,8 @@ public class FormulaHandler extends BaseHandler {
             boolean assigned = formulaManager.hasGroupFormulaAssigned(formulaName, group);
             if (assigned) {
                 formulaManager.validateInput(formulaName, content);
+                FormulaManager.convertTypes(formulaName, content);
+                FormulaFactory.convertIntegers(content);
                 formulaManager.saveGroupFormulaData(loggedInUser, groupId.longValue(), formulaName, content);
             }
             else {
