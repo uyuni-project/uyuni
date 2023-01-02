@@ -1,4 +1,6 @@
+- fix tools channel detection on Uyuni
 - add bootstrap repository definitions for SLE-Micro 5.1, 5.2 and 5.3
+
 -------------------------------------------------------------------
 Wed Dec 14 14:15:50 CET 2022 - jgonzalez@suse.com
 

@@ -215,7 +215,9 @@ _lookupToolsProductIds = """
 SELECT sp.product_id
   FROM suseProducts sp
   JOIN rhnChannelFamily cf ON sp.channel_family_id = cf.id
- WHERE cf.label = 'SLE-M-T';
+ WHERE cf.label = 'SLE-M-T'
+    OR cf.label = 'SLE-M-T-BETA'
+    OR cf.label = 'SLE-M-T-ALPHA';
 """;
 
 def releaseLOCK():
