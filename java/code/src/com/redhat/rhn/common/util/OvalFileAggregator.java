@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.common.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -38,8 +36,6 @@ import java.util.Map;
  *
  */
 public class OvalFileAggregator {
-
-    private static final Logger LOGGER = LogManager.getLogger(OvalFileAggregator.class);
 
     private Document aggregate;
     private boolean isFinished;

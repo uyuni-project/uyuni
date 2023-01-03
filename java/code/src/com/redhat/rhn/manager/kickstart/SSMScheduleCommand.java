@@ -25,8 +25,6 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.ArrayList;
@@ -37,7 +35,6 @@ import java.util.List;
  * SSMScheduleCommand
  */
 public class SSMScheduleCommand {
-    private static Logger log = LogManager.getLogger(SSMScheduleCommand.class);
 
     // Required attributes
     private User user;
