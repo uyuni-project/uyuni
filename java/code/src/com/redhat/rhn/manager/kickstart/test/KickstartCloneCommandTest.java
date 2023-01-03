@@ -34,7 +34,7 @@ import java.util.LinkedHashSet;
 public class KickstartCloneCommandTest extends BaseKickstartCommandTestCase {
 
     @Test
-    public void testClone() throws Exception {
+    public void testClone() {
         KickstartCloneCommand cmd = new KickstartCloneCommand(ksdata.getId(), user,
                 "someNewLabel [" + TestUtils.randomString() + "]");
 

@@ -115,7 +115,6 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateDriver;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateWorker;
 
@@ -3726,11 +3725,8 @@ public class SystemManager extends BaseManager {
      * Set auto_update for all systems in the system set
      * @param user The user
      * @param value True if the servers should enable auto update
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
      */
-    public static void setAutoUpdateBulk(User user, Boolean value)
-        throws TaskomaticApiException {
+    public static void setAutoUpdateBulk(User user, Boolean value) {
         CallableMode mode = ModeFactory.getCallableMode("System_queries",
                 "set_auto_update_bulk");
         Map<String, Object> params = new HashMap<>();

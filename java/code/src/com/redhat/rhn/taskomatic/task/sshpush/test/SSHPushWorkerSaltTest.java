@@ -296,7 +296,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     }
 
     private ServerAction createChildServerAction(MinionServer minoin, Action action, ActionStatus status,
-                                                 long remainingTries) throws Exception {
+                                                 long remainingTries) {
         ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
         serverAction.setStatus(status);
         serverAction.setRemainingTries(remainingTries);

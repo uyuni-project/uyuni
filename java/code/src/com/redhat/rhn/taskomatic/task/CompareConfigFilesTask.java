@@ -27,7 +27,6 @@ import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -56,8 +55,7 @@ public class CompareConfigFilesTask extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext context)
-            throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
 
         log.info("running config compare");
 

@@ -59,7 +59,7 @@ public class ActivationKeysTest extends BaseKickstartEditTestCase {
 
 
     public static ActivationKey addKeysToKickstartData(User user,
-            KickstartData ksdata) throws Exception {
+            KickstartData ksdata) {
         ActivationKey key = ActivationKeyFactory.createNewKey(user, "some key");
         ActivationKeyFactory.save(key);
         key = (ActivationKey) TestUtils.reload(key);

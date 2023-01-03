@@ -40,7 +40,7 @@ public class RhnSetTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         set = new RhnSetImpl();
         set.sync();
     }

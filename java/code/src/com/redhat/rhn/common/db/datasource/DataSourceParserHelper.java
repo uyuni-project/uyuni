@@ -60,7 +60,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
 
     /** {@inheritDoc} */
     @Override
-    public void characters(char[] text, int start, int length) throws SAXException {
+    public void characters(char[] text, int start, int length) {
 
         if (sqlBuilder != null) {
             sqlBuilder.append(text, start, length);
@@ -265,8 +265,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
 
     /** {@inheritDoc} */
     @Override
-    public void ignorableWhitespace(char[] text, int start, int length)
-        throws SAXException {
+    public void ignorableWhitespace(char[] text, int start, int length) {
     }
 
     /** {@inheritDoc} */

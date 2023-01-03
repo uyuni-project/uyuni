@@ -397,7 +397,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testLookupFileInfoNoData() throws Exception {
+    public void testLookupFileInfoNoData() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
         List<String> paths = new LinkedList<>();
         paths.add("/no/such/file.txt");
@@ -414,7 +414,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testAddPath() throws Exception {
+    public void testAddPath() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
         String path = "/tmp/foo/path" + TestUtils.randomString();
@@ -461,7 +461,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListFiles() throws Exception {
+    public void testListFiles() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
         for (int j = 0; j < 2; j++) {
@@ -508,7 +508,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testRemovePaths() throws Exception {
+    public void testRemovePaths() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
         for (int i = 0; i < 2; i++) {

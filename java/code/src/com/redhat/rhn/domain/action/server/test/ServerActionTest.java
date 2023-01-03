@@ -140,10 +140,8 @@ public class ServerActionTest extends RhnBaseTestCase {
      * @param newS new server
      * @param newA new action
      * @return ServerAction created
-     * @throws Exception something bad happened
      */
-    public static ServerAction createServerAction(Server newS, Action newA)
-        throws Exception {
+    public static ServerAction createServerAction(Server newS, Action newA) {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(10L);

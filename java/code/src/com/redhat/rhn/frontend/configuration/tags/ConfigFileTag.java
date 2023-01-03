@@ -129,7 +129,7 @@ public class ConfigFileTag extends TagSupport {
          this.revisionId = rev;
      }
 
-     private String writeIcon() throws JspException {
+     private String writeIcon() {
          IconTag i = new IconTag();
          if ("dir".equalsIgnoreCase(type) || "directory".equalsIgnoreCase(type) ||
                  "folder".equalsIgnoreCase(type)) {

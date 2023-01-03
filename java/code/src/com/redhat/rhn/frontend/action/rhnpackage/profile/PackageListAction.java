@@ -46,8 +46,7 @@ public class PackageListAction extends RhnAction implements Listable<ProfilePack
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
 

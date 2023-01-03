@@ -23,8 +23,6 @@ import org.cobbler.test.MockConnection;
 
 import java.util.List;
 
-import redstone.xmlrpc.XmlRpcFault;
-
 /**
  * Mock class for invoking xmlrpc
  * @author mmccune
@@ -39,8 +37,7 @@ public class MockXMLRPCInvoker implements XMLRPCInvoker {
     }
 
     @Override
-    public Object invokeMethod(String procedureName, List args)
-        throws XmlRpcFault {
+    public Object invokeMethod(String procedureName, List args) {
         MockConnection con = new MockConnection("url", "token");
         return con.invokeMethod(procedureName, args.toArray());
     }

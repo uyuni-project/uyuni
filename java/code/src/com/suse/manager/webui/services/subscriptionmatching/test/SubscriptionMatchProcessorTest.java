@@ -107,7 +107,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSystemIdAdjustment() throws Exception {
+    public void testSystemIdAdjustment() {
         input.getSystems().add(new SystemJson(1L, "Sys1", null, true,
                 false, new HashSet<>(), new HashSet<>()));
 
@@ -127,7 +127,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testUnsatisfiedMatchAdjustment() throws Exception {
+    public void testUnsatisfiedMatchAdjustment() {
         input.getSystems().add(new SystemJson(1L, "Sys1", null, true,
                 false, new HashSet<>(), new HashSet<>()));
         SubscriptionJson sub = new SubscriptionJson(100L, "123456", "subs name", 1,
@@ -306,7 +306,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testNewPin() throws Exception {
+    public void testNewPin() {
         input.setSystems(Arrays.asList(new SystemJson(100L, "my system", 1, true, false,
                 new HashSet<>(), new HashSet<>())));
 

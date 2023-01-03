@@ -45,7 +45,7 @@ public class DiffAction extends RhnAction {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 

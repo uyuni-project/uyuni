@@ -119,7 +119,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testCreateProfileFails() throws Exception {
+    public void testCreateProfileFails() {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         try {
@@ -616,7 +616,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testBz204345() throws Exception {
+    public void testBz204345() {
         // kernel-2.6.9-22.EL
         // kernel-2.6.9-42.0.2.EL
 

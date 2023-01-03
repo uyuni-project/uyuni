@@ -231,10 +231,9 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for retrieval of systems and groups
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testSystemsWithGroups() throws Exception {
+    public void testSystemsWithGroups() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, false);
 
@@ -338,7 +337,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         return ServerFactoryTest.createTestProxyServer(user, true);
     }
 
-    private void addInstalledProduct(Server server, String name) throws Exception {
+    private void addInstalledProduct(Server server, String name) {
         InstalledProduct installedPrd = new InstalledProduct();
         installedPrd.setName(name);
         installedPrd.setVersion("12.1");

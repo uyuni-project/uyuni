@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Profile;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.io.File;
 import java.util.List;
@@ -46,7 +45,7 @@ public class KickstartFileSyncTask extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext ctxIn) throws JobExecutionException {
+    public void execute(JobExecutionContext ctxIn) {
 
         CobblerConnection cc = CobblerXMLRPCHelper.getConnection(ConfigDefaults
                 .get().getCobblerAutomatedUser());

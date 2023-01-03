@@ -82,7 +82,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateFirst() throws Exception {
+    public void testCreateFirst() {
         /*
          * "dockerrun_pg" already creates a new Org during Init right now.
          * Therefore check first if Org with ID '1' exist without performing further tests then.
@@ -102,7 +102,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateFirstTwice() throws Exception {
+    public void testCreateFirstTwice() {
         try {
             handler.createFirst(orgName[1], "fakeadmin", "password", "First",
                     "Admin", "firstadmin@example.com");
@@ -116,7 +116,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         handler.create(admin, orgName[0], "fakeadmin", "password", "Mr.", "Bill",
                 "FakeAdmin", "fakeadmin@example.com", Boolean.FALSE);
         Org testOrg = OrgFactory.lookupByName(orgName[0]);
@@ -124,7 +124,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateShortOrgName() throws Exception {
+    public void testCreateShortOrgName() {
         String shortName = "aa"; // Must be at least 3 characters in UI
         try {
             handler.create(admin, shortName, "fakeadmin", "password", "Mr.", "Bill",
@@ -137,7 +137,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateDuplicateOrgName() throws Exception {
+    public void testCreateDuplicateOrgName() {
         String dupOrgName = "Test Org " + TestUtils.randomString();
         handler.create(admin, dupOrgName, "fakeadmin1", "password", "Mr.", "Bill",
                 "FakeAdmin", "fakeadmin1@example.com", Boolean.FALSE);
@@ -152,7 +152,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListOrgs() throws Exception {
+    public void testListOrgs() {
         Org testOrg = createOrg();
         OrgDto dto = OrgManager.toDetailsDto(testOrg);
         List<OrgDto> orgs = handler.listOrgs(admin);
@@ -160,7 +160,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDeleteNoSuchOrg() throws Exception {
+    public void testDeleteNoSuchOrg() {
         try {
             handler.delete(admin, -1);
             fail();
@@ -182,7 +182,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         Org testOrg = createOrg();
         handler.delete(admin, testOrg.getId().intValue());
         testOrg = OrgFactory.lookupByName(orgName[0]);
@@ -190,7 +190,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListActiveUsers() throws Exception {
+    public void testListActiveUsers() {
         Org testOrg = createOrg();
         List<MultiOrgUserOverview> users = handler.listUsers(admin,
                                                 testOrg.getId().intValue());
@@ -201,7 +201,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetails() throws Exception {
+    public void testGetDetails() {
         Org testOrg = createOrg();
         OrgDto actual = handler.getDetails(admin, testOrg.getId().intValue());
         OrgDto expected = OrgManager.toDetailsDto(testOrg);
@@ -214,7 +214,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testUpdateName() throws Exception {
+    public void testUpdateName() {
         Org testOrg = createOrg();
         String newName = "Foo" + TestUtils.randomString();
         OrgDto dto = handler.updateName(admin, testOrg.getId().intValue(), newName);

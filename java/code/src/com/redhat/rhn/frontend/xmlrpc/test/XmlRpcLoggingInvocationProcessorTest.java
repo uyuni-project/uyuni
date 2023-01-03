@@ -44,7 +44,7 @@ public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         lip = new XmlRpcLoggingInvocationProcessor();
         writer = new StringWriter();
     }

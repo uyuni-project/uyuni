@@ -28,7 +28,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.maintenance.MaintenanceManager;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,8 +61,7 @@ public class AutoErrataTask extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
 
         List<Long> systems = getAutoErrataSystems();
         if (systems == null || systems.isEmpty()) {

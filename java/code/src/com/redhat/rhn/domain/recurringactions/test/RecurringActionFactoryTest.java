@@ -153,7 +153,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGroupActionTaskomaticPrefixComputation() throws Exception {
+    public void testGroupActionTaskomaticPrefixComputation() {
         var action = new GroupRecurringAction();
         var group = ServerGroupTestUtils.createManaged(user);
         action.setName("action name 1");
@@ -164,7 +164,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testOrgActionTaskomaticPrefixComputation() throws Exception {
+    public void testOrgActionTaskomaticPrefixComputation() {
         var action = new OrgRecurringAction();
         action.setName("action name 1");
         action.setCronExpr(CRON_EXPR);
@@ -174,7 +174,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupRecurringActionByScheduleNameNoMatch() throws Exception {
+    public void testLookupRecurringActionByScheduleNameNoMatch() {
         assertTrue(RecurringActionFactory.lookupByJobName("recurring-action-987654321").isEmpty());
     }
 

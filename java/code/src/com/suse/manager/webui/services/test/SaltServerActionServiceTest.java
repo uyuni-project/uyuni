@@ -846,7 +846,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     private ServerAction createChildServerAction(Action action, ActionStatus status,
                                                  MinionServer minionIn,
-                                                 long remainingTries) throws Exception {
+                                                 long remainingTries) {
         ServerAction serverAction = ActionFactoryTest.createServerAction(minionIn, action);
         serverAction.setStatus(status);
         serverAction.setRemainingTries(remainingTries);

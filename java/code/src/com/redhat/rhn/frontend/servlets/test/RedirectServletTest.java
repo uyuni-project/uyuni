@@ -53,7 +53,7 @@ public class RedirectServletTest extends MockObjectTestCase {
     private String redirectURI;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         redirect = new RedirectServletStub();
 
         mockRequest = mock(HttpServletRequest.class);

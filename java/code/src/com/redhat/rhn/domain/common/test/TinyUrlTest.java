@@ -33,7 +33,7 @@ import java.util.TimeZone;
 public class TinyUrlTest extends RhnBaseTestCase {
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         TinyUrl url = CommonFactory.createTinyUrl(
                 "/rhn/kickstart/ks-rhel-i386-as-4-u2", new Date());
         assertNotNull(url);
@@ -43,7 +43,7 @@ public class TinyUrlTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testComputeUrl() throws Exception {
+    public void testComputeUrl() {
         TinyUrl url = CommonFactory.createTinyUrl(
                 "/rhn/kickstart/ks-rhel-i386-as-4-u2", new Date());
         String path = url.computeTinyUrl("xmlrpc.rhn.webdev.redhat.com");

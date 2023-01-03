@@ -32,14 +32,14 @@ import org.junit.jupiter.api.Test;
 public class KickstartLocaleEditTest extends BaseKickstartEditTestCase {
 
     @Test
-    public void testSetupExecute() throws Exception {
+    public void testSetupExecute() {
         setRequestPathInfo("/kickstart/LocaleEdit");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
     @Test
-    public void testSubmitStandard() throws Exception {
+    public void testSubmitStandard() {
         addDispatchCall(KickstartLocaleEditAction.UPDATE_METHOD);
         setRequestPathInfo("/kickstart/LocaleEdit");
         addRequestParameter(KickstartLocaleEditAction.SUBMITTED,
@@ -58,7 +58,7 @@ public class KickstartLocaleEditTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testSubmitAgain() throws Exception {
+    public void testSubmitAgain() {
         addDispatchCall(KickstartLocaleEditAction.UPDATE_METHOD);
         setRequestPathInfo("/kickstart/LocaleEdit");
         addRequestParameter(KickstartLocaleEditAction.SUBMITTED,

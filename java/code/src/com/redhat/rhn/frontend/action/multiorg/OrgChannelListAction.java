@@ -57,8 +57,7 @@ public class OrgChannelListAction extends RhnAction implements Listable<OrgChann
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         // Before we do anything, make sure the channel is actually configured
         // with protected access

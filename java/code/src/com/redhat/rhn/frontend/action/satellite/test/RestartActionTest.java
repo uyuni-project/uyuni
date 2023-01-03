@@ -49,7 +49,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testExecuteNoSubmit() throws Exception {
+    public void testExecuteNoSubmit() {
 
         actionPerform();
         DynaActionForm form = (DynaActionForm) getActionForm();
@@ -57,7 +57,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testExecuteSubmitTrue() throws Exception {
+    public void testExecuteSubmitTrue() {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(RestartAction.RESTART, Boolean.TRUE.toString());
@@ -67,7 +67,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testExecuteSubmitFalse() throws Exception {
+    public void testExecuteSubmitFalse() {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(RestartAction.RESTART, Boolean.FALSE.toString());
@@ -77,7 +77,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testExecuteRefresh() throws Exception {
+    public void testExecuteRefresh() {
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());
         addRequestParameter(RestartAction.RESTART, Boolean.FALSE.toString());

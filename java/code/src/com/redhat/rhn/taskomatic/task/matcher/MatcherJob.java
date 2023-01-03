@@ -23,7 +23,6 @@ import com.redhat.rhn.taskomatic.task.gatherer.GathererJob;
 import com.suse.manager.matcher.MatcherRunner;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 /**
  * Taskomatic job for running subscription matcher and processing its results.
@@ -41,8 +40,7 @@ public class MatcherJob extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext jobExecutionContext)
-            throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext) {
         if (jobExecutionContext.getJobDetail().getJobDataMap()
                 .containsKey(GathererJob.VHM_LABEL)) {
             log.warn("Gatherer-matcher bunch was run for a specific Virtual Host " +

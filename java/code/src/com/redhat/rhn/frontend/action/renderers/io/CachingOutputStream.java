@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.action.renderers.io;
 import com.redhat.rhn.frontend.servlets.LegacyServletOutputStream;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /**
  * Caches all content written to it to be retrieved
@@ -32,7 +31,7 @@ public class CachingOutputStream extends LegacyServletOutputStream {
      * {@inheritDoc}
      */
     @Override
-    public void write(int c) throws IOException {
+    public void write(int c) {
         buffer.write(c);
     }
 

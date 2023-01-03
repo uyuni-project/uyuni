@@ -74,7 +74,7 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) {
 
         DynaActionForm f = (DynaActionForm) actionForm;
         RequestContext requestContext = new RequestContext(request);

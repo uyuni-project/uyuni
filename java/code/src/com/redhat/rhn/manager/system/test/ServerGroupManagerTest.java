@@ -79,7 +79,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAccess() throws Exception {
+    public void testAccess() {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         assertTrue(manager.canAccess(user, sg));
@@ -100,7 +100,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemove() throws Exception {
+    public void testRemove() {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         sg = (ManagedServerGroup) reload(sg);
@@ -147,7 +147,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListNoAssociatedAdmins() throws Exception {
+    public void testListNoAssociatedAdmins() {
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         TestUtils.flushAndEvict(sg);

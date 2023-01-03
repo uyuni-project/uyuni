@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class LocalConfigFileListTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         setRequestPathInfo("/configuration/file/LocalConfigFileList");

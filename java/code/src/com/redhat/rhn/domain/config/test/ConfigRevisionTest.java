@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 public class ConfigRevisionTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testCreateConfigRevision() throws Exception {
+    public void testCreateConfigRevision() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());

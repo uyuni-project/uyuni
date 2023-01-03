@@ -33,7 +33,7 @@ public class HandlerFactoryTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         factory = HandlerFactory.getDefaultHandlerFactory();
     }
 

@@ -233,7 +233,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupConfigRevisionAction() throws Exception {
+    public void testLookupConfigRevisionAction() {
         User usr = UserTestUtils.createUser("testUser",
             UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
 
@@ -266,7 +266,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupConfigRevisionResult() throws Exception {
+    public void testLookupConfigRevisionResult() {
         User usr = UserTestUtils.createUser("testUser",
            UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
 

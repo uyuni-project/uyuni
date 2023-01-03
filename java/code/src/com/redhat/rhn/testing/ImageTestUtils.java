@@ -81,10 +81,9 @@ public class ImageTestUtils {
      * @param version   the version
      * @param user      the user
      * @return the image info
-     * @throws Exception exception
      */
     public static ImageInfo createImageInfo(ImageProfile profile, MinionServer buildHost,
-            String version, User user) throws Exception {
+            String version, User user) {
         ImageInfo info = new ImageInfo();
         info.setName(profile.getLabel());
         info.setVersion(version);
@@ -372,10 +371,9 @@ public class ImageTestUtils {
      * @param packageIn the package to install
      * @param image the image
      * @return the newly created installed package
-     * @throws Exception if anything goes wrong
      */
     public static ImagePackage createImagePackage(Package packageIn,
-            ImageInfo image) throws Exception {
+            ImageInfo image) {
         ImagePackage result = new ImagePackage();
         result.setEvr(packageIn.getPackageEvr());
         result.setArch(packageIn.getPackageArch());

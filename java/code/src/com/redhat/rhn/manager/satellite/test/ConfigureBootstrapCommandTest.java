@@ -32,7 +32,7 @@ public class ConfigureBootstrapCommandTest extends BaseTestCaseWithUser {
     private ConfigureBootstrapCommand cmd;
 
     @Test
-    public void testCreateCommand() throws Exception {
+    public void testCreateCommand() {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         cmd = new ConfigureBootstrapCommand(user) {
             @Override

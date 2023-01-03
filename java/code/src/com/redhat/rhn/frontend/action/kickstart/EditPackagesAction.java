@@ -101,14 +101,13 @@ public class EditPackagesAction extends RhnAction {
      * @param ctx RequestContext corresponding to the request
      * @param ksdata KickstartData
      * @return pointer to jsp page
-     * @throws Exception signalling error
      */
     public ActionForward display(ActionMapping mapping,
             DynaActionForm form,
             HttpServletRequest request,
             HttpServletResponse response,
             RequestContext ctx,
-            KickstartData ksdata) throws Exception {
+            KickstartData ksdata) {
         prepareForm(ksdata, form);
         return mapping.findForward("display");
     }

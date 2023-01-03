@@ -136,7 +136,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testSearchByPackagesIds() throws Exception {
+    public void testSearchByPackagesIds() {
         searchByPackagesIdsHelper(
                 Optional.empty(),
                 ErrataManager::searchByPackageIds);

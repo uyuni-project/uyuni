@@ -302,7 +302,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testUpdateRepositories() throws Exception {
+    public void testUpdateRepositories() {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
@@ -352,7 +352,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
     }
 
-    public void dupIdSzenario(boolean rhel6sync, boolean rhel7sync, boolean rhel6first) throws Exception {
+    public void dupIdSzenario(boolean rhel6sync, boolean rhel7sync, boolean rhel6first) {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
@@ -454,7 +454,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testDupIdSzenario9() throws Exception {
+    public void testDupIdSzenario9() {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
@@ -1054,10 +1054,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test 2 Credentials giving access to the same repo and switching "best auth"
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testSwitchFromCloudRmtToScc() throws Exception {
+    public void testSwitchFromCloudRmtToScc() {
         Credentials credentials = CredentialsFactory.createCloudRmtCredentials();
         credentials.setPassword("dummy");
         credentials.setUrl("dummy");
@@ -1356,10 +1355,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for {@link ContentSyncManager#updateChannelFamilies} method, insert case.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testUpdateChannelFamiliesInsert() throws Exception {
+    public void testUpdateChannelFamiliesInsert() {
         // Get test data and insert
         List<ChannelFamilyJson> channelFamilies = getChannelFamilies();
         ContentSyncManager csm = new ContentSyncManager();
@@ -1395,10 +1393,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for {@link ContentSyncManager#updateChannelFamilies} method, update case.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testUpdateChannelFamiliesUpdate() throws Exception {
+    public void testUpdateChannelFamiliesUpdate() {
         // Get test data and insert
         int familynumbers = ChannelFamilyFactory.getAllChannelFamilies().size();
 

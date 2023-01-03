@@ -36,12 +36,12 @@ public class RpmVersionComparatorTest  {
     private RpmVersionComparator cmp;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         cmp = new RpmVersionComparator();
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         cmp = null;
     }
 

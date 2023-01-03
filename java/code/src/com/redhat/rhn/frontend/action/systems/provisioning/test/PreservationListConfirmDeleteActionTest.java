@@ -46,7 +46,7 @@ public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         action = new PreservationListConfirmDeleteAction();
     }
 

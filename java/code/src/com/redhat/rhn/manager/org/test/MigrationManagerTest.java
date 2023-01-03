@@ -119,7 +119,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testMigrateSystemNotSatAdmin() throws Exception {
+    public void testMigrateSystemNotSatAdmin() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         try {
@@ -132,7 +132,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemoveEntitlements() throws Exception {
+    public void testRemoveEntitlements() {
         assertFalse(server.getEntitlements().isEmpty());
 
         migrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
@@ -142,7 +142,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemoveSystemGroups() throws Exception {
+    public void testRemoveSystemGroups() {
         assertFalse(server.getGuests().isEmpty());
         assertEquals(1, server.getManagedGroups().size());
         ManagedServerGroup serverGroup1 = server.getManagedGroups().get(0);
@@ -157,7 +157,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemoveChannels() throws Exception {
+    public void testRemoveChannels() {
 
         // verify that server was initially created w/channels
         assertFalse(server.getChannels().isEmpty());
@@ -168,7 +168,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemoveConfigChannels() throws Exception {
+    public void testRemoveConfigChannels() {
 
         ConfigChannel configChannel = ConfigTestUtils.createConfigChannel(origOrg);
         ConfigChannel configChannel2 = ConfigTestUtils.createConfigChannel(origOrg);
@@ -184,7 +184,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testUpdateAdminRelationships() throws Exception {
+    public void testUpdateAdminRelationships() {
         for (User origOrgAdmin : origOrgAdmins) {
             assertTrue(origOrgAdmin.getServers().contains(server));
         }
@@ -203,7 +203,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testMigrateServers() throws Exception {
+    public void testMigrateServers() {
 
         assertEquals(server.getOrg(), origOrg);
         assertEquals(server2.getOrg(), origOrg);
@@ -253,7 +253,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testMigrateBootstrapServer() throws Exception {
+    public void testMigrateBootstrapServer() {
         User origOrgAdmin = origOrgAdmins.iterator().next();
         Server bootstrapServer = ServerFactoryTest.createUnentitledTestServer(origOrgAdmin,
             true, ServerFactoryTest.TYPE_SERVER_NORMAL, getNow());

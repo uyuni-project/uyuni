@@ -43,8 +43,7 @@ public class SelectUpgradePackagesAction extends RhnAction implements Listable {
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm,
-                                 HttpServletRequest request, HttpServletResponse response)
-        throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 

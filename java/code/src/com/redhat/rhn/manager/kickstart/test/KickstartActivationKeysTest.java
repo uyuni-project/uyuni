@@ -42,7 +42,7 @@ import java.util.ArrayList;
 public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
     @Test
-    public void testActivationKeysForKickstart() throws Exception {
+    public void testActivationKeysForKickstart() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         String note = TestUtils.randomString() +
@@ -74,7 +74,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testKickstartActivationKeysCommand() throws Exception {
+    public void testKickstartActivationKeysCommand() {
 
         KickstartFactory.saveKickstartData(ksdata);
 

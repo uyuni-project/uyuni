@@ -313,7 +313,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = connection.createStatement();
             try {
@@ -340,7 +340,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
     @Override
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

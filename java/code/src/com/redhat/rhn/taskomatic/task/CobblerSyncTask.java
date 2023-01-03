@@ -28,7 +28,6 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,8 +63,7 @@ public class CobblerSyncTask extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext ctxIn)
-            throws JobExecutionException {
+    public void execute(JobExecutionContext ctxIn) {
 
         try {
             XMLRPCInvoker invoker = (XMLRPCInvoker)

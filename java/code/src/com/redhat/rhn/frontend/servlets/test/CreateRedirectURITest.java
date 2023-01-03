@@ -64,7 +64,7 @@ public class CreateRedirectURITest extends MockObjectTestCase {
     private HttpServletRequest mockRequest;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mockRequest = mock(HttpServletRequest.class);
     }
 

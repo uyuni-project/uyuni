@@ -50,7 +50,7 @@ import java.util.Set;
 public class ServerGroupTest extends RhnBaseTestCase {
 
     @Test
-    public void testEquals() throws Exception {
+    public void testEquals() {
         User user = UserTestUtils.findNewUser("testUser", "testorg");
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(user);
         ServerGroup sg2 = new ServerGroup();
@@ -99,7 +99,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testGetServerGroupTypeFeatures() throws Exception {
+    public void testGetServerGroupTypeFeatures() {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         assertFalse(org1.getEntitledServerGroups().isEmpty());
 
@@ -113,7 +113,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testServerGroupPillar() throws Exception {
+    public void testServerGroupPillar() {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         ServerGroup group = createTestServerGroup(org1, ServerConstants.getServerGroupTypeSaltEntitled());
         Set<Pillar> pillars = new HashSet<>();

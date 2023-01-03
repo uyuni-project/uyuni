@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class ArchTypeTest extends RhnBaseTestCase {
 
     @Test
-    public void testArchType() throws Exception {
+    public void testArchType() {
 
         Long testid = 1L;
         String query = "ArchType.findById";

@@ -71,7 +71,7 @@ public class SystemSearchHelperTest  {
     protected SystemSearchHelper.SearchResultScoreComparator nullCmp;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         dtos = new HashMap<>();
         scores = new HashMap<>();
 

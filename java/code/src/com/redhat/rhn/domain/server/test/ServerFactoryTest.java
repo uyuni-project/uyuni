@@ -239,7 +239,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testServerGroupType() throws Exception {
+    public void testServerGroupType() {
         //let's hope nobody calls their server group this
         assertNull(ServerFactory.lookupServerGroupTypeByLabel("8dafs8320921kfgbzz"));
         assertNotNull(ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -282,10 +282,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test editing a server group.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testServerGroups() throws Exception {
+    public void testServerGroups() {
         Long id = server.getId();
 
         Collection servers = new ArrayList<>();
@@ -439,7 +438,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAddNoteToServer() throws Exception {
+    public void testAddNoteToServer() {
         Set notes = server.getNotes();
         assertNotNull(notes);
         assertTrue(notes.isEmpty());
@@ -469,7 +468,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAddDeviceToServer() throws Exception {
+    public void testAddDeviceToServer() {
 
         Set devs = server.getDevices();
         assertNotNull(devs);
@@ -504,7 +503,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAddingRamToServer() throws Exception {
+    public void testAddingRamToServer() {
         server.setRam(1024);
         assertEquals(1024, server.getRam());
 
@@ -523,7 +522,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testAddingDmiToServer() throws Exception {
+    public void testAddingDmiToServer() {
 
         Dmi dmi = new Dmi();
         dmi.setServer(server);
@@ -597,9 +596,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * Create a test Server and commit it to the DB.
      * @param owner the owner of this Server
      * @return Server that was created
-     * @throws Exception something bad happened
      */
-    public static Server createTestServer(User owner) throws Exception {
+    public static Server createTestServer(User owner) {
         return createTestServer(owner, false);
     }
 
@@ -611,7 +609,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess,
-            ServerGroupType type, int stype) throws Exception {
+            ServerGroupType type, int stype) {
         return createTestServer(owner, ensureOwnerAccess, type, stype, new Date());
     }
 
@@ -861,7 +859,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListAdministrators() throws Exception {
+    public void testListAdministrators() {
 
         //The org admin user
         User admin = UserTestUtils.findNewUser("testUser",
@@ -1014,7 +1012,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSet() throws Exception {
+    public void testSet() {
         Server serverIn = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
@@ -1035,7 +1033,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testListSnapshotsForServer() throws Exception {
+    public void testListSnapshotsForServer() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
         ServerGroup grp = ServerGroupTestUtils.createEntitled(server2.getOrg(),
@@ -1050,7 +1048,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupSnapshotById() throws Exception {
+    public void testLookupSnapshotById() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
         TestUtils.saveAndFlush(snap);
@@ -1061,7 +1059,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testDeleteSnapshot() throws Exception {
+    public void testDeleteSnapshot() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
         TestUtils.saveAndFlush(snap);
@@ -1074,7 +1072,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testGetSnapshotTags() throws Exception {
+    public void testGetSnapshotTags() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
         ServerSnapshot snap = generateSnapshot(server2);
 

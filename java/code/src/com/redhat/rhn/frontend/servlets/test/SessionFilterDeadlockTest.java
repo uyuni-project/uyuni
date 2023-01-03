@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -45,7 +44,7 @@ public class SessionFilterDeadlockTest extends BaseFilterTst {
         chain = new MockFilterChain() {
             @Override
             public void doFilter(ServletRequest req, ServletResponse resp)
-            throws IOException, ServletException {
+            throws IOException {
                 throw new IOException("Test IOException");
             }
         };

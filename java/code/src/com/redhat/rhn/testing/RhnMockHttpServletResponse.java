@@ -69,10 +69,9 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     /**
      * Saves the url sent through a redirect so we can test it.
      * @param aURL The URL for this redirect
-     * @throws java.io.IOException will never throw
      */
     @Override
-    public void sendRedirect(String aURL) throws java.io.IOException {
+    public void sendRedirect(String aURL) {
         redirect = aURL;
     }
 

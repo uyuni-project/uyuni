@@ -18,7 +18,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
 
@@ -38,8 +37,7 @@ public class UuidCleanup extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext context)
-            throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
 
         WriteMode m = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_UUID_CLEANUP);

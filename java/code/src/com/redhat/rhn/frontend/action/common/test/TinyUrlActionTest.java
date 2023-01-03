@@ -34,7 +34,7 @@ import java.util.Date;
 public class TinyUrlActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testTinyUrl() throws Exception {
+    public void testTinyUrl() {
         setRequestPathInfo("/ty/TinyUrl");
         TinyUrl url = CommonFactory.createTinyUrl(
                 "/rhn/kickstart/ks-rhel-i386-as-4-u2", new Date());
@@ -46,7 +46,7 @@ public class TinyUrlActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testEmptyTinyUrl() throws Exception {
+    public void testEmptyTinyUrl() {
         setRequestPathInfo("/ty/TinyUrl");
         try {
             actionPerform();

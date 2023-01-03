@@ -1010,7 +1010,7 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     @Override
-    public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException {
+    public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) {
         try {
             LocalCall<String> call = Test.echo("checkIn");
             return callAsync(call, targetIn);

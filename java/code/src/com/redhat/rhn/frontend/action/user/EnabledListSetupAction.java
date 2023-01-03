@@ -42,7 +42,7 @@ public class EnabledListSetupAction extends RhnAction implements Listable {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.setListName(LIST_NAME);
         helper.setDataSetName(getDataSetName());

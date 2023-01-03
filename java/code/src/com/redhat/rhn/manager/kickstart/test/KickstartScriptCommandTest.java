@@ -45,7 +45,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testPreCreate() throws Exception {
+    public void testPreCreate() {
         // Lets zero out the scripts
         ksdata.getScripts().clear();
         KickstartFactory.saveKickstartData(ksdata);
@@ -71,7 +71,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testPreEdit() throws Exception {
+    public void testPreEdit() {
         KickstartScript kss = ksdata.getScripts().iterator().next();
         String language = "/usr/bin/perl";
         String contents = "print \"some string\";\n";
@@ -88,7 +88,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testScriptDelete() throws Exception {
+    public void testScriptDelete() {
 
         KickstartScript kss = ksdata.getScripts().iterator().next();
         assertEquals(5, ksdata.getScripts().size());

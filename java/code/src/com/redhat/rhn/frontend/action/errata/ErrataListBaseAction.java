@@ -52,8 +52,7 @@ public abstract class ErrataListBaseAction extends RhnAction implements Listable
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
         request.setAttribute("displayCves", isSecurityAction());
         ListHelper helper = new ListHelper(this, request);
         helper.execute();

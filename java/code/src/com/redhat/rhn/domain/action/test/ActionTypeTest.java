@@ -66,9 +66,8 @@ public class ActionTypeTest extends RhnBaseTestCase {
      * Helper method to get a ActionType by label
      * @param label the label
      * @return Returns the ActionType corresponding to label
-     * @throws Exception something bad happened
      */
-    private ActionType lookupByLabel(String label) throws Exception {
+    private ActionType lookupByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ActionType) session.getNamedQuery("ActionType.findByLabel")
                                 .setString("label", label)

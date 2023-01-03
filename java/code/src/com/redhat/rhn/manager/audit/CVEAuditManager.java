@@ -931,10 +931,9 @@ public class CVEAuditManager {
      * @param results raw patchstatus query
      * @param patchStatuses the patch statuses
      * @return list of system records with patch status
-     * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(List<CVEPatchStatus> results,
-            EnumSet<PatchStatus> patchStatuses) throws UnknownCVEIdentifierException {
+            EnumSet<PatchStatus> patchStatuses) {
 
         List<CVEAuditSystemBuilder> ret = new LinkedList<>();
 

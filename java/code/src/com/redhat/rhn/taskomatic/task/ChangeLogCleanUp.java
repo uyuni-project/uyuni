@@ -18,7 +18,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
 
@@ -37,8 +36,7 @@ public class ChangeLogCleanUp extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext arg0In)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext arg0In) {
         int rowsDeleted = deleteOrphanedChangelogEntries();
         if (rowsDeleted > 0) {
             log.info("Deleted {} row(s) of orphaned package changelog data.", rowsDeleted);

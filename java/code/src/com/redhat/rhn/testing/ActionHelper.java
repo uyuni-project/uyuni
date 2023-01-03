@@ -64,9 +64,8 @@ public class ActionHelper  {
     * @param actionIn The Action we want to setup to test.
     * @param expectedForwardName expected name of the forward you want the Action
     *        to generate.
-    * @throws Exception if error occurs setting up the Action.
-    */
-    public void setUpAction(Action actionIn, String expectedForwardName) throws Exception {
+     */
+    public void setUpAction(Action actionIn, String expectedForwardName) {
         action = actionIn;
         mapping = new ActionMapping();
         setExpectedForward(expectedForwardName);

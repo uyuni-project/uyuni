@@ -52,7 +52,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
                             user.getOrg());
     }
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         String name = ServerGroupTestUtils.NAME;
         String description = ServerGroupTestUtils.DESCRIPTION;
 
@@ -75,7 +75,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSave() throws Exception {
+    public void testSave() {
         ServerGroupTest.createTestServerGroup(user.getOrg(), ServerConstants
                 .getServerGroupTypeEnterpriseEntitled());
         EntitlementServerGroup sg = ServerGroupFactory.lookupEntitled(user.getOrg(),
@@ -85,7 +85,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookup() throws Exception {
+    public void testLookup() {
         TestUtils.flushAndEvict(managedGroup);
         ServerGroup sg1 = ServerGroupFactory.lookupByIdAndOrg(managedGroup.getId(),
                                                     managedGroup.getOrg());
@@ -96,7 +96,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListNoAssociatedAdmins() throws Exception {
+    public void testListNoAssociatedAdmins() {
         TestUtils.flushAndEvict(managedGroup);
         Collection groups = ServerGroupFactory.listNoAdminGroups(managedGroup.getOrg());
         int initSize = groups.size();
@@ -110,7 +110,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemove() throws Exception {
+    public void testRemove() {
         ServerGroupFactory.remove(new TestSaltApi(), managedGroup);
         TestUtils.flushAndEvict(managedGroup);
         ServerGroup sg1 = ServerGroupFactory.lookupByIdAndOrg(managedGroup.getId(),

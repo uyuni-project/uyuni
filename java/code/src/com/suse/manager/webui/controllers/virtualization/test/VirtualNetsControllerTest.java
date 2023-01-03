@@ -126,7 +126,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testData() throws Exception {
+    public void testData() {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/nets/:sid/data", host.getId()), response, user, host);
@@ -146,7 +146,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testDevices() throws Exception {
+    public void testDevices() {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.devices(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/nets/:sid/devices", host.getId()), response, user, host);

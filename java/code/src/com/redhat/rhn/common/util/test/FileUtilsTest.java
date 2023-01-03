@@ -30,7 +30,7 @@ import java.io.File;
 public class FileUtilsTest  {
 
     @Test
-    public void testReadWrite() throws Exception {
+    public void testReadWrite() {
         String path = "/tmp/" +
             System.currentTimeMillis() +
             TestUtils.randomString() + ".cfg";

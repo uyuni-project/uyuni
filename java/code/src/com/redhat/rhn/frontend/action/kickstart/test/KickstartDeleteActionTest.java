@@ -30,7 +30,7 @@ public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
     private final String KICKSTART_ID = "ksid";
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/kickstart/KickstartDelete");
         addRequestParameter(KickstartDetailsEditAction.COMMENTS, "test comment");
         addRequestParameter(KickstartDetailsEditAction.LABEL, "test label");
@@ -59,9 +59,8 @@ public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
      * Helper method to lookup KickstartData by id
      * @param id Id to lookup
      * @return Returns the KickstartData
-     * @throws Exception
      */
-    private KickstartData lookupById(Long id) throws Exception {
+    private KickstartData lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
                           .setLong("id", id)

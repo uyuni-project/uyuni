@@ -95,7 +95,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListKickstartableTreesByNonExistentChannelLabel() throws Exception {
+    public void testListKickstartableTreesByNonExistentChannelLabel() {
         try {
             new KickstartTreeHandler().list(admin, "no such label");
             fail();
@@ -237,7 +237,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateWithInvalidKickstartLabel() throws Exception {
+    public void testCreateWithInvalidKickstartLabel() {
         String profileLabel = "new-ks-profile";
         try {
             handler.createProfileWithCustomUrl(admin, profileLabel, "none",

@@ -54,7 +54,7 @@ public class RhnJavaJobTest {
         for (int i = 0; i < 10; i++) {
             var job = new RhnJavaJob() {
                 @Override
-                public void execute(JobExecutionContext jobExecutionContextIn) throws JobExecutionException {
+                public void execute(JobExecutionContext jobExecutionContextIn) {
                 }
 
                 @Override

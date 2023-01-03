@@ -36,10 +36,9 @@ import redstone.xmlrpc.XmlRpcSerializer;
 public class ServerSerializerTest extends BaseHandlerTestCase {
     /**
      * Test server of type Normal without machine Id
-     * @throws Exception
      */
     @Test
-    public void testSerializeNormalServer() throws Exception {
+    public void testSerializeNormalServer() {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Writer output = new StringWriter();
@@ -69,10 +68,9 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
     }
     /**
      * Test server of type Normal with machine Id
-     * @throws Exception
      */
     @Test
-    public void testSerializeNormalServerWithMachineId() throws Exception {
+    public void testSerializeNormalServerWithMachineId() {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(TestUtils.randomString());

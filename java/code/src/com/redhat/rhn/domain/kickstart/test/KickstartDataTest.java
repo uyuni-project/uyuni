@@ -422,10 +422,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      * @param data kickstart data
      * @param c channel
      * @return Returns a committed KickstartDefaults
-     * @throws Exception something bad happened
      */
     public static KickstartDefaults createDefaults(KickstartData data,
-            Channel c) throws Exception {
+            Channel c) {
         KickstartDefaults d = new KickstartDefaults();
         d.setKsdata(data);
         KickstartVirtualizationType type = KickstartFactory.
@@ -446,9 +445,8 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      * Creates KickstartData for testing purposes.
      * @param orgIn the org
      * @return Returns a committed KickstartData
-     * @throws Exception something bad happened
      */
-    public static KickstartData createTestKickstartData(Org orgIn) throws Exception {
+    public static KickstartData createTestKickstartData(Org orgIn) {
         String label = "KS Data: " + TestUtils.randomString();
         String comments = "KS Data automated test";
 

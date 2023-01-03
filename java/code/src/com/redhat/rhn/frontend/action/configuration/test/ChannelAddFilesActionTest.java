@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testUpload() throws Exception {
+    public void testUpload() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
@@ -43,7 +43,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testImport() throws Exception {
+    public void testImport() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
@@ -56,7 +56,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());

@@ -122,7 +122,7 @@ public class CSVTagTest extends MockObjectTestCase {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TestUtils.enableLocalizationLogging();
     }
 

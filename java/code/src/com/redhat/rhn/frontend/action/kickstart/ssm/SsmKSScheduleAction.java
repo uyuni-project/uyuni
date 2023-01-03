@@ -73,7 +73,7 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         DynaActionForm form = (DynaActionForm)formIn;

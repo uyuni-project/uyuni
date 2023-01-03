@@ -86,11 +86,10 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
     /**
      * Tests that action returns correct default parameters for a system without
      * a profile.
-     * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testExecuteNewSystemsDefault() throws Exception {
+    public void testExecuteNewSystemsDefault() {
 
         Server server = ServerFactoryTest.createTestServer(user, true);
         NetworkInterface networkInterface = server.getNetworkInterfaces().iterator().next();
@@ -120,11 +119,10 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
     /**
      * Tests saving the configuration of a new system.
-     * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testExecuteSaveNewSystem() throws Exception {
+    public void testExecuteSaveNewSystem() {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
@@ -166,11 +164,10 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
     /**
      * Tests reading the configuration of a system that has already been
      * configured.
-     * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testExecuteReadSavedSystem() throws Exception {
+    public void testExecuteReadSavedSystem() {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
@@ -206,10 +203,9 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
     /**
      * Tests overwriting the configuration of an existing system.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testExecuteOverwriteExistingSystem() throws Exception {
+    public void testExecuteOverwriteExistingSystem() {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
@@ -250,10 +246,9 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
     /**
      * Tests powering on a system.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testPowerOn() throws Exception {
+    public void testPowerOn() {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
@@ -274,10 +269,9 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
     /**
      * Tests powering off a system.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testPowerOff() throws Exception {
+    public void testPowerOff() {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
@@ -298,10 +292,9 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
     /**
      * Tests powering off and on a system.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testReboot() throws Exception {
+    public void testReboot() {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
@@ -322,10 +315,9 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
     /**
      * Tests retrieving the status of a system.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testGetStatus() throws Exception {
+    public void testGetStatus() {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());

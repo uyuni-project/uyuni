@@ -28,7 +28,6 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -50,7 +49,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     }
 
     @Override
-    public void execute(JobExecutionContext arg0) throws JobExecutionException {
+    public void execute(JobExecutionContext arg0) {
         if (!ConfigDefaults.get().isForwardRegistrationEnabled()) {
             log.debug("Forwarding registrations disabled");
             return;

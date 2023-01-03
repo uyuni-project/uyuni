@@ -32,7 +32,7 @@ public class RestartCommandTest extends BaseTestCaseWithUser {
     private RestartCommand cmd;
 
     @Test
-    public void testCreateCommand() throws Exception {
+    public void testCreateCommand() {
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         cmd = new RestartCommand(user) {
             @Override

@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 public class SessionManagerTest extends RhnBaseTestCase {
 
     @Test
-    public void testLifetimeValue() throws Exception {
+    public void testLifetimeValue() {
         long lifetime = SessionManager.lifetimeValue();
         long duration = Long.parseLong(Config.get().getString(
                 ConfigDefaults.WEB_SESSION_DATABASE_LIFETIME));
@@ -51,7 +51,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testMakeSession() throws Exception {
+    public void testMakeSession() {
         long expTime = SessionManager.lifetimeValue();
         User u = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -218,7 +218,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPurgeSession() throws Exception {
+    public void testPurgeSession() {
         long duration = 3600L;
         User u = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

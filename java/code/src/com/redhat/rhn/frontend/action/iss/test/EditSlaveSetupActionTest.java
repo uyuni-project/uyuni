@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 public class EditSlaveSetupActionTest extends BaseIssTestAction {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
     }
 
     @Override

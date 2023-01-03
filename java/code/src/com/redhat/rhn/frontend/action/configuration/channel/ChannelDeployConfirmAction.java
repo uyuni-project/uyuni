@@ -65,7 +65,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();

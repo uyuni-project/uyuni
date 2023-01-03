@@ -50,7 +50,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupReturnNull() throws Exception {
+    public void testLookupReturnNull() {
         TestInterface obj = TestFactory.lookupByFoobar("NOTFOUND");
         assertNull(obj);
     }
@@ -58,7 +58,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     // This is a trivial test, but it proves that we can create a simple
     // SQL query automatically from the table definition.
     @Test
-    public void testLookup() throws Exception {
+    public void testLookup() {
         TestInterface obj = TestFactory.lookupByFoobar("Blarg");
         assertEquals("Blarg", obj.getFoobar());
         // 1 is a magic number, this is basically checking that the id is set
@@ -68,7 +68,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @Test
-     public void testNullIntoPrimitive() throws Exception {
+     public void testNullIntoPrimitive() {
          TestInterface obj = TestFactory.lookupByFoobar("Blarg");
          assertEquals("Blarg", obj.getFoobar());
          assertNull(obj.getPin());
@@ -79,7 +79,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
      }
 
     @Test
-    public void testNewInsert() throws Exception {
+    public void testNewInsert() {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("testNewInsert");
         TestFactory.save(obj);
@@ -91,7 +91,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
 
     @Test
-    public void testUpdate() throws Exception {
+    public void testUpdate() {
 
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_Multi_test");
@@ -109,7 +109,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUpdateAfterCommit() throws Exception {
+    public void testUpdateAfterCommit() {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_test");
         TestFactory.save(obj);
@@ -119,13 +119,13 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupMultipleObjects() throws Exception {
+    public void testLookupMultipleObjects() {
         List allTests = TestFactory.lookupAll();
         assertFalse(allTests.isEmpty());
     }
 
     @Test
-    public void testUpdateToNullValue() throws Exception {
+    public void testUpdateToNullValue() {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_test3");
         obj.setTestColumn("AAA");
@@ -200,7 +200,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @AfterAll
-    public static void oneTimeTeardown() throws Exception {
+    public static void oneTimeTeardown() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

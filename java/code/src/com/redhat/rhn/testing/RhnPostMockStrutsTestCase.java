@@ -20,8 +20,6 @@ import org.apache.struts.upload.FormFile;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
 
@@ -71,7 +69,7 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
             }
 
             @Override
-            public byte[] getFileData() throws FileNotFoundException, IOException {
+            public byte[] getFileData() {
                 return contents.getBytes();
             }
 
@@ -86,7 +84,7 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
             }
 
             @Override
-            public InputStream getInputStream() throws FileNotFoundException, IOException {
+            public InputStream getInputStream() {
                 return new ByteArrayInputStream(contents.getBytes());
             }
 

@@ -54,7 +54,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
     private String param2Value;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mockRequest = mock(HttpServletRequest.class);
 
         param1Name = "param1";
@@ -162,7 +162,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
     }
 
     @Test
-    public final void testRequestParamsToQueryStringWithNoParams() throws Exception {
+    public final void testRequestParamsToQueryStringWithNoParams() {
         context().checking(new Expectations() { {
             allowing(mockRequest).getParameterNames();
             will(returnValue(new Vector<String>().elements()));
@@ -175,7 +175,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
     }
 
     @Test
-    public final void testRequestParamsToQueryStringWithParams() throws Exception {
+    public final void testRequestParamsToQueryStringWithParams() {
         final Hashtable<String, String> parameterMap = createParameterMap();
         context().checking(new Expectations() { {
             allowing(mockRequest).getParameterMap();

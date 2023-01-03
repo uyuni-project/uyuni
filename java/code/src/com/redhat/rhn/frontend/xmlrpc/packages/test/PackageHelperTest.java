@@ -38,7 +38,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPackageToMap() throws Exception {
+    public void testPackageToMap() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
@@ -68,7 +68,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPackage2MapWithNulls() throws Exception {
+    public void testPackage2MapWithNulls() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 

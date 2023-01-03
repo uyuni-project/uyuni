@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -35,7 +34,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 public class OrgSerializerTest extends MockObjectTestCase {
 
     @Test
-    public void testSerialize() throws XmlRpcException, IOException {
+    public void testSerialize() throws XmlRpcException {
         OrgSerializer os = new OrgSerializer();
 
         Org org = UserTestUtils.findNewOrg("foo");

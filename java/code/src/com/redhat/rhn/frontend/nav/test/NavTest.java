@@ -47,7 +47,7 @@ public class NavTest extends RhnBaseTestCase {
      */
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         TestUtils.disableLocalizationLogging();
     }
 
@@ -94,7 +94,7 @@ public class NavTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUrlSplit() throws Exception {
+    public void testUrlSplit() {
         String[] testUrls = new String[] {
             "/",
             "/foo",

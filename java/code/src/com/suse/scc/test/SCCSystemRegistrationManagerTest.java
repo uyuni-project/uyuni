@@ -31,7 +31,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
-import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCRegisterSystemJson;
@@ -66,8 +65,8 @@ public class SCCSystemRegistrationManagerTest {
         SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
                 new URI("https://localhost"), "username", "password", "uuid")) {
             @Override
-            public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
-                    throws SCCClientException {
+            public SCCSystemCredentialsJson createSystem(
+                    SCCRegisterSystemJson system, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertEquals(new Date(0), system.getLastSeenAt());
@@ -75,7 +74,7 @@ public class SCCSystemRegistrationManagerTest {
             }
 
             @Override
-            public void deleteSystem(long id, String username, String password) throws SCCClientException {
+            public void deleteSystem(long id, String username, String password) {
                 assertEquals(12345L, id);
                 assertEquals("username", username);
                 assertEquals("password", password);
@@ -144,8 +143,8 @@ public class SCCSystemRegistrationManagerTest {
         SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
                 new URI("https://localhost"), "username", "password", "uuid")) {
             @Override
-            public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
-                    throws SCCClientException {
+            public SCCSystemCredentialsJson createSystem(
+                    SCCRegisterSystemJson system, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertEquals(new Date(0), system.getLastSeenAt());
@@ -153,15 +152,14 @@ public class SCCSystemRegistrationManagerTest {
             }
 
             @Override
-            public void deleteSystem(long id, String username, String password) throws SCCClientException {
+            public void deleteSystem(long id, String username, String password) {
                 assertEquals(12345L, id);
                 assertEquals("username", username);
                 assertEquals("password", password);
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
-                    throws SCCClientException {
+            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
                 assertEquals(new Date(0), systems.get(0).getLastSeenAt());
@@ -216,14 +214,13 @@ public class SCCSystemRegistrationManagerTest {
         TestSCCWebClient sccWebClient = new TestSCCWebClient(new SCCConfig(
                 new URI("https://localhost"), "username", "password", "uuid")) {
             @Override
-            public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
-                    throws SCCClientException {
+            public SCCSystemCredentialsJson createSystem(
+                    SCCRegisterSystemJson system, String username, String password) {
                 return new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L);
             }
 
             @Override
-            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
-                    throws SCCClientException {
+            public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
                 callCnt += 1;
                 assertTrue(callCnt <= 4, "more requests then expected");
                 if (callCnt < 4) {

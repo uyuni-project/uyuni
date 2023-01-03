@@ -94,8 +94,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
     }
 
     private static void backdateKickstartSession(Session session,
-            KickstartSession ksession, int days)
-        throws Exception {
+            KickstartSession ksession, int days) {
         HibernateFactory.getSession().doWork(connection -> {
             try (Statement statement = connection.createStatement()) {
                 statement.execute("UPDATE rhnKickstartSession " +
@@ -130,7 +129,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         return ksession;
     }
 
-    private void verifyDatasourceConfig() throws Exception {
+    private void verifyDatasourceConfig() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_KSCLEANUP_FIND_CANDIDATES);
         assertNotNull(select);
@@ -152,9 +151,8 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
      * Helper method to lookup KickstartSessionState by label
      * @param label Label to lookup
      * @return Returns the KickstartSessionState
-     * @throws Exception
      */
-    private static KickstartSessionState lookupByLabel(String label) throws Exception {
+    private static KickstartSessionState lookupByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (KickstartSessionState) session
                           .getNamedQuery("KickstartSessionState.findByLabel")

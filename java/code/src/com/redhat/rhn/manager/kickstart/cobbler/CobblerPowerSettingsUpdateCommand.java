@@ -26,8 +26,6 @@ import org.cobbler.Image;
 import org.cobbler.SystemRecord;
 import org.cobbler.XmlRpcException;
 
-import java.io.IOException;
-
 /**
  * Changes power management settings for a server.
  */
@@ -123,18 +121,12 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
 
         if (systemRecord == null && server != null) {
             log.debug("No Cobbler system record found for system {}", getIdent());
-            try {
-                CobblerConnection connection = getCobblerConnection();
-                Image image = createDummyImage(connection);
-                systemRecord = SystemRecord.create(connection,
-                    CobblerSystemCreateCommand.getCobblerSystemRecordName(server.getName(), server.getOrgId()), image);
-                systemRecord.enableNetboot(false);
-                server.setCobblerId(systemRecord.getId());
-            }
-            catch (IOException e) {
-                log.error("Could not create temporary file for Cobbler image");
-                return new ValidatorError("kickstart.powermanagement.cannot_create_file");
-            }
+            CobblerConnection connection = getCobblerConnection();
+            Image image = createDummyImage(connection);
+            systemRecord = SystemRecord.create(connection,
+                CobblerSystemCreateCommand.getCobblerSystemRecordName(server.getName(), server.getOrgId()), image);
+            systemRecord.enableNetboot(false);
+            server.setCobblerId(systemRecord.getId());
         }
 
         if (systemRecord == null) {
@@ -193,9 +185,8 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
      * systems that do not need PXE booting.
      * @param connection the connection
      * @return the image
-     * @throws IOException Signals that an I/O exception has occurred.
      */
-    private Image createDummyImage(CobblerConnection connection) throws IOException {
+    private Image createDummyImage(CobblerConnection connection) {
         Image image = Image.lookupByName(connection, POWER_MANAGEMENT_DUMMY_NAME);
         if (image == null) {
             log.debug("Creating Cobbler dummy image");

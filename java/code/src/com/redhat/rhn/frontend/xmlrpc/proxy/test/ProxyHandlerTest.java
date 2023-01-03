@@ -74,7 +74,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
             saltApi);
 
     @BeforeEach
-    protected void setUp() throws Exception {
+    protected void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
     }

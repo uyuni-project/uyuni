@@ -474,7 +474,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListArches() throws Exception {
+    public void testListArches() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         List<ChannelArch> arches = csh.listArches(admin);
@@ -567,7 +567,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testIsGloballySubscribableNoSuchChannel() throws Exception {
+    public void testIsGloballySubscribableNoSuchChannel() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         try {
@@ -665,7 +665,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-chan-label",
@@ -684,7 +684,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateWithGPGCheckDisabled() throws Exception {
+    public void testCreateWithGPGCheckDisabled() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-chan-label",
@@ -704,7 +704,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateWithChecksum() throws Exception {
+    public void testCreateWithChecksum() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-checksum-chan-label",

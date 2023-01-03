@@ -38,7 +38,7 @@ import java.util.Map;
 public class CSVWriterTest {
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         TestUtils.disableLocalizationLogging();
     }
 
@@ -50,7 +50,7 @@ public class CSVWriterTest {
     }
 
     @Test
-    public void testListOutput() throws Exception {
+    public void testListOutput() {
         ExportWriter writer = new CSVWriter(new StringWriter());
         List values = new LinkedList();
         values.add("val1");
@@ -63,7 +63,7 @@ public class CSVWriterTest {
     }
 
     @Test
-    public void testListofMaps() throws Exception {
+    public void testListofMaps() {
 
         ExportWriter writer = new CSVWriter(new StringWriter());
         List columns = new LinkedList();
@@ -91,7 +91,7 @@ public class CSVWriterTest {
     }
 
     @Test
-    public void testListofDtos() throws Exception {
+    public void testListofDtos() {
 
         ExportWriter writer = new CSVWriter(new StringWriter());
         List columns = new LinkedList();

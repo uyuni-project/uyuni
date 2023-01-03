@@ -101,7 +101,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testRemovePermitionCheck() throws Exception {
+    public void testRemovePermitionCheck() {
         try {
             PaygSshData paygInfo = createPaygSshData();
             PaygApiContoller.removePaygInstance(
@@ -115,7 +115,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testRemove() throws Exception {
+    public void testRemove() {
         PaygSshData paygInfo = createPaygSshData();
         String json = PaygApiContoller.removePaygInstance(
                 getRequestWithCsrf("/manager/api/admin/config/payg/:id", paygInfo.getId()),

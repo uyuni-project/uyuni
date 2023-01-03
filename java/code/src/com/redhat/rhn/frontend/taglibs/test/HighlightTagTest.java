@@ -34,7 +34,7 @@ import javax.servlet.jsp.tagext.Tag;
 public class HighlightTagTest extends RhnBaseTestCase {
 
     @Test
-    public void testDoEndTag() throws Exception {
+    public void testDoEndTag() {
 
         HighlightTag ht = new HighlightTag();
         TagTestHelper tth = TagTestUtils.setupTagTest(ht, null);

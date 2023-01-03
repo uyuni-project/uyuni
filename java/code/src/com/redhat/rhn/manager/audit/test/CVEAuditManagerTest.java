@@ -434,10 +434,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
     /**
      * Runs listSystemsByPatchStatus with an unknown CVE identifier.
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testListSystemsByPatchStatusUnknown() throws Exception {
+    public void testListSystemsByPatchStatusUnknown() {
         String cveName = TestUtils.randomString().substring(0, 13);
 
         User user = createTestUser();

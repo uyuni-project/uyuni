@@ -37,7 +37,7 @@ import java.util.Iterator;
 public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testToken() throws Exception {
+    public void testToken() {
         String tok = ResetPasswordFactory.generatePasswordToken(user);
         assertNotNull(tok);
         assertEquals(40, tok.length());

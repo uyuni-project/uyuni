@@ -48,7 +48,7 @@ public class AclTest extends RhnBaseTestCase {
     /** Sets up the acl, handler, and context objects. */
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         acl = new Acl();
         context = new HashMap<>();
         handler = new MockAclHandler();

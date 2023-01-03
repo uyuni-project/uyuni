@@ -37,7 +37,7 @@ import java.util.List;
 public class ExtraPackageListActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);
         Package standard = PackageTest.createTestPackage(user.getOrg());
@@ -51,7 +51,7 @@ public class ExtraPackageListActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testExecuteWithPtf() throws Exception {
+    public void testExecuteWithPtf() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);
 

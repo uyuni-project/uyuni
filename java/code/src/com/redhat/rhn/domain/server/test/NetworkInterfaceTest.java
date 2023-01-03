@@ -89,11 +89,9 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
      * @param ipAddress the ip address
      * @param macAddress the MAC address
      * @return Returns a new NetworkInterface object all filled out for testing purposes.
-     * @throws Exception something bad happened
      */
     public static NetworkInterface createTestNetworkInterface(Server server,
-            String networkName, String ipAddress, String macAddress)
-        throws Exception {
+            String networkName, String ipAddress, String macAddress) {
 
         NetworkInterface netint = new NetworkInterface();
         netint.setHwaddr(macAddress);

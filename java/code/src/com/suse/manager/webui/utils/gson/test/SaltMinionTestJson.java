@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 public class SaltMinionTestJson extends MockObjectTestCase {
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 

@@ -35,7 +35,7 @@ public class ArchivedActionsSetupTest extends RhnMockStrutsTestCase {
 
 
     @Test
-    public void testPerformExecute() throws Exception {
+    public void testPerformExecute() {
 
 
         actionPerform();

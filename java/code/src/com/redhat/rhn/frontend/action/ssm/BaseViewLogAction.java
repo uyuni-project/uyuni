@@ -49,8 +49,7 @@ public abstract class BaseViewLogAction extends RhnListAction implements Listabl
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         ListHelper helper = new ListHelper(this, request);
         helper.setDataSetName(RequestContext.PAGE_LIST);

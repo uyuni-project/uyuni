@@ -101,7 +101,7 @@ public class SetCharacterEncodingFilter implements Filter {
 
     /** {@inheritDoc} */
     @Override
-    public void init(FilterConfig filterConfigIn) throws ServletException {
+    public void init(FilterConfig filterConfigIn) {
 
         this.filterConfig = filterConfigIn;
         this.encoding = filterConfig.getInitParameter("encoding");

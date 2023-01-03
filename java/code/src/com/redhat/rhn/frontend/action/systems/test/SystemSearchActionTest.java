@@ -56,9 +56,8 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
      * on the system search page. This test is expecting multiple systems to be found
      * and the user to be forwarded to the system search page with a list of systems
      * shown.
-     * @throws Exception something bad happened
      */
-    public void skipTestQueryWithResults() throws Exception {
+    public void skipTestQueryWithResults() {
        /**
         * SystemSearch now talks to a Lucene search server.  This creates issues
         * for testing...you can't use a test util to create a system put it in the
@@ -86,9 +85,8 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
     /**
      * This test is the case where only one system is found. It verfies
      * that the user is redirected to that system's SDC page.
-     * @throws Exception something bad happened
      */
-    public void skipTestQueryWithOneResult() throws Exception {
+    public void skipTestQueryWithOneResult() {
         /**
          * SystemSearch now talks to a Lucene search server.  This creates issues
          * for testing...you can't use a test util to create a system put it in the
@@ -109,7 +107,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testQueryWithoutResults() throws Exception {
+    public void testQueryWithoutResults() {
     }
 
     /**
@@ -117,10 +115,9 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
      * the system search handles and catches any underlying exceptions
      * that might be caused by this, instead of allowing the exception to escalate
      * beyond the SystemSearchAction.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testQueryWithBadParameter() throws Exception {
+    public void testQueryWithBadParameter() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, s.getName());
         addRequestParameter(BaseSearchAction.WHERE_TO_SEARCH, "all");
@@ -130,7 +127,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testNoSubmit() throws Exception {
+    public void testNoSubmit() {
         actionPerform();
         DynaActionForm formIn = (DynaActionForm) getActionForm();
         assertNotNull(formIn.get(BaseSearchAction.WHERE_TO_SEARCH));
@@ -138,7 +135,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testAlphaSubmitForNumericField() throws Exception {
+    public void testAlphaSubmitForNumericField() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, "abc");
         addRequestParameter(BaseSearchAction.WHERE_TO_SEARCH, "all");
@@ -150,7 +147,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testSmallAlphaSubmitForNumericField() throws Exception {
+    public void testSmallAlphaSubmitForNumericField() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, "a");
         addRequestParameter(BaseSearchAction.WHERE_TO_SEARCH, "all");

@@ -49,8 +49,7 @@ public class ViewLogDetailsAction extends RhnListAction implements Listable {
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         // Load the operation details for display
         long oid = Long.parseLong(request.getParameter(PARAM_OPERATION_ID));

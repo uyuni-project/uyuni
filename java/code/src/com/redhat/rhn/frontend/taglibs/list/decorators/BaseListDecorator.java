@@ -101,7 +101,7 @@ public abstract class BaseListDecorator implements ListDecorator {
      * {@inheritDoc}
      */
     @Override
-    public void beforeTopPagination() throws JspException {
+    public void beforeTopPagination() {
 
     }
 
@@ -109,7 +109,7 @@ public abstract class BaseListDecorator implements ListDecorator {
      * {@inheritDoc}
      */
     @Override
-    public void onTopExtraContent() throws JspException {
+    public void onTopExtraContent() {
 
     }
 
@@ -117,7 +117,7 @@ public abstract class BaseListDecorator implements ListDecorator {
      * {@inheritDoc}
      */
     @Override
-    public void onHeadExtraContent() throws JspException {
+    public void onHeadExtraContent() {
 
     }
 
@@ -125,7 +125,7 @@ public abstract class BaseListDecorator implements ListDecorator {
      * {@inheritDoc}
      */
     @Override
-    public void onFooterExtraContent() throws JspException {
+    public void onFooterExtraContent() {
 
     }
 
@@ -133,7 +133,7 @@ public abstract class BaseListDecorator implements ListDecorator {
      * {@inheritDoc}
      */
     @Override
-    public void onBottomExtraContent() throws JspException {
+    public void onBottomExtraContent() {
 
     }
 
@@ -141,7 +141,7 @@ public abstract class BaseListDecorator implements ListDecorator {
      * {@inheritDoc}
      */
     @Override
-    public void onTopExtraAddons() throws JspException {
+    public void onTopExtraAddons() {
 
     }
 
@@ -165,7 +165,7 @@ public abstract class BaseListDecorator implements ListDecorator {
      * {@inheritDoc}
      */
     @Override
-    public void onBottomExtraAddons() throws JspException {
+    public void onBottomExtraAddons() {
 
     }
 }

@@ -166,7 +166,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGuestimateHandlesNullArchId() throws Exception {
+    public void testGuestimateHandlesNullArchId() {
         PackageListItem pli = PackageListItem.parse("10000|1000");
         assertNull(pli.getIdThree());
         assertNull(PackageManager.guestimatePackageBySystem(10000L, 100L, 100L,
@@ -174,7 +174,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGuestimateInvalidPackage() throws Exception {
+    public void testGuestimateInvalidPackage() {
         // guestimatePackageBySystem should return null if it
         // can't find a package, not throw an exception.
         try {
@@ -307,10 +307,8 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
      * @param packageName The name of the package to create.
      * @param c The channel to which to add the package
      * @return The package with that name in the channel.
-     * @throws Exception something bad happened
      */
-    public static Package addPackageToChannel(String packageName, Channel c)
-            throws Exception {
+    public static Package addPackageToChannel(String packageName, Channel c) {
 
         PackageName pn = PackageFactory.lookupOrCreatePackageByName(packageName);
         if (pn == null) {
@@ -570,7 +568,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testDeletePackages() throws Exception {
+    public void testDeletePackages() {
         // Configuration
         final int numPackagesToDelete = 50;
 

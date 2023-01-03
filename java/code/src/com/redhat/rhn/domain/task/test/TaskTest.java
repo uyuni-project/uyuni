@@ -39,7 +39,7 @@ import java.util.List;
 public class TaskTest extends RhnBaseTestCase {
 
     @Test
-    public void testTask() throws Exception {
+    public void testTask() {
 
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String testname = "task_object_unit_test_" + TestUtils.randomString();
@@ -72,7 +72,7 @@ public class TaskTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupNameLike() throws Exception {
+    public void testLookupNameLike() {
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String testname = "task_object_unit_test_" + TestUtils.randomString();
         Long testdata = 42L;

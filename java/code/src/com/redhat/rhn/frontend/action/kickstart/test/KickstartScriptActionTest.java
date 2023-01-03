@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         // Lets zero out the scripts
         ksdata = clearScripts(ksdata);
         assertEquals(0, ksdata.getScripts().size());
@@ -48,7 +48,7 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testExecuteLargeValueSubmit() throws Exception {
+    public void testExecuteLargeValueSubmit() {
         String contents = RandomStringUtils.randomAscii(400000);
         String name = RandomStringUtils.randomAscii(20);
         // Lets zero out the scripts
@@ -80,7 +80,7 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testExecuteSubmit() throws Exception {
+    public void testExecuteSubmit() {
         // Lets zero out the scripts
         ksdata = clearScripts(ksdata);
 
@@ -111,7 +111,7 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testEditExecute() throws Exception {
+    public void testEditExecute() {
         assertEquals(5, ksdata.getScripts().size());
         addRequestParameter(KickstartScriptCreateAction.SUBMITTED,
                 Boolean.FALSE.toString());
@@ -127,7 +127,7 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testEditExecuteSubmit() throws Exception {
+    public void testEditExecuteSubmit() {
         String contents = "some script value " + TestUtils.randomString();
         String language = "/usr/bin/perl";
         addRequestParameter(KickstartScriptCreateAction.CONTENTS,

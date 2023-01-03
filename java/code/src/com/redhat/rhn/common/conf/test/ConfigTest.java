@@ -103,10 +103,9 @@ public class ConfigTest extends RhnBaseTestCase {
      * property defined fully qualifed in rhn_web.conf,
      * overridden without prefix in rhn.conf,
      * Accessed fully qualified.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testOverride() throws Exception {
+    public void testOverride() {
         assertEquals("keep", c.getString("web.to_override"));
     }
 
@@ -114,10 +113,9 @@ public class ConfigTest extends RhnBaseTestCase {
      * property defined fully qualifed in rhn_web.conf,
      * overridden without prefix in rhn.conf,
      * Accessed by property name only.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testOverride1() throws Exception {
+    public void testOverride1() {
         assertEquals("keep", c.getString("to_override"));
     }
 
@@ -125,10 +123,9 @@ public class ConfigTest extends RhnBaseTestCase {
      * property defined fully qualifed in rhn_web.conf
      * overridden fully qualfied in rhn.conf.
      * Accessed fully qualified.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testOverride2() throws Exception {
+    public void testOverride2() {
         assertEquals("1", c.getString("web.fq_to_override"));
     }
 
@@ -136,10 +133,9 @@ public class ConfigTest extends RhnBaseTestCase {
      * property defined fully qualifed in rhn_web.conf
      * overridden fully qualfied in rhn.conf.
      * Accessed by property name only.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testOverride3() throws Exception {
+    public void testOverride3() {
         assertEquals("1", c.getString("fq_to_override"));
     }
 
@@ -192,14 +188,14 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testGetStringArray1Elem() throws Exception {
+    public void testGetStringArray1Elem() {
         String[] elems = c.getStringArray("prefix.array_one_element");
         assertEquals(1, elems.length);
         assertEquals("some value", elems[0]);
     }
 
     @Test
-    public void testGetStringArrayNull() throws Exception {
+    public void testGetStringArrayNull() {
         String[] elems = c.getStringArray("find.this.entry.b****");
         assertNull(elems);
     }
@@ -207,10 +203,9 @@ public class ConfigTest extends RhnBaseTestCase {
     /**
      * define a boolean value in rhn_prefix.conf, call getBoolean.
      * Test true, false, 1, 0, y, n, foo, 10
-     * @throws Exception something bad happened
      */
     @Test
-    public void testGetBoolean() throws Exception {
+    public void testGetBoolean() {
         boolean b = c.getBoolean("prefix.boolean_true");
         assertTrue(b);
 
@@ -250,10 +245,9 @@ public class ConfigTest extends RhnBaseTestCase {
     /**
      * define an integer value in rhN_prefix.conf, call getInt.
      * Test -10, 0, 100, y
-     * @throws Exception something bad happened
      */
     @Test
-    public void testGetInt() throws Exception {
+    public void testGetInt() {
         int i = c.getInt("prefix.int_minus10");
         assertEquals(-10, i);
         assertEquals(0, c.getInt("prefix.int_zero"));
@@ -270,7 +264,7 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testGetInteger() throws Exception {
+    public void testGetInteger() {
         assertEquals(Integer.valueOf(-10), c.getInteger("prefix.int_minus10"));
         assertEquals(Integer.valueOf(0), c.getInteger("prefix.int_zero"));
         assertEquals(Integer.valueOf(100), c.getInteger("prefix.int_100"));
@@ -301,10 +295,9 @@ public class ConfigTest extends RhnBaseTestCase {
     /**
      * define comma separated value in rhn_prefix.conf,
      * call using StringArrayElem, verify all values are in array.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testGetStringArrayMultElem() throws Exception {
+    public void testGetStringArrayMultElem() {
         String[] elems = c.getStringArray("prefix.comma_separated");
         assertEquals(5, elems.length);
         assertEquals("every", elems[0]);
@@ -326,7 +319,7 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testSetBoolean() throws Exception {
+    public void testSetBoolean() {
         boolean oldValue = c.getBoolean("prefix.boolean_true");
         c.setBoolean("prefix.boolean_true", Boolean.FALSE.toString());
         assertFalse(c.getBoolean("prefix.boolean_true"));
@@ -335,7 +328,7 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testSetString() throws Exception {
+    public void testSetString() {
         String oldValue = c.getString("to_override");
         c.setString("to_override", "newValue");
         assertEquals("newValue", c.getString("to_override"));
@@ -343,7 +336,7 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testGetUndefinedInt() throws Exception {
+    public void testGetUndefinedInt() {
         int zero = c.getInt("Undefined_config_variable");
         assertEquals(0, zero);
     }
@@ -377,7 +370,7 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testNamespaceProperties() throws Exception {
+    public void testNamespaceProperties() {
         Set<String> expectedProperties = Set.of("web.without_prefix",
             "web.to_override_without_prefix",
             "web.product_name",
@@ -395,7 +388,7 @@ public class ConfigTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testNamespacePropertiesWithRewriting() throws Exception {
+    public void testNamespacePropertiesWithRewriting() {
         Set<String> expectedProperties = Set.of("test.without_prefix",
             "test.to_override_without_prefix",
             "test.product_name",

@@ -116,7 +116,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     private static TaskomaticApi taskomaticApi;
 
     @Test
-    public void testAllDownloadsTree() throws Exception {
+    public void testAllDownloadsTree() {
     }
 
     @Test
@@ -248,7 +248,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testOwnedChannelsTree() throws Exception {
+    public void testOwnedChannelsTree() {
         assertTrue(ChannelManager.ownedChannelsTree(UserTestUtils.findNewUser()).isEmpty());
         assertNotEmpty(ChannelManager.ownedChannelsTree(user));
     }
@@ -642,7 +642,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testChildrenAvailableToSet() throws Exception {
+    public void testChildrenAvailableToSet() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(user);
 

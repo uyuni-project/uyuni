@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 public class PreservationListActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         FileList f = FileListTest.createTestFileList(user.getOrg());

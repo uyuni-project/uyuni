@@ -71,7 +71,7 @@ public class ChannelOverviewTasks extends RhnAction {
     public ActionForward execute(ActionMapping map,
                                  ActionForm form,
                                  HttpServletRequest req,
-                                 HttpServletResponse resp) throws Exception {
+                                 HttpServletResponse resp) {
 
         Map params = makeParamMap(req);
         String mode = req.getParameter(MODE_PARAM);

@@ -33,7 +33,7 @@ class BufferedServletOutputStream extends LegacyServletOutputStream {
      * ${@inheritDoc}
      */
     @Override
-    public void write(int b) throws IOException {
+    public void write(int b) {
         buffer.write(b);
     }
 

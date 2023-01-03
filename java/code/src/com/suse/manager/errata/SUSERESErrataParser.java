@@ -52,7 +52,7 @@ public class SUSERESErrataParser implements VendorSpecificErrataParser {
      * {@inheritDoc}
      */
     @Override
-    public String getAnnouncementId(Errata errata) throws ErrataParsingException {
+    public String getAnnouncementId(Errata errata) {
         if (StringUtils.isEmpty(errata.getAdvisory())) {
             throw new IllegalArgumentException("No advisory id found for errata");
         }

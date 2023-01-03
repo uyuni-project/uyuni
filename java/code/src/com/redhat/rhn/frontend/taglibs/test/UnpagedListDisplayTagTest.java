@@ -51,7 +51,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     private RhnMockJspWriter writer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TestUtils.disableLocalizationLogging();
 
@@ -98,7 +98,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TestUtils.enableLocalizationLogging();
     }
 

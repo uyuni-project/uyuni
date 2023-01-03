@@ -95,7 +95,7 @@ public class UserManagerTest extends RhnBaseTestCase {
      */
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         this.users = new HashSet<>();
         SaltApi saltApi = new TestSaltApi();
         systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
@@ -124,7 +124,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testGrantServerGroupPermission() throws Exception {
+    public void testGrantServerGroupPermission() {
         //Group and user have the same org, so should be possible to grant permits
         User user = UserTestUtils.findNewUser("user_1", "org_1");
         this.users.add(user);
@@ -230,7 +230,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testRevokeServerGroupPermission() throws Exception {
+    public void testRevokeServerGroupPermission() {
         User user = UserTestUtils.findNewUser("user_test_revoke", "org_test_revoke");
         this.users.add(user);
 
@@ -303,7 +303,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testVerifyPackageAccess() throws Exception {
+    public void testVerifyPackageAccess() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         assertTrue(UserManager.verifyPackageAccess(user.getOrg(), pkg.getId()));
@@ -649,7 +649,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-   public void testUsersInSet() throws Exception {
+   public void testUsersInSet() {
        User user = UserTestUtils.findNewUser("testUser",
                "testOrg" + this.getClass().getSimpleName());
        RhnSet set = RhnSetManager.createSet(user.getId(), "test_user_list",
@@ -674,7 +674,7 @@ public class UserManagerTest extends RhnBaseTestCase {
    }
 
     @Test
-   public void testLookupServerPreferenceValue() throws Exception {
+   public void testLookupServerPreferenceValue() {
        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                TestStatics.TESTORG);
 
@@ -705,7 +705,7 @@ public class UserManagerTest extends RhnBaseTestCase {
    }
 
     @Test
-   public void testVisibleSystemsAsDtoFromList() throws Exception {
+   public void testVisibleSystemsAsDtoFromList() {
        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                TestStatics.TESTORG);
 

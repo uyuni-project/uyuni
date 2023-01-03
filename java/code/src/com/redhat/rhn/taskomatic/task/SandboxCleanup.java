@@ -21,7 +21,6 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +40,7 @@ public class SandboxCleanup extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext arg0In)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext arg0In) {
 
         int sandboxLifetime = Config.get().getInt("sandbox_lifetime"); //in days
 

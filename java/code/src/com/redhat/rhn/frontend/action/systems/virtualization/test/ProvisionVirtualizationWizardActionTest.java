@@ -115,7 +115,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
     }
 
     @Test
-    public void testStepOne() throws Exception {
+    public void testStepOne() {
         actionPerform();
         verifyNoActionErrors();
     }
