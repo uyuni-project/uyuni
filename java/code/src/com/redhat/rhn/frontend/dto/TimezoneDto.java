@@ -84,6 +84,7 @@ public class TimezoneDto extends BaseDto implements RowCallback {
      */
     @Override
     public void callback(ResultSet rs) {
+        // Not needed
     }
 
     /**

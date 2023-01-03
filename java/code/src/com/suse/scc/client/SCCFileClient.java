@@ -107,10 +107,12 @@ public class SCCFileClient implements SCCClient {
 
     @Override
     public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
+        // Not handled
     }
 
     @Override
     public void deleteSystem(long id, String username, String password) {
+        // Not handled
     }
 
     /**
@@ -150,7 +152,7 @@ public class SCCFileClient implements SCCClient {
                 .create();
         return (T) gson.fromJson(
                 new BufferedReader(new InputStreamReader(new FileInputStream(
-                        new File(config.getLocalResourcePath() + "/" + filename)))),
+                        new File(config.getLocalResourcePath(), filename)))),
                 resultType);
     }
 }

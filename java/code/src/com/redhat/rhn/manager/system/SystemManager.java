@@ -196,6 +196,7 @@ public class SystemManager extends BaseManager {
             "configfiles.base64_enc";
     public static final String CAP_SCRIPT_RUN = "script.run";
     public static final String CAP_SCAP = "scap.xccdf_eval";
+    private static final String COUNT = "count";
 
     private final SystemEntitlementManager systemEntitlementManager;
     private SaltApi saltApi;
@@ -1087,7 +1088,7 @@ public class SystemManager extends BaseManager {
         return HibernateFactory.getSession()
                 .createNativeQuery(selectCountQuery, Tuple.class)
                 .getSingleResult()
-                .get("count", Number.class)
+                .get(COUNT, Number.class)
                 .longValue();
     }
 
@@ -1338,7 +1339,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
         DataResult<Row> dr = makeDataResult(params, params, m);
-        return ((Long) dr.get(0).get("count")).intValue();
+        return ((Long) dr.get(0).get(COUNT)).intValue();
     }
 
     /**
@@ -1351,7 +1352,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("server_id", sid);
         DataResult<Row> dr = makeDataResult(params, params,  m);
-        return ((Long) dr.get(0).get("count")).intValue();
+        return ((Long) dr.get(0).get(COUNT)).intValue();
     }
 
     /**
@@ -1386,7 +1387,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("sid", sid);
         DataResult<Row> dr = makeDataResult(params, null, m);
-        return ((Long) dr.get(0).get("count")).intValue() > 0;
+        return ((Long) dr.get(0).get(COUNT)).intValue() > 0;
     }
 
     /**
@@ -1533,7 +1534,7 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
 
         DataResult<Row> dr = makeDataResult(params, null, m);
-        return ((Long) dr.get(0).get("count")).intValue();
+        return ((Long) dr.get(0).get(COUNT)).intValue();
     }
 
     /**
@@ -1552,7 +1553,7 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
 
         DataResult<Row> dr = makeDataResult(params, null, null, m);
-        return ((Long) dr.get(0).get("count")).intValue();
+        return ((Long) dr.get(0).get(COUNT)).intValue();
     }
 
     /**
@@ -1789,7 +1790,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("set_label", setLabel);
         DataResult<Row> dr = m.execute(params, entitlements);
-        return ((Long)dr.get(0).get("count")).intValue();
+        return ((Long)dr.get(0).get(COUNT)).intValue();
     }
 
     /**
@@ -1811,7 +1812,7 @@ public class SystemManager extends BaseManager {
         params.put("feature_label", featureLabel);
 
         DataResult<Row> dr = makeDataResult(params, null,  m);
-        return ((Long)dr.get(0).get("count")).intValue();
+        return ((Long)dr.get(0).get(COUNT)).intValue();
     }
 
     /**
@@ -2369,7 +2370,7 @@ public class SystemManager extends BaseManager {
         DataResult<Row> dr = makeDataResult(params, params, m);
 
         Map<String, Object> result = dr.get(0);
-        Long count = (Long) result.get("count");
+        Long count = (Long) result.get(COUNT);
         return count.intValue();
     }
 
@@ -2805,7 +2806,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("entitlement_label", EntitlementManager.ENTERPRISE_ENTITLED);
         DataResult<Row> dr = makeDataResult(params, null, null, m);
-        return ((Long) dr.get(0).get("count")).intValue() > 0;
+        return ((Long) dr.get(0).get(COUNT)).intValue() > 0;
     }
 
     /**
@@ -2825,7 +2826,7 @@ public class SystemManager extends BaseManager {
 
         DataResult<Map<String, Object>> dr = m.execute(params);
         Map<String, Object> result = dr.get(0);
-        Long count = (Long) result.get("count");
+        Long count = (Long) result.get(COUNT);
 
         return count.intValue();
     }
@@ -2877,7 +2878,7 @@ public class SystemManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("cid", cid);
         DataResult<Map<String, Object>> toReturn = m.execute(params);
-        return (Long) toReturn.get(0).get("count");
+        return (Long) toReturn.get(0).get(COUNT);
 
     }
 
@@ -3505,7 +3506,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         DataResult<Map<String, Object>> toReturn = m.execute(params);
-        return (Long) toReturn.get(0).get("count");
+        return (Long) toReturn.get(0).get(COUNT);
     }
 
     /**

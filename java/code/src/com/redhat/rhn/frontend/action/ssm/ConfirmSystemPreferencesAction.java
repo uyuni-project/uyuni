@@ -20,8 +20,6 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -34,9 +32,6 @@ import javax.servlet.http.HttpServletResponse;
  * IndexAction extends RhnAction
  */
 public class ConfirmSystemPreferencesAction extends RhnAction {
-
-    /** Logger instance */
-    private static Logger log = LogManager.getLogger(ConfirmSystemPreferencesAction.class);
 
     /** {@inheritDoc} */
     @Override

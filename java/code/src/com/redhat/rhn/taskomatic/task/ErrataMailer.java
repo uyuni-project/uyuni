@@ -58,37 +58,27 @@ public class ErrataMailer extends RhnJavaJob {
 
         List<Row> results = getErrataToProcess();
         if (results == null || results.isEmpty()) {
-            if (log.isDebugEnabled()) {
-                log.debug("No patch found...exiting");
-            }
+            log.debug("No patch found...exiting");
         }
         else {
-            if (log.isDebugEnabled()) {
-                log.debug("=== Queued up {} patches", results.size());
-            }
+            log.debug("=== Queued up {} patches", results.size());
             for (Row row: results) {
                 Long errataId = (Long) row.get("errata_id");
                 Long orgId = (Long) row.get("org_id");
                 Long channelId = (Long) row.get("channel_id");
                 markErrataDone(errataId, orgId, channelId);
                 if (OrgFactory.lookupById(orgId).getOrgConfig().isErrataEmailsEnabled()) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Processing patch {} for org {}", errataId, orgId);
-                    }
+                    log.debug("Processing patch {} for org {}", errataId, orgId);
                     try {
                         sendEmails(errataId, orgId, channelId);
-                        if (log.isDebugEnabled()) {
-                            log.debug("Finished patch {} for org {}", errataId, orgId);
-                        }
+                        log.debug("Finished patch {} for org {}", errataId, orgId);
                     }
                     catch (JavaMailException e) {
                         log.error("Error sending mail", e);
                     }
                 }
                 else {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Errata notifications disabled for whole org {} => skipping {}", orgId, errataId);
-                    }
+                    log.debug("Errata notifications disabled for whole org {} => skipping {}", orgId, errataId);
                 }
             }
         }
