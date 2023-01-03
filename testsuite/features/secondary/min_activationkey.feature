@@ -35,6 +35,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Create a complete minion activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
