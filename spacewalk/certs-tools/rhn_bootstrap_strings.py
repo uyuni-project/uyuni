@@ -887,7 +887,7 @@ if [[ $ACTIVATION_KEYS =~ , ]]; then
 fi
 
 SNAPSHOT_PREFIX=""
-if [ -n $SNAPSHOT_ID ]; then
+if [ -n "$SNAPSHOT_ID" ]; then
     SNAPSHOT_PREFIX="/var/lib/overlay/$SNAPSHOT_ID"
 fi
 
