@@ -12,6 +12,7 @@ Feature: Create activation keys
   Scenario: Create an activation key with a channel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "SUSE Test Key x86_64" as "description"
     And I enter "SUSE-KEY-x86_64" as "key"
     And I enter "20" as "usageLimit"
@@ -27,6 +28,7 @@ Feature: Create activation keys
   Scenario: Create an activation key for RedHat-like minion
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "RedHat like Test Key" as "description"
     And I enter "RH-LIKE-KEY" as "key"
     And I select "Fake-RH-Like-Channel" from "selectedBaseChannel"
@@ -37,6 +39,7 @@ Feature: Create activation keys
   Scenario: Create an activation key for Debian-like minion
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "Debian-like Test Key" as "description"
     And I enter "DEBLIKE-KEY" as "key"
     And I select "Fake-Deb-AMD64-Channel" from "selectedBaseChannel"
@@ -46,6 +49,7 @@ Feature: Create activation keys
   Scenario: Create an activation key with a channel for salt-ssh
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "SUSE SSH Test Key x86_64" as "description"
     And I enter "SUSE-SSH-KEY-x86_64" as "key"
     And I enter "20" as "usageLimit"
@@ -56,6 +60,7 @@ Feature: Create activation keys
   Scenario: Create an activation key with a channel for salt-ssh via tunnel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     And I enter "SUSE SSH Tunnel Test Key x86_64" as "description"
     And I enter "SUSE-SSH-TUNNEL-KEY-x86_64" as "key"
     And I enter "20" as "usageLimit"
