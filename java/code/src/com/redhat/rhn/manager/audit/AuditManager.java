@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -333,7 +334,7 @@ public class AuditManager /* extends BaseManager */ {
         }
 
         // otherwise, just look up this one machine
-        hostDir = new File(logDirStr + "/" + machineName + "/audit");
+        hostDir = Path.of(logDirStr, machineName.replace(File.separator, ""), "audit").toFile();
 
         if (!hostDir.exists()) {
             return new DataResult(new LinkedList());
