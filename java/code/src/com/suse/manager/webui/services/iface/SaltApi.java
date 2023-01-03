@@ -110,9 +110,8 @@ public interface SaltApi {
      * Performs an test.echo on a target set of minions for checkIn purpose.
      * @param targetIn the target
      * @return the LocalAsyncResult of the test.echo call
-     * @throws SaltException if we get a failure from Salt
      */
-    Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException;
+    Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn);
 
     /**
      * Apply util.systeminfo state on the specified minion list

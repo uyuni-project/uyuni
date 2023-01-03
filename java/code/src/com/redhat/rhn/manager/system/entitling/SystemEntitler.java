@@ -50,7 +50,6 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +145,7 @@ public class SystemEntitler {
                 try {
                     monitoringManager.enableMonitoring(minion);
                 }
-                catch (ValidatorException | IOException e) {
+                catch (ValidatorException e) {
                     LOG.error("Error enabling monitoring: {}", e.getMessage(), e);
                     result.addError(new ValidatorError("system.entitle.formula_error"));
                 }

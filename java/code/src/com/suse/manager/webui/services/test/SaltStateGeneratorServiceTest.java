@@ -165,7 +165,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testImageSyncedPillar() throws Exception {
+    public void testImageSyncedPillar() {
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
         ImageInfo img1 = ImageTestUtils.createImageInfo("ImageTest", "8.0.0", user);
         img1.setRevisionNumber(1);
@@ -187,7 +187,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         assertFalse(group.getPillarByCategory(category).isPresent());
     }
     @Test
-    public void testLegacyImageSyncedPillar() throws Exception {
+    public void testLegacyImageSyncedPillar() {
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
 
         SaltStateGeneratorService.INSTANCE.createImageSyncedPillar(group, "ImageName", "1.0.0");

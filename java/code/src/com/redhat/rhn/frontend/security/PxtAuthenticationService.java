@@ -202,8 +202,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
      */
     @Override
     public void redirectTo(HttpServletRequest request, HttpServletResponse response,
-                           String path)
-        throws ServletException {
+                           String path) {
             response.setHeader("Location", path);
             response.setStatus(response.SC_SEE_OTHER);
     }

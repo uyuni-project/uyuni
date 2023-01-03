@@ -18,7 +18,6 @@ package com.redhat.rhn.common.localization;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -59,7 +58,7 @@ class XmlResourceBundleParser  extends DefaultHandler {
     /** {@inheritDoc} */
     @Override
     public void endElement(String namespaceUri, String localName,
-                           String qualifiedName) throws SAXException {
+                           String qualifiedName) {
 
         if (thisText.length() > 0) {
             // For the en_US files we use source
@@ -82,21 +81,21 @@ class XmlResourceBundleParser  extends DefaultHandler {
 
     /** {@inheritDoc} */
     @Override
-    public void warning(SAXParseException e) throws SAXException {
+    public void warning(SAXParseException e) {
         LOG.error("SAXParseException Warning: ");
         printInfo(e);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void error(SAXParseException e) throws SAXException {
+    public void error(SAXParseException e) {
         LOG.error("SAXParseException Error: ");
         printInfo(e);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void fatalError(SAXParseException e) throws SAXException {
+    public void fatalError(SAXParseException e) {
         LOG.error("SAXParseException Fatal error: ");
         printInfo(e);
     }

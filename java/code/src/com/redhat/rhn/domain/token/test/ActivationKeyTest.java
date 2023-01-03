@@ -124,7 +124,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         }
      }
     @Test
-    public void testBadKeys()  throws Exception {
+    public void testBadKeys() {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         try {
             manager.createNewActivationKey(user, "A,B", "Cool", null, null, false);
@@ -136,7 +136,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testKeyTrimming()  throws Exception  {
+    public void testKeyTrimming() {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         String keyName = " Test Space  ";
         ActivationKey k = manager.createNewActivationKey
@@ -168,7 +168,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testNullServer() throws Exception {
+    public void testNullServer() {
         ActivationKey key = ActivationKeyFactory.createNewKey(user,
                 TestUtils.randomString());
         assertNotNull(key.getEntitlements());
@@ -177,7 +177,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
 
     // See BZ: 191007
     @Test
-    public void testCreateWithCustomGroups() throws Exception {
+    public void testCreateWithCustomGroups() {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroup testGroup = ServerGroupTestUtils.createManaged(user);
@@ -226,7 +226,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         }
     }
 
-    public static ActivationKey createTestActivationKey(User user) throws Exception {
+    public static ActivationKey createTestActivationKey(User user) {
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
@@ -245,7 +245,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testDuplicateKeyCreation() throws Exception {
+    public void testDuplicateKeyCreation() {
         String keyName = "Hey!";
         ActivationKeyManager.getInstance().createNewActivationKey
                 (user, keyName, null, null, null, false);

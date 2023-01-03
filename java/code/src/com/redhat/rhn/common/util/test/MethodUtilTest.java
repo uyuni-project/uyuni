@@ -78,21 +78,21 @@ public class MethodUtilTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCallMethod() throws Exception {
+    public void testCallMethod() {
         String teststr = (String)MethodUtil.callMethod(this, "nonStaticMethod",
                                                 new Object[] {1});
         assertEquals(TEST_STRING + 1, teststr);
     }
 
     @Test
-    public void testCallMethod2Params() throws Exception {
+    public void testCallMethod2Params() {
         String teststr = (String)MethodUtil.callMethod(this, "nonStaticMethod",
                                  new Object[] {1, 2});
         assertEquals(TEST_STRING + 1 + " " + 2, teststr);
     }
 
     @Test
-    public void testCallMethodDoesntExist() throws Exception {
+    public void testCallMethodDoesntExist() {
         try {
             MethodUtil.callMethod(this, "nonStaticMethod",
                   new Object[] {1, 2, 3});
@@ -109,7 +109,7 @@ public class MethodUtilTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCallMethodWithTranslate() throws Exception {
+    public void testCallMethodWithTranslate() {
         String teststr = (String)MethodUtil.callMethod(this,
                 "nonStaticMethodWithTranslatedParameter",
                 new Object[] {"Y"});

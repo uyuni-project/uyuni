@@ -67,8 +67,7 @@ public class CSVDownloadAction extends DownloadAction {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                 HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         try {
             super.execute(mapping, form, request, response);
         }

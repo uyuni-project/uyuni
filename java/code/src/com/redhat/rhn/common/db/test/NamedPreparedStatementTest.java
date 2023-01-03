@@ -86,7 +86,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         session = HibernateFactory.getSession();
     }
 
@@ -98,7 +98,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testColonInQuotes() throws Exception {
+    public void testColonInQuotes() {
         String jdbcQuery;
         Map<String, List<Integer>> pMap = new HashMap<>();
 
@@ -109,7 +109,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCreateSQL() throws Exception {
+    public void testCreateSQL() {
         String jdbcQuery;
         Map<String, List<Integer>> pMap = new HashMap<>();
 
@@ -123,7 +123,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPrepare() throws Exception {
+    public void testPrepare() {
         String jdbcQuery;
         Map<String, List<Integer>> pMap = new HashMap<>();
 
@@ -139,7 +139,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testTwoBindPrepare() throws Exception {
+    public void testTwoBindPrepare() {
         List<Integer> lst;
         String jdbcQuery;
         Map<String, List<Integer>> pMap = new HashMap<>();
@@ -162,7 +162,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testNotFoundBindParam() throws Exception {
+    public void testNotFoundBindParam() {
         Map<String, List<Integer>> pMap = new HashMap<>();
 
         String jdbcQuery = NamedPreparedStatement.replaceBindParams(TWO_VAR_QUERY, pMap);

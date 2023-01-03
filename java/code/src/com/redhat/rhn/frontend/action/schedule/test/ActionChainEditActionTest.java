@@ -46,11 +46,10 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
 
     /**
      * Tests loading of the form.
-     * @throws Exception if something bad happens
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testNotSubmitted() throws Exception {
+    public void testNotSubmitted() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
         TestUtils.saveAndFlush(actionChain);
@@ -74,10 +73,9 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
 
     /**
      * Tests the Action's delete dispatch call.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
         TestUtils.saveAndFlush(actionChain);

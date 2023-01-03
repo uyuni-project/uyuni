@@ -95,7 +95,7 @@ public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext ctx) throws JobExecutionException {
+    public void execute(JobExecutionContext ctx) {
         TaskQueueFactory factory = TaskQueueFactory.get();
         String queueName = getQueueName();
         TaskQueue queue = factory.getQueue(queueName);

@@ -55,7 +55,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
     private RhnMockJspWriter writer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TestUtils.disableLocalizationLogging();
         request = mock(HttpServletRequest.class);
@@ -121,7 +121,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
      * {@inheritDoc}
      */
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TestUtils.enableLocalizationLogging();
     }
 

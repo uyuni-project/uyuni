@@ -128,7 +128,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
      * (based on its product) assigned.
      */
     @Test
-    public void testChannelsAssigned() throws Exception {
+    public void testChannelsAssigned() {
         grains.put("machine_id", testMinion.getMachineId());
 
         // setup channels & product

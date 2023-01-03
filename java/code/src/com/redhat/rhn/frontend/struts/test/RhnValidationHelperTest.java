@@ -36,10 +36,9 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
 
     /**
      * Test StringsToActionErrors
-     * @throws Exception something bad happened
      */
     @Test
-     public void testValidatorErrorToActionMessages() throws Exception {
+     public void testValidatorErrorToActionMessages() {
         ValidatorError[] errors = new ValidatorError[3];
         errors[0] = new ValidatorError("error 1", "someval");
         errors[1] = new ValidatorError("error 2", "someval1");
@@ -50,7 +49,7 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
      }
 
     @Test
-     public void testValidateDynaActionFormPathed() throws Exception {
+     public void testValidateDynaActionFormPathed() {
          ChannelOverviewAction coa = new ChannelOverviewAction();
          RhnMockDynaActionForm form = new RhnMockDynaActionForm();
          form.setFormName("channelOverviewForm");
@@ -68,7 +67,7 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
      }
 
     @Test
-     public void testFailedValidation() throws Exception {
+     public void testFailedValidation() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         RhnValidationHelper.setFailedValidation(request);
         assertTrue(RhnValidationHelper.getFailedValidation(request));

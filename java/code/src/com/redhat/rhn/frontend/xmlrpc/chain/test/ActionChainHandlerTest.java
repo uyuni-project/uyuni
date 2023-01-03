@@ -166,10 +166,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test action chain create.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testAcCreateActionChain() throws Exception {
+    public void testAcCreateActionChain() {
         String chainName = TestUtils.randomString();
         Integer chainId = this.ach.createChain(this.admin, chainName);
         ActionChain newActionChain = ActionChainFactory.getActionChain(admin, chainName);
@@ -179,10 +178,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test creating an action chain failure on an empty chain name.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testAcCreateActionChainFailureOnEmptyName() throws Exception {
+    public void testAcCreateActionChainFailureOnEmptyName() {
         try {
             this.ach.createChain(this.admin, "");
             fail("Expected exception: " +
@@ -195,10 +193,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test system reboot command schedule.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testAcAddSystemReboot() throws Exception {
+    public void testAcAddSystemReboot() {
         assertTrue(this.ach.addSystemReboot(this.admin,
                 this.server.getId().intValue(),
                 CHAIN_LABEL) > 0);
@@ -211,10 +208,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test Errata update command schedule.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testAcAddErrataUpdate() throws Exception {
+    public void testAcAddErrataUpdate() {
         List<Integer> errataIds = new ArrayList<>();
         errataIds.add(this.errata.getId().intValue());
         errataIds.add(this.errata2.getId().intValue());
@@ -244,10 +240,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test package installation schedule.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testAcPackageInstallation() throws Exception {
+    public void testAcPackageInstallation() {
         List<Integer> packages = new ArrayList<>();
         packages.add(this.channelPackage.getId().intValue());
         assertTrue(this.ach.addPackageInstall(this.admin,
@@ -262,10 +257,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test package installation schedule.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testAcPackageInstallationFailed() throws Exception {
+    public void testAcPackageInstallationFailed() {
         List<Integer> packages = new ArrayList<>();
         packages.add(0);
         try {
@@ -282,10 +276,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test package removal.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testAcPackageRemoval() throws Exception {
+    public void testAcPackageRemoval() {
         List<Integer> packagesToRemove = new ArrayList<>();
         packagesToRemove.add(this.pkg.getId().intValue());
         assertTrue(this.ach.addPackageRemoval(this.admin,
@@ -300,10 +293,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test package removal failure when empty list of packages is passed.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testAcPackageRemovalFailureOnEmpty() throws Exception {
+    public void testAcPackageRemovalFailureOnEmpty() {
         try {
             assertTrue(this.ach.addPackageRemoval(
                     this.admin, this.server.getId().intValue(),
@@ -318,10 +310,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test package removal failure when list of unknown packages is passed.
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testAcPackageRemovalFailureOnUnknownPackages() throws Exception {
+    public void testAcPackageRemovalFailureOnUnknownPackages() {
         List<Integer> packagesToRemove = new ArrayList<>();
         packagesToRemove.add(0);
 

@@ -36,12 +36,12 @@ public class DebVersionComparatorTest {
     private DebVersionComparator cmp;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         cmp = new DebVersionComparator();
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         cmp = null;
     }
 

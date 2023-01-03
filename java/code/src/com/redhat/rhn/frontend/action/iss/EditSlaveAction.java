@@ -96,8 +96,7 @@ public class EditSlaveAction extends RhnAction {
     }
 
     private Long updateSlaveDetails(ActionMapping mapping, DynaActionForm dynaForm,
-                    HttpServletRequest request, HttpServletResponse response)
-                    throws Exception {
+                    HttpServletRequest request, HttpServletResponse response) {
 
         Long sid = null;
         sid = (Long) dynaForm.get(IssSlave.ID);

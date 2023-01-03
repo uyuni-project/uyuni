@@ -167,7 +167,7 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
         assertFalse(channel.getTrustedOrgs().contains(org3));
     }
 
-    private Org createOrg() throws Exception {
+    private Org createOrg() {
         String random = TestUtils.randomString();
         String orgName = "EdwardNortonOrg" + random;
         String login = "edward" + random;

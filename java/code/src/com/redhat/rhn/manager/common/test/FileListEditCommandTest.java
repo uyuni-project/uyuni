@@ -36,7 +36,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
 
     private BaseFileListEditCommand cmd;
 
-    public void setupKey(BaseFileListEditCommand cmdIn) throws Exception {
+    public void setupKey(BaseFileListEditCommand cmdIn) {
         this.cmd = cmdIn;
         assertNotNull(cmd.getFileList().getOrg());
         cmd.setLabel("Test label");

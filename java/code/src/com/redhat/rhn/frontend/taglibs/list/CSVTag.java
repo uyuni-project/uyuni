@@ -102,10 +102,8 @@ public class CSVTag extends BodyTagSupport {
      *
      * @param nameIn
      *            name of dataset
-     * @throws JspException
-     *             indicates something went wrong
      */
-    public void setDataset(String nameIn) throws JspException {
+    public void setDataset(String nameIn) {
         dataSetName = nameIn;
     }
 

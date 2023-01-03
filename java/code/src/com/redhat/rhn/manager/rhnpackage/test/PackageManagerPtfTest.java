@@ -92,7 +92,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSystemPackageList() throws Exception {
+    public void testSystemPackageList() {
         // Add the packages to the channel
         channel.getPackages().addAll(List.of(pkg, ptfPackage, ptfMaster));
         channel = TestUtils.saveAndReload(channel);

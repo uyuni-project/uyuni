@@ -104,7 +104,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
      */
     @Override
     public ActionForward unspecified(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         log.debug("unspecified()");
 
         RequestContext rctx = new RequestContext(request);

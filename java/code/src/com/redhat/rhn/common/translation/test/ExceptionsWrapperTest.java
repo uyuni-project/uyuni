@@ -43,7 +43,7 @@ public class ExceptionsWrapperTest  {
         "com.redhat.rhn.common.translation.ExceptionTranslator";
 
     @Test
-    public void testConstraintViolation() throws Exception {
+    public void testConstraintViolation() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -73,7 +73,7 @@ public class ExceptionsWrapperTest  {
     }
 
     @Test
-    public void testNamedConstraint() throws Exception {
+    public void testNamedConstraint() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -105,7 +105,7 @@ public class ExceptionsWrapperTest  {
     }
 
     @Test
-    public void testNotReplaced() throws Exception {
+    public void testNotReplaced() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -134,7 +134,7 @@ public class ExceptionsWrapperTest  {
     // Make sure that there are no StackTraceElements from
     // com.redhat.rhn.common.translation
     @Test
-    public void testStackElements() throws Exception {
+    public void testStackElements() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

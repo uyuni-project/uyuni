@@ -57,10 +57,9 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests createActionChain() and getActionChain().
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testCreateActionChain() throws Exception {
+    public void testCreateActionChain() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
         assertNotNull(actionChain);
@@ -78,10 +77,9 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests delete().
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
         assertNotNull(actionChain);
@@ -93,10 +91,9 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests getActionChains().
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testGetActionChains() throws Exception {
+    public void testGetActionChains() {
         int previousSize = ActionChainFactory.getActionChains(user).size();
 
         ActionChainFactory.createActionChain(TestUtils.randomString(), user);
@@ -157,10 +154,9 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests getOrCreateActionChain().
-     * @throws Exception if something bad happens
      */
     @Test
-    public void testGetOrCreateActionChain() throws Exception {
+    public void testGetOrCreateActionChain() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.getActionChain(user, label);
         assertNull(actionChain);

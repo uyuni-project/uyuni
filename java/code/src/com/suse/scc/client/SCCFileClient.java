@@ -101,18 +101,16 @@ public class SCCFileClient implements SCCClient {
     }
 
     @Override
-    public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
-            throws SCCClientException {
+    public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password) {
         return null;
     }
 
     @Override
-    public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
-            throws SCCClientException {
+    public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password) {
     }
 
     @Override
-    public void deleteSystem(long id, String username, String password) throws SCCClientException {
+    public void deleteSystem(long id, String username, String password) {
     }
 
     /**

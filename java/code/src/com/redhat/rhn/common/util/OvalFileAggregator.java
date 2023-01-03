@@ -50,9 +50,8 @@ public class OvalFileAggregator {
 
     /**
      * No-arg constructor
-     * @throws JDOMException if XML document initialization fails
      */
-    public OvalFileAggregator() throws JDOMException {
+    public OvalFileAggregator() {
         reset();
     }
 
@@ -66,23 +65,16 @@ public class OvalFileAggregator {
         if (f == null) {
             return;
         }
-        try {
-            SAXBuilder builder = new SAXBuilder();
-            builder.setValidation(false);
-            add(builder.build(f));
-        }
-        catch (JDOMException | IOException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw e;
-        }
+        SAXBuilder builder = new SAXBuilder();
+        builder.setValidation(false);
+        add(builder.build(f));
     }
 
     /**
      * Adds a parsed OVAL file to the aggregate
      * @param doc parsed OVAL file
-     * @throws JDOMException XMl parsing failed
      */
-    public void add(Document doc) throws JDOMException {
+    public void add(Document doc) {
        if (isFinished) {
            throw new IllegalStateException();
        }

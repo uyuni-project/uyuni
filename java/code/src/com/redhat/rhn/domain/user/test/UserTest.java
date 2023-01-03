@@ -53,7 +53,7 @@ public class UserTest extends RhnBaseTestCase {
      */
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         TestUtils.disableLocalizationLogging();
     }
 
@@ -82,10 +82,9 @@ public class UserTest extends RhnBaseTestCase {
     * Test to make sure that the authenticate method
     * functions properly.  If this test fails it could be
     * because the password changed.
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testAuthenticateTrue() throws Exception {
+    public void testAuthenticateTrue() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         // relies on UserTestUtils.createUser setting password to "password"
@@ -95,10 +94,9 @@ public class UserTest extends RhnBaseTestCase {
     /**
     * Test to make sure if the wrong password is passed
     * in that we actually fail the authenticate method
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testAuthenticateFail() throws Exception {
+    public void testAuthenticateFail() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         assertFalse(usr.authenticate("this should fail"));
@@ -108,10 +106,9 @@ public class UserTest extends RhnBaseTestCase {
     * We are having a problem when you lookup a user, then an org, and then
     * a user again.  The second user is using the ORG tables array, which
     * is bad, test that so that it doesn't happen again.
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testLookupSameUserTwice() throws Exception {
+    public void testLookupSameUserTwice() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Long userId = usr.getId();
@@ -122,10 +119,9 @@ public class UserTest extends RhnBaseTestCase {
 
     /**
     * Check to make sure we can add an Address to a User.
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testAddAddress() throws Exception {
+    public void testAddAddress() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Address addr = UserTestUtils.createTestAddress(usr);

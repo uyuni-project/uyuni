@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ScapDownloadAction extends DownloadAction {
     @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         Logger log = LogManager.getLogger(ScapDownloadAction.class);
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();

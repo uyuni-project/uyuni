@@ -43,7 +43,7 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
 
     /** {@inheritDoc} */
     @Override
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
         // no-op
     }
 

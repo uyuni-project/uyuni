@@ -67,7 +67,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListSnapshots() throws Exception {
+    public void testListSnapshots() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
         ServerGroup grp = ServerGroupTestUtils.createEntitled(server.getOrg(),
@@ -82,7 +82,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public  void testListSnapshotPackages() throws Exception {
+    public  void testListSnapshotPackages() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
@@ -99,7 +99,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDeleteSnapshot() throws Exception {
+    public void testDeleteSnapshot() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
         TestUtils.saveAndFlush(snap);
@@ -111,7 +111,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDeleteSnapshots() throws Exception {
+    public void testDeleteSnapshots() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
         generateSnapshot(server);

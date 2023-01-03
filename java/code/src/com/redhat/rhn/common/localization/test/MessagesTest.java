@@ -47,7 +47,7 @@ public class MessagesTest extends RhnBaseTestCase {
      */
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         getMessage = "Get this";
         germanMessage = "Ich bin ein Berliner";
         oneArg = "one arg: fooboo";

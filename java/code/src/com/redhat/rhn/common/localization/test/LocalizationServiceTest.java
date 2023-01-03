@@ -50,7 +50,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
      */
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         ls = LocalizationService.getInstance();
         TestUtils.disableLocalizationLogging();
     }

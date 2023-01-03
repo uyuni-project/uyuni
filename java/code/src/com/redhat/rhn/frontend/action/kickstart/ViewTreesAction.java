@@ -40,7 +40,7 @@ public class ViewTreesAction extends RhnAction implements Listable {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

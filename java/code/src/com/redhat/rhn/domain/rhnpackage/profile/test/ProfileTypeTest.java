@@ -69,9 +69,8 @@ public class ProfileTypeTest extends RhnBaseTestCase {
      * Helper method to get a ProfileType by label
      * @param label the label
      * @return Returns the ProfileType corresponding to label
-     * @throws Exception something bad happened
      */
-    public static ProfileType lookupByLabel(String label) throws Exception {
+    public static ProfileType lookupByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ProfileType) session.getNamedQuery("ProfileType.findByLabel")
                                         .setString("label", label)

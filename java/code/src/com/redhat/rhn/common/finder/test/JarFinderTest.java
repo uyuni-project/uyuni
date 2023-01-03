@@ -40,13 +40,13 @@ public class JarFinderTest {
     private static final int NUM_SUBDIRS_IN_TESTJAR = 377;
 
     @Test
-    public void testGetFinder() throws Exception {
+    public void testGetFinder() {
         Finder f = FinderFactory.getFinder(TESTJAR);
         assertNotNull(f);
     }
 
     @Test
-    public void testFindFiles() throws Exception {
+    public void testFindFiles() {
         Finder f = FinderFactory.getFinder(TESTJAR);
         assertNotNull(f);
 
@@ -55,7 +55,7 @@ public class JarFinderTest {
     }
 
     @Test
-    public void testFindFilesSubDir() throws Exception {
+    public void testFindFilesSubDir() {
         Finder f = FinderFactory.getFinder(TESTJAR);
         assertNotNull(f);
 
@@ -64,7 +64,7 @@ public class JarFinderTest {
     }
 
     @Test
-    public void testFindFilesExcluding() throws Exception {
+    public void testFindFilesExcluding() {
         Finder f = FinderFactory.getFinder(TESTJAR);
         assertNotNull(f);
 

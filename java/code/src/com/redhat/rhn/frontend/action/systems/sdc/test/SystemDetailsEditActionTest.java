@@ -94,7 +94,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testBasicFormSubmission() throws Exception {
+    public void testBasicFormSubmission() {
         request.addParameter(SystemDetailsEditAction.NAME, "Augustus");
         request.addParameter(SystemDetailsEditAction.DESCRIPTION, "First Emperor");
         request.addParameter(SystemDetailsEditAction.ADDRESS_ONE, "Palatine Hill");
@@ -121,7 +121,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testInvalidFormSubmission() throws Exception {
+    public void testInvalidFormSubmission() {
         String originalName = s.getName();
         request.addParameter(SystemDetailsEditAction.NAME, "ha");
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
@@ -132,7 +132,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testBaseEntitlementListForEntitledSystem() throws Exception {
+    public void testBaseEntitlementListForEntitledSystem() {
         actionPerform();
         verifyForward(RhnHelper.DEFAULT_FORWARD);
         List options = (List) request
@@ -153,7 +153,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testAddonEntitlemntsList() throws Exception {
+    public void testAddonEntitlemntsList() {
         actionPerform();
         Object addonsAtt =
                 request.getAttribute(SystemDetailsEditAction.ADDON_ENTITLEMENTS);
@@ -163,7 +163,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testBaseEntitlementListForUnetitledSystem() throws Exception {
+    public void testBaseEntitlementListForUnetitledSystem() {
         systemEntitlementManager.removeAllServerEntitlements(s);
         TestUtils.saveAndFlush(s);
         actionPerform();
@@ -186,7 +186,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testAddEntitlement() throws Exception {
+    public void testAddEntitlement() {
         //add the base entitlement to the request to make sure we can
         // process both base and addon.  See BZ 229448
         request.addParameter(SystemDetailsEditAction.BASE_ENTITLEMENT,
@@ -221,7 +221,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testUnentitle() throws Exception {
+    public void testUnentitle() {
         request.addParameter(SystemDetailsEditAction.NAME, s.getName());
         assertEquals(s.getBaseEntitlement(), EntitlementManager.MANAGEMENT);
         request.addParameter(SystemDetailsEditAction.BASE_ENTITLEMENT,
@@ -235,7 +235,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
 
     @Test
-    public void testCheckboxesTrue() throws Exception {
+    public void testCheckboxesTrue() {
         Iterator i = s.getValidAddonEntitlementsForServer().iterator();
 
         while (i.hasNext()) {
@@ -272,7 +272,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testCheckboxesFalse() throws Exception {
+    public void testCheckboxesFalse() {
         Iterator i = s.getValidAddonEntitlementsForServer().iterator();
 
         while (i.hasNext()) {

@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 public class SaltUtilsTest  {
 
     @Test
-    public void testPackageToKey() throws Exception {
+    public void testPackageToKey() {
         // atom package, openSUSE style, from database
         var atomName = new PackageName();
         atomName.setName("atom");

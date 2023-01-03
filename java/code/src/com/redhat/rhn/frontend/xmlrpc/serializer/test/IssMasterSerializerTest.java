@@ -28,7 +28,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashSet;
@@ -41,7 +40,7 @@ public class IssMasterSerializerTest extends MockObjectTestCase {
     private String[] masterOrgNames = {"masterOrg1", "masterOrg2", "masterOrg3"};
 
     @Test
-    public void testMasterSerialize() throws XmlRpcException, IOException {
+    public void testMasterSerialize() throws XmlRpcException {
         IssMasterSerializer os = new IssMasterSerializer();
         IssMaster master = setUpMaster();
 
@@ -60,7 +59,7 @@ public class IssMasterSerializerTest extends MockObjectTestCase {
     }
 
     @Test
-    public void testMasterOrgSerialize() throws XmlRpcException, IOException {
+    public void testMasterOrgSerialize() throws XmlRpcException {
         IssMasterOrgSerializer os = new IssMasterOrgSerializer();
         IssMaster master = setUpMaster();
         IssMasterOrg org = master.getMasterOrgs().toArray(new IssMasterOrg[0])[0];

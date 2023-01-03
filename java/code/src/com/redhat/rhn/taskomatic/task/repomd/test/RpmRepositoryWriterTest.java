@@ -94,7 +94,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testMetadataKeyFiles() throws Exception {
+    public void testMetadataKeyFiles() {
         // Mock an Executor instance to stub system calls to 'mgr-sign-metadata'
         Executor cmdExecutor = mock(Executor.class);
         context().checking(new Expectations() {{

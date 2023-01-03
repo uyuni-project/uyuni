@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
     @Test
-    public void testPerms() throws Exception {
+    public void testPerms() {
         try {
             CobblerSnippetLister.getInstance().list(user);
             fail("Yuck permission failures not caught");
@@ -46,7 +46,7 @@ public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testList() throws Exception {
+    public void testList() {
         user.addPermanentRole(RoleFactory.CONFIG_ADMIN);
         CobblerSnippet snip = CobblerSnippetTest.readOnly();
         List<CobblerSnippet> snips =

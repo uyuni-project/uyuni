@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 public class IpAddressTest extends RhnBaseTestCase {
 
     @Test
-    public void testIp() throws Exception {
+    public void testIp() {
 
         long [] ip = { 192 , 168 , 1 , 1 };
         IpAddress addr = new IpAddress(ip);

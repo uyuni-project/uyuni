@@ -46,7 +46,7 @@ import java.util.Set;
 public class PackageActionDetailsTest extends RhnBaseTestCase {
 
     @Test
-    public void testBeanMethods() throws Exception {
+    public void testBeanMethods() {
         PackageActionDetails pad = new PackageActionDetails();
         Long id = 456L;
         Date now = new Date();

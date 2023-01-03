@@ -106,7 +106,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testIsInactive() throws Exception {
+    public void testIsInactive() {
         Server s = ServerFactory.createServer();
         s.setServerInfo(new ServerInfo());
         Calendar pcal = Calendar.getInstance();

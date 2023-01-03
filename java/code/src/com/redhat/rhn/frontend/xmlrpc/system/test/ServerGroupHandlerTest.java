@@ -239,7 +239,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testAddRemoveSystems() throws Exception {
+    public void testAddRemoveSystems() {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
 
@@ -276,7 +276,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testRemoveNonExistentServer() throws Exception {
+    public void testRemoveNonExistentServer() {
         ServerGroup group = handler.create(admin, NAME, DESCRIPTION);
         List<Long> systems = new ArrayList<>();
         Server server1 = ServerFactoryTest.createTestServer(admin, true);
@@ -292,7 +292,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListAllGroups() throws Exception {
+    public void testListAllGroups() {
         int preSize = handler.listAllGroups(admin).size();
 
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
@@ -302,7 +302,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetailsById() throws Exception {
+    public void testGetDetailsById() {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg = handler.getDetails(admin,
                 group.getId().intValue());
@@ -310,7 +310,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetailsByName() throws Exception {
+    public void testGetDetailsByName() {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
         ServerGroup sg = handler.getDetails(admin, group.getName());
         assertEquals(sg, group);
@@ -318,7 +318,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetailsByUnknownId() throws Exception {
+    public void testGetDetailsByUnknownId() {
         boolean exceptCaught = false;
         int badValue = -80;
         try {
@@ -331,7 +331,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetailsByUnknownName() throws Exception {
+    public void testGetDetailsByUnknownName() {
         boolean exceptCaught = false;
         String badName = new String("intentionalBadName123456789");
         try {
@@ -393,7 +393,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testSubscribeAndListAssignedConfigChannels() throws Exception {
+    public void testSubscribeAndListAssignedConfigChannels() {
         ConfigChannelHandler ccHandler = new ConfigChannelHandler();
         String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
         String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
@@ -422,7 +422,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testSubscribeAndListAssignedConfigChannels2() throws Exception {
+    public void testSubscribeAndListAssignedConfigChannels2() {
         ConfigChannelHandler ccHandler = new ConfigChannelHandler();
         String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
         String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
@@ -451,7 +451,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testUnsubscribeConfigChannels() throws Exception {
+    public void testUnsubscribeConfigChannels() {
         ConfigChannelHandler ccHandler = new ConfigChannelHandler();
         String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
         String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
@@ -485,7 +485,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
      * Just check that we do not crash
      */
     @Test
-    public void testListAssignedFormulas() throws Exception {
+    public void testListAssignedFormulas() {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
 
         List<Formula> assignedFormulas = handler.listAssignedFormuals(admin, group.getName());

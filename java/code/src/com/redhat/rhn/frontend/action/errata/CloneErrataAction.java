@@ -53,8 +53,7 @@ public class CloneErrataAction extends RhnAction implements Listable {
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         ListRhnSetHelper helper =
             new ListRhnSetHelper(this, request, RhnSetDecl.ERRATA_CLONE);

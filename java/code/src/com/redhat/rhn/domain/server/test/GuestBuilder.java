@@ -148,7 +148,7 @@ public class GuestBuilder {
         return this;
     }
 
-    private GuestBuilder withHost(ServerGroupType groupType) throws Exception {
+    private GuestBuilder withHost(ServerGroupType groupType) {
         Server host = ServerFactoryTest
                 .createTestServer(owner, true, groupType);
         guest.setHostSystem(host);
@@ -229,7 +229,7 @@ public class GuestBuilder {
         return this;
     }
 
-    private void withHostInAnotherOrg(ServerGroupType groupType) throws Exception {
+    private void withHostInAnotherOrg(ServerGroupType groupType) {
         Long orgId = UserTestUtils.createOrg("another-org-" + TestUtils.randomString());
         User otherUser = UserTestUtils.createUser("another-user" + TestUtils.randomString(),
                 orgId);

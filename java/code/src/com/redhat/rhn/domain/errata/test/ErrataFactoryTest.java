@@ -263,7 +263,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         return e;
     }
 
-    private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) throws Exception {
+    private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) {
         String name = Opt.fold(advisory, () -> "JAVA-Test-" + advisorySeq++, Function.identity());
         Org org = null;
         if (orgId != null) {

@@ -196,10 +196,9 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
     /**
      *
-     * @throws Exception exception if test fails
      */
     @Test
-    public void testManagementEntitledUser() throws Exception {
+    public void testManagementEntitledUser() {
         Server server = ServerFactoryTest.createTestServer(user, true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
@@ -234,10 +233,9 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
     /**
      *
-     * @throws Exception exception if test fails
      */
     @Test
-    public void testEntitlementCountMessage() throws Exception {
+    public void testEntitlementCountMessage() {
         Server server = ServerFactoryTest.createTestServer(user, true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
         assertFalse(server.getEntitlements().isEmpty());

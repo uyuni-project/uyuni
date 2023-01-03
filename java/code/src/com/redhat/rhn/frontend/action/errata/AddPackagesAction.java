@@ -55,8 +55,7 @@ public class AddPackagesAction extends RhnAction implements Listable<PackageOver
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 

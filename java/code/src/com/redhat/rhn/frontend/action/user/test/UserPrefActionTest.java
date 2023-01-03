@@ -43,10 +43,9 @@ public class UserPrefActionTest extends RhnBaseTestCase {
 
     /**
      *
-     * @throws Exception on server init failure
      */
     @Test
-    public void testPerformExecute() throws Exception {
+    public void testPerformExecute() {
         UserPrefAction action = new UserPrefAction();
 
         ActionMapping mapping = new ActionMapping();

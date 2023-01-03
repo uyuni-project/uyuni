@@ -118,7 +118,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testStepOne() throws Exception {
+    public void testStepOne() {
         actionPerform();
         verifyNoActionErrors();
         assertNotNull(request.getAttribute(RequestContext.SYSTEM));

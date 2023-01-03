@@ -57,7 +57,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testUrlBounce() throws UnsupportedEncodingException {
+    public void testUrlBounce() {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
 
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
@@ -82,7 +82,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testLoginWithSSO() throws UnsupportedEncodingException {
+    public void testLoginWithSSO() {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
@@ -103,7 +103,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testUrlBounceNotAuthenticated() throws UnsupportedEncodingException {
+    public void testUrlBounceNotAuthenticated() {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
 
         final String requestUrl = "http://localhost:8080/rhn/manager/login";

@@ -47,7 +47,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testPopulatePartition() throws Exception {
+    public void testPopulatePartition() {
         setRequestPathInfo("/kickstart/KickstartPartitionEdit");
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());
         actionPerform();
@@ -57,7 +57,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testCleanSubmit() throws Exception {
+    public void testCleanSubmit() {
 
         String data = "part swap --size=1000 --grow --maxsize=3000\n" +
         "logvol swap --fstype swap --name=lvswap --vgname=Volume00 --size=2048\n" +
@@ -81,7 +81,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testMultipleSwapsSubmit() throws Exception {
+    public void testMultipleSwapsSubmit() {
 
         String data = "part swap --size=1000 --grow --maxsize=3000\n" +
         "partition swap --fstype swap --name=lvswap --vgname=Volume00 --size=2048\n" +

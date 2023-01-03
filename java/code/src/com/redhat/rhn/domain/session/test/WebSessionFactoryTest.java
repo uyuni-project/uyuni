@@ -58,7 +58,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testId() throws Exception {
+    public void testId() {
         WebSession s = WebSessionFactory.createSession();
         assertNull(s.getId());
         WebSessionFactory.save(s);
@@ -67,14 +67,14 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCreateSession() throws Exception {
+    public void testCreateSession() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
     }
 
     @Test
-    public void testExpired() throws Exception {
+    public void testExpired() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -85,7 +85,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testNotExpired() throws Exception {
+    public void testNotExpired() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -96,7 +96,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testSetUserId() throws Exception {
+    public void testSetUserId() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -146,7 +146,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUnifiedCreate() throws Exception {
+    public void testUnifiedCreate() {
         User u = UserTestUtils.findNewUser("sessionTest", "SessionTestOrg");
         WebSession s = SessionManager.makeSession(u.getId(), (long) EXP_TIME);
 
@@ -157,7 +157,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCommitAndRetreive() throws Exception {
+    public void testCommitAndRetreive() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -176,7 +176,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCommitAndRetreiveNullUser() throws Exception {
+    public void testCommitAndRetreiveNullUser() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -217,7 +217,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupExpired() throws Exception {
+    public void testLookupExpired() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);

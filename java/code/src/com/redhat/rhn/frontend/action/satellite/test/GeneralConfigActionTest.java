@@ -44,7 +44,7 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testNonSubmit() throws Exception {
+    public void testNonSubmit() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/GeneralConfig");
@@ -70,7 +70,7 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testSubmit() throws Exception {
+    public void testSubmit() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/GeneralConfig");

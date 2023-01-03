@@ -383,7 +383,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(expected, initialSize);
     }
 
-    public void assertActionsForUser(User user, int expected) throws Exception {
+    public void assertActionsForUser(User user, int expected) {
         Session session = HibernateFactory.getSession();
         Query query = session.createQuery("from Action a where a.schedulerUser = :user");
         query.setParameter("user", user);
@@ -752,7 +752,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupFailLookupAction() throws Exception {
+    public void testLookupFailLookupAction() {
         try {
             ActionManager.lookupAction(user, -1L);
             fail("Expected to fail");

@@ -261,7 +261,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         assertEquals(Long.valueOf(1024), matchingGuests.get(0).getMemory());
     }
 
-    protected Optional<String> getSaltResponse(String filename, Map<String, String> placeholders) throws Exception {
+    protected Optional<String> getSaltResponse(String filename, Map<String, String> placeholders) {
         return SaltTestUtils.getSaltResponse("/com/suse/manager/reactor/messaging/test/" + filename,
                 placeholders, null);
     }

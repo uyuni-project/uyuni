@@ -166,7 +166,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -263,7 +262,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testSnapshotServer() throws Exception {
+    public void testSnapshotServer() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -290,7 +289,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testDeleteServer() throws Exception {
+    public void testDeleteServer() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -427,7 +426,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testSystemsNotInSg() throws Exception {
+    public void testSystemsNotInSg() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -458,7 +457,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testSystemList() throws Exception {
+    public void testSystemList() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -473,7 +472,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testSystemWithFeature() throws Exception {
+    public void testSystemWithFeature() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         PageControl pc = new PageControl();
@@ -501,7 +500,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
 
     @Test
-    public void testSystemsInGroup() throws Exception {
+    public void testSystemsInGroup() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -640,11 +639,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      * @param sid Server id
      * @param capability Capability to add
      * @param version version number
-     * @throws SQLException thrown if there's a problem which should cause
-     * the test to fail.
      */
-    public static void giveCapability(Long sid, String capability, Long version)
-        throws SQLException {
+    public static void giveCapability(Long sid, String capability, Long version) {
 
         WriteMode m = ModeFactory.getWriteMode("test_queries",
                                                     "add_to_client_capabilities");
@@ -762,7 +758,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testRegisteredList() throws Exception {
+    public void testRegisteredList() {
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -878,7 +874,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testListCustomKeys() throws Exception {
+    public void testListCustomKeys() {
         User admin = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -1179,7 +1175,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testInSet() throws Exception {
+    public void testInSet() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         RhnSet newrs = RhnSetManager.createSet(usr.getId(), "test_systems_list",
@@ -1201,7 +1197,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testFindByName() throws Exception {
+    public void testFindByName() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Server s = ServerFactoryTest.createTestServer(user, true);
@@ -1212,7 +1208,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testListDuplicatesByHostname() throws Exception {
+    public void testListDuplicatesByHostname() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
 
@@ -1285,7 +1281,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testCountSystemsInSetWithoutEntitlement() throws Exception {
+    public void testCountSystemsInSetWithoutEntitlement() {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
             this.getClass().getSimpleName());
 
@@ -1322,7 +1318,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testCountSystemsInSetWithoutFeature() throws Exception {
+    public void testCountSystemsInSetWithoutFeature() {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
             this.getClass().getSimpleName());
 
@@ -1682,7 +1678,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(fromDb2.isEmpty());
     }
 
-    private MinionServer createEmptyProfile(Optional<String> hostName, Optional<String> hwAddr) throws Exception {
+    private MinionServer createEmptyProfile(Optional<String> hostName, Optional<String> hwAddr) {
         Map<String, Object> data = new HashMap<>();
         hostName.ifPresent(n -> data.put("hostname", n));
         hwAddr.ifPresent(a -> data.put("hwAddress", a));

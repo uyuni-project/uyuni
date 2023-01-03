@@ -40,7 +40,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
 
     private BaseCryptoKeyCommand cmd;
 
-    public void setupKey(BaseCryptoKeyCommand cmdIn) throws Exception {
+    public void setupKey(BaseCryptoKeyCommand cmdIn) {
         this.cmd = cmdIn;
         assertNotNull(cmd.getCryptoKey().getOrg());
         cmd.setDescription("Test desc");

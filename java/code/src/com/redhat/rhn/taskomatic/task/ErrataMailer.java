@@ -31,7 +31,6 @@ import com.suse.manager.utils.MailHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -55,8 +54,7 @@ public class ErrataMailer extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
 
         List<Row> results = getErrataToProcess();
         if (results == null || results.isEmpty()) {

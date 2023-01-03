@@ -75,7 +75,7 @@ public class SelectVerifyPackagesActionTest extends RhnMockStrutsTestCase {
         verifyForward("confirm");
     }
 
-    private void selectAllPackagesInUI() throws Exception {
+    private void selectAllPackagesInUI() {
 
         String[] itemsSelected = new String[] {
             "dummy"

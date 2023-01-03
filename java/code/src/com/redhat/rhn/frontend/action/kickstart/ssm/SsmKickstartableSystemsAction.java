@@ -46,7 +46,7 @@ public class SsmKickstartableSystemsAction extends RhnAction implements Listable
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         if (context.wasDispatched("ssm.config.subscribe.jsp.continue")) {
             if (Boolean.TRUE.toString().equals(request.getParameter("scheduleManual"))) {

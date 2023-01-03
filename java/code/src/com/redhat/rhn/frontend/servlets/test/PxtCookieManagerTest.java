@@ -52,7 +52,7 @@ public class PxtCookieManagerTest extends MockObjectTestCase {
     }
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         manager = new PxtCookieManager();
 
         pxtSessionId = 2658447890L;

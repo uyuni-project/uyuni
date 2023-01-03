@@ -48,7 +48,7 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testNonSubmitExecute() throws Exception {
+    public void testNonSubmitExecute() {
         String expectedHostname = ConfigDefaults.get().getHostname();
 
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());
@@ -73,7 +73,7 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testSubmitExecute() throws Exception {
+    public void testSubmitExecute() {
 
         String expectedHostname = ConfigDefaults.get().getHostname();
 

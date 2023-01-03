@@ -23,7 +23,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.maintenance.MaintenanceManager;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +47,7 @@ public class RecurringStateApplyJob extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
         String scheduleName = context.getJobDetail().getKey().getName();
         Optional<RecurringAction> recurringAction = RecurringActionFactory.lookupByJobName(scheduleName);
 

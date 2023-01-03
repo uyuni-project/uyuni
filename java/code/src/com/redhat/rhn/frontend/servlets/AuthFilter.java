@@ -147,7 +147,7 @@ public class AuthFilter implements Filter {
      * {@inheritDoc}
      */
     @Override
-    public void init(FilterConfig arg0) throws ServletException {
+    public void init(FilterConfig arg0) {
         AuthenticationServiceFactory factory = AuthenticationServiceFactory.getInstance();
         authenticationService = factory.getAuthenticationService();
     }

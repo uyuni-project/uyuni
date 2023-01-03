@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 public class KickstartOverviewActionTest extends BaseKickstartEditTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/kickstart/KickstartOverview");
         actionPerform();
 

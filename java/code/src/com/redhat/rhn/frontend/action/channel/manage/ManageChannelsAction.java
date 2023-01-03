@@ -42,8 +42,7 @@ public class ManageChannelsAction extends RhnAction implements Listable<ChannelT
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         ListHelper helper = new ListHelper(this, request);
         helper.execute();

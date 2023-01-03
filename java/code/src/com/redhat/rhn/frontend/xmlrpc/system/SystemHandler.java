@@ -7127,8 +7127,6 @@ public class SystemHandler extends BaseHandler {
      * @param sid Server ID
      * @param interfaceName Interface name
      * @return 1 if success, exception thrown otherwise
-     * @throws Exception If interface does not exist Exception is thrown
-     *
      * @apidoc.doc Sets new primary network interface
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
@@ -7136,7 +7134,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setPrimaryInterface(User loggedInUser, Integer sid,
-            String interfaceName) throws Exception {
+            String interfaceName) {
         Server server = lookupServer(loggedInUser, sid);
 
         if (!server.existsActiveInterfaceWithName(interfaceName)) {

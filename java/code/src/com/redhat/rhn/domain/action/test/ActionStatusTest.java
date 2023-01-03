@@ -30,10 +30,9 @@ public class ActionStatusTest extends RhnBaseTestCase {
 
     /**
      * Test Equals
-     * @throws Exception something bad happened
      */
     @Test
-    public void testEquals() throws Exception {
+    public void testEquals() {
         ActionStatus s1 = new ActionStatus();
         ActionStatus s2 = null;
         assertNotEquals(s1, s2);
@@ -51,10 +50,9 @@ public class ActionStatusTest extends RhnBaseTestCase {
      * second level cache in hibernate. Turn on sql output
      * in the hibernate.properties file and make sure that
      * we're not going to the db twice
-     * @throws Exception something bad happened
      */
     @Test
-    public void testFindByLabel() throws Exception {
+    public void testFindByLabel() {
         ActionStatus r1 = ActionFactory.STATUS_COMPLETED;
         ActionStatus r2 = ActionFactory.STATUS_COMPLETED;
         assertEquals(r2.getName(), r1.getName());

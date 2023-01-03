@@ -41,10 +41,9 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
 
     /**
      * A dummy test until the other two are fixed.
-     * @throws Exception something bad happened
      */
     @Test
-    public void testDummy() throws Exception {
+    public void testDummy() {
         assertEquals(42, 42);
     }
 

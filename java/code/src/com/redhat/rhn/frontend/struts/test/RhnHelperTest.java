@@ -59,7 +59,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testGetParameterWithSpecialCharacters() throws Exception {
+    public void testGetParameterWithSpecialCharacters() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         request.setupQueryString("   ");
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));

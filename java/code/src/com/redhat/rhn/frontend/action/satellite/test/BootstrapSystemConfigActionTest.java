@@ -50,10 +50,9 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
 
     /**
      * Tests disabling and enabling bootstrap discovery.
-     * @throws Exception if things go wrong
      */
     @Test
-    public void testDisableEnableBootstrapDiscovery() throws Exception {
+    public void testDisableEnableBootstrapDiscovery() {
         actionPerform();
 
         assertEquals(200, getMockResponse().getStatusCode());

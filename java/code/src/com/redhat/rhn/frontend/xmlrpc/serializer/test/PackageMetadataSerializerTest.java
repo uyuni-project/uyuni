@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.PackageMetadataSerializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -37,13 +36,13 @@ public class PackageMetadataSerializerTest  {
     private XmlRpcSerializer builtin;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
 
         builtin = new XmlRpcSerializer();
         builtin.addCustomSerializer(new BigDecimalSerializer());
     }
     @Test
-    public void testSerialize() throws XmlRpcException, IOException {
+    public void testSerialize() throws XmlRpcException {
 
         PackageMetadataSerializer os = new PackageMetadataSerializer();
 

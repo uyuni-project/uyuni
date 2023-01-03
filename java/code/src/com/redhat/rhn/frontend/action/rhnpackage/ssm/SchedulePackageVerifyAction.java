@@ -78,7 +78,7 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 

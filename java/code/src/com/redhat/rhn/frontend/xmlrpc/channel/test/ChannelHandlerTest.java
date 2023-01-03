@@ -266,7 +266,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertTrue(foundChannel);
     }
 
-    private Org createOrg() throws Exception {
+    private Org createOrg() {
         TestUtils.randomString();
         Org org = OrgFactory.createOrg();
         org.setName("org created by OrgFactory test: " + TestUtils.randomString());

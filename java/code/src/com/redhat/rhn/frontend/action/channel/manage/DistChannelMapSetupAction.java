@@ -42,7 +42,7 @@ public class DistChannelMapSetupAction extends RhnAction implements Listable {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         User user =  context.getCurrentUser();
         ListHelper helper = new ListHelper(this, request);

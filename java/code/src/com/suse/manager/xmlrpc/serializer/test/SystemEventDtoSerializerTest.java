@@ -23,7 +23,6 @@ import com.suse.manager.xmlrpc.serializer.SystemEventDtoSerializer;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.sql.Date;
@@ -35,7 +34,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 public class SystemEventDtoSerializerTest {
 
     @Test
-    public void testSerializeSystemEventDto() throws IOException {
+    public void testSerializeSystemEventDto() {
 
         final SystemEventDtoSerializer serializer = new SystemEventDtoSerializer();
 

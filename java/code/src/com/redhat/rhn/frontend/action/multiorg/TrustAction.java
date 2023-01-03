@@ -86,7 +86,7 @@ abstract class FormDispatcher extends RhnAction {
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception;
+            HttpServletResponse response);
 
     protected abstract ActionForward confirmAction(
             ActionMapping mapping,
@@ -98,13 +98,13 @@ abstract class FormDispatcher extends RhnAction {
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception;
+            HttpServletResponse response);
 
     protected abstract ActionForward affectedSystemsAction(
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception;
+            HttpServletResponse response);
 }
 
 /**
@@ -124,7 +124,7 @@ public class TrustAction extends FormDispatcher {
         ActionMapping mapping,
         ActionForm form,
         HttpServletRequest request,
-        HttpServletResponse response) throws Exception {
+        HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         RhnListSetHelper helper = new RhnListSetHelper(request);
@@ -241,7 +241,7 @@ public class TrustAction extends FormDispatcher {
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         RhnListSetHelper helper = new RhnListSetHelper(request);
@@ -301,7 +301,7 @@ public class TrustAction extends FormDispatcher {
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
 
         Long userorg =
             Long.valueOf(request.getParameter(RequestContext.ORG_ID));

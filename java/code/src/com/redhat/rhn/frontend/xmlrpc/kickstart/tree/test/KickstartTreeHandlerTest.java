@@ -149,7 +149,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListTreeTypes() throws Exception {
+    public void testListTreeTypes() {
         List types = handler.listInstallTypes(admin);
         assertNotNull(types);
         assertFalse(types.isEmpty());

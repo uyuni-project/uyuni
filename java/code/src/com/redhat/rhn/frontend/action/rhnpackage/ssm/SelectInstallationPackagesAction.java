@@ -47,7 +47,7 @@ public class SelectInstallationPackagesAction extends RhnAction implements
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         Map<String, Object> params = new HashMap<>();

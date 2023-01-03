@@ -36,7 +36,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         logger.debug("setUp - start");
         Config.get().setString("web.mailer_class",
                 MockMail.class.getName());
@@ -165,7 +165,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testDeRegisterMultiple() throws Exception {
+    public void testDeRegisterMultiple() {
         logger.debug("testDeRegisterMultiple - start");
         TestAction.deRegisterAction();
         TestAction.deRegisterAction();

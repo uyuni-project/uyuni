@@ -54,7 +54,7 @@ public class EnvironmentFilter implements Filter {
      * {@inheritDoc}
      */
     @Override
-    public void init(FilterConfig arg0) throws ServletException {
+    public void init(FilterConfig arg0) {
     }
 
     /**

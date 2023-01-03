@@ -40,7 +40,7 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
     private User user;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
     }

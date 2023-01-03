@@ -83,7 +83,7 @@ public class GathererJsonIOTest  {
     }
 
     @Test
-    public void testVHMtoJson() throws Exception {
+    public void testVHMtoJson() {
         Credentials creds = CredentialsFactory.createVHMCredentials();
         creds.setUsername("tux");
         creds.setPassword("penguin");

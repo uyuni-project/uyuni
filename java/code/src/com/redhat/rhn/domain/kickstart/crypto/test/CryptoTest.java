@@ -37,7 +37,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testCryptoKey() throws Exception {
+    public void testCryptoKey() {
         CryptoKey key = createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
         key = (CryptoKey) reload(key);
@@ -48,7 +48,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testBigKey() throws Exception {
+    public void testBigKey() {
         CryptoKey key = createTestKey(user.getOrg());
         assertNotNull(key);
 

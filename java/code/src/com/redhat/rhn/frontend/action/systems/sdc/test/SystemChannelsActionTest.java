@@ -71,7 +71,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
 
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.SYSTEM));
@@ -126,7 +126,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testUpdateNoBaseChannel() throws Exception {
+    public void testUpdateNoBaseChannel() {
         addDispatchCall("sdc.channels.confirmNewBase.modifyBaseSoftwareChannel");
         addRequestParameter(SystemChannelsAction.NEW_BASE_CHANNEL_ID, "-1");
         actionPerform();

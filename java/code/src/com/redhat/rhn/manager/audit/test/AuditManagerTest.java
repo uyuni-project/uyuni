@@ -32,7 +32,7 @@ public class AuditManagerTest  {
 
 
     @Test
-    public void testGetMachines() throws Exception {
+    public void testGetMachines() {
         String testdir =  "/tmp/sw-audit-test";
         String machinename = TestUtils.randomString();
         Config.get().setString("web.audit.logdir", testdir);

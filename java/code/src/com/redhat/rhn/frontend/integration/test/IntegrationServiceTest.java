@@ -33,7 +33,7 @@ import java.util.Map;
 public class IntegrationServiceTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testAuth() throws Exception {
+    public void testAuth() {
         String login = "test-login-iservice";
         Map tokens = (Map) TestUtils.getPrivateField(IntegrationService.get(),
             "randomTokenStore");
