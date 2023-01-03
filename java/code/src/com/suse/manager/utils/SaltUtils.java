@@ -340,10 +340,12 @@ public class SaltUtils {
         boolean fullRefreshNeeded = changes.entrySet().stream().anyMatch(
             e ->
                 e.getKey().endsWith("-release") ||
+                // Live patching requires refresh to fetch the updated LP version
+                e.getKey().startsWith("kernel-livepatch-") ||
                 (e.getValue().getNewValue().isLeft() &&
                  e.getValue().getOldValue().isLeft())
-
         );
+
         if (fullRefreshNeeded) {
             return PackageChangeOutcome.NEEDS_REFRESHING;
         }
