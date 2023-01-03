@@ -177,6 +177,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import javax.persistence.Tuple;
+
 
 /**
  * SystemManager
@@ -1074,6 +1076,20 @@ public class SystemManager extends BaseManager {
         pc.setFilterColumn("outdated_packages");
         pc.setFilterData(">0");
         return systemListNew(user, PagedSqlQueryBuilder::parseFilterAsNumber, pc);
+    }
+
+    /**
+     * Returns the number of systems with outdated packages
+     *
+     * @return number of systems with outdated packages
+     */
+    public static long countOutdatedSystems() {
+        String selectCountQuery = "SELECT COUNT(DISTINCT(id)) FROM susesystemoverview WHERE outdated_packages > 0";
+        return HibernateFactory.getSession()
+                .createNativeQuery(selectCountQuery, Tuple.class)
+                .getSingleResult()
+                .get("count", Number.class)
+                .longValue();
     }
 
     /**

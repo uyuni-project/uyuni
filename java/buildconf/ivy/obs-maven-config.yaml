@@ -234,6 +234,9 @@ artifacts:
   - artifact: simpleclient_common
     package: prometheus-client-java
     repository: Uyuni_Other
+  - artifact: simpleclient_hibernate
+    package: prometheus-client-java
+    repository: Uyuni_Other
   - artifact: simpleclient_httpserver
     package: prometheus-client-java
     repository: Uyuni_Other
