@@ -5836,6 +5836,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="activation-key.java.nochannel">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="system.sdc.missing.config_deploy1">
           <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
         <context-group name="ctx">
