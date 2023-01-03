@@ -151,13 +151,6 @@ salt-minion-package:
     - require:
       - file: bootstrap_repo
 {%- else %}
-salt-minion-package:
-  mgrcompat.module_run:
-    - name: transactional_update.pkg_install
-    - pkg: {{ salt_minion_name }}
-    - args: "--no-recommends"
-    - require:
-      - file: bootstrap_repo
 {# hack until transactional_update.run is fixed to use venv-salt-call #}
 {# Writing  to the future - find latest etc overlay which was created for package installation and use that as etc root #}
 {# this only works here in bootstrap when we are not running in transaction #}
@@ -170,6 +163,24 @@ salt-minion-package:
 {# this is working under assumption there will be only one transaction between jinja render and actual package installation #}
 {%- set pending_transaction_id = pending_transaction_id|int + 1 %}
 {%- set salt_config_dir = '/var/lib/overlay/' + pending_transaction_id|string + salt_config_dir %}
+
+salt-minion-package:
+  mgrcompat.module_run:
+    - name: transactional_update.pkg_install
+    - pkg: {{ salt_minion_name }}
+    - args: "--no-recommends"
+    - require:
+      - file: bootstrap_repo
+
+{{ salt_config_dir }}/minion.d/transactional_update.conf:
+  file.managed:
+    - source:
+      - salt://bootstrap/transactional_update.conf
+    - template: jinja
+    - mode: 644
+    - makedirs: True
+    - require:
+      - file: {{ salt_config_dir }}/minion.d/susemanager.conf
 {%- endif %}
 
 {# We must install "python3-contextvars" on DEB based distros, running Salt 3004, with Python version < 3.7, like Ubuntu 18.04 #}
@@ -202,15 +213,6 @@ salt-install-contextvars:
     - makedirs: True
     - require:
       - salt-minion-package
-{{ salt_config_dir }}/minion.d/transactional_update.conf:
-  file.managed:
-    - source:
-      - salt://bootstrap/transactional_update.conf
-    - template: jinja
-    - mode: 644
-    - makedirs: True
-    - require:
-      - file: {{ salt_config_dir }}/minion.d/susemanager.conf
 
 {{ salt_config_dir }}/minion_id:
   file.managed:
