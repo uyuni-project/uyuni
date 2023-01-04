@@ -317,7 +317,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     // Get the number of ServerAction objects that match
     // the passed in ActionStatus
     private long getActionStatusCount(ActionStatus status) {
-        return ActionFactory.getServerActionCountByStatus(this.getOrg(), this, status);
+        return ActionFactory.getServerActionCountByStatus(this, status);
     }
 
     /**

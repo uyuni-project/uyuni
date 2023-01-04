@@ -53,10 +53,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssSlave found
      */
     public static IssSlave lookupSlaveById(Long id) {
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", id);
-        return (IssSlave) singleton.lookupObjectByNamedQuery(
-                "IssSlave.findById", params);
+        return singleton.lookupObjectByNamedQuery("IssSlave.findById", Map.of("id", id));
     }
 
     /**
@@ -65,10 +62,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssSlave found
      */
     public static IssSlave lookupSlaveByName(String inName) {
-        Map<String, String> params = new HashMap<>();
-        params.put("slave", inName);
-        return (IssSlave) singleton.lookupObjectByNamedQuery(
-                "IssSlave.findByName", params);
+        return singleton.lookupObjectByNamedQuery("IssSlave.findByName", Map.of("slave", inName));
     }
 
     /**
@@ -91,10 +85,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssMaster entry found
      */
     public static IssMaster lookupMasterById(Long id) {
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", id);
-        return (IssMaster) singleton.lookupObjectByNamedQuery(
-                "IssMaster.findById", params);
+        return singleton.lookupObjectByNamedQuery("IssMaster.findById", Map.of("id", id));
     }
 
     /**
@@ -103,10 +94,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssMaster entry found
      */
     public static IssMaster lookupMasterByLabel(String label) {
-        Map<String, String> params = new HashMap<>();
-        params.put("label", label);
-        return (IssMaster) singleton.lookupObjectByNamedQuery(
-                "IssMaster.findByLabel", params);
+        return singleton.lookupObjectByNamedQuery("IssMaster.findByLabel", Map.of("label", label));
     }
 
     /**
@@ -124,9 +112,7 @@ public class IssFactory extends HibernateFactory {
      * @return master where master.isDefaultMaster() == true, null else
      */
     public static IssMaster getCurrentMaster() {
-        Map<String, Object> params = new HashMap<>();
-        return (IssMaster) singleton.lookupObjectByNamedQuery(
-                "IssMaster.lookupDefaultMaster", params);
+        return singleton.lookupObjectByNamedQuery("IssMaster.lookupDefaultMaster", Map.of());
     }
 
     /**

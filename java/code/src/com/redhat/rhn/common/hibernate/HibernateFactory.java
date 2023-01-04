@@ -48,7 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -141,32 +140,27 @@ public abstract class HibernateFactory {
      * class of the given object.
      * @param query Query to be modified.
      * @param parameters named query parameters to be bound.
-     * @return Modified Query.
      * @throws HibernateException if there is a problem with updating the Query.
      * @throws ClassCastException if the key in the given Map is NOT a String.
      */
-    private Query bindParameters(Query query, Map parameters)
+    private <T> void bindParameters(Query<T> query, Map<String, Object> parameters)
         throws HibernateException {
         if (parameters == null) {
-            return query;
+            return;
         }
 
-        Set entrySet = parameters.entrySet();
-        for (Object oIn : entrySet) {
-            Map.Entry entry = (Map.Entry) oIn;
+        for (Map.Entry<String, Object> entry: parameters.entrySet()) {
             if (entry.getValue() instanceof Collection) {
-                Collection c = (Collection) entry.getValue();
+                Collection<?> c = (Collection<?>) entry.getValue();
                 if (c.size() > 1000) {
                     LOG.error("Query executed with Collection larger than 1000");
                 }
-                query.setParameterList((String) entry.getKey(), c);
+                query.setParameterList(entry.getKey(), c);
             }
             else {
-                query.setParameter((String) entry.getKey(), entry.getValue());
+                query.setParameter(entry.getKey(), entry.getValue());
             }
         }
-
-        return query;
     }
 
     /**
@@ -178,7 +172,7 @@ public abstract class HibernateFactory {
      * map can also be null.
      * @return Object found by named query or null if nothing found.
      */
-    protected Object lookupObjectByNamedQuery(String qryName, Map qryParams) {
+    protected <T> T lookupObjectByNamedQuery(String qryName, Map<String, Object> qryParams) {
         return lookupObjectByNamedQuery(qryName, qryParams, false);
     }
 
@@ -192,18 +186,15 @@ public abstract class HibernateFactory {
      * @param cacheable if we should cache the results of this object
      * @return Object found by named query or null if nothing found.
      */
-    protected Object lookupObjectByNamedQuery(String qryName, Map qryParams,
+    @SuppressWarnings("unchecked")
+    protected <T> T lookupObjectByNamedQuery(String qryName, Map<String, Object> qryParams,
             boolean cacheable) {
-        Object retval = null;
-        Session session = null;
-
         try {
-            session = HibernateFactory.getSession();
+            Session session = HibernateFactory.getSession();
 
-            Query query = session.getNamedQuery(qryName)
-                    .setCacheable(cacheable);
+            Query<T> query = session.getNamedQuery(qryName).setCacheable(cacheable);
             bindParameters(query, qryParams);
-            retval = query.uniqueResult();
+            return query.uniqueResult();
         }
         catch (MappingException me) {
             throw new HibernateRuntimeException("Mapping not found for " + qryName, me);
@@ -212,8 +203,6 @@ public abstract class HibernateFactory {
             throw new HibernateRuntimeException("Executing query " + qryName +
                     " with params " + qryParams + " failed", he);
         }
-
-        return retval;
     }
 
     /**

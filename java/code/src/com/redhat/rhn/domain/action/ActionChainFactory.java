@@ -67,12 +67,9 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChain getActionChain(User requestor, String label) {
         log.debug("Looking up Action Chain with label {}", label);
-        return (ActionChain) singleton.lookupObjectByNamedQuery(
+        return singleton.lookupObjectByNamedQuery(
                 "ActionChain.getActionChainByLabel",
-                new HashMap<String, Object>() { {
-                    put("user", requestor);
-                    put("label", label);
-                } }
+                Map.of("user", requestor, "label", label)
         );
     }
 
@@ -89,17 +86,12 @@ public class ActionChainFactory extends HibernateFactory {
         if (id == null) {
             return null;
         }
-        ActionChain ac = (ActionChain) singleton.lookupObjectByNamedQuery(
-            "ActionChain.getActionChain",
-            new HashMap<String, Object>() { {
-                put("user", requestor);
-                put("id", id);
-            } }
+        ActionChain ac = singleton.lookupObjectByNamedQuery("ActionChain.getActionChain",
+           Map.of("user", requestor, "id", id)
         );
         if (ac == null) {
             throw new ObjectNotFoundException(ActionChain.class,
-                            "ActionChain Id " + id + " not found for User " +
-                            requestor.getLogin());
+                            "ActionChain Id " + id + " not found for User " + requestor.getLogin());
         }
         return ac;
     }
@@ -336,10 +328,8 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the next sort order value
      */
     public static int getNextSortOrderValue(final ActionChain actionChain) {
-        return (Integer) singleton.lookupObjectByNamedQuery(
-            "ActionChain.getNextSortOrderValue",
-            new HashMap<String, Object>() { { put("id", actionChain.getId()); } }
-        );
+        return singleton.lookupObjectByNamedQuery("ActionChain.getNextSortOrderValue",
+            Map.of("id", actionChain.getId()));
     }
 
     /**
@@ -445,9 +435,8 @@ public class ActionChainFactory extends HibernateFactory {
      * @return if the action chains contains any minion
      */
     public static boolean isActionChainTargettingMinions(final ActionChain actionChain) {
-        return ((Long)singleton.lookupObjectByNamedQuery(
-            "ActionChain.countMinionsInActionChain",
-            new HashMap<String, Object>() { { put("actionchain_id", actionChain.getId()); } }
+        return ((Long)singleton.lookupObjectByNamedQuery("ActionChain.countMinionsInActionChain",
+            Map.of("actionchain_id", actionChain.getId())
         ) > 0);
     }
 }

@@ -584,11 +584,10 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found (null if not or not member if orgIn)
      */
     public static Server lookupByIdAndOrg(Long id, Org orgIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", id);
-        params.put("orgId", orgIn.getId());
-        return (Server) SINGLETON.lookupObjectByNamedQuery(
-                "Server.findByIdandOrgId", params);
+        if (id == null || orgIn == null) {
+            return null;
+        }
+        return SINGLETON.lookupObjectByNamedQuery("Server.findByIdandOrgId", Map.of("sid", id, "orgId", orgIn.getId()));
     }
 
     /**
@@ -952,10 +951,8 @@ public class ServerFactory extends HibernateFactory {
      * @return channel arch
      */
     public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server_arch_id", serverArch.getId());
-        return (ChannelArch) SINGLETON.lookupObjectByNamedQuery("ServerArch.findCompatibleChannelArch",
-                params, true);
+        return SINGLETON.lookupObjectByNamedQuery("ServerArch.findCompatibleChannelArch",
+                Map.of("server_arch_id", serverArch.getId()), true);
     }
 
     /**
@@ -1051,10 +1048,8 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static Optional<Server> findByFqdn(String name) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", name);
-        return Optional.ofNullable((Server) SINGLETON
-                .lookupObjectByNamedQuery("Server.findByFqdn", params));
+        return Optional.ofNullable(name)
+                .map(n -> SINGLETON.lookupObjectByNamedQuery("Server.findByFqdn", Map.of("name", name)));
     }
 
     /**
@@ -1119,10 +1114,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the server snapshot
      */
     public static ServerSnapshot lookupSnapshotById(Integer id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("snapId", Long.valueOf(id));
-        return (ServerSnapshot) SINGLETON.lookupObjectByNamedQuery(
-                "ServerSnapshot.findById", params);
+        return SINGLETON.lookupObjectByNamedQuery("ServerSnapshot.findById", Map.of("snapId", Long.valueOf(id)));
     }
 
     /**
@@ -1131,10 +1123,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the server snapshot
      */
     public static ServerSnapshot lookupLatestForServer(Server server) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", server);
-        return (ServerSnapshot) SINGLETON.lookupObjectByNamedQuery(
-                "ServerSnapshot.findLatestForServer", params);
+        return SINGLETON.lookupObjectByNamedQuery("ServerSnapshot.findLatestForServer", Map.of("sid", server));
     }
 
     /**
@@ -1356,10 +1345,7 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method
      */
     public static ContactMethod findContactMethodById(Long id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        return (ContactMethod) SINGLETON.lookupObjectByNamedQuery(
-                "ContactMethod.findById", params, true);
+        return SINGLETON.lookupObjectByNamedQuery("ContactMethod.findById", Map.of("id", id), true);
     }
 
     /**

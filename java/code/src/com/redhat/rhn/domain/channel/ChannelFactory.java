@@ -87,11 +87,11 @@ public class ChannelFactory extends HibernateFactory {
      * @return the Server found (null if not or not member if userIn)
      */
     public static Channel lookupByIdAndUser(Long id, User userIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("cid", id);
-        params.put("userId", userIn.getId());
-        return (Channel) singleton.lookupObjectByNamedQuery(
-                                       "Channel.findByIdAndUserId", params);
+        if (id == null || userIn == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("Channel.findByIdAndUserId",
+                Map.of("cid", id, "userId", userIn.getId()));
     }
 
     /**
@@ -101,11 +101,11 @@ public class ChannelFactory extends HibernateFactory {
      * @return the Server found (null if not or not member if userIn)
      */
     public static Channel lookupByLabelAndUser(String label, User userIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        params.put("userId", userIn.getId());
-        return (Channel) singleton.lookupObjectByNamedQuery(
-                                       "Channel.findByLabelAndUserId", params);
+        if (label == null || userIn == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("Channel.findByLabelAndUserId",
+                Map.of("label", label, "userId", userIn.getId()));
     }
 
     /**
@@ -114,10 +114,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSourceType
      */
     public static ContentSourceType lookupContentSourceType(String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        return (ContentSourceType) singleton.lookupObjectByNamedQuery(
-                "ContentSourceType.findByLabel", params);
+        return singleton.lookupObjectByNamedQuery("ContentSourceType.findByLabel", Map.of("label", label));
     }
 
     /**
@@ -174,10 +171,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return repository
      */
     public static Optional<SCCRepository> findVendorRepositoryByChannel(Channel c) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("cid", c.getId());
-        return Optional.ofNullable((SCCRepository) singleton.lookupObjectByNamedQuery(
-                "Channel.findVendorRepositoryByChannelId", params));
+        return Optional.ofNullable(singleton.lookupObjectByNamedQuery("Channel.findVendorRepositoryByChannelId",
+                Map.of("cid", c.getId())));
     }
 
     /**
@@ -206,13 +201,9 @@ public class ChannelFactory extends HibernateFactory {
      * @param label repo label
      * @return the ContentSource(s)
      */
-    public static ContentSource lookupContentSourceByOrgAndLabel(Org org,
-            String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("org", org);
-        params.put("label", label);
-        return (ContentSource) singleton.lookupObjectByNamedQuery(
-                "ContentSource.findByOrgAndLabel", params);
+    public static ContentSource lookupContentSourceByOrgAndLabel(Org org, String label) {
+        return singleton.lookupObjectByNamedQuery("ContentSource.findByOrgAndLabel",
+                Map.of("org", org, "label", label));
     }
 
     /**
@@ -221,10 +212,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static ContentSource lookupVendorContentSourceByLabel(String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        return (ContentSource) singleton.lookupObjectByNamedQuery(
-                "ContentSource.findVendorContentSourceByLabel", params);
+        return singleton.lookupObjectByNamedQuery("ContentSource.findVendorContentSourceByLabel",
+                Map.of("label", label));
     }
 
     /**
@@ -251,11 +240,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return content source
      */
     public static ContentSource lookupContentSource(Long id, Org orgIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        params.put("org", orgIn);
-        return (ContentSource) singleton.lookupObjectByNamedQuery(
-                "ContentSource.findByIdandOrg", params);
+        return singleton.lookupObjectByNamedQuery("ContentSource.findByIdandOrg", Map.of("id", id, "org", orgIn));
     }
 
 
@@ -369,10 +354,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return Base Channel for the given server id.
      */
     public static Channel getBaseChannel(Long sid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", sid);
-        return (Channel) singleton.lookupObjectByNamedQuery(
-                "Channel.findBaseChannel", params);
+        return singleton.lookupObjectByNamedQuery("Channel.findBaseChannel", Map.of("sid", sid));
     }
 
     /**
@@ -446,10 +428,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return true if it is accessible
      */
     public static boolean isAccessibleBy(String channelLabel, Long orgId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("channel_label", channelLabel);
-        params.put("org_id", orgId);
-        return (int)singleton.lookupObjectByNamedQuery("Channel.isAccessibleBy", params) > 0;
+        return (int)singleton.lookupObjectByNamedQuery("Channel.isAccessibleBy",
+                Map.of("channel_label", channelLabel, "org_id", orgId)) > 0;
     }
 
     /**
@@ -460,10 +440,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return true if it is accessible
      */
     public static boolean isAccessibleByUser(String channelLabel, Long userId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("channelLabel", channelLabel);
-        params.put("userId", userId);
-        return singleton.lookupObjectByNamedQuery("Channel.isAccessibleByUser", params) != null;
+        return singleton.lookupObjectByNamedQuery("Channel.isAccessibleByUser",
+                Map.of("channelLabel", channelLabel, "userId", userId)) != null;
     }
 
     /**
@@ -485,11 +463,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return the Channel whose label matches the given label.
      */
     public static Channel lookupByLabel(Org org, String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        params.put("orgId", org.getId());
-        return (Channel) singleton.lookupObjectByNamedQuery("Channel.findByLabelAndOrgId",
-                params);
+        return singleton.lookupObjectByNamedQuery("Channel.findByLabelAndOrgId",
+                Map.of("label", label, "orgId", org.getId()));
     }
 
     /**
@@ -661,10 +636,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return true if the given label is in use.
      */
     public static boolean doesChannelLabelExist(String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        Object o = singleton.lookupObjectByNamedQuery(
-                "Channel.verifyLabel", params, false);
+        if (label == null) {
+            return false;
+        }
+        Object o = singleton.lookupObjectByNamedQuery("Channel.verifyLabel", Map.of("label", label), false);
         return (o != null);
     }
 
@@ -674,10 +649,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return true if the given name is in use.
      */
     public static boolean doesChannelNameExist(String name) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", name);
-        Object o = singleton.lookupObjectByNamedQuery(
-                "Channel.verifyName", params, false);
+        if (name == null) {
+            return false;
+        }
+        Object o = singleton.lookupObjectByNamedQuery("Channel.verifyName", Map.of("name", name), false);
         return (o != null);
     }
 
@@ -734,10 +709,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return ChecksumType instance for given label
      */
     public static ChecksumType findChecksumTypeByLabel(String checksum) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", checksum);
-        return (ChecksumType)
-            singleton.lookupObjectByNamedQuery("ChecksumType.findByLabel", params);
+        return singleton.lookupObjectByNamedQuery("ChecksumType.findByLabel", Map.of("label", checksum));
     }
 
     /**
@@ -763,10 +735,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return ChannelArch if found, otherwise null
      */
     public static ChannelArch lookupArchByName(String name) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", name);
-        return (ChannelArch)
-            singleton.lookupObjectByNamedQuery("ChannelArch.findByName", params);
+        if (name == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("ChannelArch.findByName", Map.of("name", name));
     }
 
     /**
@@ -775,10 +747,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return ChannelArch if found, otherwise null
      */
     public static ChannelArch lookupArchByLabel(String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        return (ChannelArch)
-            singleton.lookupObjectByNamedQuery("ChannelArch.findByLabel", params);
+        if (label == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("ChannelArch.findByLabel", Map.of("label", label));
     }
 
     /**
@@ -801,10 +773,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return number of packages in this channel.
      */
     public static int getPackageCount(Channel channel) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("cid", channel.getId());
-        return (Integer)singleton.lookupObjectByNamedQuery
-                                ("Channel.getPackageCount", params);
+        return singleton.lookupObjectByNamedQuery("Channel.getPackageCount", Map.of("cid", channel.getId()));
     }
 
     /**
@@ -813,10 +782,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return the errata count as an int
      */
     public static int getErrataCount(Channel channel) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("cid", channel.getId());
-        return (Integer)singleton.lookupObjectByNamedQuery
-                                ("Channel.getErrataCount", params);
+        return singleton.lookupObjectByNamedQuery("Channel.getErrataCount", Map.of("cid", channel.getId()));
     }
 
     /**
@@ -883,10 +849,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return DistChannelMap, null if none is found
      */
     public static DistChannelMap lookupDistChannelMapById(Long id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        return (DistChannelMap)singleton.lookupObjectByNamedQuery(
-                "DistChannelMap.lookupById", params);
+        return singleton.lookupObjectByNamedQuery("DistChannelMap.lookupById", Map.of("id", id));
     }
 
     /**
@@ -900,19 +863,13 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static DistChannelMap lookupDistChannelMapByPnReleaseArch(
             Org org, String productName, String release, ChannelArch channelArch) {
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("for_org_id", org.getId());
-        params.put("product_name", productName);
-        params.put("release", release);
-        params.put("channel_arch_id", channelArch.getId());
-        return (DistChannelMap)singleton.lookupObjectByNamedQuery(
-                "DistChannelMap.findByProductNameReleaseAndChannelArch", params);
+        return singleton.lookupObjectByNamedQuery("DistChannelMap.findByProductNameReleaseAndChannelArch",
+                Map.of("for_org_id", org.getId(), "product_name", productName,
+                        "release", release, "channel_arch_id", channelArch.getId()));
     }
 
     /**
-     * Lookup the dist channel map for the given organization according to
-     * release and channel arch.
+     * Lookup the dist channel map for the given organization according to release and channel arch.
      * Returns null if none is found.
      *
      * @param org organization
@@ -920,15 +877,10 @@ public class ChannelFactory extends HibernateFactory {
      * @param channelArch Channel arch.
      * @return DistChannelMap, null if none is found
      */
-    public static DistChannelMap lookupDistChannelMapByOrgReleaseArch(Org org,
-            String release, ChannelArch channelArch) {
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", org.getId());
-        params.put("release", release);
-        params.put("channel_arch_id", channelArch.getId());
-        return (DistChannelMap)singleton.lookupObjectByNamedQuery(
-                "DistChannelMap.findByOrgReleaseArch", params);
+    public static DistChannelMap lookupDistChannelMapByOrgReleaseArch(Org org, String release,
+                                                                      ChannelArch channelArch) {
+        return singleton.lookupObjectByNamedQuery("DistChannelMap.findByOrgReleaseArch",
+                Map.of("org_id", org.getId(), "release", release, "channel_arch_id", channelArch.getId()));
     }
 
     /**
@@ -1087,10 +1039,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return The channel that was cloned, null if none
      */
     public static Channel lookupOriginalChannel(Channel chan) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("clone", chan);
-        return (Channel)singleton.lookupObjectByNamedQuery(
-                "Channel.lookupOriginal", params);
+        return singleton.lookupObjectByNamedQuery("Channel.lookupOriginal", Map.of("clone", chan));
     }
 
     /**
@@ -1100,10 +1049,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return Product name if found, null otherwise.
      */
     public static ProductName lookupProductNameByLabel(String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        return (ProductName)singleton.lookupObjectByNamedQuery(
-                "ProductName.findByLabel", params);
+        if (label == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("ProductName.findByLabel", Map.of("label", label));
     }
 
     /**
