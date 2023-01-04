@@ -129,6 +129,7 @@ Feature: Content lifecycle
     And I follow "clp_name"
     Then I should see a "Build (0)" text
     When I click on "Attach/Detach Sources"
+    And I uncheck "Vendors"
     And I add the "Fake Base Channel" channel to sources
     And I click on "Save"
     Then I wait until I see "Fake Base Channel" text
