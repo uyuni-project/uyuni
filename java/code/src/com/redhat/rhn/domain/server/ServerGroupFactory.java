@@ -193,14 +193,9 @@ public class ServerGroupFactory extends HibernateFactory {
      * @param org The org in which the server group belongs
      * @return Returns the server group if found, null otherwise
      */
-    public static EntitlementServerGroup lookupEntitled(Entitlement ent,
-                                                            Org org) {
-        Map<String, Object> qryParams = new HashMap<>();
-        qryParams.put("label", ent.getLabel());
-        qryParams.put("org", org);
-        return (EntitlementServerGroup) SINGLETON.lookupObjectByNamedQuery(
-                "ServerGroup.lookupByTypeLabelAndOrg",
-                qryParams);
+    public static EntitlementServerGroup lookupEntitled(Entitlement ent, Org org) {
+        return SINGLETON.lookupObjectByNamedQuery("ServerGroup.lookupByTypeLabelAndOrg",
+                Map.of("label", ent.getLabel(), "org", org));
     }
 
     /**
@@ -333,11 +328,8 @@ public class ServerGroupFactory extends HibernateFactory {
      * @return the value of the the currentmemebers column.
      */
     public static Long getCurrentMembers(ServerGroup sg) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sgid", sg.getId());
-        Object obj  = SINGLETON.lookupObjectByNamedQuery(
-                "ServerGroup.lookupCurrentMembersValue", params);
-        Number members = (Number) obj;
+        Number members = SINGLETON.lookupObjectByNamedQuery("ServerGroup.lookupCurrentMembersValue",
+                Map.of("sgid", sg.getId()));
         if (members == null) {
            return 0L;
         }

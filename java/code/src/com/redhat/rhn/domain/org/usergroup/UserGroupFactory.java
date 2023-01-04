@@ -108,10 +108,7 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static UserExtGroup lookupExtGroupById(Long gidIn) {
-        Map<String, Long> params = new HashMap<>();
-        params.put("gid", gidIn);
-        return (UserExtGroup) singleton.lookupObjectByNamedQuery(
-                "UserExtGroup.lookupById", params);
+        return singleton.lookupObjectByNamedQuery("UserExtGroup.lookupById", Map.of("gid", gidIn));
     }
 
     /**
@@ -121,11 +118,8 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static OrgUserExtGroup lookupOrgExtGroupByIdAndOrg(Long gidIn, Org orgIn) {
-        Map<String, Long> params = new HashMap<>();
-        params.put("gid", gidIn);
-        params.put("org_id", orgIn.getId());
-        return (OrgUserExtGroup) singleton.lookupObjectByNamedQuery(
-                "OrgUserExtGroup.lookupByIdAndOrg", params);
+        return singleton.lookupObjectByNamedQuery("OrgUserExtGroup.lookupByIdAndOrg",
+                Map.of("gid", gidIn, "org_id", orgIn.getId()));
     }
 
     /**
@@ -158,10 +152,7 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static UserExtGroup lookupExtGroupByLabel(String labelIn) {
-        Map<String, String> params = new HashMap<>();
-        params.put("label", labelIn);
-        return (UserExtGroup) singleton.lookupObjectByNamedQuery(
-                "UserExtGroup.lookupByLabel", params);
+        return singleton.lookupObjectByNamedQuery("UserExtGroup.lookupByLabel", Map.of("label", labelIn));
     }
 
     /**
@@ -170,13 +161,9 @@ public class UserGroupFactory extends HibernateFactory {
      * @param orgIn organization
      * @return external group object
      */
-    public static OrgUserExtGroup lookupOrgExtGroupByLabelAndOrg(String labelIn,
-            Org orgIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", labelIn);
-        params.put("org_id", orgIn.getId());
-        return (OrgUserExtGroup) singleton.lookupObjectByNamedQuery(
-                "OrgUserExtGroup.lookupByLabelAndOrg", params);
+    public static OrgUserExtGroup lookupOrgExtGroupByLabelAndOrg(String labelIn, Org orgIn) {
+        return singleton.lookupObjectByNamedQuery("OrgUserExtGroup.lookupByLabelAndOrg",
+                Map.of("label", labelIn, "org_id", orgIn.getId()));
     }
 
     /**

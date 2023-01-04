@@ -227,11 +227,8 @@ public  class UserFactory extends HibernateFactory {
      * @return the user found
      */
     public static User lookupById(User user, Long id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("uid", id);
-        params.put("orgId", user.getOrg().getId());
-        User returnedUser  = (User)getInstance().lookupObjectByNamedQuery(
-                "User.findByIdandOrgId", params);
+        User returnedUser  = getInstance().lookupObjectByNamedQuery("User.findByIdandOrgId",
+                Map.of("uid", id, "orgId", user.getOrg().getId()));
         if (returnedUser == null || !user.getOrg().equals(returnedUser.getOrg())) {
             throw getNoUserException(id.toString());
         }
@@ -252,10 +249,7 @@ public  class UserFactory extends HibernateFactory {
      * @return the User found
      */
     public static User lookupByLogin(String login) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(LOGIN_UC, login.toUpperCase());
-        User user = (User)getInstance()
-                .lookupObjectByNamedQuery("User.findByLogin", params);
+        User user = getInstance().lookupObjectByNamedQuery("User.findByLogin", Map.of(LOGIN_UC, login.toUpperCase()));
 
         if (user == null) {
             throw getNoUserException(login);
@@ -270,11 +264,8 @@ public  class UserFactory extends HibernateFactory {
      * @return the User found
      */
     public static User lookupByLogin(User user, String login) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(LOGIN_UC, login.toUpperCase());
-        params.put("orgId", user.getOrg().getId());
-        User returnedUser  = (User)getInstance().lookupObjectByNamedQuery(
-                "User.findByLoginAndOrgId", params);
+        User returnedUser  = getInstance().lookupObjectByNamedQuery("User.findByLoginAndOrgId",
+                Map.of(LOGIN_UC, login.toUpperCase(), "orgId", user.getOrg().getId()));
 
         if (returnedUser == null) {
             throw getNoUserException(login);

@@ -70,7 +70,6 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAc
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -539,28 +538,19 @@ public class ActionFactory extends HibernateFactory {
      * @return the Action found
      */
     public static Action lookupByUserAndId(User user, Long id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("aid", id);
-        params.put("orgId", user.getOrg().getId());
-        return (Action)singleton.lookupObjectByNamedQuery(
-                "Action.findByIdandOrgId", params);
+        return singleton.lookupObjectByNamedQuery("Action.findByIdandOrgId",
+                Map.of("aid", id, "orgId", user.getOrg().getId()));
     }
 
     /**
-     * Lookup the number of server actions for a particular action that have
-     *      a certain status
-     * @param org the org to look
+     * Lookup the number of server actions for a particular action that have a certain status
      * @param status the status you want
      * @param action the action id
      * @return the count
      */
-    public static Integer getServerActionCountByStatus(Org org, Action action,
-            ActionStatus status) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("aid", action.getId());
-        params.put("stid", status.getId());
-        return (Integer)singleton.lookupObjectByNamedQuery(
-                "Action.getServerActionCountByStatus", params);
+    public static Integer getServerActionCountByStatus(Action action, ActionStatus status) {
+        return singleton.lookupObjectByNamedQuery("Action.getServerActionCountByStatus",
+                Map.of("aid", action.getId(), "stid", status.getId()));
     }
 
 
@@ -575,16 +565,9 @@ public class ActionFactory extends HibernateFactory {
      * @param server the server who's latest completed action is desired.
      * @return the Action found or null if none exists
      */
-    public static Action lookupLastCompletedAction(User user,
-            ActionType type,
-            Server server) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", user.getId());
-        params.put("actionTypeId", type.getId());
-        params.put("serverId", server.getId());
-        return (Action)singleton.lookupObjectByNamedQuery(
-                "Action.findLastActionByServerIdAndActionTypeIdAndUserId",
-                params);
+    public static Action lookupLastCompletedAction(User user, ActionType type, Server server) {
+        return singleton.lookupObjectByNamedQuery("Action.findLastActionByServerIdAndActionTypeIdAndUserId",
+                Map.of("userId", user.getId(), "actionTypeId", type.getId(), "serverId", server.getId()));
     }
 
 
@@ -604,22 +587,10 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionType corresponding to label
      */
     public static ActionType lookupActionTypeByLabel(String label) {
-        Map<String, String> params = new HashMap<>();
-        params.put("label", label);
-        return (ActionType)
-                singleton.lookupObjectByNamedQuery("ActionType.findByLabel", params, true);
-    }
-
-    /**
-     * Helper method to get a ActionType by name
-     * @param name the Action to lookup
-     * @return Returns the ActionType corresponding to name
-     */
-    public static ActionType lookupActionTypeByName(String name) {
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
-        return (ActionType) singleton.lookupObjectByNamedQuery("ActionType.findByName",
-                params, true);
+        if (label == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("ActionType.findByLabel", Map.of("label", label), true);
     }
 
     /**
@@ -628,39 +599,26 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionStatus corresponding to name
      */
     private static ActionStatus lookupActionStatusByName(String name) {
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
-        return (ActionStatus)
-                singleton.lookupObjectByNamedQuery("ActionStatus.findByName", params, true);
+        return singleton.lookupObjectByNamedQuery("ActionStatus.findByName", Map.of("name", name), true);
 
     }
 
     /**
-     * Helper method to get a ConfigRevisionActionResult by
-     *  Action Config Revision Id
-     * @param actionConfigRevisionId the id of the ActionConfigRevision
-     *                  for whom we want to lookup the result
+     * Helper method to get a ConfigRevisionActionResult by Action Config Revision Id
+     * @param actionConfigRevisionId the id of the ActionConfigRevision for whom we want to lookup the result
      * @return The ConfigRevisionActionResult corresponding to the revison ID.
      */
-    public static ConfigRevisionActionResult
-    lookupConfigActionResult(Long actionConfigRevisionId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", actionConfigRevisionId);
-        return (ConfigRevisionActionResult)
-                singleton.lookupObjectByNamedQuery("ConfigRevisionActionResult.findById",
-                        params, true);
+    public static ConfigRevisionActionResult lookupConfigActionResult(Long actionConfigRevisionId) {
+        return singleton.lookupObjectByNamedQuery("ConfigRevisionActionResult.findById",
+                Map.of("id", actionConfigRevisionId), true);
     }
 
     /**
-     * Helper method to get a ConfigRevisionAction by
-     *  Action Config Revision Id
-     * @param id the id of the ActionConfigRevision
-     *                  for whom we want to lookup the result
+     * Helper method to get a ConfigRevisionAction by Action Config Revision Id
+     * @param id the id of the ActionConfigRevision for whom we want to lookup the result
      * @return The ConfigRevisionAction corresponding to the revison ID.
      */
-    public static ConfigRevisionAction
-    lookupConfigRevisionAction(Long id) {
-
+    public static ConfigRevisionAction lookupConfigRevisionAction(Long id) {
         Session session = HibernateFactory.getSession();
         return session.get(ConfigRevisionAction.class, id);
     }
@@ -671,9 +629,8 @@ public class ActionFactory extends HibernateFactory {
      * @return the {@link ApplyStatesActionDetails} corresponding to the given action id.
      */
     public static ApplyStatesActionDetails lookupApplyStatesActionDetails(Long actionId) {
-        final Map<String, Long> params = Collections.singletonMap("action_id", actionId);
-        return (ApplyStatesActionDetails)
-                singleton.lookupObjectByNamedQuery("ApplyStatesActionDetails.findByActionId", params, true);
+        return singleton.lookupObjectByNamedQuery("ApplyStatesActionDetails.findByActionId",
+                Map.of("action_id", actionId), true);
     }
 
     /**
@@ -858,13 +815,12 @@ public class ActionFactory extends HibernateFactory {
      * @param actionIn the action who's ServerAction you are searching for
      * @return matching ServerAction object
      */
-    public static ServerAction getServerActionForServerAndAction(Server serverIn,
-            Action actionIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", serverIn);
-        params.put("action", actionIn);
-        return (ServerAction) singleton.lookupObjectByNamedQuery(
-                "ServerAction.findByServerAndAction", params);
+    public static ServerAction getServerActionForServerAndAction(Server serverIn, Action actionIn) {
+        if (serverIn == null || actionIn == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("ServerAction.findByServerAndAction",
+                Map.of("server", serverIn, "action", actionIn));
     }
 
     /**
@@ -933,10 +889,7 @@ public class ActionFactory extends HibernateFactory {
      * @return history event
      */
     public static ServerHistoryEvent lookupHistoryEventById(Long aid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", aid);
-        return (ServerHistoryEvent) singleton.lookupObjectByNamedQuery(
-                "ServerHistory.lookupById", params);
+        return singleton.lookupObjectByNamedQuery("ServerHistory.lookupById", Map.of("id", aid));
     }
 
     /**

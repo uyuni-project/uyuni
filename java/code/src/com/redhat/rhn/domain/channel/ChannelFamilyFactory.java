@@ -89,10 +89,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @return the ChannelFamily found
      */
     public static ChannelFamily lookupByOrg(Org orgIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("orgId", orgIn.getId());
-        return (ChannelFamily) singleton.lookupObjectByNamedQuery(
-                                       "ChannelFamily.findByOrgId", params);
+        return singleton.lookupObjectByNamedQuery("ChannelFamily.findByOrgId", Map.of("orgId", orgIn.getId()));
     }
 
     /**
