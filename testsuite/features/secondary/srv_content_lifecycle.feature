@@ -45,7 +45,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
-    And I should see a "Build (2)" text
+    And I should see a "Build (6)" text
 
 @susemanager
   Scenario: Verify added sources for SUSE Manager
@@ -54,7 +54,7 @@ Feature: Content lifecycle
     Then I should see a "SLE-Manager-Tools15-Updates for x86_64 SP4" text
     And I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
     And I should see a "SLE-Manager-Tools15-Pool for x86_64 SP4" text
-    And I should see a "Build (4)" text
+    And I should see a "Build (8)" text
 
   Scenario: Add environments to the project
     When I follow the left menu "Content Lifecycle > Projects"
@@ -88,7 +88,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
-    When I click on "Build (2)"
+    When I click on "Build (6)"
     Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
@@ -100,7 +100,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
-    When I click on "Build (4)"
+    When I click on "Build (8)"
     Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
