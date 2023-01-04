@@ -78,25 +78,9 @@ Feature: Bootstrapping with reactivation key
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
-
-  Scenario: Cleanup: subscribe again to base channel after reactivation tests
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Software" in the content area
-    And I follow "Software Channels" in the content area
-    And I wait until I do not see "Loading..." text
-    And I wait until I see "SUSE Channels" text, refreshing the page
-    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
-    And I wait until I do not see "Loading..." text
-    And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
-    And I click on "Next"
-    Then I should see a "Confirm Software Channel Change" text
-    When I click on "Confirm"
-    Then I should see a "Changing the channels has been scheduled." text
-    When I wait until event "Subscribe channels scheduled by admin" is completed
