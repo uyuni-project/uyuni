@@ -26,14 +26,6 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SLES 12 SP5 minion
     When I create the bootstrap repository for "sle12sp5_minion" on the server
 
-@sle15_client
-  Scenario: Create the bootstrap repository for a SLES 15 traditional client
-    When I create the bootstrap repository for "sle15_client" on the server
-
-@sle15_minion
-  Scenario: Create the bootstrap repository for a SLES 15 minion
-    When I create the bootstrap repository for "sle15_minion" on the server
-
 @sle15sp1_client
   Scenario: Create the bootstrap repository for a SLES 15 SP1 traditional client
     When I create the bootstrap repository for "sle15sp1_client" on the server
