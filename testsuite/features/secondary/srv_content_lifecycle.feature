@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
@@ -35,7 +35,6 @@ Feature: Content lifecycle
     And I follow "clp_name"
     And I click on "Attach/Detach Sources"
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
-    And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
     And I click on "Save"
     And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
