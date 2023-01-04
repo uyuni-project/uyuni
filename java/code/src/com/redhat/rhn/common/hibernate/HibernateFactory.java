@@ -72,6 +72,8 @@ public abstract class HibernateFactory {
     private static final Logger LOG = LogManager.getLogger(HibernateFactory.class);
     private static final int LIST_BATCH_MAX_SIZE = 1000;
 
+    public static final String ROLLBACK_MSG = "Error during transaction. Rolling back";
+
     protected HibernateFactory() {
     }
 
@@ -377,6 +379,32 @@ public abstract class HibernateFactory {
      */
     public static void commitTransaction() throws HibernateException {
         connectionManager.commitTransaction();
+    }
+
+    /**
+     * Roll back transaction in case it is not committed and close the Hibernate session.
+     *
+     * @param committed - if it was possible to commit the transaction.
+     */
+    public static void rollbackTransactionAndCloseSession(boolean committed) {
+        try {
+            if (!committed) {
+                try {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Rolling back transaction");
+                    }
+                    HibernateFactory.rollbackTransaction();
+                }
+                catch (HibernateException e) {
+                    final String msg = "Additional error during rollback";
+                    LOG.warn(msg, e);
+                }
+            }
+        }
+        finally {
+            // cleanup the session
+            HibernateFactory.closeSession();
+        }
     }
 
     /**
