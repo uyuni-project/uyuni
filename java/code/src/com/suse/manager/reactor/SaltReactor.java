@@ -41,9 +41,6 @@ import com.suse.manager.reactor.messaging.LibvirtEngineNetworkMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolLifecycleMessage;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolRefreshMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -125,10 +122,6 @@ public class SaltReactor {
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(saltApi),
-                MinionStartEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(saltApi),
-                MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(saltServerActionService, saltUtils),
@@ -262,7 +255,6 @@ public class SaltReactor {
             LOG.debug("Trigger start and registration for minion: {}", minionId);
         }
         return of(
-            new MinionStartEventMessage(minionId),
             new RegisterMinionEventMessage(minionId, startupGrains)
         );
     }

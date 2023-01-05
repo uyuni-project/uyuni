@@ -24,6 +24,7 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -118,6 +119,13 @@ public interface SaltApi {
      * @param minionTarget minion list
      */
     void updateSystemInfo(MinionList minionTarget);
+
+    /**
+     * Apply util.systeminfo_full state on the specified minion and wait for the result
+     * @param minion minion id
+     * @return the SystemInfo result
+     */
+    Optional<SystemInfo> getSystemInfoFull(String minion);
 
     /**
      * Store the files uploaded by a minion to the SCAP storage directory.

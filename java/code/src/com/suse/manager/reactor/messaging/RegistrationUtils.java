@@ -96,13 +96,11 @@ public class RegistrationUtils {
      * @param activationKey the activation key
      * @param creator user performing the registration
      * @param enableMinionService true if salt-minion service should be enabled and running
+     * @param isSaltSSH true if the minion is ssh push minion
      */
     public static void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey,
-            Optional<User> creator, boolean enableMinionService) {
+            Optional<User> creator, boolean enableMinionService, boolean isSaltSSH) {
         String minionId = minion.getMinionId();
-
-        // Asynchronously get the uptime of this minion
-        MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
 
         // Generate pillar data
         try {
@@ -136,7 +134,7 @@ public class RegistrationUtils {
         if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
         }
-        else {
+        if (isSaltSSH) {
             // SSH Minions need this to set last booted value.
             statesToApply.add(ApplyStatesEventMessage.SYSTEM_INFO);
         }

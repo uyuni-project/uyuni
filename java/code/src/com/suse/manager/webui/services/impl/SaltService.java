@@ -43,6 +43,7 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.AbstractCall;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -80,6 +81,7 @@ import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
 import com.google.gson.JsonElement;
@@ -1069,6 +1071,17 @@ public class SaltService implements SystemQuery, SaltApi {
         catch (SaltException ex) {
             LOG.debug("Error while executing util.systeminfo state: {}", ex.getMessage());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<SystemInfo> getSystemInfoFull(String minionId) {
+        return rawJsonCall(State.apply(Collections.singletonList(ApplyStatesEventMessage.SYSTEM_INFO_FULL),
+               Optional.empty()), minionId)
+               .flatMap(result -> result.result())
+               .map(result -> Json.GSON.fromJson(result, SystemInfo.class));
     }
 
     /**
