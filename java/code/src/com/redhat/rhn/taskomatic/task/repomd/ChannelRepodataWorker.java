@@ -163,7 +163,6 @@ public class ChannelRepodataWorker implements QueueWorker {
     /**
      * populates the queue details for repomd event
      */
-    @SuppressWarnings("unchecked")
     private void populateQueueEntryDetails() {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DETAILS_QUERY);

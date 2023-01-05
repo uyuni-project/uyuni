@@ -576,7 +576,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param root root product
      * @return list of product extension of the given product and root
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllExtensionProductsForRootOf(SUSEProduct base, SUSEProduct root) {
         Map<String, Object> params = new HashMap<>();
         params.put("baseId", base.getId());
@@ -605,7 +604,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param ext product to find bases for
      * @return list of base products of the given product
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext) {
         Map<String, Object> params = Map.of("extId", ext.getId());
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsOf", params);
@@ -617,7 +615,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param root the root product
      * @return list of base products of the given product and root
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext, SUSEProduct root) {
         Map<String, Object> params = new HashMap<>();
         params.put("extId", ext.getId());
@@ -630,7 +627,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param prd product to find roots for
      * @return list of root products of the given product
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct prd) {
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf",
                 Map.of("extId", prd.getId()));

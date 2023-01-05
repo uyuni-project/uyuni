@@ -189,7 +189,6 @@ public class Access extends BaseHandler {
      * @param params Parameters to use to fetch from context.
      * @return true if at all systems in the set have the feature passed as params[0]
      */
-    @SuppressWarnings("unchecked")
     public boolean aclAllSystemsInSetHaveFeature(Map<String, Object> ctx, String[] params) {
         User user = (User) ctx.get("user");
 
@@ -225,7 +224,6 @@ public class Access extends BaseHandler {
      * @return True if system has salt entitlement, false otherwise.
      */
     public boolean aclSystemHasSaltEntitlement(Map<String, Object> ctx, String[] params) {
-        @SuppressWarnings("unchecked")
         Long sid = getAsLong(ctx.get("sid"));
         boolean ret = false;
         if (sid != null) {
@@ -250,7 +248,6 @@ public class Access extends BaseHandler {
      * @return True if system has salt entitlement, false otherwise.
      */
     public boolean aclSystemHasAnsibleControlNodeEntitlement(Map<String, Object> ctx, String[] params) {
-        @SuppressWarnings("unchecked")
         Long sid = getAsLong(ctx.get("sid"));
         boolean ret = false;
         if (sid != null) {
@@ -270,7 +267,6 @@ public class Access extends BaseHandler {
      * @return True if system has foreign entitlement, false otherwise.
      */
     public boolean aclSystemHasForeignEntitlement(Map<String, Object> ctx, String[] params) {
-        @SuppressWarnings("unchecked")
         Long sid = getAsLong(ctx.get("sid"));
         boolean ret = false;
         if (sid != null) {
@@ -311,7 +307,6 @@ public class Access extends BaseHandler {
      * @return True if any system has salt entitlement, false otherwise.
      */
     public boolean aclAnySystemWithSaltEntitlement(Map<String, Object> ctx, String[] params) {
-        @SuppressWarnings("unchecked")
         Long sid = getAsLong(ctx.get("sid"));
         User user = (User) ctx.get("user");
         boolean ret = false;

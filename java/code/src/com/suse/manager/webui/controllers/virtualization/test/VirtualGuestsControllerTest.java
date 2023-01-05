@@ -94,7 +94,6 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     @BeforeEach
     public void setUp() throws Exception {

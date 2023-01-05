@@ -545,7 +545,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception the exception
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataOnManagementStack() throws Exception {
 
@@ -739,7 +738,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception the exception
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataOnManagementStackForZypp() throws Exception {
 
@@ -997,7 +995,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataMultipleErrataYum() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -1298,7 +1295,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataMultipleErrataActionChain() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -1422,7 +1418,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      *
      * @throws Exception if something goes wrong
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataMultipleErrataActionChainYum() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());

@@ -243,7 +243,6 @@ public class ActionChainFactory extends HibernateFactory {
      * @param requestor the user whose chains we're looking for
      * @return action chains
      */
-    @SuppressWarnings("unchecked")
     public static List<ActionChain> getActionChains(User requestor) {
         return singleton.listObjectsByNamedQuery("ActionChain.getActionChains", Map.of("user", requestor));
     }
@@ -253,7 +252,6 @@ public class ActionChainFactory extends HibernateFactory {
      * @param requestor the user whose chain we're looking for
      * @return action chains
      */
-    @SuppressWarnings("unchecked")
     public static List<ActionChain> getActionChainsByModificationDate(User requestor) {
         return singleton.listObjectsByNamedQuery("ActionChain.getActionChainsByModificationDate",
                 Map.of("user", requestor)

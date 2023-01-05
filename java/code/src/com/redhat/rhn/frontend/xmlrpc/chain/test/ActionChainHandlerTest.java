@@ -494,7 +494,6 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test package upgrade.
      * @throws Exception if something bad happens
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testAcPackageUpgrade() throws Exception {
         Map<String, Object> info =

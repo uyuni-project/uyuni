@@ -674,7 +674,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 }, DEFAULT_CONTACT_METHOD);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testRegisterMinionWithoutActivationKey() throws Exception {
         ChannelFamily channelFamily = createTestChannelFamily();
@@ -880,7 +879,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 }, DEFAULT_CONTACT_METHOD, Optional.empty());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testRegisterMinionWithActivationKeySUSEManagerDefault() throws Exception {
         ChannelFamily channelFamily = createTestChannelFamily();

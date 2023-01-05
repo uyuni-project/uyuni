@@ -557,7 +557,6 @@ public class TaskomaticApi {
      * @return number of removed schedules
      * @throws TaskomaticApiException if there was an error
      */
-    @SuppressWarnings("unchecked")
     public int unscheduleInvalidRepoSyncSchedules(Org orgIn) throws TaskomaticApiException {
         Set<String> unscheduledLabels = new HashSet<>();
         for (TaskoSchedule schedule : listActiveRepoSyncSchedules(orgIn)) {

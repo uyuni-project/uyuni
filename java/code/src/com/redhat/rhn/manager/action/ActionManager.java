@@ -842,7 +842,6 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    @SuppressWarnings("unchecked")
     public static DataResult<ScheduledAction> pendingActions(User user, PageControl pc) {
         return getActions(user, pc, "pending_action_list");
     }

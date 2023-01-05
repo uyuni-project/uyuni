@@ -1171,7 +1171,6 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of vendor channels
      */
     public static List<Channel> listVendorChannels() {
-        @SuppressWarnings("unchecked")
         List<Channel> result = singleton.listObjectsByNamedQuery("Channel.findVendorChannels", Map.of());
         if (result != null) {
             return result;
@@ -1184,7 +1183,6 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of vendor channels
      */
     public static List<Channel> listCustomChannelsWithRepositories() {
-        @SuppressWarnings("unchecked")
         List<Channel> result =
             singleton.listObjectsByNamedQuery("Channel.findCustomChannelsWithRepositories", Map.of());
         if (result != null) {

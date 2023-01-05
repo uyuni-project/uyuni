@@ -49,7 +49,6 @@ public class SaltEventFactory extends HibernateFactory {
      * @return the list of events count per queue starting with a queue corresponding to events
      *  without any minion ID. This queue is referred to as queue 0.
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> countSaltEvents(int queuesCount) {
         List<Object[]> countObjects = singleton.listObjectsByNamedQuery("SaltEvent.countSaltEvents", Map.of());
 
@@ -66,7 +65,6 @@ public class SaltEventFactory extends HibernateFactory {
      * @param queue the thread to pop events for, 0 for those associated with no particular queue.
      * @return events
      */
-    @SuppressWarnings("unchecked")
     public static Stream<SaltEvent> popSaltEvents(int limit, int queue) {
         List<Object[]> eventObjects = singleton.listObjectsByNamedQuery("SaltEvent.popSaltEvents",
                 Map.of("limit", limit, "queue", queue));
@@ -80,7 +78,6 @@ public class SaltEventFactory extends HibernateFactory {
      * @param ids event ids
      * @return event ids actually deleted
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> deleteSaltEvents(Collection<Long> ids) {
         return singleton.listObjectsByNamedQuery("SaltEvent.deleteSaltEvents", Map.of("ids", ids));
     }

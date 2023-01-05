@@ -35,7 +35,6 @@ public class EulaManager {
      * @param pkgId id of the package
      * @return list of EULAs
      */
-    @SuppressWarnings("unchecked")
     public List<String> getEulasForPackage(long pkgId) {
         SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
             TaskConstants.TASK_QUERY_REPOMD_GENERATOR_EULAS);

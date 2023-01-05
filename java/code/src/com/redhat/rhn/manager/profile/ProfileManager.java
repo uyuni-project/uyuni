@@ -161,7 +161,6 @@ public class ProfileManager extends BaseManager {
         return ProfileFactory.compatibleWithServer(server, org);
     }
 
-    @SuppressWarnings("unchecked")
     private static DataResult<PackageListItem> canonicalProfilePackages(Long prid, Long orgid,
             PageControl pc) {
 
@@ -174,7 +173,6 @@ public class ProfileManager extends BaseManager {
         return makeDataResult(params, elabParams, pc, m);
     }
 
-    @SuppressWarnings("unchecked")
     private static DataResult<PackageListItem> canonicalSystemsPackages(Long sid, Long orgid,
             PageControl pc) {
 
@@ -1063,7 +1061,6 @@ public class ProfileManager extends BaseManager {
     }
 
 
-    @SuppressWarnings("unchecked")
     private static DataResult<PackageListItem> getPackagesInChannelByIdCombo(Long cid) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "packages_in_channel_by_id_combo");
