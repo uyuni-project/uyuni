@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,11 +78,9 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static List<UserExtGroup> listExtAuthGroups(User user) {
         if (!user.getRoles().contains(RoleFactory.SAT_ADMIN)) {
-            throw new PermissionException("Satellite admin role required " +
-                    "to access extauth groups");
+            throw new PermissionException("Satellite admin role required to access extauth groups");
         }
-        return singleton.listObjectsByNamedQuery(
-                "UserExtGroup.listAll", new HashMap<>());
+        return singleton.listObjectsByNamedQuery("UserExtGroup.listAll", Map.of());
     }
 
     /**
@@ -93,13 +90,9 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static List<OrgUserExtGroup> listExtAuthOrgGroups(User user) {
         if (!user.getRoles().contains(RoleFactory.ORG_ADMIN)) {
-            throw new PermissionException("Organization admin role required " +
-                    "to access extauth organization groups");
+            throw new PermissionException("Organization admin role required to access extauth organization groups");
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("org_id", user.getOrg().getId());
-        return singleton.listObjectsByNamedQuery(
-                "OrgUserExtGroup.listAll", map);
+        return singleton.listObjectsByNamedQuery("OrgUserExtGroup.listAll", Map.of("org_id", user.getOrg().getId()));
     }
 
     /**

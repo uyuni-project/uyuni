@@ -98,15 +98,15 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testListNoAssociatedAdmins() {
         TestUtils.flushAndEvict(managedGroup);
-        Collection groups = ServerGroupFactory.listNoAdminGroups(managedGroup.getOrg());
+        Collection<ServerGroup> groups = ServerGroupFactory.listNoAdminGroups(managedGroup.getOrg());
         int initSize = groups.size();
         ServerGroup sg1 = ServerGroupFactory.create(ServerGroupTestUtils.NAME + "ALPHA",
                 ServerGroupTestUtils.DESCRIPTION,
                 user.getOrg());
-        Collection groups1 = ServerGroupFactory.listNoAdminGroups(sg1.getOrg());
+        Collection<ServerGroup> groups1 = ServerGroupFactory.listNoAdminGroups(sg1.getOrg());
         assertEquals(initSize + 1, groups1.size());
         groups.add(sg1);
-        assertEquals(new HashSet(groups), new HashSet(groups1));
+        assertEquals(new HashSet<>(groups), new HashSet<>(groups1));
     }
 
     @Test

@@ -885,7 +885,7 @@ public class UserHandler extends BaseHandler {
         throws FaultException {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
                     loggedInUser, login);
-        List groups = ServerGroupFactory.listAdministeredServerGroups(target);
+        List<ServerGroup> groups = ServerGroupFactory.listAdministeredServerGroups(target);
         return groups.toArray();
     }
 

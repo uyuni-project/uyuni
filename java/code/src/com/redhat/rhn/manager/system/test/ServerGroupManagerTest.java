@@ -159,17 +159,17 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
           //passed
         }
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Collection groups = manager.listNoAdminGroups(user);
+        Collection<ServerGroup> groups = manager.listNoAdminGroups(user);
 
         int initSize = groups.size();
         ServerGroup sg1 = ServerGroupFactory.create(NAME + "ALPHA", DESCRIPTION,
                 user.getOrg());
         TestUtils.flushAndEvict(sg1);
 
-        Collection groups1 = manager.listNoAdminGroups(user);
+        Collection<ServerGroup> groups1 = manager.listNoAdminGroups(user);
         assertEquals(initSize + 1, groups1.size());
         groups.add(sg1);
-        assertEquals(new HashSet(groups), new HashSet(groups1));
+        assertEquals(new HashSet<>(groups), new HashSet<>(groups1));
 
     }
 

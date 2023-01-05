@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,9 +69,7 @@ public class IssFactory extends HibernateFactory {
      * @return list of all the slaves
      */
     public static List<IssSlave> listAllIssSlaves() {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery(
-                "IssSlave.lookupAll", params);
+        return singleton.listObjectsByNamedQuery("IssSlave.lookupAll", Map.of());
     }
 
     /***
@@ -102,9 +99,7 @@ public class IssFactory extends HibernateFactory {
      * @return list of all masters known to this slave
      */
     public static List<IssMaster> listAllMasters() {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery(
-                "IssMaster.lookupAll", params);
+        return singleton.listObjectsByNamedQuery("IssMaster.lookupAll", Map.of());
     }
 
     /**

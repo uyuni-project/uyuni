@@ -336,12 +336,8 @@ public class OrgFactory extends HibernateFactory {
      * @param channelFamily Channel family to search for.
      * @return List of orgs.
      */
-    public static List<Org> lookupOrgsUsingChannelFamily(
-            ChannelFamily channelFamily) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("cf", channelFamily);
-        return singleton.listObjectsByNamedQuery(
-                "Org.findOrgsWithSystemsInChannelFamily", params);
+    public static List<Org> lookupOrgsUsingChannelFamily(ChannelFamily channelFamily) {
+        return singleton.listObjectsByNamedQuery("Org.findOrgsWithSystemsInChannelFamily", Map.of("cf", channelFamily));
     }
 
     /**
@@ -397,9 +393,7 @@ public class OrgFactory extends HibernateFactory {
      * @return List of orgs.
      */
     public static List<Org> lookupAllOrgs() {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery(
-                "Org.findAll", params);
+        return singleton.listObjectsByNamedQuery("Org.findAll", Map.of());
     }
 
 }

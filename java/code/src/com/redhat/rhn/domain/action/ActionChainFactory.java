@@ -245,10 +245,7 @@ public class ActionChainFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ActionChain> getActionChains(User requestor) {
-        return singleton.listObjectsByNamedQuery(
-                "ActionChain.getActionChains",
-                new HashMap<String, Object>() { { put("user", requestor); } }
-        );
+        return singleton.listObjectsByNamedQuery("ActionChain.getActionChains", Map.of("user", requestor));
     }
 
     /**
@@ -258,9 +255,8 @@ public class ActionChainFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ActionChain> getActionChainsByModificationDate(User requestor) {
-        return singleton.listObjectsByNamedQuery(
-                "ActionChain.getActionChainsByModificationDate",
-                new HashMap<String, Object>() { { put("user", requestor); } }
+        return singleton.listObjectsByNamedQuery("ActionChain.getActionChainsByModificationDate",
+                Map.of("user", requestor)
         );
     }
 
@@ -270,13 +266,8 @@ public class ActionChainFactory extends HibernateFactory {
      * @param actionChain an Action Chain
      * @return a list of corresponding groups
      */
-    @SuppressWarnings("unchecked")
-    public static List<ActionChainEntryGroup> getActionChainEntryGroups(
-        final ActionChain actionChain) {
-        return singleton.listObjectsByNamedQuery(
-            "ActionChainEntry.getGroups",
-            new HashMap<String, Object>() { { put("id", actionChain.getId()); } }
-        );
+    public static List<ActionChainEntryGroup> getActionChainEntryGroups(final ActionChain actionChain) {
+        return singleton.listObjectsByNamedQuery("ActionChainEntry.getGroups", Map.of("id", actionChain.getId()));
     }
 
     /**
@@ -285,15 +276,9 @@ public class ActionChainFactory extends HibernateFactory {
      * @param sortOrder the sort order
      * @return an entry list
      */
-    @SuppressWarnings("unchecked")
-    public static List<ActionChainEntry> getActionChainEntries(
-        final ActionChain actionChain, final Integer sortOrder) {
-        return singleton.listObjectsByNamedQuery(
-            "ActionChainEntry.getActionChainEntries",
-            new HashMap<String, Object>() { {
-                put("id", actionChain.getId());
-                put("sortOrder", sortOrder);
-            } }
+    public static List<ActionChainEntry> getActionChainEntries(final ActionChain actionChain, final Integer sortOrder) {
+        return singleton.listObjectsByNamedQuery("ActionChainEntry.getActionChainEntries",
+           Map.of("id", actionChain.getId(), "sortOrder", sortOrder)
         );
     }
 
@@ -303,8 +288,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return an ActionChain list
      */
     public static List<ActionChain> getAllActionChains() {
-        return singleton.listObjectsByNamedQuery(
-                "ActionChain.getAllActionChains", new HashMap<String, Object>());
+        return singleton.listObjectsByNamedQuery("ActionChain.getAllActionChains", Map.of());
     }
 
     /**
@@ -313,12 +297,8 @@ public class ActionChainFactory extends HibernateFactory {
      * @return action chains
      */
     public static List<ActionChain> getActionChainsByServer(Server server) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", server.getId());
         return singleton.listObjectsByNamedQuery(
-                "ActionChain.getActionChainsByServer",
-                params
-        );
+                "ActionChain.getActionChainsByServer", Map.of("id", server.getId()));
     }
 
 

@@ -607,8 +607,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("extId", ext.getId());
+        Map<String, Object> params = Map.of("extId", ext.getId());
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsOf", params);
     }
 
@@ -633,9 +632,8 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct prd) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("extId", prd.getId());
-        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf", params);
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf",
+                Map.of("extId", prd.getId()));
     }
 
     /**

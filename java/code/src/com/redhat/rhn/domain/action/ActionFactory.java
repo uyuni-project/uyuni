@@ -740,11 +740,8 @@ public class ActionFactory extends HibernateFactory {
      * @return List of Action objects
      */
     public static List<Action> listActionsForServer(User user, Server serverIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("orgId", user.getOrg().getId());
-        params.put("server", serverIn);
-        return singleton.listObjectsByNamedQuery(
-                "Action.findByServerAndOrgId", params);
+        return singleton.listObjectsByNamedQuery("Action.findByServerAndOrgId",
+                Map.of("orgId", user.getOrg().getId(), "server", serverIn));
     }
 
     /**
@@ -754,10 +751,7 @@ public class ActionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ServerAction> listServerActionsForServer(Server serverIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", serverIn);
-        return singleton.listObjectsByNamedQuery(
-                "ServerAction.findByServer", params);
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServer", Map.of("server", serverIn));
     }
 
     /**
@@ -769,13 +763,8 @@ public class ActionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ServerAction> listServerActionsForServer(Server serverIn, String actionType, Date date) {
-        final Map<String, Object> params = new HashMap<>();
-
-        params.put("server", serverIn);
-        params.put("actionType", actionType);
-        params.put("date", date);
-
-        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate", params);
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate",
+                Map.of("server", serverIn, "actionType", actionType, "date", date));
     }
     /**
      * Lookup a List of ServerAction objects in the given states for a given Server.
@@ -783,13 +772,9 @@ public class ActionFactory extends HibernateFactory {
      * @param statusList to filter the ServerActoins by
      * @return List of ServerAction objects
      */
-    public static List<ServerAction> listServerActionsForServer(Server serverIn,
-            List<ActionStatus> statusList) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", serverIn);
-        params.put("statusList", statusList);
-        return singleton.listObjectsByNamedQuery(
-                "ServerAction.findByServerAndStatus", params);
+    public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList) {
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndStatus",
+                Map.of("server", serverIn, "statusList", statusList));
     }
 
     /**
@@ -801,12 +786,8 @@ public class ActionFactory extends HibernateFactory {
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList,
                                                                 Date createdDate) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", serverIn);
-        params.put("statusList", statusList);
-        params.put("date", createdDate);
-        return singleton.listObjectsByNamedQuery(
-                "ServerAction.findByServerAndStatusAndCreatedDate", params);
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndStatusAndCreatedDate",
+                Map.of("server", serverIn, "statusList", statusList, "date", createdDate));
     }
 
     /**
@@ -862,9 +843,7 @@ public class ActionFactory extends HibernateFactory {
      * @return list of pending minions that contain minions
      */
     public static List<Action> pendingMinionServerActions() {
-        List<Action> result = singleton.listObjectsByNamedQuery(
-                "Action.lookupPendingMinionActions", null);
-        return result;
+        return singleton.listObjectsByNamedQuery("Action.lookupPendingMinionActions", Map.of());
     }
 
     /**

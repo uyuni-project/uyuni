@@ -271,8 +271,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return a list of cobbler ids.
      */
     public static List<String> listKickstartDataCobblerIds() {
-        return singleton.listObjectsByNamedQuery("KickstartData.cobblerIds",
-                Collections.emptyMap());
+        return singleton.listObjectsByNamedQuery("KickstartData.cobblerIds", Collections.emptyMap());
 
     }
 
