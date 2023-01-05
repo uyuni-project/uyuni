@@ -720,9 +720,6 @@ When(/^I enable client tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
   case os_family
-  when /^(opensuse|sles)/
-    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
-    node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   when /^(centos|rocky)/
     repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools_" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
@@ -742,9 +739,6 @@ When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
   case os_family
-  when /^(opensuse|sles)/
-    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
-    node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   when /^(centos|rocky)/
     repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools_" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
@@ -760,71 +754,11 @@ When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
   end
 end
 
-When(/^I enable repositories before installing Docker$/) do
-  os_version = $build_host.os_version
-  os_family = $build_host.os_family
-
-  # Distribution
-  repos = $is_using_scc_repositories ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
-  log $build_host.run("zypper mr --enable #{repos}")
-
-  # Tools
-  unless $is_using_scc_repositories
-    repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-    log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-  end
-
-  # Development and Desktop Applications (required)
-  # (we do not install Python 2 repositories in this branch
-  #  because they are not needed anymore starting with version 4.1)
-  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_using_scc_repositories
-    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
-    log $build_host.run("zypper mr --enable #{repos}")
-  end
-
-  # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_using_scc_repositories
-    repos = "containers_pool_repo containers_updates_repo"
-    log $build_host.run("zypper mr --enable #{repos}")
-  end
-
-  $build_host.run('zypper -n --gpg-auto-import-keys ref')
-end
-
-When(/^I disable repositories after installing Docker$/) do
-  os_version = $build_host.os_version
-  os_family = $build_host.os_family
-
-  # Distribution
-  repos = $is_using_scc_repositories ? OS_REPOS_BY_OS_VERSION[os_version].join(' ') : "os_pool_repo os_update_repo"
-  log $build_host.run("zypper mr --disable #{repos}")
-
-  # Tools
-  unless $is_using_scc_repositories
-    repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-    log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-  end
-
-  # Development and Desktop Applications (required)
-  # (we do not install Python 2 repositories in this branch
-  #  because they are not needed anymore starting with version 4.1)
-  if (os_family =~ /^sles/ && os_version =~ /^15/) && !$is_using_scc_repositories
-    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
-    log $build_host.run("zypper mr --disable #{repos}")
-  end
-
-  # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/ || $is_using_scc_repositories
-    repos = "containers_pool_repo containers_updates_repo"
-    log $build_host.run("zypper mr --disable #{repos}")
-  end
-end
-
 # Register client
 
 Given(/^I update the profile of "([^"]*)"$/) do |client|
   node = get_target(client)
-  node.run('rhn-profile-sync', timeout: 500)
+  node.run('rhn-profile-gsync', timeout: 500)
 end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
