@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -83,11 +82,8 @@ public class ProfileFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<Profile> compatibleWithServer(Server server, Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", server.getId());
-        params.put("org_id", org.getId());
-        return (List<Profile>)singleton.listObjectsByNamedQuery(
-                "Profile.compatibleWithServer", params, false);
+        return singleton.listObjectsByNamedQuery("Profile.compatibleWithServer",
+                Map.of("sid", server.getId(), "org_id", org.getId()), false);
     }
 
      /**

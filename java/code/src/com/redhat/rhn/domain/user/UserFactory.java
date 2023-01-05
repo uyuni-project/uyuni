@@ -305,10 +305,8 @@ public  class UserFactory extends HibernateFactory {
      * @return Returns true if the user is disabled
      */
     public static boolean isDisabled(User user) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("user", user);
         List<StateChange>  changes =  getInstance().
-                listObjectsByNamedQuery("StateChanges.lookupByUserId", params);
+                listObjectsByNamedQuery("StateChanges.lookupByUserId", Map.of("user", user));
         return changes != null && !changes.isEmpty() &&
                 DISABLED.equals(changes.get(0).getState());
     }
@@ -686,13 +684,9 @@ public  class UserFactory extends HibernateFactory {
      * @return list of users.
      */
     public List<User> findAllUsers(Optional<Org> inOrg) {
-        Map<String, Object> params = new HashMap<>();
         return Opt.fold(inOrg,
-            () -> listObjectsByNamedQuery("User.getAllUsers", params),
-            org -> {
-                params.put("org_id", org.getId());
-                return listObjectsByNamedQuery("User.findAllUsersByOrg", params);
-            });
+            () -> listObjectsByNamedQuery("User.getAllUsers", Map.of()),
+            org -> listObjectsByNamedQuery("User.findAllUsersByOrg", Map.of("org_id", org.getId())));
     }
 
     /**
@@ -702,10 +696,7 @@ public  class UserFactory extends HibernateFactory {
      * @return list of users.
      */
     public List<User> findAllOrgAdmins(Org inOrg) {
-        Session session = HibernateFactory.getSession();
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", inOrg.getId());
-        return listObjectsByNamedQuery("User.findAllOrgAdmins", params);
+        return listObjectsByNamedQuery("User.findAllOrgAdmins", Map.of("org_id", inOrg.getId()));
     }
 
     /**

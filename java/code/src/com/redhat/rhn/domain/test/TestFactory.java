@@ -60,8 +60,8 @@ public class TestFactory extends HibernateFactory {
         return singleton.lookupObjectByNamedQuery("Test.findByFoobar", Map.of("fooBar", f));
     }
 
-    public static List lookupAll() {
-        return singleton.listObjectsByNamedQuery("Test.findAll", null);
+    public static List<TestInterface> lookupAll() {
+        return singleton.listObjectsByNamedQuery("Test.findAll", Map.of());
     }
 
     public static void save(TestInterface t) {

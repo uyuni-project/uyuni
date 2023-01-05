@@ -119,15 +119,14 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     public void testListAdministrators() {
         regular.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ServerGroup group = handler.create(regular, NAME, DESCRIPTION);
-        List admins = handler.listAdministrators(regular, group.getName());
+        List<User> admins = handler.listAdministrators(regular, group.getName());
         assertTrue(admins.contains(regular));
         assertTrue(admins.contains(admin));
         //now test on permissions
         regular.removePermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         try {
-            admins = handler.listAdministrators(regular, group.getName());
-            fail("Should throw access / permission exception" +
-                                " for regular is not a sys admin");
+            handler.listAdministrators(regular, group.getName());
+            fail("Should throw access / permission exception for regular is not a sys admin");
         }
         catch (Exception e) {
           //access check successful.
@@ -157,7 +156,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
         regular.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         handler.addOrRemoveAdmins(regular, group.getName(), logins, true);
-        List admins = handler.listAdministrators(regular, group.getName());
+        List<User> admins = handler.listAdministrators(regular, group.getName());
         assertTrue(admins.contains(newbie));
 
         handler.addOrRemoveAdmins(regular, group.getName(), logins, false);

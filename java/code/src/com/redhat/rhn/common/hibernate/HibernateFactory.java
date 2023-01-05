@@ -215,7 +215,7 @@ public abstract class HibernateFactory {
      * @return List of objects returned by named query, or null if nothing
      * found.
      */
-    protected List listObjectsByNamedQuery(String qryName, Map qryParams) {
+    protected <T> List<T> listObjectsByNamedQuery(String qryName, Map<String, Object> qryParams) {
         return listObjectsByNamedQuery(qryName, qryParams, false);
     }
 
@@ -231,24 +231,23 @@ public abstract class HibernateFactory {
      * @return List of objects returned by named query, or null if nothing
      * found.
      */
-    protected List listObjectsByNamedQuery(String qryName, Map qryParams,
-                                        Collection col, String colLabel) {
+    protected <T> List<T> listObjectsByNamedQuery(String qryName, Map<String, Object> qryParams,
+                                        Collection<Long> col, String colLabel) {
 
         if (col.isEmpty()) {
             return Collections.emptyList();
         }
 
-        ArrayList<Long> tmpList = new ArrayList<>();
-        List<Long> toRet = new ArrayList<>();
-        tmpList.addAll(col);
+        List<Long> tmpList = new ArrayList<>(col);
+        List<T> toRet = new ArrayList<>();
 
         for (int i = 0; i < col.size();) {
-            int initial = i;
-            int fin = i + 500 < col.size() ? i + 500 : col.size();
+            int fin = Math.min(i + 500, col.size());
             List<Long> sublist = tmpList.subList(i, fin);
 
-            qryParams.put(colLabel, sublist);
-            toRet.addAll(listObjectsByNamedQuery(qryName, qryParams, false));
+            Map<String, Object> params = new HashMap<>(qryParams);
+            params.put(colLabel, sublist);
+            toRet.addAll(listObjectsByNamedQuery(qryName, params, false));
             i = fin;
         }
         return toRet;
@@ -267,16 +266,13 @@ public abstract class HibernateFactory {
      * @return List of objects returned by named query, or null if nothing
      * found.
      */
-    protected List listObjectsByNamedQuery(String qryName, Map qryParams,
-            boolean cacheable) {
-        Session session = null;
-        List retval = null;
-        session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery(qryName);
+    @SuppressWarnings("unchecked")
+    protected <T> List<T> listObjectsByNamedQuery(String qryName, Map<String, Object> qryParams, boolean cacheable) {
+        Session session = HibernateFactory.getSession();
+        Query<T> query = session.getNamedQuery(qryName);
         query.setCacheable(cacheable);
         bindParameters(query, qryParams);
-        retval = query.list();
-        return retval;
+        return query.list();
     }
 
     /**

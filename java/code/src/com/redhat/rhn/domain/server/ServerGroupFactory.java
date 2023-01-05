@@ -37,8 +37,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -68,11 +66,9 @@ public class ServerGroupFactory extends HibernateFactory {
      * @param user User whose ServerGroups are sought.
      * @return the ServerGroups that the user can administer.
      */
-    public static List listAdministeredServerGroups(User user) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("uid", user.getId());
-        return SINGLETON.listObjectsByNamedQuery(
-                "ServerGroup.lookupAdministeredServerGroups", params);
+    public static List<ServerGroup> listAdministeredServerGroups(User user) {
+        return SINGLETON.listObjectsByNamedQuery("ServerGroup.lookupAdministeredServerGroups",
+                Map.of("uid", user.getId()));
     }
 
     /**
@@ -263,11 +259,9 @@ public class ServerGroupFactory extends HibernateFactory {
      * @param org org of the current user.
      * @return the list of servergroups without any admins.
      */
-    public static List listNoAdminGroups(Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", org.getId());
-        return SINGLETON.listObjectsByNamedQuery(
-                "ServerGroup.lookupGroupsWithNoAssocAdmins", params);
+    public static List<ServerGroup> listNoAdminGroups(Org org) {
+        return SINGLETON.listObjectsByNamedQuery("ServerGroup.lookupGroupsWithNoAssocAdmins",
+                Map.of("org_id", org.getId()));
     }
 
     /**
@@ -275,12 +269,9 @@ public class ServerGroupFactory extends HibernateFactory {
      * @param sg the serverGroup to find the admins of
      * @return list of User objects that can administer the server group
      */
-    public static List listAdministrators(ServerGroup sg) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sgid", sg.getId());
-        params.put("org_id", sg.getOrg().getId());
-        return SINGLETON.listObjectsByNamedQuery(
-                "ServerGroup.lookupAdministrators", params);
+    public static List<User> listAdministrators(ServerGroup sg) {
+        return SINGLETON.listObjectsByNamedQuery("ServerGroup.lookupAdministrators",
+                Map.of("sgid", sg.getId(), "org_id", sg.getOrg().getId()));
     }
 
     /**
@@ -290,16 +281,9 @@ public class ServerGroupFactory extends HibernateFactory {
      *                      the server group
      */
     public static List<Server> listServers(ServerGroup sg) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sgid", sg.getId());
-        params.put("org_id", sg.getOrg().getId());
-        List<Number> ids =
-                SINGLETON.listObjectsByNamedQuery(
-                "ServerGroup.lookupServerIds", params);
-        List<Long> serverIds = new ArrayList<>();
-        for (Number n : ids) {
-            serverIds.add(n.longValue());
-        }
+        List<Number> ids = SINGLETON.listObjectsByNamedQuery("ServerGroup.lookupServerIds",
+                Map.of("sgid", sg.getId(), "org_id", sg.getOrg().getId()));
+        List<Long> serverIds = ids.stream().map(Number::longValue).collect(toList());
         return ServerFactory.lookupByIds(serverIds);
     }
 
@@ -336,12 +320,6 @@ public class ServerGroupFactory extends HibernateFactory {
         return members.longValue();
     }
 
-    private static List listServerGroups(Server s, String queryName) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", s.getId());
-        return  SINGLETON.listObjectsByNamedQuery(queryName, params);
-    }
-
     /**
      * Returns the list of Entitlement ServerGroups  associated to a server.
      * @param org the Org to find the server groups of
@@ -349,8 +327,7 @@ public class ServerGroupFactory extends HibernateFactory {
      *                      the org.
      */
     public static List<EntitlementServerGroup> listEntitlementGroups(Org org) {
-        return (List<EntitlementServerGroup>)listServerGroups(org,
-                            "ServerGroup.lookupEntitlementGroupsByOrg");
+        return listServerGroups(org, "ServerGroup.lookupEntitlementGroupsByOrg");
     }
 
     /**
@@ -360,14 +337,11 @@ public class ServerGroupFactory extends HibernateFactory {
      *                      the org.
      */
     public static List<ManagedServerGroup> listManagedGroups(Org org) {
-        return (List<ManagedServerGroup>)listServerGroups(org,
-                                "ServerGroup.lookupManagedGroupsByOrg");
+        return listServerGroups(org, "ServerGroup.lookupManagedGroupsByOrg");
     }
 
-    private static List<? extends ServerGroup> listServerGroups(Org org, String queryName) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("org", org);
-        return  SINGLETON.listObjectsByNamedQuery(queryName, params);
+    private static <T> List<T> listServerGroups(Org org, String queryName) {
+        return SINGLETON.listObjectsByNamedQuery(queryName, Map.of("org", org));
     }
 
     /**
@@ -394,10 +368,7 @@ public class ServerGroupFactory extends HibernateFactory {
         return listServerIds(sg, threshold, "ServerGroup.lookupInactiveServerIds");    }
 
     private static List<Long> listServerIds(ServerGroup sg, Long threshold, String query) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sgid", sg.getId());
-        params.put("threshold", threshold);
-        return  SINGLETON.listObjectsByNamedQuery(query, params);
+        return SINGLETON.listObjectsByNamedQuery(query, Map.of("sgid", sg.getId(), "threshold", threshold));
     }
 
     /**
