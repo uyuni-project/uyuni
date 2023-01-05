@@ -872,7 +872,6 @@ public class ServerFactory extends HibernateFactory {
      * @param name The name to search for
      * @return The first ServerArch found
      */
-    @SuppressWarnings("unchecked")
     public static ServerArch lookupServerArchByName(String name) {
         List<ServerArch> archs = SINGLETON.listObjectsByNamedQuery("ServerArch.findByName", Map.of("name", name));
         if (archs != null && !archs.isEmpty()) {
@@ -1384,7 +1383,6 @@ public class ServerFactory extends HibernateFactory {
      * @param errataIds set of errata ids
      * @return map from server id to map from errata id to patch name
      */
-    @SuppressWarnings("unchecked")
     public static Map<Long, Map<Long, Set<ErrataInfo>>> listErrataNamesForServers(
             Set<Long> serverIds, Set<Long> errataIds) {
         if (serverIds.isEmpty() || errataIds.isEmpty()) {
@@ -1425,7 +1423,6 @@ public class ServerFactory extends HibernateFactory {
      * @param errataIds set of errata ids
      * @return map from server id to map of package name to package version in evr format
      */
-    @SuppressWarnings("unchecked")
     public static Map<Long, Map<String, Tuple2<String, String>>> listNewestPkgsForServerErrata(
             Set<Long> serverIds, Set<Long> errataIds) {
         if (serverIds.isEmpty() || errataIds.isEmpty()) {

@@ -618,7 +618,6 @@ public class CachedStatement implements Serializable {
         });
     }
 
-    @SuppressWarnings("unchecked")
     private DataResult<Object> processResultSet(ResultSet rs, SelectMode mode,
             List<Object> currentResults) {
 
@@ -909,7 +908,6 @@ public class CachedStatement implements Serializable {
         return MethodUtil.callMethod(obj, StringUtil.beanify("get " + key), new Object[0]);
     }
 
-    @SuppressWarnings("unchecked")
     private Map<Object, Integer> generatePointers(List<Object> dr, String key) {
 
         Iterator<Object> i = dr.iterator();

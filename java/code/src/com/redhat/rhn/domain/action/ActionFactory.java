@@ -749,7 +749,6 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIn you want to limit the list of Actions to
      * @return List of ServerAction objects
      */
-    @SuppressWarnings("unchecked")
     public static List<ServerAction> listServerActionsForServer(Server serverIn) {
         return singleton.listObjectsByNamedQuery("ServerAction.findByServer", Map.of("server", serverIn));
     }
@@ -761,7 +760,6 @@ public class ActionFactory extends HibernateFactory {
      * @param date you want to limit the completion date after
      * @return List of ServerAction objects
      */
-    @SuppressWarnings("unchecked")
     public static List<ServerAction> listServerActionsForServer(Server serverIn, String actionType, Date date) {
         return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate",
                 Map.of("server", serverIn, "actionType", actionType, "date", date));

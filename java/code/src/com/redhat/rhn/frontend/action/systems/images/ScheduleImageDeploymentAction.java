@@ -44,7 +44,6 @@ public class ScheduleImageDeploymentAction extends RhnAction {
 
     /** {@inheritDoc} */
     @Override
-    @SuppressWarnings("unchecked")
     public ActionForward execute(ActionMapping actionMapping,
             ActionForm actionForm, HttpServletRequest request,
             HttpServletResponse response) {

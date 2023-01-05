@@ -73,7 +73,6 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             delete.executeUpdate(Map.of("mgm_id", LOCAL_MGM_ID));
 
             // Extract the first batch
-            @SuppressWarnings("unchecked")
             DataResult<Map<String, Object>> firstBatch = query.execute(Map.of("offset", 0, "limit", batchSize));
             if (!firstBatch.isEmpty()) {
                 // Generate the insert using the column name retrieved from the select

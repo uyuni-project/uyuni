@@ -94,7 +94,6 @@ public class DistUpgradeManager extends BaseManager {
         HashMap<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("sid", server.getId());
-        @SuppressWarnings("unchecked")
         DataResult<Map<String, ? extends Number>> dr = m.execute(params);
         return dr.get(0).get("count").intValue() > 0;
     }
@@ -105,7 +104,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param productId SUSE product ID
      * @return list of possible migration target product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findTargetProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_target_products");
         HashMap<String, Object> params = new HashMap<>();
@@ -119,7 +117,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param productId SUSE product ID
      * @return list of possible migration source product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findSourceProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_source_products");
         HashMap<String, Object> params = new HashMap<>();
@@ -135,7 +132,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param baseChannelID the base channel id for the product set
      * @return list of channel DTOs
      */
-    @SuppressWarnings("unchecked")
     public static List<EssentialChannelDto> getRequiredChannels(SUSEProductSet productSet, long baseChannelID) {
         List<Long> productIDs = productSet.getProductIDs();
         HashMap<String, Object> params = new HashMap<>();

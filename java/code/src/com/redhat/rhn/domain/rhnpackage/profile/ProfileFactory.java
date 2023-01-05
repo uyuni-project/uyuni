@@ -80,7 +80,6 @@ public class ProfileFactory extends HibernateFactory {
      * @param org Org owner
      * @return  a list of Profiles which are compatible with the given server.
      */
-    @SuppressWarnings("unchecked")
     public static List<Profile> compatibleWithServer(Server server, Org org) {
         return singleton.listObjectsByNamedQuery("Profile.compatibleWithServer",
                 Map.of("sid", server.getId(), "org_id", org.getId()), false);

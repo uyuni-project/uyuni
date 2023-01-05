@@ -1948,7 +1948,6 @@ public class SaltUtils {
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        @SuppressWarnings("unchecked")
         List<ServerAction> serverActions = ActionFactory
                 .listServerActionsForServer(minion);
         int actionsChanged = 0;

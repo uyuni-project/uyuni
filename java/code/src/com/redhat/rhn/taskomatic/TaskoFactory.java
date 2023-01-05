@@ -526,7 +526,6 @@ public class TaskoFactory extends HibernateFactory {
      * @param date time of interest
      * @return list of repo sync schedules
      */
-    @SuppressWarnings("unchecked")
     public static List<TaskoSchedule> listRepoSyncSchedulesNewerThan(Date date) {
         TaskoBunch bunch = lookupBunchByName("repo-sync-bunch");
         if (date == null) {

@@ -258,7 +258,6 @@ public class CVEAuditManager {
      *
      * @return all servers
      */
-    @SuppressWarnings("unchecked")
     public static List<SystemOverview> listAllServers() {
         SelectMode m = ModeFactory.getMode("cve_audit_queries", "find_all_servers");
         return m.execute(Collections.emptyMap());
@@ -270,7 +269,6 @@ public class CVEAuditManager {
      * @param suseProductId the SUSE product ID
      * @return list of channel product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> convertProductId(long suseProductId) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "convert_suse_product_to_channel_products");
@@ -1107,7 +1105,6 @@ public class CVEAuditManager {
      * @param cveIdentifier the CVE identifier
      * @return true if it is unknown
      */
-    @SuppressWarnings("unchecked")
     public static boolean isCVEIdentifierUnknown(String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries", "count_cve_identifiers");
         Map<String, Object> params = new HashMap<>();

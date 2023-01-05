@@ -50,10 +50,7 @@ public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_QUEUE_FIND_CANDIDATES);
         try {
-            @SuppressWarnings("unchecked")
-            List<Map<String, Long>> result = select.execute();
-
-            return result;
+            return select.execute();
         }
         finally {
             HibernateFactory.closeSession();

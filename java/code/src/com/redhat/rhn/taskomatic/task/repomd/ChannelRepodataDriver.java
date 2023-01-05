@@ -78,7 +78,6 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
                 TaskConstants.TASK_QUERY_REPOMD_DRIVER_QUERY);
 
         Map<String, Object> params = new HashMap<>();
-        @SuppressWarnings("unchecked")
         List<Map<String, Object>> results = select.execute(params);
         if (results != null) {
             return results;
