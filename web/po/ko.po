@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-23 14:02+0100\n"
-"PO-Revision-Date: 2022-11-21 11:13+0000\n"
+"PO-Revision-Date: 2023-01-06 05:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -3987,9 +3987,8 @@ msgid "End of Life Period"
 msgstr "수명 주기 종료"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:58
-#, fuzzy
 msgid "Subscription Warning"
-msgstr "구독 일치"
+msgstr "구독 경고"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:149
 msgid "Filter by type"
