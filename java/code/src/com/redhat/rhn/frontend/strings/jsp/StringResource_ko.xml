@@ -10831,19 +10831,19 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target>잘못된 변수 '{0}'이(가) 지정되었습니다. 변수는  'ip=192.168.0.1'과 같이 '='로 구분된 이름 값 쌍이어야 하며, 각 쌍은 새로운 행으로 구분해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_generation" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">킥스타트/autoyast 템플릿에 오류가 발생하였습니다. '{0}' 탭에서 템플릿에 있는 문제를 확인하십시오.</target>
+        <target state="final">킥스타트/autoYaST 템플릿에 오류가 발생하였습니다. '{0}' 탭에서 템플릿에 있는 문제를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_message" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">킥스타트/autoyast 템플릿에 오류가 발생했습니다. 아래의 오류 메세지를 확인하십시오.</target>
+        <target state="final">킥스타트/autoYaST 템플릿에 오류가 발생했습니다. 아래의 오류 메세지를 확인하십시오.</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>

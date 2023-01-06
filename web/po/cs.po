@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 16:37+0100\n"
+"POT-Creation-Date: 2023-01-06 13:56+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-2/cs/>\n"
@@ -544,6 +544,8 @@ msgid "Select All"
 msgstr "Vybrat vše"
 
 #: ../html/src/components/table/TableDataHandler.tsx:339
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
@@ -4005,11 +4007,6 @@ msgstr "Přidat soubor inventáře"
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr "např. /etc/ansible/testing/hosts"
 
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-msgid "Loading.."
-msgstr "Zavádění..."
-
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:81
 msgid "Nothing configured. Please add paths in the "
 msgstr "Nic není konfigurováno. Přidejte cesty do "
@@ -6148,6 +6145,9 @@ msgstr "nedefinováno"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} čaj {1}"
+
+#~ msgid "Loading.."
+#~ msgstr "Zavádění..."
 
 #~ msgid "Time"
 #~ msgstr "Čas"
