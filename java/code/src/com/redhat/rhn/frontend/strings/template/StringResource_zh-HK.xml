@@ -183,11 +183,9 @@ Affected Systems List
 ---------------------
 This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
-package profile for that server is out of date. In that case you should run
-'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
-as root on the system in question to refresh your software profile.
+package profile for that server is out of date.
     </source>
-        <target/>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
