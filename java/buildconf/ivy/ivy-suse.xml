@@ -78,6 +78,7 @@
         <dependency org="suse" name="salt-netapi-client" rev="0.20.0" />
         <dependency org="suse" name="simpleclient" rev="0.3.0" />
         <dependency org="suse" name="simpleclient_common" rev="0.3.0" />
+        <dependency org="suse" name="simpleclient_hibernate" rev="0.3.0" />
         <dependency org="suse" name="simpleclient_httpserver" rev="0.3.0" />
         <dependency org="suse" name="simpleclient_servlet" rev="0.3.0" />
         <dependency org="suse" name="simple-core" rev="3.1.3" />

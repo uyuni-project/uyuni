@@ -37,7 +37,7 @@ public class DailySummaryTest extends RhnBaseTestCase {
     public void testDequeueOrg() {
         WriteMode clear = ModeFactory.getWriteMode("test_queries",
             "delete_from_daily_summary_queue");
-        clear.executeUpdate(new HashMap());
+        clear.executeUpdate(new HashMap<>());
 
         DailySummary ds = new DailySummary();
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());

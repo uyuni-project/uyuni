@@ -34,27 +34,27 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
 
     /** Context Path */
     private String requestURL;
-    private Map attributes;
-    private Map headers;
+    private Map<String, Object> attributes;
+    private Map<String, String> headers;
     private Map parameterMap;
-    private List locales;
+    private List<Locale> locales;
     private int port;
     private boolean secure;
-    private List cookies;
+    private List<Cookie> cookies;
     private String encoding;
     private String method;
-    private Enumeration headerNames;
+    private Enumeration<String> headerNames;
 
     /**
      * default constructor
      */
     public RhnMockHttpServletRequest() {
         super();
-        attributes = new HashMap();
-        headers = new HashMap();
-        locales = new ArrayList();
-        parameterMap = new HashMap();
-        cookies = new ArrayList();
+        attributes = new HashMap<>();
+        headers = new HashMap<>();
+        locales = new ArrayList<>();
+        parameterMap = new HashMap<>();
+        cookies = new ArrayList<>();
         setupServerName("somehost.rhn.redhat.com");
         setupGetRequestURI("/rhn/network/somepage.do");
         setLocale(Locale.getDefault());
@@ -113,7 +113,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     /** {@inheritDoc} */
     @Override
     public String getHeader(String name) {
-        return (String)headers.get(name);
+        return headers.get(name);
     }
 
     /** {@inheritDoc} */
@@ -126,7 +126,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
      * Header Names
      * @param headerNamesIn attribute headerNames
      */
-    public void setupGetHeaderNames(Enumeration headerNamesIn) {
+    public void setupGetHeaderNames(Enumeration<String> headerNamesIn) {
         this.headerNames = headerNamesIn;
     }
 
@@ -165,7 +165,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     /** {@inheritDoc} */
     @Override
     public Locale getLocale() {
-        return (Locale) this.locales.get(0);
+        return this.locales.get(0);
     }
 
     /**

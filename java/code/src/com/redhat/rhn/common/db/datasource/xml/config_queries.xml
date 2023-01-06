@@ -699,39 +699,6 @@ ORDER BY UPPER(CFN.path)
 </query>
 </mode>
 
-<mode name="org_configfile_size_totals" class="com.redhat.rhn.frontend.dto.ConfigFileDto">
-  <query params="org_id, user_id">
-SELECT DISTINCT CF.id AS id,
-       CFN.path,
-       CC.label AS CONFIG_CHANNEL_LABEL,
-       CC.id AS CONFIG_CHANNEL_ID,
-       CF.latest_config_revision_id,
-       LCR.revision AS latest_config_revision,
-       CFT.label AS type,
-       CCT.label AS config_channel_type,
-       CC.name AS CONFIG_CHANNEL_NAME,
-       SUM(Coalesce(CCon.file_size,0)) AS total_file_size
-  FROM rhnConfigContent CCon LEFT OUTER JOIN rhnConfigRevision CR
-       ON CCon.id = CR.config_content_id,
-       rhnConfigChannelType CCT,
-       rhnConfigRevision LCR,
-       rhnConfigFileName CFN,
-       rhnConfigFile CF,
-       rhnConfigChannel CC,
-       rhnConfigFileType CFT
- WHERE CC.org_id = :org_id
-   AND rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
-   AND CF.config_channel_id = CC.id
-   AND CFN.id = CF.config_file_name_id
-   AND LCR.id = CF.latest_config_revision_id
-   AND LCR.config_file_type_id = CFT.id
-   AND CR.config_file_id = CF.id
-   AND CC.confchan_type_id = CCT.id
-GROUP BY CF.id, CFN.path, CC.name, CC.label, CFT.label, CCT.label, CC.id, CF.latest_config_revision_id, LCR.revision
-ORDER BY total_file_size DESC
-  </query>
-</mode>
-
 <mode name="count_managed_servers_for_user">
   <query params="user_id">
 SELECT  count(distinct S.id) AS count

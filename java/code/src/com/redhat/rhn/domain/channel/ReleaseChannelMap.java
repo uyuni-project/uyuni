@@ -112,6 +112,7 @@ public class ReleaseChannelMap implements Serializable,
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ReleaseChannelMap)) {
             return false;
@@ -127,6 +128,7 @@ public class ReleaseChannelMap implements Serializable,
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getProduct()).append(getVersion()).append(
                 getRelease()).append(getChannelArch()).append(getChannel()).toHashCode();

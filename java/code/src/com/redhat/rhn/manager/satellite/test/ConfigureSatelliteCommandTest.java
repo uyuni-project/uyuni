@@ -58,7 +58,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreateCommand() throws Exception {
+    public void testCreateCommand() {
 
         cmd = new ConfigureSatelliteCommand(user) {
             @Override
@@ -110,7 +110,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemoveEntries() throws Exception {
+    public void testRemoveEntries() {
 
         cmd = new ConfigureSatelliteCommand(user) {
             @Override
@@ -147,7 +147,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testUpdateHostname() throws Exception {
+    public void testUpdateHostname() {
 
         cmd = new ConfigureSatelliteCommand(user) {
             @Override
@@ -163,7 +163,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testMountPoint() throws Exception {
+    public void testMountPoint() {
 
         cmd = new ConfigureSatelliteCommand(user) {
             @Override
@@ -181,7 +181,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRoles() throws Exception {
+    public void testRoles() {
 
         user.removePermanentRole(RoleFactory.SAT_ADMIN);
         try {

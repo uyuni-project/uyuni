@@ -72,7 +72,7 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
      * (based on its product) assigned.
      */
     @Test
-    public void testImageSyncedPillarCreatedRemoved() throws Exception {
+    public void testImageSyncedPillarCreatedRemoved() {
         ImageInfo img1 = ImageTestUtils.createImageInfo("ImageTest", "8.0.0", user);
         img1.setRevisionNumber(5);
 
@@ -120,7 +120,7 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
      * (based on its product) assigned.
      */
     @Test
-    public void testLegacyImageSyncedPillarCreatedRemoved() throws Exception {
+    public void testLegacyImageSyncedPillarCreatedRemoved() {
         JsonParser<Event> jsonParser = new JsonParser<>(new TypeToken<>() {
         });
         Event event = jsonParser.parse(

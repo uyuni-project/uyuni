@@ -136,7 +136,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     @SuppressWarnings("java:S1144")
     private ActionForward runFirst(ActionMapping mapping, DynaActionForm form,
             RequestContext ctx, HttpServletResponse response,
-            WizardStep step) throws Exception {
+            WizardStep step) {
         KickstartWizardHelper cmd = new KickstartWizardHelper(ctx.getCurrentUser());
         List<Channel> channels = cmd.getAvailableChannels();
         if (channels == null || channels.isEmpty()) {

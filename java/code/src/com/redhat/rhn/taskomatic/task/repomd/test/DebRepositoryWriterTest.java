@@ -102,6 +102,7 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
 //        System.out.println(releaseContent);
     }
 
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();

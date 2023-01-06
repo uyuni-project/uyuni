@@ -296,7 +296,7 @@ public abstract class RhnAction extends Action {
      * @param request The request containing the params we want
      * @return Returns a map containing the pagination params.
      */
-    protected Map makeParamMap(HttpServletRequest request) {
+    protected Map<String, Object> makeParamMap(HttpServletRequest request) {
         return new RequestContext(request).makeParamMapWithPagination();
     }
 

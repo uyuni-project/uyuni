@@ -31,8 +31,8 @@ import java.util.Set;
  * MapBuilder
  */
 public class MapBuilder {
-    private Set excludes = new HashSet();
-    private Set includes = new HashSet();
+    private final Set<String> excludes = new HashSet<>();
+    private final Set<String> includes = new HashSet<>();
     private static Logger log = LogManager.getLogger(MapBuilder.class);
     /**
      * Add a debeanified name that must be excluded from the final map
@@ -67,21 +67,17 @@ public class MapBuilder {
      * @param bean the bean object to be mapified
      * @return a map containing the debeanified values.
      */
-    public Map mapify(Object bean) {
-        Map retval = new HashMap();
+    public Map<String, String> mapify(Object bean) {
+        Map<String, String> retval = new HashMap<>();
         try {
-            Map properties = BeanUtils.describe(bean);
-            for (Object oIn : properties.keySet()) {
-                String key = (String) oIn;
-                if (includes.isEmpty() || includes.contains(key)) {
-                    if (!excludes.contains(key)) {
-                        if (properties.get(key) != null) {
-                            String value = String.valueOf(properties.get(key));
-                            retval.put(StringUtil.debeanify(key), value);
-                        }
-                        else {
-                            retval.put(StringUtil.debeanify(key), "");
-                        }
+            Map<String, String> properties = BeanUtils.describe(bean);
+            for (Map.Entry<String, String> entry : properties.entrySet()) {
+                if ((includes.isEmpty() || includes.contains(entry.getKey())) && !excludes.contains(entry.getKey())) {
+                    if (entry.getValue() != null) {
+                        retval.put(StringUtil.debeanify(entry.getKey()), entry.getValue());
+                    }
+                    else {
+                        retval.put(StringUtil.debeanify(entry.getKey()), "");
                     }
                 }
             }

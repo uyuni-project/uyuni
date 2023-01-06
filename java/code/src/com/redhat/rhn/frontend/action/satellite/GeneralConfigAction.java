@@ -36,7 +36,6 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.net.IDN;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,16 +61,13 @@ public class GeneralConfigAction extends BaseConfigAction {
 
     private static final String[] BOOLEAN_CONFIG_ARRAY = { ConfigDefaults.DISCONNECTED };
 
-    private static final List COMBO_LIST = new LinkedList();
+    private static final List<String> ALLOWED_CONFIGS = new LinkedList<>();
     static {
-        COMBO_LIST.addAll(Arrays.asList(STRING_CONFIG_ARRAY));
-        COMBO_LIST.addAll(Arrays.asList(BOOLEAN_CONFIG_ARRAY));
+        ALLOWED_CONFIGS.addAll(Arrays.asList(STRING_CONFIG_ARRAY));
+        ALLOWED_CONFIGS.addAll(Arrays.asList(BOOLEAN_CONFIG_ARRAY));
     }
 
-    private final List BOOLEAN_CONFIGS = Arrays.asList(BOOLEAN_CONFIG_ARRAY);
-
-    /** List of Config keys allowed by this Action */
-    public static final List ALLOWED_CONFIGS = COMBO_LIST;
+    private static final List<String> BOOLEAN_CONFIGS = Arrays.asList(BOOLEAN_CONFIG_ARRAY);
 
     /*
      * enable_ssl, disconnected, mount_point
@@ -98,7 +94,6 @@ public class GeneralConfigAction extends BaseConfigAction {
         if (isSubmitted(form)) {
             ConfigureSatelliteCommand csc =
                 (ConfigureSatelliteCommand) getCommand(currentUser);
-            Iterator i = ALLOWED_CONFIGS.iterator();
 
             errors = validateForm(form);
             errors.add(RhnValidationHelper.validateDynaActionForm(this, form));
@@ -109,21 +104,17 @@ public class GeneralConfigAction extends BaseConfigAction {
                 return mapping.findForward("failure");
             }
 
-
-            while (i.hasNext()) {
-                String configKey = (String) i.next();
+            for (String configKey : ALLOWED_CONFIGS) {
                 // Have to munge the property name to replace the dots with | since
                 // struts attempts to 'beanify' the form propert values if you include
                 // dot notation in the names.
 
                 if (BOOLEAN_CONFIGS.contains(configKey)) {
-                    Boolean value = (Boolean)
-                        form.get(translateFormPropertyName(configKey));
+                    Boolean value = (Boolean) form.get(translateFormPropertyName(configKey));
                     csc.updateBoolean(configKey, value);
                 }
                 else {
-                    String value = (String)
-                        form.get(translateFormPropertyName(configKey));
+                    String value = (String) form.get(translateFormPropertyName(configKey));
                     if (configKey.equals(ConfigDefaults.SERVER_HOSTNAME)) {
                         value = IDN.toASCII(value);
                     }
@@ -141,8 +132,7 @@ public class GeneralConfigAction extends BaseConfigAction {
             }
         }
         else {
-            for (Object allowedConfigIn : ALLOWED_CONFIGS) {
-                String configKey = (String) allowedConfigIn;
+            for (String configKey: ALLOWED_CONFIGS) {
 
                 if (BOOLEAN_CONFIGS.contains(configKey)) {
                     Boolean configValue = Config.get().getBoolean(configKey);
@@ -186,6 +176,10 @@ public class GeneralConfigAction extends BaseConfigAction {
      */
     public static String translateFormPropertyName(String configKey) {
         return configKey.replace('.', '|');
+    }
+
+    public static List<String> getAllowedConfigs() {
+        return ALLOWED_CONFIGS;
     }
 
     /**

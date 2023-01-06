@@ -20,6 +20,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -67,7 +68,7 @@ public class CustomPackagesDeleteConfirmAction extends RhnAction {
                 Boolean.parseBoolean(request.getParameter("source_checked"));
 
         RhnSet set =  RhnSetDecl.DELETABLE_PACKAGE_LIST.get(user);
-        DataResult result;
+        DataResult<PackageOverview> result;
         if (sourcePackagesChecked) {
             result = PackageManager.sourcePackageIdsInSet(user, set.getLabel(), null);
         }

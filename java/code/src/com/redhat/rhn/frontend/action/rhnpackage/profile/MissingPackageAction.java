@@ -81,7 +81,7 @@ public class MissingPackageAction extends BaseProfilesAction {
                 return null;
             }
 
-            List args = new ArrayList();
+            List args = new ArrayList<>();
             args.add(sid.toString());
             args.add(pa.getId().toString());
             args.add(StringUtil.htmlifyText(
@@ -101,7 +101,7 @@ public class MissingPackageAction extends BaseProfilesAction {
                 return null;
             }
 
-            List args = new ArrayList();
+            List args = new ArrayList<>();
             args.add(sid.toString());
             args.add(pa.getId().toString());
             args.add(StringUtil.htmlifyText(
@@ -238,8 +238,8 @@ public class MissingPackageAction extends BaseProfilesAction {
      * {@inheritDoc}
      */
     @Override
-    protected Map getKeyMethodMap() {
-        Map map = new HashMap();
+    protected Map<String, String> getKeyMethodMap() {
+        Map<String, String> map = new HashMap<>();
         map.put("missingpkgs.jsp.selectnewpackageprofile", "selectNewPackageProfile");
         map.put("missingpkgs.jsp.removelistedpackagesfromsync", "removePackagesFromSync");
         map.put("missingpkgs.jsp.subscribetochannels", "subscribeToChannels");

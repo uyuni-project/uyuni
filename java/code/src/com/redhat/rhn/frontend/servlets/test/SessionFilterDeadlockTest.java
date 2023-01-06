@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -29,7 +30,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -44,7 +44,7 @@ public class SessionFilterDeadlockTest extends BaseFilterTst {
         chain = new MockFilterChain() {
             @Override
             public void doFilter(ServletRequest req, ServletResponse resp)
-            throws IOException, ServletException {
+            throws IOException {
                 throw new IOException("Test IOException");
             }
         };
@@ -64,7 +64,7 @@ public class SessionFilterDeadlockTest extends BaseFilterTst {
             }
         }
         Configurator.setLevel(this.getClass().getName(), orig);
-        assertTrue(caughtCount == 5);
+        assertEquals(5, caughtCount);
         HibernateFactory.getSession();
         assertTrue(HibernateFactory.inTransaction());
     }

@@ -31,7 +31,6 @@ import com.jcraft.jsch.JSchException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -51,7 +50,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
     }
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext) {
         log.debug("Running PaygUpdateAuthTask");
         if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
             Optional<PaygSshData> paygData = PaygSshDataFactory.lookupById(

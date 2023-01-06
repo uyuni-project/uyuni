@@ -15,7 +15,7 @@
 package com.redhat.rhn.common.translation.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -43,7 +43,7 @@ public class ExceptionsWrapperTest  {
         "com.redhat.rhn.common.translation.ExceptionTranslator";
 
     @Test
-    public void testConstraintViolation() throws Exception {
+    public void testConstraintViolation() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -73,7 +73,7 @@ public class ExceptionsWrapperTest  {
     }
 
     @Test
-    public void testNamedConstraint() throws Exception {
+    public void testNamedConstraint() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -105,7 +105,7 @@ public class ExceptionsWrapperTest  {
     }
 
     @Test
-    public void testNotReplaced() throws Exception {
+    public void testNotReplaced() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -134,7 +134,7 @@ public class ExceptionsWrapperTest  {
     // Make sure that there are no StackTraceElements from
     // com.redhat.rhn.common.translation
     @Test
-    public void testStackElements() throws Exception {
+    public void testStackElements() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
@@ -155,8 +155,8 @@ public class ExceptionsWrapperTest  {
                     for (StackTraceElement elementIn : elements) {
                         String method = elementIn.getMethodName();
                         String className = elementIn.getClassName();
-                        assertFalse(className.equals(EXCEPTION_TRANSLATOR));
-                        assertFalse(method.equals("convert"));
+                        assertNotEquals(EXCEPTION_TRANSLATOR, className);
+                        assertNotEquals("convert", method);
                     }
                 }
             }

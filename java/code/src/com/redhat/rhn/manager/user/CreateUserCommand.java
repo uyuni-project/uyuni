@@ -36,7 +36,6 @@ import com.redhat.rhn.frontend.events.NewUserEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,7 +80,7 @@ public class CreateUserCommand {
      * @return an Object array of ValidatorErrors.
      */
     public ValidatorError[] validate() {
-        errors = new ArrayList(); //clear validation errors
+        errors = new ArrayList<>(); //clear validation errors
 
         if (passwordErrors != null) {
             errors.addAll(passwordErrors); //add any password validation errors
@@ -158,7 +157,7 @@ public class CreateUserCommand {
                         user.getLogin() + " default system group", user.getOrg());
             }
             UserManager.grantServerGroupPermission(user, sg.getId());
-            user.setDefaultSystemGroupIds(new HashSet<>(Arrays.asList(sg.getId())));
+            user.setDefaultSystemGroupIds(Set.of(sg.getId()));
         }
         // assign server groups permissions
         for (ServerGroup sg : serverGroups) {
@@ -316,7 +315,7 @@ public class CreateUserCommand {
      * @param passwordIn The raw password to set
      */
     public void setRawPassword(String passwordIn) {
-        passwordErrors = new ArrayList(); //init password errors list
+        passwordErrors = new ArrayList<>(); //init password errors list
         user.setRawPassword(passwordIn);
     }
 
@@ -325,7 +324,7 @@ public class CreateUserCommand {
      * @param validate if password requirements should be validated
      */
     public void setPassword(String passwordIn, boolean validate) {
-        passwordErrors = new ArrayList(); //init password errors list
+        passwordErrors = new ArrayList<>(); //init password errors list
         if (validate) {
             validatePassword(passwordIn);
         }

@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 public class OrgDetailsActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         addRequestParameter("oid", user.getOrg().getId().toString());

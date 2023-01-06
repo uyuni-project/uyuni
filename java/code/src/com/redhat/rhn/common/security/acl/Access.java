@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.dto.ChannelPerms;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -120,7 +121,7 @@ public class Access extends BaseHandler {
 
         SelectMode m = ModeFactory.getMode("Org_queries",
                 "has_channel_family_entitlement");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("label", label);
         queryParams.put("org_id", user.getOrg().getId());
         DataResult dr = m.execute(queryParams);
@@ -138,7 +139,7 @@ public class Access extends BaseHandler {
 
         SelectMode m = ModeFactory.getMode("System_queries",
                 "org_proxy_servers");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("org_id", user.getOrg().getId());
         DataResult dr = m.execute(queryParams);
         return (!dr.isEmpty());
@@ -443,7 +444,7 @@ public class Access extends BaseHandler {
     public boolean aclUserCanManageChannels(Map<String, Object> ctx, String[] params) {
         User user = (User) ctx.get("user");
         if (user != null) {
-            List chans = UserManager.channelManagement(user, null);
+            List<ChannelPerms> chans = UserManager.channelManagement(user, null);
             return (user.hasRole(RoleFactory.CHANNEL_ADMIN)) || !chans.isEmpty();
         }
 

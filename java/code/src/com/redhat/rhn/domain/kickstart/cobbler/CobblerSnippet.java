@@ -346,6 +346,7 @@ public class CobblerSnippet implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -361,6 +362,7 @@ public class CobblerSnippet implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder b = new HashCodeBuilder();
         b.append(getPath());

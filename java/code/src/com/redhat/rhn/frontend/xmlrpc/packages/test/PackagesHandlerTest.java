@@ -43,7 +43,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
     private final PackagesHandler handler = new PackagesHandler();
 
     @Test
-    public void testGetDetails() throws Exception {
+    public void testGetDetails() {
 
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
         assertNotNull(pkg.getOrg().getId());
@@ -63,7 +63,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
 
 
     @Test
-    public void testListFiles() throws Exception {
+    public void testListFiles() {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
@@ -79,7 +79,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListProvidingErrata() throws Exception {
+    public void testListProvidingErrata() {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
@@ -89,7 +89,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListProvidingChannels() throws Exception {
+    public void testListProvidingChannels() {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
@@ -158,14 +158,14 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testRemovePackage() throws Exception {
+    public void testRemovePackage() {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         handler.removePackage(admin, pkg.getId().intValue());
     }
 
     @Test
-    public void testRemovePackageSource() throws Exception {
+    public void testRemovePackageSource() {
         User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
         PackageSource pkg = PackageTest.createTestPackageSource(srpm, user.getOrg());
@@ -175,23 +175,23 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
 
 
     @Test
-    public void testFindByNevra() throws Exception {
+    public void testFindByNevra() {
         Package p = PackageTest.createTestPackage(admin.getOrg());
 
         List<Package> newP = handler.findByNvrea(admin, p.getPackageName().getName(),
                 p.getPackageEvr().getVersion(), p.getPackageEvr().getRelease(),
                 p.getPackageEvr().getEpoch(), p.getPackageArch().getLabel());
-        assertTrue(newP.size() == 1);
+        assertEquals(1, newP.size());
         assertEquals(p, newP.get(0));
         newP = handler.findByNvrea(admin, p.getPackageName().getName(),
                 p.getPackageEvr().getVersion(), p.getPackageEvr().getRelease(),
                 "", p.getPackageArch().getLabel());
-        assertTrue(newP.size() == 1);
+        assertEquals(1, newP.size());
         assertEquals(p, newP.get(0));
     }
 
     @Test
-    public void testListSourcePackages() throws Exception {
+    public void testListSourcePackages() {
         User user = UserTestUtils.createUser("testUser", regular.getOrg().getId());
         Object[] result1 = handler.listSourcePackages(user);
         for (int i = 0; i < 3; i++) {

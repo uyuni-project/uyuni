@@ -54,7 +54,7 @@ public class FileListTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testFileList() throws Exception {
+    public void testFileList() {
         Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
         FileList f = createTestFileList(o);
 

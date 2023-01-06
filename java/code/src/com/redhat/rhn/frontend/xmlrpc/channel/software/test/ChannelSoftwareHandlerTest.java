@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.channel.software.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -365,7 +366,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, server.getChannels().size());
 
         Channel c2 = ChannelFactoryTest.createTestChannel(admin);
-        assertFalse(c1.getLabel().equals(c2.getLabel()));
+        assertNotEquals(c1.getLabel(), c2.getLabel());
         result = sh.setBaseChannel(admin, server.getId().intValue(), c2.getLabel());
 
         server = reload(server);
@@ -473,12 +474,12 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListArches() throws Exception {
+    public void testListArches() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         List<ChannelArch> arches = csh.listArches(admin);
         assertNotNull(arches);
-        assertTrue(!arches.isEmpty());
+        assertFalse(arches.isEmpty());
     }
 
     @Test
@@ -487,7 +488,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
             List<ChannelArch> arches = csh.listArches(admin);
             assertNotNull(arches);
-            assertTrue(!arches.isEmpty());
+            assertFalse(arches.isEmpty());
         }
         catch (PermissionCheckFailureException e) {
             assertTrue(true);
@@ -566,7 +567,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testIsGloballySubscribableNoSuchChannel() throws Exception {
+    public void testIsGloballySubscribableNoSuchChannel() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         try {
@@ -657,14 +658,14 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                     result.getEndOfLife().toString());
         }
         else {
-            assertEquals(null, result.getEndOfLife());
+            assertNull(result.getEndOfLife());
         }
 
-        assertEquals(null, result.getParentChannel());
+        assertNull(result.getParentChannel());
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-chan-label",
@@ -683,7 +684,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateWithGPGCheckDisabled() throws Exception {
+    public void testCreateWithGPGCheckDisabled() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-chan-label",
@@ -703,7 +704,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateWithChecksum() throws Exception {
+    public void testCreateWithChecksum() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-checksum-chan-label",
@@ -1164,18 +1165,18 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         cal.add(Calendar.YEAR, -5);
 
         List<PackageDto> list = handler.listAllPackages(admin, chan.getLabel());
-        assertTrue(list.size() == 1);
+        assertEquals(1, list.size());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = sdf.parse("2004-08-20 08:00:00");
         Date endDate = sdf.parse("3004-08-20 08:00:00");
 
         list = handler.listAllPackages(admin, chan.getLabel(), startDate);
-        assertTrue(list.size() == 1);
+        assertEquals(1, list.size());
 
         list = handler.listAllPackages(admin, chan.getLabel(), startDate,
                 endDate);
-        assertTrue(list.size() == 1);
+        assertEquals(1, list.size());
     }
 
     private ChannelSoftwareHandler getMockedHandler() throws Exception {

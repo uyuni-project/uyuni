@@ -125,7 +125,7 @@ public class AuthHandlerTest extends RhnBaseTestCase {
 
         //Make sure key is a valid one
         boolean isValid = handler.isSessionKeyValid(key);
-        assertEquals(isValid , true);
+        assertTrue(isValid);
         handler.logout(key);
 
         //Make sure key is not a valid which means we get the exception
@@ -141,7 +141,7 @@ public class AuthHandlerTest extends RhnBaseTestCase {
     @Test
     public void testCheckAuthToken() {
         AuthHandler handler = new AuthHandler();
-        assertTrue(handler.checkAuthToken(TestUtils.randomString(),
-                TestUtils.randomString()) == 0);
+        assertEquals(0, handler.checkAuthToken(TestUtils.randomString(),
+                TestUtils.randomString()));
     }
 }

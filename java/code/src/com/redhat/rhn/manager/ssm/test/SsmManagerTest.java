@@ -333,10 +333,9 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
     /**
      * Test change to default for 2 servers with no base channel.
-     * @throws Exception
      */
     @Test
-    public void testComputeAllowedChannelChangesTwoServersWithoutBase() throws Exception {
+    public void testComputeAllowedChannelChangesTwoServersWithoutBase() {
         Server server1 = ServerFactoryTest.createTestServer(user, true);
         Server server2 = ServerFactoryTest.createTestServer(user, true);
 
@@ -373,10 +372,9 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
     /**
      * Test when an empty list of changes is supplied.
-     * @throws Exception
      */
     @Test
-    public void testComputeAllowedChannelChangesNoChangePresent() throws Exception {
+    public void testComputeAllowedChannelChangesNoChangePresent() {
         SsmBaseChannelChangesDto changes = new SsmBaseChannelChangesDto();
 
         List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);

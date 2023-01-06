@@ -725,7 +725,7 @@ public class ReportDbHibernateFactory {
 
     protected void executeCallableMode(String name, String mode, Map params) {
         CallableMode m = ModeFactory.getCallableMode(name, mode);
-        m.execute(params, new HashMap());
+        m.execute(params, new HashMap<>());
     }
 
     /**

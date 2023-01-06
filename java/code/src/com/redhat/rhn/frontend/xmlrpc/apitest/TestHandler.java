@@ -58,8 +58,8 @@ public class TestHandler extends BaseHandler {
      * tests hash api definition stuff
      * @param testMap test map to see if we get a map coming in.
      * @return Map with key:foobar, value:baz   */
-    public Map hashChecking(Map testMap) {
-        Map result = new HashMap();
+    public Map<String, String> hashChecking(Map<String, String> testMap) {
+        Map<String, String> result = new HashMap<>();
         result.put("foobar", "baz");
         return result;
     }

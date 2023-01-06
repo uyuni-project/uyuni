@@ -165,6 +165,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     /**
      *  {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this)
             .append("name", getName())

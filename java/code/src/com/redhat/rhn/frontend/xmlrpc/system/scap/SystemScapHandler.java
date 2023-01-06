@@ -254,7 +254,7 @@ public class SystemScapHandler extends BaseHandler {
      */
     public int scheduleXccdfScan(User loggedInUser, Integer sid,
             String xccdfPath, String oscapParams, Date date) {
-        List serverIds = new ArrayList();
+        List serverIds = new ArrayList<>();
         serverIds.add(sid);
         return scheduleXccdfScan(loggedInUser, serverIds, xccdfPath, oscapParams, null, date);
     }

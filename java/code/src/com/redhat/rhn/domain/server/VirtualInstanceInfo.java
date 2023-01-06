@@ -156,6 +156,7 @@ public class VirtualInstanceInfo extends BaseDomainHelper {
      * @return <code>true</code> if <code>object</code> is a VirtualInstanceInfo and has
      * the same parent VirtualInstance as this info object.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null || object.getClass() != getClass()) {
             return false;
@@ -169,6 +170,7 @@ public class VirtualInstanceInfo extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getParent()).toHashCode();
     }

@@ -256,7 +256,7 @@ public class XccdfTestResult {
      * SCAP retention policy.
      * @return the result
      */
-    public Boolean getDeletable() {
+    public boolean getDeletable() {
         OrgConfig cfg = getServer().getOrg().getOrgConfig();
         Long retentionDays = cfg.getScapRetentionPeriodDays();
         if (retentionDays == null) {

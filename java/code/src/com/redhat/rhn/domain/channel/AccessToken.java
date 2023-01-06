@@ -150,6 +150,7 @@ public class AccessToken {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other instanceof AccessToken) {
             AccessToken o = (AccessToken)other;

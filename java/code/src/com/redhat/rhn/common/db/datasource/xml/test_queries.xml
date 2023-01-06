@@ -93,13 +93,6 @@
 </mode>
 
 
-<write-mode name="update_group_type">
-    <query params="type_id, sgid">
-update rhnServerGroup set group_type = :type_id where id = :sgid
-    </query>
-</write-mode>
-
-
 <write-mode name="delete_from_table">
   <query params="foobar">
     DELETE FROM adv_datasource
@@ -141,14 +134,6 @@ update rhnServerGroup set group_type = :type_id where id = :sgid
   </query>
 </write-mode>
 
-<write-mode name="insert_into_table_pg">
-  <query params="foobar, id, test_column, pin">
-    INSERT INTO adv_datasource (foobar, id, test_column, pin)
-    VALUES (:foobar, :id, :test_column, :pin)
-    ON CONFLICT DO NOTHING
-  </query>
-</write-mode>
-
 <write-mode name="update_in_table">
   <query params="foobar, id">
     UPDATE adv_datasource
@@ -162,13 +147,6 @@ update rhnServerGroup set group_type = :type_id where id = :sgid
       { :arch = call lookup_package_arch( :label ) }
   </query>
 </callable-mode>
-
-<callable-mode name="stored_procedure_oracle_format">
-  <query params="label, arch">
-      { :arch = call lookup_package_arch( :label ) }
-  </query>
-</callable-mode>
-
 
 <!-- Test to benchmark datasource vs hibernate -->
 <mode name="withClass_pg" class="com.redhat.rhn.common.db.datasource.test.TableData">
@@ -268,20 +246,6 @@ VALUES (:server_id,
   </query>
 </write-mode>
 
-<write-mode name="insert_into_rhnServerPackageSimple">
-  <query params="server_id, name_id, evr_id">
-INSERT
-  INTO rhnServerPackage
-       (server_id,
-        name_id,
-        evr_id)
-VALUES (:server_id,
-        :name_id,
-        :evr_id)
-  </query>
-</write-mode>
-
-
 <mode name="scheduled_actions">
   <query params="user_id">
     Select  AT.label
@@ -331,12 +295,6 @@ insert into rhnClientCapability (server_id, capability_name_id, version)
     </query>
 </write-mode>
 
-<write-mode name="update_group_type">
-    <query params="type_id, sgid">
-update rhnServerGroup set group_type = :type_id where id = :sgid
-    </query>
-</write-mode>
-
 <mode name="package_install_list">
     <query params="action_id">
 SELECT * from rhntransactionpackage where
@@ -346,34 +304,9 @@ SELECT * from rhntransactionpackage where
     </query>
 </mode>
 
-<mode name="select_virtual_instance_by_id">
-    <query params="id">
-SELECT * FROM rhnVirtualInstance WHERE id = :id
-    </query>
-</mode>
-
 <mode name="get_test_users">
     <query params="">
 SELECT id from web_contact where UPPER(login) like 'TEST%'
-    </query>
-</mode>
-
-<mode name="get_test_channels">
-    <query params="">
-SELECT id from rhnChannel where UPPER(name) like 'CHANNELNAME%' or UPPER(label) like 'CHANNELLABEL%'
-    </query>
-</mode>
-
-
-<mode name="get_test_orgs">
-    <query params="">
-SELECT id from web_customer where UPPER(name) like 'TEST%'
-    </query>
-</mode>
-
-<mode name="get_test_servers">
-    <query params="">
-SELECT id from rhnServer where name like 'serverfactorytest%'
     </query>
 </mode>
 
@@ -403,25 +336,6 @@ SELECT 1 FROM dual
     </query>
 </mode>
 
-<write-mode name="delete_all_servers">
-  <query>
-    DELETE FROM rhnserver
-  </query>
-</write-mode>
-
-<write-mode name="insert_into_suseupgradepath">
-  <query params="from_pdid, to_pdid">
-    INSERT INTO suseupgradepath (
-	  from_pdid,
-	  to_pdid
-    )
-    VALUES (
-	  :from_pdid,
-	  :to_pdid
-    )
-  </query>
-</write-mode>
-
 <mode name="find_relevant_channels" class="com.redhat.rhn.manager.audit.ServerChannelIdPair">
   <query params="sid">
       SELECT server_id sid, channel_id cid, channel_rank FROM suseCVEServerChannel
@@ -440,13 +354,6 @@ SELECT 1 FROM dual
     <query params="details_id">
         SELECT * FROM rhnActionSubChannelsList
         WHERE subscribe_channels_id = :details_id
-    </query>
-</mode>
-
-<mode name="latest_action_subscribe_channels">
-    <query>
-        SELECT * FROM rhnActionSubChannels
-        WHERE id=(SELECT MAX(id) FROM rhnActionSubChannels)
     </query>
 </mode>
 

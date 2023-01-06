@@ -153,7 +153,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param arch channel arch
      * @return base channel
      */
-    @SuppressWarnings("unchecked")
     public static EssentialChannelDto getProductBaseChannelDto(long productID, ChannelArch arch) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("pid", productID);

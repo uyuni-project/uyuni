@@ -65,12 +65,10 @@ public class MirrorCredentialsRenderer {
      * @param user username for new credentials
      * @param password password for new credentials
      * @return the rendered fragment
-     * @throws ServletException in case of rendering errors
-     * @throws IOException in case something really bad happens
      * @throws ContentSyncException in case of problems storing the credentials
      */
     public String saveCredentials(HttpServletRequest request, Long id, String user, String password)
-        throws ServletException, IOException, ContentSyncException {
+        throws ContentSyncException {
 
         MirrorCredentialsDto creds;
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();

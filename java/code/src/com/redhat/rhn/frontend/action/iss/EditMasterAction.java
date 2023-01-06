@@ -99,8 +99,7 @@ public class EditMasterAction extends RhnAction {
     }
 
     private Long updateMasterDetails(ActionMapping mapping, DynaActionForm dynaForm,
-                    HttpServletRequest request, HttpServletResponse response)
-                    throws Exception {
+                    HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext ctxt = new RequestContext(request);
         ActionMessages msg = new ActionMessages();

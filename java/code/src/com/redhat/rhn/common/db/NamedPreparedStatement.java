@@ -109,12 +109,12 @@ public final class NamedPreparedStatement {
      * @param outParams A map of parameter name to Integer object of
      *                  SQL Types representing the type of data to be returned.
      * @return true if CallableStatement executed without error, false otherwise.
-     * @throws RuntimeException in case of SQLException
+     * @throws DatabaseException in case of SQL Exception
      */
     public static boolean execute(CallableStatement cs,
             Map<String, List<Integer>> parameterMap,
             Map<String, ?> inParams, Map<String, Integer> outParams)
-            throws RuntimeException {
+            throws DatabaseException {
         try {
             setVars(cs, parameterMap, inParams);
             setOutputVars(cs, parameterMap, outParams);
@@ -134,7 +134,7 @@ public final class NamedPreparedStatement {
      * @see java.sql.PreparedStatement#execute()
      * @return true if PreparedStatement received a result set
      *         false if PreparedStatement received an update count
-     * @throws RuntimeException in case of SQLException
+     * @throws DatabaseException in case of SQL Exception
      */
     public static boolean execute(PreparedStatement ps,
             Map<String, List<Integer>> parameterMap,
@@ -228,7 +228,7 @@ public final class NamedPreparedStatement {
      * @param batch The values to substitute for the named bind parameters
      * @see java.sql.PreparedStatement#executeBatch()
      * @return an array of update counts containing one element for each command in the batch
-     * @throws RuntimeException in case of SQLException
+     * @throws DatabaseException in case of SQL Exception
      */
     public static int[] executeBatch(PreparedStatement ps,
             Map<String, List<Integer>> parameterMap, DataResult<Map<String, Object>> batch) {

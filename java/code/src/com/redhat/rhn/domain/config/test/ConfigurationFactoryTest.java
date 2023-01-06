@@ -43,7 +43,7 @@ import java.util.Date;
 public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testLookupConfigChannelType() throws Exception {
+    public void testLookupConfigChannelType() {
         assertNotNull(ConfigChannelType.normal());
         assertNotNull(ConfigChannelType.sandbox());
         assertNotNull(ConfigChannelType.local());
@@ -51,7 +51,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupConfigFileType() throws Exception {
+    public void testLookupConfigFileType() {
         assertNotNull(ConfigFileType.dir());
         assertEquals(ConfigFileType.DIR,
                 ConfigFileType.dir().getLabel());
@@ -61,7 +61,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupConfigFileState() throws Exception {
+    public void testLookupConfigFileState() {
         assertNotNull(ConfigFileState.normal());
         assertNotNull(ConfigFileState.dead());
     }
@@ -235,7 +235,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreateNewRevisionFromStream() throws Exception {
+    public void testCreateNewRevisionFromStream() {
         String startData = "this is some original data";
         ByteArrayInputStream stream =
             new ByteArrayInputStream(startData.getBytes(StandardCharsets.UTF_8));

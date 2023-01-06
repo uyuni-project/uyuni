@@ -31,7 +31,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -43,15 +42,15 @@ import java.util.Set;
 public class AclTest extends RhnBaseTestCase {
 
     private Acl acl = null;
-    private Map context = null;
+    private Map<String, Object> context = null;
     private MockAclHandler handler = null;
 
     /** Sets up the acl, handler, and context objects. */
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         acl = new Acl();
-        context = new HashMap();
+        context = new HashMap<>();
         handler = new MockAclHandler();
 
         acl.registerHandler(handler);
@@ -319,13 +318,13 @@ public class AclTest extends RhnBaseTestCase {
      * first parameter equals "true", then handleAcl() returns true.
      */
    public static class MockAclHandler implements AclHandler, Verifiable {
-       private Map expected = null;
+       private Map<String, Object> expected = null;
 
        public MockAclHandler() {
            reset();
        }
        private void reset() {
-           expected = new HashMap();
+           expected = new HashMap<>();
            expected.put("handler_zero",
                    new ExpectationValue("handler_zero params"));
            expected.put("handler_one",
@@ -337,8 +336,7 @@ public class AclTest extends RhnBaseTestCase {
            // otherwise, calling setActual() might throw an Exception,
            // which we don't want because then we won't get our
            // assert exceptions
-           Collection expectedValues = expected.values();
-           for (Object expectedValueIn : expectedValues) {
+           for (Object expectedValueIn : expected.values()) {
                ExpectationValue exp = (ExpectationValue) expectedValueIn;
                exp.setFailOnVerify();
            }
@@ -386,8 +384,7 @@ public class AclTest extends RhnBaseTestCase {
         */
        @Override
        public void verify() {
-           Collection expectedValues = expected.values();
-           for (Object expectedValueIn : expectedValues) {
+           for (Object expectedValueIn : expected.values()) {
                ExpectationValue exp = (ExpectationValue) expectedValueIn;
                exp.verify();
            }

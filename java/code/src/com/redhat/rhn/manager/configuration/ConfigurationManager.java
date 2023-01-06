@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -187,9 +188,7 @@ public class ConfigurationManager extends BaseManager {
      * @param user The user looking at channels.
      * @return A list of the channels in DTO format.
      */
-    public DataResult<ConfigChannelDto>
-    listGlobalChannelsForActivationKeySubscriptions
-    (ActivationKey key, User user) {
+    public DataResult<ConfigChannelDto> listGlobalChannelsForActivationKeySubscriptions(ActivationKey key, User user) {
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES,
                 "overview_config_channels_for_act_key_subscriptions");
         Map<String, Object> params = new HashMap<>();
@@ -207,9 +206,7 @@ public class ConfigurationManager extends BaseManager {
      * @param user The user looking at channels.
      * @return A list of the channels in DTO format.
      */
-    public DataResult<ConfigChannelDto>
-    listGlobalChannelsForActivationKey(ActivationKey key,
-            User user) {
+    public DataResult<ConfigChannelDto> listGlobalChannelsForActivationKey(ActivationKey key, User user) {
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES,
                 "overview_config_channels_for_act_key");
         Map<String, Object> params = new HashMap<>();
@@ -253,8 +250,7 @@ public class ConfigurationManager extends BaseManager {
      * @param pc A page control for this user.
      * @return A list of the channels in DTO format.
      */
-    public DataResult<ConfigChannelDto>
-    listGlobalChannelsForSystemSubscriptions(Server server,
+    public DataResult<ConfigChannelDto> listGlobalChannelsForSystemSubscriptions(Server server,
             User user,
             PageControl pc) {
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES,
@@ -279,8 +275,7 @@ public class ConfigurationManager extends BaseManager {
      * @param pc A page control for this user.
      * @return A list of the channels in DTO format.
      */
-    public DataResult<ConfigChannelDto>
-    listNormalChannelsForSystemSubscriptions(Server server,
+    public DataResult<ConfigChannelDto> listNormalChannelsForSystemSubscriptions(Server server,
                                              User user,
                                              PageControl pc) {
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES,
@@ -616,8 +611,7 @@ public class ConfigurationManager extends BaseManager {
      * @param pc A PageControl for this user
      * @return A list of config file names in DTO format.
      */
-    public DataResult<ConfigFileNameDto> listFileNamesForSystem(User user,
-            Server server, PageControl pc) {
+    public DataResult<ConfigFileNameDto> listFileNamesForSystem(User user, Server server, PageControl pc) {
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES,
                 "file_names_for_system");
         Map<String, Object> params = new HashMap<>();
@@ -649,8 +643,7 @@ public class ConfigurationManager extends BaseManager {
      * @param pc A PageControl for this user
      * @return A list of config file names in DTO format.
      */
-    public DataResult<ConfigFileNameDto> listFileNamesForSystemQuick(User user,
-            Server server, PageControl pc) {
+    public DataResult<ConfigFileNameDto> listFileNamesForSystemQuick(User user, Server server, PageControl pc) {
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES,
                 "file_names_for_system_quick");
         Map<String, Object> params = new HashMap<>();
@@ -2427,8 +2420,8 @@ public class ConfigurationManager extends BaseManager {
      * @param pc page control
      * @return Difference of config channel subscription between current state and snapshot
      */
-    public static DataResult<Map<String, Object>> systemSnapshotConfigChannels(Long sid, Long ssid,
-            PageControl pc) {
+    public static DataResult<Row> systemSnapshotConfigChannels(Long sid, Long ssid,
+                                                               PageControl pc) {
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES,
                 "snapshot_configchannel_diff");
         Map<String, Object> params = new HashMap<>();
@@ -2442,12 +2435,11 @@ public class ConfigurationManager extends BaseManager {
      * @param pc page control
      * @return List of config files which will be redeployed during rollback
      */
-    public static DataResult<Map<String, Object>> systemSnapshotConfigFiles(Long ssid, PageControl pc) {
+    public static DataResult<Row> systemSnapshotConfigFiles(Long ssid, PageControl pc) {
         SelectMode m = ModeFactory.getMode(CONFIG_QUERIES, "configfiles_for_snapshot");
         Map<String, Object> params = new HashMap<>();
         params.put("ss_id", ssid);
-        Map<Object, Object> elabParams = new HashMap<>();
-        return makeDataResult(params, elabParams, pc, m);
+        return makeDataResult(params, new HashMap<>(), pc, m);
     }
 
     private void checkChannelAccess(User user, ConfigChannel channel) throws IllegalArgumentException {

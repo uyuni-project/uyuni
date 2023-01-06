@@ -43,6 +43,7 @@ public class SummaryPopulation extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
 
         try {

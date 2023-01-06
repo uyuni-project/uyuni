@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.configuration.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -102,7 +103,7 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
 
         assertEquals(other, revision2.getCreator());
         assertEquals(3, revision2.getConfigChannels().size());
-        assertFalse(revision1.equals(revision2));
+        assertNotEquals(revision1, revision2);
         assertTrue(revision2.getConfigChannels().stream().anyMatch(channel1::equals));
         assertTrue(revision2.getConfigChannels().stream().anyMatch(channel2::equals));
         assertTrue(revision2.getConfigChannels().stream().anyMatch(channel3::equals));
@@ -181,7 +182,7 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
 
         assertEquals(other, revision2.getCreator());
         assertEquals(0, revision2.getConfigChannels().size());
-        assertFalse(revision1.equals(revision2));
+        assertNotEquals(revision1, revision2);
 
         // Test non-subscribed channels
         channelsToUnsubscribe.clear();
@@ -248,6 +249,6 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         assertEquals(other, revision2.getCreator());
         assertEquals(2, revision2.getConfigChannels().size());
         assertEquals(channelList, revision2.getConfigChannels());
-        assertFalse(revision1.equals(revision2));
+        assertNotEquals(revision1, revision2);
     }
 }

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
@@ -728,13 +729,14 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @return all errata notifications
      */
-    public List getNotificationQueue() {
+    public List<Row> getNotificationQueue() {
         return ErrataManager.listErrataNotifications(this);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return getClass().getName() + " : " + id + " : " + advisory + " desc: " + description + " syn: " + synopsis;
     }
@@ -788,6 +790,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Errata)) {
             return false;
@@ -805,6 +808,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder eb = new HashCodeBuilder();
         eb.append(this.getAdvisory());

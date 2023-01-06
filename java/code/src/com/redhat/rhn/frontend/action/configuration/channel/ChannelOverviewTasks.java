@@ -71,7 +71,7 @@ public class ChannelOverviewTasks extends RhnAction {
     public ActionForward execute(ActionMapping map,
                                  ActionForm form,
                                  HttpServletRequest req,
-                                 HttpServletResponse resp) throws Exception {
+                                 HttpServletResponse resp) {
 
         Map params = makeParamMap(req);
         String mode = req.getParameter(MODE_PARAM);
@@ -187,8 +187,8 @@ public class ChannelOverviewTasks extends RhnAction {
     }
 
     @Override
-    protected Map makeParamMap(HttpServletRequest req) {
-        Map m = new HashMap();
+    protected Map<String, Object> makeParamMap(HttpServletRequest req) {
+        Map<String, Object> m = new HashMap<>();
         ConfigChannel cc = ConfigActionHelper.getChannel(req);
         ConfigActionHelper.processParamMap(cc, m);
         return m;

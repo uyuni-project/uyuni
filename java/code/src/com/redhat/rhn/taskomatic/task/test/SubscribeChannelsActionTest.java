@@ -125,8 +125,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(server2.getChannels().isEmpty());
     }
 
-    private ServerAction createChildServerAction(Action action, Server server, ActionStatus status)
-            throws Exception {
+    private ServerAction createChildServerAction(Action action, Server server, ActionStatus status) {
         ServerAction serverAction = ActionFactoryTest.createServerAction(server, action);
         serverAction.setStatus(status);
         serverAction.setRemainingTries(1L);

@@ -76,7 +76,7 @@ public class BaseUserSetupAction extends RhnAction {
      * @return Map of configured locales and locale image uris
      */
     public Map<String, LangDisplayBean> buildImageMap(List<String> locales) {
-        Map<String, LangDisplayBean> retval = new LinkedHashMap();
+        Map<String, LangDisplayBean> retval = new LinkedHashMap<>();
         LocalizationService ls = LocalizationService.getInstance();
         for (String locale : locales) {
             LangDisplayBean ldb = new LangDisplayBean();
@@ -93,7 +93,7 @@ public class BaseUserSetupAction extends RhnAction {
      */
     public List getTimeZones() {
         List dataList = UserManager.lookupAllTimeZones();
-        List displayList = new ArrayList();
+        List<Map<String, String>> displayList = new ArrayList<>();
         for (Object oIn : dataList) {
             String display = LocalizationService.getInstance()
                     .getMessage(((RhnTimeZone) oIn).getOlsonName());
@@ -103,14 +103,14 @@ public class BaseUserSetupAction extends RhnAction {
         return displayList;
     }
 
-    private Map createDisplayMap(String display, String value) {
-        Map selection = new HashMap();
+    protected Map<String, String> createDisplayMap(String display, String value) {
+        Map<String, String> selection = new HashMap<>();
         selection.put("display", display);
         selection.put("value", value);
         return selection;
     }
 
-    public List getWebThemes() {
+    public List<String> getWebThemes() {
         return ConfigDefaults.get().getWebThemesList();
     }
 }

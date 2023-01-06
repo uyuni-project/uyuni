@@ -29,14 +29,14 @@ import java.util.Map;
  */
 public class RhnMockHttpSession extends MockHttpSession {
 
-    private Map attributes;
+    private Map<String, Object> attributes;
 
     /**
      * default constructor
      */
     public RhnMockHttpSession() {
         super();
-        attributes = new HashMap();
+        attributes = new HashMap<>();
     }
 
     /**
@@ -74,6 +74,7 @@ public class RhnMockHttpSession extends MockHttpSession {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return this.getClass().getName() + " attributes: " + attributes;
     }

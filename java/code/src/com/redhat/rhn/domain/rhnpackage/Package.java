@@ -96,7 +96,7 @@ public class Package extends BaseDomainHelper {
     /**
      * @return Returns the status of being locked.
      */
-    public Boolean isLockPending() {
+    public boolean isLockPending() {
         return lockPending;
     }
 

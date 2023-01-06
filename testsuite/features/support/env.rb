@@ -268,14 +268,6 @@ Before('@sle12sp5_minion') do
   skip_this_scenario unless $sle12sp5_minion
 end
 
-Before('@sle15_ssh_minion') do
-  skip_this_scenario unless $sle15_ssh_minion
-end
-
-Before('@sle15_minion') do
-  skip_this_scenario unless $sle15_minion
-end
-
 Before('@sle15sp1_ssh_minion') do
   skip_this_scenario unless $sle15sp1_ssh_minion
 end

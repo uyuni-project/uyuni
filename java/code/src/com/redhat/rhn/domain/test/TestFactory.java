@@ -58,7 +58,7 @@ public class TestFactory extends HibernateFactory {
 
     public static TestInterface lookupByFoobar(String f) {
         // Get PersonalInfo row
-        Map m = new HashMap();
+        Map<String, Object> m = new HashMap<>();
         m.put("fooBar", f);
         return (TestInterface) singleton.lookupObjectByNamedQuery("Test.findByFoobar", m);
     }

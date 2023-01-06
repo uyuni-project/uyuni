@@ -82,6 +82,7 @@ public abstract class SsmPackageEvent implements EventDatabaseMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmPackageEvent[userId=" + userId + ", " +
                 (earliest != null ? "earliest=" + earliest + ", " : "") +

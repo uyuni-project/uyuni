@@ -1,7 +1,10 @@
+- install SUSE Liberty v2 GPG key
+- Detect bootstrap repository path for SLE Micro
+- Fix reboot info beacon installation
+- Add state to properly configure the reboot action for transactional systems
 - enforce installation of the PTF GPG key package
 - Optimize the number of salt calls on minion startup (bsc#1203532)
 - Updated logrotate configuration (bsc#1206470)
-
 -------------------------------------------------------------------
 Wed Dec 14 14:15:05 CET 2022 - jgonzalez@suse.com
 

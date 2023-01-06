@@ -44,7 +44,7 @@ public class CobblerLoginCommand {
         XMLRPCInvoker helper =
             (XMLRPCInvoker) MethodUtil.getClassFromConfig(
                     CobblerXMLRPCHelper.class.getName());
-        List args = new ArrayList();
+        List args = new ArrayList<>();
         args.add(usernameIn);
         args.add(passwordIn);
         String retval = null;
@@ -73,7 +73,7 @@ public class CobblerLoginCommand {
         XMLRPCInvoker helper =
             (XMLRPCInvoker) MethodUtil.getClassFromConfig(
                     CobblerXMLRPCHelper.class.getName());
-        List args = new ArrayList();
+        List args = new ArrayList<>();
         args.add(token);
         Boolean retval = null;
         try {

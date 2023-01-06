@@ -45,6 +45,7 @@ public class ValidatorError extends ValidationMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "ValidatorError [Key: " + getKey() + "]";
     }

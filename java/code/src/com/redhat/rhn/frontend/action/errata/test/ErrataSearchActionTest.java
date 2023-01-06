@@ -59,7 +59,7 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
         ah.getRequest().setupAddParameter(BaseSearchAction.FINE_GRAINED, "on");
 
         // I *HATE* Mockobjects
-        Map paramnames = new HashMap();
+        Map<String, String> paramnames = new HashMap<>();
         paramnames.put(BaseSearchAction.SEARCH_STR, name);
         paramnames.put(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
         paramnames.put(BaseSearchAction.FINE_GRAINED, "on");

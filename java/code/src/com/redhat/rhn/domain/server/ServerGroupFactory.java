@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.DuplicateObjectException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -194,7 +195,7 @@ public class ServerGroupFactory extends HibernateFactory {
      */
     public static EntitlementServerGroup lookupEntitled(Entitlement ent,
                                                             Org org) {
-        Map qryParams = new HashMap();
+        Map<String, Object> qryParams = new HashMap<>();
         qryParams.put("label", ent.getLabel());
         qryParams.put("org", org);
         return (EntitlementServerGroup) SINGLETON.lookupObjectByNamedQuery(
@@ -414,8 +415,9 @@ public class ServerGroupFactory extends HibernateFactory {
      * @return a map containing the managed system group information for each group the passed systems are member of
      */
     public Map<Long, List<SystemGroupID>> lookupManagedSystemGroupsForSystems(List<Long> systemIDs) {
-        SelectMode mode = ModeFactory.getMode("SystemGroup_queries", "managed_system_groups_by_system", Map.class);
-        return ((DataResult<Map<String, Object>>) mode.execute(systemIDs)).stream()
+        SelectMode mode = ModeFactory.getMode("SystemGroup_queries", "managed_system_groups_by_system");
+        DataResult<Row> dr = mode.execute(systemIDs);
+        return dr.stream()
                 .collect(Collectors.groupingBy(m -> (Long) m.get("system_id"),
                         Collectors.mapping(
                                 m -> new SystemGroupID((Long) m.get("group_id"), (String) m.get("group_name")),

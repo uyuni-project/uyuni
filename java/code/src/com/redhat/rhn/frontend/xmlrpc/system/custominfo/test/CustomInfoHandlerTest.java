@@ -34,7 +34,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
     private CustomInfoHandler handler = new CustomInfoHandler();
 
     @Test
-    public void testCreateKey() throws Exception {
+    public void testCreateKey() {
 
         // default setup already includes a custom key; therefore, let's
         // grab the initial size
@@ -59,7 +59,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDeleteKey() throws Exception {
+    public void testDeleteKey() {
 
         // default setup already includes a custom key; therefore, let's
         // grab the initial size
@@ -97,7 +97,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListAllKeys() throws Exception {
+    public void testListAllKeys() {
 
         // default setup already includes a custom key; therefore, we don't
         // need to add any as part of this test.

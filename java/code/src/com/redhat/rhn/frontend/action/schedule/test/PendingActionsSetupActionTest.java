@@ -50,7 +50,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
     @Test
-    public void testPerformExecute() throws Exception {
+    public void testPerformExecute() {
 
 
         actionPerform();

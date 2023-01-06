@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageMergeDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
@@ -73,7 +74,7 @@ public class ChannelPackagesCompareMergeConfirmAction extends ChannelPackagesCom
         }
 
         RhnSet set = RhnSetDecl.PACKAGES_TO_SYNC_CHANNEL.get(user);
-        DataResult result = PackageManager.mergePackagesFromSet(user, set.getLabel());
+        DataResult<PackageMergeDto> result = PackageManager.mergePackagesFromSet(user, set.getLabel());
 
 
         request.setAttribute(RequestContext.CID, chan.getId());

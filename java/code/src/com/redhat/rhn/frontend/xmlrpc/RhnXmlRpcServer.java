@@ -40,12 +40,9 @@ public class RhnXmlRpcServer extends XmlRpcServer {
      *      reference to the server
      * @param protoc the protocol the client used in connection to the server
      * available  to  custom processors.
-     * @throws Throwable if the input stream contains unparseable XML or if
-     * some error occurs in the SAX driver.
      */
     public void execute(InputStream xmlInput, Writer output, String callerIp,
-            String serverHost, String protoc)
-        throws Throwable {
+            String serverHost, String protoc) {
         server.set(serverHost);
         proto.set(protoc);
         caller.set(callerIp);

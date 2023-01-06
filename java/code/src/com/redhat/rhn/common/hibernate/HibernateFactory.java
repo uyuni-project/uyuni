@@ -119,6 +119,14 @@ public abstract class HibernateFactory {
     }
 
     /**
+     * Register Prometheus Statistics Collector component name
+     * @param componentName Name of the application component which will be added to the metric as the `unit` label
+     */
+    public static void registerComponentName(String componentName) {
+        connectionManager.setComponentName(componentName);
+    }
+
+    /**
      * Get the Logger for the derived class so log messages show up on the
      * correct class
      * @return Logger for this class.
@@ -715,7 +723,7 @@ public abstract class HibernateFactory {
 
     protected static void executeCallableMode(String name, String mode, Map params) {
         CallableMode m = ModeFactory.getCallableMode(name, mode);
-        m.execute(params, new HashMap());
+        m.execute(params, new HashMap<>());
     }
 
     /**

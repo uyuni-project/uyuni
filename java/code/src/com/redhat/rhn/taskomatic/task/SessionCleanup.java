@@ -19,7 +19,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,10 +39,9 @@ public class SessionCleanup extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext context)
-            throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
         Config c = Config.get();
-        Map inParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
 
         //retrieves info from user preferences
         long window = c.getInt("web.session_database_lifetime");

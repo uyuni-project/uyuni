@@ -26,8 +26,6 @@ import org.apache.commons.digester.Digester;
 import org.junit.jupiter.api.Test;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class AttributeCopyRuleTest extends RhnBaseTestCase {
@@ -43,28 +41,16 @@ public class AttributeCopyRuleTest extends RhnBaseTestCase {
         DummyObject result =
             (DummyObject)digester.parse(url.openStream());
 
-        Map expected = new HashMap();
-        expected.put("foo", "1");
-        expected.put("bar", "baz");
+        Map<String, String> expected = Map.of(
+            "foo", "1",
+            "bar", "baz");
 
-        Iterator i;
-        i = expected.entrySet().iterator();
-        while (i.hasNext()) {
-            Map.Entry me = (Map.Entry)i.next();
+        assertEquals(expected.size(), result.getValues().size());
 
-            assertNotNull(result.getValues().get(me.getKey()));
-            assertEquals(result.getValues().get(me.getKey()),
-                         me.getValue());
-        }
-
-        i = result.getValues().entrySet().iterator();
-        while (i.hasNext()) {
-            Map.Entry me = (Map.Entry)i.next();
-
-            assertNotNull(expected.get(me.getKey()));
-            assertEquals(expected.get(me.getKey()),
-                         me.getValue());
-        }
+        expected.forEach((key, value) -> {
+            assertNotNull(result.getValues().get(key));
+            assertEquals(result.getValues().get(key), value);
+        });
     }
 }
 

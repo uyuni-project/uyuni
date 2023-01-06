@@ -33,7 +33,7 @@ public class UserOverviewTest extends RhnBaseTestCase {
      */
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         uo = new UserOverview();
     }
 

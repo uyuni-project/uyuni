@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
 
     @Test
-    public void testKickstartEditCommand() throws Exception {
+    public void testKickstartEditCommand() {
 
         KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
         command.setComments("My Comment");
@@ -50,7 +50,7 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testKickstartLabel() throws Exception {
+    public void testKickstartLabel() {
         KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
         command.setLabel("shaggy-ks-rhel4");
         command.store();

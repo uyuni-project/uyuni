@@ -46,7 +46,7 @@ public class CloneErrataActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testEmptySet() throws Exception {
+    public void testEmptySet() {
         RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),
                                                           "clone_errata_list",
                                                           SetCleanup.NOOP);

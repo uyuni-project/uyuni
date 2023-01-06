@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.filediff.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.filediff.ChangeHunk;
@@ -61,7 +62,7 @@ public class DiffTest extends RhnBaseTestCase {
     private void checkDiff(String[] oldFile, String[] newFile, Class<?>[] types) {
         Diff diff = new Diff(oldFile, newFile);
         List<Hunk> hunks = diff.diffFiles();
-        assertTrue(types.length == hunks.size());
+        assertEquals(types.length, hunks.size());
         Iterator<Hunk> i = hunks.iterator();
         int a = 0;
         while (i.hasNext()) {

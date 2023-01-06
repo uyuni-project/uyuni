@@ -330,6 +330,10 @@ PKGLIST15_SALT_OPT_BUNDLE = PKGLIST15_SALT_NO_BUNDLE + [
     "venv-salt-minion*",
 ]
 
+PKGLISTMICRO_BUNDLE_ONLY = [
+    "venv-salt-minion",
+]
+
 ONLYSLE15 = [
     "gio-branding-SLE",
 ]
@@ -1052,6 +1056,42 @@ DATA = {
     'SUMA-43-PROXY-x86_64' : {
         'PDID' : [2299, 2384], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
+    },
+    'SLE-MICRO-5.1-aarch64' : {
+        'PDID' : [2282, 2549], 'BETAPDID' : [2552], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/1/bootstrap/'
+    },
+    'SLE-MICRO-5.1-s390x' : {
+        'PDID' : [2287, 2550], 'BETAPDID' : [2553], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/1/bootstrap/'
+    },
+    'SLE-MICRO-5.1-x86_64' : {
+        'PDID' : [2283, 2551], 'BETAPDID' : [2554], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/1/bootstrap/'
+    },
+    'SLE-MICRO-5.2-aarch64' : {
+        'PDID' : [2399, 2549], 'BETAPDID' : [2552], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
+    },
+    'SLE-MICRO-5.2-s390x' : {
+        'PDID' : [2400, 2550], 'BETAPDID' : [2553], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
+    },
+    'SLE-MICRO-5.2-x86_64' : {
+        'PDID' : [2401, 2551], 'BETAPDID' : [2554], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/2/bootstrap/'
+    },
+    'SLE-MICRO-5.3-aarch64' : {
+        'PDID' : [2426, 2549], 'BETAPDID' : [2552], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
+    },
+    'SLE-MICRO-5.3-s390x' : {
+        'PDID' : [2427, 2550], 'BETAPDID' : [2553], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
+    },
+    'SLE-MICRO-5.3-x86_64' : {
+        'PDID' : [2428, 2551], 'BETAPDID' : [2554], 'PKGLIST' : PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/slemicro/5/3/bootstrap/'
     },
     'openSUSE-Leap-15-x86_64' : {
         'BASECHANNEL' : 'opensuse_leap15_0-x86_64', 'PKGLIST' :  PKGLIST15_SALT + PKGLIST15_X86_ARM,

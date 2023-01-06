@@ -149,6 +149,7 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ImageFile)) {
             return false;
@@ -165,6 +166,7 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(imageInfo)

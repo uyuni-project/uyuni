@@ -39,7 +39,6 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -80,8 +79,8 @@ public class DailySummary extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext ctxIn)
-        throws JobExecutionException {
+    @Override
+    public void execute(JobExecutionContext ctxIn) {
 
         processEndOfLifeNotification();
         processSubscriptionWarningNotification();
@@ -364,7 +363,7 @@ public class DailySummary extends RhnJavaJob {
                 String advisoryKey = ERRATA_INDENTION + am.getAdvisory();
 
                 if (!errataActions.containsKey(advisoryKey)) {
-                    errataActions.put(advisoryKey, new HashMap());
+                    errataActions.put(advisoryKey, new HashMap<>());
                     if (advisoryKey.length() + HEADER_SPACER > longestActionLength) {
                         longestActionLength = advisoryKey.length() + HEADER_SPACER;
                     }
@@ -385,7 +384,7 @@ public class DailySummary extends RhnJavaJob {
                     if (am.getType().equals("Apply states")) {
                         am.setType("Apply states (total)");
                     }
-                    nonErrataActions.put(am.getType(), new HashMap());
+                    nonErrataActions.put(am.getType(), new HashMap<>());
                     if (am.getType().length() + HEADER_SPACER > longestActionLength) {
                         longestActionLength = am.getType().length() + HEADER_SPACER;
                     }

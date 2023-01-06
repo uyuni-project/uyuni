@@ -49,7 +49,7 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
         tth = TagTestUtils.setupTagTest(tt, null);
         out = (MockJspWriter) tth.getPageContext().getOut();
         MockHttpServletRequest req = tth.getRequest();
-        req.setupGetAttribute(new HashMap());
+        req.setupGetAttribute(new HashMap<>());
     }
 
     @Override

@@ -104,7 +104,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
      */
     @Override
     public ActionForward unspecified(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         log.debug("unspecified()");
 
         RequestContext rctx = new RequestContext(request);
@@ -130,7 +130,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         strutsDelegate.saveMessages(request, msgs);
 
         return strutsDelegate.forwardParams(mapping.findForward("success"),
-                new HashMap());
+                new HashMap<>());
     }
 
     private ActionForward handleDataHasChanged(ActionMapping mapping,
@@ -144,7 +144,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         strutsDelegate.saveMessages(request, msgs);
 
         return strutsDelegate.forwardParams(mapping.findForward("success"),
-                new HashMap());
+                new HashMap<>());
     }
 
     /**
@@ -236,7 +236,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     strutsDelegate.saveMessages(request, msgs);
 
                     return strutsDelegate.forwardParams(mapping.findForward("success"),
-                            new HashMap());
+                            new HashMap<>());
                 }
 
                 List<DistChannelMap> dcms = ChannelFactory.listDistChannelMaps(oldBase);
@@ -296,7 +296,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     strutsDelegate.saveMessages(request, msgs);
 
                     return strutsDelegate.forwardParams(mapping.findForward("success"),
-                            new HashMap());
+                            new HashMap<>());
                 }
                 //case 2 --> evaluate the new base channel selected and use it
                 newBase = ChannelManager.lookupByIdAndUser(newBaseChannelId, user);

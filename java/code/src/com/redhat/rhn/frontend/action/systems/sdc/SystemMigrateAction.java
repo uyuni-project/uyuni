@@ -199,7 +199,7 @@ public class SystemMigrateAction extends RhnAction {
 
         //ibm jvm has issues adding set in ArrayList constructor so add separately
         Set set = user.getOrg().getTrustedOrgs();
-        List orgList = new ArrayList();
+        List orgList = new ArrayList<>();
         orgList.addAll(set);
 
         request.setAttribute("trustedOrgCount", trustedOrgCount);

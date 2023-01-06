@@ -63,7 +63,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testKsDownload() throws Exception {
+    public void testKsDownload() {
         // /ks/dist/f9-x86_64-distro/images/boot.iso
         addRequestParameter("url", "/ks/dist/" + tree.getLabel() + "/images/boot.iso");
         request.setQueryString("url=/ks/dist/" + tree.getLabel() + "/images/boot.iso");

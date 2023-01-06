@@ -24,6 +24,7 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -1008,7 +1009,7 @@ public class SystemHandler extends BaseHandler {
 
         List toCheck = packagesToCheck(server, name);
 
-        List returnList = new ArrayList();
+        List returnList = new ArrayList<>();
         /*
          * Loop through the packages to check and compare the evr parts to what was
          * passed in from the user. If the package is older, add it to returnList.
@@ -1084,7 +1085,7 @@ public class SystemHandler extends BaseHandler {
         );
 
         List toCheck = packagesToCheck(server, name);
-        List returnList = new ArrayList();
+        List returnList = new ArrayList<>();
         /*
          * Loop through the packages to check and compare the evr parts to what was
          * passed in from the user. If the package is newer, add it to returnList.
@@ -2523,9 +2524,8 @@ public class SystemHandler extends BaseHandler {
                 type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
 
             // retrieve the list of package names associated with the action...
-            DataResult pkgs = ActionManager.getPackageList(action.getId(), null);
-            for (Object pkgIn : pkgs) {
-                Map pkg = (Map) pkgIn;
+            DataResult<Row> pkgs = ActionManager.getPackageList(action.getId(), null);
+            for (Row pkg : pkgs) {
                 String detail = (String) pkg.get("nvre");
 
                 Map<String, String> info = new HashMap<>();
@@ -5959,10 +5959,9 @@ public class SystemHandler extends BaseHandler {
      * @return True is systems are compatible, false otherwise.
      */
     private boolean isCompatible(User user, Server target, Server source) {
-        List<Map<String, Object>> compatibleServers =
-                SystemManager.compatibleWithServer(user, target);
+        List<Row> compatibleServers = SystemManager.compatibleWithServer(user, target);
         boolean found = false;
-        for (Map<String, Object> m : compatibleServers) {
+        for (Row m : compatibleServers) {
             Long currentId = (Long) m.get("id");
             if (currentId.longValue() == source.getId().longValue()) {
                 found = true;
@@ -7128,8 +7127,6 @@ public class SystemHandler extends BaseHandler {
      * @param sid Server ID
      * @param interfaceName Interface name
      * @return 1 if success, exception thrown otherwise
-     * @throws Exception If interface does not exist Exception is thrown
-     *
      * @apidoc.doc Sets new primary network interface
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
@@ -7137,7 +7134,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setPrimaryInterface(User loggedInUser, Integer sid,
-            String interfaceName) throws Exception {
+            String interfaceName) {
         Server server = lookupServer(loggedInUser, sid);
 
         if (!server.existsActiveInterfaceWithName(interfaceName)) {

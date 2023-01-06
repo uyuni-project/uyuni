@@ -158,6 +158,7 @@ public abstract class ImageProfile extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ImageProfile)) {
             return false;
@@ -171,6 +172,7 @@ public abstract class ImageProfile extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(label)
                                     .append(org)

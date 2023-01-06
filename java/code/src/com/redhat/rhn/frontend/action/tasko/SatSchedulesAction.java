@@ -60,7 +60,7 @@ public class SatSchedulesAction extends RhnAction implements Listable {
         catch (TaskomaticApiException e) {
             createErrorMessage(contextIn.getRequest(),
                     "repos.jsp.message.taskomaticdown", null);
-            return new ArrayList();
+            return new ArrayList<>();
         }
     }
 }

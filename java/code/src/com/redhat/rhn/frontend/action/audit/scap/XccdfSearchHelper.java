@@ -60,7 +60,7 @@ public class XccdfSearchHelper extends RhnAction {
             Date startDate, Date endDate, String ruleResult, boolean returnTestResults,
             RequestContext context)
             throws MalformedURLException, XmlRpcException, XmlRpcFault {
-        ArrayList args = new ArrayList();
+        ArrayList args = new ArrayList<>();
         args.add(context.getWebSession().getId().toString());
         args.add(IDENT_INDEX);
         args.add(preprocessSearchString(searchString));

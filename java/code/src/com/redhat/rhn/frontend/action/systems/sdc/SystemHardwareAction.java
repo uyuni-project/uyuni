@@ -74,7 +74,7 @@ public class SystemHardwareAction extends RhnAction {
         DynaActionForm form = (DynaActionForm)formIn;
         RequestContext ctx = new RequestContext(request);
         User user =  ctx.getCurrentUser();
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         String fwd = RhnHelper.DEFAULT_FORWARD;
 
         Long sid = ctx.getRequiredParam(RequestContext.SID);
@@ -185,21 +185,21 @@ public class SystemHardwareAction extends RhnAction {
         request.setAttribute("network_cnames", server.getDecodedCnames());
         request.setAttribute("fqdns", server.getFqdns());
 
-        List<String> nicList = new ArrayList();
+        List<String> nicList = new ArrayList<>();
         for (NetworkInterface n : server.getNetworkInterfaces()) {
             nicList.add(n.getName());
         }
         Collections.sort(nicList);
 
-        List nicList2 = new ArrayList();
-        List nicList3 = new ArrayList();
-        List nicList4 = new ArrayList();
+        List<Map<String, String>> nicList2 = new ArrayList<>();
+        List<Map<String, String>> nicList3 = new ArrayList<>();
+        List<Map<String, String>> nicList4 = new ArrayList<>();
         for (String nicName : nicList) {
             NetworkInterface n = server.getNetworkInterface(nicName);
             boolean hasIPv4 = false;
             boolean hasIPv6 = false;
             for (ServerNetAddress4 na4 : n.getIPv4Addresses()) {
-                Map nic = new HashMap();
+                Map<String, String> nic = new HashMap<>();
                 nic.put("name", n.getName());
                 nic.put("ip", na4.getAddress());
                 nic.put("netmask", na4.getNetmask());
@@ -210,7 +210,7 @@ public class SystemHardwareAction extends RhnAction {
                 hasIPv4 = true;
             }
             for (ServerNetAddress6 na6 : n.getIPv6Addresses()) {
-                Map nic = new HashMap();
+                Map<String, String> nic = new HashMap<>();
                 nic.put("name", n.getName());
                 nic.put("hwaddr", n.getHwaddr());
                 nic.put("module", n.getModule());
@@ -221,7 +221,7 @@ public class SystemHardwareAction extends RhnAction {
                 hasIPv6 = true;
             }
             if (!(hasIPv4 || hasIPv6)) {
-                Map nic = new HashMap();
+                Map<String, String> nic = new HashMap<>();
                 nic.put("name", n.getName());
                 nic.put("hwaddr", n.getHwaddr());
                 nic.put("module", n.getModule());
@@ -232,14 +232,14 @@ public class SystemHardwareAction extends RhnAction {
         request.setAttribute("ipv6_network_interfaces", nicList3);
         request.setAttribute("noip_network_interfaces", nicList4);
 
-        List miscDevices = new ArrayList();
-        List videoDevices = new ArrayList();
-        List audioDevices = new ArrayList();
-        List captureDevices = new ArrayList();
-        List usbDevices = new ArrayList();
+        List<Map<String, String>> miscDevices = new ArrayList<>();
+        List<Map<String, String>> videoDevices = new ArrayList<>();
+        List<Map<String, String>> audioDevices = new ArrayList<>();
+        List<Map<String, String>> captureDevices = new ArrayList<>();
+        List<Map<String, String>> usbDevices = new ArrayList<>();
 
         for (Device d : server.getDevices()) {
-            Map device = new HashMap();
+            Map<String, String> device = new HashMap<>();
             String desc = null;
             String vendor = null;
 
@@ -263,31 +263,32 @@ public class SystemHardwareAction extends RhnAction {
             device.put("device", d.getDevice());
             device.put("driver", d.getDriver());
             device.put("pcitype", d.getPcitype().toString());
-            if (d.getDeviceClass().equals("HD")) {
-                continue;
-            }
-            else if (d.getDeviceClass().equals("VIDEO")) {
-                videoDevices.add(device);
-            }
-            else if (d.getDeviceClass().equals("USB")) {
-                usbDevices.add(device);
-            }
-            else if (d.getDeviceClass().equals("AUDIO")) {
-                audioDevices.add(device);
-            }
-            else if (d.getDeviceClass().equals("CAPTURE")) {
-                captureDevices.add(device);
-            }
-            else {
-                if (!d.getBus().equals("MISC")) {
-                    miscDevices.add(device);
-                }
+            switch (d.getDeviceClass()) {
+                case "HD":
+                    continue;
+                case "VIDEO":
+                    videoDevices.add(device);
+                    break;
+                case "USB":
+                    usbDevices.add(device);
+                    break;
+                case "AUDIO":
+                    audioDevices.add(device);
+                    break;
+                case "CAPTURE":
+                    captureDevices.add(device);
+                    break;
+                default:
+                    if (!d.getBus().equals("MISC")) {
+                        miscDevices.add(device);
+                    }
+                    break;
             }
         }
 
-        List storageDevices = new ArrayList();
+        List<Map<String, String>> storageDevices = new ArrayList<>();
         for (Device hd : ServerFactory.lookupStorageDevicesByServer(server)) {
-            Map device = new HashMap();
+            Map<String, String> device = new HashMap<>();
             device.put("description", hd.getDescription());
             device.put("device", hd.getDevice());
             device.put("bus", hd.getBus());
@@ -304,8 +305,8 @@ public class SystemHardwareAction extends RhnAction {
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
     }
 
-    private List getNetworkInterfaces(Server s) {
-        List pages = new ArrayList();
+    private List<Map<String, String>> getNetworkInterfaces(Server s) {
+        List<Map<String, String>> pages = new ArrayList<>();
         for (NetworkInterface ni : s.getActiveNetworkInterfaces()) {
             String istr = ni.getName();
             pages.add(createDisplayMap(istr, istr));
@@ -313,8 +314,8 @@ public class SystemHardwareAction extends RhnAction {
         return pages;
     }
 
-    private Map createDisplayMap(String display, String value) {
-        Map selection = new HashMap();
+    private Map<String, String> createDisplayMap(String display, String value) {
+        Map<String, String> selection = new HashMap<>();
         selection.put("display", display);
         selection.put("value", value);
         return selection;

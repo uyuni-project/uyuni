@@ -154,6 +154,7 @@ public class PackageActionRemovalFailure implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof PackageActionRemovalFailure)) {
             return false;
@@ -175,6 +176,7 @@ public class PackageActionRemovalFailure implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getAction())
                                     .append(getServer())

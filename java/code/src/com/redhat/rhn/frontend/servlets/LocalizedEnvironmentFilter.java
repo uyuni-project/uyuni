@@ -75,7 +75,7 @@ public class LocalizedEnvironmentFilter implements Filter {
      * {@inheritDoc}
      */
     @Override
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
     }
 
     private void initializeContext(HttpServletRequest request) {

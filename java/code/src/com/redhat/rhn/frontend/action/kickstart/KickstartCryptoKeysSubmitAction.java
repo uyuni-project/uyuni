@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.kickstart;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.CryptoKeyDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.kickstart.KickstartCryptoKeyCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
@@ -74,9 +75,9 @@ public class KickstartCryptoKeysSubmitAction extends BaseKickstartListSubmitActi
     }
 
     @Override
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<CryptoKeyDto> getDataResult(User user,
+                                                     ActionForm formIn,
+                                                     HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         return KickstartLister.getInstance().
             cryptoKeysInOrg(rctx.getCurrentUser().getOrg());

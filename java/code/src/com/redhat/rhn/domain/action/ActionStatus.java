@@ -65,6 +65,7 @@ public class ActionStatus {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         if (o == this) {
             return true;
@@ -80,6 +81,7 @@ public class ActionStatus {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return name;
     }
@@ -87,6 +89,7 @@ public class ActionStatus {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getName())
                                     .toHashCode();

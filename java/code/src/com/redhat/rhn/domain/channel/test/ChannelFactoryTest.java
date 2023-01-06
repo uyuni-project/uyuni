@@ -77,7 +77,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertNull(ChannelFactory.lookupById(id));
     }
 
-    public static ProductName lookupOrCreateProductName(String label) throws Exception {
+    public static ProductName lookupOrCreateProductName(String label) {
         ProductName attempt = ChannelFactory.lookupProductNameByLabel(label);
         if (attempt == null) {
             attempt = new ProductName();
@@ -176,8 +176,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return createTestChannel(name, label, org, arch, cfam);
     }
 
-    public static Channel createTestChannel(String name, String label, Org org, ChannelArch arch, ChannelFamily cfam)
-        throws Exception {
+    public static Channel createTestChannel(String name, String label, Org org, ChannelArch arch, ChannelFamily cfam) {
 
         String basedir = "TestChannel basedir";
         String summary = "TestChannel summary";
@@ -232,7 +231,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
                 ChannelFactory.getChannelsWithClonableErrata(
                 user.getOrg());
 
-        assertTrue(!channels.isEmpty());
+        assertFalse(channels.isEmpty());
     }
 
     @Test

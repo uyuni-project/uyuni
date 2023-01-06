@@ -33,7 +33,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
-import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
@@ -48,6 +47,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.CVE;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DuplicateErrataException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidAdvisoryReleaseException;
@@ -465,7 +465,7 @@ public class ErrataHandler extends BaseHandler {
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
-        DataResult dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errataIds);
+        DataResult<SystemOverview> dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errataIds);
 
         return dr.toArray();
     }
@@ -566,7 +566,7 @@ public class ErrataHandler extends BaseHandler {
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
         return ErrataManager.applicableChannels(errataIds,
-                loggedInUser.getOrg().getId(), null, Map.class).toArray();
+                loggedInUser.getOrg().getId()).toArray();
     }
 
     /**
@@ -587,14 +587,14 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.returntype #array_single("string", "CVE name")
      */
     @ReadOnly
-    public List listCves(User loggedInUser, String advisoryName) throws FaultException {
+    public List<String> listCves(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
-        DataResult dr = ErrataManager.errataCVEs(errataIds);
+        DataResult<CVE> dr = ErrataManager.errataCVEs(errataIds);
 
-        return (List) dr.stream().map(cve -> ((CVE) cve).getName()).collect(toList());
+        return dr.stream().map(CVE::getName).collect(toList());
     }
 
     /**
@@ -641,7 +641,7 @@ public class ErrataHandler extends BaseHandler {
      *           #array_end()
      */
     @ReadOnly
-    public List<Map> listPackages(User loggedInUser, String advisoryName) throws FaultException {
+    public List<Map<String, Object>> listPackages(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
@@ -792,7 +792,6 @@ public class ErrataHandler extends BaseHandler {
      * @param channelLabel the channel's label that we are cloning into
      * @param advisoryNames an array of String objects containing the advisory name
      *          of every errata you want to clone
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
      * @apidoc.doc Clone a list of errata into the specified channel.
@@ -805,8 +804,7 @@ public class ErrataHandler extends BaseHandler {
      *              $ErrataSerializer
      *          #array_end()
      */
-    public Object[] clone(User loggedInUser, String channelLabel, List<String> advisoryNames)
-            throws InvalidChannelRoleException {
+    public Object[] clone(User loggedInUser, String channelLabel, List<String> advisoryNames) {
         return clone(loggedInUser, channelLabel, advisoryNames, false, false);
     }
 
@@ -926,7 +924,6 @@ public class ErrataHandler extends BaseHandler {
      * @param channelLabel the cloned channel's label that we are cloning into
      * @param advisoryNames an array of String objects containing the advisory name
      *          of every errata you want to clone
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
      * @apidoc.doc Clones a list of errata into a specified cloned channel according the original erratas.
@@ -939,8 +936,7 @@ public class ErrataHandler extends BaseHandler {
      *              $ErrataSerializer
      *          #array_end()
      */
-    public Object[] cloneAsOriginal(User loggedInUser, String channelLabel, List<String> advisoryNames)
-            throws InvalidChannelRoleException {
+    public Object[] cloneAsOriginal(User loggedInUser, String channelLabel, List<String> advisoryNames) {
         return clone(loggedInUser, channelLabel, advisoryNames, true, false);
     }
 
@@ -952,7 +948,6 @@ public class ErrataHandler extends BaseHandler {
      * @param channelLabel the cloned channel's label that we are cloning into
      * @param advisoryNames an array of String objects containing the advisory name
      *          of every errata you want to clone
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return 1 on success, exception thrown otherwise.
      *
      * @apidoc.doc Asynchronously clones a list of errata into a specified cloned channel
@@ -963,8 +958,7 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
      * @apidoc.returntype #return_int_success()
      */
-    public int cloneAsOriginalAsync(User loggedInUser, String channelLabel, List<String> advisoryNames)
-            throws InvalidChannelRoleException {
+    public int cloneAsOriginalAsync(User loggedInUser, String channelLabel, List<String> advisoryNames) {
         clone(loggedInUser, channelLabel, advisoryNames, true, true);
         return 1;
     }
@@ -1002,7 +996,6 @@ public class ErrataHandler extends BaseHandler {
      * @param keywords a List of keywords for the errata
      * @param packageIds a List of package Id packageId Integers
      * @param channelLabels an array of channel labels to add patches to
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return The errata created
      *
      * @apidoc.doc Create a custom errata
@@ -1043,8 +1036,7 @@ public class ErrataHandler extends BaseHandler {
      */
     public Errata create(User loggedInUser, Map<String, Object> errataInfo,
                          List<Map<String, Object>> bugs, List<String> keywords,
-                         List<Integer> packageIds, List<String> channelLabels)
-            throws InvalidChannelRoleException {
+                         List<Integer> packageIds, List<String> channelLabels) {
 
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<>();
@@ -1225,7 +1217,6 @@ public class ErrataHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param advisoryName The advisory Name of the errata to add
      * @param channelLabels List of channels to add the errata to
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return the added errata
      *
      * @apidoc.doc Adds an existing cloned errata to a set of cloned
@@ -1235,8 +1226,7 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.param #array_single_desc("string", "channelLabels", "list of channel labels to add to")
      * @apidoc.returntype $ErrataSerializer
      */
-    public Errata publishAsOriginal(User loggedInUser, String advisoryName, List<String> channelLabels)
-            throws InvalidChannelRoleException {
+    public Errata publishAsOriginal(User loggedInUser, String advisoryName, List<String> channelLabels) {
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, Collections.emptyList());
         for (Channel c : channels) {
             ClonedChannel cc = null;

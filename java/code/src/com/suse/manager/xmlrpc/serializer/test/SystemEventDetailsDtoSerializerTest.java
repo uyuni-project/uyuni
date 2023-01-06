@@ -24,7 +24,6 @@ import com.suse.manager.xmlrpc.serializer.SystemEventDetailsDtoSerializer;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.sql.Date;
@@ -39,7 +38,7 @@ public class SystemEventDetailsDtoSerializerTest {
      * Verify if the serialization to xml contains the expected tags
      */
     @Test
-    public void testSerializeSystemEventDetailDto() throws IOException {
+    public void testSerializeSystemEventDetailDto() {
 
         final SystemEventDetailsDtoSerializer serializer = new SystemEventDetailsDtoSerializer();
 

@@ -42,10 +42,8 @@ public interface AuthenticationService {
      *
      * @return True is validation succeeds, false otherwise.
      *
-     * @throws ServletException If an unrecoverable error occurs
      */
-    boolean validate(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException;
+    boolean validate(HttpServletRequest request, HttpServletResponse response);
 
     /**
      * Refresh any storage of session information (cookies, database rows).
@@ -84,10 +82,8 @@ public interface AuthenticationService {
      * @param request the request
      * @param response the response
      * @param path where to redirect
-     * @throws ServletException If an unrecoverable error occurs
      */
-    void redirectTo(HttpServletRequest request, HttpServletResponse response, String path)
-            throws ServletException;
+    void redirectTo(HttpServletRequest request, HttpServletResponse response, String path);
 
     /**
      * Invalidates login credentials associated with the given request.

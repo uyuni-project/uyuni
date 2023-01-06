@@ -45,7 +45,7 @@ public class SelectVerifyPackagesAction extends RhnAction implements Listable {
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) {
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
         Map<String, Object> params = new HashMap<>();

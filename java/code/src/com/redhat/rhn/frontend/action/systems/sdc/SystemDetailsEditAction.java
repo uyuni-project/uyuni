@@ -397,7 +397,7 @@ public class SystemDetailsEditAction extends RhnAction {
         LocalizationService ls = LocalizationService.getInstance();
         Entitlement baseEntitlement = s.getBaseEntitlement();
 
-        List entitlements = new ArrayList();
+        List entitlements = new ArrayList<>();
 
         if (baseEntitlement == null) {
             entitlements.add(new LabelValueBean(

@@ -104,12 +104,10 @@ public class SubscriptionsSubmitAction extends BaseSetOperateOnSelectedItemsActi
        }
 
        Server server = context.lookupAndBindServer();
-        //Map params = makeParamMap(formIn, request);
-        Map params2 = new HashMap();
+        Map<String, Object> params2 = new HashMap<>();
         params2.put(RequestContext.SID, server.getId().toString());
         params2.put(WIZARD_MODE, Boolean.TRUE.toString());
-        return getStrutsDelegate().forwardParams(mapping.findForward("rank"),
-                                                                        params2);
+        return getStrutsDelegate().forwardParams(mapping.findForward("rank"), params2);
     }
 
     @Override

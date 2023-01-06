@@ -107,7 +107,7 @@ public class XccdfRuleResultDto extends BaseDto {
                 return i.getIdentifier();
             }
         }
-        return new String();
+        return "";
     }
 
     /**
@@ -129,13 +129,13 @@ public class XccdfRuleResultDto extends BaseDto {
      * @return comma separated list of xccdf:ident identifiers
      */
     public String getIdentsString() {
-        String result = new String();
+        StringBuilder result = new StringBuilder();
         for (XccdfIdentDto i : getIdents()) {
             if (!i.isDocumentIdref()) {
-                result += (result.isEmpty() ? "" : ", ") + i.getIdentifier();
+                result.append(result.toString().isEmpty() ? "" : ", ").append(i.getIdentifier());
             }
         }
-        return result;
+        return result.toString();
     }
 
     private List<XccdfIdentDto> getIdents() {

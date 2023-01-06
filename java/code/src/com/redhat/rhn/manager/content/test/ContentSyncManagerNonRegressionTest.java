@@ -65,10 +65,9 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
     /**
      * Just here to prevent error about no test specified
-     * @throws Exception
      */
     @Test
-    public void testNothing() throws Exception {
+    public void testNothing() {
         assertTrue(true);
     }
 

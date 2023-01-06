@@ -76,6 +76,7 @@ public class UpdateInfoWriter extends RepomdWriter {
     /**
      * Ends the xml creation
      */
+    @Override
     public void end() {
         try {
             handler.endElement("updates");
@@ -90,6 +91,7 @@ public class UpdateInfoWriter extends RepomdWriter {
      * Starts xml creation
      * @param channel channel info
      */
+    @Override
     public void begin(Channel channel) {
         try {
             handler.startElement("updates");

@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 public class PreservationListEditActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
-    public void testEditExecute() throws Exception {
+    public void testEditExecute() {
         FileList list = FileListTest.createTestFileList(user.getOrg());
         CommonFactory.saveFileList(list);
         TestUtils.flushAndEvict(list);
@@ -64,7 +64,7 @@ public class PreservationListEditActionTest extends RhnPostMockStrutsTestCase {
         executeCreate(Boolean.FALSE);
     }
 
-    private void executeCreate(Boolean submit) throws Exception {
+    private void executeCreate(Boolean submit) {
         String testLabel = "some new label" + TestUtils.randomString();
         setRequestPathInfo("/systems/provisioning/preservation/PreservationListCreate");
         addRequestParameter(RhnAction.SUBMITTED, submit.toString());

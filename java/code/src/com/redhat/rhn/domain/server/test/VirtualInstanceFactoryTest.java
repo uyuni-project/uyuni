@@ -63,7 +63,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         virtualInstanceDAO = new VirtualInstanceFactory();
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -279,7 +279,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         VirtualInstance vi = host.getGuests().iterator().next();
         vi.setState(VirtualInstanceFactory.getInstance().getRunningState());
         TestUtils.saveAndFlush(vi);
-        assertTrue(vi.getState() != null);
+        assertNotNull(vi.getState());
     }
 
     @Test

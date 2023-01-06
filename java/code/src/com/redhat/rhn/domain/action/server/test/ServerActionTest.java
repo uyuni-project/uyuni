@@ -15,9 +15,8 @@
 package com.redhat.rhn.domain.action.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -67,36 +66,36 @@ public class ServerActionTest extends RhnBaseTestCase {
     public void testEquals() {
         ServerAction sa = new ServerAction();
         ServerAction sa2 = null;
-        assertFalse(sa.equals(sa2));
+        assertNotEquals(sa, sa2);
 
         sa2 = new ServerAction();
-        assertTrue(sa.equals(sa2));
+        assertEquals(sa, sa2);
 
         Server one = ServerFactory.createServer();
         one.setId(10001L);
         sa.setServerWithCheck(one);
-        assertFalse(sa.equals(sa2));
-        assertFalse(sa2.equals(sa));
+        assertNotEquals(sa, sa2);
+        assertNotEquals(sa2, sa);
 
         Server two = ServerFactory.createServer();
         two.setId(10001L); // same ID
         sa2.setServerWithCheck(two);
-        assertTrue(sa.equals(sa2));
+        assertEquals(sa, sa2);
 
         one.setName("foo");
-        assertFalse(sa.equals(sa2));
+        assertNotEquals(sa, sa2);
 
         sa2.setServerWithCheck(one);
-        assertTrue(sa.equals(sa2));
+        assertEquals(sa, sa2);
 
         Action parent = new ApplyStatesAction();
         parent.setId(243L);
         parent.setActionType(ActionFactory.TYPE_APPLY_STATES);
         sa.setParentActionWithCheck(parent);
-        assertFalse(sa.equals(sa2));
+        assertNotEquals(sa, sa2);
 
         sa2.setParentActionWithCheck(parent);
-        assertTrue(sa.equals(sa2));
+        assertEquals(sa, sa2);
     }
 
     @Test
@@ -112,10 +111,10 @@ public class ServerActionTest extends RhnBaseTestCase {
         ActionFactory.save(parent);
 
         assertNotNull(parent.getId());
-        assertTrue(child.getParentAction().equals(parent));
+        assertEquals(child.getParentAction(), parent);
         assertNotNull(parent.getServerActions());
         assertNotNull(parent.getServerActions().toArray()[0]);
-        assertTrue(child.equals(parent.getServerActions().toArray()[0]));
+        assertEquals(child, parent.getServerActions().toArray()[0]);
     }
 
     /**
@@ -141,10 +140,8 @@ public class ServerActionTest extends RhnBaseTestCase {
      * @param newS new server
      * @param newA new action
      * @return ServerAction created
-     * @throws Exception something bad happened
      */
-    public static ServerAction createServerAction(Server newS, Action newA)
-        throws Exception {
+    public static ServerAction createServerAction(Server newS, Action newA) {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(10L);

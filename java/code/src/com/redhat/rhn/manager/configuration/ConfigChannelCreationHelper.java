@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.configuration;
 
-import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -27,9 +26,6 @@ import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
 
 import org.apache.struts.action.DynaActionForm;
-
-import java.io.IOException;
-
 
 
 /**
@@ -219,13 +215,7 @@ public class ConfigChannelCreationHelper {
     public void createInitSlsFile(User user, ConfigChannel channel, String contents) {
         if (channel.isStateChannel()) {
             ConfigFileData data = new SLSFileData(contents);
-            try {
-                ConfigFileBuilder.getInstance().create(data, user, channel);
-            }
-            catch (IOException e) {
-                String msg = "Error creating init.sls file .\n" +  e.getMessage();
-                throw new FaultException(1021, "ConfigChannelCreationException", msg);
-            }
+            ConfigFileBuilder.getInstance().create(data, user, channel);
         }
 
     }

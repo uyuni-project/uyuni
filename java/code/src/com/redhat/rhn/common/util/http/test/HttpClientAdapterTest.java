@@ -232,7 +232,7 @@ public class HttpClientAdapterTest  {
      * Tear down after each test.
      */
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         // Clear proxy settings
         ProxySettingsDto proxySettings = new ProxySettingsDto();
         proxySettings.setHostname("");

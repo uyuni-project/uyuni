@@ -32,6 +32,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,7 +69,7 @@ public class CSVTagTest extends MockObjectTestCase {
         csv.setDataset(listName);
 
         context().checking(new Expectations() { {
-            List dataList = CSVWriterTest.getTestListOfMaps();
+            List<Map<String, String>> dataList = CSVWriterTest.getTestListOfMaps();
             atLeast(1).of(context).getAttribute(listName);
             will(returnValue(dataList));
             atLeast(1).of(context).getRequest();
@@ -121,7 +122,7 @@ public class CSVTagTest extends MockObjectTestCase {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TestUtils.enableLocalizationLogging();
     }
 

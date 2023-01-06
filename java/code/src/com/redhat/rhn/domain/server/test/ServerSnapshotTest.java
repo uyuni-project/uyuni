@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -52,7 +52,7 @@ public class ServerSnapshotTest extends BaseTestCaseWithUser {
                 server.getOrg()));
         snapshot.setGroups(serverGroupsForSnapshot);
 
-        assertFalse(serverGroupsForSnapshot.equals(server.getGroups()));
+        assertNotEquals(serverGroupsForSnapshot, server.getGroups());
 
         snapshot.rollbackGroups();
 

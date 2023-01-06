@@ -704,7 +704,7 @@ public class FormulaFactory {
         try {
             formulas = Optional
                     .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .orElse(new HashMap());
+                    .orElse(new HashMap<>());
         }
         catch (FileNotFoundException e) {
         }
@@ -773,7 +773,7 @@ public class FormulaFactory {
         if (dataFile.exists()) {
             Map<String, List<String>> serverFormulas = Optional
                     .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .orElse(new HashMap());
+                    .orElse(new HashMap<>());
 
             if (serverFormulas.containsKey(id)) {
                 serverFormulas.remove(id);

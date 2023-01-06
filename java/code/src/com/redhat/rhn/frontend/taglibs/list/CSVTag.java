@@ -102,10 +102,8 @@ public class CSVTag extends BodyTagSupport {
      *
      * @param nameIn
      *            name of dataset
-     * @throws JspException
-     *             indicates something went wrong
      */
-    public void setDataset(String nameIn) throws JspException {
+    public void setDataset(String nameIn) {
         dataSetName = nameIn;
     }
 
@@ -196,10 +194,10 @@ public class CSVTag extends BodyTagSupport {
      */
     private void renderExport() throws JspException {
         IconTag i = new IconTag("item-download-csv");
-        String exportLink = new String("<div class=\"spacewalk-csv-download\">" +
+        String exportLink = "<div class=\"spacewalk-csv-download\">" +
                 "<a class=\"btn btn-link\" data-senna-off=\"true\" href=\"" + CSV_DOWNLOAD_URI + "?" +
                 makeCSVRequestParams() + "\">" + i.render() + LocalizationService.getInstance().getMessage(
-                "listdisplay.csv") + "</a></div>");
+                "listdisplay.csv") + "</a></div>";
         ListTagUtil.write(pageContext, exportLink);
     }
 
@@ -268,10 +266,9 @@ public class CSVTag extends BodyTagSupport {
         return CSVDownloadAction.PAGE_LIST_DATA + "=" + paramPageList;
     }
 
-    private Map makePartialResult(List result) {
-        Map output = new HashMap();
-        for (Object oIn : result) {
-            SystemSearchResult r = (SystemSearchResult) oIn;
+    private Map<Long, SystemSearchPartialResult> makePartialResult(List<SystemSearchResult> result) {
+        Map<Long, SystemSearchPartialResult> output = new HashMap<>();
+        for (SystemSearchResult r : result) {
             SystemSearchPartialResult partial = new SystemSearchPartialResult(r);
             output.put(r.getId(), partial);
         }

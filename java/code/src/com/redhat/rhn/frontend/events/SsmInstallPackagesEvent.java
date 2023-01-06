@@ -68,6 +68,7 @@ public class SsmInstallPackagesEvent extends SsmPackageEvent {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmInstallPackagesEvent [" + super.toString() + ", numPkgs=" +
                 packages.size() + ", " + "channelId=" + channelId + "]";

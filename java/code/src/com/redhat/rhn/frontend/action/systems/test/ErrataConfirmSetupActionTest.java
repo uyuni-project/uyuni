@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/systems/details/ErrataConfirm");
 
         // Create Server

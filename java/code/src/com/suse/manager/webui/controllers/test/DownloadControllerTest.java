@@ -823,7 +823,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             fail("HaltException expected for missing file!");
         }
         catch (spark.HaltException e) {
-            assertTrue(e.getStatusCode() == 404, "Not Found Exception expected");
+            assertEquals(404, e.getStatusCode(), "Not Found Exception expected");
         }
     }
 

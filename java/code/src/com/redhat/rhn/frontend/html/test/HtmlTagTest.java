@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 
 public class HtmlTagTest extends RhnBaseTestCase {
     @Test
-    public void testTagMaking() throws Exception {
+    public void testTagMaking() {
         HtmlTag a = new HtmlTag("a");
         a.addBody("text");
         a.setAttribute("href", "url");
@@ -45,7 +45,7 @@ public class HtmlTagTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testChildTags() throws Exception {
+    public void testChildTags() {
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", "url");
         HtmlTag img = new HtmlTag("img");
@@ -56,7 +56,7 @@ public class HtmlTagTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testChildTagAndBody() throws Exception {
+    public void testChildTagAndBody() {
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", "url");
         a.addBody("Preferences");

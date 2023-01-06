@@ -50,6 +50,7 @@ class ErrataQueueWorker implements QueueWorker {
         logger = parentLogger;
     }
 
+    @Override
     public void run() {
         try {
             parentQueue.workerStarting();
@@ -107,6 +108,7 @@ class ErrataQueueWorker implements QueueWorker {
         }
     }
 
+    @Override
     public void setParentQueue(TaskQueue queue) {
         parentQueue = queue;
     }

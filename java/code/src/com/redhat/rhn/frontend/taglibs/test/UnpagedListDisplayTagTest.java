@@ -51,7 +51,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     private RhnMockJspWriter writer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TestUtils.disableLocalizationLogging();
 
@@ -65,7 +65,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
         ldt.setPageContext(context);
         ldt.setParent(lt);
 
-        lt.setPageList(new DataResult(CSVWriterTest.getTestListOfMaps()));
+        lt.setPageList(new DataResult<>(CSVWriterTest.getTestListOfMaps()));
 
         context().checking(new Expectations() { {
             atLeast(1).of(context).getOut();
@@ -98,7 +98,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TestUtils.enableLocalizationLogging();
     }
 

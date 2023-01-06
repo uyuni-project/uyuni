@@ -120,6 +120,7 @@ public class ActionType implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof ActionType)) {
             return false;
@@ -139,6 +140,7 @@ public class ActionType implements Serializable {
      * Output ActionType to string
      * @return Returns ActionType as a String
      */
+    @Override
     public String toString() {
         return label + " : " + name;
     }
@@ -146,6 +148,7 @@ public class ActionType implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getId())
                                     .append(getName())

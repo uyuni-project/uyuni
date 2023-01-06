@@ -64,7 +64,7 @@ public abstract class BaseProfilesAction extends RhnLookupDispatchAction {
             // cascade.sfbay.redhat.com to be run before the
             // package profile sync.  This is required to verify that the
             // system has the ability to compare packages.
-            List hwargs = new ArrayList();
+            List hwargs = new ArrayList<>();
             hwargs.add(rctx.lookupAndBindServer().getId().toString());
             hwargs.add(pa.getPrerequisite().toString());
             hwargs.add(rctx.lookupAndBindServer().getName());

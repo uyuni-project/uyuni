@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.user.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -94,7 +95,7 @@ public class UserManagerTest extends RhnBaseTestCase {
      */
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         this.users = new HashSet<>();
         SaltApi saltApi = new TestSaltApi();
         systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
@@ -123,7 +124,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testGrantServerGroupPermission() throws Exception {
+    public void testGrantServerGroupPermission() {
         //Group and user have the same org, so should be possible to grant permits
         User user = UserTestUtils.findNewUser("user_1", "org_1");
         this.users.add(user);
@@ -172,7 +173,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         User foundUser2 = UserFactory.lookupById(user2.getId());
         assertEquals(foundUser2.getId(), user2.getId());
-        assertFalse(foundUser2.getOrg().getId().equals(group.getOrg().getId()));
+        assertNotEquals(foundUser2.getOrg().getId(), group.getOrg().getId());
 
         Set userGroups2 = foundUser2.getAssociatedServerGroups();
         assertNotNull(userGroups2);
@@ -229,7 +230,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testRevokeServerGroupPermission() throws Exception {
+    public void testRevokeServerGroupPermission() {
         User user = UserTestUtils.findNewUser("user_test_revoke", "org_test_revoke");
         this.users.add(user);
 
@@ -302,7 +303,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testVerifyPackageAccess() throws Exception {
+    public void testVerifyPackageAccess() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         assertTrue(UserManager.verifyPackageAccess(user.getOrg(), pkg.getId()));
@@ -526,7 +527,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         User peon = UserTestUtils.createUser("testBob", user.getOrg().getId());
 
-        DataResult orgUsers = UserManager.usersInOrg(user, pc);
+        DataResult<UserOverview> orgUsers = UserManager.usersInOrg(user, pc);
         assertNotNull(orgUsers);
         assertEquals(numTotal + 1, orgUsers.getTotalSize());
 
@@ -648,7 +649,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-   public void testUsersInSet() throws Exception {
+   public void testUsersInSet() {
        User user = UserTestUtils.findNewUser("testUser",
                "testOrg" + this.getClass().getSimpleName());
        RhnSet set = RhnSetManager.createSet(user.getId(), "test_user_list",
@@ -663,17 +664,17 @@ public class UserManagerTest extends RhnBaseTestCase {
        PageControl pc = new PageControl();
        pc.setStart(1);
        pc.setPageSize(10);
-       DataResult dr = UserManager.usersInSet(user, "test_user_list", pc);
+       DataResult<UserOverview> dr = UserManager.usersInSet(user, "test_user_list", pc);
 
        assertEquals(5, dr.size());
        assertTrue(dr.iterator().hasNext());
-       assertTrue(dr.iterator().next() instanceof UserOverview);
-       UserOverview m = (UserOverview)(dr.iterator().next());
+        assertNotNull(dr.iterator().next());
+       UserOverview m = dr.iterator().next();
        assertNotNull(m.getUserLogin());
    }
 
     @Test
-   public void testLookupServerPreferenceValue() throws Exception {
+   public void testLookupServerPreferenceValue() {
        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                TestStatics.TESTORG);
 
@@ -704,7 +705,7 @@ public class UserManagerTest extends RhnBaseTestCase {
    }
 
     @Test
-   public void testVisibleSystemsAsDtoFromList() throws Exception {
+   public void testVisibleSystemsAsDtoFromList() {
        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                TestStatics.TESTORG);
 

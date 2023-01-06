@@ -82,7 +82,7 @@ public class SystemAclHandler extends BaseHandler {
         String label = params[0];
 
         SelectMode m = ModeFactory.getMode("Channel_queries", "child_channel_candidate");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("label", label);
         queryParams.put("sid", sid);
         DataResult dr = m.execute(queryParams);
@@ -99,7 +99,7 @@ public class SystemAclHandler extends BaseHandler {
         Long sid = getAsLong(ctx.get("sid"));
 
         SelectMode m = ModeFactory.getMode("System_queries", "is_mgr_server");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("sid", sid);
         DataResult dr = m.execute(queryParams);
         return (!dr.isEmpty());
@@ -115,7 +115,7 @@ public class SystemAclHandler extends BaseHandler {
         Long sid = getAsLong(ctx.get("sid"));
 
         SelectMode m = ModeFactory.getMode("System_queries", "is_proxy");
-        Map queryParams = new HashMap();
+        Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("sid", sid);
         DataResult dr = m.execute(queryParams);
         return (!dr.isEmpty());

@@ -26,14 +26,14 @@ import java.util.Map;
  */
 public abstract class BaseListFilter implements ListFilter {
 
-    private Map fieldMap;
+    private Map<String, String> fieldMap;
 
     /**
      * ${@inheritDoc}
      */
     @Override
     public void prepare(Locale userLocale) {
-        fieldMap = new HashMap();
+        fieldMap = new HashMap<>();
         processMap(fieldMap, userLocale);
     }
 
@@ -48,8 +48,7 @@ public abstract class BaseListFilter implements ListFilter {
         // filter subsystem this is the only way to be able to use the
         // ColumnFilter from the action side (AbstractSetHelper) without
         // doing some really crazy things
-        //String methodName = (String) fieldMap.get(field);
-        String methodName = (String) fieldMap.values().iterator().next();
+        String methodName = fieldMap.values().iterator().next();
 
         criteria = criteria.toLowerCase();
         if (methodName != null) {
@@ -64,8 +63,8 @@ public abstract class BaseListFilter implements ListFilter {
      * ${@inheritDoc}
      */
     @Override
-    public List getFieldNames() {
-        return new LinkedList(fieldMap.keySet());
+    public List<String> getFieldNames() {
+        return new LinkedList<>(fieldMap.keySet());
     }
 
     /**
@@ -76,7 +75,7 @@ public abstract class BaseListFilter implements ListFilter {
      *              bound to the bean property
      * @param userLocale the locale info used for the display value
      */
-    public abstract void processMap(Map map, Locale userLocale);
+    public abstract void processMap(Map<String, String> map, Locale userLocale);
 
     @Override
     public void postFilter(List filteredList) {

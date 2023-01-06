@@ -179,13 +179,13 @@ public interface User {
      * Gets the Set of SystemGroup IDs (Long) associated with this User.
      * @return Set the current value
      */
-    Set getDefaultSystemGroupIds();
+    Set<Long> getDefaultSystemGroupIds();
 
     /**
      * Updates the User's Default System groups.  This
      * @param groups Set of Long System Group IDs
      */
-    void setDefaultSystemGroupIds(Set groups);
+    void setDefaultSystemGroupIds(Set<Long> groups);
 
     /**
      * Tells whether or not a user is disabled

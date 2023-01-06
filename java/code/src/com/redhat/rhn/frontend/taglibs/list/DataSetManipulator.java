@@ -297,8 +297,8 @@ public class DataSetManipulator {
      * Builds a map of bog-standard pagination links complete with images
      * @return map (String, String[])
      */
-    public Map getPaginationLinks() {
-        Map links = new HashMap();
+    public Map<String, String[]> getPaginationLinks() {
+        Map<String, String[]> links = new HashMap<>();
         if (pageSize > 0 && !dataset.isEmpty() && getTotalDataSetSize() > pageSize) {
             String pageLinkName = "list_" + uniqueName + "_page";
             String[] data = new String[4];

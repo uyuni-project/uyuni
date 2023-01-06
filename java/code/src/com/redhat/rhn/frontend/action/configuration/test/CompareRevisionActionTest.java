@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class CompareRevisionActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         //Make the user a config admin
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

@@ -21,6 +21,7 @@ import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -179,7 +180,7 @@ public class ServerFactory extends HibernateFactory {
     public static List lookupServersWithCustomKey(Long userId, Long cikid) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "users_systems_with_value_for_key");
-        Map inParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
 
         inParams.put("user_id", userId);
         inParams.put("cikid", cikid);
@@ -280,10 +281,10 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void updateServerNeededCache(long serverId) {
         CallableMode m = ModeFactory.getCallableMode("System_queries", "update_needed_cache");
-        Map inParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
         inParams.put("server_id", serverId);
 
-        m.execute(inParams, new HashMap());
+        m.execute(inParams, new HashMap<>());
     }
 
     /**
@@ -389,7 +390,7 @@ public class ServerFactory extends HibernateFactory {
     private static boolean insertServersToGroup(List<Long> serverIds, Long sgid) {
         WriteMode m = ModeFactory.getWriteMode("System_queries", "add_servers_to_server_group");
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
 
         int insertsCount = m.executeUpdate(params, serverIds);
@@ -404,7 +405,7 @@ public class ServerFactory extends HibernateFactory {
     private static void updateCurrentMembersOfServerGroup(Long sgid, int membersCount) {
         WriteMode mode = ModeFactory.getWriteMode("System_queries", "update_current_members_of_server_group");
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
         params.put("members_count", membersCount);
 
@@ -414,10 +415,10 @@ public class ServerFactory extends HibernateFactory {
     private static void updatePermissionsForServerGroup(Long sgid) {
         CallableMode m = ModeFactory.getCallableMode("System_queries",
                 "update_permissions_for_server_group");
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
 
-        m.execute(params, new HashMap());
+        m.execute(params, new HashMap<>());
     }
 
     /**
@@ -475,7 +476,7 @@ public class ServerFactory extends HibernateFactory {
     private static boolean removeServersFromGroup(List<Long> serverIds, Long sgid) {
         WriteMode m = ModeFactory.getWriteMode("System_queries", "delete_from_servergroup");
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
 
         int removesCount = m.executeUpdate(params, serverIds);
@@ -858,18 +859,18 @@ public class ServerFactory extends HibernateFactory {
         HibernateFactory.getSession().evict(server);
         CallableMode m = ModeFactory.getCallableMode("System_queries",
                 "delete_server");
-        Map in = new HashMap();
+        Map<String, Object> in = new HashMap<>();
         in.put("server_id", server.getId());
-        m.execute(in, new HashMap());
+        m.execute(in, new HashMap<>());
         HibernateFactory.getSession().clear();
     }
 
     private static void updateServerPerms(Server server) {
         CallableMode m = ModeFactory.getCallableMode("System_queries",
                 "update_perms_for_server");
-        Map inParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
         inParams.put("sid", server.getId());
-        m.execute(inParams, new HashMap());
+        m.execute(inParams, new HashMap<>());
     }
 
     /**
@@ -922,7 +923,7 @@ public class ServerFactory extends HibernateFactory {
      * @param server Server whose profiles we want.
      * @return a list of Servers which are compatible with the given server.
      */
-    public static List<Map<String, Object>> compatibleWithServer(User user, Server server) {
+    public static List<Row> compatibleWithServer(User user, Server server) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "compatible_with_server");
 
@@ -984,7 +985,7 @@ public class ServerFactory extends HibernateFactory {
         params.put("orgId", user.getOrg().getId());
         List<Number> ids = SINGLETON.listObjectsByNamedQuery(
                 "Server.listProxies", params);
-        List<Server> servers = new ArrayList(ids.size());
+        List<Server> servers = new ArrayList<>(ids.size());
         for (Number id : ids) {
             servers.add(lookupById(id.longValue()));
         }
@@ -1130,7 +1131,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the server snapshot
      */
     public static ServerSnapshot lookupLatestForServer(Server server) {
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", server);
         return (ServerSnapshot) SINGLETON.lookupObjectByNamedQuery(
                 "ServerSnapshot.findLatestForServer", params);
@@ -1266,7 +1267,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Long> listLinuxSystems(Collection<Long> systemIds) {
         return SINGLETON.listObjectsByNamedQuery("Server.listRedHatSystems",
-                new HashMap(), systemIds, "sids");
+                new HashMap<>(), systemIds, "sids");
     }
 
     /**
@@ -1278,11 +1279,11 @@ public class ServerFactory extends HibernateFactory {
     public static void addTagToSnapshot(Long snpId, Long orgId, String tagName) {
         CallableMode m = ModeFactory.getCallableMode("System_queries",
                 "add_tag_to_snapshot");
-        Map inParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
         inParams.put("snapshot_id", snpId);
         inParams.put("org_id", orgId);
         inParams.put("tag_name", tagName);
-        m.execute(inParams, new HashMap());
+        m.execute(inParams, new HashMap<>());
     }
 
     /**
@@ -1310,10 +1311,10 @@ public class ServerFactory extends HibernateFactory {
     public static void removeTagFromSnapshot(Long serverId, SnapshotTag tag) {
         CallableMode m = ModeFactory.getCallableMode("System_queries",
                 "remove_tag_from_snapshot");
-        Map inParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
         inParams.put("server_id", serverId);
         inParams.put("tag_id", tag.getId());
-        m.execute(inParams, new HashMap());
+        m.execute(inParams, new HashMap<>());
     }
 
     /**
@@ -1355,7 +1356,7 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method
      */
     public static ContactMethod findContactMethodById(Long id) {
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         return (ContactMethod) SINGLETON.lookupObjectByNamedQuery(
                 "ContactMethod.findById", params, true);

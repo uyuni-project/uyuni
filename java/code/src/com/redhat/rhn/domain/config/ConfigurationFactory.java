@@ -137,8 +137,8 @@ public class ConfigurationFactory extends HibernateFactory {
     public static void saveNewConfigChannel(ConfigChannel channel) {
         CallableMode m = ModeFactory.getCallableMode("config_queries",
             "create_new_config_channel");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
 
         inParams.put("org_id_in", channel.getOrgId());
         inParams.put("type_in", channel.getConfigChannelType().getLabel());
@@ -181,8 +181,8 @@ public class ConfigurationFactory extends HibernateFactory {
 
         CallableMode m = ModeFactory.getCallableMode("config_queries",
             "create_new_config_file");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
 
         //this will generate a foreign-key constraint violation if the config
         //channel is not already persisted.
@@ -229,8 +229,8 @@ public class ConfigurationFactory extends HibernateFactory {
         // in the database.  If this is not the case, please read the documentation for
         // lookupOrInsertConfigInfo(String, String, Long) and correct the problem.
 
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
 
         inParams.put("revision_in", revision.getRevision());
         inParams.put("config_file_id_in", revision.getConfigFile().getId());
@@ -289,7 +289,7 @@ public class ConfigurationFactory extends HibernateFactory {
         commit(file.getConfigChannel());
         if (file.getId() == null) {
             Long fileId = saveNewConfigFile(file);
-            file = (ConfigFile) getSession().get(ConfigFile.class, fileId);
+            file = getSession().get(ConfigFile.class, fileId);
         }
         else {
             save(file);
@@ -312,7 +312,7 @@ public class ConfigurationFactory extends HibernateFactory {
             // and set it after reload not to lose it
             Long changedById = revision.getChangedById();
             Long revId = saveNewConfigRevision(revision);
-            revision = (ConfigRevision) getSession().get(ConfigRevision.class, revId);
+            revision = getSession().get(ConfigRevision.class, revId);
             revision.setChangedById(changedById);
             file.setLatestConfigRevision(revision);
             //and now we have to save the file again
@@ -366,7 +366,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigChannel lookupConfigChannelById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (ConfigChannel)session.get(ConfigChannel.class, id);
+        return session.get(ConfigChannel.class, id);
     }
 
     /**
@@ -414,7 +414,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigFile lookupConfigFileById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (ConfigFile)session.get(ConfigFile.class, id);
+        return session.get(ConfigFile.class, id);
     }
 
     /**
@@ -446,7 +446,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigRevision lookupConfigRevisionById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (ConfigRevision)session.get(ConfigRevision.class, id);
+        return session.get(ConfigRevision.class, id);
     }
 
 
@@ -483,7 +483,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigInfo lookupConfigInfoById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (ConfigInfo)session.get(ConfigInfo.class, id);
+        return session.get(ConfigInfo.class, id);
     }
 
     /**
@@ -493,7 +493,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigFileName lookupConfigFileNameById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (ConfigFileName)session.get(ConfigFileName.class, id);
+        return session.get(ConfigFileName.class, id);
     }
 
 
@@ -593,8 +593,8 @@ public class ConfigurationFactory extends HibernateFactory {
         CallableMode m = ModeFactory.getCallableMode("config_queries",
             "lookup_config_info");
 
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
 
         inParams.put("username_in", user);
         inParams.put("groupname_in", group);
@@ -654,8 +654,8 @@ public class ConfigurationFactory extends HibernateFactory {
         CallableMode m = ModeFactory.getCallableMode("config_queries",
             "lookup_config_filename");
 
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
 
         inParams.put("name_in", path);
         outParams.put("name_id", Types.NUMERIC);
@@ -676,8 +676,8 @@ public class ConfigurationFactory extends HibernateFactory {
         CallableMode m = ModeFactory.getCallableMode("config_queries",
             "remove_config_channel");
 
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
         inParams.put("config_channel_id_in", channel.getId());
         m.execute(inParams, outParams);
     }
@@ -693,8 +693,8 @@ public class ConfigurationFactory extends HibernateFactory {
         CallableMode m = ModeFactory.getCallableMode("config_queries",
             "remove_config_file");
 
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
         inParams.put("config_file_id_in", file.getId());
         m.execute(inParams, outParams);
     }
@@ -751,8 +751,8 @@ public class ConfigurationFactory extends HibernateFactory {
 
         CallableMode m = ModeFactory.getCallableMode("config_queries", "remove_config_revision");
 
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
         inParams.put("config_revision_id_in", revision.getId());
         inParams.put("org_id", orgId);
         m.execute(inParams, outParams);

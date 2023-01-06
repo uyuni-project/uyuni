@@ -20,7 +20,7 @@ import redstone.xmlrpc.XmlRpcInvocationHandler;
 
 public class MockXmlRpcClient implements XmlRpcInvocationHandler {
     @Override
-    public Object invoke(String sIn, List listIn) throws Throwable {
+    public Object invoke(String sIn, List listIn) {
         switch (sIn) {
             case "test_invoke_method":
                 // This method doesn't exist on Cobbler. Purely for API Client testing.

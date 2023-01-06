@@ -114,14 +114,13 @@ public class OrgDetailsAction extends RhnAction {
      * @param response going out
      * @param oid ID of Org we're operating on
      * @param org Org object for oid
-     * @throws Exception to parent
      */
     private void updateOrgDetails(ActionMapping mapping,
             DynaActionForm dynaForm,
             HttpServletRequest request,
             HttpServletResponse response,
             Long oid,
-            Org org) throws Exception {
+            Org org) {
 
         RequestContext requestContext = new RequestContext(request);
         if (validateForm(request, dynaForm, oid, org)) {

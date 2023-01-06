@@ -87,7 +87,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         Action a = createAction(UserTestUtils.createUser("testUser", UserTestUtils
                 .createOrg("testOrg" + this.getClass().getSimpleName())),
                     ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
-        assertTrue(a.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST));
+        assertEquals(a.getActionType(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         Long id = a.getId();
         Action a2 = ActionFactory.lookupById(id);
         assertNotNull(a2);
@@ -105,7 +105,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
 
         ConfigAction a = (ConfigAction)createAction(user,
                                             ActionFactory.TYPE_CONFIGFILES_DEPLOY);
-        assertTrue(a.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY));
+        assertEquals(a.getActionType(), ActionFactory.TYPE_CONFIGFILES_DEPLOY);
         //complete it
         assertNotNull(a.getServerActions());
         for (ServerAction next : a.getServerActions()) {
@@ -227,13 +227,13 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         ServerAction sa = (ServerAction)array[0];
         assertTrue(TimeUtilsTest.timeEquals(sa.getCreated().getTime(),
                 sa.getModified().getTime()));
-        assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
+        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
 
-        assertTrue(sa.getServer().equals(s));
+        assertEquals(sa.getServer(), s);
     }
 
     @Test
-    public void testLookupConfigRevisionAction() throws Exception {
+    public void testLookupConfigRevisionAction() {
         User usr = UserTestUtils.createUser("testUser",
             UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
 
@@ -266,7 +266,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupConfigRevisionResult() throws Exception {
+    public void testLookupConfigRevisionResult() {
         User usr = UserTestUtils.createUser("testUser",
            UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
 
@@ -323,7 +323,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         ActionFactory.rescheduleFailedServerActions(a1, 5L);
         sa = (ServerAction) ActionFactory.reload(sa);
 
-        assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
+        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
         assertTrue(sa.getRemainingTries() > 0);
 
     }
@@ -343,7 +343,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         ActionFactory.rescheduleAllServerActions(a1, 5L);
         sa = (ServerAction) ActionFactory.reload(sa);
 
-        assertTrue(sa.getStatus().equals(ActionFactory.STATUS_QUEUED));
+        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
         assertTrue(sa.getRemainingTries() > 0);
 
     }
@@ -388,14 +388,14 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         // Should NOT update if already in final state.
         ActionFactory.updateServerActionsPickedUp(a1, list);
         HibernateFactory.reload(sa1);
-        assertTrue(sa1.getStatus().equals(ActionFactory.STATUS_FAILED));
+        assertEquals(sa1.getStatus(), ActionFactory.STATUS_FAILED);
 
         list.clear();
         list.add(sa2.getServerId());
         //Should update to STATUS_COMPLETED
         ActionFactory.updateServerActions(a1, list, ActionFactory.STATUS_COMPLETED);
         HibernateFactory.reload(sa2);
-        assertTrue(sa2.getStatus().equals(ActionFactory.STATUS_COMPLETED));
+        assertEquals(sa2.getStatus(), ActionFactory.STATUS_COMPLETED);
     }
 
     public static Action createAction(User usr, ActionType type) throws Exception {

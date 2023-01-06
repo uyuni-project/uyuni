@@ -38,7 +38,7 @@ import java.util.Set;
 public class ChannelArchTest extends RhnBaseTestCase {
 
     @Test
-    public void testChannelArch() throws Exception {
+    public void testChannelArch() {
         Long testid = 500L;
         String query = "ChannelArch.findById";
         ChannelArch ca = (ChannelArch) TestUtils.lookupFromCacheById(testid, query);
@@ -48,7 +48,7 @@ public class ChannelArchTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testChannelArchByLabel() throws Exception {
+    public void testChannelArchByLabel() {
         ChannelArch x86Arch = ChannelFactory.lookupArchByName("IA-32");
         assertNotNull(x86Arch);
     }

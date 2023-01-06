@@ -96,7 +96,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreateSchedule() throws Exception {
+    public void testCreateSchedule() {
         MaintenanceManager mm = new MaintenanceManager();
         mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.empty());
 

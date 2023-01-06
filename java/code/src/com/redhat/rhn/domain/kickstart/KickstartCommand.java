@@ -160,6 +160,7 @@ public class KickstartCommand implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
             return this.getClass().getName() + " name: " +
                 this.getCommandName().getName() + " arguments " + getArguments();

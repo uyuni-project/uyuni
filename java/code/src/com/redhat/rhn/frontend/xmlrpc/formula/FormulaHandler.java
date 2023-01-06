@@ -40,7 +40,6 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -314,9 +313,6 @@ public class FormulaHandler extends BaseHandler {
                         " it first and try again");
             }
         }
-        catch (IOException e) {
-            throw new IOFaultException(e);
-        }
         catch (InvalidFormulaException e) {
             throw new ValidationException(e.getMessage());
         }
@@ -354,9 +350,6 @@ public class FormulaHandler extends BaseHandler {
                 throw new InvalidParameterException("Group doesn't have formula assigned, please assign it" +
                         "first and try again");
             }
-        }
-        catch (IOException e) {
-            throw new IOFaultException(e);
         }
         catch (InvalidFormulaException e) {
             throw new ValidationException(e.getMessage());

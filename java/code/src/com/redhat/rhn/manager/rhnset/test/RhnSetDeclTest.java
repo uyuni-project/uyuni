@@ -46,7 +46,7 @@ public class RhnSetDeclTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
     }
@@ -65,7 +65,7 @@ public class RhnSetDeclTest extends RhnBaseTestCase {
         testBadAndGoodIds(RhnSetDecl.SYSTEMS_AFFECTED, s.getId());
     }
 
-    private void testBadAndGoodIds(RhnSetDecl declIn, Long goodId) throws Exception {
+    private void testBadAndGoodIds(RhnSetDecl declIn, Long goodId) {
         RhnSet set = declIn.get(user);
         Long badId = (long) -1;
         set.addElement(goodId);

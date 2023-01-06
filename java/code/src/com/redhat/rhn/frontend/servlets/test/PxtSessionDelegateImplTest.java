@@ -143,7 +143,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
     }
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mockRequest = mock(HttpServletRequest.class);
         mockResponse = mock(HttpServletResponse.class);
         mockPxtSession = mock(WebSession.class);

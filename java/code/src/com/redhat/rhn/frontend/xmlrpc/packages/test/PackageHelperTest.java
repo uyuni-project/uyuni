@@ -38,11 +38,11 @@ public class PackageHelperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPackageToMap() throws Exception {
+    public void testPackageToMap() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
-        Map map = PackageHelper.packageToMap(pkg, user);
+        Map<String, Object> map = PackageHelper.packageToMap(pkg, user);
 
         assertKey(map, "name", pkg.getPackageName().getName());
         assertKey(map, "id", pkg.getId());
@@ -68,7 +68,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPackage2MapWithNulls() throws Exception {
+    public void testPackage2MapWithNulls() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
@@ -86,7 +86,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
         pkg.setPackageEvr(null);
         pkg.setPackageArch(null);
 
-        Map map = PackageHelper.packageToMap(pkg, user);
+        Map<String, Object> map = PackageHelper.packageToMap(pkg, user);
         assertKey(map, "build_date", "");
         assertKey(map, "last_modified_date", "");
         assertKey(map, "size", "");

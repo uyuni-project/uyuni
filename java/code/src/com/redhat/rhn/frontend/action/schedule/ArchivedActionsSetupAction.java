@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.schedule;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -53,7 +54,7 @@ public class ArchivedActionsSetupAction extends BaseScheduledListAction {
     * {@inheritDoc}
     */
    @Override
-   public List getResult(RequestContext context) {
+   public List<ScheduledAction> getResult(RequestContext context) {
        return ActionManager.archivedActions(context.getCurrentUser(), null);
    }
 

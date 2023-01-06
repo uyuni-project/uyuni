@@ -30,7 +30,7 @@ public class ViewModifyPathsFilter extends BaseListFilter {
      * ${@inheritDoc}
      */
     @Override
-    public void processMap(Map map, Locale userLocale) {
+    public void processMap(Map<String, String> map, Locale userLocale) {
         LocalizationService ls =
             LocalizationService.getInstance();
         String label = ls.getMessage("sdc.config.file_list.name",

@@ -29,7 +29,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.utils.MinionServerUtils;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,8 +52,7 @@ public class RebootActionCleanup extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext arg0In)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext arg0In) {
         List<Map<String, Long>> failedRebootActions = lookupRebootActionCleanup();
         for (Map<String, Long> fa : failedRebootActions) {
             Long sid = fa.get("server_id");

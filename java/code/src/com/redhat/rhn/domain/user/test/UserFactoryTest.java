@@ -80,19 +80,19 @@ public class UserFactoryTest extends RhnBaseTestCase {
          */
         Thread.sleep(1000);
 
-        assertTrue(normalUser.getStateChanges().size() == 1);
+        assertEquals(1, normalUser.getStateChanges().size());
         assertTrue(normalUser.isDisabled());
 
         //make sure our state change was set correctly
         StateChange change = (StateChange) normalUser.getStateChanges().toArray()[0];
-        assertTrue(change.getUser().equals(normalUser));
-        assertTrue(change.getChangedBy().equals(orgAdmin));
-        assertTrue(change.getState().equals(UserFactory.DISABLED));
+        assertEquals(change.getUser(), normalUser);
+        assertEquals(change.getChangedBy(), orgAdmin);
+        assertEquals(change.getState(), UserFactory.DISABLED);
 
         //enable the normal user
         factory.enable(normalUser, orgAdmin);
 
-        assertTrue(normalUser.getStateChanges().size() == 2);
+        assertEquals(2, normalUser.getStateChanges().size());
         assertFalse(normalUser.isDisabled());
 
         Long id = normalUser.getId();
@@ -103,7 +103,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         User usr = UserFactory.lookupById(id);
         assertFalse(usr.isDisabled());
-        assertTrue(usr.getStateChanges().size() == 2);
+        assertEquals(2, usr.getStateChanges().size());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupById() throws Exception {
+    public void testLookupById() {
         Long id = UserTestUtils.createUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         User usr = UserFactory.lookupById(id);
@@ -133,7 +133,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupByIds() throws Exception {
+    public void testLookupByIds() {
         List<Long> idList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
         Long firstId = UserTestUtils.createUser("testUserOne", "testOrgOne");
@@ -147,7 +147,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupByLogin() throws Exception {
+    public void testLookupByLogin() {
         Long id = UserTestUtils.createUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         User usr = UserFactory.lookupById(id);
@@ -161,7 +161,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupNotExists() throws Exception {
+    public void testLookupNotExists() {
         User usr = UserFactory.lookupById(-99999L);
         assertNull(usr);
     }
@@ -178,7 +178,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     public void testGetTimeZoneOlson() {
         RhnTimeZone tz = UserFactory.getTimeZone("America/Los_Angeles");
         assertNotNull(tz);
-        assertTrue(tz.getOlsonName().equals("America/Los_Angeles"));
+        assertEquals("America/Los_Angeles", tz.getOlsonName());
 
         RhnTimeZone tz2 = UserFactory.getTimeZone("foo");
         assertNull(tz2);
@@ -188,8 +188,8 @@ public class UserFactoryTest extends RhnBaseTestCase {
     public void testGetTimeZoneId() {
         RhnTimeZone tz = UserFactory.getTimeZone(UserFactory
                 .getTimeZone("America/Los_Angeles").getTimeZoneId());
-        assertTrue(UserFactory.getTimeZone("America/Los_Angeles").equals(tz));
-        assertTrue(tz.getOlsonName().equals("America/Los_Angeles"));
+        assertEquals(UserFactory.getTimeZone("America/Los_Angeles"), tz);
+        assertEquals("America/Los_Angeles", tz.getOlsonName());
 
         RhnTimeZone tz2 = UserFactory.getTimeZone(-23);
         assertNull(tz2);
@@ -199,7 +199,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     public void testGetTimeZoneDefault() {
         RhnTimeZone tz = UserFactory.getDefaultTimeZone();
         assertNotNull(tz);
-        assertTrue(tz.getTimeZone().getRawOffset() == TimeZone.getDefault().getRawOffset());
+        assertEquals(tz.getTimeZone().getRawOffset(), TimeZone.getDefault().getRawOffset());
     }
 
     @Test
@@ -220,7 +220,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCommitUser() throws Exception {
+    public void testCommitUser() {
 
         Long id = UserTestUtils.createUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -259,7 +259,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
 
     @Test
-    public void testLookupMultiple() throws Exception {
+    public void testLookupMultiple() {
         int len = 3;
         String[] logins = new String[len];
         for (int i = 0; i < len; i++) {
@@ -271,7 +271,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         for (int i = 0; i < len; i++) {
             User usr = UserFactory.lookupByLogin(logins[i]);
-            assertTrue(usr.getLogin().equals(logins[i]));
+            assertEquals(usr.getLogin(), logins[i]);
         }
     }
 
@@ -319,7 +319,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUserServerPreferenceLookup() throws Exception {
+    public void testUserServerPreferenceLookup() {
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                                               TestStatics.TESTORG + "UserFactoryTest");
 
@@ -346,7 +346,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testSetUserServerPreferenceTrue() throws Exception {
+    public void testSetUserServerPreferenceTrue() {
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                                               TestStatics.TESTORG + "UserFactoryTest");
 
@@ -384,7 +384,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testFindAllOrgAdmins() throws Exception {
+    public void testFindAllOrgAdmins() {
         User user = UserTestUtils.findNewUser("testUser", "findAdminsOrg", true);
         User user2 = UserTestUtils.findNewUser("testUser2", "findAdminsOrg", true);
 

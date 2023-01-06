@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.frontend.events;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.action.ActionChain;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Event fired to carry the information necessary to remove packages from servers in the
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class SsmRemovePackagesEvent extends SsmPackageEvent {
 
-    private List<Map<String, Object>> result;
+    private List<Row> result;
 
     /**
      * Creates a new SSM remove packages event.
@@ -39,12 +39,13 @@ public class SsmRemovePackagesEvent extends SsmPackageEvent {
      * @param resultIn    Complex map of which packages we're removing from which servers.
      */
     public SsmRemovePackagesEvent(Long userIdIn, Date earliestIn,
-            ActionChain actionChainIn, List<Map<String, Object>> resultIn) {
+            ActionChain actionChainIn, List<Row> resultIn) {
         super(userIdIn, earliestIn, actionChainIn);
         result = resultIn;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmRemovePackagesEvent[" + super.toString() + "]";
     }
@@ -54,7 +55,7 @@ public class SsmRemovePackagesEvent extends SsmPackageEvent {
      *
      * @return The result.
      */
-    public List<Map<String, Object>> getResult() {
+    public List<Row> getResult() {
         return this.result;
     }
 

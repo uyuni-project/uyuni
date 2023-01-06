@@ -58,11 +58,10 @@ public class ServiceMock extends Service {
     /**
      * @param requestIn Request
      * @param response Response
-     * @throws Exception
      * @see simple.http.load.Service#process(simple.http.Request, simple.http.Response)
      */
     @Override
-    protected void process(Request requestIn, Response response) throws Exception {
+    protected void process(Request requestIn, Response response) {
         this.request = requestIn;
         responder.respond(requestIn, response);
     }

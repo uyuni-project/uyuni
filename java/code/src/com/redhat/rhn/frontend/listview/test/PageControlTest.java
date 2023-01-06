@@ -41,7 +41,7 @@ public class PageControlTest extends RhnBaseTestCase {
         assertEquals(pc.getEnd(), 29);
         assertEquals(pc.getFilterColumn(), "TestFilterColumn");
         assertEquals(pc.getFilterData(), "TestFilterData");
-        assertEquals(pc.hasIndex(), true);
+        assertTrue(pc.hasIndex());
     }
 
     /**

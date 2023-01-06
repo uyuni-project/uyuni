@@ -39,7 +39,7 @@ public class ActivationKeyDeleteConfirmAction extends RhnAction {
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         ActivationKey key = context.lookupAndBindActivationKey();
         if (context.isSubmitted() && context.wasDispatched(DELETE_KEY)) {

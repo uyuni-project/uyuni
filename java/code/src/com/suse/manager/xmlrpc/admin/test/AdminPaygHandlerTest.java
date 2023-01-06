@@ -336,7 +336,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testList() throws TaskomaticApiException {
+    public void testList() {
         PaygSshDataFactory.savePaygSshData(createPaygSshData(true, "_1"));
         PaygSshDataFactory.savePaygSshData(createPaygSshData(true, "_2"));
         PaygSshDataFactory.savePaygSshData(createPaygSshData(false, "_3"));
@@ -346,7 +346,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetails() throws TaskomaticApiException {
+    public void testGetDetails() {
         PaygSshData paygData = createPaygSshData(true, "");
         PaygSshDataFactory.savePaygSshData(paygData);
         PaygSshDataFactory.savePaygSshData(createPaygSshData(false, "_1"));

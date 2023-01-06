@@ -289,7 +289,7 @@ public class OverviewAction extends RhnAction {
         String messageKey = DIFF_ACTION_MESSAGE_PREFIX +
             filesSuffix + "_dirs_" + dirsSuffix + "_symlinks_" + symlinksSuffix;
 
-        List params = new ArrayList();
+        List params = new ArrayList<>();
         // setup the params
         params.add(String.valueOf(successful.getFiles()));
         params.add(String.valueOf(total.getFiles()));

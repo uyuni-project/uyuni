@@ -23,6 +23,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -210,12 +211,11 @@ public class ChannelManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Channel_queries", "vendor_channel_tree");
 
 
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
 
-        DataResult<ChannelTreeNode> dr =
-                makeDataResult(params, params, lc, m, ChannelTreeNode.class);
+        DataResult<ChannelTreeNode> dr = makeDataResult(params, params, lc, m);
         Collections.sort(dr);
         return dr;
     }
@@ -235,13 +235,12 @@ public class ChannelManager extends BaseManager {
                                                  ListControl lc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "popular_channel_tree");
 
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
         params.put("server_count", serverCount);
 
-        DataResult<ChannelTreeNode> dr =
-                makeDataResult(params, params, lc, m, ChannelTreeNode.class);
+        DataResult<ChannelTreeNode> dr = makeDataResult(params, params, lc, m);
         Collections.sort(dr);
         return dr;
     }
@@ -258,12 +257,11 @@ public class ChannelManager extends BaseManager {
                                                  ListControl lc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "my_channel_tree");
 
-
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
 
-        return makeDataResult(params, params, lc, m, ChannelTreeNode.class);
+        return makeDataResult(params, params, lc, m);
     }
 
     /**
@@ -280,11 +278,11 @@ public class ChannelManager extends BaseManager {
                                             ListControl lc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "trust_channel_consume");
 
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", trustOrg.getId());
         params.put("user_id", user.getId());
         params.put("org_id2", org.getId());
-        return makeDataResult(params, params, lc, m, ChannelTreeNode.class);
+        return makeDataResult(params, params, lc, m);
     }
 
     /**
@@ -298,11 +296,11 @@ public class ChannelManager extends BaseManager {
                                             ListControl lc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "all_channel_tree");
 
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
 
-        return makeDataResult(params, params, lc, m, ChannelTreeNode.class);
+        return makeDataResult(params, params, lc, m);
     }
 
     /**
@@ -314,11 +312,11 @@ public class ChannelManager extends BaseManager {
     public static DataResult<ChannelTreeNode> ownedChannelsTree(User user) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "owned_channels_tree");
 
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
 
-        return makeDataResult(params, params, null, m, ChannelTreeNode.class);
+        return makeDataResult(params, params, null, m);
     }
 
     /**
@@ -332,11 +330,11 @@ public class ChannelManager extends BaseManager {
                                             ListControl lc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "shared_channel_tree");
 
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
 
-        return makeDataResult(params, params, lc, m, ChannelTreeNode.class);
+        return makeDataResult(params, params, lc, m);
     }
 
     /**
@@ -350,11 +348,11 @@ public class ChannelManager extends BaseManager {
                                                 ListControl lc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "retired_channel_tree");
 
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
 
-        return makeDataResult(params, params, lc, m, ChannelTreeNode.class);
+        return makeDataResult(params, params, lc, m);
     }
 
     /**
@@ -370,12 +368,12 @@ public class ChannelManager extends BaseManager {
                                                ListControl lc) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "channel_family_tree");
 
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("family_id", familyId);
         params.put("org_id", user.getOrg().getId());
 
-        return makeDataResult(params, params, lc, m, ChannelTreeNode.class);
+        return makeDataResult(params, params, lc, m);
     }
 
     /**
@@ -388,9 +386,9 @@ public class ChannelManager extends BaseManager {
             channelsOwnedByOrg(Long orgId, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                                            "channels_owned_by_org");
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
-        return makeDataResult(params, null, pc, m, ChannelOverview.class);
+        return makeDataResult(params, null, pc, m);
     }
 
     /**
@@ -401,10 +399,10 @@ public class ChannelManager extends BaseManager {
      */
     public static DataResult<Long> relevantPackages(Long channelId, Errata e) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "relevant_packages_for_channel_published");
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cid", channelId);
         params.put("eid", e.getId());
-        return makeDataResult(params, null, null, m, Long.class);
+        return makeDataResult(params, null, null, m);
     }
 
     /**
@@ -1865,8 +1863,7 @@ public class ChannelManager extends BaseManager {
      * @param serverArch RHEL server arch.
      * @return List of EssentialChannelDto's.
      */
-    public static List<EssentialChannelDto>
-        listBaseEusChannelsByVersionReleaseAndServerArch(User user,
+    public static List<EssentialChannelDto> listBaseEusChannelsByVersionReleaseAndServerArch(User user,
             String version, PackageEvr pevr, String serverArch) {
 
         log.debug("listBaseEusChannelsByVersionReleaseAndServerArch()");
@@ -1881,9 +1878,7 @@ public class ChannelManager extends BaseManager {
         params.put("product_name_label", RHEL_PRODUCT_NAME);
         params.put("version", version);
         params.put("server_arch", serverArch);
-        DataResult<EssentialChannelDto> dr =
-                makeDataResult(params, new HashMap<String, Object>(), null, m,
-                        EssentialChannelDto.class);
+        DataResult<EssentialChannelDto> dr = makeDataResult(params, new HashMap<>(), null, m);
 
         List<EssentialChannelDto> result = new LinkedList<>();
         EusReleaseComparator comparator = new EusReleaseComparator(version);
@@ -1909,10 +1904,8 @@ public class ChannelManager extends BaseManager {
      * @param rcm ReleaseChannelMap entry for this Channel
      * @return List of EssentialChannelDto's.
      */
-    public static List<EssentialChannelDto>
-        listBaseEusChannelsByVersionReleaseAndChannelArch(User user,
+    public static List<EssentialChannelDto> listBaseEusChannelsByVersionReleaseAndChannelArch(User user,
                 ReleaseChannelMap rcm) {
-
         log.debug("listBaseEusChannelsByVersionReleaseAndChannelArch()");
         SelectMode m = ModeFactory.getMode("Channel_queries",
                     "base_eus_channels_by_version_channel_arch");
@@ -1925,9 +1918,7 @@ public class ChannelManager extends BaseManager {
         params.put("product_name_label", RHEL_PRODUCT_NAME);
         params.put("version", rcm.getVersion());
         params.put("channel_arch_id", rcm.getChannelArch().getId());
-        DataResult<EssentialChannelDto> dr =
-                makeDataResult(params, new HashMap<String, Object>(), null, m,
-                        EssentialChannelDto.class);
+        DataResult<EssentialChannelDto> dr = makeDataResult(params, new HashMap<>(), null, m);
 
         List<EssentialChannelDto> result = new LinkedList<>();
         EusReleaseComparator comparator = new EusReleaseComparator(rcm.getVersion());
@@ -1965,9 +1956,7 @@ public class ChannelManager extends BaseManager {
         params.put("product_name_label", RHEL_PRODUCT_NAME);
         params.put("version", rhelVersion);
         params.put("channel_arch_id", channelArchId);
-        DataResult<EssentialChannelDto> dr =
-                makeDataResult(params, new HashMap<String, Object>(), null, m,
-                        EssentialChannelDto.class);
+        DataResult<EssentialChannelDto> dr = makeDataResult(params, new HashMap<>(), null, m);
         if (dr.isEmpty()) {
             return null;
         }
@@ -1980,15 +1969,13 @@ public class ChannelManager extends BaseManager {
      * @param server server
      * @return List of channels.
      */
-    public static DataResult<EssentialChannelDto> listCustomBaseChannelsForServer(
-            Server server) {
+    public static DataResult<EssentialChannelDto> listCustomBaseChannelsForServer(Server server) {
         SelectMode m =
             ModeFactory.getMode("Channel_queries", "custom_base_channels_for_server");
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("org_id", server.getOrg().getId());
         params.put("server_arch_id", server.getServerArch().getId());
-        return makeDataResult(params, new HashMap<String, Long>(), null, m,
-                EssentialChannelDto.class);
+        return makeDataResult(params, new HashMap<>(), null, m);
     }
 
     /**
@@ -2636,12 +2623,12 @@ public class ChannelManager extends BaseManager {
                     return empty();
                 },
                 id -> {
-                    Map params = new HashMap();
+                    Map<String, Object> params = new HashMap<>();
                     params.put("pid", id);
                     params.put("channel_arch_id", s.getServerArch().getCompatibleChannelArch().getId());
                     SelectMode m3 = ModeFactory.getMode("Channel_queries",
                             "suse_base_channels_for_suse_product");
-                    DataResult ret  = makeDataResult(params, new HashMap(), null, m3);
+                    DataResult<EssentialChannelDto> ret  = makeDataResult(params, new HashMap<>(), null, m3);
                     return of(ret);
                 });
     }
@@ -2656,12 +2643,13 @@ public class ChannelManager extends BaseManager {
      * @param channel channel
      * @return only SLE11 products
      */
-    @Deprecated public static DataResult listSuseProductsInChannel(Channel channel) {
+    @Deprecated
+    public static DataResult<Row> listSuseProductsInChannel(Channel channel) {
         String mode = "suse_products_in_channel";
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("channel_id", channel.getId());
 
-        SelectMode m = ModeFactory.getMode("Package_queries", mode, Map.class);
+        SelectMode m = ModeFactory.getMode("Package_queries", mode);
         return m.execute(params);
     }
 
@@ -2690,7 +2678,7 @@ public class ChannelManager extends BaseManager {
      * @param pc pageControl
      * @return List of channels associated to a content source (repository)
      */
-    public static DataResult channelsForContentSource(Long csid, PageControl pc) {
+    public static DataResult<Row> channelsForContentSource(Long csid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "channels_for_content_source");
         Map<String, Object> params = new HashMap<>();

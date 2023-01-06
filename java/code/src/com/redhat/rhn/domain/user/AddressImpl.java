@@ -244,6 +244,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
      * Output this object to a string
      * @return String value of AddressImpl object
      */
+    @Override
     public String toString() {
         return "{ID: " + getId() + ", type: " + getType() + ", created: " + getCreated() +
                 ", modified: " + getModified() + ", address1: " + getAddress1() + "}";

@@ -37,6 +37,7 @@ public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean canContinue() {
         return true;
     }
@@ -44,6 +45,7 @@ public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Map<String, Long>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_QUEUE_FIND_CANDIDATES);
@@ -61,6 +63,7 @@ public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
@@ -68,6 +71,7 @@ public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Logger getLogger() {
         return logger;
     }
@@ -75,6 +79,7 @@ public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMaxWorkers() {
         return Config.get().getInt("taskomatic.errata_queue_workers", 2);
     }
@@ -82,6 +87,7 @@ public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public QueueWorker makeWorker(Map<String, Long> workItem) {
         return new ErrataQueueWorker(workItem, logger);
     }
@@ -90,6 +96,7 @@ public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
     *
     * {@inheritDoc}
     */
+    @Override
     public void initialize() {
         // empty
     }

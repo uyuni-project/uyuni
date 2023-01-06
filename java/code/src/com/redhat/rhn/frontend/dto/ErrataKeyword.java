@@ -50,6 +50,7 @@ public class ErrataKeyword {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return getKeyword();
     }

@@ -53,7 +53,7 @@ public class RebootInfoBeaconTest extends RhnJmockBaseTestCase {
     private JsonParser<Event> eventParser;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
         this.eventParser = new JsonParser<>(new TypeToken<>() {

@@ -307,7 +307,7 @@ public class ErrataFactory extends HibernateFactory {
 
         }
         ChannelFactory.save(chan);
-        List chanList = new ArrayList();
+        List chanList = new ArrayList<>();
         chanList.add(chan.getId());
 
         ErrataCacheManager.insertCacheForChannelErrataAsync(chanList, errata);
@@ -832,7 +832,7 @@ public class ErrataFactory extends HibernateFactory {
      * @param org Organization to match results with
      * @return a list of ErrataOverview that match the given errata ids.
      */
-    public static List<ErrataOverview> search(List eids, Org org) {
+    public static List<ErrataOverview> search(List<Long> eids, Org org) {
         Map<String, Object> params = new HashMap<>();
         params.put("eids", eids);
         params.put("org_id", org.getId());
@@ -867,7 +867,7 @@ public class ErrataFactory extends HibernateFactory {
      * @return a list of ErrataOverview of Errata that match the given Package
      * ids.
      */
-    public static List<ErrataOverview> searchByPackageIds(List pids) {
+    public static List<ErrataOverview> searchByPackageIds(List<Long> pids) {
         Map<String, Object> params = new HashMap<>();
         params.put("pids", pids);
         if (log.isDebugEnabled()) {

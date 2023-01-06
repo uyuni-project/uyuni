@@ -452,7 +452,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListGlobalChannelsForSDC() throws Exception {
+    public void testListGlobalChannelsForSDC() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         //Create a config channel
@@ -472,7 +472,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListGlobalChannelsForActivationKeys() throws Exception {
+    public void testListGlobalChannelsForActivationKeys() {
         UserTestUtils.addUserRole(user, RoleFactory.ACTIVATION_KEY_ADMIN);
 
         //Create a config channel
@@ -672,10 +672,9 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
     /**
      *
-     * @throws Exception something bad happened
      */
     @Test
-    public void testAvailableChannels() throws Exception {
+    public void testAvailableChannels() {
         // Create a system
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
 
@@ -888,7 +887,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListSystemInfoForChannel() throws Exception {
+    public void testListSystemInfoForChannel() {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
@@ -1460,7 +1459,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         }
     }
     @Test
-    public void testChannelAccess() throws Exception {
+    public void testChannelAccess() {
         // Create a server we DON'T own - we shouldn't have channel access
         Server srv = ServerFactoryTest.createTestServer(user, false);
 

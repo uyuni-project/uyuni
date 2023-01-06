@@ -55,7 +55,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
     private RhnMockJspWriter writer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TestUtils.disableLocalizationLogging();
         request = mock(HttpServletRequest.class);
@@ -68,7 +68,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         ldt.setPageContext(pageContext);
         ldt.setParent(lt);
 
-        lt.setPageList(new DataResult(CSVWriterTest.getTestListOfMaps()));
+        lt.setPageList(new DataResult<>(CSVWriterTest.getTestListOfMaps()));
 
         context().checking(new Expectations() { {
             atLeast(1).of(pageContext).getOut();
@@ -121,7 +121,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
      * {@inheritDoc}
      */
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TestUtils.enableLocalizationLogging();
     }
 

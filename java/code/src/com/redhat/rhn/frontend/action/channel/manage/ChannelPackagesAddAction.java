@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.SelectableChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListSetHelper;
@@ -95,16 +96,11 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
                                 mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);
         }
 
-
-
-
         String selectedChan = request.getParameter(SELECTED_CHANNEL);
-        DataResult result = null;
-
+        DataResult<PackageOverview> result;
 
         //selected channel id
         long scid = 0;
-
 
         //go ahead and set these to false.  We'll change them down a bit  if we need to
         request.setAttribute(ALL_PACKAGES_SELECTED, false);
@@ -120,7 +116,6 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
             }
         }
 
-
         if (ALL_PACKAGES.equals(selectedChan)) {
             result = PackageManager.lookupCustomPackagesForChannel(cid,
                     user.getOrg().getId());
@@ -134,7 +129,6 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
             scid = Long.parseLong(selectedChan);
             result = PackageManager.lookupPackageForChannelFromChannel(scid, cid);
         }
-
 
         //Add Red Hat Base Channels, and custom base channels to the list, and if one
         //      is selected, select it

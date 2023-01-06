@@ -80,6 +80,7 @@ public class ErrataCacheDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         ErrataCacheDto ecd = (ErrataCacheDto) obj;
 
@@ -92,6 +93,7 @@ public class ErrataCacheDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getErrataId())
                                     .append(getPackageId())
@@ -102,6 +104,7 @@ public class ErrataCacheDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("errata_id", getErrataId())
                                         .append("package_id", getPackageId())

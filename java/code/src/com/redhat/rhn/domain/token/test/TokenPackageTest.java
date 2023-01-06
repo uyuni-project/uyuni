@@ -76,7 +76,7 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
     }
 
     public static TokenPackage populateTestPackage(User user, ActivationKey key,
-            TokenPackage p) throws Exception {
+            TokenPackage p) {
 
         PackageName pname = PackageNameTest.createTestPackageName();
 

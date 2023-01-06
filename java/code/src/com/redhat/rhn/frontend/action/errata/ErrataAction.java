@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.OwnedErrata;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -33,15 +34,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** ErrataAction */
-public class ErrataAction extends RhnAction implements Listable {
+public class ErrataAction extends RhnAction implements Listable<OwnedErrata> {
 
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         ListRhnSetHelper helper =
             new ListRhnSetHelper(this, request, RhnSetDecl.ERRATA_TO_DELETE);
@@ -58,7 +58,7 @@ public class ErrataAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<OwnedErrata> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return ErrataManager.ownedErrata(user);
     }

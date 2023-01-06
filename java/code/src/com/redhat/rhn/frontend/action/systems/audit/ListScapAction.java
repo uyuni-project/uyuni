@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.audit.scap.XccdfDiffSubmitAction;
+import com.redhat.rhn.frontend.dto.XccdfTestResultDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListSetHelper;
@@ -64,7 +65,7 @@ public class ListScapAction extends ScapSetupAction {
         User user = context.getCurrentUser();
         setupScapEnablementInfo(context);
 
-        DataResult result = ScapManager.allScans(server);
+        DataResult<XccdfTestResultDto> result = ScapManager.allScans(server);
         RhnListSetHelper helper = new RhnListSetHelper(request);
 
         RhnSet set = getSetDecl(sid).get(user);

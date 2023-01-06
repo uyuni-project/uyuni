@@ -49,6 +49,7 @@ public class KickstartCleanup extends RhnJavaJob {
      *
      * @throws JobExecutionException Indicates somes sort of fatal error
      */
+    @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         try {
             SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,

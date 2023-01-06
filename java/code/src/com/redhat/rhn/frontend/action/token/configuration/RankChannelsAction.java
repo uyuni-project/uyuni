@@ -111,7 +111,7 @@ public class RankChannelsAction  extends RhnAction {
      *                   their new  rankings.
      */
     private List<Long> getChannelIds(DynaActionForm form) {
-        List channels = new ArrayList();
+        List channels = new ArrayList<>();
         String rankedValues = (String)form.get(RANKED_VALUES);
         if (StringUtils.isNotBlank(rankedValues)) {
             String [] values = rankedValues.split(",");
@@ -145,7 +145,7 @@ public class RankChannelsAction  extends RhnAction {
             saveMessage("common.config.rank.jsp.error.nojavascript", request);
         }
 
-        Map map = new HashMap();
+        Map map = new HashMap<>();
         processParams(context, map);
         Set<String> set = getSet(context);
         setup(context, (DynaActionForm)formIn, set);

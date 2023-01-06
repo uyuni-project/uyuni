@@ -85,7 +85,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
                 addHardwareMessage(pa, requestContext);
 
                 // sid, actionid, servername, profilename
-                List args = new ArrayList();
+                List<String> args = new ArrayList<>();
                 args.add(sid.toString());
                 args.add(pa.getId().toString());
                 args.add(StringUtil.htmlifyText(
@@ -139,8 +139,8 @@ public class SyncProfilesAction extends BaseProfilesAction {
      * {@inheritDoc}
      */
     @Override
-    protected Map getKeyMethodMap() {
-        Map map = new HashMap();
+    protected Map<String, String> getKeyMethodMap() {
+        Map<String, String> map = new HashMap<>();
         map.put("schedulesync.jsp.schedulesync", "scheduleSync");
         return map;
     }

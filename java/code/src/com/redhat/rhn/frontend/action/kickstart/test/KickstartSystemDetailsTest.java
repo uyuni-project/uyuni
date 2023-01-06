@@ -98,7 +98,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         ksdata.getKickstartDefaults().getKstree().
             setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
@@ -115,7 +115,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         verifyNoActionErrors();
     }
 
-    private void setupForDisplay(KickstartData k) throws Exception {
+    private void setupForDisplay(KickstartData k) {
         clearRequestParameters();
         setRequestPathInfo("/kickstart/SystemDetailsEdit");
         addRequestParameter("ksid", k.getId().toString());

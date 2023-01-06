@@ -84,9 +84,8 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * Create a SUSE product (which is different from a {@link com.redhat.rhn.domain.channel.ChannelProduct}).
      * @param family the channel family
      * @return the newly created SUSE product
-     * @throws Exception if anything goes wrong
      */
-    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) throws Exception {
+    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) {
         SUSEProduct product = new SUSEProduct();
         String name = TestUtils.randomString().toLowerCase();
         product.setName(name);
@@ -391,10 +390,9 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param testDataPath the path to test data
      * @param withRepos set true if repos should be added
      * @param fromdir set true if fromdir option should be simulated
-     * @throws Exception
      */
     public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos,
-                                                          boolean fromdir) throws Exception {
+                                                          boolean fromdir) {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();

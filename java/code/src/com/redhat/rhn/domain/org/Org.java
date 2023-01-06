@@ -389,7 +389,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * @return Returns the userList
      */
     private List<User> getUsers(DataResult dataresult) {
-        List userList = new ArrayList();
+        List userList = new ArrayList<>();
         Collection userIds = getListFromResult(dataresult, USER_ID_KEY);
 
         if (!userIds.isEmpty()) {
@@ -406,7 +406,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * @return Returns the userIds
      */
     private List getListFromResult(DataResult dataresult, String key) {
-        List userIds = new ArrayList();
+        List userIds = new ArrayList<>();
         for (Object oIn : dataresult) {
             // convert these to Longs
             Long bd = (Long) ((HashMap) oIn).get(key);

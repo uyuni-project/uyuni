@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.user.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.UserPrefAction;
@@ -44,10 +43,9 @@ public class UserPrefActionTest extends RhnBaseTestCase {
 
     /**
      *
-     * @throws Exception on server init failure
      */
     @Test
-    public void testPerformExecute() throws Exception {
+    public void testPerformExecute() {
         UserPrefAction action = new UserPrefAction();
 
         ActionMapping mapping = new ActionMapping();
@@ -81,7 +79,7 @@ public class UserPrefActionTest extends RhnBaseTestCase {
         ActionForward rc = action.execute(mapping, form, request, response);
 
         // verify the correct ActionForward was returned
-        assertTrue(rc.getName().equals("success"));
+        assertEquals("success", rc.getName());
         assertEquals("path?uid=" + user.getId(), rc.getPath());
         assertFalse(rc.getRedirect());
 

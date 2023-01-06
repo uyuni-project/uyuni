@@ -48,7 +48,7 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         nmt = new NavDialogMenuTag();
         try {
             url = TestUtils.findTestData(NAV_XML);

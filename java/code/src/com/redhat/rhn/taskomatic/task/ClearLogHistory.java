@@ -43,6 +43,7 @@ public class ClearLogHistory extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext context)
         throws JobExecutionException {
         Integer days = null;

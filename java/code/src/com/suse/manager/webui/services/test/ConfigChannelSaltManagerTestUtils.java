@@ -39,9 +39,8 @@ public class ConfigChannelSaltManagerTestUtils {
      * Create a test channel and reloads the object.
      * @param user the user
      * @return the channel
-     * @throws Exception if anything goes wrong
      */
-    public static ConfigChannel createTestChannel(User user) throws Exception {
+    public static ConfigChannel createTestChannel(User user) {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         return (ConfigChannel) HibernateFactory.reload(cc);
     }

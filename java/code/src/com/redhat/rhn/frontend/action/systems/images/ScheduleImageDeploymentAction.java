@@ -47,7 +47,7 @@ public class ScheduleImageDeploymentAction extends RhnAction {
     @SuppressWarnings("unchecked")
     public ActionForward execute(ActionMapping actionMapping,
             ActionForm actionForm, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
 
         // Get the current user
         RequestContext ctx = new RequestContext(request);

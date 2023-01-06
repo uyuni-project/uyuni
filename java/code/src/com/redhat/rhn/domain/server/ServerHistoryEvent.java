@@ -150,6 +150,7 @@ public class ServerHistoryEvent extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         ServerHistoryEvent that = (ServerHistoryEvent) obj;
         return new EqualsBuilder().
@@ -162,6 +163,7 @@ public class ServerHistoryEvent extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
 
        HashCodeBuilder builder = new HashCodeBuilder();

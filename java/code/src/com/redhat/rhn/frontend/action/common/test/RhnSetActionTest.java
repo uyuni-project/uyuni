@@ -58,7 +58,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         action = new TestAction();
     }
 
@@ -191,7 +191,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
     }
 
     public static void verifyRhnSetData(Long uid, String setname, int size)
-        throws HibernateException, SQLException {
+        throws HibernateException {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             ResultSet rs = null;

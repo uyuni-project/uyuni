@@ -58,7 +58,7 @@ public abstract class BaseCopyToAction extends RhnAction {
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest req,
-                                 HttpServletResponse resp) throws Exception {
+                                 HttpServletResponse resp) {
 
         RequestContext ctx = new RequestContext(req);
         User user = ctx.getCurrentUser();

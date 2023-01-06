@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.satellite.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.action.satellite.BootstrapSystemConfigAction;
@@ -51,10 +50,9 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
 
     /**
      * Tests disabling and enabling bootstrap discovery.
-     * @throws Exception if things go wrong
      */
     @Test
-    public void testDisableEnableBootstrapDiscovery() throws Exception {
+    public void testDisableEnableBootstrapDiscovery() {
         actionPerform();
 
         assertEquals(200, getMockResponse().getStatusCode());
@@ -64,7 +62,7 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
         request.setMethod(HttpServletRequestSimulator.POST);
         actionPerform();
 
-        assertTrue(getMockResponse().getStatusCode() == 200);
+        assertEquals(200, getMockResponse().getStatusCode());
         HttpServletRequest request = getRequest();
         String userOrgName = user.getOrg().getName();
         assertEquals(userOrgName,

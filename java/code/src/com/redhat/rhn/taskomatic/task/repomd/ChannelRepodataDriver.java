@@ -41,6 +41,7 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void initialize() {
         WriteMode resetChannelRepodata = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMOD_CLEAR_IN_PROGRESS);
@@ -63,6 +64,7 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
     /**
      * @return Returns boolean canContinue
      */
+    @Override
     public boolean canContinue() {
         return true;
     }
@@ -70,6 +72,7 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
     /**
      * @return Returns candidates
      */
+    @Override
     public List<Map<String, Object>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DRIVER_QUERY);
@@ -86,6 +89,7 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
     /**
      * @return Returns Logger
      */
+    @Override
     public Logger getLogger() {
         return logger;
     }
@@ -94,6 +98,7 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
      * {@inheritDoc}
      */
 
+    @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
@@ -101,6 +106,7 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
     /**
      * @return Returns max workers
      */
+    @Override
     public int getMaxWorkers() {
         return ConfigDefaults.get().getTaskoChannelRepodataWorkers();
     }
@@ -109,6 +115,7 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
      * @param workItem work item
      * @return Returns channel repodata worker object
      */
+    @Override
     public QueueWorker makeWorker(Map<String, Object> workItem) {
         return new ChannelRepodataWorker(workItem, getLogger());
     }

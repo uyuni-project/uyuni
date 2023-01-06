@@ -45,6 +45,7 @@ public class VirtualizationPoolCreateActionSource extends PoolSource {
      * Serializes into a json string
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return GSON.toJson(this);
     }

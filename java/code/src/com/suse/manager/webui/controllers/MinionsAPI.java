@@ -254,7 +254,7 @@ public class MinionsAPI {
         }
 
         @Override
-        public void write(JsonWriter jsonWriter, BootstrapHostsJson.AuthMethod authMethod) throws IOException {
+        public void write(JsonWriter jsonWriter, BootstrapHostsJson.AuthMethod authMethod) {
             throw new UnsupportedOperationException();
         }
     }

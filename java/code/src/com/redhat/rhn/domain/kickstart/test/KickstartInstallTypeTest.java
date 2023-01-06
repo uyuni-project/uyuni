@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class KickstartInstallTypeTest extends RhnBaseTestCase {
 
     @Test
-    public void testKsInstallType() throws Exception {
+    public void testKsInstallType() {
         Long testid = 1L;
         String query = "KickstartInstallType.findById";
 

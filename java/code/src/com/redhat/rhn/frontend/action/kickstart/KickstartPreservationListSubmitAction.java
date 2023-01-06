@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.kickstart.FilePreservationListsCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
@@ -43,9 +44,9 @@ public class KickstartPreservationListSubmitAction extends BaseKickstartListSubm
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<FilePreservationDto> getDataResult(User userIn,
+                                                            ActionForm formIn,
+                                                            HttpServletRequest request) {
         return KickstartLister.getInstance().preservationListsInOrg(
                 userIn.getOrg(), null);
     }

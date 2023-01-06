@@ -37,7 +37,7 @@ public class ManagedServerGroupSerializerTest extends MockObjectTestCase {
     private XmlRpcSerializer serializer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         serializer = new XmlRpcSerializer();
     }

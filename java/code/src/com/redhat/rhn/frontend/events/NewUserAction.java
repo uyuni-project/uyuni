@@ -55,12 +55,10 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
         super.execute(msg);
         NewUserEvent evt = (NewUserEvent) msg;
 
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("login", evt.getUser().getLogin());
         map.put("email-address", evt.getUser().getEmail());
 
-        //set url and account info for email to accountOwner
-        //url.append();
         String accountInfo = StringUtil.replaceTags(OrgFactory
                 .EMAIL_ACCOUNT_INFO.getValue(), map);
 

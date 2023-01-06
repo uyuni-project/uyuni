@@ -30,7 +30,7 @@ public class RenderGuardComposite implements RenderGuard {
      */
     public RenderGuardComposite() {
         super();
-        guards = new ArrayList();
+        guards = new ArrayList<>();
     }
 
     /**

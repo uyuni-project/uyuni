@@ -55,7 +55,7 @@ public class AddToSSMTest extends RhnMockStrutsTestCase {
 
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
 
         actionPerform();
         assertEquals(request.getParameter("sid"), server.getId().toString());

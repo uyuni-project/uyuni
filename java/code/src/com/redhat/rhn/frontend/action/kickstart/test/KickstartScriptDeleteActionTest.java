@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class KickstartScriptDeleteActionTest extends BaseKickstartEditTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         KickstartScript kss = ksdata.getScripts().iterator().next();
         assertEquals(5, ksdata.getScripts().size());
         addRequestParameter(RequestContext.KICKSTART_SCRIPT_ID, kss.getId().toString());
@@ -44,7 +44,7 @@ public class KickstartScriptDeleteActionTest extends BaseKickstartEditTestCase {
 
 
     @Test
-    public void testExecuteSubmit() throws Exception {
+    public void testExecuteSubmit() {
         KickstartScript kss = ksdata.getScripts().iterator().next();
         assertEquals(5, ksdata.getScripts().size());
         addRequestParameter(RequestContext.KICKSTART_SCRIPT_ID, kss.getId().toString());
