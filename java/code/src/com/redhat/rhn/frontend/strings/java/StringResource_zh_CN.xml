@@ -2843,12 +2843,12 @@ and try again.
         </context-group>
         <target state="translated">创建通知过滤器</target>
       </trans-unit>
-      <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
+      <trans-unit id="toolbar.upload.kickstart" xml:space="preserve" approved="yes">
         <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="needs-adaptation">上载 Kickstart/Autoyast 文件</target>
+        <target state="final">上载 Kickstart/AutoYaST 文件</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -11276,14 +11276,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Package {0} not found in subscribed channels</source>
         <target state="final">在订阅的通道中找不到软件包 {0}</target>
       </trans-unit>
-    <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+      <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve" approved="yes">
         <source>Cannot cancel an action in PICKED UP state.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <target state="final">无法取消处于 "已提取" 状态的操作。</target>
+      </trans-unit>
+      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve" approved="yes">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">无法取消未满足先决条件的操作。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
