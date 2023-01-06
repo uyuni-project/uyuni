@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 16:37+0100\n"
+"POT-Creation-Date: 2023-01-06 13:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -529,6 +529,8 @@ msgid "Select All"
 msgstr ""
 
 #: ../html/src/components/table/TableDataHandler.tsx:339
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
@@ -3896,11 +3898,6 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:225
 msgid "e.g., /etc/ansible/testing/hosts"
-msgstr ""
-
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-msgid "Loading.."
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:81
