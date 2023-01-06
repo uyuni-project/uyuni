@@ -11261,6 +11261,13 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <source>Product Temporary Fixes packages (PTF): {0}</source>
         <target state="translated">Balíky Product Temporary Fixes (PTF): {0}</target>
       </trans-unit>
-    </body>
+    <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>

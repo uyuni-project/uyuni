@@ -11228,11 +11228,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
         <target state="final">PICKED UP 상태에서는 작업을 취소할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
         <target state="final">대기 중인 전제 조건이 있는 작업을 취소할 수 없습니다.</target>
       </trans-unit>
@@ -11243,11 +11243,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
         <source>You have subscriptions that need attention.</source>
         <target state="final">주의가 필요한 구독이 있습니다.</target>
       </trans-unit>
-      <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.subscriptionwarning.detail" xml:space="preserve">
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
         <target state="final">곧 만료되거나 이미 만료된 구독이 있습니다. &lt;a href="/rhn/manager/subscription-matching"&gt;구독 일치&lt;/a&gt; 페이지를 확인하십시오.</target>
       </trans-unit>
@@ -11259,6 +11259,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Product Temporary Fixes packages (PTF): {0}</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>
