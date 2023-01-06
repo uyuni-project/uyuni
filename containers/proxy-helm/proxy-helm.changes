@@ -1,3 +1,5 @@
+- Allow using container images from different registry paths
+
 -------------------------------------------------------------------
 Wed Dec 14 13:50:56 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
