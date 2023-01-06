@@ -2840,12 +2840,12 @@ and try again.
         </context-group>
         <target>通知フィルターを作成</target>
       </trans-unit>
-      <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.upload.kickstart" xml:space="preserve">
         <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="needs-adaptation">キックスタート/Autoyastファイルをアップロード</target>
+        <target state="final">キックスタート/Autoyastファイルをアップロード</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -11260,22 +11260,29 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-    <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+      <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <target state="final">ピックアップ済み状態のアクションはキャンセルできません。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <target state="final">前提条件が待機中のアクションはキャンセルできません。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
         <source>You have subscriptions that need attention.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <target state="final">注意が必要なサブスクリプションがあります。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.detail" xml:space="preserve">
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
-      <target state="new"/>
+        <target state="final">間もなく期限切れになるサブスクリプション、または既に期限切れになっているサブスクリプションがあります。 &lt;a href="/rhn/manager/subscription-matching"&gt;サブスクリプションマッチング&lt;/a&gt;ページを確認してください。</target>
+      </trans-unit>
+    <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="new"/>
   </trans-unit>
-      </body>
+        </body>
   </file>
 </xliff>

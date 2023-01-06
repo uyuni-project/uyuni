@@ -10555,6 +10555,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>

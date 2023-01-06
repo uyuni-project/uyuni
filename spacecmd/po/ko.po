@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-02 15:52+0100\n"
-"PO-Revision-Date: 2022-11-22 02:13+0000\n"
+"POT-Creation-Date: 2023-01-06 13:58+0100\n"
+"PO-Revision-Date: 2023-01-06 05:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/"
 "ko/>\n"
@@ -1272,7 +1272,7 @@ msgid "Failed to get details for file %s from %s"
 msgstr "%s에서 %s 파일에 대한 세부 사항을 가져오지 못함"
 
 #: ../src/spacecmd/configchannel.py:1200
-#, fuzzy, python-format
+#, python-format
 msgid "File %s could not be exported "
 msgstr "%s 파일을 엑스포트할 수 없음 "
 
@@ -1360,7 +1360,6 @@ msgid "Failed trying to import file %s (empty content)"
 msgstr "%s 파일을 가져오지 못함(비어 있는 컨텐트)"
 
 #: ../src/spacecmd/configchannel.py:1361
-#, fuzzy
 msgid "Older APIs can't export encoded files"
 msgstr "기존 API는 인코딩된 파일을 엑스포트할 수 없음"
 
@@ -1946,7 +1945,7 @@ msgstr "CVE"
 
 #: ../src/spacecmd/errata.py:431
 msgid "Vendor Advisory"
-msgstr ""
+msgstr "벤더 자문"
 
 #: ../src/spacecmd/errata.py:435
 msgid "Solution"
@@ -2019,7 +2018,7 @@ msgstr "사용법: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
 #: ../src/spacecmd/errata.py:559 ../src/spacecmd/scap.py:181
 msgid "Example:"
-msgstr "예는 다음과 같습니다."
+msgstr "예:"
 
 #: ../src/spacecmd/filepreservation.py:42
 msgid "filepreservation_list: List all file preservations"
@@ -3036,7 +3035,6 @@ msgid "Kickstart profile you've entered was not found"
 msgstr "입력한 킥스타트 프로파일을 찾을 수 없음"
 
 #: ../src/spacecmd/kickstart.py:2225
-#, fuzzy
 msgid "kickstart_export: export kickstart profile(s) to json format file"
 msgstr "kickstart_export: 킥스타트 프로파일을 json 형식 파일로 엑스포트"
 
@@ -4089,7 +4087,7 @@ msgstr ""
 "proxy_container_config: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:33
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL ROOT_CA CRT KEY\n"
@@ -4134,7 +4132,7 @@ msgstr ""
 "\n"
 "옵션:\n"
 "  -o, --output 생성된 구성을 생성할 경로입니다. 기본값: 'config.tar.gz'\n"
-"  -p, --ssh-port SSH 포트 프록시는 하나를 수신합니다. 기본값: 22\n"
+"  -p, --ssh-port SSH 포트 프록시는 하나를 수신합니다. 기본값: 8022\n"
 "  -i, --intermediate-ca  프록시 서명에 사용되는 중간 CA에 대한 경로입니다.\n"
 "            PEM 형식의 인증서. 여러 번 제공될 수 있습니다.\n"
 "\n"
@@ -4151,7 +4149,7 @@ msgstr ""
 "환합니다."
 
 #: ../src/spacecmd/proxy.py:90
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL\n"
@@ -4207,7 +4205,7 @@ msgstr ""
 "\n"
 "옵션:\n"
 "  -o, --output 생성된 구성을 생성할 경로입니다. 기본값: 'config.tar.gz'\n"
-"  -p, --ssh-port SSH 포트는 하나를 수신합니다. 기본값: 22\n"
+"  -p, --ssh-port SSH 포트는 하나를 수신합니다. 기본값: 8022\n"
 "  --ca-crt 새 프록시 인증서를 생성하기 위해 사용할 CA 인증서의 경로입니다.\n"
 "           기본적으로 /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT를 사용합니"
 "다.\n"
@@ -8204,7 +8202,6 @@ msgstr ""
 "다."
 
 #: ../src/spacecmd/system.py:4604
-#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8230,6 +8227,8 @@ msgstr ""
 "    옵션: \n"
 "        -s START_TIME \n"
 "        -d 모의 연습을 실행하려면 이 플래그 전달 \n"
+"        --allow-vendor-change 벤더 변경을 허용하려면 이 플래그 전달 \n"
+"        -r 후속 제품이 없는 제품을 제거하려면 이 플래그 전달 \n"
 "        -c CHILD_CHANNELS (쉼표로 구분된 하위 채널 레이블(공백 없음))"
 
 #: ../src/spacecmd/system.py:4658
@@ -8245,9 +8244,8 @@ msgid "Scheduling Product migration for system "
 msgstr "시스템에 대한 제품 마이그레이션 예약 중 "
 
 #: ../src/spacecmd/system.py:4662
-#, fuzzy
 msgid "Migration target "
-msgstr "  마이그레이션 대상 없음"
+msgstr "마이그레이션 대상 "
 
 #: ../src/spacecmd/system.py:4669
 msgid "Scheduled action ID: "
