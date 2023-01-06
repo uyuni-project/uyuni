@@ -3,7 +3,7 @@ repository: registry.opensuse.org/uyuni
 version: latest
 
 ## Allows to override the default URI for an image if defined
-## Requires a full URI in a form of <registry>/<image>/<version>
+## Requires a full URI in a form of <registry>/<image>:<version-tag>
 ##
 images:
     # proxy-httpd: <registry>/<image>/<version>
