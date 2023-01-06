@@ -10832,14 +10832,14 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target state="translated">您指定了无效变量："{0}"。变量应该是名称数值对，中间用 "=" 符号隔开，每个名称数值对之间用换行符隔开。例如："ip=192.168.0.1"</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_generation" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
         <target state="final">您的 kickstart/autoYaST 模板中有错误。请检查 "{0}" 选项卡确定模板的问题。</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_message" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
@@ -29436,7 +29436,7 @@ given channel.</source>
         </context-group>
         <target state="translated">请选择您偏好的样式主题。</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.allow.vendor.change" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
         <source>Allow Vendor Change</source>
         <target state="final">允许更改供应商</target>
       </trans-unit>
@@ -29868,7 +29868,7 @@ given channel.</source>
         <source>Update System Overview</source>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
         <target state="final">为这些日程安排指定的系统没有处于 {0} 的维护时段</target>
       </trans-unit>
