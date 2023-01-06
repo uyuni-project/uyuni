@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-23 14:02+0100\n"
-"PO-Revision-Date: 2022-12-09 19:13+0000\n"
+"POT-Creation-Date: 2023-01-06 14:03+0100\n"
+"PO-Revision-Date: 2022-12-25 21:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -563,6 +563,8 @@ msgid "Select All"
 msgstr "Vybrať všetko"
 
 #: ../html/src/components/table/TableDataHandler.tsx:369
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
@@ -738,57 +740,57 @@ msgstr "Povolené"
 msgid "Disabled"
 msgstr "Zakázané"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:157
 msgid "Server Monitoring"
 msgstr "Monitorovanie servera"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:159
 msgid "The server uses "
 msgstr "Server používa "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:156
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
 msgid "Prometheus"
 msgstr "Prometheus"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:158
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:163
 msgid " exporters to expose metrics about your environment."
 msgstr " exportéri pre ukázanie metriky o vašom prostredí."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:166
 msgid "Refer to the "
 msgstr "Pozrite si "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:167
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:172
 msgid "documentation"
 msgstr "dokumentácia"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:169
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:174
 msgid " to learn how to to consume these metrics."
 msgstr " naučiť sa, ako tieto metriky využívať."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:247
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:267
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:287
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:309
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:256
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:276
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:296
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:318
 msgid "Enable"
 msgstr "Povoliť"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:317
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:263
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:283
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:303
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:326
 msgid "Disable"
 msgstr "Zakázať"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:330
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:339
 msgid "SUSE Manager Configuration - Monitoring"
 msgstr "Konfigurácia SUSE Manager - Monitorovanie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:335
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:344
 msgid "Setup your SUSE Manager server monitoring."
 msgstr "Nastavte monitorovanie svojho servera SUSE Manager."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:350
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:219
@@ -796,38 +798,38 @@ msgstr "Nastavte monitorovanie svojho servera SUSE Manager."
 msgid "General"
 msgstr "Všeobecné"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:346
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:355
 msgid "Bootstrap Script"
 msgstr "Zavádzací skript"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:360
 msgid "Organizations"
 msgstr "Organizácie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:365
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
 msgid "Restart"
 msgstr "Reštart"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
 msgid "Bare-metal systems"
 msgstr "Systémy Bare-metal"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:387
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:396
 msgid "Monitoring"
 msgstr "Monitorovanie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:407
 msgid "Restarting"
 msgstr "Reštartovanie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:399
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -2016,7 +2018,7 @@ msgstr "Poskytuje názov"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:223
 msgid "Number"
-msgstr ""
+msgstr "Číslo"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
@@ -2133,7 +2135,7 @@ msgstr "Oprava"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:38
 msgid "Product Temporary Fix"
-msgstr ""
+msgstr "Product Temporary Fix"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:45
 msgid "contains"
@@ -2251,11 +2253,11 @@ msgstr "poskytuje rovnaký názov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:125
 msgid "all"
-msgstr ""
+msgstr "všetky"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
 msgid "all product temporary fixes"
-msgstr ""
+msgstr "všetky dočasné opravy produktov"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:139
 msgid "NEVRA"
@@ -2286,14 +2288,12 @@ msgid "Contains Package"
 msgstr "Obsahuje balík"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:217
-#, fuzzy
 msgid "All"
-msgstr "Umožniť"
+msgstr "Všetky"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:235
-#, fuzzy
 msgid "Fixes Package Name"
-msgstr "Názov balíka"
+msgstr "Názov balíka opráv"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:256
 msgid "enable module"
@@ -3860,11 +3860,6 @@ msgstr "Pridať inventárny súbor"
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:225
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr "napr. /etc/ansible/testing/hosts"
-
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-msgid "Loading.."
-msgstr "Načítava sa.."
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:81
 msgid "Nothing configured. Please add paths in the "
@@ -6312,6 +6307,9 @@ msgstr "nedefinované"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "Loading.."
+#~ msgstr "Načítava sa.."
 
 #~ msgid "Time"
 #~ msgstr "Čas"

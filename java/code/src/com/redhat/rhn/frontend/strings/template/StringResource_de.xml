@@ -228,9 +228,7 @@ Affected Systems List
 ---------------------
 This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
-package profile for that server is out of date. In that case you should run
-'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
-as root on the system in question to refresh your software profile.
+package profile for that server is out of date.
     </source> <target state="needs-adaptation">--------------------- Liste der betroffenen Systeme --------------------- Dieser Errata-Hinweis trifft möglicherweise auf die nachfolgend aufgelisteten Systeme zu. Falls Sie sicher sind, dass dieses Erratum auf keines der aufgelisteten Systeme zutrifft, ist das Paketprofil für diesen Server möglicherweise veraltet. In diesem Fall sollten Sie 'up2date -p' (RHEL 4 und älter) oder 'rhn-profile-sync' (RHEL 5 und neuer) als Root auf dem fraglichen System ausführen, um Ihr Software-Profil zu aktualisieren.</target> <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>

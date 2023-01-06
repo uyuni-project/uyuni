@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-02 15:32+0100\n"
-"PO-Revision-Date: 2022-11-14 22:13+0000\n"
+"POT-Creation-Date: 2023-01-06 14:03+0100\n"
+"PO-Revision-Date: 2023-01-06 05:14+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -1943,7 +1943,7 @@ msgstr "CVE"
 
 #: ../src/spacecmd/errata.py:431
 msgid "Vendor Advisory"
-msgstr ""
+msgstr "供应商建议"
 
 #: ../src/spacecmd/errata.py:435
 msgid "Solution"
@@ -4070,7 +4070,7 @@ msgid ""
 msgstr "proxy_container_config：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:33
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL ROOT_CA CRT KEY\n"
@@ -4114,7 +4114,7 @@ msgstr ""
 "\n"
 "选项：\n"
 "  -o、--output 用于创建生成的配置的路径。默认值为 \"config.tar.gz\"\n"
-"  -p、--ssh-port 代理要侦听的 SSH 端口。默认端口为 22\n"
+"  -p、--ssh-port 代理要侦听的 SSH 端口。默认端口为 8022\n"
 "  -i、--intermediate-ca  用于为 PEM 格式代理证书签名的中间 CA 的路径。\n"
 "            可以提供多次。\n"
 "\n"
@@ -4129,7 +4129,7 @@ msgid ""
 msgstr "proxy_container_config_generate_cert：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:90
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL\n"
@@ -4186,7 +4186,7 @@ msgstr ""
 "\n"
 "选项：\n"
 "  -o、--output 用于创建生成的配置的路径。默认值为 \"config.tar.gz\"\n"
-"  -p、--ssh-port 代理要侦听的 SSH 端口。默认端口为 22\n"
+"  -p、--ssh-port 代理要侦听的 SSH 端口。默认端口为 8022\n"
 "  --ca-crt 用于生成新代理证书的 CA 的证书路径。\n"
 "           默认使用 /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT。\n"
 "  --ca-key 用于生成新代理证书的 CA 的私用密钥路径。\n"
@@ -8139,7 +8139,6 @@ msgid ""
 msgstr "system_scheduleproductmigration：为系统安排服务产品迁移。"
 
 #: ../src/spacecmd/system.py:4604
-#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8162,7 +8161,9 @@ msgstr ""
 "    必须按以下格式传递迁移目标参数：[3143,3146,3147,3145,3144,3148,3062]。\n"
 "    选项：\n"
 "        -s 开始时间\n"
-"        -d 如果您要执行试运行，请传递此标志\n"
+"        -d 如果您要执行试运行，请传递此标志 \n"
+"        --allow-vendor-change 如果您要允许更改供应商，请传递此标志 \n"
+"        -r 如果您要去除没有后继版本的产品，请传递此标志 \n"
 "        -c 子通道（逗号分隔的子通道标签（不含空格））"
 
 #: ../src/spacecmd/system.py:4658
@@ -8178,9 +8179,8 @@ msgid "Scheduling Product migration for system "
 msgstr "正在为以下系统安排产品迁移 "
 
 #: ../src/spacecmd/system.py:4662
-#, fuzzy
 msgid "Migration target "
-msgstr "  无迁移目标"
+msgstr "迁移目标 "
 
 #: ../src/spacecmd/system.py:4668
 msgid "Scheduled action ID: "

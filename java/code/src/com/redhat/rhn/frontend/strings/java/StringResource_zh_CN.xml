@@ -2843,12 +2843,12 @@ and try again.
         </context-group>
         <target state="translated">创建通知过滤器</target>
       </trans-unit>
-      <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.upload.kickstart" xml:space="preserve">
         <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="needs-adaptation">上载 Kickstart/Autoyast 文件</target>
+        <target state="final">上载 Kickstart/AutoYaST 文件</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -11216,51 +11216,58 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-    <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
         <source>Regularly ensure the systems overview data are up to date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
         <source>Update the systems overview data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <target state="final">无法取消处于 "已提取" 状态的操作。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">无法取消未满足先决条件的操作。</target>
+      </trans-unit>
       <trans-unit id="java|hostname" xml:space="preserve">
         <source>Hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
         <source>You have subscriptions that need attention.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <target state="final">您有需要注意的订阅。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.detail" xml:space="preserve">
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">您的某些订阅即将失效或已经失效。请查看&lt;a href="/rhn/manager/subscription-matching"&gt;订阅匹配&lt;/a&gt;页面。</target>
+      </trans-unit>
       <trans-unit id="api.package.ptfpackage" xml:space="preserve">
         <source>Packages part of a Product Temporary Fixes (PTF): {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.package.ptfmaster" xml:space="preserve">
         <source>Product Temporary Fixes packages (PTF): {0}</source>
-      <target state="new"/>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="new"/>
   </trans-unit>
-      </body>
+        </body>
   </file>
 </xliff>
