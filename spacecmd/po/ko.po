@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-02 15:47+0100\n"
-"PO-Revision-Date: 2022-11-22 02:13+0000\n"
+"PO-Revision-Date: 2023-01-06 03:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-2/"
 "ko/>\n"
@@ -1269,7 +1269,7 @@ msgid "Failed to get details for file %s from %s"
 msgstr "%s에서 %s 파일에 대한 세부 사항을 가져오지 못함"
 
 #: ../src/spacecmd/configchannel.py:1194
-#, fuzzy, python-format
+#, python-format
 msgid "File %s could not be exported "
 msgstr "%s 파일을 엑스포트할 수 없음 "
 
@@ -1357,7 +1357,6 @@ msgid "Failed trying to import file %s (empty content)"
 msgstr "%s 파일을 가져오지 못함(비어 있는 컨텐트)"
 
 #: ../src/spacecmd/configchannel.py:1354
-#, fuzzy
 msgid "Older APIs can't export encoded files"
 msgstr "기존 API는 인코딩된 파일을 엑스포트할 수 없음"
 
@@ -2012,7 +2011,7 @@ msgstr "사용법: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
 #: ../src/spacecmd/errata.py:553 ../src/spacecmd/scap.py:180
 msgid "Example:"
-msgstr "예는 다음과 같습니다."
+msgstr "예:"
 
 #: ../src/spacecmd/filepreservation.py:42
 msgid "filepreservation_list: List all file preservations"
@@ -3015,7 +3014,6 @@ msgid "Kickstart profile you've entered was not found"
 msgstr "입력한 킥스타트 프로파일을 찾을 수 없음"
 
 #: ../src/spacecmd/kickstart.py:2147
-#, fuzzy
 msgid "kickstart_export: export kickstart profile(s) to json format file"
 msgstr "kickstart_export: 킥스타트 프로파일을 json 형식 파일로 엑스포트"
 
