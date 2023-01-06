@@ -13,6 +13,7 @@ Feature: Bootstrap a virtualization host minion and set it up for virtualization
   Scenario: Create KVM activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     When I enter "KVM testing" as "description"
     And I enter "KVM-TEST" as "key"
     And I enter "20" as "usageLimit"

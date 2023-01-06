@@ -973,6 +973,7 @@ end
 # Navigate to a service endpoint
 When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   node = get_target(host)
+  os_family = node.os_family
   system_name = get_system_name(host)
   port, text = case service
                when 'Prometheus' then [9090, 'graph']

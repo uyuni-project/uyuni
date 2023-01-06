@@ -56,7 +56,7 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   if os_family =~ /^sles/ && os_version =~ /^11/
     node.run('rcsalt-minion restart', check_errors: false)
   else
-    node.run('systemctl restart salt-minion', check_errors: false)
+    node.run('systemctl restart venv-salt-minion', check_errors: false)
   end
 end
 
@@ -338,7 +338,9 @@ end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
+  salt_call = "venv-salt-call"
+  # TODO: Replace previous line with following line
+  # salt_call = $use_salt_bundle ? "venv-salt-call" : "salt-call"
   output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
   raise "Text: #{fing} not found" unless has_content?(fing)

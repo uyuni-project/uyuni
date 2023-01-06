@@ -50,6 +50,7 @@ Feature: Bootstrapping with reactivation key
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I enter the reactivation key of "sle_minion"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Systems > Overview"
@@ -88,6 +89,8 @@ Feature: Bootstrapping with reactivation key
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
+    # Workaround bug https://bugzilla.suse.com/show_bug.cgi?id=1206423
+    And I wait until I see "SUSE Channels" text, refreshing the page
     And I check radio button "SLE-Product-SLES15-SP3-Pool for x86_64"
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels

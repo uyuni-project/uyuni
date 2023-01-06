@@ -207,7 +207,7 @@ class DownloadThread(Thread):
             ssl_key=params["ssl_client_key"],
             range=params["bytes_range"],
             proxies=params["proxies"],
-            http_headers=tuple(params["http_headers"].items()),
+            http_headers=params["http_headers"],
             timeout=params["timeout"],
             minrate=params["minrate"],
             keepalive=True,

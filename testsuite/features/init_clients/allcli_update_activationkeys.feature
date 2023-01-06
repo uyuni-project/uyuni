@@ -47,7 +47,7 @@ Feature: Update activation keys
   Scenario: Update SLE key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
-    And I wait until I do not see "Loading" text 
+    And I wait until I do not see "Loading..." text
     And I select "SLE-Product-SLES15-SP3-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
@@ -59,7 +59,7 @@ Feature: Update activation keys
   Scenario: Update SSH key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Test Key x86_64" in the content area
-    And I wait until I do not see "Loading" text 
+    And I wait until I do not see "Loading..." text
     And I select "SLE-Product-SLES15-SP3-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
@@ -70,7 +70,7 @@ Feature: Update activation keys
   Scenario: Update SSH tunnel key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Tunnel Test Key x86_64" in the content area
-    And I wait until I do not see "Loading" text 
+    And I wait until I do not see "Loading..." text
     And I select "SLE-Product-SLES15-SP3-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP3-Pool for x86_64"
