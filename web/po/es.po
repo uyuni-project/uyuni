@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-16 14:42+0100\n"
+"POT-Creation-Date: 2023-01-06 13:58+0100\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -521,6 +521,8 @@ msgid "Select All"
 msgstr "Seleccionar todo"
 
 #: ../html/src/components/table/TableDataHandler.tsx:346
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
@@ -693,58 +695,58 @@ msgstr "Activada"
 msgid "Disabled"
 msgstr "Desactivada"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:157
 #, fuzzy
 msgid "Server Monitoring"
 msgstr "Autosupervisión del servidor"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:159
 msgid "The server uses "
 msgstr "El servidor utiliza "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:156
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
 msgid "Prometheus"
 msgstr "Prometheus"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:158
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:163
 msgid " exporters to expose metrics about your environment."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:166
 msgid "Refer to the "
 msgstr "Consulte la "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:167
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:172
 msgid "documentation"
 msgstr "documentación"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:169
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:174
 msgid " to learn how to to consume these metrics."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:247
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:267
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:287
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:309
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:256
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:276
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:296
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:318
 msgid "Enable"
 msgstr "Activar"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:317
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:263
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:283
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:303
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:326
 msgid "Disable"
 msgstr "Desactivar"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:330
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:339
 msgid "SUSE Manager Configuration - Monitoring"
 msgstr "Configuración de SUSE Manager. Supervisión"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:335
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:344
 msgid "Setup your SUSE Manager server monitoring."
 msgstr "Configure la supervisión del servidor de SUSE Manager."
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:350
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:219
@@ -752,39 +754,39 @@ msgstr "Configure la supervisión del servidor de SUSE Manager."
 msgid "General"
 msgstr "Generales"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:346
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:355
 msgid "Bootstrap Script"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:360
 msgid "Organizations"
 msgstr "Organizaciones"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:365
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
 msgid "Cobbler"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
 msgid "Bare-metal systems"
 msgstr "Sistemas sin sistema operativo"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:387
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:396
 msgid "Monitoring"
 msgstr "Supervisión"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:407
 #, fuzzy
 msgid "Restarting"
 msgstr "Reiniciar"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:399
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -3752,11 +3754,6 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:225
 msgid "e.g., /etc/ansible/testing/hosts"
-msgstr ""
-
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-msgid "Loading.."
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:81

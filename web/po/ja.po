@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-16 14:42+0100\n"
+"POT-Creation-Date: 2023-01-06 13:58+0100\n"
 "PO-Revision-Date: 2022-11-22 02:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
@@ -528,6 +528,8 @@ msgid "Select All"
 msgstr "すべてを選択"
 
 #: ../html/src/components/table/TableDataHandler.tsx:346
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:323
@@ -703,57 +705,57 @@ msgstr "有効"
 msgid "Disabled"
 msgstr "無効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:152
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:157
 msgid "Server Monitoring"
 msgstr "サーバ監視"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:154
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:159
 msgid "The server uses "
 msgstr "サーバは "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:156
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
 msgid "Prometheus"
 msgstr "Prometheus"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:158
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:163
 msgid " exporters to expose metrics about your environment."
 msgstr " エクスポータを利用して、お使いの環境に関するメトリックを開示します。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:161
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:166
 msgid "Refer to the "
 msgstr "詳しくは "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:167
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:172
 msgid "documentation"
 msgstr "ドキュメンテーション"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:169
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:174
 msgid " to learn how to to consume these metrics."
 msgstr " をお読みください。メトリックの消費方法が書かれています。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:247
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:267
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:287
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:309
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:256
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:276
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:296
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:318
 msgid "Enable"
 msgstr "有効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:254
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:274
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:294
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:317
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:263
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:283
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:303
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:326
 msgid "Disable"
 msgstr "無効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:330
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:339
 msgid "SUSE Manager Configuration - Monitoring"
 msgstr "SUSE Manager 設定 - モニタリング"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:335
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:344
 msgid "Setup your SUSE Manager server monitoring."
 msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:350
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:219
@@ -761,38 +763,38 @@ msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 msgid "General"
 msgstr "全般"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:346
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:355
 msgid "Bootstrap Script"
 msgstr "ブートストラップスクリプト"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:360
 msgid "Organizations"
 msgstr "組織"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:365
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
 msgid "Restart"
 msgstr "再起動"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:375
 msgid "Bare-metal systems"
 msgstr "ベアメタルシステム"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:387
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:396
 msgid "Monitoring"
 msgstr "モニタリング"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:398
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:407
 msgid "Restarting"
 msgstr "再起動"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:399
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -3796,11 +3798,6 @@ msgstr "インベントリファイルの追加"
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr "例: /etc/ansible/testing/hosts"
 
-#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
-msgid "Loading.."
-msgstr "読み込んでいます.."
-
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:81
 msgid "Nothing configured. Please add paths in the "
 msgstr "何も設定されていません。パスを追加してください "
@@ -6224,6 +6221,9 @@ msgstr "未定義"
 #: ../html/src/utils/test-utils/setup/t.test.ts:13
 msgid "foo {0} tea {1}"
 msgstr "foo {0} tea {1}"
+
+#~ msgid "Loading.."
+#~ msgstr "読み込んでいます.."
 
 #~ msgid "The FQDN of the machine where the containers are hosted"
 #~ msgstr "コンテナがホストされているマシンのFQDN"
