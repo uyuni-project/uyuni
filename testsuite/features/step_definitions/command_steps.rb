@@ -1527,7 +1527,7 @@ end
 
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
   node = get_target(host)
-  os_version = node.os_version
+  os_version = node.os_version.gsub('-SP', '.')
   os_family = node.os_family
   repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/

@@ -127,7 +127,7 @@ Feature: PXE boot a terminal with Cobbler
     Then I should not see a "SLE-15-SP4-TFTP" text
 
   Scenario: Cleanup: delete the PXE boot minion
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"

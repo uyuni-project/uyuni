@@ -1,3 +1,8 @@
+- Optimize the number of salt calls on minion startup (bsc#1203532)
+- install SUSE Liberty v2 GPG key
+- Bootstrap state now writes salt config in correct overlay on SLE Micro (bsc#1206294)
+- Fix reboot info beacon installation
+- Add state to properly configure the reboot action for transactional systems
 - Updated logrotate configuration (bsc#1206470)
 - Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
 - Avoid installing recommended packages from assigned products (bsc#1204330)

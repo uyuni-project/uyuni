@@ -1246,10 +1246,23 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> rebootAction(List<MinionSummary> minionSummaries) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.System
-                .reboot(Optional.of(3)), minionSummaries);
-        return ret;
+        return minionSummaries.stream().collect(
+            Collectors.groupingBy(
+                m -> m.isTransactionalUpdate() ? transactionalReboot() :
+                        com.suse.salt.netapi.calls.modules.System.reboot(Optional.of(3))
+            )
+        );
+    }
+
+    /**
+     * @deprecated this method is temporarily here until a new version of salt-netapi-client that contains it
+     * is released.
+     */
+    @Deprecated
+    private static LocalCall<String> transactionalReboot() {
+        return new LocalCall<>("transactional_update.reboot", Optional.empty(), Optional.empty(),
+                new TypeToken<>() {
+                });
     }
 
     /**

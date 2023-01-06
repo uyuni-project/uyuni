@@ -42,9 +42,6 @@ if $build_validation
   $sle12sp5_client = twopence_init("ssh:#{ENV['SLE12SP5_CLIENT']}") if ENV['SLE12SP5_CLIENT']
   $sle12sp5_minion = twopence_init("ssh:#{ENV['SLE12SP5_MINION']}") if ENV['SLE12SP5_MINION']
   $sle12sp5_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP5_SSHMINION']}") if ENV['SLE12SP5_SSHMINION']
-  $sle15_client = twopence_init("ssh:#{ENV['SLE15_CLIENT']}") if ENV['SLE15_CLIENT']
-  $sle15_minion = twopence_init("ssh:#{ENV['SLE15_MINION']}") if ENV['SLE15_MINION']
-  $sle15_ssh_minion = twopence_init("ssh:#{ENV['SLE15_SSHMINION']}") if ENV['SLE15_SSHMINION']
   $sle15sp1_client = twopence_init("ssh:#{ENV['SLE15SP1_CLIENT']}") if ENV['SLE15SP1_CLIENT']
   $sle15sp1_minion = twopence_init("ssh:#{ENV['SLE15SP1_MINION']}") if ENV['SLE15SP1_MINION']
   $sle15sp1_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP1_SSHMINION']}") if ENV['SLE15SP1_SSHMINION']
@@ -85,7 +82,6 @@ if $build_validation
   $monitoring_server = twopence_init("ssh:#{ENV['MONITORING_SERVER']}") if ENV['MONITORING_SERVER']
   $nodes += [$sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
-             $sle15_client, $sle15_minion, $sle15_ssh_minion,
              $sle15sp1_client, $sle15sp1_minion, $sle15sp1_ssh_minion,
              $sle15sp2_client, $sle15sp2_minion, $sle15sp2_ssh_minion,
              $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
@@ -282,9 +278,6 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle12sp5_client'           => $sle12sp5_client,
                   'sle12sp5_minion'           => $sle12sp5_minion,
                   'sle12sp5_ssh_minion'       => $sle12sp5_ssh_minion,
-                  'sle15_client'              => $sle15_client,
-                  'sle15_minion'              => $sle15_minion,
-                  'sle15_ssh_minion'          => $sle15_ssh_minion,
                   'sle15sp1_client'           => $sle15sp1_client,
                   'sle15sp1_minion'           => $sle15sp1_minion,
                   'sle15sp1_ssh_minion'       => $sle15sp1_ssh_minion,

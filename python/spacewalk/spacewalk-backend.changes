@@ -1,3 +1,4 @@
+- Compute headers as list of two-tuples to be used by url grabber (bsc#1205523)
 - Updated logrotate configuration (bsc#1206470)
 - Add rhel_9 as Salt-enabled kickstart installation
 - do not fetch mirrorlist when a file url is given

@@ -85,7 +85,7 @@ public class ImageDeployedEventMessageAction implements MessageAction {
             m.getChannels().clear();
             RegistrationUtils.subscribeMinionToChannels(systemQuery, m, grains, activationKey, activationKeyLabel);
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(m, ak, grains));
-            RegistrationUtils.finishRegistration(m, activationKey, Optional.empty(), false);
+            RegistrationUtils.finishRegistration(m, activationKey, Optional.empty(), false, false);
         });
     }
 

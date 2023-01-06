@@ -13,6 +13,7 @@ Feature: Advanced Search
     Given I am authorized for the "Admin" section
 
   Scenario: No search results - inverse results
+    Given I clean the search index on the server
     When I follow the left menu "Systems > Advanced Search"
     And I enter "sle_minion" hostname on the search field
     And I select "Hostname" from "Field to Search"

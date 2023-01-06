@@ -1047,9 +1047,9 @@ echo
         if [ -n "$SNAPSHOT_ID" ]; then
             # we need to copy certificate to the trustroot outside of transaction for zypper
             cp "$ORG_CA_CERT" /etc/pki/trust/anchors/
-            call_tukit "mv '/root/$ORG_CA_CERT' '$CERT_DIR'"
+            call_tukit "mv '/root/$ORG_CA_CERT' '${CERT_DIR}/${CERT_FILE}'"
         else
-            mv "$ORG_CA_CERT" "$CERT_DIR"
+            mv "$ORG_CA_CERT" "${CERT_DIR}/${CERT_FILE}"
         fi
         # symlink & update certificates is already done in rpm post-install script
         # no need to be done again if we have installed rpm
@@ -1215,13 +1215,19 @@ if [[ $ACTIVATION_KEYS =~ , ]]; then
     exit 1
 fi
 
-MINION_ID_FILE="/etc/salt/minion_id"
-SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/susemanager.conf"
+SNAPSHOT_PREFIX=""
+if [ -n "$SNAPSHOT_ID" ]; then
+    SNAPSHOT_PREFIX="/var/lib/overlay/$SNAPSHOT_ID"
+fi
+MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/salt/minion_id"
+MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/salt/minion.d"
+SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
 MINION_SERVICE="salt-minion"
 
 if [ $VENV_ENABLED -eq 1 ]; then
-    MINION_ID_FILE="/etc/venv-salt-minion/minion_id"
-    SUSEMANAGER_MASTER_FILE="/etc/venv-salt-minion/minion.d/susemanager.conf"
+    MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion_id"
+    MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion.d"
+    SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
     MINION_SERVICE="venv-salt-minion"
 fi
 
@@ -1268,7 +1274,16 @@ system-environment:
       _:
         SALT_RUNNING: 1
 EOF
-fi
+
+if [ -n "$SNAPSHOT_ID" ]; then
+    cat <<EOF >> "${{MINION_CONFIG_DIR}}/transactional_update.conf"
+# Enable the transactional_update executor
+module_executors:
+  - transactional_update
+  - direct_call
+EOF
+fi # -n SNAPSHOT_ID
+fi # REGISTER_THIS_BOX eq 1
 
 echo "* removing TLS certificate used for bootstrap"
 echo "  (will be re-added via salt state)"

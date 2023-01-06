@@ -1,3 +1,10 @@
+- Optimize the number of salt calls on minion startup (bsc#1203532)
+- Fix name for autoinstall snippets after Cobbler 3.3.3
+- prevent ISE on activation key page when selected base channel value is null
+- Trigger a package profile update when a new live-patch is installed (bsc#1206249)
+- Fix HTTP API login status code when using wrong credentials (bsc#1206666)
+- Configure the reboot action for transactional systems appropriately
+- Fix link to documentation in monitoring page
 - Fix server error in product migration outside maintenance window (bsc#1206276)
 - Updated logrotate configuration (bsc#1206470)
 - Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)

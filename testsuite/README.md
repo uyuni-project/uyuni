@@ -64,7 +64,6 @@ There are also hints about [Pitfalls](documentation/pitfalls.md) when writing co
 - Release (to be run against a nightly or released *tagged* version of SUSE Manager):
   - [`Manager-4.3`](https://github.com/SUSE/spacewalk/tree/Manager-4.3)
   - [`Manager-4.2`](https://github.com/SUSE/spacewalk/tree/Manager-4.2)
-  - [`Manager-4.1`](https://github.com/SUSE/spacewalk/tree/Manager-4.1)
 
 ## Dummy packages used by the test suite
 

@@ -40,6 +40,13 @@ mgr_deploy_res_gpg_key:
     - makedirs: True
     - mode: 644
 
+mgr_deploy_liberty_v2_gpg_key:
+  file.managed:
+    - name: /etc/pki/rpm-gpg/suse-liberty-v2-gpg-pubkey-177086FAB0F9C64F.key
+    - source: salt://gpg/suse-liberty-v2-gpg-pubkey-177086FAB0F9C64F.key
+    - makedirs: True
+    - mode: 644
+
 mgr_deploy_tools_rhel_gpg_key:
   file.managed:
     - name: /etc/pki/rpm-gpg/el-tools-gpg-pubkey-39db7c82.key
