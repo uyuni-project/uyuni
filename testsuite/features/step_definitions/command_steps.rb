@@ -42,7 +42,12 @@ end
 
 Then(/^"([^"]*)" should communicate with the server using public interface/) do |host|
   node = get_target(host)
-  node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
+  _result, return_code = node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}", check_errors: false)
+  unless return_code.zero?
+    sleep 2
+    puts "re-try ping"
+    node.run("ping -c 1 -I #{node.public_interface} #{$server.public_ip}")
+  end
   $server.run("ping -c 1 #{node.public_ip}")
 end
 
