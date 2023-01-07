@@ -10832,19 +10832,19 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target state="translated">変数 '{0}' の指定が正しくありません。変数は '=' で区切られた名前と値の対でなければならず、各対は別々の行に記述しなければなりません。例: 'ip=192.168.0.1'</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
+      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve" approved="yes">
         <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">キックスタートテンプレートにエラーが存在します。'{0}' タブをチェックしてテンプレートの問題を確認してください。</target>
+        <target state="final">キックスタート/AutoYastテンプレートにエラーが存在します。「{0}」タブを確認してテンプレートの問題を特定してください。</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
+      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve" approved="yes">
         <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">キックスタートテンプレートにエラーが存在します。以下のエラーメッセージを確認してください。</target>
+        <target state="final">キックスタート/AutoYaSTテンプレートにエラーが存在します。以下のエラーメッセージを確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
