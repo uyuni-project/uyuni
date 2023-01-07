@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-06 13:58+0100\n"
-"PO-Revision-Date: 2023-01-07 12:14+0000\n"
+"PO-Revision-Date: 2023-01-07 15:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd-4-3/ja/>\n"
@@ -8369,7 +8369,6 @@ msgstr ""
 "system_scheduleproductmigration: システムに対して製品移行をスケジュールする。"
 
 #: ../src/spacecmd/system.py:4604
-#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8386,17 +8385,16 @@ msgid ""
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
-"使用方法: system_scheduleproductmigration <システム> <ベースチャンネルのラベ"
-"ル> <移行先> [オプション] \n"
-"    <移行先> として指定可能なターゲットの一覧を表示するには "
-"system_listmigrationtargets を使用する。\n"
-"    <移行先> は下記のような書式で渡されなければならないことに注意: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"使用方法: system_scheduleproductmigration <システム> <ベースチャンネルのラベル> <移行先> [オプション] \n"
+"    <移行先> として指定可能なターゲットの一覧を表示するには system_listmigrationtargets を使用する。\n"
+"    <移行先> は下記のような書式で渡されなければならないことに注意: [3143,3146,3147,3145,3144,3148,3062]. "
+"\n"
 "    オプション: \n"
 "        -s (開始時刻) \n"
-"        -d 予行演習モード (実際には処理を行なわない) \n"
-"        -c (子チャンネル) (カンマ区切りで子チャンネルのラベルを指定する。空白"
-"は使用しないこと)"
+"        -d 予行演習モード(実際には処理を行なわない) \n"
+"        --allow-vendor-change (ベンダーの変更を許可する場合は、このフラグを渡す) \n"
+"        -r (後継のない製品を削除する場合は、このフラグを渡す) \n"
+"        -c (子チャンネル) (カンマ区切りで子チャンネルのラベルを指定する。空白は使用しないこと)"
 
 #: ../src/spacecmd/system.py:4658
 msgid "Cannot find system "
@@ -8411,9 +8409,8 @@ msgid "Scheduling Product migration for system "
 msgstr "システムに対して製品移行をスケジュールしています "
 
 #: ../src/spacecmd/system.py:4662
-#, fuzzy
 msgid "Migration target "
-msgstr "  移行ターゲットがありません"
+msgstr "移行ターゲット "
 
 #: ../src/spacecmd/system.py:4669
 msgid "Scheduled action ID: "
