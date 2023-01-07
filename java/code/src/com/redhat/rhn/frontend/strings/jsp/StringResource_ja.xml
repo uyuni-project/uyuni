@@ -10832,19 +10832,19 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target state="translated">変数 '{0}' の指定が正しくありません。変数は '=' で区切られた名前と値の対でなければならず、各対は別々の行に記述しなければなりません。例: 'ip=192.168.0.1'</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
+      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve" approved="yes">
         <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">キックスタートテンプレートにエラーが存在します。'{0}' タブをチェックしてテンプレートの問題を確認してください。</target>
+        <target state="final">キックスタート/AutoYastテンプレートにエラーが存在します。「{0}」タブを確認してテンプレートの問題を特定してください。</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
+      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve" approved="yes">
         <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">キックスタートテンプレートにエラーが存在します。以下のエラーメッセージを確認してください。</target>
+        <target state="final">キックスタート/AutoYaSTテンプレートにエラーが存在します。以下のエラーメッセージを確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
@@ -29602,7 +29602,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
-        <target state="needs-adaptation">トランザクション型更新のあるOS: パッケージおよび/またはチャンネルが変更されたら再起動してください。</target>
+        <target state="final">このシステムには待機中のトランザクションが存在します。システムを再起動して変更をアクティブ化してください。</target>
       </trans-unit>
       <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
@@ -29760,10 +29760,10 @@ given channel.</source>
         <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 4.4 or greater. Consider migrating to salt minions before this release.</source>
         <target state="final">従来のスタックは、SUSE manager 4.3のリリース時点で非推奨です。次のメジャーリリースであるバージョン4.4以降ではサポートされなくなります。このリリースの前に、salt minionへの移行を検討してください。</target>
       </trans-unit>
-    <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve" approved="yes">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">これらのスケジュールに割り当てられたシステムには、{0} のメンテナンス ウィンドウがありません</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
