@@ -346,13 +346,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     }
 
 
-    private void initialize(Long selectedHostServerId,
-            Long selectedTargetServerId,
-            User userIn) {
+    private void initialize(Long selectedHostServerId, Long selectedTargetServerId, User userIn) {
 
         log.debug("Initializing with selectedHostServerId={}, selectedTargetServerId={}", selectedHostServerId,
                 selectedTargetServerId);
-        this.setPackagesToInstall(new LinkedList());
+        this.setPackagesToInstall(new LinkedList<>());
 
         // There must always be a host server present.
 

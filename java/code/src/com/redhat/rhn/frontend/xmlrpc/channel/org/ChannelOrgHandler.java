@@ -223,9 +223,7 @@ public class ChannelOrgHandler extends BaseHandler {
 
     private boolean verifyChannelAdmin(User user, Channel channel) {
         try {
-            if (!ChannelManager.verifyChannelAdmin(user, channel.getId())) {
-                throw new PermissionCheckFailureException();
-            }
+            ChannelManager.verifyChannelAdmin(user, channel.getId());
         }
         catch (InvalidChannelRoleException e) {
             throw new PermissionCheckFailureException();

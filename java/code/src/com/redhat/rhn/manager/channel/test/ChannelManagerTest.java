@@ -872,9 +872,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(parent1);
         TestUtils.flushAndEvict(child1);
 
-
-        Map<Channel, Channel> children = ChannelManager.
-                                findCompatibleChildren(parent, parent1, user);
+        Map<Channel, Channel> children = ChannelManager.findCompatibleChildren(parent, parent1, user);
 
         assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());

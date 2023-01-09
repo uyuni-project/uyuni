@@ -42,10 +42,6 @@ public class IssFactory extends HibernateFactory {
         return log;
     }
 
-    /***
-     *  IssSlave helpers
-     ***/
-
     /**
      * Lookup a IssSlave by its id
      * @param id the id to search for
@@ -71,10 +67,6 @@ public class IssFactory extends HibernateFactory {
     public static List<IssSlave> listAllIssSlaves() {
         return singleton.listObjectsByNamedQuery("IssSlave.lookupAll", Map.of());
     }
-
-    /***
-     *  IssMaster helpers
-     ***/
 
     /**
      * Lookup a IssMaster by its id
@@ -123,10 +115,6 @@ public class IssFactory extends HibernateFactory {
     }
 
     /**
-     * IssMasterOrg helpers
-     */
-
-    /**
      * Remove a given local-org from being mapped to any master-orgs
      * @param inOrg the local-org we want to unmap
      */
@@ -136,10 +124,6 @@ public class IssFactory extends HibernateFactory {
             setParameter("inOrg", inOrg).
             executeUpdate();
     }
-
-    /***
-     *  Common helpers
-     ***/
 
     /**
      * Delete an entity.

@@ -188,7 +188,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         }
     }
 
-    protected List performSearch(HttpServletRequest request, Long sessionId,
+    protected List<ErrataOverview> performSearch(HttpServletRequest request, Long sessionId,
             String searchString, String mode, DynaActionForm formIn)
         throws XmlRpcFault, MalformedURLException {
 
@@ -198,8 +198,8 @@ public class ErrataSearchAction extends BaseSearchAction {
         // call search server
         XmlRpcClient client = new XmlRpcClient(
                 ConfigDefaults.get().getSearchServerUrl(), true);
-        String path = null;
-        List args = new ArrayList<>();
+        String path;
+        List<Object> args = new ArrayList<>();
         args.add(sessionId.toString());
         // do a package search instead of an errata one. This uses
         // a different lucene index to find pkgs then reconciles
@@ -211,7 +211,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             args.add("errata");
         }
 
-        List results = new ArrayList<>();
+        List<Map<String, Object>> results;
         //
         // Note:  This is how "issue date" search works.
         // It functions in one of 2 ways, depending on the state of "searchString"
@@ -228,7 +228,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         // has been activated. Search will proceed as normal, then the final step
         // will be to filter the results by issue date.
         //
-        Boolean dateSearch = getOptionIssueDateSearch(request);
+        boolean dateSearch = getOptionIssueDateSearch(request);
         LOG.debug("Datesearch is {}", dateSearch);
 
         Date startDate = getPickerDate(request, "start");
@@ -257,7 +257,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Calling to search server (XMLRPC):  \"index.search\", args={}", args);
         }
-        results = (List)client.invoke(path, args);
+        results = (List<Map<String, Object>>)client.invoke(path, args);
         if (LOG.isDebugEnabled()) {
             LOG.debug("results = [{}]", results);
         }
@@ -279,7 +279,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         // if we go forward we end up with gtk:1 and kernel:2 but we wanted
         // kernel:2, gtk:0.
         for (int x = results.size() - 1; x >= 0; x--) {
-            Map item = (Map) results.get(x);
+            Map<String, Object> item = results.get(x);
             lookupmap.put(Long.valueOf((String)item.get("id")), x);
             Long id = Long.valueOf((String)item.get("id"));
             ids.add(id);
@@ -291,8 +291,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         // to a better user experience.
         List<ErrataOverview> unsorted;
         if (OPT_PKG_NAME.equals(mode)) {
-            unsorted = ErrataManager.searchByPackageIdsWithOrg(ids,
-                    ctx.getCurrentUser().getOrg());
+            unsorted = ErrataManager.searchByPackageIdsWithOrg(ids, ctx.getCurrentUser().getOrg());
 
         }
         else {
@@ -309,10 +308,9 @@ public class ErrataSearchAction extends BaseSearchAction {
         }
         List<ErrataOverview> filtered = new ArrayList<>();
         // Filter based on errata type selected
-        List<ErrataOverview> filteredByType = new ArrayList<>();
-        filteredByType = filterByAdvisoryType(unsorted, formIn);
+        List<ErrataOverview> filteredByType = filterByAdvisoryType(unsorted, formIn);
 
-        List<ErrataOverview> filteredByIssueDate = new ArrayList<>();
+        List<ErrataOverview> filteredByIssueDate;
         if (dateSearch && !StringUtils.isBlank(searchString)) {
             // search string is not blank, therefore a search was run so filter the results
             LOG.debug("Performing filter on issue date, we only want records between {} - {}", startDate, endDate);
@@ -357,8 +355,8 @@ public class ErrataSearchAction extends BaseSearchAction {
             }
 
             boolean added = false;
-            for (ListIterator itr = ordered.listIterator(); itr.hasNext();) {
-                ErrataOverview curpo = (ErrataOverview) itr.next();
+            for (ListIterator<ErrataOverview> itr = ordered.listIterator(); itr.hasNext();) {
+                ErrataOverview curpo = itr.next();
                 int curidx = lookupmap.get(curpo.getId());
                 if (idx <= curidx) {
                     itr.previous();
