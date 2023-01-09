@@ -2845,7 +2845,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="final">キックスタート/Autoyastファイルをアップロード</target>
+        <target state="final">キックスタート/AutoYaSTファイルをアップロード</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -11279,7 +11279,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-        <target state="final">前提条件が待機中のアクションはキャンセルできません。</target>
+        <target state="final">待機中の前提条件を持つアクションはキャンセルできません。</target>
       </trans-unit>
       <trans-unit id="activation-key.java.nochannel" xml:space="preserve" approved="yes">
           <source>No Base Channel selected.</source>
