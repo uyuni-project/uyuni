@@ -1,3 +1,4 @@
+- Fix modular channel check during system update via XMLRPC (bsc#1206613)
 - Fix transaction commit behavior for Spark routes
 - Trigger a package profile update when a new live-patch is installed (bsc#1206249)
 - Fix CVE Audit ignoring errata in parent channels if patch in successor
