@@ -230,6 +230,9 @@ public class PackageFactory extends HibernateFactory {
      * @return the PackageArch whose label matches the given label.
      */
     public static PackageArch lookupPackageArchByLabel(String label) {
+        if (label == null) {
+            return null;
+        }
         return singleton.lookupObjectByNamedQuery("PackageArch.findByLabel", Map.of("label", label), true);
     }
 
