@@ -48,23 +48,6 @@ import java.util.Map;
     }
 
     /**
-     * Create a new SystemMigration
-     * @return SystemMigration to be used.
-     */
-    public static SystemMigration createSystemMigration() {
-        return new SystemMigration();
-    }
-
-    /**
-     * Delete the system migration.
-     *
-     * @param migration the system migration to remove
-     */
-    public static void removeSystemMigration(SystemMigration migration) {
-        singleton.removeObject(migration);
-    }
-
-    /**
      * Find the system migrations that were initiated from the org provided.
      * @param fromOrg the org that the systems were migrated from
      * @return list of SystemMigrations found

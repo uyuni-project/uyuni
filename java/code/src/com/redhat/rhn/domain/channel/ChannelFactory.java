@@ -746,16 +746,6 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Find the original packages that were part of a channel.  This list
-     *      includes only those packages that have not had errata released for them.
-     * @param channel the channel to clone from
-     * @return List of packages
-     */
-    public static List<Long> findOriginalPackages(Channel channel) {
-        return singleton.listObjectsByNamedQuery("Channel.lookupOriginalPackages", Map.of("from_cid", channel.getId()));
-    }
-
-    /**
      * Lookup the default release channel map for the given channel. Returns null if no
      * default is found.
      *

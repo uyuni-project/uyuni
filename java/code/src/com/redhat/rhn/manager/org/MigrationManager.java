@@ -110,7 +110,7 @@ public class MigrationManager extends BaseManager {
             event.setDetails(details);
             server.getHistory().add(event);
 
-            SystemMigration migration = SystemMigrationFactory.createSystemMigration();
+            SystemMigration migration = new SystemMigration();
             migration.setToOrg(toOrg);
             migration.setFromOrg(fromOrg);
             migration.setServer(server);
