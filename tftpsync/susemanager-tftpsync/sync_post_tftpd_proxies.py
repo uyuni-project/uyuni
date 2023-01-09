@@ -24,6 +24,7 @@ from cobbler import utils
 import time
 import cobbler.MultipartPostHandler as MultipartPostHandler
 import json
+from concurrent.futures import ThreadPoolExecutor
 import threading
 
 try:
@@ -45,7 +46,7 @@ def register():
 
 
 def run(api, args):
-    logger.info("sync_post_tftp_proxies started")
+    logger.info("sync_post_tftp_proxies started - this can take a while (to see the progress check the cobbler logs)")
     settings = api.settings()
 
     # test if proxies are configured:
@@ -60,12 +61,16 @@ def run(api, args):
 
     find_delete_from_proxies(tftpbootdir, settings)
 
+    pool = ThreadPoolExecutor()
+
     for root, dirs, files in os.walk(tftpbootdir):
         for fname in files:
             path = os.path.join(root, fname)
             if '.link_cache' in path:
                 continue
-            check_push(path, tftpbootdir, settings)
+            pool.submit(check_push, path, tftpbootdir, settings)
+
+    pool.shutdown()
     return 0
 
 
