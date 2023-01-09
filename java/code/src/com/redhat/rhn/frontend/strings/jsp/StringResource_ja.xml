@@ -10837,14 +10837,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="final">キックスタート/AutoYastテンプレートにエラーが存在します。「{0}」タブを確認してテンプレートの問題を特定してください。</target>
+        <target state="final">キックスタート/AutoYastテンプレートにエラーがあります。「{0}」タブを確認してテンプレートの問題を特定してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve" approved="yes">
         <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="final">キックスタート/AutoYaSTテンプレートにエラーが存在します。以下のエラーメッセージを確認してください。</target>
+        <target state="final">キックスタート/AutoYaSTテンプレートにエラーがあります。以下のエラーメッセージを確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
