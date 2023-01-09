@@ -164,9 +164,7 @@ public class ChannelAccessHandler extends BaseHandler {
         return channel.getAccess();
     }
 
-    private Channel lookupChannelByLabel(User user, String label)
-        throws NoSuchChannelException {
-
+    private Channel lookupChannelByLabel(User user, String label) throws NoSuchChannelException {
         Channel channel = ChannelFactory.lookupByLabelAndUser(label, user);
         if (channel == null) {
             throw new NoSuchChannelException();
@@ -175,15 +173,12 @@ public class ChannelAccessHandler extends BaseHandler {
         return channel;
     }
 
-    private boolean verifyChannelAdmin(User user, Channel channel) {
+    private void verifyChannelAdmin(User user, Channel channel) {
         try {
-            if (!ChannelManager.verifyChannelAdmin(user, channel.getId())) {
-                throw new PermissionCheckFailureException();
-            }
+            ChannelManager.verifyChannelAdmin(user, channel.getId());
         }
         catch (InvalidChannelRoleException e) {
             throw new PermissionCheckFailureException();
         }
-        return true;
     }
 }

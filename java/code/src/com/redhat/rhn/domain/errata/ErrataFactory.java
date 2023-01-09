@@ -902,7 +902,7 @@ public class ErrataFactory extends HibernateFactory {
      * @return a list of ErrataOverview of Errata that match the given Package
      * ids.
      */
-    public static List<ErrataOverview> searchByPackageIdsWithOrg(List pids, Org org) {
+    public static List<ErrataOverview> searchByPackageIdsWithOrg(List<Long> pids, Org org) {
         log.debug("org_id = {}, pids = {}", org.getId(), pids);
         List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchByPackageIdsWithOrg",
                 Map.of("pids", pids, "org_id", org.getId()));

@@ -532,8 +532,7 @@ public class SystemHandler extends BaseHandler {
             List<String> channelLabels = new ArrayList<>();
             channelLabels.add(channelLabel);
 
-            List<Long> channelIds = new ArrayList<>();
-            channelIds = ChannelFactory.getChannelIds(channelLabels);
+            List<Long> channelIds = ChannelFactory.getChannelIds(channelLabels);
 
             if (!channelIds.isEmpty()) {
                 cmd = new UpdateBaseChannelCommand(loggedInUser, server, channelIds.get(0));

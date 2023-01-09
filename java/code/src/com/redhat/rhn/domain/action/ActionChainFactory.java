@@ -111,20 +111,17 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the Action Chain Entry
      * @throws ObjectNotFoundException if there is no such id accessible to the requestor
      */
-    public static ActionChainEntry getActionChainEntry(User requestor, Long id)
-    throws ObjectNotFoundException {
+    public static ActionChainEntry getActionChainEntry(User requestor, Long id) throws ObjectNotFoundException {
         if (id == null) {
             return null;
         }
-        ActionChainEntry ace = (ActionChainEntry) getSession()
-                        .load(ActionChainEntry.class, id);
+        ActionChainEntry ace = getSession().load(ActionChainEntry.class, id);
 
-        if (ace.getActionChain().getUser().getId().longValue() ==
-                        requestor.getId().longValue()) {
+        if (ace.getActionChain().getUser().getId().longValue() == requestor.getId().longValue()) {
             return ace;
         }
         throw new ObjectNotFoundException(ActionChainEntry.class,
-        "ActionChainEntry Id " + id + " not found for User " + requestor.getLogin());
+            "ActionChainEntry Id " + id + " not found for User " + requestor.getLogin());
     }
 
     /**
@@ -206,7 +203,7 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChainEntry queueActionChainEntry(Action action,
         ActionChain actionChain, Long serverId, int sortOrder) {
-        Server server = (Server) getSession().load(Server.class, serverId);
+        Server server = getSession().load(Server.class, serverId);
         return queueActionChainEntry(action, actionChain, server, sortOrder);
     }
 
@@ -288,14 +285,11 @@ public class ActionChainFactory extends HibernateFactory {
      * @param date first action's minimum timestamp
      * @throws TaskomaticApiException if there was a Taskomatic error
      */
-    public static void schedule(ActionChain actionChain, Date date)
-        throws TaskomaticApiException {
-
+    public static void schedule(ActionChain actionChain, Date date) throws TaskomaticApiException {
         log.debug("Scheduling Action Chain {} to date {}", actionChain, date);
         Map<Server, Action> latest = new HashMap<>();
         int maxSortOrder = getNextSortOrderValue(actionChain);
         Date dateInOrder = new Date(date.getTime());
-        Map<Server, List<Action>> minionActions = new HashMap<>();
 
         for (int sortOrder = 0; sortOrder < maxSortOrder; sortOrder++) {
             for (ActionChainEntry entry : getActionChainEntries(actionChain, sortOrder)) {
@@ -333,8 +327,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @param actionChain An ActionChain from which to be removed.
      * @param removedOrder sort order of the (already) removed entry
      */
-    public static void removeActionChainEntrySortGaps(ActionChain actionChain,
-            int removedOrder) {
+    public static void removeActionChainEntrySortGaps(ActionChain actionChain, int removedOrder) {
         Set<ActionChainEntry> entries = actionChain.getEntries();
 
         for (ActionChainEntry entry : entries) {

@@ -279,8 +279,8 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of schedules
      * @throws NoSuchBunchTaskException in case of unknown bunch name
      */
-    public static List<TaskoSchedule> listActiveSchedulesByOrgAndBunch(Integer orgId,
-            String bunchName) throws NoSuchBunchTaskException {
+    public static List<TaskoSchedule> listActiveSchedulesByOrgAndBunch(Integer orgId, String bunchName)
+            throws NoSuchBunchTaskException {
         TaskoBunch bunch = lookupBunchByOrgAndName(orgId, bunchName);
         Map<String, Object> params = new HashMap<>();
         params.put("timestamp", new Date());    // use server time, not DB time
@@ -314,7 +314,7 @@ public class TaskoFactory extends HibernateFactory {
 
     private static TaskoBunch lookupBunchByOrgAndName(Integer orgId, String bunchName)
         throws NoSuchBunchTaskException {
-        TaskoBunch bunch = null;
+        TaskoBunch bunch;
         if (orgId == null) {
             bunch = lookupSatBunchByName(bunchName);
         }

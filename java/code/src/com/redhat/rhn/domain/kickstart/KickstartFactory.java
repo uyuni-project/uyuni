@@ -280,8 +280,7 @@ public class KickstartFactory extends HibernateFactory {
      * @param cobblerId the cobbler id to lookup
      * @return the Kickstartable Tree object
      */
-    public static KickstartableTree
-    lookupKickstartTreeByCobblerIdOrXenId(String cobblerId) {
+    public static KickstartableTree lookupKickstartTreeByCobblerIdOrXenId(String cobblerId) {
         return singleton.lookupObjectByNamedQuery("KickstartableTree.findByCobblerIdOrXenId",
                 Map.of("cid", cobblerId));
     }
