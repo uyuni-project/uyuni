@@ -204,9 +204,7 @@ end
 def extract_logs_from_node(node)
   os_family = node.os_family
   if os_family =~ /^opensuse/
-    node.run('zypper mr --enable os_pool_repo os_update_repo') unless $build_validation
     node.run('zypper --non-interactive install tar')
-    node.run('zypper mr --disable os_pool_repo os_update_repo') unless $build_validation
   end
   node.run('journalctl > /var/log/messages', check_errors: false) # Some clients might not support systemd
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
