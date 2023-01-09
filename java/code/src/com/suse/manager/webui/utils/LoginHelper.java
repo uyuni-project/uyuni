@@ -58,7 +58,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -428,26 +427,6 @@ public class LoginHelper {
         SystemCommandExecutor ce = new SystemCommandExecutor();
         return ce.execute(rpmCommand) == 0 ?
             ce.getLastCommandOutput().replace("\n", "") : null;
-    }
-
-    /**
-     * Log a user into the site and create the user's session.
-     *
-     * @param username login name
-     * @param password unencrypted password
-     * @param errors list of error messages to be populated
-     * @return the user object
-     */
-    public static User loginUser(String username, String password, List<String> errors) {
-        User user = null;
-
-        try {
-            user = UserManager.loginUser(username, password);
-        }
-        catch (LoginException e) {
-            errors.add(LocalizationService.getInstance().getMessage(e.getMessage()));
-        }
-        return user;
     }
 
     /**
