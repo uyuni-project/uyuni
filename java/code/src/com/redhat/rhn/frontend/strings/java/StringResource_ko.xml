@@ -11282,13 +11282,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot cancel an action with a pending prerequisite.</source>
         <target state="final">대기 중인 전제 조건이 있는 작업을 취소할 수 없습니다.</target>
       </trans-unit>
-    <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+      <trans-unit id="activation-key.java.nochannel" xml:space="preserve" approved="yes">
           <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        </body>
+        <target state="final">선택한 기본 채널이 없습니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
