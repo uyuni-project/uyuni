@@ -11279,13 +11279,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
         <target state="final">곧 만료되거나 이미 만료된 구독이 있습니다. &lt;a href="/rhn/manager/subscription-matching"&gt;구독 일치&lt;/a&gt; 페이지를 확인하십시오.</target>
       </trans-unit>
-    <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+      <trans-unit id="activation-key.java.nochannel" xml:space="preserve" approved="yes">
           <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        </body>
+        <target state="final">선택한 기본 채널이 없습니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
