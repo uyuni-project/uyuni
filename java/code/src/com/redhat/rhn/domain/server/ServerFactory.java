@@ -573,20 +573,6 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Looks up server objects from the given list of server IDs.
-     *
-     * @param serverIds List of server IDs.
-     * @param user who wants to lookup the Server
-     * @return list of server objects
-     */
-    public static List<Server> lookupByIdsAndUser(List<Long> serverIds, User user) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("orgId", user.getOrg().getId());
-
-        return findByIds(serverIds, "Server.findByIdsAndOrgId", "serverIds", parameters);
-    }
-
-    /**
      * Returns list of the ID information of all systems visible to user and are entitled with the passed entitlement.
      * @param user the logged in user.
      * @param entitlement the entitlement.
@@ -1089,27 +1075,11 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Save a server snapshot
-     * @param snapshotIn snapshot to save
-     */
-    public static void saveSnapshot(ServerSnapshot snapshotIn) {
-        SINGLETON.saveObject(snapshotIn);
-    }
-
-    /**
      * Delete a snapshot
      * @param snap the snapshot to delete
      */
     public static void deleteSnapshot(ServerSnapshot snap) {
         HibernateFactory.getSession().delete(snap);
-    }
-
-    /**
-     * Delete a server path
-     * @param path the server path to delete
-     */
-    public static void deleteServerPath(ServerPath path) {
-        HibernateFactory.getSession().delete(path);
     }
 
     /**

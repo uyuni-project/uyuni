@@ -20,7 +20,6 @@ package com.redhat.rhn.domain.action;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -202,20 +201,6 @@ public class ActionChainFactory extends HibernateFactory {
      * @param action the action
      * @param actionChain the action chain
      * @param serverId the server id
-     * @return the action chain entry
-     */
-    public static ActionChainEntry queueActionChainEntry(Action action,
-        ActionChain actionChain, Long serverId) {
-        // this does not hit the database, as it returns a lazy object
-        Server server = (Server) getSession().load(Server.class, serverId);
-        return queueActionChainEntry(action, actionChain, server);
-    }
-
-    /**
-     * Creates a new entry in an Action Chain object.
-     * @param action the action
-     * @param actionChain the action chain
-     * @param serverId the server id
      * @param sortOrder the required sort order
      * @return the action chain entry
      */
@@ -223,19 +208,6 @@ public class ActionChainFactory extends HibernateFactory {
         ActionChain actionChain, Long serverId, int sortOrder) {
         Server server = (Server) getSession().load(Server.class, serverId);
         return queueActionChainEntry(action, actionChain, server, sortOrder);
-    }
-
-    /**
-     * Creates a new entry in an Action Chain object.
-     *
-     * @param action the action
-     * @param actionChain the action chain
-     * @param systemOverview the server overview object
-     * @return the action chain entry
-     */
-    public static ActionChainEntry queueActionChainEntry(Action action,
-        ActionChain actionChain, SystemOverview systemOverview) {
-        return queueActionChainEntry(action, actionChain, systemOverview.getId());
     }
 
     /**
@@ -278,15 +250,6 @@ public class ActionChainFactory extends HibernateFactory {
         return singleton.listObjectsByNamedQuery("ActionChainEntry.getActionChainEntries",
            Map.of("id", actionChain.getId(), "sortOrder", sortOrder)
         );
-    }
-
-    /**
-     * Returns all existing ActionChains in the database
-     *
-     * @return an ActionChain list
-     */
-    public static List<ActionChain> getAllActionChains() {
-        return singleton.listObjectsByNamedQuery("ActionChain.getAllActionChains", Map.of());
     }
 
     /**

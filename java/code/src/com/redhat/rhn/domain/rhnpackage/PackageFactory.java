@@ -597,28 +597,12 @@ public class PackageFactory extends HibernateFactory {
     }
 
     /**
-     * Deletes a package key
-     * @param key the key to delete
-     */
-    public static void deletePackageKey(PackageKey key) {
-        HibernateFactory.getSession().delete(key);
-    }
-
-    /**
      * Lookup a package key object
      * @param key the key to lookup
      * @return the package key
      */
     public static PackageKey lookupPackageKey(String key) {
         return singleton.lookupObjectByNamedQuery("PackageKey.findByKey", Map.of("key", key));
-    }
-
-    /**
-     * List all package keys
-     * @return list of package key objects
-     */
-    public static List<PackageKey> listPackageKeys() {
-        return singleton.listObjectsByNamedQuery("PackageKey.listKeys", Map.of());
     }
 
     /**
