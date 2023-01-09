@@ -761,8 +761,11 @@ public class ActionFactory extends HibernateFactory {
      * @return List of ServerAction objects
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn, String actionType, Date date) {
-        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate",
-                Map.of("server", serverIn, "actionType", actionType, "date", date));
+        Map<String, Object> params = new HashMap<>();
+        params.put("server", serverIn);
+        params.put("actionType", actionType);
+        params.put("date", date);
+        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate", params);
     }
     /**
      * Lookup a List of ServerAction objects in the given states for a given Server.

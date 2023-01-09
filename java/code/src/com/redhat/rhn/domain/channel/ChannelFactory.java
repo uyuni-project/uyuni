@@ -672,6 +672,9 @@ public class ChannelFactory extends HibernateFactory {
      * @return ChecksumType instance for given label
      */
     public static ChecksumType findChecksumTypeByLabel(String checksum) {
+        if (checksum == null) {
+            return null;
+        }
         return singleton.lookupObjectByNamedQuery("ChecksumType.findByLabel", Map.of("label", checksum));
     }
 
