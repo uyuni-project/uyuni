@@ -2845,7 +2845,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="final">キックスタート/Autoyastファイルをアップロード</target>
+        <target state="final">キックスタート/AutoYaSTファイルをアップロード</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -11266,7 +11266,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-        <target state="final">前提条件が待機中のアクションはキャンセルできません。</target>
+        <target state="final">待機中の前提条件を持つアクションはキャンセルできません。</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
         <source>You have subscriptions that need attention.</source>
@@ -11274,7 +11274,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="notification.subscriptionwarning.detail" xml:space="preserve">
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
-        <target state="final">間もなく期限切れになるサブスクリプション、または既に期限切れになっているサブスクリプションがあります。 &lt;a href="/rhn/manager/subscription-matching"&gt;サブスクリプションマッチング&lt;/a&gt;ページを確認してください。</target>
+        <target state="final">間もなく期限切れになるサブスクリプション、またはすでに期限切れになっているサブスクリプションがあります。 &lt;a href="/rhn/manager/subscription-matching"&gt;サブスクリプションマッチング&lt;/a&gt;ページを確認してください。</target>
       </trans-unit>
       <trans-unit id="activation-key.java.nochannel" xml:space="preserve" approved="yes">
           <source>No Base Channel selected.</source>
