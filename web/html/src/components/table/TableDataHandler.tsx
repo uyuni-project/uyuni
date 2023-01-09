@@ -189,6 +189,9 @@ export class TableDataHandler extends React.Component<Props, State> {
     if (this.props.data !== prevProps.data) {
       this.setState({ provider: this.getProvider() }, () => this.getData());
     }
+    if (this.props.loading !== prevProps.loading) {
+      this.setState({ loading: Boolean(this.props.loading) });
+    }
   }
 
   componentWillUnmount() {
