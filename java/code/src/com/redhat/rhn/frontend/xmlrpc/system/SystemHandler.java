@@ -3664,7 +3664,7 @@ public class SystemHandler extends BaseHandler {
             for (Long sid : serverIds) {
                 Server server = SystemManager.lookupByIdAndUser(sid, loggedInUser);
                 for (Channel channel : server.getChannels()) {
-                    if (channel.getModules() != null) {
+                    if (channel.isModular()) {
                         throw new ModulesNotAllowedException();
                     }
                 }
@@ -3973,7 +3973,7 @@ public class SystemHandler extends BaseHandler {
             for (Integer sid : sids) {
                 Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
                 for (Channel channel : server.getChannels()) {
-                    if (channel.getModules() != null) {
+                    if (channel.isModular()) {
                         hasModules = true;
                         break;
                     }
