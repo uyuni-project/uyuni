@@ -203,9 +203,7 @@ end
 
 def extract_logs_from_node(node)
   os_family = node.os_family
-  if os_family =~ /^opensuse/
-    node.run('zypper --non-interactive install tar')
-  end
+  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/
   node.run('journalctl > /var/log/messages', check_errors: false) # Some clients might not support systemd
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
   `mkdir logs` unless Dir.exist?('logs')
