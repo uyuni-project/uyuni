@@ -51,7 +51,7 @@ Feature: Update activation keys
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Module-Containers15-SP4-Updates for x86_64"
+    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SLES-Channel"
     Then I should see "SLE-Module-Basesystem15-SP4-Pool for x86_64" as checked
     And I should see "SLE-Module-Basesystem15-SP4-Updates for x86_64" as checked
