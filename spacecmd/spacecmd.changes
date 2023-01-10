@@ -1,3 +1,5 @@
+- Remove python3-simplejson dependency
+
 -------------------------------------------------------------------
 Wed Dec 14 14:07:34 CET 2022 - jgonzalez@suse.com
 

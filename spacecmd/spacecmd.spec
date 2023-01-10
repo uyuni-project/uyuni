@@ -85,7 +85,6 @@ BuildRequires:  python3-rpm-macros
 %endif
 Requires:       python3
 Requires:       python3-rpm
-Requires:       python3-simplejson
 %else
 BuildRequires:  %{python2prefix}
 %if "%{_vendor}" == "debbuild"
