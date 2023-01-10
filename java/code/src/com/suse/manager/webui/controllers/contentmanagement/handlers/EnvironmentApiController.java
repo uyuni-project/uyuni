@@ -21,6 +21,7 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
@@ -127,12 +128,17 @@ public class EnvironmentApiController {
     public static String removeContentEnvironemnt(Request req, Response res, User user) {
         EnvironmentRequest removeEnvironmentRequest = EnvironmentHandler.getEnvironmentRequest(req);
 
-        CONTENT_MGR.removeEnvironment(
-                removeEnvironmentRequest.getLabel(),
-                removeEnvironmentRequest.getProjectLabel(),
-                user
-        );
-
+        try {
+            CONTENT_MGR.removeEnvironment(
+                    removeEnvironmentRequest.getLabel(),
+                    removeEnvironmentRequest.getProjectLabel(),
+                    user
+            );
+        }
+        catch (ContentManagementException e) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(e.getMessage()));
+        }
         return ControllerApiUtils.fullProjectJsonResponse(res, removeEnvironmentRequest.getProjectLabel(), user);
     }
 
