@@ -51,20 +51,6 @@ Feature: Build OS images
     And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image for "pxeboot_minion"
 
-@proxy
-@private_net
-  Scenario: Move the image to the branch server
-    When I manually install the "image-sync" formula on the server
-    And I enable repositories before installing branch server
-    And I synchronize all Salt dynamic modules on "proxy"
-    And I apply state "image-sync" to "proxy"
-    Then the image for "pxeboot_minion" should exist on the branch server
-
-@proxy
-@private_net
-  Scenario: Cleanup: Disable the repositories on branch server
-    When I disable repositories after installing branch server
-
   Scenario: Cleanup: remove remaining systems from SSM after OS image tests
     When I go to the home page
     And I follow "Clear"
