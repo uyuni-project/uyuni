@@ -615,8 +615,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
             fail("Must not purge.");
         }
         catch (ContentManagementException e) {
-            assertEquals("The target " + target.toString() +
-                    " is being used in an autoinstallation profile. Cannot remove.", e.getMessage());
+            assertEquals("The target is being used in an autoinstallation profile. Cannot remove.", e.getMessage());
         }
         finally {
             assertEquals(1, envdev.getTargets().size());

@@ -1,3 +1,5 @@
+- Fix not being able to delete CLM environment if there are custom child
+  channels that where not built by the environment (bsc#1206932)
 - Add 'none' matcher to CLM AppStream filters (bsc#1206817)
 - Makes systems column sortable on relevant patch page, to list by most affected systems
 - Fix issue where subscription warning would show incorrectly
