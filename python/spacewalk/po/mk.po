@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-04 15:35+0200\n"
-"PO-Revision-Date: 2022-08-30 07:13+0000\n"
+"PO-Revision-Date: 2023-01-10 09:14+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/"
 "backend-4-3/mk/>\n"
@@ -1285,7 +1285,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:606
 #, python-format
 msgid "   ------- %s PARSE/IMPORT ERROR -------"
-msgstr ""
+msgstr "   ------- %s ГРЕШКА ПРИ ПАРСИРАЊЕ/ИМПОРТИРАЊЕ -------"
 
 #: ../satellite_tools/satsync.py:608
 msgid "   ---------------------------------------"
