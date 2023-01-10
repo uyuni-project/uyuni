@@ -53,6 +53,8 @@ Feature: Update activation keys
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SLES-Channel"
+
+  Scenario: Check that sub-channels are automatically selected
     Then I should see "SLE-Module-Basesystem15-SP4-Pool for x86_64" as checked
     And I should see "SLE-Module-Basesystem15-SP4-Updates for x86_64" as checked
     And I should see "SLE-Module-Server-Applications15-SP4-Pool for x86_64" as checked
