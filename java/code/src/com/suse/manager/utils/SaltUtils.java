@@ -2067,7 +2067,7 @@ public class SaltUtils {
      * @param minion the minion
      * @param uptimeSeconds uptime time in seconds
      */
-    public void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
+    public static void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
         Date bootTime = new Date(
                 System.currentTimeMillis() - (uptimeSeconds * 1000));
         LOG.debug("Set last boot for " + minion.getMinionId() + " to " + bootTime);
@@ -2093,7 +2093,7 @@ public class SaltUtils {
         }
     }
 
-    private boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
+    private static boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();
         boolean result = false;
         if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {

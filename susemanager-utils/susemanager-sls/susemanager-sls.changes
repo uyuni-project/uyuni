@@ -1,3 +1,4 @@
+- Optimize the number of salt calls on minion startup (bsc#1203532)
 - Updated logrotate configuration (bsc#1206470)
 - Make libvirt-events.conf path depend on what minion is used (bsc#1205920)
 - Fix kiwi inspect regexp to allow image names with "-" (bsc#1204541)

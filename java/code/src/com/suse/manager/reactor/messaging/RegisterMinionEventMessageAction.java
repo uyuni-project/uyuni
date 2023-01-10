@@ -60,6 +60,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
@@ -72,6 +73,7 @@ import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -90,7 +92,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -233,7 +234,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             () -> {
                                 // Case 1.1 - new registration
                                 finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId, actKeyOverride,
-                                        isSaltSSH);
+                                        isSaltSSH, saltbootInitrd);
                             },
                             minionServer -> {
                                 // Case 2.1 - update found system with new values
@@ -242,7 +243,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                         "machine-id ( %s vs. %s). Updating existing system with System ID: %s",
                                         minionId, machineId, minionServer.getMachineId(), minionServer.getId()));
                                 updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
-                                applySaltBootStates(minionId, minionServer, saltbootInitrd);
+                                applyMinionStartStates(minionId, minionServer, saltbootInitrd);
                             });
                     },
                     server -> {
@@ -253,11 +254,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                     () -> {
                                         // traditional client wants migration to salt
                                         finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId,
-                                                actKeyOverride, isSaltSSH);
+                                                actKeyOverride, isSaltSSH, saltbootInitrd);
                                     },
                                     registeredMinion -> {
                                         updateAlreadyRegisteredInfo(minionId, machineId, registeredMinion);
-                                        applySaltBootStates(minionId, registeredMinion, saltbootInitrd);
+                                        applyMinionStartStates(minionId, registeredMinion, saltbootInitrd);
                                     });
                             },
                             minionServer -> {
@@ -265,7 +266,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                     serverAsMinion -> {
                                         // Case 2.2a
                                         updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
-                                        applySaltBootStates(minionId, minionServer, saltbootInitrd);
+                                        applyMinionStartStates(minionId, minionServer, saltbootInitrd);
                                     },
                                     () -> {
                                         // Case 2.2b - Cleanup missing - salt DB got out of sync with Uyuni DB
@@ -284,7 +285,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             //Case B : Reactivation
             rk -> {
                 reactivateSystem(minionId, machineId, rk);
-                finalizeMinionRegistration(minionId, machineId, sshPort, saltSSHProxyId, actKeyOverride, isSaltSSH);
+                finalizeMinionRegistration(minionId, machineId, sshPort,
+                    saltSSHProxyId, actKeyOverride, isSaltSSH, saltbootInitrd);
             }
         );
     }
@@ -315,16 +317,23 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     }
 
     /**
-     * Apply the states needed for the retail minion
+     * Apply the states needed for regular start of an already registered minion
      * @param minionId
      * @param registeredMinion
      * @param saltbootInitrd
      */
-    private void applySaltBootStates(String minionId, MinionServer registeredMinion, boolean saltbootInitrd) {
+    private void applyMinionStartStates(String minionId, MinionServer registeredMinion, boolean saltbootInitrd) {
         if (saltbootInitrd) {
             // if we have the "saltboot_initrd" grain we want to re-deploy an image via saltboot,
             LOG.info("Applying saltboot for minion " + minionId);
-            applySaltboot(registeredMinion);
+            applySaltboot(registeredMinion, true);
+        }
+        else {
+            // this is either regular minion
+            // or saltboot minion which already finished initrd phase
+            // this is the time to update SystemInfo
+            MinionList minionTarget = new MinionList(minionId);
+            saltApi.updateSystemInfo(minionTarget);
         }
     }
 
@@ -416,43 +425,39 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param saltSSHProxyId optional proxy id for saltssh in case it is used
      * @param activationKeyOverride optional label of activation key to be applied to the system
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     * @param saltbootInitrd true if saltboot initrd grain is set
      */
     public void finalizeMinionRegistration(String minionId,
                                            String machineId,
                                            Optional<Integer> sshPort,
                                            Optional<Long> saltSSHProxyId,
                                            Optional<String> activationKeyOverride,
-                                           boolean isSaltSSH) {
+                                           boolean isSaltSSH,
+                                           boolean saltbootInitrd) {
         Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
-        ValueMap grains = new ValueMap(saltApi.getGrains(minionId).orElseGet(HashMap::new));
-        MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
-        Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
-        if (grains.isEmpty()) {
-            //recalculate grains, cause probably the contact method is changed
-            saltApi.syncGrains(new MinionList(minionId));
-            grains = new ValueMap(saltApi.getGrains(minionId).orElseGet(HashMap::new));
-
-        }
-
-        if (grains.isEmpty()) {
-            LOG.warn("Grains from minionID=" + minionId + " cannot be fetched, some information can be missing");
-        }
-
-        minion.setMachineId(machineId);
-        minion.setMinionId(minionId);
-        minion.setName(minionId);
-        minion.setDigitalServerId(machineId);
-
-        Optional<String> activationKeyLabel = getActivationKeyLabelFromGrains(grains, activationKeyOverride);
-        Optional<ActivationKey> activationKey = activationKeyLabel.map(ActivationKeyFactory::lookupByKey);
+        Org org = null;
 
         try {
-            String master = saltApi
-                    .getMasterHostname(minionId)
+            SystemInfo systemInfo = saltApi.getSystemInfoFull(minionId)
+                .orElseThrow(() -> new SaltException("Missing systeminfo result. Aborting registration."));
+
+            ValueMap grains = systemInfo.getGrains();
+            MinionServer minion = migrateOrCreateSystem(minionId, isSaltSSH, activationKeyOverride, machineId, grains);
+            Optional<String> originalMinionId = Optional.ofNullable(minion.getMinionId());
+
+            minion.setMachineId(machineId);
+            minion.setMinionId(minionId);
+            minion.setName(minionId);
+            minion.setDigitalServerId(machineId);
+
+            Optional<String> activationKeyLabel = getActivationKeyLabelFromGrains(grains, activationKeyOverride);
+            Optional<ActivationKey> activationKey = activationKeyLabel.map(ActivationKeyFactory::lookupByKey);
+
+            String master = systemInfo.getMaster()
                     .orElseThrow(() -> new SaltException(
                             "Master not found in minion configuration"));
 
-            Org org = activationKey.map(ActivationKey::getOrg)
+            org = activationKey.map(ActivationKey::getOrg)
                             .orElseGet(() -> creator.map(User::getOrg)
                             .orElseGet(() -> getProxyOrg(master, isSaltSSH, saltSSHProxyId)
                             .orElseGet(() -> OrgFactory.getSatelliteOrg())));
@@ -494,6 +499,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             minion.setModified(minion.getCreated());
             minion.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
             minion.setHostname(grains.getOptionalAsString(FQDN).orElse(null));
+            systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
+
 
             String serverArch = String.format("%s-%s", osarch,
                     osfamily.equals("Debian") ? "debian-linux" : "redhat-linux");
@@ -505,8 +512,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }
             minion.setServerArch(arch);
 
-            RegistrationUtils.subscribeMinionToChannels(systemQuery, minion, grains, activationKey,
+            if (!saltbootInitrd) {
+                RegistrationUtils.subscribeMinionToChannels(systemQuery, minion, grains, activationKey,
                     activationKeyLabel);
+            }
 
             minion.updateServerInfo();
 
@@ -536,20 +545,19 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }
 
             // Saltboot treatment - prepare and apply saltboot
-            if (grains.getOptionalAsBoolean("saltboot_initrd").orElse(false)) {
-                LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
-                prepareRetailMinionForSaltboot(minion, org, grains);
-                applySaltboot(minion);
+            if (saltbootInitrd) {
+                prepareRetailMinionAndApplySaltboot(minion, org, grains);
                 migrateMinionFormula(minionId, originalMinionId);
                 return;
             }
 
-            RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH);
+            systemInfo.getUptimeSeconds().ifPresent(us -> SaltUtils.handleUptimeUpdate(minion, us.longValue()));
+            RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH, isSaltSSH);
             migrateMinionFormula(minionId, originalMinionId);
         }
-        catch (Throwable t) {
+        catch (Exception t) {
             LOG.error("Error registering minion id: " + minionId, t);
-            throw new RegisterMinionException(minionId, minion.getOrg());
+            throw new RegisterMinionException(minionId, org);
         }
         finally {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
@@ -637,6 +645,26 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     }
 
     /**
+     * Prepare saltboot configuration for retail minion and apply saltboot state
+     *
+     * @param minion - the minion
+     * @param org - the organization in which minion is to be registered
+     * @param grains - grains
+     */
+    private void prepareRetailMinionAndApplySaltboot(MinionServer minion, Org org, ValueMap grains) {
+        String minionId = minion.getMinionId();
+        LOG.info("\"saltboot_initrd\" grain set to true: Preparing & applying saltboot for minion " + minionId);
+        try {
+            prepareRetailMinionForSaltboot(minion, org, grains);
+            applySaltboot(minion, false);
+        }
+        catch (Exception t) {
+            LOG.error("Error preparing saltboot configuration for minion id: " + minionId, t);
+            // do not throw, leave the minion as registered in initrd
+        }
+    }
+
+    /**
      * Prepare a retail minion to be registered in SUMA:
      *  - assign needed groups
      *  - generate pillar
@@ -651,8 +679,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         Optional<String> branchId = grains.getOptionalAsString("minion_id_prefix");
 
         if (!manufacturer.isPresent() || !productName.isPresent() || !branchId.isPresent()) {
+            SystemManager.addHistoryEvent(minion, "Saltboot configuration failed",
+                    "Missing machine manufacturer, product name or minion_id_prefix " +
+                    "on retail minion registration! Aborting saltboot configuration.");
+
             throw new IllegalStateException("Missing machine manufacturer, product name or minion_id_prefix " +
-                    "on retail minion registration! Aborting registration.");
+                    "on retail minion registration! Aborting saltboot configuration.");
         }
 
         String hwTypeGroupPrefix = "HWTYPE:";
@@ -664,9 +696,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         ManagedServerGroup branchIdGroup = ServerGroupFactory.lookupByNameAndOrg(branchIdGroupName, org);
         ManagedServerGroup hwGroup = ServerGroupFactory.lookupByNameAndOrg(hwTypeGroup, org);
 
-        if (terminalsGroup == null || branchIdGroup == null) {
-            throw new IllegalStateException("Missing required server groups (\"" + TERMINALS_GROUP_NAME + "\" or \"" +
-                    branchIdGroupName + "\")! Aborting registration.");
+        if (branchIdGroup == null) {
+            SystemManager.addHistoryEvent(minion, "Saltboot configuration failed", "Missing required server group (\"" +
+                    branchIdGroupName + "\")!" + " Aborting saltboot configuration.");
+
+            throw new IllegalStateException("Missing required server group (\"" + branchIdGroupName + "\")!" +
+                    " Aborting saltboot configuration.");
         }
 
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
@@ -680,15 +715,23 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }
             else {
                 systemManager.addServerToServerGroup(minion, hwGroup);
+                SystemManager.addHistoryEvent(minion, "Saltboot HWTYPE group assigned",
+                        "Minion assigned to HW group \"" + hwTypeGroup + "\"");
             }
+        }
+        else {
+            SystemManager.addHistoryEvent(minion, "Saltboot HWTYPE group not found",
+                    "HWTYPE group does not exist: \"" + hwTypeGroup + "\"");
         }
 
         minion.asMinionServer().ifPresent(MinionPillarManager.INSTANCE::generatePillar);
     }
 
-    private void applySaltboot(MinionServer minion) {
+    private void applySaltboot(MinionServer minion, boolean sync) {
         List<String> states = new ArrayList<>();
-        states.add(ApplyStatesEventMessage.SYNC_STATES);
+        if (sync) {
+            states.add(ApplyStatesEventMessage.SYNC_STATES);
+        }
         states.add(ApplyStatesEventMessage.SALTBOOT);
 
         MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), false, states));
