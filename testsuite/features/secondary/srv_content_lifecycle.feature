@@ -157,3 +157,14 @@ Feature: Content lifecycle
     And I click on "Delete"
     And I click on "Delete" in "Delete Project" modal
     Then I should not see a "clp_name" text
+    When I delete these channels with spacewalk-remove-channel:
+      |clp_label-dev_label-fake_base_channel|
+      |clp_label-dev_label-sles12-sp5-updates-x86_64|
+      |clp_label-prod_label-fake_base_channel|
+      |clp_label-prod_label-sles12-sp5-updates-x86_64|
+      |clp_label-qa_label-fake_base_channel|
+      |clp_label-qa_label-sles12-sp5-updates-x86_64|
+    And I delete these channels with spacewalk-remove-channel:
+      |clp_label-dev_label-sles12-sp5-pool-x86_64|
+      |clp_label-prod_label-sles12-sp5-pool-x86_64|
+      |clp_label-qa_label-sles12-sp5-pool-x86_64|
