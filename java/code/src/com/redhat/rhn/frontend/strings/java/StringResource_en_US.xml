@@ -8977,6 +8977,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
       </trans-unit>
+      <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
+        <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
+      </trans-unit>
+      <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
+        <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
+      </trans-unit>
       <trans-unit id="payg.description_required" xml:space="preserve">
         <source>Description is required.</source>
       </trans-unit>
