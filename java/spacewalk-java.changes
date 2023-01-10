@@ -1,3 +1,4 @@
+- Add reboot needed indicator to systems list
 - Fix transaction commit behavior for Spark routes
 - Fix modular channel check during system update via XMLRPC (bsc#1206613)
 - Fix CVE Audit ignoring errata in parent channels if patch in successor

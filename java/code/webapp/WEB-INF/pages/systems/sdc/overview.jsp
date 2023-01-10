@@ -285,9 +285,7 @@
             <td><rhn:formatDate humanStyle="from" value="${system.lastBootAsDate}" type="both" dateStyle="short" timeStyle="long"/><br/>
                   <rhn:require acl="system_feature(ftr_reboot)"
                        mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
-                    <c:if test="${!rebootScheduled}">
-                      <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
-                    </c:if>
+                    <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
                   </rhn:require>
             </td>
           </tr>

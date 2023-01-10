@@ -24,6 +24,11 @@ function statusDisplay(system: any, isAdmin: boolean) {
       iconTitle: "Kickstart in progress",
       url: "/rhn/systems/details/kickstart/SessionStatus.do?sid=" + sid,
     },
+    "reboot needed": {
+      iconType: "system-reboot",
+      iconTitle: "System requires reboot",
+      url: "/rhn/systems/details/RebootSystem.do?sid=" + sid,
+    },
     "updates scheduled": {
       iconType: "action-pending",
       iconTitle: "All updates scheduled",
