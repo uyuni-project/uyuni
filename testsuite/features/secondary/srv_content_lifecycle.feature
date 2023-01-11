@@ -151,9 +151,24 @@ Feature: Content lifecycle
     And I wait for "1" second
     Then I wait at most 600 seconds until I see "Built" text in the environment "prod_name"
 
-  Scenario: Clean up the Content Lifecycle Management feature
+  Scenario: Cleanup: remove the Content Lifecycle Management project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I click on "Delete"
     And I click on "Delete" in "Delete Project" modal
     Then I should not see a "clp_name" text
+  
+  Scenario: Cleanup: remove the created channels
+    When I delete these channels with spacewalk-remove-channel:
+      |clp_label-prod_label-fake_base_channel|
+      |clp_label-prod_label-sles12-sp5-updates-x86_64|
+      |clp_label-qa_label-fake_base_channel|
+      |clp_label-qa_label-sles12-sp5-updates-x86_64|
+      |clp_label-dev_label-fake_base_channel|
+      |clp_label-dev_label-sles12-sp5-updates-x86_64|
+    And I delete these channels with spacewalk-remove-channel:
+      |clp_label-prod_label-sles12-sp5-pool-x86_64|
+      |clp_label-qa_label-sles12-sp5-pool-x86_64|
+      |clp_label-dev_label-sles12-sp5-pool-x86_64|
+    When I list channels with spacewalk-remove-channel
+    Then I shouldn't get "clp_label"
