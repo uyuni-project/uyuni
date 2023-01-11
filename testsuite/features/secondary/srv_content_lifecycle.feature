@@ -172,7 +172,7 @@ Feature: Content lifecycle
       |clp_label-prod_label-sle-product-sles15-sp4-pool-x86_64|
       |clp_label-qa_label-sle-product-sles15-sp4-pool-x86_64|
       |clp_label-dev_label-sle-product-sles15-sp4-pool-x86_64|
-    When I list channels with spacewalk-remove-channel
+    And I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"
 
 @susemanager
