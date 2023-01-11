@@ -35,6 +35,7 @@ Feature: Content lifecycle
     And I follow "clp_name"
     And I click on "Attach/Detach Sources"
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I exclude the recommended child channels
     And I click on "Save"
     And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
@@ -162,15 +163,15 @@ Feature: Content lifecycle
   Scenario: Cleanup: remove the created channels for Uyni
     When I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-fake_base_channel|
-      |clp_label-prod_label-sles12-sp5-updates-x86_64|
+      |clp_label-prod_label-sles15-sp4-updates-x86_64|
       |clp_label-qa_label-fake_base_channel|
-      |clp_label-qa_label-sles12-sp5-updates-x86_64|
+      |clp_label-qa_label-sles15-sp4-updates-x86_64|
       |clp_label-dev_label-fake_base_channel|
-      |clp_label-dev_label-sles12-sp5-updates-x86_64|
+      |clp_label-dev_label-sles15-sp4-updates-x86_64|
     And I delete these channels with spacewalk-remove-channel:
-      |clp_label-prod_label-sles12-sp5-pool-x86_64|
-      |clp_label-qa_label-sles12-sp5-pool-x86_64|
-      |clp_label-dev_label-sles12-sp5-pool-x86_64|
+      |clp_label-prod_label-sles15-sp4-pool-x86_64|
+      |clp_label-qa_label-sles15-sp4-pool-x86_64|
+      |clp_label-dev_label-sles15-sp4-pool-x86_64|
     When I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"
 

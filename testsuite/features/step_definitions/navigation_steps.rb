@@ -214,12 +214,17 @@ When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio,
   choose(label[:for])
 end
 
-When(/^I include the recommended child channels$/) do
+When(/^I (include|exclude) the recommended child channels$/) do |action|
   toggle = "//span[@class='pointer']"
-  toggle_off = "//i[contains(@class, 'fa-toggle-off')]"
   step %(I wait until I see "include recommended" text)
   raise 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
-  find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
+  if action == include
+    toggle_off = "//i[contains(@class, 'fa-toggle-off')]"
+    find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
+  else
+    toggle_on = "//i[contains(@class, 'fa-toggle-on')]"
+    find(:xpath, toggle).click if page.has_xpath?(toggle_on, wait: 5)
+  end
 end
 
 When(/^I choose "([^"]*)"$/) do |arg1|
