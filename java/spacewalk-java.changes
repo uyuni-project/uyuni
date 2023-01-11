@@ -1,52 +1,56 @@
-- Add reboot needed indicator to systems list
-- Fix transaction commit behavior for Spark routes
-- Fix modular channel check during system update via XMLRPC (bsc#1206613)
-- Fix CVE Audit ignoring errata in parent channels if patch in successor
-  product exists (bsc#1206168)
-- Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
-- Improve automatic dependency selection for vendor clones
-- Optimize the number of salt calls on minion startup (bsc#1203532)
-- Fix name for autoinstall snippets after Cobbler 3.3.3
-- prevent ISE on activation key page when selected base channel value is null
-- Trigger a package profile update when a new live-patch is installed (bsc#1206249)
-- Fix HTTP API login status code when using wrong credentials (bsc#1206666)
-- Configure the reboot action for transactional systems appropriately
-- Fix link to documentation in monitoring page
-- Fix server error in product migration outside maintenance window (bsc#1206276)
-- Updated logrotate configuration (bsc#1206470)
-- Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
-- Source Select2 and jQuery UI from susemanager-frontend-libs
-- Don't use hash in apidoc links
-- Limit changelog data in generated metadata to 20 entries
-- Fix internal server error when transferring system between organizations
-- Fix products controller to keep loading mandatory channels even when there are
-  broken channels (bsc#1204270)
-- Move web dependencies from susemanager-frontend-libs to
-  spacewalk-web
-- Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
-- send notifications also as email if email notifications are enabled
-- Add subscription warning notification to overview page
-- Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
-- Add vendor_advisory to errata.getDetails (bsc#1205207)
-- Fix ClassCastException
-- disable cloned vendor channel auto selection by default (bsc#1204186) 
-- Add SUSE Liberty Linux support for RHEL9 based clients
-- Removed contents of certificates from the web UI logs (bsc#1204715)
-- Fix kickstart for RHEL 9 to not add install command
-- Remove RHEL kickstart types below 6
-- Don't persist the YAML parser in FormulaFactory (bsc#1205754)
-- format results for package, errata and image build actions in
-  system history similar to state apply results
-- check for NULL in DEB package install size value
-- adapt permissions of temporary ssh key directory
-- Fixed traditional stack warning message to be displayed only when the system
-  has enterprise entitlement (bsc#1205350)
-- Remove invalid errata selection after patch installation (bsc#1204235)
-- Ignore insert conflicts during reporting database update (bsc#1202150)
-- Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
-- Run only minion actions that are in the pending status (bsc#1205012)
-- Allow usage of one FQDN to deploy containerized proxy in VM (#19586)
-- Migrate formulas with default values to database (bsc#1204932)
+-------------------------------------------------------------------
+Wed Jan 11 12:47:55 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.44-1
+  * Add reboot needed indicator to systems list
+  * Fix transaction commit behavior for Spark routes
+  * Fix modular channel check during system update via XMLRPC (bsc#1206613)
+  * Fix CVE Audit ignoring errata in parent channels if patch in successor
+    product exists (bsc#1206168)
+  * Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
+  * Improve automatic dependency selection for vendor clones
+  * Optimize the number of salt calls on minion startup (bsc#1203532)
+  * Fix name for autoinstall snippets after Cobbler 3.3.3
+  * prevent ISE on activation key page when selected base channel value is null
+  * Trigger a package profile update when a new live-patch is installed (bsc#1206249)
+  * Fix HTTP API login status code when using wrong credentials (bsc#1206666)
+  * Configure the reboot action for transactional systems appropriately
+  * Fix link to documentation in monitoring page
+  * Fix server error in product migration outside maintenance window (bsc#1206276)
+  * Updated logrotate configuration (bsc#1206470)
+  * Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
+  * Source Select2 and jQuery UI from susemanager-frontend-libs
+  * Don't use hash in apidoc links
+  * Limit changelog data in generated metadata to 20 entries
+  * Fix internal server error when transferring system between organizations
+  * Fix products controller to keep loading mandatory channels even when there are
+    broken channels (bsc#1204270)
+  * Move web dependencies from susemanager-frontend-libs to
+    spacewalk-web
+  * Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
+  * send notifications also as email if email notifications are enabled
+  * Add subscription warning notification to overview page
+  * Fix CLM to not remove necessary packages when filtering erratas (bsc#1195979)
+  * Add vendor_advisory to errata.getDetails (bsc#1205207)
+  * Fix ClassCastException
+  * disable cloned vendor channel auto selection by default (bsc#1204186) 
+  * Add SUSE Liberty Linux support for RHEL9 based clients
+  * Removed contents of certificates from the web UI logs (bsc#1204715)
+  * Fix kickstart for RHEL 9 to not add install command
+  * Remove RHEL kickstart types below 6
+  * Don't persist the YAML parser in FormulaFactory (bsc#1205754)
+  * format results for package, errata and image build actions in
+    system history similar to state apply results
+  * check for NULL in DEB package install size value
+  * adapt permissions of temporary ssh key directory
+  * Fixed traditional stack warning message to be displayed only when the system
+    has enterprise entitlement (bsc#1205350)
+  * Remove invalid errata selection after patch installation (bsc#1204235)
+  * Ignore insert conflicts during reporting database update (bsc#1202150)
+  * Allowed cancelling pending actions with a failed prerequisite (bsc#1204712)
+  * Run only minion actions that are in the pending status (bsc#1205012)
+  * Allow usage of one FQDN to deploy containerized proxy in VM (#19586)
+  * Migrate formulas with default values to database (bsc#1204932)
 
 -------------------------------------------------------------------
 Fri Nov 18 10:43:27 UTC 2022 - marina.latini@suse.com
