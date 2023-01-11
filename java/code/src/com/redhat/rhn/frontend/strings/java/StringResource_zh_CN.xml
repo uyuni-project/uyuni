@@ -11281,7 +11281,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
         <target state="final">您的某些订阅即将失效或已经失效。请查看&lt;a href="/rhn/manager/subscription-matching"&gt;订阅匹配&lt;/a&gt;页面。</target>
       </trans-unit>
-      <trans-unit id="activation-key.java.nochannel" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
           <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
