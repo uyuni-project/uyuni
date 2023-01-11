@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-06 13:58+0100\n"
+"POT-Creation-Date: 2023-01-11 09:41+0100\n"
 "PO-Revision-Date: 2022-12-09 19:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/"
@@ -469,7 +469,7 @@ msgid "Custom Quartz format:"
 msgstr "Vlastný formát Quartz:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:345
+#: ../html/src/components/table/TableDataHandler.tsx:348
 msgid "There are no entries to show."
 msgstr "Nie sú k dispozícii žiadne záznamy na zobrazenie."
 
@@ -501,12 +501,12 @@ msgstr "Upraviť"
 msgid "Edit Configuration Channel"
 msgstr "Upraviť konfiguračný kanál"
 
-#: ../html/src/components/systems.tsx:45
+#: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Security Advisory"
 msgstr "Bezpečnostné upozornenie"
 
-#: ../html/src/components/systems.tsx:58
+#: ../html/src/components/systems.tsx:63
 msgid "System Locked"
 msgstr "Systém uzamknutý"
 
@@ -527,7 +527,7 @@ msgstr "Vyčistiť"
 msgid "Select All"
 msgstr "Vybrať všetko"
 
-#: ../html/src/components/table/TableDataHandler.tsx:346
+#: ../html/src/components/table/TableDataHandler.tsx:349
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
@@ -539,7 +539,7 @@ msgstr "Vybrať všetko"
 msgid "Loading..."
 msgstr "Načítava sa..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:377
+#: ../html/src/components/table/TableDataHandler.tsx:380
 msgid "items per page"
 msgstr "položiek na stránku"
 
