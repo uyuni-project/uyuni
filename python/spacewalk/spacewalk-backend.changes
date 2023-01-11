@@ -1,9 +1,13 @@
-- Add 'octet-stream' to accepted content-types for reposync mirrorlists
-- Exclude invalid mirror urls for reposync (bsc#1203826)
-- Compute headers as list of two-tuples to be used by url grabber (bsc#1205523)
-- Updated logrotate configuration (bsc#1206470)
-- Add rhel_9 as Salt-enabled kickstart installation
-- do not fetch mirrorlist when a file url is given
+-------------------------------------------------------------------
+Wed Jan 11 12:46:38 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.18-1
+  * Add 'octet-stream' to accepted content-types for reposync mirrorlists
+  * Exclude invalid mirror urls for reposync (bsc#1203826)
+  * Compute headers as list of two-tuples to be used by url grabber (bsc#1205523)
+  * Updated logrotate configuration (bsc#1206470)
+  * Add rhel_9 as Salt-enabled kickstart installation
+  * do not fetch mirrorlist when a file url is given
 
 -------------------------------------------------------------------
 Tue Nov 15 16:47:41 UTC 2022 - marina.latini@suse.com
