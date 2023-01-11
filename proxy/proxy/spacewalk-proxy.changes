@@ -1,5 +1,9 @@
-- Updated logrotate configuration (bsc#1206470)
-- Handle tftp in rhn-proxy (bsc#1205976)
+-------------------------------------------------------------------
+Wed Jan 11 12:38:30 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.14-1
+  * Updated logrotate configuration (bsc#1206470)
+  * Handle tftp in rhn-proxy (bsc#1205976)
 
 -------------------------------------------------------------------
 Tue Nov 15 16:53:10 UTC 2022 - marina.latini@suse.com
