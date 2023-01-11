@@ -1,4 +1,8 @@
-- fix tools channel detection on Uyuni
+-------------------------------------------------------------------
+Wed Jan 11 12:47:31 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.22-1
+  * fix tools channel detection on Uyuni
 
 -------------------------------------------------------------------
 Fri Dec 02 11:55:08 UTC 2022 - marina.latini@suse.com
