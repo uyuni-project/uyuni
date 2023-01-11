@@ -1,4 +1,8 @@
-- Add missing proxy release notes package
+-------------------------------------------------------------------
+Wed Jan 11 11:55:04 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 4.3.3
+  * Add missing proxy release notes package
 
 -------------------------------------------------------------------
 Mon Dec  5 16:44:05 UTC 2022 - Marina Latini <marina.latini@suse.com>
