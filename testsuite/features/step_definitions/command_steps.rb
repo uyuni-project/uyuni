@@ -337,8 +337,6 @@ When(/^I wait until all spacewalk\-repo\-sync finished$/) do
   end
 end
 
-# rubocop:enable Metrics/BlockLength
-
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
   raise "Errors during reposync:\n#{result}" if code.zero?
