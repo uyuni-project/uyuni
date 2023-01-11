@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-06 13:58+0100\n"
-"PO-Revision-Date: 2022-11-11 09:13+0000\n"
+"POT-Creation-Date: 2023-01-11 09:41+0100\n"
+"PO-Revision-Date: 2023-01-10 02:14+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd-4-3/ja/>\n"
@@ -1988,7 +1988,7 @@ msgstr "CVE"
 
 #: ../src/spacecmd/errata.py:431
 msgid "Vendor Advisory"
-msgstr ""
+msgstr "ベンダアドバイザリー"
 
 #: ../src/spacecmd/errata.py:435
 msgid "Solution"
@@ -4179,7 +4179,7 @@ msgstr ""
 "proxy_container_config: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:33
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL ROOT_CA CRT KEY\n"
@@ -4208,7 +4208,7 @@ msgid ""
 "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme."
 "org root_ca.crt proxy.crt proxy.key\n"
 msgstr ""
-"使用方法: proxy_container_config [オプション]  PROXY_FQDN SERVER_FQDN "
+"使用方法: proxy_container_config [オプション] PROXY_FQDN SERVER_FQDN "
 "MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "パラメータ:\n"
@@ -4224,7 +4224,7 @@ msgstr ""
 "\n"
 "オプション:\n"
 "  -o, --output 生成された設定を作成するパス。デフォルト: 「config.tar.gz」\n"
-"  -p, --ssh-port プロキシがリスンするSSHポート。デフォルト: 22\n"
+"  -p, --ssh-port プロキシがリスンするSSHポート。デフォルト: 8022\n"
 "  -i, --intermediate-ca  PEM形式でプロキシ証明書に署名するために使用される\n"
 "            中間CAへのパス。複数回提供できます。\n"
 "\n"
@@ -4241,7 +4241,7 @@ msgstr ""
 "イルを返します"
 
 #: ../src/spacecmd/proxy.py:90
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL\n"
@@ -4298,7 +4298,7 @@ msgstr ""
 "\n"
 "オプション:\n"
 "  -o, --output 生成された設定を作成するパス。デフォルト: 「config.tar.gz」\n"
-"  -p, --ssh-port プロキシがリスンするSSHポート。デフォルト: 22\n"
+"  -p, --ssh-port プロキシがリスンするSSHポート。デフォルト: 8022\n"
 "  --ca-crt 新しいプロキシ証明書の生成に使用するCAの証明書へのパス。\n"
 "           デフォルトで/root/ ssl-build/RHN-ORG-TRUSTED-SSL-CERTを使用。\n"
 "  --ca-key 新しいプロキシ証明書の生成に使用するCAの機密鍵へのパス。\n"
@@ -8379,7 +8379,6 @@ msgstr ""
 "system_scheduleproductmigration: システムに対して製品移行をスケジュールする。"
 
 #: ../src/spacecmd/system.py:4604
-#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8401,10 +8400,12 @@ msgstr ""
 "    <移行先> として指定可能なターゲットの一覧を表示するには "
 "system_listmigrationtargets を使用する。\n"
 "    <移行先> は下記のような書式で渡されなければならないことに注意: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"[3143,3146,3147,3145,3144,3148,3062] \n"
 "    オプション: \n"
 "        -s (開始時刻) \n"
-"        -d 予行演習モード (実際には処理を行なわない) \n"
+"        -d 予行演習モード(実際には処理を行なわない) \n"
+"        --allow-vendor-change (ベンダーの変更を許可する) \n"
+"        -r (後継のない製品を削除する) \n"
 "        -c (子チャンネル) (カンマ区切りで子チャンネルのラベルを指定する。空白"
 "は使用しないこと)"
 
@@ -8421,9 +8422,8 @@ msgid "Scheduling Product migration for system "
 msgstr "システムに対して製品移行をスケジュールしています "
 
 #: ../src/spacecmd/system.py:4662
-#, fuzzy
 msgid "Migration target "
-msgstr "  移行ターゲットがありません"
+msgstr "移行ターゲット "
 
 #: ../src/spacecmd/system.py:4669
 msgid "Scheduled action ID: "
