@@ -13,7 +13,7 @@ Feature: Operate an Ansible control node in a normal minion
 
   Scenario: Enable "Ansible control node" system type
     Given I am on the Systems overview page of this "sle_minion"
-    When I enable client tools repositories on "sle_minion"
+    When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
     And I follow "Properties" in the content area
     And I check "ansible_control_node"
     And I click on "Update Properties"
@@ -77,5 +77,6 @@ Feature: Operate an Ansible control node in a normal minion
     And I uncheck "ansible_control_node"
     And I click on "Update Properties"
     Then I should see a "System properties changed" text
+    And I disable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
     And I remove package "orion-dummy" from this "sle_minion" without error control
     And I remove "/tmp/file.txt" from "sle_minion"
