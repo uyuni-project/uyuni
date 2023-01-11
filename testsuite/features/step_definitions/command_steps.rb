@@ -802,12 +802,10 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   cmd = ''
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     mand_repos = ''
-    opt_repos = ''
     repos.split(' ').map do |repo|
       mand_repos = "#{mand_repos} #{repo}"
     end
-    cmd = "zypper mr --#{action} #{opt_repos} ||:;" unless opt_repos.empty?
-    cmd += "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
+    cmd = "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
   elsif os_family =~ /^centos/ || os_family =~ /^rocky/
     repos.split(' ').each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
