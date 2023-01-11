@@ -1,4 +1,9 @@
-- Backport SLE Micro bootstrap fixes
+-------------------------------------------------------------------
+Wed Jan 11 12:44:14 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.17-1
+  * Backport SLE Micro bootstrap fixes
+
 -------------------------------------------------------------------
 Tue Nov 15 16:55:37 UTC 2022 - marina.latini@suse.com
 
