@@ -1,4 +1,8 @@
-- unify user notification code on java side
+-------------------------------------------------------------------
+Wed Jan 11 12:45:26 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.7-1
+  * unify user notification code on java side
 
 -------------------------------------------------------------------
 Mon Sep 26 12:29:05 UTC 2022 - marina.latini@suse.com
