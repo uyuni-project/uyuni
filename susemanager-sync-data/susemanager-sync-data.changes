@@ -1,6 +1,10 @@
-- change OES 2023 URL to https and make the tools channels mandatory
-  (bsc#1205644)
-- remove version from product names as they are held separate
+-------------------------------------------------------------------
+Wed Jan 11 12:33:18 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.12-1
+  * change OES 2023 URL to https and make the tools channels mandatory
+    (bsc#1205644)
+  * remove version from product names as they are held separate
 
 -------------------------------------------------------------------
 Thu Nov 24 17:20:48 UTC 2022 - marina.latini@suse.com
