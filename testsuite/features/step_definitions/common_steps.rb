@@ -20,7 +20,7 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, ur
     iso_path = url.sub(/^http:.*\/pub/, '/mirror/pub')
   else
     iso_path = "/tmp/#{name}.iso"
-    $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 500)
+    $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 700)
   end
   mount_point = "/srv/www/htdocs/#{name}"
   $server.run("mkdir -p #{mount_point}")
