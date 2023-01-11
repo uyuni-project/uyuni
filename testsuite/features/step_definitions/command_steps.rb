@@ -378,8 +378,17 @@ end
 # rubocop:enable Metrics/BlockLength
 
 Then(/^the reposync logs should not report errors$/) do
-  result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: false)
-  raise "Errors during reposync:\n#{result}" if code.zero?
+  $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: true)
+end
+
+Then(/^the rhlike reposync logs should not report errors$/) do
+  logfiles = ["rocky*", "rhel*", "res*"]
+  logfiles.each do |logs|
+    _result, code = $server.run("test -f /var/log/rhn/reposync/#{logs}.log", check_errors: false)
+    if code.zero?
+      $server.run("grep -i 'ERROR:' /var/log/rhn/reposync/#{logs}.log", check_errors: true)
+    end
+  end
 end
 
 Then(/^"([^"]*)" package should have been stored$/) do |pkg|
