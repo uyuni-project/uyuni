@@ -1,10 +1,14 @@
-- Remove python3-simplejson dependency
-- Correctly understand 'ssm' keyword on scap scheduling
-- Add vendor_advisory information to errata_details call (bsc#1205207)
-- Added two missing options to schedule product migration: allow-vendor-change
-  and remove-products-without-successor (bsc#1204126)
-- Changed schedule product migration to use the correct API method
-- Change default port of "Containerized Proxy configuration" 8022
+-------------------------------------------------------------------
+Wed Jan 11 12:38:07 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.17-1
+  * Remove python3-simplejson dependency
+  * Correctly understand 'ssm' keyword on scap scheduling
+  * Add vendor_advisory information to errata_details call (bsc#1205207)
+  * Added two missing options to schedule product migration: allow-vendor-change
+    and remove-products-without-successor (bsc#1204126)
+  * Changed schedule product migration to use the correct API method
+  * Change default port of "Containerized Proxy configuration" 8022
 
 -------------------------------------------------------------------
 Tue Nov 15 16:46:47 UTC 2022 - marina.latini@suse.com
