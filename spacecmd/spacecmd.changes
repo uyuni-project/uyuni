@@ -1,3 +1,4 @@
+- Remove python3-simplejson dependency
 - Correctly understand 'ssm' keyword on scap scheduling
 - Add vendor_advisory information to errata_details call (bsc#1205207)
 - Added two missing options to schedule product migration: allow-vendor-change

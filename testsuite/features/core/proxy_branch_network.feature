@@ -26,7 +26,6 @@ Feature: Setup SUSE Manager for Retail branch network
     When I manually install the "branch-network" formula on the server
     And I manually install the "dhcpd" formula on the server
     And I manually install the "bind" formula on the server
-    And I synchronize all Salt dynamic modules on "proxy"
 
 @proxy
 @private_net
@@ -35,6 +34,7 @@ Feature: Setup SUSE Manager for Retail branch network
     When I refresh the metadata for "server"
     When I install pattern "suma_retail" on this "server"
     And I wait for "patterns-suma_retail" to be installed on "server"
+    And I synchronize all Salt dynamic modules on "proxy"
 
 @proxy
 @private_net
@@ -43,6 +43,12 @@ Feature: Setup SUSE Manager for Retail branch network
     When I refresh the metadata for "server"
     When I install pattern "uyuni_retail" on this "server"
     And I wait for "patterns-uyuni_retail" to be installed on "server"
+    And I synchronize all Salt dynamic modules on "proxy"
+
+@proxy
+@private_net
+  Scenario: Restart spacewalk services
+    When I restart the spacewalk service
 
 @proxy
 @private_net

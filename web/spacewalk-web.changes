@@ -1,3 +1,5 @@
+- Add reboot needed indicator to systems list
+- Fix salt keys page keeps loading when no key exists (bsc#1206799)
 - Fix link to documentation in monitoring page
 - Source Select2 and jQuery UI from susemanager-frontend-libs
 - fix frontend logging in react pages

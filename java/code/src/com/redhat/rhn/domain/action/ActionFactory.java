@@ -349,6 +349,25 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Check if the server has a scheudled reboot action. Return the action
+     * if available or null otherwise
+     * @param serverId server
+     * @return reboot Action or null otherwise
+     */
+    public static Action isRebootScheduled(Long serverId) {
+        Action ret = null;
+        Session session = HibernateFactory.getSession();
+        Query query = session.getNamedQuery("ServerAction.findPendingActionsForServer");
+        query.setParameter("serverId", serverId);
+        query.setParameter("label", "reboot.reboot");
+        List list = query.list();
+        if (list != null && list.size() > 0) {
+            ret = ((ServerAction) list.get(0)).getParentAction();
+        }
+        return ret;
+    }
+
+    /**
      * Create a new Action from scratch.
      * @param typeIn the type of Action we want to create
      * @return the Action created

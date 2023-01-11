@@ -1,3 +1,10 @@
+- Add reboot needed indicator to systems list
+- Fix transaction commit behavior for Spark routes
+- Fix modular channel check during system update via XMLRPC (bsc#1206613)
+- Fix CVE Audit ignoring errata in parent channels if patch in successor
+  product exists (bsc#1206168)
+- Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
+- Improve automatic dependency selection for vendor clones
 - Optimize the number of salt calls on minion startup (bsc#1203532)
 - Fix name for autoinstall snippets after Cobbler 3.3.3
 - prevent ISE on activation key page when selected base channel value is null

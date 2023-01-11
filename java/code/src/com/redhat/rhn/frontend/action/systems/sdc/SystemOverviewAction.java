@@ -111,6 +111,14 @@ public class SystemOverviewAction extends RhnAction {
         // Reboot needed after certain types of updates
         boolean rebootRequired = SystemManager.requiresReboot(user, sid);
 
+        // Check if reboot is scheduled
+        boolean rebootScheduled = false;
+        Action rebootAction = ActionFactory.isRebootScheduled(sid);
+        if (rebootAction != null) {
+            request.setAttribute("rebootActionId", rebootAction.getId());
+            rebootScheduled = true;
+        }
+
         if (!processLock(user, s, rctx)) {
             request.setAttribute("serverLock", s.getLock());
         }
@@ -132,6 +140,7 @@ public class SystemOverviewAction extends RhnAction {
         }
 
         request.setAttribute("rebootRequired", rebootRequired);
+        request.setAttribute("rebootScheduled", rebootScheduled);
         request.setAttribute("unentitled", s.getEntitlements().isEmpty());
         request.setAttribute("entitlements", entitlements);
         request.setAttribute("systemInactive", s.isInactive());
