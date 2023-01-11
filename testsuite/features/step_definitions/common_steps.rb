@@ -720,6 +720,9 @@ When(/^I enable client tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
   case os_family
+  when /^(opensuse|sles)/
+    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
   when /^(centos|rocky)/
     repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools_" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
@@ -739,6 +742,9 @@ When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
   case os_family
+  when /^(opensuse|sles)/
+    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
+    node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
   when /^(centos|rocky)/
     repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools_" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
