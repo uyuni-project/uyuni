@@ -1,4 +1,8 @@
-- Don't get stuck at the end of SSL transfers (bsc#1204032)
+-------------------------------------------------------------------
+Wed Jan 11 12:45:47 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.5-1
+  * Don't get stuck at the end of SSL transfers (bsc#1204032)
 
 -------------------------------------------------------------------
 Tue Apr 19 11:54:48 CEST 2022 - jgonzalez@suse.com
