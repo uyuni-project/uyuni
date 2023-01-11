@@ -1,10 +1,14 @@
-- Add reboot needed indicator to systems list
-- Fix salt keys page keeps loading when no key exists (bsc#1206799)
-- Fix link to documentation in monitoring page
-- Source Select2 and jQuery UI from susemanager-frontend-libs
-- fix frontend logging in react pages
-- Move web dependencies from susemanager-frontend-libs to
-  spacewalk-web
+-------------------------------------------------------------------
+Wed Jan 11 12:49:22 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.27-1
+  * Add reboot needed indicator to systems list
+  * Fix salt keys page keeps loading when no key exists (bsc#1206799)
+  * Fix link to documentation in monitoring page
+  * Source Select2 and jQuery UI from susemanager-frontend-libs
+  * fix frontend logging in react pages
+  * Move web dependencies from susemanager-frontend-libs to
+    spacewalk-web
 
 -------------------------------------------------------------------
 Fri Nov 18 10:42:27 UTC 2022 - marina.latini@suse.com
