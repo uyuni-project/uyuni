@@ -33,7 +33,7 @@ class CobblerTest
   end
 
   ##
-  # If the server is running, the function will return true. If the server is not running, the function will return false
+  # Returns true or false depending on whether the server is running
   def running?
     result = true
     begin
