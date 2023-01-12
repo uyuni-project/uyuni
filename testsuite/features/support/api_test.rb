@@ -18,7 +18,7 @@ require_relative 'http_client'
 # Abstract parent class describing an API test
 class ApiTest
   ##
-  # It creates a bunch of objects that are used to interact with the API
+  # It creates objects that are used to interact with the API
   #
   # Args:
   #   _host: The hostname of the Spacewalk server.
