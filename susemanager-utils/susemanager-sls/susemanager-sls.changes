@@ -1,3 +1,4 @@
+- Improve _mgractionchains.conf logs
 - install SUSE Liberty v2 GPG key
 - Detect bootstrap repository path for SLE Micro
 - Fix reboot info beacon installation
