@@ -48,7 +48,10 @@ class CobblerTest
   # It returns a list of the names of the systems, profiles, or distros in the database
   #
   # Args:
-  #   what: the type of list you want to get.  Valid values are:
+  #   what: The type of list you want to get.  Valid values are:
+  #        - systems
+  #        - profiles
+  #        - distros
   def get_list(what)
     result = []
     unless %w[systems profiles distros].include?(what)
