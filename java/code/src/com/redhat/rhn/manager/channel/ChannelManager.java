@@ -998,37 +998,6 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
-     * List the errata applicable to a channel between start and end date
-     * @deprecated Use appropriate listErrata
-     * @param channel channel whose errata are sought
-     * @param start start date
-     * @param end end date
-     * @return the errata applicable to a channel
-     */
-    @Deprecated
-    public static DataResult<Map<String, Object>> listErrataForDates(Channel channel,
-            String start, String end) {
-        String mode = "relevant_to_channel_deprecated";
-        Map<String, Object> params = new HashMap<>();
-        params.put("cid", channel.getId());
-
-        if (!StringUtils.isEmpty(start)) {
-            params.put("start_date_str", start);
-            mode = "relevant_to_channel_after_deprecated";
-
-            if (!StringUtils.isEmpty(end)) {
-                params.put("end_date_str", end);
-                mode = "relevant_to_channel_between_deprecated";
-            }
-        }
-
-        SelectMode m = ModeFactory.getMode(
-                ERRATA_QUERIES, mode);
-
-        return m.execute(params);
-    }
-
-    /**
      * List the errata of a particular type that are applicable to a channel.
      * @param channel channel whose errata are sought
      * @param type type of errata
