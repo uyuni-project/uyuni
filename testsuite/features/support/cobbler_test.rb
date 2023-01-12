@@ -140,7 +140,7 @@ class CobblerTest
   end
 
   ##
-  # *This function removes a system from the Spacewalk server.*
+  # Removes a system from the Spacewalk server.
   #
   # The first thing this function does is check to see if the system exists. If it doesn't, it raises an error. If it
   # does, it calls the remove_system function on the Spacewalk server. If that fails, it raises an error
