@@ -82,7 +82,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I remove package "orion-dummy" from this "sle_minion" without error control
     And I remove "/tmp/file.txt" from "sle_minion"
 
-  Scenario: Cleanup: Disable client tools channel
+  Scenario: Cleanup: Disable client tools repositories
     Given I am on the Systems overview page of this "sle_minion"
     When I disable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
     And I refresh the metadata for "sle_minion"
