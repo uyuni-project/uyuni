@@ -1,3 +1,5 @@
+- Improve logs when sls action chain file is missing
+
 -------------------------------------------------------------------
 Wed Jan 11 12:47:55 CET 2023 - jgonzalez@suse.com
 
