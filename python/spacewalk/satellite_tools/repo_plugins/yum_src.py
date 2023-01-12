@@ -534,11 +534,19 @@ class ContentSource:
         verify = self.sslcacert
         try:
             webpage = requests.get(url, proxies=proxies, cert=cert, verify=verify)
-            content_type = webpage.headers["Content-Type"]
-            # amazonlinux core channels content-type = binary/octet-stream
-            if "text/plain" not in content_type and "xml" not in content_type and "octet-stream" not in content_type:
-                # Not a valid mirrorlist or metalink; continue without it
-                return returnlist
+            # We want to check the page content-type usually, but
+            # we have to wrap the next bit in a try-block for if the resource is
+            # cached and returns a 304; cached page returns no content type
+            # (if page is cached, for now we will assume it is the right type)
+            try:
+                content_type = webpage.headers["Content-Type"]
+                # amazonlinux core channels content-type = binary/octet-stream
+                if "text/plain" not in content_type and "xml" not in content_type and "octet-stream" not in content_type:
+                    # Not a valid mirrorlist or metalink; continue without it
+                    return returnlist
+            except KeyError:
+                # This will then go straight to the next try block.
+                log(1, "No content-type header. Treating as valid.")
         except requests.exceptions.RequestException as exc:
             self.error_msg("ERROR: Failed to reach repo url: {} - {}".format(url, exc))
             return returnlist
