@@ -115,7 +115,10 @@ class ApiTestHttp < ApiTest
 
   ##
   # XML-RPC uses Date class for dates, while HTTP RPC uses simple strings for dates.
-  # This function provides a string containing a date that can be swallowed by HTTP RPC
+  # This function provides a string containing a date that can be swallowed by HTTP RPC.
+  #
+  # Args:
+  #     attribute: The date object to be parsed.
   def date?(attribute)
     begin
       ok = true
