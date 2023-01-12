@@ -5,11 +5,25 @@ require 'faraday'
 
 # Wrapper class for HTTP client library (Faraday)
 class HttpClient
+  ##
+  # `@http_client = Faraday.new('https://' + host, request: { timeout: DEFAULT_TIMEOUT })`
+  #
+  # This function creates a new HTTP client using the Faraday library
+  #
+  # Args:
+  #   host: The hostname of the server you want to connect to.
   def initialize(host)
     puts 'Activating HTTP API'
     @http_client = Faraday.new('https://' + host, request: { timeout: DEFAULT_TIMEOUT })
   end
 
+  ##
+  # It takes a name of a Spacewalk API call and a hash of parameters and returns a tuple of the HTTP method and the URL to
+  # call
+  #
+  # Args:
+  #   name: The name of the API call.
+  #   params: a hash of parameters to pass to the API call.
   def prepare_call(name, params)
     short_name = name.split('.')[-1]
     call_type =
@@ -33,6 +47,12 @@ class HttpClient
     [call_type, url]
   end
 
+  ##
+  # It takes a name and a hash of parameters, calls the API, and returns the result
+  #
+  # Args:
+  #   name: The name of the API call, e.g. 'auth.login'
+  #   params: a hash of parameters to pass to the API call.
   def call(name, params)
     # Get session cookie from previous calls
     if params.nil?

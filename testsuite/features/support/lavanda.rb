@@ -13,30 +13,66 @@ module LavandaBasic
     @in_hostname = hostname.strip
   end
 
+  ##
+  # This function takes a fully qualified domain name (FQDN) as an argument and sets the instance variable
+  # @in_full_hostname to the value of the FQDN
+  #
+  # Args:
+  #   fqdn: The fully qualified domain name of the host.
   def init_full_hostname(fqdn)
     @in_full_hostname = fqdn.strip
   end
 
+  ##
+  # It sets the instance variable @in_private_ip to the value of the private_ip parameter.
+  #
+  # Args:
+  #   private_ip: The private IP address of the instance.
   def init_private_ip(private_ip)
     @in_private_ip = private_ip
   end
 
+  ##
+  # It initializes the instance variable @in_public_ip to the value of the argument public_ip.
+  #
+  # Args:
+  #   public_ip: The public IP address of the server.
   def init_public_ip(public_ip)
     @in_public_ip = public_ip
   end
 
+  ##
+  # It sets the instance variable @in_private_interface to the value of the private_interface parameter.
+  #
+  # Args:
+  #   private_interface: A boolean value that indicates whether the interface is private or not.
   def init_private_interface(private_interface)
     @in_private_interface = private_interface
   end
 
+  ##
+  # It sets the value of the instance variable `@in_public_interface` to the value of the parameter `public_interface`
+  #
+  # Args:
+  #   public_interface: The name of the public interface.
   def init_public_interface(public_interface)
     @in_public_interface = public_interface
   end
 
+  ##
+  # It sets the value of the instance variable @in_os_family to the value of the parameter os_family.
+  #
+  # Args:
+  #   os_family: The OS family to check against.
   def init_os_family(os_family)
     @in_os_family = os_family
   end
 
+  ##
+  # It initializes the variable @in_os_version to the value of the parameter os_version.
+  #
+  # Args:
+  #   os_version: The version of the operating system.
   def init_os_version(os_version)
     @in_os_version = os_version
   end
@@ -47,42 +83,60 @@ module LavandaBasic
     @in_hostname
   end
 
+  ##
+  # It raises an exception if the hostname is empty, otherwise it returns the hostname
   def full_hostname
     raise 'empty hostname, something wrong' if @in_full_hostname.empty?
     @in_full_hostname
   end
 
+  ##
+  # It raises an exception if the private_ip is empty, otherwise it returns the private_ip
   def private_ip
     raise 'empty private_ip, something wrong' if @in_private_ip.empty?
     @in_private_ip
   end
 
+  ##
+  # It returns the public ip address of the machine.
   def public_ip
     raise 'empty public_ip, something wrong' if @in_public_ip.empty?
     @in_public_ip
   end
 
+  ##
+  # It raises an error if the private interface is empty
   def private_interface
     raise 'empty private_interface, something wrong' if @in_private_interface.empty?
     @in_private_interface
   end
 
+  ##
+  # It raises an error if the public interface is empty
   def public_interface
     raise 'empty public_interface, something wrong' if @in_public_interface.empty?
     @in_public_interface
   end
 
+  ##
+  # It raises an exception if the `@in_os_family` variable is empty
   def os_family
     raise 'empty os_family, something wrong' if @in_os_family.empty?
     @in_os_family
   end
 
+  ##
+  # It raises an error if the os_version is empty.
   def os_version
     raise 'empty os_version, something wrong' if @in_os_version.empty?
     @in_os_version
   end
 
-  # run functions
+  ##
+  # It runs a command, and returns the output, error, and exit code
+  #
+  # Args:
+  #   cmd: the command to run
   def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
     if separated_results
       out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
@@ -100,8 +154,12 @@ module LavandaBasic
     end
   end
 
+  ##
+  # It runs a command until it succeeds or times out
+  #
+  # Args:
+  #   cmd: The command to run.
   def run_until_ok(cmd)
-    result = nil
     repeat_until_timeout(report_result: true) do
       result, code = run(cmd, check_errors: false)
       break if code.zero?
@@ -110,8 +168,12 @@ module LavandaBasic
     end
   end
 
+  ##
+  # It runs a command until it fails, or until it times out
+  #
+  # Args:
+  #   cmd: The command to run.
   def run_until_fail(cmd)
-    result = nil
     repeat_until_timeout(report_result: true) do
       result, code = run(cmd, check_errors: false)
       break if code.nonzero?
@@ -120,8 +182,12 @@ module LavandaBasic
     end
   end
 
+  ##
+  # It waits until the process is no longer running
+  #
+  # Args:
+  #   process: The name of the process to wait for.
   def wait_while_process_running(process)
-    result = nil
     repeat_until_timeout(report_result: true) do
       result, code = run("pgrep -x #{process} >/dev/null", check_errors: false)
       break if code.nonzero?

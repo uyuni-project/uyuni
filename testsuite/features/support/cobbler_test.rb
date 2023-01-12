@@ -12,18 +12,28 @@ require 'pp'
 
 # Class for clobber test
 class CobblerTest
+  ##
+  # It creates a new XMLRPC client object, and then checks to see if the server is running
   def initialize
     server_address = ENV['SERVER']
     @server = XMLRPC::Client.new2('http://' + server_address + '/cobbler_api', nil, DEFAULT_TIMEOUT)
     raise 'No running server at found at ' + server_address unless running?
   end
 
+  ##
+  # It logs into cobbler and returns the token
+  #
+  # Args:
+  #   user: the username to login with
+  #   pass: the password for the user
   def login(user, pass)
     @token = @server.call('login', user, pass)
   rescue
     raise 'login to cobbler failed' + $ERROR_INFO.to_s
   end
 
+  ##
+  # If the server is running, the function will return true. If the server is not running, the function will return false
   def running?
     result = true
     begin
@@ -34,6 +44,11 @@ class CobblerTest
     result
   end
 
+  ##
+  # It returns a list of the names of the systems, profiles, or distros in the database
+  #
+  # Args:
+  #   what: the type of list you want to get.  Valid values are:
   def get_list(what)
     result = []
     unless %w[systems profiles distros].include?(what)
@@ -44,6 +59,14 @@ class CobblerTest
     result
   end
 
+  ##
+  # It creates a new distribution, sets the name, kernel, initrd, and breed, and then saves the distribution
+  #
+  # Args:
+  #   name: The name of the distribution.
+  #   kernel: The path to the kernel file.
+  #   initrd: The initrd file for the distribution.
+  #   breed: The type of distribution.  This can be one of the following:. Defaults to suse
   def distro_create(name, kernel, initrd, breed = 'suse')
     begin
       distro_id = @server.call('new_distro', @token)
@@ -58,6 +81,13 @@ class CobblerTest
     distro_id
   end
 
+  ##
+  # It creates a new profile, modifies it, and saves it
+  #
+  # Args:
+  #   name: The name of the profile.
+  #   distro: The name of the distribution you want to use.
+  #   location: The location of the kickstart file.
   def profile_create(name, distro, location)
     begin
       profile_id = @server.call('new_profile', @token)
@@ -79,7 +109,13 @@ class CobblerTest
     profile_id
   end
 
+  ##
+  # Create a system, set its name and profile, and save it
   # every system needs at least a name and a profile
+  #
+  # Args:
+  #   name: The name of the system.
+  #   profile: The name of the profile to use for the system.
   def system_create(name, profile)
     begin
       system_id = @server.call('new_system', @token)
@@ -100,6 +136,14 @@ class CobblerTest
     system_id
   end
 
+  ##
+  # *This function removes a system from the Spacewalk server.*
+  #
+  # The first thing this function does is check to see if the system exists. If it doesn't, it raises an error. If it
+  # does, it calls the remove_system function on the Spacewalk server. If that fails, it raises an error
+  #
+  # Args:
+  #   name: The name of the system to be removed.
   def system_remove(name)
     raise "system cannot be found. #{$ERROR_INFO}" unless system_exists(name)
     begin
@@ -109,27 +153,64 @@ class CobblerTest
     end
   end
 
+  ##
+  # > This function checks if a distro exists in the database
+  #
+  # Args:
+  #   name: The name of the distro.
   def distro_exists(name)
     exists('distros', 'name', name)
   end
 
+  ##
+  # `exists` is a function that takes three arguments: a table name, a column name, and a value. It returns true if the
+  # value exists in the column of the table, and false otherwise
+  #
+  # Args:
+  #   name: The name of the profile.
   def profile_exists(name)
     exists('profiles', 'name', name)
   end
 
+  ##
+  # > This function checks if a system exists in the database
+  #
+  # Args:
+  #   name: The name of the system.
   def system_exists(name)
     exists('systems', 'name', name)
   end
 
+  ##
+  # > This function checks if a repo exists in the database
+  #
+  # Args:
+  #   name: The name of the repository.
   def repo_exists(name)
     exists('repos', 'name', name)
   end
 
+  ##
+  # `return get('repo', name, key) if repo_exists(name)`
+  #
+  # Args:
+  #   name: The name of the repo
+  #   key: The key to get the value of
+  #
+  # Returns:
+  #   The value of the key in the repo.
   def repo_get_key(name, key)
     return get('repo', name, key) if repo_exists(name)
     raise 'Repo ' + name + ' does not exists' unless repo_exists(name)
   end
 
+  ##
+  # It returns true if the value of the key in the hash is equal to the value passed in
+  #
+  # Args:
+  #   what: the name of the object you want to check for.
+  #   key: the key to check for
+  #   value: The value to check for
   def exists(what, key, value)
     result = false
     ret = @server.call('get_' + what)
@@ -139,6 +220,13 @@ class CobblerTest
     result
   end
 
+  ##
+  # It takes a string, a string, and a string, and returns a string
+  #
+  # Args:
+  #   what: the type of object you want to get.  This can be one of the following:
+  #   name: The name of the object you want to get the ID of.
+  #   key: the key to look for in the hash
   def get(what, name, key)
     result = nil
     ret = @server.call('get_' + what)

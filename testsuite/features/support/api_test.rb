@@ -17,6 +17,11 @@ require_relative 'http_client'
 
 # Abstract parent class describing an API test
 class ApiTest
+  ##
+  # It creates a bunch of objects that are used to interact with the API
+  #
+  # Args:
+  #   _host: The hostname of the Spacewalk server.
   def initialize(_host)
     @actionchain = NamespaceActionchain.new(self)
     @activationkey = NamespaceActivationkey.new(self)
@@ -48,6 +53,13 @@ class ApiTest
   attr_reader :token
   attr_writer :token
 
+  ##
+  # It takes a name and a list of parameters, and calls the function with the given name and parameters, and returns the
+  # response
+  #
+  # Args:
+  #   name: The name of the method you want to call.
+  #   *params: The parameters to pass to the API call.
   def call(name, *params)
     thread =
       Thread.new do
@@ -65,16 +77,24 @@ end
 
 # Derived class for an XML-RPC test
 class ApiTestXmlrpc < ApiTest
+  ##
+  # It creates a new instance of the XmlrpcClient class, and assigns it to the @connection instance variable
+  #
+  # Args:
+  #   host: The hostname of the server.
   def initialize(host)
     super
     @connection = XmlrpcClient.new(host)
   end
 
+  ##
   # during XML-RPC tests, dates are XMLRPC::DateTime's
   def date?(attribute)
     attribute.class == XMLRPC::DateTime
   end
 
+  ##
+  # It returns the current date and time as an XMLRPC::DateTime object
   def date_now
     now = Time.now
     XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
@@ -83,12 +103,19 @@ end
 
 # Derived class for an HTTP test
 class ApiTestHttp < ApiTest
+  ##
+  # It creates a new instance of the HttpClient class.
+  #
+  # Args:
+  #   host: The hostname of the server.
   def initialize(host)
     super
     @connection = HttpClient.new(host)
   end
 
-  # during HTTP tests, dates are strings
+  ##
+  # XML-RPC uses Date class for dates, while HTTP RPC uses simple strings for dates.
+  # This function provides a string containing a date that can be swallowed by HTTP RPC
   def date?(attribute)
     begin
       ok = true
@@ -99,6 +126,8 @@ class ApiTestHttp < ApiTest
     ok
   end
 
+  ##
+  # It returns a string with the current date and time in the format `YYYY-MM-DDTHH:MM:SS.LLL+HHMM`
   def date_now
     now = Time.now
     now.strftime('%Y-%m-%dT%H:%M:%S.%L%z')

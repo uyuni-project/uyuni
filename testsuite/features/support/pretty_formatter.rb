@@ -3,6 +3,7 @@
 
 require 'cucumber/formatter/pretty'
 
+# CustomFormatter module
 module CustomFormatter
   PrettyFormatter = PrependsFeatureName.formatter(Cucumber::Formatter::Pretty)
 end

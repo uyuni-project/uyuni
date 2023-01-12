@@ -3,10 +3,17 @@
 
 # "api" namespace
 class NamespaceApi
+  ##
+  # It initializes the api_test variable.
+  #
+  # Args:
+  #   api_test: This is the test object that is passed to the initialize method.
   def initialize(api_test)
     @test = api_test
   end
 
+  ##
+  # This function calls the `api.getApiNamespaces` method of the API and returns the number of namespaces returned
   def get_count_of_api_namespaces
     namespaces = @test.call('api.getApiNamespaces', sessionKey: @test.token)
     namespaces.nil? ? 0 : namespaces.length
@@ -18,6 +25,8 @@ class NamespaceApi
     call_list.nil? ? 0 : call_list.length
   end
 
+  ##
+  # It gets the count of the number of API calls in the API namespace call list
   def get_count_of_api_namespace_call_list
     count = 0
     namespaces = @test.call('api.getApiNamespaces', sessionKey: @test.token)
