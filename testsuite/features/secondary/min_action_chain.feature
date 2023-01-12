@@ -14,7 +14,7 @@ Feature: Action chains on Salt minions
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I install package "milkyway-dummy" on this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"
-    And I run "zypper -n ref" on "sle_minion"
+    And I refresh the metadata for "sle_minion"
 
   Scenario: Pre-requisite: refresh package list and check installed packages after downgrade on SLE minion
     When I refresh packages list via spacecmd on "sle_minion"
