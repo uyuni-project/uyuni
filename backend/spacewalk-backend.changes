@@ -1,3 +1,4 @@
+- Fix reposync error about missing "content-type" key when syncing certain channels
 - Compute headers as list of two-tuples to be used by url grabber (bsc#1205523)
 - Updated logrotate configuration (bsc#1206470)
 - Add 'octet-stream' to accepted content-types for reposync mirrorlists
