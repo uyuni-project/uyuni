@@ -157,7 +157,7 @@ class CobblerTest
   end
 
   ##
-  # > This function checks if a distro exists in the database
+  # Checks if a distribution exists in the database by using 'distro' as the table name, 'name' as the column and the name of the distro.
   #
   # Args:
   #   name: The name of the distro.
