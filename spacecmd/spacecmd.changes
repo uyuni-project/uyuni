@@ -1,3 +1,6 @@
+- Add python-dateutil dependency, required to process date values in
+  spacecmd api calls
+
 -------------------------------------------------------------------
 Wed Jan 11 12:38:07 CET 2023 - jgonzalez@suse.com
 
