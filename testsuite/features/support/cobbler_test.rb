@@ -167,7 +167,6 @@ class CobblerTest
 
   ##
   # `exists` is a function that takes three arguments: a table name, a column name, and a value. It returns true if the
-  # value exists in the column of the table, and false otherwise
   #
   # Args:
   #   name: The name of the profile.
