@@ -25,7 +25,7 @@ class CobblerTest
   #
   # Args:
   #   user: The username used to log in.
-  #   pass: the password for the user
+  #   pass: The password for the user.
   def login(user, pass)
     @token = @server.call('login', user, pass)
   rescue
