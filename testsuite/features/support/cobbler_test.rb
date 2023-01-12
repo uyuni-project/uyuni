@@ -176,7 +176,7 @@ class CobblerTest
   end
 
   ##
-  # > This function checks if a system exists in the database
+  # Checks if a system exists in the database by using 'systems' as the table name, 'name' as the column and the name of the system.
   #
   # Args:
   #   name: The name of the system.
