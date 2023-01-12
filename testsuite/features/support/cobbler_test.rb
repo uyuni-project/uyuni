@@ -185,7 +185,7 @@ class CobblerTest
   end
 
   ##
-  # > This function checks if a repo exists in the database
+  # Checks if a repository exists in the database by using 'repos' as the table name, 'name' as the column and the name of the repo.
   #
   # Args:
   #   name: The name of the repository.
