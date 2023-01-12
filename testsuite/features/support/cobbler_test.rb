@@ -113,7 +113,7 @@ class CobblerTest
   end
 
   ##
-  # Create a system, set its name and profile, and save it
+  # Creates a system, sets its name and profile, and saves it.
   # every system needs at least a name and a profile
   #
   # Args:
