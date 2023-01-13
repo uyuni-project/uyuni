@@ -1,3 +1,6 @@
+- fix bootstrap repo definition for SUSE Liberty Linux 9 and RHEL9
+  (bsc#1207136)
+
 -------------------------------------------------------------------
 Wed Jan 11 12:47:31 CET 2023 - jgonzalez@suse.com
 
