@@ -110,7 +110,8 @@ class NamespaceActivationkey
   #   description: A description of the channel.
   #   base_channel_label: The label of the base channel you want to subscribe to.
   #   usage_limit: The number of times this key can be used.
-  #   contact_method:
+  #   contact_method: Contact method to use when onboarding a system using this AK.
+  #                   Valid values are: default, ssh-push, ssh-push-tunnel
   def set_details(id, description, base_channel_label, usage_limit, contact_method)
     details = {
       description: description,
