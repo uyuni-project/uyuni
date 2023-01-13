@@ -11261,7 +11261,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Product Temporary Fixes packages (PTF): {0}</source>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="activation-key.java.nochannel" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
           <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
