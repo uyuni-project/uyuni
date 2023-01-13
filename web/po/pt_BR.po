@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-06 14:03+0100\n"
+"POT-Creation-Date: 2023-01-13 14:59+0100\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -472,7 +472,7 @@ msgid "Custom Quartz format:"
 msgstr "Formato de quartzo personalizado:"
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:368
+#: ../html/src/components/table/TableDataHandler.tsx:371
 msgid "There are no entries to show."
 msgstr "Não há entradas para mostrar."
 
@@ -570,7 +570,7 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:369
+#: ../html/src/components/table/TableDataHandler.tsx:372
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
@@ -582,7 +582,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:402
+#: ../html/src/components/table/TableDataHandler.tsx:405
 msgid "items per page"
 msgstr ""
 
