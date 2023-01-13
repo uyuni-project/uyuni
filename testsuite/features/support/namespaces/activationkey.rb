@@ -43,20 +43,20 @@ class NamespaceActivationkey
   end
 
   ##
-  # It returns the number of activated systems for a given user.
+  # Returns the number of activated systems for a given user.
   #
   # Args:
-  #   id: The id of the user
+  #   id: The ID of the user.
   def get_activated_systems_count(id)
     systems = @test.call('activationkey.listActivatedSystems', sessionKey: @test.token, key: id)
     systems.nil? ? 0 : systems.length
   end
 
   ##
-  # It returns the number of channels in the configuration with the given id.
+  # Returns the number of channels in the configuration with the given ID.
   #
   # Args:
-  #   id: The id of the configuration.
+  #   id: The ID of the configuration.
   def get_config_channels_count(id)
     channels = @test.call('activationkey.listConfigChannels', sessionKey: @test.token, key: id)
     channels.nil? ? 0 : channels.length
