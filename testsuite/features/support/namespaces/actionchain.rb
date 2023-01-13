@@ -71,7 +71,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function lists all the actions in a given chain
+  # Lists all the actions in a given chain.
   #
   # Args:
   #   label: The label of the chain you want to list the actions for.
