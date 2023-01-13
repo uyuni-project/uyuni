@@ -11284,7 +11284,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cannot cancel an action with a pending prerequisite.</source>
         <target state="final">无法取消未满足先决条件的操作。</target>
       </trans-unit>
-      <trans-unit id="activation-key.java.nochannel" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
           <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
