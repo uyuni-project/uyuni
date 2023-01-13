@@ -136,7 +136,7 @@ public class UserManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_available_to_user");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
-        DataResult dr = m.execute(params, packageIds);
+        DataResult<Row> dr = m.execute(params, packageIds);
         /*
          * Ok... this query will result in returning a single row containing '1' if the
          * org has access to this channel. If the org *does not* have access to the given

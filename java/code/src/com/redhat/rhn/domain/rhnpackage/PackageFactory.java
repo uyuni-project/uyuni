@@ -34,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -97,9 +98,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the Package found
      */
     private static Package lookupById(Long id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        return (Package) singleton.lookupObjectByNamedQuery("Package.findById", params);
+        return singleton.lookupObjectByNamedQuery("Package.findById", Map.of("id", id));
     }
 
     /**
@@ -108,8 +107,7 @@ public class PackageFactory extends HibernateFactory {
      * @return list of Packages found
      */
     private static List<Package> lookupById(List<Long> ids) {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery("Package.findByIds", params, ids, "pids");
+        return singleton.listObjectsByNamedQuery("Package.findByIds", Map.of(), ids, "pids");
     }
 
     /**
@@ -221,11 +219,8 @@ public class PackageFactory extends HibernateFactory {
      * @return the PackageArch whose id matches the given id.
      */
     public static PackageArch lookupPackageArchById(Long id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
         return HibernateFactory.doWithoutAutoFlushing(
-          () -> (PackageArch) singleton.
-                  lookupObjectByNamedQuery("PackageArch.findById", params, true)
+          () -> singleton.lookupObjectByNamedQuery("PackageArch.findById", Map.of("id", id), true)
         );
     }
 
@@ -235,10 +230,10 @@ public class PackageFactory extends HibernateFactory {
      * @return the PackageArch whose label matches the given label.
      */
     public static PackageArch lookupPackageArchByLabel(String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        return (PackageArch) singleton.lookupObjectByNamedQuery("PackageArch.findByLabel",
-                params, true);
+        if (label == null) {
+            return null;
+        }
+        return singleton.lookupObjectByNamedQuery("PackageArch.findByLabel", Map.of("label", label), true);
     }
 
     /**
@@ -513,10 +508,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the key type
      */
     public static PackageKeyType lookupKeyTypeByLabel(String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        return (PackageKeyType) singleton.lookupObjectByNamedQuery(
-                "PackageKeyType.findByLabel", params);
+        return singleton.lookupObjectByNamedQuery("PackageKeyType.findByLabel", Map.of("label", label));
     }
 
     /**
@@ -545,10 +537,10 @@ public class PackageFactory extends HibernateFactory {
      * @return the list of package source objects
      */
     public static List<PackageSource> lookupPackageSources(Package pack) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("pack", pack);
-
-        return singleton.listObjectsByNamedQuery("PackageSource.findByPackage", params);
+        if (pack == null) {
+            return new ArrayList<>();
+        }
+        return singleton.listObjectsByNamedQuery("PackageSource.findByPackage", Map.of("pack", pack));
     }
 
     /**
@@ -558,11 +550,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the package source
      */
     public static PackageSource lookupPackageSourceByIdAndOrg(Long psid, Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", psid);
-        params.put("org", org);
-        return (PackageSource) singleton.lookupObjectByNamedQuery(
-                "PackageSource.findByIdAndOrg", params);
+        return singleton.lookupObjectByNamedQuery("PackageSource.findByIdAndOrg", Map.of("id", psid, "org", org));
     }
 
     /**
@@ -596,8 +584,7 @@ public class PackageFactory extends HibernateFactory {
      * @return list of package providers
      */
     public static List<PackageProvider> listPackageProviders() {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery("PackageProvider.listProviders", params);
+        return singleton.listObjectsByNamedQuery("PackageProvider.listProviders", Map.of());
     }
 
     /**
@@ -606,17 +593,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the package provider
      */
     public static PackageProvider lookupPackageProvider(String name) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", name);
-        return (PackageProvider) singleton.lookupObjectByNamedQuery("PackageProvider.findByName", params);
-    }
-
-    /**
-     * Deletes a package key
-     * @param key the key to delete
-     */
-    public static void deletePackageKey(PackageKey key) {
-        HibernateFactory.getSession().delete(key);
+        return singleton.lookupObjectByNamedQuery("PackageProvider.findByName", Map.of("name", name));
     }
 
     /**
@@ -625,18 +602,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the package key
      */
     public static PackageKey lookupPackageKey(String key) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("key", key);
-        return (PackageKey) singleton.lookupObjectByNamedQuery("PackageKey.findByKey", params);
-    }
-
-    /**
-     * List all package keys
-     * @return list of package key objects
-     */
-    public static List<PackageKey> listPackageKeys() {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery("PackageKey.listKeys", params);
+        return singleton.lookupObjectByNamedQuery("PackageKey.findByKey", Map.of("key", key));
     }
 
     /**
@@ -679,11 +645,7 @@ public class PackageFactory extends HibernateFactory {
      * @return Return missing packages which contains a product
      */
     public static List<Package> findMissingProductPackagesOnServer(Long sid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", sid);
-        List<Package> pkgs = singleton.listObjectsByNamedQuery(
-                "Package.findMissingProductPackagesOnServer", params);
-        return pkgs;
+        return singleton.listObjectsByNamedQuery("Package.findMissingProductPackagesOnServer", Map.of("sid", sid));
     }
 
     /**

@@ -120,7 +120,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupMultipleObjects() {
-        List allTests = TestFactory.lookupAll();
+        List<TestInterface> allTests = TestFactory.lookupAll();
         assertFalse(allTests.isEmpty());
     }
 

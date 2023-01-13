@@ -602,7 +602,6 @@ public class PackageManager extends BaseManager {
         params.put("sid", sid);
         params.put("name", name);
         SelectMode m = ModeFactory.getMode("Package_queries", "lookup_id_combo_by_name");
-        @SuppressWarnings("unchecked")
         DataResult<Map<String, Long>> dr = m.execute(params);
         if (!dr.isEmpty()) {
             return dr.get(0);

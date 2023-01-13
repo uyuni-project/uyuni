@@ -271,8 +271,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return a list of cobbler ids.
      */
     public static List<String> listKickstartDataCobblerIds() {
-        return singleton.listObjectsByNamedQuery("KickstartData.cobblerIds",
-                Collections.emptyMap());
+        return singleton.listObjectsByNamedQuery("KickstartData.cobblerIds", Collections.emptyMap());
 
     }
 
@@ -281,12 +280,9 @@ public class KickstartFactory extends HibernateFactory {
      * @param cobblerId the cobbler id to lookup
      * @return the Kickstartable Tree object
      */
-    public static KickstartableTree
-    lookupKickstartTreeByCobblerIdOrXenId(String cobblerId) {
-        Map<String, String> map = new HashMap<>();
-        map.put("cid", cobblerId);
-        return (KickstartableTree) singleton.lookupObjectByNamedQuery(
-                "KickstartableTree.findByCobblerIdOrXenId", map);
+    public static KickstartableTree lookupKickstartTreeByCobblerIdOrXenId(String cobblerId) {
+        return singleton.lookupObjectByNamedQuery("KickstartableTree.findByCobblerIdOrXenId",
+                Map.of("cid", cobblerId));
     }
 
 

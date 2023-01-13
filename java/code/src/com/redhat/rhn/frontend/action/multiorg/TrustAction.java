@@ -236,7 +236,6 @@ public class TrustAction extends FormDispatcher {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected ActionForward commitAction(
             ActionMapping mapping,
             ActionForm form,

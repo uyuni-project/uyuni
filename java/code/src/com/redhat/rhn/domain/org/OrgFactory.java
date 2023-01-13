@@ -336,12 +336,8 @@ public class OrgFactory extends HibernateFactory {
      * @param channelFamily Channel family to search for.
      * @return List of orgs.
      */
-    public static List<Org> lookupOrgsUsingChannelFamily(
-            ChannelFamily channelFamily) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("cf", channelFamily);
-        return singleton.listObjectsByNamedQuery(
-                "Org.findOrgsWithSystemsInChannelFamily", params);
+    public static List<Org> lookupOrgsUsingChannelFamily(ChannelFamily channelFamily) {
+        return singleton.listObjectsByNamedQuery("Org.findOrgsWithSystemsInChannelFamily", Map.of("cf", channelFamily));
     }
 
     /**
@@ -349,10 +345,7 @@ public class OrgFactory extends HibernateFactory {
      * @return Total number of orgs.
      */
     public static Long getTotalOrgCount() {
-        Map<String, Object> params = new HashMap<>();
-
-        return (Long)singleton.lookupObjectByNamedQuery(
-                "Org.numOfOrgs", params);
+        return singleton.lookupObjectByNamedQuery("Org.numOfOrgs", Map.of());
     }
 
     /**
@@ -361,23 +354,18 @@ public class OrgFactory extends HibernateFactory {
      *  @return date created for Trusted Org
      */
     public static Date getTrustedSince(Long org, Long trustedOrg) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", org);
-        params.put("trusted_org_id", trustedOrg);
-        return (Date)singleton.lookupObjectByNamedQuery(
-                "Org.getTrustedSince", params);
+        return singleton.lookupObjectByNamedQuery("Org.getTrustedSince",
+                Map.of("org_id", org, "trusted_org_id", trustedOrg));
     }
 
     /**
-     * @param orgTo Org to caclulate system migrations to
-     * @param orgFrom Org to caclulate system migrations from
+     * @param orgTo Org to calculate system migrations to
+     * @param orgFrom Org to calculate system migrations from
      * @return number of systems migrated to orgIn
      */
     public static Long getMigratedSystems(Long orgTo, Long orgFrom) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_to_id", orgTo);
-        params.put("org_from_id", orgFrom);
-        return (Long)singleton.lookupObjectByNamedQuery("Org.getMigratedSystems", params);
+        return singleton.lookupObjectByNamedQuery("Org.getMigratedSystems",
+                Map.of("org_to_id", orgTo, "org_from_id", orgFrom));
     }
 
     /**
@@ -386,10 +374,8 @@ public class OrgFactory extends HibernateFactory {
      * @return number of systems migrated to orgIn
      */
     public static Long getSharedChannels(Long orgId, Long trustId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgId);
-        params.put("org_trust_id", trustId);
-        return (Long)singleton.lookupObjectByNamedQuery("Org.getSharedChannels", params);
+        return singleton.lookupObjectByNamedQuery("Org.getSharedChannels",
+                Map.of("org_id", orgId, "org_trust_id", trustId));
     }
 
     /**
@@ -398,10 +384,8 @@ public class OrgFactory extends HibernateFactory {
      * @return number of systems trustId has subscribed to orgId channels
      */
     public static Long getSharedSubscribedSys(Long orgId, Long trustId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", orgId);
-        params.put("org_trust_id", trustId);
-        return (Long)singleton.lookupObjectByNamedQuery("Org.getSharedSubscribedSys", params);
+        return singleton.lookupObjectByNamedQuery("Org.getSharedSubscribedSys",
+                Map.of("org_id", orgId, "org_trust_id", trustId));
     }
 
     /**
@@ -409,9 +393,7 @@ public class OrgFactory extends HibernateFactory {
      * @return List of orgs.
      */
     public static List<Org> lookupAllOrgs() {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery(
-                "Org.findAll", params);
+        return singleton.listObjectsByNamedQuery("Org.findAll", Map.of());
     }
 
 }

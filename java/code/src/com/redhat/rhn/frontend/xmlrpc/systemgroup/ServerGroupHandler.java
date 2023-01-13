@@ -87,7 +87,7 @@ public class ServerGroupHandler extends BaseHandler {
      *   #array_end()
      */
     @ReadOnly
-    public List listAdministrators(User loggedInUser, String systemGroupName) {
+    public List<User> listAdministrators(User loggedInUser, String systemGroupName) {
         ManagedServerGroup sg = serverGroupManager.lookup(systemGroupName, loggedInUser);
         return serverGroupManager.listAdministrators(sg, loggedInUser);
     }
@@ -308,7 +308,7 @@ public class ServerGroupHandler extends BaseHandler {
      *      #array_end()
      */
     @ReadOnly
-    public List listGroupsWithNoAssociatedAdmins(User loggedInUser) {
+    public List<ServerGroup> listGroupsWithNoAssociatedAdmins(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return serverGroupManager.listNoAdminGroups(loggedInUser);
     }

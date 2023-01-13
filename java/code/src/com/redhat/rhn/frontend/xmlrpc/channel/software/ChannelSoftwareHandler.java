@@ -1205,9 +1205,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Channel channel = lookupChannelByLabel(loggedInUser.getOrg(), channelLabel);
 
         try {
-            if (!ChannelManager.verifyChannelAdmin(loggedInUser, channel.getId())) {
-                throw new PermissionCheckFailureException();
-            }
+            ChannelManager.verifyChannelAdmin(loggedInUser, channel.getId());
         }
         catch (InvalidChannelRoleException e) {
             throw new PermissionCheckFailureException();

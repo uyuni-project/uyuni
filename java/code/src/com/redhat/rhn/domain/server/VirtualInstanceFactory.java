@@ -173,7 +173,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
 
     /**
      * transforms a result set of
-     * guest.id as guest_id,
+     * guest.id as guest_id
      * guest.org_id as guest_org_id,
      * guest.name as guest_name,
      * host.org_id as host_org_id,

@@ -464,8 +464,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             //  change the systems base channel
             Channel c = ChannelFactory.lookupById(spc.getId());
 
-            List<EssentialChannelDto> compatibles = ChannelManager
-                    .listCompatibleBaseChannelsForChannel(user, c);
+            List<EssentialChannelDto> compatibles = ChannelManager.listCompatibleBaseChannelsForChannel(user, c);
             log.debug("Sorting channels: {}", compatibles.size());
             List<EssentialChannelDto> rhn = new ArrayList<>();
             List<EssentialChannelDto> custom = new ArrayList<>();

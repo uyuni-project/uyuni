@@ -1,3 +1,10 @@
+- Fix modular channel check during system update via XMLRPC (bsc#1206613)
+- Fix transaction commit behavior for Spark routes
+- Trigger a package profile update when a new live-patch is installed (bsc#1206249)
+- Fix CVE Audit ignoring errata in parent channels if patch in successor
+  product exists (bsc#1206168)
+- Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
+- Rename monitoring entitlement
 - Remove outdated advice from errata mail
 - Fix name for autoinstall snippets after Cobbler 3.3.3
 - prevent ISE on activation key page when selected base channel value is null

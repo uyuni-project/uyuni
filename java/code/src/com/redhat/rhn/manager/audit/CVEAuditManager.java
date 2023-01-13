@@ -258,7 +258,6 @@ public class CVEAuditManager {
      *
      * @return all servers
      */
-    @SuppressWarnings("unchecked")
     public static List<SystemOverview> listAllServers() {
         SelectMode m = ModeFactory.getMode("cve_audit_queries", "find_all_servers");
         return m.execute(Collections.emptyMap());
@@ -270,7 +269,6 @@ public class CVEAuditManager {
      * @param suseProductId the SUSE product ID
      * @return list of channel product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> convertProductId(long suseProductId) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "convert_suse_product_to_channel_products");
@@ -953,6 +951,7 @@ public class CVEAuditManager {
             // Group results for the system further by package names, filtering out 'not-affected' entries
             Map<String, List<CVEPatchStatus>> resultsByPackage =
                     systemResults.stream().filter(r -> r.getErrataId().isPresent())
+                            .filter(r -> r.getChannelRank().orElse(0L) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
                             .collect(Collectors.groupingBy(r -> r.getPackageName().get()));
 
             // When live patching is available, the original kernel packages ('-default' or '-xen') must be ignored.
@@ -1050,8 +1049,7 @@ public class CVEAuditManager {
         Comparator<CVEPatchStatus> evrComparator = Comparator.comparing(r -> r.getPackageEvr().get());
 
         Optional<CVEPatchStatus> latestInstalled = packageResults.stream()
-                .filter(r -> r.isPackageInstalled() &&
-                        r.getChannelRank().orElse(null) < PREDECESSOR_PRODUCT_RANK_BOUNDARY)
+                .filter(r -> r.isPackageInstalled())
                 .max(evrComparator);
 
         Optional<CVEPatchStatus> result = latestInstalled.map(li -> {
@@ -1078,10 +1076,16 @@ public class CVEAuditManager {
             return newerPatch;
         }).orElse(
                 // The CVE is not patched against
-                // Compare channel ranks to find the top channel (assigned channels come first)
+                // Compare channel ranks to find the top channel. Assigned channels come first.
+                // Vendor and cloned channels next. Last come successor channels.
                 packageResults.stream().max(Comparator.comparing(CVEPatchStatus::isChannelAssigned)
-                .thenComparing(Comparator.nullsLast(Comparator.comparingLong(r -> r.getChannelRank().orElse(null))))));
-
+                        .thenComparingLong(r -> {
+                            Long rank = r.getChannelRank().orElse(0L);
+                            return rank < SUCCESSOR_PRODUCT_RANK_BOUNDARY ? rank : 0L;
+                        })
+                        .thenComparingLong(r -> r.getChannelRank().orElse(0L))
+                )
+        );
         return result;
     }
 
@@ -1101,7 +1105,6 @@ public class CVEAuditManager {
      * @param cveIdentifier the CVE identifier
      * @return true if it is unknown
      */
-    @SuppressWarnings("unchecked")
     public static boolean isCVEIdentifierUnknown(String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries", "count_cve_identifiers");
         Map<String, Object> params = new HashMap<>();

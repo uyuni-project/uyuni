@@ -340,10 +340,12 @@ public class SaltUtils {
         boolean fullRefreshNeeded = changes.entrySet().stream().anyMatch(
             e ->
                 e.getKey().endsWith("-release") ||
+                // Live patching requires refresh to fetch the updated LP version
+                e.getKey().startsWith("kernel-livepatch-") ||
                 (e.getValue().getNewValue().isLeft() &&
                  e.getValue().getOldValue().isLeft())
-
         );
+
         if (fullRefreshNeeded) {
             return PackageChangeOutcome.NEEDS_REFRESHING;
         }
@@ -1946,7 +1948,6 @@ public class SaltUtils {
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        @SuppressWarnings("unchecked")
         List<ServerAction> serverActions = ActionFactory
                 .listServerActionsForServer(minion);
         int actionsChanged = 0;

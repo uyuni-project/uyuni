@@ -110,7 +110,6 @@ public class AutoErrataTask extends RhnJavaJob {
     protected List<Long> getAutoErrataSystems() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_AUTO_ERRATA_SYSTEMS);
-        @SuppressWarnings("unchecked")
         List<Map<String, Long>> results = select.execute();
         return results.stream().map(system -> system.get("id")).collect(Collectors.toList());
     }
@@ -163,8 +162,6 @@ public class AutoErrataTask extends RhnJavaJob {
 
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_AUTO_ERRATA_CANDIDATES);
-        @SuppressWarnings("unchecked")
-        List<Map<String, Long>> results = select.execute(sids);
-        return results;
+        return select.execute(sids);
     }
 }

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2022 SUSE LLC.
+# Copyright (c) 2013-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -203,11 +203,7 @@ end
 
 def extract_logs_from_node(node)
   os_family = node.os_family
-  if os_family =~ /^opensuse/
-    node.run('zypper mr --enable os_pool_repo os_update_repo') unless $build_validation
-    node.run('zypper --non-interactive install tar')
-    node.run('zypper mr --disable os_pool_repo os_update_repo') unless $build_validation
-  end
+  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/
   node.run('journalctl > /var/log/messages', check_errors: false) # Some clients might not support systemd
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
   `mkdir logs` unless Dir.exist?('logs')

@@ -267,8 +267,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("summary");
         validKeys.add("url");
         if (details.containsKey("bugs")) {
-            for (Map<String, Object> bugMap :
-                (ArrayList<Map<String, Object>>) details.get("bugs")) {
+            for (Map<String, Object> bugMap : (ArrayList<Map<String, Object>>) details.get("bugs")) {
 
                 validateMap(validKeys, bugMap);
             }
@@ -331,9 +330,9 @@ public class ErrataHandler extends BaseHandler {
         }
         if (details.containsKey("advisory_type")) {
             String pea = "Product Enhancement Advisory"; // hack for checkstyle
-            if (!((String)details.get("advisory_type")).equals("Security Advisory") &&
-            !((String)details.get("advisory_type")).equals(pea) &&
-            !((String)details.get("advisory_type")).equals("Bug Fix Advisory")) {
+            if (!(details.get("advisory_type")).equals("Security Advisory") &&
+            !(details.get("advisory_type")).equals(pea) &&
+            !(details.get("advisory_type")).equals("Bug Fix Advisory")) {
                 throw new InvalidParameterException("Invalid advisory type");
             }
             errata.setAdvisoryType((String)details.get("advisory_type"));
@@ -500,7 +499,7 @@ public class ErrataHandler extends BaseHandler {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
-        return (Map<Long, String>) erratas.stream().flatMap(e -> e.getBugs().stream())
+        return erratas.stream().flatMap(e -> e.getBugs().stream())
                 .collect(toMap(Bug::getId, Bug::getSummary));
     }
 

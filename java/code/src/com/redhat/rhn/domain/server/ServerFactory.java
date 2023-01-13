@@ -65,7 +65,6 @@ import org.hibernate.type.StandardBasicTypes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -153,10 +152,7 @@ public class ServerFactory extends HibernateFactory {
      * @return List of custom data values.
      */
     public static List<CustomDataValue> lookupCustomDataValues(CustomDataKey key) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("key", key);
-        return SINGLETON.listObjectsByNamedQuery(
-                "CustomDataValue.findByKey", params);
+        return SINGLETON.listObjectsByNamedQuery("CustomDataValue.findByKey", Map.of("key", key));
     }
 
     /**
@@ -165,10 +161,7 @@ public class ServerFactory extends HibernateFactory {
      * @return List of minions.
      */
     public static List<MinionServer> listMinionsByChannel(long cid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("cid", cid);
-        return SINGLETON.listObjectsByNamedQuery(
-                "Server.listMinionsByChannel", params);
+        return SINGLETON.listObjectsByNamedQuery("Server.listMinionsByChannel", Map.of("cid", cid));
     }
 
     /**
@@ -194,10 +187,7 @@ public class ServerFactory extends HibernateFactory {
      * @return List of devices
      */
     public static List<Device> lookupStorageDevicesByServer(Server s) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", s);
-        return SINGLETON.listObjectsByNamedQuery(
-                "Device.findStorageByServer", params);
+        return SINGLETON.listObjectsByNamedQuery("Device.findStorageByServer", Map.of("server", s));
     }
 
     /**
@@ -265,9 +255,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the minion ID to system ID map
      */
     public static Map<String, Long> getMinionIdMap(Long id) {
-        var params = new HashMap<String, Object>();
-        params.put("user_id", id);
-        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listMinionIdMappings", params);
+        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listMinionIdMappings", Map.of("user_id", id));
         return result.stream().collect(toMap(
                 row -> (String)(row[0]),
                 row -> (Long)(row[1]))
@@ -527,11 +515,8 @@ public class ServerFactory extends HibernateFactory {
      * @return the ids of the erratas grouped by server id
      */
     public static Map<Long, List<Long>> findUnscheduledErrataByServerIds(User user, List<Long> serverIds) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("user_id", user.getId());
-
-        List<Object[]> result = (SINGLETON.listObjectsByNamedQuery("Server.findUnscheduledErrataByServerIds",
-                params, serverIds, "serverIds"));
+        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.findUnscheduledErrataByServerIds",
+                Map.of("user_id", user.getId()), serverIds, "serverIds");
 
         return result.stream().collect(
                 Collectors.groupingBy(
@@ -561,9 +546,8 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of servers
      */
     public static List<Server> lookupByIdsAndOrg(Set<Long> serverIds, Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("orgId", org.getId());
-        return SINGLETON.listObjectsByNamedQuery("Server.findByIdsAndOrgId", params, serverIds, "serverIds");
+        return SINGLETON.listObjectsByNamedQuery("Server.findByIdsAndOrgId",
+                Map.of("orgId", org.getId()), serverIds, "serverIds");
     }
 
     /**
@@ -572,9 +556,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of non-zypper server ids
      */
     public static List<Long> findNonZypperTradClientsIds(Set<Long> ids) {
-        Map<String, Object> params = new HashMap<>();
-        return SINGLETON.listObjectsByNamedQuery("Server.findNonZypperTradClientsIds", params, ids,
-                "serverIds");
+        return SINGLETON.listObjectsByNamedQuery("Server.findNonZypperTradClientsIds", Map.of(), ids, "serverIds");
     }
 
     /**
@@ -584,25 +566,10 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found (null if not or not member if orgIn)
      */
     public static Server lookupByIdAndOrg(Long id, Org orgIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", id);
-        params.put("orgId", orgIn.getId());
-        return (Server) SINGLETON.lookupObjectByNamedQuery(
-                "Server.findByIdandOrgId", params);
-    }
-
-    /**
-     * Looks up server objects from the given list of server IDs.
-     *
-     * @param serverIds List of server IDs.
-     * @param user who wants to lookup the Server
-     * @return list of server objects
-     */
-    public static List<Server> lookupByIdsAndUser(List<Long> serverIds, User user) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("orgId", user.getOrg().getId());
-
-        return findByIds(serverIds, "Server.findByIdsAndOrgId", "serverIds", parameters);
+        if (id == null || orgIn == null) {
+            return null;
+        }
+        return SINGLETON.lookupObjectByNamedQuery("Server.findByIdandOrgId", Map.of("sid", id, "orgId", orgIn.getId()));
     }
 
     /**
@@ -891,13 +858,8 @@ public class ServerFactory extends HibernateFactory {
      * @param name The name to search for
      * @return The first ServerArch found
      */
-    @SuppressWarnings("unchecked")
     public static ServerArch lookupServerArchByName(String name) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", name);
-        List<ServerArch> archs = SINGLETON.listObjectsByNamedQuery(
-                "ServerArch.findByName",
-                params);
+        List<ServerArch> archs = SINGLETON.listObjectsByNamedQuery("ServerArch.findByName", Map.of("name", name));
         if (archs != null && !archs.isEmpty()) {
             return archs.get(0);
         }
@@ -939,11 +901,8 @@ public class ServerFactory extends HibernateFactory {
      * @return list of User objects that can administer the system
      */
     public static List<User> listAdministrators(Server server) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", server.getId());
-        params.put("org_id", server.getOrg().getId());
         return SINGLETON.listObjectsByNamedQuery("Server.lookupAdministrators",
-                params);
+                Map.of("sid", server.getId(), "org_id", server.getOrg().getId()));
     }
 
     /**
@@ -952,10 +911,8 @@ public class ServerFactory extends HibernateFactory {
      * @return channel arch
      */
     public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server_arch_id", serverArch.getId());
-        return (ChannelArch) SINGLETON.lookupObjectByNamedQuery("ServerArch.findCompatibleChannelArch",
-                params, true);
+        return SINGLETON.lookupObjectByNamedQuery("ServerArch.findCompatibleChannelArch",
+                Map.of("server_arch_id", serverArch.getId()), true);
     }
 
     /**
@@ -980,11 +937,8 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of Proxy Server objects
      */
     public static List<Server> lookupProxiesByOrg(User user) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", user.getId());
-        params.put("orgId", user.getOrg().getId());
-        List<Number> ids = SINGLETON.listObjectsByNamedQuery(
-                "Server.listProxies", params);
+        List<Number> ids = SINGLETON.listObjectsByNamedQuery("Server.listProxies",
+                Map.of("userId", user.getId(), "orgId", user.getOrg().getId()));
         List<Server> servers = new ArrayList<>(ids.size());
         for (Number id : ids) {
             servers.add(lookupById(id.longValue()));
@@ -1017,10 +971,8 @@ public class ServerFactory extends HibernateFactory {
      * @return List of servers.
      */
     public static List<Server> listSystemsInSsm(User user) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", user.getId());
-        params.put("label", RhnSetDecl.SYSTEMS.getLabel());
-        return SINGLETON.listObjectsByNamedQuery("Server.findInSet", params);
+        return SINGLETON.listObjectsByNamedQuery("Server.findInSet",
+                Map.of("userId", user.getId(), "label", RhnSetDecl.SYSTEMS.getLabel()));
     }
 
     /**
@@ -1030,8 +982,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of config enabled systems
      */
     public static List<Server> listConfigEnabledSystems() {
-        return SINGLETON.listObjectsByNamedQuery(
-                "Server.listConfigEnabledSystems", Collections.emptyMap());
+        return SINGLETON.listObjectsByNamedQuery("Server.listConfigEnabledSystems", Map.of());
     }
 
     /**
@@ -1040,9 +991,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of FQDNs
      */
     public static List<String> listFqdns(Long sid) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", sid);
-        return SINGLETON.listObjectsByNamedQuery("Server.listFqdns", params);
+        return SINGLETON.listObjectsByNamedQuery("Server.listFqdns", Map.of("sid", sid));
     }
 
     /**
@@ -1051,10 +1000,8 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static Optional<Server> findByFqdn(String name) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", name);
-        return Optional.ofNullable((Server) SINGLETON
-                .lookupObjectByNamedQuery("Server.findByFqdn", params));
+        return Optional.ofNullable(name)
+                .map(n -> SINGLETON.lookupObjectByNamedQuery("Server.findByFqdn", Map.of("name", name)));
     }
 
     /**
@@ -1064,8 +1011,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of config-diff enabled systems
      */
     public static List<Server> listConfigDiffEnabledSystems() {
-        return SINGLETON.listObjectsByNamedQuery(
-                "Server.listConfigDiffEnabledSystems", Collections.emptyMap());
+        return SINGLETON.listObjectsByNamedQuery("Server.listConfigDiffEnabledSystems", Map.of());
     }
 
     /**
@@ -1098,17 +1044,14 @@ public class ServerFactory extends HibernateFactory {
         if ((startDate != null) && (endDate != null)) {
             params.put("start_date", startDate);
             params.put("end_date", endDate);
-            snaps = SINGLETON.listObjectsByNamedQuery(
-                    "ServerSnapshot.findBetweenDates", params);
+            snaps = SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findBetweenDates", params);
         }
         else if (startDate != null) {
             params.put("start_date", startDate);
-            snaps = SINGLETON.listObjectsByNamedQuery(
-                    "ServerSnapshot.findAfterDate", params);
+            snaps = SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findAfterDate", params);
         }
         else {
-            snaps = SINGLETON.listObjectsByNamedQuery(
-                    "ServerSnapshot.findForServer", params);
+            snaps = SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findForServer", params);
         }
         return snaps;
     }
@@ -1119,10 +1062,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the server snapshot
      */
     public static ServerSnapshot lookupSnapshotById(Integer id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("snapId", Long.valueOf(id));
-        return (ServerSnapshot) SINGLETON.lookupObjectByNamedQuery(
-                "ServerSnapshot.findById", params);
+        return SINGLETON.lookupObjectByNamedQuery("ServerSnapshot.findById", Map.of("snapId", Long.valueOf(id)));
     }
 
     /**
@@ -1131,18 +1071,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the server snapshot
      */
     public static ServerSnapshot lookupLatestForServer(Server server) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("sid", server);
-        return (ServerSnapshot) SINGLETON.lookupObjectByNamedQuery(
-                "ServerSnapshot.findLatestForServer", params);
-    }
-
-    /**
-     * Save a server snapshot
-     * @param snapshotIn snapshot to save
-     */
-    public static void saveSnapshot(ServerSnapshot snapshotIn) {
-        SINGLETON.saveObject(snapshotIn);
+        return SINGLETON.lookupObjectByNamedQuery("ServerSnapshot.findLatestForServer", Map.of("sid", server));
     }
 
     /**
@@ -1151,14 +1080,6 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void deleteSnapshot(ServerSnapshot snap) {
         HibernateFactory.getSession().delete(snap);
-    }
-
-    /**
-     * Delete a server path
-     * @param path the server path to delete
-     */
-    public static void deleteServerPath(ServerPath path) {
-        HibernateFactory.getSession().delete(path);
     }
 
     /**
@@ -1254,9 +1175,7 @@ public class ServerFactory extends HibernateFactory {
      * @return list of tags
      */
     public static List<SnapshotTag> getSnapshotTags(ServerSnapshot snap) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("snap", snap);
-        return SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findTags", params);
+        return SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findTags", Map.of("snap", snap));
     }
 
     /**
@@ -1266,8 +1185,7 @@ public class ServerFactory extends HibernateFactory {
      * @return list of system ids that are linux systems
      */
     public static List<Long> listLinuxSystems(Collection<Long> systemIds) {
-        return SINGLETON.listObjectsByNamedQuery("Server.listRedHatSystems",
-                new HashMap<>(), systemIds, "sids");
+        return SINGLETON.listObjectsByNamedQuery("Server.listRedHatSystems", Map.of(), systemIds, "sids");
     }
 
     /**
@@ -1347,7 +1265,7 @@ public class ServerFactory extends HibernateFactory {
      * @return available contact methods
      */
     public static List<ContactMethod> listContactMethods() {
-        return SINGLETON.listObjectsByNamedQuery("ContactMethod.findAll", null, true);
+        return SINGLETON.listObjectsByNamedQuery("ContactMethod.findAll", Map.of(), true);
     }
 
     /**
@@ -1356,10 +1274,7 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method
      */
     public static ContactMethod findContactMethodById(Long id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        return (ContactMethod) SINGLETON.lookupObjectByNamedQuery(
-                "ContactMethod.findById", params, true);
+        return SINGLETON.lookupObjectByNamedQuery("ContactMethod.findById", Map.of("id", id), true);
     }
 
     /**
@@ -1438,17 +1353,13 @@ public class ServerFactory extends HibernateFactory {
      * @param errataIds set of errata ids
      * @return map from server id to map from errata id to patch name
      */
-    @SuppressWarnings("unchecked")
     public static Map<Long, Map<Long, Set<ErrataInfo>>> listErrataNamesForServers(
             Set<Long> serverIds, Set<Long> errataIds) {
         if (serverIds.isEmpty() || errataIds.isEmpty()) {
             return new HashMap<>();
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("serverIds", serverIds);
-        params.put("errataIds", errataIds);
-        List<Object[]> result = SINGLETON.listObjectsByNamedQuery(
-                "Server.listErrataNamesForServers", params);
+        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listErrataNamesForServers",
+                Map.of("serverIds", serverIds, "errataIds", errataIds));
         return result.stream().collect(
             // Group by server id
             Collectors.groupingBy(row -> (Long) row[1],
@@ -1482,17 +1393,13 @@ public class ServerFactory extends HibernateFactory {
      * @param errataIds set of errata ids
      * @return map from server id to map of package name to package version in evr format
      */
-    @SuppressWarnings("unchecked")
     public static Map<Long, Map<String, Tuple2<String, String>>> listNewestPkgsForServerErrata(
             Set<Long> serverIds, Set<Long> errataIds) {
         if (serverIds.isEmpty() || errataIds.isEmpty()) {
             return new HashMap<>();
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("serverIds", serverIds);
-        params.put("errataIds", errataIds);
-        List<Object[]> result = SINGLETON.listObjectsByNamedQuery(
-                "Server.listNewestPkgsForServerErrata", params);
+        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listNewestPkgsForServerErrata",
+                Map.of("serverIds", serverIds, "errataIds", errataIds));
 
         return result.stream().collect(
                 // Group by server id
@@ -1553,11 +1460,8 @@ public class ServerFactory extends HibernateFactory {
      * given channel
      */
     public static List<Long> findServersInSetByChannel(User user, long channelId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("user_id", user.getId());
-        params.put("channel_id", channelId);
-        return SINGLETON.listObjectsByNamedQuery(
-                "Server.findServerInSSMByChannel", params);
+        return SINGLETON.listObjectsByNamedQuery("Server.findServerInSSMByChannel",
+                Map.of("user_id", user.getId(), "channel_id", channelId));
 
     }
 
@@ -1579,10 +1483,7 @@ public class ServerFactory extends HibernateFactory {
      * @return List of servers
      */
     public static List<Server> listOrgSystems(long orgId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("orgId", orgId);
-        return SINGLETON.listObjectsByNamedQuery(
-                "Server.listOrgSystems", params);
+        return SINGLETON.listObjectsByNamedQuery("Server.listOrgSystems", Map.of("orgId", orgId));
     }
 
     /**

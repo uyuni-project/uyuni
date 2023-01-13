@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -155,7 +156,10 @@ public class LoginControllerTest extends BaseControllerTestCase {
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
-        assertEquals("error.invalid_login", String.join("", result.getMessages()));
+        assertEquals(
+                LocalizationService.getInstance().getMessage("error.invalid_login"),
+                String.join("", result.getMessages())
+        );
     }
 
     @Test
@@ -172,7 +176,10 @@ public class LoginControllerTest extends BaseControllerTestCase {
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
-        assertEquals("error.invalid_login", String.join("", result.getMessages()));
+        assertEquals(
+                LocalizationService.getInstance().getMessage("error.invalid_login"),
+                String.join("", result.getMessages())
+        );
     }
 
     @Test
@@ -189,7 +196,10 @@ public class LoginControllerTest extends BaseControllerTestCase {
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
-        assertEquals("error.invalid_login", String.join("", result.getMessages()));
+        assertEquals(
+                LocalizationService.getInstance().getMessage("error.invalid_login"),
+                String.join("", result.getMessages())
+        );
     }
 
     @Test
@@ -206,7 +216,9 @@ public class LoginControllerTest extends BaseControllerTestCase {
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
-        assertEquals("error.invalid_login", String.join("", result.getMessages()));
+        assertEquals(
+                LocalizationService.getInstance().getMessage("error.invalid_login"),
+                String.join("", result.getMessages()));
     }
 
     @Test
@@ -226,6 +238,9 @@ public class LoginControllerTest extends BaseControllerTestCase {
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
-        assertEquals("account.disabled", String.join("", result.getMessages()));
+        assertEquals(
+                LocalizationService.getInstance().getMessage("account.disabled"),
+                String.join("", result.getMessages())
+        );
     }
 }

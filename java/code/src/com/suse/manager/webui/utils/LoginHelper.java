@@ -445,7 +445,7 @@ public class LoginHelper {
             user = UserManager.loginUser(username, password);
         }
         catch (LoginException e) {
-            errors.add(e.getMessage());
+            errors.add(LocalizationService.getInstance().getMessage(e.getMessage()));
         }
         return user;
     }

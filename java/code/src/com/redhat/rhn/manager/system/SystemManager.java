@@ -1723,7 +1723,6 @@ public class SystemManager extends BaseManager {
      * @param feat Feature to look for
      * @return the list of server ids which have the specified feature
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> filterServerIdsWithFeature(List<Long> sids, String feat) {
         SelectMode m = ModeFactory.getMode("General_queries", "filter_system_ids_with_feature");
 
@@ -3395,7 +3394,6 @@ public class SystemManager extends BaseManager {
      * @param limit the maximum number of results returned
      * @return a list of the history event according to the parameters specified
      */
-    @SuppressWarnings("unchecked")
     public static DataResult<SystemEventDto> systemEventHistory(Server server, Org org, java.util.Date earliestDate,
                                                                 Integer offset, Integer limit) {
         final SelectMode m = ModeFactory.getMode("System_queries", "system_events_history");
@@ -3428,7 +3426,6 @@ public class SystemManager extends BaseManager {
         params.put("oid", oid);
         params.put("eid", eid);
 
-        @SuppressWarnings("unchecked")
         final DataResult<SystemEventDetailsDto> result = m.execute(params);
         return result.isEmpty() ? null : result.get(0);
     }
@@ -3615,7 +3612,6 @@ public class SystemManager extends BaseManager {
      * @param entitlements the entitlement labels
      * @return a list of SystemOverview objects
      */
-    @SuppressWarnings("unchecked")
     public static List<SystemOverview> entitledInSet(User user, String setLabel,
         List<String> entitlements) {
         SelectMode mode = ModeFactory.getMode("System_queries", "entitled_systems_in_set");

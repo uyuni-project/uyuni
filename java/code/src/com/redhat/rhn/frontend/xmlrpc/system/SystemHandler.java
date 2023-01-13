@@ -532,8 +532,7 @@ public class SystemHandler extends BaseHandler {
             List<String> channelLabels = new ArrayList<>();
             channelLabels.add(channelLabel);
 
-            List<Long> channelIds = new ArrayList<>();
-            channelIds = ChannelFactory.getChannelIds(channelLabels);
+            List<Long> channelIds = ChannelFactory.getChannelIds(channelLabels);
 
             if (!channelIds.isEmpty()) {
                 cmd = new UpdateBaseChannelCommand(loggedInUser, server, channelIds.get(0));
@@ -3666,7 +3665,7 @@ public class SystemHandler extends BaseHandler {
             for (Long sid : serverIds) {
                 Server server = SystemManager.lookupByIdAndUser(sid, loggedInUser);
                 for (Channel channel : server.getChannels()) {
-                    if (channel.getModules() != null) {
+                    if (channel.isModular()) {
                         throw new ModulesNotAllowedException();
                     }
                 }
@@ -3975,7 +3974,7 @@ public class SystemHandler extends BaseHandler {
             for (Integer sid : sids) {
                 Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
                 for (Channel channel : server.getChannels()) {
-                    if (channel.getModules() != null) {
+                    if (channel.isModular()) {
                         hasModules = true;
                         break;
                     }

@@ -186,15 +186,16 @@ public class ActionManager extends BaseManager {
      * @param message Message from user, reason of this fail
      * @return int 1 if succeed
      */
-    public static int failSystemAction(User loggedInUser, Long serverId, Long actionId,
-                                       String message) {
+    public static int failSystemAction(User loggedInUser, Long serverId, Long actionId, String message) {
         Action action = ActionFactory.lookupByUserAndId(loggedInUser, actionId);
         Server server = SystemManager.lookupByIdAndUser(serverId, loggedInUser);
+        if (action == null) {
+            throw new LookupException("Could not find action " + actionId + " on system " + serverId);
+        }
         ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server,
                 action);
-        if (action == null || serverAction == null) {
-            throw new LookupException("Could not find action " + actionId + " on system " +
-                    serverId);
+        if (serverAction == null) {
+            throw new LookupException("Could not find action " + actionId + " on system " + serverId);
         }
         Date now = Calendar.getInstance().getTime();
         if (serverAction.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
@@ -841,7 +842,6 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    @SuppressWarnings("unchecked")
     public static DataResult<ScheduledAction> pendingActions(User user, PageControl pc) {
         return getActions(user, pc, "pending_action_list");
     }

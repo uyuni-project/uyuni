@@ -798,11 +798,8 @@ public class ErrataFactory extends HibernateFactory {
      * @return pairs of package and server ids of packages that are retracted for a given server.
      */
     public static List<Tuple2<Long, Long>> retractedPackages(List<Long> pids, List<Long> sids) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("pids", pids);
-        params.put("sids", sids);
-        List<Object[]> results = singleton.listObjectsByNamedQuery(
-                "Errata.retractedPackages", params);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackages",
+                Map.of("pids", pids, "sids", sids));
         return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
     }
 
@@ -817,12 +814,10 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static List<Tuple2<Long, Long>> retractedPackagesByNevra(List<String> nevras, List<Long> sids) {
         if (nevras.isEmpty()) {
-            return new LinkedList<Tuple2<Long, Long>>();
+            return new LinkedList<>();
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("nevras", nevras);
-        params.put("sids", sids);
-        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackagesByNevra", params);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackagesByNevra",
+                Map.of("nevras", nevras, "sids", sids));
         return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
     }
 
@@ -833,14 +828,10 @@ public class ErrataFactory extends HibernateFactory {
      * @return a list of ErrataOverview that match the given errata ids.
      */
     public static List<ErrataOverview> search(List<Long> eids, Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("eids", eids);
-        params.put("org_id", org.getId());
-        List results = singleton.listObjectsByNamedQuery(
-                "Errata.searchById", params);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchById",
+                Map.of("eids", eids, "org_id", org.getId()));
         List<ErrataOverview> errata = new ArrayList<>();
-        for (Object result : results) {
-            Object[] values = (Object[]) result;
+        for (Object[] values : results) {
             ErrataOverview eo = new ErrataOverview();
             // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
             eo.setId((Long)values[0]);
@@ -868,21 +859,13 @@ public class ErrataFactory extends HibernateFactory {
      * ids.
      */
     public static List<ErrataOverview> searchByPackageIds(List<Long> pids) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("pids", pids);
-        if (log.isDebugEnabled()) {
-            log.debug("pids = {}", pids);
-        }
-        List results = singleton.listObjectsByNamedQuery(
-                "Errata.searchByPackageIds", params);
-        if (log.isDebugEnabled()) {
-            log.debug("Query 'Errata.searchByPackageIds' returned {} entries", results.size());
-        }
+        log.debug("pids = {}", pids);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchByPackageIds", Map.of("pids", pids));
+        log.debug("Query 'Errata.searchByPackageIds' returned {} entries", results.size());
         List<ErrataOverview> errata = new ArrayList<>();
         Long lastId = null;
         ErrataOverview eo = null;
-        for (Object result : results) {
-            Object[] values = (Object[]) result;
+        for (Object[] values : results) {
             // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
             Long curId = (Long)values[0];
 
@@ -903,10 +886,8 @@ public class ErrataFactory extends HibernateFactory {
                 errata.add(eo);
                 lastId = curId;
             }
-            if (log.isDebugEnabled()) {
-                log.debug("curId = {}, lastId = {}", curId, lastId);
-                log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
-            }
+            log.debug("curId = {}, lastId = {}", curId, lastId);
+            log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
         }
 
         return errata;
@@ -921,24 +902,15 @@ public class ErrataFactory extends HibernateFactory {
      * @return a list of ErrataOverview of Errata that match the given Package
      * ids.
      */
-    public static List<ErrataOverview> searchByPackageIdsWithOrg(List pids, Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("pids", pids);
-        params.put("org_id", org.getId());
-        if (log.isDebugEnabled()) {
-            log.debug("org_id = {}", org.getId());
-            log.debug("pids = {}", pids);
-        }
-        List results = singleton.listObjectsByNamedQuery(
-                "Errata.searchByPackageIdsWithOrg", params);
-        if (log.isDebugEnabled()) {
-            log.debug("Query 'Errata.searchByPackageIdsWithOrg' returned {} entries", results.size());
-        }
+    public static List<ErrataOverview> searchByPackageIdsWithOrg(List<Long> pids, Org org) {
+        log.debug("org_id = {}, pids = {}", org.getId(), pids);
+        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchByPackageIdsWithOrg",
+                Map.of("pids", pids, "org_id", org.getId()));
+        log.debug("Query 'Errata.searchByPackageIdsWithOrg' returned {} entries", results.size());
         List<ErrataOverview> errata = new ArrayList<>();
         Long lastId = null;
         ErrataOverview eo = null;
-        for (Object result : results) {
-            Object[] values = (Object[]) result;
+        for (Object[] values : results) {
             // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
             Long curId = (Long)values[0];
 
@@ -960,10 +932,8 @@ public class ErrataFactory extends HibernateFactory {
                 errata.add(eo);
                 lastId = curId;
             }
-            if (log.isDebugEnabled()) {
-                log.debug("curId = {}, lastId = {}", curId, lastId);
-                log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
-            }
+            log.debug("curId = {}, lastId = {}", curId, lastId);
+            log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
         }
 
         return errata;
@@ -1044,10 +1014,7 @@ public class ErrataFactory extends HibernateFactory {
      * @return List of Errata Objects
      */
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("orgId", orgId);
-        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds",
-                params, ids, "eids");
+        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds", Map.of("orgId", orgId), ids, "eids");
     }
 
     /**
