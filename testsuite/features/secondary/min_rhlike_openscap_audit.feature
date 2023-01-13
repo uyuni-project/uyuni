@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_openscap
@@ -15,7 +15,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   Scenario: Install the OpenSCAP packages on the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
     When I enable repository "CentOS-Base" on this "rhlike_minion"
-    And I enable client tools repositories on "rhlike_minion"
+    And I enable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
     And I refresh the metadata for "rhlike_minion"
     And I install OpenSCAP dependencies on "rhlike_minion"
     And I fix CentOS 7 OpenSCAP files on "rhlike_minion"
@@ -73,7 +73,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   Scenario: Cleanup: remove the OpenSCAP packages from the Red Hat-like minion
     When I remove OpenSCAP dependencies from "rhlike_minion"
     And I disable repository "CentOS-Base" on this "rhlike_minion"
-    And I disable client tools repositories on "rhlike_minion"
+    And I disable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
 
   Scenario: Cleanup: restore the base channel for the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"

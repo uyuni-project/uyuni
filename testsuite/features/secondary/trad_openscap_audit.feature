@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2021 SUSE LLC
+# Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -9,8 +9,7 @@ Feature: OpenSCAP audit of traditional client
   I want to run an OpenSCAP scan on it
 
   Scenario: Install the OpenSCAP packages on the traditional client
-    When I enable repository "os_pool_repo os_update_repo" on this "sle_client"
-    And I enable client tools repositories on "sle_client"
+    When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_client"
     And I refresh the metadata for "sle_client"
     And I install OpenSCAP dependencies on "sle_client"
 
@@ -65,5 +64,4 @@ Feature: OpenSCAP audit of traditional client
 
   Scenario: Cleanup: remove the OpenSCAP packages from the traditional client
     When I remove OpenSCAP dependencies from "sle_client"
-    And I disable client tools repositories on "sle_client"
-    And I disable repository "os_pool_repo os_update_repo" on this "sle_client"
+    And I disable the repositories "tools_update_repo tools_pool_repo" on this "sle_client"

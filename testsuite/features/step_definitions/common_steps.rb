@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2022 SUSE LLC.
+# Copyright (c) 2010-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -17,7 +17,7 @@ end
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
   iso_path = "/tmp/#{name}.iso"
   mount_point = "/srv/www/htdocs/#{name}"
-  $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 500)
+  $server.run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 700)
   $server.run("mkdir -p #{mount_point}")
   $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
   $server.run("umount #{iso_path}; mount #{iso_path}")
@@ -729,109 +729,6 @@ end
 Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node = get_target(host)
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
-end
-
-# Repository steps
-
-# Enable tools repositories (both stable and development)
-When(/^I enable client tools repositories on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  os_family = node.os_family
-  case os_family
-  when /^(opensuse|sles)/
-    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
-    node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-  when /^centos/
-    repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools" | cut -d" " -f1')
-    repos.gsub(/\s/, ' ').split.each do |repo|
-      node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
-    end
-  when /^ubuntu/
-    repos, _code = node.run("ls /etc/apt/sources.list.d | grep tools")
-    repos.gsub(/\s/, ' ').split.each do |repo|
-      node.run("sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}")
-    end
-  else
-    raise "This step has no implementation for #{os_family} system."
-  end
-end
-
-When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  os_family = node.os_family
-  case os_family
-  when /^(opensuse|sles)/
-    repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
-    node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-  when /^centos/
-    repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
-    repos.gsub(/\s/, ' ').split.each do |repo|
-      node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
-    end
-  when /^ubuntu/
-    repos, _code = node.run("ls /etc/apt/sources.list.d | grep tools")
-    repos.gsub(/\s/, ' ').split.each do |repo|
-      node.run("sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}")
-    end
-  else
-    raise "This step has no implementation for #{os_family} system."
-  end
-end
-
-When(/^I enable repositories before installing Docker$/) do
-  os_version = $build_host.os_version
-  os_family = $build_host.os_family
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  log $build_host.run("zypper mr --enable #{repos}")
-
-  # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-
-  # Development and Desktop Applications (required)
-  # (we do not install Python 2 repositories in this branch
-  #  because they are not needed anymore starting with version 4.1)
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
-    log $build_host.run("zypper mr --enable #{repos}")
-  end
-
-  # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/
-    repos = "containers_pool_repo containers_updates_repo"
-    log $build_host.run("zypper mr --enable #{repos}")
-  end
-
-  $build_host.run('zypper -n --gpg-auto-import-keys ref')
-end
-
-When(/^I disable repositories after installing Docker$/) do
-  os_version = $build_host.os_version
-  os_family = $build_host.os_family
-
-  # Distribution
-  repos = "os_pool_repo os_update_repo"
-  log $build_host.run("zypper mr --disable #{repos}")
-
-  # Tools
-  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  log $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-
-  # Development and Desktop Applications (required)
-  # (we do not install Python 2 repositories in this branch
-  #  because they are not needed anymore starting with version 4.1)
-  if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
-    log $build_host.run("zypper mr --disable #{repos}")
-  end
-
-  # Containers
-  unless os_family =~ /^opensuse/ || os_version =~ /^11/
-    repos = "containers_pool_repo containers_updates_repo"
-    log $build_host.run("zypper mr --disable #{repos}")
-  end
 end
 
 # Register client

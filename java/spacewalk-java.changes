@@ -1,3 +1,9 @@
+- Optimize the number of salt calls on minion startup (bsc#1203532)
+- Fix CVE Audit ignoring errata in parent channels if patch in successor
+  product exists (bsc#1206168)
+- Fix CVE Audit incorrectly displaying predecessor product (bsc#1205663)
+- Fix modular channel check during system update via XMLRPC (bsc#1206613)
+- Trigger a package profile update when a new live-patch is installed (bsc#1206249)
 - prevent ISE on activation key page when selected base channel value is null
 - Only remove product catalog if PAYG ssh credentials are defined (bsc#1205943)
 - Updated logrotate configuration (bsc#1206470)
