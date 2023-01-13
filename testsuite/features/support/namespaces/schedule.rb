@@ -1,7 +1,7 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-# "schedule" namespace
+# Schedule namespace
 class NamespaceSchedule
   ##
   # It initializes the api_test variable.
@@ -13,19 +13,19 @@ class NamespaceSchedule
   end
 
   ##
-  # It lists all actions
+  # It lists all actions.
   def list_all_actions
     @test.call('schedule.listAllActions', sessionKey: @test.token)
   end
 
   ##
-  # > Returns a list of actions that are currently in progress
+  # Returns a list of actions that are currently in progress.
   def list_in_progress_actions
     @test.call('schedule.listInProgressActions', sessionKey: @test.token)
   end
 
   ##
-  # > Returns a list of systems that are currently in progress for the given action
+  # Returns a list of systems that are currently in progress for the given action.
   #
   # Args:
   #   action_id: The ID of the action you want to list systems for.
@@ -34,19 +34,19 @@ class NamespaceSchedule
   end
 
   ##
-  # > This function returns a list of completed actions for the current user
+  # Returns a list of completed actions for the current user.
   def list_completed_actions
     @test.call('schedule.listCompletedActions', sessionKey: @test.token)
   end
 
   ##
-  # > This function returns a list of failed actions
+  # Returns a list of failed actions.
   def list_failed_actions
     @test.call('schedule.listFailedActions', sessionKey: @test.token)
   end
 
   ##
-  # This function returns a list of systems that failed to execute the action
+  # Returns a list of systems that failed to execute the action.
   #
   # Args:
   #   action_id: The ID of the action to list failed systems for.
@@ -55,7 +55,7 @@ class NamespaceSchedule
   end
 
   ##
-  # This function cancels actions in the schedule
+  # Cancels actions in the schedule.
   #
   # Args:
   #   actions: An array of action IDs to cancel.
@@ -64,7 +64,7 @@ class NamespaceSchedule
   end
 
   ##
-  # > This function will fail a system action
+  # Fails a system action.
   #
   # Args:
   #   system_id: The ID of the system you want to schedule an action for.

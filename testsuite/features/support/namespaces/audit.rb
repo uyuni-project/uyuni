@@ -1,7 +1,7 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-# "audit" namespace
+# Audit namespace
 class NamespaceAudit
   ##
   # It initializes the api_test variable.
@@ -13,7 +13,7 @@ class NamespaceAudit
   end
 
   ##
-  # `list_systems_by_patch_status` returns a list of systems that are affected by a given CVE
+  # List of systems that are affected by a given CVE.
   #
   # Args:
   #   cve_identifier: The CVE identifier for the vulnerability you want to check.

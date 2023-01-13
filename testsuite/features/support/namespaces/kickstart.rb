@@ -1,7 +1,7 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-# "kickstart" namespace
+# Kickstart namespace
 class NamespaceKickstart
   ##
   # It initializes the function.
@@ -28,7 +28,7 @@ class NamespaceKickstartTree
   end
 
   ##
-  # This function deletes a tree and all profiles associated with it
+  # Deletes a Kickstart tree and all profiles associated with it
   #
   # Args:
   #   distro: The name of the distribution you want to delete.

@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 # Configuration Channel namespace
@@ -13,7 +13,7 @@ class NamespaceConfigchannel
   end
 
   ##
-  # Returns true if the configuration channel exists, false otherwise
+  # Returns true if the configuration channel exists, false otherwise.
   #
   # Args:
   #   channel: The channel to check for existence.
@@ -22,7 +22,7 @@ class NamespaceConfigchannel
   end
 
   ##
-  # Lists the files in a configuration channel
+  # Lists the files in a configuration channel.
   #
   # Args:
   #   channel: The configuration channel to list files from.
@@ -40,12 +40,12 @@ class NamespaceConfigchannel
   end
 
   ##
-  # Get a file revision of a configuration channel
+  # Get a file revision of a configuration channel.
   #
   # Args:
-  #   channel: The configuration channel name
-  #   file_path: A file path
-  #   revision: A revision number
+  #   channel: The configuration channel name.
+  #   file_path: A file path.
+  #   revision: A revision number.
   def get_file_revision(channel, file_path, revision)
     @test.call('configchannel.getFileRevision', sessionKey: @test.token, label: channel, filePath: file_path, revision: revision)
   end
@@ -76,9 +76,7 @@ class NamespaceConfigchannel
   end
 
   ##
-  # "Create or update a file in a channel."
-  #
-  # The first line of the function is a comment. It's a comment because it starts with a `#`
+  # Creates or update a file in a channel
   #
   # Args:
   #   channel: The configuration channel to create or update the file in.
@@ -107,7 +105,7 @@ class NamespaceConfigchannel
   end
 
   ##
-  # Deletes the specified channels
+  # Deletes the specified channels.
   #
   # Args:
   #   channels: A list of configuration channel names to delete.

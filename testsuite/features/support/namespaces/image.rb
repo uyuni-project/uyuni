@@ -1,7 +1,7 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-# "image" namespace
+# Image namespace
 class NamespaceImage
   def initialize(api_test)
     @test = api_test
@@ -105,7 +105,7 @@ class NamespaceImageProfile
   end
 
   ##
-  # This function returns the custom values for a given label
+  # Returns the custom values for a given label.
   #
   # Args:
   #   label: The label of the image profile you want to get the custom values for.
@@ -114,7 +114,7 @@ class NamespaceImageProfile
   end
 
   ##
-  # Lists the image profile types available in the system
+  # Lists the image profile types available in the system.
   def list_image_profile_types
     @test.call('image.profile.listImageProfileTypes', sessionKey: @test.token)
   end
@@ -126,7 +126,7 @@ class NamespaceImageProfile
   end
 
   ##
-  # This function will return the details of the profile with the label you pass in
+  # This function will return the details of the profile with the label you pass in.
   #
   # Args:
   #   label: The label of the image profile you want to get details for.
@@ -148,7 +148,7 @@ end
 # Image Store namespace
 class NamespaceImageStore
   ##
-  # This function initializes the NamespaceChannelSoftware class
+  # This function initializes the NamespaceChannelSoftware class.
   #
   # Args:
   #   api_test: This is the test object that is passed in from the test script.
@@ -160,10 +160,10 @@ class NamespaceImageStore
   # Create a new image store.
   #
   # Args:
-  #   label: The name of the image store
-  #   uri: The URI path of the image store
-  #   type: The type of the store. Valid values are: TODO
-  #   creds: Credentials
+  #   label: The name of the image store.
+  #   uri: The URI path of the image store.
+  #   type: The type of the store. Valid values are: TODO.
+  #   creds: Credentials.
   def create(label, uri, type, creds = {})
     @test.call('image.store.create', sessionKey: @test.token, label: label, uri: uri, storeType: type, credentials: creds)
   end
@@ -172,19 +172,19 @@ class NamespaceImageStore
   # Deletes an image store from the system.
   #
   # Args:
-  #   label: The name of the image store
+  #   label: The name of the image store.
   def delete(label)
     @test.call('image.store.delete', sessionKey: @test.token, label: label)
   end
 
   ##
-  # Lists the image store types available in the system
+  # Lists the image store types available in the system.
   def list_image_store_types
     @test.call('image.store.listImageStoreTypes', sessionKey: @test.token)
   end
 
   ##
-  # Lists the image stores available in the system
+  # Lists the image stores available in the system.
   def list_image_stores
     @test.call('image.store.listImageStores', sessionKey: @test.token)
   end
@@ -193,7 +193,7 @@ class NamespaceImageStore
   # Get the details of an image store.
   #
   # Args:
-  #   label: The name of the image store
+  #   label: The name of the image store.
   def get_details(label)
     @test.call('image.store.getDetails', sessionKey: @test.token, label: label)
   end
@@ -202,8 +202,8 @@ class NamespaceImageStore
   # Set the details of an image store.
   #
   # Args:
-  #   label: The name of the image store
-  #   details: Details of the image store
+  #   label: The name of the image store.
+  #   details: Details of the image store.
   def set_details(label, details)
     @test.call('image.store.setDetails', sessionKey: @test.token, label: label, details: details)
   end

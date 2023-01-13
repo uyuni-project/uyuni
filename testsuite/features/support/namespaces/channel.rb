@@ -1,10 +1,10 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-# "channel" namespace
+# Channel namespace
 class NamespaceChannel
   ##
-  # This function initializes the NamespaceChannelSoftware class
+  # This function initializes the NamespaceChannelSoftware class.
   #
   # Args:
   #   api_test: This is the test object that is passed in from the test script.
@@ -16,7 +16,7 @@ class NamespaceChannel
   attr_reader :software
 
   ##
-  # It returns the number of software channels in the system
+  # It returns the number of software channels in the system.
   def get_software_channels_count
     channels = @test.call('channel.listSoftwareChannels', sessionKey: @test.token)
     channels.nil? ? 0 : channels.length
@@ -39,7 +39,7 @@ class NamespaceChannel
   end
 end
 
-# "channel.software" namespace
+# Software Channel namespace
 class NamespaceChannelSoftware
   ##
   # It initializes the class.
@@ -73,7 +73,7 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # `create_repo` creates a new repository
+  # `create_repo` creates a new repository.
   #
   # Args:
   #   label: The name of the repo.
@@ -111,7 +111,7 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # Given a child channel and a parent channel, return true if the child channel is a child of the parent channel
+  # Given a child channel and a parent channel, return true if the child channel is a child of the parent channel.
   #
   # Args:
   #   child: The channel you want to check if it's a child of the parent channel.
@@ -126,7 +126,7 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # `list_child_channels` returns a list of child channels for a given parent channel
+  # Lists the child channels for a given parent channel.
   #
   # Args:
   #   parent_channel: The channel you want to list the children of.
@@ -137,7 +137,7 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # > This function lists all the repos that the user has access to
+  # Lists all the repos that the user has access to.
   def list_user_repos
     repos = @test.call('channel.software.listUserRepos', sessionKey: @test.token)
     repos.map { |key| key['label'] }

@@ -1,7 +1,7 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-# "system" namespace
+# System namespace
 class NamespaceSystem
   def initialize(api_test)
     @test = api_test
@@ -32,7 +32,7 @@ class NamespaceSystem
   end
 
   ##
-  # > This function will list all systems in the system
+  # List all systems in the system
   def list_systems
     @test.call('system.listSystems', sessionKey: @test.token)
   end
@@ -47,7 +47,7 @@ class NamespaceSystem
   end
 
   ##
-  # This function lists all the packages that can be installed on a server
+  # Lists all the packages that can be installed on a server
   #
   # Args:
   #   server: The server ID of the server you want to list the packages for.
@@ -56,7 +56,7 @@ class NamespaceSystem
   end
 
   ##
-  # `list_latest_upgradable_packages` returns a list of packages that are upgradable on a given server
+  # List of packages that are upgradable on a given server
   #
   # Args:
   #   server: The server ID
@@ -65,7 +65,7 @@ class NamespaceSystem
   end
 
   ##
-  # If a proxy is defined, use it, otherwise don't
+  # Bootstrap a system
   #
   # Args:
   #   host: The hostname of the system to bootstrap
@@ -82,7 +82,7 @@ class NamespaceSystem
   end
 
   ##
-  # `schedule_apply_highstate` schedules a highstate to be applied to a server at a given date
+  # Schedules a highstate to be applied to a server at a given date
   #
   # Args:
   #   server: The server ID of the server you want to schedule the highstate on.
@@ -93,7 +93,7 @@ class NamespaceSystem
   end
 
   ##
-  # This function schedules a package refresh on a server
+  # Schedules a package refresh on a server
   #
   # Args:
   #   server: The server ID of the server you want to schedule the package refresh on.
@@ -103,7 +103,7 @@ class NamespaceSystem
   end
 
   ##
-  # > Schedule a reboot for a server on a specific date
+  # Schedule a reboot for a server on a specific date
   #
   # Args:
   #   server: The server ID you want to reboot.
@@ -113,19 +113,9 @@ class NamespaceSystem
   end
 
   ##
-  # This function schedules a script to run on a server at a specified date and time
+  # Schedules a script to run on a server at a specified date and time
   #
   # Args:
-  ##
-  # This function creates a system record in the Satellite 6 server
-  #
-  # Args:
-  #   name: The name of the system record.
-  #   kslabel: The kickstart label you want to use.
-  #   koptions:
-  #   comment: A comment about the system record.
-  #   netdevices: This is a hash of the network devices that you want to use.  The key is the device name, and the value
-  # is the IP address.  For example:
   #   server: The server ID of the server you want to run the script on.
   #   uid: The user ID of the user who will run the script.
   #   gid: The group name of the user that will run the script.
@@ -137,12 +127,22 @@ class NamespaceSystem
     @test.call('system.scheduleScriptRun', sessionKey: @test.token, sid: server, username: uid, groupname: gid, timeout: timeout, script: script, earliestOccurrence: date)
   end
 
+  ##
+  # Creates a system record in the Satellite 6 server.
+  #
+  # Args:
+  #   name: The name of the system record.
+  #   kslabel: The kickstart label you want to use.
+  #   koptions:
+  #   comment: A comment about the system record.
+  #   netdevices: This is a hash of the network devices that you want to use.  The key is the device name, and the value
+  # is the IP address.  For example:
   def create_system_record(name, kslabel, koptions, comment, netdevices)
     @test.call('system.createSystemRecord', sessionKey: @test.token, systemName: name, ksLabel: kslabel, kOptions: koptions, comment: comment, netDevices: netdevices)
   end
 
   ##
-  # This function creates a system profile with the given name and data
+  # Creates a system profile with the given name and data.
   #
   # Args:
   #   name: The name of the system profile.
@@ -153,13 +153,13 @@ class NamespaceSystem
   end
 
   ##
-  # > Returns a list of system profiles that have no systems assigned to them
+  # Returns a list of system profiles that have no systems assigned to them.
   def list_empty_system_profiles
     @test.call('system.listEmptySystemProfiles', sessionKey: @test.token)
   end
 
   ##
-  # This function will obtain a reactivation key for a server
+  # This function will obtain a reactivation key for a server.
   #
   # Args:
   #   server: The server ID of the server you want to reactivate.
@@ -168,7 +168,7 @@ class NamespaceSystem
   end
 end
 
-# "system.config" namespace
+# System Configuration namespace
 class NamespaceSystemConfig
   ##
   # It initializes the api_test variable.
@@ -180,7 +180,7 @@ class NamespaceSystemConfig
   end
 
   ##
-  # Remove the specified channels from the specified servers
+  # Remove the specified channels from the specified servers.
   #
   # Args:
   #   servers: An array of server IDs
@@ -190,7 +190,7 @@ class NamespaceSystemConfig
   end
 end
 
-# "system.custominfo" namespace
+# System Custom Information namespace
 class NamespaceSystemCustominfo
   ##
   # It initializes the api_test variable.
@@ -202,7 +202,7 @@ class NamespaceSystemCustominfo
   end
 
   ##
-  # This function creates a custom info key
+  # Creates a custom info key.
   #
   # Args:
   #   value: The name of the custom field
@@ -212,7 +212,7 @@ class NamespaceSystemCustominfo
   end
 end
 
-# "system.provisioning" namespace
+# System Provisioning namespace
 class NamespaceSystemProvisioning
   ##
   # This function initializes the powermanagement namespace
@@ -228,7 +228,7 @@ class NamespaceSystemProvisioning
   attr_reader :powermanagement
 end
 
-# "system.provisioning.powermanagement" namespace
+# System Provisioning Power Management namespace
 class NamespaceSystemProvisioningPowermanagement
   ##
   # It initializes the api_test variable.
@@ -240,41 +240,41 @@ class NamespaceSystemProvisioningPowermanagement
   end
 
   ##
-  # > This function lists the power management types available for a given system
+  # Lists the power management types available for a given system.
   def list_types
     @test.call('system.provisioning.powermanagement.listTypes', sessionKey: @test.token)
   end
 
   ##
-  # This function will return the power management details of a server
+  # Returns the power management details of a server.
   #
   # Args:
-  #   server: The server ID
+  #   server: The server ID.
   def get_details(server)
     @test.call('system.provisioning.powermanagement.getDetails', sessionKey: @test.token, sid: server)
   end
 
   ##
-  # This function will return the power status of a server
+  # Returns the power status of a server.
   #
   # Args:
-  #   server: The server ID
+  #   server: The server ID.
   def get_status(server)
     @test.call('system.provisioning.powermanagement.getStatus', sessionKey: @test.token, sid: server)
   end
 
   ##
-  # This function sets the power management details for a server
+  # Sets the power management details for a server.
   #
   # Args:
-  #   server: The server ID
+  #   server: The server ID.
   #   data: A hash of the data to be set.
   def set_details(server, data)
     @test.call('system.provisioning.powermanagement.setDetails', sessionKey: @test.token, sid: server, data: data)
   end
 
   ##
-  # This function powers on a server
+  # Power on a server.
   #
   # Args:
   #   server: The server ID of the server you want to power on.
@@ -283,7 +283,7 @@ class NamespaceSystemProvisioningPowermanagement
   end
 
   ##
-  # This function will power off a server
+  # Power off a server.
   #
   # Args:
   #   server: The server ID of the server you want to power off.
@@ -292,7 +292,7 @@ class NamespaceSystemProvisioningPowermanagement
   end
 
   ##
-  # This function reboots a server
+  # Reboots a server.
   #
   # Args:
   #   server: The server ID you want to reboot.
@@ -301,7 +301,7 @@ class NamespaceSystemProvisioningPowermanagement
   end
 end
 
-# "system.scap" namespace
+# System SCAP namespace
 class NamespaceSystemScap
   ##
   # It initializes the api_test variable.
@@ -313,7 +313,7 @@ class NamespaceSystemScap
   end
 
   ##
-  # > List all XCCDF scans for a given server
+  # List all XCCDF scans for a given server.
   #
   # Args:
   #   server: The server ID of the server you want to list the XCCDF scans for.
@@ -322,7 +322,7 @@ class NamespaceSystemScap
   end
 end
 
-# "system.search" namespace
+# System Search namespace
 class NamespaceSystemSearch
   ##
   # It initializes the api_test variable.
@@ -334,7 +334,7 @@ class NamespaceSystemSearch
   end
 
   ##
-  # This function takes a server name as an argument and returns the hostname of the server
+  # Takes a server name as an argument and returns the hostname of the server
   #
   # Args:
   #   server: The server name you want to search for.

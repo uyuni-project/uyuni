@@ -1,7 +1,7 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-# "activationkey" namespace
+# Activation Key namespace
 class NamespaceActivationkey
   ##
   # It initializes the function.
@@ -17,8 +17,8 @@ class NamespaceActivationkey
   # It creates an activation key.
   #
   # Args:
-  #   id: The name of the activation key
-  #   descr: The description of the activation key
+  #   id: The name of the activation key.
+  #   descr: The description of the activation key.
   #   base_channel: The channel you want to use as the base for the activation key.
   #   limit: The number of systems that can be registered to this activation key.
   def create(id, descr, base_channel, limit)
@@ -111,7 +111,10 @@ class NamespaceActivationkey
   #   base_channel_label: The label of the base channel you want to subscribe to.
   #   usage_limit: The number of times this key can be used.
   #   contact_method: Contact method to use when onboarding a system using this AK.
-  #                   Valid values are: default, ssh-push, ssh-push-tunnel
+  #                   Valid values are:
+  #                   - default
+  #                   - ssh-push
+  #                   - ssh-push-tunnel
   def set_details(id, description, base_channel_label, usage_limit, contact_method)
     details = {
       description: description,

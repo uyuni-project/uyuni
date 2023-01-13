@@ -1,7 +1,7 @@
-# Copyright (c) 2022 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-# "actionchain" namespace
+# Action Chain namespace
 class NamespaceActionchain
   ##
   # It initializes the api_test variable.
