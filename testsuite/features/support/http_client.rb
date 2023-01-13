@@ -52,7 +52,7 @@ class HttpClient
   #
   # Args:
   #   name: The name of the API call, e.g. 'auth.login'
-  #   params: a hash of parameters to pass to the API call.
+  #   params: A hash of parameters to pass to the API call.
   def call(name, params)
     # Get session cookie from previous calls
     if params.nil?
