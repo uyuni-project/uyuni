@@ -116,6 +116,11 @@ const filterMatchers: FilterMatcherEnumType = {
     text: t("provides name"),
     longDescription: t("provides name equal"),
   },
+  MODULE_NONE: {
+    key: "module_none",
+    text: t("none (disable modularity)"),
+    longDescription: t("none (disable modularity)"),
+  },
 };
 
 export const clmFilterOptions: ClmFilterOptionsEnumType = {
@@ -201,7 +206,7 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     key: "module_stream",
     text: t("Stream"),
     entityType: filterEntity.MODULE,
-    matchers: [filterMatchers.EQUALS],
+    matchers: [filterMatchers.EQUALS, filterMatchers.MODULE_NONE],
   },
 };
 
@@ -220,7 +225,8 @@ function findFilterMatcherByKey(key: string | undefined): FilterMatcherType | Pa
 export function getClmFilterDescription(filter: any): string {
   const filterMatcher = findFilterMatcherByKey(filter.matcher);
   if (filter.entityType === "module") {
-    return `${filter.name}: ${t("enable module")} ${filter.criteriaValue}`;
+    if (filter.matcher === "equals") return `${filter.name}: ${t("enable module")} ${filter.criteriaValue}`;
+    else return `${filter.name}: ${t("disable all modules")}`;
   }
   return `${filter.name}: ${filter.rule} ${filter.entityType} ${filterMatcher.longDescription || ""} ${
     filter.criteriaValue

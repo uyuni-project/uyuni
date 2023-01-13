@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModularityDisabledException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
@@ -197,9 +198,27 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         assertEquals(10, result.size());
         // There should be one and only one "perl" api filter
         assertEquals(1, result.stream().filter(f -> isDenyNameMatches(f, "perl")).count());
-        // There should be allow filters for both versions
+        // There should be "allow" filters for both versions
         assertTrue(result.stream().anyMatch(f -> isAllowNevraEquals(f, "perl-0:5.24.0-xxx.x86_64")));
         assertTrue(result.stream().anyMatch(f -> isAllowNevraEquals(f, "perl-0:5.24.1-yyy.x86_64")));
+    }
+
+    /**
+     * Test the resolver with modularity disabled
+     */
+    public void testResolveModuleFiltersDisabled() {
+        FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.MODULE_NONE, "module_stream", null);
+        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria1, user);
+        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
+        ContentFilter moduleFilter = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria2, user);
+
+        try {
+            resolver.resolveFilters(List.of(moduleFilter, noModules));
+            fail("Should throw DependencyResolutionException.");
+        }
+        catch (DependencyResolutionException e) {
+            assertTrue(e.getCause() instanceof ModularityDisabledException);
+        }
     }
 
     /**
@@ -257,6 +276,21 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         catch (DependencyResolutionException e) {
             assertTrue(e.getCause() instanceof ConflictingStreamsException);
         }
+    }
+
+    /**
+     * Test if the modularity is disabled via a module:none filter
+     */
+    public void testIsModulesDisabled() {
+        FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
+        ContentFilter moduleFilter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria1, user);
+        FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.MODULE_NONE, "module_stream", null);
+        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria2, user);
+
+        assertFalse(DependencyResolver.isModulesDisabled(emptyList()));
+        assertFalse(DependencyResolver.isModulesDisabled(List.of(moduleFilter)));
+        assertTrue(DependencyResolver.isModulesDisabled(List.of(noModules)));
+        assertTrue(DependencyResolver.isModulesDisabled(List.of(moduleFilter, noModules)));
     }
 
     private boolean isAllowNevraEquals(ContentFilter f, String value) {

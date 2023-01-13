@@ -8,7 +8,7 @@ import Network from "utils/network";
 import SelectInput from "./select-input";
 import TextInput from "./text-input";
 
-export default function AppStreams() {
+export default function AppStreams({ matcher }) {
   const [channels, setChannels] = useState<{ id: string; name: string }[]>([]);
   const [isBrowse, setBrowse] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -24,19 +24,23 @@ export default function AppStreams() {
       .catch((xhr) => showErrorToastr(Network.responseErrorMessage(xhr).map((msg) => msg.text)));
   };
 
-  return isBrowse ? (
-    <SelectInput channels={channels} />
-  ) : (
-    <>
-      <div className="form-group">
-        <div className="col-md-offset-3 col-md-6">
-          <button className="btn-link" onClick={enableBrowse}>
-            {isLoading ? <i className="fa fa-refresh fa-spin fa-fw" /> : <i className="fa fa-search fa-fw" />}
-            Browse available modules
-          </button>
+  if (isBrowse) {
+    return <SelectInput channels={channels} />;
+  } else if (matcher === "equals") {
+    return (
+      <>
+        <div className="form-group">
+          <div className="col-md-offset-3 col-md-6">
+            <button className="btn-link" onClick={enableBrowse}>
+              {isLoading ? <i className="fa fa-refresh fa-spin fa-fw" /> : <i className="fa fa-search fa-fw" />}
+              Browse available modules
+            </button>
+          </div>
         </div>
-      </div>
-      <TextInput />
-    </>
-  );
+        <TextInput />
+      </>
+    );
+  } else {
+    return null;
+  }
 }
