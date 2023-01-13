@@ -223,7 +223,7 @@ public class FilterApiController {
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(createFilterRequest.getMatcher()),
                 createFilterRequest.getCriteriaKey(),
-                createFilterRequest.getCriteriaValue());
+                StringUtils.trimToNull(createFilterRequest.getCriteriaValue()));
 
 
         ContentFilter createdFilter;
@@ -274,7 +274,7 @@ public class FilterApiController {
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(updateFilterRequest.getMatcher()),
                 updateFilterRequest.getCriteriaKey(),
-                updateFilterRequest.getCriteriaValue());
+                StringUtils.trimToNull(updateFilterRequest.getCriteriaValue()));
         try {
             CONTENT_MGR.updateFilter(
                     Long.parseLong(req.params("filterId")),
