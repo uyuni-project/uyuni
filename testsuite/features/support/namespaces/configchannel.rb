@@ -74,7 +74,7 @@ class NamespaceConfigchannel
   #   label: The label of the field. This is what will be displayed to the user.
   #   name: The name of the field. This is the name that will be used to access the field's value in the form's data hash.
   #   description: A short description of the parameter.
-  #   type:
+  #   type: TODO
   #   info: a hash of information about the field.  The following keys are used:
   def create_with_pathinfo(label, name, description, type, info)
     @test.call('configchannel.create', sessionKey: @test.token, label: label, name: name, description: description, type: type, pathInfo: info)

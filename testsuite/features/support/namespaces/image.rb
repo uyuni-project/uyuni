@@ -105,7 +105,7 @@ class NamespaceImageProfile
   end
 
   ##
-  # > This function returns the custom values for a given label
+  # This function returns the custom values for a given label
   #
   # Args:
   #   label: The label of the profile you want to get the custom values for.
@@ -114,7 +114,7 @@ class NamespaceImageProfile
   end
 
   ##
-  # * Lists the image profile types available in the system
+  # Lists the image profile types available in the system
   def list_image_profile_types
     @test.call('image.profile.listImageProfileTypes', sessionKey: @test.token)
   end
