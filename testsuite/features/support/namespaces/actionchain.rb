@@ -112,7 +112,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function adds a package verify action to the action chain.
+  # Adds a package verify action to the action chain.
   #
   # Args:
   #   system: The system ID of the system you want to add the package to.
