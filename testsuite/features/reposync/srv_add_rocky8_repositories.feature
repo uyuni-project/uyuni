@@ -8,7 +8,7 @@ Feature: Add the Rocky 8 distribution custom repositories
   I want to filter them out to remove the modules information
 
   Scenario: Download the iso of Rocky 8 DVD and mount it on the server
-    When I mount as "rocky-8-iso" the ISO from "http://minima-mirror.mgr.suse.de/pub/rocky/8/isos/x86_64/Rocky-x86_64-dvd.iso" in the server
+    When I mount as "rocky-8-iso" the ISO from "http://minima-mirror.mgr.suse.de/pub/rocky/8/isos/x86_64/Rocky-x86_64-minimal.iso" in the server
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
