@@ -13,7 +13,7 @@ module CustomFormatter
     # It takes the feature file name and stores it in a variable called @current_feature_name
     #
     # Args:
-    #   feature: The feature object
+    #   feature: The feature object.
     def before_feature(feature)
       @current_feature_name = feature.location.file
       super(feature)
