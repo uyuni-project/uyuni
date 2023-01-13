@@ -35,7 +35,7 @@ module CustomFormatter
     end
 
     ##
-    # It takes a string as an argument and returns a new string that is the original string prepended with the current
+    # Adds a given text after the feature name.
     # feature name
     #
     # Args:
