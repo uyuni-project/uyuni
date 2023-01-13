@@ -1302,6 +1302,10 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
     'SUSE-LibertyLinux9-x86_64' : {
+        'PDID' : [-35, 2538, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
+    },
+    'RHEL9-x86_64' : {
         'PDID' : [-35, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
     },
