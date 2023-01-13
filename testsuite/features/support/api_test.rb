@@ -18,7 +18,7 @@ require_relative 'http_client'
 # Abstract parent class describing an API test
 class ApiTest
   ##
-  # It creates objects that are used to interact with the API
+  # Creates objects that are used to interact with the API.
   #
   # Args:
   #   _host: The hostname of the Spacewalk server.
@@ -54,8 +54,7 @@ class ApiTest
   attr_writer :token
 
   ##
-  # It takes a name and a list of parameters, and calls the function with the given name and parameters, and returns the
-  # response
+  # Calls a function with the given name and parameters, and returns its response.
   #
   # Args:
   #   name: The name of the method you want to call.
@@ -78,7 +77,7 @@ end
 # Derived class for an XML-RPC test
 class ApiTestXmlrpc < ApiTest
   ##
-  # It creates a new instance of the XmlrpcClient class, and assigns it to the @connection instance variable
+  # Creates a new instance of the XmlrpcClient class, and assigns it to the @connection instance variable.
   #
   # Args:
   #   host: The hostname of the server.
@@ -94,7 +93,7 @@ class ApiTestXmlrpc < ApiTest
   end
 
   ##
-  # It returns the current date and time as an XMLRPC::DateTime object
+  # Returns the current date and time as an XMLRPC::DateTime object.
   def date_now
     now = Time.now
     XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)

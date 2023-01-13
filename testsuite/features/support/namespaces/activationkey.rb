@@ -63,10 +63,10 @@ class NamespaceActivationkey
   end
 
   ##
-  # It returns the id of the user.
+  # Verifies if the ID of the user is valid and active.
   #
   # Args:
-  #   id: The id of the user to verify.
+  #   id: The ID of the user to verify.
   def verify(id)
     @test.call('activationkey.listActivationKeys', sessionKey: @test.token)
          .map { |key| key['key'] }
@@ -74,41 +74,41 @@ class NamespaceActivationkey
   end
 
   ##
-  # It adds config channels to a system.
+  # Adds configuration channels to a system.
   #
   # Args:
-  #   id: The id of the system to add the config channels to.
+  #   id: The ID of the system to add the config channels to.
   #   config_channels: A list of config channels to add to the system.
   def add_config_channels(id, config_channels)
     @test.call('activationkey.addConfigChannels', sessionKey: @test.token, keys: id, configChannelLabels: config_channels, addToTop: false)
   end
 
   ##
-  # It adds child channels to a channel.
+  # Adds child channels to a channel.
   #
   # Args:
-  #   id: The id of the channel you want to add child channels to.
-  #   child_channels: An array of channel ids that you want to add to the parent channel.
+  #   id: The ID of the channel you want to add child channels to.
+  #   child_channels: An array of channel IDs that you want to add to the parent channel.
   def add_child_channels(id, child_channels)
     @test.call('activationkey.addChildChannels', sessionKey: @test.token, key: id, childChannelLabels: child_channels)
   end
 
   ##
-  # It returns the details of the user with the given id.
+  # Returns the details of the user with the given ID.
   #
   # Args:
-  #   id: The id of the user you want to get details for.
+  #   id: The ID of the user you want to get details for.
   def get_details(id)
     @test.call('activationkey.getDetails', sessionKey: @test.token, key: id)
   end
 
   ##
-  # It sets the details of a channel.
+  # Sets the details of a channel, such as its description, base channel, usage limit and contact method.
   #
   # Args:
-  #   id: The id of the subscription.
-  #   description: A description of the subscription.
-  #   base_channel_label: The base channel label of the channel you want to subscribe to.
+  #   id: The ID of the channel.
+  #   description: A description of the channel.
+  #   base_channel_label: The label of the base channel you want to subscribe to.
   #   usage_limit: The number of times this key can be used.
   #   contact_method:
   def set_details(id, description, base_channel_label, usage_limit, contact_method)
