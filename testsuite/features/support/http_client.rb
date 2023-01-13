@@ -6,7 +6,6 @@ require 'faraday'
 # Wrapper class for HTTP client library (Faraday)
 class HttpClient
   ##
-  # `@http_client = Faraday.new('https://' + host, request: { timeout: DEFAULT_TIMEOUT })`
   #
   # This function creates a new HTTP client using the Faraday library.
   #
@@ -48,7 +47,7 @@ class HttpClient
   end
 
   ##
-  # It takes a name and a hash of parameters, calls the API, and returns the result
+  # It takes a name and a hash of parameters, calls the API, and returns the result.
   #
   # Args:
   #   name: The name of the API call, e.g. 'auth.login'

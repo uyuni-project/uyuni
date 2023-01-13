@@ -26,7 +26,7 @@ class NamespaceActivationkey
   end
 
   ##
-  # This function deletes an activation key
+  # This function deletes an activation key.
   #
   # Args:
   #   id: The ID of the activation key you want to delete.

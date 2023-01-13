@@ -13,13 +13,13 @@ class NamespaceActionchain
   end
 
   ##
-  # > This function returns a list of all the action chains in the account
+  # This function returns a list of all the action chains in the account
   def list_chains
     @test.call('actionchain.listChains', sessionKey: @test.token).map { |x| x['label'] }
   end
 
   ##
-  # This function creates a new action chain with the label specified in the function call
+  # This function creates a new action chain with the label specified in the function call.
   #
   # Args:
   #   label: The name of the chain you want to create.
@@ -28,7 +28,7 @@ class NamespaceActionchain
   end
 
   ##
-  # > This function deletes a chain with the label specified in the function call
+  # This function deletes a chain with the label specified in the function call
   #
   # Args:
   #   label: The label of the chain you want to delete.
@@ -37,7 +37,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function removes an action from an action chain
+  # This function removes an action from an action chain.
   #
   # Args:
   #   label: The label of the action chain you want to remove an action from.
@@ -47,17 +47,17 @@ class NamespaceActionchain
   end
 
   ##
-  # Rename a chain
+  # Renames an action chain.
   #
   # Args:
-  #   old_label: The label of the chain you want to rename.
-  #   new_label: The new name of the chain.
+  #   old_label: The name of the action chain you want to rename.
+  #   new_label: The new name of the action chain.
   def rename_chain(old_label, new_label)
     @test.call('actionchain.renameChain', sessionKey: @test.token, previousLabel: old_label, newLabel: new_label)
   end
 
   ##
-  # This function adds a script run action to the action chain
+  # This function adds a script run action to the action chain.
   #
   # Args:
   #   system: The system ID of the system you want to run the action chain on.
@@ -71,7 +71,7 @@ class NamespaceActionchain
   end
 
   ##
-  # > This function lists all the actions in a given chain
+  # This function lists all the actions in a given chain
   #
   # Args:
   #   label: The label of the chain you want to list the actions for.
@@ -80,7 +80,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function adds a system reboot action to the action chain
+  # This function adds a system reboot action to the action chain.
   #
   # Args:
   #   system: The system ID of the system you want to reboot.
@@ -90,7 +90,7 @@ class NamespaceActionchain
   end
 
   ##
-  # Adds a package install action to the action chain for the given system
+  # Adds a package install action to the action chain for the given system.
   #
   # Args:
   #   system: The system ID of the system you want to add the package to.
@@ -101,7 +101,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function adds a package upgrade action to the action chain
+  # This function adds a package upgrade action to the action chain.
   #
   # Args:
   #   system: The system ID of the system you want to upgrade.
@@ -112,7 +112,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function adds a package verify action to the action chain
+  # This function adds a package verify action to the action chain.
   #
   # Args:
   #   system: The system ID of the system you want to add the package to.
@@ -123,7 +123,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function adds a package removal action to the action chain for the specified system
+  # This function adds a package removal action to the action chain for the specified system.
   #
   # Args:
   #   system: The ID of the system you want to add the package removal to.
@@ -134,7 +134,7 @@ class NamespaceActionchain
   end
 
   ##
-  # > Schedule a chain to run at a specific time
+  # Schedule a chain to run at a specific time.
   #
   # Args:
   #   label: The label of the chain you want to schedule.

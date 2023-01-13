@@ -15,7 +15,7 @@ module LavandaBasic
 
   ##
   # This function takes a fully qualified domain name (FQDN) as an argument and sets the instance variable
-  # @in_full_hostname to the value of the FQDN
+  # @in_full_hostname to the value of the FQDN.
   #
   # Args:
   #   fqdn: The fully qualified domain name of the host.
@@ -51,7 +51,7 @@ module LavandaBasic
   end
 
   ##
-  # It sets the value of the instance variable `@in_public_interface` to the value of the parameter `public_interface`
+  # It sets the value of the instance variable `@in_public_interface` to the value of the parameter `public_interface`.
   #
   # Args:
   #   public_interface: The name of the public interface.
@@ -63,7 +63,7 @@ module LavandaBasic
   # It sets the value of the instance variable @in_os_family to the value of the parameter os_family.
   #
   # Args:
-  #   os_family: The OS family to check against.
+  #   os_family: The OS family to initialize.
   def init_os_family(os_family)
     @in_os_family = os_family
   end
@@ -84,21 +84,21 @@ module LavandaBasic
   end
 
   ##
-  # It raises an exception if the hostname is empty, otherwise it returns the hostname
+  # It raises an exception if the hostname is empty, otherwise it returns the hostname.
   def full_hostname
     raise 'empty hostname, something wrong' if @in_full_hostname.empty?
     @in_full_hostname
   end
 
   ##
-  # It raises an exception if the private_ip is empty, otherwise it returns the private_ip
+  # It raises an exception if the private_ip is empty, otherwise it returns the private_ip.
   def private_ip
     raise 'empty private_ip, something wrong' if @in_private_ip.empty?
     @in_private_ip
   end
 
   ##
-  # It returns the public ip address of the machine.
+  # It returns the public IP address of the machine.
   def public_ip
     raise 'empty public_ip, something wrong' if @in_public_ip.empty?
     @in_public_ip
@@ -133,10 +133,10 @@ module LavandaBasic
   end
 
   ##
-  # It runs a command, and returns the output, error, and exit code
+  # It runs a command, and returns the output, error, and exit code.
   #
   # Args:
-  #   cmd: the command to run
+  #   cmd: The command to run
   def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
     if separated_results
       out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)
@@ -155,7 +155,7 @@ module LavandaBasic
   end
 
   ##
-  # It runs a command until it succeeds or times out
+  # It runs a command until it succeeds or times out.
   #
   # Args:
   #   cmd: The command to run.
@@ -169,7 +169,7 @@ module LavandaBasic
   end
 
   ##
-  # It runs a command until it fails, or until it times out
+  # It runs a command until it fails, or until it times out.
   #
   # Args:
   #   cmd: The command to run.
@@ -183,7 +183,7 @@ module LavandaBasic
   end
 
   ##
-  # It waits until the process is no longer running
+  # It waits until the process is no longer running.
   #
   # Args:
   #   process: The name of the process to wait for.
