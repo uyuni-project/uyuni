@@ -24,7 +24,7 @@ module CustomFormatter
     #
     # Args:
     #   keyword: The keyword of the step (Given, When, Then, etc)
-    #   step_match: The step match object
+    #   step_match: The step match object.
     #   status: The status, which can be: passed, failed, undefined, skipped, pending, exception.
     #   source_indent: The indentation of the step definition.
     #   background: Whether the step is running in the background or not.
