@@ -1,3 +1,4 @@
+- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
 - Increase cron_expr varchar length to 120 in suseRecurringAction
   table (bsc#1205040)
 - Keep older module metadata files in database (bsc#1201893)
