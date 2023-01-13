@@ -26,7 +26,7 @@ module CustomFormatter
     #   keyword: The keyword of the step (Given, When, Then, etc)
     #   step_match: The step match object
     #   status: :passed, :failed, :undefined, :skipped, :pending, :exception
-    #   source_indent: The indentation of the step definition
+    #   source_indent: The indentation of the step definition.
     #   background: true if the step is in a background
     #   file_colon_line: "features/step_definitions/my_steps.rb:7"
     def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
