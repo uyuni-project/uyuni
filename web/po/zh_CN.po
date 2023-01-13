@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-06 14:03+0100\n"
+"POT-Creation-Date: 2023-01-13 14:59+0100\n"
 "PO-Revision-Date: 2023-01-06 05:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -457,7 +457,7 @@ msgid "Custom Quartz format:"
 msgstr "自定义 Quartz 格式："
 
 #: ../html/src/components/ranking-table.tsx:40
-#: ../html/src/components/table/TableDataHandler.tsx:368
+#: ../html/src/components/table/TableDataHandler.tsx:371
 msgid "There are no entries to show."
 msgstr "没有可显示的项。"
 
@@ -556,7 +556,7 @@ msgstr "清除"
 msgid "Select All"
 msgstr "全选"
 
-#: ../html/src/components/table/TableDataHandler.tsx:369
+#: ../html/src/components/table/TableDataHandler.tsx:372
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
@@ -568,7 +568,7 @@ msgstr "全选"
 msgid "Loading..."
 msgstr "正在装载..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:402
+#: ../html/src/components/table/TableDataHandler.tsx:405
 msgid "items per page"
 msgstr "项每页"
 
