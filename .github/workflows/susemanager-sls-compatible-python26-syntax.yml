@@ -1,8 +1,6 @@
 name: Check for non-compatible Python 2.6 in susemanager-sls Salt modules
 
 on:
-  push:
-    paths: 'susemanager-utils/susemanager-sls/src/**/*'
   pull_request:
     paths: 'susemanager-utils/susemanager-sls/src/**/*'
 
