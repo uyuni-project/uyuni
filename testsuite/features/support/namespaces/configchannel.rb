@@ -31,18 +31,7 @@ class NamespaceConfigchannel
   end
 
   ##
-  # "Returns a list of systems subscribed to the given channel."
-  #
-  # The first line of the function is the function signature. It's a single line that contains the function name, the
-  ##
-  # `get_file_revision` returns the contents of a file at a given revision
-  #
-  # Args:
-  #   channel: The channel to get the file from.
-  #   file_path: The path to the file you want to get the revision of.
-  #   revision: The revision number of the file you want to get.
-  # arguments, and the return type. The function name is `list_subscribed_systems`. The arguments are `channel`, which is
-  # a `Channel` object. The return type is `Array[System]`
+  # Returns a list of systems subscribed to the given channel.
   #
   # Args:
   #   channel: The channel you want to list the subscribed systems for.
