@@ -1,9 +1,15 @@
 # Copyright (c) 2010-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+### This file contains all step definitions concerning general product funtionality
+### as well as those which do not fit into any other category or are temporary workarounds.
+###
+### The definitions are divided into blocks marked with a summary headline.
+
 require 'jwt'
 require 'securerandom'
 require 'pathname'
+
 # Used for debugging purposes
 When(/^I save a screenshot as "([^"]+)"$/) do |filename|
   save_screenshot(filename)

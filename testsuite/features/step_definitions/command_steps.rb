@@ -1,6 +1,8 @@
 # Copyright (c) 2014-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+### This file contains the definitions for all steps concerning the execution of commands on a system.
+
 require 'timeout'
 require 'nokogiri'
 require 'pg'

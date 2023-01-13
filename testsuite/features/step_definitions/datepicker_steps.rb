@@ -1,5 +1,8 @@
-# Copyright (c) 2017-2021 SUSE LLC.
+# Copyright (c) 2017-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the selection,
+### handling or finding of dates and times including timestamps.
 
 require 'date'
 

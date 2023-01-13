@@ -1,5 +1,7 @@
-# Copyright (c) 2010-2019 SUSE LLC.
+# Copyright (c) 2010-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps used to lock packages on a system.
 
 Then(/^"(.*?)" is (locked|unlocked) on "(.*?)"$/) do |pkg, action, system|
   node = get_target(system)

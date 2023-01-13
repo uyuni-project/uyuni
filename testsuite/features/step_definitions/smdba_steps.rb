@@ -1,5 +1,8 @@
-# Copyright 2011-2022 SUSE LLC.
+# Copyright 2011-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions of all steps concerning the configuration of
+### and access to the database.
 
 Given(/^a postgresql database is running$/) do
   $output, _code = $server.run('file /var/lib/pgsql/data/postgresql.conf', check_errors: false)
