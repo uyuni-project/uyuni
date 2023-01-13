@@ -212,7 +212,7 @@ class CobblerTest
   # Args:
   #   what: the name of the object you want to check for.
   #   key: the key to check for
-  #   value: The value to check for
+  #   value: The value to check for.
   def exists(what, key, value)
     result = false
     ret = @server.call('get_' + what)
