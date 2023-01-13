@@ -114,7 +114,7 @@ class CobblerTest
 
   ##
   # Creates a system, sets its name and profile, and saves it.
-  # every system needs at least a name and a profile
+  # Every system needs at least a name and a profile.
   #
   # Args:
   #   name: The name of the system.
