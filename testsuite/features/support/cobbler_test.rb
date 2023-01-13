@@ -193,7 +193,7 @@ class CobblerTest
   end
 
   ##
-  # `return get('repo', name, key) if repo_exists(name)`
+  # Gets a key's value from a repository.
   #
   # Args:
   #   name: The name of the repo
