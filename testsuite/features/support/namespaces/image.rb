@@ -13,7 +13,7 @@ class NamespaceImage
   attr_reader :store
 
   ##
-  # This function deletes an image from the Splunk server
+  # This function deletes an image
   #
   # Args:
   #   imageid: The ID of the image you want to delete.
