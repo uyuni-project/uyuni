@@ -69,7 +69,7 @@ class CobblerTest
   #   name: The name of the distribution.
   #   kernel: The path to the kernel file.
   #   initrd: The initrd file for the distribution.
-  #   breed: The type of distribution.  This can be one of the following:. Defaults to suse
+  #   breed: The type of distribution.  This can be one of the following: redhat, debian, suse. Defaults to suse.
   def distro_create(name, kernel, initrd, breed = 'suse')
     begin
       distro_id = @server.call('new_distro', @token)
