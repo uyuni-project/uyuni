@@ -44,13 +44,13 @@ class NamespaceImage
   end
 
   ##
-  # `list_images` returns a list of images
+  # Returns a list of images
   def list_images
     @test.call('image.listImages', sessionKey: @test.token)
   end
 end
 
-# "image.profile" namespace
+# Image Profile namespace
 # It's a Ruby class that wraps the API calls for the image.profile namespace
 class NamespaceImageProfile
   ##
@@ -63,11 +63,11 @@ class NamespaceImageProfile
   end
 
   ##
-  # Create a new image profile
+  # Create a new image profile.
   #
   # Args:
   #   label: The name of the profile
-  #   type: The type of profile to create.  Valid values are:
+  #   type: The type of profile to create.  Valid values are: TODO
   #   store_label: The label of the store you want to use.
   #   path: The path to the kickstart file.
   #   actkey: The activation key to use for the profile.
@@ -76,7 +76,7 @@ class NamespaceImageProfile
   end
 
   ##
-  # > Deletes a profile from the system
+  # Deletes a profile from the system.
   #
   # Args:
   #   label: The name of the profile to delete.
@@ -85,17 +85,17 @@ class NamespaceImageProfile
   end
 
   ##
-  # `set_custom_values` sets custom values for a given label
+  # Sets custom values for a given label.
   #
   # Args:
-  #   label: The label of the custom field.
+  #   label: The label of the image profile
   #   values: A JSON object containing the custom values to set.
   def set_custom_values(label, values)
     @test.call('image.profile.setCustomValues', sessionKey: @test.token, label: label, values: values)
   end
 
   ##
-  # Delete custom values from a profile
+  # Delete custom values from an image profile.
   #
   # Args:
   #   label: The label of the image profile you want to delete custom values from.
@@ -108,7 +108,7 @@ class NamespaceImageProfile
   # This function returns the custom values for a given label
   #
   # Args:
-  #   label: The label of the profile you want to get the custom values for.
+  #   label: The label of the image profile you want to get the custom values for.
   def get_custom_values(label)
     @test.call('image.profile.getCustomValues', sessionKey: @test.token, label: label)
   end
@@ -129,7 +129,7 @@ class NamespaceImageProfile
   # This function will return the details of the profile with the label you pass in
   #
   # Args:
-  #   label: The label of the profile you want to get details for.
+  #   label: The label of the image profile you want to get details for.
   def get_details(label)
     @test.call('image.profile.getDetails', sessionKey: @test.token, label: label)
   end
@@ -145,32 +145,65 @@ class NamespaceImageProfile
   end
 end
 
-# "image.store" namespace
+# Image Store namespace
 class NamespaceImageStore
+  ##
+  # This function initializes the NamespaceChannelSoftware class
+  #
+  # Args:
+  #   api_test: This is the test object that is passed in from the test script.
   def initialize(api_test)
     @test = api_test
   end
 
+  ##
+  # Create a new image store.
+  #
+  # Args:
+  #   label: The name of the image store
+  #   uri: The URI path of the image store
+  #   type: The type of the store. Valid values are: TODO
+  #   creds: Credentials
   def create(label, uri, type, creds = {})
     @test.call('image.store.create', sessionKey: @test.token, label: label, uri: uri, storeType: type, credentials: creds)
   end
 
+  ##
+  # Deletes an image store from the system.
+  #
+  # Args:
+  #   label: The name of the image store
   def delete(label)
     @test.call('image.store.delete', sessionKey: @test.token, label: label)
   end
 
+  ##
+  # Lists the image store types available in the system
   def list_image_store_types
     @test.call('image.store.listImageStoreTypes', sessionKey: @test.token)
   end
 
+  ##
+  # Lists the image stores available in the system
   def list_image_stores
     @test.call('image.store.listImageStores', sessionKey: @test.token)
   end
 
+  ##
+  # Get the details of an image store.
+  #
+  # Args:
+  #   label: The name of the image store
   def get_details(label)
     @test.call('image.store.getDetails', sessionKey: @test.token, label: label)
   end
 
+  ##
+  # Set the details of an image store.
+  #
+  # Args:
+  #   label: The name of the image store
+  #   details: Details of the image store
   def set_details(label, details)
     @test.call('image.store.setDetails', sessionKey: @test.token, label: label, details: details)
   end
