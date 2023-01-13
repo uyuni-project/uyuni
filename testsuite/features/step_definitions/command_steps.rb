@@ -342,7 +342,6 @@ end
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
-# rubocop:disable Metrics/BlockLength
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_channels_to_leave_running
   reposync_not_running_streak = 0
@@ -375,7 +374,6 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
   end
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^the reposync logs should not report errors$/) do
   result, code = $server.run('grep -i "ERROR:" /var/log/rhn/reposync/*.log', check_errors: true)
@@ -800,7 +798,6 @@ When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |a
   node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} \"#{source_repo}\"")
 end
 
-# rubocop:disable Metrics/BlockLength
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   os_family = node.os_family
@@ -832,7 +829,6 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   end
   node.run(cmd, verbose: true, check_errors: error_control.empty?)
 end
-# rubocop:enable Metrics/BlockLength
 
 When(/^I enable source package syncing$/) do
   cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"

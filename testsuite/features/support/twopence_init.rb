@@ -154,7 +154,6 @@ end
 # * for the usual clients, it is the full hostname, e.g. suma-41-min-sle15.tf.local
 # * for the PXE booted clients, it is derived from the branch name, the hardware type,
 #   and a fingerprint, e.g. example.Intel-Genuine-None-d6df84cca6f478cdafe824e35bbb6e3b
-# rubocop:disable Metrics/MethodLength
 def get_system_name(host)
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
@@ -190,7 +189,6 @@ def get_system_name(host)
   end
   system_name
 end
-# rubocop:enable Metrics/MethodLength
 
 # Get MAC address of system
 def get_mac_address(host)
