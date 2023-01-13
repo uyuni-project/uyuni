@@ -1,3 +1,4 @@
+- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
 - Rename monitoring entitlement
 - Added view to handle ptf packages and updated the procedures
   to refresh the updatable/installable packages
