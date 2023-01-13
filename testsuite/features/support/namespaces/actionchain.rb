@@ -80,7 +80,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function adds a system reboot action to the action chain.
+  # Adds a system reboot action to the action chain.
   #
   # Args:
   #   system: The system ID of the system you want to reboot.
