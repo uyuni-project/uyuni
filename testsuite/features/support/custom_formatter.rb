@@ -20,7 +20,7 @@ module CustomFormatter
     end
 
     ##
-    # It takes the keyword, prepends the feature name to it, and then calls the super function.
+    # This method override the step name value by prepending the feature name. This helps to identify each step in the console output when we run features in parallel.
     #
     # Args:
     #   keyword: The keyword of the step (Given, When, Then, etc).
