@@ -21,7 +21,7 @@ class CobblerTest
   end
 
   ##
-  # It logs into cobbler and returns the token
+  # It logs into Cobbler and returns the token
   #
   # Args:
   #   user: The username used to log in.
