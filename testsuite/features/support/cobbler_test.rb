@@ -13,7 +13,7 @@ require 'pp'
 # Class for clobber test
 class CobblerTest
   ##
-  # It creates a new XMLRPC client object, and then checks to see if the server is running
+  # It creates a new XMLRPC::client object, and then checks to see if the server is running
   def initialize
     server_address = ENV['SERVER']
     @server = XMLRPC::Client.new2('http://' + server_address + '/cobbler_api', nil, DEFAULT_TIMEOUT)
