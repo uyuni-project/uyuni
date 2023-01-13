@@ -83,7 +83,7 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # > Associate a repo with a channel
+  # Associate a repo with a channel
   #
   # Args:
   #   channel_label: The label of the channel you want to associate the repo with.
@@ -93,7 +93,7 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # "Remove a repository from the list of repositories to be processed."
+  # Remove a repository from the list of repositories to be processed.
   #
   # The first line of the function is a comment.  It's a comment because it starts with a `#` character.  Comments are
   # ignored by the Ruby interpreter.  They're for humans to read.  The comment is a one sentence summary of the function.

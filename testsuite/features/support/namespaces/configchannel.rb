@@ -13,7 +13,7 @@ class NamespaceConfigchannel
   end
 
   ##
-  # > Returns true if the channel exists, false otherwise
+  # Returns true if the channel exists, false otherwise
   #
   # Args:
   #   channel: The channel to check for existence.

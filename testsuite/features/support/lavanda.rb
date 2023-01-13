@@ -105,28 +105,28 @@ module LavandaBasic
   end
 
   ##
-  # It raises an error if the private interface is empty
+  # Verifies the private interface instance variable. Raises an error if it's empty.
   def private_interface
     raise 'empty private_interface, something wrong' if @in_private_interface.empty?
     @in_private_interface
   end
 
   ##
-  # It raises an error if the public interface is empty
+  # Verifies the public interface instance variable. Raises an error if it's empty.
   def public_interface
     raise 'empty public_interface, something wrong' if @in_public_interface.empty?
     @in_public_interface
   end
 
   ##
-  # It raises an exception if the `@in_os_family` variable is empty
+  # Verifies the os_family instance variable. Raises an error if it's empty.
   def os_family
     raise 'empty os_family, something wrong' if @in_os_family.empty?
     @in_os_family
   end
 
   ##
-  # It raises an error if the os_version is empty.
+  # Verifies the os_version instance variable. Raises an error if it's empty.
   def os_version
     raise 'empty os_version, something wrong' if @in_os_version.empty?
     @in_os_version
@@ -136,7 +136,14 @@ module LavandaBasic
   # It runs a command, and returns the output, error, and exit code.
   #
   # Args:
-  #   cmd: The command to run
+  #   cmd: The command to run.
+  #   separated_results: Whether the results should be stored separately. Defaults to false.
+  #   check_errors: Whether to check for errors or not. Defaults to true.
+  #   timeout: The timeout to be used, in seconds. Defaults to 250 or the value of the DEFAULT_TIMEOUT environment variable.
+  #   user: The user to be used to run the command. Defaults to root.
+  #   successcodes: An array with the values to be accepted as success codes from the command run.
+  #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
+  #   verbose: Whether to log the output of the command in case of success. Defaults to false.
   def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65536, verbose: false)
     if separated_results
       out, err, _lo, _rem, code = test_and_store_results_separately(cmd, user, timeout, buffer_size)

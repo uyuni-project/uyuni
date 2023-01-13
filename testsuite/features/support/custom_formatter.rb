@@ -36,7 +36,6 @@ module CustomFormatter
 
     ##
     # Adds a given text after the feature name.
-    # feature name
     #
     # Args:
     #   text: The text to be prepended with the feature name.

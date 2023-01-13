@@ -26,7 +26,7 @@ class NamespaceActivationkey
   end
 
   ##
-  # This function deletes an activation key.
+  # Deletes an activation key.
   #
   # Args:
   #   id: The ID of the activation key you want to delete.
@@ -36,7 +36,7 @@ class NamespaceActivationkey
   end
 
   ##
-  # Get Activation keys count
+  # Returns the number of activation keys.
   def get_activation_keys_count
     @keys = @test.call('activationkey.listActivationKeys', sessionKey: @test.token)
     @keys.nil? ? 0 : @keys.length

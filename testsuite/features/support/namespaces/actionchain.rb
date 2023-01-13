@@ -13,13 +13,13 @@ class NamespaceActionchain
   end
 
   ##
-  # This function returns a list of all the action chains in the account
+  # Returns a list of all the action chains in the account.
   def list_chains
     @test.call('actionchain.listChains', sessionKey: @test.token).map { |x| x['label'] }
   end
 
   ##
-  # This function creates a new action chain with the label specified in the function call.
+  # Creates a new action chain with the given label.
   #
   # Args:
   #   label: The name of the chain you want to create.
@@ -28,7 +28,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function deletes a chain with the label specified in the function call
+  # Deletes an action chain with the specified label.
   #
   # Args:
   #   label: The label of the chain you want to delete.
@@ -37,7 +37,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function removes an action from an action chain.
+  # Removes an action from an action chain.
   #
   # Args:
   #   label: The label of the action chain you want to remove an action from.
@@ -57,7 +57,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function adds a script run action to the action chain.
+  # Adds a script run action to the action chain.
   #
   # Args:
   #   system: The system ID of the system you want to run the action chain on.
@@ -123,7 +123,7 @@ class NamespaceActionchain
   end
 
   ##
-  # This function adds a package removal action to the action chain for the specified system.
+  # Adds a package removal action to the action chain for the specified system.
   #
   # Args:
   #   system: The ID of the system you want to add the package removal to.
