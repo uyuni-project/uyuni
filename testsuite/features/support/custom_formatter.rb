@@ -39,7 +39,7 @@ module CustomFormatter
     # feature name
     #
     # Args:
-    #   text: The text to be prepended with the feature name
+    #   text: The text to be prepended with the feature name.
     def prepend_feature_name_to(text)
       "[#{@current_feature_name}] #{text}"
     end
