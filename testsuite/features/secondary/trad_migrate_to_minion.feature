@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -96,7 +96,7 @@ Feature: Migrate a traditional client into a Salt minion
 
 @skip_if_salt_bundle
   Scenario: Cleanup: register minion again as traditional client
-    When I enable client tools repositories on "sle_client"
+    When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
@@ -104,7 +104,7 @@ Feature: Migrate a traditional client into a Salt minion
 
 @salt_bundle
   Scenario: Cleanup: register minion again as traditional client
-    When I enable client tools repositories on "sle_client"
+    When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "venv-salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy

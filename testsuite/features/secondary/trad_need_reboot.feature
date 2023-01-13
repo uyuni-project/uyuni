@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # TODO: This feature must run before install a patch in the client
@@ -23,7 +23,7 @@ Feature: Reboot required after patch
 
   Scenario: Enable old packages to test a "needing reboot"
     When I enable repository "test_repo_rpm_pool" on this "sle_client"
-    And I run "zypper -n ref" on "sle_client"
+    And I refresh the metadata for "sle_client"
     And I install old package "andromeda-dummy-1.0" on this "sle_client"
     And I run "rhn_check -vvv" on "sle_client"
     When I follow the left menu "Admin > Task Schedules"

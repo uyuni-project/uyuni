@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This test case does not test a valid scenario. In SUMA you normally do not
@@ -57,7 +57,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
 
 @susemanager
   Scenario: Register minion again as traditional client in a deleted client context
-    When I enable client tools repositories on "sle_client"
+    When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
@@ -65,7 +65,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
 
 @uyuni
   Scenario: Register minion again as traditional client in a deleted client context
-    When I enable client tools repositories on "sle_client"
+    When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "venv-salt-minion" from this "sle_client"
     And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
@@ -94,7 +94,7 @@ Feature: Migrate a unregistered traditional client into a Salt minion
     When I remove package "zypp-plugin-spacewalk" from this "sle_client"
 
   Scenario: Migrate a SLES client into a Salt minion in a deleted client context
-    When I enable client tools repositories on "sle_client"
+    When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_client"
     When I follow the left menu "Systems > Bootstrapping"
     And I enter the hostname of "sle_client" as "hostname"
     And I enter "22" as "port"

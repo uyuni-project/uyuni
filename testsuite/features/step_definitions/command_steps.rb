@@ -851,15 +851,10 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   cmd = ''
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     mand_repos = ''
-    opt_repos = ''
     repos.split(' ').map do |repo|
-      if repo =~ /_ltss_/
-        opt_repos = "#{opt_repos} #{repo}"
-      else
-        mand_repos = "#{mand_repos} #{repo}"
-      end
+      mand_repos = "#{mand_repos} #{repo}"
     end
-    cmd = "zypper mr --#{action} #{opt_repos} ||:; zypper mr --#{action} #{mand_repos}"
+    cmd = "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
   elsif os_family =~ /^centos/
     repos.split(' ').each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
@@ -1536,7 +1531,6 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   os_family = node.os_family
   repositories = 'tools_pool_repo tools_update_repo'
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    repositories.concat(' os_pool_repo os_update_repo')
     if $product != 'Uyuni'
       repositories.concat(' tools_additional_repo')
       # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.

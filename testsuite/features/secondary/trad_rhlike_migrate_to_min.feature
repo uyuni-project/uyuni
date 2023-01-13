@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -18,7 +18,7 @@ Feature: Migrate a Red Hat-like traditional client into a Salt minion
 
   Scenario: Prepare the Red Hat-like traditional client in the migration context
     When I enable repository "CentOS-Base" on this "rhlike_client"
-    And I enable client tools repositories on "rhlike_client"
+    And I enable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_client"
     And I refresh the packages list via package manager on "rhlike_client"
     And I install the traditional stack utils on "rhlike_client"
     And I install OpenSCAP dependencies on "rhlike_client"

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_client
@@ -15,7 +15,7 @@ Feature: Action chain on traditional clients
     And I remove package "virgo-dummy" from this "sle_client" without error control
     And I install package "milkyway-dummy" on this "sle_client" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_client"
-    And I run "zypper -n ref" on "sle_client"
+    And I refresh the metadata for "sle_client"
     And I run "rhn_check -vvv" on "sle_client"
 
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on traditional client

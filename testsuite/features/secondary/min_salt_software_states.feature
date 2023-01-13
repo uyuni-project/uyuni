@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 SUSE LLC
+# Copyright (c) 2016-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_salt
@@ -7,7 +7,7 @@ Feature: Salt package states
   Scenario: Pre-requisite: install old packages on SLES minion
     When I apply highstate on "sle_minion"
     And I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I run "zypper -n ref" on "sle_minion"
+    And I refresh the metadata for "sle_minion"
     And I install old package "milkyway-dummy-1.0" on this "sle_minion" without error control
     And I install old package "virgo-dummy-1.0" on this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion" without error control
@@ -130,4 +130,4 @@ Feature: Salt package states
     And I remove package "milkyway-dummy" from this "sle_minion" without error control
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I remove package "andromeda-dummy" from this "sle_minion" without error control
-    And I run "zypper -n ref" on "sle_minion"
+    And I refresh the metadata for "sle_minion"

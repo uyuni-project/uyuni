@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete Red Hat-like minion and register a Red Hat-like traditional client
@@ -26,7 +26,7 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
 
   Scenario: Prepare the Red Hat-like traditional client
     When I enable repository "CentOS-Base" on this "rhlike_client"
-    And I enable client tools repositories on "rhlike_client"
+    And I enable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_client"
     And I refresh the packages list via package manager on "rhlike_client"
     And I install the traditional stack utils on "rhlike_client"
     And I install OpenSCAP dependencies on "rhlike_client"
@@ -99,7 +99,7 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
   Scenario: Cleanup: delete the installed rpms on Red Hat-like traditional client
     When I remove the traditional stack utils from "rhlike_client"
     And I remove OpenSCAP dependencies from "rhlike_client"
-    And I disable client tools repositories on "rhlike_client"
+    And I disable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_client"
     And I disable repository "CentOS-Base" on this "rhlike_client"
 
   Scenario: Cleanup: bootstrap a Red Hat-like minion after traditional client tests
