@@ -210,8 +210,8 @@ class CobblerTest
   # It returns true if the value of the key in the hash is equal to the value passed in
   #
   # Args:
-  #   what: the name of the object you want to check for.
-  #   key: the key to check for
+  #   what: The name of the object you want to check for.
+  #   key: The key to check for.
   #   value: The value to check for.
   def exists(what, key, value)
     result = false
@@ -223,12 +223,12 @@ class CobblerTest
   end
 
   ##
-  # It takes a string, a string, and a string, and returns a string
+  # Retrieves an object from the server based on its type, name and key.
   #
   # Args:
-  #   what: the type of object you want to get.  This can be one of the following:
+  #   what: the type of object you want to get. This can be one of the following:
   #   name: The name of the object you want to get the ID of.
-  #   key: the key to look for in the hash
+  #   key: The key to look for in the hash.
   def get(what, name, key)
     result = nil
     ret = @server.call('get_' + what)

@@ -10,7 +10,7 @@ module CustomFormatter
     end
 
     ##
-    # It takes the feature file name and stores it in a variable called @current_feature_name
+    # It takes the feature file name and stores it in a variable called @current_feature_name.
     #
     # Args:
     #   feature: The feature object.
@@ -20,10 +20,10 @@ module CustomFormatter
     end
 
     ##
-    # It takes the keyword, prepends the feature name to it, and then calls the super function
+    # It takes the keyword, prepends the feature name to it, and then calls the super function.
     #
     # Args:
-    #   keyword: The keyword of the step (Given, When, Then, etc)
+    #   keyword: The keyword of the step (Given, When, Then, etc).
     #   step_match: The step match object.
     #   status: The status, which can be: passed, failed, undefined, skipped, pending, exception.
     #   source_indent: The indentation of the step definition.
