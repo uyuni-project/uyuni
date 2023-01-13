@@ -10832,14 +10832,14 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target state="translated">変数 '{0}' の指定が正しくありません。変数は '=' で区切られた名前と値の対でなければならず、各対は別々の行に記述しなければなりません。例: 'ip=192.168.0.1'</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_generation" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
         <target state="final">キックスタート/AutoYastテンプレートにエラーがあります。「{0}」タブを確認してテンプレートの問題を特定してください。</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_message" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
@@ -29154,8 +29154,8 @@ given channel.</source>
         <target>OS イメージビルドホスト</target>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
-        <target>モニタリング</target>
+        <source>Monitored Host</source>
+        <target state="needs-adaptation">モニタリング</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29867,7 +29867,7 @@ given channel.</source>
         <source>Update System Overview</source>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
         <target state="final">これらのスケジュールに割り当てられたシステムには、{0} のメンテナンス ウィンドウがありません</target>
       </trans-unit>
