@@ -233,3 +233,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Retail Branch Server 4.3 x86_64" product has been added
+
+  Scenario: Detect product loading issues from the UI in Build Validation
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    Then I should not see a "Operation not successful" text
+    And I should not see a warning sign
