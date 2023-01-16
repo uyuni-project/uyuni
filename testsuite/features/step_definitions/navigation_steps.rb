@@ -748,6 +748,10 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
+Then(/^I should not see a warning sign$/) do
+  raise 'Warning detected' unless page.has_no_xpath?("//*[contains(@class, 'fa fa-li fa-exclamation-triangle text-warning')]")
+end
+
 Then(/^I select the "([^"]*)" repo$/) do |repo|
   step %(I check "#{repo}" in the list)
 end
