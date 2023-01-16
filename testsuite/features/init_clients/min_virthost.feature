@@ -10,17 +10,6 @@ Feature: Bootstrap a virtualization host minion and set it up for virtualization
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Create KVM activation key
-    When I follow the left menu "Systems > Activation Keys"
-    And I follow "Create Key"
-    And I wait until I do not see "Loading..." text
-    When I enter "KVM testing" as "description"
-    And I enter "KVM-TEST" as "key"
-    And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
-    And I click on "Create Activation Key"
-    Then I should see a "Activation key KVM testing has been created" text
-
   Scenario: Bootstrap KVM virtual host
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
@@ -28,7 +17,7 @@ Feature: Bootstrap a virtualization host minion and set it up for virtualization
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter KVM Server password
-    And I select "1-KVM-TEST" from "activationKeys"
+    And I select "1-SUSE-KEY" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
