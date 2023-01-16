@@ -87,7 +87,7 @@ class ApiTestXmlrpc < ApiTest
   end
 
   ##
-  # during XML-RPC tests, dates are XMLRPC::DateTime's
+  # Returns a boolean on whether the given attribute is an XMLRPC::DateTime object or not
   def date?(attribute)
     attribute.class == XMLRPC::DateTime
   end
@@ -113,8 +113,8 @@ class ApiTestHttp < ApiTest
   end
 
   ##
-  # XML-RPC uses Date class for dates, while HTTP RPC uses simple strings for dates.
-  # This function provides a string containing a date that can be swallowed by HTTP RPC.
+  # Attempts to parse a given string as a Date object, to validate it.
+  # Returns a boolean on whether it's a string containing a valid Date or not.
   #
   # Args:
   #     attribute: The date object to be parsed.
