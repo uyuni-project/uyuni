@@ -148,6 +148,7 @@ import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
+import com.suse.salt.netapi.calls.modules.TransactionalUpdate;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -1252,21 +1253,10 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> rebootAction(List<MinionSummary> minionSummaries) {
         return minionSummaries.stream().collect(
             Collectors.groupingBy(
-                m -> m.isTransactionalUpdate() ? transactionalReboot() :
+                m -> m.isTransactionalUpdate() ? TransactionalUpdate.reboot() :
                         com.suse.salt.netapi.calls.modules.System.reboot(Optional.of(3))
             )
         );
-    }
-
-    /**
-     * @deprecated this method is temporarily here until a new version of salt-netapi-client that contains it
-     * is released.
-     */
-    @Deprecated
-    private static LocalCall<String> transactionalReboot() {
-        return new LocalCall<>("transactional_update.reboot", Optional.empty(), Optional.empty(),
-                new TypeToken<>() {
-                });
     }
 
     /**
