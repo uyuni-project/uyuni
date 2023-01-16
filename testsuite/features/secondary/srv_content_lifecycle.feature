@@ -159,7 +159,7 @@ Feature: Content lifecycle
     Then I should not see a "clp_name" text
 
 @uyuni
-  Scenario: Cleanup: remove the created channels
+  Scenario: Cleanup: remove the created channels for Uyni
     When I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-fake_base_channel|
       |clp_label-prod_label-sles12-sp5-updates-x86_64|
@@ -175,7 +175,7 @@ Feature: Content lifecycle
     Then I shouldn't get "clp_label"
 
 @susemanager
-  Scenario: Cleanup: remove the created channels
+  Scenario: Cleanup: remove the created channels for SUSE Manager
     When I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-fake_base_channel|
       |clp_label-prod_label-sles12-sp5-updates-x86_64|
