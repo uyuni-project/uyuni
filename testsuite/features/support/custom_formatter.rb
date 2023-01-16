@@ -24,11 +24,11 @@ module CustomFormatter
     #
     # Args:
     #   keyword: The keyword of the step (Given, When, Then, etc).
-    #   step_match: The step match object.
+    #   step_match: Represents the match found between a Test Step and its activation
     #   status: The status, which can be: passed, failed, undefined, skipped, pending, exception.
-    #   source_indent: The indentation of the step definition.
-    #   background: Whether the step is running in the background or not.
-    #   file_colon_line: "features/step_definitions/my_steps.rb:7"
+    #   source_indent: The source code of the step definition indented
+    #   background: The background object in case this step is part of a background
+    #   file_colon_line: The line number where the step is defined
     def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
       keyword_changed = prepend_feature_name_to(keyword)
       super(keyword_changed, step_match, status, source_indent, background, file_colon_line)
