@@ -1,3 +1,4 @@
+- Add `mgr_server_is_uyuni` minion pillar item
 - Improve logs when sls action chain file is missing
 - Fix modular channel check during system update via XMLRPC (bsc#1206613)
 - Fix transaction commit behavior for Spark routes
