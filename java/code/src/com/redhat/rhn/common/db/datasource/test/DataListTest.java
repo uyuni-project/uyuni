@@ -16,6 +16,7 @@ package com.redhat.rhn.common.db.datasource.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
@@ -62,63 +63,63 @@ public class DataListTest extends RhnBaseTestCase {
 
     @Test
     public void testElaborate() {
-        DataList list = getList();
-        list.iterator();
+        DataList<Map<String, String>> list = getList();
+        assertNotNull(list.iterator());
         assertTrue(hsm.isElaborated());
     }
 
     @Test
     public void testSubList() {
         //work it like a list
-        DataList list = getList();
-        DataList sub = getSubList(list);
+        DataList<Map<String, String>> list = getList();
+        DataList<Map<String, String>> sub = getSubList(list);
 
         //subList does not force elaboration
         assertFalse(hsm.isElaborated());
         //No elaboration until data is actually accessed.
-        sub.toString();
+        assertNotNull(sub.toString());
         assertFalse(hsm.isElaborated());
-        sub.isEmpty();
+        assertFalse(sub.isEmpty());
         assertFalse(hsm.isElaborated());
-        sub.get(1);
+        assertNotNull(sub.get(1));
         assertTrue(hsm.isElaborated());
     }
 
     @Test
     public void testElaborateOnce() {
         //at first, nothing is elaborated
-        List list = getList();
+        DataList<Map<String, String>> list = getList();
         assertEquals(0, hsm.getElaborated());
 
         //iterator causes elaboration
-        list.iterator();
+        assertNotNull(list.iterator());
         assertEquals(1, hsm.getElaborated());
         //don't elaborate again
-        list.get(1);
+        assertNotNull(list.get(1));
         assertEquals(1, hsm.getElaborated());
 
-        DataList sub = getSubList((DataList)list);
+        DataList<Map<String, String>> sub = getSubList(list);
         assertEquals(1, hsm.getElaborated());
         //sublist should also know that it is already elaborated
-        sub.iterator();
+        assertNotNull(sub.iterator());
         assertEquals(1, hsm.getElaborated());
         assertEquals(sub.getMode(), hsm);
     }
 
-    private DataList getList() {
+    private DataList<Map<String, String>> getList() {
         //test the get method
-        DataList list = DataList.getDataList(hsm, new HashMap<>(), elabParams);
+        DataList<Map<String, String>> list = DataList.getDataList(hsm, new HashMap<>(), elabParams);
         assertFalse(list.isEmpty());
         assertFalse(hsm.isElaborated());
         return list;
     }
 
-    private DataList getSubList(DataList list) {
+    private DataList<Map<String, String>> getSubList(DataList<Map<String, String>> list) {
         int end = list.size() < 11 ? list.size() - 1 : 10;
-        List sub = list.subList(0, end);
+        List<Map<String, String>> sub = list.subList(0, end);
         assertEquals(sub.size(), end);
         assertEquals(sub.getClass(), DataList.class);
-        return (DataList) sub;
+        return (DataList<Map<String, String>>) sub;
     }
 
     /**
@@ -131,7 +132,7 @@ public class DataListTest extends RhnBaseTestCase {
 
         private static final long serialVersionUID = 1L;
         private int elaborated;
-        private DataResult baseDr;
+        private DataResult<Map<String, String>> baseDr;
         private SelectMode selectMode;
 
         public HookedSelectMode(SelectMode m) {
@@ -149,22 +150,23 @@ public class DataListTest extends RhnBaseTestCase {
         }
 
         @Override
-        public DataResult execute(Map parms) {
+        @SuppressWarnings("unchecked")
+        public <T> DataResult<T> execute(Map<String, ?> parameters) {
             if (baseDr == null) {
-                baseDr = buildBase(parms);
+                baseDr = buildBase();
             }
-            return baseDr;
+            return (DataResult<T>) baseDr;
         }
 
         @Override
-        public void elaborate(List resultList, Map parms) {
+        public void elaborate(List resultList, Map<String, ?> parms) {
             if (elaborated <= 0) {
-                buildElab(parms);
+                buildElab();
             }
             elaborated++;
         }
 
-        private DataResult buildBase(Map parms) {
+        private DataResult<Map<String, String>> buildBase() {
             ArrayList<Map<String, String>> rslts = new ArrayList<>();
             String[] names = {
                     "RHN", "RHNDEBUG", "WEB"
@@ -178,15 +180,14 @@ public class DataListTest extends RhnBaseTestCase {
                 rsltRow.put("created", "01-APR-2013 00:00");
                 rslts.add(rsltRow);
             }
-            return new DataResult(rslts);
+            return new DataResult<>(rslts);
         }
 
-        private DataResult buildElab(Map parms) {
+        private void buildElab() {
             ArrayList<Map<String, String>> typedDr = baseDr;
             for (Map<String, String> oneRow : typedDr) {
                 oneRow.put("table_count", "13");
             }
-            return new DataResult(typedDr);
         }
 
         @Override

@@ -49,7 +49,7 @@ public class DataList<E> extends ArrayList<E> {
 
     //used for elaborating only
     private SelectMode mode;
-    private Map elaboratorParams;
+    private Map<String, Object> elaboratorParams;
 
     //switch to turn on or off automatic elaboration
     private boolean autoElab = true;
@@ -60,15 +60,17 @@ public class DataList<E> extends ArrayList<E> {
      * @param m Datasource's SelectMode
      * @param params Driving query parameters.
      * @param elabParams Elaborator parameters.
+     * @param <E> type of objects in the list
      * @return A new DataList object containing the results of the driving query.
      */
-    public static DataList getDataList(SelectMode m, Map params, Map elabParams) {
+    public static <E> DataList<E> getDataList(SelectMode m, Map<String, Object> params,
+                                              Map<String, Object> elabParams) {
         if (m == null || params == null || elabParams == null) {
             throw new NullPointerException("Parameters for getDataList cannot " +
                     "be null. Maps may be empty if necessary.");
         }
         //get driving query results
-        DataList retval = new DataList(m.execute(params));
+        DataList<E> retval = new DataList<>(m.execute(params));
         //prepare to elaborate
         retval.setMode(m);
         retval.setElaboratorParams(elabParams);
@@ -79,7 +81,7 @@ public class DataList<E> extends ArrayList<E> {
      * Collection constructor for special cases.  Also used internally.
      * @param c The collection.
      */
-    public DataList(Collection c) {
+    public DataList(Collection<? extends E> c) {
         super(c);
     }
 
@@ -111,14 +113,14 @@ public class DataList<E> extends ArrayList<E> {
      * {@inheritDoc}
      */
     @Override
-    public List subList(int start, int end) {
+    public List<E> subList(int start, int end) {
         //The act of asking for a subList will access the list,
         //which would normally cause the list to elaborate.  This
         //would violate the 'elaborate as late as possible' idea.
         boolean temp = autoElab;
         autoElab = false;
         //create a sublist
-        DataList retval = new DataList(super.subList(start, end));
+        DataList<E> retval = new DataList<>(super.subList(start, end));
         //set autoElab back to what it was.
         autoElab = temp;
 
@@ -196,17 +198,9 @@ public class DataList<E> extends ArrayList<E> {
 
 
     /**
-     * @return Returns the elaboratorParams.
-     */
-    public Map getElaboratorParams() {
-        return elaboratorParams;
-    }
-
-
-    /**
      * @param elaboratorParamsIn The elaboratorParams to set.
      */
-    public void setElaboratorParams(Map elaboratorParamsIn) {
+    public void setElaboratorParams(Map<String, Object> elaboratorParamsIn) {
         elaboratorParams = elaboratorParamsIn;
     }
 
@@ -239,18 +233,7 @@ public class DataList<E> extends ArrayList<E> {
      */
     @Override
     public String toString() {
-        StringBuilder buffy = new StringBuilder();
-        buffy.append("DataList(");
-        buffy.append("mode:");
-        buffy.append(mode.toString());
-        buffy.append(" ");
-        buffy.append("elabParams:");
-        buffy.append(elaboratorParams.toString());
-        buffy.append(" ");
-        buffy.append("elaborated:");
-        buffy.append(!autoElab);
-        buffy.append(")");
-        return buffy.toString();
+        return String.format("DataList(mode:%s elaborated:%b)", mode.toString(), !autoElab);
     }
 
 }
