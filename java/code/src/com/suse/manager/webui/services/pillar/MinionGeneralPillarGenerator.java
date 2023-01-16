@@ -67,6 +67,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         }
 
         pillar.add("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
+        pillar.add("mgr_server_is_uyuni", ConfigDefaults.get().isUyuni());
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
         Map<String, Object> chanPillar = new HashMap<>();
