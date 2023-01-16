@@ -1,3 +1,4 @@
+- Add `mgr_server_is_uyuni` minion pillar item
 - Improve logs when sls action chain file is missing
 
 -------------------------------------------------------------------
