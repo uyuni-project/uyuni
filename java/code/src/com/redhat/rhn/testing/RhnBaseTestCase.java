@@ -25,7 +25,6 @@ import com.redhat.rhn.common.util.Asserts;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.HibernateException;
@@ -51,7 +50,7 @@ public abstract class RhnBaseTestCase  {
      * Default Constructor
      */
     public RhnBaseTestCase() {
-        MessageQueue.configureDefaultActions(new TestSystemQuery(), new TestSaltApi());
+        MessageQueue.configureDefaultActions(new TestSaltApi());
     }
 
     /**

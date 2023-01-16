@@ -57,11 +57,6 @@ public class AddRedHatErrataAction extends RhnListAction {
     private static final String SELECTED_CHANNEL = "selected_channel";
     private static final String SELECTED_CHANNEL_OLD = "selected_channel_old";
 
-    private static final String SELECTED_VERSION = "selected_version";
-    private static final String SELECTED_VERSION_OLD = "selected_version_old";
-    private static final String SELECTED_VERSION_NAME = "selected_version_name";
-
-    private static final String VERSION_LIST = "version_list";
     private static final String CHANNEL_LIST = "channel_list";
 
     private static final String VERSION_SUBMIT = "frontend.actions.channels.manager." +

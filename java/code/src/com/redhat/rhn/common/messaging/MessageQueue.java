@@ -60,7 +60,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -268,10 +267,9 @@ public class MessageQueue {
      * Configures default messaging actions needed by RHN
      * This method should be called directly after <code>startMessaging</code>.
      *
-     * @param systemQuery instance for gathering data from a system
      * @param saltApi Salt Api instance to use
      */
-    public static void configureDefaultActions(SystemQuery systemQuery, SaltApi saltApi) {
+    public static void configureDefaultActions(SaltApi saltApi) {
         // Register the Actions for the Events
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
@@ -337,7 +335,7 @@ public class MessageQueue {
                                     SsmConfigFilesEvent.class);
 
         // Handle changes of channel assignments on minions
-        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(systemQuery, saltApi),
+        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(saltApi),
                 ChannelsChangedEventMessage.class);
     }
 }

@@ -73,8 +73,7 @@ public class GlobalInstanceHolder {
     public static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);
     public static final UserPreferenceUtils USER_PREFERENCE_UTILS = new UserPreferenceUtils(ACL_FACTORY);
     public static final RenderUtils RENDER_UTILS = new RenderUtils(ACL_FACTORY);
-    public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(
-            SALT_SERVER_ACTION_SERVICE, SALT_API, SALT_UTILS);
+    public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(SALT_API, SALT_UTILS);
     public static final KubernetesManager KUBERNETES_MANAGER = new KubernetesManager(SALT_API);
     public static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
     public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER =

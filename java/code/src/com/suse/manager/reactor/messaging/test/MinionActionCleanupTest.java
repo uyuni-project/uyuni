@@ -36,9 +36,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
-import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -120,10 +118,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         } });
 
         SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
-        SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
-                new SaltKeyUtils(saltServiceMock));
-        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
-                saltUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServiceMock, saltUtils);
         minionActionUtils.cleanupMinionActions();
     }
 
@@ -246,11 +241,5 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         ActionChainFactory.schedule(actionChain, earliest);
 
         ActionChainFactory.delete(actionChain);
-
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
-        SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
-                new SaltKeyUtils(saltServiceMock));
-        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
-                saltUtils);
     }
 }

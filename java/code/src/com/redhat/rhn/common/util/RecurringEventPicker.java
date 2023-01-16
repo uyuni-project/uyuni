@@ -58,29 +58,22 @@ public class RecurringEventPicker {
     // 0 %d * ? * *
     private static final String STATUS_HOURLY = "hourly";
     private static final String HOURLY_REGEX = "0 +\\d+ +\\* +\\? +\\* +\\*";
-    private static final String HOURLY_MINUTE = "_hourly_minute";
 
     //Daily defines
     // 0 %d %d * * *
     private static final String STATUS_DAILY = "daily";
     private static final String DAILY_REGEX = "0 +\\d+ +\\d+ +\\? +\\* +\\*";
-    private static final String DAILY_HOUR = "_daily_hour";
-    private static final String DAILY_MINUTE = "_daily_minute";
 
     //Weekly defines
     // 0 %d %d * * %d
     private static final String STATUS_WEEKLY = "weekly";
     private static final String WEEKLY_REGEX = "0 +\\d+ +\\d+ +\\? +\\* +\\d";
-    private static final String WEEKLY_HOUR = "_weekly_hour";
-    private static final String WEEKLY_MINUTE = "_weekly_minute";
     private static final String WEEKLY_DAY_OF_WEEK = "_day_week";
 
     //Monthly Defines
     // 0 %d %d %d * *
     private static final String STATUS_MONTHLY = "monthly";
     private static final String MONTHLY_REGEX = "0 +\\d+ +\\d+ +\\d+ +\\* +\\?";
-    private static final String MONTHLY_HOUR = "_monthly_hour";
-    private static final String MONTHLY_MINUTE = "_monthly_minute";
     private static final String MONTHLY_DAY_OF_MONTH = "_day_month";
 
     private static final String STATUS_CRON = "cron";

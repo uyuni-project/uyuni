@@ -46,7 +46,6 @@ import java.util.Set;
  */
 public class ErrataCacheManager extends HibernateFactory {
 
-    private static ErrataCacheManager singleton = new ErrataCacheManager();
     private static Logger log = LogManager.getLogger(ErrataCacheManager.class);
 
     private ErrataCacheManager() {
