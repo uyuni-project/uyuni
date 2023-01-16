@@ -1,3 +1,5 @@
+- fix bootstrap repo definition for SUSE Liberty Linux 9 and RHEL9
+  (bsc#1207136)
 - fix tools channel detection on Uyuni
 - add bootstrap repository definitions for SLE-Micro 5.1, 5.2 and 5.3
 
