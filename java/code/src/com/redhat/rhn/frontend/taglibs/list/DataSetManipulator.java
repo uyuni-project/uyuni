@@ -126,11 +126,11 @@ public class DataSetManipulator {
 
         String sortDir = getActiveSortDirection();
         try {
-            dataset.sort(new DynamicComparator(sortAttr, sortDir));
+            dataset.sort(new DynamicComparator<>(sortAttr, sortDir));
         }
         catch (IllegalArgumentException iae) {
             log.warn("Unable to sort dataset according to: {}", sortAttr);
-            dataset.sort(new DynamicComparator(defaultSortAttribute, sortDir));
+            dataset.sort(new DynamicComparator<>(defaultSortAttribute, sortDir));
         }
     }
 

@@ -45,7 +45,7 @@ public class UpgradablePackageListItem extends PackageListItem {
      * @param installedIn The installed to set.
      */
     public void setInstalled(Collection installedIn) {
-        this.installed = new HashSet(installedIn);
+        this.installed = new HashSet<>(installedIn);
     }
 
     /**

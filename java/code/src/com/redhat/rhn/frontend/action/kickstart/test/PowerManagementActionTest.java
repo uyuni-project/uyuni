@@ -16,8 +16,8 @@ package com.redhat.rhn.frontend.action.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
@@ -106,7 +106,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
         Map<String, String> types = (Map<String, String>) request
             .getAttribute(PowerManagementAction.TYPES);
-        Asserts.assertContains(types.values(), EXPECTED_TYPE);
+        assertTrue(types.containsValue(EXPECTED_TYPE));
 
         assertEquals(EXPECTED_TYPE, request.getAttribute(PowerManagementAction.POWER_TYPE));
         assertNull(request.getAttribute(PowerManagementAction.POWER_ADDRESS));
@@ -138,7 +138,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
         Map<String, String> types = (Map<String, String>) request
             .getAttribute(PowerManagementAction.TYPES);
-        Asserts.assertContains(types.values(), EXPECTED_TYPE);
+        assertTrue(types.containsValue(EXPECTED_TYPE));
 
         assertEquals(EXPECTED_TYPE, request.getAttribute(PowerManagementAction.POWER_TYPE));
         assertEquals(EXPECTED_ADDRESS,
@@ -188,7 +188,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
         Map<String, String> types = (Map<String, String>) request
             .getAttribute(PowerManagementAction.TYPES);
-        Asserts.assertContains(types.values(), EXPECTED_TYPE);
+        assertTrue(types.containsValue(EXPECTED_TYPE));
 
         assertEquals(EXPECTED_TYPE, request.getAttribute(PowerManagementAction.POWER_TYPE));
         assertEquals(EXPECTED_ADDRESS,

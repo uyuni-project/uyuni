@@ -16,6 +16,7 @@ package com.redhat.rhn.common.security.acl;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -85,7 +86,7 @@ public class SystemAclHandler extends BaseHandler {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("label", label);
         queryParams.put("sid", sid);
-        DataResult dr = m.execute(queryParams);
+        DataResult<Row> dr = m.execute(queryParams);
         return (!dr.isEmpty());
     }
 
@@ -101,7 +102,7 @@ public class SystemAclHandler extends BaseHandler {
         SelectMode m = ModeFactory.getMode("System_queries", "is_mgr_server");
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("sid", sid);
-        DataResult dr = m.execute(queryParams);
+        DataResult<Row> dr = m.execute(queryParams);
         return (!dr.isEmpty());
     }
 
@@ -117,7 +118,7 @@ public class SystemAclHandler extends BaseHandler {
         SelectMode m = ModeFactory.getMode("System_queries", "is_proxy");
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("sid", sid);
-        DataResult dr = m.execute(queryParams);
+        DataResult<Row> dr = m.execute(queryParams);
         return (!dr.isEmpty());
     }
 
@@ -164,7 +165,7 @@ public class SystemAclHandler extends BaseHandler {
      */
     public boolean aclOrgHasProxies(Map<String, Object> ctx, String[] params) {
         User user = (User)ctx.get("user");
-        List  proxies = ServerFactory.lookupProxiesByOrg(user);
+        List<Server>  proxies = ServerFactory.lookupProxiesByOrg(user);
         return !proxies.isEmpty();
     }
 

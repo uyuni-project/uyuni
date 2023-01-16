@@ -129,7 +129,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
         ActivationKeyFactory.save(key);
         key = TestUtils.reload(key);
         Token t = TokenFactory.lookupById(key.getId());
-        Set tokens = new HashSet();
+        Set tokens = new HashSet<>();
         tokens.add(t);
         k.setDefaultRegTokens(tokens);
 

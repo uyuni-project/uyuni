@@ -290,7 +290,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Package testPackage = PackageTest.createTestPackage(org);
 
         ErrataFile ef;
-        Set errataFilePackages = new HashSet();
+        Set<Package> errataFilePackages = new HashSet<>();
         errataFilePackages.add(testPackage);
         e.addPackage(testPackage);
         ef = ErrataFactory.createErrataFile(ErrataFactory.

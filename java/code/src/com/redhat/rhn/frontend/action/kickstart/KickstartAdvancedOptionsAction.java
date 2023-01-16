@@ -102,7 +102,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
 
             // store to the db
             if (messages.isEmpty()) {
-                Set s = new HashSet();
+                Set s = new HashSet<>();
 
                 for (Object oIn : cmd.getAvailableOptions()) {
 

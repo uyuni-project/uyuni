@@ -413,13 +413,12 @@ public class DatePicker {
      * @param map a map from date widget field names to <code>Integer</code>
      *            or <code>String</code> values.
      */
-    public void readMap(Map map) {
+    public void readMap(Map<String, ?> map) {
         cal.clear();
-        Map fieldCalMap = getFieldCalMap();
+        Map<String, Integer> fieldCalMap = getFieldCalMap();
 
         //go through and read all of the fields we need.
-        for (Object oIn : fieldCalMap.keySet()) {
-            String field = (String) oIn;
+        for (String field: fieldCalMap.keySet()) {
             Object value = map.get(propertyName(field));
             Integer fieldValue;
             if (value == null) {

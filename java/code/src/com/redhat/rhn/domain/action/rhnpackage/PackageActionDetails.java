@@ -34,20 +34,22 @@ public class PackageActionDetails extends ActionChild {
     private PackageEvr evr;
     private String parameter;
     private PackageArch arch;
-    private Set results = new HashSet();
+    private Set<PackageActionResult> results = new HashSet<>();
 
     /**
      * @param resultsIn The results to set.
      */
-    public void setResults(Set resultsIn) {
+    public void setResults(Set<PackageActionResult> resultsIn) {
         this.results = resultsIn;
     }
+
     /**
      * @return Returns the results.
      */
-    public Set getResults() {
+    public Set<PackageActionResult> getResults() {
         return results;
     }
+
     /**
      * @param r The result to add.
      */
@@ -130,7 +132,7 @@ public class PackageActionDetails extends ActionChild {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof PackageActionDetails)) {
+        if (!(other instanceof PackageActionDetails)) {
             return false;
         }
         PackageActionDetails castOther = (PackageActionDetails) other;

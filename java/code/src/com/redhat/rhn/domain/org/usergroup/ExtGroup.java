@@ -17,11 +17,16 @@ package com.redhat.rhn.domain.org.usergroup;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import javax.annotation.Nonnull;
+
 
 /**
  * ExtGroup
  */
-public abstract class ExtGroup extends BaseDomainHelper implements Comparable {
+public abstract class ExtGroup extends BaseDomainHelper implements Comparable<ExtGroup> {
 
     private Long id;
     private String label;
@@ -73,10 +78,31 @@ public abstract class ExtGroup extends BaseDomainHelper implements Comparable {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(Object objectIn) {
-        if (objectIn == null || objectIn instanceof UserExtGroup) {
+    public int compareTo(@Nonnull ExtGroup objectIn) {
+        if (objectIn instanceof UserExtGroup) {
             return 0;
         }
-        return id.compareTo(((ExtGroup) objectIn).getId());
+        return id.compareTo(objectIn.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(id).append(label).append(org).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+
+        if (!(oIn instanceof ExtGroup)) {
+            return false;
+        }
+
+        ExtGroup extGroup = (ExtGroup) oIn;
+
+        return new EqualsBuilder().append(id, extGroup.id)
+                .append(label, extGroup.label).append(org, extGroup.org).isEquals();
     }
 }

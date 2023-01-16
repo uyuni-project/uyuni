@@ -1671,13 +1671,12 @@ public class PackageManager extends BaseManager {
     public static void verifyPackagesChannelArchCompatAndOrgAccess(
             User user, Channel channel, List<Long> packageIds, boolean checkArchCompat) {
         Long orgId = user.getOrg().getId();
-        DataResult dr = PackageFactory.getPackagesChannelArchCompatAndOrgAccess(
+        DataResult<Row> dr = PackageFactory.getPackagesChannelArchCompatAndOrgAccess(
                 orgId, channel.getId(), packageIds);
         List<Long> found = new ArrayList<>();
         List<Long> archNonCompat = new ArrayList<>();
         List<Long> orgNoAccess = new ArrayList<>();
-        for (Object oIn : dr) {
-            Map m = (Map) oIn;
+        for (Row m : dr) {
             found.add((Long) m.get("id"));
             if (m.get("package_arch_id") == null) {
                 archNonCompat.add((Long) m.get("id"));

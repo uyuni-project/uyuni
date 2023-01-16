@@ -183,7 +183,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         admins.add(newUser);
         manager.associateAdmins(sg, admins, user);
 
-        Set expected = new HashSet(admins);
+        Set expected = new HashSet<>(admins);
         expected.add(user);
         assertEquals(expected, sg.getAssociatedAdminsFor(user));
 

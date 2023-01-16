@@ -443,18 +443,16 @@ public class SPMigrationAction extends RhnAction {
      * @param requiredChannels
      * @return
      */
-    @SuppressWarnings("unchecked")
     private List<ChildChannelDto> getChildChannels(Channel baseChannel,
             RequestContext ctx, Server s, List<Long> requiredChannels) {
         User user = ctx.getCurrentUser();
         List<Channel> channels = baseChannel.getAccessibleChildrenFor(user);
 
         // Sort channels by name
-        channels.sort(new DynamicComparator("name", RequestContext.SORT_ASC));
+        channels.sort(new DynamicComparator<>("name", RequestContext.SORT_ASC));
 
         List<ChildChannelDto> childChannels = new ArrayList<>();
-        for (Channel channelIn : channels) {
-            Channel child = (Channel) channelIn;
+        for (Channel child : channels) {
             ChildChannelDto childChannel = new ChildChannelDto(child.getId(),
                     child.getName(),
                     s.isSubscribed(child),
@@ -475,13 +473,12 @@ public class SPMigrationAction extends RhnAction {
      * @param channelIDs
      * @return List of channels
      */
-    @SuppressWarnings("unchecked")
     private List<EssentialChannelDto> getChannelDTOs(RequestContext ctx,
             Channel baseChannel, List<Long> channelIDs) {
         List<Channel> childChannels = baseChannel.getAccessibleChildrenFor(ctx.getCurrentUser());
 
         // Sort channels by name
-        childChannels.sort(new DynamicComparator("name", RequestContext.SORT_ASC));
+        childChannels.sort(new DynamicComparator<>("name", RequestContext.SORT_ASC));
 
         List<EssentialChannelDto> channelDTOs = new ArrayList<>();
         for (Channel child : childChannels) {

@@ -21,7 +21,7 @@ import java.util.Date;
 /**
  * KickstartCommandName
  */
-public class KickstartCommand implements Comparable {
+public class KickstartCommand implements Comparable<KickstartCommand> {
 
     private Long id;
     private String arguments;
@@ -115,15 +115,14 @@ public class KickstartCommand implements Comparable {
 
     /**
      *
-     * @param kc KickstartCommand to compare
+     * @param k KickstartCommand to compare
      * @return how does it stack up!
      */
     @Override
-    public int compareTo(Object kc) {
-        if (kc == this) {
+    public int compareTo(KickstartCommand k) {
+        if (k == this) {
             return 0;
         }
-        KickstartCommand k = (KickstartCommand)kc;
         int order = getCommandName().getOrder().compareTo(k.getCommandName().getOrder());
         if (k.getCommandName().getName().equals("custom") && getCustomPosition() != null) {
             order = getCustomPosition().compareTo(k.getCustomPosition());

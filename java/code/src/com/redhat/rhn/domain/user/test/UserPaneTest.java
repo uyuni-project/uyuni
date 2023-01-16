@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.PaneFactory;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -46,15 +47,14 @@ public class UserPaneTest extends BaseTestCaseWithUser {
         assertTrue(user.getHiddenPanes().isEmpty());
     }
 
-    private List addPanes() {
-        List panes = new ArrayList<>(PaneFactory.getAllPanes().values());
+    private List<Pane> addPanes() {
+        List<Pane> panes = new ArrayList<>(PaneFactory.getAllPanes().values());
         UserFactory.save(user);
         Long id = user.getId();
         user = null;
         user = UserFactory.lookupById(id);
 
-        Set userPanes = new HashSet();
-
+        Set<Pane> userPanes = new HashSet<>();
 
         userPanes.add(panes.get(0));
         userPanes.add(panes.get(1));
@@ -62,8 +62,7 @@ public class UserPaneTest extends BaseTestCaseWithUser {
         UserFactory.save(user);
         user = null;
         user = UserFactory.lookupById(id);
-        assertEquals(new HashSet(panes.subList(0, 2)),
-                        new HashSet(user.getHiddenPanes()));
+        assertEquals(new HashSet<>(panes.subList(0, 2)), new HashSet<>(user.getHiddenPanes()));
 
         return panes.subList(0, 2);
     }
@@ -74,13 +73,13 @@ public class UserPaneTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testAddRemovePane() {
-        List hiddenPanes = addPanes();
+        List<Pane> hiddenPanes = addPanes();
 
         assertTrue(user.getHiddenPanes().contains(hiddenPanes.get(0)));
 
         Long id = user.getId();
 
-        Set userPanes = new HashSet(user.getHiddenPanes());
+        Set<Pane> userPanes = new HashSet<>(user.getHiddenPanes());
         userPanes.remove(hiddenPanes.get(0));
         user.setHiddenPanes(userPanes);
         UserFactory.save(user);

@@ -64,7 +64,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testStateChanges() throws Exception {
+    public void testStateChanges() throws InterruptedException {
 
         User orgAdmin = UserTestUtils.createUser("UFTOrgAdmin",
                                             UserTestUtils.createOrg("UFTTestOrg"));
@@ -84,7 +84,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertTrue(normalUser.isDisabled());
 
         //make sure our state change was set correctly
-        StateChange change = (StateChange) normalUser.getStateChanges().toArray()[0];
+        StateChange change = new ArrayList<>(normalUser.getStateChanges()).get(0);
         assertEquals(change.getUser(), normalUser);
         assertEquals(change.getChangedBy(), orgAdmin);
         assertEquals(change.getState(), UserFactory.DISABLED);
@@ -135,12 +135,11 @@ public class UserFactoryTest extends RhnBaseTestCase {
     @Test
     public void testLookupByIds() {
         List<Long> idList = new ArrayList<>();
-        List<User> userList = new ArrayList<>();
         Long firstId = UserTestUtils.createUser("testUserOne", "testOrgOne");
         Long secondId = UserTestUtils.createUser("testUserSecond", "testOrgSecond");
         idList.add(firstId);
         idList.add(secondId);
-        userList = UserFactory.lookupByIds(idList);
+        List<User> userList = UserFactory.lookupByIds(idList);
         assertNotNull(userList);
         assertNotNull(userList.get(1).getFirstNames());
         assertContains(userList.get(1).getLogin(), "testUserSecond");
@@ -204,19 +203,18 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testTimeZoneLookupAll() {
-        List tzList = UserFactory.lookupAllTimeZones();
+        List<RhnTimeZone> tzList = UserFactory.lookupAllTimeZones();
         // Total seems to fluctuate, check for 30+:
         assertTrue(tzList.size() > 30);
-        assertTrue(tzList.get(2) instanceof RhnTimeZone);
+        assertNotNull(tzList.get(2));
         // Order-test:
         // 1) Start at GMT
         // 2) Then E-to-W from GMT (ie, all negative offsets followed by pos offsets)
         // Note: There are several GMT-equivalent TZs at the beginning of all this -
         //       skip past them
-        assertEquals("GMT", ((RhnTimeZone)tzList.get(0)).getOlsonName());
-        assertTrue(((RhnTimeZone)tzList.get(4)).getTimeZone().getRawOffset() < 0);
-        assertTrue(((RhnTimeZone)tzList.get(tzList.size() - 1)).
-                        getTimeZone().getRawOffset() > 0);
+        assertEquals("GMT", tzList.get(0).getOlsonName());
+        assertTrue(tzList.get(4).getTimeZone().getRawOffset() < 0);
+        assertTrue(tzList.get(tzList.size() - 1).getTimeZone().getRawOffset() > 0);
     }
 
     @Test
@@ -336,7 +334,6 @@ public class UserFactoryTest extends RhnBaseTestCase {
         usp.setValue("0");
         TestUtils.saveAndFlush(usp);
 
-        usp = null;
         usp = factory.lookupServerPreferenceByUserServerAndName(user, s,
                                       UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
 
@@ -386,7 +383,6 @@ public class UserFactoryTest extends RhnBaseTestCase {
     @Test
     public void testFindAllOrgAdmins() {
         User user = UserTestUtils.findNewUser("testUser", "findAdminsOrg", true);
-        User user2 = UserTestUtils.findNewUser("testUser2", "findAdminsOrg", true);
 
         Org o = user.getOrg();
 

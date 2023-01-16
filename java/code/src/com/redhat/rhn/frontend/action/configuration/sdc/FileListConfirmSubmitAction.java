@@ -180,7 +180,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         }
 
         //we need a set, so add our one server to a set.
-        Set servers = new HashSet();
+        Set servers = new HashSet<>();
         servers.add(sid);
 
         //create the action
@@ -216,7 +216,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     private Set getCfnids(RhnSet rhnSet) {
         //We currently have a set of RhnSetElements, but we need a set
         //of Longs, this does that conversion.
-        Set cfnids = new HashSet();
+        Set cfnids = new HashSet<>();
         for (RhnSetElement rhnSetElementIn : rhnSet.getElements()) {
             cfnids.add(rhnSetElementIn.getElement());
         }
@@ -242,7 +242,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     }
 
     private Set getCrids(RhnSet rhnSet, Long sid) {
-        Set revisions = new HashSet();
+        Set revisions = new HashSet<>();
 
         //go through all of the selected file names
         for (RhnSetElement rhnSetElementIn : rhnSet.getElements()) {

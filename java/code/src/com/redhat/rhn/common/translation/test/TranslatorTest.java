@@ -45,7 +45,7 @@ public class TranslatorTest extends RhnBaseTestCase {
     @Test
     public void testInt2List() {
         Integer i = 42;
-        List list = Translator.int2List(i);
+        List<Integer> list = List.of(i);
         assertEquals(1, list.size());
         Integer result = (Integer) list.iterator().next();
         assertEquals(i, result);

@@ -1019,7 +1019,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public Optional<ServerFQDN> lookupFqdn(String fqdnName) {
         return this.fqdns.stream()
-                .filter((fqdn) -> fqdn.getName().equals(fqdnName))
+                .filter(fqdn -> fqdn.getName().equals(fqdnName))
                 .findFirst();
     }
 
@@ -1057,7 +1057,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
             return primaryInterface;
         }
         if (!networkInterfaces.isEmpty()) {
-            Iterator<NetworkInterface> i = networkInterfaces.iterator();
             // First pass look for names
             NetworkInterface ni = null;
 
@@ -1082,7 +1081,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 return ni;
             }
             // Second pass look for localhost
-            i = networkInterfaces.iterator();
+            Iterator<NetworkInterface> i = networkInterfaces.iterator();
             while (i.hasNext()) {
                 NetworkInterface n = i.next();
                 for (ServerNetAddress4 ad4 : n.getIPv4Addresses()) {
@@ -1223,7 +1222,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return String of RAM.
      */
     public String getRamString() {
-        return Long.valueOf(getRam()).toString();
+        return Long.toString(getRam());
     }
 
     /**
@@ -1611,11 +1610,15 @@ public class Server extends BaseDomainHelper implements Identifiable {
      *
      * @return the virtual guests
      */
-    private Set<VirtualInstance> getVirtualGuests() {
+    public Set<VirtualInstance> getVirtualGuests() {
         return guests;
     }
 
-    private void setVirtualGuests(Set<VirtualInstance> virtualGuests) {
+    /**
+     * @param virtualGuests the virtual guests to use
+     */
+    public void setVirtualGuests(Set<VirtualInstance> virtualGuests) {
+        // This function is used by hibernate
         this.guests = virtualGuests;
     }
 
@@ -1695,7 +1698,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof Server)) {
+        if (!(other instanceof Server)) {
             return false;
         }
         Server castOther = (Server) other;
@@ -1930,7 +1933,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * @return Returns the ignoreEntitlementsForMigration.
      */
-    public Boolean getIgnoreEntitlementsForMigration() {
+    public boolean getIgnoreEntitlementsForMigration() {
         return ignoreEntitlementsForMigration;
     }
 
@@ -2066,7 +2069,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return active Set of active interaces without lo
      */
     public Set<NetworkInterface> getActiveNetworkInterfaces() {
-        Set<NetworkInterface> active = new HashSet();
+        Set<NetworkInterface> active = new HashSet<>();
         for (NetworkInterface n : networkInterfaces) {
             if (!n.isDisabled()) {
                 active.add(n);

@@ -167,7 +167,7 @@ public abstract class ListSetHelper extends ListHelper {
 
 
         if (!context.isSubmitted() && alphaBarPressed == null && preSelectAll) {
-            Set selSet = new HashSet();
+            Set selSet = new HashSet<>();
             for (BaseDto bdto : (List<BaseDto>) dataList) {
                 selSet.add(bdto.getId());
             }

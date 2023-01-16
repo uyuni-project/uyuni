@@ -101,7 +101,6 @@ public class SCCCachingFactory extends HibernateFactory {
      * Clear all repositories from the database.
      */
     public static void clearRepositories() {
-        //getSession().getNamedQuery("SCCRepository.deleteAll").executeUpdate();
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaDelete<SCCRepository> delete = builder.createCriteriaDelete(SCCRepository.class);
         CriteriaDelete<SCCRepositoryAuth> deleteAuth = builder.createCriteriaDelete(SCCRepositoryAuth.class);
@@ -147,10 +146,8 @@ public class SCCCachingFactory extends HibernateFactory {
         Set<SUSEProduct> products = sub.getProducts();
         List<Long> currentProductIds = jsonSub.getProductIds();
         for (Long pid : currentProductIds) {
-            if (productsBySccId.containsKey(pid)) {
-                if (!products.contains(productsBySccId.get(pid))) {
-                    products.add(productsBySccId.get(pid));
-                }
+            if (productsBySccId.containsKey(pid) && !products.contains(productsBySccId.get(pid))) {
+                products.add(productsBySccId.get(pid));
             }
         }
         Set<SUSEProduct> toRemove = new HashSet<>();
@@ -196,10 +193,9 @@ public class SCCCachingFactory extends HibernateFactory {
      * Clear all subscriptions from the database.
      */
     public static void clearSubscriptions() {
-        //getSession().getNamedQuery("SCCSubscription.deleteAll").executeUpdate();
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaDelete<SCCSubscription> delete = builder.createCriteriaDelete(SCCSubscription.class);
-        Root d = delete.from(SCCSubscription.class);
+        delete.from(SCCSubscription.class);
         getSession().createQuery(delete).executeUpdate();
 
     }
@@ -574,7 +570,7 @@ public class SCCCachingFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> listUpdateLastSeenCandidates(Credentials cred) {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> result = new ArrayList<>();
         List<Object[]> rows = getSession().createQuery(
                 "SELECT reg.sccLogin, reg.sccPasswd, si.checkin " +
                 "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem AS reg " +

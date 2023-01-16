@@ -34,8 +34,8 @@ public class ChannelArch extends BaseDomainHelper {
     private String label;
     private String name;
     private ArchType archType;
-    private Set compatibleServerArches;
-    private Set compatiblePackageArches;
+    private Set<ServerArch> compatibleServerArches;
+    private Set<PackageArch> compatiblePackageArches;
 
     /**
      * @return Returns the archType.
@@ -99,7 +99,7 @@ public class ChannelArch extends BaseDomainHelper {
      * @return the set of server architectures compatible with this channel
      * architecture.
      */
-    public Set getCompatibleServerArches() {
+    public Set<ServerArch> getCompatibleServerArches() {
         return compatibleServerArches;
     }
 
@@ -109,7 +109,7 @@ public class ChannelArch extends BaseDomainHelper {
      * @return the set of package architectures compatible with this channel
      * architecture.
      */
-    public Set getCompatiblePackageArches() {
+    public Set<PackageArch> getCompatiblePackageArches() {
         return compatiblePackageArches;
     }
 
@@ -121,7 +121,7 @@ public class ChannelArch extends BaseDomainHelper {
      * @return true if compatible; false if null or not compatible.
      */
     public boolean isCompatible(ServerArch arch) {
-        Set compats = getCompatibleServerArches();
+        Set<ServerArch> compats = getCompatibleServerArches();
         if (compats == null) {
             return false;
         }
@@ -137,7 +137,7 @@ public class ChannelArch extends BaseDomainHelper {
      * @return true if compatible; false if null or not compatible.
      */
     public boolean isCompatible(PackageArch arch) {
-        Set compats = getCompatiblePackageArches();
+        Set<PackageArch> compats = getCompatiblePackageArches();
         if (compats == null) {
             return false;
         }

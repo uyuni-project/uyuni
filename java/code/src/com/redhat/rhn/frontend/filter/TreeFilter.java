@@ -98,7 +98,7 @@ public class TreeFilter implements ResultsFilter {
         if (!dr.isEmpty() &&
                 !StringUtils.isBlank(filterData) &&
                 !StringUtils.isBlank(filterColumn)) {
-            positions = new HashSet();
+            positions = new HashSet<>();
             filtered = new LinkedList();
             Iterator it = dr.iterator();
             NodeInfo current = NodeInfo.instance((DepthAware)it.next(),
