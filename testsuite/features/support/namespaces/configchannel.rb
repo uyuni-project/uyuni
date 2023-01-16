@@ -69,7 +69,7 @@ class NamespaceConfigchannel
   #   label: The label of the configuration channel.
   #   name: The name of the configuration channel.
   #   description: A short description of the configuration channel.
-  #   type: TODO
+  #   type: normal, local_override, server_import, state
   #   info: Path information.
   def create_with_pathinfo(label, name, description, type, info)
     @test.call('configchannel.create', sessionKey: @test.token, label: label, name: name, description: description, type: type, pathInfo: info)
