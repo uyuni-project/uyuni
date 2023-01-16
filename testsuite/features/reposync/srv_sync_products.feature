@@ -79,6 +79,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should get "    [I] SLES12-SP5-Installer-Updates for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-installer-updates-x86_64]"
     And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"
 
+@scc_credentials
   Scenario: Detect product loading issues from the UI
     When I follow the left menu "Admin > Setup Wizard > Products"
     Then I should not see a "Operation not successful" text
