@@ -157,8 +157,9 @@ Feature: Content lifecycle
     And I click on "Delete"
     And I click on "Delete" in "Delete Project" modal
     Then I should not see a "clp_name" text
-  
-  Scenario: Cleanup: remove the created channels
+
+@uyuni
+  Scenario: Cleanup: remove the created channels for Uyni
     When I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-fake_base_channel|
       |clp_label-prod_label-sles12-sp5-updates-x86_64|
@@ -166,6 +167,28 @@ Feature: Content lifecycle
       |clp_label-qa_label-sles12-sp5-updates-x86_64|
       |clp_label-dev_label-fake_base_channel|
       |clp_label-dev_label-sles12-sp5-updates-x86_64|
+    And I delete these channels with spacewalk-remove-channel:
+      |clp_label-prod_label-sles12-sp5-pool-x86_64|
+      |clp_label-qa_label-sles12-sp5-pool-x86_64|
+      |clp_label-dev_label-sles12-sp5-pool-x86_64|
+    When I list channels with spacewalk-remove-channel
+    Then I shouldn't get "clp_label"
+
+@susemanager
+  Scenario: Cleanup: remove the created channels for SUSE Manager
+    When I delete these channels with spacewalk-remove-channel:
+      |clp_label-prod_label-fake_base_channel|
+      |clp_label-prod_label-sles12-sp5-updates-x86_64|
+      |clp_label-prod_label-sle-manager-tools12-pool-x86_64-sp5|
+      |clp_label-prod_label-sle-manager-tools12-updates-x86_64-sp5|
+      |clp_label-qa_label-fake_base_channel|
+      |clp_label-qa_label-sles12-sp5-updates-x86_64|
+      |clp_label-qa_label-sle-manager-tools12-pool-x86_64-sp5|
+      |clp_label-qa_label-sle-manager-tools12-updates-x86_64-sp5|
+      |clp_label-dev_label-fake_base_channel|
+      |clp_label-dev_label-sles12-sp5-updates-x86_64|
+      |clp_label-dev_label-sle-manager-tools12-pool-x86_64-sp5|
+      |clp_label-dev_label-sle-manager-tools12-updates-x86_64-sp5|
     And I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-sles12-sp5-pool-x86_64|
       |clp_label-qa_label-sles12-sp5-pool-x86_64|
