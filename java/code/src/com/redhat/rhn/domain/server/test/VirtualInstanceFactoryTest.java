@@ -175,7 +175,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
      * Commeting out test for satellite.
     @Test
     public void testFindGuestsWithNonVirtHostByOrg() throws Exception {
-        Set expectedViews = new HashSet();
+        Set expectedViews = new HashSet<>();
 
         expectedViews.add(builder.createGuest().withNonVirtHost()
                 .withPersistence().build().asGuestAndNonVirtHostView());
@@ -199,7 +199,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testFindGuestsWithoutAHostByOrg() throws Exception {
-        Set expectedViews = new HashSet();
+        Set expectedViews = new HashSet<>();
 
         expectedViews.add(builder.createGuest().withPersistence().build()
                 .asGuestAndNonVirtHostView());

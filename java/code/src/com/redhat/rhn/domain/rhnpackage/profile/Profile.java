@@ -37,7 +37,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     private Org org;
     private Channel baseChannel;
     private ProfileType profileType;
-    private Set packageEntries;
+    private Set<ProfileEntry> packageEntries;
 
 
     /**
@@ -199,7 +199,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * @return Returns the packageEntries.
      */
-    public Set getPackageEntries() {
+    public Set<ProfileEntry> getPackageEntries() {
         return packageEntries;
     }
 
@@ -207,7 +207,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * @param packageEntriesIn The packageEntries to set.
      */
-    public void setPackageEntries(Set packageEntriesIn) {
+    public void setPackageEntries(Set<ProfileEntry> packageEntriesIn) {
         this.packageEntries = packageEntriesIn;
     }
 

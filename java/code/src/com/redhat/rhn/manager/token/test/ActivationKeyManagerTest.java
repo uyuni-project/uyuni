@@ -220,7 +220,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         assertTrue(temp.getKey().endsWith(keyName));
         assertEquals(note, temp.getNote());
         assertEquals(usageLimit, temp.getUsageLimit());
-        Set channels = new HashSet();
+        Set channels = new HashSet<>();
         channels.add(baseChannel);
         assertEquals(channels, temp.getChannels());
 

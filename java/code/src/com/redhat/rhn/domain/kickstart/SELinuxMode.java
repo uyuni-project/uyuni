@@ -72,7 +72,7 @@ public enum SELinuxMode {
     /**
      * @return the mode keys available.
      */
-    public static Collection keys() {
+    public static Collection<String> keys() {
         return MODE_MAP.keySet();
     }
 

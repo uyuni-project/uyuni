@@ -113,7 +113,7 @@ public class LocalizationService {
     /** Add the keys from the specified class to the Service's Map. */
     private void addKeysToMap(String className) {
         try {
-            Class z = Class.forName(className);
+            Class<?> z = Class.forName(className);
             // All the keys must exist in the en_US XML files first. The other
             // languages may have subsets but no unique keys. If this is a
             // problem
@@ -253,8 +253,8 @@ public class LocalizationService {
         if (msgLogger.isDebugEnabled()) {
             msgLogger.debug("Resolving message \"{}\" for locale {}", logSafeMessageId, userLocale);
         }
-        String mess = null;
-        Class z = null;
+        String mess;
+        Class<?> z = null;
         try {
             // If the keyMap doesn't contain the requested key
             // then there is no hope and we return.

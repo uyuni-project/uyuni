@@ -52,15 +52,14 @@ public class ConfigActionFormatter extends ActionFormatter {
     protected String getNotesBody() {
         StringBuilder buffy = new StringBuilder();
         ConfigAction action = (ConfigAction)getAction();
-        Iterator configs = action.getConfigRevisionActions().iterator();
+        Iterator<ConfigRevisionAction> configs = action.getConfigRevisionActions().iterator();
 
         //There could (and most likely will be) multiple config revision actions per
         // revision (one per system).  Therefore, we will keep track of ones we have
         // already displayed.
-        Set dealtWith = new HashSet();
+        Set<Long> dealtWith = new HashSet<>();
         while (configs.hasNext()) {
-            ConfigRevision revision =
-                ((ConfigRevisionAction) configs.next()).getConfigRevision();
+            ConfigRevision revision = configs.next().getConfigRevision();
             if (!dealtWith.contains(revision.getId())) {
                 buffy.append(displayRevision(revision));
                 dealtWith.add(revision.getId());

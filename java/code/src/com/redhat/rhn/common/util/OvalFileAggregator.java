@@ -39,10 +39,10 @@ public class OvalFileAggregator {
 
     private Document aggregate;
     private boolean isFinished;
-    private Map defs;
-    private Map tests;
-    private Map objects;
-    private Map states;
+    private Map<String, Element> defs;
+    private Map<String, Element> tests;
+    private Map<String, Element> objects;
+    private Map<String, Element> states;
 
     /**
      * No-arg constructor
@@ -104,10 +104,11 @@ public class OvalFileAggregator {
         StringWriter buffer = new StringWriter();
         out.output(aggregate, buffer);
         String retval = buffer.toString();
-        retval = retval.replaceAll(" xmlns:oval=\"removeme\"", "");
-        return retval.replaceAll(" xmlns:redhat=\"removeme\"", "");
+        retval = retval.replace(" xmlns:oval=\"removeme\"", "");
+        return retval.replace(" xmlns:redhat=\"removeme\"", "");
     }
 
+    @SuppressWarnings("unchecked")
     private void buildDocument() {
         Element defsElement = new Element("definitions");
         attachChildren(defsElement, defs);
@@ -117,7 +118,7 @@ public class OvalFileAggregator {
         attachChildren(objectsElement, objects);
         Element statesElement = new Element("states");
         attachChildren(statesElement, states);
-        List children = aggregate.getRootElement().getChildren();
+        List<Element> children = aggregate.getRootElement().getChildren();
         children.add(defsElement);
         children.add(testsElement);
         children.add(objectsElement);
@@ -128,12 +129,8 @@ public class OvalFileAggregator {
         return defs.isEmpty() && tests.isEmpty() && states.isEmpty();
     }
 
-    private void attachChildren(Element parent, Map children) {
-        for (Object oIn : children.keySet()) {
-            String key = (String) oIn;
-            Element child = (Element) children.get(key);
-            parent.getChildren().add(child);
-        }
+    private void attachChildren(Element parent, Map<String, Element> children) {
+        parent.getChildren().addAll(children.values());
     }
 
     private void storeStates(Document doc) {
@@ -156,17 +153,13 @@ public class OvalFileAggregator {
         storeChildren(xpl, doc, defs);
     }
 
-    private void storeChildren(XPathLite xpl, Document doc, Map container) {
-        for (Object oIn : xpl.selectChildren(doc)) {
-            Element child = (Element) oIn;
+    private void storeChildren(XPathLite xpl, Document doc, Map<String, Element> container) {
+        for (Element child : xpl.selectChildren(doc)) {
             String key = child.getAttributeValue("id");
-            if (key == null) {
+            if (key == null || container.containsKey(key)) {
                 continue;
             }
-            if (container.containsKey(key)) {
-                continue;
-            }
-            container.put(key, child.clone());
+            container.put(key, (Element)child.clone());
         }
     }
 
@@ -220,9 +213,9 @@ public class OvalFileAggregator {
         generator.getChildren().add(schemaVersion);
         generator.getChildren().add(timestamp);
 
-        defs = new LinkedHashMap();
-        tests = new LinkedHashMap();
-        objects = new LinkedHashMap();
-        states = new LinkedHashMap();
+        defs = new LinkedHashMap<>();
+        tests = new LinkedHashMap<>();
+        objects = new LinkedHashMap<>();
+        states = new LinkedHashMap<>();
     }
 }

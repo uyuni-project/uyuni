@@ -68,7 +68,7 @@ public class Token implements Identifiable {
     /**
      * @param entitlementsIn The entitlements to set.
      */
-    public void setEntitlements(Set entitlementsIn) {
+    public void setEntitlements(Set<ServerGroupType> entitlementsIn) {
         this.entitlements = entitlementsIn;
     }
 
@@ -283,7 +283,7 @@ public class Token implements Identifiable {
     /**
      * @param channelsIn The channels to set.
      */
-    public void setChannels(Set channelsIn) {
+    public void setChannels(Set<Channel> channelsIn) {
         this.channels = channelsIn;
     }
 
@@ -291,7 +291,7 @@ public class Token implements Identifiable {
      * Clear all channels associated with this token.
      */
     public void clearChannels() {
-        this.channels = new HashSet();
+        this.channels = new HashSet<>();
     }
 
     /**
@@ -330,7 +330,7 @@ public class Token implements Identifiable {
     /**
      * @param serverGroupsIn The server groups to set.
      */
-    public void setServerGroups(Set serverGroupsIn) {
+    public void setServerGroups(Set<ServerGroup> serverGroupsIn) {
         this.serverGroups = serverGroupsIn;
     }
 
@@ -436,7 +436,7 @@ public class Token implements Identifiable {
     /**
      * @param packagesIn The packages to set.
      */
-    public void setPackages(Set packagesIn) {
+    public void setPackages(Set<TokenPackage> packagesIn) {
         this.packages = packagesIn;
     }
 
@@ -472,7 +472,7 @@ public class Token implements Identifiable {
      * This method should only be called by hibernate..!
      * @param cfgChannels the configChannels to set
      */
-    protected void setConfigChannels(List cfgChannels) {
+    protected void setConfigChannels(List<ConfigChannel> cfgChannels) {
         this.configChannels = cfgChannels;
         configChannels.removeIf(Objects::isNull);
     }
@@ -526,12 +526,7 @@ public class Token implements Identifiable {
         }
         Channel existing = getBaseChannel();
         if (existing != channel) {
-            if (existing != null && channel != null &&
-                    !existing.getId().equals(channel.getId())) {
-                clearChannels();
-                getChannels().add(channel);
-            }
-            else if (existing == null) {
+            if (existing == null || channel != null && !existing.getId().equals(channel.getId())) {
                 clearChannels();
                 getChannels().add(channel);
             }

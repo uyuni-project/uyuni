@@ -14,9 +14,11 @@
  */
 package com.redhat.rhn.domain.config;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -56,6 +58,7 @@ import javax.persistence.criteria.Root;
  * commitConfigBlah methods.
  */
 public class ConfigurationFactory extends HibernateFactory {
+    private static final String CONFIG_QUERIES = "config_queries";
     private static ConfigurationFactory singleton = new ConfigurationFactory();
     private static Logger log = LogManager.getLogger(ConfigurationFactory.class);
 
@@ -135,7 +138,7 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param channel The channel object to persist.
      */
     public static void saveNewConfigChannel(ConfigChannel channel) {
-        CallableMode m = ModeFactory.getCallableMode("config_queries",
+        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
             "create_new_config_channel");
         Map<String, Object> inParams = new HashMap<>();
         Map<String, Integer> outParams = new HashMap<>();
@@ -148,7 +151,7 @@ public class ConfigurationFactory extends HibernateFactory {
         //Outparam
         outParams.put("channelId", Types.NUMERIC);
 
-        Map result = m.execute(inParams, outParams);
+        Map<String, Object> result = m.execute(inParams, outParams);
 
         Long channelId = (Long) result.get("channelId");
         channel.setId(channelId);
@@ -179,7 +182,7 @@ public class ConfigurationFactory extends HibernateFactory {
         // ConfigFile so the stored proc will have an ID to work with
         singleton.saveObject(file.getConfigFileName());
 
-        CallableMode m = ModeFactory.getCallableMode("config_queries",
+        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
             "create_new_config_file");
         Map<String, Object> inParams = new HashMap<>();
         Map<String, Integer> outParams = new HashMap<>();
@@ -191,7 +194,7 @@ public class ConfigurationFactory extends HibernateFactory {
         // Outparam
         outParams.put("configFileId", Types.NUMERIC);
 
-        Map result = m.execute(inParams, outParams);
+        Map<String, Object> result = m.execute(inParams, outParams);
         return (Long)result.get("configFileId");
     }
 
@@ -216,7 +219,7 @@ public class ConfigurationFactory extends HibernateFactory {
                     "saved before config files");
         }
 
-        CallableMode m = ModeFactory.getCallableMode("config_queries",
+        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
                             "create_new_config_revision");
 
 
@@ -246,7 +249,7 @@ public class ConfigurationFactory extends HibernateFactory {
         // Outparam
         outParams.put("configRevisionId", Types.NUMERIC);
 
-        Map result = m.execute(inParams, outParams);
+        Map<String, Object> result = m.execute(inParams, outParams);
 
         return (Long) result.get("configRevisionId");
     }
@@ -423,16 +426,17 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param name The file's config file name id
      * @return the ConfigFile found or null if not found.
      */
+    @SuppressWarnings("unchecked")
     public static ConfigFile lookupConfigFileByChannelAndName(Long channel, Long name) {
         Session session = HibernateFactory.getSession();
-        Query query =
+        Query<ConfigFile> query =
             session.getNamedQuery("ConfigFile.findByChannelAndName")
                     .setLong("channel_id", channel)
                     .setLong("name_id", name)
                     .setLong("state_id", ConfigFileState.normal().
                             getId());
         try {
-            return (ConfigFile) query.uniqueResult();
+            return query.uniqueResult();
         }
         catch (ObjectNotFoundException e) {
             return null;
@@ -456,12 +460,13 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param revId The ConfigFile revision to look for.
      * @return ConfigRevision The sought for ConfigRevision.
      */
+    @SuppressWarnings("unchecked")
     public static ConfigRevision lookupConfigRevisionByRevId(ConfigFile cf, Long revId) {
         Session session = HibernateFactory.getSession();
-        Query q = session.getNamedQuery("ConfigRevision.findByRevisionAndConfigFile");
+        Query<ConfigRevision> q = session.getNamedQuery("ConfigRevision.findByRevisionAndConfigFile");
         q.setLong("rev", revId);
         q.setParameter("cf", cf);
-        return (ConfigRevision) q.uniqueResult();
+        return q.uniqueResult();
     }
 
     /**
@@ -469,6 +474,7 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param cf The ConfigFile to look for.
      * @return List of configuration revisions for given configuration file.
      */
+    @SuppressWarnings("unchecked")
     public static List<ConfigRevision> lookupConfigRevisions(ConfigFile cf) {
         Session session = HibernateFactory.getSession();
         Query<ConfigRevision> q = session.getNamedQuery("ConfigRevision.findByConfigFile");
@@ -590,7 +596,7 @@ public class ConfigurationFactory extends HibernateFactory {
     private static Long lookupConfigInfo(String user, String group,
             Long filemode, String selinuxCtx,
             String symlinkTargetPath) {
-        CallableMode m = ModeFactory.getCallableMode("config_queries",
+        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
             "lookup_config_info");
 
         Map<String, Object> inParams = new HashMap<>();
@@ -615,7 +621,7 @@ public class ConfigurationFactory extends HibernateFactory {
 
         outParams.put("info_id", Types.NUMERIC);
 
-        Map out = m.execute(inParams, outParams);
+        Map<String, Object> out = m.execute(inParams, outParams);
 
         return (Long)out.get("info_id");
     }
@@ -651,7 +657,7 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return The id of the found config file name
      */
     private static Long lookupConfigFileName(String path) {
-        CallableMode m = ModeFactory.getCallableMode("config_queries",
+        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
             "lookup_config_filename");
 
         Map<String, Object> inParams = new HashMap<>();
@@ -660,7 +666,7 @@ public class ConfigurationFactory extends HibernateFactory {
         inParams.put("name_in", path);
         outParams.put("name_id", Types.NUMERIC);
 
-        Map out = m.execute(inParams, outParams);
+        Map<String, Object> out = m.execute(inParams, outParams);
 
         return (Long)out.get("name_id");
     }
@@ -673,7 +679,7 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param channel Channel to remove
      */
     public static void removeConfigChannel(ConfigChannel channel) {
-        CallableMode m = ModeFactory.getCallableMode("config_queries",
+        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
             "remove_config_channel");
 
         Map<String, Object> inParams = new HashMap<>();
@@ -690,7 +696,7 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param file Config File to remove
      */
     public static void removeConfigFile(ConfigFile file) {
-        CallableMode m = ModeFactory.getCallableMode("config_queries",
+        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
             "remove_config_file");
 
         Map<String, Object> inParams = new HashMap<>();
@@ -731,7 +737,7 @@ public class ConfigurationFactory extends HibernateFactory {
         }
         catch (ConfigFileSafeDeleteException e) {
             // Should never happen since we pass 'false' as safeDelete flag.
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -749,7 +755,7 @@ public class ConfigurationFactory extends HibernateFactory {
             throw new ConfigFileSafeDeleteException();
         }
 
-        CallableMode m = ModeFactory.getCallableMode("config_queries", "remove_config_revision");
+        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES, "remove_config_revision");
 
         Map<String, Object> inParams = new HashMap<>();
         Map<String, Integer> outParams = new HashMap<>();
@@ -760,7 +766,7 @@ public class ConfigurationFactory extends HibernateFactory {
         if (latest) {
             //We just deleted the latest revision and now the config file has no idea
             //what its latest revision is, so we will find out.
-            Map map = getMaxRevisionForFile(file);
+            Row map = getMaxRevisionForFile(file);
             if (map != null) {
                 Long id = (Long)map.get("id");
                 file.setLatestConfigRevision(lookupConfigRevisionById(id));
@@ -915,29 +921,28 @@ public class ConfigurationFactory extends HibernateFactory {
         }
         catch (IOException e) {
             log.error("IOException while reading config content from input stream!", e);
-            throw new RuntimeException("IOException while reading config content from" +
-                    " input stream!");
+            throw new RhnRuntimeException("IOException while reading config content from input stream!");
         }
         return foo;
     }
 
-    private static Map getMaxRevisionForFile(ConfigFile file) {
+    private static Row getMaxRevisionForFile(ConfigFile file) {
         Map<String, Object> params = new HashMap<>();
         params.put("cfid", file.getId());
-        SelectMode m = ModeFactory.getMode("config_queries", "max_revision_for_file");
-        DataResult dr = m.execute(params);
+        SelectMode m = ModeFactory.getMode(CONFIG_QUERIES, "max_revision_for_file");
+        DataResult<Row> dr = m.execute(params);
         if (dr.isEmpty()) {
             return null; //no revisions left.
         }
-        return (Map)dr.get(0);
+        return dr.get(0);
     }
 
     private static Long getCountRevisionForFile(ConfigFile file) {
         Map<String, Object> params = new HashMap<>();
         params.put("cfid", file.getId());
-        SelectMode m = ModeFactory.getMode("config_queries", "count_revision_for_file");
-        DataResult dr = m.execute(params);
-        return (Long)((Map)dr.get(0)).get("count");
+        SelectMode m = ModeFactory.getMode(CONFIG_QUERIES, "count_revision_for_file");
+        DataResult<Row> dr = m.execute(params);
+        return (Long)dr.get(0).get("count");
     }
 
     /**
@@ -946,7 +951,10 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return next revision number
      */
     public static Long getNextRevisionForFile(ConfigFile file) {
-        Map results = getMaxRevisionForFile(file);
+        Row results = getMaxRevisionForFile(file);
+        if (results == null) {
+            return 1L;
+        }
         return ((Long) results.get("revision")) + 1;
     }
 

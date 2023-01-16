@@ -879,12 +879,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         //create server set and add it to the group
         Server serverToSearch = ServerFactoryTest.createTestServer(admin, true);
-        Set servers = new HashSet();
+        Set servers = new HashSet<>();
         servers.add(serverToSearch);
         SERVER_GROUP_MANAGER.addServers(group, servers, admin);
         assertFalse(group.getServers().isEmpty());
         //create admins set and add it to the grup
-        Set admins = new HashSet();
+        Set admins = new HashSet<>();
         admins.add(regular);
         SERVER_GROUP_MANAGER.associateAdmins(group, admins, admin);
         assertTrue(SERVER_GROUP_MANAGER.canAccess(regular, group));
@@ -969,7 +969,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         server.addChannel(baseChan);
 
         Channel proxyChan = ChannelFactoryTest.createTestChannel(owner);
-        Set chanFamilies = new HashSet();
+        Set chanFamilies = new HashSet<>();
 
         ChannelFamily proxyFam = ChannelFamilyFactory.lookupByLabel(
                 ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL, owner.getOrg());

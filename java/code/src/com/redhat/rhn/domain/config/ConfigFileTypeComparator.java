@@ -20,7 +20,7 @@ import java.util.Comparator;
  * Comparator used in ConfigChannel.getConfigFiles
  * ConfigFileTypeComparator
  */
-public class ConfigFileTypeComparator implements Comparator {
+public class ConfigFileTypeComparator implements Comparator<ConfigFile> {
     /**
      * Compares 2 ConfigFiles with respect to their latest revision's file type
      * Sorts file ahead of directories
@@ -30,32 +30,30 @@ public class ConfigFileTypeComparator implements Comparator {
      *  based on the file type of the latest revision
      */
     @Override
-    public int compare(Object arg0, Object arg1) {
-        ConfigFile one = (ConfigFile) arg0;
-        ConfigFile other = (ConfigFile) arg1;
-        if (one == null && other == null) {
+    public int compare(ConfigFile arg0, ConfigFile arg1) {
+        if (arg0 == null && arg1 == null) {
             return 0;
         }
-        if (one == null && other != null) {
+        if (arg0 == null) {
             return -1;
         }
-        if (one != null && other == null) {
+        if (arg1 == null) {
             return 1;
         }
-        if (one.equals(other)) {
+        if (arg0.equals(arg1)) {
             return 0;
         }
 
-        ConfigFileType fileTypeOne =  one.getLatestConfigRevision().
+        ConfigFileType fileTypeOne =  arg0.getLatestConfigRevision().
                                                     getConfigFileType();
-        ConfigFileType fileTypeOther =  other.getLatestConfigRevision().
+        ConfigFileType fileTypeOther =  arg1.getLatestConfigRevision().
                                                             getConfigFileType();
 
         if (compareTypes(fileTypeOne, fileTypeOther) != 0) {
             return compareTypes(fileTypeOne, fileTypeOther);
         }
-        String pathOne = one.getConfigFileName().getPath();
-        String pathOther = other.getConfigFileName().getPath();
+        String pathOne = arg0.getConfigFileName().getPath();
+        String pathOther = arg1.getConfigFileName().getPath();
 
         if (pathOne.compareTo(pathOther) != 0) {
             return pathOne.compareTo(pathOther);

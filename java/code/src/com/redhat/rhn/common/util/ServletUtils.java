@@ -20,9 +20,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +66,8 @@ public class ServletUtils {
      * @param params params to fillout on the URL
      * @return String path
      */
-    public static String pathWithParams(String base, Map params) {
+    @SuppressWarnings("unchecked")
+    public static String pathWithParams(String base, Map<String, Object> params) {
         StringBuilder ret = new StringBuilder(base);
         boolean firstPass = true;
 
@@ -73,58 +76,44 @@ public class ServletUtils {
             return ret.toString();
         }
 
-        for (Object oIn : params.entrySet()) {
-            Map.Entry me = (Map.Entry) oIn;
-            Object[] values;
+        for (Map.Entry<String, Object> me : params.entrySet()) {
+            List<Object> values;
 
             // No guarantee of receiving strings here, use toString() instead of casts:
             if (me.getValue() == null) {
-                values = new Object[]{me.getValue()};
+                values = List.of();
             }
             else if (me.getValue() instanceof Object[]) {
                 Object[] paramValues = (Object[]) me.getValue();
-                String[] encodedValues = new String[paramValues.length];
-                for (int x = 0; x < paramValues.length; x++) {
-                    encodedValues[x] = StringUtil.urlEncode(paramValues[x].toString());
-                }
-
-                values = encodedValues;
+                values = Arrays.stream(paramValues)
+                        .map(o -> StringUtil.urlEncode(String.valueOf(o)))
+                        .collect(Collectors.toList());
             }
             else if (me.getValue() instanceof List) {
-                List paramValues = (List) me.getValue();
-                String[] encodedValues = new String[paramValues.size()];
-                int x = 0;
-                for (Object o : paramValues) {
-                    encodedValues[x] = StringUtil.urlEncode(String.valueOf(o));
-                    x++;
-                }
-
-                values = encodedValues;
+                List<Object> paramValues = (List<Object>) me.getValue();
+                values = paramValues.stream()
+                        .map(o -> StringUtil.urlEncode(String.valueOf(o)))
+                        .collect(Collectors.toList());
             }
             else {
                 String paramValue = me.getValue().toString();
-                paramValue = StringUtil.urlEncode(paramValue);
-                values = new Object[]{paramValue};
+                values = List.of(StringUtil.urlEncode(paramValue));
             }
 
-            for (Object valueIn : values) {
-                if (valueIn != null) {
-                    if (firstPass) {
-                        ret.append("?");
-                    }
-                    else {
-                        ret.append("&");
-                    }
+            List<String> allValues = values.stream()
+                    .map(v -> StringUtil.urlEncode(me.getKey()) + "=" + v)
+                    .collect(Collectors.toList());
+
+            if (!allValues.isEmpty()) {
+                if (firstPass) {
+                    ret.append("?");
                     firstPass = false;
-
-                    String key = (String) me.getKey();
-                    key = StringUtil.urlEncode(key);
-
-                    ret.append(key);
-                    ret.append("=");
-                    ret.append(valueIn.toString());
-                } //if
-            } //for
+                }
+                else {
+                    ret.append("&");
+                }
+                ret.append(String.join("&", allValues));
+            }
         } //while
 
         return ret.toString();
@@ -146,13 +135,13 @@ public class ServletUtils {
 
         StringBuffer queryString = new StringBuffer();
 
-        String paramName = null;
-        String paramValue = null;
+        String paramName;
+        String paramValue;
 
-        Enumeration paramNames = request.getParameterNames();
+        Enumeration<String> paramNames = request.getParameterNames();
 
         while (paramNames.hasMoreElements()) {
-            paramName = (String)paramNames.nextElement();
+            paramName = paramNames.nextElement();
             paramValue = request.getParameter(paramName);
 
             queryString.append(encode(paramName)).append("=").append(encode(paramValue))

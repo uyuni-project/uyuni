@@ -88,6 +88,7 @@ import javax.persistence.criteria.Root;
  */
 public class ServerFactory extends HibernateFactory {
 
+    private static final String SYSTEM_QUERIES = "System_queries";
     private static Logger log = LogManager.getLogger(ServerFactory.class);
 
     public static final ServerFactory SINGLETON = new ServerFactory();
@@ -170,8 +171,8 @@ public class ServerFactory extends HibernateFactory {
      * @param cikid The ID of the Key for the values you would like to lookup
      * @return List of systems
      */
-    public static List lookupServersWithCustomKey(Long userId, Long cikid) {
-        SelectMode m = ModeFactory.getMode("System_queries",
+    public static List<Row> lookupServersWithCustomKey(Long userId, Long cikid) {
+        SelectMode m = ModeFactory.getMode(SYSTEM_QUERIES,
                 "users_systems_with_value_for_key");
         Map<String, Object> inParams = new HashMap<>();
 
@@ -268,7 +269,7 @@ public class ServerFactory extends HibernateFactory {
      * @param serverId the server ID
      */
     public static void updateServerNeededCache(long serverId) {
-        CallableMode m = ModeFactory.getCallableMode("System_queries", "update_needed_cache");
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES, "update_needed_cache");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("server_id", serverId);
 
@@ -376,7 +377,7 @@ public class ServerFactory extends HibernateFactory {
     }
 
     private static boolean insertServersToGroup(List<Long> serverIds, Long sgid) {
-        WriteMode m = ModeFactory.getWriteMode("System_queries", "add_servers_to_server_group");
+        WriteMode m = ModeFactory.getWriteMode(SYSTEM_QUERIES, "add_servers_to_server_group");
 
         Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
@@ -391,7 +392,7 @@ public class ServerFactory extends HibernateFactory {
     }
 
     private static void updateCurrentMembersOfServerGroup(Long sgid, int membersCount) {
-        WriteMode mode = ModeFactory.getWriteMode("System_queries", "update_current_members_of_server_group");
+        WriteMode mode = ModeFactory.getWriteMode(SYSTEM_QUERIES, "update_current_members_of_server_group");
 
         Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
@@ -401,7 +402,7 @@ public class ServerFactory extends HibernateFactory {
     }
 
     private static void updatePermissionsForServerGroup(Long sgid) {
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
                 "update_permissions_for_server_group");
         Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
@@ -430,7 +431,7 @@ public class ServerFactory extends HibernateFactory {
         in.put("entitlement_label", ent.getLabel());
         in.put("summary", summary);
 
-        WriteMode m = ModeFactory.getWriteMode("System_queries", "update_server_history_for_entitlement_event");
+        WriteMode m = ModeFactory.getWriteMode(SYSTEM_QUERIES, "update_server_history_for_entitlement_event");
         m.executeUpdate(in);
 
         log.debug("update_server_history_for_entitlement_event mode query executed.");
@@ -462,7 +463,7 @@ public class ServerFactory extends HibernateFactory {
     }
 
     private static boolean removeServersFromGroup(List<Long> serverIds, Long sgid) {
-        WriteMode m = ModeFactory.getWriteMode("System_queries", "delete_from_servergroup");
+        WriteMode m = ModeFactory.getWriteMode(SYSTEM_QUERIES, "delete_from_servergroup");
 
         Map<String, Object> params = new HashMap<>();
         params.put("sgid", sgid);
@@ -531,10 +532,11 @@ public class ServerFactory extends HibernateFactory {
      * @param systems the systems to check
      * @return list of servers pending reoot action
      */
+    @SuppressWarnings("unchecked")
     public static List<Long> findSystemsPendingRebootActions(List<SystemOverview> systems) {
         List<Long> sids = systems.stream().map(SystemOverview::getId).collect(Collectors.toList());
         Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery("Server.findServersPendingRebootAction");
+        Query<Long> query = session.getNamedQuery("Server.findServersPendingRebootAction");
         query.setParameter("systemIds", sids);
         return query.list();
     }
@@ -580,7 +582,7 @@ public class ServerFactory extends HibernateFactory {
      * @return list of system IDs.
      */
     public List<SystemIDInfo> lookupSystemsVisibleToUserWithEntitlement(User user, String entitlement) {
-        SelectMode mode = ModeFactory.getMode("System_queries", "systems_visible_to_user_with_entitlement", Map.class);
+        SelectMode mode = ModeFactory.getMode(SYSTEM_QUERIES, "systems_visible_to_user_with_entitlement", Map.class);
 
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
@@ -824,7 +826,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void delete(Server server) {
         HibernateFactory.getSession().evict(server);
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
                 "delete_server");
         Map<String, Object> in = new HashMap<>();
         in.put("server_id", server.getId());
@@ -833,7 +835,7 @@ public class ServerFactory extends HibernateFactory {
     }
 
     private static void updateServerPerms(Server server) {
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
                 "update_perms_for_server");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("sid", server.getId());
@@ -886,7 +888,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of Servers which are compatible with the given server.
      */
     public static List<Row> compatibleWithServer(User user, Server server) {
-        SelectMode m = ModeFactory.getMode("System_queries",
+        SelectMode m = ModeFactory.getMode(SYSTEM_QUERIES,
                 "compatible_with_server");
 
         Map<String, Object> params = new HashMap<>();
@@ -1195,7 +1197,7 @@ public class ServerFactory extends HibernateFactory {
      * @param tagName name of the tag
      */
     public static void addTagToSnapshot(Long snpId, Long orgId, String tagName) {
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
                 "add_tag_to_snapshot");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("snapshot_id", snpId);
@@ -1211,7 +1213,7 @@ public class ServerFactory extends HibernateFactory {
      * @param user User making the request
      */
     public static void bulkAddTagToSnapshot(String tagName, String setLabel, User user) {
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
                 "bulk_add_tag_to_snapshot");
         Map<String, Object> params = new HashMap<>();
         params.put("set_label", setLabel);
@@ -1227,8 +1229,7 @@ public class ServerFactory extends HibernateFactory {
      * @param tag snapshot tag
      */
     public static void removeTagFromSnapshot(Long serverId, SnapshotTag tag) {
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
-                "remove_tag_from_snapshot");
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES, "remove_tag_from_snapshot");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("server_id", serverId);
         inParams.put("tag_id", tag.getId());
@@ -1297,7 +1298,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> list(boolean fetchingVirtualGuests, boolean fetchingGroups) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<Server> criteria = builder.createQuery(Server.class);
-        Root r = criteria.from(Server.class);
+        Root<Server> r = criteria.from(Server.class);
         if (fetchingVirtualGuests) {
             r.fetch("virtualGuests", JoinType.LEFT);
         }
@@ -1305,8 +1306,7 @@ public class ServerFactory extends HibernateFactory {
             r.fetch("groups", JoinType.LEFT);
         }
         criteria.distinct(true);
-        return getSession().createQuery(criteria).getResultList().stream()
-                .collect(Collectors.toList());
+        return new ArrayList<>(getSession().createQuery(criteria).getResultList());
 
     }
 

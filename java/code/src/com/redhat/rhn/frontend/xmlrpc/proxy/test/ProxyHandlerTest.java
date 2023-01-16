@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.client.ClientCertificate;
-import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -163,7 +162,8 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
                 .listProxyClients(user, toIntExact(proxy.getId()));
 
         // verify client id is in results
-        Asserts.assertContains(clientIds, minion.getId());
+
+        assertTrue(clientIds.contains(minion.getId()));
     }
 
     @Test

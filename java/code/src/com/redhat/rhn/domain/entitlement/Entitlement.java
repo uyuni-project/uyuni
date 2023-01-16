@@ -25,7 +25,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * Entitlements
  */
-public abstract class Entitlement implements Comparable {
+public abstract class Entitlement implements Comparable<Entitlement> {
     private String label;
 
     /**
@@ -72,10 +72,8 @@ public abstract class Entitlement implements Comparable {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(final Object other) {
-        Entitlement castOther = (Entitlement) other;
-        return new CompareToBuilder().append(label, castOther.label)
-                .toComparison();
+    public int compareTo(final Entitlement other) {
+        return new CompareToBuilder().append(label, other.label).toComparison();
     }
 
     /**

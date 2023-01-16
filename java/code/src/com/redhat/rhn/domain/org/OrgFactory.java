@@ -36,6 +36,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.type.LongType;
 
 import java.sql.Types;
 import java.util.Collections;
@@ -128,7 +129,7 @@ public class OrgFactory extends HibernateFactory {
     public static Org lookupByName(String name) {
         Session session = HibernateFactory.getSession();
         return  (Org) session.getNamedQuery("Org.findByName")
-                .setString("name", name)
+                .setParameter("name", name)
                 .uniqueResult();
     }
 
@@ -142,7 +143,7 @@ public class OrgFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
 
         return (CustomDataKey) session.getNamedQuery("CustomDataKey.findByLabelAndOrg")
-                .setString("label", label)
+                .setParameter("label", label)
                 .setParameter("org", org)
                 //Retrieve from cache if there
                 .setCacheable(true)
@@ -158,7 +159,7 @@ public class OrgFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
 
         return (CustomDataKey) session.getNamedQuery("CustomDataKey.findById")
-                .setLong("id", cikid)
+                .setParameter("id", cikid, LongType.INSTANCE)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();
@@ -233,7 +234,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveUsers(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfActiveUsers")
-                .setLong(ORG_ID, orgIn.getId())
+                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
                 .uniqueResult();
 
     }
@@ -246,7 +247,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveSystems(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfSystems")
-                .setLong(ORG_ID, orgIn.getId())
+                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
                 .uniqueResult();
     }
 
@@ -258,7 +259,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getServerGroups(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfServerGroups")
-                .setLong(ORG_ID, orgIn.getId())
+                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
                 .uniqueResult();
     }
 
@@ -270,7 +271,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getConfigChannels(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfConfigChannels")
-                .setLong(ORG_ID, orgIn.getId())
+                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
                 .uniqueResult();
     }
 
@@ -310,7 +311,7 @@ public class OrgFactory extends HibernateFactory {
     public static TemplateString lookupTemplateByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (TemplateString) session.getNamedQuery("TemplateString.findByLabel")
-                .setString("label", label)
+                .setParameter("label", label)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();

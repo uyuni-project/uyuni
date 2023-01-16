@@ -287,13 +287,13 @@ public class UserManager extends BaseManager {
     @SuppressWarnings("unchecked")
     public static void updateServerGroupPermsForUser(User user, List<Long> serverGroupIds) {
         boolean needsToUpdateServerPerms = false;
-        List<Long> userServerGroupIds = (List<Long>) user.getAssociatedServerGroups()
-                .stream().map(sg -> ((ServerGroup) sg).getId()).collect(toList());
+        List<Long> userServerGroupIds = user.getAssociatedServerGroups()
+                .stream().map(sg -> sg.getId()).collect(toList());
 
         List<Long> serverGroupIdsToRevoke = userServerGroupIds.stream()
                 .filter(id -> !serverGroupIds.contains(id)).collect(toList());
         if (!serverGroupIdsToRevoke.isEmpty()) {
-            needsToUpdateServerPerms |= executeRevokeServerGroupPermsQuery(user.getId(), serverGroupIdsToRevoke);
+            needsToUpdateServerPerms = executeRevokeServerGroupPermsQuery(user.getId(), serverGroupIdsToRevoke);
         }
 
         List<Long> serverGroupIdsToGrant = serverGroupIds.stream()

@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class XPathLite {
 
-    private String[] names = null;
+    private String[] names;
 
     /**
      * Constructor
@@ -65,7 +65,8 @@ public class XPathLite {
      * @param doc XML doc to search
      * @return node if found, otherwise null
      */
-    public List selectChildren(Document doc) {
+    @SuppressWarnings("unchecked")
+    public List<Element> selectChildren(Document doc) {
         Element current = selectNode(doc);
         if (current != null) {
             return current.getChildren();
@@ -73,10 +74,10 @@ public class XPathLite {
         return Collections.emptyList();
     }
 
+    @SuppressWarnings("unchecked")
     private Element findChild(Element current, String name) {
-        List children = current.getChildren();
-        for (Object childIn : children) {
-            Element child = (Element) childIn;
+        List<Element> children = current.getChildren();
+        for (Element child : children) {
             if (child.getName().equals(name)) {
                 current = child;
                 break;

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.CachedStatement;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -125,13 +126,12 @@ public class PackageFactory extends HibernateFactory {
         params.put("name_id", nameId);
         params.put("evr_id", evrId);
         SelectMode m = ModeFactory.getMode("Channel_queries", "is_package_in_channel");
-        DataResult dr = m.execute(params);
+        DataResult<BooleanWrapper> dr = m.execute(params);
         if (dr.isEmpty()) {
             return false;
         }
 
-        BooleanWrapper bw = (BooleanWrapper) dr.get(0);
-        return bw.booleanValue();
+        return dr.get(0).booleanValue();
     }
 
     /**
@@ -322,7 +322,8 @@ public class PackageFactory extends HibernateFactory {
      * @param org the org to check for
      * @return a List of package objects that are not in any channel
      */
-    public static List lookupOrphanPackages(Org org) {
+    @SuppressWarnings("unchecked")
+    public static List<Package> lookupOrphanPackages(Org org) {
         return HibernateFactory.getSession().getNamedQuery("Package.listOrphans")
                 .setParameter("org", org).list();
     }
@@ -450,7 +451,7 @@ public class PackageFactory extends HibernateFactory {
             List<String> archLabels, Long relevantUserId, Long filterChannelId,
             String searchType) {
         Map<String, Object> params = new HashMap<>();
-        SelectMode m = null;
+        SelectMode m;
 
         if (searchType.equals(BaseSearchAction.ARCHITECTURE)) {
             if (!(archLabels != null && !archLabels.isEmpty())) {
@@ -497,7 +498,7 @@ public class PackageFactory extends HibernateFactory {
 
         // SelectMode.execute will batch the size properly and CachedStatement.execute
         // will create a comma separated string representation of the list of pids
-        DataResult result = m.execute(params, pids);
+        DataResult<PackageOverview> result = m.execute(params, pids);
         result.elaborate();
         return result;
     }
@@ -613,13 +614,12 @@ public class PackageFactory extends HibernateFactory {
      * @param packageIds list of package ids
      * @return dataresult(id, package_arch_id, org_package, org_access, shared_access)
      */
-    public static DataResult getPackagesChannelArchCompatAndOrgAccess(
+    public static DataResult<Row> getPackagesChannelArchCompatAndOrgAccess(
             Long orgId, Long channelId, List<Long> packageIds) {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
         params.put("channel_id", channelId);
-        SelectMode m = ModeFactory.getMode("Package_queries",
-                "channel_arch_and_org_access");
+        SelectMode m = ModeFactory.getMode("Package_queries", "channel_arch_and_org_access");
         return m.execute(params, packageIds);
     }
 
@@ -661,7 +661,7 @@ public class PackageFactory extends HibernateFactory {
         String mode = "has_package_available_with_name";
         SelectMode m =
                 ModeFactory.getMode("System_queries", mode);
-        DataResult toReturn = m.execute(params);
+        DataResult<Row> toReturn = m.execute(params);
         return !toReturn.isEmpty();
     }
 

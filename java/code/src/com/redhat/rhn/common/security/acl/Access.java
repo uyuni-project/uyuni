@@ -17,6 +17,7 @@ package com.redhat.rhn.common.security.acl;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -30,6 +31,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ChannelPerms;
+import com.redhat.rhn.frontend.dto.OrgProxyServer;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -124,7 +126,7 @@ public class Access extends BaseHandler {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("label", label);
         queryParams.put("org_id", user.getOrg().getId());
-        DataResult dr = m.execute(queryParams);
+        DataResult<Row> dr = m.execute(queryParams);
         return (!dr.isEmpty());
     }
 
@@ -141,7 +143,7 @@ public class Access extends BaseHandler {
                 "org_proxy_servers");
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("org_id", user.getOrg().getId());
-        DataResult dr = m.execute(queryParams);
+        DataResult<OrgProxyServer> dr = m.execute(queryParams);
         return (!dr.isEmpty());
     }
 

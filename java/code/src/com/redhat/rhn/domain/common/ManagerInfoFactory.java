@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -52,7 +53,7 @@ public class ManagerInfoFactory extends HibernateFactory {
     public static Optional<Date> getLastMgrSyncRefresh() {
         Map<String, Object> params = new HashMap<>();
         SelectMode m = ModeFactory.getMode("util_queries", "get_last_mgr_sync_refresh");
-        DataResult<Map> dr = m.execute(params);
+        DataResult<Row> dr = m.execute(params);
         if (!dr.isEmpty()) {
             return Optional.of((Date) dr.get(0).get("last_mgr_sync_refresh"));
         }

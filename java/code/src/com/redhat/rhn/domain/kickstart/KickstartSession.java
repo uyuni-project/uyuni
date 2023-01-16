@@ -64,7 +64,7 @@ public class KickstartSession {
     private Server newServer;
     private Server hostServer;
     private Profile serverProfile;
-    private Set history;
+    private Set<KickstartSessionHistory> history;
     private String clientIp;
 
     private Date created;
@@ -427,14 +427,14 @@ public class KickstartSession {
     /**
      * @return the history
      */
-    public Set getHistory() {
+    public Set<KickstartSessionHistory> getHistory() {
         return history;
     }
 
     /**
      * @param historyIn the history to set
      */
-    public void setHistory(Set historyIn) {
+    public void setHistory(Set<KickstartSessionHistory> historyIn) {
         this.history = historyIn;
     }
 
@@ -448,9 +448,9 @@ public class KickstartSession {
             while (parentAction.getPrerequisite() != null) {
                 parentAction = parentAction.getPrerequisite();
             }
-            if (this.currentServer() != null) {
-                ActionFactory.removeActionForSystem(
-                    parentAction.getId(), this.currentServer().getId());
+            Server currentServer = this.currentServer();
+            if (currentServer != null) {
+                ActionFactory.removeActionForSystem(parentAction.getId(), currentServer.getId());
             }
         }
         this.setState(KickstartFactory.SESSION_STATE_FAILED);
@@ -483,7 +483,7 @@ public class KickstartSession {
         hist.setMessage(messageIn);
 
         if (this.history == null) {
-            this.history = new HashSet();
+            this.history = new HashSet<>();
         }
         this.history.add(hist);
     }
@@ -532,15 +532,12 @@ public class KickstartSession {
     public String getMostRecentHistory() {
         if (this.history != null && !this.history.isEmpty()) {
 
-            SortedMap sorted = new TreeMap();
-            for (Object oIn : this.history) {
-                KickstartSessionHistory hist =
-                        (KickstartSessionHistory) oIn;
+            SortedMap<Long, KickstartSessionHistory> sorted = new TreeMap<>();
+            for (KickstartSessionHistory hist : this.history) {
                 sorted.put(hist.getId(), hist);
             }
 
-            KickstartSessionHistory hist =
-                (KickstartSessionHistory) sorted.get(sorted.lastKey());
+            KickstartSessionHistory hist = sorted.get(sorted.lastKey());
             return hist.getMessage();
         }
         return null;
