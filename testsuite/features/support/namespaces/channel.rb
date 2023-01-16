@@ -4,7 +4,7 @@
 # Channel namespace
 class NamespaceChannel
   ##
-  # This function initializes the NamespaceChannelSoftware class.
+  # Initializes the NamespaceChannelSoftware class.
   #
   # Args:
   #   api_test: This is the test object that is passed in from the test script.
@@ -23,7 +23,7 @@ class NamespaceChannel
   end
 
   ##
-  # It checks if the label is a valid channel.
+  # Checks if a channel is valid, based on its label.
   #
   # Args:
   #   label: The label of the channel you want to verify.
@@ -51,39 +51,39 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # Create a new repository
+  # Creates a new repository.
   #
   # Args:
   #   label: The label of the repository.
   #   name: The name of the repository.
   #   summary: A short description of the repository.
-  #   arch: The architecture of the package.
+  #   arch: The architecture of the packages in the repo.
   #   parent: The parent of the new repository. This is a Repository object.
   def create(label, name, summary, arch, parent)
     @test.call('channel.software.create', sessionKey: @test.token, label: label, name: name, summary: summary, archLabel: arch, parentLabel: parent)
   end
 
   ##
-  # Delete the node with the given label.
+  # Deletes the repository with the given label.
   #
   # Args:
-  #   label: The label of the button to delete.
+  #   label: The label of the repository to delete.
   def delete(label)
     @test.call('channel.software.delete', sessionKey: @test.token, channelLabel: label)
   end
 
   ##
-  # `create_repo` creates a new repository.
+  # Creates a new repository, with a given label and URL.
   #
   # Args:
-  #   label: The name of the repo.
+  #   label: The name of the repository.
   #   url: The URL of the repository.
   def create_repo(label, url)
     @test.call('channel.software.createRepo', sessionKey: @test.token, label: label, type: 'yum', url: url)
   end
 
   ##
-  # Associate a repo with a channel
+  # Associates a repository with a channel.
   #
   # Args:
   #   channel_label: The label of the channel you want to associate the repo with.
@@ -93,11 +93,7 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # Remove a repository from the list of repositories to be processed.
-  #
-  # The first line of the function is a comment.  It's a comment because it starts with a `#` character.  Comments are
-  # ignored by the Ruby interpreter.  They're for humans to read.  The comment is a one sentence summary of the function.
-  # It's a good idea to write a comment like this for every function you write
+  # Removes a repository from the list of repositories to be processed.
   #
   # Args:
   #   label: The label of the repo you want to remove.
@@ -111,11 +107,11 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # Given a child channel and a parent channel, return true if the child channel is a child of the parent channel.
+  # Verifies if a given channel is a child of the given parent channel.
   #
   # Args:
   #   child: The channel you want to check if it's a child of the parent channel.
-  #   parent: the parent channel
+  #   parent: The possible parent channel.
   def parent_channel?(child, parent)
     channel = @test.call('channel.software.getDetails', sessionKey: @test.token, channelLabel: child)
     channel['parent_channel_label'] == parent

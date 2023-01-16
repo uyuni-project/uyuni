@@ -7,7 +7,7 @@ require 'faraday'
 class HttpClient
   ##
   #
-  # This function creates a new HTTP client using the Faraday library.
+  # Creates a new HTTP client using the Faraday library.
   #
   # Args:
   #   host: The hostname of the server you want to connect to.

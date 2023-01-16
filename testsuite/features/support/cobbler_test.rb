@@ -45,7 +45,7 @@ class CobblerTest
   end
 
   ##
-  # It returns a list of the names of the systems, profiles, or distros in the database
+  # Returns a list of the names of the systems, profiles, or distros in the database.
   #
   # Args:
   #   what: The type of list you want to get.  Valid values are:
@@ -63,7 +63,7 @@ class CobblerTest
   end
 
   ##
-  # It creates a new distribution, sets the name, kernel, initrd, and breed, and then saves the distribution
+  # Creates a new distribution with a specific name, kernel, initrd, and breed, and saves it.
   #
   # Args:
   #   name: The name of the distribution.
@@ -85,7 +85,7 @@ class CobblerTest
   end
 
   ##
-  # It creates a new profile, modifies it, and saves it
+  # Creates a new profile, modifies it, and saves it.
   #
   # Args:
   #   name: The name of the profile.
@@ -143,7 +143,7 @@ class CobblerTest
   # Removes a system from the Spacewalk server.
   #
   # The first thing this function does is check to see if the system exists. If it doesn't, it raises an error. If it
-  # does, it calls the remove_system function on the Spacewalk server. If that fails, it raises an error
+  # does, it calls the remove_system function on the Spacewalk server. If that fails, it raises an error.
   #
   # Args:
   #   name: The name of the system to be removed.
@@ -207,7 +207,7 @@ class CobblerTest
   end
 
   ##
-  # It returns true if the value of the key in the hash is equal to the value passed in
+  # Checks if a specific object with a certain key and value exists in the database.
   #
   # Args:
   #   what: The name of the object you want to check for.
@@ -226,7 +226,7 @@ class CobblerTest
   # Retrieves an object from the server based on its type, name and key.
   #
   # Args:
-  #   what: the type of object you want to get. This can be one of the following:
+  #   what: The type of object you want to get. This can be one of the following: # TODO
   #   name: The name of the object you want to get the ID of.
   #   key: The key to look for in the hash.
   def get(what, name, key)

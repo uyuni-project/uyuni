@@ -20,7 +20,7 @@ class NamespaceApi
   end
 
   ##
-  # List all available api calls grouped by namespace.
+  # Returns the amount of available API calls.
   def get_count_of_api_call_list_groups
     call_list = @test.call('api.getApiCallList', sessionKey: @test.token)
     call_list.nil? ? 0 : call_list.length

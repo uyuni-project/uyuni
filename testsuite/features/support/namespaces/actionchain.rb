@@ -134,7 +134,7 @@ class NamespaceActionchain
   end
 
   ##
-  # Schedule a chain to run at a specific time.
+  # Schedules a chain to run at a specific time.
   #
   # Args:
   #   label: The label of the chain you want to schedule.

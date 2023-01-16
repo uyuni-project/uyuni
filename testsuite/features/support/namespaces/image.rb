@@ -13,7 +13,7 @@ class NamespaceImage
   attr_reader :store
 
   ##
-  # This function deletes an image
+  # Deletes an image based on its ID.
   #
   # Args:
   #   imageid: The ID of the image you want to delete.
@@ -22,7 +22,7 @@ class NamespaceImage
   end
 
   ##
-  # This function takes an imageid as an argument and returns the details of the image
+  # Gets an image's details based on its ID.
   #
   # Args:
   #   imageid: The ID of the image you want to get details for.
@@ -31,20 +31,20 @@ class NamespaceImage
   end
 
   ##
-  # This function schedules an image build for a given profile, version, build host, and date
+  # This function schedules an image build for a given profile, version, build host, and date.
   #
   # Args:
   #   profile_label: The label of the profile you want to build.
   #   version_build: The version of the image you want to build.
   #   build_hostid: This is the ID of the build host you want to use. You can get this by running the following command:
   #   date: The date and time you want the build to start.  This is in the format of YYYY-MM-DD HH:MM:SS.  For example, if
-  # you wanted to start the build at 5:00 PM on January 1, 2015, you would use the following:
+  # you wanted to start the build at 5:00 PM on January 1, 2015, you would use the following: 2015-01-01 17:00:00.
   def schedule_image_build(profile_label, version_build, build_hostid, date)
     @test.call('image.scheduleImageBuild', sessionKey: @test.token, profileLabel: profile_label, version: version_build, buildHostId: build_hostid, earliestOccurrence: date)
   end
 
   ##
-  # Returns a list of images
+  # Returns a list of images.
   def list_images
     @test.call('image.listImages', sessionKey: @test.token)
   end
@@ -85,7 +85,7 @@ class NamespaceImageProfile
   end
 
   ##
-  # Sets custom values for a given label.
+  # Sets custom values for an image profile, based on its label.
   #
   # Args:
   #   label: The label of the image profile
@@ -126,7 +126,7 @@ class NamespaceImageProfile
   end
 
   ##
-  # This function will return the details of the profile with the label you pass in.
+  # Returns the details of an image profile based on its label.
   #
   # Args:
   #   label: The label of the image profile you want to get details for.
@@ -135,7 +135,7 @@ class NamespaceImageProfile
   end
 
   ##
-  # It sets the details of the label and values.
+  # Sets the label and values for an image profile.
   #
   # Args:
   #   label: The label for the details.
@@ -157,7 +157,7 @@ class NamespaceImageStore
   end
 
   ##
-  # Create a new image store.
+  # Creates a new image store.
   #
   # Args:
   #   label: The name of the image store.
@@ -190,7 +190,7 @@ class NamespaceImageStore
   end
 
   ##
-  # Get the details of an image store.
+  # Gets the details of an image store.
   #
   # Args:
   #   label: The name of the image store.
@@ -199,7 +199,7 @@ class NamespaceImageStore
   end
 
   ##
-  # Set the details of an image store.
+  # Sets the details of an image store.
   #
   # Args:
   #   label: The name of the image store.

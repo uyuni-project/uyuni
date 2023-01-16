@@ -40,7 +40,7 @@ class NamespaceConfigchannel
   end
 
   ##
-  # Get a file revision of a configuration channel.
+  # Gets a file revision of a configuration channel.
   #
   # Args:
   #   channel: The configuration channel name.
@@ -63,20 +63,20 @@ class NamespaceConfigchannel
   end
 
   ##
-  # It creates a new configuration channel with a path info.
+  # Creates a new configuration channel with path information.
   #
   # Args:
   #   label: The label of the configuration channel.
   #   name: The name of the configuration channel.
   #   description: A short description of the configuration channel.
   #   type: TODO
-  #   info: A path info
+  #   info: Path information.
   def create_with_pathinfo(label, name, description, type, info)
     @test.call('configchannel.create', sessionKey: @test.token, label: label, name: name, description: description, type: type, pathInfo: info)
   end
 
   ##
-  # Creates or update a file in a channel
+  # Creates or updates a file in a channel.
   #
   # Args:
   #   channel: The configuration channel to create or update the file in.
@@ -96,7 +96,7 @@ class NamespaceConfigchannel
   end
 
   ##
-  # Deploy all systems to the given configuration channel.
+  # Deploys all systems to the given configuration channel.
   #
   # Args:
   #   channel: The configuration channel to deploy to.

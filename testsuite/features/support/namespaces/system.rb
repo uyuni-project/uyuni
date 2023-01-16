@@ -32,13 +32,13 @@ class NamespaceSystem
   end
 
   ##
-  # List all systems in the system
+  # Lists all systems in the server.
   def list_systems
     @test.call('system.listSystems', sessionKey: @test.token)
   end
 
   ##
-  # It searches for a name in the system
+  # Searches for a system based on its name.
   #
   # Args:
   #   name: The name of the system you want to search for.
@@ -47,7 +47,7 @@ class NamespaceSystem
   end
 
   ##
-  # Lists all the packages that can be installed on a server
+  # Lists all the packages that can be installed on a server.
   #
   # Args:
   #   server: The server ID of the server you want to list the packages for.
@@ -56,21 +56,21 @@ class NamespaceSystem
   end
 
   ##
-  # List of packages that are upgradable on a given server
+  # Lists the packages that are upgradable on a given server.
   #
   # Args:
-  #   server: The server ID
+  #   server: The server ID.
   def list_latest_upgradable_packages(server)
     @test.call('system.listLatestUpgradablePackages', sessionKey: @test.token, sid: server)
   end
 
   ##
-  # Bootstrap a system
+  # Bootstraps a system, given its hostname, activation key and whether it's SSH managed or not.
   #
   # Args:
-  #   host: The hostname of the system to bootstrap
+  #   host: The hostname of the system to bootstrap.
   #   activation_key: The activation key to use for the system.
-  #   salt_ssh: true/false
+  #   salt_ssh: Boolean value determining if the system is SSH managed or not.
   def bootstrap_system(host, activation_key, salt_ssh)
     if $proxy.nil?
       @test.call('system.bootstrap', sessionKey: @test.token, host: host, sshPort: 22, sshUser: 'root', sshPassword: 'linux', activationKey: activation_key, saltSSH: salt_ssh)
@@ -82,12 +82,12 @@ class NamespaceSystem
   end
 
   ##
-  # Schedules a highstate to be applied to a server at a given date
+  # Schedules a highstate to be applied to a server at a given date.
   #
   # Args:
   #   server: The server ID of the server you want to schedule the highstate on.
   #   date: The date and time you want the highstate to be applied.
-  #   test: true or false
+  #   test: Boolean that determines if the highstate is run on test mode or not.
   def schedule_apply_highstate(server, date, test)
     @test.call('system.scheduleApplyHighstate', sessionKey: @test.token, sid: server, earliestOccurrence: date, test: test)
   end
@@ -103,7 +103,7 @@ class NamespaceSystem
   end
 
   ##
-  # Schedule a reboot for a server on a specific date
+  # Schedules a reboot for a server on a specific date.
   #
   # Args:
   #   server: The server ID you want to reboot.
@@ -113,7 +113,7 @@ class NamespaceSystem
   end
 
   ##
-  # Schedules a script to run on a server at a specified date and time
+  # Schedules a script to run on a server at a specified date and time.
   #
   # Args:
   #   server: The server ID of the server you want to run the script on.
@@ -122,7 +122,7 @@ class NamespaceSystem
   #   timeout: The amount of time in seconds that the script is allowed to run before it is killed.
   #   script: The script to run.
   #   date: The date and time you want the script to run.  This is in the format of YYYY-MM-DD HH:MM:SS.  For example, to
-  # run the script at 11:30pm on December 31st, 2013, you would use 2013-12-31 23
+  # run the script at 11:30pm on December 31st, 2013, you would use 2013-12-31 23:30:00.
   def schedule_script_run(server, uid, gid, timeout, script, date)
     @test.call('system.scheduleScriptRun', sessionKey: @test.token, sid: server, username: uid, groupname: gid, timeout: timeout, script: script, earliestOccurrence: date)
   end
@@ -136,7 +136,7 @@ class NamespaceSystem
   #   koptions:
   #   comment: A comment about the system record.
   #   netdevices: This is a hash of the network devices that you want to use.  The key is the device name, and the value
-  # is the IP address.  For example:
+  # is the IP address.  For example: #TODO
   def create_system_record(name, kslabel, koptions, comment, netdevices)
     @test.call('system.createSystemRecord', sessionKey: @test.token, systemName: name, ksLabel: kslabel, kOptions: koptions, comment: comment, netDevices: netdevices)
   end
@@ -147,7 +147,7 @@ class NamespaceSystem
   # Args:
   #   name: The name of the system profile.
   #   data: This is the data that will be used to create the system profile. It is a JSON object that contains the
-  # following keys:
+  # following keys: #TODO
   def create_system_profile(name, data)
     @test.call('system.createSystemProfile', sessionKey: @test.token, systemName: name, data: data)
   end
@@ -159,7 +159,7 @@ class NamespaceSystem
   end
 
   ##
-  # This function will obtain a reactivation key for a server.
+  # Gets the reactivation key of a server.
   #
   # Args:
   #   server: The server ID of the server you want to reactivate.
@@ -180,7 +180,7 @@ class NamespaceSystemConfig
   end
 
   ##
-  # Remove the specified channels from the specified servers.
+  # Removes the specified channels from the specified servers.
   #
   # Args:
   #   servers: An array of server IDs
@@ -215,7 +215,7 @@ end
 # System Provisioning namespace
 class NamespaceSystemProvisioning
   ##
-  # This function initializes the powermanagement namespace
+  # Initializes the Power Management namespace.
   #
   # Args:
   #   api_test: This is the object that is passed in from the test script. It contains the methods that are used to make
@@ -274,7 +274,7 @@ class NamespaceSystemProvisioningPowermanagement
   end
 
   ##
-  # Power on a server.
+  # Powers on a server.
   #
   # Args:
   #   server: The server ID of the server you want to power on.
@@ -283,7 +283,7 @@ class NamespaceSystemProvisioningPowermanagement
   end
 
   ##
-  # Power off a server.
+  # Powers off a server.
   #
   # Args:
   #   server: The server ID of the server you want to power off.

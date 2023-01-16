@@ -28,7 +28,7 @@ class NamespaceKickstartTree
   end
 
   ##
-  # Deletes a Kickstart tree and all profiles associated with it
+  # Deletes a Kickstart tree and all profiles associated with it.
   #
   # Args:
   #   distro: The name of the distribution you want to delete.

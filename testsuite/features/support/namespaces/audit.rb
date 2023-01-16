@@ -13,7 +13,7 @@ class NamespaceAudit
   end
 
   ##
-  # List of systems that are affected by a given CVE.
+  # Lists the systems that are affected by a given CVE.
   #
   # Args:
   #   cve_identifier: The CVE identifier for the vulnerability you want to check.
