@@ -749,8 +749,8 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I should not see a warning sign$/) do
-  warning = "//*[contains(@class, \"fa fa-li fa-exclamation-triangle text-warning\")]"
-  raise "Errors detected in the Products Catalog" if page.has_xpath?(warning, wait: 5)
+  warning = '//*[contains(@class, \"fa fa-li fa-exclamation-triangle text-warning\")]'
+  raise 'Errors detected in the Products Catalog' if page.has_xpath?(warning, wait: 5)
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
