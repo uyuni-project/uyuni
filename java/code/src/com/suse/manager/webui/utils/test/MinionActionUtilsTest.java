@@ -27,7 +27,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
@@ -71,9 +70,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     public void testCleanupScriptActions() throws Exception {
 
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
-        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils, saltKeyUtils);
-        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
-                saltUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltApi, saltUtils);
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
@@ -95,9 +92,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     @Test
     public void testCleanupScriptWithoutAction() throws Exception {
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
-        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils, saltKeyUtils);
-        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
-                saltUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltApi, saltUtils);
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
         Path scriptFile = Files.createFile(saltUtils.getScriptPath(123456L));
 
@@ -112,9 +107,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     @Test
     public void testCleanupScriptActionsPickedUp() throws Exception {
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
-        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils, saltKeyUtils);
-        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
-                saltUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltApi, saltUtils);
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);

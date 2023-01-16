@@ -35,7 +35,6 @@ import java.util.Objects;
  */
 public class SatConfigFactory extends HibernateFactory {
 
-    private static SatConfigFactory singleton = new SatConfigFactory();
     private static final Logger LOG = LogManager.getLogger(SatConfigFactory.class);
 
     public static final String EXT_AUTH_DEFAULT_ORGID = "extauth_default_orgid";

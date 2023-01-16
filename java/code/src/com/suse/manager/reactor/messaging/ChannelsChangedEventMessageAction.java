@@ -50,8 +50,6 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
 
     private static Logger log = LogManager.getLogger(ChannelsChangedEventMessageAction.class);
 
-    // Reference to the SaltService instance
-    private final SystemQuery systemQuery;
     private final SaltApi saltApi;
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
@@ -59,11 +57,9 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
     /**
      * Constructor taking a {@link SystemQuery} instance.
      *
-     * @param systemQueryIn systemQuery instance for gathering data from a system.
      * @param saltApiIn Salt API instance to use
      */
-    public ChannelsChangedEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn) {
-        systemQuery = systemQueryIn;
+    public ChannelsChangedEventMessageAction(SaltApi saltApiIn) {
         saltApi = saltApiIn;
     }
 

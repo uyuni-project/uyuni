@@ -41,12 +41,6 @@ public class SUSEProductSet {
     // A list of labels of missing channels
     private List<String> missingChannels = null;
 
-    private Boolean isEveryChannelSynced = true;
-
-    private String missingChannelsMessage = "";
-
-    private String serializedProductIDs = "";
-
     // when calculating a target product set we ignore these products if the
     // baseproduct version is less than 15.
     // sle-manager-tools: The tools channel is treated as part of the base product
@@ -210,13 +204,6 @@ public class SUSEProductSet {
     }
 
     /**
-     * @param isEveryChannelSyncedIn The isEveryChannelSynced to set.
-     */
-    public void setIsEveryChannelSynced(Boolean isEveryChannelSyncedIn) {
-        this.isEveryChannelSynced = isEveryChannelSyncedIn;
-    }
-
-    /**
      * Return a single String with channles that are not synced
      * @return the missingChannels single String
      */
@@ -226,24 +213,10 @@ public class SUSEProductSet {
     }
 
     /**
-     * @param missingChannelsMessageIn The missingChannelsMessage to set.
-     */
-    public void setMissingChannelsMessage(String missingChannelsMessageIn) {
-        this.missingChannelsMessage = missingChannelsMessageIn;
-    }
-
-    /**
      * @return Returns the serializedProductIds.
      */
     public String getSerializedProductIDs() {
         return serializeProductIDs(getProductIDs());
-    }
-
-    /**
-     * @param serializedProductIDsIn The serializedProductIDs to set.
-     */
-    public void setSerializedProductIDs(String serializedProductIDsIn) {
-        this.serializedProductIDs = serializedProductIDsIn;
     }
 
     /**

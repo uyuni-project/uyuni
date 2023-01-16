@@ -51,7 +51,6 @@ public class DataSetManipulator {
 
     private final int pageSize;
     private List dataset;
-    private ListFilter filter;
     private String filterBy;
     private String filterValue;
     private int totalDataSetSize;
@@ -106,7 +105,6 @@ public class DataSetManipulator {
                 filterValue == null || filterValue.isEmpty()) {
             return;
         }
-        filter = f;
         HtmlTag filterClass = new HtmlTag("input");
         filterClass.setAttribute("type", "hidden");
         filterClass.setAttribute("name", ListTagUtil.makeFilterClassLabel(uniqueName));

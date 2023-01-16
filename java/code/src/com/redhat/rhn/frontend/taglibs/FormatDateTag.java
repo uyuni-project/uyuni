@@ -56,7 +56,6 @@ public class FormatDateTag extends TagSupport {
 
     private static final String FROM = "from";
     private static final String CALENDAR = "calendar";
-    private static final String NONE = "none";
 
     protected Date value;
     protected Date reference;

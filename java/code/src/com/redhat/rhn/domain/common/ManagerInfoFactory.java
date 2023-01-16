@@ -34,7 +34,6 @@ import java.util.Optional;
  */
 public class ManagerInfoFactory extends HibernateFactory {
 
-    private static ManagerInfoFactory singleton = new ManagerInfoFactory();
     private static final Logger LOG = LogManager.getLogger(ManagerInfoFactory.class);
 
     private ManagerInfoFactory() {

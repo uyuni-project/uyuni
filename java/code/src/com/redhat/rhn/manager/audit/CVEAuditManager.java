@@ -86,10 +86,6 @@ public class CVEAuditManager {
     private static Map<Long, List<SUSEProductDto>> sourceProductCache =
             new HashMap<>();
 
-    private static final String KERNEL_DEFAULT_NAME = "kernel-default";
-
-    private static final String KERNEL_XEN_NAME = "kernel-xen";
-
     /** Magic number signalling a patch present in a product migration channel */
     private static final int SUCCESSOR_PRODUCT_RANK_BOUNDARY = 50_000;
     /** Magic number signalling a patch present in a product predecessor channel */
