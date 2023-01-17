@@ -1,26 +1,27 @@
+- Integrate the containerized proxy into the usual rel-eng workflow
+
 -------------------------------------------------------------------
-Mon Jan 23 07:34:04 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+Mon Jan 23 07:33:53 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 2023.01
 
 -------------------------------------------------------------------
-Wed Dec 14 13:53:42 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+Wed Dec 14 13:53:28 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 2022.12
 
 -------------------------------------------------------------------
-Fri Nov 18 14:17:05 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+Fri Nov 18 14:16:37 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
-- Update the image version to 2022.11:
-  * Update the squid.pid path to /run/squid.squid.pid (bsc#1204948)
+- Update the image version to 2022.11
 
 -------------------------------------------------------------------
-Wed Sep 28 07:44:33 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+Wed Sep 28 07:44:25 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 2022.10
 
 -------------------------------------------------------------------
-Wed Jul 27 12:21:32 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+Wed Jul 27 12:21:59 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 4.3.1
   * Set MIT license for Dockerfile
@@ -31,27 +32,21 @@ Tue May 24 13:27:51 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 - Change the default base image to 15.4
 
 -------------------------------------------------------------------
-Fri May 13 07:33:58 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+Fri May 13 07:33:42 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 4.3.0
 
 -------------------------------------------------------------------
-Thu May  5 15:20:28 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+Thu May  5 15:19:54 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 4.3.0-public-rc
 
 -------------------------------------------------------------------
-Mon Apr 11 08:50:55 UTC 2022 - Dario Leidi <dleidi@suse.com>
+Mon Apr 11 08:50:35 UTC 2022 - Dario Leidi <dleidi@suse.com>
 
 - Align the image version to the product one
 
 -------------------------------------------------------------------
-Fri Apr  1 20:37:42 UTC 2022 - Ondrej Holecek <oholecek@suse.com>
+Tue Mar 15 14:40:57 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
 
-- Adapt caching for big images and initrd/kernel files
-  Part of saltboot containerization workflow
-
--------------------------------------------------------------------
-Tue Mar 15 14:42:01 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
-
-- Initial version 
+- Initial version

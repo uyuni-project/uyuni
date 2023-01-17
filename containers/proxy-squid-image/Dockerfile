@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-squid:latest uyuni/proxy-squid:%PKG_VERSION% uyuni/proxy-squid:%PKG_VERSION%.%RELEASE%
+#!BuildTag: uyuni/proxy-squid:latest uyuni/proxy-squid:4.3.3-1 uyuni/proxy-squid:4.3.3-1.%RELEASE%
 
 ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS base
@@ -54,9 +54,10 @@ LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy co
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%PKG_VERSION%"
+LABEL org.opencontainers.image.name=uyuni-proxy-squid-image
+LABEL org.opencontainers.image.version=4.3.3-1
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-squid:%PKG_VERSION%.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-squid:4.3.3-1.%RELEASE%"
 # endlabelprefix
 
 # Squid
