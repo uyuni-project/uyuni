@@ -142,6 +142,26 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Rocky Linux 9" product has been added
 
+@alma9_minion
+  Scenario: Add Alma Linux 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "AlmaLinux 9 x86_64" as the filtered product description
+    And I select "AlmaLinux 9 x86_64" as a product
+    Then I should see the "AlmaLinux 9 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "AlmaLinux 9 x86_64" product has been added
+
+@oracle9_minion
+  Scenario: Add Oracle Linux 9
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "Oracle Linux 9" as the filtered product description
+    And I select "Oracle Linux 9" as a product
+    Then I should see the "Oracle Linux 9" selected
+    When I click the Add Product button
+    And I wait until I see "Oracle Linux 9" product has been added
+
 @rhel9_minion
   Scenario: Add RHEL and Liberty 9
     When I follow the left menu "Admin > Setup Wizard > Products"

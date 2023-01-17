@@ -209,6 +209,26 @@ Before('@rhel9_ssh_minion') do
   skip_this_scenario unless $rhel9_ssh_minion
 end
 
+Before('@rocky9_ssh_minion') do
+  skip_this_scenario unless $rocky9_ssh_minion
+end
+
+Before('@alma9_minion') do
+  skip_this_scenario unless $alma9_minion
+end
+
+Before('@alma9_ssh_minion') do
+  skip_this_scenario unless $alma9_ssh_minion
+end
+
+Before('@oracle9_minion') do
+  skip_this_scenario unless $oracle9_minion
+end
+
+Before('@oracle9_ssh_minion') do
+  skip_this_scenario unless $oracle9_ssh_minion
+end
+
 Before('@ubuntu1804_minion') do
   skip_this_scenario unless $ubuntu1804_minion
 end
@@ -374,6 +394,15 @@ end
 
 Before('@skip_for_traditional') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'client'
+end
+
+# TODO: remove these 2 "skip" tags when Rocky and Alma have patches available.
+Before('@skip_for_alma9') do
+  skip_this_scenario if $alma9_minion || $alma9_ssh_minion
+end
+
+Before('@skip_for_rocky9') do
+  skip_this_scenario if $rocky9_minion || $rocky_ssh_minion
 end
 
 # do some tests only if we have SCC credentials
