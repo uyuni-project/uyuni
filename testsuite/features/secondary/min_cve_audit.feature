@@ -89,6 +89,7 @@ Feature: CVE Audit on SLE Salt Minions
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
+    And I wait until I see "milkyway-dummy-2345" text, refreshing the page
     And I check "milkyway-dummy-2345" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
