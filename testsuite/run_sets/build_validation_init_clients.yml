@@ -11,6 +11,11 @@
 - features/build_validation/init_clients/rhel9_minion.feature
 - features/build_validation/init_clients/rhel9_ssh_minion.feature
 
+- features/build_validation/init_clients/alma9_minion.feature
+- features/build_validation/init_clients/alma9_ssh_minion.feature
+- features/build_validation/init_clients/oracle9_minion.feature
+- features/build_validation/init_clients/oracle9_ssh_minion.feature
+
 - features/build_validation/init_clients/sle12sp4_minion.feature
 - features/build_validation/init_clients/sle12sp4_ssh_minion.feature
 - features/build_validation/init_clients/sle12sp5_minion.feature
