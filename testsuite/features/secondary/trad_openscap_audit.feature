@@ -29,7 +29,7 @@ Feature: OpenSCAP audit of traditional client
 
   Scenario: Check results of the audit job SUSE profile
     When I follow "Audit" in the content area
-    And I follow first "xccdf_org.open-scap_testresult_Default"
+    And I follow first "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_standard"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "Default" text
     And I should see a "XCCDF Rule Results" text
