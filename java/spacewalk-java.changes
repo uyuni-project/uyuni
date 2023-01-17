@@ -1,3 +1,4 @@
+- Fix reconnection of postgres event stream
 - fix NumberFormatException when syncing ubuntu errata (bsc#1207883)
 - Fix duplicate keys in image tables (bsc#1207799)
 - Fix CLM environments UI for environment labels containing dots (bsc#1207838)
