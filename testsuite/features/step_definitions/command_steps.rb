@@ -367,12 +367,10 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
       # solv is the last file to be written when the server synchronizes a channel,
       # therefore we wait until it exist
       _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
-      if code.zero?
         # We want to check if no .new files exists.
         # On a re-sync, the old files stay, the new one have this suffix until it's ready.
-        _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/*.new", check_errors: false)
-        break unless new_code.zero?
-      end
+      _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/*.new", check_errors: false)
+      break unless !code.zero? && new_code.zero?
       log "I am still waiting for '#{channel}' channel to be synchronized."
       sleep 10
     end
