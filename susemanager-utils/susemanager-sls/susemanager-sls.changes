@@ -1,3 +1,4 @@
+- Add missing transactional_update.conf for SLE Micro
 - filter out libvirt engine events (bsc#1206146)
 - Improve _mgractionchains.conf logs
 - install SUSE Liberty v2 GPG key
