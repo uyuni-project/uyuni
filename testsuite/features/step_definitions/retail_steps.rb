@@ -1,6 +1,9 @@
 # Copyright 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+### This file contains the definitions for all steps concerning the different
+### kinds of minions as well as PXE boot and Retail.
+
 # This function returns the net prefix, caching it
 def net_prefix
   $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil?
