@@ -89,7 +89,7 @@ namespace :utils do
     clients.reject! { |client| client.include?('monitoring_server') }
     clients.each do |client|
       Rake::Task['utils:generate_feature'].invoke(
-        'features/build_validation/add_custom_repositories/add_maintenance_update_repository.template',
+        'features/build_validation/add_custom_repositories/add_maintenance_update_repositories.template',
         File.basename(client,'.feature'),
         'features/build_validation/add_custom_repositories',
         'run_sets/build_validation_add_custom_repositories.yml'
@@ -212,7 +212,7 @@ namespace :jenkins do
       Rake::Task['jenkins:generate_rake_run_step'].invoke("_add_activation_key",
                                                           File.basename(minion,".feature"),
                                                           "features/build_validation/add_activation_keys",
-                                                          "run_sets/build_validation_add_activation_keys_#{minion}.yml")
+                                                          "run_sets/build_validation_add_activation_key_#{minion}.yml")
       Rake::Task['jenkins:generate_rake_run_step'].reenable
     end
   end
@@ -228,7 +228,7 @@ namespace :jenkins do
         Rake::Task['jenkins:generate_rake_run_step'].invoke("_smoke_tests",
                                                             File.basename(minion,".feature"),
                                                             "features/build_validation/smoke_tests",
-                                                            "run_sets/build_validation_smoke_test_#{minion}.yml")
+                                                            "run_sets/build_validation_smoke_tests_#{minion}.yml")
         Rake::Task['jenkins:generate_rake_run_step'].reenable
       end
     end
