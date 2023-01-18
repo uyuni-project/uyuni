@@ -112,6 +112,21 @@ namespace :utils do
     end
   end
 
+  desc 'Generate feature to create bootstrap repositories for all the clients'
+  task :generate_create_bootstrap_repositories_features do
+    clients = Rake::FileList['features/build_validation/init_clients/*.feature']
+    clients.reject! { |client| client.include? 'ssh'}
+    clients.reject! { |client| client.include? 'monitoring_server' }
+    clients.reject! { |client| (client.include? 'buildhost') || (client.include? 'terminal') }
+    clients.each do |client|
+      Rake::Task['utils:generate_feature'].invoke('features/build_validation/create_bootstrap_repositories/create_bootstrap_repository.template',
+                                                  File.basename(client,'.feature'),
+                                                  'features/build_validation/create_bootstrap_repositories',
+                                                  'run_sets/build_validation_create_bootstrap_repositories.yml')
+      Rake::Task['utils:generate_feature'].reenable
+    end
+  end
+
   desc 'Generate all the features we need for a Build Validation from templates'
   task :generate_build_validation_features do
     Rake::Task['utils:generate_smoke_tests'].invoke
@@ -120,6 +135,8 @@ namespace :utils do
     Rake::Task['utils:generate_add_maintenance_update_repository_features'].reenable
     Rake::Task['utils:generate_add_activation_keys_features'].invoke
     Rake::Task['utils:generate_add_activation_keys_features'].reenable
+    Rake::Task['utils:generate_create_bootstrap_repositories_features'].invoke
+    Rake::Task['utils:generate_create_bootstrap_repositories_features'].reenable
   end
 
   desc 'Generate test report'
@@ -147,10 +164,10 @@ namespace :jenkins do
       if minion.include?('ssh')
         next
       else
-        Rake::Task['jenkins:generate_rake_run_step'].invoke("_create_bootstrap_repositories",
+        Rake::Task['jenkins:generate_rake_run_step'].invoke("_create_bootstrap_repository",
                                                             File.basename(minion,".feature"),
                                                             "features/build_validation/create_bootstrap_repositories",
-                                                            "run_sets/build_validation_create_bootstrap_repositories_#{minion}.yml")
+                                                            "run_sets/build_validation_create_bootstrap_repository_#{minion}.yml")
         Rake::Task['jenkins:generate_rake_run_step'].reenable
       end
     end
