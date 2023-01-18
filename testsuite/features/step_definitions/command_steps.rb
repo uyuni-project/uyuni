@@ -369,9 +369,9 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
       _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
         # We want to check if no .new files exists.
         # On a re-sync, the old files stay, the new one have this suffix until it's ready.
-      _result, new_code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/*.new", check_errors: false)
-      break unless !code.zero? && new_code.zero?
-      log "I am still waiting for '#{channel}' channel to be synchronized."
+      _result, new_code = $server.run("ls /var/cache/rhn/repodata/#{channel}/ | grep -i .new, check_errors: false)
+      break if code.zero? && new_code.zero?
+      log "I am still waiting for '#{channel}' channel to be synchroniczed."
       sleep 10
     end
   rescue StandardError => e
