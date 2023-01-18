@@ -1,6 +1,9 @@
 # Copyright (c) 2010-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+### This file contains the definitions for all steps concerning navigation through the Web UI
+### as well as validating the UI output.
+
 #
 # Texts and links
 #
