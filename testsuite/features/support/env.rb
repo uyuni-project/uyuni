@@ -359,10 +359,6 @@ Before('@skip_for_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'minion'
 end
 
-Before('@skip_for_traditional') do |scenario|
-  skip_this_scenario if scenario.location.file.include? 'client'
-end
-
 # TODO: remove these 2 "skip" tags when Rocky and Alma have patches available.
 Before('@skip_for_alma9') do
   skip_this_scenario if $alma9_minion || $alma9_ssh_minion
