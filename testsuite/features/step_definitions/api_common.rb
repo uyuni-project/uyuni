@@ -1,6 +1,8 @@
 # Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+### This file contains the definitions for all steps concerning the API.
+
 require 'json'
 require 'socket'
 
