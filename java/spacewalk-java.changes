@@ -1,3 +1,4 @@
+- Include missing 'gpg' states to avoid issues on SSH minions.
 - Optimize the number of salt calls on minion startup (bsc#1203532)
 - Fix CVE Audit ignoring errata in parent channels if patch in successor
   product exists (bsc#1206168)
