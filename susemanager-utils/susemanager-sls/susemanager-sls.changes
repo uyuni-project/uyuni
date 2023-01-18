@@ -1,4 +1,8 @@
-- Move transactional_update.conf to correct location
+-------------------------------------------------------------------
+Wed Jan 18 13:18:45 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.28-1
+  * Move transactional_update.conf to correct location
 
 -------------------------------------------------------------------
 Wed Jan 11 12:47:10 CET 2023 - jgonzalez@suse.com
