@@ -50,6 +50,14 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a Rocky 9 Salt minion
     When I create the bootstrap repository for "rocky9_minion" on the server
 
+@alma9_minion
+  Scenario: Create the bootstrap repository for a Alma 9 Salt minion
+    When I create the bootstrap repository for "alma9_minion" on the server
+
+@oracle9_minion
+  Scenario: Create the bootstrap repository for a Oracle 9 Salt minion
+    When I create the bootstrap repository for "oracle9_minion" on the server
+
 @rhel9_minion
 Scenario: Create the bootstrap repository for a Rhel 9 Salt minion
   When I create the bootstrap repository for "rhel9_minion" on the server
