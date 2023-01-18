@@ -1,3 +1,5 @@
+- Move transactional_update.conf to correct location
+
 -------------------------------------------------------------------
 Wed Jan 11 12:47:10 CET 2023 - jgonzalez@suse.com
 
