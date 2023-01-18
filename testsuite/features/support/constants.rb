@@ -386,7 +386,7 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   %w[
     res8-manager-tools-pool-x86_64
     res8-manager-tools-updates-x86_64
-    el8-uyuni-client-x86_64
+    sll8-uyuni-client-x86_64
   ]
 }.freeze
 
