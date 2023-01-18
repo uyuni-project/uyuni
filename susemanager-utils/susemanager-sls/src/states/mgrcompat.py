@@ -50,21 +50,12 @@ def module_run(**kwargs):
 
     '''
 
-    # The new syntax will be used as the default
-    use_new_syntax = True
+    # We use classic "module.run" syntax by default.
+    use_new_syntax = False
 
-    if __grains__['saltversioninfo'][0] > 3004:
-        # Only new syntax - default behavior for Phosphorus and future releases
-        pass
-    elif __grains__['saltversioninfo'][0] > 2016 and 'module.run' in __opts__.get('use_superseded', []):
+    if 2016 < __grains__['saltversioninfo'][0] < 3005 and 'module.run' in __opts__.get('use_superseded', []):
         # New syntax - explicitely enabled via 'use_superseded' configuration on 2018.3, 2019.2, 3000.x, 3002.x, 3003.x and 3004.x
-        pass
-    elif __grains__['saltversioninfo'][0] > 2016 and not 'module.run' in __opts__.get('use_superseded', []):
-        # Old syntax - default behavior for 2018.3, 2019.2, 3000.x, 3002.x, 3003.x and 3004.x
-        use_new_syntax = False
-    elif __grains__['saltversioninfo'][0] <= 2016:
-        # Only old syntax - the new syntax is not available for 2016.11 and 2015.8
-        use_new_syntax = False
+        use_new_syntax = True
 
     if use_new_syntax:
         log.debug("Minion is using the new syntax for 'module.run' state. Tailoring parameters.")
