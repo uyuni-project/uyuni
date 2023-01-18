@@ -1,3 +1,4 @@
+- Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
 - filter out libvirt engine events (bsc#1206146)
 - Improve _mgractionchains.conf logs
 
