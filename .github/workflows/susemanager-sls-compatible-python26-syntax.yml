@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     container: centos:6
     steps:
+      # We need to use "checkout@v1" here as is the only version compatible with Python 2.6
       - name: Check out repository code
         uses: actions/checkout@v1
 
