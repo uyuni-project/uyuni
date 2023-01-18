@@ -123,7 +123,7 @@ public class SaltSSHService {
             "distupgrade", "hardware", "images", "packages/init.sls",
             "packages/patchdownload.sls", "packages/patchinstall.sls", "packages/pkgdownload.sls",
             "packages/pkginstall.sls", "packages/pkgupdate.sls", "packages/pkgremove.sls", "packages/profileupdate.sls",
-            "packages/redhatproductinfo.sls", "remotecommands", "scap", "services",
+            "packages/redhatproductinfo.sls", "remotecommands", "scap", "services", "gpg",
             "custom", "custom_groups", "custom_org", "util", "bootstrap", "formulas.sls");
 
     public static final String ACTION_STATES = ACTION_STATES_LIST
