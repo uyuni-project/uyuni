@@ -130,47 +130,110 @@ namespace :utils do
     sh 'node index.js &> cucumber_reporter.log', verbose: false
   end
 
-  desc 'Generate Rake Files'
-  task :generate_rake_files do
-    clients = []
-    ENV.select { |k, v| k.include?("CLIENT") || k.include?("MINION") }.each do |key, value|
-      client = "#{key}".downcase
-      puts "#{client}"
-      clients << client.gsub("sshminion", "ssh_minion")
-    end
+end
 
-    clients.each do |client|
-      Rake::Task['utils:generate_rake_runstep'].invoke("_smoke_tests",
-                                                       File.basename(client,".feature"),
-                                                       "features/build_validation/smoke_tests",
-                                                       "run_sets/build_validation_smoke_test_#{client}.yml")
-      Rake::Task['utils:generate_rake_runstep'].reenable
-      Rake::Task['utils:generate_rake_runstep'].invoke("",
-                                                       File.basename(client,".feature"),
-                                                       "features/build_validation/init_clients",
-                                                       "run_sets/build_validation_init_client_#{client}.yml")
-      Rake::Task['utils:generate_rake_runstep'].reenable
-      Rake::Task['utils:generate_rake_runstep'].invoke("_add_activation_key",
-                                                       File.basename(client,".feature"),
-                                                       "features/build_validation/add_activation_keys",
-                                                       "run_sets/build_validation_add_activation_keys_#{client}.yml")
-      Rake::Task['utils:generate_rake_runstep'].reenable
-      if client.include?('ssh')
+namespace :jenkins do
+
+  desc 'Generate rake file runstep'
+  task :generate_rake_run_step, [:extension, :client_name, :output_path, :yaml_path] do |t, args|
+    output_filepath = "#{args[:output_path]}/#{args[:client_name]}#{args[:extension]}.feature"
+    sh "echo '- #{output_filepath}' >> #{args[:yaml_path]}", verbose: false
+  end
+
+  desc 'Generate rake files for create bootstrap repositories'
+  task :generate_rake_files_create_bootstrap_repositories, [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      if minion.include?('ssh')
         next
       else
-        Rake::Task['utils:generate_rake_runstep'].invoke("_add_custom_repositories",
-                                                         File.basename(client,".feature"),
-                                                         "features/build_validation/add_custom_repositories",
-                                                         "run_sets/build_validation_add_custom_repositories_#{client}.yml")
-        Rake::Task['utils:generate_rake_runstep'].reenable
+        Rake::Task['jenkins:generate_rake_run_step'].invoke("_create_bootstrap_repositories",
+                                                            File.basename(minion,".feature"),
+                                                            "features/build_validation/create_bootstrap_repositories",
+                                                            "run_sets/build_validation_create_bootstrap_repositories_#{minion}.yml")
+        Rake::Task['jenkins:generate_rake_run_step'].reenable
       end
     end
   end
 
-  desc 'Generate rake file runstep'
-  task :generate_rake_runstep, [:extension, :client_name, :output_path, :yaml_path] do |t, args|
-    output_filepath = "#{args[:output_path]}/#{args[:client_name]}#{args[:extension]}.feature"
-    sh "echo '- #{output_filepath}' >> #{args[:yaml_path]}", verbose: false
+  desc 'Generate rake files for init clients'
+  task :generate_rake_files_init_clients, [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      if minion.include?('proxy')
+        next
+      else
+        Rake::Task['jenkins:generate_rake_run_step'].invoke("",
+                                                            File.basename(minion,".feature"),
+                                                            "features/build_validation/init_clients",
+                                                            "run_sets/build_validation_init_client_#{minion}.yml")
+        Rake::Task['jenkins:generate_rake_run_step'].reenable
+      end
+    end
+  end
+
+  desc 'Generate rake files for Maintenance Update Channels and repositories'
+  task :generate_rake_files_custom_repositories, [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      if minion.include?('ssh')
+        next
+      else
+        Rake::Task['jenkins:generate_rake_run_step'].invoke("_add_custom_repositories",
+                                                            File.basename(minion,".feature"),
+                                                            "features/build_validation/add_custom_repositories",
+                                                            "run_sets/build_validation_add_custom_repositories_#{minion}.yml")
+        Rake::Task['jenkins:generate_rake_run_step'].reenable
+      end
+    end
+  end
+
+  desc 'Generate rake files for activation Keys feature'
+  task :generate_rake_files_add_activation_keys , [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      Rake::Task['jenkins:generate_rake_run_step'].invoke("_add_activation_key",
+                                                          File.basename(minion,".feature"),
+                                                          "features/build_validation/add_activation_keys",
+                                                          "run_sets/build_validation_add_activation_keys_#{minion}.yml")
+      Rake::Task['jenkins:generate_rake_run_step'].reenable
+    end
+  end
+
+  desc 'Generate rake file for smoke tests '
+  task :generate_rake_files_smoke_tests , [:instances] do |_t, args|
+    minions = args[:instances]
+    minions.each do |minion|
+      if minion.include?('proxy')
+        next
+      else
+        puts "#{minion}"
+        Rake::Task['jenkins:generate_rake_run_step'].invoke("_smoke_tests",
+                                                            File.basename(minion,".feature"),
+                                                            "features/build_validation/smoke_tests",
+                                                            "run_sets/build_validation_smoke_test_#{minion}.yml")
+        Rake::Task['jenkins:generate_rake_run_step'].reenable
+      end
+    end
+  end
+
+  desc 'Generate all the rake files needed for Build Validation'
+  task :generate_rake_files_build_validation do
+    instances = []
+    ENV.select { |k, v| k.include?("MINION") || k.include?("PROXY") }.each do |key, value|
+      instance = "#{key}".downcase
+      instances << instance.gsub("sshminion", "ssh_minion")
+    end
+    Rake::Task['jenkins:generate_rake_files_smoke_tests'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_smoke_tests'].reenable
+    Rake::Task['jenkins:generate_rake_files_create_bootstrap_repositories'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_create_bootstrap_repositories'].reenable
+    Rake::Task['jenkins:generate_rake_files_init_clients'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_init_clients'].reenable
+    Rake::Task['jenkins:generate_rake_files_add_activation_keys'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_add_activation_keys'].reenable
+    Rake::Task['jenkins:generate_rake_files_custom_repositories'].invoke(instances)
+    Rake::Task['jenkins:generate_rake_files_custom_repositories'].reenable
   end
 
 end
