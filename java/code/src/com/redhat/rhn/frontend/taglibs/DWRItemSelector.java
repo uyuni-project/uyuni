@@ -47,7 +47,6 @@ public class DWRItemSelector {
      * @param ids the ids to update
      * @param on true if the items were to be added
      * @return the selected
-     * @throws Exception on exceptions
      */
     public String select(String setLabel, String[] ids, boolean on) throws Exception {
         WebContext ctx = WebContextFactory.get();
@@ -69,11 +68,9 @@ public class DWRItemSelector {
      * @param isOn true to add, false to remove
      * @param user the user updating the set
      * @return the final count of items in the set
-     *
-     * @throws Exception if anything bad happens
      */
     public static Integer updateSetFromRequest(HttpServletRequest req,
-            String setLabel, String[] which, boolean isOn, User user) throws Exception {
+            String setLabel, String[] which, boolean isOn, User user) {
         if (which == null) {
             return null;
         }
@@ -111,7 +108,7 @@ public class DWRItemSelector {
     private String getResponse(int setSize, String setLabel) {
         StringBuilder responseText = new StringBuilder();
         LocalizationService ls = LocalizationService.getInstance();
-        Boolean systemsRelated = RhnSetDecl.SYSTEMS.getLabel().equals(setLabel);
+        boolean systemsRelated = RhnSetDecl.SYSTEMS.getLabel().equals(setLabel);
         if (systemsRelated) {
             StringBuilder headerMessage = new StringBuilder();
             headerMessage.append("<span id='spacewalk-set-system_list-counter'")
@@ -139,6 +136,6 @@ public class DWRItemSelector {
         responseText.append("\"pagination\":\"")
                     .append(paginationMessage)
                     .append("\"");
-        return  "({" + responseText.toString() + "})";
+        return  "({" + responseText + "})";
     }
 }

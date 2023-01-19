@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.testing;
 
+import com.mockobjects.ExpectationValue;
 import com.mockobjects.servlet.MockHttpServletResponse;
 
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     private Map header = new HashMap();
     private String redirect;
     private String encoding;
+    private final ExpectationValue myStatus = new ExpectationValue("RhnMockHttpServletResponse.setStatus");
 
     /** {@inheritDoc} */
     public void addCookie(Cookie cookie) {
@@ -106,5 +108,19 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      */
     public boolean isCommitted() {
         return false;
+    }
+
+    /**
+     * Set the expected response status
+     * @param status the response status
+     */
+    public void setExpectedStatus(int status) {
+        myStatus.setExpected(status);
+    }
+
+    @Override
+    public void setStatus(int status) {
+        super.setStatus(status);
+        myStatus.setActual(status);
     }
 }
