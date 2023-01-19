@@ -17,6 +17,7 @@
 import inspect
 import imp
 import sys
+import pytest
 import unittest
 import json
 import os
@@ -966,6 +967,51 @@ def test_channel_exceptions():
             _, ret = rs.sync()
             assert ret == -1
         assert rs.sendErrorMail.call_args == (("%s: %s" % (exc_name, "error msg"), ), {})
+
+def test_get_standard_comps_filename():
+    repoSync = spacewalk.satellite_tools.reposync
+    repoSync.os.path.basename = os.path.basename
+    get_standard_comps_filename = repoSync.RepoSync.get_standard_comps_filename
+
+    (oldname, newname) = get_standard_comps_filename('/my/new/comps.xml', 'comps')
+    assert oldname == newname == 'comps.xml'
+
+    (oldname, newname) = get_standard_comps_filename('/my/new/comps.xml.bz', 'comps')
+    assert oldname == newname == 'comps.xml.bz'
+
+    (oldname, newname) = get_standard_comps_filename('/my/new/ffff-comps-BaseOS.x86_64.xml.gz', 'comps')
+    assert oldname == 'ffff-comps-BaseOS.x86_64.xml.gz'
+    assert newname == 'comps.xml.gz'
+
+    with pytest.raises(ValueError):
+        # Unknown extensions
+        get_standard_comps_filename('/my/new/comps?xml', 'comps')
+        get_standard_comps_filename('/my/new/comps.aaa', 'comps')
+        get_standard_comps_filename('/my/new/comps.xml.aa', 'comps')
+
+    # Bypass comps types other than 'comps' and 'modules'
+    (oldname, newname) = get_standard_comps_filename('/my/new/file', 'anything')
+    assert oldname == newname == 'file'
+
+def test_get_standard_comps_filename_modules():
+    repoSync = spacewalk.satellite_tools.reposync
+    repoSync.os.path.basename = os.path.basename
+    get_standard_comps_filename = repoSync.RepoSync.get_standard_comps_filename
+
+    # Mock checksum calculation
+    dummy_chksum = "dae7e104812099a2f632ea4c5ef2769aca18ca1205abdd2c3ba6d171e319df3d"
+    repoSync.RepoSync._get_decompressed_file_checksum = Mock(return_value=dummy_chksum)
+
+    (oldname, newname) = get_standard_comps_filename('/my/new/modules.yaml', 'modules')
+    assert oldname == 'modules.yaml'
+    assert newname == dummy_chksum + '-modules.yaml'
+
+    (oldname, newname) = get_standard_comps_filename('/my/new/modules.yaml.xz', 'modules')
+    assert oldname == 'modules.yaml.xz'
+    assert newname == dummy_chksum + '-modules.yaml.xz'
+
+    (oldname, newname) = get_standard_comps_filename('/my/new/' + 'ddbbccaa0099-modules.yaml.gz', 'modules')
+    assert oldname == newname == 'ddbbccaa0099-modules.yaml.gz'
 
 def _init_reposync(reposync, label="Label", repo_type=RTYPE, **kwargs):
     """Initialize the RepoSync object with some mocked attrs"""

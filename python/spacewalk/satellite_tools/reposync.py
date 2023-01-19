@@ -72,6 +72,7 @@ relative_modules_dir = 'rhn/modules'
 relative_mediaproducts_dir = 'suse/media.1'
 checksum_cache_filename = 'reposync/checksum_cache'
 default_import_batch_size = 20
+compressed_suffixes = ['.gz', '.bz', '.xz']
 
 errata_typemap = {
     'security': 'Security Advisory',
@@ -807,6 +808,37 @@ class RepoSync(object):
                 refresh_newest_package(self.channel['id'], 'backend.importPatches')
 
     @staticmethod
+    def get_standard_comps_filename(filepath, comps_type):
+        """Generate a standard filename for an imported comps or modules file that has an arbitrary name.
+
+        The resulting filename depends on the type of the comps file.
+        For 'modules' files, the uncompressed file checksum is prepended on the filename.
+
+        Returns a couple of the original and the standardized filenames.
+        If the filename is already standard, the original and the standard names will be equal.
+
+        :filepath: the full path to the file
+        :comps_type: the type of the comps file. Must be either 'comps' or 'modules'
+        """
+        # Compose a regex group from the compression suffixes, escaping the '.' characters
+        suffixes_regex_group = '(%s)?' % '|'.join(['\\' + s for s in compressed_suffixes])
+        std_name = basename = os.path.basename(filepath)
+
+        if comps_type == 'comps' and not re.match('comps.xml%s' % suffixes_regex_group, basename):
+            # Non-standard name. Rename to 'comps.xml[.gz|.bz|.xz]'
+            regex_match = re.match(r'.*(\.xml%s)$' % suffixes_regex_group, basename)
+            try:
+                std_name = 'comps' + regex_match.group(1)
+            except AttributeError:
+                raise ValueError
+        elif comps_type == 'modules' and re.match('modules.yaml' + suffixes_regex_group, basename):
+            # Decompress to get the checksum
+            checksum = RepoSync._get_decompressed_file_checksum(filepath, 'sha256')
+            std_name = checksum + "-" + basename
+
+        return (basename, std_name)
+
+    @staticmethod
     def _get_decompressed_file_checksum(abspath, hashtype):
         with fileutils.decompress_open(abspath) as src, tempfile.TemporaryFile('w') as tmp:
             shutil.copyfileobj(src, tmp)
@@ -818,22 +850,17 @@ class RepoSync(object):
             mount_point = CFG.MOUNT_POINT
         old_checksum = None
         db_timestamp = datetime.fromtimestamp(0.0, utc)
-        basename = os.path.basename(filename)
+
+        (oldname, basename) = get_standard_comps_filename(filename, comps_type)
         log(0, '')
         log(0, "  Importing %s file %s." % (comps_type, basename))
+        if basename != oldname:
+            log(0, "  Renaming non-standard filename %s to %s." % (oldname, basename))
+
         relativedir = os.path.join(relative_dir, self.channel_label)
         absdir = os.path.join(mount_point, relativedir)
         if not os.path.exists(absdir):
             os.makedirs(absdir)
-        compressed_suffixes = ['.gz', '.bz', '.xz']
-        if comps_type == 'comps' and not re.match('comps.xml(' + "|".join(compressed_suffixes) + ')*', basename):
-            log(0, "  Renaming non-standard filename %s to %s." % (basename, 'comps' + basename[basename.find('.'):]))
-            basename = 'comps' + basename[basename.find('.'):]
-        elif comps_type == 'modules' and re.match('modules.yaml(' + "|".join(compressed_suffixes) + ')*', basename):
-            # decompress only for getting the checksum
-            checksum = self._get_decompressed_file_checksum(filename, 'sha256')
-            basename = checksum + "-" + basename
-            log(0, "  Including the checksum in the modules file name: %s" % basename)
 
         relativepath = os.path.join(relativedir, basename)
         abspath = os.path.join(absdir, basename)
