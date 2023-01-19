@@ -250,6 +250,18 @@ while read PKG_NAME; do
     continue
   }
 
+  # check which endpoint we are using to match the product
+  if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+      PRODUCT_VERSION=$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+  else
+      # Uyuni settings
+      PRODUCT_VERSION=$(sed -n 's/.*web.version.uyuni\s*=\s*\(.*\)$/\1/p' ${BASE_DIR}/../web/conf/rhn_web.conf)
+  fi
+  # to lowercase with ",," and replace spaces " " with "-"
+  PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
+  # Remove leading zero from Uyuni release and add potentially missing micro part
+  SEMANTIC_VERSION=$(echo ${PRODUCT_VERSION} | sed 's/\([0-9]\+\)\.0\?\([1-9][0-9]*\)\(\.\([0-9]\+\)\)\?\( .\+\)\?/\1.\2.\4\5/' | sed 's/\.$/.0/')
+
   if [ -f "$SRPM_PKG_DIR/Dockerfile" ]; then
       # check which endpoint we are using to match the product
       if [ "${OSCAPI}" == "https://api.suse.de" ]; then
@@ -262,6 +274,7 @@ while read PKG_NAME; do
           sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
       fi
+      sed "s/^LABEL org.opencontainers.image.product-version=.*$/LABEL org.opencontainers.image.product-version=${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Dockerfile
   fi
 
   if [ -f "$SRPM_PKG_DIR/Chart.yaml" ]; then
@@ -277,6 +290,7 @@ while read PKG_NAME; do
           tar cf $CHART_TAR -C ${SRPM_PKG_DIR}/tar .
           rm -rf ${SRPM_PKG_DIR}/tar
       fi
+      sed "s/^appVersion: .*$/appVersion: ${SEMANTIC_VERSION}/" -i $SRPM_PKG_DIR/Chart.yaml
   fi
 
   # update from obs (create missing package on the fly)
