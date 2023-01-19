@@ -51,7 +51,7 @@ from difflib import unified_diff
 from tempfile import mkstemp
 from textwrap import wrap
 from subprocess import Popen, PIPE
-from dateutil.parser import parse as parse_datetime, ParserError
+from dateutil.parser import isoparse
 
 try:
     import json
@@ -690,8 +690,8 @@ def datetime_parser_lst(lst):
     for i, l in enumerate(lst):
         if isinstance(l, str):
             try:
-                lst[i] = parse_datetime(l)
-            except ParserError:
+                lst[i] = isoparse(l)
+            except ValueError:
                 pass
 
 
