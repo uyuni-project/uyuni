@@ -65,7 +65,6 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Opt;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -322,10 +321,10 @@ public class SaltSSHService {
             LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel,
             Optional<String> extraFilerefs) {
         Optional<SaltRoster> roster = prepareSaltRoster(target, getSshPushTimeout());
-        Map<String, CompletableFuture<Result<R>>> futures = new HashedMap();
-        target.getTarget().forEach(minionId ->
-                futures.put(minionId, new CompletableFuture<>())
-        );
+        Map<String, CompletableFuture<Result<R>>> futures = target.getTarget().stream()
+                .collect(Collectors.toMap(
+                        minionId -> minionId,
+                        minionId -> new CompletableFuture<>()));
         CompletableFuture<Map<String, Result<R>>> asyncCallFuture =
                 CompletableFuture.supplyAsync(() -> {
                     try {
@@ -364,7 +363,7 @@ public class SaltSSHService {
         });
         return futures.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
-                e -> (CompletionStage<Result<R>>) e.getValue()
+                e -> e.getValue()
         ));
     }
 
