@@ -47,6 +47,7 @@ LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=uyuni-proxy-ssh-image
 LABEL org.opencontainers.image.version=4.4.0-1
+LABEL org.opencontainers.image.product-version=2023.01
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-ssh:4.4.0-1.%RELEASE%"
 # endlabelprefix

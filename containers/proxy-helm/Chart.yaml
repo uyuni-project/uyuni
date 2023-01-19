@@ -9,4 +9,4 @@ type: application
 home: https://www.uyuni-project.org/
 icon: https://www.uyuni-project.org/img/uyuni-logo.svg
 version: 4.4.0-1
-appVersion: 4.4.0-1
+appVersion: 2023.01
