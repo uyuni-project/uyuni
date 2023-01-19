@@ -81,12 +81,12 @@ mgr_deploy_{{ keyname }}:
 
 {%- set gpg_urls = [] %}
 {%- for chan, args in pillar.get(pillar.get('_mgr_channels_items_name', 'channels'), {}).items() %}
-{%- if args['gpgkeyurl'] is defined %}
+{%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'] not in gpg_urls %}
 {{ gpg_urls.append(args['gpgkeyurl']) | default("", True) }}
 {%- endif %}
 {%- endfor %}
 
-{% for url in gpg_urls | unique %}
+{% for url in gpg_urls %}
 {{ url | replace(':', '_') }}:
   mgrcompat.module_run:
     - name: pkg.add_repo_key
