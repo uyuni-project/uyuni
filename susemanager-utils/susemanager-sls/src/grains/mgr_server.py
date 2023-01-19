@@ -2,11 +2,8 @@
 Grains for Mgr Server
 """
 
-import sys
 import logging
 import os
-
-from salt.exceptions import CommandExecutionError
 
 log = logging.getLogger(__name__)
 RHNCONF = "/etc/rhn/rhn.conf"
