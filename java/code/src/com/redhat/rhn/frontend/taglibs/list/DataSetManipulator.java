@@ -147,7 +147,7 @@ public class DataSetManipulator {
      * @return list representing one page of data
      */
     public List getPage() {
-        List retval = new LinkedList();
+        List retval = new LinkedList<>();
         if (pageSize > 0) {
             int startOffset = getCurrentPageNumber() * pageSize;
             if (startOffset > dataset.size()) {
@@ -173,7 +173,7 @@ public class DataSetManipulator {
      * @return List representing all data available
      */
     public List getAllData() {
-        List retval = new LinkedList();
+        List retval = new LinkedList<>();
         retval.addAll(dataset);
         return expand(retval);
     }
@@ -505,7 +505,7 @@ public class DataSetManipulator {
     }
 
     private List expand(List data) {
-        List expanded = new LinkedList();
+        List expanded = new LinkedList<>();
         for (Object obj : data) {
             expanded.add(obj);
             if (obj instanceof Expandable) {

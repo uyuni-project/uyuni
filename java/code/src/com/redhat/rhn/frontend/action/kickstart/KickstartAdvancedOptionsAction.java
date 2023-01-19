@@ -76,7 +76,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
             new KickstartOptionsCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                                         ctx.getCurrentUser());
 
-        List displayList = new LinkedList();
+        List displayList = new LinkedList<>();
 
         //Display message if this kickstart profile's channel is inadequate.
         User user = new RequestContext(request).getCurrentUser();

@@ -60,7 +60,7 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
         ValidatorError[] errors = new ValidatorError[1];
         String errorKey = "bootstrap.config.error.";
 
-        List args = new LinkedList();
+        List args = new LinkedList<>();
         args.add("/usr/bin/sudo");
         args.add("/usr/bin/rhn-bootstrap");
         if (BooleanUtils.toBooleanDefaultIfNull(this.allowConfigActions, false)) {

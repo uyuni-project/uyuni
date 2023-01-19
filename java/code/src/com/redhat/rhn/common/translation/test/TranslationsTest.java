@@ -85,7 +85,7 @@ public class TranslationsTest extends RhnBaseTestCase {
         assertNotNull(s);
         assertEquals("[10, list]", s);
 
-        list = new LinkedList();
+        list = new LinkedList<>();
         list.add(20);
         list.add("list");
         s = (String) TestTranslations.convert(list, String.class);

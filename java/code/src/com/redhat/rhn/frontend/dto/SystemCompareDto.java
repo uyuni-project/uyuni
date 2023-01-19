@@ -195,7 +195,7 @@ public class SystemCompareDto {
         List<List> groups = new LinkedList<>();
         Map<String, String> idMap = new HashMap<>();
         for (Server system : servers) {
-            List sysGroups = new LinkedList();
+            List sysGroups = new LinkedList<>();
             for (ServerGroup sg : system.getManagedGroups()) {
                 sysGroups.add(sg.getName());
                 idMap.put(sg.getName(), sg.getId().toString());
@@ -258,7 +258,7 @@ public class SystemCompareDto {
         List<List> ret = new LinkedList<>();
         Map<String, String> idMap = new HashMap<>();
         for (Server system : servers) {
-            List keys = new LinkedList();
+            List keys = new LinkedList<>();
             Set<Channel> childChannels = system.getChildChannels();
             if (childChannels != null) {
                 for (Channel channel : childChannels) {
@@ -280,7 +280,7 @@ public class SystemCompareDto {
         List<List> ret = new LinkedList<>();
         Map<String, String> idMap = new HashMap<>();
         for (Server system : servers) {
-            List keys = new LinkedList();
+            List keys = new LinkedList<>();
             if (system.getConfigChannelCount() > 0) {
                 system.getConfigChannelStream().forEach(ch -> {
                     keys.add(ch.getName());
@@ -300,7 +300,7 @@ public class SystemCompareDto {
     public List<List<Item>> getSystemEntitlements() {
         List<List> ret = new LinkedList<>();
         for (Server system : servers) {
-            List keys = new LinkedList();
+            List keys = new LinkedList<>();
             if (!system.getEntitlements().isEmpty()) {
                 if (system.getAddOnEntitlements().isEmpty()) {
                     keys.add(EntitlementManager.MANAGEMENT.getHumanReadableTypeLabel());
@@ -329,7 +329,7 @@ public class SystemCompareDto {
     public List<List<Item>> getSoftwareEntitlements() {
         List<List> ret = new LinkedList<>();
         for (Server system : servers) {
-            List keys = new LinkedList();
+            List keys = new LinkedList<>();
 
             if (system.getBaseChannel() != null && !system.getBaseChannel().isCustom()) {
                 keys.add(system.getBaseChannel().getChannelFamily().getName());
@@ -356,7 +356,7 @@ public class SystemCompareDto {
         Map<String, String> idMap = new HashMap<>();
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
         for (Server system : servers) {
-            List keys = new LinkedList();
+            List keys = new LinkedList<>();
             for (ActivationKey ak : akm.findByServer(system, user)) {
                 keys.add(ak.getKey());
                 idMap.put(ak.getKey(), ak.getToken().getId().toString());

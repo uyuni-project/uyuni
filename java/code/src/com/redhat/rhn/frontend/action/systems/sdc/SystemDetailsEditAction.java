@@ -427,7 +427,7 @@ public class SystemDetailsEditAction extends RhnAction {
         LocalizationService ls = LocalizationService.getInstance();
         Map cmap = ls.availableCountries();
         Iterator i = cmap.keySet().iterator();
-        List countries = new LinkedList();
+        List countries = new LinkedList<>();
 
         countries.add(new LabelValueBean(ls.getMessage("sdc.details.edit.none"), ""));
         while (i.hasNext()) {

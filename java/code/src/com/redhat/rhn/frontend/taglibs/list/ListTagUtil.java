@@ -517,7 +517,7 @@ public class ListTagUtil {
      * @return array of sytles
      */
     public static String[] parseStyles(String styles) {
-        List tmp = new LinkedList();
+        List tmp = new LinkedList<>();
         StringTokenizer strtok = new StringTokenizer(styles, "|");
         while (strtok.hasMoreTokens()) {
             tmp.add(strtok.nextToken().trim());
