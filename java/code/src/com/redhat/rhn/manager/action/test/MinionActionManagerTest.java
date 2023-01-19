@@ -133,7 +133,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -183,7 +183,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -236,7 +236,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -287,7 +287,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -338,7 +338,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(false);
@@ -389,7 +389,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion2.setOrg(user.getOrg());
 
         Package pkg1 = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg1.getId().intValue());
 
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());

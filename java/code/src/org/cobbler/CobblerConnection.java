@@ -203,6 +203,6 @@ public class CobblerConnection {
      * @return the server version
      */
     public Double getVersion() {
-        return (Double) invokeMethod("version", new LinkedList());
+        return (Double) invokeMethod("version", new LinkedList<>());
     }
 }

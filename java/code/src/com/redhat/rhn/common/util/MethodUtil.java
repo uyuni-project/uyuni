@@ -220,7 +220,7 @@ public class MethodUtil {
      *
      * List someList = getClassFromConfig("java.lang.LinkedList");
      *
-     * would return a new LinkedList() object.
+     * would return a new LinkedList<>() object.
      *
      * But if you define a config var with:
      *

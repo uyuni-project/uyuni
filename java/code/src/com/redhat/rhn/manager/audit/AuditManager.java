@@ -337,7 +337,7 @@ public class AuditManager /* extends BaseManager */ {
         hostDir = Path.of(logDirStr, machineName.replace(File.separator, ""), "audit").toFile();
 
         if (!hostDir.exists()) {
-            return new DataResult(new LinkedList());
+            return new DataResult(new LinkedList<>());
         }
 
         for (String auditLog : hostDir.list()) {

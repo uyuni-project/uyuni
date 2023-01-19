@@ -132,7 +132,7 @@ public class KickstartIpRangeAction extends RhnAction {
             setupFormValues(form);
         }
 
-        List displayList = new LinkedList();
+        List displayList = new LinkedList<>();
         displayList = cmd.getDisplayRanges();
 
         //Create the kickstart urls to display

@@ -74,7 +74,7 @@ public abstract class RhnAction extends Action {
      * @return List of LabelValue beans
      */
     protected List createLabelValueList(Iterator i, String nameMethod, String valueMethod) {
-        List retval = new LinkedList();
+        List retval = new LinkedList<>();
         while (i.hasNext()) {
             Object o = i.next();
             String name = (String) MethodUtil.callMethod(o, nameMethod, new Object[0]);
