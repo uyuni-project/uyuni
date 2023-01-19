@@ -342,9 +342,9 @@ public class DailySummary extends RhnJavaJob {
         StringBuilder legend = new StringBuilder();
         StringBuilder msg = new StringBuilder();
         LinkedHashSet<String> statusSet = new LinkedHashSet<>();
-        TreeMap<String, Map<String, Integer>> nonErrataActions = new TreeMap();
-        TreeMap<String, Map<String, Integer>> errataActions = new TreeMap();
-        TreeMap<String, String> errataSynopsis = new TreeMap();
+        TreeMap<String, Map<String, Integer>> nonErrataActions = new TreeMap<>();
+        TreeMap<String, Map<String, Integer>> errataActions = new TreeMap<>();
+        TreeMap<String, String> errataSynopsis = new TreeMap<>();
 
         legend.append(LocalizationService
                 .getInstance().getMessage("taskomatic.daily.errata"));

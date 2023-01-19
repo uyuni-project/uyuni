@@ -78,7 +78,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertTrue(cmd.getKeysToBeUpdated().contains(TEST_CONFIG_STRING));
         assertTrue(cmd.getKeysToBeUpdated().contains(TEST_CONFIG_NULL));
 
-        Map optionMap = new TreeMap();
+        Map optionMap = new TreeMap<>();
         for (String key : cmd.getKeysToBeUpdated()) {
             optionMap.put(key, Config.get().getString(key));
         }
