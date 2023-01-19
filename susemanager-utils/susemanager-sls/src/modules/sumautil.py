@@ -11,6 +11,7 @@ import os
 import re
 import time
 import salt.utils
+import salt.modules.cmdmod
 from salt.exceptions import CommandExecutionError
 
 __salt__ = {
