@@ -142,7 +142,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
 
                 //set custom options
                 String customOps = request.getParameter(CUSTOM_OPTIONS);
-                LinkedHashSet customSet = new LinkedHashSet();
+                LinkedHashSet customSet = new LinkedHashSet<>();
                 log.debug("Adding custom options");
                 if (customOps != null) {
                     for (StringTokenizer strtok = new StringTokenizer(
@@ -182,7 +182,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
             displayList = cmd.getDisplayOptions();
         }
         Collections.sort(displayList);
-        LinkedHashSet displaySet = new LinkedHashSet();
+        LinkedHashSet displaySet = new LinkedHashSet<>();
         Iterator<KickstartCommand> iter;
         iter = cmd.getKickstartData().getCustomOptions().iterator();
         while (iter.hasNext()) {

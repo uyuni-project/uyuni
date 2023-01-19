@@ -61,7 +61,7 @@ public abstract class BaseRankChannels extends RhnLookupDispatchAction {
                                      DynaActionForm form,
                                      RhnSet set) {
         User user = context.getCurrentUser();
-        LinkedHashSet labelValues = new LinkedHashSet();
+        LinkedHashSet labelValues = new LinkedHashSet<>();
         populateWidgetLabels(labelValues, context);
         for (RhnSetElement rhnSetElementIn : set.getElements()) {
             Long ccid = rhnSetElementIn.getElement();
