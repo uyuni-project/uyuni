@@ -56,6 +56,7 @@ Feature: Bootstrap the monitoring server
     And I click on "Expand All Sections"
     And I enter "admin" as "Username"
     And I enter "admin" as "Password"
+    And I check the blackbox exporter
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
     When I follow "States" in the content area
