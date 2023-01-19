@@ -377,7 +377,7 @@ public class ColumnTag extends TagSupport {
         if (this.sortProperty != null) {
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
             String pageUrl;
-            Map params = new TreeMap(request.getParameterMap());
+            Map params = new TreeMap<>(request.getParameterMap());
             String sortOrder = request.getParameter(RequestContext.SORT_ORDER);
 
             if (RequestContext.SORT_ASC.equals(sortOrder)) {
