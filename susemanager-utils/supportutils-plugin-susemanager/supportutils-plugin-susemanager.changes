@@ -1,3 +1,4 @@
+- add /etc/passwd content
 - update susemanager plugin to export the number of pending salt events
 
 -------------------------------------------------------------------

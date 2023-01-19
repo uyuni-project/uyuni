@@ -78,4 +78,5 @@ plugin_command "echo \"select count(*) from susesaltevent;\" | spacewalk-sql --s
 plugin_command "/sbin/supportconfig-sumalog $LOG"
 plugin_command "cp /var/log/zypper.log $LOG"
 plugin_command "grep \"Client bootstrap script\" /srv/www/htdocs/pub/bootstrap/*.sh"
+plugin_command "cat /etc/passwd"
 
