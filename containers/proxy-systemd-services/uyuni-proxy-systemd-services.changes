@@ -1,3 +1,4 @@
+- Fix script for allowing using container images from different registry paths
 - Allow using container images from different registry paths
 
 -------------------------------------------------------------------
