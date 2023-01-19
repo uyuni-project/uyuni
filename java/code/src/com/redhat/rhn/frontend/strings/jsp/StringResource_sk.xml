@@ -1333,7 +1333,7 @@
       </trans-unit>
       <trans-unit id="preferences.jsp.show" xml:space="preserve">
         <source>Show</source>
-        <target/>
+        <target>Zobraziť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1341,56 +1341,56 @@
       <!--Start of  the Pane entries Section-->
       <trans-unit id="preferences.tasks.name" xml:space="preserve">
         <source>Tasks</source>
-        <target/>
+        <target>Úlohy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.tasks.description" xml:space="preserve">
         <source> A task-oriented menu of quick links to different areas of the @@PRODUCT_NAME@@ user interface.</source>
-        <target/>
+        <target> Na úlohy zamerané menu rýchlych odkazov na rôzne oblasti používateľského rozhrania @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.critical-systems.name" xml:space="preserve">
         <source>Most Critical Systems</source>
-        <target/>
+        <target>Najkritickejšie systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.critical-systems.description" xml:space="preserve">
         <source> A listing of the systems with the most critical update and health status.</source>
-        <target/>
+        <target> Zoznam systémov s najkritickejšou aktualizáciou a zdravotným stavom.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.name" xml:space="preserve">
         <source>System Groups</source>
-        <target/>
+        <target>Systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.description" xml:space="preserve">
         <source> Preview the overall status of your system groups.</source>
-        <target/>
+        <target> Náhľad na celkový stav vašich systémových skupín.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.latest-errata.name" xml:space="preserve">
         <source>Relevant Security Errata</source>
-        <target/>
+        <target>Príslušné bezpečnostné opravy chýb</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.latest-errata.description" xml:space="preserve">
         <source> View the most recent security errata applicable to your systems.</source>
-        <target/>
+        <target> Zobrazte najnovšie bezpečnostné opravy chýb, ktoré sa vzťahujú na vaše systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
