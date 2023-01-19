@@ -68,6 +68,8 @@ for service in %{SERVICES}; do
     ln -s /usr/sbin/service %{buildroot}%{_sbindir}/rc${service}
 done
 
+install -m 755 uyuni-proxy.sh %{buildroot}%{_sbindir}/uyuni-proxy.sh
+
 %check
 
 %pre
@@ -118,5 +120,6 @@ done
 %endif
 %{_sysconfdir}/uyuni
 %{_localstatedir}/lib/uyuni
+%{_sbindir}/uyuni-proxy.sh
 
 %changelog
