@@ -989,6 +989,11 @@ When(/^I check "([^"]*)" exporter$/) do |exporter_type|
   step %(I check "exporters##{exporter_type}_exporter#enabled")
 end
 
+# Check the Blackbox Exporter in the Prometheus formula
+When(/^I check the blackbox exporter$/) do
+  step %(I check "prometheus#blackbox_exporter#enabled")
+end
+
 # Navigate to a service endpoint
 When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   node = get_target(host)
@@ -1097,6 +1102,13 @@ end
 When(/^I enter "([^"]*)" hostname on the search field$/) do |host|
   system_name = get_system_name(host)
   step %(I enter "#{system_name}" on the search field)
+end
+
+When(/^I enter "([^"]*)" hostname on grafana's host field$/) do |host|
+  step %(I click on "var-hostname")
+  system_name = get_system_name(host)
+  step %(I enter "#{system_name}" as "Enter variable value")
+  send_keys(:return)
 end
 
 Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
