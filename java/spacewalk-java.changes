@@ -1,3 +1,4 @@
+- Add support to add optional channels via webUI
 - Added APIs to allow frontend to install and remove ptf
 - Show the package summary where applicable to better describe PTF packages
 - Added CLM filters to match product temporary fixes packages
