@@ -46,14 +46,14 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
 
     static {
         // Login routes
-        TreeSet set = new TreeSet();
+        TreeSet set = new TreeSet<>();
         set.add("/rhn/newlogin/");
         set.add("/rhn/manager/login");
 
         LOGIN_URIS = UnmodifiableSet.decorate(set);
 
         // Unauthenticated routes
-        set = new TreeSet(set);
+        set = new TreeSet<>(set);
         set.add("/rhn/rpc/api");
         set.add("/rhn/help/");
         set.add("/rhn/apidoc");
@@ -75,7 +75,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
 
         // CSRF whitelist
-        set = new TreeSet(set);
+        set = new TreeSet<>(set);
         set.add("/rhn/common/DownloadFile");
         // search (safe to be unprotected, since it has no modifying side-effects)
         set.add("/rhn/Search.do");
