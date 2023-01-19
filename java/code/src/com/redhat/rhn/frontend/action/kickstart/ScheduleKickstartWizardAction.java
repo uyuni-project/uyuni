@@ -410,10 +410,9 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                 ctx.getRequest(), form, "date", DatePicker.YEAR_RANGE_POSITIVE);
 
         SdcHelper.ssmCheck(ctx.getRequest(), system.getId(), user);
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, sid);
-        ListHelper helper = new ListHelper(new Profiles(), ctx.getRequest(),
-                params);
+        ListHelper helper = new ListHelper(new Profiles(), ctx.getRequest(), params);
         helper.execute();
         if (!StringUtils.isBlank(form.getString(RequestContext.COBBLER_ID))) {
             ListTagHelper.selectRadioValue(ListHelper.LIST,
