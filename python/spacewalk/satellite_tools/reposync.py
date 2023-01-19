@@ -902,6 +902,7 @@ class RepoSync(object):
             return abspath
 
         # update or insert
+        # allow multiple rows for modules (comps_type_id = 2)
         hu = rhnSQL.prepare("""
             update rhnChannelComps
             set relative_filename = :relpath,
@@ -909,7 +910,7 @@ class RepoSync(object):
                 last_modified = :last_modified
             where channel_id = :cid
                 and comps_type_id = (select id from rhnCompsType where label = :ctype)
-                and relative_filename = :relpath""")
+                and (comps_type_id <> 2 or relative_filename = :relpath)""")
         hu.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
                    last_modified=last_modified)
 
@@ -925,7 +926,7 @@ class RepoSync(object):
                     (select 1 from rhnChannelComps
                         where channel_id = :cid
                             and comps_type_id = (select id from rhnCompsType where label = :ctype)
-                            and relative_filename = :relpath))""")
+                            and (comps_type_id <> 2 or relative_filename = :relpath)))""")
         hi.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
                    last_modified=last_modified)
         return abspath

@@ -1,3 +1,5 @@
+- Prevent saving duplicate comps files on repo sync (bsc#1206907)
+
 -------------------------------------------------------------------
 Tue Jan 24 13:12:35 CET 2023 - jgonzalez@suse.com
 
