@@ -5,4 +5,6 @@ export default {
   "minion/packages/package-states": () => import("./packages/package-states.renderer"),
   "minion/ansible/control-node": () => import("./ansible/ansible-control-node"),
   "minion/ansible/path-content": () => import("./ansible/ansible-path-content"),
+  "minion/ptf/ptf-list-remove": () => import("./ptf/ptf-list-remove.renderer"),
+  "minion/ptf/ptf-install": () => import("./ptf/ptf-install.renderer"),
 };

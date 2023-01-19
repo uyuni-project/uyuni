@@ -70,6 +70,15 @@
       </rhn-tab>
     </rhn-tab>
 
+    <rhn-tab name="PTF" url="/rhn/manager/systems/details/ptf/list">
+      <rhn-tab name="system.detail.nav.remove">
+        <rhn-tab-url>/rhn/manager/systems/details/ptf/list</rhn-tab-url>
+      </rhn-tab>
+      <rhn-tab name="Install">
+        <rhn-tab-url>/rhn/manager/systems/details/ptf/install</rhn-tab-url>
+      </rhn-tab>
+    </rhn-tab>
+
     <rhn-tab name="Software Channels" acl="system_feature(ftr_package_updates)">
       <rhn-tab-url>/rhn/systems/details/SystemChannels.do</rhn-tab-url>
     </rhn-tab>

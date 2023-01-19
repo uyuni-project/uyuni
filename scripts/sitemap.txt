@@ -574,6 +574,8 @@
 "/rhn/manager/systems/bootstrap",
 "/rhn/manager/systems/cmd",
 "/rhn/manager/systems/([^/]+)",
+"/rhn/manager/systems/details/ptf/list",
+"/rhn/manager/systems/details/ptf/install",
 "/rhn/manager/systems/details/packages",
 "/rhn/manager/systems/details/custom",
 "/rhn/manager/systems/details/highstate",
