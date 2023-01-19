@@ -83,7 +83,7 @@ public class RankChannelsAction  extends RhnAction {
     private void setupWidget(RequestContext context,
                                      DynaActionForm form,
                                      Set<String> set) {
-        LinkedHashSet labelValues = new LinkedHashSet();
+        LinkedHashSet labelValues = new LinkedHashSet<>();
         populateWidgetLabels(labelValues, context);
         for (String id : set) {
             Long ccid = Long.valueOf(id);
