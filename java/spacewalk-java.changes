@@ -1,3 +1,4 @@
+- Add support to add optional channels via webUI
 - Add the create/update methods for kickstart to accepts kernel and kernel post options(jsc#suma-251)
 - fix NumberFormatException when syncing ubuntu errata (bsc#1207883)
 - Fix duplicate keys in suseImageFile and other tables (bsc#1207799)
