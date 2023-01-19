@@ -31,9 +31,7 @@ def _simple_parse_rhn_conf(cfile):
 
 
 def server_grains():
-    """ returns if this minion is a Uyuni/SUSE Manager Server and
-        if it has a reporting database configured.
-    """
+    """ Returns grains relevant for Uyuni/SUMA server. """
     grains = {'is_mgr_server': False}
 
     config = _simple_parse_rhn_conf(RHNCONF)
