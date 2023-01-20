@@ -19,7 +19,7 @@ import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 
-import java.util.List;
+import java.util.Optional;
 
 
 public class SubscriptionWarning implements NotificationData {
@@ -31,13 +31,13 @@ public class SubscriptionWarning implements NotificationData {
      * @return boolean
      **/
     public boolean expiresSoon() {
-        List<Object[]> rows = getSession().createSQLQuery(
+        Optional<Boolean> result = getSession().createSQLQuery(
         "select exists (select name,  expires_at, status, subtype " +
                 "from susesccsubscription where subtype != 'internal' " +
-                " and (status = 'ACTIVE' and expires_at < now() + interval '90 day') " +
-                "or (status = 'EXPIRED' and expires_at > now() - interval '30 day'))").list();
+                " and ((status = 'ACTIVE' and expires_at < now() + interval '90 day') " +
+                "or (status = 'EXPIRED' and expires_at > now() - interval '30 day')))").uniqueResultOptional();
 
-        return !rows.isEmpty();
+        return result.orElse(false);
     }
 
     @Override
