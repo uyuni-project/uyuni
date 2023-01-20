@@ -20,8 +20,6 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.annotation.Nonnull;
-
 
 /**
  * ExtGroup
@@ -78,7 +76,7 @@ public abstract class ExtGroup extends BaseDomainHelper implements Comparable<Ex
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(@Nonnull ExtGroup objectIn) {
+    public int compareTo(ExtGroup objectIn) {
         if (objectIn instanceof UserExtGroup) {
             return 0;
         }

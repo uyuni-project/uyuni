@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 
 /**
  * ReleaseChannelMap
@@ -142,7 +140,7 @@ public class ReleaseChannelMap implements Serializable, Comparable<ReleaseChanne
      */
     @SuppressWarnings("unchecked")
     @Override
-    public int compareTo(@Nonnull ReleaseChannelMap o) {
+    public int compareTo(ReleaseChannelMap o) {
         List<Comparator<ReleaseChannelMap>> compar = new ArrayList<>();
 
         compar.add(new DynamicComparator<>("channel", true));
