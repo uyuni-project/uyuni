@@ -751,7 +751,7 @@ When(/^I click on the red confirmation button$/) do
 end
 
 When(/^I click on the clear SSM button$/) do
-  find_and_wait_click('a#clear-ssm').click
+  find_and_wait_click(:xpath, "//*[@id='clear-ssm']").click
 end
 
 When(/^I click on the filter button$/) do
