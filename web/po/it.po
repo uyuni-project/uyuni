@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-13 14:59+0100\n"
+"POT-Creation-Date: 2023-01-20 14:16+0100\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -1364,7 +1364,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:317
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:133
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:23
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
@@ -1778,7 +1778,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:9
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:211
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:216
 msgid "Stream"
 msgstr ""
 
@@ -1903,7 +1903,7 @@ msgid "Product Enhancement Advisory"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
 msgid "Advisory Type"
 msgstr ""
 
@@ -1912,7 +1912,7 @@ msgid "Issued"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:174
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr ""
@@ -1934,12 +1934,12 @@ msgid "Package Provides Name"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:151
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:156
 msgid "Provides Name"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:223
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "Number"
 msgstr ""
 
@@ -2175,51 +2175,60 @@ msgid "provides name equal"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:125
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
+msgid "none (disable modularity)"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:130
 msgid "all"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
 msgid "all product temporary fixes"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:139
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:144
 msgid "NEVRA"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:157
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:162
 msgid "Advisory Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:175
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
 msgid "Keyword"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:181
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:186
 msgid "Issue date"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:187
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:192
 msgid "Contains Package Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:193
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:198
 msgid "Contains Package Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:199
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:204
 msgid "Contains Package"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:217
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
 msgid "All"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:235
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
 msgid "Fixes Package Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:256
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
 msgid "enable module"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:262
+msgid "disable all modules"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:64
