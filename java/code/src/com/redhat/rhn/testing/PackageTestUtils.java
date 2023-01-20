@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
 
 import org.hibernate.Session;
 
@@ -99,6 +100,18 @@ public class PackageTestUtils {
         installedNewerPkg.setArch(pkg.getPackageArch());
         installedNewerPkg.setName(pkg.getPackageName());
         return installedNewerPkg;
+    }
+
+    /**
+     * Create a package for Zypper with the specified version
+     * @param version the version of zypper to create
+     * @param user the user owning  the package
+     * @return the zypper package
+     */
+    public static Package createZypperPackage(String version, User user) {
+        Package zypperPackage = PackageTest.createTestPackage(user.getOrg(), "zypper");
+        zypperPackage.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(null, version, "0", PackageType.RPM));
+        return  TestUtils.saveAndReload(zypperPackage);
     }
 
     /**

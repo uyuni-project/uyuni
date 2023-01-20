@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.PackageListItem;
@@ -39,6 +40,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
@@ -74,6 +76,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -134,6 +138,8 @@ public class MinionsAPI {
         post("/manager/api/systems/keys/:target/reject", withOrgAdmin(this::reject));
         post("/manager/api/systems/keys/:target/delete", withOrgAdmin(this::delete));
         post("/manager/api/systems/proxy", asJson(withOrgAdmin(this::setProxy)));
+        get("/manager/api/systems/:sid/details/ptf/allowedActions",
+            asJson(withUserAndServer(this::allowedPtfActions)));
         get("/manager/api/systems/:sid/details/ptf/installed",
             asJson(withUserAndServer(this::installedPtfsForSystem)));
         get("/manager/api/systems/:sid/details/ptf/available",
@@ -313,6 +319,32 @@ public class MinionsAPI {
             res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
+    }
+
+    /**
+     * API to list the allowed actions for this user that can perfomed on PTF
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return json list of allowed actions
+     */
+    private String allowedPtfActions(Request request, Response response, User user, Server server) {
+        if (!server.doesOsSupportPtf()) {
+            return json(response, ResultJson.success(Collections.emptyList()));
+        }
+
+        List<String> allowedActions = new ArrayList<>();
+        if (SystemManager.serverHasFeature(server.getId(), "ftr_package_remove") &&
+            ServerFactory.isPtfUninstallationSupported(server)) {
+            allowedActions.add(ActionFactory.TYPE_PACKAGES_REMOVE.getLabel());
+        }
+
+        if (SystemManager.serverHasFeature(server.getId(), "ftr_package_updates")) {
+            allowedActions.add(ActionFactory.TYPE_PACKAGES_UPDATE.getLabel());
+        }
+
+        return json(response, ResultJson.success(allowedActions));
     }
 
     /**

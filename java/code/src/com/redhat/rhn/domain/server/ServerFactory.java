@@ -25,6 +25,7 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -559,6 +560,34 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Long> findNonZypperTradClientsIds(Set<Long> ids) {
         return SINGLETON.listObjectsByNamedQuery("Server.findNonZypperTradClientsIds", Map.of(), ids, "serverIds");
+    }
+
+
+    /**
+     * Check if this server currently supports automated ptf uninstallation
+     * @param server the server
+     * @return <code>true</code> if this server support ptf uninstallation
+     */
+    public static boolean isPtfUninstallationSupported(Server server) {
+        if (!server.doesOsSupportPtf()) {
+            return false;
+        }
+
+        if (ServerConstants.SLES.equals(server.getOs())) {
+            PackageEvr zypperEvr = getSession().createNamedQuery("Server.findZypperEvr", PackageEvr.class)
+                                               .setParameter("sid", server.getId())
+                                               .uniqueResult();
+            if (zypperEvr == null) {
+                return false;
+            }
+
+            final RpmVersionComparator rpmVersionComparator = new RpmVersionComparator();
+            if ("15".equals(server.getRelease())) {
+                return rpmVersionComparator.compare(zypperEvr.getVersion(), "1.14.59") >= 0;
+            }
+        }
+
+        return false;
     }
 
     /**

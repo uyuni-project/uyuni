@@ -362,7 +362,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                          AND n.name = 'zypper')
         ]]>
     </query>
-    
+
+    <query name="Server.findZypperEvr">
+        <![CDATA[SELECT p.evr
+                   FROM com.redhat.rhn.domain.server.InstalledPackage as p
+                            JOIN p.name as n
+                            JOIN p.server as s
+                  WHERE s.id = :sid AND n.name = 'zypper'
+        ]]>
+    </query>
+
     <sql-query name="Server.findUnscheduledErrataByServerIds">
         <return-scalar column="serverId" type="long"/>
         <return-scalar column="errataId" type="long"/>

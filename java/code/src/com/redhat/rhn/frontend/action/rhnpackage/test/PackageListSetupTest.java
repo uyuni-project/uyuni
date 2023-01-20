@@ -21,9 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.action.rhnpackage.PackageListSetupAction;
 import com.redhat.rhn.frontend.dto.PackageListItem;
@@ -34,8 +38,12 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * PackageListSetupTest
@@ -57,8 +65,10 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
         verifyList(PackageListSetupAction.DATA_SET, PackageListItem.class);
     }
 
-    @Test
-    public void testExecuteWithPtf() throws Exception {
+    @ParameterizedTest(name = "{0}, {1} -> {2}")
+    @MethodSource("executeWithPtfArguments")
+    public void testExecuteWithPtf(String osVersion, String zypperVersion, boolean uninstallationSupported)
+        throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
@@ -69,11 +79,22 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
         Package ptfMaster = PackageTestUtils.createPtfMaster("123456", "1", user.getOrg());
         Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", user.getOrg());
 
-        channel.getPackages().addAll(List.of(standard, ptfMaster, ptfPackage));
+        // Set an OS that does not support PTFs uninstallation
+        server.setOs(ServerConstants.SLES);
+        server.setRelease(osVersion);
+
+        Package zypperPackage = PackageTest.createTestPackage(user.getOrg(), "zypper");
+        PackageEvr zyppEvr = PackageEvrFactory.lookupOrCreatePackageEvr(null, zypperVersion, "0", PackageType.RPM);
+
+        zypperPackage.setPackageEvr(zyppEvr);
+        zypperPackage = TestUtils.saveAndReload(zypperPackage);
+
+        channel.getPackages().addAll(List.of(standard, ptfMaster, ptfPackage, zypperPackage));
         channel = TestUtils.saveAndReload(channel);
 
         SystemManager.subscribeServerToChannel(user, server, channel);
-        PackageTestUtils.installPackagesOnServer(List.of(standard, ptfMaster, ptfPackage), server);
+        PackageTestUtils.installPackagesOnServer(List.of(standard, ptfMaster, ptfPackage, zypperPackage), server);
+
         server = TestUtils.reload(server);
 
         assertFalse(ptfPackage.isMasterPtfPackage());
@@ -118,6 +139,15 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
         assertNotNull(ptfMasterItem, "No entry in the list for the ptf master package");
         assertTrue(ptfMasterItem.isMasterPtfPackage());
         assertFalse(ptfMasterItem.isPartOfPtf());
-        assertFalse(ptfMasterItem.isSelectable());
+        assertTrue(ptfMasterItem.isSelectable() == uninstallationSupported);
+    }
+
+    private static Stream<Arguments> executeWithPtfArguments() {
+        return Stream.of(
+            Arguments.of("12", "1.12.76", false),
+            Arguments.of("15", "1.14.57", false),
+            Arguments.of("15", "1.14.59", true),
+            Arguments.of("15", "1.15.27", true)
+        );
     }
 }
