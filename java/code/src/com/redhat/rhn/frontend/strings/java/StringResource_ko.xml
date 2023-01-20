@@ -11266,6 +11266,20 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">선택한 기본 채널이 없습니다.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
