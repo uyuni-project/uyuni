@@ -1,3 +1,4 @@
+- Fix issue where subscription warning would show incorrectly
 - Include missing 'gpg' states to avoid issues on SSH minions.
 - Standardize the login response format with other HTTP API endpoints (bsc#1206800)
 - Add `mgr_server_is_uyuni` minion pillar item
