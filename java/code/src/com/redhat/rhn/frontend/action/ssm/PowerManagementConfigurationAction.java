@@ -50,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  * Changes power management configuration in SSM for multiple systems at once.
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
  */
-public class PowerManagementConfigurationAction extends RhnAction implements Listable {
+public class PowerManagementConfigurationAction extends RhnAction implements Listable<SystemOverview> {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(PowerManagementConfigurationAction.class);

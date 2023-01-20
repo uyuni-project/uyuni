@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageOverview;
+import com.redhat.rhn.frontend.dto.SsmUpgradablePackageListItem;
 import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -561,7 +562,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_BUG);
 
         // Test
-        DataResult result = PackageManager.upgradablePackagesFromServerSet(user);
+        DataResult<SsmUpgradablePackageListItem> result = PackageManager.upgradablePackagesFromServerSet(user);
 
         assertNotNull(result);
         assertEquals(2, result.size());

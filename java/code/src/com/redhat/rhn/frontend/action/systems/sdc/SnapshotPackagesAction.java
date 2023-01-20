@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * SnapshotPackagesAction
  */
-public class SnapshotPackagesAction extends SnapshotBaseAction {
+public class SnapshotPackagesAction extends SnapshotBaseAction<Row> {
 
     /** {@inheritDoc} */
     @Override

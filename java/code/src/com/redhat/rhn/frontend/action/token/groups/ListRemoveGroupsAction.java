@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author paji
  * ListRemoveGroupsAction
  */
-public class ListRemoveGroupsAction extends BaseListAction {
+public class ListRemoveGroupsAction extends BaseListAction<ManagedServerGroup> {
 
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 

@@ -166,7 +166,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listCompletedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.completedActions(loggedInUser, null);
+        DataResult<ScheduledAction> dr = ActionManager.completedActions(loggedInUser, null);
         return dr.toArray();
     }
 
@@ -206,7 +206,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listFailedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.failedActions(loggedInUser, null);
+        DataResult<ScheduledAction> dr = ActionManager.failedActions(loggedInUser, null);
         return dr.toArray();
     }
 

@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * AdminListAction
  */
-public class AdminListAction extends BaseListAction {
+public class AdminListAction extends BaseListAction<UserOverview> {
 
     private ManagedServerGroup serverGroup;
     private User user;
@@ -105,7 +105,7 @@ public class AdminListAction extends BaseListAction {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<UserOverview> getResult(RequestContext context) {
         List<UserOverview> userList = UserManager.activeInOrg2(user);
         for (UserOverview uo : userList) {
             uo.setSelectable(true);

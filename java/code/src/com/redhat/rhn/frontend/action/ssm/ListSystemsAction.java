@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.ssm;
 
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -35,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ListSystemsAction
  */
-public class ListSystemsAction extends RhnAction implements Listable {
+public class ListSystemsAction extends RhnAction implements Listable<SystemOverview> {
 
     /**
      * ${@inheritDoc}
@@ -56,8 +57,7 @@ public class ListSystemsAction extends RhnAction implements Listable {
      * ${@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext context) {
-        return SystemManager.inSet(context.getCurrentUser(),
-                RhnSetDecl.SYSTEMS.getLabel());
+    public List<SystemOverview> getResult(RequestContext context) {
+        return SystemManager.inSet(context.getCurrentUser(), RhnSetDecl.SYSTEMS.getLabel());
     }
 }

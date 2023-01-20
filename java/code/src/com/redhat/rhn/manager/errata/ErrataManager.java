@@ -353,7 +353,7 @@ public class ErrataManager extends BaseManager {
      * @param user Currently logged in user.
      * @return all security errata
      */
-    public static DataResult<SecurityErrataOverview> allSecurityErrata(User user) {
+    public static DataResult<ErrataOverview> allSecurityErrata(User user) {
         SelectMode m = ModeFactory.getMode(ERRATA_QUERIES,
                 "all_errata_by_type_with_cves");
         Map<String, Object> params = new HashMap<>();

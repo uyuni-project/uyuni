@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SsmRemovePackageListItem;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * Handles the listing of packages on systems in the SSM that can be verified.
  *
  */
-public class SelectVerifyPackagesAction extends RhnAction implements Listable {
+public class SelectVerifyPackagesAction extends RhnAction implements Listable<SsmRemovePackageListItem> {
 
     /** {@inheritDoc} */
     @Override
@@ -64,7 +65,7 @@ public class SelectVerifyPackagesAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<SsmRemovePackageListItem> getResult(RequestContext context) {
         User user = context.getCurrentUser();
 
         return PackageManager.packagesFromServerSet(user);

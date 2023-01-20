@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * SnapshotGroupsAction
  */
-public class SnapshotGroupsAction extends SnapshotBaseAction {
+public class SnapshotGroupsAction extends SnapshotBaseAction<Row> {
 
     /** {@inheritDoc} */
     @Override

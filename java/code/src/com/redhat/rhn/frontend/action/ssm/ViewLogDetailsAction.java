@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.ssm;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.OperationDetailsDto;
+import com.redhat.rhn.frontend.dto.ServerOperationDataDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -40,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Jason Dobies
  */
-public class ViewLogDetailsAction extends RhnListAction implements Listable {
+public class ViewLogDetailsAction extends RhnListAction implements Listable<ServerOperationDataDto> {
 
     private static final String PARAM_OPERATION_ID = "oid";
 
@@ -56,8 +57,7 @@ public class ViewLogDetailsAction extends RhnListAction implements Listable {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
 
-        OperationDetailsDto operationData = SsmOperationManager.
-                                                findOperationById(user, oid);
+        OperationDetailsDto operationData = SsmOperationManager.findOperationById(user, oid);
         request.setAttribute("operationData", operationData);
 
         // List stuff for the server list
@@ -74,7 +74,7 @@ public class ViewLogDetailsAction extends RhnListAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<ServerOperationDataDto> getResult(RequestContext context) {
         HttpServletRequest request = context.getRequest();
         long oid = Long.parseLong(request.getParameter(PARAM_OPERATION_ID));
 

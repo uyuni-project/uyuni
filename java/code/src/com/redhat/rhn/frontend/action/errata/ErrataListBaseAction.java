@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * the {@link #getErrataFilter()} method to indicate what data to return.
  *
  */
-public abstract class ErrataListBaseAction extends RhnAction implements Listable {
+public abstract class ErrataListBaseAction extends RhnAction implements Listable<ErrataOverview> {
 
     /**
      * Indicates the specific erratum returned by a particular subclass.
@@ -62,7 +62,7 @@ public abstract class ErrataListBaseAction extends RhnAction implements Listable
 
     /** {@inheritDoc} */
     @Override
-    public List<? extends ErrataOverview> getResult(RequestContext context) {
+    public List<ErrataOverview> getResult(RequestContext context) {
 
         User user = context.getCurrentUser();
         DataResult<ErrataOverview> result;

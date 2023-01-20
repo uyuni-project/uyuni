@@ -50,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * PendingActionsConfirmAction
  */
-public class PendingActionsDeleteConfirmAction extends RhnAction implements Listable {
+public class PendingActionsDeleteConfirmAction extends RhnAction implements Listable<ScheduledAction> {
 
     private static final Logger LOG =
             LogManager.getLogger(PendingActionsDeleteConfirmAction.class);
