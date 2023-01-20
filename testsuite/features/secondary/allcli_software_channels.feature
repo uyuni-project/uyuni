@@ -10,7 +10,7 @@ Feature: Channel subscription via SSM
 @sle_minion
   Scenario: Change child channels for SLES minion subscribed to a base channel
     When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I should see "1" systems selected for SSM
     And I follow the left menu "Systems > System Set Manager > Overview"
@@ -31,7 +31,7 @@ Feature: Channel subscription via SSM
     And I remember when I scheduled an action
     Then I wait until I see "Channel Changes Actions" text
     And a table line should contain system "sle_minion", "Scheduled"
-    And I follow "Clear"
+    And I click on the clear SSM button
 
 @sle_client
   Scenario: Change child channels for SLES client subscribed to a base channel
@@ -57,7 +57,7 @@ Feature: Channel subscription via SSM
     And I remember when I scheduled an action
     Then I wait until I see "Channel Changes Actions" text
     And a table line should contain system "sle_client", "Scheduled"
-    And I follow "Clear"
+    And I click on the clear SSM button
 
 @sle_minion
   Scenario: Check SLES minion is still subscribed to old channels before channel change completes
@@ -143,7 +143,7 @@ Feature: Channel subscription via SSM
 @rhlike_minion
   Scenario: System default channel can't be determined on the Red Hat-like minion
     When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    And I click on the clear SSM button
     And I check the "rhlike_minion" client
     Then I should see "1" systems selected for SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
@@ -161,7 +161,7 @@ Feature: Channel subscription via SSM
     Then I should see a "Channel Changes Actions" text
     And I should see a "Items 1 - 1 of 1" text
     And a table line should contain system "rhlike_minion", "Could not determine system default channel"
-    And I follow "Clear"
+    And I click on the clear SSM button
 
 @rhlike_minion
   Scenario: Cleanup: make sure the Red Hat-like minion is still unchanged
@@ -173,7 +173,7 @@ Feature: Channel subscription via SSM
 @deblike_minion
   Scenario: System default channel can't be determined on the Debian-like minion
     When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    And I click on the clear SSM button
     And I check the "deblike_minion" client
     Then I should see "1" systems selected for SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
@@ -191,7 +191,7 @@ Feature: Channel subscription via SSM
     Then I should see a "Channel Changes Actions" text
     And I should see a "Items 1 - 1 of 1" text
     And a table line should contain system "deblike_minion", "Could not determine system default channel"
-    And I follow "Clear"
+    And I click on the clear SSM button
 
 @deblike_minion
   Scenario: Cleanup: make sure the Debian-like minion is still unchanged
@@ -246,4 +246,4 @@ Feature: Channel subscription via SSM
     Then channel "SLE15-SP4-Installer-Updates for x86_64" should not be enabled on "sle_client"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
-    When I follow "Clear"
+    When I click on the clear SSM button

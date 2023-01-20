@@ -52,7 +52,7 @@ Feature: IPMI Power management
 
   Scenario: Check power management SSM configuration
     When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    And I click on the clear SSM button
     And I check the "sle_client" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Configure power management" in the content area
@@ -95,4 +95,4 @@ Feature: IPMI Power management
     When the server stops mocking an IPMI host
 
   Scenario: Cleanup: remove remaining systems from SSM after power management tests
-    When I follow "Clear"
+    When I click on the clear SSM button

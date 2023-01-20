@@ -109,7 +109,7 @@ Feature: Retracted patches
 
   Scenario: SSM: Retracted package should not be available for installation
     When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client 
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages" in the content area
@@ -117,4 +117,4 @@ Feature: Retracted patches
     And I follow "Fake-RPM-SLES-Channel"
     Then I should see a "rute-dummy-2.0-1.2" text
     And I should not see a "rute-dummy-2.1-1.1" text
-    And I follow "Clear"
+    And I click on the clear SSM button

@@ -164,4 +164,4 @@ Feature: Use salt formulas
      When I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
-     When I follow "Clear"
+     When I click on the clear SSM button
