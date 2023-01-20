@@ -25,13 +25,13 @@ Feature: Be able to list available channels and enable them
   Scenario: List products
     When I execute mgr-sync "list products"
     Then I should get "[ ] SUSE Linux Enterprise Server 12 SP4 x86_64"
-    And I should get "[ ] SUSE Manager Proxy 4.3 x86_64"
+    And I should get "[ ] SUSE Manager Proxy 4.2 x86_64"
 
 @susemanager
   Scenario: List all products for SUSE Manager
     When I execute mgr-sync "list products --expand"
     Then I should get "[ ] SUSE Linux Enterprise Server 12 SP4 x86_64"
-    And I should get "[ ] SUSE Manager Proxy 4.3 x86_64"
+    And I should get "[ ] SUSE Manager Proxy 4.2 x86_64"
     And I should get "  [ ] (R) SUSE Manager Client Tools for RHEL, Liberty and Clones 7 x86_64"
     And I should get "  [ ] (R) SUSE Manager Client Tools for SLE 15 x86_64"
 

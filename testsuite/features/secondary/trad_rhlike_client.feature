@@ -76,7 +76,7 @@ Feature: Be able to register a Red Hat-like traditional client and do some basic
   Scenario: Check the results of the OpenSCAP scan on the Red Hat-like traditional client
     Given I am on the Systems overview page of this "rhlike_client"
     When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_standard"
+    And I follow "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_standard"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-7" text
     And I should see a "XCCDF Rule Results" text

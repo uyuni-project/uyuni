@@ -63,7 +63,7 @@ Feature: Maintenance windows
 
   Scenario: Assign systems to a multi schedule using SSM
     When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
+    And I click on the clear SSM button
     And I check the "sle_client" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area
@@ -103,8 +103,7 @@ Feature: Maintenance windows
 
   Scenario: Detach systems from schedules
     When I follow the left menu "Systems > Overview"
-    And I follow "Clear"
-    And I check the "sle_client" client
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area

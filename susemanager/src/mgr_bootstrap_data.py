@@ -432,7 +432,7 @@ AMAZONLINUX2 = [
     "zip"
 ]
 
-PKGLIST15_SALT = [
+PKGLIST15_SALT_NO_BUNDLE = [
     "libpgm-5_2-0",
     "libsodium23",
     "libzmq5",
@@ -464,7 +464,14 @@ PKGLIST15_SALT = [
     "salt-minion",
     "python3-apipkg*",
     "python3-iniconfig*",
-    "venv-salt-minion",
+]
+
+PKGLIST15_SALT = PKGLIST15_SALT_NO_BUNDLE + [
+    "venv-salt-minion"
+]
+
+PKGLIST15_SALT_OPT_BUNDLE = PKGLIST15_SALT_NO_BUNDLE + [
+    "venv-salt-minion*"
 ]
 
 ONLYSLE15 = [
@@ -993,7 +1000,7 @@ DATA = {
     },
     'SLES4SAP-12-x86_64' : {
         'PDID' : 1319, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/1/bootstrap/'
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
     },
     'SLE-12-SP1-ppc64le' : {
         'PDID' : 1334, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
@@ -1009,11 +1016,11 @@ DATA = {
     },
     'SLES4SAP-12-SP1-ppc64le' : {
         'PDID' : 1437, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/0/1/bootstrap/'
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLES4SAP-12-SP1-x86_64' : {
         'PDID' : 1346, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
-        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/0/1/bootstrap/'
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
     },
     'RES6-x86_64' : {
         'PDID' : [1138], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
@@ -1244,7 +1251,7 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
     },
     'SUMA-42-PROXY-x86_64' : {
-        'PDID' : [2145, 2225], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2145, 2225], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT_OPT_BUNDLE + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP4-aarch64' : {

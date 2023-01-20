@@ -127,4 +127,4 @@ Feature: Clone a channel
     And I should see a "has been deleted." text
 
   Scenario: Cleanup: remove remaining systems from SSM after channel cloning tests
-    When I follow "Clear"
+    When I click on the clear SSM button

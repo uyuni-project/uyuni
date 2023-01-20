@@ -1,5 +1,8 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+### This file contains all step definitions concerning Salt and bootstrapping
+### Salt minions.
 
 require 'timeout'
 require 'open-uri'

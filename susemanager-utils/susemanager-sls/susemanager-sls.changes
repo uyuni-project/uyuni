@@ -1,3 +1,6 @@
+- Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
+- Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
+- filter out libvirt engine events (bsc#1206146)
 - Optimize the number of salt calls on minion startup (bsc#1203532)
 - Updated logrotate configuration (bsc#1206470)
 - Make libvirt-events.conf path depend on what minion is used (bsc#1205920)
