@@ -2321,6 +2321,15 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Return <code>true</code> if OS supports Product Temporary Fixes (PTF)
+     *
+     * @return <code>true</code> if OS supports PTF uninstallation
+     */
+    public boolean doesOsSupportPtf() {
+        return ServerConstants.SLES.equals(getOs());
+    }
+
+    /**
      * @return true if the installer type is of SLES 10
      */
     private boolean isSLES10() {

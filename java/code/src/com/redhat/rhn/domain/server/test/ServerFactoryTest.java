@@ -597,9 +597,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * Create a test Server and commit it to the DB.
      * @param owner the owner of this Server
      * @return Server that was created
-     * @throws Exception something bad happened
      */
-    public static Server createTestServer(User owner) throws Exception {
+    public static Server createTestServer(User owner) {
         return createTestServer(owner, false);
     }
 
@@ -1652,4 +1651,37 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(result.stream().anyMatch(pkgEvr1::equals));
         assertTrue(result.stream().anyMatch(pkgEvr3::equals));
     }
+
+    @Test
+    public void canIdentifyIfPtfUninstallationIsSupported() {
+        Package zypperNoSupport = PackageTestUtils.createZypperPackage("1.14.50", user);
+        Package zypperWithSupport = PackageTestUtils.createZypperPackage("1.14.59", user);
+
+        Server noPtfSupport = createTestServer(user);
+        noPtfSupport.setOs(ServerConstants.ALMA);
+
+        Server ptfSupportNoUninstall = createTestServer(user);
+        ptfSupportNoUninstall.setOs(ServerConstants.SLES);
+        ptfSupportNoUninstall.setRelease("15");
+        PackageTestUtils.installPackagesOnServer(List.of(zypperNoSupport), ptfSupportNoUninstall);
+
+        Server ptfFullSupport = createTestServer(user);
+        ptfFullSupport.setOs(ServerConstants.SLES);
+        ptfFullSupport.setRelease("15");
+        PackageTestUtils.installPackagesOnServer(List.of(zypperWithSupport), ptfFullSupport);
+
+        noPtfSupport = TestUtils.reload(noPtfSupport);
+        ptfSupportNoUninstall = TestUtils.reload(ptfSupportNoUninstall);
+        ptfFullSupport = TestUtils.reload(ptfFullSupport);
+
+        assertFalse(noPtfSupport.doesOsSupportPtf());
+        assertFalse(ServerFactory.isPtfUninstallationSupported(noPtfSupport));
+
+        assertTrue(ptfSupportNoUninstall.doesOsSupportPtf());
+        assertFalse(ServerFactory.isPtfUninstallationSupported(ptfSupportNoUninstall));
+
+        assertTrue(ptfFullSupport.doesOsSupportPtf());
+        assertTrue(ServerFactory.isPtfUninstallationSupported(ptfFullSupport));
+    }
+
 }

@@ -24,6 +24,7 @@ import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -39,6 +40,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -55,6 +57,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -407,6 +410,79 @@ public class AccessTest extends BaseTestCaseWithUser {
         ctx.put("sid", guest.getId());
         ctx.put("user", user);
         assertTrue(a.aclSystemIsVirtual(ctx, null));
+    }
+
+    @Test
+    public void testCanEvalIfServerHasPtfRepositories() throws Exception {
+        Server serverNoSupport = ServerFactoryTest.createTestServer(user, true);
+        serverNoSupport.setOs(ServerConstants.ALMA);
+
+        Server serverWithSupport = ServerFactoryTest.createTestServer(user, true);
+        serverWithSupport.setOs(ServerConstants.SLES);
+
+        Server serverWithSupportAndChannel = ServerFactoryTest.createTestServer(user, true);
+        serverWithSupportAndChannel.setOs(ServerConstants.SLES);
+
+        Channel normalChannel = ChannelFactoryTest.createTestChannel(user, List.of("http://example.com/REPO/RPMS"));
+        Channel ptfChannel = ChannelFactoryTest.createTestChannel(user, List.of("http://example.com/PTF/RPMS"));
+
+        SystemManager.subscribeServerToChannel(user, serverNoSupport, normalChannel);
+        SystemManager.subscribeServerToChannel(user, serverWithSupport, normalChannel);
+        SystemManager.subscribeServerToChannel(user, serverWithSupportAndChannel, ptfChannel);
+
+        serverNoSupport = TestUtils.saveAndReload(serverNoSupport);
+        serverWithSupport = TestUtils.saveAndReload(serverWithSupport);
+        serverWithSupportAndChannel = TestUtils.saveAndReload(serverWithSupportAndChannel);
+
+        Access access = new Access();
+        Map<String, Object> context = new HashMap<>();
+        context.put("user", user);
+
+        context.put("sid", serverNoSupport.getId());
+        assertFalse(access.aclHasPtfRepositories(context, null));
+
+        context.put("sid", serverWithSupport.getId());
+        assertFalse(access.aclHasPtfRepositories(context, null));
+
+        context.put("sid", serverWithSupportAndChannel.getId());
+        assertTrue(access.aclHasPtfRepositories(context, null));
+    }
+
+    @Test
+    public void testCanEvalIfServerSupportsPtfRemoval() {
+        Package zypperNoSupport = PackageTestUtils.createZypperPackage("1.14.50", user);
+        Package zypperWithSupport = PackageTestUtils.createZypperPackage("1.14.59", user);
+
+        Server serverNoSupport = ServerFactoryTest.createTestServer(user, true);
+        serverNoSupport.setOs(ServerConstants.ALMA);
+
+        Server serverOnlyPtf = ServerFactoryTest.createTestServer(user, true);
+        serverOnlyPtf.setOs(ServerConstants.SLES);
+        serverOnlyPtf.setRelease("15");
+
+        Server serverPtfAndRemoval = ServerFactoryTest.createTestServer(user, true);
+        serverPtfAndRemoval.setOs(ServerConstants.SLES);
+        serverPtfAndRemoval.setRelease("15");
+
+        PackageTestUtils.installPackagesOnServer(List.of(zypperNoSupport), serverOnlyPtf);
+        PackageTestUtils.installPackagesOnServer(List.of(zypperWithSupport), serverPtfAndRemoval);
+
+        serverNoSupport = TestUtils.saveAndReload(serverNoSupport);
+        serverOnlyPtf = TestUtils.saveAndReload(serverOnlyPtf);
+        serverPtfAndRemoval = TestUtils.saveAndReload(serverPtfAndRemoval);
+
+        Access access = new Access();
+        Map<String, Object> context = new HashMap<>();
+        context.put("user", user);
+
+        context.put("sid", serverNoSupport.getId());
+        assertFalse(access.aclSystemSupportsPtfRemoval(context, null));
+
+        context.put("sid", serverOnlyPtf.getId());
+        assertFalse(access.aclSystemSupportsPtfRemoval(context, null));
+
+        context.put("sid", serverPtfAndRemoval.getId());
+        assertTrue(access.aclSystemSupportsPtfRemoval(context, null));
     }
 
     /**

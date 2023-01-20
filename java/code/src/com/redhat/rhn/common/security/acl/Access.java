@@ -21,12 +21,14 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -591,6 +593,48 @@ public class Access extends BaseHandler {
         User user = (User) map.get("user");
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
         return ContactMethodUtil.isSSHPushContactMethod(lookedUp.getContactMethod());
+    }
+
+    /**
+     * Checks if a server can support product temporary fixes (ptf).
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return true if the server can have ptf
+     */
+    public boolean aclHasPtfRepositories(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
+
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null || !server.doesOsSupportPtf()) {
+            return false;
+        }
+
+        // Evaluate if any of the subscript channel refers to a PTF repository
+        return server.getChannels()
+                     .stream()
+                     .flatMap(c -> c.getSources().stream())
+                     .map(ContentSource::getSourceUrl)
+                     .anyMatch(url -> url.contains("/PTF/"));
+    }
+
+    /**
+     * Checks if a system allows manual uninstallation of ptfs without user intervention
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return true if the system support automated ptf uninstallation
+     */
+    public boolean aclSystemSupportsPtfRemoval(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
+
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null) {
+            return false;
+        }
+
+        return SystemManager.serverHasFeature(sid, "ftr_package_remove") &&
+            ServerFactory.isPtfUninstallationSupported(server);
     }
 
 }

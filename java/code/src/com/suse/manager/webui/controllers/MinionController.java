@@ -136,6 +136,8 @@ public class MinionController {
     }
 
     private static void initPTFRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/ptf/overview",
+            withCsrfToken(withDocsLocale(withUserAndServer(MinionController::ptfOverview))), jade);
         get("/manager/systems/details/ptf/list",
             withCsrfToken(withDocsLocale(withUserAndServer(MinionController::ptfListRemove))), jade);
         get("/manager/systems/details/ptf/install",
@@ -532,6 +534,18 @@ public class MinionController {
         return new ModelAndView(data, "templates/ssm/proxy.jade");
     }
 
+    /**
+     * Handler for the overview PTFs page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the server
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ptfOverview(Request request, Response response, User user, Server server) {
+        return new ModelAndView(new HashMap<>(), "templates/minion/ptf-overview.jade");
+    }
     /**
      * Handler for the page to list and remove currently installed PTFs.
      *
