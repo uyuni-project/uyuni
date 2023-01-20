@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author paji
  * AddGroupsAction
  */
-public class AddGroupsAction extends BaseListAction {
+public class AddGroupsAction extends BaseListAction<ManagedServerGroup> {
     private static final String ACCESS_MAP = "accessMap";
 
     private final ServerGroupManager sgm = GlobalInstanceHolder.SERVER_GROUP_MANAGER;

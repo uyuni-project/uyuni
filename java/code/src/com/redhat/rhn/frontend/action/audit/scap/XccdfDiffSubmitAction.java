@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Static action page.
  */
-public class XccdfDiffSubmitAction extends RhnAction implements Listable {
+public class XccdfDiffSubmitAction extends RhnAction implements Listable<RuleResultComparator> {
     public static final String FIRST = "first";
     public static final String SECOND = "second";
     public static final String VIEW = "view";

@@ -19,6 +19,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
@@ -42,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author paji
  */
-public class AddSystemsAction extends BaseListAction {
+public class AddSystemsAction extends BaseListAction<SystemOverview> {
 
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
@@ -76,10 +77,9 @@ public class AddSystemsAction extends BaseListAction {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<SystemOverview> getResult(RequestContext context) {
         ManagedServerGroup sg = context.lookupAndBindServerGroup();
-        return SystemManager.systemsNotInGroup(context.getCurrentUser(),
-                                                        sg, null);
+        return SystemManager.systemsNotInGroup(context.getCurrentUser(), sg, null);
     }
 
 }

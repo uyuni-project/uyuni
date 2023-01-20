@@ -411,9 +411,9 @@ public class TaskomaticApi {
      * @return list of schedules
      * @throws TaskomaticApiException if there was an error
      */
-    public List findActiveSchedules(User user) throws TaskomaticApiException {
-        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedules");
-        return schedules;
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> findActiveSchedules(User user) throws TaskomaticApiException {
+        return (List<Map<String, Object>>) invoke("tasko.listActiveSatSchedules");
     }
 
     /**
@@ -423,11 +423,12 @@ public class TaskomaticApi {
      * @return list of schedules
      * @throws TaskomaticApiException if there was an error
      */
-    public List findRunsByBunch(User user, String bunchName) throws TaskomaticApiException {
-        List<Map> runs = (List<Map>) invoke("tasko.listBunchSatRuns", bunchName);
-        return runs;
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> findRunsByBunch(User user, String bunchName) throws TaskomaticApiException {
+        return (List<Map<String, Object>>) invoke("tasko.listBunchSatRuns", bunchName);
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Object> findScheduleByBunchAndLabel(String bunchName, String jobLabel, User user)
         throws TaskomaticApiException {
         List<Map<String, Object>> schedules = (List<Map<String, Object>>) invoke("tasko.listActiveSchedulesByBunch",

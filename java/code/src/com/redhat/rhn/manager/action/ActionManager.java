@@ -892,7 +892,7 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    public static DataResult failedActions(User user, PageControl pc) {
+    public static DataResult<ScheduledAction> failedActions(User user, PageControl pc) {
         return getActions(user, pc, "failed_action_list");
     }
 
@@ -902,7 +902,7 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    public static DataResult completedActions(User user, PageControl pc) {
+    public static DataResult<ScheduledAction> completedActions(User user, PageControl pc) {
         return getActions(user, pc, "completed_action_list");
     }
 

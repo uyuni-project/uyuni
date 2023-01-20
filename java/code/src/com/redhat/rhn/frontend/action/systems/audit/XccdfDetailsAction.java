@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
+import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -41,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  * XccdfDetailsAction
  */
 
-public class XccdfDetailsAction extends RhnAction implements Listable {
+public class XccdfDetailsAction extends RhnAction implements Listable<XccdfRuleResultDto> {
 
     /**
      * {@inheritDoc}
@@ -73,7 +74,7 @@ public class XccdfDetailsAction extends RhnAction implements Listable {
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext context) {
+    public List<XccdfRuleResultDto> getResult(RequestContext context) {
         Long xid = context.getRequiredParam("xid");
         return ScapManager.ruleResultsPerScan(xid);
     }

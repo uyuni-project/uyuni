@@ -47,6 +47,8 @@ import com.redhat.rhn.frontend.dto.PackageFileDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMergeDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
+import com.redhat.rhn.frontend.dto.SsmRemovePackageListItem;
+import com.redhat.rhn.frontend.dto.SsmUpgradablePackageListItem;
 import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -1467,7 +1469,7 @@ public class PackageManager extends BaseManager {
      * @param user user
      * @return list of {@link com.redhat.rhn.frontend.dto.SsmRemovePackageListItem}
      */
-    public static DataResult packagesFromServerSet(User user) {
+    public static DataResult<SsmRemovePackageListItem> packagesFromServerSet(User user) {
 
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_from_server_set");
         Map<String, Object> params = new HashMap<>();
@@ -1484,7 +1486,7 @@ public class PackageManager extends BaseManager {
      * @param user user
      * @return list of {@link com.redhat.rhn.frontend.dto.SsmUpgradablePackageListItem}
      */
-    public static DataResult upgradablePackagesFromServerSet(User user) {
+    public static DataResult<SsmUpgradablePackageListItem> upgradablePackagesFromServerSet(User user) {
 
         SelectMode m = ModeFactory.getMode("Package_queries", "ssm_packages_for_upgrade");
         Map<String, Object> params = new HashMap<>();

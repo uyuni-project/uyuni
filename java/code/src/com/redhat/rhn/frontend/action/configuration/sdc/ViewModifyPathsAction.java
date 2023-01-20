@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ViewModifyCentralPathsAction
  */
-public class ViewModifyPathsAction extends RhnAction implements Listable {
+public class ViewModifyPathsAction extends RhnAction implements Listable<ConfigFileNameDto> {
     public static final String COPY_TO_LOCAL = "copy_to_local";
     public static final String COPY_TO_SANDBOX = "copy_to_sandbox";
     public static final String COPY_TO_GLOBAL = "copy_to_global";

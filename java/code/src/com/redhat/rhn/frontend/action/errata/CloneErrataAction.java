@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  * CloneErrataSubmitAction
  *
  */
-public class CloneErrataAction extends RhnAction implements Listable {
+public class CloneErrataAction extends RhnAction implements Listable<ClonableErrataDto> {
 
     public static final String ANY_CHANNEL = "any_channel";
 
@@ -77,7 +77,7 @@ public class CloneErrataAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<ClonableErrataDto> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         Long orgId = user.getOrg().getId();
 

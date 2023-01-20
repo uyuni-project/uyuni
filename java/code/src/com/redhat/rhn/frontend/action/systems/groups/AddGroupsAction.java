@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author paji
  * AddGroupsAction
  */
-public class AddGroupsAction extends RhnAction implements Listable {
+public class AddGroupsAction extends RhnAction implements Listable<ManagedServerGroup> {
 
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 

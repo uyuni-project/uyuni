@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.audit;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.frontend.dto.AuditMachineDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -36,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * AuditAction
  */
-public class AuditAction extends RhnAction implements Listable {
+public class AuditAction extends RhnAction implements Listable<AuditMachineDto> {
 
     /** {@inheritDoc} */
     @Override
@@ -68,7 +69,7 @@ public class AuditAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public DataResult getResult(RequestContext context) {
+    public DataResult<AuditMachineDto> getResult(RequestContext context) {
         return AuditManager.getMachines();
     }
 }

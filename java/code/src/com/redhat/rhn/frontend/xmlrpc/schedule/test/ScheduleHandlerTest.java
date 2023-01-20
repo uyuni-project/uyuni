@@ -134,7 +134,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     public void testListCompletedActions() throws Exception {
 
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.completedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.completedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -182,7 +182,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListFailedActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.failedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.failedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same

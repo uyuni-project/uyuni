@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.ScheduleKickstartWizardAction;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -56,7 +57,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ScheduleKickstartAction
  */
-public class SsmKSScheduleAction extends RhnAction implements Listable {
+public class SsmKSScheduleAction extends RhnAction implements Listable<KickstartDto> {
     private static final String SCHEDULE_TYPE_IP = "isIP";
     public static final String USE_IPV6_GATEWAY = "useIpv6Gateway";
 
@@ -155,9 +156,8 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
     }
 
 
-    private ScheduleActionResult schedule(HttpServletRequest request, ActionForm form,
-        RequestContext context) {
-        SSMScheduleCommand com  = null;
+    private ScheduleActionResult schedule(HttpServletRequest request, ActionForm form, RequestContext context) {
+        SSMScheduleCommand com;
         User user = context.getCurrentUser();
 
 
@@ -227,13 +227,13 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext ctx) {
+    public List<KickstartDto> getResult(RequestContext ctx) {
         if (isIP(ctx.getRequest())) {
             return Collections.emptyList();
         }
 
         User user = ctx.getCurrentUser();
-        List profiles = KickstartLister.getInstance().listProfilesForSsm(user);
+        List<KickstartDto> profiles = KickstartLister.getInstance().listProfilesForSsm(user);
 
         if (profiles.isEmpty()) {
             addMessage(ctx.getRequest(), "kickstart.schedule.noprofiles");
@@ -244,5 +244,4 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
         }
         return profiles;
     }
-
 }

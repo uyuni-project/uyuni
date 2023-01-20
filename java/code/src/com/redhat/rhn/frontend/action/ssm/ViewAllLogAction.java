@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.ssm;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.OperationDetailsDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 
@@ -30,7 +31,7 @@ public class ViewAllLogAction extends BaseViewLogAction {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<OperationDetailsDto> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SsmOperationManager.allOperations(user);
     }

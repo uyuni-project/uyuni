@@ -50,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ChildChannelConfirmAction
  */
-public class ChildChannelConfirmAction extends RhnAction implements Listable {
+public class ChildChannelConfirmAction extends RhnAction implements Listable<ChannelActionDAO> {
 
     private static final Logger LOG = LogManager.getLogger(ChildChannelConfirmAction.class);
 
@@ -86,8 +86,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
         Map<Long, ChannelActionDAO> sysSubList = ChannelManager.filterChildSubscriptions(
                 RhnSetDecl.SYSTEMS.getLabel(),  chanSubList, chanUnsubList, user);
 
-        List list = new ArrayList<>();
-        list.addAll(sysSubList.values());
+        List<ChannelActionDAO> list = new ArrayList<>(sysSubList.values());
         request.setAttribute("data", list);
 
 
@@ -134,8 +133,7 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
         List<Channel> newChannels = new ArrayList<>();
         for (Channel c : chans) {
             // Verify the user roles, caching the role for the channel
-            Boolean hasAcceptableRole =
-                    ChannelManager.verifyChannelSubscribe(user, c.getId());
+            boolean hasAcceptableRole = ChannelManager.verifyChannelSubscribe(user, c.getId());
             if (hasAcceptableRole) {
                 newChannels.add(c);
             }
@@ -167,14 +165,13 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
         }
     }
 
-
-
     /**
      *
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext context) {
-        return (List) context.getRequest().getAttribute("data");
+    @SuppressWarnings("unchecked")
+    public List<ChannelActionDAO> getResult(RequestContext context) {
+        return (List<ChannelActionDAO>) context.getRequest().getAttribute("data");
     }
 }

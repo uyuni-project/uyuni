@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.systems.duplicate;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -39,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * DuplicateSystemsDeleteSetupAction
  */
-public class DuplicateSystemsDeleteSetupAction extends RhnAction implements Listable {
+public class DuplicateSystemsDeleteSetupAction extends RhnAction implements Listable<SystemOverview> {
     /**
     * {@inheritDoc}
     */
@@ -91,8 +92,7 @@ public class DuplicateSystemsDeleteSetupAction extends RhnAction implements List
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext contextIn) {
-        return SystemManager.inSet(contextIn.getCurrentUser(),
-                RhnSetDecl.DUPLICATE_SYSTEMS.getLabel(), true);
+    public List<SystemOverview> getResult(RequestContext contextIn) {
+        return SystemManager.inSet(contextIn.getCurrentUser(), RhnSetDecl.DUPLICATE_SYSTEMS.getLabel(), true);
     }
 }
