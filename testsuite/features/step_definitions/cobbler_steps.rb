@@ -3,55 +3,54 @@
 
 ### This file contains the definitions for all steps concerning Cobbler.
 
+$cobbler_test = CobblerTest.new
+
 # cobbler daemon
 Given(/^cobblerd is running$/) do
-  ct = CobblerTest.new
-  raise 'cobblerd is not running' unless ct.running?
+  raise 'cobblerd is not running' unless $cobbler_test.running?
 end
 
 When(/^I restart cobbler on the server$/) do
   $server.run('systemctl restart cobblerd.service')
 end
 
+Given(/^I am logged into Cobbler API as user "([^"]*)" with password "([^"]*)"$/) do |user, pwd|
+  $cobbler_test.login(user, pwd)
+end
+
+When(/^I log out from Cobbler API$/) do
+  $cobbler_test.logout
+end
+
 # distro and profile management
 Given(/^distro "([^"]*)" exists$/) do |distro|
-  ct = CobblerTest.new
-  raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
+  raise "Distro #{distro} does not exist" unless $cobbler_test.element_exists('distros', distro)
 end
 
 Given(/^profile "([^"]*)" exists$/) do |profile|
-  ct = CobblerTest.new
-  raise 'profile ' + profile + ' does not exist' unless ct.profile_exists(profile)
+  raise "Profile #{profile} does not exist" unless $cobbler_test.element_exists('profiles', profile)
 end
 
-When(/^I create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
-  ct = CobblerTest.new
-  ct.login(user, pwd)
-  raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
+When(/^I create distro "([^"]*)"$/) do |distro|
+  raise "Distro #{distro} already exists" if $cobbler_test.element_exists('distros', distro)
 
-  ct.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
+  $cobbler_test.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
-When(/^I create profile "([^"]*)" for distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |profile, distro, user, pwd|
-  ct = CobblerTest.new
-  ct.login(user, pwd)
-  raise 'profile ' + profile + ' already exists' if ct.profile_exists(profile)
+When(/^I create profile "([^"]*)" for distro "([^"]*)"$/) do |profile, distro|
+  raise "Profile #{profile} already exists" if $cobbler_test.element_exists('profiles', profile)
 
-  ct.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
+  $cobbler_test.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
 end
 
-When(/^I create system "([^"]*)" for profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, profile, user, pwd|
-  ct = CobblerTest.new
-  ct.login(user, pwd)
-  raise 'system ' + system + ' already exists' if ct.system_exists(system)
+When(/^I create system "([^"]*)" for profile "([^"]*)"$/) do |system, profile|
+  raise "System #{system} already exists" if $cobbler_test.element_exists('systems', system)
 
-  ct.system_create(system, profile)
+  $cobbler_test.system_create(system, profile)
 end
 
-When(/^I remove system "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
-  ct = CobblerTest.new
-  ct.login(user, pwd)
-  ct.system_remove(system)
+When(/^I remove system "([^"]*)"$/) do |system|
+  $cobbler_test.system_remove(system)
 end
 
 When(/^I remove profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |system, user, pwd|
@@ -249,4 +248,17 @@ When(/^I run Cobbler sync (with|without) error checking$/) do |checking|
   else
     _out, _code = $server.run('cobbler sync')
   end
+end
+
+When(/^I start local monitoring of Cobbler$/) do
+  $server.run('tail -n 0 -f /var/log/cobbler/cobbler.log > /var/log/cobbler/testsuite_cobbler_watch.log', timeout: 1)
+end
+
+When(/^I check for Cobbler errors in the local logs$/) do
+  command_output, _code = $server.run('ps axo pid,cmd | grep tail | grep -v grep', check_errors: false)
+  pid = command_output.split(' ')[0]
+  $server.run("kill #{pid}", check_errors: false)
+  output, code = $server.run('grep -i error /var/log/cobbler/testsuite_cobbler_watch.log', check_errors: false)
+  $server.run('rm /var/log/cobbler/testsuite_cobbler_watch.log', check_errors: false)
+  raise "Errors in Cobbler logs:\n #{output}" if code.zero?
 end

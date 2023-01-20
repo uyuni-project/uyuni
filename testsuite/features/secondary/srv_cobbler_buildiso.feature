@@ -8,19 +8,23 @@ Feature: Cobbler buildiso
 
   Scenario: Log in as testing user in the cobbler buildiso context
     Given I am authorized as "testing" with password "testing"
+    And I am logged into Cobbler API as user "testing" with password "testing"
+
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
 
   Scenario: Copy cobbler profiles on the server in the cobbler buildiso context
     When I copy autoinstall mocked files on server
 
   Scenario: Create a dummy distro in the cobbler buildiso context
     Given cobblerd is running
-    When I create distro "buildisodistro" as user "testing" with password "testing"
+    When I create distro "buildisodistro"
 
   Scenario: Create dummy profiles in the cobbler buildiso context
     Given distro "buildisodistro" exists
-    When I create profile "orchid" for distro "buildisodistro" as user "testing" with password "testing"
-    And I create profile "flame" for distro "buildisodistro" as user "testing" with password "testing"
-    And I create profile "pearl" for distro "buildisodistro" as user "testing" with password "testing"
+    When I create profile "orchid" for distro "buildisodistro"
+    And I create profile "flame" for distro "buildisodistro"
+    And I create profile "pearl" for distro "buildisodistro"
 
   Scenario: Check cobbler created a distro and profiles in the cobbler buildiso context
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -31,7 +35,7 @@ Feature: Cobbler buildiso
 
   Scenario: Create dummy system in the Cobbler buildiso context
     Given profile "orchid" exists
-    When I create system "testsystem" for profile "orchid" as user "testing" with password "testing"
+    When I create system "testsystem" for profile "orchid"
     And I add the Cobbler parameter "name-servers" with value "9.9.9.9" to item "system" with name "testsystem"
 
   Scenario: Prepare the cobbler buildiso context
@@ -66,7 +70,7 @@ Feature: Cobbler buildiso
 
   Scenario: Cleanup: delete test distro and profiles in the cobbler buildiso context
     Given I am authorized as "testing" with password "testing"
-    When I remove system "testsystem" as user "testing" with password "testing"
+    When I remove system "testsystem"
     And I remove kickstart profiles and distros
     And I follow the left menu "Systems > Autoinstallation > Profiles"
     Then I should not see a "buildisodistro" text
@@ -76,3 +80,7 @@ Feature: Cobbler buildiso
 
   Scenario: Cleanup: Remove buildiso tmpdir and built ISO file in the cobbler buildiso context
     When I cleanup after Cobbler buildiso
+    And I log out from Cobbler API
+
+  Scenario: Check for errors in Cobbler monitoring
+    When I check for Cobbler errors in the local logs

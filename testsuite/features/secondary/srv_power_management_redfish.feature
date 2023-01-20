@@ -13,6 +13,9 @@ Feature: Redfish Power management
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+
   Scenario: Save power management values for Redfish
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Provisioning" in the content area
@@ -95,3 +98,6 @@ Feature: Redfish Power management
 
   Scenario: Cleanup: remove remaining systems from SSM after Redfish power management tests
     When I click on the clear SSM button
+
+  Scenario: Check for errors in Cobbler monitoring
+    When I check for Cobbler errors in the local logs
