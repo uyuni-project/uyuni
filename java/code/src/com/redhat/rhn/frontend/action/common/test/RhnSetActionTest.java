@@ -132,7 +132,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
             protected DataResult getDataResult(User user,
                                                ActionForm formIn,
                                                HttpServletRequest request) {
-                List retval = new LinkedList();
+                List retval = new LinkedList<>();
                 for (int i = 0; i < 10; i++) {
                     retval.add(new TestIdObject((long) i));
                 }

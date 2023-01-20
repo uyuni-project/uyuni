@@ -54,7 +54,7 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  * Action handling the advanced system search page.
  */
-public class SystemSearchAction extends BaseSearchAction implements Listable {
+public class SystemSearchAction extends BaseSearchAction implements Listable<SystemSearchResult> {
 
     public static final String DATA_SET = "searchResults";
 
@@ -222,7 +222,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    protected DataResult performSearch(RequestContext context) {
+    protected DataResult<SystemSearchResult> performSearch(RequestContext context) {
         HttpServletRequest request = context.getRequest();
         String searchString = (String)request.getAttribute(SEARCH_STR);
         String viewMode = (String)request.getAttribute(VIEW_MODE);
@@ -232,7 +232,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
         Boolean isFineGrained = (Boolean)request.getAttribute(FINE_GRAINED);
 
         ActionErrors errs = new ActionErrors();
-        DataResult dr = null;
+        DataResult<SystemSearchResult> dr = null;
         try {
             dr = SystemSearchHelper.systemSearch(context,
                     searchString,
@@ -302,7 +302,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<SystemSearchResult> getResult(RequestContext context) {
         String searchString = (String)context.getRequest().getAttribute(SEARCH_STR);
 
         if (!StringUtils.isBlank(searchString)) {

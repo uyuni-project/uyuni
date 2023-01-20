@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -354,12 +355,12 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * Gets the number of active org admins in this org.
      * @return Returns the number of active org admins in this org.
      */
+    @SuppressWarnings("unchecked")
     public int numActiveOrgAdmins() {
         Session session = HibernateFactory.getSession();
-        List list = session.getNamedQuery("Org.numOfOrgAdmins")
-        .setParameter("org_id", this.getId())
-        // Retrieve from cache if there
-        .list();
+        List<Long> list = session.getNamedQuery("Org.numOfOrgAdmins")
+                .setParameter(ORG_ID_KEY, this.getId())
+                .list();
         if (list != null) {
             return list.size();
         }
@@ -375,7 +376,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
         SelectMode m = ModeFactory.getMode("User_queries", "active_org_admins");
         Map<String, Object> params = new HashMap<>();
         params.put(ORG_ID_KEY, this.getId());
-        DataResult dr = m.execute(params);
+        DataResult<Row> dr = m.execute(params);
         if (dr == null) {
             return null;
         }
@@ -388,9 +389,9 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * @param dataresult the dataresult object containing the results of a query
      * @return Returns the userList
      */
-    private List<User> getUsers(DataResult dataresult) {
-        List userList = new ArrayList<>();
-        Collection userIds = getListFromResult(dataresult, USER_ID_KEY);
+    private List<User> getUsers(DataResult<Row> dataresult) {
+        List<User> userList = new ArrayList<>();
+        Collection<Long> userIds = getListFromResult(dataresult, USER_ID_KEY);
 
         if (!userIds.isEmpty()) {
             userList = UserFactory.lookupByIds(userIds);
@@ -405,11 +406,11 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * @param key the key for fetching the value
      * @return Returns the userIds
      */
-    private List getListFromResult(DataResult dataresult, String key) {
-        List userIds = new ArrayList<>();
-        for (Object oIn : dataresult) {
+    private List<Long> getListFromResult(DataResult<Row> dataresult, String key) {
+        List<Long> userIds = new ArrayList<>();
+        for (Row row: dataresult) {
             // convert these to Longs
-            Long bd = (Long) ((HashMap) oIn).get(key);
+            Long bd = (Long) row.get(key);
             userIds.add(bd);
         }
         return userIds;

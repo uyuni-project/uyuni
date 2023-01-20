@@ -331,7 +331,7 @@ public class ServerSnapshot extends BaseDomainHelper {
         Map<String, Long> params = new HashMap<>();
         params.put("ss_id", id);
         params.put("sid", sid);
-        DataResult dr = m.execute(params);
+        DataResult<Row> dr = m.execute(params);
 
         return dr.size();
     }
@@ -384,7 +384,7 @@ public class ServerSnapshot extends BaseDomainHelper {
     public boolean rollbackPackages(User user) throws TaskomaticApiException {
         // schedule package delta, if needed
         if (packageDiffs(this.server.getId()) > 0) {
-            DataResult pkgs = preparePackagesForSync();
+            DataResult<PackageMetadata> pkgs = preparePackagesForSync();
             ActionManager.schedulePackageRunTransaction(user, this.server, pkgs, new Date());
             return true;
         }
@@ -444,8 +444,7 @@ public class ServerSnapshot extends BaseDomainHelper {
        return m.execute(params);
     }
 
-    @SuppressWarnings("rawtypes")
-    private DataResult preparePackagesForSync() {
+    private DataResult<PackageMetadata> preparePackagesForSync() {
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "compare_packages_to_snapshot");
         Map<String, Object> params = new HashMap<>();
@@ -455,7 +454,7 @@ public class ServerSnapshot extends BaseDomainHelper {
 
         List<PackageMetadata> pkgsMeta = new ArrayList<>();
 
-        for (Map pkgDiff : pkgsDiff) {
+        for (Map<String, Object> pkgDiff : pkgsDiff) {
             PackageListItem systemPkg   = new PackageListItem();
             systemPkg.setName((String) pkgDiff.get("package_name"));
             systemPkg.setArch((String) pkgDiff.get("arch"));

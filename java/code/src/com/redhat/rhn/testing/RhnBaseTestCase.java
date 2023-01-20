@@ -14,20 +14,18 @@
  */
 package com.redhat.rhn.testing;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.util.Asserts;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.junit.jupiter.api.AfterEach;
@@ -35,7 +33,6 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -51,7 +48,7 @@ public abstract class RhnBaseTestCase  {
      * Default Constructor
      */
     public RhnBaseTestCase() {
-        MessageQueue.configureDefaultActions(new TestSystemQuery(), new TestSaltApi());
+        MessageQueue.configureDefaultActions(new TestSaltApi());
     }
 
     /**
@@ -122,7 +119,7 @@ public abstract class RhnBaseTestCase  {
             Thread.sleep(1000);
         }
         catch (InterruptedException e) {
-            throw new RuntimeException("Sleep interrupted", e);
+            throw new RhnRuntimeException("Sleep interrupted", e);
         }
         return now;
     }
@@ -138,14 +135,14 @@ public abstract class RhnBaseTestCase  {
      * @param elem the element that should be in the collection
      */
     public static <A> void assertContains(Collection<A> coll, A elem) {
-        Asserts.assertContains(coll, elem);
+        assertTrue(coll.contains(elem));
     }
 
     /**
      * Assert that <code>coll</code> is not empty
      * @param coll the collection
      */
-    public static void assertNotEmpty(Collection coll) {
+    public static void assertNotEmpty(Collection<?> coll) {
         assertNotEmpty(null, coll);
     }
 
@@ -154,32 +151,10 @@ public abstract class RhnBaseTestCase  {
      * @param msg the message to print if the assertion fails
      * @param coll the collection
      */
-    public static void assertNotEmpty(String msg, Collection coll) {
+    public static void assertNotEmpty(String msg, Collection<?> coll) {
         assertNotNull(coll);
         if (coll.isEmpty()) {
             fail(msg);
-        }
-    }
-
-    /**
-     * Assert that the beans <code>exp</code> and <code>act</code> have the same values
-     * for property <code>propName</code>
-     *
-     * @param propName name of the proeprty to compare
-     * @param exp the bean with the expected values
-     * @param act the bean with the actual values
-     */
-    public static void assertPropertyEquals(String propName, Object exp, Object act) {
-        assertEquals(getProperty(exp, propName), getProperty(act, propName));
-    }
-
-    private static Object getProperty(Object bean, String propName) {
-        try {
-            return PropertyUtils.getProperty(bean, propName);
-        }
-        catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            throw new RuntimeException("Could not get property " + propName +
-                    " from " + bean, e);
         }
     }
 
@@ -213,12 +188,12 @@ public abstract class RhnBaseTestCase  {
         if (dir.exists() && !dir.isDirectory()) {
             if (!dir.renameTo(new File(dir.getPath() + ".bak")) &&
                          !dir.delete()) {
-                throw new RuntimeException(error);
+                throw new RhnRuntimeException(error);
             }
         }
 
         if (!dir.exists() && !dir.mkdirs()) {
-            throw new RuntimeException(error);
+            throw new RhnRuntimeException(error);
         }
     }
 }

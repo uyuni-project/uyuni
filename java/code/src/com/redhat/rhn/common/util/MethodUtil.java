@@ -16,6 +16,7 @@
 package com.redhat.rhn.common.util;
 
 import com.redhat.rhn.common.MethodInvocationException;
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.translation.TranslationException;
 import com.redhat.rhn.common.translation.Translator;
@@ -74,7 +75,7 @@ public class MethodUtil {
      * @throws IllegalAccessException if the method cannot be accessed
      * @throws InvocationTargetException if the method throws an exception
      */
-    public static Object invokeStaticMethod(Class clazz, String method,
+    public static Object invokeStaticMethod(Class<?> clazz, String method,
                                             Object[] args)
         throws NoSuchMethodException, IllegalAccessException,
                InvocationTargetException {
@@ -112,7 +113,7 @@ public class MethodUtil {
         if (log.isDebugEnabled()) {
             log.debug("Trying to call: {} in {}", methodCalled, o.getClass());
         }
-        Class myClass = o.getClass();
+        Class<?> myClass = o.getClass();
         Method[] methods;
         try {
             methods = myClass.getMethods();
@@ -219,7 +220,7 @@ public class MethodUtil {
      *
      * List someList = getClassFromConfig("java.lang.LinkedList");
      *
-     * would return a new LinkedList() object.
+     * would return a new LinkedList<>() object.
      *
      * But if you define a config var with:
      *
@@ -257,28 +258,28 @@ public class MethodUtil {
         Object retval = null;
 
         try {
-            Class clazz = Thread.currentThread().
+            Class<?> clazz = Thread.currentThread().
                             getContextClassLoader().loadClass(className);
             if (args == null || args.length == 0) {
                 retval = clazz.newInstance();
             }
             else {
                 try {
-                    Constructor[] ctors = clazz.getConstructors();
-                    for (Constructor ctor : ctors) {
+                    Constructor<?>[] ctors = clazz.getConstructors();
+                    for (Constructor<?> ctor : ctors) {
                         if (isCompatible(ctor.getParameterTypes(), args)) {
                             return ctor.newInstance(args);
                         }
                     }
                 }
                 catch (IllegalArgumentException | InvocationTargetException e) {
-                    throw new RuntimeException(e);
+                    throw new RhnRuntimeException(e);
                 }
             }
 
         }
         catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
-           throw new RuntimeException(e);
+           throw new RhnRuntimeException(e);
         }
 
         return retval;

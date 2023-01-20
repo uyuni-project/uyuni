@@ -106,7 +106,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         assertFalse(pad.getResults().contains(null));
         assertTrue(pad.getResults().contains(par1));
 
-        Set results = new HashSet();
+        Set results = new HashSet<>();
         results.add(par);
         results.add(par1);
         results.add(par2);

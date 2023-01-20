@@ -94,7 +94,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
             String current = this.getTimezone();
 
             String args = timezoneCommand.getArguments();
-            LinkedList tokens = new LinkedList();
+            LinkedList tokens = new LinkedList<>();
 
             if (args != null) {
                 tokens = (LinkedList) StringUtil.stringToList(args);
@@ -192,7 +192,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
         }
 
         String args = timezoneCommand.getArguments();
-        LinkedList tokens = new LinkedList();
+        LinkedList tokens = new LinkedList<>();
 
         if (args != null) {
             tokens = (LinkedList) StringUtil.stringToList(args);
@@ -221,7 +221,7 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
         }
 
         String args = timezoneCommand.getArguments();
-        LinkedList tokens = new LinkedList();
+        LinkedList tokens = new LinkedList<>();
 
         if (args != null) {
             tokens = (LinkedList) StringUtil.stringToList(args);

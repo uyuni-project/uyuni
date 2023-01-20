@@ -52,7 +52,7 @@ public class CSVWriterTest {
     @Test
     public void testListOutput() {
         ExportWriter writer = new CSVWriter(new StringWriter());
-        List values = new LinkedList();
+        List values = new LinkedList<>();
         values.add("val1");
         values.add("val2");
         values.add("val3");
@@ -66,7 +66,7 @@ public class CSVWriterTest {
     public void testListofMaps() {
 
         ExportWriter writer = new CSVWriter(new StringWriter());
-        List columns = new LinkedList();
+        List columns = new LinkedList<>();
         columns.add("column1");
         columns.add("column2");
         columns.add("column3");
@@ -94,13 +94,13 @@ public class CSVWriterTest {
     public void testListofDtos() {
 
         ExportWriter writer = new CSVWriter(new StringWriter());
-        List columns = new LinkedList();
+        List columns = new LinkedList<>();
         columns.add("fieldOne");
         columns.add("fieldTwo");
         columns.add("fieldThree");
         writer.setColumns(columns);
 
-        List values = new LinkedList();
+        List values = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             TestCsvDto dto = new TestCsvDto();
             dto.setFieldOne("f1 - " + i);

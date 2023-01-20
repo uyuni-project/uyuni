@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * SnapshotConfigChannelsAction
  */
-public class SnapshotConfigChannelsAction extends SnapshotBaseAction {
+public class SnapshotConfigChannelsAction extends SnapshotBaseAction<Row> {
 
     /** {@inheritDoc} */
     @Override

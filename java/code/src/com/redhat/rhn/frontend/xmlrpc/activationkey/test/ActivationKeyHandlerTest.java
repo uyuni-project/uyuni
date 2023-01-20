@@ -780,7 +780,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
      * @return Single item list
      */
     private List buildList(Object input) {
-        List output = new LinkedList();
+        List output = new LinkedList<>();
         output.add(input);
         return output;
     }

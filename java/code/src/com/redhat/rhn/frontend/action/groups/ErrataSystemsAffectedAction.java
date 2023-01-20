@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
@@ -40,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * List Errata for server group
  */
-public final class ErrataSystemsAffectedAction extends BaseListAction {
+public final class ErrataSystemsAffectedAction extends BaseListAction<SystemOverview> {
 
     @Override
     protected void setup(HttpServletRequest request) {
@@ -83,7 +84,7 @@ public final class ErrataSystemsAffectedAction extends BaseListAction {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<SystemOverview> getResult(RequestContext context) {
         ManagedServerGroup group = context.lookupAndBindServerGroup();
         Errata erratum = context.lookupErratum();
         User user = context.getCurrentUser();

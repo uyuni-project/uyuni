@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
@@ -35,6 +36,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.type.LongType;
 
 import java.sql.Types;
 import java.util.Collections;
@@ -49,6 +51,7 @@ import java.util.Map;
  */
 public class OrgFactory extends HibernateFactory {
 
+    private static final String ORG_ID = "org_id";
 
     private static OrgFactory singleton = new OrgFactory();
     private static Logger log = LogManager.getLogger(OrgFactory.class);
@@ -112,7 +115,7 @@ public class OrgFactory extends HibernateFactory {
         IssFactory.unmapLocalOrg(org);
 
         Map<String, Object> in = new HashMap<>();
-        in.put("org_id", oid);
+        in.put(ORG_ID, oid);
         CallableMode m = ModeFactory.getCallableMode(
                 "Org_queries", "delete_organization");
         m.execute(in, new HashMap<>());
@@ -126,7 +129,7 @@ public class OrgFactory extends HibernateFactory {
     public static Org lookupByName(String name) {
         Session session = HibernateFactory.getSession();
         return  (Org) session.getNamedQuery("Org.findByName")
-                .setString("name", name)
+                .setParameter("name", name)
                 .uniqueResult();
     }
 
@@ -140,7 +143,7 @@ public class OrgFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
 
         return (CustomDataKey) session.getNamedQuery("CustomDataKey.findByLabelAndOrg")
-                .setString("label", label)
+                .setParameter("label", label)
                 .setParameter("org", org)
                 //Retrieve from cache if there
                 .setCacheable(true)
@@ -156,7 +159,7 @@ public class OrgFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
 
         return (CustomDataKey) session.getNamedQuery("CustomDataKey.findById")
-                .setLong("id", cikid)
+                .setParameter("id", cikid, LongType.INSTANCE)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();
@@ -173,11 +176,11 @@ public class OrgFactory extends HibernateFactory {
         // password is currently required as an input to the create_new_org
         // stored proc; however, it is not used by the proc.
         inParams.put("password", org.getName());
-        outParams.put("org_id", Types.NUMERIC);
+        outParams.put(ORG_ID, Types.NUMERIC);
 
         Map<String, Object> row = m.execute(inParams, outParams);
         // Get the out params
-        Org retval = lookupById((Long) row.get("org_id"));
+        Org retval = lookupById((Long) row.get(ORG_ID));
 
         retval.addRole(RoleFactory.ACTIVATION_KEY_ADMIN);
         retval.addRole(RoleFactory.CHANNEL_ADMIN);
@@ -188,7 +191,7 @@ public class OrgFactory extends HibernateFactory {
 
         // Save the object since we may have in memory items to write\
         singleton.saveInternal(retval);
-        retval = (Org) HibernateFactory.reload(retval);
+        retval = HibernateFactory.reload(retval);
         return retval;
     }
 
@@ -220,7 +223,7 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Org lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (Org)session.get(Org.class, id);
+        return session.get(Org.class, id);
     }
 
     /**
@@ -231,7 +234,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveUsers(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfActiveUsers")
-                .setLong("org_id", orgIn.getId())
+                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
                 .uniqueResult();
 
     }
@@ -244,7 +247,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveSystems(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfSystems")
-                .setLong("org_id", orgIn.getId())
+                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
                 .uniqueResult();
     }
 
@@ -256,7 +259,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getServerGroups(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfServerGroups")
-                .setLong("org_id", orgIn.getId())
+                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
                 .uniqueResult();
     }
 
@@ -268,7 +271,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getConfigChannels(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfConfigChannels")
-                .setLong("org_id", orgIn.getId())
+                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
                 .uniqueResult();
     }
 
@@ -281,9 +284,9 @@ public class OrgFactory extends HibernateFactory {
 
         SelectMode m = ModeFactory.getMode("General_queries",
                 "activation_keys_for_org");
-        Map<String, Long> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
-        DataList keys = DataList.getDataList(m, params, Collections.emptyMap());
+        Map<String, Object> params = new HashMap<>();
+        params.put(ORG_ID, orgIn.getId());
+        DataList<ActivationKeyDto> keys = DataList.getDataList(m, params, Collections.emptyMap());
         return (long) keys.size();
     }
 
@@ -295,9 +298,9 @@ public class OrgFactory extends HibernateFactory {
     public static Long getKickstarts(Org orgIn) {
         SelectMode m = ModeFactory.getMode("General_queries",
                 "kickstarts_for_org");
-        Map<String, Long> params = new HashMap<>();
-        params.put("org_id", orgIn.getId());
-        DataList kickstarts = DataList.getDataList(m, params, Collections.emptyMap());
+        Map<String, Object> params = new HashMap<>();
+        params.put(ORG_ID, orgIn.getId());
+        DataList<KickstartDto> kickstarts = DataList.getDataList(m, params, Collections.emptyMap());
         return (long) kickstarts.size();
     }
     /**
@@ -308,7 +311,7 @@ public class OrgFactory extends HibernateFactory {
     public static TemplateString lookupTemplateByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (TemplateString) session.getNamedQuery("TemplateString.findByLabel")
-                .setString("label", label)
+                .setParameter("label", label)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();
@@ -355,7 +358,7 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Date getTrustedSince(Long org, Long trustedOrg) {
         return singleton.lookupObjectByNamedQuery("Org.getTrustedSince",
-                Map.of("org_id", org, "trusted_org_id", trustedOrg));
+                Map.of(ORG_ID, org, "trusted_org_id", trustedOrg));
     }
 
     /**
@@ -375,7 +378,7 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Long getSharedChannels(Long orgId, Long trustId) {
         return singleton.lookupObjectByNamedQuery("Org.getSharedChannels",
-                Map.of("org_id", orgId, "org_trust_id", trustId));
+                Map.of(ORG_ID, orgId, "org_trust_id", trustId));
     }
 
     /**
@@ -385,7 +388,7 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Long getSharedSubscribedSys(Long orgId, Long trustId) {
         return singleton.lookupObjectByNamedQuery("Org.getSharedSubscribedSys",
-                Map.of("org_id", orgId, "org_trust_id", trustId));
+                Map.of(ORG_ID, orgId, "org_trust_id", trustId));
     }
 
     /**

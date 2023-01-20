@@ -63,7 +63,7 @@ public class RhnServletListener implements ServletContextListener {
         // Start the MessageQueue thread listening for
         // Events
         MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions(GlobalInstanceHolder.SYSTEM_QUERY, GlobalInstanceHolder.SALT_API);
+        MessageQueue.configureDefaultActions(GlobalInstanceHolder.SALT_API);
     }
 
     private void stopMessaging() {

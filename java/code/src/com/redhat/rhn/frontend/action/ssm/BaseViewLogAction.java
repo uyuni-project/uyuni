@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.ssm;
 
+import com.redhat.rhn.frontend.dto.OperationDetailsDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -34,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Jason Dobies
  */
-public abstract class BaseViewLogAction extends RhnListAction implements Listable {
+public abstract class BaseViewLogAction extends RhnListAction implements Listable<OperationDetailsDto> {
 
     /**
      * Allows the subclass to introduce a message key specific to the data it provides.

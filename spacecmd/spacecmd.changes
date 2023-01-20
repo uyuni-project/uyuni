@@ -1,3 +1,5 @@
+- Prevent string api parameters to be parsed as dates if not in
+  ISO-8601 format (bsc#1205759)
 - Add python-dateutil dependency, required to process date values in
   spacecmd api calls
 - Remove python3-simplejson dependency

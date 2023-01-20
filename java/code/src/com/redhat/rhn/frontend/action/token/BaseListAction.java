@@ -36,8 +36,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author paji
  * BaseListAction
+ *
+ * @param <T> the item of the list items
  */
-public abstract class BaseListAction extends RhnAction implements Listable {
+public abstract class BaseListAction<T> extends RhnAction implements Listable<T> {
     private static final String LIST_NAME = "list";
     private static final String DATA_SET = "all";
     private static final String DESCRIPTION = "description";

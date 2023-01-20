@@ -555,7 +555,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @param b The bugs to set.
      */
-    public void setBugs(Set b) {
+    public void setBugs(Set<Bug> b) {
         this.bugs = b;
     }
 

@@ -205,7 +205,7 @@ public class ActivationKey extends BaseDomainHelper {
     /**
      * @param disabled The disabled to set
      */
-    public void setDisabled(Boolean disabled) {
+    public void setDisabled(boolean disabled) {
         if (disabled) {
             this.getToken().disable();
         }
@@ -238,7 +238,7 @@ public class ActivationKey extends BaseDomainHelper {
     /**
      * @param entitlementsIn The entitlements to set
      */
-    public void setEntitlements(Set entitlementsIn) {
+    public void setEntitlements(Set<ServerGroupType> entitlementsIn) {
         this.getToken().setEntitlements(entitlementsIn);
     }
 
@@ -302,7 +302,7 @@ public class ActivationKey extends BaseDomainHelper {
      * Set the Set of Channels associated with this ActivationKey
      * @param channelsIn Channel set
      */
-    public void setChannels(Set channelsIn) {
+    public void setChannels(Set<Channel> channelsIn) {
         this.getToken().setChannels(channelsIn);
     }
     /**

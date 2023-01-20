@@ -243,7 +243,7 @@ public class ServerGroupManager {
                                 User loggedInUser) {
         validateAccessCredentials(loggedInUser, group, group.getName());
         validateAdminCredentials(loggedInUser);
-        List admins = new LinkedList();
+        List admins = new LinkedList<>();
         for (Object adminLoginIn : adminLogins) {
             String login = (String) adminLoginIn;
             User admin = UserFactory.lookupByLogin(login);

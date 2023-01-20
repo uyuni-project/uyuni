@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.frontend.context.Context;
 
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -63,20 +62,16 @@ public class MinionActionUtils {
 
     private static final Logger LOG = LogManager.getLogger(MinionActionUtils.class);
 
-    private final SaltServerActionService saltServerActionService;
     private final SaltApi saltApi;
     private final SaltUtils saltUtils;
 
     /**
      * Utilities for minion actions
      *
-     * @param saltServerActionServiceIn
      * @param saltApiIn
      * @param saltUtilsIn
      */
-    public MinionActionUtils(SaltServerActionService saltServerActionServiceIn, SaltApi saltApiIn,
-                             SaltUtils saltUtilsIn) {
-        this.saltServerActionService = saltServerActionServiceIn;
+    public MinionActionUtils(SaltApi saltApiIn, SaltUtils saltUtilsIn) {
         this.saltApi = saltApiIn;
         this.saltUtils = saltUtilsIn;
     }

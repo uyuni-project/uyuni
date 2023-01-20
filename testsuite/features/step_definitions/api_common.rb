@@ -1,5 +1,7 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the API.
 
 require 'json'
 require 'socket'
@@ -249,6 +251,10 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
                      'no-appstream-8-result-custom_channel_rocky8_minion'
                    elsif client.include? 'rocky9'
                      'no-appstream-9-result-custom_channel_rocky9_minion'
+                   elsif client.include? 'alma9'
+                     'no-appstream-alma-9-result-custom_channel_alma9_minion'
+                   elsif client.include? 'oracle9'
+                     'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
                    else
                      "custom_channel_#{client}"
                    end

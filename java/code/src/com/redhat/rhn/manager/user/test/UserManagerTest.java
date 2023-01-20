@@ -29,13 +29,11 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.security.user.StateChangeException;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
-import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -75,7 +73,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -151,7 +148,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertEquals(foundUser.getOrg().getId(), user.getOrg().getId());
         assertEquals(foundUser.getOrg().getId(), group.getOrg().getId());
 
-        Set userGroups = foundUser.getAssociatedServerGroups();
+        Set<ServerGroup> userGroups = foundUser.getAssociatedServerGroups();
         assertNotNull(userGroups);
         assertTrue(userGroups.isEmpty());
 
@@ -165,7 +162,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         userGroups = foundUser.getAssociatedServerGroups();
         assertNotNull(userGroups);
         assertEquals(userGroups.size(), 1);
-        assertTrue(userGroups.stream().allMatch(g -> ((ServerGroup) g).getId().equals(group.getId())));
+        assertTrue(userGroups.stream().allMatch(g -> g.getId().equals(group.getId())));
 
         //Group and user have different orgs, so should not be possible to grant permits
         User user2 = UserTestUtils.findNewUser("user_2", "org_2");
@@ -175,7 +172,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertEquals(foundUser2.getId(), user2.getId());
         assertNotEquals(foundUser2.getOrg().getId(), group.getOrg().getId());
 
-        Set userGroups2 = foundUser2.getAssociatedServerGroups();
+        Set<ServerGroup> userGroups2 = foundUser2.getAssociatedServerGroups();
         assertNotNull(userGroups2);
         assertTrue(userGroups2.isEmpty());
 
@@ -256,7 +253,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertEquals(foundUser.getOrg().getId(), user.getOrg().getId());
         assertEquals(foundUser.getOrg().getId(), group.getOrg().getId());
 
-        Set userGroups = foundUser.getAssociatedServerGroups();
+        Set<ServerGroup> userGroups = foundUser.getAssociatedServerGroups();
         assertNotNull(userGroups);
         assertTrue(userGroups.isEmpty());
 
@@ -270,7 +267,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         userGroups = foundUser.getAssociatedServerGroups();
         assertNotNull(userGroups);
         assertEquals(userGroups.size(), 1);
-        assertTrue(userGroups.stream().allMatch(g -> ((ServerGroup) g).getId().equals(group.getId())));
+        assertTrue(userGroups.stream().allMatch(g -> g.getId().equals(group.getId())));
 
         UserManager.revokeServerGroupPermission(foundUser, group.getId());
         HibernateFactory.commitTransaction();
@@ -285,7 +282,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testListRolesAssignable() throws Exception {
+    public void testListRolesAssignable() {
         User user = UserTestUtils.findNewUser();
         assertTrue(UserManager.listRolesAssignableBy(user).isEmpty());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -335,7 +332,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         // make sure regular user can't lookup users
         try {
-            test = UserManager.lookupUser(regular, admin.getId());
+            UserManager.lookupUser(regular, admin.getId());
             fail();
         }
         catch (PermissionException e) {
@@ -343,7 +340,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         }
 
         try {
-            test = UserManager.lookupUser(regular, admin.getLogin());
+            UserManager.lookupUser(regular, admin.getLogin());
             fail();
         }
         catch (PermissionException e) {
@@ -455,45 +452,6 @@ public class UserManagerTest extends RhnBaseTestCase {
         //admin -> normal user
         UserManager.enableUser(org1admin2, org1normal);
         assertFalse(org1normal.isDisabled());
-    }
-
-    /**
-    * Test to ensure functionality of translating
-    * usergroup ids to Roles
-     * @throws Exception something bad happened
-    */
-    public void aTestUpdateUserRolesFromRoleLabels() throws Exception {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        ServerFactoryTest.createTestServer(usr);
-
-        Org o1 = usr.getOrg();
-        Set<Role> oRoles = o1.getRoles();
-        List<String> roleLabels = new LinkedList<>();
-        // We know that all newly created Orgs have the ORG_ADMIN
-        // so if we add all the UserGroup IDs to the list then
-        // the User should have the ORG_ADMIN assigned to it.
-        for (Role role : oRoles) {
-            roleLabels.add(role.getLabel());
-        }
-        UserManager.addRemoveUserRoles(usr, roleLabels, new LinkedList<>());
-        UserManager.storeUser(usr);
-
-        UserTestUtils.assertOrgAdmin(usr);
-
-        // Make sure we can take roles away from ourselves:
-        int numRoles = usr.getRoles().size();
-        List<String> removeRoles = new LinkedList<>();
-        removeRoles.add(RoleFactory.ORG_ADMIN.getLabel());
-        UserManager.addRemoveUserRoles(usr, new LinkedList<>(),
-                removeRoles);
-        UserManager.storeUser(usr);
-        assertEquals(numRoles - 1, usr.getRoles().size());
-
-        // Test that taking away org admin properly removes
-        // permissions for the user (bz156752). Note that calling
-        // UserManager.storeUser is absolutely vital for this to work
-        UserTestUtils.assertNotOrgAdmin(usr);
     }
 
     @Test
@@ -715,11 +673,11 @@ public class UserManagerTest extends RhnBaseTestCase {
        ids.add(s.getId());
        List<SystemSearchResult> dr =
            UserManager.visibleSystemsAsDtoFromList(user, ids);
-       assertTrue(dr.size() >= 1);
+       assertTrue(!dr.isEmpty());
    }
 
     @Test
-   public void testSystemSearchResults() throws Exception {
+   public void testSystemSearchResults() {
        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
                TestStatics.TESTORG);
 
@@ -732,9 +690,9 @@ public class UserManagerTest extends RhnBaseTestCase {
        s.setDescription("Test Description Value");
        List<Long> ids = new ArrayList<>();
        ids.add(s.getId());
-       DataResult<SystemSearchResult> dr =
-           UserManager.visibleSystemsAsDtoFromList(user, ids);
-       assertTrue(dr.size() >= 1);
+       DataResult<SystemSearchResult> dr = UserManager.visibleSystemsAsDtoFromList(user, ids);
+       assertNotNull(dr);
+       assertFalse(dr.isEmpty());
        dr.elaborate(Collections.emptyMap());
        SystemSearchResult sr = dr.get(0);
        assertNotNull(sr.getDescription());

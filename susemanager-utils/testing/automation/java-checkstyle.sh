@@ -42,5 +42,6 @@ CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -
 docker pull $REGISTRY/$PGSQL_CONTAINER
 docker run --privileged --rm=true -v "$GITROOT:/manager" \
     -v "${HOME}/.obs-to-maven-cache:/manager/java/.obs-to-maven-cache" \
+    -v "${HOME}/.obs-to-maven-cache/repository:/manager/java/buildconf/ivy/repository" \
     $REGISTRY/$PGSQL_CONTAINER \
     /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"

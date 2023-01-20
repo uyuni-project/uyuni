@@ -779,7 +779,7 @@ DATA = {
     },
     'SLES4SAP-12-x86_64' : {
         'PDID' : 1319, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + SLE12MINION + SLE12VENV,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/0/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/0/bootstrap/'
     },
     'SLE-12-SP1-ppc64le' : {
         'PDID' : 1334, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + SLE12MINION + SLE12VENV + ENHANCE12SP1,
@@ -795,11 +795,11 @@ DATA = {
     },
     'SLES4SAP-12-SP1-ppc64le' : {
         'PDID' : 1437, 'BETAPDID' : [1745], 'PKGLIST' : PKGLIST12 + SLE12MINION + SLE12VENV + ENHANCE12SP1,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/0/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/bootstrap/'
     },
     'SLES4SAP-12-SP1-x86_64' : {
         'PDID' : 1346, 'BETAPDID' : [1747], 'PKGLIST' : PKGLIST12 + SLE12MINION + SLE12VENV + ENHANCE12SP1,
-        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/0/1/bootstrap/'
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/12/1/bootstrap/'
     },
     'RES6-x86_64' : {
         'PDID' : [1138], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
@@ -1302,6 +1302,10 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
     'SUSE-LibertyLinux9-x86_64' : {
+        'PDID' : [-35, 2538, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
+    },
+    'RHEL9-x86_64' : {
         'PDID' : [-35, 2543], 'BETAPDID' : [2548], 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
     },

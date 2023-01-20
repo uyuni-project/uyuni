@@ -164,14 +164,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           and (e.org = :org or e.org is null)]]>
     </query>
 
-    <query name="Errata.lookupSortedByChannel">
-        <![CDATA[select e
-                        from com.redhat.rhn.domain.errata.Errata as e
-                where :channel in elements(e.channels)  and
-                       ( e.org = :org or e.org is null )
-                        order by e.issueDate
-                ]]>
-    </query>
     <query name="Errata.lookupByChannelBetweenDates">
         <![CDATA[select e
                    from com.redhat.rhn.domain.errata.Errata as e

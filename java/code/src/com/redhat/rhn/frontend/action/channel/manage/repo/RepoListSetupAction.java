@@ -37,8 +37,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RepoListSetupAction extends RhnAction {
 
-    private static final DynamicComparator LABEL_COMPARATOR =
-                new DynamicComparator("label", true);
+    private static final DynamicComparator<ContentSourceDto> LABEL_COMPARATOR =
+                new DynamicComparator<>("label", true);
     /**
      * ${@inheritDoc}
      */

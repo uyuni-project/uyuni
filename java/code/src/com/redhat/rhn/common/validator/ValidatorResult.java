@@ -57,7 +57,7 @@ public class ValidatorResult {
      * @param error ValidatorError to be added.
      */
     public void addFieldError(String field, ValidatorError error) {
-        fieldValidationErrors.putIfAbsent(field, new LinkedList());
+        fieldValidationErrors.putIfAbsent(field, new LinkedList<>());
         fieldValidationErrors.get(field).add(error);
     }
 
@@ -134,8 +134,7 @@ public class ValidatorResult {
     }
 
     /**
-     *
-     * @return TODO
+     * @return the error message
      */
     public String getMessage() {
         StringBuilder str = new StringBuilder();
@@ -148,7 +147,7 @@ public class ValidatorResult {
         }
         if (!fieldValidationErrors.isEmpty()) {
             str.append("FIELD_ERRORS:\n");
-            fieldValidationErrors.forEach((field, fieldErrors) -> fieldErrors.forEach((fieldError) ->
+            fieldValidationErrors.forEach((field, fieldErrors) -> fieldErrors.forEach(fieldError ->
                     str.append(field).append(" - ").append(fieldError.getMessage()).append("\n")
             ));
         }

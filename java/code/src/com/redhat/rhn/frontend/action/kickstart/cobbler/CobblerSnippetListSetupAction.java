@@ -44,8 +44,8 @@ public class CobblerSnippetListSetupAction extends RhnAction {
     private static final String CUSTOM = "custom";
     private static final String ALL = "all";
 
-    private static final DynamicComparator NAME_COMPARATOR =
-                new DynamicComparator("name", true);
+    private static final DynamicComparator<CobblerSnippet> NAME_COMPARATOR =
+                new DynamicComparator<>("name", true);
     /**
      * ${@inheritDoc}
      */

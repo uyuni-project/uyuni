@@ -307,12 +307,12 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         }
 
         // Verify
-        DataResult<Object> result = SsmOperationManager
+        DataResult<ServerOperationDataDto> result = SsmOperationManager
             .findServerDataForOperation(operationId);
         assertNotNull(result);
         assertEquals(2, result.size());
 
-        ServerOperationDataDto serverData = (ServerOperationDataDto) result.get(0);
+        ServerOperationDataDto serverData = result.get(0);
         assertNotNull(serverData.getId());
         assertNotNull(serverData.getName());
         assertEquals(EXPECTED_NOTE, serverData.getNote());

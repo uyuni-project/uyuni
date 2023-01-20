@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SsmRemovePackageListItem;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * Handles listing and selecting a number of packages to remove from systems in the SSM.
  *
  */
-public class SelectRemovePackagesAction extends RhnAction implements Listable {
+public class SelectRemovePackagesAction extends RhnAction implements Listable<SsmRemovePackageListItem> {
 
     /** {@inheritDoc} */
     @Override
@@ -65,7 +66,7 @@ public class SelectRemovePackagesAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<SsmRemovePackageListItem> getResult(RequestContext context) {
         User user = context.getCurrentUser();
 
         return PackageManager.packagesFromServerSet(user);

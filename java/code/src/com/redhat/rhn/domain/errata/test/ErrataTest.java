@@ -107,7 +107,6 @@ public class ErrataTest extends BaseTestCaseWithUser {
     @Test
     public void testKeywords() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        assertTrue(errata instanceof Errata);
         errata.addKeyword("yankee");
         errata.addKeyword("hotel");
         errata.addKeyword("foxtrot");
@@ -124,7 +123,6 @@ public class ErrataTest extends BaseTestCaseWithUser {
     @Test
     public void testPackages() throws Exception {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        assertTrue(errata instanceof Errata);
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         errata.addPackage(pkg);
 
@@ -140,14 +138,14 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertFalse(e.getPackages().isEmpty());
         Channel c = ChannelTestUtils.createTestChannel(user);
         Package p = PackageManagerTest.addPackageToChannel("some-errata-package", c);
-        c = (Channel) reload(c);
+        c = reload(c);
 
         // Add the package to an errataFile
         ErrataFile ef;
         ef = ErrataFactory.createErrataFile(ErrataFactory.
                 lookupErrataFileType("RPM"),
                     "SOME FAKE CHECKSUM",
-                    "testAddChannelsToErrata" + TestUtils.randomString(), new HashSet());
+                    "testAddChannelsToErrata" + TestUtils.randomString(), new HashSet<>());
         ef.addPackage(p);
         e.addFile(ef);
 
@@ -155,7 +153,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         e.addChannel(c);
 
         ErrataFactory.save(e);
-        e = (Errata) reload(e);
+        e = reload(e);
 
         assertEquals(1, e.getChannels().size());
 
@@ -163,12 +161,12 @@ public class ErrataTest extends BaseTestCaseWithUser {
 
         // Now test clearing it out
         e.clearChannels();
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
         assertTrue(e.getChannels() == null || e.getChannels().isEmpty());
-        Iterator i = e.getFiles().iterator();
+        Iterator<ErrataFile> i = e.getFiles().iterator();
         boolean matched = false;
         while (i.hasNext()) {
-            ErrataFile f1 = (ErrataFile) i.next();
+            ErrataFile f1 = i.next();
             assertNotNull(f1.getChannels());
             assertTrue(f1.getChannels() == null || f1.getChannels().isEmpty());
             matched = true;
@@ -184,7 +182,6 @@ public class ErrataTest extends BaseTestCaseWithUser {
     @Test
     public void testBeanMethodsPublished() throws Exception {
         Errata err = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        assertTrue(err instanceof Errata);
         runBeanMethodsTest(err, 1);
     }
 

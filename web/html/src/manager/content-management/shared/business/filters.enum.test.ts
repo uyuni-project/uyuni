@@ -273,4 +273,21 @@ describe("Testing filters enum and descriptions", () => {
       "filter by fixed package: deny ptf matches regular expression vim-data (ptf_package)"
     );
   });
+
+  test("test module stream description", () => {
+    const filter = {
+      name: "my module filter",
+      criteriaKey: "module_stream",
+      criteriaValue: "mymodule:stream",
+      entityType: "module",
+      rule: "allow",
+      matcher: "equals",
+    };
+
+    expect(getClmFilterDescription(filter)).toEqual("my module filter: enable module mymodule:stream");
+
+    filter.matcher = "module_none";
+
+    expect(getClmFilterDescription(filter)).toEqual("my module filter: disable all modules");
+  });
 });

@@ -262,16 +262,13 @@ public class ErrataManager extends BaseManager {
         Set<Errata> errataToMerge = new HashSet<>(errataToMergeIn);
 
         // find errata that we do not need to merge
-        List<Errata> same = ErrataFactory.listErrataInBothChannels(user.getOrg(),
-                fromChannel, toChannel);
-        List<Errata> brothers = ErrataFactory.listSiblingsInChannels(user.getOrg(),
-                fromChannel, toChannel);
-        List<Errata> clones = ErrataFactory.listClonesInChannels(user.getOrg(),
-                fromChannel, toChannel);
+        List<Errata> same = ErrataFactory.listErrataInBothChannels(fromChannel, toChannel);
+        List<Errata> brothers = ErrataFactory.listSiblingsInChannels(fromChannel, toChannel);
+        List<Errata> clones = ErrataFactory.listClonesInChannels(fromChannel, toChannel);
         // and remove them
-        errataToMerge.removeAll(same);
-        errataToMerge.removeAll(brothers);
-        errataToMerge.removeAll(clones);
+        same.forEach(errataToMerge::remove);
+        brothers.forEach(errataToMerge::remove);
+        clones.forEach(errataToMerge::remove);
 
         log.debug("Publishing");
         Set<Long> errataIds = getErrataIds(errataToMerge);
@@ -356,7 +353,7 @@ public class ErrataManager extends BaseManager {
      * @param user Currently logged in user.
      * @return all security errata
      */
-    public static DataResult<SecurityErrataOverview> allSecurityErrata(User user) {
+    public static DataResult<ErrataOverview> allSecurityErrata(User user) {
         SelectMode m = ModeFactory.getMode(ERRATA_QUERIES,
                 "all_errata_by_type_with_cves");
         Map<String, Object> params = new HashMap<>();

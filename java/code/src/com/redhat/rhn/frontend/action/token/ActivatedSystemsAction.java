@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author partha
  * ActivatedSystemsAction
  */
-public class ActivatedSystemsAction extends BaseListAction {
+public class ActivatedSystemsAction extends BaseListAction<Server> {
     private static final String ACCESS_MAP = "accessMap";
     private static final String DATE_MAP = "dateMap";
 
@@ -60,7 +60,7 @@ public class ActivatedSystemsAction extends BaseListAction {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<Server> getResult(RequestContext context) {
         ActivationKey key = context.lookupAndBindActivationKey();
         List<Server> servers = new LinkedList<>(
                 key.getToken().getActivatedServers());

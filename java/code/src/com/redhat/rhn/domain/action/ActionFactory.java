@@ -19,6 +19,7 @@ import static java.util.stream.Collectors.toSet;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
@@ -99,6 +100,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -110,7 +112,7 @@ public class ActionFactory extends HibernateFactory {
 
     private static ActionFactory singleton = new ActionFactory();
     private static final Logger LOG = LogManager.getLogger(ActionFactory.class);
-    private static Set actionArchTypes;
+    private static Set<String> actionArchTypes;
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     private ActionFactory() {
@@ -118,28 +120,22 @@ public class ActionFactory extends HibernateFactory {
         setupActionArchTypes();
     }
 
+    @SuppressWarnings("unchecked")
     private void setupActionArchTypes() {
         synchronized (this) {
-            Session session = null;
             try {
-                session = HibernateFactory.getSession();
-                List types = session.getNamedQuery("ActionArchType.loadAll")
-                        //Retrieve from cache if there
+                List<ActionArchType> types = getSession().getNamedQuery("ActionArchType.loadAll")
                         .setCacheable(true).list();
 
-                actionArchTypes = new HashSet();
-                for (Object typeIn : types) {
-                    ActionArchType type = (ActionArchType) typeIn;
-                    // don't cache the entire ActionArchType bean to avoid
-                    // any LazyInitializatoinException latter
-                    actionArchTypes.add(toActionArchTypeKey(type.getActionType().getId(),
-                            type.getActionStyle()));
-                }
+                // don't cache the entire ActionArchType bean to avoid
+                // any LazyInitializatoinException latter
+                actionArchTypes = types.stream()
+                        .map(type -> toActionArchTypeKey(type.getActionType().getId(), type.getActionStyle()))
+                        .collect(toSet());
             }
             catch (HibernateException he) {
                 LOG.error("Error loading ActionArchTypes from DB", he);
-                throw new
-                HibernateRuntimeException("Error loading ActionArchTypes from db");
+                throw new HibernateRuntimeException("Error loading ActionArchTypes from db");
             }
         }
     }
@@ -153,10 +149,10 @@ public class ActionFactory extends HibernateFactory {
      * @param actionId action to remove
      * @return the number of failed systems to remove an action for.
      */
+    @SuppressWarnings("unchecked")
     public static int removeAction(Long actionId) {
 
-        Session session = HibernateFactory.getSession();
-        List<Long> ids = session.getNamedQuery("Action.findServerIds")
+        List<Long> ids = getSession().getNamedQuery("Action.findServerIds")
                 .setLong("action_id", actionId).list();
         int failed = 0;
         for (long id : ids) {
@@ -187,8 +183,8 @@ public class ActionFactory extends HibernateFactory {
         Set<Server> involvedMinions = MinionServerFactory
                     .lookupByIds(new ArrayList<>(set.getElementValues()))
                     .collect(toSet());
-        Set<Server> involvedSystems = ServerFactory.lookupByIds(
-                new ArrayList<>(set.getElementValues())).stream().collect(toSet());
+        Set<Server> involvedSystems = new HashSet<>(ServerFactory.lookupByIds(
+                new ArrayList<>(set.getElementValues())));
         Action action = ActionFactory.lookupById(actionId);
 
         TASKOMATIC_API.deleteScheduledActions(Collections.singletonMap(action, involvedMinions));
@@ -210,14 +206,12 @@ public class ActionFactory extends HibernateFactory {
      * @param serverId the server id
      */
     public static void cancelPendingForSystem(Long serverId) {
-
-        SelectMode pending =
-                ModeFactory.getMode("System_queries", "system_pending_actions");
+        SelectMode pending = ModeFactory.getMode("System_queries", "system_pending_actions");
         Map<String, Long> params = new HashMap<>();
         params.put("sid", serverId);
-        DataResult<Map> dr = pending.execute(params);
+        DataResult<Row> dr = pending.execute(params);
 
-        for (Map action : dr) {
+        for (Row action : dr) {
             removeActionForSystem((Long) action.get("id"), serverId);
         }
         SystemManager.updateSystemOverview(serverId);
@@ -229,8 +223,7 @@ public class ActionFactory extends HibernateFactory {
      * @param sid to remove from Action
      */
     public static void removeActionForSystem(Number actionId, Number sid) {
-        CallableMode mode =
-                ModeFactory.getCallableMode("System_queries", "delete_action_for_system");
+        CallableMode mode = ModeFactory.getCallableMode("System_queries", "delete_action_for_system");
         Map<String, Object> params = new HashMap<>();
         params.put("action_id", actionId);
         params.put("server_id",  sid);
@@ -253,8 +246,7 @@ public class ActionFactory extends HibernateFactory {
      * @param parent The parent action
      */
     public static void addServerToAction(Long sid, Action parent) {
-        addServerToAction(ServerFactory.lookupByIdAndOrg(sid,
-                parent.getOrg()), parent);
+        addServerToAction(ServerFactory.lookupByIdAndOrg(sid, parent.getOrg()), parent);
     }
 
     /**
@@ -279,8 +271,7 @@ public class ActionFactory extends HibernateFactory {
      * @param server The server for the action
      * @param parent The parent action
      */
-    public static void addConfigRevisionToAction(ConfigRevision revision, Server server,
-            ConfigAction parent) {
+    public static void addConfigRevisionToAction(ConfigRevision revision, Server server, ConfigAction parent) {
         ConfigRevisionAction cra = new ConfigRevisionAction();
         cra.setConfigRevision(revision);
         cra.setCreated(new Date());
@@ -314,13 +305,13 @@ public class ActionFactory extends HibernateFactory {
      * @param serverId server
      * @return true if found, otherwise false
      */
+    @SuppressWarnings("unchecked")
     public static boolean doesServerHaveKickstartScheduled(Long serverId) {
         Session session = HibernateFactory.getSession();
-        Query query =
-                session.getNamedQuery("ServerAction.findPendingActionsForServer");
+        Query<ServerAction> query = session.getNamedQuery("ServerAction.findPendingActionsForServer");
         query.setParameter("serverId", serverId);
         query.setParameter("label", "kickstart.initiate");
-        List retval = query.list();
+        List<ServerAction> retval = query.list();
         return (retval != null && !retval.isEmpty());
     }
 
@@ -330,17 +321,17 @@ public class ActionFactory extends HibernateFactory {
      * @param serverId server
      * @return ID of a possibly scheduled migration or null.
      */
+    @SuppressWarnings("unchecked")
     public static Action isMigrationScheduledForServer(Long serverId) {
-        Action ret = null;
-        Query query = HibernateFactory.getSession().getNamedQuery(
+        Query<ServerAction> query = HibernateFactory.getSession().getNamedQuery(
                 "ServerAction.findPendingActionsForServer");
         query.setParameter("serverId", serverId);
         query.setParameter("label", "distupgrade.upgrade");
         List<ServerAction> list = query.list();
         if (list != null && !list.isEmpty()) {
-            ret = list.get(0).getParentAction();
+            return list.get(0).getParentAction();
         }
-        return ret;
+        return null;
     }
 
     /**
@@ -349,17 +340,17 @@ public class ActionFactory extends HibernateFactory {
      * @param serverId server
      * @return reboot Action or null otherwise
      */
+    @SuppressWarnings("unchecked")
     public static Action isRebootScheduled(Long serverId) {
-        Action ret = null;
         Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery("ServerAction.findPendingActionsForServer");
+        Query<ServerAction> query = session.getNamedQuery("ServerAction.findPendingActionsForServer");
         query.setParameter("serverId", serverId);
         query.setParameter("label", "reboot.reboot");
-        List list = query.list();
+        List<ServerAction> list = query.list();
         if (list != null && !list.isEmpty()) {
-            ret = ((ServerAction) list.get(0)).getParentAction();
+            return list.get(0).getParentAction();
         }
-        return ret;
+        return null;
     }
 
     /**
@@ -654,9 +645,8 @@ public class ActionFactory extends HibernateFactory {
                 actionIn.getActionType().equals(TYPE_PACKAGES_LOCK)) {
 
             PackageAction action = (PackageAction) actionIn;
-            Set details = action.getDetails();
-            for (Object detailIn : details) {
-                PackageActionDetails detail = (PackageActionDetails) detailIn;
+            Set<PackageActionDetails> details = action.getDetails();
+            for (PackageActionDetails detail : details) {
                 PackageEvr evr = detail.getEvr();
 
                 // It is possible to have a Package Action with only a package name
@@ -710,23 +700,20 @@ public class ActionFactory extends HibernateFactory {
      * @param parentAction Parent action.
      * @return Set of actions dependent on the given parent.
      */
+    @SuppressWarnings("unchecked")
     public static Stream<Action> lookupDependentActions(Action parentAction) {
         Session session = HibernateFactory.getSession();
 
         Set<Action> returnSet = new HashSet<>();
-        List actionsAtHierarchyLevel = new LinkedList();
+        List<Long> actionsAtHierarchyLevel = new LinkedList<>();
         actionsAtHierarchyLevel.add(parentAction.getId());
         do {
-            Query findDependentActions = session.getNamedQuery(
-                    "Action.findDependentActions");
+            Query<Action> findDependentActions = session.getNamedQuery("Action.findDependentActions");
             findDependentActions.setParameterList("action_ids", actionsAtHierarchyLevel);
-            List results = findDependentActions.list();
+            List<Action> results = findDependentActions.list();
             returnSet.addAll(results);
             // Reset list of actions for the next hierarchy level:
-            actionsAtHierarchyLevel = new LinkedList();
-            for (Object resultIn : results) {
-                actionsAtHierarchyLevel.add(((Action) resultIn).getId());
-            }
+            actionsAtHierarchyLevel = results.stream().map(a -> a.getId()).collect(Collectors.toList());
         }
         while (!actionsAtHierarchyLevel.isEmpty());
 

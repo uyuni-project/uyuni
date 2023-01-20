@@ -107,8 +107,9 @@ public class SchemaParser {
      *
      * @throws IOException - when parsing errors occur.
      */
+    @SuppressWarnings("unchecked")
     private void parseSchema() throws IOException {
-        /**
+        /*
          * Create builder to generate JDOM representation of XML Schema,
          *   without validation and using Apache Xerces.
          */
@@ -119,12 +120,8 @@ public class SchemaParser {
             Document schemaDoc = builder.build(schemaURL);
 
             // Handle attributes
-            List attributes = schemaDoc.getRootElement()
-                                         .getChildren("attribute",
-                                                      schemaNamespace);
-            for (Object attributeIn : attributes) {
-                // Iterate and handle
-                Element attribute = (Element) attributeIn;
+            List<Element> attributes = schemaDoc.getRootElement().getChildren("attribute", schemaNamespace);
+            for (Element attribute : attributes) {
                 handleAttribute(attribute);
             }
             // Handle attributes nested within complex types
@@ -166,7 +163,7 @@ public class SchemaParser {
             throw new IOException("No data type specified for constraint " + name);
         }
 
-        Constraint constraint; // = new Constraint(name);
+        Constraint constraint;
 
         Element child;
 
@@ -254,7 +251,7 @@ public class SchemaParser {
 
             child = simpleType.getChild("matchesExpression", schemaNamespace);
             if (child != null) {
-                String value = new String(child.getAttributeValue("value"));
+                String value = child.getAttributeValue("value");
                 lc.setRegEx(value);
             }
             constraint = lc;
@@ -287,18 +284,15 @@ public class SchemaParser {
         return optional;
     }
 
+    @SuppressWarnings("unchecked")
     private void processRequiredIfConstraint(Element simpleType, RequiredIfConstraint lc) {
-        List requiredIfFields =
-             simpleType.getChildren("requiredIf", schemaNamespace);
+        List<Element> requiredIfFields = simpleType.getChildren("requiredIf", schemaNamespace);
         if (requiredIfFields != null && !requiredIfFields.isEmpty()) {
-            for (Object requiredIfFieldIn : requiredIfFields) {
-                Element requiredIf = (Element) requiredIfFieldIn;
+            for (Element requiredIf : requiredIfFields) {
                 String fieldName = requiredIf.getAttributeValue("field");
                 String fieldValue = requiredIf.getAttributeValue("value");
                 lc.addField(fieldName, fieldValue);
             }
         }
     }
-
-
 }

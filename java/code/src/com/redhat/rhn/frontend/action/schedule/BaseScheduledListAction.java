@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.schedule;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -39,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * Base action for scheduled action lists
  */
-public abstract class BaseScheduledListAction extends RhnAction implements Listable {
+public abstract class BaseScheduledListAction extends RhnAction implements Listable<ScheduledAction> {
 
     /**
      *

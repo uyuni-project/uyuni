@@ -51,7 +51,6 @@ public class DataSetManipulator {
 
     private final int pageSize;
     private List dataset;
-    private ListFilter filter;
     private String filterBy;
     private String filterValue;
     private int totalDataSetSize;
@@ -106,7 +105,6 @@ public class DataSetManipulator {
                 filterValue == null || filterValue.isEmpty()) {
             return;
         }
-        filter = f;
         HtmlTag filterClass = new HtmlTag("input");
         filterClass.setAttribute("type", "hidden");
         filterClass.setAttribute("name", ListTagUtil.makeFilterClassLabel(uniqueName));
@@ -128,11 +126,11 @@ public class DataSetManipulator {
 
         String sortDir = getActiveSortDirection();
         try {
-            dataset.sort(new DynamicComparator(sortAttr, sortDir));
+            dataset.sort(new DynamicComparator<>(sortAttr, sortDir));
         }
         catch (IllegalArgumentException iae) {
             log.warn("Unable to sort dataset according to: {}", sortAttr);
-            dataset.sort(new DynamicComparator(defaultSortAttribute, sortDir));
+            dataset.sort(new DynamicComparator<>(defaultSortAttribute, sortDir));
         }
     }
 
@@ -149,7 +147,7 @@ public class DataSetManipulator {
      * @return list representing one page of data
      */
     public List getPage() {
-        List retval = new LinkedList();
+        List retval = new LinkedList<>();
         if (pageSize > 0) {
             int startOffset = getCurrentPageNumber() * pageSize;
             if (startOffset > dataset.size()) {
@@ -175,7 +173,7 @@ public class DataSetManipulator {
      * @return List representing all data available
      */
     public List getAllData() {
-        List retval = new LinkedList();
+        List retval = new LinkedList<>();
         retval.addAll(dataset);
         return expand(retval);
     }
@@ -507,7 +505,7 @@ public class DataSetManipulator {
     }
 
     private List expand(List data) {
-        List expanded = new LinkedList();
+        List expanded = new LinkedList<>();
         for (Object obj : data) {
             expanded.add(obj);
             if (obj instanceof Expandable) {

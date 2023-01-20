@@ -21,6 +21,7 @@ import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MODULE_NONE;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -122,6 +123,12 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
      */
     final void attachModularFilter(String value) {
         FilterCriteria criteria = new FilterCriteria(EQUALS, "module_stream", value);
+        ContentFilter filter = manager.createFilter(TestUtils.randomString(), ALLOW, MODULE, criteria, user);
+        manager.attachFilter("cplabel", filter.getId(), user);
+    }
+
+    final void attachModuleNoneFilter() {
+        FilterCriteria criteria = new FilterCriteria(MODULE_NONE, "module_stream", null);
         ContentFilter filter = manager.createFilter(TestUtils.randomString(), ALLOW, MODULE, criteria, user);
         manager.attachFilter("cplabel", filter.getId(), user);
     }

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -48,7 +49,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * AddErrataAction
  */
-public class ErrataRemoveAction extends RhnListAction implements Listable {
+public class ErrataRemoveAction extends RhnListAction implements Listable<ErrataOverview> {
 
     private static final String CONFIRM = "channel.jsp.errata.confirmremove";
     private static final String CID = "cid";
@@ -96,7 +97,7 @@ public class ErrataRemoveAction extends RhnListAction implements Listable {
            Map<String, Object> params = new HashMap<>();
            params.put(CID, cid);
            ActionMessages msg = new ActionMessages();
-           Set args = new HashSet();
+           Set args = new HashSet<>();
            args.add(decl.get(user).size());
            msg.add(ActionMessages.GLOBAL_MESSAGE,
               new ActionMessage("channel.jsp.errata.remove.finalmessage", args.toArray()));
@@ -114,15 +115,11 @@ public class ErrataRemoveAction extends RhnListAction implements Listable {
      * {@inheritDoc}
      */
     @Override
-    public DataResult getResult(RequestContext context) {
+    public DataResult<ErrataOverview> getResult(RequestContext context) {
         Long cid = Long.parseLong(context.getRequest().getParameter(CID));
         User user = context.getCurrentUser();
         RhnSetDecl decl = RhnSetDecl.ERRATA_TO_REMOVE.createCustom(cid);
 
-        Channel currentChan = ChannelFactory.lookupByIdAndUser(cid,
-                context.getCurrentUser());
         return ErrataManager.errataInSet(user, decl.getLabel());
     }
-
-
 }

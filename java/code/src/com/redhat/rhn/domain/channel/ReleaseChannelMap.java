@@ -29,8 +29,7 @@ import java.util.List;
 /**
  * ReleaseChannelMap
  */
-public class ReleaseChannelMap implements Serializable,
-                               Comparable<ReleaseChannelMap> {
+public class ReleaseChannelMap implements Serializable, Comparable<ReleaseChannelMap> {
 
     private static final long serialVersionUID = 1L;
     private String product;
@@ -139,18 +138,18 @@ public class ReleaseChannelMap implements Serializable,
      * @param o the other object
      * @return the compare return
      */
+    @SuppressWarnings("unchecked")
     @Override
     public int compareTo(ReleaseChannelMap o) {
-        List<Comparator> compar = new ArrayList<>();
+        List<Comparator<ReleaseChannelMap>> compar = new ArrayList<>();
 
-        compar.add(new DynamicComparator("channel", true));
-        compar.add(new DynamicComparator("channelArch", true));
-        compar.add(new DynamicComparator("product", true));
-        compar.add(new DynamicComparator("version", true));
-        compar.add(new DynamicComparator("release", true));
+        compar.add(new DynamicComparator<>("channel", true));
+        compar.add(new DynamicComparator<>("channelArch", true));
+        compar.add(new DynamicComparator<>("product", true));
+        compar.add(new DynamicComparator<>("version", true));
+        compar.add(new DynamicComparator<>("release", true));
 
-        Comparator com = ComparatorUtils.chainedComparator(
-                                (Comparator[]) compar.toArray());
+        Comparator<ReleaseChannelMap> com = ComparatorUtils.chainedComparator(compar.toArray(new Comparator[0]));
         return com.compare(this, o);
     }
 

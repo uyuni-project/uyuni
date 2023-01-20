@@ -29,8 +29,10 @@ import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.EnterpriseUser;
+import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.StateChange;
 import com.redhat.rhn.domain.user.User;
@@ -40,6 +42,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.pam.Pam;
 import com.suse.pam.PamReturnValue;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -62,7 +65,6 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     private static final Logger LOG = LogManager.getLogger(UserImpl.class);
 
-    //private Address address;
     private EnterpriseUserImpl euser;
     private Long id;
     private String login;
@@ -73,8 +75,8 @@ public class UserImpl extends BaseDomainHelper implements User {
     private Org org;
     private Set<StateChange> stateChanges;
     private Set<Address> addresses;
-    private Set hiddenPanes;
-    private Set associatedServerGroups;
+    private Set<Pane> hiddenPanes;
+    private Set<ServerGroup> associatedServerGroups;
     private Set<Server> servers;
     // PersonalInfo sub-object object
     private PersonalInfo personalInfo;
@@ -95,8 +97,8 @@ public class UserImpl extends BaseDomainHelper implements User {
         userInfo.setUser(this);
         stateChanges = new TreeSet<>();
         addresses = new HashSet<>();
-        hiddenPanes = new HashSet();
-        associatedServerGroups = new HashSet();
+        hiddenPanes = new HashSet<>();
+        associatedServerGroups = new HashSet<>();
     }
 
     /**
@@ -309,7 +311,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     private void addRole(Role label, boolean temporary) {
         checkPermanentOrgAdmin();
-        Set<Role> roles = new HashSet<>();
+        Set<Role> roles;
         if (temporary) {
             roles = this.getTemporaryRoles();
         }
@@ -387,8 +389,7 @@ public class UserImpl extends BaseDomainHelper implements User {
          * If we have a valid pamAuthService and the user uses pam authentication,
          * authenticate via pam, otherwise, use the db.
          */
-        if (pamAuthService != null && !pamAuthService.trim().isEmpty() &&
-                this.getUsePamAuthentication()) {
+        if (!StringUtils.isBlank(pamAuthService) && this.getUsePamAuthentication()) {
             Pam pam = new Pam(pamAuthService);
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
@@ -397,42 +398,39 @@ public class UserImpl extends BaseDomainHelper implements User {
             }
         }
         else {
-            /**
+            /*
              * If we're using encrypted passwords, check
              * thePassword encrypted, otherwise just do
              * a straight clear-text comparison.
              */
-            boolean useEncrPasswds =
-                Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
+            boolean useEncrPasswds = Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
             if (useEncrPasswds) {
                 // user uses SHA-256 encrypted password
                 if (password.startsWith(CryptHelper.getSHA256Prefix())) {
                     result = SHA256Crypt.crypt(thePassword, password).equals(password);
                 }
                 // user still uses MD5 encrypted password
-                else if (password.startsWith(CryptHelper.getMD5Prefix())) {
-                    if (MD5Crypt.crypt(thePassword, password).equals(password)) {
-                        // if authenticated with md5 pass, convert it to sha-256
-                        setPassword(thePassword);
-                        result = true;
-                    }
-                    else {
-                        result = false;
-                    }
+                else if (password.startsWith(CryptHelper.getMD5Prefix()) &&
+                        MD5Crypt.crypt(thePassword, password).equals(password)) {
+                    // if authenticated with md5 pass, convert it to sha-256
+                    setPassword(thePassword);
+                    result = true;
                 }
             }
             else {
                 result = password.equals(thePassword);
             }
-            if (LOG.isDebugEnabled() && !useEncrPasswds) {
-                String encr = useEncrPasswds ? "with" : "without";
-                LOG.debug("DB login for user {} {} encrypted passwords failed", this, encr);
-            }
+            debug(!result, "DB login for user {} {} encrypted passwords failed", this,
+                        useEncrPasswds ? "with" : "without");
         }
-        if (LOG.isDebugEnabled() && result) {
-            LOG.debug("PAM login for user {} succeeded. ", this);
-        }
+        debug(result, "PAM login for user {} succeeded. ", this);
         return result;
+    }
+
+    private void debug(boolean condition, String message, Object... args) {
+        if (condition) {
+            LOG.debug(message, args);
+        }
     }
 
     /**
@@ -520,18 +518,18 @@ public class UserImpl extends BaseDomainHelper implements User {
      * {@inheritDoc}
      */
     @Override
-    public Set getStateChanges() {
+    public Set<StateChange> getStateChanges() {
         return stateChanges;
     }
 
     /**
      * @param s The stateChanges to set.
      */
-    public void setStateChanges(Set s) {
+    public void setStateChanges(Set<StateChange> s) {
         this.stateChanges = s;
     }
 
-    /*************   UserInfo methods **************/
+    // ************   UserInfo methods **************
     /** {@inheritDoc} */
     @Override
     public int getPageSize() {
@@ -793,7 +791,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      */
     @Override
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof User)) {
+        if (!(other instanceof User)) {
             return false;
         }
         User otherUser = (User) other;
@@ -953,7 +951,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * {@inheritDoc}
      */
     @Override
-    public Set getHiddenPanes() {
+    public Set<Pane> getHiddenPanes() {
         return hiddenPanes;
     }
 
@@ -961,7 +959,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * {@inheritDoc}
      */
     @Override
-    public void setHiddenPanes(Set p) {
+    public void setHiddenPanes(Set<Pane> p) {
         hiddenPanes = p;
     }
 
@@ -1048,46 +1046,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         */
         @Override
         public void setId(Long idIn) {
-        }
-
-        /**
-        * Add a User to this instance.
-        *
-        * @param u a User to add
-        */
-        @Override
-        public void addUser(User u) {
-        }
-
-        /**
-        * Remove a User from this instance.
-        *
-        * @param u the User to remove
-        */
-        @Override
-        public void removeUser(User u) {
-        }
-
-        /**
-        * Return an iterator over all Users associated with
-        * this instance.
-        *
-        * @return Iterator an iterator over all users
-        */
-        @Override
-        public Iterator allUsers() {
-            return null;
-        }
-
-        /**
-        * Find the user having the id provided. Return null if
-        * not found.
-        * @param idIn id to use
-        * @return User or null
-        */
-        @Override
-        public User findUserById(Long idIn) {
-            return null;
+            id = idIn;
         }
 
         /**
@@ -1250,6 +1209,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         */
         @Override
         public void setModified(Date modifiedIn) {
+            // Not implemented
         }
 
         /**
@@ -1267,6 +1227,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         */
         @Override
         public void setCreated(Date createdIn) {
+            // Not implemented
         }
 
         /**
@@ -1378,7 +1339,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * {@inheritDoc}
      */
     @Override
-    public Set getAssociatedServerGroups() {
+    public Set<ServerGroup> getAssociatedServerGroups() {
         return associatedServerGroups;
     }
 
@@ -1387,7 +1348,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Meant for use by hibernate only (hence protected)
      * @param serverGroups the servergroups to set.
      */
-    protected void setAssociatedServerGroups(Set serverGroups) {
+    protected void setAssociatedServerGroups(Set<ServerGroup> serverGroups) {
         associatedServerGroups = serverGroups;
     }
 
@@ -1397,7 +1358,11 @@ public class UserImpl extends BaseDomainHelper implements User {
         return servers;
     }
 
-    private void setServers(Set<Server> serversIn) {
+    /**
+     * @param serversIn the servers to set
+     */
+    public void setServers(Set<Server> serversIn) {
+        // This method is used by hibernate
         this.servers = serversIn;
     }
 

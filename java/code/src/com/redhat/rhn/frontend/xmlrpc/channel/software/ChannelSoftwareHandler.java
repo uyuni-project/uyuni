@@ -64,7 +64,6 @@ import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
-import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
 import com.redhat.rhn.manager.channel.ChannelEditor;
@@ -114,20 +113,16 @@ public class ChannelSoftwareHandler extends BaseHandler {
     private static Logger log = LogManager.getLogger(ChannelSoftwareHandler.class);
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
-    private final SystemHandler systemHandler;
 
     /**
      * Set the {@link TaskomaticApi} instance to use, only for unit tests.
      *
      * @param taskomaticApiIn the {@link TaskomaticApi}
      * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
-     * @param systemHandlerIn
      */
-    public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
-                                  SystemHandler systemHandlerIn) {
+    public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         taskomaticApi = taskomaticApiIn;
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
-        systemHandler = systemHandlerIn;
     }
 
     /**
@@ -1759,7 +1754,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             throw new PermissionCheckFailureException();
         }
 
-        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser, new HashSet(mergeFrom
+        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser, new HashSet<>(mergeFrom
                 .getErratas()), mergeTo, mergeFrom);
 
         return mergedErrata.toArray();

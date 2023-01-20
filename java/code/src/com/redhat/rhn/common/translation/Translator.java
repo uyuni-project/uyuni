@@ -40,7 +40,7 @@ public class Translator extends Translations {
      * @param want The Class to convert to.
      * @return the converted object
      */
-    public static Object convert(Object have, Class want) {
+    public static Object convert(Object have, Class<?> want) {
         return convert(Translator.class, have, want);
     }
 
@@ -58,8 +58,8 @@ public class Translator extends Translations {
      * @param i The integer to add to the list
      * @return Returns a list containing i
      */
-    public static List int2List(Integer i) {
-        List list = new ArrayList<>();
+    public static List<Integer> int2List(Integer i) {
+        List<Integer> list = new ArrayList<>();
         if (i != null) {
             list.add(i);
         }
@@ -181,7 +181,7 @@ public class Translator extends Translations {
      * @param l list to be converted
      * @return List.toString()
      */
-    public static String list2String(List l) {
+    public static String list2String(List<Object> l) {
         return (l == null) ? "" : l.toString();
     }
 

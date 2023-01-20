@@ -225,7 +225,7 @@ public abstract class CobblerCommand {
      */
     protected Map getSystemMapByMac(Server server) {
         // Build up list of mac addrs
-        List macs = new LinkedList();
+        List macs = new LinkedList<>();
         for (NetworkInterface n : server.getNetworkInterfaces()) {
             // Skip localhost and non real interfaces
             if (!n.isMacValid()) {

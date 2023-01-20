@@ -103,7 +103,7 @@ public class Scrubber {
     }
 
     private Object scrubList(List value) {
-        List retval = new LinkedList();
+        List retval = new LinkedList<>();
         for (Object oIn : value) {
             retval.add(scrub(oIn));
         }

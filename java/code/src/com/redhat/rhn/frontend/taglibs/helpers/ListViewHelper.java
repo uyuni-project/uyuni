@@ -177,7 +177,7 @@ public class ListViewHelper {
         if (result.isEmpty() || getFilterParam() == null) {
             return;
         }
-        List filteredData = new LinkedList();
+        List filteredData = new LinkedList<>();
         Object datum = result.get(0);
         if (datum instanceof Map) {
             filterMaps(filteredData);

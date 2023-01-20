@@ -1,3 +1,4 @@
+- Add 'none' matcher to CLM AppStream filters (bsc#1206817)
 - Fix salt keys page keeps loading when no key exists (bsc#1206799)
 - Fix link to documentation in monitoring page
 - Added CLM filters to match product temporary fixes packages

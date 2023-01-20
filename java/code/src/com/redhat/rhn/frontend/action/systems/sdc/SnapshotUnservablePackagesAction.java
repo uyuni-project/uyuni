@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * SnapshotUnservablePackagesAction
  */
-public class SnapshotUnservablePackagesAction extends SnapshotBaseAction {
+public class SnapshotUnservablePackagesAction extends SnapshotBaseAction<Row> {
 
     /** {@inheritDoc} */
     @Override
