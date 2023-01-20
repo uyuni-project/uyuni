@@ -85,6 +85,11 @@ FAILED_PKG=
 VERBOSE=$VERBOSE
 while read PKG_NAME PKG_VER PKG_DIR; do
  for tries in 1 2 3; do
+
+  if [[ $PKG_DIR == *"containers"* ]]; then
+    continue
+  fi
+
   echo "=== Building package [$PKG_NAME-$PKG_VER] from $PKG_DIR (Try $tries)"
   rm -rf "$SRPMBUILD_DIR"
   mkdir -p "$SRPMBUILD_DIR"
