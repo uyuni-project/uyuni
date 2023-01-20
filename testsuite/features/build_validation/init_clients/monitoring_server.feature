@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @monitoring_server
@@ -56,6 +56,7 @@ Feature: Bootstrap the monitoring server
     And I click on "Expand All Sections"
     And I enter "admin" as "Username"
     And I enter "admin" as "Password"
+    And I check the blackbox exporter
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
     When I follow "States" in the content area

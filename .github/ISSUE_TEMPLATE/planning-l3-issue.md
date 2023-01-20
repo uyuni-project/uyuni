@@ -9,21 +9,22 @@ assignees: ''
 
 - 
 
-## Issue Postmortem
+<hr>
+
+##  ⚕️ Issue Postmortem ⚕️
 
 After fixing the L3 and when related PR is merged or ready to be merged, please try to answer the following questions, where possible.
 
 ### Why did this happen?
 <!--- If possible, please describe what was the root cause of this issue. Some examples could be like `An edge case was missed ` or like `3rd party library that we are using caused the issue` or anything else-->
 
--
+- [ ] Mark this checkbox as checked after providing this info
 
 
 
 ### What could have prevented this L3?
 <!--- Can you think of some possibilities or actions that could have prevented this L3 to happen in 1st place, if were taken proactively! It could be, for example, an additional 'unit-test` or `cucumber-test` could have prevented this situation-->
 
--
-
+- [ ] Mark this checkbox as checked after providing this info
 
 

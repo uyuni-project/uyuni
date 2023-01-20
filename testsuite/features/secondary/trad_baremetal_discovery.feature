@@ -107,7 +107,7 @@ Feature: Bare metal discovery
     And I should see a "Groups" link in the content area
     And I should not see a "Channels" link in the content area
     And I should not see a "Audit" link in the content area
-    And I follow "Clear"
+    And I click on the clear SSM button
 
   Scenario: Cleanup: delete the bare metal system profile
     Given I am on the Systems overview page of this "sle_client"

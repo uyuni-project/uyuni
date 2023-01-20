@@ -6,6 +6,8 @@
 - features/build_validation/add_custom_repositories/add_centos7_repositories.feature
 - features/build_validation/add_custom_repositories/add_rocky8_repositories.feature
 - features/build_validation/add_custom_repositories/add_rocky9_repositories.feature
+- features/build_validation/add_custom_repositories/add_alma9_repositories.feature
+- features/build_validation/add_custom_repositories/add_oracle9_repositories.feature
 
 ## Add common channels and special repositories END ###
 

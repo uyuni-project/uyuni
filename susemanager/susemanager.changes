@@ -1,3 +1,14 @@
+- fix bootstrap repo path for SLES for SAP 12 (bsc#1207141)
+- show RHEL target for bootstrap repo creation only if it is
+  really connected to the CDN (bsc#1206861)
+
+-------------------------------------------------------------------
+Mon Jan 16 09:26:34 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.23-1
+  * fix bootstrap repo definition for SUSE Liberty Linux 9 and RHEL9
+    (bsc#1207136)
+
 -------------------------------------------------------------------
 Wed Jan 11 12:47:31 CET 2023 - jgonzalez@suse.com
 

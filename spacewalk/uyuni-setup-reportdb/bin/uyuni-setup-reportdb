@@ -447,9 +447,21 @@ postgresql_service() {
     esac
 }
 
+test_postgres_user() {
+    set +e
+    POSTGRES_USER_ENABLED=$(su - postgres -c /bin/true)
+    if [ $POSTGRES_USER_ENABLED != "0" ] ; then
+        echo "Cannot use postgres user. Terminating" >&2 
+        exit 1
+    fi
+    set -e
+}
+
 OPTS=$(getopt --longoptions=db:,user:,password:,autogenpw,standalone,local,help,address:,remote: -n ${0##*/} -- d:u:p:gsha:r:l "$@")
 
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+test_postgres_user
 
 eval set -- "$OPTS"
 

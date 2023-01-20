@@ -158,4 +158,4 @@ Feature: Work with Union and Intersection buttons in the group list
     Then I should see a "deleted" text
 
   Scenario: Cleanup: remove remaining systems from SSM after group union and intersection tests
-    When I follow "Clear"
+    When I click on the clear SSM button

@@ -1,3 +1,15 @@
+- Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
+- Do not use non-compatible unique filter in old jinja2 (bsc#1206979) (bsc#1206981)
+- Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
+- filter out libvirt engine events (bsc#1206146)
+- Improve _mgractionchains.conf logs
+
+-------------------------------------------------------------------
+Wed Jan 18 13:18:45 CET 2023 - jgonzalez@suse.com
+
+- version 4.3.28-1
+  * Move transactional_update.conf to correct location
+
 -------------------------------------------------------------------
 Wed Jan 11 12:47:10 CET 2023 - jgonzalez@suse.com
 

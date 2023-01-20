@@ -77,7 +77,7 @@
         <dependency org="manager-43" name="quartz" rev="2.3.0" />
         <dependency org="manager-43" name="redstone-xmlrpc" rev="1.1_20071120" />
         <dependency org="manager-43" name="redstone-xmlrpc-client" rev="1.1_20071120" />
-        <dependency org="manager-43" name="salt-netapi-client" rev="0.20.0" />
+        <dependency org="manager-43" name="salt-netapi-client" rev="0.21.0" />
         <dependency org="manager-43" name="simpleclient" rev="0.3.0" />
         <dependency org="manager-43" name="simpleclient_common" rev="0.3.0" />
         <dependency org="manager-43" name="simpleclient_httpserver" rev="0.3.0" />

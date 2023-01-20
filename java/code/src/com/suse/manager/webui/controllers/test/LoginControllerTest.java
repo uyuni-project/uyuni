@@ -158,7 +158,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertFalse(result.isSuccess());
         assertEquals(
                 LocalizationService.getInstance().getMessage("error.invalid_login"),
-                String.join("", result.getMessages())
+                String.join("", result.getMessage())
         );
     }
 
@@ -178,7 +178,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertFalse(result.isSuccess());
         assertEquals(
                 LocalizationService.getInstance().getMessage("error.invalid_login"),
-                String.join("", result.getMessages())
+                String.join("", result.getMessage())
         );
     }
 
@@ -198,7 +198,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertFalse(result.isSuccess());
         assertEquals(
                 LocalizationService.getInstance().getMessage("error.invalid_login"),
-                String.join("", result.getMessages())
+                String.join("", result.getMessage())
         );
     }
 
@@ -218,7 +218,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertFalse(result.isSuccess());
         assertEquals(
                 LocalizationService.getInstance().getMessage("error.invalid_login"),
-                String.join("", result.getMessages()));
+                String.join("", result.getMessage()));
     }
 
     @Test
@@ -240,7 +240,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         assertFalse(result.isSuccess());
         assertEquals(
                 LocalizationService.getInstance().getMessage("account.disabled"),
-                String.join("", result.getMessages())
+                String.join("", result.getMessage())
         );
     }
 }

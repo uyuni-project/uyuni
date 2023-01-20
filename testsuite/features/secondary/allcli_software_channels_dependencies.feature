@@ -50,4 +50,4 @@ Feature: Channel subscription with recommended or required dependencies
     And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-SP3-Pool for x86_64" channel
 
   Scenario: Cleanup: remove remaining systems from SSM after software channel tests
-    When I follow "Clear"
+    When I click on the clear SSM button

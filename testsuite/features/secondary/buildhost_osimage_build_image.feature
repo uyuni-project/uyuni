@@ -53,7 +53,7 @@ Feature: Build OS images
 
   Scenario: Cleanup: remove remaining systems from SSM after OS image tests
     When I go to the home page
-    And I follow "Clear"
+    And I click on the clear SSM button
 
   Scenario: Cleanup: remove OS image profile
     When I follow the left menu "Images > Profiles"

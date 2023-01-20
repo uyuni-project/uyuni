@@ -54,7 +54,7 @@ Feature: Display patches
 
   Scenario: Cleanup: remove old packages
     When I disable repository "test_repo_rpm_pool" on this "sle_client" without error control
-    And I refresh the metadata for "sle_client" without error control
+    And I refresh the metadata for "sle_client"
     And I remove package "andromeda-dummy" from this "sle_client" without error control
     And I remove package "virgo-dummy" from this "sle_client" without error control
     And I run "rhn_check -vvv" on "sle_client" without error control
