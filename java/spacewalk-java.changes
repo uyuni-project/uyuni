@@ -1,3 +1,5 @@
+- Fix issue where subscription warning would show incorrectly
+
 -------------------------------------------------------------------
 Mon Jan 23 08:31:37 CET 2023 - jgonzalez@suse.com
 
