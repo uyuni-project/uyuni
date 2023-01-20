@@ -1,3 +1,4 @@
+- Reuse DB connection on compiling pillar with suma_minion
 - Do not use non-compatible unique filter in old jinja2 (bsc#1206979) (bsc#1206981)
 - Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
 - Add missing transactional_update.conf for SLE Micro
