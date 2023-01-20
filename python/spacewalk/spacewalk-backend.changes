@@ -1,3 +1,5 @@
+- Enhance passwords cleanup and add extra files in spacewalk-debug (bsc#1201059)
+
 -------------------------------------------------------------------
 Wed Jan 11 12:46:38 CET 2023 - jgonzalez@suse.com
 
