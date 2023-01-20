@@ -34,6 +34,7 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.LOWER;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.LOWEREQ;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_PKG_NAME;
+import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MODULE_NONE;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.PROVIDES_NAME;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.PTF_ALL;
 import static com.redhat.rhn.domain.contentmgmt.PtfFilter.FIELD_PTF_ALL;
@@ -102,6 +103,7 @@ public class FilterCriteria {
         Triple.of(ERRATUM, CONTAINS_PKG_GE_EVR, "package_nevr"),
         Triple.of(ERRATUM, CONTAINS_PKG_GT_EVR, "package_nevr"),
         Triple.of(MODULE, EQUALS, "module_stream"),
+        Triple.of(MODULE, MODULE_NONE, "module_stream"),
         Triple.of(PACKAGE, PROVIDES_NAME, "provides_name"),
         Triple.of(ERRATUM, CONTAINS_PROVIDES_NAME, "package_provides_name"),
         Triple.of(PTF, PTF_ALL, FIELD_PTF_ALL),
@@ -135,6 +137,7 @@ public class FilterCriteria {
         MATCHES("matches"),
         PROVIDES_NAME("provides_name"),
         CONTAINS_PROVIDES_NAME("contains_provides_name"),
+        MODULE_NONE("module_none"),
         PTF_ALL("ptf_all");
 
         private final String label;

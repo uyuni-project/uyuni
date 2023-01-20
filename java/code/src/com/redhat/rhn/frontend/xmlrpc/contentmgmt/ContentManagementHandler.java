@@ -759,14 +759,13 @@ public class ContentManagementHandler extends BaseHandler {
         if (criteria.isEmpty()) {
             return empty();
         }
-        if (!criteria.containsKey("matcher") || !criteria.containsKey("field") ||
-                !criteria.containsKey("value")) {
+        if (!criteria.containsKey("matcher") || !criteria.containsKey("field")) {
             throw new InvalidArgsException("Incomplete filter criteria");
         }
         return of(new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel((String) criteria.get("matcher")),
                 (String) criteria.get("field"),
-                (String) criteria.get("value")));
+                StringUtils.trimToNull((String) criteria.get("value"))));
     }
 
     /**
