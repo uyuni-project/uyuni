@@ -69,7 +69,7 @@ Feature: Move a minion from a proxy to direct connection
     # be sure that the old events are older than 1 minute
     Given I wait for "120" seconds
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I should see "1" systems selected for SSM
     And I follow the left menu "Systems > System Set Manager > Overview"
