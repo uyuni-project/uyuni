@@ -1278,6 +1278,10 @@ type=rpm-md
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
 
+        if len(self.repo.urls) == 1:
+            # when we have only 1 url copy it to have a 2nd try
+            params['urls'].append(self.repo.urls[0])
+
     def get_file(self, path, local_base=None):
         try:
             try:
