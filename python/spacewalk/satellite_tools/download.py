@@ -174,13 +174,13 @@ class DownloadThread(Thread):
             # No codes at all or some specified codes
             # 58, 77 - Couple of curl error codes observed in multithreading on RHEL 7 - probably a bug
             if (retrycode is None and code is None) or (retrycode in opts.retrycodes or code in [58, 77]):
-                log2(0, 2, "ERROR: Download failed: %s - %s. Retrying..." % (url, sys.exc_info()[1]),
+                log2(0, 2, "WARNING: Download failed: %s - %s. Retrying..." % (url, sys.exc_info()[1]),
                      stream=sys.stderr)
                 return True
 
         # 14 - HTTP Error
         if retry < (mirrors - 1) and retrycode == 14:
-            log2(0, 2, "ERROR: Download failed: %s - %s. Trying next mirror..." % (url, sys.exc_info()[1]),
+            log2(0, 2, "WARNING: Download failed: %s - %s. Trying next mirror..." % (url, sys.exc_info()[1]),
                  stream=sys.stderr)
             return True
 
