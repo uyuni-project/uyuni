@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="unentitled" xml:space="preserve">
         <source>&lt;em&gt;(none)&lt;/em&gt;</source>
-        <target/>
+        <target>&lt;em&gt;(ниеден)&lt;/em&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
