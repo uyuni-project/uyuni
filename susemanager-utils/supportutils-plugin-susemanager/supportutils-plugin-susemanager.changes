@@ -1,4 +1,8 @@
-- update susemanager plugin to export the number of pending salt events
+-------------------------------------------------------------------
+Mon Jan 23 08:29:01 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * update susemanager plugin to export the number of pending salt events
 
 -------------------------------------------------------------------
 Fri Nov 18 15:09:16 CET 2022 - jgonzalez@suse.com
