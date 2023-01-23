@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.action.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -59,15 +60,17 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,7 +78,7 @@ import java.util.List;
 /**
  * ActionFactoryTest
  */
-public class ActionFactoryTest extends RhnBaseTestCase {
+public class ActionFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test fetching an Action
@@ -84,9 +87,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
     @Test
     public void testLookup() throws Exception {
 
-        Action a = createAction(UserTestUtils.createUser("testUser", UserTestUtils
-                .createOrg("testOrg" + this.getClass().getSimpleName())),
-                    ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action a = createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         assertEquals(a.getActionType(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         Long id = a.getId();
         Action a2 = ActionFactory.lookupById(id);
@@ -100,11 +101,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupLastCompletedAction() throws Exception {
-        final User user = UserTestUtils.createUser("testUser",
-            UserTestUtils .createOrg("testOrg" + this.getClass().getSimpleName()));
-
-        ConfigAction a = (ConfigAction)createAction(user,
-                                            ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        ConfigAction a = (ConfigAction) createAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
         assertEquals(a.getActionType(), ActionFactory.TYPE_CONFIGFILES_DEPLOY);
         //complete it
         assertNotNull(a.getServerActions());
@@ -130,12 +127,9 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupWithLoggedInUser() throws Exception {
-
-        User user1 = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        Action a = createAction(user1, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action a = createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         Long id = a.getId();
-        Action a2 = ActionFactory.lookupByUserAndId(user1, id);
+        Action a2 = ActionFactory.lookupByUserAndId(user, id);
         assertNotNull(a2);
         // Check to make sure it returns NULL
         // if we lookup with a User who isnt part of the
@@ -149,9 +143,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupScriptAction() throws Exception {
-        Action newA = createAction(UserTestUtils.createUser("testUser", UserTestUtils
-                .createOrg("testOrg" + this.getClass().getSimpleName())),
-                    ActionFactory.TYPE_SCRIPT_RUN);
+        Action newA = createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
 
@@ -169,10 +161,8 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testSchedulerUser() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        Action newA = createAction(user1, ActionFactory.TYPE_REBOOT);
-        newA.setSchedulerUser(user1);
+        Action newA = createAction(user, ActionFactory.TYPE_REBOOT);
+        newA.setSchedulerUser(user);
         ActionFactory.save(newA);
 
         assertNotNull(newA.getSchedulerUser());
@@ -184,9 +174,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupErrataAction() throws Exception {
-        Action newA = createAction(UserTestUtils.createUser("testUser", UserTestUtils
-                .createOrg("testOrg" + this.getClass().getSimpleName())),
-                    ActionFactory.TYPE_ERRATA);
+        Action newA = createAction(user, ActionFactory.TYPE_ERRATA);
         assertNotNull(newA.getId());
         assertTrue(newA instanceof ErrataAction);
         ErrataAction ea = (ErrataAction) newA;
@@ -200,9 +188,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupDaemonConfig() throws Exception {
-        Action newA = createAction(UserTestUtils.createUser("testUser", UserTestUtils
-                .createOrg("testOrg" + this.getClass().getSimpleName())),
-                    ActionFactory.TYPE_DAEMON_CONFIG);
+        Action newA = createAction(user, ActionFactory.TYPE_DAEMON_CONFIG);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
         assertNotNull(a);
@@ -215,10 +201,8 @@ public class ActionFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testAddServerToAction() throws Exception {
-        User usr = UserTestUtils.createUser("testUser",
-                UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
-        Server s = ServerFactoryTest.createTestServer(usr);
-        Action a = createAction(usr, ActionFactory.TYPE_ERRATA);
+        Server s = ServerFactoryTest.createTestServer(user);
+        Action a = createAction(user, ActionFactory.TYPE_ERRATA);
         ActionFactory.addServerToAction(s.getId(), a);
 
         assertNotNull(a.getServerActions());
@@ -234,15 +218,12 @@ public class ActionFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupConfigRevisionAction() {
-        User usr = UserTestUtils.createUser("testUser",
-            UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
-
         Action newA = ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DIFF);
-        newA.setOrg(usr.getOrg());
+        newA.setOrg(user.getOrg());
 
-        newA.setSchedulerUser(usr);
+        newA.setSchedulerUser(user);
 
-        Server newS = ServerFactoryTest.createTestServer(usr, true);
+        Server newS = ServerFactoryTest.createTestServer(user, true);
         ConfigRevisionAction crad = new ConfigRevisionAction();
 
         crad.setParentAction(newA);
@@ -251,7 +232,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         crad.setModified(new Date());
 
         // Create ConfigRevision
-        ConfigRevision cr = ConfigTestUtils.createConfigRevision(usr.getOrg());
+        ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
         crad.setConfigRevision(cr);
         ConfigAction ca = (ConfigAction) newA;
         ca.addConfigRevisionAction(crad);
@@ -267,15 +248,12 @@ public class ActionFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupConfigRevisionResult() {
-        User usr = UserTestUtils.createUser("testUser",
-           UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
-
         Action newA = ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DIFF);
-        newA.setOrg(usr.getOrg());
+        newA.setOrg(user.getOrg());
 
-        newA.setSchedulerUser(usr);
+        newA.setSchedulerUser(user);
 
-        Server newS = ServerFactoryTest.createTestServer(usr, true);
+        Server newS = ServerFactoryTest.createTestServer(user, true);
         ConfigRevisionAction crad = new ConfigRevisionAction();
 
         crad.setParentAction(newA);
@@ -292,7 +270,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         cresult.setConfigRevisionAction(crad);
         crad.setConfigRevisionActionResult(cresult);
         // Create ConfigRevision
-        ConfigRevision cr = ConfigTestUtils.createConfigRevision(usr.getOrg());
+        ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
         crad.setConfigRevision(cr);
         ConfigAction ca = (ConfigAction) newA;
         ca.addConfigRevisionAction(crad);
@@ -305,79 +283,103 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         assertEquals(cresult.getResultContents(), newResult.getResultContents());
         assertEquals(cresult.getActionConfigRevisionId(),
                                 newResult.getActionConfigRevisionId());
-
     }
 
     @Test
-    public void testRescheduleFailedServerActions() throws Exception {
+    public void rescheduleSingleActionUpdatesEarliestDate() throws Exception {
+        Instant testStartInstant = ZonedDateTime.now().toInstant();
+        Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
 
-        User user1 = UserTestUtils.findNewUser("testUser",
-            "testOrg" + this.getClass().getSimpleName());
-        Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        a1.setEarliestAction(Date.from(originalInstant));
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatus(ActionFactory.STATUS_FAILED);
         sa.setRemainingTries(0L);
+        ActionFactory.save(a1);
+
+        ActionFactory.rescheduleSingleServerAction(a1, 5L, sa.getServerId());
+
+        a1 = HibernateFactory.reload(a1);
+        sa = HibernateFactory.reload(sa);
+
+        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa.getRemainingTries() > 0);
+
+        Instant newEarliestInstant = a1.getEarliestAction().toInstant();
+        assertTrue(originalInstant.isBefore(newEarliestInstant));
+        assertFalse(testStartInstant.isAfter(newEarliestInstant));
+    }
+
+    @Test
+    public void testRescheduleFailedServerActions() {
+        Instant testStartInstant = ZonedDateTime.now().toInstant();
+        Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
+
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        a1.setEarliestAction(Date.from(originalInstant));
+
+        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_FAILED);
+        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_COMPLETED);
+
         ActionFactory.save(a1);
 
         ActionFactory.rescheduleFailedServerActions(a1, 5L);
-        sa = (ServerAction) ActionFactory.reload(sa);
+        sa1 = HibernateFactory.reload(sa1);
 
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
-        assertTrue(sa.getRemainingTries() > 0);
+        assertEquals(sa1.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa1.getRemainingTries() > 0);
 
+        assertEquals(sa2.getStatus(), ActionFactory.STATUS_COMPLETED);
+
+        Instant newEarliestInstant = a1.getEarliestAction().toInstant();
+        assertTrue(originalInstant.isBefore(newEarliestInstant));
+        assertFalse(testStartInstant.isAfter(newEarliestInstant));
     }
 
     @Test
-    public void testRescheduleAllServerActions() throws Exception {
+    public void testRescheduleAllServerActions() {
+        Instant testStartInstant = ZonedDateTime.now().toInstant();
+        Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
 
-        User user1 = UserTestUtils.findNewUser("testUser",
-            "testOrg" + this.getClass().getSimpleName());
-        Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
-        ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        a1.setEarliestAction(Date.from(originalInstant));
 
-        sa.setStatus(ActionFactory.STATUS_FAILED);
-        sa.setRemainingTries(0L);
+        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_FAILED);
+        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_COMPLETED);
+
         ActionFactory.save(a1);
 
         ActionFactory.rescheduleAllServerActions(a1, 5L);
-        sa = (ServerAction) ActionFactory.reload(sa);
 
-        assertEquals(sa.getStatus(), ActionFactory.STATUS_QUEUED);
-        assertTrue(sa.getRemainingTries() > 0);
+        sa1 = HibernateFactory.reload(sa1);
+        sa2 = HibernateFactory.reload(sa2);
 
+        assertEquals(sa1.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa1.getRemainingTries() > 0);
+
+        assertEquals(sa2.getStatus(), ActionFactory.STATUS_QUEUED);
+        assertTrue(sa2.getRemainingTries() > 0);
     }
-
-
-
 
     @Test
     public void testCreateAction() throws Exception {
-        Action a = createAction(UserTestUtils.createUser("testUser", UserTestUtils
-                .createOrg("testOrg" + this.getClass().getSimpleName())),
-                    ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action a = createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         assertNotNull(a);
     }
 
     @Test
     public void testCheckActionArchType() throws Exception {
-        Action newA = createAction(UserTestUtils.createUser("testUser", UserTestUtils
-                .createOrg("testOrg" + this.getClass().getSimpleName())),
-                    ActionFactory.TYPE_PACKAGES_VERIFY);
+        Action newA = createAction(user, ActionFactory.TYPE_PACKAGES_VERIFY);
         assertTrue(ActionFactory.checkActionArchType(newA, "verify"));
     }
 
     @Test
-    public void testUpdateServerActions() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
-        Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
-        Server newS = ServerFactoryTest.createTestServer(user1, true);
-        a1.addServerAction(ServerActionTest.createServerAction(newS, a1));
-        ServerAction sa1 = (ServerAction) a1.getServerActions().toArray()[0];
-        ServerAction sa2 = (ServerAction) a1.getServerActions().toArray()[1];
+    public void testUpdateServerActions() {
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_FAILED);
+        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_QUEUED);
 
-        sa1.setStatus(ActionFactory.STATUS_FAILED);
-        sa1.setRemainingTries(0L);
         ActionFactory.save(a1);
         flushAndEvict(sa1);
         flushAndEvict(sa2);
@@ -398,10 +400,11 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         assertEquals(sa2.getStatus(), ActionFactory.STATUS_COMPLETED);
     }
 
-    public static Action createAction(User usr, ActionType type) throws Exception {
+
+    public static Action createAction(User user, ActionType type) throws Exception {
         Action newA = ActionFactory.createAction(type);
-        Long orgId = usr.getOrg().getId();
-        newA.setSchedulerUser(usr);
+        Long orgId = user.getOrg().getId();
+        newA.setSchedulerUser(user);
         if (type.equals(ActionFactory.TYPE_ERRATA)) {
             Errata e1 = ErrataFactoryTest.createTestErrata(orgId);
             Errata e2 = ErrataFactoryTest.createTestErrata(orgId);
@@ -418,8 +421,8 @@ public class ActionFactoryTest extends RhnBaseTestCase {
             cfda.setModified(new Date());
             cua.addConfigDateFileAction(cfda);
 
-            Server newS = ServerFactoryTest.createTestServer(usr);
-            ConfigRevision cr = ConfigTestUtils.createConfigRevision(usr.getOrg());
+            Server newS = ServerFactoryTest.createTestServer(user);
+            ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
             cua.addConfigChannelAndServer(cr.getConfigFile().getConfigChannel(), newS);
             // rhnActionConfigChannel requires a ServerAction to exist
             cua.addServerAction(ServerActionTest.createServerAction(newS, newA));
@@ -433,9 +436,9 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         }
         else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD)) {
             ConfigUploadAction cua = (ConfigUploadAction) newA;
-            Server newS = ServerFactoryTest.createTestServer(usr);
+            Server newS = ServerFactoryTest.createTestServer(user);
 
-            ConfigRevision cr = ConfigTestUtils.createConfigRevision(usr.getOrg());
+            ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
             cua.addConfigChannelAndServer(cr.getConfigFile().getConfigChannel(), newS);
             cua.addServerAction(ServerActionTest.createServerAction(newS, newA));
 
@@ -447,7 +450,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
             cua.addConfigFileName(name2, newS);
         }
         else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-            Server newS = ServerFactoryTest.createTestServer(usr, true);
+            Server newS = ServerFactoryTest.createTestServer(user, true);
             ConfigRevisionAction crad = new ConfigRevisionAction();
             crad.setParentAction(newA);
             crad.setServer(newS);
@@ -461,7 +464,7 @@ public class ActionFactoryTest extends RhnBaseTestCase {
             cresult.setConfigRevisionAction(crad);
             crad.setConfigRevisionActionResult(cresult);
             // Create ConfigRevision
-            ConfigRevision cr = ConfigTestUtils.createConfigRevision(usr.getOrg());
+            ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
             crad.setConfigRevision(cr);
             ConfigAction ca = (ConfigAction) newA;
             ca.addConfigRevisionAction(crad);
@@ -518,9 +521,8 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         // Here we specifically want to test the addition of the ServerAction details
         // objects.
         else if (type.equals(ActionFactory.TYPE_REBOOT)) {
-            usr.addPermanentRole(RoleFactory.ORG_ADMIN);
-            Server newS = ServerFactoryTest.createTestServer(usr, true);
-            newA.addServerAction(ServerActionTest.createServerAction(newS, newA));
+            user.addPermanentRole(RoleFactory.ORG_ADMIN);
+            addServerAction(user, newA, ActionFactory.STATUS_QUEUED);
         }
         else if (type.equals(ActionFactory.TYPE_DAEMON_CONFIG)) {
             DaemonConfigDetails dcd = new DaemonConfigDetails();
@@ -539,22 +541,22 @@ public class ActionFactoryTest extends RhnBaseTestCase {
                  type.equals(ActionFactory.TYPE_VIRTUALIZATION_START) ||
                  type.equals(ActionFactory.TYPE_VIRTUALIZATION_SUSPEND)) {
             BaseVirtualizationGuestAction va = (BaseVirtualizationGuestAction)newA;
-            va.setUuid("testuuid");
+            va.setUuid(RandomStringUtils.randomAlphanumeric(8));
         }
         else if (type.equals(ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY)) {
            VirtualizationSetMemoryGuestAction va = (VirtualizationSetMemoryGuestAction)newA;
-           va.setUuid("testuuid");
+            va.setUuid(RandomStringUtils.randomAlphanumeric(8));
            va.setMemory(1234);
         }
         else if (type.equals(ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS)) {
             VirtualizationSetVcpusGuestAction va = (VirtualizationSetVcpusGuestAction)newA;
-            va.setUuid("testuuid");
+            va.setUuid(RandomStringUtils.randomAlphanumeric(8));
             va.setVcpu(12);
         }
 
         newA.setName("RHN-JAVA Test Action");
         newA.setActionType(type);
-        newA.setOrg(usr.getOrg());
+        newA.setOrg(user.getOrg());
         newA.setEarliestAction(new Date());
         newA.setVersion(0L);
         newA.setArchived(0L);
@@ -562,6 +564,13 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         newA.setModified(new Date());
         ActionFactory.save(newA);
         return newA;
+    }
+
+    private static ServerAction addServerAction(User user, Action newA, ActionStatus status) {
+        Server newS = ServerFactoryTest.createTestServer(user, true);
+        ServerAction serverAction = ServerActionTest.createServerAction(newS, newA, status);
+        newA.addServerAction(serverAction);
+        return serverAction;
     }
 
     public static Action createEmptyAction(User user, ActionType type) {

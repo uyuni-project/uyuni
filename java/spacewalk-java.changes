@@ -1,3 +1,4 @@
+- Update earliest date when rescheduling failed actions (bsc#1206562)
 - Improve automatic dependency selection for vendor clones
 - Fix taskomatic logging (bsc#1207867)
 - Added APIs to allow frontend to install and remove ptf
