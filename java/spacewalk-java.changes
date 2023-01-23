@@ -1,3 +1,4 @@
+- Update earliest date when rescheduling failed actions (bsc#1206562)
 - send virtualization information to SCC
 - Prevent HTTP API restricted args from being logged (bsc#1208119)
 - Fix reconnection of postgres event stream
