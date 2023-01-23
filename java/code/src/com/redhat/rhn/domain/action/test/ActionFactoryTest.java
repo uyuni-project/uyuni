@@ -74,6 +74,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * ActionFactoryTest
@@ -400,6 +402,40 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         assertTrue(sa2.getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
+    @Test
+    public void rejectScheduledActionsMarkPendingServerActionsAsFailed() {
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        ServerAction sa1 = addServerAction(user, a1, ActionFactory.STATUS_COMPLETED);
+        ServerAction sa2 = addServerAction(user, a1, ActionFactory.STATUS_QUEUED);
+
+        Action a2 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_APPLY_STATES);
+        ServerAction sa3 = addServerAction(user, a2, ActionFactory.STATUS_QUEUED);
+        ServerAction sa4 = addServerAction(user, a2, ActionFactory.STATUS_PICKED_UP);
+
+        TestUtils.saveAndReload(a1);
+        TestUtils.saveAndReload(a2);
+
+        List<Long> actionIds = Stream.of(a1, a2).map(Action::getId).collect(Collectors.toList());
+        ActionFactory.rejectScheduledActions(actionIds, "Test Rejection Reason");
+
+        sa1 = HibernateFactory.reload(sa1);
+        sa2 = HibernateFactory.reload(sa2);
+        sa3 = HibernateFactory.reload(sa3);
+        sa4 = HibernateFactory.reload(sa4);
+
+        assertEquals(ActionFactory.STATUS_COMPLETED, sa1.getStatus());
+
+        assertEquals(ActionFactory.STATUS_FAILED, sa2.getStatus());
+        assertEquals("Test Rejection Reason", sa2.getResultMsg());
+        assertEquals(-1, sa2.getResultCode());
+
+        assertEquals(ActionFactory.STATUS_FAILED, sa3.getStatus());
+        assertEquals("Test Rejection Reason", sa3.getResultMsg());
+        assertEquals(-1, sa3.getResultCode());
+
+        assertEquals(ActionFactory.STATUS_PICKED_UP, sa4.getStatus());
+    }
+
     public static Action createAction(User user, ActionType type) throws Exception {
         Action newA = ActionFactory.createAction(type);
         Long orgId = user.getOrg().getId();
@@ -565,7 +601,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         return newA;
     }
 
-    private static ServerAction addServerAction(User user, Action newA, ActionStatus status) {
+    public static ServerAction addServerAction(User user, Action newA, ActionStatus status) {
         Server newS = ServerFactoryTest.createTestServer(user, true);
         ServerAction serverAction = ServerActionTest.createServerAction(newS, newA, status);
         newA.addServerAction(serverAction);

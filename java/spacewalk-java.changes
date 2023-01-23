@@ -1,3 +1,5 @@
+- Mark as failed actions that cannot be scheduled because earliest
+  date is too old
 - Update earliest date when rescheduling failed actions (bsc#1206562)
 - send virtualization information to SCC
 - Prevent HTTP API restricted args from being logged (bsc#1208119)
